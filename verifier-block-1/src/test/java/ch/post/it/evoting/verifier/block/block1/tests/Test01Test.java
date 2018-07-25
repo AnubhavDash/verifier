@@ -17,7 +17,7 @@ import java.io.File;
 
 /**
  * Class Test01isPrimePTest.
- * This represents TODO.
+ * This represents a unit for the Test01 class
  *
  * @author lalandret
  * @version $$Revision$$
