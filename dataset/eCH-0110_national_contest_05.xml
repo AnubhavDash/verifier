@@ -1,0 +1,1435 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<eCH-0110:delivery xmlns:eCH-0110="http://www.ech.ch/xmlns/eCH-0110/3" xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008/3" xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3">
+    <eCH-0110:deliveryHeader>
+        <eCH-0058:senderId>http://www.post.ch</eCH-0058:senderId>
+        <eCH-0058:messageId>1526039955748</eCH-0058:messageId>
+        <eCH-0058:messageType>http://www.post.ch</eCH-0058:messageType>
+        <eCH-0058:sendingApplication>
+            <eCH-0058:manufacturer>SwissPost</eCH-0058:manufacturer>
+            <eCH-0058:product>OV</eCH-0058:product>
+            <eCH-0058:productVersion>1</eCH-0058:productVersion>
+        </eCH-0058:sendingApplication>
+        <eCH-0058:messageDate>2018-05-11T13:59:15.748+02:00</eCH-0058:messageDate>
+        <eCH-0058:action>1</eCH-0058:action>
+        <eCH-0058:testDeliveryFlag>false</eCH-0058:testDeliveryFlag>
+    </eCH-0110:deliveryHeader>
+    <eCH-0110:resultDelivery>
+        <eCH-0110:reportingBody>
+            <eCH-0110:reportingBodyIdentification>SwissPost-OV</eCH-0110:reportingBodyIdentification>
+            <eCH-0110:creationDateTime>2018-05-11T13:59:15.681+02:00</eCH-0110:creationDateTime>
+        </eCH-0110:reportingBody>
+        <eCH-0110:contestInformation>
+            <eCH-0155:contestIdentification>national_contest_05</eCH-0155:contestIdentification>
+            <eCH-0155:contestDate>2019-01-01</eCH-0155:contestDate>
+            <eCH-0155:contestDescription>
+                <eCH-0155:contestDescriptionInfo>
+                    <eCH-0155:language>de</eCH-0155:language>
+                    <eCH-0155:contestDescription>Nationale Wahlen und Abstimmungen</eCH-0155:contestDescription>
+                </eCH-0155:contestDescriptionInfo>
+                <eCH-0155:contestDescriptionInfo>
+                    <eCH-0155:language>fr</eCH-0155:language>
+                    <eCH-0155:contestDescription>Nationale Wahlen und Abstimmungen</eCH-0155:contestDescription>
+                </eCH-0155:contestDescriptionInfo>
+                <eCH-0155:contestDescriptionInfo>
+                    <eCH-0155:language>it</eCH-0155:language>
+                    <eCH-0155:contestDescription>Nationale Wahlen und Abstimmungen</eCH-0155:contestDescription>
+                </eCH-0155:contestDescriptionInfo>
+                <eCH-0155:contestDescriptionInfo>
+                    <eCH-0155:language>rm</eCH-0155:language>
+                    <eCH-0155:contestDescription>Nationale Wahlen und Abstimmungen</eCH-0155:contestDescription>
+                </eCH-0155:contestDescriptionInfo>
+            </eCH-0155:contestDescription>
+        </eCH-0110:contestInformation>
+        <eCH-0110:countingCircleResults>
+            <eCH-0110:countingCircle>
+                <eCH-0155:countingCircleId>FR-MU-2309</eCH-0155:countingCircleId>
+                <eCH-0155:countingCircleName>Wünnewil-Flamatt</eCH-0155:countingCircleName>
+            </eCH-0110:countingCircle>
+            <eCH-0110:votingCardsInformation>
+                <eCH-0110:countOfReceivedValidVotingCardsTotal>3</eCH-0110:countOfReceivedValidVotingCardsTotal>
+                <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
+            </eCH-0110:votingCardsInformation>
+            <eCH-0110:voteResults>
+                <eCH-0110:vote>
+                    <eCH-0155:voteIdentification>vote-01</eCH-0155:voteIdentification>
+                    <eCH-0155:domainOfInfluence>1B76E565-4DA8-11E6-89C7-00155D28151E</eCH-0155:domainOfInfluence>
+                    <eCH-0155:voteDescription>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:voteDescription>Eidgenössische Volksabstimmung</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:voteDescription>Votation populaire fédérale</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:voteDescription>Votazione popolare federale</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:voteDescription>Votaziun federala dal pievel</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                    </eCH-0155:voteDescription>
+                </eCH-0110:vote>
+                <eCH-0110:countOfVotersInformation>
+                    <eCH-0110:countOfVotersTotal>100</eCH-0110:countOfVotersTotal>
+                </eCH-0110:countOfVotersInformation>
+                <eCH-0110:ballotResult>
+                    <eCH-0110:ballotIdentification>b1</eCH-0110:ballotIdentification>
+                    <eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
+                    <eCH-0110:ballotDescription>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Volksinitiative «Volksinitiative A»</eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionShort>Initiative A</eCH-0155:ballotDescriptionShort>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Initiative populaire «Initiative populaire A»</eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionShort>Initiative A</eCH-0155:ballotDescriptionShort>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Iniziativa popolare «Iniziativa popolare A»</eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionShort>Iniziativa A</eCH-0155:ballotDescriptionShort>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Iniziativa dal pievel «Iniziativa dal pievel A»</eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionShort>Iniziativa A</eCH-0155:ballotDescriptionShort>
+                        </eCH-0155:ballotDescriptionInfo>
+                    </eCH-0110:ballotDescription>
+                    <eCH-0110:countOfReceivedBallotsTotal>
+                        <eCH-0110:total>3</eCH-0110:total>
+                    </eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:countOfAccountedBallotsTotal>
+                        <eCH-0110:total>3</eCH-0110:total>
+                    </eCH-0110:countOfAccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBallotsTotal>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBlankBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:countOfUnaccountedInvalidBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:variantBallot>
+                        <eCH-0110:questionInformation>
+                            <eCH-0110:questionIdentification>Q1</eCH-0110:questionIdentification>
+                            <eCH-0110:answerType>
+                                <eCH-0155:answerType>2</eCH-0155:answerType>
+                            </eCH-0110:answerType>
+                            <eCH-0110:question>
+                                <eCH-0155:ballotQuestionInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:ballotQuestionTitle>Volksinitiative A</eCH-0155:ballotQuestionTitle>
+                                    <eCH-0155:ballotQuestion>Volksinitiative: Wollen Sie die «Volksinitiative A» annehmen?</eCH-0155:ballotQuestion>
+                                </eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:ballotQuestionInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:ballotQuestionTitle>Initiative populaire A</eCH-0155:ballotQuestionTitle>
+                                    <eCH-0155:ballotQuestion>Initiative populaire: Acceptez-vous «l'initiative populaire A»?</eCH-0155:ballotQuestion>
+                                </eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:ballotQuestionInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:ballotQuestionTitle>Iniziativa popolare A</eCH-0155:ballotQuestionTitle>
+                                    <eCH-0155:ballotQuestion>Iniziativa popolare: Volete accettare «l'iniziativa popolare A»?</eCH-0155:ballotQuestion>
+                                </eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:ballotQuestionInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:ballotQuestionTitle>Iniziativa dal pievel A</eCH-0155:ballotQuestionTitle>
+                                    <eCH-0155:ballotQuestion>Iniziativa dal pievel: Vulais Vus acceptar «l’iniziativa dal pievel A»?</eCH-0155:ballotQuestion>
+                                </eCH-0155:ballotQuestionInfo>
+                            </eCH-0110:question>
+                            <eCH-0110:countOfAnswerYes>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfAnswerYes>
+                            <eCH-0110:countOfAnswerNo>
+                                <eCH-0110:total>2</eCH-0110:total>
+                            </eCH-0110:countOfAnswerNo>
+                            <eCH-0110:countOfAnswerInvalid>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfAnswerInvalid>
+                            <eCH-0110:countOfAnswerEmpty>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfAnswerEmpty>
+                        </eCH-0110:questionInformation>
+                        <eCH-0110:questionInformation>
+                            <eCH-0110:questionIdentification>Q2</eCH-0110:questionIdentification>
+                            <eCH-0110:answerType>
+                                <eCH-0155:answerType>2</eCH-0155:answerType>
+                            </eCH-0110:answerType>
+                            <eCH-0110:question>
+                                <eCH-0155:ballotQuestionInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:ballotQuestionTitle>Volksinitiative A : Gegenentwurf</eCH-0155:ballotQuestionTitle>
+                                    <eCH-0155:ballotQuestion>Gegenentwurf: Wollen Sie den Gegenentwurf der Bundesversammlung «Gegenentwurf B» annehmen?</eCH-0155:ballotQuestion>
+                                </eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:ballotQuestionInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:ballotQuestionTitle>Initiative A : Contre-projet</eCH-0155:ballotQuestionTitle>
+                                    <eCH-0155:ballotQuestion>Contre-projet: Acceptez-vous le contreprojet de l'Assemblée fédérale «Contre-projet B»?</eCH-0155:ballotQuestion>
+                                </eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:ballotQuestionInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:ballotQuestionTitle>Iniziativa A : Controprogetto</eCH-0155:ballotQuestionTitle>
+                                    <eCH-0155:ballotQuestion>Controprogetto : Volete accettare il controprogetto dell’Assemblea federale «Controprogetto B»?</eCH-0155:ballotQuestion>
+                                </eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:ballotQuestionInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:ballotQuestionTitle>Iniziativa A : Cuntraproject</eCH-0155:ballotQuestionTitle>
+                                    <eCH-0155:ballotQuestion>Cuntraproject: Vulais Vus acceptar il cuntraproject da l'Assamblea federala «cuntraproject B»?</eCH-0155:ballotQuestion>
+                                </eCH-0155:ballotQuestionInfo>
+                            </eCH-0110:question>
+                            <eCH-0110:countOfAnswerYes>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfAnswerYes>
+                            <eCH-0110:countOfAnswerNo>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfAnswerNo>
+                            <eCH-0110:countOfAnswerInvalid>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfAnswerInvalid>
+                            <eCH-0110:countOfAnswerEmpty>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfAnswerEmpty>
+                        </eCH-0110:questionInformation>
+                        <eCH-0110:tieBreak>
+                            <eCH-0110:questionIdentification>Q3</eCH-0110:questionIdentification>
+                            <eCH-0110:answerType>
+                                <eCH-0155:answerType>4</eCH-0155:answerType>
+                            </eCH-0110:answerType>
+                            <eCH-0110:tieBreakQuestion>
+                                <eCH-0155:tieBreakQuestionInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:tieBreakQuestionTitle>Initiative A : Stichfrage</eCH-0155:tieBreakQuestionTitle>
+                                    <eCH-0155:tieBreakQuestion>Stichfrage: Falls sowohl die «Volksinitiative A» als auch der «Gegenentwurf B» von Volk und Ständen angenommen werden: Soll die Volksinitiative A oder der Gegenentwurf A in Kraft treten?</eCH-0155:tieBreakQuestion>
+                                </eCH-0155:tieBreakQuestionInfo>
+                                <eCH-0155:tieBreakQuestionInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:tieBreakQuestionTitle>Initiative A : Question subsidiaire</eCH-0155:tieBreakQuestionTitle>
+                                    <eCH-0155:tieBreakQuestion>Question subsidiaire: Si le peuple et les cantons acceptaient à la fois «l'initiative A» et «le contre-projet B»: Est-ce l'initiative populaire A ou le contre-projet B qui doit entrer en vigueur?</eCH-0155:tieBreakQuestion>
+                                </eCH-0155:tieBreakQuestionInfo>
+                                <eCH-0155:tieBreakQuestionInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:tieBreakQuestionTitle>Iniziativa A : Questione sussidiario</eCH-0155:tieBreakQuestionTitle>
+                                    <eCH-0155:tieBreakQuestion>Questione sussidiario: Nel caso in cui popolo e Cantoni accettino sia «l’iniziativa A» sia «il controprogetto B», deve entrare in vigore l’iniziativa popolare A oppure il controprogetto B?</eCH-0155:tieBreakQuestion>
+                                </eCH-0155:tieBreakQuestionInfo>
+                                <eCH-0155:tieBreakQuestionInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:tieBreakQuestionTitle>Iniziativa A : Dumonda conclusiva</eCH-0155:tieBreakQuestionTitle>
+                                    <eCH-0155:tieBreakQuestion>Dumonda conclusiva: Sche tant la «iniziativa dal pievel A» sco er il «cuntraproject B» vegnan acceptads dal pievel e dals chantuns: Duai entrar en vigur l'iniziativa dal pievel A ubain il cuntraproject B?</eCH-0155:tieBreakQuestion>
+                                </eCH-0155:tieBreakQuestionInfo>
+                            </eCH-0110:tieBreakQuestion>
+                            <eCH-0110:countOfAnswerInvalid>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfAnswerInvalid>
+                            <eCH-0110:countOfAnswerEmpty>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfAnswerEmpty>
+                            <eCH-0110:countInFavourOf>
+                                <eCH-0110:questionIdentification>Q1</eCH-0110:questionIdentification>
+                                <eCH-0110:countOfValidAnswers>
+                                    <eCH-0110:total>0</eCH-0110:total>
+                                </eCH-0110:countOfValidAnswers>
+                            </eCH-0110:countInFavourOf>
+                            <eCH-0110:countInFavourOf>
+                                <eCH-0110:questionIdentification>Q2</eCH-0110:questionIdentification>
+                                <eCH-0110:countOfValidAnswers>
+                                    <eCH-0110:total>3</eCH-0110:total>
+                                </eCH-0110:countOfValidAnswers>
+                            </eCH-0110:countInFavourOf>
+                        </eCH-0110:tieBreak>
+                    </eCH-0110:variantBallot>
+                </eCH-0110:ballotResult>
+                <eCH-0110:ballotResult>
+                    <eCH-0110:ballotIdentification>b2</eCH-0110:ballotIdentification>
+                    <eCH-0110:ballotPosition>2</eCH-0110:ballotPosition>
+                    <eCH-0110:ballotDescription>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Demo Bundesbeschluss C</eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionShort>Demo Bundesbeschluss C</eCH-0155:ballotDescriptionShort>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Démo Arrêté fédéral C</eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionShort>Démo Arrêté fédéral C</eCH-0155:ballotDescriptionShort>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Demo Decreto federale C</eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionShort>Demo Decreto federale C</eCH-0155:ballotDescriptionShort>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Demo Conclus federal C</eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionShort>Demo Conclus federal C</eCH-0155:ballotDescriptionShort>
+                        </eCH-0155:ballotDescriptionInfo>
+                    </eCH-0110:ballotDescription>
+                    <eCH-0110:countOfReceivedBallotsTotal>
+                        <eCH-0110:total>3</eCH-0110:total>
+                    </eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:countOfAccountedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfAccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBallotsTotal>
+                        <eCH-0110:total>1</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBlankBallots>
+                        <eCH-0110:total>1</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:countOfUnaccountedInvalidBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:standardBallot>
+                        <eCH-0110:questionIdentification>Q4</eCH-0110:questionIdentification>
+                        <eCH-0110:answerType>
+                            <eCH-0155:answerType>2</eCH-0155:answerType>
+                        </eCH-0110:answerType>
+                        <eCH-0110:question>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>de</eCH-0155:language>
+                                <eCH-0155:ballotQuestionTitle>Bundesbeschluss C</eCH-0155:ballotQuestionTitle>
+                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss «C» vom 28. Februar 2017 annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>fr</eCH-0155:language>
+                                <eCH-0155:ballotQuestionTitle>Arrêté fédéral C</eCH-0155:ballotQuestionTitle>
+                                <eCH-0155:ballotQuestion>Acceptez-vous l'arrêté fédéral «C» du 28 février 2017?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>it</eCH-0155:language>
+                                <eCH-0155:ballotQuestionTitle>Decreto federale C</eCH-0155:ballotQuestionTitle>
+                                <eCH-0155:ballotQuestion>Volete accettare la decreto federale «C» del 28 febbraio 2017?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>rm</eCH-0155:language>
+                                <eCH-0155:ballotQuestionTitle>Conclus federal C</eCH-0155:ballotQuestionTitle>
+                                <eCH-0155:ballotQuestion>Vulais Vus acceptar il conclus federal «C» dals 28 da favrer 2017?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                        </eCH-0110:question>
+                        <eCH-0110:countOfAnswerYes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerYes>
+                        <eCH-0110:countOfAnswerNo>
+                            <eCH-0110:total>2</eCH-0110:total>
+                        </eCH-0110:countOfAnswerNo>
+                        <eCH-0110:countOfAnswerInvalid>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerInvalid>
+                        <eCH-0110:countOfAnswerEmpty>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerEmpty>
+                    </eCH-0110:standardBallot>
+                </eCH-0110:ballotResult>
+            </eCH-0110:voteResults>
+            <eCH-0110:electionResults>
+                <eCH-0110:election>
+                    <eCH-0155:electionIdentification>Eidgenoessische_Wahlen</eCH-0155:electionIdentification>
+                    <eCH-0155:domainOfInfluence>1B76E565-4DA8-11E6-89C7-00155D28151E</eCH-0155:domainOfInfluence>
+                    <eCH-0155:typeOfElection>1</eCH-0155:typeOfElection>
+                    <eCH-0155:electionDescription>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:electionDescriptionShort>Nationalrat</eCH-0155:electionDescriptionShort>
+                            <eCH-0155:electionDescription>Nationalratswahl</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:electionDescriptionShort>Conseil national</eCH-0155:electionDescriptionShort>
+                            <eCH-0155:electionDescription>Election du Conseil national</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:electionDescriptionShort>Demo Consiglio nationale</eCH-0155:electionDescriptionShort>
+                            <eCH-0155:electionDescription>Elezione del Consiglio nationale</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:electionDescriptionShort>Demo Cussegl natiunal</eCH-0155:electionDescriptionShort>
+                            <eCH-0155:electionDescription>Elecziun dal Cussegl natiunal</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                    </eCH-0155:electionDescription>
+                    <eCH-0155:numberOfMandates>5</eCH-0155:numberOfMandates>
+                </eCH-0110:election>
+                <eCH-0110:countOfVotersInformation>
+                    <eCH-0110:countOfVotersTotal>100</eCH-0110:countOfVotersTotal>
+                </eCH-0110:countOfVotersInformation>
+                <eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:total>3</eCH-0110:total>
+                </eCH-0110:countOfReceivedBallotsTotal>
+                <eCH-0110:countOfAccountedBallots>
+                    <eCH-0110:total>3</eCH-0110:total>
+                </eCH-0110:countOfAccountedBallots>
+                <eCH-0110:countOfUnaccountedBallots>
+                    <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedBallots>
+                <eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedBlankBallots>
+                <eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedInvalidBallots>
+                <eCH-0110:proportionalElection>
+                    <eCH-0110:countOfChangedBallotsWithPartyAffiliation>
+                        <eCH-0110:total>1</eCH-0110:total>
+                    </eCH-0110:countOfChangedBallotsWithPartyAffiliation>
+                    <eCH-0110:countOfChangedBallotsWithoutPartyAffiliation>
+                        <eCH-0110:total>1</eCH-0110:total>
+                    </eCH-0110:countOfChangedBallotsWithoutPartyAffiliation>
+                    <eCH-0110:countOfEmptyVotesOfChangedBallotsWithoutPartyAffiliation>
+                        <eCH-0110:total>4</eCH-0110:total>
+                    </eCH-0110:countOfEmptyVotesOfChangedBallotsWithoutPartyAffiliation>
+                    <eCH-0110:list>
+                        <eCH-0110:listInformation>
+                            <eCH-0110:listIdentification>L1</eCH-0110:listIdentification>
+                            <eCH-0110:listIndentureNumber>E1-L1</eCH-0110:listIndentureNumber>
+                            <eCH-0110:listDescription>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>L1</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Liste 1: Komponisten/innen</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>L1</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Liste 1: Compositeurs/Compositrices</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>L1</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Lista 1: Compositore/Compositrice</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>L1</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Glista 1: Cumponists/Cumponistas</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                            </eCH-0110:listDescription>
+                        </eCH-0110:listInformation>
+                        <eCH-0110:countOfChangedBallots>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfChangedBallots>
+                        <eCH-0110:countOfCandidateVotes>
+                            <eCH-0110:total>6</eCH-0110:total>
+                        </eCH-0110:countOfCandidateVotes>
+                        <eCH-0110:countOfAdditionalVotes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAdditionalVotes>
+                        <eCH-0110:countOfPartyVotes>
+                            <eCH-0110:total>6</eCH-0110:total>
+                        </eCH-0110:countOfPartyVotes>
+                    </eCH-0110:list>
+                    <eCH-0110:list>
+                        <eCH-0110:listInformation>
+                            <eCH-0110:listIdentification>L2</eCH-0110:listIdentification>
+                            <eCH-0110:listIndentureNumber>E1-L2</eCH-0110:listIndentureNumber>
+                            <eCH-0110:listDescription>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>L2</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Liste 2: Schriftsteller/innen</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>L2</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Liste 2: Écrivains/Écrivaines</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>L2</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Lista 2: Scrittore/Scrittrice</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>L2</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Glista 2: Scripturs/Scripturas</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                            </eCH-0110:listDescription>
+                        </eCH-0110:listInformation>
+                        <eCH-0110:countOfChangedBallots>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfChangedBallots>
+                        <eCH-0110:countOfCandidateVotes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfCandidateVotes>
+                        <eCH-0110:countOfAdditionalVotes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAdditionalVotes>
+                        <eCH-0110:countOfPartyVotes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfPartyVotes>
+                    </eCH-0110:list>
+                    <eCH-0110:list>
+                        <eCH-0110:listInformation>
+                            <eCH-0110:listIdentification>L3</eCH-0110:listIdentification>
+                            <eCH-0110:listIndentureNumber>E1-L3</eCH-0110:listIndentureNumber>
+                            <eCH-0110:listDescription>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>L3</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Liste 3: Musiker/innen</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>L3</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Liste 3: Musiciens/Musiciennes</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>L3</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Lista 3: Musicista</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>L3</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Glista 3: Musicists/Musicistas</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                            </eCH-0110:listDescription>
+                        </eCH-0110:listInformation>
+                        <eCH-0110:countOfChangedBallots>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfChangedBallots>
+                        <eCH-0110:countOfCandidateVotes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfCandidateVotes>
+                        <eCH-0110:countOfAdditionalVotes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAdditionalVotes>
+                        <eCH-0110:countOfPartyVotes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfPartyVotes>
+                    </eCH-0110:list>
+                    <eCH-0110:list>
+                        <eCH-0110:listInformation>
+                            <eCH-0110:listIdentification>L4</eCH-0110:listIdentification>
+                            <eCH-0110:listIndentureNumber>E1-L4</eCH-0110:listIndentureNumber>
+                            <eCH-0110:listDescription>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>L4</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Liste 4: Wissenschaftler/innen</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>L4</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Liste 4: Scientifiques</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>L4</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Lista 4: Scienziato/Scienziata</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>L4</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Glista 4: Scienziads/Scienziadas</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                            </eCH-0110:listDescription>
+                        </eCH-0110:listInformation>
+                        <eCH-0110:countOfChangedBallots>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfChangedBallots>
+                        <eCH-0110:countOfCandidateVotes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfCandidateVotes>
+                        <eCH-0110:countOfAdditionalVotes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAdditionalVotes>
+                        <eCH-0110:countOfPartyVotes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfPartyVotes>
+                    </eCH-0110:list>
+                    <eCH-0110:list>
+                        <eCH-0110:listInformation>
+                            <eCH-0110:listIdentification>L5</eCH-0110:listIdentification>
+                            <eCH-0110:listIndentureNumber>E1-L5</eCH-0110:listIndentureNumber>
+                            <eCH-0110:listDescription>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>L5</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Liste 5: Mathematiker/innen</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>L5</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Liste 5: Mathématiciens/Mathématiciennes</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>L5</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Lista 5: Matematico/Matematica</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>L5</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Glista 5: Matematichers/Matematicras</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                            </eCH-0110:listDescription>
+                        </eCH-0110:listInformation>
+                        <eCH-0110:countOfChangedBallots>
+                            <eCH-0110:total>1</eCH-0110:total>
+                        </eCH-0110:countOfChangedBallots>
+                        <eCH-0110:countOfCandidateVotes>
+                            <eCH-0110:total>5</eCH-0110:total>
+                        </eCH-0110:countOfCandidateVotes>
+                        <eCH-0110:countOfAdditionalVotes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAdditionalVotes>
+                        <eCH-0110:countOfPartyVotes>
+                            <eCH-0110:total>5</eCH-0110:total>
+                        </eCH-0110:countOfPartyVotes>
+                    </eCH-0110:list>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7101</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Chopin</eCH-0110:familyName>
+                            <eCH-0110:firstName>Fréderic</eCH-0110:firstName>
+                            <eCH-0110:callName>Fréderic</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Chopin Fréderic</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Chopin Fréderic</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Chopin Fréderic</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Chopin Fréderic</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>L1</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>2</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7104</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Strozzi</eCH-0110:familyName>
+                            <eCH-0110:firstName>Barbara</eCH-0110:firstName>
+                            <eCH-0110:callName>Barbara</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Strozzi Barbara</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Strozzi Barbara</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Strozzi Barbara</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Strozzi Barbara</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>L1</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>2</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7105</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Liszt</eCH-0110:familyName>
+                            <eCH-0110:firstName>Franz</eCH-0110:firstName>
+                            <eCH-0110:callName>Franz</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Liszt Franz</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Liszt Franz</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Liszt Franz</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Liszt Franz</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>L1</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>List99</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7106</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>King</eCH-0110:familyName>
+                            <eCH-0110:firstName>Stephen</eCH-0110:firstName>
+                            <eCH-0110:callName>Stephen</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>King Stephen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>King Stephen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>King Stephen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>King Stephen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7109</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Lee</eCH-0110:familyName>
+                            <eCH-0110:firstName>Harper</eCH-0110:firstName>
+                            <eCH-0110:callName>Harper</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Lee Harper</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Lee Harper</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Lee Harper</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Lee Harper</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7110</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Orwell</eCH-0110:familyName>
+                            <eCH-0110:firstName>George</eCH-0110:firstName>
+                            <eCH-0110:callName>George</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Orwell George</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Orwell George</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Orwell George</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Orwell George</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7111</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Jagger</eCH-0110:familyName>
+                            <eCH-0110:firstName>Mick</eCH-0110:firstName>
+                            <eCH-0110:callName>Mick</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Jagger Mick</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Jagger Mick</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Jagger Mick</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Jagger Mick</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7114</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Turner</eCH-0110:familyName>
+                            <eCH-0110:firstName>Tina</eCH-0110:firstName>
+                            <eCH-0110:callName>Tina</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Turner Tina</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Turner Tina</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Turner Tina</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Turner Tina</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7115</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Wonder</eCH-0110:familyName>
+                            <eCH-0110:firstName>Stevie</eCH-0110:firstName>
+                            <eCH-0110:callName>Stevie</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Wonder Stevie</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Wonder Stevie</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Wonder Stevie</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Wonder Stevie</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7116</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Newton</eCH-0110:familyName>
+                            <eCH-0110:firstName>Isaac</eCH-0110:firstName>
+                            <eCH-0110:callName>Isaac</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Newton Isaac</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Newton Isaac</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Newton Isaac</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Newton Isaac</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7117</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Einstein</eCH-0110:familyName>
+                            <eCH-0110:firstName>Albert</eCH-0110:firstName>
+                            <eCH-0110:callName>Albert</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Einstein Albert</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Einstein Albert</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Einstein Albert</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Einstein Albert</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7118</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Curie</eCH-0110:familyName>
+                            <eCH-0110:firstName>Marie</eCH-0110:firstName>
+                            <eCH-0110:callName>Marie</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Curie Marie</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Curie Marie</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Curie Marie</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Curie Marie</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7119</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Meitner</eCH-0110:familyName>
+                            <eCH-0110:firstName>Lise</eCH-0110:firstName>
+                            <eCH-0110:callName>Lise</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Meitner Lise</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Meitner Lise</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Meitner Lise</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Meitner Lise</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7120</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Hawking</eCH-0110:familyName>
+                            <eCH-0110:firstName>Stephen</eCH-0110:firstName>
+                            <eCH-0110:callName>Stephen</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Hawking Stephen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Hawking Stephen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Hawking Stephen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Hawking Stephen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7121</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Galilei</eCH-0110:familyName>
+                            <eCH-0110:firstName>Galileo</eCH-0110:firstName>
+                            <eCH-0110:callName>Galileo</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Galilei Galileo</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Galilei Galileo</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Galilei Galileo</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Galilei Galileo</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7122</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Keppler</eCH-0110:familyName>
+                            <eCH-0110:firstName>Johannes</eCH-0110:firstName>
+                            <eCH-0110:callName>Johannes</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Keppler Johannes</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Keppler Johannes</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Keppler Johannes</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Keppler Johannes</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>L5</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7123</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Descartes</eCH-0110:familyName>
+                            <eCH-0110:firstName>René</eCH-0110:firstName>
+                            <eCH-0110:callName>René</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Descartes René</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Descartes René</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Descartes René</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Descartes René</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>L5</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7124</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Germain</eCH-0110:familyName>
+                            <eCH-0110:firstName>Sophie</eCH-0110:firstName>
+                            <eCH-0110:callName>Sophie</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Germain Sophie</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Germain Sophie</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Germain Sophie</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Germain Sophie</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>L5</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7125</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Kopernikus</eCH-0110:familyName>
+                            <eCH-0110:firstName>Nikolaus</eCH-0110:firstName>
+                            <eCH-0110:callName>Nikolaus</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Kopernikus Nikolaus</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Kopernikus Nikolaus</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Kopernikus Nikolaus</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Kopernikus Nikolaus</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>L5</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>2</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                </eCH-0110:proportionalElection>
+            </eCH-0110:electionResults>
+            <eCH-0110:electionResults>
+                <eCH-0110:election>
+                    <eCH-0155:electionIdentification>majorz_wahl</eCH-0155:electionIdentification>
+                    <eCH-0155:domainOfInfluence>1B76E565-4DA8-11E6-89C7-00155D28151E</eCH-0155:domainOfInfluence>
+                    <eCH-0155:typeOfElection>2</eCH-0155:typeOfElection>
+                    <eCH-0155:electionDescription>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:electionDescriptionShort>Ständerat</eCH-0155:electionDescriptionShort>
+                            <eCH-0155:electionDescription>Ständeratswahl</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:electionDescriptionShort>Conseil des Etats</eCH-0155:electionDescriptionShort>
+                            <eCH-0155:electionDescription>Election du Conseil des Etats</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:electionDescriptionShort>Conseil des Etats</eCH-0155:electionDescriptionShort>
+                            <eCH-0155:electionDescription>Election du Conseil des Etats</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:electionDescriptionShort>Ständerat</eCH-0155:electionDescriptionShort>
+                            <eCH-0155:electionDescription>Ständeratswahl</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                    </eCH-0155:electionDescription>
+                    <eCH-0155:numberOfMandates>2</eCH-0155:numberOfMandates>
+                </eCH-0110:election>
+                <eCH-0110:countOfVotersInformation>
+                    <eCH-0110:countOfVotersTotal>100</eCH-0110:countOfVotersTotal>
+                </eCH-0110:countOfVotersInformation>
+                <eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:total>3</eCH-0110:total>
+                </eCH-0110:countOfReceivedBallotsTotal>
+                <eCH-0110:countOfAccountedBallots>
+                    <eCH-0110:total>2</eCH-0110:total>
+                </eCH-0110:countOfAccountedBallots>
+                <eCH-0110:countOfUnaccountedBallots>
+                    <eCH-0110:total>1</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedBallots>
+                <eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:total>1</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedBlankBallots>
+                <eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedInvalidBallots>
+                <eCH-0110:majoralElection>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>10BDBE6B-A5B6-11E6-ACC2-00155D28151E</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Schwaller</eCH-0110:familyName>
+                            <eCH-0110:firstName>Urs</eCH-0110:firstName>
+                            <eCH-0110:callName>Urs</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Schwaller Urs</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Schwaller Urs</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Schwaller Urs</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Schwaller Urs</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>76892ECC-A4D5-11E6-ACC2-00155D28151E</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>16123755-A5A8-11E6-ACC2-00155D28151E</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>896DA903-A5A9-11E6-ACC2-00155D28151E</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Berset</eCH-0110:familyName>
+                            <eCH-0110:firstName>Alain</eCH-0110:firstName>
+                            <eCH-0110:callName>Alain</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Berset Alain</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Berset Alain</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Berset Alain</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Berset Alain</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>E973F450-A5B6-11E6-ACC2-00155D28151E</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Vonlanthen</eCH-0110:familyName>
+                            <eCH-0110:firstName>Ruedi</eCH-0110:firstName>
+                            <eCH-0110:callName>Ruedi</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Vonlanthen Ruedi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Vonlanthen Ruedi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Vonlanthen Ruedi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Vonlanthen Ruedi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>F0713B3E-A5A8-11E6-ACC2-00155D28151E</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Rime</eCH-0110:familyName>
+                            <eCH-0110:firstName>Jean-François</eCH-0110:firstName>
+                            <eCH-0110:callName>Jean-François</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Rime Jean-François</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Rime Jean-François</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Rime Jean-François</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Rime Jean-François</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>SP-EV-00000001</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>émiilié</eCH-0110:familyName>
+                            <eCH-0110:callName>äöüustra</eCH-0110:callName>
+                            <eCH-0110:officialCandidateYesNo>false</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>76892ECC-A4D5-11E6-ACC2-00155D28151E</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>SP-EV-00000002</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Hausi</eCH-0110:familyName>
+                            <eCH-0110:callName>Hansàéé</eCH-0110:callName>
+                            <eCH-0110:officialCandidateYesNo>false</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>16123755-A5A8-11E6-ACC2-00155D28151E</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                </eCH-0110:majoralElection>
+            </eCH-0110:electionResults>
+        </eCH-0110:countingCircleResults>
+    </eCH-0110:resultDelivery>
+</eCH-0110:delivery>
