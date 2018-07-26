@@ -17,8 +17,7 @@ import java.security.InvalidParameterException;
 
 /**
  * Class JsonMapper.
- * This represents TODO.
- *
+ * This class allow to convert JSON file into java object.
  * @author lalandret
  * @version $$Revision$$
  */

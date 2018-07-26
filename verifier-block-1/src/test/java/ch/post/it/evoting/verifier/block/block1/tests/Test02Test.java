@@ -10,33 +10,39 @@ package ch.post.it.evoting.verifier.block.block1.tests;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestResult;
-import ch.post.it.evoting.verifier.common.block.tools.TypeHelper;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
-import java.math.BigInteger;
-import java.util.Base64;
+
+import static org.junit.Assert.*;
 
 /**
- * Class Test01isPrimePTest.
- * This represents a unit test for the Test01 class
+ * Class Test02Test.
+ * This represents TODO.
  *
  * @author lalandret
  * @version $$Revision$$
  */
-public class Test01Test {
+public class Test02Test {
 
     @Test
     public void executeTestOK() {
-        TestResult testResult = new Test01().executeTest(new File(getClass().getResource("/Test01/OK").getFile()));
+        TestResult testResult = new Test02().executeTest(new File(getClass().getResource("/Test02/OK").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.OK, testResult.getStatus());
     }
 
     @Test
     public void executeTestNOK() {
-        TestResult testResult = new Test01().executeTest(new File(getClass().getResource("/Test01/NOK").getFile()));
+        TestResult testResult = new Test02().executeTest(new File(getClass().getResource("/Test02/NOK").getFile()));
+        Assert.assertNotNull(testResult);
+        Assert.assertEquals(Status.NOK, testResult.getStatus());
+    }
+
+    @Test
+    public void executeTestNOKFileNotFound() {
+        TestResult testResult = new Test02().executeTest(new File(getClass().getResource("/Test02/NOK-NOTFILE").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
     }
