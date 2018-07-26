@@ -32,9 +32,6 @@ public class Test03Test {
 
     @Test
     public void executeTestOK() {
-
-        String p = TypeHelper.BigIntegerToB64String(BigInteger.valueOf(20));
-        String q = TypeHelper.BigIntegerToB64String(BigInteger.valueOf(12));
         TestResult testResult = new Test03().executeTest(new File(getClass().getResource("/Test03/OK").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.OK, testResult.getStatus());
