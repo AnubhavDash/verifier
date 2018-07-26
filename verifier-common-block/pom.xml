@@ -20,7 +20,7 @@
                 </dependency>
         -->
         <dependency>
-            <groupId>ch.post.it.evoting</groupId>
+            <groupId>ch.post.it.evoting.verifier</groupId>
             <artifactId>verifier-common</artifactId>
             <version>${project.version}</version>
         </dependency>
