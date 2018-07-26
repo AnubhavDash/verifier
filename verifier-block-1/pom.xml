@@ -12,7 +12,7 @@
     <artifactId>verifier-block-1</artifactId>
     <dependencies>
         <dependency>
-            <groupId>ch.post.it.evoting</groupId>
+            <groupId>ch.post.it.evoting.verifier</groupId>
             <artifactId>verifier-common-block</artifactId>
             <version>${project.version}</version>
         </dependency>
