@@ -35,11 +35,9 @@ public class Test05 extends Test {
 
     private static final Logger log = Logger.getLogger(Test05.class);
     private List listNumbersInError;
-    private boolean isError;
 
     public Test05() {
         this.listNumbersInError = new ArrayList();
-        this.isError = false;
     }
 
     @Override
@@ -74,13 +72,8 @@ public class Test05 extends Test {
                                                                                 option -> {
                                                                                     int pn = option.getPrimeNumber();
                                                                                     if(!TypeHelper.isPrime(BigInteger.valueOf(pn))){
-                                                                                        this.isError = true;
                                                                                         this.listNumbersInError.add(pn);
                                                                                     }
-                                                                                    else{
-                                                                                        this.isError = (this.listNumbersInError.size() > 0) ? true : false;
-                                                                                    }
-
                                                                                 }
                                                                         );
                                                                     }
@@ -94,7 +87,7 @@ public class Test05 extends Test {
                     }
             );
 
-            if ( !this.isError ) {
+            if (!(this.listNumbersInError.size() > 0)) {
                 result.setStatus(Status.OK);
             } else {
                 result.setStatus(Status.NOK);
