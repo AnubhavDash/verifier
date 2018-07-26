@@ -76,9 +76,10 @@ public class VerifierProcessor {
                 ForkJoinPool forkJoinPool = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
                 forkJoinPool.submit(() ->
                 {
-                    blocks.parallelStream()
+                    blocks.stream()
                             .map(b -> b.process(inputDirectory).parallel())
                             .reduce(Stream.empty(), (s1, s2) -> Stream.concat(s1, s2))
+                            .parallel()
                             .forEach(t ->
                             {
                                 log.debug(String.format("Test '%02d-%02d' performed on Thread '%s'", t.getTestDefinition().getBlockId(), t.getTestDefinition().getId(), Thread.currentThread().getName()));
@@ -93,7 +94,7 @@ public class VerifierProcessor {
         }
     }
 
-    protected void testProcessed(TestResult testResult) {
+    protected synchronized void testProcessed(TestResult testResult) {
         Test testExecutionStatus = executionStatus.get(TestDefinitionTools.computeUniqueKey(testResult.getTestDefinition()));
         TestExecutionStatusMapper.INSTANCE.update(testExecutionStatus, testResult);
 
