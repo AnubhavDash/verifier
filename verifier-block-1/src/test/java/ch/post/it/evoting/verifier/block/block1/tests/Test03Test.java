@@ -12,42 +12,47 @@ import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.tools.LanguageHelper;
+import ch.post.it.evoting.verifier.common.block.tools.TypeHelper;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.math.BigInteger;
+import java.util.Base64;
 
 import static org.junit.Assert.*;
 
 /**
- * Class Test02Test.
- * This represents a unit test for the Test02 class
+ * Class Test03Test.
+ * This represents a unit test for the Test03 class
  * @author lalandret
  * @version $$Revision$$
  */
-public class Test02Test {
+public class Test03Test {
 
     @Test
     public void executeTestOK() {
-        TestResult testResult = new Test02().executeTest(new File(getClass().getResource("/Test02/OK").getFile()));
+
+        String p = TypeHelper.BigIntegerToB64String(BigInteger.valueOf(20));
+        String q = TypeHelper.BigIntegerToB64String(BigInteger.valueOf(12));
+        TestResult testResult = new Test03().executeTest(new File(getClass().getResource("/Test03/OK").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.OK, testResult.getStatus());
     }
 
     @Test
     public void executeTestNOK() {
-        TestResult testResult = new Test02().executeTest(new File(getClass().getResource("/Test02/NOK").getFile()));
+        TestResult testResult = new Test03().executeTest(new File(getClass().getResource("/Test03/NOK").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
-        Assert.assertEquals(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test02.nok.message"), testResult.getMessage());
+        Assert.assertEquals(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test03.nok.message"), testResult.getMessage());
     }
 
     @Test
     public void executeTestNOKFileNotFound() {
-        TestResult testResult = new Test02().executeTest(new File(getClass().getResource("/Test02/NOK-NOTFILE").getFile()));
+        TestResult testResult = new Test03().executeTest(new File(getClass().getResource("/Test03/NOK-NOTFILE").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
-        Assert.assertEquals(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test02.file.not.found.message"), testResult.getMessage());
-
+        Assert.assertEquals(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message"), testResult.getMessage());
     }
 }
