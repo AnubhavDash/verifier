@@ -38,7 +38,7 @@ public class Test02 extends Test {
         def.setBlockId(1);
         def.setCategory(Category.INTEGRITY);
         def.setDescription(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test02.description"));
-        def.setId(1);
+        def.setId(2);
         def.setName("isPrime(q)");
         return def;
     }
