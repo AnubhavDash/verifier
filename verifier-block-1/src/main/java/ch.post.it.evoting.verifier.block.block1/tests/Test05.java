@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,11 +34,11 @@ import java.util.List;
 public class Test05 extends Test {
 
     private static final Logger log = Logger.getLogger(Test05.class);
-    private int nbOfLinesInError;
+    private List listNumbersInError;
     private boolean isError;
 
     public Test05() {
-        this.nbOfLinesInError = 0;
+        this.listNumbersInError = new ArrayList();
         this.isError = false;
     }
 
@@ -74,10 +75,10 @@ public class Test05 extends Test {
                                                                                     int pn = option.getPrimeNumber();
                                                                                     if(!TypeHelper.isPrime(BigInteger.valueOf(pn))){
                                                                                         this.isError = true;
-                                                                                        this.nbOfLinesInError += 1;
+                                                                                        this.listNumbersInError.add(pn);
                                                                                     }
                                                                                     else{
-                                                                                        this.isError = (this.nbOfLinesInError > 0) ? true : false;
+                                                                                        this.isError = (this.listNumbersInError.size() > 0) ? true : false;
                                                                                     }
 
                                                                                 }
