@@ -1,11 +1,3 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.common.block.tools;
 
 import java.math.BigInteger;
@@ -39,6 +31,7 @@ public class TypeHelper {
     public static byte[] BigIntegerToByte(BigInteger bi) {
         return bi.toString().getBytes(StandardCharsets.UTF_8);
     }
+
     public static byte[] Base64ToByte(String b64) {
         return Base64.getDecoder().decode(b64);
     }
@@ -51,9 +44,10 @@ public class TypeHelper {
         return Base64.getEncoder().encodeToString(b);
     }
 
+    public static String BigIntegerToB64String(BigInteger bigInt) { return Base64.getEncoder().encodeToString(bigInt.toByteArray()); }
+
     public static byte[] ByteToB64ByteArray(byte[] b) {
         return Base64.getEncoder().encode(b);
     }
-
 
 }

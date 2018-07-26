@@ -1,11 +1,3 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.block.block1.tests;
 
 import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
@@ -22,24 +14,23 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.math.BigInteger;
 
 /**
- * Test02 of Block1, Step isPrime(q)
+ * Test03 of Block1, Step isStrongPrime(p, q)
  */
-public class Test02 extends Test {
+public class Test03 extends Test {
 
-    private static final Logger log = Logger.getLogger(Test02.class);
+    private static final Logger log = Logger.getLogger(Test03.class);
 
     @Override
     public TestDefinition getTestDefinition() {
         TestDefinition def = new TestDefinition();
         def.setBlockId(1);
         def.setCategory(Category.INTEGRITY);
-        def.setDescription(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test02.description"));
-        def.setId(2);
-        def.setName("isPrime(q)");
+        def.setDescription(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test03.description"));
+        def.setId(3);
+        def.setName("isStrongPrime(p,q)");
         return def;
     }
 
@@ -48,19 +39,21 @@ public class Test02 extends Test {
         TestResult result = new TestResult(getTestDefinition());
         try {
             EncryptionParameters encryptionParameters = JsonMapper.mapFromJson(inputDirectory, "encryptionParameters.json", EncryptionParameters.class);
+            String pString = encryptionParameters.getZpSubgroup().getP();
             String qString = encryptionParameters.getZpSubgroup().getQ();
 
+            BigInteger p = TypeHelper.base64ToBigInteger(pString);
             BigInteger q = TypeHelper.base64ToBigInteger(qString);
-            if (TypeHelper.isPrime(q)) {
+            if ( p.equals((q.multiply(BigInteger.valueOf(2))).add(BigInteger.valueOf(1))) ) {
                 result.setStatus(Status.OK);
             } else {
                 result.setStatus(Status.NOK);
-                result.setMessage(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test02.nok.message"));
+                result.setMessage(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test03.nok.message"));
             }
         } catch (Exception e) {
             result.setStatus(Status.NOK);
             if(e instanceof FileNotFoundException){
-                result.setMessage(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test02.file.not.found.message"));
+                result.setMessage(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message"));
             } else {
                 log.error("Unexpected error", e);
                 result.setMessage(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));

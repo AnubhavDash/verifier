@@ -21,7 +21,6 @@ import java.util.Base64;
 /**
  * Class Test01isPrimePTest.
  * This represents a unit test for the Test01 class
- *
  * @author lalandret
  * @version $$Revision$$
  */
