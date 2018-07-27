@@ -20,25 +20,23 @@ import ch.post.it.evoting.verifier.common.block.tools.LanguageHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeHelper;
 import ch.post.it.evoting.verifier.dto.BallotBox;
 import ch.post.it.evoting.verifier.dto.DataConfigEE;
+import ch.post.it.evoting.verifier.dto.Option;
 import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
- * Test03 of Block1, Step isStrongPrime(p, q)
+ * Test05 of Block1, Step isPrime([vo])
  */
 public class Test05 extends Test {
 
     private static final Logger log = Logger.getLogger(Test05.class);
-    private List listNumbersInError;
-
-    public Test05() {
-        this.listNumbersInError = new ArrayList();
-    }
 
     @Override
     public TestDefinition getTestDefinition() {
@@ -47,7 +45,7 @@ public class Test05 extends Test {
         def.setCategory(Category.INTEGRITY);
         def.setDescription(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test05.description"));
         def.setId(3);
-        def.setName("isStrongPrime(p,q)");
+        def.setName("isPrime([vo])");
         return def;
     }
 
@@ -58,36 +56,43 @@ public class Test05 extends Test {
             DataConfigEE dataConfigEE = JsonMapper.mapFromJson(inputDirectory, "dataConfig_[EE].json", DataConfigEE.class);
             List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
 
-            ballotBoxes.stream().forEach(
-                    ballotBox -> {
-                        ballotBox.getCountingCircles().stream().forEach(
-                                countingCircle -> {
-                                    countingCircle.getDomainOfInfluence().stream().forEach(
-                                            domainOfInfluence -> {
-                                                domainOfInfluence.getVotes().stream().forEach(
-                                                        vote -> {
-                                                            vote.getQuestions().stream().forEach(
-                                                                    question -> {
-                                                                        question.getOptions().stream().forEach(
-                                                                                option -> {
-                                                                                    int pn = option.getPrimeNumber();
-                                                                                    if(!TypeHelper.isPrime(BigInteger.valueOf(pn))){
-                                                                                        this.listNumbersInError.add(pn);
-                                                                                    }
-                                                                                }
-                                                                        );
-                                                                    }
-                                                            );
-                                                        }
-                                                );
-                                            }
-                                    );
-                                }
-                        );
-                    }
-            );
+            //votations
+            Collection<Integer> errors = ballotBoxes.stream()
+                    .flatMap(bb -> bb.getCountingCircles().stream())
+                    .flatMap(cc -> cc.getDomainOfInfluence().stream())
+                    .flatMap(doi -> doi.getVotes().stream())
+                    .flatMap(v -> v.getQuestions().stream())
+                    .flatMap(q -> q.getOptions().stream())
+                    .filter(o -> !TypeHelper.isPrime(BigInteger.valueOf(o.getPrimeNumber())))
+                    .map(Option::getPrimeNumber)
+                    .collect(Collectors.toList());
 
-            if (!(this.listNumbersInError.size() > 0)) {
+            //lists
+            errors.addAll(
+                    ballotBoxes.stream()
+                            .flatMap(bb -> bb.getCountingCircles().stream())
+                            .flatMap(cc -> cc.getDomainOfInfluence().stream())
+                            .flatMap(doi -> doi.getElections().stream())
+                            .flatMap(e -> e.getLists().stream())
+                            .filter(l -> !TypeHelper.isPrime(BigInteger.valueOf(l.getPrimeNumber())))
+                            .map(ch.post.it.evoting.verifier.dto.List::getPrimeNumber)
+                            .collect(Collectors.toList()));
+
+            //candidates
+            errors.addAll(
+                    ballotBoxes.stream()
+                            .flatMap(bb -> bb.getCountingCircles().stream())
+                            .flatMap(cc -> cc.getDomainOfInfluence().stream())
+                            .flatMap(doi -> doi.getElections().stream())
+                            .flatMap(e -> e.getLists().stream())
+                            .flatMap(l -> l.getCandidatePositions().stream())
+                            .flatMap(cp -> cp.getPrimeNumber().stream())
+                            .filter(v -> !TypeHelper.isPrime(BigInteger.valueOf(v)))
+                            .collect(Collectors.toList()));
+
+            //TODO check candidates without lists --> not in this example
+
+            if (errors.isEmpty()) {
                 result.setStatus(Status.OK);
             } else {
                 result.setStatus(Status.NOK);
