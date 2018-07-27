@@ -20,12 +20,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>ch.post.it.evoting</groupId>
+            <groupId>ch.post.it.evoting.verifier</groupId>
             <artifactId>verifier-block-sample</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>ch.post.it.evoting</groupId>
+            <groupId>ch.post.it.evoting.verifier</groupId>
             <artifactId>verifier-block-1</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -83,7 +83,7 @@
         </plugins>
     </build>
 
-    <repositories>
+    <!--<repositories>
         <repository>
             <releases>
                 <enabled>true</enabled>
@@ -136,6 +136,6 @@
             <name>Central Repository</name>
             <url>https://repo.maven.apache.org/maven2</url>
         </pluginRepository>
-    </pluginRepositories>
+    </pluginRepositories>-->
 
 </project>
