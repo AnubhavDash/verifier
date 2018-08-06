@@ -21,7 +21,7 @@
               "options" : [ {
                 "id" : "9c6f2118dbad4968856b95865dff0a08",
                 "alias" : "fde61cea-14e3-3ff7-a81b-d644514f21f2",
-                "primeNumber" : 143141
+                "primeNumber" : 6
               }, {
                 "id" : "fc85c60f25ac44ea9fbe6359503bfd35",
                 "alias" : "e79d30f1-cb60-3cad-9b6e-5646eff10590",
@@ -59,7 +59,7 @@
               }, {
                 "id" : "b4e5c98edbfc48aeb973819631b51a70",
                 "alias" : "8f46229f-53be-3b3b-8b3d-72e7cb88f92a",
-                "primeNumber" : 143263
+                "primeNumber" : 14360
               } ]
             }, {
               "alias" : "Q4",
@@ -111,7 +111,7 @@
               "candidatePositions" : [ {
                 "alias" : "CAND-7106",
                 "candidateListId" : "2dd2c771-00f7-364f-9f1d-8b4c0319cbcd",
-                "primeNumber" : [ 143401, 143971 ],
+                "primeNumber" : [ 1410, 143971 ],
                 "initialAccumulation" : 2,
                 "isBlank" : false
               }, {
@@ -169,7 +169,7 @@
               }, {
                 "alias" : "CAND-7118",
                 "candidateListId" : "650934ef-2602-3691-9e86-30eb8fcf3bc3",
-                "primeNumber" : [ 144037, 144173 ],
+                "primeNumber" : [ 144037, 1228 ],
                 "initialAccumulation" : 1,
                 "isBlank" : false
               }, {

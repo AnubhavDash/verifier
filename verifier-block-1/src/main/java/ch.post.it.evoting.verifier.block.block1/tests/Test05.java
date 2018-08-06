@@ -44,7 +44,7 @@ public class Test05 extends Test {
         def.setBlockId(1);
         def.setCategory(Category.INTEGRITY);
         def.setDescription(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test05.description"));
-        def.setId(3);
+        def.setId(5);
         def.setName("isPrime([vo])");
         return def;
     }
@@ -96,7 +96,7 @@ public class Test05 extends Test {
                 result.setStatus(Status.OK);
             } else {
                 result.setStatus(Status.NOK);
-                result.setMessage(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test05.nok.message"));
+                result.setMessage(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test05.nok.message", errors.toString()));
             }
         } catch (Exception e) {
             result.setStatus(Status.NOK);
