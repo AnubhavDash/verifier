@@ -19,6 +19,7 @@ import ch.post.it.evoting.verifier.common.block.tools.LanguageHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeHelper;
 import ch.post.it.evoting.verifier.dto.BallotBox;
 import ch.post.it.evoting.verifier.dto.DataConfigEE;
+import ch.post.it.evoting.verifier.dto.EncryptionParameters;
 import ch.post.it.evoting.verifier.dto.Option;
 import org.apache.log4j.Logger;
 
@@ -47,10 +48,26 @@ public class Test06 extends Test {
         return def;
     }
 
+    // common method used to verify if a vo is in error
+    // if Euler criterion is not equals to 1 there is an error
+    private boolean isBigIntInError(BigInteger vo, BigInteger p){
+        boolean inError = false;
+        BigInteger exponent = (p.subtract(new BigInteger("1"))).divide(new BigInteger("2"));
+        BigInteger ec = vo.modPow(exponent, p);
+        inError = (ec.equals(new BigInteger("1"))) ? false : true ;
+        return inError;
+    }
+
     @Override
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
+
+            EncryptionParameters encryptionParameters = JsonMapper.mapFromJson(inputDirectory, "encryptionParameters.json", EncryptionParameters.class);
+            String pString = encryptionParameters.getZpSubgroup().getP();
+
+            BigInteger p = TypeHelper.base64ToBigInteger(pString);
+
             DataConfigEE dataConfigEE = JsonMapper.mapFromJson(inputDirectory, "dataConfig_[EE].json", DataConfigEE.class);
             List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
 
@@ -61,7 +78,7 @@ public class Test06 extends Test {
                     .flatMap(doi -> doi.getVotes().stream())
                     .flatMap(v -> v.getQuestions().stream())
                     .flatMap(q -> q.getOptions().stream())
-                    .filter(o -> !TypeHelper.isPrime(BigInteger.valueOf(o.getPrimeNumber())))
+                    .filter(o -> isBigIntInError(BigInteger.valueOf(o.getPrimeNumber()), p))
                     .map(Option::getPrimeNumber)
                     .collect(Collectors.toList());
 
@@ -72,7 +89,7 @@ public class Test06 extends Test {
                             .flatMap(cc -> cc.getDomainOfInfluence().stream())
                             .flatMap(doi -> doi.getElections().stream())
                             .flatMap(e -> e.getLists().stream())
-                            .filter(l -> !TypeHelper.isPrime(BigInteger.valueOf(l.getPrimeNumber())))
+                            .filter(l -> isBigIntInError(BigInteger.valueOf(l.getPrimeNumber()), p))
                             .map(ch.post.it.evoting.verifier.dto.List::getPrimeNumber)
                             .collect(Collectors.toList()));
 
@@ -85,7 +102,7 @@ public class Test06 extends Test {
                             .flatMap(e -> e.getLists().stream())
                             .flatMap(l -> l.getCandidatePositions().stream())
                             .flatMap(cp -> cp.getPrimeNumber().stream())
-                            .filter(v -> !TypeHelper.isPrime(BigInteger.valueOf(v)))
+                            .filter(v -> isBigIntInError(BigInteger.valueOf(v), p))
                             .collect(Collectors.toList()));
 
             //TODO check candidates without lists --> not in this example
@@ -94,7 +111,7 @@ public class Test06 extends Test {
                 result.setStatus(Status.OK);
             } else {
                 result.setStatus(Status.NOK);
-                result.setMessage(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test06.nok.message", errors.toString()));
+                result.setMessage(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test06.nok.message"));
             }
         } catch (Exception e) {
             result.setStatus(Status.NOK);
