@@ -18,7 +18,7 @@ import org.junit.Test;
 import java.io.File;
 
 /**
- * Class Test05Test.
+ * Class Test06Test.
  * This represents a unit test for the Test06 class
  *
  * @author lalandret
