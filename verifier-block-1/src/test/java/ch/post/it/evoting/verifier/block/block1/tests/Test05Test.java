@@ -17,11 +17,9 @@ import org.junit.Test;
 
 import java.io.File;
 
-import static org.junit.Assert.*;
-
 /**
  * Class Test05Test.
- * This represents TODO.
+ * This represents a unit test for the Test05 class
  *
  * @author lalandret
  * @version $$Revision$$
@@ -37,13 +35,9 @@ public class Test05Test {
 
     @Test
     public void executeTestNOK() {
-        // TODO
-        /*
         TestResult testResult = new Test05().executeTest(new File(getClass().getResource("/Test05/NOK").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
-        Assert.assertEquals(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test05.nok.message"), testResult.getMessage());
-         */
     }
 
     @Test
