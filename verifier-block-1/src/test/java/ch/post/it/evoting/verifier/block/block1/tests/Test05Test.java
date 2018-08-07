@@ -12,44 +12,40 @@ import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.tools.LanguageHelper;
-import ch.post.it.evoting.verifier.common.block.tools.TypeHelper;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
-import java.math.BigInteger;
-import java.util.Base64;
-
-import static org.junit.Assert.*;
 
 /**
- * Class Test03Test.
- * This represents a unit test for the Test03 class
+ * Class Test05Test.
+ * This represents a unit test for the Test05 class
+ *
  * @author lalandret
  * @version $$Revision$$
  */
-public class Test03Test {
+public class Test05Test {
 
     @Test
     public void executeTestOK() {
-        TestResult testResult = new Test03().executeTest(new File(getClass().getResource("/Test03/OK").getFile()));
+        TestResult testResult = new Test05().executeTest(new File(getClass().getResource("/Test05/OK").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.OK, testResult.getStatus());
     }
 
     @Test
     public void executeTestNOK() {
-        TestResult testResult = new Test03().executeTest(new File(getClass().getResource("/Test03/NOK").getFile()));
+        TestResult testResult = new Test05().executeTest(new File(getClass().getResource("/Test05/NOK").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
-        Assert.assertEquals(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test03.nok.message"), testResult.getMessage());
     }
 
     @Test
     public void executeTestNOKFileNotFound() {
-        TestResult testResult = new Test03().executeTest(new File(getClass().getResource("/Test03/NOK-NOTFILE").getFile()));
+        TestResult testResult = new Test05().executeTest(new File(getClass().getResource("/Test05/NOK-NOTFILE").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
-        Assert.assertEquals(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message"), testResult.getMessage());
+        Assert.assertEquals(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test05.file.not.found.message"), testResult.getMessage());
     }
+
 }

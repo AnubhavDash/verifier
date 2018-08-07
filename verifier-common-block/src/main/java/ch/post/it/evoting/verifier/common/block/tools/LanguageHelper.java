@@ -13,8 +13,20 @@ public class LanguageHelper {
     public static Map<Language, String> getFromResourceBundle(String resourceBundleName, String key) {
         HashMap<Language, String> result = new HashMap<>();
         Arrays.stream(Language.values()).forEach(lang -> result.put(lang, getFromResourceBundle(resourceBundleName, key, lang.getLocale())));
-
         return result;
+    }
+
+    public static Map<Language, String> getFromResourceBundle(String resourceBundleName, String key, String... args) {
+        HashMap<Language, String> result = new HashMap<>();
+        MessageFormat formatter = new MessageFormat("");
+
+        Arrays.stream(Language.values())
+                .forEach(lang -> {
+                    formatter.applyPattern(getFromResourceBundle(resourceBundleName, key, lang.getLocale()));
+                    result.put(lang, formatter.format(args) );
+                });
+        return result;
+
     }
 
     public static Map<Language, String> getFromResourceBundle(String resourceBundleName, String key, String args) {
