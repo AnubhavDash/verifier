@@ -111,7 +111,7 @@ public class Test06 extends Test {
                 result.setStatus(Status.OK);
             } else {
                 result.setStatus(Status.NOK);
-                result.setMessage(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test06.nok.message"));
+                result.setMessage(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test06.nok.message", errors.toString()));
             }
         } catch (Exception e) {
             result.setStatus(Status.NOK);
