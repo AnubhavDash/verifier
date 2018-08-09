@@ -13,6 +13,7 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.tools.LanguageHelper;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -26,6 +27,7 @@ import java.io.File;
  */
 public class Test07Test {
 
+    @Ignore
     @Test
     public void executeTestOK() {
         TestResult testResult = new Test07().executeTest(new File(getClass().getResource("/Test07/OK").getFile()));
