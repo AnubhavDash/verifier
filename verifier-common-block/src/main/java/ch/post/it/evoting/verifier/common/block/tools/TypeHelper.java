@@ -44,6 +44,10 @@ public class TypeHelper {
         return Base64.getEncoder().encodeToString(b);
     }
 
+    public static String ByteNo64ToString(byte[] b) {
+        return new String(b);
+    }
+
     public static String BigIntegerToB64String(BigInteger bigInt) { return Base64.getEncoder().encodeToString(bigInt.toByteArray()); }
 
     public static byte[] ByteToB64ByteArray(byte[] b) {
