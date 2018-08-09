@@ -40,11 +40,11 @@ public class TypeHelper {
         return new BigInteger(b);
     }
 
-    public static String ByteToString(byte[] b) {
+    public static String ByteToBase64String(byte[] b) {
         return Base64.getEncoder().encodeToString(b);
     }
 
-    public static String ByteNo64ToString(byte[] b) {
+    public static String ByteToString(byte[] b) {
         return new String(b);
     }
 
