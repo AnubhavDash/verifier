@@ -50,7 +50,7 @@ public class Test08 extends Test {
         boolean inError = false;
         BigInteger exponent = (p.subtract(new BigInteger("1"))).divide(new BigInteger("2"));
         BigInteger ec = vo.modPow(exponent, p);
-        inError = (ec.equals(new BigInteger("1"))) ? false : true ;
+        inError = !ec.equals(new BigInteger("1"));;
         return inError;
     }
 
