@@ -22,9 +22,11 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Test07 of Block1, Step checkCommitmentParameters(cp)
@@ -44,49 +46,32 @@ public class Test08 extends Test {
         return def;
     }
 
+    // common method used to verify if a vo is in error
+    // if Euler criterion is not equals to 1 there is an error
+    private boolean isBigIntInError(BigInteger vo, BigInteger p){
+        boolean inError = false;
+        BigInteger exponent = (p.subtract(new BigInteger("1"))).divide(new BigInteger("2"));
+        BigInteger ec = vo.modPow(exponent, p);
+        inError = (ec.equals(new BigInteger("1"))) ? false : true ;
+        return inError;
+    }
+
     @Override
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
 
-            DataConfigEE dataConfigEE = JsonMapper.mapFromJson(inputDirectory, "dataConfig_[EE].json", DataConfigEE.class);
-            List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
+            EncryptionParameters encryptionParameters = JsonMapper.mapFromJson(inputDirectory, "encryptionParameters.json", EncryptionParameters.class);
+            String pString = encryptionParameters.getZpSubgroup().getP();
+            BigInteger p = TypeHelper.base64ToBigInteger(pString);
 
-            //votations
-            Collection<Integer> errors = ballotBoxes.stream()
-                    .flatMap(bb -> bb.getCountingCircles().stream())
-                    .flatMap(cc -> cc.getDomainOfInfluence().stream())
-                    .flatMap(doi -> doi.getVotes().stream())
-                    .flatMap(v -> v.getQuestions().stream())
-                    .flatMap(q -> q.getOptions().stream())
-                    //.filter(o -> isBigIntInError(BigInteger.valueOf(o.getPrimeNumber()), p))
-                    .map(Option::getPrimeNumber)
+            CommitmentParameters commitmentParameters = JsonMapper.mapFromJson(inputDirectory, "commitmentParameters.json", CommitmentParameters.class);
+            List<Signed> signed = commitmentParameters.getSigned();
+
+            List<BigInteger> errors = signed.stream()
+                    .map(s -> TypeHelper.base64ToBigInteger(s.getValue()))
+                    .filter(v -> isBigIntInError(v, p))
                     .collect(Collectors.toList());
-
-            //lists
-            errors.addAll(
-                    ballotBoxes.stream()
-                            .flatMap(bb -> bb.getCountingCircles().stream())
-                            .flatMap(cc -> cc.getDomainOfInfluence().stream())
-                            .flatMap(doi -> doi.getElections().stream())
-                            .flatMap(e -> e.getLists().stream())
-                          //  .filter(l -> isBigIntInError(BigInteger.valueOf(l.getPrimeNumber()), p))
-                            .map(ch.post.it.evoting.verifier.dto.List::getPrimeNumber)
-                            .collect(Collectors.toList()));
-
-            //candidates
-            errors.addAll(
-                    ballotBoxes.stream()
-                            .flatMap(bb -> bb.getCountingCircles().stream())
-                            .flatMap(cc -> cc.getDomainOfInfluence().stream())
-                            .flatMap(doi -> doi.getElections().stream())
-                            .flatMap(e -> e.getLists().stream())
-                            .flatMap(l -> l.getCandidatePositions().stream())
-                            .flatMap(cp -> cp.getPrimeNumber().stream())
-                           // .filter(v -> isBigIntInError(BigInteger.valueOf(v), p))
-                            .collect(Collectors.toList()));
-
-            //TODO check candidates without lists --> not in this example
 
             if (errors.isEmpty()) {
                 result.setStatus(Status.OK);
