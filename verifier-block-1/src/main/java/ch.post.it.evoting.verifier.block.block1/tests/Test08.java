@@ -20,13 +20,11 @@ import ch.post.it.evoting.verifier.common.block.tools.TypeHelper;
 import ch.post.it.evoting.verifier.dto.*;
 import org.apache.log4j.Logger;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.math.BigInteger;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Test07 of Block1, Step checkCommitmentParameters(cp)
@@ -65,19 +63,28 @@ public class Test08 extends Test {
             String pString = encryptionParameters.getZpSubgroup().getP();
             BigInteger p = TypeHelper.base64ToBigInteger(pString);
 
-            CommitmentParameters commitmentParameters = JsonMapper.mapFromJson(inputDirectory, "commitmentParameters.json", CommitmentParameters.class);
-            List<Signed> signed = commitmentParameters.getSigned();
+            FileInputStream fis = new FileInputStream(new File(inputDirectory + "/commitmentParameters.txt"));
+            BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+            List<BigInteger> numbers = new ArrayList<>();
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                numbers.add(new BigInteger(line));
+            }
+            br.close();
 
-            List<BigInteger> errors = signed.stream()
-                    .map(s -> TypeHelper.base64ToBigInteger(s.getValue()))
-                    .filter(v -> isBigIntInError(v, p))
-                    .collect(Collectors.toList());
-
-            if (errors.isEmpty()) {
-                result.setStatus(Status.OK);
-            } else {
-                result.setStatus(Status.NOK);
-                result.setMessage(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test08.nok.message", errors.toString()));
+            if(numbers.isEmpty()){
+                throw new Exception("No such numbers was found in commitmentParameters file");
+            }
+            else{
+                List<BigInteger> errors = numbers.stream()
+                        .filter(bigInteger -> isBigIntInError(bigInteger, p))
+                        .collect(Collectors.toList());
+                if (errors.isEmpty()) {
+                    result.setStatus(Status.OK);
+                } else {
+                    result.setStatus(Status.NOK);
+                    result.setMessage(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test08.nok.message", errors.toString()));
+                }
             }
         } catch (Exception e) {
             result.setStatus(Status.NOK);
