@@ -65,7 +65,6 @@ public class Test06 extends Test {
 
             EncryptionParameters encryptionParameters = JsonMapper.mapFromJson(inputDirectory, "encryptionParameters.json", EncryptionParameters.class);
             String pString = encryptionParameters.getZpSubgroup().getP();
-
             BigInteger p = TypeHelper.base64ToBigInteger(pString);
 
             DataConfigEE dataConfigEE = JsonMapper.mapFromJson(inputDirectory, "dataConfig_[EE].json", DataConfigEE.class);
