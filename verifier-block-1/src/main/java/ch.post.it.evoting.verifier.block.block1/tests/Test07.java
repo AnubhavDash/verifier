@@ -54,7 +54,7 @@ public class Test07 extends Test {
         boolean inError = false;
         BigInteger exponent = (p.subtract(new BigInteger("1"))).divide(new BigInteger("2"));
         BigInteger ec = vo.modPow(exponent, p);
-        inError = (ec.equals(new BigInteger("1"))) ? false : true ;
+        inError = !ec.equals(new BigInteger("1"));
         return inError;
     }
 
@@ -69,7 +69,7 @@ public class Test07 extends Test {
             ElectoralAuthority electoralAuthority = JsonMapper.mapFromJson(inputDirectory, "electoralAuthority.json", ElectoralAuthority.class);
             String publicKeyB64 = electoralAuthority.getPublicKey();
             byte[] decoded = TypeHelper.Base64ToByte(publicKeyB64);
-            String publicKey = TypeHelper.ByteNo64ToString(decoded);
+            String publicKey = TypeHelper.ByteToString(decoded);
 
             List<String> elements = extractElements(publicKey);
             if(elements.isEmpty()){
@@ -79,7 +79,7 @@ public class Test07 extends Test {
                 List<String> errors = elements.stream()
                                                 .map(element -> TypeHelper.ByteToBigInteger(TypeHelper.Base64ToByte(element)))
                                                 .filter(bigInteger -> isBigIntInError(bigInteger, p))
-                                                .map(bi -> TypeHelper.ByteToString(TypeHelper.BigIntegerToByte(bi)))
+                                                .map(bi -> TypeHelper.ByteToBase64String(TypeHelper.BigIntegerToByte(bi)))
                                                 .collect(Collectors.toList());
                 if (errors.isEmpty()) {
                     result.setStatus(Status.OK);
@@ -101,7 +101,7 @@ public class Test07 extends Test {
     }
 
     private List<String> extractElements(String publicKey) {
-        List result = new ArrayList<>();
+        List<String> result = new ArrayList<>();
         if(publicKey != null && !publicKey.isEmpty() && publicKey.contains("elements")){
             String[] split = publicKey.split("\"");
             int indexOf = Arrays.asList(split).indexOf("elements");
