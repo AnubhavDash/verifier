@@ -59,6 +59,8 @@ public class Test09 extends Test {
         TestResult result = new TestResult(getTestDefinition());
         try {
 
+
+
             EncryptionParameters encryptionParameters = JsonMapper.mapFromJson(inputDirectory, "encryptionParameters.json", EncryptionParameters.class);
             String pString = encryptionParameters.getZpSubgroup().getP();
             BigInteger p = TypeHelper.base64ToBigInteger(pString);
