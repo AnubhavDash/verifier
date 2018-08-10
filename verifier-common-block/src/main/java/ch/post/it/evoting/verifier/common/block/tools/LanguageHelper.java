@@ -30,15 +30,6 @@ public class LanguageHelper {
     }
 
     public static String getFromResourceBundle(String resourceBundleName, String key, Locale locale) {
-        // As per the javadoc, they are by default read as ISO-8859-1
-        // https://stackoverflow.com/questions/4659929/how-to-use-utf-8-in-resource-properties-with-resourcebundle
-        String strIso88591 = ResourceBundle.getBundle(resourceBundleName, locale).getString(key);
-        String strUtf8 = strIso88591;
-        try {
-            strUtf8 = new String(strIso88591.getBytes("ISO-8859-1"), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return strUtf8;
+        return ResourceBundle.getBundle(resourceBundleName, locale).getString(key);
     }
 }

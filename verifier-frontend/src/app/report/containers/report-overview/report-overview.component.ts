@@ -3,6 +3,7 @@ import {ProcessorService} from "../../services/processor.service";
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {TestDefinition} from "../../models/TestDefinition.interface";
+import {log} from "util";
 
 @Component({
   templateUrl: 'report-overview.component.html',
@@ -20,6 +21,7 @@ export class ReportOverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //console.log(navigator.language.toUpperCase());
     this.processorService.getTestStatus().subscribe(value => {
         for (let i = 0; i < value.length; i++) {
           console.log(JSON.stringify(value[i]));
@@ -44,8 +46,8 @@ export class ReportOverviewComponent implements OnInit {
     result.name = input.name;
     result.category = input.category;
     result.status = input.status;
-    result.description = input.description ? input.description[navigator.language.toUpperCase()] : null;
-    result.message = input.message ? input.message[navigator.language.toUpperCase()] : null;
+    result.description = input.description ? input.description[navigator.language.toUpperCase().substr(0, 2)] : null;
+    result.message = input.message ? input.message[navigator.language.toUpperCase().substr(0, 2)] : null;
     if (input.status === "OK") {
       result.color = "green";
     } else if (input.status === "NOK") {
