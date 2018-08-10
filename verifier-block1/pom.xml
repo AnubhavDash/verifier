@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>verifier-block-1</artifactId>
+    <artifactId>verifier-block1</artifactId>
     <dependencies>
         <dependency>
             <groupId>ch.post.it.evoting.verifier</groupId>
