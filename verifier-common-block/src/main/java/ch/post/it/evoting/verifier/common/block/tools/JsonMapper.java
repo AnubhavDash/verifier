@@ -24,7 +24,7 @@ import java.security.InvalidParameterException;
 public class JsonMapper {
     public static <T> T mapFromJson(File inputDirectory, String filename, Class<T> targetClazz) throws IOException {
         ObjectMapper jsonMapper = new ObjectMapper();
-        File[] file = inputDirectory.listFiles((dir, name) -> name.contains(filename));
+        File[] file = inputDirectory.listFiles((dir, name) -> name.endsWith(filename));
         if (file.length == 0) {
             throw new FileNotFoundException(filename);
         } else if (file.length > 1) {
