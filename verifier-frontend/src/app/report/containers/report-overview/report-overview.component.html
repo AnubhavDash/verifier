@@ -9,7 +9,7 @@
       <th>Category</th>
       <th>Description</th>
       <th>Status</th>
-      <th>Message</th>
+      <!--th>Message</th-->
     </tr>
     <tr *ngFor="let key of keys" [ngStyle]="{'background-color':tests[key].color}">
       <td>{{tests[key].blockId}}</td>
@@ -17,8 +17,8 @@
       <td>{{tests[key].name}}</td>
       <td>{{tests[key].category}}</td>
       <td>{{tests[key].description}}</td>
-      <td>{{tests[key].status}}</td>
-      <td>{{tests[key].message}}</td>
+      <td><div title="{{tests[key].message}}">{{tests[key].status}}</div></td>
+      <!--td></td-->
     </tr>
   </table>
 </div>
