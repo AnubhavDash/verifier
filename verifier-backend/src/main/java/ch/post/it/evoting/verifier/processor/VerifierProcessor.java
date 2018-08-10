@@ -78,7 +78,7 @@ public class VerifierProcessor {
                 {
                     blocks.stream()
                             .map(b -> b.process(inputDirectory).parallel())
-                            .reduce(Stream.empty(), (s1, s2) -> Stream.concat(s1, s2))
+                            .reduce(Stream.empty(), Stream::concat)
                             .parallel()
                             .forEach(t ->
                             {
