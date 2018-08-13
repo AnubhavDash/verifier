@@ -7,7 +7,7 @@ import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
 @ComponentScan("ch.post.it.evoting.verifier")
-@PropertySource("/verifier.properties")
+@PropertySource("classpath:verifier.properties")
 public class Application {
     public static void main(String... args) {
         SpringApplication.run(Application.class, args);
