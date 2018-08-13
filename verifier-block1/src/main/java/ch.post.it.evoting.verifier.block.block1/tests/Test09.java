@@ -14,10 +14,11 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
-import ch.post.it.evoting.verifier.common.block.tools.JsonMapper;
+import ch.post.it.evoting.verifier.common.block.dto.ConfigurationType;
 import ch.post.it.evoting.verifier.common.block.tools.LanguageHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeHelper;
-import ch.post.it.evoting.verifier.dto.EncryptionParameters;
+import ch.post.it.evoting.verifier.common.block.tools.XMLMapper;
+import com.sun.xml.internal.bind.v2.TODO;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -48,9 +49,9 @@ public class Test09 extends Test {
     // if Euler criterion is not equals to 1 there is an error
     private boolean isBigIntInError(BigInteger vo, BigInteger p){
         boolean inError = false;
-        BigInteger exponent = (p.subtract(new BigInteger("1"))).divide(new BigInteger("2"));
+        BigInteger exponent = (p.subtract(BigInteger.ONE)).divide(new BigInteger("2"));
         BigInteger ec = vo.modPow(exponent, p);
-        inError = !ec.equals(new BigInteger("1"));;
+        inError = !ec.equals(BigInteger.ONE);
         return inError;
     }
 
@@ -58,11 +59,23 @@ public class Test09 extends Test {
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
+            ConfigurationType configuration = XMLMapper.mapFromXml(inputDirectory, "configuration-anonymized.xml", ConfigurationType.class);
 
+            // TODO
+            /*
+            Read the file configuration-anonymized.xml
+- For each vote, read the voteIdentification. Count the number of <answer> elements (Example. The vote
+has one variantBallot with two standardQuestions and one tie-break question, each having three possible
+answers. Therefore, the vote has 9 answer elements in total).
+- For each election: Read the fields: numberOfMandates, writeInsAllowed and candidateAccumulation
+o Count the number of <candidate> elements. Count the number of candidate options as follows
+𝑐𝑎𝑛𝑑𝑖𝑑𝑎𝑡𝑒𝑉𝑜𝑡𝑖𝑛𝑔𝑂𝑝𝑡𝑖𝑜𝑛𝑠 = (#𝑐𝑎𝑛𝑑𝑖𝑑𝑎𝑡𝑒𝑠 ∗ 𝑐𝑎𝑛𝑑𝑖𝑑𝑎𝑡𝑒𝐴𝑐𝑐𝑢𝑚𝑢𝑙𝑎𝑡𝑖𝑜𝑛) + 𝑛𝑢𝑚𝑏𝑒𝑟𝑂𝑓𝑀𝑎𝑛𝑑𝑎𝑡𝑒𝑠 ∗ (1 + 𝑤𝑟𝑖𝑡𝑒𝐼𝑛𝑠𝐴𝑙𝑙𝑜𝑤𝑒𝑑)
+Example: 7 mandates, 10 candidates, candidateAccumulation = 2, writeInsAllowed = true.
+𝑐𝑎𝑛𝑑𝑖𝑑𝑎𝑡𝑒𝑉𝑜𝑡𝑖𝑛𝑔𝑂𝑝𝑡𝑖𝑜𝑛𝑠 = (10 ∗ 2) + 7 (1 + 1) = 34
+o Count the number of <list> elements.
+             */
 
-
-            EncryptionParameters encryptionParameters = JsonMapper.mapFromJson(inputDirectory, "encryptionParameters.json", EncryptionParameters.class);
-            String pString = encryptionParameters.getZpSubgroup().getP();
+            String pString = "1a";
             BigInteger p = TypeHelper.base64ToBigInteger(pString);
 
             FileInputStream fis = new FileInputStream(new File(inputDirectory + "/commitmentParameters.txt"));

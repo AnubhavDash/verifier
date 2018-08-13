@@ -8,6 +8,8 @@
 
 package ch.post.it.evoting.verifier.common.block.tools;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import java.io.File;
@@ -25,7 +27,15 @@ import java.security.InvalidParameterException;
  */
 public class XMLMapper {
     public static <T> T mapFromXml(File inputDirectory, String filename, Class<T> targetClazz) throws IOException {
-        XmlMapper xmlMapper = new XmlMapper();
+
+        JacksonXmlModule jacksonXmlModule = new JacksonXmlModule();
+        jacksonXmlModule.setDefaultUseWrapper(false);
+
+        XmlMapper xmlMapper = new XmlMapper(jacksonXmlModule);
+        xmlMapper.configure(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES, false);
+        xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        xmlMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+
         File[] file = inputDirectory.listFiles((dir, name) -> name.endsWith(filename));
         if (file.length == 0) {
             throw new FileNotFoundException(filename);
