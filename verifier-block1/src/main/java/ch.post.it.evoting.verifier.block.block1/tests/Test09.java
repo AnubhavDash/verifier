@@ -14,16 +14,22 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
-import ch.post.it.evoting.verifier.common.block.dto.ConfigurationType;
+import ch.post.it.evoting.verifier.common.block.dto.*;
+import ch.post.it.evoting.verifier.common.block.tools.JsonMapper;
 import ch.post.it.evoting.verifier.common.block.tools.LanguageHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeHelper;
 import ch.post.it.evoting.verifier.common.block.tools.XMLMapper;
-import com.sun.xml.internal.bind.v2.TODO;
+import ch.post.it.evoting.verifier.dto.BallotBox;
+import ch.post.it.evoting.verifier.dto.DataConfigEE;
+import ch.post.it.evoting.verifier.dto.Option;
 import org.apache.log4j.Logger;
 
+import javax.xml.bind.JAXBElement;
 import java.io.*;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,19 +67,60 @@ public class Test09 extends Test {
         try {
             ConfigurationType configuration = XMLMapper.mapFromXml(inputDirectory, "configuration-anonymized.xml", ConfigurationType.class);
 
-            // TODO
-            /*
-            Read the file configuration-anonymized.xml
-- For each vote, read the voteIdentification. Count the number of <answer> elements (Example. The vote
-has one variantBallot with two standardQuestions and one tie-break question, each having three possible
-answers. Therefore, the vote has 9 answer elements in total).
-- For each election: Read the fields: numberOfMandates, writeInsAllowed and candidateAccumulation
-o Count the number of <candidate> elements. Count the number of candidate options as follows
-𝑐𝑎𝑛𝑑𝑖𝑑𝑎𝑡𝑒𝑉𝑜𝑡𝑖𝑛𝑔𝑂𝑝𝑡𝑖𝑜𝑛𝑠 = (#𝑐𝑎𝑛𝑑𝑖𝑑𝑎𝑡𝑒𝑠 ∗ 𝑐𝑎𝑛𝑑𝑖𝑑𝑎𝑡𝑒𝐴𝑐𝑐𝑢𝑚𝑢𝑙𝑎𝑡𝑖𝑜𝑛) + 𝑛𝑢𝑚𝑏𝑒𝑟𝑂𝑓𝑀𝑎𝑛𝑑𝑎𝑡𝑒𝑠 ∗ (1 + 𝑤𝑟𝑖𝑡𝑒𝐼𝑛𝑠𝐴𝑙𝑙𝑜𝑤𝑒𝑑)
-Example: 7 mandates, 10 candidates, candidateAccumulation = 2, writeInsAllowed = true.
-𝑐𝑎𝑛𝑑𝑖𝑑𝑎𝑡𝑒𝑉𝑜𝑡𝑖𝑛𝑔𝑂𝑝𝑡𝑖𝑜𝑛𝑠 = (10 ∗ 2) + 7 (1 + 1) = 34
-o Count the number of <list> elements.
-             */
+            // vote
+            VoteType vote = configuration.getContest().getVoteInformation().getVote();
+            String voteIdentification = configuration.getContest().getVoteInformation().getVote().getVoteIdentification();
+            List<BallotType> ballots = vote.getBallot();
+            int numberOfQuestions = 0;
+            for(BallotType ballot : ballots){
+                VariantBallotType variantBallot = ballot.getVariantBallot();
+                StandardBallotType standardBallot = ballot.getStandardBallot();
+                if( variantBallot != null ){
+                    List<StandardQuestionType> standardQuestions = variantBallot.getStandardQuestion();
+                    for(StandardQuestionType question : standardQuestions){
+                        List<JAXBElement<?>> questionIdentificationOrQuestionPositionOrAnswerType = question.getQuestionIdentificationOrQuestionPositionOrAnswerType();
+                        List<JAXBElement<AnswerType>> listAnswerType = (List<JAXBElement<AnswerType>>)(List<?>) questionIdentificationOrQuestionPositionOrAnswerType;;
+                        numberOfQuestions += listAnswerType.size();
+                    }
+                    numberOfQuestions += variantBallot.getTieBreakQuestion().getAnswer().size();
+                }
+                if( standardBallot != null ){
+                    numberOfQuestions += standardBallot.getAnswer().size();
+                }
+            }
+
+            //election
+            HashMap<ElectionType, HashMap<String, Integer>> electionsMap = new HashMap<>();
+
+            List<ElectionInformationType> elections = configuration.getContest().getElectionInformation();
+            for(ElectionInformationType electionInfo : elections){
+                int numberOfMandates = Integer.parseInt(electionInfo.getElection().getNumberOfMandates());
+                int writeInsAllowed = electionInfo.getElection().getWriteInsAllowed().equals("true") ? 1 : 0 ;
+                int candidateAccumulation = Integer.parseInt(electionInfo.getElection().getCandidateAccumulation());
+                List<CandidateType> candidates = electionInfo.getCandidate();
+                int candidateVotingOption = ( candidates.size() * candidateAccumulation ) + numberOfMandates * ( 1 + writeInsAllowed );
+                List<ListType> listes = electionInfo.getList();
+
+                HashMap<String, Integer> electionDetails = new HashMap();
+                electionDetails.put("candidateVotingOption", candidateVotingOption);
+                electionDetails.put("candidates", candidates.size());
+                electionDetails.put("listes", listes.size());
+                electionsMap.put(electionInfo.getElection(),electionDetails );
+            }
+
+
+            DataConfigEE dataConfigEE = JsonMapper.mapFromJson(inputDirectory, "dataConfig_[EE].json", DataConfigEE.class);
+            List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
+
+            //votations
+            Collection<Integer> temp = ballotBoxes.stream()
+                    .flatMap(bb -> bb.getCountingCircles().stream())
+                    .flatMap(cc -> cc.getDomainOfInfluence().stream())
+                    .flatMap(doi -> doi.getVotes().stream())
+                    .flatMap(v -> v.getQuestions().stream())
+                    .flatMap(q -> q.getOptions().stream())
+                    .map(Option::getPrimeNumber)
+                    .collect(Collectors.toList());
 
             String pString = "1a";
             BigInteger p = TypeHelper.base64ToBigInteger(pString);
