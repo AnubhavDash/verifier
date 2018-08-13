@@ -1,5 +1,6 @@
 package ch.post.it.evoting.verifier.spring;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +25,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser(clientUsername).password(clientPassword).roles("USER");
+        if (StringUtils.isNotEmpty(clientUsername)) {
+            auth.inMemoryAuthentication()
+                    .withUser(clientUsername).password(clientPassword).roles("USER");
+        }
     }
 
     @Override
@@ -35,8 +38,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/socket/**").permitAll()
-                .anyRequest().authenticated()
-                .and().httpBasic().authenticationEntryPoint(authEntryPoint);
+                .antMatchers("/socket/**").permitAll();
+
+        if (StringUtils.isEmpty(clientUsername)) {
+            http.authorizeRequests().antMatchers("**").permitAll();
+        } else {
+            http.authorizeRequests().anyRequest().authenticated()
+                    .and().httpBasic().authenticationEntryPoint(authEntryPoint);
+        }
+
     }
 }
