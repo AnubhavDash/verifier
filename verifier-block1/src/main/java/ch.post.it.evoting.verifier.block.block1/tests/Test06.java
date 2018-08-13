@@ -52,9 +52,9 @@ public class Test06 extends Test {
     // if Euler criterion is not equals to 1 there is an error
     private boolean isBigIntInError(BigInteger vo, BigInteger p){
         boolean inError = false;
-        BigInteger exponent = (p.subtract(new BigInteger("1"))).divide(new BigInteger("2"));
+        BigInteger exponent = (p.subtract(BigInteger.ONE)).divide(new BigInteger("2"));
         BigInteger ec = vo.modPow(exponent, p);
-        inError = !ec.equals(new BigInteger("1"));
+        inError = !ec.equals(BigInteger.ONE);
         return inError;
     }
 

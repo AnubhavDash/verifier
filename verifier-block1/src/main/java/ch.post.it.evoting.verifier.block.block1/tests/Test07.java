@@ -18,7 +18,6 @@ import ch.post.it.evoting.verifier.common.block.tools.JsonMapper;
 import ch.post.it.evoting.verifier.common.block.tools.LanguageHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeHelper;
 import ch.post.it.evoting.verifier.dto.ElectoralAuthority;
-import ch.post.it.evoting.verifier.dto.EncryptionParameters;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -52,9 +51,9 @@ public class Test07 extends Test {
     // if Euler criterion is not equals to 1 there is an error
     private boolean isBigIntInError(BigInteger vo, BigInteger p){
         boolean inError = false;
-        BigInteger exponent = (p.subtract(new BigInteger("1"))).divide(new BigInteger("2"));
+        BigInteger exponent = (p.subtract(BigInteger.ONE)).divide(new BigInteger("2"));
         BigInteger ec = vo.modPow(exponent, p);
-        inError = !ec.equals(new BigInteger("1"));
+        inError = !ec.equals(BigInteger.ONE);
         return inError;
     }
 
@@ -62,16 +61,14 @@ public class Test07 extends Test {
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
-            EncryptionParameters encryptionParameters = JsonMapper.mapFromJson(inputDirectory, "encryptionParameters.json", EncryptionParameters.class);
-            String pString = encryptionParameters.getZpSubgroup().getP();
-            BigInteger p = TypeHelper.base64ToBigInteger(pString);
 
             ElectoralAuthority electoralAuthority = JsonMapper.mapFromJson(inputDirectory, "electoralAuthority.json", ElectoralAuthority.class);
             String publicKeyB64 = electoralAuthority.getPublicKey();
             byte[] decoded = TypeHelper.Base64ToByte(publicKeyB64);
             String publicKey = TypeHelper.ByteToString(decoded);
 
-            List<String> elements = extractElements(publicKey);
+            BigInteger p = extractPFromPublicKey(publicKey);
+            List<String> elements = extractElementsFromPublicKey(publicKey);
             if(elements.isEmpty()){
                 throw new Exception("No such Elements was found in the publicKey");
             }
@@ -100,7 +97,22 @@ public class Test07 extends Test {
         return result;
     }
 
-    private List<String> extractElements(String publicKey) {
+    private BigInteger extractPFromPublicKey(String publicKey) {
+        List<BigInteger> result = new ArrayList<>();
+        if(publicKey != null && !publicKey.isEmpty() && publicKey.contains("p")){
+            String[] split = publicKey.split("\"");
+            int indexOf = Arrays.asList(split).indexOf("p");
+
+            result.addAll(IntStream
+                    .range(0, split.length)
+                    .filter(i -> (i == indexOf + 2))
+                    .mapToObj(i -> TypeHelper.ByteToBigInteger(TypeHelper.Base64ToByte(split[i])))
+                    .collect(Collectors.toList()));
+        }
+        return result.get(0);
+    }
+
+    private List<String> extractElementsFromPublicKey(String publicKey) {
         List<String> result = new ArrayList<>();
         if(publicKey != null && !publicKey.isEmpty() && publicKey.contains("elements")){
             String[] split = publicKey.split("\"");
