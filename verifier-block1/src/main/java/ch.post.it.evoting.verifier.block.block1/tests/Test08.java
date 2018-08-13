@@ -14,10 +14,7 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
-import ch.post.it.evoting.verifier.common.block.tools.JsonMapper;
 import ch.post.it.evoting.verifier.common.block.tools.LanguageHelper;
-import ch.post.it.evoting.verifier.common.block.tools.TypeHelper;
-import ch.post.it.evoting.verifier.dto.*;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -48,9 +45,9 @@ public class Test08 extends Test {
     // if Euler criterion is not equals to 1 there is an error
     private boolean isBigIntInError(BigInteger vo, BigInteger p){
         boolean inError = false;
-        BigInteger exponent = (p.subtract(new BigInteger("1"))).divide(new BigInteger("2"));
+        BigInteger exponent = (p.subtract(BigInteger.ONE)).divide(new BigInteger("2"));
         BigInteger ec = vo.modPow(exponent, p);
-        inError = !ec.equals(new BigInteger("1"));;
+        inError = !ec.equals(BigInteger.ONE);
         return inError;
     }
 
@@ -58,11 +55,6 @@ public class Test08 extends Test {
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
-
-            EncryptionParameters encryptionParameters = JsonMapper.mapFromJson(inputDirectory, "encryptionParameters.json", EncryptionParameters.class);
-            String pString = encryptionParameters.getZpSubgroup().getP();
-            BigInteger p = TypeHelper.base64ToBigInteger(pString);
-
             FileInputStream fis = new FileInputStream(new File(inputDirectory + "/commitmentParameters.txt"));
             BufferedReader br = new BufferedReader(new InputStreamReader(fis));
             List<BigInteger> numbers = new ArrayList<>();
@@ -76,6 +68,11 @@ public class Test08 extends Test {
                 throw new Exception("No such numbers was found in commitmentParameters file");
             }
             else{
+                BigInteger p = numbers.get(0);
+                BigInteger q = numbers.get(1);
+                BigInteger g = numbers.get(2);
+                numbers = numbers.subList(3, numbers.size());
+
                 List<BigInteger> errors = numbers.stream()
                         .filter(bigInteger -> isBigIntInError(bigInteger, p))
                         .collect(Collectors.toList());
