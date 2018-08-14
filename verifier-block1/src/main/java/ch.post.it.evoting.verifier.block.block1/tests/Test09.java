@@ -9,6 +9,8 @@
 package ch.post.it.evoting.verifier.block.block1.tests;
 
 import ch.evoting.xmlns.config._3.Configuration;
+import ch.evoting.xmlns.config._3.StandardAnswerType;
+import ch.evoting.xmlns.config._3.TiebreakAnswerType;
 import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
@@ -19,6 +21,7 @@ import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.dto.DataConfigEE;
 import ch.post.it.evoting.verifier.dto.DomainOfInfluence;
+import ch.post.it.evoting.verifier.dto.Option;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -61,21 +64,19 @@ public class Test09 extends Test {
                                     if (b.getStandardBallot() != null) {
                                         return b.getStandardBallot().getAnswer().stream();
                                     } else {
-                                        Stream s1 = b.getVariantBallot().getStandardQuestion().stream().flatMap(sq -> sq.getAnswer().stream());
-                                        Stream s2 = b.getVariantBallot().getTieBreakQuestion().stream().flatMap(tq -> tq.getAnswer().stream());
+                                        Stream<StandardAnswerType> s1 = b.getVariantBallot().getStandardQuestion().stream().flatMap(sq -> sq.getAnswer().stream());
+                                        Stream<TiebreakAnswerType> s2 = b.getVariantBallot().getTieBreakQuestion().stream().flatMap(tq -> tq.getAnswer().stream());
                                         return Stream.concat(s1, s2);
                                     }
                                 }).count();
 
-
-                        return new AbstractMap.SimpleEntry<String, Long>(id, nbAnswer);
+                        return new AbstractMap.SimpleEntry<>(id, nbAnswer);
                     })
-                    .collect(Collectors.toMap(se -> se.getKey(), se -> se.getValue()));
+                    .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
-
+            // election
             Map<String, ElectionDetail> electionOptionCount = configuration.getContest().getElectionInformation().stream()
                     .map(ei -> {
-
                         ElectionDetail electionDetail = new ElectionDetail();
 
                         int candidateCount = ei.getCandidate().size();
@@ -87,25 +88,25 @@ public class Test09 extends Test {
                         electionDetail.setOptionCount(optionCount.intValue());
                         electionDetail.setListCount(ei.getList().size());
 
-                        return new AbstractMap.SimpleEntry<String, ElectionDetail>(ei.getElection().getElectionIdentification(), electionDetail);
-                    }).collect(Collectors.toMap(se -> se.getKey(), se -> se.getValue()));
+                        return new AbstractMap.SimpleEntry<>(ei.getElection().getElectionIdentification(), electionDetail);
+                    }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
 
+            //check correspondences between config and dataConfig
             DataConfigEE dataConfigEE = Deserializer.fromJson(inputDirectory, "dataConfig_[EE].json", DataConfigEE.class);
-
             dataConfigEE.getElectionEvent().getBallotBoxes().stream()
                     .flatMap(bb -> bb.getCountingCircles().stream())
                     .flatMap(cc -> cc.getDomainOfInfluence().stream())
                     .forEach((DomainOfInfluence doi) -> {
-                        doi.getVotes().stream().forEach(v -> {
+                        doi.getVotes().forEach(v -> {
                             String voteIdentification = v.getAlias();
                             if (!voteAnswersCount.containsKey(voteIdentification)) {
                                 //TODO set correct key
                                 throw new Test09Exception("KEY", voteIdentification);
                             }
 
-                            List<Integer> options = v.getQuestions().stream().flatMap(q -> q.getOptions().stream()).map(o -> o.getPrimeNumber()).collect(Collectors.toList());
-                            long optionsDistinctCount = v.getQuestions().stream().flatMap(q -> q.getOptions().stream()).map(o -> o.getPrimeNumber()).distinct().count();
+                            List<Integer> options = v.getQuestions().stream().flatMap(q -> q.getOptions().stream()).map(Option::getPrimeNumber).collect(Collectors.toList());
+                            long optionsDistinctCount = v.getQuestions().stream().flatMap(q -> q.getOptions().stream()).map(Option::getPrimeNumber).distinct().count();
                             if (options.size() != optionsDistinctCount) {
                                 //TODO set correct key
                                 throw new Test09Exception("KEY", getDoubles(options).toString());
@@ -117,7 +118,7 @@ public class Test09 extends Test {
                             }
                         });
 
-                        doi.getElections().stream().forEach(e -> {
+                        doi.getElections().forEach(e -> {
                             String electionIdentification = e.getAlias();
                             if (!electionOptionCount.containsKey(electionIdentification)) {
                                 //TODO set correct key
@@ -138,9 +139,9 @@ public class Test09 extends Test {
                                     .flatMap(l -> l.getCandidatePositions().stream())
                                     .flatMap(cp -> cp.getPrimeNumber().stream()).distinct().count();
                             //TODO check that with Olivier
-                            int writeInscount = e.getWriteIns().size();
+                            int writeInsCount = e.getWriteIns().size();
 
-                            if ((optionDistinctCount + writeInscount) != electionOptionCount.get(electionIdentification).getOptionCount()) {
+                            if ((optionDistinctCount + writeInsCount) != electionOptionCount.get(electionIdentification).getOptionCount()) {
                                 //TODO set correct key
                                 throw new Test09Exception("KEY");
                             }
@@ -180,19 +181,21 @@ public class Test09 extends Test {
 
     private <T> List<T> getDoubles(List<T> entries) {
         List<T> result = new LinkedList<>();
+
         HashMap<T, Integer> countByValue = new HashMap<>();
-        entries.stream().forEach(o -> {
+        entries.forEach(o -> {
             if (countByValue.containsKey(o)) {
                 countByValue.put(o, countByValue.get(o) + 1);
             } else {
                 countByValue.put(o, 1);
             }
         });
-        countByValue.keySet().stream().forEach(k -> {
+        countByValue.keySet().forEach(k -> {
             if (countByValue.get(k) > 1) {
                 result.add(k);
             }
         });
+
         return result;
     }
 

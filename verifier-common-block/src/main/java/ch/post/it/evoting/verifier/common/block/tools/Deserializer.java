@@ -1,9 +1,6 @@
 package ch.post.it.evoting.verifier.common.block.tools;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
