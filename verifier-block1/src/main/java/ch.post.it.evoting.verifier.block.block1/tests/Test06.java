@@ -67,7 +67,7 @@ public class Test06 extends Test {
             String pString = encryptionParameters.getZpSubgroup().getP();
             BigInteger p = TypeConverter.base64ToBigInteger(pString);
 
-            DataConfigEE dataConfigEE = Deserializer.fromJson(inputDirectory, "dataConfig_[EE].json", DataConfigEE.class);
+            DataConfigEE dataConfigEE = Deserializer.fromJson(inputDirectory, "dataConfig_*.json", DataConfigEE.class);
             List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
 
             //votations

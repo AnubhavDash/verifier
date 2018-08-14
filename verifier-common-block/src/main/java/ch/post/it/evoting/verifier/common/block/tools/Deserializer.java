@@ -26,7 +26,7 @@ public class Deserializer {
     }
 
     private static File getFile(File inputDirectory, String filename) throws FileNotFoundException {
-        File[] file = inputDirectory.listFiles((dir, name) -> name.endsWith(filename));
+        File[] file = inputDirectory.listFiles((dir, name) -> name.matches(filename.replaceAll("\\*", "(.*)")));
         if (file.length == 0) {
             throw new FileNotFoundException(filename);
         } else if (file.length > 1) {

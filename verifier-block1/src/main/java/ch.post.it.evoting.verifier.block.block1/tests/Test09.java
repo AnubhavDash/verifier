@@ -93,9 +93,8 @@ public class Test09 extends Test {
                         return new AbstractMap.SimpleEntry<>(ei.getElection().getElectionIdentification(), electionDetail);
                     }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
-
             //check correspondences between config and dataConfig
-            DataConfigEE dataConfigEE = Deserializer.fromJson(inputDirectory, "dataConfig_[EE].json", DataConfigEE.class);
+            DataConfigEE dataConfigEE = Deserializer.fromJson(inputDirectory, "dataConfig_*.json", DataConfigEE.class);
             dataConfigEE.getElectionEvent().getBallotBoxes().stream()
                     .flatMap(bb -> bb.getCountingCircles().stream())
                     .flatMap(cc -> cc.getDomainOfInfluence().stream())
@@ -134,7 +133,6 @@ public class Test09 extends Test {
                             long optionDistinctCount = e.getLists().stream()
                                     .flatMap(l -> l.getCandidatePositions().stream())
                                     .flatMap(cp -> cp.getPrimeNumber().stream()).distinct().count();
-                            //TODO check that with Olivier
                             int writeInsCount = e.getWriteIns().size();
 
                             if ((optionDistinctCount + writeInsCount) != electionOptionCount.get(electionIdentification).getOptionCount()) {

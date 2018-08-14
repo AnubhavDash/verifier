@@ -4,7 +4,7 @@ let win;
 let serverProcess;
 let platform = process.platform;
 
-let appUrl = 'http://localhost:8080';
+let appUrl = 'https://localhost:8443';
 
 if (platform === 'win32') {
   serverProcess = require('child_process')
