@@ -11,10 +11,8 @@ package ch.post.it.evoting.verifier.block.block1.tests;
 import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestResult;
-import ch.post.it.evoting.verifier.common.block.tools.LanguageHelper;
-import ch.post.it.evoting.verifier.common.block.tools.TypeHelper;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -47,7 +45,7 @@ public class Test07Test {
         TestResult testResult = new Test06().executeTest(new File(getClass().getResource("/Test07/NOK-NOTFILE").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
-        Assert.assertEquals(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message"), testResult.getMessage());
+        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message"), testResult.getMessage());
     }
 
 }

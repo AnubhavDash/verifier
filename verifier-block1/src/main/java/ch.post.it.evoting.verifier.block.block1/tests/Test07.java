@@ -14,9 +14,9 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
-import ch.post.it.evoting.verifier.common.block.tools.JsonMapper;
-import ch.post.it.evoting.verifier.common.block.tools.LanguageHelper;
-import ch.post.it.evoting.verifier.common.block.tools.TypeHelper;
+import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.ElectoralAuthority;
 import org.apache.log4j.Logger;
 
@@ -41,7 +41,7 @@ public class Test07 extends Test {
         TestDefinition def = new TestDefinition();
         def.setBlockId(1);
         def.setCategory(Category.INTEGRITY);
-        def.setDescription(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test07.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test07.description"));
         def.setId(7);
         def.setName("isMemberOfGroup(pk_ea)");
         return def;
@@ -62,10 +62,10 @@ public class Test07 extends Test {
         TestResult result = new TestResult(getTestDefinition());
         try {
 
-            ElectoralAuthority electoralAuthority = JsonMapper.mapFromJson(inputDirectory, "electoralAuthority.json", ElectoralAuthority.class);
+            ElectoralAuthority electoralAuthority = Deserializer.fromJson(inputDirectory, "electoralAuthority.json", ElectoralAuthority.class);
             String publicKeyB64 = electoralAuthority.getPublicKey();
-            byte[] decoded = TypeHelper.Base64ToByte(publicKeyB64);
-            String publicKey = TypeHelper.ByteToString(decoded);
+            byte[] decoded = TypeConverter.Base64ToByte(publicKeyB64);
+            String publicKey = TypeConverter.ByteToString(decoded);
 
             BigInteger p = extractPFromPublicKey(publicKey);
             List<String> elements = extractElementsFromPublicKey(publicKey);
@@ -74,24 +74,24 @@ public class Test07 extends Test {
             }
             else{
                 List<String> errors = elements.stream()
-                                                .map(element -> TypeHelper.ByteToBigInteger(TypeHelper.Base64ToByte(element)))
+                                                .map(element -> TypeConverter.ByteToBigInteger(TypeConverter.Base64ToByte(element)))
                                                 .filter(bigInteger -> isBigIntInError(bigInteger, p))
-                                                .map(bi -> TypeHelper.ByteToBase64String(TypeHelper.BigIntegerToByte(bi)))
+                                                .map(bi -> TypeConverter.ByteToBase64String(TypeConverter.BigIntegerToByte(bi)))
                                                 .collect(Collectors.toList());
                 if (errors.isEmpty()) {
                     result.setStatus(Status.OK);
                 } else {
                     result.setStatus(Status.NOK);
-                    result.setMessage(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test07.nok.message", errors.toString()));
+                    result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test07.nok.message", errors.toString()));
                 }
             }
         } catch (Exception e) {
             result.setStatus(Status.NOK);
             if(e instanceof FileNotFoundException){
-                result.setMessage(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message"));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message"));
             } else {
                 log.error("Unexpected error", e);
-                result.setMessage(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
             }
         }
         return result;
@@ -106,7 +106,7 @@ public class Test07 extends Test {
             result.addAll(IntStream
                     .range(0, split.length)
                     .filter(i -> (i == indexOf + 2))
-                    .mapToObj(i -> TypeHelper.ByteToBigInteger(TypeHelper.Base64ToByte(split[i])))
+                    .mapToObj(i -> TypeConverter.ByteToBigInteger(TypeConverter.Base64ToByte(split[i])))
                     .collect(Collectors.toList()));
         }
         return result.get(0);

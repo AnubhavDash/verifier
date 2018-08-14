@@ -6,7 +6,7 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
-import ch.post.it.evoting.verifier.common.block.tools.LanguageHelper;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 
 import java.io.File;
 
@@ -16,7 +16,7 @@ public class Test1 extends Test {
         TestDefinition def = new TestDefinition();
         def.setBlockId(255);
         def.setCategory(Category.COMPLETENESS);
-        def.setDescription(LanguageHelper.getFromResourceBundle(SampleTestSuite.RESOURCE_BUNDLE_NAME, "test1.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(SampleTestSuite.RESOURCE_BUNDLE_NAME, "test1.description"));
         def.setId(1);
         def.setName("test 1");
         return def;

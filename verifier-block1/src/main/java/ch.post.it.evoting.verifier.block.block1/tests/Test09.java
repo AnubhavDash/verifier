@@ -15,10 +15,9 @@ import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.dto.*;
-import ch.post.it.evoting.verifier.common.block.tools.JsonMapper;
-import ch.post.it.evoting.verifier.common.block.tools.LanguageHelper;
-import ch.post.it.evoting.verifier.common.block.tools.TypeHelper;
-import ch.post.it.evoting.verifier.common.block.tools.XMLMapper;
+import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.BallotBox;
 import ch.post.it.evoting.verifier.dto.DataConfigEE;
 import ch.post.it.evoting.verifier.dto.Option;
@@ -45,7 +44,7 @@ public class Test09 extends Test {
         TestDefinition def = new TestDefinition();
         def.setBlockId(1);
         def.setCategory(Category.INTEGRITY);
-        def.setDescription(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test09.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test09.description"));
         def.setId(9);
         def.setName("checkPrimeNumberOptions([vo])");
         return def;
@@ -53,7 +52,7 @@ public class Test09 extends Test {
 
     // common method used to verify if a vo is in error
     // if Euler criterion is not equals to 1 there is an error
-    private boolean isBigIntInError(BigInteger vo, BigInteger p){
+    private boolean isBigIntInError(BigInteger vo, BigInteger p) {
         boolean inError = false;
         BigInteger exponent = (p.subtract(BigInteger.ONE)).divide(new BigInteger("2"));
         BigInteger ec = vo.modPow(exponent, p);
@@ -65,7 +64,7 @@ public class Test09 extends Test {
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
-            ConfigurationType configuration = XMLMapper.mapFromXml(inputDirectory, "configuration-anonymized.xml", ConfigurationType.class);
+            ConfigurationType configuration = Deserializer.fromXml(inputDirectory, "configuration-anonymized.xml", ConfigurationType.class);
 
             // vote
             VoteType vote = configuration.getContest().getVoteInformation().getVote();
@@ -109,7 +108,7 @@ public class Test09 extends Test {
             }
 
 
-            DataConfigEE dataConfigEE = JsonMapper.mapFromJson(inputDirectory, "dataConfig_[EE].json", DataConfigEE.class);
+            DataConfigEE dataConfigEE = Deserializer.fromJson(inputDirectory, "dataConfig_[EE].json", DataConfigEE.class);
             List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
 
             //votations
@@ -123,7 +122,7 @@ public class Test09 extends Test {
                     .collect(Collectors.toList());
 
             String pString = "1a";
-            BigInteger p = TypeHelper.base64ToBigInteger(pString);
+            BigInteger p = TypeConverter.base64ToBigInteger(pString);
 
             FileInputStream fis = new FileInputStream(new File(inputDirectory + "/commitmentParameters.txt"));
             BufferedReader br = new BufferedReader(new InputStreamReader(fis));
@@ -134,10 +133,9 @@ public class Test09 extends Test {
             }
             br.close();
 
-            if(numbers.isEmpty()){
+            if (numbers.isEmpty()) {
                 throw new Exception("No such numbers was found in commitmentParameters file");
-            }
-            else{
+            } else {
                 List<BigInteger> errors = numbers.stream()
                         .filter(bigInteger -> isBigIntInError(bigInteger, p))
                         .collect(Collectors.toList());
@@ -145,16 +143,16 @@ public class Test09 extends Test {
                     result.setStatus(Status.OK);
                 } else {
                     result.setStatus(Status.NOK);
-                    result.setMessage(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test09.nok.message", errors.toString()));
+                    result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test09.nok.message", errors.toString()));
                 }
             }
         } catch (Exception e) {
             result.setStatus(Status.NOK);
-            if(e instanceof FileNotFoundException){
-                result.setMessage(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test09.file.not.found.message"));
+            if (e instanceof FileNotFoundException) {
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test09.file.not.found.message"));
             } else {
                 log.error("Unexpected error", e);
-                result.setMessage(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
             }
         }
         return result;

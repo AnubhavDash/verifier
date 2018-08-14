@@ -1,14 +1,7 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.common.block.tools;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
@@ -17,16 +10,18 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.InvalidParameterException;
 
-/**
- * Class XmlMapper.
- * This class allow to convert XML file into java object.
- * its called XMLMapper without camel case
- * not to be confused with the XmlMapper jackson object
- * @author lalandret
- * @version $$Revision$$
- */
-public class XMLMapper {
-    public static <T> T mapFromXml(File inputDirectory, String filename, Class<T> targetClazz) throws IOException {
+public class Deserializer {
+
+    private Deserializer() {
+        //private constructor, use static
+    }
+
+    public static <T> T fromJson(File inputDirectory, String filename, Class<T> targetClazz) throws IOException {
+        ObjectMapper jsonMapper = new ObjectMapper();
+        return jsonMapper.readValue(getFile(inputDirectory, filename), targetClazz);
+    }
+
+    public static <T> T fromXml(File inputDirectory, String filename, Class<T> targetClazz) throws IOException {
 
         JacksonXmlModule jacksonXmlModule = new JacksonXmlModule();
         jacksonXmlModule.setDefaultUseWrapper(false);
@@ -36,13 +31,17 @@ public class XMLMapper {
         xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         xmlMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 
+        return xmlMapper.readValue(getFile(inputDirectory, filename), targetClazz);
+    }
+
+    private static File getFile(File inputDirectory, String filename) throws FileNotFoundException {
         File[] file = inputDirectory.listFiles((dir, name) -> name.endsWith(filename));
         if (file.length == 0) {
             throw new FileNotFoundException(filename);
         } else if (file.length > 1) {
             throw new InvalidParameterException("more than one file found, filename is not specific enough");
         } else {
-            return xmlMapper.readValue(file[0], targetClazz);
+            return file[0];
         }
     }
 }
