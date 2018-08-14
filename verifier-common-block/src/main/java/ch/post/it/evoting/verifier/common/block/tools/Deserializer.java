@@ -44,7 +44,7 @@ public class Deserializer {
     }
 
     public static Function<String[], CredentialDataElement> toCredentialDataElement = array -> {
-        if (array.length != 2) {
+        if (array == null || array.length != 2) {
             throw new IllegalArgumentException("Wrong array input format");
         }
         CredentialDataElement cde = new CredentialDataElement();
