@@ -5,7 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.InvalidParameterException;
@@ -21,17 +24,8 @@ public class Deserializer {
         return jsonMapper.readValue(getFile(inputDirectory, filename), targetClazz);
     }
 
-    public static <T> T fromXml(File inputDirectory, String filename, Class<T> targetClazz) throws IOException {
-
-        JacksonXmlModule jacksonXmlModule = new JacksonXmlModule();
-        jacksonXmlModule.setDefaultUseWrapper(false);
-
-        XmlMapper xmlMapper = new XmlMapper(jacksonXmlModule);
-        xmlMapper.configure(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES, false);
-        xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        xmlMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-
-        return xmlMapper.readValue(getFile(inputDirectory, filename), targetClazz);
+    public static <T> T fromXml(File inputDirectory, String filename, Class<T> targetClazz) throws IOException, JAXBException {
+        return (T) JAXBContext.newInstance(targetClazz).createUnmarshaller().unmarshal(new FileInputStream(getFile(inputDirectory, filename)));
     }
 
     private static File getFile(File inputDirectory, String filename) throws FileNotFoundException {

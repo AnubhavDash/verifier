@@ -8,29 +8,25 @@
 
 package ch.post.it.evoting.verifier.block.block1.tests;
 
+import ch.evoting.xmlns.config._3.Configuration;
 import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
-import ch.post.it.evoting.verifier.common.block.dto.*;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
-import ch.post.it.evoting.verifier.dto.BallotBox;
 import ch.post.it.evoting.verifier.dto.DataConfigEE;
-import ch.post.it.evoting.verifier.dto.Option;
+import ch.post.it.evoting.verifier.dto.DomainOfInfluence;
 import org.apache.log4j.Logger;
 
-import javax.xml.bind.JAXBElement;
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Test09 of Block1, Step checkPrimeNumberOptions([vo])
@@ -50,88 +46,109 @@ public class Test09 extends Test {
         return def;
     }
 
-    // common method used to verify if a vo is in error
-    // if Euler criterion is not equals to 1 there is an error
-    private boolean isBigIntInError(BigInteger vo, BigInteger p) {
-        boolean inError = false;
-        BigInteger exponent = (p.subtract(BigInteger.ONE)).divide(new BigInteger("2"));
-        BigInteger ec = vo.modPow(exponent, p);
-        inError = !ec.equals(BigInteger.ONE);
-        return inError;
-    }
-
     @Override
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
-            ConfigurationType configuration = Deserializer.fromXml(inputDirectory, "configuration-anonymized.xml", ConfigurationType.class);
+            Configuration configuration = Deserializer.fromXml(inputDirectory, "configuration-anonymized.xml", Configuration.class);
 
             // vote
-            VoteType vote = configuration.getContest().getVoteInformation().getVote();
-            String voteIdentification = configuration.getContest().getVoteInformation().getVote().getVoteIdentification();
-            List<BallotType> ballots = vote.getBallot();
-            int numberOfQuestions = 0;
-            for(BallotType ballot : ballots){
-                VariantBallotType variantBallot = ballot.getVariantBallot();
-                StandardBallotType standardBallot = ballot.getStandardBallot();
-                if( variantBallot != null ){
-                    List<StandardQuestionType> standardQuestions = variantBallot.getStandardQuestion();
-                    for(StandardQuestionType question : standardQuestions){
-                        List<JAXBElement<?>> questionIdentificationOrQuestionPositionOrAnswerType = question.getQuestionIdentificationOrQuestionPositionOrAnswerType();
-                        List<JAXBElement<AnswerType>> listAnswerType = (List<JAXBElement<AnswerType>>)(List<?>) questionIdentificationOrQuestionPositionOrAnswerType;;
-                        numberOfQuestions += listAnswerType.size();
-                    }
-                    numberOfQuestions += variantBallot.getTieBreakQuestion().getAnswer().size();
-                }
-                if( standardBallot != null ){
-                    numberOfQuestions += standardBallot.getAnswer().size();
-                }
-            }
+            Map<String, Long> voteAnswersCount = configuration.getContest().getVoteInformation().stream()
+                    .map(vi -> {
+                        String id = vi.getVote().getVoteIdentification();
+                        long nbAnswer = vi.getVote().getBallot().stream()
+                                .flatMap(b -> {
+                                    if (b.getStandardBallot() != null) {
+                                        return b.getStandardBallot().getAnswer().stream();
+                                    } else {
+                                        Stream s1 = b.getVariantBallot().getStandardQuestion().stream().flatMap(sq -> sq.getAnswer().stream());
+                                        Stream s2 = b.getVariantBallot().getTieBreakQuestion().stream().flatMap(tq -> tq.getAnswer().stream());
+                                        return Stream.concat(s1, s2);
+                                    }
+                                }).count();
 
-            //election
-            HashMap<ElectionType, HashMap<String, Integer>> electionsMap = new HashMap<>();
 
-            List<ElectionInformationType> elections = configuration.getContest().getElectionInformation();
-            for(ElectionInformationType electionInfo : elections){
-                int numberOfMandates = Integer.parseInt(electionInfo.getElection().getNumberOfMandates());
-                int writeInsAllowed = electionInfo.getElection().getWriteInsAllowed().equals("true") ? 1 : 0 ;
-                int candidateAccumulation = Integer.parseInt(electionInfo.getElection().getCandidateAccumulation());
-                List<CandidateType> candidates = electionInfo.getCandidate();
-                int candidateVotingOption = ( candidates.size() * candidateAccumulation ) + numberOfMandates * ( 1 + writeInsAllowed );
-                List<ListType> listes = electionInfo.getList();
+                        return new AbstractMap.SimpleEntry<String, Long>(id, nbAnswer);
+                    })
+                    .collect(Collectors.toMap(se -> se.getKey(), se -> se.getValue()));
 
-                HashMap<String, Integer> electionDetails = new HashMap();
-                electionDetails.put("candidateVotingOption", candidateVotingOption);
-                electionDetails.put("candidates", candidates.size());
-                electionDetails.put("listes", listes.size());
-                electionsMap.put(electionInfo.getElection(),electionDetails );
-            }
+
+            Map<String, ElectionDetail> electionOptionCount = configuration.getContest().getElectionInformation().stream()
+                    .map(ei -> {
+
+                        ElectionDetail electionDetail = new ElectionDetail();
+
+                        int candidateCount = ei.getCandidate().size();
+                        BigInteger numberOfMandates = ei.getElection().getNumberOfMandates();
+                        boolean writeInsAllowed = ei.getElection().isWriteInsAllowed();
+                        BigInteger candidateAccumulation = ei.getElection().getCandidateAccumulation();
+
+                        BigInteger optionCount = (candidateAccumulation.multiply(BigInteger.valueOf(candidateCount))).add(numberOfMandates.multiply(BigInteger.valueOf(1 + (writeInsAllowed ? 1 : 0))));
+                        electionDetail.setOptionCount(optionCount.intValue());
+                        electionDetail.setListCount(ei.getList().size());
+
+                        return new AbstractMap.SimpleEntry<String, ElectionDetail>(ei.getElection().getElectionIdentification(), electionDetail);
+                    }).collect(Collectors.toMap(se -> se.getKey(), se -> se.getValue()));
 
 
             DataConfigEE dataConfigEE = Deserializer.fromJson(inputDirectory, "dataConfig_[EE].json", DataConfigEE.class);
-            List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
 
-            //votations
-            Collection<Integer> temp = ballotBoxes.stream()
+            dataConfigEE.getElectionEvent().getBallotBoxes().stream()
                     .flatMap(bb -> bb.getCountingCircles().stream())
                     .flatMap(cc -> cc.getDomainOfInfluence().stream())
-                    .flatMap(doi -> doi.getVotes().stream())
-                    .flatMap(v -> v.getQuestions().stream())
-                    .flatMap(q -> q.getOptions().stream())
-                    .map(Option::getPrimeNumber)
-                    .collect(Collectors.toList());
+                    .forEach((DomainOfInfluence doi) -> {
+                        doi.getVotes().stream().forEach(v -> {
+                            String voteIdentification = v.getAlias();
+                            if (!voteAnswersCount.containsKey(voteIdentification)) {
+                                //TODO set correct key
+                                throw new Test09Exception("KEY", voteIdentification);
+                            }
 
-            String pString = "1a";
-            BigInteger p = TypeConverter.base64ToBigInteger(pString);
+                            List<Integer> options = v.getQuestions().stream().flatMap(q -> q.getOptions().stream()).map(o -> o.getPrimeNumber()).collect(Collectors.toList());
+                            long optionsDistinctCount = v.getQuestions().stream().flatMap(q -> q.getOptions().stream()).map(o -> o.getPrimeNumber()).distinct().count();
+                            if (options.size() != optionsDistinctCount) {
+                                //TODO set correct key
+                                throw new Test09Exception("KEY", getDoubles(options).toString());
+                            }
 
-            FileInputStream fis = new FileInputStream(new File(inputDirectory + "/commitmentParameters.txt"));
-            BufferedReader br = new BufferedReader(new InputStreamReader(fis));
-            List<BigInteger> numbers = new ArrayList<>();
-            String line = null;
-            while ((line = br.readLine()) != null) {
-                numbers.add(new BigInteger(line));
-            }
-            br.close();
+                            if (options.size() != voteAnswersCount.get(voteIdentification)) {
+                                //TODO set correct key
+                                throw new Test09Exception("KEY");
+                            }
+                        });
+
+                        doi.getElections().stream().forEach(e -> {
+                            String electionIdentification = e.getAlias();
+                            if (!electionOptionCount.containsKey(electionIdentification)) {
+                                //TODO set correct key
+                                throw new Test09Exception("KEY", electionIdentification);
+                            }
+
+                            List<Integer> listCount = e.getLists().stream().map(l -> l.getPrimeNumber()).collect(Collectors.toList());
+                            long listDistinctCount = e.getLists().stream().map(l -> l.getPrimeNumber()).distinct().count();
+                            if (listCount.size() != listDistinctCount) {
+                                //TODO set correct key
+                                throw new Test09Exception("KEY", getDoubles(listCount).toString());
+                            }
+                            if (listCount.size() != electionOptionCount.get(electionIdentification).getListCount()) {
+                                //TODO set correct key
+                                throw new Test09Exception("KEY");
+                            }
+                            long optionDistinctCount = e.getLists().stream()
+                                    .flatMap(l -> l.getCandidatePositions().stream())
+                                    .flatMap(cp -> cp.getPrimeNumber().stream()).distinct().count();
+                            //TODO check that with Olivier
+                            int writeInscount = e.getWriteIns().size();
+
+                            if ((optionDistinctCount + writeInscount) != electionOptionCount.get(electionIdentification).getOptionCount()) {
+                                //TODO set correct key
+                                throw new Test09Exception("KEY");
+                            }
+                        });
+                    });
+
+            result.setStatus(Status.OK);
+/*
 
             if (numbers.isEmpty()) {
                 throw new Exception("No such numbers was found in commitmentParameters file");
@@ -146,9 +163,12 @@ public class Test09 extends Test {
                     result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test09.nok.message", errors.toString()));
                 }
             }
+            */
         } catch (Exception e) {
             result.setStatus(Status.NOK);
-            if (e instanceof FileNotFoundException) {
+            if (e instanceof Test09Exception) {
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, ((Test09Exception) e).getKey(), ((Test09Exception) e).getParams()));
+            } else if (e instanceof FileNotFoundException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test09.file.not.found.message"));
             } else {
                 log.error("Unexpected error", e);
@@ -157,4 +177,62 @@ public class Test09 extends Test {
         }
         return result;
     }
+
+    private <T> List<T> getDoubles(List<T> entries) {
+        List<T> result = new LinkedList<>();
+        HashMap<T, Integer> countByValue = new HashMap<>();
+        entries.stream().forEach(o -> {
+            if (countByValue.containsKey(o)) {
+                countByValue.put(o, countByValue.get(o) + 1);
+            } else {
+                countByValue.put(o, 1);
+            }
+        });
+        countByValue.keySet().stream().forEach(k -> {
+            if (countByValue.get(k) > 1) {
+                result.add(k);
+            }
+        });
+        return result;
+    }
+
+    class ElectionDetail {
+        private int optionCount;
+        private int listCount;
+
+        public int getOptionCount() {
+            return optionCount;
+        }
+
+        public void setOptionCount(int optionCount) {
+            this.optionCount = optionCount;
+        }
+
+        public int getListCount() {
+            return listCount;
+        }
+
+        public void setListCount(int listCount) {
+            this.listCount = listCount;
+        }
+    }
+
+    class Test09Exception extends RuntimeException {
+        String key;
+        String[] params;
+
+        Test09Exception(String key, String... params) {
+            this.key = key;
+            this.params = params;
+        }
+
+        public String[] getParams() {
+            return params;
+        }
+
+        public String getKey() {
+            return key;
+        }
+    }
+
 }
