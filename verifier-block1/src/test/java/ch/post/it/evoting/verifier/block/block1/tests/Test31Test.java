@@ -18,8 +18,8 @@ import org.junit.Test;
 import java.io.File;
 
 /**
- * Class Test08Test.
- * This represents a unit test for the Test09 class
+ * Class Test31Test.
+ * This represents a unit test for the Test31 class
  *
  * @author lalandret
  * @version $$Revision$$
@@ -35,17 +35,17 @@ public class Test31Test {
 
     @Test
     public void executeTestNOK() {
-        TestResult testResult = new Test09().executeTest(new File(getClass().getResource("/Test09/NOK").getFile()));
+        TestResult testResult = new Test31().executeTest(new File(getClass().getResource("/Test31/NOK").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
     }
 
     @Test
     public void executeTestNOKFileNotFound() {
-        TestResult testResult = new Test09().executeTest(new File(getClass().getResource("/Test09/NOK-NOTFILE").getFile()));
+        TestResult testResult = new Test31().executeTest(new File(getClass().getResource("/Test31/NOK-NOTFILE").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
-        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test09.file.not.found.message"), testResult.getMessage());
+        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test31.file.not.found.message"), testResult.getMessage());
     }
 
 }
