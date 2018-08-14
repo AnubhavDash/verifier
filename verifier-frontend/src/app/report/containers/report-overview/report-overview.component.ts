@@ -52,6 +52,8 @@ export class ReportOverviewComponent implements OnInit {
       result.color = "green";
     } else if (input.status === "NOK") {
       result.color = "red";
+    } else if (input.status === "NA") {
+      result.color = "grey";
     }
     return result;
   }

@@ -47,11 +47,11 @@ public class Test31 extends Test {
         try {
             // number of voters
             Configuration configuration = Deserializer.fromXml(inputDirectory, "configuration-anonymized.xml", Configuration.class);
-            long votersCount = configuration.getRegister().getVoter().stream().count();
+            int votersCount = configuration.getRegister().getVoter().size();
 
             // number of lines
             Iterable<CredentialDataElement> iterable = Deserializer.fromCsv(inputDirectory, "credentialData\\.csv", Deserializer.toCredentialDataElement);
-            long linesCount = 0;
+            int linesCount = 0;
             for (CredentialDataElement credentialDataElement : iterable) {
                 linesCount++;
             }

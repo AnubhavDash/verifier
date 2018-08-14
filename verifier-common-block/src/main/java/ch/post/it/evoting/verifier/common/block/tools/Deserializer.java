@@ -29,7 +29,7 @@ public class Deserializer {
     }
 
     public static <T> Iterable<T> fromCsv(File inputDirectory, String filenamePattern, Function<String[], T> mapper) throws IOException {
-        return new CsvReader<T>(getFile(inputDirectory, filenamePattern).toString(), StandardCharsets.UTF_8, false, ",", mapper).process();
+        return new CsvReader<>(getFile(inputDirectory, filenamePattern).toString(), StandardCharsets.UTF_8, false, ",", mapper).process();
     }
 
     private static File getFile(File inputDirectory, String filenamePattern) throws FileNotFoundException {
