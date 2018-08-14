@@ -18,24 +18,24 @@ import org.junit.Test;
 import java.io.File;
 
 /**
- * Class Test71Test.
+ * Class Test74Test.
  * This represents a unit test for the Test71 class
  *
  * @author lalandret
  * @version $$Revision$$
  */
-public class Test71Test {
+public class Test74Test {
 
     @Test
     public void executeTestOK() {
-        TestResult testResult = new Test71().executeTest(new File(getClass().getResource("/Test71/OK").getFile()));
+        TestResult testResult = new Test74().executeTest(new File(getClass().getResource("/Test74/OK").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NA, testResult.getStatus());
     }
 
     @Test
     public void executeTestNOK() {
-        TestResult testResult = new Test71().executeTest(new File(getClass().getResource("/Test71/NOK").getFile()));
+        TestResult testResult = new Test74().executeTest(new File(getClass().getResource("/Test74/NOK").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NA, testResult.getStatus());
     }

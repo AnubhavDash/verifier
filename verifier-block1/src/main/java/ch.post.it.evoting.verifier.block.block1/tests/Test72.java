@@ -20,20 +20,20 @@ import org.apache.log4j.Logger;
 import java.io.File;
 
 /**
- * Test71 of Block1, Step checkSigEch0045
+ * Test72 of Block1, Step checkSigEch015X
  */
-public class Test71 extends Test {
+public class Test72 extends Test {
 
-    private static final Logger log = Logger.getLogger(Test71.class);
+    private static final Logger log = Logger.getLogger(Test72.class);
 
     @Override
     public TestDefinition getTestDefinition() {
         TestDefinition def = new TestDefinition();
         def.setBlockId(1);
         def.setCategory(Category.AUTHENTICITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test71.description"));
-        def.setId(71);
-        def.setName("checkSigEch0045");
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test72.description"));
+        def.setId(72);
+        def.setName("checkSigEch015X");
         return def;
     }
 
