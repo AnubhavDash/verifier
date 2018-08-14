@@ -3,13 +3,14 @@ package ch.post.it.evoting.verifier.mapper;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.dto.Test;
+import ch.post.it.evoting.verifier.util.TestDefinitionTools;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(imports = {TestDefinitionTools.class})
 public interface TestExecutionStatusMapper {
     TestExecutionStatusMapper INSTANCE = Mappers.getMapper(TestExecutionStatusMapper.class);
 

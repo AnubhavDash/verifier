@@ -25,8 +25,8 @@
     <modules>
         <module>verifier-common</module>
         <module>verifier-common-block</module>
-        <module>verifier-block-sample</module>
         <module>verifier-block1</module>
+        <module>verifier-block4</module>
         <module>verifier-backend</module>
         <module>verifier-frontend</module>
     </modules>

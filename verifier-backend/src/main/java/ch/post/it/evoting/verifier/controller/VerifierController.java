@@ -35,8 +35,8 @@ public class VerifierController {
 
         initializeExecutionStatus();
 
-        processor.registerProcessListener(executionStatus -> {
-            notifyUpdate(executionStatus);
+        processor.registerProcessListener(t -> {
+            notifyUpdate(t);
             this.executionStatus.setTestActual(this.getStatus().getTestActual() + 1);
 
             if (this.getStatus().getTestActual() == this.getStatus().getTestCount()) {
@@ -80,7 +80,7 @@ public class VerifierController {
     }
 
     @RequestMapping(value = "/tests", method = RequestMethod.POST)
-    public ResponseEntity putMessage() {
+    public ResponseEntity process() {
         this.executionStatus.setStatus(Status.RUNNING);
         try {
             this.processor.processTests();
