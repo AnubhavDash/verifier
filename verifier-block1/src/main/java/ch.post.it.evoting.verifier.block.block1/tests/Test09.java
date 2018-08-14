@@ -94,7 +94,7 @@ public class Test09 extends Test {
                     }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
             //check correspondences between config and dataConfig
-            DataConfigEE dataConfigEE = Deserializer.fromJson(inputDirectory, "dataConfig_*.json", DataConfigEE.class);
+            DataConfigEE dataConfigEE = Deserializer.fromJson(inputDirectory, "dataConfig_.*\\.json", DataConfigEE.class);
             dataConfigEE.getElectionEvent().getBallotBoxes().stream()
                     .flatMap(bb -> bb.getCountingCircles().stream())
                     .flatMap(cc -> cc.getDomainOfInfluence().stream())

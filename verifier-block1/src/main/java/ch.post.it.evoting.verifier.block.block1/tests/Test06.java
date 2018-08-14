@@ -63,11 +63,11 @@ public class Test06 extends Test {
         TestResult result = new TestResult(getTestDefinition());
         try {
 
-            EncryptionParameters encryptionParameters = Deserializer.fromJson(inputDirectory, "encryptionParameters.json", EncryptionParameters.class);
+            EncryptionParameters encryptionParameters = Deserializer.fromJson(inputDirectory, "encryptionParameters\\.json", EncryptionParameters.class);
             String pString = encryptionParameters.getZpSubgroup().getP();
             BigInteger p = TypeConverter.base64ToBigInteger(pString);
 
-            DataConfigEE dataConfigEE = Deserializer.fromJson(inputDirectory, "dataConfig_*.json", DataConfigEE.class);
+            DataConfigEE dataConfigEE = Deserializer.fromJson(inputDirectory, "dataConfig_.*\\.json", DataConfigEE.class);
             List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
 
             //votations

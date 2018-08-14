@@ -62,7 +62,7 @@ public class Test07 extends Test {
         TestResult result = new TestResult(getTestDefinition());
         try {
 
-            ElectoralAuthority electoralAuthority = Deserializer.fromJson(inputDirectory, "electoralAuthority.json", ElectoralAuthority.class);
+            ElectoralAuthority electoralAuthority = Deserializer.fromJson(inputDirectory, "electoralAuthority\\.json", ElectoralAuthority.class);
             String publicKeyB64 = electoralAuthority.getPublicKey();
             byte[] decoded = TypeConverter.Base64ToByte(publicKeyB64);
             String publicKey = TypeConverter.ByteToString(decoded);

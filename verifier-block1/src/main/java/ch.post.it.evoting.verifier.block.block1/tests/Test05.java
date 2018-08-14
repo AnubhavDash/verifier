@@ -51,7 +51,7 @@ public class Test05 extends Test {
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
-            DataConfigEE dataConfigEE = Deserializer.fromJson(inputDirectory, "dataConfig_*.json", DataConfigEE.class);
+            DataConfigEE dataConfigEE = Deserializer.fromJson(inputDirectory, "dataConfig_.*\\.json", DataConfigEE.class);
             List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
 
             //votations

@@ -46,7 +46,7 @@ public class Test02 extends Test {
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
-            EncryptionParameters encryptionParameters = Deserializer.fromJson(inputDirectory, "encryptionParameters.json", EncryptionParameters.class);
+            EncryptionParameters encryptionParameters = Deserializer.fromJson(inputDirectory, "encryptionParameters\\.json", EncryptionParameters.class);
             String qString = encryptionParameters.getZpSubgroup().getQ();
 
             BigInteger q = TypeConverter.base64ToBigInteger(qString);

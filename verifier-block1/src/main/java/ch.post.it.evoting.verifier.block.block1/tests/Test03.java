@@ -38,7 +38,7 @@ public class Test03 extends Test {
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
-            EncryptionParameters encryptionParameters = Deserializer.fromJson(inputDirectory, "encryptionParameters.json", EncryptionParameters.class);
+            EncryptionParameters encryptionParameters = Deserializer.fromJson(inputDirectory, "encryptionParameters\\.json", EncryptionParameters.class);
             String pString = encryptionParameters.getZpSubgroup().getP();
             String qString = encryptionParameters.getZpSubgroup().getQ();
 
