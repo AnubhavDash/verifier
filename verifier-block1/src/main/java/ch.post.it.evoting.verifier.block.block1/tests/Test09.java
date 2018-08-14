@@ -103,39 +103,33 @@ public class Test09 extends Test {
                         doi.getVotes().forEach(v -> {
                             String voteIdentification = v.getAlias();
                             if (!voteAnswersCount.containsKey(voteIdentification)) {
-                                //TODO set correct key
-                                throw new Test09Exception("KEY", voteIdentification);
+                                throw new Test09Exception("test09.nok.message.alias.vote.nok", voteIdentification);
                             }
 
                             List<Integer> options = v.getQuestions().stream().flatMap(q -> q.getOptions().stream()).map(Option::getPrimeNumber).collect(Collectors.toList());
                             long optionsDistinctCount = v.getQuestions().stream().flatMap(q -> q.getOptions().stream()).map(Option::getPrimeNumber).distinct().count();
                             if (options.size() != optionsDistinctCount) {
-                                //TODO set correct key
-                                throw new Test09Exception("KEY", getDoubles(options).toString());
+                                throw new Test09Exception("test09.nok.message.prime.number.mutually.distinct.nok", getDoubles(options).toString());
                             }
 
                             if (options.size() != voteAnswersCount.get(voteIdentification)) {
-                                //TODO set correct key
-                                throw new Test09Exception("KEY");
+                                throw new Test09Exception("test09.nok.message.number.of.prime.number.and.answer.nok");
                             }
                         });
 
                         doi.getElections().forEach(e -> {
                             String electionIdentification = e.getAlias();
                             if (!electionOptionCount.containsKey(electionIdentification)) {
-                                //TODO set correct key
-                                throw new Test09Exception("KEY", electionIdentification);
+                                throw new Test09Exception("test09.nok.message.alias.election.nok", electionIdentification);
                             }
 
                             List<Integer> listCount = e.getLists().stream().map(l -> l.getPrimeNumber()).collect(Collectors.toList());
                             long listDistinctCount = e.getLists().stream().map(l -> l.getPrimeNumber()).distinct().count();
                             if (listCount.size() != listDistinctCount) {
-                                //TODO set correct key
-                                throw new Test09Exception("KEY", getDoubles(listCount).toString());
+                                throw new Test09Exception("test09.nok.message", getDoubles(listCount).toString());
                             }
                             if (listCount.size() != electionOptionCount.get(electionIdentification).getListCount()) {
-                                //TODO set correct key
-                                throw new Test09Exception("KEY");
+                                throw new Test09Exception("test09.nok.message.number.of.distinct.prime.number.and.lists.nok");
                             }
                             long optionDistinctCount = e.getLists().stream()
                                     .flatMap(l -> l.getCandidatePositions().stream())
@@ -144,8 +138,7 @@ public class Test09 extends Test {
                             int writeInsCount = e.getWriteIns().size();
 
                             if ((optionDistinctCount + writeInsCount) != electionOptionCount.get(electionIdentification).getOptionCount()) {
-                                //TODO set correct key
-                                throw new Test09Exception("KEY");
+                                throw new Test09Exception("test09.nok.message.number.of.candidate.prime.number.and.vo.nok");
                             }
                         });
                     });

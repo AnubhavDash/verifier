@@ -97,12 +97,6 @@
                 "primeNumber" : [ 143509, 143669 ],
                 "initialAccumulation" : 2,
                 "isBlank" : false
-              }, {
-                "alias" : "CAND-7105",
-                "candidateListId" : "8036a112-d6ec-3afb-9a15-dc9f9d5aecbc",
-                "primeNumber" : [ 143827, 143519 ],
-                "initialAccumulation" : 1,
-                "isBlank" : false
               } ],
               "alias" : "L1"
             }, {
