@@ -43,10 +43,13 @@ public class Deserializer {
         }
     }
 
-    public static Function<String[], CredentialDataElement> toCredentialDataElement = s -> {
+    public static Function<String[], CredentialDataElement> toCredentialDataElement = array -> {
+        if (array == null || array.length != 2) {
+            throw new IllegalArgumentException("Wrong array input format");
+        }
         CredentialDataElement cde = new CredentialDataElement();
-        cde.setValue1(s[0]);
-        cde.setValue2(s[1]);
+        cde.setValue1(array[0]);
+        cde.setValue2(array[1]);
         return cde;
     };
 }
