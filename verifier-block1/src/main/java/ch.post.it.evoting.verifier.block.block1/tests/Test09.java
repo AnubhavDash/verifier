@@ -27,7 +27,9 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -149,22 +151,6 @@ public class Test09 extends Test {
                     });
 
             result.setStatus(Status.OK);
-/*
-
-            if (numbers.isEmpty()) {
-                throw new Exception("No such numbers was found in commitmentParameters file");
-            } else {
-                List<BigInteger> errors = numbers.stream()
-                        .filter(bigInteger -> isBigIntInError(bigInteger, p))
-                        .collect(Collectors.toList());
-                if (errors.isEmpty()) {
-                    result.setStatus(Status.OK);
-                } else {
-                    result.setStatus(Status.NOK);
-                    result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test09.nok.message", errors.toString()));
-                }
-            }
-            */
         } catch (Exception e) {
             result.setStatus(Status.NOK);
             if (e instanceof Test09Exception) {
@@ -180,23 +166,12 @@ public class Test09 extends Test {
     }
 
     private <T> List<T> getDoubles(List<T> entries) {
-        List<T> result = new LinkedList<>();
-
-        HashMap<T, Integer> countByValue = new HashMap<>();
-        entries.forEach(o -> {
-            if (countByValue.containsKey(o)) {
-                countByValue.put(o, countByValue.get(o) + 1);
-            } else {
-                countByValue.put(o, 1);
-            }
-        });
-        countByValue.keySet().forEach(k -> {
-            if (countByValue.get(k) > 1) {
-                result.add(k);
-            }
-        });
-
-        return result;
+        return entries.stream()
+                .distinct()
+                .map(e -> new AbstractMap.SimpleEntry<>(e, entries.stream().filter(e::equals).count()))
+                .filter(e -> e.getValue() > 1)
+                .map(AbstractMap.SimpleEntry::getKey)
+                .collect(Collectors.toList());
     }
 
     class ElectionDetail {
