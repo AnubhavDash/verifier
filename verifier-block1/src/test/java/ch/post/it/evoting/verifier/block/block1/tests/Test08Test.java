@@ -27,8 +27,6 @@ import java.io.File;
  */
 public class Test08Test {
 
-    // at this point with the current file 2 BigInteger are nok with the euler criterion
-    @Ignore
     @Test
     public void executeTestOK() {
         TestResult testResult = new Test08().executeTest(new File(getClass().getResource("/Test08/OK").getFile()));
