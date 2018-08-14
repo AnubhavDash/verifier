@@ -64,8 +64,8 @@ public class Test07 extends Test {
 
             ElectoralAuthority electoralAuthority = Deserializer.fromJson(inputDirectory, "electoralAuthority\\.json", ElectoralAuthority.class);
             String publicKeyB64 = electoralAuthority.getPublicKey();
-            byte[] decoded = TypeConverter.Base64ToByte(publicKeyB64);
-            String publicKey = TypeConverter.ByteToString(decoded);
+            byte[] decoded = TypeConverter.base64ToByte(publicKeyB64);
+            String publicKey = TypeConverter.byteToString(decoded);
 
             BigInteger p = extractPFromPublicKey(publicKey);
             List<String> elements = extractElementsFromPublicKey(publicKey);
@@ -74,9 +74,9 @@ public class Test07 extends Test {
             }
             else{
                 List<String> errors = elements.stream()
-                                                .map(element -> TypeConverter.ByteToBigInteger(TypeConverter.Base64ToByte(element)))
+                                                .map(element -> TypeConverter.byteToBigInteger(TypeConverter.base64ToByte(element)))
                                                 .filter(bigInteger -> isBigIntInError(bigInteger, p))
-                                                .map(bi -> TypeConverter.ByteToBase64String(TypeConverter.BigIntegerToByte(bi)))
+                                                .map(bi -> TypeConverter.byteToBase64String(TypeConverter.bigIntegerToByte(bi)))
                                                 .collect(Collectors.toList());
                 if (errors.isEmpty()) {
                     result.setStatus(Status.OK);
@@ -106,7 +106,7 @@ public class Test07 extends Test {
             result.addAll(IntStream
                     .range(0, split.length)
                     .filter(i -> (i == indexOf + 2))
-                    .mapToObj(i -> TypeConverter.ByteToBigInteger(TypeConverter.Base64ToByte(split[i])))
+                    .mapToObj(i -> TypeConverter.byteToBigInteger(TypeConverter.base64ToByte(split[i])))
                     .collect(Collectors.toList()));
         }
         return result.get(0);

@@ -15,8 +15,8 @@ import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.BallotBox;
 import ch.post.it.evoting.verifier.dto.DataConfigEE;
 import ch.post.it.evoting.verifier.dto.Option;
@@ -61,7 +61,7 @@ public class Test05 extends Test {
                     .flatMap(doi -> doi.getVotes().stream())
                     .flatMap(v -> v.getQuestions().stream())
                     .flatMap(q -> q.getOptions().stream())
-                    .filter(o -> !TypeConverter.isPrime(BigInteger.valueOf(o.getPrimeNumber())))
+                    .filter(o -> !MathHelper.isPrime(BigInteger.valueOf(o.getPrimeNumber())))
                     .map(Option::getPrimeNumber)
                     .collect(Collectors.toList());
 
@@ -72,7 +72,7 @@ public class Test05 extends Test {
                             .flatMap(cc -> cc.getDomainOfInfluence().stream())
                             .flatMap(doi -> doi.getElections().stream())
                             .flatMap(e -> e.getLists().stream())
-                            .filter(l -> !TypeConverter.isPrime(BigInteger.valueOf(l.getPrimeNumber())))
+                            .filter(l -> !MathHelper.isPrime(BigInteger.valueOf(l.getPrimeNumber())))
                             .map(ch.post.it.evoting.verifier.dto.List::getPrimeNumber)
                             .collect(Collectors.toList()));
 
@@ -85,7 +85,7 @@ public class Test05 extends Test {
                             .flatMap(e -> e.getLists().stream())
                             .flatMap(l -> l.getCandidatePositions().stream())
                             .flatMap(cp -> cp.getPrimeNumber().stream())
-                            .filter(v -> !TypeConverter.isPrime(BigInteger.valueOf(v)))
+                            .filter(v -> !MathHelper.isPrime(BigInteger.valueOf(v)))
                             .collect(Collectors.toList()));
 
             //TODO check candidates without lists --> not in this example

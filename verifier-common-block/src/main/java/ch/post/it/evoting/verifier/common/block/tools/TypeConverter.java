@@ -14,39 +14,35 @@ public class TypeConverter {
         return new BigInteger(Base64.getDecoder().decode(value));
     }
 
-    public static boolean isPrime(BigInteger value) {
-        return value.isProbablePrime(Integer.MAX_VALUE);
-    }
-
-    public static byte[] StringToByte(String s) {
+    public static byte[] stringToByte(String s) {
         return s.getBytes(StandardCharsets.UTF_8);
     }
 
-    public static byte[] BigIntegerToByte(BigInteger bi) {
+    public static byte[] bigIntegerToByte(BigInteger bi) {
         return bi.toString().getBytes(StandardCharsets.UTF_8);
     }
 
-    public static byte[] Base64ToByte(String b64) {
+    public static byte[] base64ToByte(String b64) {
         return Base64.getDecoder().decode(b64);
     }
 
-    public static BigInteger ByteToBigInteger(byte[] b) {
+    public static BigInteger byteToBigInteger(byte[] b) {
         return new BigInteger(b);
     }
 
-    public static String ByteToBase64String(byte[] b) {
+    public static String byteToBase64String(byte[] b) {
         return Base64.getEncoder().encodeToString(b);
     }
 
-    public static String ByteToString(byte[] b) {
+    public static String byteToString(byte[] b) {
         return new String(b);
     }
 
-    public static String BigIntegerToB64String(BigInteger bigInt) {
+    public static String bigIntegerToB64String(BigInteger bigInt) {
         return Base64.getEncoder().encodeToString(bigInt.toByteArray());
     }
 
-    public static byte[] ByteToB64ByteArray(byte[] b) {
+    public static byte[] byteToB64ByteArray(byte[] b) {
         return Base64.getEncoder().encode(b);
     }
 }

@@ -7,6 +7,7 @@ import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.EncryptionParameters;
@@ -42,7 +43,7 @@ public class Test01 extends Test {
             String pString = encryptionParameters.getZpSubgroup().getP();
 
             BigInteger p = TypeConverter.base64ToBigInteger(pString);
-            if (TypeConverter.isPrime(p)) {
+            if (MathHelper.isPrime(p)) {
                 result.setStatus(Status.OK);
             } else {
                 result.setStatus(Status.NOK);
