@@ -1,5 +1,6 @@
 package ch.post.it.evoting.verifier.common.block.tools;
 
+import ch.post.it.evoting.verifier.common.block.dto.CredentialDataElement;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.xml.bind.JAXBContext;
@@ -8,7 +9,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidParameterException;
+import java.util.function.Function;
 
 public class Deserializer {
 
@@ -25,6 +28,10 @@ public class Deserializer {
         return (T) JAXBContext.newInstance(targetClazz).createUnmarshaller().unmarshal(new FileInputStream(getFile(inputDirectory, filenamePattern)));
     }
 
+    public static <T> Iterable<T> fromCsv(File inputDirectory, String filenamePattern, Function<String[], T> mapper) throws IOException {
+        return new CsvReader<T>(getFile(inputDirectory, filenamePattern).toString(), StandardCharsets.UTF_8, false, ",", mapper).process();
+    }
+
     private static File getFile(File inputDirectory, String filenamePattern) throws FileNotFoundException {
         File[] file = inputDirectory.listFiles((dir, name) -> name.matches(filenamePattern));
         if (file.length == 0) {
@@ -35,4 +42,11 @@ public class Deserializer {
             return file[0];
         }
     }
+
+    public static Function<String[], CredentialDataElement> toCredentialDataElement = s -> {
+        CredentialDataElement cde = new CredentialDataElement();
+        cde.setValue1(s[0]);
+        cde.setValue2(s[1]);
+        return cde;
+    };
 }
