@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidParameterException;
+import java.util.Arrays;
 import java.util.function.Function;
 
 public class Deserializer {
@@ -32,6 +33,10 @@ public class Deserializer {
         return new CsvReader<>(getFile(inputDirectory, filenamePattern).toString(), StandardCharsets.UTF_8, false, ",", mapper).process();
     }
 
+    public static <T> Iterable<T> fromCsv(File inputDirectory, String filenamePattern, String separator, Function<String[], T> mapper) throws IOException {
+        return new CsvReader<>(getFile(inputDirectory, filenamePattern).toString(), StandardCharsets.UTF_8, false, separator, mapper).process();
+    }
+
     private static File getFile(File inputDirectory, String filenamePattern) throws FileNotFoundException {
         File[] file = inputDirectory.listFiles((dir, name) -> name.matches(filenamePattern));
         if (file.length == 0) {
@@ -51,5 +56,17 @@ public class Deserializer {
         cde.setValue1(array[0]);
         cde.setValue2(array[1]);
         return cde;
+    };
+
+    public static Function<String[], String> toLineByLine = array -> {
+        /*
+        if (array == null || array.length != 2) {
+            throw new IllegalArgumentException("Wrong array input format");
+        }
+        CredentialDataElement cde = new CredentialDataElement();
+        cde.setValue1(array[0]);
+        cde.setValue2(array[1]);
+        */
+        return Arrays.toString(array);
     };
 }
