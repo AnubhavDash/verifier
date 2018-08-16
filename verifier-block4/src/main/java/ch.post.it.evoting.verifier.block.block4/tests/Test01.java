@@ -8,9 +8,6 @@
 
 package ch.post.it.evoting.verifier.block.block4.tests;
 
-import ch.evoting.xmlns.config._3.Configuration;
-import ch.evoting.xmlns.decrypt._1.BallotsBoxType;
-import ch.evoting.xmlns.decrypt._1.Results;
 import ch.post.it.evoting.verifier.block.block4.Block4TestSuite;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
@@ -20,21 +17,17 @@ import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.dto.BallotBox;
-import ch.post.it.evoting.verifier.dto.CandidatePosition;
 import ch.post.it.evoting.verifier.dto.DataConfigEE;
 import ch.post.it.evoting.verifier.dto.Option;
+import com.scytl.xmlns.decrypt._1.Results;
 import org.apache.log4j.Logger;
 
-import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 /**
  * /**
@@ -75,9 +68,10 @@ public class Test01 extends Test {
             DataConfigEE dataConfigEE = Deserializer.fromJson(inputDirectory, "dataConfig_.*\\.json", DataConfigEE.class);
             List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
 
-            ballotBoxes.stream().forEach( ballotBox -> {
-                String ballotBoxId = ballotBox.getId();
-                ballotBox.getCountingCircles().stream().forEach(countingCircle -> {
+            ballotBoxes.forEach( ballotBox -> {
+                String ballotBoxAuthId = ballotBox.getAuthId();
+                ballotBox.getCountingCircles().forEach(countingCircle -> {
+                    try {
                     String countingCircleId = countingCircle.getId();
                     //1 Generate map<prime, alias>
                     Map<Integer, String> dataConfigPrimeAliasMap = new HashMap<>();
@@ -101,18 +95,38 @@ public class Test01 extends Test {
                             .flatMap(cp -> cp.getPrimeNumber().stream().map(prime -> new AbstractMap.SimpleEntry<>(prime, cp.getAlias())))
                             .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue))
                     );
-                    //2 Generate map<prime, count>, but before retrieve the correct ecrypted file
-                    Map<String,Long> decryptedPrimesCountMap = getCorrectFileAndExtractPrimesCount(countingCircleId);
+                    //2 Generate map<prime, count>, but before retrieve the correct encrypted file
+                    Map<String,Long> encryptedPrimesCountMap = getCorrectFileAndExtractPrimesCount(countingCircleId);
                     //3 Generate map<alias, count>
-                    // Results decryptResult = decryptResult = Deserializer.fromXml(inputDirectory, "evoting-decrypt.xml", Results.class);
-                    // decryptResult.getBallotsBox();
+                    Results decryptResult = decryptResult = Deserializer.fromXml(inputDirectory, "evoting-decrypt_.*\\.xml", Results.class);
+                    List<String> liste = decryptResult.getBallotsBox().stream()
+                            .filter(bb -> ballotBoxAuthId.equals(bb.getBallotBoxIdentification()))
+                            .flatMap(theBb -> theBb.getCountingCircle().stream())
+                            .filter(cc -> countingCircleId.equals(cc.getCountingCircleIdentification()))
+                            .flatMap(theCc -> theCc.getDomainOfInfluence().stream())
+                            .flatMap(doi -> doi.getVote().stream())
+                            .flatMap(v -> v.getBallot().stream())
+                            .flatMap(b -> b.getChosenAnswerIdentification().stream())
+                            .collect(Collectors.toList());
 
+                    Map<String,Long> decryptedAliasCountMap = liste.stream().collect(Collectors.groupingBy(Function.identity(),Collectors.counting()));
+
+                    // Finally do the check
+
+                    } catch (Exception e) {
+                        throw new Test01WrapperException(e);
+                    }
                 });
 
             });
             result.setStatus(Status.OK);
         } catch (Exception e) {
             result.setStatus(Status.NOK);
+            if (e instanceof Test01WrapperException) {
+                //unwrap the wrapped exception
+                e = (Exception) e.getCause();
+            }
+
             if (e instanceof FileNotFoundException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message"));
             } else {
@@ -138,5 +152,11 @@ public class Test01 extends Test {
             e.printStackTrace();
         }
         return result;
+    }
+
+    class Test01WrapperException extends RuntimeException {
+        public Test01WrapperException(Exception root) {
+            super(root);
+        }
     }
 }
