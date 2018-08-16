@@ -1,0 +1,233 @@
+{
+  "electionEvent" : {
+    "id" : "648ee926f34f4ff3b1d42f5ea0420d2b",
+    "alias" : "r20_03",
+    "ballotBoxes" : [ {
+      "id" : "ded74dc5db574de3a307a3cabbb607d7",
+      "alias" : "FR-CH-1006|FR-MU-2309+FR-CT-1006|FR-MU-3309",
+      "authId" : "fc52c745-f35b-3c20-8ba5-4120b3cc02da",
+      "vcsId" : "78751b003d05411aa76915eb3d5c82ca",
+      "vcsAlias" : "vcs_FR-CH-1006|FR-MU-2309+FR-CT-1006|FR-MU-3309",
+      "votingCardsGenerated" : 10,
+      "countingCircles" : [ {
+        "id" : "FR-MU-2309",
+        "domainOfInfluence" : [ {
+          "id" : "doi_ch",
+          "votes" : [ {
+            "id" : "07ee6ceaaf5c446882aa2b0eeb13cf68",
+            "alias" : "vote_ch",
+            "questions" : [ {
+              "alias" : "ch_q1",
+              "options" : [ {
+                "id" : "1b2956105d48492c8bf3a9d190d0408f",
+                "alias" : "ch_q1_a1",
+                "primeNumber" : 187009
+              }, {
+                "id" : "1a873b4101c74b4c85e39a0aa4d46c3b",
+                "alias" : "ch_q1_a2",
+                "primeNumber" : 187069
+              }, {
+                "id" : "a9bd1a49e88543e0b41610b65f9cb3b6",
+                "alias" : "ch_q1_a3",
+                "primeNumber" : 18701
+              } ]
+            } ]
+          } ],
+          "elections" : [ {
+            "id" : "67df75e39fe343ec9d502d4cb8912b4d",
+            "alias" : "el_ch",
+            "numberOfSeats" : 1,
+            "lists" : [ {
+              "isBlank" : false,
+              "primeNumber" : 187129,
+              "candidatePositions" : [ {
+                "alias" : "cand_ch_1",
+                "candidateListId" : "cand_list_1",
+                "primeNumber" : [ 187081 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              } ],
+              "alias" : "L1"
+            }, {
+              "isBlank" : true,
+              "primeNumber" : 187111,
+              "candidatePositions" : [ {
+                "alias" : "empty_1",
+                "candidateListId" : "empty_1",
+                "primeNumber" : [ 18713 ],
+                "isBlank" : true
+              } ],
+              "alias" : "list_99"
+            } ]
+          } ]
+        } ]
+      }, {
+        "id" : "FR-MU-3309",
+        "domainOfInfluence" : [ {
+          "id" : "doi_ct",
+          "votes" : [ ],
+          "elections" : [ {
+            "id" : "dd20c7bacfac4ed79a98ef571832d6d6",
+            "alias" : "el_ct",
+            "numberOfSeats" : 1,
+            "lists" : [ {
+              "isBlank" : false,
+              "primeNumber" : 187219,
+              "candidatePositions" : [ {
+                "alias" : "cand_ct_1",
+                "candidateListId" : "cand_list_2",
+                "primeNumber" : [ 187133 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              } ],
+              "alias" : "L2"
+            }, {
+              "isBlank" : true,
+              "primeNumber" : 187177,
+              "candidatePositions" : [ {
+                "alias" : "empty_2",
+                "candidateListId" : "empty_2",
+                "primeNumber" : [ 187163 ],
+                "isBlank" : true
+              } ],
+              "alias" : "list_99_2"
+            } ]
+          } ]
+        } ]
+      }, {
+        "id" : "FR-MU-3409",
+        "domainOfInfluence" : [ {
+          "id" : "doi_mu_1",
+          "votes" : [ ],
+          "elections" : [ {
+            "id" : "aa119d2166ca426b92ecb6db3c09ea3a",
+            "alias" : "el_mu_1",
+            "numberOfSeats" : 1,
+            "lists" : [ {
+              "isBlank" : false,
+              "primeNumber" : 187303,
+              "candidatePositions" : [ {
+                "alias" : "cand_mu_1",
+                "candidateListId" : "cand_list_3",
+                "primeNumber" : [ 187223 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              } ],
+              "alias" : "L3"
+            }, {
+              "isBlank" : true,
+              "primeNumber" : 1873,
+              "candidatePositions" : [ {
+                "alias" : "empty_3",
+                "candidateListId" : "empty_3",
+                "primeNumber" : [ 187337 ],
+                "isBlank" : true
+              } ],
+              "alias" : "list_99_3"
+            } ]
+          } ]
+        } ]
+      } ]
+    }, {
+      "id" : "a678e2218ff844be972a6acf43ec5b0a",
+      "alias" : "FR-CT-1006|FR-MU-3309+FR-MU-1006|FR-MU-4409",
+      "authId" : "fc52c745-f35b-3c20-8ba5-4120b3cc02db",
+      "vcsId" : "ac62b0e8df0c44e7904d03339e1a0955",
+      "vcsAlias" : "vcs_FR-CT-1006|FR-MU-3309+FR-MU-1006|FR-MU-4409",
+      "votingCardsGenerated" : 9,
+      "countingCircles" : [ {
+        "id" : "FR-MU-3309",
+        "domainOfInfluence" : [ {
+          "id" : "doi_ct",
+          "votes" : [ ],
+          "elections" : [ {
+            "id" : "dd20c7bacfac4ed79a98ef571832d6d6",
+            "alias" : "el_ct",
+            "numberOfSeats" : 1,
+            "lists" : [ {
+              "isBlank" : false,
+              "primeNumber" : 187219,
+              "candidatePositions" : [ {
+                "alias" : "cand_ct_1",
+                "candidateListId" : "cand_list_2",
+                "primeNumber" : [ 187133 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              } ],
+              "alias" : "L2"
+            }, {
+              "isBlank" : true,
+              "primeNumber" : 187177,
+              "candidatePositions" : [ {
+                "alias" : "empty_2",
+                "candidateListId" : "empty_2",
+                "primeNumber" : [ 187163 ],
+                "isBlank" : true
+              } ],
+              "alias" : "list_99_2"
+            } ]
+          } ]
+        } ]
+      }, {
+        "id" : "FR-MU-4409",
+        "domainOfInfluence" : [ {
+          "id" : "doi_mu_2",
+          "votes" : [ ],
+          "elections" : [ {
+            "id" : "3ffb0a76a1614e2286b56206e3f74208",
+            "alias" : "el_mu_2",
+            "numberOfSeats" : 1,
+            "lists" : [ {
+              "isBlank" : false,
+              "primeNumber" : 187393,
+              "candidatePositions" : [ {
+                "alias" : "cand_mu_2",
+                "candidateListId" : "cand_list_4",
+                "primeNumber" : [ 187379 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              } ],
+              "alias" : "L4"
+            }, {
+              "isBlank" : true,
+              "primeNumber" : 187361,
+              "candidatePositions" : [ {
+                "alias" : "empty_4",
+                "candidateListId" : "empty_4",
+                "primeNumber" : [ 187373 ],
+                "isBlank" : true
+              } ],
+              "alias" : "list_99_4"
+            } ]
+          }, {
+            "id" : "430d239dfa2b4c5abe7efee7de3e6454",
+            "alias" : "el_mu_3",
+            "numberOfSeats" : 1,
+            "lists" : [ {
+              "isBlank" : false,
+              "primeNumber" : 187417,
+              "candidatePositions" : [ {
+                "alias" : "cand_mu_3",
+                "candidateListId" : "cand_list_5",
+                "primeNumber" : [ 187423 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              } ],
+              "alias" : "L5"
+            }, {
+              "isBlank" : true,
+              "primeNumber" : 187507,
+              "candidatePositions" : [ {
+                "alias" : "empty_5",
+                "candidateListId" : "empty_5",
+                "primeNumber" : [ 187471 ],
+                "isBlank" : true
+              } ],
+              "alias" : "list_99_5"
+            } ]
+          } ]
+        } ]
+      } ]
+    } ]
+  }
+}

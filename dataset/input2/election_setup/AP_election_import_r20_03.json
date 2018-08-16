@@ -1,0 +1,1740 @@
+{
+  "electionEvents" : [ {
+    "alias" : "r20_03",
+    "title" : "Kombiniert (DE)",
+    "description" : "Kombiniert (DE)",
+    "dateFrom" : "2018-07-18 00:00",
+    "dateTo" : "2018-07-18 12:00",
+    "gracePeriod" : 900,
+    "timeZone" : "+01:00",
+    "ballots" : [ {
+      "entityId" : "ballot_1",
+      "alias" : "ballot_1",
+      "title" : "ballot_vote_ch_el_ch_el_ct_el_mu_1",
+      "description" : "ballot_vote_ch_el_ch_el_ct_el_mu_1",
+      "contests" : [ {
+        "entityId" : "contest_vote_ch"
+      }, {
+        "entityId" : "contest_el_ch"
+      }, {
+        "entityId" : "contest_el_ct"
+      }, {
+        "entityId" : "contest_el_mu_1"
+      } ]
+    }, {
+      "entityId" : "ballot_2",
+      "alias" : "ballot_2",
+      "title" : "ballot_el_ct_el_mu_2_el_mu_3",
+      "description" : "ballot_el_ct_el_mu_2_el_mu_3",
+      "contests" : [ {
+        "entityId" : "contest_el_ct"
+      }, {
+        "entityId" : "contest_el_mu_2"
+      }, {
+        "entityId" : "contest_el_mu_3"
+      } ]
+    } ],
+    "contests" : [ {
+      "entityId" : "contest_vote_ch",
+      "title" : "Vote CH (DE)",
+      "alias" : "vote_ch",
+      "description" : "Vote CH (DE)",
+      "explanationText" : "",
+      "template" : "options",
+      "fullBlank" : "false",
+      "extraDataTypes" : {
+        "questionType" : [ {
+          "name" : "text",
+          "key" : "text"
+        } ],
+        "answerType" : [ {
+          "name" : "text",
+          "key" : "text"
+        } ]
+      },
+      "attributes" : [ {
+        "alias" : "ch_q1",
+        "extraDataType" : "questionType",
+        "extraDataValues" : [ {
+          "text" : "CH question 1"
+        } ],
+        "children" : [ {
+          "alias" : "ch_q1_a1",
+          "extraDataType" : "answerType",
+          "extraDataValues" : [ {
+            "text" : "Ja"
+          } ]
+        }, {
+          "alias" : "ch_q1_a2",
+          "extraDataType" : "answerType",
+          "extraDataValues" : [ {
+            "text" : "Nein"
+          } ]
+        } ]
+      } ],
+      "questions" : [ {
+        "alias" : "ch_q1",
+        "max" : "1",
+        "min" : "0",
+        "writeIn" : "false",
+        "choices" : [ "ch_q1_a1", "ch_q1_a2" ],
+        "fusions" : [ ],
+        "accumulation" : "1",
+        "blankText" : "Leer"
+      } ]
+    }, {
+      "entityId" : "contest_el_ch",
+      "title" : "election ch",
+      "alias" : "el_ch",
+      "description" : "election ch",
+      "explanationText" : "",
+      "template" : "listsAndCandidates",
+      "fullBlank" : "true",
+      "extraDataTypes" : {
+        "listType" : [ {
+          "name" : "Party Name",
+          "key" : "attribute1"
+        } ],
+        "candidateType" : [ {
+          "name" : "Candidate text",
+          "key" : "attribute1"
+        }, {
+          "name" : "Candidate Date Of Birth",
+          "key" : "attribute2"
+        } ]
+      },
+      "attributes" : [ {
+        "alias" : "L1",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "1 - List"
+        } ],
+        "children" : [ {
+          "alias" : "cand_list_1",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "Doe John"
+          }, {
+            "text" : "1970-01-01"
+          } ]
+        } ]
+      } ],
+      "questions" : [ {
+        "alias" : "lists",
+        "max" : "1",
+        "min" : "0",
+        "writeIn" : "false",
+        "choices" : [ "L1" ],
+        "fusions" : [ ],
+        "accumulation" : "1",
+        "blankText" : "Leer"
+      }, {
+        "alias" : "candidates",
+        "max" : "1",
+        "min" : "1",
+        "writeIn" : "false",
+        "choices" : [ "cand_list_1" ],
+        "fusions" : [ ],
+        "accumulation" : "1",
+        "blankText" : "Kein Name ausgewählt"
+      } ]
+    }, {
+      "entityId" : "contest_el_ct",
+      "title" : "election ct",
+      "alias" : "el_ct",
+      "description" : "election ct",
+      "explanationText" : "",
+      "template" : "listsAndCandidates",
+      "fullBlank" : "true",
+      "extraDataTypes" : {
+        "listType" : [ {
+          "name" : "Party Name",
+          "key" : "attribute1"
+        } ],
+        "candidateType" : [ {
+          "name" : "Candidate text",
+          "key" : "attribute1"
+        }, {
+          "name" : "Candidate Date Of Birth",
+          "key" : "attribute2"
+        } ]
+      },
+      "attributes" : [ {
+        "alias" : "L2",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "1 - List"
+        } ],
+        "children" : [ {
+          "alias" : "cand_list_2",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "Doe Canton"
+          }, {
+            "text" : "1970-01-01"
+          } ]
+        } ]
+      } ],
+      "questions" : [ {
+        "alias" : "lists",
+        "max" : "1",
+        "min" : "0",
+        "writeIn" : "false",
+        "choices" : [ "L2" ],
+        "fusions" : [ ],
+        "accumulation" : "1",
+        "blankText" : "Leer"
+      }, {
+        "alias" : "candidates",
+        "max" : "1",
+        "min" : "1",
+        "writeIn" : "false",
+        "choices" : [ "cand_list_2" ],
+        "fusions" : [ ],
+        "accumulation" : "1",
+        "blankText" : "Kein Name ausgewählt"
+      } ]
+    }, {
+      "entityId" : "contest_el_mu_1",
+      "title" : "election mu 1",
+      "alias" : "el_mu_1",
+      "description" : "election mu 1",
+      "explanationText" : "",
+      "template" : "listsAndCandidates",
+      "fullBlank" : "true",
+      "extraDataTypes" : {
+        "listType" : [ {
+          "name" : "Party Name",
+          "key" : "attribute1"
+        } ],
+        "candidateType" : [ {
+          "name" : "Candidate text",
+          "key" : "attribute1"
+        }, {
+          "name" : "Candidate Date Of Birth",
+          "key" : "attribute2"
+        } ]
+      },
+      "attributes" : [ {
+        "alias" : "L3",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "1 - List"
+        } ],
+        "children" : [ {
+          "alias" : "cand_list_3",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "Doe Municipal 1"
+          }, {
+            "text" : "1970-01-01"
+          } ]
+        } ]
+      } ],
+      "questions" : [ {
+        "alias" : "lists",
+        "max" : "1",
+        "min" : "0",
+        "writeIn" : "false",
+        "choices" : [ "L3" ],
+        "fusions" : [ ],
+        "accumulation" : "1",
+        "blankText" : "Leer"
+      }, {
+        "alias" : "candidates",
+        "max" : "1",
+        "min" : "1",
+        "writeIn" : "false",
+        "choices" : [ "cand_list_3" ],
+        "fusions" : [ ],
+        "accumulation" : "1",
+        "blankText" : "Kein Name ausgewählt"
+      } ]
+    }, {
+      "entityId" : "contest_el_mu_2",
+      "title" : "election mu 2",
+      "alias" : "el_mu_2",
+      "description" : "election mu 2",
+      "explanationText" : "",
+      "template" : "listsAndCandidates",
+      "fullBlank" : "true",
+      "extraDataTypes" : {
+        "listType" : [ {
+          "name" : "Party Name",
+          "key" : "attribute1"
+        } ],
+        "candidateType" : [ {
+          "name" : "Candidate text",
+          "key" : "attribute1"
+        }, {
+          "name" : "Candidate Date Of Birth",
+          "key" : "attribute2"
+        } ]
+      },
+      "attributes" : [ {
+        "alias" : "L4",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "1 - List"
+        } ],
+        "children" : [ {
+          "alias" : "cand_list_4",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "Doe Municipal 2"
+          }, {
+            "text" : "1970-01-01"
+          } ]
+        } ]
+      } ],
+      "questions" : [ {
+        "alias" : "lists",
+        "max" : "1",
+        "min" : "0",
+        "writeIn" : "false",
+        "choices" : [ "L4" ],
+        "fusions" : [ ],
+        "accumulation" : "1",
+        "blankText" : "Leer"
+      }, {
+        "alias" : "candidates",
+        "max" : "1",
+        "min" : "1",
+        "writeIn" : "false",
+        "choices" : [ "cand_list_4" ],
+        "fusions" : [ ],
+        "accumulation" : "1",
+        "blankText" : "Kein Name ausgewählt"
+      } ]
+    }, {
+      "entityId" : "contest_el_mu_3",
+      "title" : "election mu 3",
+      "alias" : "el_mu_3",
+      "description" : "election mu 3",
+      "explanationText" : "",
+      "template" : "listsAndCandidates",
+      "fullBlank" : "true",
+      "extraDataTypes" : {
+        "listType" : [ {
+          "name" : "Party Name",
+          "key" : "attribute1"
+        } ],
+        "candidateType" : [ {
+          "name" : "Candidate text",
+          "key" : "attribute1"
+        }, {
+          "name" : "Candidate Date Of Birth",
+          "key" : "attribute2"
+        } ]
+      },
+      "attributes" : [ {
+        "alias" : "L5",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "1 - List"
+        } ],
+        "children" : [ {
+          "alias" : "cand_list_5",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "Doe Municipal 3"
+          }, {
+            "text" : "1970-01-01"
+          } ]
+        } ]
+      } ],
+      "questions" : [ {
+        "alias" : "lists",
+        "max" : "1",
+        "min" : "0",
+        "writeIn" : "false",
+        "choices" : [ "L5" ],
+        "fusions" : [ ],
+        "accumulation" : "1",
+        "blankText" : "Leer"
+      }, {
+        "alias" : "candidates",
+        "max" : "1",
+        "min" : "1",
+        "writeIn" : "false",
+        "choices" : [ "cand_list_5" ],
+        "fusions" : [ ],
+        "accumulation" : "1",
+        "blankText" : "Kein Name ausgewählt"
+      } ]
+    } ],
+    "ballotBoxes" : [ {
+      "entityId" : "fc52c745-f35b-3c20-8ba5-4120b3cc02da",
+      "alias" : "FR-CH-1006|FR-MU-2309+FR-CT-1006|FR-MU-3309",
+      "title" : "Wünnewil-Flamatt_1",
+      "description" : "Wünnewil-Flamatt_1FR-CH-1006|FR-MU-2309+FR-CT-1006|FR-MU-3309",
+      "dateFrom" : "2018-07-18 00:00",
+      "dateTo" : "2018-07-18 12:00",
+      "gracePeriod" : 900,
+      "timeZone" : "+01:00",
+      "ballot" : {
+        "entityId" : "ballot_1"
+      },
+      "electoralAuthority" : {
+        "entityId" : "ea1"
+      },
+      "test" : false
+    }, {
+      "entityId" : "fc52c745-f35b-3c20-8ba5-4120b3cc02db",
+      "alias" : "FR-CT-1006|FR-MU-3309+FR-MU-1006|FR-MU-4409",
+      "title" : "Wünnewil-Flamatt_2",
+      "description" : "Wünnewil-Flamatt_2FR-CT-1006|FR-MU-3309+FR-MU-1006|FR-MU-4409",
+      "dateFrom" : "2018-07-18 00:00",
+      "dateTo" : "2018-07-18 12:00",
+      "gracePeriod" : 900,
+      "timeZone" : "+01:00",
+      "ballot" : {
+        "entityId" : "ballot_2"
+      },
+      "electoralAuthority" : {
+        "entityId" : "ea1"
+      },
+      "test" : false
+    } ],
+    "votingCardSets" : [ {
+      "entityId" : "vcs_Wünnewil-Flamatt_1",
+      "alias" : "vcs_FR-CH-1006|FR-MU-2309+FR-CT-1006|FR-MU-3309",
+      "title" : "vcs_Wünnewil-Flamatt_1",
+      "description" : "vcs_Wünnewil-Flamatt_1FR-CH-1006|FR-MU-2309+FR-CT-1006|FR-MU-3309",
+      "numberOfVotingCardsToGenerate" : 10,
+      "ballotBox" : {
+        "entityId" : "fc52c745-f35b-3c20-8ba5-4120b3cc02da"
+      }
+    }, {
+      "entityId" : "vcs_Wünnewil-Flamatt_2",
+      "alias" : "vcs_FR-CT-1006|FR-MU-3309+FR-MU-1006|FR-MU-4409",
+      "title" : "vcs_Wünnewil-Flamatt_2",
+      "description" : "vcs_Wünnewil-Flamatt_2FR-CT-1006|FR-MU-3309+FR-MU-1006|FR-MU-4409",
+      "numberOfVotingCardsToGenerate" : 9,
+      "ballotBox" : {
+        "entityId" : "fc52c745-f35b-3c20-8ba5-4120b3cc02db"
+      }
+    } ],
+    "electoralAuthorities" : [ {
+      "entityId" : "ea1",
+      "alias" : "ea1",
+      "title" : "ea1",
+      "description" : "ea1",
+      "minimumThreshold" : "1",
+      "electoralBoard" : [ "Member 1", "Member 2" ]
+    } ],
+    "translations" : [ {
+      "entityId" : "contest_vote_ch",
+      "locale" : "de-CH",
+      "texts" : {
+        "title" : "Vote CH (DE)",
+        "description" : "Vote CH (DE)",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "questionType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ],
+          "answerType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "ch_q1",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "CH question 1"
+          } ],
+          "children" : [ {
+            "alias" : "ch_q1_a1",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Ja"
+            } ]
+          }, {
+            "alias" : "ch_q1_a2",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Nein"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "ch_q1",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Leer"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_el_ch",
+      "locale" : "de-CH",
+      "texts" : {
+        "title" : "election ch",
+        "description" : "election ch",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L1",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 - List"
+          } ],
+          "children" : [ {
+            "alias" : "cand_list_1",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "Doe John"
+            }, {
+              "text" : "1970-01-01"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Leer"
+        }, {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Kein Name ausgewählt"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_el_ct",
+      "locale" : "de-CH",
+      "texts" : {
+        "title" : "election ct",
+        "description" : "election ct",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L2",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 - List"
+          } ],
+          "children" : [ {
+            "alias" : "cand_list_2",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "Doe Canton"
+            }, {
+              "text" : "1970-01-01"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Leer"
+        }, {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Kein Name ausgewählt"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_el_mu_1",
+      "locale" : "de-CH",
+      "texts" : {
+        "title" : "election mu 1",
+        "description" : "election mu 1",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L3",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 - List"
+          } ],
+          "children" : [ {
+            "alias" : "cand_list_3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "Doe Municipal 1"
+            }, {
+              "text" : "1970-01-01"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Leer"
+        }, {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Kein Name ausgewählt"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_el_mu_2",
+      "locale" : "de-CH",
+      "texts" : {
+        "title" : "election mu 2",
+        "description" : "election mu 2",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L4",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 - List"
+          } ],
+          "children" : [ {
+            "alias" : "cand_list_4",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "Doe Municipal 2"
+            }, {
+              "text" : "1970-01-01"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Leer"
+        }, {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Kein Name ausgewählt"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_el_mu_3",
+      "locale" : "de-CH",
+      "texts" : {
+        "title" : "election mu 3",
+        "description" : "election mu 3",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L5",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 - List"
+          } ],
+          "children" : [ {
+            "alias" : "cand_list_5",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "Doe Municipal 3"
+            }, {
+              "text" : "1970-01-01"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Leer"
+        }, {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Kein Name ausgewählt"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_vote_ch",
+      "locale" : "fr-CH",
+      "texts" : {
+        "title" : "Vote CH (FR)",
+        "description" : "Vote CH (FR)",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "questionType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ],
+          "answerType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "ch_q1",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "CH question 1"
+          } ],
+          "children" : [ {
+            "alias" : "ch_q1_a1",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Oui"
+            } ]
+          }, {
+            "alias" : "ch_q1_a2",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Non"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "ch_q1",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Vote blanc"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_el_ch",
+      "locale" : "fr-CH",
+      "texts" : {
+        "title" : "election ch",
+        "description" : "election ch",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L1",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 - List"
+          } ],
+          "children" : [ {
+            "alias" : "cand_list_1",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "Doe John"
+            }, {
+              "text" : "1970-01-01"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Vide"
+        }, {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Aucun nom sélectionné"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_el_ct",
+      "locale" : "fr-CH",
+      "texts" : {
+        "title" : "election ct",
+        "description" : "election ct",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L2",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 - List"
+          } ],
+          "children" : [ {
+            "alias" : "cand_list_2",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "Doe Canton"
+            }, {
+              "text" : "1970-01-01"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Vide"
+        }, {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Aucun nom sélectionné"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_el_mu_1",
+      "locale" : "fr-CH",
+      "texts" : {
+        "title" : "election mu 1",
+        "description" : "election mu 1",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L3",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 - List"
+          } ],
+          "children" : [ {
+            "alias" : "cand_list_3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "Doe Municipal 1"
+            }, {
+              "text" : "1970-01-01"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Vide"
+        }, {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Aucun nom sélectionné"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_el_mu_2",
+      "locale" : "fr-CH",
+      "texts" : {
+        "title" : "election mu 2",
+        "description" : "election mu 2",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L4",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 - List"
+          } ],
+          "children" : [ {
+            "alias" : "cand_list_4",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "Doe Municipal 2"
+            }, {
+              "text" : "1970-01-01"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Vide"
+        }, {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Aucun nom sélectionné"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_el_mu_3",
+      "locale" : "fr-CH",
+      "texts" : {
+        "title" : "election mu 3",
+        "description" : "election mu 3",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L5",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 - List"
+          } ],
+          "children" : [ {
+            "alias" : "cand_list_5",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "Doe Municipal 3"
+            }, {
+              "text" : "1970-01-01"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Vide"
+        }, {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Aucun nom sélectionné"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_vote_ch",
+      "locale" : "rm-CH",
+      "texts" : {
+        "title" : "Vote CH (RM)",
+        "description" : "Vote CH (RM)",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "questionType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ],
+          "answerType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "ch_q1",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "CH question 1"
+          } ],
+          "children" : [ {
+            "alias" : "ch_q1_a1",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Bundi"
+            } ]
+          }, {
+            "alias" : "ch_q1_a2",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "No"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "ch_q1",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "vut blanks"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_el_ch",
+      "locale" : "rm-CH",
+      "texts" : {
+        "title" : "election ch",
+        "description" : "election ch",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L1",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 - List"
+          } ],
+          "children" : [ {
+            "alias" : "cand_list_1",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "Doe John"
+            }, {
+              "text" : "1970-01-01"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Leer"
+        }, {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Nagin num selecziunà"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_el_ct",
+      "locale" : "rm-CH",
+      "texts" : {
+        "title" : "election ct",
+        "description" : "election ct",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L2",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 - List"
+          } ],
+          "children" : [ {
+            "alias" : "cand_list_2",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "Doe Canton"
+            }, {
+              "text" : "1970-01-01"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Leer"
+        }, {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Nagin num selecziunà"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_el_mu_1",
+      "locale" : "rm-CH",
+      "texts" : {
+        "title" : "election mu 1",
+        "description" : "election mu 1",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L3",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 - List"
+          } ],
+          "children" : [ {
+            "alias" : "cand_list_3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "Doe Municipal 1"
+            }, {
+              "text" : "1970-01-01"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Leer"
+        }, {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Nagin num selecziunà"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_el_mu_2",
+      "locale" : "rm-CH",
+      "texts" : {
+        "title" : "election mu 2",
+        "description" : "election mu 2",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L4",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 - List"
+          } ],
+          "children" : [ {
+            "alias" : "cand_list_4",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "Doe Municipal 2"
+            }, {
+              "text" : "1970-01-01"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Leer"
+        }, {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Nagin num selecziunà"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_el_mu_3",
+      "locale" : "rm-CH",
+      "texts" : {
+        "title" : "election mu 3",
+        "description" : "election mu 3",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L5",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 - List"
+          } ],
+          "children" : [ {
+            "alias" : "cand_list_5",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "Doe Municipal 3"
+            }, {
+              "text" : "1970-01-01"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Leer"
+        }, {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Nagin num selecziunà"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_vote_ch",
+      "locale" : "it-CH",
+      "texts" : {
+        "title" : "Vote CH (IT)",
+        "description" : "Vote CH (IT)",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "questionType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ],
+          "answerType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "ch_q1",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "CH question 1"
+          } ],
+          "children" : [ {
+            "alias" : "ch_q1_a1",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Si"
+            } ]
+          }, {
+            "alias" : "ch_q1_a2",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "No"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "ch_q1",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "voto blanco"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_el_ch",
+      "locale" : "it-CH",
+      "texts" : {
+        "title" : "election ch",
+        "description" : "election ch",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L1",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 - List"
+          } ],
+          "children" : [ {
+            "alias" : "cand_list_1",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "Doe John"
+            }, {
+              "text" : "1970-01-01"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Vide"
+        }, {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Nessun nominativo selezionato"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_el_ct",
+      "locale" : "it-CH",
+      "texts" : {
+        "title" : "election ct",
+        "description" : "election ct",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L2",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 - List"
+          } ],
+          "children" : [ {
+            "alias" : "cand_list_2",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "Doe Canton"
+            }, {
+              "text" : "1970-01-01"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Vide"
+        }, {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Nessun nominativo selezionato"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_el_mu_1",
+      "locale" : "it-CH",
+      "texts" : {
+        "title" : "election mu 1",
+        "description" : "election mu 1",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L3",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 - List"
+          } ],
+          "children" : [ {
+            "alias" : "cand_list_3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "Doe Municipal 1"
+            }, {
+              "text" : "1970-01-01"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Vide"
+        }, {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Nessun nominativo selezionato"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_el_mu_2",
+      "locale" : "it-CH",
+      "texts" : {
+        "title" : "election mu 2",
+        "description" : "election mu 2",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L4",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 - List"
+          } ],
+          "children" : [ {
+            "alias" : "cand_list_4",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "Doe Municipal 2"
+            }, {
+              "text" : "1970-01-01"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Vide"
+        }, {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Nessun nominativo selezionato"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_el_mu_3",
+      "locale" : "it-CH",
+      "texts" : {
+        "title" : "election mu 3",
+        "description" : "election mu 3",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L5",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 - List"
+          } ],
+          "children" : [ {
+            "alias" : "cand_list_5",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "Doe Municipal 3"
+            }, {
+              "text" : "1970-01-01"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Vide"
+        }, {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Nessun nominativo selezionato"
+        } ]
+      }
+    } ]
+  } ]
+}
