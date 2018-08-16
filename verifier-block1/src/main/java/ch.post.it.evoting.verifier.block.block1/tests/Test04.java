@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
+import java.nio.file.Path;
 
 /**
  * Test04 of Block1, Step hasSufficientSize(p)
@@ -46,9 +47,10 @@ public class Test04 extends Test {
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
-            EncryptionParameters encryptionParameters = Deserializer.fromJson(inputDirectory, "encryptionParameters\\.json", EncryptionParameters.class);
-            String pString = encryptionParameters.getZpSubgroup().getP();
-            BigInteger p = TypeConverter.base64ToBigInteger(pString);
+            Path path = inputDirectory.toPath().resolve(Block1TestSuite.PATH_CRYPTO_SETUP);
+            EncryptionParameters encryptionParameters = Deserializer.fromJson(path.toFile(), "encryptionParameters\\.json", EncryptionParameters.class);
+            String pString = encryptionParameters.getP();
+            BigInteger p = TypeConverter.stringToBigInteger(pString);
 
             if (p.bitLength() >= 2048) {
                 result.setStatus(Status.OK);

@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
+import java.nio.file.Path;
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +56,8 @@ public class Test09 extends Test {
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
-            Configuration configuration = Deserializer.fromXml(inputDirectory, "configuration-anonymized.xml", Configuration.class);
+            Path path = inputDirectory.toPath().resolve(Block1TestSuite.PATH_ELECTION_SETUP);
+            Configuration configuration = Deserializer.fromXml(path.toFile(), "configuration-anonymized.xml", Configuration.class);
 
             // vote
             Map<String, Long> voteAnswersCount = configuration.getContest().getVoteInformation().stream()
@@ -94,7 +96,7 @@ public class Test09 extends Test {
                     }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
             //check correspondences between config and dataConfig
-            DataConfigEE dataConfigEE = Deserializer.fromJson(inputDirectory, "dataConfig_.*\\.json", DataConfigEE.class);
+            DataConfigEE dataConfigEE = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", DataConfigEE.class);
             dataConfigEE.getElectionEvent().getBallotBoxes().stream()
                     .flatMap(bb -> bb.getCountingCircles().stream())
                     .flatMap(cc -> cc.getDomainOfInfluence().stream())

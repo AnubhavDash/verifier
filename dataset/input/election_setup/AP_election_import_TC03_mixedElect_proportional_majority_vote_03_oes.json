@@ -1,0 +1,2792 @@
+{
+  "electionEvents" : [ {
+    "alias" : "TC03_mixedElect_proportional_majority_vote_03_oes",
+    "title" : "TC03_mixedElect_proportional_majority_vote_03 (DE)",
+    "description" : "TC03_mixedElect_proportional_majority_vote_03 (DE)",
+    "dateFrom" : "2018-07-18 00:00",
+    "dateTo" : "2018-12-31 23:59",
+    "gracePeriod" : 900,
+    "timeZone" : "+01:00",
+    "ballots" : [ {
+      "entityId" : "ballot_1",
+      "alias" : "ballot_1",
+      "title" : "ballot_TC03_vote_EA_TC03_majority_elect_EA_TC03_proportional_elect_EA",
+      "description" : "ballot_TC03_vote_EA_TC03_majority_elect_EA_TC03_proportional_elect_EA",
+      "contests" : [ {
+        "entityId" : "contest_TC03_vote_EA"
+      }, {
+        "entityId" : "contest_TC03_majority_elect_EA"
+      }, {
+        "entityId" : "contest_TC03_proportional_elect_EA"
+      } ]
+    }, {
+      "entityId" : "ballot_2",
+      "alias" : "ballot_2",
+      "title" : "ballot_TC03_vote_EA_TC03_majority_elect_EA_TC03_proportional_elect_EA",
+      "description" : "ballot_TC03_vote_EA_TC03_majority_elect_EA_TC03_proportional_elect_EA",
+      "contests" : [ {
+        "entityId" : "contest_TC03_vote_EA"
+      }, {
+        "entityId" : "contest_TC03_majority_elect_EA"
+      }, {
+        "entityId" : "contest_TC03_proportional_elect_EA"
+      } ]
+    }, {
+      "entityId" : "ballot_3",
+      "alias" : "ballot_3",
+      "title" : "ballot_TC03_vote_EA_TC03_majority_elect_EA_TC03_proportional_elect_EA",
+      "description" : "ballot_TC03_vote_EA_TC03_majority_elect_EA_TC03_proportional_elect_EA",
+      "contests" : [ {
+        "entityId" : "contest_TC03_vote_EA"
+      }, {
+        "entityId" : "contest_TC03_majority_elect_EA"
+      }, {
+        "entityId" : "contest_TC03_proportional_elect_EA"
+      } ]
+    }, {
+      "entityId" : "ballot_4",
+      "alias" : "ballot_4",
+      "title" : "ballot_TC03_vote_EA_TC03_majority_elect_EA_TC03_proportional_elect_EA",
+      "description" : "ballot_TC03_vote_EA_TC03_majority_elect_EA_TC03_proportional_elect_EA",
+      "contests" : [ {
+        "entityId" : "contest_TC03_vote_EA"
+      }, {
+        "entityId" : "contest_TC03_majority_elect_EA"
+      }, {
+        "entityId" : "contest_TC03_proportional_elect_EA"
+      } ]
+    } ],
+    "contests" : [ {
+      "entityId" : "contest_TC03_vote_EA",
+      "title" : "Demo Eidgenössische Volksabstimmung",
+      "alias" : "TC03_vote_EA",
+      "description" : "Demo Eidgenössische Volksabstimmung",
+      "explanationText" : "",
+      "template" : "options",
+      "fullBlank" : "false",
+      "extraDataTypes" : {
+        "questionType" : [ {
+          "name" : "text",
+          "key" : "text"
+        } ],
+        "answerType" : [ {
+          "name" : "text",
+          "key" : "text"
+        } ]
+      },
+      "attributes" : [ {
+        "alias" : "Q1",
+        "extraDataType" : "questionType",
+        "extraDataValues" : [ {
+          "text" : "Volksinitiative: Wollen Sie die «Volksinitiative A» annehmen?"
+        } ],
+        "children" : [ {
+          "alias" : "fde61cea-14e3-3ff7-a81b-d644514f21f2",
+          "extraDataType" : "answerType",
+          "extraDataValues" : [ {
+            "text" : "Ja"
+          } ]
+        }, {
+          "alias" : "e79d30f1-cb60-3cad-9b6e-5646eff10590",
+          "extraDataType" : "answerType",
+          "extraDataValues" : [ {
+            "text" : "Nein"
+          } ]
+        } ]
+      }, {
+        "alias" : "Q2",
+        "extraDataType" : "questionType",
+        "extraDataValues" : [ {
+          "text" : "Gegenentwurf: Wollen Sie den Gegenentwurf der Bundesversammlung «Gegenentwurf B» annehmen?"
+        } ],
+        "children" : [ {
+          "alias" : "9b24eab7-d8fc-3321-975c-8c234f54bf90",
+          "extraDataType" : "answerType",
+          "extraDataValues" : [ {
+            "text" : "Ja"
+          } ]
+        }, {
+          "alias" : "e2a1ed15-f6c0-3964-ab31-c3be7bb3d21c",
+          "extraDataType" : "answerType",
+          "extraDataValues" : [ {
+            "text" : "Nein"
+          } ]
+        } ]
+      }, {
+        "alias" : "Q3",
+        "extraDataType" : "questionType",
+        "extraDataValues" : [ {
+          "text" : "Stichfrage: Falls sowohl die «Volksinitiative A» als auch der «Gegenentwurf B» von Volk und Ständen angenommen werden: Soll die Volksinitiative A oder der Gegenentwurf A in Kraft treten?"
+        } ],
+        "children" : [ {
+          "alias" : "6139f531-56c0-32a1-b581-302846c14037",
+          "extraDataType" : "answerType",
+          "extraDataValues" : [ {
+            "text" : "Initiative"
+          } ]
+        }, {
+          "alias" : "9dd807e1-50e9-3ca2-92bb-3a68ea328817",
+          "extraDataType" : "answerType",
+          "extraDataValues" : [ {
+            "text" : "Gegenentwurf"
+          } ]
+        } ]
+      }, {
+        "alias" : "Q4",
+        "extraDataType" : "questionType",
+        "extraDataValues" : [ {
+          "text" : "Wollen Sie den Bundesbeschluss «C» vom 28. Februar 2017 annehmen?"
+        } ],
+        "children" : [ {
+          "alias" : "32d86e85-2e64-3b56-89e9-df7b3cff0f8f",
+          "extraDataType" : "answerType",
+          "extraDataValues" : [ {
+            "text" : "Ja"
+          } ]
+        }, {
+          "alias" : "7e175ad0-bb70-3f87-9719-32b4c69fb527",
+          "extraDataType" : "answerType",
+          "extraDataValues" : [ {
+            "text" : "Nein"
+          } ]
+        } ]
+      } ],
+      "questions" : [ {
+        "alias" : "Q1",
+        "max" : "1",
+        "min" : "0",
+        "writeIn" : "false",
+        "choices" : [ "fde61cea-14e3-3ff7-a81b-d644514f21f2", "e79d30f1-cb60-3cad-9b6e-5646eff10590" ],
+        "fusions" : [ ],
+        "accumulation" : "1",
+        "blankText" : "Leer"
+      }, {
+        "alias" : "Q2",
+        "max" : "1",
+        "min" : "0",
+        "writeIn" : "false",
+        "choices" : [ "9b24eab7-d8fc-3321-975c-8c234f54bf90", "e2a1ed15-f6c0-3964-ab31-c3be7bb3d21c" ],
+        "fusions" : [ ],
+        "accumulation" : "1",
+        "blankText" : "Leer"
+      }, {
+        "alias" : "Q3",
+        "max" : "1",
+        "min" : "0",
+        "writeIn" : "false",
+        "choices" : [ "6139f531-56c0-32a1-b581-302846c14037", "9dd807e1-50e9-3ca2-92bb-3a68ea328817" ],
+        "fusions" : [ ],
+        "accumulation" : "1",
+        "blankText" : "Leer"
+      }, {
+        "alias" : "Q4",
+        "max" : "1",
+        "min" : "0",
+        "writeIn" : "false",
+        "choices" : [ "32d86e85-2e64-3b56-89e9-df7b3cff0f8f", "7e175ad0-bb70-3f87-9719-32b4c69fb527" ],
+        "fusions" : [ ],
+        "accumulation" : "1",
+        "blankText" : "Leer"
+      } ]
+    }, {
+      "entityId" : "contest_TC03_majority_elect_EA",
+      "title" : "Staatsratswahl (2. Wahlgang) (DE)",
+      "alias" : "TC03_majority_elect_EA",
+      "description" : "Staatsratswahl (2. Wahlgang) (DE)",
+      "explanationText" : "",
+      "template" : "listsAndCandidates",
+      "fullBlank" : "true",
+      "extraDataTypes" : {
+        "listType" : [ {
+          "name" : "Party Name",
+          "key" : "attribute1"
+        }, {
+          "name" : "Party name short",
+          "key" : "attribute2"
+        } ],
+        "candidateType" : [ {
+          "name" : "Candidate text",
+          "key" : "attribute1"
+        }, {
+          "name" : "Candidate Date Of Birth",
+          "key" : "attribute2"
+        } ]
+      },
+      "attributes" : [ {
+        "alias" : "5F712CDA-A5A8-11E6-ACC2-00155D28151E",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "Sozialdemokratische Partei des Kantons Freiburg (SP)"
+        }, {
+          "text" : "SP"
+        } ],
+        "children" : [ {
+          "alias" : "3c150624-8567-36e6-9429-409c7d8d1a13",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "2 Demierre Anne-Claude"
+          }, {
+            "text" : "1961-08-16+01:00"
+          } ]
+        }, {
+          "alias" : "209dff7d-1f36-3f14-a2c4-98e941fd1d8d",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "3 Steiert Jean-François"
+          }, {
+            "text" : "1961-02-07+01:00"
+          } ]
+        } ]
+      }, {
+        "alias" : "71275251-A5B3-11E6-ACC2-00155D28151E",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "SVP - Das Freiburger Bündnis"
+        }, {
+          "text" : "SVP"
+        } ],
+        "children" : [ {
+          "alias" : "ff6822d2-8d46-3ac3-871e-ae2048a7807f",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "1 Peiry Stéphane"
+          }, {
+            "text" : "1970-03-05+01:00"
+          } ]
+        } ]
+      }, {
+        "alias" : "00A49147-A5B4-11E6-ACC2-00155D28151E",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "Grüne"
+        }, {
+          "text" : "Grüne"
+        } ],
+        "children" : [ {
+          "alias" : "3c9b89a0-cd2d-3c17-96af-cfc2b3ca0fd8",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "4 Garnier Marie"
+          }, {
+            "text" : "1962-04-10+01:00"
+          } ]
+        } ]
+      } ],
+      "questions" : [ {
+        "alias" : "lists",
+        "max" : "1",
+        "min" : "0",
+        "writeIn" : "false",
+        "choices" : [ "71275251-A5B3-11E6-ACC2-00155D28151E", "00A49147-A5B4-11E6-ACC2-00155D28151E", "5F712CDA-A5A8-11E6-ACC2-00155D28151E" ],
+        "fusions" : [ ],
+        "accumulation" : "1",
+        "blankText" : "Leer"
+      }, {
+        "alias" : "candidates",
+        "max" : "3",
+        "min" : "1",
+        "writeIn" : "false",
+        "choices" : [ "ff6822d2-8d46-3ac3-871e-ae2048a7807f", "3c9b89a0-cd2d-3c17-96af-cfc2b3ca0fd8", "3c150624-8567-36e6-9429-409c7d8d1a13", "209dff7d-1f36-3f14-a2c4-98e941fd1d8d" ],
+        "fusions" : [ ],
+        "accumulation" : "1",
+        "blankText" : "Kein Name ausgewählt"
+      } ]
+    }, {
+      "entityId" : "contest_TC03_proportional_elect_EA",
+      "title" : "Proporzwahl",
+      "alias" : "TC03_proportional_elect_EA",
+      "description" : "Proporzwahl",
+      "explanationText" : "",
+      "template" : "listsAndCandidates",
+      "fullBlank" : "true",
+      "extraDataTypes" : {
+        "listType" : [ {
+          "name" : "Party Name",
+          "key" : "attribute1"
+        }, {
+          "name" : "Party name short",
+          "key" : "attribute2"
+        } ],
+        "candidateType" : [ {
+          "name" : "Candidate text",
+          "key" : "attribute1"
+        }, {
+          "name" : "Candidate Date Of Birth",
+          "key" : "attribute2"
+        } ]
+      },
+      "attributes" : [ {
+        "alias" : "L1",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "Liste 1 (DE)"
+        }, {
+          "text" : "L1 (DE)"
+        } ],
+        "children" : [ {
+          "alias" : "a1594175-ddaa-3dd2-9eb6-c4727faa338c",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7101 Chopin Fréderic"
+          }, {
+            "text" : "1810-03-01"
+          } ]
+        }, {
+          "alias" : "536d35fd-af86-318e-a36a-c603f4827e0e",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7102 Vivaldi Antonio"
+          }, {
+            "text" : "1678-03-04"
+          } ]
+        }, {
+          "alias" : "1d6a1c2e-926b-32f5-9e85-46c231f9ba71",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7103 Farrenc Louise"
+          }, {
+            "text" : "1804-05-31"
+          } ]
+        }, {
+          "alias" : "8463349b-681a-3840-883a-3c6b9d76b859",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7104 Strozzi Barbara"
+          }, {
+            "text" : "1619-08-05"
+          } ]
+        }, {
+          "alias" : "8036a112-d6ec-3afb-9a15-dc9f9d5aecbc",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7105 Liszt Franz"
+          }, {
+            "text" : "1811-10-22"
+          } ]
+        } ]
+      }, {
+        "alias" : "L2",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "Liste 2 (DE)"
+        }, {
+          "text" : "L2 (DE)"
+        } ],
+        "children" : [ {
+          "alias" : "2dd2c771-00f7-364f-9f1d-8b4c0319cbcd",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7106 King Stephen"
+          }, {
+            "text" : "1947-09-21"
+          } ]
+        }, {
+          "alias" : "7d94ff9d-3bce-3f76-8d4b-bc5be794be1d",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7107 Rowling Joanne"
+          }, {
+            "text" : "1965-07-31"
+          } ]
+        }, {
+          "alias" : "642c5e1c-0dd9-3e74-a517-d9d5bb367494",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7108 Tolkien John"
+          }, {
+            "text" : "1892-01-03"
+          } ]
+        }, {
+          "alias" : "e6a06a3c-bb27-3cd0-8f0a-56b8c00cb9f3",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7109 Lee Harper"
+          }, {
+            "text" : "1926-04-26"
+          } ]
+        }, {
+          "alias" : "0cfb211b-0f83-3dae-8651-db6b1d600782",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7110 Orwell George"
+          }, {
+            "text" : "1903-06-25"
+          } ]
+        } ]
+      }, {
+        "alias" : "L3",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "Liste 3 (DE)"
+        }, {
+          "text" : "L3 (DE)"
+        } ],
+        "children" : [ {
+          "alias" : "8e93d23e-1791-3a9f-8b6b-4b120f681ac3",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7111 Jagger Mick"
+          }, {
+            "text" : "1943-07-26"
+          } ]
+        }, {
+          "alias" : "54f0ccd7-d631-36f7-90c7-b479a82d4ac4",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7112 Berry Chuck"
+          }, {
+            "text" : "1926-10-18"
+          } ]
+        }, {
+          "alias" : "ebfe2bd2-755e-3183-ac47-be88aa6f7ca5",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7113 Franklin Aretha"
+          }, {
+            "text" : "1942-03-25"
+          } ]
+        }, {
+          "alias" : "8e7f887a-b478-309c-87be-9ca34330bcdf",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7114 Turner Tina"
+          }, {
+            "text" : "1939-11-26"
+          } ]
+        }, {
+          "alias" : "d200acdc-84fb-32bf-8cef-fb7131505619",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7115 Wonder Stevie"
+          }, {
+            "text" : "1950-05-13"
+          } ]
+        } ]
+      }, {
+        "alias" : "L4",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "Liste 4 (DE)"
+        }, {
+          "text" : "L4 (DE)"
+        } ],
+        "children" : [ {
+          "alias" : "cf878505-fa4a-359b-9030-582d7c43c98e",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7116 Newton Isaac"
+          }, {
+            "text" : "1643-01-04"
+          } ]
+        }, {
+          "alias" : "0e83280f-68c6-3961-89b7-19dc889fba53",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7117 Einstein Albert"
+          }, {
+            "text" : "1879-03-14"
+          } ]
+        }, {
+          "alias" : "650934ef-2602-3691-9e86-30eb8fcf3bc3",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7118 Curie Marie"
+          }, {
+            "text" : "1867-11-07"
+          } ]
+        }, {
+          "alias" : "a7792448-091c-34dd-9dce-1a194a706f82",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7119 Meitner Lise"
+          }, {
+            "text" : "1968-10-27"
+          } ]
+        }, {
+          "alias" : "6afde4ce-ea6c-310a-af3e-506e265d94a0",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7120 Hawking Stephen"
+          }, {
+            "text" : "1942-01-08"
+          } ]
+        } ]
+      }, {
+        "alias" : "L5",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "Liste 5 (DE)"
+        }, {
+          "text" : "L5 (DE)"
+        } ],
+        "children" : [ {
+          "alias" : "60afb6a8-b4b1-32e9-bec3-2a01a6d6eaca",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7121 Galilei Galileo"
+          }, {
+            "text" : "1564-02-15"
+          } ]
+        }, {
+          "alias" : "78044b2a-1a5c-387d-9a06-78687bc962e7",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7122 Keppler Johannes"
+          }, {
+            "text" : "1571-12-27"
+          } ]
+        }, {
+          "alias" : "9a1d536d-ea52-30d6-9cba-87a714c5fb02",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7123 Descartes René"
+          }, {
+            "text" : "1596-03-31"
+          } ]
+        }, {
+          "alias" : "6d82cd23-63af-3690-836c-86191d0f9d2a",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7124 Germain Sophie"
+          }, {
+            "text" : "1776-04-01"
+          } ]
+        }, {
+          "alias" : "0ca509bc-5ddc-39c6-aaa9-b5b103c12b0d",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "7125 Kopernikus Nikolaus"
+          }, {
+            "text" : "1543-02-19"
+          } ]
+        } ]
+      } ],
+      "questions" : [ {
+        "alias" : "lists",
+        "max" : "1",
+        "min" : "0",
+        "writeIn" : "false",
+        "choices" : [ "L1", "L2", "L3", "L4", "L5" ],
+        "fusions" : [ ],
+        "accumulation" : "1",
+        "blankText" : "Leer"
+      }, {
+        "alias" : "candidates",
+        "max" : "5",
+        "min" : "1",
+        "writeIn" : "false",
+        "choices" : [ "a1594175-ddaa-3dd2-9eb6-c4727faa338c", "536d35fd-af86-318e-a36a-c603f4827e0e", "1d6a1c2e-926b-32f5-9e85-46c231f9ba71", "8463349b-681a-3840-883a-3c6b9d76b859", "8036a112-d6ec-3afb-9a15-dc9f9d5aecbc", "2dd2c771-00f7-364f-9f1d-8b4c0319cbcd", "7d94ff9d-3bce-3f76-8d4b-bc5be794be1d", "642c5e1c-0dd9-3e74-a517-d9d5bb367494", "e6a06a3c-bb27-3cd0-8f0a-56b8c00cb9f3", "0cfb211b-0f83-3dae-8651-db6b1d600782", "8e93d23e-1791-3a9f-8b6b-4b120f681ac3", "54f0ccd7-d631-36f7-90c7-b479a82d4ac4", "ebfe2bd2-755e-3183-ac47-be88aa6f7ca5", "8e7f887a-b478-309c-87be-9ca34330bcdf", "d200acdc-84fb-32bf-8cef-fb7131505619", "cf878505-fa4a-359b-9030-582d7c43c98e", "0e83280f-68c6-3961-89b7-19dc889fba53", "650934ef-2602-3691-9e86-30eb8fcf3bc3", "a7792448-091c-34dd-9dce-1a194a706f82", "6afde4ce-ea6c-310a-af3e-506e265d94a0", "60afb6a8-b4b1-32e9-bec3-2a01a6d6eaca", "78044b2a-1a5c-387d-9a06-78687bc962e7", "9a1d536d-ea52-30d6-9cba-87a714c5fb02", "6d82cd23-63af-3690-836c-86191d0f9d2a", "0ca509bc-5ddc-39c6-aaa9-b5b103c12b0d" ],
+        "fusions" : [ ],
+        "accumulation" : "1",
+        "blankText" : "Kein Name ausgewählt"
+      } ]
+    } ],
+    "ballotBoxes" : [ {
+      "entityId" : "aaa3621c-7ca4-3398-afed-41153e17b5ec",
+      "alias" : "FR-CH-1|FR-MU-9999",
+      "title" : "CH de l'étranger",
+      "description" : "CH de l'étrangerFR-CH-1|FR-MU-9999",
+      "dateFrom" : "2018-07-18 00:00",
+      "dateTo" : "2018-12-31 23:59",
+      "gracePeriod" : 900,
+      "timeZone" : "+01:00",
+      "ballot" : {
+        "entityId" : "ballot_1"
+      },
+      "electoralAuthority" : {
+        "entityId" : "EA_TC03_mixedElect_proportional_majority_vote_03"
+      },
+      "test" : false
+    }, {
+      "entityId" : "b875fae9-03c5-3002-9794-2b1b47872ab7",
+      "alias" : "FR-CH-1|FR-MU-2148",
+      "title" : "Riaz",
+      "description" : "RiazFR-CH-1|FR-MU-2148",
+      "dateFrom" : "2018-07-18 00:00",
+      "dateTo" : "2018-12-31 23:59",
+      "gracePeriod" : 900,
+      "timeZone" : "+01:00",
+      "ballot" : {
+        "entityId" : "ballot_2"
+      },
+      "electoralAuthority" : {
+        "entityId" : "EA_TC03_mixedElect_proportional_majority_vote_03"
+      },
+      "test" : false
+    }, {
+      "entityId" : "692cf97f-aabc-3e70-bd42-10204b3dc995",
+      "alias" : "FR-CH-1|FR-MU-2309",
+      "title" : "Wünnewil-Flamatt",
+      "description" : "Wünnewil-FlamattFR-CH-1|FR-MU-2309",
+      "dateFrom" : "2018-07-18 00:00",
+      "dateTo" : "2018-12-31 23:59",
+      "gracePeriod" : 900,
+      "timeZone" : "+01:00",
+      "ballot" : {
+        "entityId" : "ballot_3"
+      },
+      "electoralAuthority" : {
+        "entityId" : "EA_TC03_mixedElect_proportional_majority_vote_03"
+      },
+      "test" : false
+    }, {
+      "entityId" : "2456a13a-c550-3227-8201-f6cd612f1b0b",
+      "alias" : "FR-CH-1|FR-MU-2226",
+      "title" : "Treyvaux",
+      "description" : "TreyvauxFR-CH-1|FR-MU-2226",
+      "dateFrom" : "2018-07-18 00:00",
+      "dateTo" : "2018-12-31 23:59",
+      "gracePeriod" : 900,
+      "timeZone" : "+01:00",
+      "ballot" : {
+        "entityId" : "ballot_4"
+      },
+      "electoralAuthority" : {
+        "entityId" : "EA_TC03_mixedElect_proportional_majority_vote_03"
+      },
+      "test" : false
+    } ],
+    "votingCardSets" : [ {
+      "entityId" : "vcs_CH de l'étranger",
+      "alias" : "vcs_FR-CH-1|FR-MU-9999",
+      "title" : "vcs_CH de l'étranger",
+      "description" : "vcs_CH de l'étrangerFR-CH-1|FR-MU-9999",
+      "numberOfVotingCardsToGenerate" : 22,
+      "ballotBox" : {
+        "entityId" : "aaa3621c-7ca4-3398-afed-41153e17b5ec"
+      }
+    }, {
+      "entityId" : "vcs_Riaz",
+      "alias" : "vcs_FR-CH-1|FR-MU-2148",
+      "title" : "vcs_Riaz",
+      "description" : "vcs_RiazFR-CH-1|FR-MU-2148",
+      "numberOfVotingCardsToGenerate" : 21,
+      "ballotBox" : {
+        "entityId" : "b875fae9-03c5-3002-9794-2b1b47872ab7"
+      }
+    }, {
+      "entityId" : "vcs_Wünnewil-Flamatt",
+      "alias" : "vcs_FR-CH-1|FR-MU-2309",
+      "title" : "vcs_Wünnewil-Flamatt",
+      "description" : "vcs_Wünnewil-FlamattFR-CH-1|FR-MU-2309",
+      "numberOfVotingCardsToGenerate" : 21,
+      "ballotBox" : {
+        "entityId" : "692cf97f-aabc-3e70-bd42-10204b3dc995"
+      }
+    }, {
+      "entityId" : "vcs_Treyvaux",
+      "alias" : "vcs_FR-CH-1|FR-MU-2226",
+      "title" : "vcs_Treyvaux",
+      "description" : "vcs_TreyvauxFR-CH-1|FR-MU-2226",
+      "numberOfVotingCardsToGenerate" : 21,
+      "ballotBox" : {
+        "entityId" : "2456a13a-c550-3227-8201-f6cd612f1b0b"
+      }
+    } ],
+    "electoralAuthorities" : [ {
+      "entityId" : "EA_TC03_mixedElect_proportional_majority_vote_03",
+      "alias" : "EA_TC03_mixedElect_proportional_majority_vote_03",
+      "title" : "EA_TC03_mixedElect_proportional_majority_vote_03",
+      "description" : "EA_TC03_mixedElect_proportional_majority_vote_03",
+      "minimumThreshold" : "2",
+      "electoralBoard" : [ "EAM1", "EAM2" ]
+    } ],
+    "translations" : [ {
+      "entityId" : "contest_TC03_vote_EA",
+      "locale" : "de-CH",
+      "texts" : {
+        "title" : "Demo Eidgenössische Volksabstimmung",
+        "description" : "Demo Eidgenössische Volksabstimmung",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "questionType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ],
+          "answerType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "Q1",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "Volksinitiative: Wollen Sie die «Volksinitiative A» annehmen?"
+          } ],
+          "children" : [ {
+            "alias" : "fde61cea-14e3-3ff7-a81b-d644514f21f2",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Ja"
+            } ]
+          }, {
+            "alias" : "e79d30f1-cb60-3cad-9b6e-5646eff10590",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Nein"
+            } ]
+          } ]
+        }, {
+          "alias" : "Q2",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "Gegenentwurf: Wollen Sie den Gegenentwurf der Bundesversammlung «Gegenentwurf B» annehmen?"
+          } ],
+          "children" : [ {
+            "alias" : "9b24eab7-d8fc-3321-975c-8c234f54bf90",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Ja"
+            } ]
+          }, {
+            "alias" : "e2a1ed15-f6c0-3964-ab31-c3be7bb3d21c",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Nein"
+            } ]
+          } ]
+        }, {
+          "alias" : "Q3",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "Stichfrage: Falls sowohl die «Volksinitiative A» als auch der «Gegenentwurf B» von Volk und Ständen angenommen werden: Soll die Volksinitiative A oder der Gegenentwurf A in Kraft treten?"
+          } ],
+          "children" : [ {
+            "alias" : "6139f531-56c0-32a1-b581-302846c14037",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Initiative"
+            } ]
+          }, {
+            "alias" : "9dd807e1-50e9-3ca2-92bb-3a68ea328817",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Gegenentwurf"
+            } ]
+          } ]
+        }, {
+          "alias" : "Q4",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "Wollen Sie den Bundesbeschluss «C» vom 28. Februar 2017 annehmen?"
+          } ],
+          "children" : [ {
+            "alias" : "32d86e85-2e64-3b56-89e9-df7b3cff0f8f",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Ja"
+            } ]
+          }, {
+            "alias" : "7e175ad0-bb70-3f87-9719-32b4c69fb527",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Nein"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "Q1",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Leer"
+        }, {
+          "alias" : "Q2",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Leer"
+        }, {
+          "alias" : "Q3",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Leer"
+        }, {
+          "alias" : "Q4",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Leer"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_TC03_majority_elect_EA",
+      "locale" : "de-CH",
+      "texts" : {
+        "title" : "Staatsratswahl (2. Wahlgang) (DE)",
+        "description" : "Staatsratswahl (2. Wahlgang) (DE)",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          }, {
+            "name" : "Party name short",
+            "key" : "attribute2"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "5F712CDA-A5A8-11E6-ACC2-00155D28151E",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Sozialdemokratische Partei des Kantons Freiburg (SP)"
+          }, {
+            "text" : "SP"
+          } ],
+          "children" : [ {
+            "alias" : "3c150624-8567-36e6-9429-409c7d8d1a13",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "2 Demierre Anne-Claude"
+            }, {
+              "text" : "1961-08-16+01:00"
+            } ]
+          }, {
+            "alias" : "209dff7d-1f36-3f14-a2c4-98e941fd1d8d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "3 Steiert Jean-François"
+            }, {
+              "text" : "1961-02-07+01:00"
+            } ]
+          } ]
+        }, {
+          "alias" : "71275251-A5B3-11E6-ACC2-00155D28151E",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "SVP - Das Freiburger Bündnis"
+          }, {
+            "text" : "SVP"
+          } ],
+          "children" : [ {
+            "alias" : "ff6822d2-8d46-3ac3-871e-ae2048a7807f",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "1 Peiry Stéphane"
+            }, {
+              "text" : "1970-03-05+01:00"
+            } ]
+          } ]
+        }, {
+          "alias" : "00A49147-A5B4-11E6-ACC2-00155D28151E",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Grüne"
+          }, {
+            "text" : "Grüne"
+          } ],
+          "children" : [ {
+            "alias" : "3c9b89a0-cd2d-3c17-96af-cfc2b3ca0fd8",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "4 Garnier Marie"
+            }, {
+              "text" : "1962-04-10+01:00"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Leer"
+        }, {
+          "alias" : "candidates",
+          "max" : "3",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Kein Name ausgewählt"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_TC03_proportional_elect_EA",
+      "locale" : "de-CH",
+      "texts" : {
+        "title" : "Proporzwahl",
+        "description" : "Proporzwahl",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          }, {
+            "name" : "Party name short",
+            "key" : "attribute2"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L1",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste 1 (DE)"
+          }, {
+            "text" : "L1 (DE)"
+          } ],
+          "children" : [ {
+            "alias" : "a1594175-ddaa-3dd2-9eb6-c4727faa338c",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7101 Chopin Fréderic"
+            }, {
+              "text" : "1810-03-01"
+            } ]
+          }, {
+            "alias" : "536d35fd-af86-318e-a36a-c603f4827e0e",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7102 Vivaldi Antonio"
+            }, {
+              "text" : "1678-03-04"
+            } ]
+          }, {
+            "alias" : "1d6a1c2e-926b-32f5-9e85-46c231f9ba71",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7103 Farrenc Louise"
+            }, {
+              "text" : "1804-05-31"
+            } ]
+          }, {
+            "alias" : "8463349b-681a-3840-883a-3c6b9d76b859",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7104 Strozzi Barbara"
+            }, {
+              "text" : "1619-08-05"
+            } ]
+          }, {
+            "alias" : "8036a112-d6ec-3afb-9a15-dc9f9d5aecbc",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7105 Liszt Franz"
+            }, {
+              "text" : "1811-10-22"
+            } ]
+          } ]
+        }, {
+          "alias" : "L2",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste 2 (DE)"
+          }, {
+            "text" : "L2 (DE)"
+          } ],
+          "children" : [ {
+            "alias" : "2dd2c771-00f7-364f-9f1d-8b4c0319cbcd",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7106 King Stephen"
+            }, {
+              "text" : "1947-09-21"
+            } ]
+          }, {
+            "alias" : "7d94ff9d-3bce-3f76-8d4b-bc5be794be1d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7107 Rowling Joanne"
+            }, {
+              "text" : "1965-07-31"
+            } ]
+          }, {
+            "alias" : "642c5e1c-0dd9-3e74-a517-d9d5bb367494",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7108 Tolkien John"
+            }, {
+              "text" : "1892-01-03"
+            } ]
+          }, {
+            "alias" : "e6a06a3c-bb27-3cd0-8f0a-56b8c00cb9f3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7109 Lee Harper"
+            }, {
+              "text" : "1926-04-26"
+            } ]
+          }, {
+            "alias" : "0cfb211b-0f83-3dae-8651-db6b1d600782",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7110 Orwell George"
+            }, {
+              "text" : "1903-06-25"
+            } ]
+          } ]
+        }, {
+          "alias" : "L3",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste 3 (DE)"
+          }, {
+            "text" : "L3 (DE)"
+          } ],
+          "children" : [ {
+            "alias" : "8e93d23e-1791-3a9f-8b6b-4b120f681ac3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7111 Jagger Mick"
+            }, {
+              "text" : "1943-07-26"
+            } ]
+          }, {
+            "alias" : "54f0ccd7-d631-36f7-90c7-b479a82d4ac4",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7112 Berry Chuck"
+            }, {
+              "text" : "1926-10-18"
+            } ]
+          }, {
+            "alias" : "ebfe2bd2-755e-3183-ac47-be88aa6f7ca5",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7113 Franklin Aretha"
+            }, {
+              "text" : "1942-03-25"
+            } ]
+          }, {
+            "alias" : "8e7f887a-b478-309c-87be-9ca34330bcdf",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7114 Turner Tina"
+            }, {
+              "text" : "1939-11-26"
+            } ]
+          }, {
+            "alias" : "d200acdc-84fb-32bf-8cef-fb7131505619",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7115 Wonder Stevie"
+            }, {
+              "text" : "1950-05-13"
+            } ]
+          } ]
+        }, {
+          "alias" : "L4",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste 4 (DE)"
+          }, {
+            "text" : "L4 (DE)"
+          } ],
+          "children" : [ {
+            "alias" : "cf878505-fa4a-359b-9030-582d7c43c98e",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7116 Newton Isaac"
+            }, {
+              "text" : "1643-01-04"
+            } ]
+          }, {
+            "alias" : "0e83280f-68c6-3961-89b7-19dc889fba53",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7117 Einstein Albert"
+            }, {
+              "text" : "1879-03-14"
+            } ]
+          }, {
+            "alias" : "650934ef-2602-3691-9e86-30eb8fcf3bc3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7118 Curie Marie"
+            }, {
+              "text" : "1867-11-07"
+            } ]
+          }, {
+            "alias" : "a7792448-091c-34dd-9dce-1a194a706f82",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7119 Meitner Lise"
+            }, {
+              "text" : "1968-10-27"
+            } ]
+          }, {
+            "alias" : "6afde4ce-ea6c-310a-af3e-506e265d94a0",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7120 Hawking Stephen"
+            }, {
+              "text" : "1942-01-08"
+            } ]
+          } ]
+        }, {
+          "alias" : "L5",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste 5 (DE)"
+          }, {
+            "text" : "L5 (DE)"
+          } ],
+          "children" : [ {
+            "alias" : "60afb6a8-b4b1-32e9-bec3-2a01a6d6eaca",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7121 Galilei Galileo"
+            }, {
+              "text" : "1564-02-15"
+            } ]
+          }, {
+            "alias" : "78044b2a-1a5c-387d-9a06-78687bc962e7",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7122 Keppler Johannes"
+            }, {
+              "text" : "1571-12-27"
+            } ]
+          }, {
+            "alias" : "9a1d536d-ea52-30d6-9cba-87a714c5fb02",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7123 Descartes René"
+            }, {
+              "text" : "1596-03-31"
+            } ]
+          }, {
+            "alias" : "6d82cd23-63af-3690-836c-86191d0f9d2a",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7124 Germain Sophie"
+            }, {
+              "text" : "1776-04-01"
+            } ]
+          }, {
+            "alias" : "0ca509bc-5ddc-39c6-aaa9-b5b103c12b0d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7125 Kopernikus Nikolaus"
+            }, {
+              "text" : "1543-02-19"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Leer"
+        }, {
+          "alias" : "candidates",
+          "max" : "5",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Kein Name ausgewählt"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_TC03_vote_EA",
+      "locale" : "fr-CH",
+      "texts" : {
+        "title" : "Démo Votation populaire fédérale",
+        "description" : "Démo Votation populaire fédérale",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "questionType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ],
+          "answerType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "Q1",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "Initiative populaire: Acceptez-vous «l'initiative populaire A»?"
+          } ],
+          "children" : [ {
+            "alias" : "fde61cea-14e3-3ff7-a81b-d644514f21f2",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Oui"
+            } ]
+          }, {
+            "alias" : "e79d30f1-cb60-3cad-9b6e-5646eff10590",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Non"
+            } ]
+          } ]
+        }, {
+          "alias" : "Q2",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "Contre-projet: Acceptez-vous le contreprojet de l'Assemblée fédérale «Contre-projet B»?"
+          } ],
+          "children" : [ {
+            "alias" : "9b24eab7-d8fc-3321-975c-8c234f54bf90",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Oui"
+            } ]
+          }, {
+            "alias" : "e2a1ed15-f6c0-3964-ab31-c3be7bb3d21c",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Non"
+            } ]
+          } ]
+        }, {
+          "alias" : "Q3",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "Question subsidiaire: Si le peuple et les cantons acceptaient à la fois «l'initiative A» et «le contre-projet B»: Est-ce l'initiative populaire A ou le contre-projet B qui doit entrer en vigueur?"
+          } ],
+          "children" : [ {
+            "alias" : "6139f531-56c0-32a1-b581-302846c14037",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Initiative"
+            } ]
+          }, {
+            "alias" : "9dd807e1-50e9-3ca2-92bb-3a68ea328817",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Contre-projet"
+            } ]
+          } ]
+        }, {
+          "alias" : "Q4",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "Acceptez-vous l'arrêté fédéral «C» du 28 février 2017?"
+          } ],
+          "children" : [ {
+            "alias" : "32d86e85-2e64-3b56-89e9-df7b3cff0f8f",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Oui"
+            } ]
+          }, {
+            "alias" : "7e175ad0-bb70-3f87-9719-32b4c69fb527",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Non"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "Q1",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Blanc"
+        }, {
+          "alias" : "Q2",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Blanc"
+        }, {
+          "alias" : "Q3",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Blanc"
+        }, {
+          "alias" : "Q4",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Blanc"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_TC03_majority_elect_EA",
+      "locale" : "fr-CH",
+      "texts" : {
+        "title" : "Election du Conseil d'Etat (2ème tour) (FR)",
+        "description" : "Election du Conseil d'Etat (2ème tour) (FR)",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          }, {
+            "name" : "Party name short",
+            "key" : "attribute2"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "5F712CDA-A5A8-11E6-ACC2-00155D28151E",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Parti socialiste fribourgeois (PS)"
+          }, {
+            "text" : "PS"
+          } ],
+          "children" : [ {
+            "alias" : "3c150624-8567-36e6-9429-409c7d8d1a13",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "2 Demierre Anne-Claude"
+            }, {
+              "text" : "1961-08-16+01:00"
+            } ]
+          }, {
+            "alias" : "209dff7d-1f36-3f14-a2c4-98e941fd1d8d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "3 Steiert Jean-François"
+            }, {
+              "text" : "1961-02-07+01:00"
+            } ]
+          } ]
+        }, {
+          "alias" : "71275251-A5B3-11E6-ACC2-00155D28151E",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "UDC - L'Entente Fribourgeoise"
+          }, {
+            "text" : "UDC"
+          } ],
+          "children" : [ {
+            "alias" : "ff6822d2-8d46-3ac3-871e-ae2048a7807f",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "1 Peiry Stéphane"
+            }, {
+              "text" : "1970-03-05+01:00"
+            } ]
+          } ]
+        }, {
+          "alias" : "00A49147-A5B4-11E6-ACC2-00155D28151E",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Les Verts"
+          }, {
+            "text" : "Verts"
+          } ],
+          "children" : [ {
+            "alias" : "3c9b89a0-cd2d-3c17-96af-cfc2b3ca0fd8",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "4 Garnier Marie"
+            }, {
+              "text" : "1962-04-10+01:00"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Vide"
+        }, {
+          "alias" : "candidates",
+          "max" : "3",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Aucun nom sélectionné"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_TC03_proportional_elect_EA",
+      "locale" : "fr-CH",
+      "texts" : {
+        "title" : "Election à la proportionelle",
+        "description" : "Election à la proportionelle",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          }, {
+            "name" : "Party name short",
+            "key" : "attribute2"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L1",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste 1 (FR)"
+          }, {
+            "text" : "L1 (FR)"
+          } ],
+          "children" : [ {
+            "alias" : "a1594175-ddaa-3dd2-9eb6-c4727faa338c",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7101 Chopin Fréderic"
+            }, {
+              "text" : "1810-03-01"
+            } ]
+          }, {
+            "alias" : "536d35fd-af86-318e-a36a-c603f4827e0e",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7102 Vivaldi Antonio"
+            }, {
+              "text" : "1678-03-04"
+            } ]
+          }, {
+            "alias" : "1d6a1c2e-926b-32f5-9e85-46c231f9ba71",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7103 Farrenc Louise"
+            }, {
+              "text" : "1804-05-31"
+            } ]
+          }, {
+            "alias" : "8463349b-681a-3840-883a-3c6b9d76b859",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7104 Strozzi Barbara"
+            }, {
+              "text" : "1619-08-05"
+            } ]
+          }, {
+            "alias" : "8036a112-d6ec-3afb-9a15-dc9f9d5aecbc",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7105 Liszt Franz"
+            }, {
+              "text" : "1811-10-22"
+            } ]
+          } ]
+        }, {
+          "alias" : "L2",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste 2 (FR)"
+          }, {
+            "text" : "L2 (FR)"
+          } ],
+          "children" : [ {
+            "alias" : "2dd2c771-00f7-364f-9f1d-8b4c0319cbcd",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7106 King Stephen"
+            }, {
+              "text" : "1947-09-21"
+            } ]
+          }, {
+            "alias" : "7d94ff9d-3bce-3f76-8d4b-bc5be794be1d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7107 Rowling Joanne"
+            }, {
+              "text" : "1965-07-31"
+            } ]
+          }, {
+            "alias" : "642c5e1c-0dd9-3e74-a517-d9d5bb367494",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7108 Tolkien John"
+            }, {
+              "text" : "1892-01-03"
+            } ]
+          }, {
+            "alias" : "e6a06a3c-bb27-3cd0-8f0a-56b8c00cb9f3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7109 Lee Harper"
+            }, {
+              "text" : "1926-04-26"
+            } ]
+          }, {
+            "alias" : "0cfb211b-0f83-3dae-8651-db6b1d600782",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7110 Orwell George"
+            }, {
+              "text" : "1903-06-25"
+            } ]
+          } ]
+        }, {
+          "alias" : "L3",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste 3 (FR)"
+          }, {
+            "text" : "L3 (FR)"
+          } ],
+          "children" : [ {
+            "alias" : "8e93d23e-1791-3a9f-8b6b-4b120f681ac3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7111 Jagger Mick"
+            }, {
+              "text" : "1943-07-26"
+            } ]
+          }, {
+            "alias" : "54f0ccd7-d631-36f7-90c7-b479a82d4ac4",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7112 Berry Chuck"
+            }, {
+              "text" : "1926-10-18"
+            } ]
+          }, {
+            "alias" : "ebfe2bd2-755e-3183-ac47-be88aa6f7ca5",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7113 Franklin Aretha"
+            }, {
+              "text" : "1942-03-25"
+            } ]
+          }, {
+            "alias" : "8e7f887a-b478-309c-87be-9ca34330bcdf",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7114 Turner Tina"
+            }, {
+              "text" : "1939-11-26"
+            } ]
+          }, {
+            "alias" : "d200acdc-84fb-32bf-8cef-fb7131505619",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7115 Wonder Stevie"
+            }, {
+              "text" : "1950-05-13"
+            } ]
+          } ]
+        }, {
+          "alias" : "L4",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste 4 (FR)"
+          }, {
+            "text" : "L4 (FR)"
+          } ],
+          "children" : [ {
+            "alias" : "cf878505-fa4a-359b-9030-582d7c43c98e",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7116 Newton Isaac"
+            }, {
+              "text" : "1643-01-04"
+            } ]
+          }, {
+            "alias" : "0e83280f-68c6-3961-89b7-19dc889fba53",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7117 Einstein Albert"
+            }, {
+              "text" : "1879-03-14"
+            } ]
+          }, {
+            "alias" : "650934ef-2602-3691-9e86-30eb8fcf3bc3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7118 Curie Marie"
+            }, {
+              "text" : "1867-11-07"
+            } ]
+          }, {
+            "alias" : "a7792448-091c-34dd-9dce-1a194a706f82",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7119 Meitner Lise"
+            }, {
+              "text" : "1968-10-27"
+            } ]
+          }, {
+            "alias" : "6afde4ce-ea6c-310a-af3e-506e265d94a0",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7120 Hawking Stephen"
+            }, {
+              "text" : "1942-01-08"
+            } ]
+          } ]
+        }, {
+          "alias" : "L5",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste 5 (FR)"
+          }, {
+            "text" : "L5 (FR)"
+          } ],
+          "children" : [ {
+            "alias" : "60afb6a8-b4b1-32e9-bec3-2a01a6d6eaca",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7121 Galilei Galileo"
+            }, {
+              "text" : "1564-02-15"
+            } ]
+          }, {
+            "alias" : "78044b2a-1a5c-387d-9a06-78687bc962e7",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7122 Keppler Johannes"
+            }, {
+              "text" : "1571-12-27"
+            } ]
+          }, {
+            "alias" : "9a1d536d-ea52-30d6-9cba-87a714c5fb02",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7123 Descartes René"
+            }, {
+              "text" : "1596-03-31"
+            } ]
+          }, {
+            "alias" : "6d82cd23-63af-3690-836c-86191d0f9d2a",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7124 Germain Sophie"
+            }, {
+              "text" : "1776-04-01"
+            } ]
+          }, {
+            "alias" : "0ca509bc-5ddc-39c6-aaa9-b5b103c12b0d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7125 Kopernikus Nikolaus"
+            }, {
+              "text" : "1543-02-19"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Blanc"
+        }, {
+          "alias" : "candidates",
+          "max" : "5",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Aucun nom sélectionné"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_TC03_vote_EA",
+      "locale" : "rm-CH",
+      "texts" : {
+        "title" : "Demo Votaziun federala dal pievel",
+        "description" : "Demo Votaziun federala dal pievel",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "questionType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ],
+          "answerType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "Q1",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "Iniziativa dal pievel: Vulais Vus acceptar «l’iniziativa dal pievel A»?"
+          } ],
+          "children" : [ {
+            "alias" : "fde61cea-14e3-3ff7-a81b-d644514f21f2",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Gea"
+            } ]
+          }, {
+            "alias" : "e79d30f1-cb60-3cad-9b6e-5646eff10590",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Na"
+            } ]
+          } ]
+        }, {
+          "alias" : "Q2",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "Cuntraproject: Vulais Vus acceptar il cuntraproject da l'Assamblea federala «cuntraproject B»?"
+          } ],
+          "children" : [ {
+            "alias" : "9b24eab7-d8fc-3321-975c-8c234f54bf90",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Gea"
+            } ]
+          }, {
+            "alias" : "e2a1ed15-f6c0-3964-ab31-c3be7bb3d21c",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Na"
+            } ]
+          } ]
+        }, {
+          "alias" : "Q3",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "Dumonda conclusiva: Sche tant la «iniziativa dal pievel A» sco er il «cuntraproject B» vegnan acceptads dal pievel e dals chantuns: Duai entrar en vigur l'iniziativa dal pievel A ubain il cuntraproject B?"
+          } ],
+          "children" : [ {
+            "alias" : "6139f531-56c0-32a1-b581-302846c14037",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Iniziativa"
+            } ]
+          }, {
+            "alias" : "9dd807e1-50e9-3ca2-92bb-3a68ea328817",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Cuntraproposta"
+            } ]
+          } ]
+        }, {
+          "alias" : "Q4",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "Vulais Vus acceptar il conclus federal «C» dals 28 da favrer 2017?"
+          } ],
+          "children" : [ {
+            "alias" : "32d86e85-2e64-3b56-89e9-df7b3cff0f8f",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Gea"
+            } ]
+          }, {
+            "alias" : "7e175ad0-bb70-3f87-9719-32b4c69fb527",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Na"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "Q1",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Vid"
+        }, {
+          "alias" : "Q2",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Vid"
+        }, {
+          "alias" : "Q3",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Vid"
+        }, {
+          "alias" : "Q4",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Vid"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_TC03_majority_elect_EA",
+      "locale" : "rm-CH",
+      "texts" : {
+        "title" : "Staatsratswahl (2. Wahlgang) (RM)",
+        "description" : "Staatsratswahl (2. Wahlgang) (RM)",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          }, {
+            "name" : "Party name short",
+            "key" : "attribute2"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "5F712CDA-A5A8-11E6-ACC2-00155D28151E",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Sozialdemokratische Partei des Kantons Freiburg (SP)"
+          }, {
+            "text" : "SP"
+          } ],
+          "children" : [ {
+            "alias" : "3c150624-8567-36e6-9429-409c7d8d1a13",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "2 Demierre Anne-Claude"
+            }, {
+              "text" : "1961-08-16+01:00"
+            } ]
+          }, {
+            "alias" : "209dff7d-1f36-3f14-a2c4-98e941fd1d8d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "3 Steiert Jean-François"
+            }, {
+              "text" : "1961-02-07+01:00"
+            } ]
+          } ]
+        }, {
+          "alias" : "71275251-A5B3-11E6-ACC2-00155D28151E",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "SVP - Das Freiburger Bündnis"
+          }, {
+            "text" : "SVP"
+          } ],
+          "children" : [ {
+            "alias" : "ff6822d2-8d46-3ac3-871e-ae2048a7807f",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "1 Peiry Stéphane"
+            }, {
+              "text" : "1970-03-05+01:00"
+            } ]
+          } ]
+        }, {
+          "alias" : "00A49147-A5B4-11E6-ACC2-00155D28151E",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Grüne"
+          }, {
+            "text" : "Grüne"
+          } ],
+          "children" : [ {
+            "alias" : "3c9b89a0-cd2d-3c17-96af-cfc2b3ca0fd8",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "4 Garnier Marie"
+            }, {
+              "text" : "1962-04-10+01:00"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Leer"
+        }, {
+          "alias" : "candidates",
+          "max" : "3",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Nagin num selecziunà"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_TC03_proportional_elect_EA",
+      "locale" : "rm-CH",
+      "texts" : {
+        "title" : "Elecziun da proporz",
+        "description" : "Elecziun da proporz",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          }, {
+            "name" : "Party name short",
+            "key" : "attribute2"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L1",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Glista 1 (RM)"
+          }, {
+            "text" : "L1 (RM)"
+          } ],
+          "children" : [ {
+            "alias" : "a1594175-ddaa-3dd2-9eb6-c4727faa338c",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7101 Chopin Fréderic"
+            }, {
+              "text" : "1810-03-01"
+            } ]
+          }, {
+            "alias" : "536d35fd-af86-318e-a36a-c603f4827e0e",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7102 Vivaldi Antonio"
+            }, {
+              "text" : "1678-03-04"
+            } ]
+          }, {
+            "alias" : "1d6a1c2e-926b-32f5-9e85-46c231f9ba71",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7103 Farrenc Louise"
+            }, {
+              "text" : "1804-05-31"
+            } ]
+          }, {
+            "alias" : "8463349b-681a-3840-883a-3c6b9d76b859",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7104 Strozzi Barbara"
+            }, {
+              "text" : "1619-08-05"
+            } ]
+          }, {
+            "alias" : "8036a112-d6ec-3afb-9a15-dc9f9d5aecbc",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7105 Liszt Franz"
+            }, {
+              "text" : "1811-10-22"
+            } ]
+          } ]
+        }, {
+          "alias" : "L2",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Glista 2 (RM)"
+          }, {
+            "text" : "L2 (RM)"
+          } ],
+          "children" : [ {
+            "alias" : "2dd2c771-00f7-364f-9f1d-8b4c0319cbcd",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7106 King Stephen"
+            }, {
+              "text" : "1947-09-21"
+            } ]
+          }, {
+            "alias" : "7d94ff9d-3bce-3f76-8d4b-bc5be794be1d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7107 Rowling Joanne"
+            }, {
+              "text" : "1965-07-31"
+            } ]
+          }, {
+            "alias" : "642c5e1c-0dd9-3e74-a517-d9d5bb367494",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7108 Tolkien John"
+            }, {
+              "text" : "1892-01-03"
+            } ]
+          }, {
+            "alias" : "e6a06a3c-bb27-3cd0-8f0a-56b8c00cb9f3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7109 Lee Harper"
+            }, {
+              "text" : "1926-04-26"
+            } ]
+          }, {
+            "alias" : "0cfb211b-0f83-3dae-8651-db6b1d600782",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7110 Orwell George"
+            }, {
+              "text" : "1903-06-25"
+            } ]
+          } ]
+        }, {
+          "alias" : "L3",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Glista 3 (RM)"
+          }, {
+            "text" : "L3 (RM)"
+          } ],
+          "children" : [ {
+            "alias" : "8e93d23e-1791-3a9f-8b6b-4b120f681ac3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7111 Jagger Mick"
+            }, {
+              "text" : "1943-07-26"
+            } ]
+          }, {
+            "alias" : "54f0ccd7-d631-36f7-90c7-b479a82d4ac4",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7112 Berry Chuck"
+            }, {
+              "text" : "1926-10-18"
+            } ]
+          }, {
+            "alias" : "ebfe2bd2-755e-3183-ac47-be88aa6f7ca5",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7113 Franklin Aretha"
+            }, {
+              "text" : "1942-03-25"
+            } ]
+          }, {
+            "alias" : "8e7f887a-b478-309c-87be-9ca34330bcdf",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7114 Turner Tina"
+            }, {
+              "text" : "1939-11-26"
+            } ]
+          }, {
+            "alias" : "d200acdc-84fb-32bf-8cef-fb7131505619",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7115 Wonder Stevie"
+            }, {
+              "text" : "1950-05-13"
+            } ]
+          } ]
+        }, {
+          "alias" : "L4",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Glista 4 (RM)"
+          }, {
+            "text" : "L4 (RM)"
+          } ],
+          "children" : [ {
+            "alias" : "cf878505-fa4a-359b-9030-582d7c43c98e",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7116 Newton Isaac"
+            }, {
+              "text" : "1643-01-04"
+            } ]
+          }, {
+            "alias" : "0e83280f-68c6-3961-89b7-19dc889fba53",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7117 Einstein Albert"
+            }, {
+              "text" : "1879-03-14"
+            } ]
+          }, {
+            "alias" : "650934ef-2602-3691-9e86-30eb8fcf3bc3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7118 Curie Marie"
+            }, {
+              "text" : "1867-11-07"
+            } ]
+          }, {
+            "alias" : "a7792448-091c-34dd-9dce-1a194a706f82",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7119 Meitner Lise"
+            }, {
+              "text" : "1968-10-27"
+            } ]
+          }, {
+            "alias" : "6afde4ce-ea6c-310a-af3e-506e265d94a0",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7120 Hawking Stephen"
+            }, {
+              "text" : "1942-01-08"
+            } ]
+          } ]
+        }, {
+          "alias" : "L5",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Glista 5 (RM)"
+          }, {
+            "text" : "L5 (RM)"
+          } ],
+          "children" : [ {
+            "alias" : "60afb6a8-b4b1-32e9-bec3-2a01a6d6eaca",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7121 Galilei Galileo"
+            }, {
+              "text" : "1564-02-15"
+            } ]
+          }, {
+            "alias" : "78044b2a-1a5c-387d-9a06-78687bc962e7",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7122 Keppler Johannes"
+            }, {
+              "text" : "1571-12-27"
+            } ]
+          }, {
+            "alias" : "9a1d536d-ea52-30d6-9cba-87a714c5fb02",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7123 Descartes René"
+            }, {
+              "text" : "1596-03-31"
+            } ]
+          }, {
+            "alias" : "6d82cd23-63af-3690-836c-86191d0f9d2a",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7124 Germain Sophie"
+            }, {
+              "text" : "1776-04-01"
+            } ]
+          }, {
+            "alias" : "0ca509bc-5ddc-39c6-aaa9-b5b103c12b0d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7125 Kopernikus Nikolaus"
+            }, {
+              "text" : "1543-02-19"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Vid"
+        }, {
+          "alias" : "candidates",
+          "max" : "5",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Nagin num selecziunà"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_TC03_vote_EA",
+      "locale" : "it-CH",
+      "texts" : {
+        "title" : "Demo Votazione popolare federale",
+        "description" : "Demo Votazione popolare federale",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "questionType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ],
+          "answerType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "Q1",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "Iniziativa popolare: Volete accettare «l'iniziativa popolare A»?"
+          } ],
+          "children" : [ {
+            "alias" : "fde61cea-14e3-3ff7-a81b-d644514f21f2",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Si"
+            } ]
+          }, {
+            "alias" : "e79d30f1-cb60-3cad-9b6e-5646eff10590",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "No"
+            } ]
+          } ]
+        }, {
+          "alias" : "Q2",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "Controprogetto : Volete accettare il controprogetto dell’Assemblea federale «Controprogetto B»?"
+          } ],
+          "children" : [ {
+            "alias" : "9b24eab7-d8fc-3321-975c-8c234f54bf90",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Si"
+            } ]
+          }, {
+            "alias" : "e2a1ed15-f6c0-3964-ab31-c3be7bb3d21c",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "No"
+            } ]
+          } ]
+        }, {
+          "alias" : "Q3",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "Questione sussidiario: Nel caso in cui popolo e Cantoni accettino sia «l’iniziativa A» sia «il controprogetto B», deve entrare in vigore l’iniziativa popolare A oppure il controprogetto B?"
+          } ],
+          "children" : [ {
+            "alias" : "6139f531-56c0-32a1-b581-302846c14037",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Iniziativa"
+            } ]
+          }, {
+            "alias" : "9dd807e1-50e9-3ca2-92bb-3a68ea328817",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Controprogetto"
+            } ]
+          } ]
+        }, {
+          "alias" : "Q4",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "Volete accettare la decreto federale «C» del 28 febbraio 2017?"
+          } ],
+          "children" : [ {
+            "alias" : "32d86e85-2e64-3b56-89e9-df7b3cff0f8f",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Si"
+            } ]
+          }, {
+            "alias" : "7e175ad0-bb70-3f87-9719-32b4c69fb527",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "No"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "Q1",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Bianco"
+        }, {
+          "alias" : "Q2",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Bianco"
+        }, {
+          "alias" : "Q3",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Bianco"
+        }, {
+          "alias" : "Q4",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Bianco"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_TC03_majority_elect_EA",
+      "locale" : "it-CH",
+      "texts" : {
+        "title" : "Election du Conseil d'Etat (2ème tour) (IT)",
+        "description" : "Election du Conseil d'Etat (2ème tour) (IT)",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          }, {
+            "name" : "Party name short",
+            "key" : "attribute2"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "5F712CDA-A5A8-11E6-ACC2-00155D28151E",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Parti socialiste fribourgeois (PS)"
+          }, {
+            "text" : "PS"
+          } ],
+          "children" : [ {
+            "alias" : "3c150624-8567-36e6-9429-409c7d8d1a13",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "2 Demierre Anne-Claude"
+            }, {
+              "text" : "1961-08-16+01:00"
+            } ]
+          }, {
+            "alias" : "209dff7d-1f36-3f14-a2c4-98e941fd1d8d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "3 Steiert Jean-François"
+            }, {
+              "text" : "1961-02-07+01:00"
+            } ]
+          } ]
+        }, {
+          "alias" : "71275251-A5B3-11E6-ACC2-00155D28151E",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "UDC - L'Entente Fribourgeoise"
+          }, {
+            "text" : "UDC"
+          } ],
+          "children" : [ {
+            "alias" : "ff6822d2-8d46-3ac3-871e-ae2048a7807f",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "1 Peiry Stéphane"
+            }, {
+              "text" : "1970-03-05+01:00"
+            } ]
+          } ]
+        }, {
+          "alias" : "00A49147-A5B4-11E6-ACC2-00155D28151E",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Les Verts"
+          }, {
+            "text" : "Verts"
+          } ],
+          "children" : [ {
+            "alias" : "3c9b89a0-cd2d-3c17-96af-cfc2b3ca0fd8",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "4 Garnier Marie"
+            }, {
+              "text" : "1962-04-10+01:00"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Vide"
+        }, {
+          "alias" : "candidates",
+          "max" : "3",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Nessun nominativo selezionato"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_TC03_proportional_elect_EA",
+      "locale" : "it-CH",
+      "texts" : {
+        "title" : "Elezione secondo il sistema proporzionale",
+        "description" : "Elezione secondo il sistema proporzionale",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          }, {
+            "name" : "Party name short",
+            "key" : "attribute2"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L1",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Lista 1 (IT)"
+          }, {
+            "text" : "L1 (IT)"
+          } ],
+          "children" : [ {
+            "alias" : "a1594175-ddaa-3dd2-9eb6-c4727faa338c",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7101 Chopin Fréderic"
+            }, {
+              "text" : "1810-03-01"
+            } ]
+          }, {
+            "alias" : "536d35fd-af86-318e-a36a-c603f4827e0e",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7102 Vivaldi Antonio"
+            }, {
+              "text" : "1678-03-04"
+            } ]
+          }, {
+            "alias" : "1d6a1c2e-926b-32f5-9e85-46c231f9ba71",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7103 Farrenc Louise"
+            }, {
+              "text" : "1804-05-31"
+            } ]
+          }, {
+            "alias" : "8463349b-681a-3840-883a-3c6b9d76b859",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7104 Strozzi Barbara"
+            }, {
+              "text" : "1619-08-05"
+            } ]
+          }, {
+            "alias" : "8036a112-d6ec-3afb-9a15-dc9f9d5aecbc",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7105 Liszt Franz"
+            }, {
+              "text" : "1811-10-22"
+            } ]
+          } ]
+        }, {
+          "alias" : "L2",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Lista 2 (IT)"
+          }, {
+            "text" : "L2 (IT)"
+          } ],
+          "children" : [ {
+            "alias" : "2dd2c771-00f7-364f-9f1d-8b4c0319cbcd",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7106 King Stephen"
+            }, {
+              "text" : "1947-09-21"
+            } ]
+          }, {
+            "alias" : "7d94ff9d-3bce-3f76-8d4b-bc5be794be1d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7107 Rowling Joanne"
+            }, {
+              "text" : "1965-07-31"
+            } ]
+          }, {
+            "alias" : "642c5e1c-0dd9-3e74-a517-d9d5bb367494",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7108 Tolkien John"
+            }, {
+              "text" : "1892-01-03"
+            } ]
+          }, {
+            "alias" : "e6a06a3c-bb27-3cd0-8f0a-56b8c00cb9f3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7109 Lee Harper"
+            }, {
+              "text" : "1926-04-26"
+            } ]
+          }, {
+            "alias" : "0cfb211b-0f83-3dae-8651-db6b1d600782",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7110 Orwell George"
+            }, {
+              "text" : "1903-06-25"
+            } ]
+          } ]
+        }, {
+          "alias" : "L3",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Lista 3 (IT)"
+          }, {
+            "text" : "L3 (IT)"
+          } ],
+          "children" : [ {
+            "alias" : "8e93d23e-1791-3a9f-8b6b-4b120f681ac3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7111 Jagger Mick"
+            }, {
+              "text" : "1943-07-26"
+            } ]
+          }, {
+            "alias" : "54f0ccd7-d631-36f7-90c7-b479a82d4ac4",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7112 Berry Chuck"
+            }, {
+              "text" : "1926-10-18"
+            } ]
+          }, {
+            "alias" : "ebfe2bd2-755e-3183-ac47-be88aa6f7ca5",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7113 Franklin Aretha"
+            }, {
+              "text" : "1942-03-25"
+            } ]
+          }, {
+            "alias" : "8e7f887a-b478-309c-87be-9ca34330bcdf",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7114 Turner Tina"
+            }, {
+              "text" : "1939-11-26"
+            } ]
+          }, {
+            "alias" : "d200acdc-84fb-32bf-8cef-fb7131505619",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7115 Wonder Stevie"
+            }, {
+              "text" : "1950-05-13"
+            } ]
+          } ]
+        }, {
+          "alias" : "L4",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Lista 4 (IT)"
+          }, {
+            "text" : "L4 (IT)"
+          } ],
+          "children" : [ {
+            "alias" : "cf878505-fa4a-359b-9030-582d7c43c98e",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7116 Newton Isaac"
+            }, {
+              "text" : "1643-01-04"
+            } ]
+          }, {
+            "alias" : "0e83280f-68c6-3961-89b7-19dc889fba53",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7117 Einstein Albert"
+            }, {
+              "text" : "1879-03-14"
+            } ]
+          }, {
+            "alias" : "650934ef-2602-3691-9e86-30eb8fcf3bc3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7118 Curie Marie"
+            }, {
+              "text" : "1867-11-07"
+            } ]
+          }, {
+            "alias" : "a7792448-091c-34dd-9dce-1a194a706f82",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7119 Meitner Lise"
+            }, {
+              "text" : "1968-10-27"
+            } ]
+          }, {
+            "alias" : "6afde4ce-ea6c-310a-af3e-506e265d94a0",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7120 Hawking Stephen"
+            }, {
+              "text" : "1942-01-08"
+            } ]
+          } ]
+        }, {
+          "alias" : "L5",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Lista 5 (IT)"
+          }, {
+            "text" : "L5 (IT)"
+          } ],
+          "children" : [ {
+            "alias" : "60afb6a8-b4b1-32e9-bec3-2a01a6d6eaca",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7121 Galilei Galileo"
+            }, {
+              "text" : "1564-02-15"
+            } ]
+          }, {
+            "alias" : "78044b2a-1a5c-387d-9a06-78687bc962e7",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7122 Keppler Johannes"
+            }, {
+              "text" : "1571-12-27"
+            } ]
+          }, {
+            "alias" : "9a1d536d-ea52-30d6-9cba-87a714c5fb02",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7123 Descartes René"
+            }, {
+              "text" : "1596-03-31"
+            } ]
+          }, {
+            "alias" : "6d82cd23-63af-3690-836c-86191d0f9d2a",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7124 Germain Sophie"
+            }, {
+              "text" : "1776-04-01"
+            } ]
+          }, {
+            "alias" : "0ca509bc-5ddc-39c6-aaa9-b5b103c12b0d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "7125 Kopernikus Nikolaus"
+            }, {
+              "text" : "1543-02-19"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Bianco"
+        }, {
+          "alias" : "candidates",
+          "max" : "5",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Nessun nominativo selezionato"
+        } ]
+      }
+    } ]
+  } ]
+}

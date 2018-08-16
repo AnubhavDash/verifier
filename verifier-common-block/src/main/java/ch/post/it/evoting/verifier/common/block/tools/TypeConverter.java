@@ -38,6 +38,10 @@ public class TypeConverter {
         return new String(b);
     }
 
+    public static BigInteger stringToBigInteger(String s) {
+        return new BigInteger(s);
+    }
+
     public static String bigIntegerToB64String(BigInteger bigInt) {
         return Base64.getEncoder().encodeToString(bigInt.toByteArray());
     }

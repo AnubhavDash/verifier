@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -61,8 +62,8 @@ public class Test07 extends Test {
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
-
-            ElectoralAuthority electoralAuthority = Deserializer.fromJson(inputDirectory, "electoralAuthority\\.json", ElectoralAuthority.class);
+            Path path = inputDirectory.toPath().resolve(Block1TestSuite.PATH_CRYPTO_SETUP);
+            ElectoralAuthority electoralAuthority = Deserializer.fromJson(path.toFile(), "electoralAuthority\\.json", ElectoralAuthority.class);
             String publicKeyB64 = electoralAuthority.getPublicKey();
             byte[] decoded = TypeConverter.base64ToByte(publicKeyB64);
             String publicKey = TypeConverter.byteToString(decoded);

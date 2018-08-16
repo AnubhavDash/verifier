@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
+import java.nio.file.Path;
 
 /**
  * Test03 of Block1, Step isStrongPrime(p, q)
@@ -38,12 +39,13 @@ public class Test03 extends Test {
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
-            EncryptionParameters encryptionParameters = Deserializer.fromJson(inputDirectory, "encryptionParameters\\.json", EncryptionParameters.class);
-            String pString = encryptionParameters.getZpSubgroup().getP();
-            String qString = encryptionParameters.getZpSubgroup().getQ();
+            Path path = inputDirectory.toPath().resolve(Block1TestSuite.PATH_CRYPTO_SETUP);
+            EncryptionParameters encryptionParameters = Deserializer.fromJson(path.toFile(), "encryptionParameters\\.json", EncryptionParameters.class);
+            String pString = encryptionParameters.getP();
+            String qString = encryptionParameters.getQ();
 
-            BigInteger p = TypeConverter.base64ToBigInteger(pString);
-            BigInteger q = TypeConverter.base64ToBigInteger(qString);
+            BigInteger p = TypeConverter.stringToBigInteger(pString);
+            BigInteger q = TypeConverter.stringToBigInteger(qString);
             if (p.equals((q.multiply(BigInteger.valueOf(2))).add(BigInteger.valueOf(1)))) {
                 result.setStatus(Status.OK);
             } else {

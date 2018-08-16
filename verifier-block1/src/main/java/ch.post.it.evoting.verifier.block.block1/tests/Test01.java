@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
+import java.nio.file.Path;
 
 /**
  * Test01 of Block1, Step isPrime(p)
@@ -39,10 +40,11 @@ public class Test01 extends Test {
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
-            EncryptionParameters encryptionParameters = Deserializer.fromJson(inputDirectory, "encryptionParameters\\.json", EncryptionParameters.class);
-            String pString = encryptionParameters.getZpSubgroup().getP();
+            Path path = inputDirectory.toPath().resolve(Block1TestSuite.PATH_CRYPTO_SETUP);
+            EncryptionParameters encryptionParameters = Deserializer.fromJson(path.toFile(), "encryptionParameters\\.json", EncryptionParameters.class);
+            String pString = encryptionParameters.getP();
 
-            BigInteger p = TypeConverter.base64ToBigInteger(pString);
+            BigInteger p = TypeConverter.stringToBigInteger(pString);
             if (MathHelper.isPrime(p)) {
                 result.setStatus(Status.OK);
             } else {

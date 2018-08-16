@@ -9,11 +9,11 @@
 package ch.post.it.evoting.verifier.block.block1.tests;
 
 import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
+import ch.post.it.evoting.verifier.block.block1.diabledTests.Test08;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
