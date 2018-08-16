@@ -73,7 +73,7 @@ public class Test06 extends Test {
             List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
 
             //votations
-            Collection<Integer> errors = ballotBoxes.stream()
+            Collection<Integer> errors = ballotBoxes.parallelStream()
                     .flatMap(bb -> bb.getCountingCircles().stream())
                     .flatMap(cc -> cc.getDomainOfInfluence().stream())
                     .flatMap(doi -> doi.getVotes().stream())
@@ -85,7 +85,7 @@ public class Test06 extends Test {
 
             //lists
             errors.addAll(
-                    ballotBoxes.stream()
+                    ballotBoxes.parallelStream()
                             .flatMap(bb -> bb.getCountingCircles().stream())
                             .flatMap(cc -> cc.getDomainOfInfluence().stream())
                             .flatMap(doi -> doi.getElections().stream())
@@ -96,7 +96,7 @@ public class Test06 extends Test {
 
             //candidates
             errors.addAll(
-                    ballotBoxes.stream()
+                    ballotBoxes.parallelStream()
                             .flatMap(bb -> bb.getCountingCircles().stream())
                             .flatMap(cc -> cc.getDomainOfInfluence().stream())
                             .flatMap(doi -> doi.getElections().stream())

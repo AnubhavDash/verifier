@@ -9,10 +9,10 @@ public class PathHelper {
     }
 
     public static File[] listDirectories(Path path) {
-        if (path.toFile().isDirectory()) {
+        if (path != null && path.toFile().isDirectory()) {
             return path.toFile().listFiles(((subDir, name) -> subDir.isDirectory()));
         } else {
-            throw new IllegalArgumentException("Given path is not a directory");
+            throw new IllegalArgumentException("Given path is not a directory :"+path);
         }
     }
 }

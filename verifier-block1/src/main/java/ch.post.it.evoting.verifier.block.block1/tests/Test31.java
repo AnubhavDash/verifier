@@ -55,7 +55,7 @@ public class Test31 extends Test {
             int votersCount = configuration.getRegister().getVoter().size();
 
             // number of lines
-            Path votingCardSetsPath = path.resolve("voting_card_sets");
+            Path votingCardSetsPath = path.resolve(Block1TestSuite.PATH_VOTING_CARD_SETS);
 
             final int[] linesCount = {0};
             Stream.of(PathHelper.listDirectories(votingCardSetsPath)).forEach(f -> {

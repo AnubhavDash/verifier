@@ -42,7 +42,7 @@ public class Deserializer {
         if (file == null || file.length == 0) {
             throw new FileNotFoundException(filenamePattern);
         } else if (file.length > 1) {
-            throw new InvalidParameterException("more than one file found, filename is not specific enough");
+            throw new InvalidParameterException(String.format("more than one file found, filename is not specific enough. Dir:%s filenamePattern:%s ",inputDirectory, filenamePattern));
         } else {
             return file[0];
         }
@@ -56,17 +56,5 @@ public class Deserializer {
         cde.setValue1(array[0]);
         cde.setValue2(array[1]);
         return cde;
-    };
-
-    public static Function<String[], String> toLineByLine = array -> {
-        /*
-        if (array == null || array.length != 2) {
-            throw new IllegalArgumentException("Wrong array input format");
-        }
-        CredentialDataElement cde = new CredentialDataElement();
-        cde.setValue1(array[0]);
-        cde.setValue2(array[1]);
-        */
-        return Arrays.toString(array);
     };
 }
