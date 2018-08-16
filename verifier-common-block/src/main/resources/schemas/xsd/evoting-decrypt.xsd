@@ -1,87 +1,120 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.scytl.com/xmlns/decrypt/1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:element name="results" type="ns:resultsType" xmlns:ns="http://www.scytl.com/xmlns/decrypt/1"/>
-  <xs:complexType name="domainOfInfluenceType">
-    <xs:sequence>
-      <xs:element type="xs:string" name="domainOfInfluenceIdentification"/>
-      <xs:element type="ns:voteType" name="vote" xmlns:ns="http://www.scytl.com/xmlns/decrypt/1"/>
-      <xs:element type="ns:electionType" name="election" maxOccurs="unbounded" minOccurs="0" xmlns:ns="http://www.scytl.com/xmlns/decrypt/1"/>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="countingCircleType">
-    <xs:sequence>
-      <xs:element type="xs:string" name="countingCircleIdentification"/>
-      <xs:element type="ns:domainOfInfluenceType" name="domainOfInfluence" xmlns:ns="http://www.scytl.com/xmlns/decrypt/1"/>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="resultsType">
-    <xs:sequence>
-      <xs:element type="xs:string" name="contestIdentification"/>
-      <xs:element type="xs:string" name="castBallots"/>
-      <xs:element type="ns:ballotsBoxType" name="ballotsBox" xmlns:ns="http://www.scytl.com/xmlns/decrypt/1"/>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="electionType">
-    <xs:sequence>
-      <xs:element name="electionIdentification">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="Eidgenoessische_Wahlen"/>
-            <xs:enumeration value="majorz_wahl"/>
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:element>
-      <xs:element type="ns:ballotType" name="ballot" maxOccurs="unbounded" minOccurs="0" xmlns:ns="http://www.scytl.com/xmlns/decrypt/1"/>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="ballotsBoxType">
-    <xs:sequence>
-      <xs:element type="xs:string" name="ballotBoxIdentification"/>
-      <xs:element type="ns:countingCircleType" name="countingCircle" xmlns:ns="http://www.scytl.com/xmlns/decrypt/1"/>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="ballotType">
-    <xs:sequence>
-      <xs:element name="chosenAnswerIdentification" maxOccurs="unbounded" minOccurs="0">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="9dd807e1-50e9-3ca2-92bb-3a68ea328817"/>
-            <xs:enumeration value="e79d30f1-cb60-3cad-9b6e-5646eff10590"/>
-            <xs:enumeration value="e2a1ed15-f6c0-3964-ab31-c3be7bb3d21c"/>
-            <xs:enumeration value="7e175ad0-bb70-3f87-9719-32b4c69fb527"/>
-            <xs:enumeration value="9b24eab7-d8fc-3321-975c-8c234f54bf90"/>
-            <xs:enumeration value="fde61cea-14e3-3ff7-a81b-d644514f21f2"/>
-            <xs:enumeration value="2311429a-9da8-3b12-9f58-6e15a4853569"/>
-            <xs:enumeration value="00b9daa3-32fa-3cb4-8d02-38d8527d09c4"/>
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:element>
-      <xs:element name="chosenListIdentification" minOccurs="0">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="L5"/>
-            <xs:enumeration value="L1"/>
-            <xs:enumeration value="List99"/>
-            <xs:enumeration value="76892ECC-A4D5-11E6-ACC2-00155D28151E"/>
-            <xs:enumeration value="16123755-A5A8-11E6-ACC2-00155D28151E"/>
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:element>
-      <xs:element type="xs:string" name="chosenCandidateListIdentification" maxOccurs="unbounded" minOccurs="0"/>
-      <xs:element name="chosenWriteInsCandidateValue" minOccurs="0">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="émiilié äöüustra"/>
-            <xs:enumeration value="Hausi Hansàéé"/>
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:element>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="voteType">
-    <xs:sequence>
-      <xs:element type="xs:string" name="voteIdentification"/>
-      <xs:element type="ns:ballotType" name="ballot" maxOccurs="unbounded" minOccurs="0" xmlns:ns="http://www.scytl.com/xmlns/decrypt/1"/>
-    </xs:sequence>
-  </xs:complexType>
+<!-- edited with XMLSpy v2012 sp1 (http://www.altova.com) by Die Schweizerische Post (Die Schweizerische Post) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://www.evoting.ch/xmlns/decrypt/1" xmlns:decrypt="http://www.evoting.ch/xmlns/decrypt/1" targetNamespace="http://www.evoting.ch/xmlns/decrypt/1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="results">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="contestIdentification">
+					<xs:simpleType>
+						<xs:restriction base="xs:token">
+							<xs:minLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="castBallots" type="xs:nonNegativeInteger"/>
+				<xs:element name="ballotsBox" type="decrypt:BallotsBoxType" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="BallotsBoxType">
+		<xs:sequence>
+			<xs:element name="ballotboxIdentification">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="countingCircle" type="decrypt:CountingCircleType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CountingCircleType">
+		<xs:sequence>
+			<xs:element name="countingCircleIdentification">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="domainOfInfluence" type="ns1:DomainOfInfluenceType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DomainOfInfluenceType">
+		<xs:sequence>
+			<xs:element name="domainOfInfluenceIdentification">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="election" type="decrypt:ElectionType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="vote" type="decrypt:VoteType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ElectionType">
+		<xs:sequence>
+			<xs:element name="electionIdentification">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ballot" type="decrypt:ElectionBallotType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ElectionBallotType">
+		<xs:sequence>
+			<xs:element name="chosenListIdentification" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="chosenCandidateListIdentification" minOccurs="0" maxOccurs="unbounded">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="chosenCandidateIdentification" minOccurs="0" maxOccurs="unbounded">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="chosenWriteInsCandidateValue" minOccurs="0" maxOccurs="unbounded">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VoteType">
+		<xs:sequence>
+			<xs:element name="voteIdentification" type="xs:token"/>
+			<xs:element name="ballot" type="decrypt:VoteBallotType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VoteBallotType">
+		<xs:sequence>
+			<xs:element name="chosenAnswerIdentification" maxOccurs="unbounded">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
 </xs:schema>
