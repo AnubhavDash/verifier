@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -46,6 +47,15 @@ import java.util.stream.StreamSupport;
 public class Test01 extends Test {
 
     private static final Logger log = Logger.getLogger(Test01.class);
+    private boolean onSuccess;
+
+    public boolean isOnSuccess() {
+        return onSuccess;
+    }
+
+    public void setOnSuccess(boolean onSuccess) {
+        this.onSuccess = onSuccess;
+    }
 
     @Override
     public TestDefinition getTestDefinition() {
@@ -112,7 +122,8 @@ public class Test01 extends Test {
                                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
                         // Finally do the check
-                        List<Boolean> resultList = primesCountMap.entrySet().stream()
+                        setOnSuccess(
+                                primesCountMap.entrySet().stream()
                                 .map(e -> {
                                     int prime = Integer.parseInt(e.getKey());
                                     return prime;
@@ -121,7 +132,9 @@ public class Test01 extends Test {
                                     long aliasCount = aliasCountMap.get(alias);
                                     long primeCount = primesCountMap.get(prime.toString());
                                     return aliasCount == primeCount;
-                                }).collect(Collectors.toList());
+                                }).collect(Collectors.toList())
+                                .stream().allMatch(aBoolean -> aBoolean)
+                        );
 
                     } catch (Exception e) {
                         throw new Test01WrapperException(e);
@@ -129,7 +142,10 @@ public class Test01 extends Test {
                 });
 
             });
-            result.setStatus(Status.OK);
+
+            if(isOnSuccess()){
+                result.setStatus(Status.OK);
+            }
         } catch (Exception e) {
             result.setStatus(Status.NOK);
             if (e instanceof Test01WrapperException) {
