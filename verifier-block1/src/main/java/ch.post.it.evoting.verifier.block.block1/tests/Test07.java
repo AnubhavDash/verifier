@@ -50,7 +50,7 @@ public class Test07 extends Test {
 
     // common method used to verify if a vo is in error
     // if Euler criterion is not equals to 1 there is an error
-    private boolean isBigIntInError(BigInteger vo, BigInteger p){
+    private boolean isBigIntInError(BigInteger vo, BigInteger p) {
         boolean inError = false;
         BigInteger exponent = (p.subtract(BigInteger.ONE)).divide(new BigInteger("2"));
         BigInteger ec = vo.modPow(exponent, p);
@@ -70,15 +70,14 @@ public class Test07 extends Test {
 
             BigInteger p = extractPFromPublicKey(publicKey);
             List<String> elements = extractElementsFromPublicKey(publicKey);
-            if(elements.isEmpty()){
+            if (elements.isEmpty()) {
                 throw new Exception("No such Elements was found in the publicKey");
-            }
-            else{
+            } else {
                 List<String> errors = elements.stream()
-                                                .map(element -> TypeConverter.byteToBigInteger(TypeConverter.base64ToByte(element)))
-                                                .filter(bigInteger -> isBigIntInError(bigInteger, p))
-                                                .map(bi -> TypeConverter.byteToBase64String(TypeConverter.bigIntegerToByte(bi)))
-                                                .collect(Collectors.toList());
+                        .map(element -> TypeConverter.byteToBigInteger(TypeConverter.base64ToByte(element)))
+                        .filter(bigInteger -> isBigIntInError(bigInteger, p))
+                        .map(bi -> TypeConverter.byteToBase64String(TypeConverter.bigIntegerToByte(bi)))
+                        .collect(Collectors.toList());
                 if (errors.isEmpty()) {
                     result.setStatus(Status.OK);
                 } else {
@@ -88,7 +87,7 @@ public class Test07 extends Test {
             }
         } catch (Exception e) {
             result.setStatus(Status.NOK);
-            if(e instanceof FileNotFoundException){
+            if (e instanceof FileNotFoundException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message"));
             } else {
                 log.error("Unexpected error", e);
@@ -99,29 +98,23 @@ public class Test07 extends Test {
     }
 
     private BigInteger extractPFromPublicKey(String publicKey) {
-        List<BigInteger> result = new ArrayList<>();
-        if(publicKey != null && !publicKey.isEmpty() && publicKey.contains("p")){
-            String[] split = publicKey.split("\"");
-            int indexOf = Arrays.asList(split).indexOf("p");
+        int index = publicKey.toLowerCase().indexOf("\"p\"");
 
-            result.addAll(IntStream
-                    .range(0, split.length)
-                    .filter(i -> (i == indexOf + 2))
-                    .mapToObj(i -> TypeConverter.byteToBigInteger(TypeConverter.base64ToByte(split[i])))
-                    .collect(Collectors.toList()));
-        }
-        return result.get(0);
+        int startDoubleQuote = publicKey.indexOf("\"", index + 4);
+        int endDoubleQuote = publicKey.indexOf("\"", startDoubleQuote + 2);
+
+        return TypeConverter.base64ToBigInteger(publicKey.substring(startDoubleQuote + 1, endDoubleQuote));
     }
 
     private List<String> extractElementsFromPublicKey(String publicKey) {
         List<String> result = new ArrayList<>();
-        if(publicKey != null && !publicKey.isEmpty() && publicKey.contains("elements")){
+        if (publicKey != null && !publicKey.isEmpty() && publicKey.contains("elements")) {
             String[] split = publicKey.split("\"");
             int indexOf = Arrays.asList(split).indexOf("elements");
 
             result.addAll(IntStream
                     .range(0, split.length)
-                    .filter(i -> (i > indexOf && i % 2 == 1 ))
+                    .filter(i -> (i > indexOf && i % 2 == 1))
                     .mapToObj(i -> split[i])
                     .collect(Collectors.toList()));
         }
