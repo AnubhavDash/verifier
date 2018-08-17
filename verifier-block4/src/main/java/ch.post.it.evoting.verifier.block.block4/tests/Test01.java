@@ -69,6 +69,7 @@ public class Test01 extends Test {
             ballotBoxes.forEach(ballotBox -> {
                 String ballotBoxId = ballotBox.getId();
                 String ballotBoxAuthId = ballotBox.getAuthId();
+
                 ballotBox.getCountingCircles().forEach(countingCircle -> {
                     try {
                         String countingCircleId = countingCircle.getId();
@@ -154,7 +155,7 @@ public class Test01 extends Test {
         //TODO get the correct file regarding the countingCircleId
         Path path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_BALLOTBOXES).resolve(ballotboxId);
         Iterable<List<String>> iterable = Deserializer.fromCsv(path.toFile(),
-                "decompressedVotes\\.csv", ";", array -> Arrays.asList(array));
+                "decompressedVotes\\.csv", ";", Arrays::asList);
 
         return StreamSupport.stream(iterable.spliterator(), false)
                 .flatMap(l -> l.stream())
