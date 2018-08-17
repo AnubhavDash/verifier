@@ -15,7 +15,6 @@ import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.dto.BallotBox;
 import ch.post.it.evoting.verifier.dto.DataConfigEE;
@@ -23,6 +22,7 @@ import ch.post.it.evoting.verifier.dto.Option;
 import com.scytl.xmlns.decrypt._1.Results;
 import org.apache.log4j.Logger;
 
+import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -32,9 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
@@ -47,15 +45,7 @@ import java.util.stream.StreamSupport;
 public class Test01 extends Test {
 
     private static final Logger log = Logger.getLogger(Test01.class);
-    private boolean onSuccess;
 
-    public boolean isOnSuccess() {
-        return onSuccess;
-    }
-
-    public void setOnSuccess(boolean onSuccess) {
-        this.onSuccess = onSuccess;
-    }
 
     @Override
     public TestDefinition getTestDefinition() {
@@ -100,15 +90,15 @@ public class Test01 extends Test {
                                 .flatMap(doi -> doi.getElections().stream())
                                 .flatMap(e -> e.getLists().stream())
                                 .flatMap(l -> l.getCandidatePositions().stream())
-                                .flatMap(cp -> cp.getPrimeNumber().stream().map(prime -> new AbstractMap.SimpleEntry<>(prime, cp.getAlias())))
+                                .flatMap(cp -> cp.getPrimeNumber().stream().map(prime -> new AbstractMap.SimpleEntry<>(prime, cp.getCandidateListId())))
                                 .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue))
                         );
                         //TODO candidates without list
 
                         //2 Generate map<prime, count>, but before retrieve the correct encrypted file
                         Map<String, Long> primesCountMap = getCorrectFileAndExtractPrimesCount(inputDirectory, ballotBoxId, countingCircleId);
-                        //3 Generate map<alias, count>
 
+                        //3 Generate map<alias, count>
                         final Path resultsPath = inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS);
                         Results decryptResult = decryptResult = Deserializer.fromXml(resultsPath.toFile(), "evoting-decrypt_.*\\.xml", Results.class);
                         Map<String, Long> aliasCountMap = decryptResult.getBallotsBox().stream()
@@ -122,38 +112,35 @@ public class Test01 extends Test {
                                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
                         // Finally do the check
-                        setOnSuccess(
-                                primesCountMap.entrySet().stream()
-                                .map(e -> {
-                                    int prime = Integer.parseInt(e.getKey());
-                                    return prime;
-                                }).map(prime -> {
-                                    String alias = primeAliasMap.get(prime);
-                                    long aliasCount = aliasCountMap.get(alias);
-                                    long primeCount = primesCountMap.get(prime.toString());
-                                    return aliasCount == primeCount;
-                                }).collect(Collectors.toList())
-                                .stream().allMatch(aBoolean -> aBoolean)
-                        );
-
-                    } catch (Exception e) {
+                        aliasCountMap.forEach((alias, aliasCount) -> {
+                            Long nb = primeAliasMap.entrySet().stream()
+                                    .filter(e -> e.getValue().equals(alias))
+                                    .map(e -> e.getKey())
+                                    .mapToLong(p -> primesCountMap.get(p.toString()))
+                                    .sum();
+                            if (!nb.equals(aliasCount)) {
+                                throw new Test01FailException(alias);
+                            }
+                        });
+                    } catch (IOException | JAXBException e) {
                         throw new Test01WrapperException(e);
                     }
                 });
 
             });
 
-            if(isOnSuccess()){
-                result.setStatus(Status.OK);
-            }
+            result.setStatus(Status.OK);
+
         } catch (Exception e) {
             result.setStatus(Status.NOK);
             if (e instanceof Test01WrapperException) {
                 //unwrap the wrapped exception
                 e = (Exception) e.getCause();
             }
-
-            if (e instanceof FileNotFoundException) {
+            if (e instanceof Test01FailException) {
+                result.setStatus(Status.NOK);
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test01.nok.message", ((Test01FailException) e).getAliasInError()));
+            } else if (e instanceof FileNotFoundException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message"));
             } else {
                 log.error("Unexpected error", e);
@@ -177,6 +164,18 @@ public class Test01 extends Test {
     class Test01WrapperException extends RuntimeException {
         public Test01WrapperException(Exception root) {
             super(root);
+        }
+    }
+
+    class Test01FailException extends RuntimeException {
+        private String aliasInError;
+
+        public Test01FailException(String aliasInError) {
+            this.aliasInError = aliasInError;
+        }
+
+        public String getAliasInError() {
+            return aliasInError;
         }
     }
 }

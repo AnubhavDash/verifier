@@ -34,11 +34,8 @@ public class Test01Test {
 
     @Test
     public void executeTestNOK() {
-        /*
-
         TestResult testResult = new Test01().executeTest(new File(getClass().getResource("/Test01/NOK").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
-         */
     }
 }
