@@ -23,9 +23,7 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.file.Path;
-import java.util.stream.Stream;
 
 /**
  * Test31 of Block1, Step checkNumberCredentials()
@@ -57,19 +55,15 @@ public class Test31 extends Test {
             // number of lines
             Path votingCardSetsPath = path.resolve(Block1TestSuite.PATH_VOTING_CARD_SETS);
 
-            final int[] linesCount = {0};
-            Stream.of(PathHelper.listDirectories(votingCardSetsPath)).forEach(f -> {
-                try {
-                    Iterable<CredentialDataElement> iterable = Deserializer.fromCsv(f, "credentialData\\.csv", Deserializer.toCredentialDataElement);
-                    for (CredentialDataElement credentialDataElement : iterable) {
-                        linesCount[0]++;
-                    }
-                } catch (IOException e) {
-                    throw new Test31WrapperException(e);
+            int linesCount = 0;
+            for (File f : PathHelper.listDirectories(votingCardSetsPath)) {
+                Iterable<CredentialDataElement> iterable = Deserializer.fromCsv(f, "credentialData\\.csv", Deserializer.toCredentialDataElement);
+                for (CredentialDataElement credentialDataElement : iterable) {
+                    linesCount++;
                 }
-            });
+            }
 
-            if (votersCount == linesCount[0]) {
+            if (votersCount == linesCount) {
                 result.setStatus(Status.OK);
             } else {
                 result.setStatus(Status.NOK);
@@ -79,10 +73,6 @@ public class Test31 extends Test {
         } catch (Exception e) {
             result.setStatus(Status.NOK);
 
-            if (e instanceof Test31WrapperException) {
-                e = (Exception) e.getCause();
-            }
-
             if (e instanceof FileNotFoundException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test31.file.not.found.message"));
             } else {
@@ -91,11 +81,5 @@ public class Test31 extends Test {
             }
         }
         return result;
-    }
-
-    class Test31WrapperException extends RuntimeException {
-        public Test31WrapperException(Exception e) {
-            super(e);
-        }
     }
 }

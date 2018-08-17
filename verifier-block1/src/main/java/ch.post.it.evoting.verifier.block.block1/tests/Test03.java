@@ -46,7 +46,7 @@ public class Test03 extends Test {
 
             BigInteger p = TypeConverter.stringToBigInteger(pString);
             BigInteger q = TypeConverter.stringToBigInteger(qString);
-            if (p.equals((q.multiply(BigInteger.valueOf(2))).add(BigInteger.valueOf(1)))) {
+            if (p.equals((q.multiply(BigInteger.valueOf(2))).add(BigInteger.ONE))) {
                 result.setStatus(Status.OK);
             } else {
                 result.setStatus(Status.NOK);

@@ -1,0 +1,105 @@
+{
+  "electionEvent" : {
+    "id" : "9634e553cb5e4d93b10ddecf1b9f83bc",
+    "alias" : "verifier_test_vote",
+    "ballotBoxes" : [ {
+      "id" : "514f7615916a42419c1c351a53dfa79e",
+      "alias" : "FR-CH-1|FR-MU-2309",
+      "authId" : "692cf97f-aabc-3e70-bd42-10204b3dc995",
+      "vcsId" : "549e3fce19224218873d5872c8ebc36c",
+      "vcsAlias" : "vcs_FR-CH-1|FR-MU-2309",
+      "votingCardsGenerated" : 99,
+      "countingCircles" : [ {
+        "id" : "FR-MU-2309",
+        "domainOfInfluence" : [ {
+          "id" : "21611090-4DB4-11E6-89C7-00155D28151E",
+          "votes" : [ {
+            "id" : "5aef6e8272c3453fad7db8796feb0957",
+            "alias" : "vote-01",
+            "questions" : [ {
+              "alias" : "Q1",
+              "options" : [ {
+                "id" : "233126ad5ad14278b2e1acb21d0cdb30",
+                "alias" : "fde61cea-14e3-3ff7-a81b-d644514f21f2",
+                "primeNumber" : 14303
+              }, {
+                "id" : "bbf4cde76fbd4c0ebad8902b532990bb",
+                "alias" : "e79d30f1-cb60-3cad-9b6e-5646eff10590",
+                "primeNumber" : 14327
+              }, {
+                "id" : "57703816cf5f42118cd374afe2c76232",
+                "alias" : "ab638852-b787-3878-849a-3e6ca1c02ac0",
+                "primeNumber" : 143249
+              } ]
+            }, {
+              "alias" : "Q2",
+              "options" : [ {
+                "id" : "e2e67714d34245e3a5180ee2f65fa2a4",
+                "alias" : "9b24eab7-d8fc-3321-975c-8c234f54bf90",
+                "primeNumber" : 143093
+              }, {
+                "id" : "a982fe98e60f4b9099188b67e8ff3933",
+                "alias" : "e2a1ed15-f6c0-3964-ab31-c3be7bb3d21c",
+                "primeNumber" : 143141
+              }, {
+                "id" : "7362f36ac8ca4d6cab712ee0160f4514",
+                "alias" : "2311429a-9da8-3b12-9f58-6e15a4853569",
+                "primeNumber" : 14321
+              } ]
+            }, {
+              "alias" : "Q3",
+              "options" : [ {
+                "id" : "a1884d1cc2bb40bb8086b11e394ba29d",
+                "alias" : "6139f531-56c0-32a1-b581-302846c14037",
+                "primeNumber" : 143263
+              }, {
+                "id" : "6d682ac0325740098592a011d1cb5042",
+                "alias" : "9dd807e1-50e9-3ca2-92bb-3a68ea328817",
+                "primeNumber" : 143159
+              }, {
+                "id" : "172c292e11b64898a3c53e2c3ada9ae4",
+                "alias" : "8f46229f-53be-3b3b-8b3d-72e7cb88f92a",
+                "primeNumber" : 143137
+              } ]
+            }, {
+              "alias" : "Q4",
+              "options" : [ {
+                "id" : "7fa61e11695e4e2d9c835a554179f1a4",
+                "alias" : "32d86e85-2e64-3b56-89e9-df7b3cff0f8f",
+                "primeNumber" : 143063
+              }, {
+                "id" : "a4f4c0528c34469a8e96880fc3ba6cb8",
+                "alias" : "7e175ad0-bb70-3f87-9719-32b4c69fb527",
+                "primeNumber" : 143177
+              }, {
+                "id" : "ea79159ca79c4c5b9203d08e32dc2843",
+                "alias" : "00b9daa3-32fa-3cb4-8d02-38d8527d09c4",
+                "primeNumber" : 143257
+              } ]
+            } ]
+          }, {
+            "id" : "a3c5bb0fddb34b4ebb7c1e632b63ae7c",
+            "alias" : "VOTE_DE344194-0F01-11E7-B71C-00155D28151F",
+            "questions" : [ {
+              "alias" : "6DAD50E7-07D6-11E7-B602-00155D28151E",
+              "options" : [ {
+                "id" : "d889d262b787441187e7d51d4536f522",
+                "alias" : "8704c55d-ba67-3d32-8caf-bf91e2694755",
+                "primeNumber" : 143413
+              }, {
+                "id" : "e657ca6e7f0d4ea18883a1e2d81ceb62",
+                "alias" : "8992d450-d26e-3818-8db5-db390a4bae45",
+                "primeNumber" : 143401
+              }, {
+                "id" : "03c5f820cf2b4529891faf3233a1fa18",
+                "alias" : "f26a04ef-ff81-3fba-ac10-855641fd0c25",
+                "primeNumber" : 143387
+              } ]
+            } ]
+          } ],
+          "elections" : [ ]
+        } ]
+      } ]
+    } ]
+  }
+}
