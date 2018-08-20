@@ -29,6 +29,7 @@
         <module>verifier-block4</module>
         <module>verifier-backend</module>
         <module>verifier-frontend</module>
+        <module>verifier-console</module>
     </modules>
 
 

@@ -1,0 +1,184 @@
+[
+  {
+    "id": "01-01",
+    "testId": 1,
+    "blockId": 1,
+    "name": "isPrime(p)",
+    "category": "INTEGRITY",
+    "description": {
+      "DE": "DE: Check that p is prime",
+      "FR": "FR: Contrôler que p est un nombre premier"
+    },
+    "status": null,
+    "message": null
+  },
+  {
+    "id": "01-02",
+    "testId": 2,
+    "blockId": 1,
+    "name": "isPrime(q)",
+    "category": "INTEGRITY",
+    "description": {
+      "DE": "DE: Check that q is prime",
+      "FR": "FR: Contrôler que q est un nombre premier"
+    },
+    "status": null,
+    "message": null
+  },
+  {
+    "id": "01-03",
+    "testId": 3,
+    "blockId": 1,
+    "name": "isStrongPrime(p,q)",
+    "category": "INTEGRITY",
+    "description": {
+      "DE": "DE: Check that p is 2q + 1",
+      "FR": "FR: Contrôler que p = 2q + 1"
+    },
+    "status": null,
+    "message": null
+  },
+  {
+    "id": "01-04",
+    "testId": 4,
+    "blockId": 1,
+    "name": "hasSufficientSize(p)",
+    "category": "INTEGRITY",
+    "description": {
+      "DE": "DE: Check that bitlength(p) >= 2048",
+      "FR": "FR: Contrôler que bitlength(p) >= 2048"
+    },
+    "status": null,
+    "message": null
+  },
+  {
+    "id": "01-05",
+    "testId": 5,
+    "blockId": 1,
+    "name": "isPrime([vo])",
+    "category": "INTEGRITY",
+    "description": {
+      "DE": "DE: Check that the voting options [vo] are prime",
+      "FR": "FR: Contrôler que les options de vote [vo] sont premier"
+    },
+    "status": null,
+    "message": null
+  },
+  {
+    "id": "01-06",
+    "testId": 6,
+    "blockId": 1,
+    "name": "isQuadraticResidue([vo])",
+    "category": "INTEGRITY",
+    "description": {
+      "DE": "DE: Check that the voting options are quadratic residues of the group",
+      "FR": "FR: Check that the voting options are quadratic residues of the group"
+    },
+    "status": null,
+    "message": null
+  },
+  {
+    "id": "01-07",
+    "testId": 7,
+    "blockId": 1,
+    "name": "isMemberOfGroup(pk_ea)",
+    "category": "INTEGRITY",
+    "description": {
+      "DE": "DE: Check that components of the public key of the electoral authorities are part of the group q",
+      "FR": "FR: Check that components of the public key of the electoral authorities are part of the group q"
+    },
+    "status": null,
+    "message": null
+  },
+  {
+    "id": "01-09",
+    "testId": 9,
+    "blockId": 1,
+    "name": "checkPrimeNumberOptions([vo])",
+    "category": "INTEGRITY",
+    "description": {
+      "DE": "DE: Check that the number of primer numbers corresponds to the number of voting options and there are no prime numbers repeated",
+      "FR": "FR: Check that the number of primer numbers corresponds to the number of voting options and there are no prime numbers repeated"
+    },
+    "status": null,
+    "message": null
+  },
+  {
+    "id": "01-31",
+    "testId": 31,
+    "blockId": 1,
+    "name": "checkNumberCredentials()",
+    "category": "COMPLETENESS",
+    "description": {
+      "DE": "DE: Check that the number of credentials corresponds to the number of voters in the electoral roll",
+      "FR": "FR: Check that the number of credentials corresponds to the number of voters in the electoral roll"
+    },
+    "status": null,
+    "message": null
+  },
+  {
+    "id": "01-71",
+    "testId": 71,
+    "blockId": 1,
+    "name": "checkSigEch0045",
+    "category": "AUTHENTICITY",
+    "description": {
+      "DE": "DE: Verify the signature of the eCH-0045 file",
+      "FR": "FR: Verify the signature of the eCH-0045 file"
+    },
+    "status": null,
+    "message": null
+  },
+  {
+    "id": "01-72",
+    "testId": 72,
+    "blockId": 1,
+    "name": "checkSigEch015X",
+    "category": "AUTHENTICITY",
+    "description": {
+      "DE": "DE: Verify the signature of the eCH-0157 or eCH-0159",
+      "FR": "FR: Verify the signature of the eCH-0157 or eCH-0159"
+    },
+    "status": null,
+    "message": null
+  },
+  {
+    "id": "01-73",
+    "testId": 73,
+    "blockId": 1,
+    "name": "checkSigConfig",
+    "category": "AUTHENTICITY",
+    "description": {
+      "DE": "DE: Verify the signature of the configurationanonymized.xml",
+      "FR": "FR: Verify the signature of the configurationanonymized.xml"
+    },
+    "status": null,
+    "message": null
+  },
+  {
+    "id": "01-74",
+    "testId": 74,
+    "blockId": 1,
+    "name": "checkSigDataConfig",
+    "category": "AUTHENTICITY",
+    "description": {
+      "DE": "DE: Verify the signature of the dataConfig.json",
+      "FR": "FR: Verify the signature of the dataConfig.json"
+    },
+    "status": null,
+    "message": null
+  },
+  {
+    "id": "04-01",
+    "testId": 1,
+    "blockId": 4,
+    "name": "checkOptionsMapping",
+    "category": "CONSISTENCY",
+    "description": {
+      "DE": "DE: Verify that the prime numbers were mapped to the correct answers / candidates / lists in evoting-decrypt.xml",
+      "FR": "FR: Verify that the prime numbers were mapped to the correct answers / candidates / lists in evoting-decrypt.xml"
+    },
+    "status": null,
+    "message": null
+  }
+]

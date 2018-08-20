@@ -8,10 +8,8 @@
 
 package ch.post.it.evoting.verifier.block.block4.tests;
 
-import ch.evoting.xmlns.config._3.AuthorizationType;
+import ch.ech.xmlns.ech_0110._3.Delivery;
 import ch.evoting.xmlns.config._3.Configuration;
-import ch.evoting.xmlns.config._3.StandardAnswerType;
-import ch.evoting.xmlns.config._3.TiebreakAnswerType;
 import ch.post.it.evoting.verifier.block.block4.Block4TestSuite;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
@@ -20,23 +18,20 @@ import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.dto.BallotBox;
-import ch.post.it.evoting.verifier.dto.DataConfigEE;
-import ch.post.it.evoting.verifier.dto.Option;
 import com.scytl.xmlns.decrypt._1.Results;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 /**
  * /**
@@ -64,50 +59,114 @@ public class Test02 extends Test {
     @Override
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
-        try{
-            Path path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_ELECTION_SETUP);
-            Configuration configuration = Deserializer.fromXml(path.toFile(), "configuration-anonymized.xml", Configuration.class);
-
+        try {
             // 1, config file => map<Tuple<Qid, Atype>, answerId> => map1
             // 2, decrypt file => map<countingCircle, map<answerId, count>> => map2
             // 3, e110 file foreach cc do a loop for each Question get the count
             // ask the map1 and get the right answerId
             // check the count by asking map2
 
-
             //1, config file => map<Tuple<Qid, Atype>, answerId> => map1
-            Map<Map<String, String>, String> map1 = new HashMap<>();
-            configuration.getContest().getVoteInformation().forEach
-                    (vi -> {
-                        String id = vi.getVote().getVoteIdentification();
-                        vi.getVote().getBallot().forEach
-                                (b -> {
-                                    //standard ballot
-                                    if (b.getStandardBallot() != null) {
-                                        String qId = b.getStandardBallot().getQuestionIdentification();
-                                        b.getStandardBallot().getAnswer().forEach( a -> {
-                                                    String aType = a.getStandardAnswerType();
-                                                    String answerId = a.getAnswerIdentification();
-                                                    AbstractMap.SimpleEntry<String, String> se = new AbstractMap.SimpleEntry<>(qId, aType);
-                                                    AbstractMap.SimpleEntry<AbstractMap.SimpleEntry<String, String>, String> se2 = new AbstractMap.SimpleEntry<>(se, answerId);
-                                                    // TypeError below
-                                                    // map1.put(se2);
-                                                }
-                                        );
-                                    }
-                                    //variant ballot
-                                    else {
+            Path path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_ELECTION_SETUP);
+            Configuration configuration = Deserializer.fromXml(path.toFile(), "configuration-anonymized.xml", Configuration.class);
+            Map<Map.Entry<String, String>, String> mapConfig = configuration.getContest().getVoteInformation().stream()
+                    .flatMap(vi -> vi.getVote().getBallot().stream())
+                    .flatMap(b -> {
+                        List<AbstractMap.SimpleEntry<AbstractMap.SimpleEntry<String, String>, String>> answers = new LinkedList<>();
 
+                        if (b.getStandardBallot() != null) {
+                            String qId = b.getStandardBallot().getQuestionIdentification();
+                            answers.addAll(b.getStandardBallot().getAnswer().stream().map(a -> {
+                                String aType = a.getStandardAnswerType();
+                                String answerId = a.getAnswerIdentification();
+                                AbstractMap.SimpleEntry<String, String> se = new AbstractMap.SimpleEntry<>(qId, aType);
+                                return new AbstractMap.SimpleEntry<>(se, answerId);
+                            }).collect(Collectors.toList()));
+                        }
+
+                        if (b.getVariantBallot() != null) {
+                            answers.addAll(b.getVariantBallot().getStandardQuestion().stream().flatMap(q -> {
+                                String qId = q.getQuestionIdentification();
+                                return q.getAnswer().stream().map(a -> {
+                                    String aType = a.getStandardAnswerType();
+                                    String answerId = a.getAnswerIdentification();
+                                    AbstractMap.SimpleEntry<String, String> se = new AbstractMap.SimpleEntry<>(qId, aType);
+                                    return new AbstractMap.SimpleEntry<>(se, answerId);
+                                });
+                            }).collect(Collectors.toList()));
+                        }
+
+                        return answers.stream();
+                    }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+
+            // 2, decrypt file => map<countingCircle, map<answerId, count>> => map2
+            path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS);
+            Results results = Deserializer.fromXml(path.toFile(), "evoting-decrypt_.*\\.xml", Results.class);
+            Map<String, Map<String, Long>> mapDecrypt = results.getBallotsBox().stream()
+                    .flatMap(bb -> bb.getCountingCircle().stream())
+                    .map(cc -> {
+                        String ccId = cc.getCountingCircleIdentification();
+
+                        Map<String, Long> answerCount = cc.getDomainOfInfluence().stream().flatMap(doi -> doi.getVote().stream())
+                                .flatMap(v -> v.getBallot().stream())
+                                .flatMap(b -> b.getChosenAnswerIdentification().stream())
+                                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+                        return new AbstractMap.SimpleEntry<>(ccId, answerCount);
+                    })
+                    .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+
+            // 3, e110 file foreach cc do a loop for each Question get the count
+            path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS);
+            Delivery ech110 = Deserializer.fromXml(path.toFile(), "eCH-0110_.*\\.xml", Delivery.class);
+            ech110.getResultDelivery().getCountingCircleResults().forEach(cc -> {
+                String ccId = cc.getCountingCircle().getCountingCircleId();
+                cc.getVoteResults().stream().flatMap(vr -> vr.getBallotResult().stream())
+                        .forEach(br -> {
+                            BigInteger nbUnaccountedBlanks = br.getCountOfUnaccountedBlankBallots().getTotal();
+                            if (br.getStandardBallot() != null) {
+                                String qId = br.getStandardBallot().getQuestionIdentification();
+                                if (!br.getStandardBallot().getCountOfAnswerYes().getTotal()
+                                        .equals(getDecryptCount(mapDecrypt, mapConfig, ccId, qId, "YES"))) {
+                                    throw new Test02Exception(qId, "YES");
+                                }
+                                if (!br.getStandardBallot().getCountOfAnswerNo().getTotal()
+                                        .equals(getDecryptCount(mapDecrypt, mapConfig, ccId, qId, "NO"))) {
+                                    throw new Test02Exception(qId, "NO");
+                                }
+                                if (!br.getStandardBallot().getCountOfAnswerEmpty().getTotal().add(nbUnaccountedBlanks)
+                                        .equals(getDecryptCount(mapDecrypt, mapConfig, ccId, qId, "EMPTY"))) {
+                                    throw new Test02Exception(qId, "EMPTY");
+                                }
+                            }
+                            if (br.getVariantBallot() != null) {
+                                br.getVariantBallot().getQuestionInformation().forEach(q -> {
+                                    String qId = q.getQuestionIdentification();
+                                    if (!q.getCountOfAnswerYes().getTotal()
+                                            .equals(getDecryptCount(mapDecrypt, mapConfig, ccId, qId, "YES"))) {
+                                        throw new Test02Exception(qId, "YES");
+                                    }
+                                    if (!q.getCountOfAnswerNo().getTotal()
+                                            .equals(getDecryptCount(mapDecrypt, mapConfig, ccId, qId, "NO"))) {
+                                        throw new Test02Exception(qId, "NO");
+                                    }
+                                    if (!q.getCountOfAnswerEmpty().getTotal().add(nbUnaccountedBlanks)
+                                            .equals(getDecryptCount(mapDecrypt, mapConfig, ccId, qId, "EMPTY"))) {
+                                        throw new Test02Exception(qId, "EMPTY");
                                     }
                                 });
-
-                    });
+                            }
+                        });
+            });
 
             result.setStatus(Status.OK);
 
         } catch (Exception e) {
             result.setStatus(Status.NOK);
-            if (e instanceof FileNotFoundException) {
+
+            if (e instanceof Test02Exception) {
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test02.nok.message", ((Test02Exception) e).getQuestionId(), ((Test02Exception) e).getAnswerType()));
+            } else if (e instanceof FileNotFoundException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test02.file.not.found.message"));
             } else {
                 log.error("Unexpected error", e);
@@ -115,6 +174,37 @@ public class Test02 extends Test {
             }
         }
         return result;
+    }
+
+    private BigInteger getDecryptCount(Map<String, Map<String, Long>> mapDecrypt, Map<Map.Entry<String, String>, String> mapConfig, String ccId, String qId, String answerType) {
+        Map<String, Long> countByCC = mapDecrypt.get(ccId);
+        String answerId = mapConfig.get(new AbstractMap.SimpleEntry<>(qId, answerType));
+
+        if (countByCC == null) {
+            throw new IllegalArgumentException("cannot find the decrypt data for given countingCircle : " + ccId);
+        }
+        if (StringUtils.isEmpty(answerId)) {
+            throw new IllegalArgumentException(String.format("cannot find the answerId for answer %s on question %s", answerType, qId));
+        }
+        return countByCC.get(answerId) == null ? BigInteger.ZERO : BigInteger.valueOf(countByCC.get(answerId));
+    }
+
+    private class Test02Exception extends RuntimeException {
+        private String questionId;
+        private String answerType;
+
+        public Test02Exception(String questionIdentification, String answerType) {
+            this.questionId = questionIdentification;
+            this.answerType = answerType;
+        }
+
+        public String getQuestionId() {
+            return questionId;
+        }
+
+        public String getAnswerType() {
+            return answerType;
+        }
     }
 
 }
