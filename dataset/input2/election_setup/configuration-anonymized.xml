@@ -1,0 +1,1497 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://www.evoting.ch/xmlns/config/3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.evoting.ch/xmlns/config/3 file:///C:/Users/esseivao/Documents/eVoting/Gravity/Gravity-V.0.3.1.0/src/evoting-config-3-0.xsd">
+	<header>
+		<fileDate>2018-01-14T20:23:22.555+01:00</fileDate>
+		<voterTotal>19</voterTotal>
+	</header>
+	<contest>
+		<contestIdentification>r20_03</contestIdentification>
+		<contestDefaultLanguage>de</contestDefaultLanguage>
+		<contestDate>2018-07-18</contestDate>
+		<contestDescription>
+			<contestDescriptionInfo>
+				<language>de</language>
+				<contestDescription>Kombiniert (DE)</contestDescription>
+			</contestDescriptionInfo>
+			<contestDescriptionInfo>
+				<language>fr</language>
+				<contestDescription>Kombiniert (FR)</contestDescription>
+			</contestDescriptionInfo>
+			<contestDescriptionInfo>
+				<language>it</language>
+				<contestDescription>Kombiniert (IT)</contestDescription>
+			</contestDescriptionInfo>
+			<contestDescriptionInfo>
+				<language>rm</language>
+				<contestDescription>Kombiniert (RM)</contestDescription>
+			</contestDescriptionInfo>
+		</contestDescription>
+		<evotingFromDate>2018-07-18T00:00:00+01:00</evotingFromDate>
+		<evotingToDate>2018-07-18T12:00:00+01:00</evotingToDate>
+		<extendedAuthenticationKeys>
+			<keyName>birthYear</keyName>
+		</extendedAuthenticationKeys>
+<electionInformation>
+	<election>
+		<electionIdentification>el_ch</electionIdentification>
+		<domainOfInfluence>doi_ch</domainOfInfluence>
+		<typeOfElection>2</typeOfElection>
+		<electionDescription>
+			<electionDescriptionInfo>
+				<language>de</language>
+				<electionDescription>election ch</electionDescription>
+			</electionDescriptionInfo>
+			<electionDescriptionInfo>
+				<language>fr</language>
+				<electionDescription>election ch</electionDescription>
+			</electionDescriptionInfo>
+			<electionDescriptionInfo>
+				<language>it</language>
+				<electionDescription>election ch</electionDescription>
+			</electionDescriptionInfo>
+			<electionDescriptionInfo>
+				<language>rm</language>
+				<electionDescription>election ch</electionDescription>
+			</electionDescriptionInfo>
+		</electionDescription>
+		<numberOfMandates>1</numberOfMandates>
+		<writeInsAllowed>false</writeInsAllowed>
+		<candidateAccumulation>1</candidateAccumulation>
+	</election>
+	<candidate>
+		<candidateIdentification>cand_ch_1</candidateIdentification>
+		<familyName>Doe</familyName>
+		<callName>John</callName>
+		<candidateText>
+			<candidateTextInfo>
+				<language>de</language>
+				<candidateText>Doe John</candidateText>
+			</candidateTextInfo>
+			<candidateTextInfo>
+				<language>fr</language>
+				<candidateText>Doe John</candidateText>
+			</candidateTextInfo>
+			<candidateTextInfo>
+				<language>it</language>
+				<candidateText>Doe John</candidateText>
+			</candidateTextInfo>
+			<candidateTextInfo>
+				<language>rm</language>
+				<candidateText>Doe John</candidateText>
+			</candidateTextInfo>
+		</candidateText>
+		<dateOfBirth>1970-01-01</dateOfBirth>
+		<sex>1</sex>
+		<incumbent>true</incumbent>
+		<dwellingAddress>
+			<street>Main street</street>
+			<zipCode>1700</zipCode>
+			<town>Fribourg</town>
+		</dwellingAddress>
+		<swiss>
+			<origin>Le Mouret</origin>
+		</swiss>
+	</candidate>
+	<list>
+		<listIdentification>L1</listIdentification>
+		<listIndentureNumber>1</listIndentureNumber>
+		<listDescription>
+			<listDescriptionInfo>
+				<language>de</language>
+				<listDescription>List</listDescription>
+			</listDescriptionInfo>
+			<listDescriptionInfo>
+				<language>fr</language>
+				<listDescription>List</listDescription>
+			</listDescriptionInfo>
+			<listDescriptionInfo>
+				<language>it</language>
+				<listDescription>List</listDescription>
+			</listDescriptionInfo>
+			<listDescriptionInfo>
+				<language>rm</language>
+				<listDescription>List</listDescription>
+			</listDescriptionInfo>
+		</listDescription>
+		<listOrderOfPrecedence>1</listOrderOfPrecedence>
+		<listEmpty>false</listEmpty>
+		<candidatePosition>
+			<candidateListIdentification>cand_list_1</candidateListIdentification>
+			<positionOnList>1</positionOnList>
+			<candidateReferenceOnPosition>01.01</candidateReferenceOnPosition>
+			<candidateIdentification>cand_ch_1</candidateIdentification>
+			<candidateTextOnPosition>
+				<candidateTextInfo>
+					<language>de</language>
+					<candidateText>Doe John</candidateText>
+				</candidateTextInfo>
+				<candidateTextInfo>
+					<language>fr</language>
+					<candidateText>Doe John</candidateText>
+				</candidateTextInfo>
+				<candidateTextInfo>
+					<language>it</language>
+					<candidateText>Doe John</candidateText>
+				</candidateTextInfo>
+				<candidateTextInfo>
+					<language>rm</language>
+					<candidateText>Doe John</candidateText>
+				</candidateTextInfo>
+			</candidateTextOnPosition>
+		</candidatePosition>
+	</list>
+	  <list>
+        <listIdentification>list_99</listIdentification>
+        <listIndentureNumber>99</listIndentureNumber>
+        <listDescription>
+          <listDescriptionInfo>
+            <language>de</language>
+            <listDescriptionShort>Leer</listDescriptionShort>
+            <listDescription>Leer</listDescription>
+          </listDescriptionInfo>
+          <listDescriptionInfo>
+            <language>fr</language>
+            <listDescriptionShort>Vide</listDescriptionShort>
+            <listDescription>Vide</listDescription>
+          </listDescriptionInfo>
+          <listDescriptionInfo>
+            <language>it</language>
+            <listDescriptionShort>Vide</listDescriptionShort>
+            <listDescription>Vide</listDescription>
+          </listDescriptionInfo>
+          <listDescriptionInfo>
+            <language>rm</language>
+            <listDescriptionShort>Leer</listDescriptionShort>
+            <listDescription>Leer</listDescription>
+          </listDescriptionInfo>
+        </listDescription>
+        <listOrderOfPrecedence>99</listOrderOfPrecedence>
+        <listEmpty>true</listEmpty>
+        <candidatePosition>
+          <candidateListIdentification>empty_1</candidateListIdentification>
+          <positionOnList>1</positionOnList>
+          <candidateReferenceOnPosition>99.01</candidateReferenceOnPosition>
+          <candidateTextOnPosition>
+            <candidateTextInfo>
+              <language>de</language>
+              <candidateText>Kein Name ausgewählt</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>fr</language>
+              <candidateText>Aucun nom sélectionné</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>it</language>
+              <candidateText>Nessun nominativo selezionato</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>rm</language>
+              <candidateText>Nagin num selecziunà</candidateText>
+            </candidateTextInfo>
+          </candidateTextOnPosition>
+        </candidatePosition>
+      </list>
+</electionInformation>
+<electionInformation>
+	<election>
+		<electionIdentification>el_ct</electionIdentification>
+		<domainOfInfluence>doi_ct</domainOfInfluence>
+		<typeOfElection>2</typeOfElection>
+		<electionDescription>
+			<electionDescriptionInfo>
+				<language>de</language>
+				<electionDescription>election ct</electionDescription>
+			</electionDescriptionInfo>
+			<electionDescriptionInfo>
+				<language>fr</language>
+				<electionDescription>election ct</electionDescription>
+			</electionDescriptionInfo>
+			<electionDescriptionInfo>
+				<language>it</language>
+				<electionDescription>election ct</electionDescription>
+			</electionDescriptionInfo>
+			<electionDescriptionInfo>
+				<language>rm</language>
+				<electionDescription>election ct</electionDescription>
+			</electionDescriptionInfo>
+		</electionDescription>
+		<numberOfMandates>1</numberOfMandates>
+		<writeInsAllowed>false</writeInsAllowed>
+		<candidateAccumulation>1</candidateAccumulation>
+	</election>
+	<candidate>
+		<candidateIdentification>cand_ct_1</candidateIdentification>
+		<familyName>Canton</familyName>
+		<callName>John</callName>
+		<candidateText>
+			<candidateTextInfo>
+				<language>de</language>
+				<candidateText>Canton John</candidateText>
+			</candidateTextInfo>
+			<candidateTextInfo>
+				<language>fr</language>
+				<candidateText>Canton John</candidateText>
+			</candidateTextInfo>
+			<candidateTextInfo>
+				<language>it</language>
+				<candidateText>Canton John</candidateText>
+			</candidateTextInfo>
+			<candidateTextInfo>
+				<language>rm</language>
+				<candidateText>Canton John</candidateText>
+			</candidateTextInfo>
+		</candidateText>
+		<dateOfBirth>1970-01-01</dateOfBirth>
+		<sex>1</sex>
+		<incumbent>true</incumbent>
+		<dwellingAddress>
+			<street>Main street</street>
+			<zipCode>1700</zipCode>
+			<town>Fribourg</town>
+		</dwellingAddress>
+		<swiss>
+			<origin>Le Mouret</origin>
+		</swiss>
+	</candidate>
+	<list>
+		<listIdentification>L2</listIdentification>
+		<listIndentureNumber>1</listIndentureNumber>
+		<listDescription>
+			<listDescriptionInfo>
+				<language>de</language>
+				<listDescription>List</listDescription>
+			</listDescriptionInfo>
+			<listDescriptionInfo>
+				<language>fr</language>
+				<listDescription>List</listDescription>
+			</listDescriptionInfo>
+			<listDescriptionInfo>
+				<language>it</language>
+				<listDescription>List</listDescription>
+			</listDescriptionInfo>
+			<listDescriptionInfo>
+				<language>rm</language>
+				<listDescription>List</listDescription>
+			</listDescriptionInfo>
+		</listDescription>
+		<listOrderOfPrecedence>1</listOrderOfPrecedence>
+		<listEmpty>false</listEmpty>
+		<candidatePosition>
+			<candidateListIdentification>cand_list_2</candidateListIdentification>
+			<positionOnList>1</positionOnList>
+			<candidateReferenceOnPosition>01.01</candidateReferenceOnPosition>
+			<candidateIdentification>cand_ct_1</candidateIdentification>
+			<candidateTextOnPosition>
+				<candidateTextInfo>
+					<language>de</language>
+					<candidateText>Doe Canton</candidateText>
+				</candidateTextInfo>
+				<candidateTextInfo>
+					<language>fr</language>
+					<candidateText>Doe Canton</candidateText>
+				</candidateTextInfo>
+				<candidateTextInfo>
+					<language>it</language>
+					<candidateText>Doe Canton</candidateText>
+				</candidateTextInfo>
+				<candidateTextInfo>
+					<language>rm</language>
+					<candidateText>Doe Canton</candidateText>
+				</candidateTextInfo>
+			</candidateTextOnPosition>
+		</candidatePosition>
+	</list>
+	  <list>
+        <listIdentification>list_99_2</listIdentification>
+        <listIndentureNumber>99</listIndentureNumber>
+        <listDescription>
+          <listDescriptionInfo>
+            <language>de</language>
+            <listDescriptionShort>Leer</listDescriptionShort>
+            <listDescription>Leer</listDescription>
+          </listDescriptionInfo>
+          <listDescriptionInfo>
+            <language>fr</language>
+            <listDescriptionShort>Vide</listDescriptionShort>
+            <listDescription>Vide</listDescription>
+          </listDescriptionInfo>
+          <listDescriptionInfo>
+            <language>it</language>
+            <listDescriptionShort>Vide</listDescriptionShort>
+            <listDescription>Vide</listDescription>
+          </listDescriptionInfo>
+          <listDescriptionInfo>
+            <language>rm</language>
+            <listDescriptionShort>Leer</listDescriptionShort>
+            <listDescription>Leer</listDescription>
+          </listDescriptionInfo>
+        </listDescription>
+        <listOrderOfPrecedence>99</listOrderOfPrecedence>
+        <listEmpty>true</listEmpty>
+        <candidatePosition>
+          <candidateListIdentification>empty_2</candidateListIdentification>
+          <positionOnList>1</positionOnList>
+          <candidateReferenceOnPosition>99.01</candidateReferenceOnPosition>
+          <candidateTextOnPosition>
+            <candidateTextInfo>
+              <language>de</language>
+              <candidateText>Kein Name ausgewählt</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>fr</language>
+              <candidateText>Aucun nom sélectionné</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>it</language>
+              <candidateText>Nessun nominativo selezionato</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>rm</language>
+              <candidateText>Nagin num selecziunà</candidateText>
+            </candidateTextInfo>
+          </candidateTextOnPosition>
+        </candidatePosition>
+      </list>
+</electionInformation>
+<electionInformation>
+	<election>
+		<electionIdentification>el_mu_1</electionIdentification>
+		<domainOfInfluence>doi_mu_1</domainOfInfluence>
+		<typeOfElection>2</typeOfElection>
+		<electionDescription>
+			<electionDescriptionInfo>
+				<language>de</language>
+				<electionDescription>election mu 1</electionDescription>
+			</electionDescriptionInfo>
+			<electionDescriptionInfo>
+				<language>fr</language>
+				<electionDescription>election mu 1</electionDescription>
+			</electionDescriptionInfo>
+			<electionDescriptionInfo>
+				<language>it</language>
+				<electionDescription>election mu 1</electionDescription>
+			</electionDescriptionInfo>
+			<electionDescriptionInfo>
+				<language>rm</language>
+				<electionDescription>election mu 1</electionDescription>
+			</electionDescriptionInfo>
+		</electionDescription>
+		<numberOfMandates>1</numberOfMandates>
+		<writeInsAllowed>false</writeInsAllowed>
+		<candidateAccumulation>1</candidateAccumulation>
+	</election>
+	<candidate>
+		<candidateIdentification>cand_mu_1</candidateIdentification>
+		<familyName>Canton</familyName>
+		<firstName>John</firstName>
+		<callName>John</callName>
+		<candidateText>
+			<candidateTextInfo>
+				<language>de</language>
+				<candidateText>Municipal John</candidateText>
+			</candidateTextInfo>
+			<candidateTextInfo>
+				<language>fr</language>
+				<candidateText>Municipal John</candidateText>
+			</candidateTextInfo>
+			<candidateTextInfo>
+				<language>it</language>
+				<candidateText>Municipal John</candidateText>
+			</candidateTextInfo>
+			<candidateTextInfo>
+				<language>rm</language>
+				<candidateText>Municipal John</candidateText>
+			</candidateTextInfo>
+		</candidateText>
+		<dateOfBirth>1970-01-01</dateOfBirth>
+		<sex>1</sex>
+		<incumbent>true</incumbent>
+		<dwellingAddress>
+			<street>Main street</street>
+			<zipCode>1700</zipCode>
+			<town>Fribourg</town>
+		</dwellingAddress>
+		<swiss>
+			<origin>Le Mouret</origin>
+		</swiss>
+	</candidate>
+	<list>
+		<listIdentification>L3</listIdentification>
+		<listIndentureNumber>1</listIndentureNumber>
+		<listDescription>
+			<listDescriptionInfo>
+				<language>de</language>
+				<listDescription>List</listDescription>
+			</listDescriptionInfo>
+			<listDescriptionInfo>
+				<language>fr</language>
+				<listDescription>List</listDescription>
+			</listDescriptionInfo>
+			<listDescriptionInfo>
+				<language>it</language>
+				<listDescription>List</listDescription>
+			</listDescriptionInfo>
+			<listDescriptionInfo>
+				<language>rm</language>
+				<listDescription>List</listDescription>
+			</listDescriptionInfo>
+		</listDescription>
+		<listOrderOfPrecedence>1</listOrderOfPrecedence>
+		<listEmpty>false</listEmpty>
+		<candidatePosition>
+			<candidateListIdentification>cand_list_3</candidateListIdentification>
+			<positionOnList>1</positionOnList>
+			<candidateReferenceOnPosition>01.01</candidateReferenceOnPosition>
+			<candidateIdentification>cand_mu_1</candidateIdentification>
+			<candidateTextOnPosition>
+				<candidateTextInfo>
+					<language>de</language>
+					<candidateText>Doe Municipal 1</candidateText>
+				</candidateTextInfo>
+				<candidateTextInfo>
+					<language>fr</language>
+					<candidateText>Doe Municipal 1</candidateText>
+				</candidateTextInfo>
+				<candidateTextInfo>
+					<language>it</language>
+					<candidateText>Doe Municipal 1</candidateText>
+				</candidateTextInfo>
+				<candidateTextInfo>
+					<language>rm</language>
+					<candidateText>Doe Municipal 1</candidateText>
+				</candidateTextInfo>
+			</candidateTextOnPosition>
+		</candidatePosition>
+	</list>
+	  <list>
+        <listIdentification>list_99_3</listIdentification>
+        <listIndentureNumber>99</listIndentureNumber>
+        <listDescription>
+          <listDescriptionInfo>
+            <language>de</language>
+            <listDescriptionShort>Leer</listDescriptionShort>
+            <listDescription>Leer</listDescription>
+          </listDescriptionInfo>
+          <listDescriptionInfo>
+            <language>fr</language>
+            <listDescriptionShort>Vide</listDescriptionShort>
+            <listDescription>Vide</listDescription>
+          </listDescriptionInfo>
+          <listDescriptionInfo>
+            <language>it</language>
+            <listDescriptionShort>Vide</listDescriptionShort>
+            <listDescription>Vide</listDescription>
+          </listDescriptionInfo>
+          <listDescriptionInfo>
+            <language>rm</language>
+            <listDescriptionShort>Leer</listDescriptionShort>
+            <listDescription>Leer</listDescription>
+          </listDescriptionInfo>
+        </listDescription>
+        <listOrderOfPrecedence>99</listOrderOfPrecedence>
+        <listEmpty>true</listEmpty>
+        <candidatePosition>
+          <candidateListIdentification>empty_3</candidateListIdentification>
+          <positionOnList>1</positionOnList>
+          <candidateReferenceOnPosition>99.01</candidateReferenceOnPosition>
+          <candidateTextOnPosition>
+            <candidateTextInfo>
+              <language>de</language>
+              <candidateText>Kein Name ausgewählt</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>fr</language>
+              <candidateText>Aucun nom sélectionné</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>it</language>
+              <candidateText>Nessun nominativo selezionato</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>rm</language>
+              <candidateText>Nagin num selecziunà</candidateText>
+            </candidateTextInfo>
+          </candidateTextOnPosition>
+        </candidatePosition>
+      </list>
+</electionInformation>
+<electionInformation>
+	<election>
+		<electionIdentification>el_mu_2</electionIdentification>
+		<domainOfInfluence>doi_mu_2</domainOfInfluence>
+		<typeOfElection>2</typeOfElection>
+		<electionDescription>
+			<electionDescriptionInfo>
+				<language>de</language>
+				<electionDescription>election mu 2</electionDescription>
+			</electionDescriptionInfo>
+			<electionDescriptionInfo>
+				<language>fr</language>
+				<electionDescription>election mu 2</electionDescription>
+			</electionDescriptionInfo>
+			<electionDescriptionInfo>
+				<language>it</language>
+				<electionDescription>election mu 2</electionDescription>
+			</electionDescriptionInfo>
+			<electionDescriptionInfo>
+				<language>rm</language>
+				<electionDescription>election mu 2</electionDescription>
+			</electionDescriptionInfo>
+		</electionDescription>
+		<numberOfMandates>1</numberOfMandates>
+		<writeInsAllowed>false</writeInsAllowed>
+		<candidateAccumulation>1</candidateAccumulation>
+	</election>
+	<candidate>
+		<candidateIdentification>cand_mu_2</candidateIdentification>
+		<familyName>Municipal</familyName>
+		<firstName>John 2</firstName>
+		<callName>John 2</callName>
+		<candidateText>
+			<candidateTextInfo>
+				<language>de</language>
+				<candidateText>Municipal John 2</candidateText>
+			</candidateTextInfo>
+			<candidateTextInfo>
+				<language>fr</language>
+				<candidateText>Municipal John 2</candidateText>
+			</candidateTextInfo>
+			<candidateTextInfo>
+				<language>it</language>
+				<candidateText>Municipal John 2</candidateText>
+			</candidateTextInfo>
+			<candidateTextInfo>
+				<language>rm</language>
+				<candidateText>Municipal John 2</candidateText>
+			</candidateTextInfo>
+		</candidateText>
+		<dateOfBirth>1970-01-01</dateOfBirth>
+		<sex>1</sex>
+		<incumbent>true</incumbent>
+		<dwellingAddress>
+			<street>Main street</street>
+			<zipCode>1700</zipCode>
+			<town>Fribourg</town>
+		</dwellingAddress>
+		<swiss>
+			<origin>Le Mouret</origin>
+		</swiss>
+	</candidate>
+	<list>
+		<listIdentification>L4</listIdentification>
+		<listIndentureNumber>1</listIndentureNumber>
+		<listDescription>
+			<listDescriptionInfo>
+				<language>de</language>
+				<listDescription>List</listDescription>
+			</listDescriptionInfo>
+			<listDescriptionInfo>
+				<language>fr</language>
+				<listDescription>List</listDescription>
+			</listDescriptionInfo>
+			<listDescriptionInfo>
+				<language>it</language>
+				<listDescription>List</listDescription>
+			</listDescriptionInfo>
+			<listDescriptionInfo>
+				<language>rm</language>
+				<listDescription>List</listDescription>
+			</listDescriptionInfo>
+		</listDescription>
+		<listOrderOfPrecedence>1</listOrderOfPrecedence>
+		<listEmpty>false</listEmpty>
+		<candidatePosition>
+			<candidateListIdentification>cand_list_4</candidateListIdentification>
+			<positionOnList>1</positionOnList>
+			<candidateReferenceOnPosition>01.02</candidateReferenceOnPosition>
+			<candidateIdentification>cand_mu_2</candidateIdentification>
+			<candidateTextOnPosition>
+				<candidateTextInfo>
+					<language>de</language>
+					<candidateText>Doe Municipal 2</candidateText>
+				</candidateTextInfo>
+				<candidateTextInfo>
+					<language>fr</language>
+					<candidateText>Doe Municipal 2</candidateText>
+				</candidateTextInfo>
+				<candidateTextInfo>
+					<language>it</language>
+					<candidateText>Doe Municipal 2</candidateText>
+				</candidateTextInfo>
+				<candidateTextInfo>
+					<language>rm</language>
+					<candidateText>Doe Municipal 2</candidateText>
+				</candidateTextInfo>
+			</candidateTextOnPosition>
+		</candidatePosition>
+	</list>
+	  <list>
+        <listIdentification>list_99_4</listIdentification>
+        <listIndentureNumber>99</listIndentureNumber>
+        <listDescription>
+          <listDescriptionInfo>
+            <language>de</language>
+            <listDescriptionShort>Leer</listDescriptionShort>
+            <listDescription>Leer</listDescription>
+          </listDescriptionInfo>
+          <listDescriptionInfo>
+            <language>fr</language>
+            <listDescriptionShort>Vide</listDescriptionShort>
+            <listDescription>Vide</listDescription>
+          </listDescriptionInfo>
+          <listDescriptionInfo>
+            <language>it</language>
+            <listDescriptionShort>Vide</listDescriptionShort>
+            <listDescription>Vide</listDescription>
+          </listDescriptionInfo>
+          <listDescriptionInfo>
+            <language>rm</language>
+            <listDescriptionShort>Leer</listDescriptionShort>
+            <listDescription>Leer</listDescription>
+          </listDescriptionInfo>
+        </listDescription>
+        <listOrderOfPrecedence>99</listOrderOfPrecedence>
+        <listEmpty>true</listEmpty>
+        <candidatePosition>
+          <candidateListIdentification>empty_4</candidateListIdentification>
+          <positionOnList>1</positionOnList>
+          <candidateReferenceOnPosition>99.01</candidateReferenceOnPosition>
+          <candidateTextOnPosition>
+            <candidateTextInfo>
+              <language>de</language>
+              <candidateText>Kein Name ausgewählt</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>fr</language>
+              <candidateText>Aucun nom sélectionné</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>it</language>
+              <candidateText>Nessun nominativo selezionato</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>rm</language>
+              <candidateText>Nagin num selecziunà</candidateText>
+            </candidateTextInfo>
+          </candidateTextOnPosition>
+        </candidatePosition>
+      </list>
+</electionInformation>
+<electionInformation>
+	<election>
+		<electionIdentification>el_mu_3</electionIdentification>
+		<domainOfInfluence>doi_mu_2</domainOfInfluence>
+		<typeOfElection>2</typeOfElection>
+		<electionDescription>
+			<electionDescriptionInfo>
+				<language>de</language>
+				<electionDescription>election mu 3</electionDescription>
+			</electionDescriptionInfo>
+			<electionDescriptionInfo>
+				<language>fr</language>
+				<electionDescription>election mu 3</electionDescription>
+			</electionDescriptionInfo>
+			<electionDescriptionInfo>
+				<language>it</language>
+				<electionDescription>election mu 3</electionDescription>
+			</electionDescriptionInfo>
+			<electionDescriptionInfo>
+				<language>rm</language>
+				<electionDescription>election mu 3</electionDescription>
+			</electionDescriptionInfo>
+		</electionDescription>
+		<numberOfMandates>1</numberOfMandates>
+		<writeInsAllowed>false</writeInsAllowed>
+		<candidateAccumulation>1</candidateAccumulation>
+	</election>
+	<candidate>
+		<candidateIdentification>cand_mu_3</candidateIdentification>
+		<familyName>Municipal</familyName>
+		<firstName>John 3</firstName>
+		<callName>John 3</callName>
+		<candidateText>
+			<candidateTextInfo>
+				<language>de</language>
+				<candidateText>Municipal John 3</candidateText>
+			</candidateTextInfo>
+			<candidateTextInfo>
+				<language>fr</language>
+				<candidateText>Municipal John 3</candidateText>
+			</candidateTextInfo>
+			<candidateTextInfo>
+				<language>it</language>
+				<candidateText>Municipal John 3</candidateText>
+			</candidateTextInfo>
+			<candidateTextInfo>
+				<language>rm</language>
+				<candidateText>Municipal John 3</candidateText>
+			</candidateTextInfo>
+		</candidateText>
+		<dateOfBirth>1970-01-01</dateOfBirth>
+		<sex>1</sex>
+		<incumbent>true</incumbent>
+		<dwellingAddress>
+			<street>Main street</street>
+			<zipCode>1700</zipCode>
+			<town>Fribourg</town>
+		</dwellingAddress>
+		<swiss>
+			<origin>Le Mouret</origin>
+		</swiss>
+	</candidate>
+	<list>
+		<listIdentification>L5</listIdentification>
+		<listIndentureNumber>1</listIndentureNumber>
+		<listDescription>
+			<listDescriptionInfo>
+				<language>de</language>
+				<listDescription>List</listDescription>
+			</listDescriptionInfo>
+			<listDescriptionInfo>
+				<language>fr</language>
+				<listDescription>List</listDescription>
+			</listDescriptionInfo>
+			<listDescriptionInfo>
+				<language>it</language>
+				<listDescription>List</listDescription>
+			</listDescriptionInfo>
+			<listDescriptionInfo>
+				<language>rm</language>
+				<listDescription>List</listDescription>
+			</listDescriptionInfo>
+		</listDescription>
+		<listOrderOfPrecedence>1</listOrderOfPrecedence>
+		<listEmpty>false</listEmpty>
+		<candidatePosition>
+			<candidateListIdentification>cand_list_5</candidateListIdentification>
+			<positionOnList>1</positionOnList>
+			<candidateReferenceOnPosition>01.03</candidateReferenceOnPosition>
+			<candidateIdentification>cand_mu_3</candidateIdentification>
+			<candidateTextOnPosition>
+				<candidateTextInfo>
+					<language>de</language>
+					<candidateText>Doe Municipal 3</candidateText>
+				</candidateTextInfo>
+				<candidateTextInfo>
+					<language>fr</language>
+					<candidateText>Doe Municipal 3</candidateText>
+				</candidateTextInfo>
+				<candidateTextInfo>
+					<language>it</language>
+					<candidateText>Doe Municipal 3</candidateText>
+				</candidateTextInfo>
+				<candidateTextInfo>
+					<language>rm</language>
+					<candidateText>Doe Municipal 3</candidateText>
+				</candidateTextInfo>
+			</candidateTextOnPosition>
+		</candidatePosition>
+	</list>
+	  <list>
+        <listIdentification>list_99_5</listIdentification>
+        <listIndentureNumber>99</listIndentureNumber>
+        <listDescription>
+          <listDescriptionInfo>
+            <language>de</language>
+            <listDescriptionShort>Leer</listDescriptionShort>
+            <listDescription>Leer</listDescription>
+          </listDescriptionInfo>
+          <listDescriptionInfo>
+            <language>fr</language>
+            <listDescriptionShort>Vide</listDescriptionShort>
+            <listDescription>Vide</listDescription>
+          </listDescriptionInfo>
+          <listDescriptionInfo>
+            <language>it</language>
+            <listDescriptionShort>Vide</listDescriptionShort>
+            <listDescription>Vide</listDescription>
+          </listDescriptionInfo>
+          <listDescriptionInfo>
+            <language>rm</language>
+            <listDescriptionShort>Leer</listDescriptionShort>
+            <listDescription>Leer</listDescription>
+          </listDescriptionInfo>
+        </listDescription>
+        <listOrderOfPrecedence>99</listOrderOfPrecedence>
+        <listEmpty>true</listEmpty>
+        <candidatePosition>
+          <candidateListIdentification>empty_5</candidateListIdentification>
+          <positionOnList>1</positionOnList>
+          <candidateReferenceOnPosition>99.01</candidateReferenceOnPosition>
+          <candidateTextOnPosition>
+            <candidateTextInfo>
+              <language>de</language>
+              <candidateText>Kein Name ausgewählt</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>fr</language>
+              <candidateText>Aucun nom sélectionné</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>it</language>
+              <candidateText>Nessun nominativo selezionato</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>rm</language>
+              <candidateText>Nagin num selecziunà</candidateText>
+            </candidateTextInfo>
+          </candidateTextOnPosition>
+        </candidatePosition>
+      </list>
+</electionInformation>
+		<voteInformation>
+			<vote>
+				<voteIdentification>vote_ch</voteIdentification>
+				<domainOfInfluence>doi_ch</domainOfInfluence>
+				<voteDescription>
+					<voteDescriptionInfo>
+						<language>de</language>
+						<voteDescription>Vote CH (DE)</voteDescription>
+					</voteDescriptionInfo>
+					<voteDescriptionInfo>
+						<language>fr</language>
+						<voteDescription>Vote CH (FR)</voteDescription>
+					</voteDescriptionInfo>
+					<voteDescriptionInfo>
+						<language>it</language>
+						<voteDescription>Vote CH (IT)</voteDescription>
+					</voteDescriptionInfo>
+					<voteDescriptionInfo>
+						<language>rm</language>
+						<voteDescription>Vote CH (RM)</voteDescription>
+					</voteDescriptionInfo>
+				</voteDescription>
+				<ballot>
+					<ballotIdentification>bal_ch_1</ballotIdentification>
+					<ballotPosition>1</ballotPosition>
+					<ballotDescription>
+						<ballotDescriptionInfo>
+							<language>de</language>
+							<ballotDescriptionLong>Ballot 1 Long</ballotDescriptionLong>
+							<ballotDescriptionShort>Ballot 1</ballotDescriptionShort>
+						</ballotDescriptionInfo>
+						<ballotDescriptionInfo>
+							<language>fr</language>
+							<ballotDescriptionLong>Ballot 1 Long</ballotDescriptionLong>
+							<ballotDescriptionShort>Ballot 1</ballotDescriptionShort>
+						</ballotDescriptionInfo>
+						<ballotDescriptionInfo>
+							<language>it</language>
+							<ballotDescriptionLong>Ballot 1 Long</ballotDescriptionLong>
+							<ballotDescriptionShort>Ballot 1</ballotDescriptionShort>
+						</ballotDescriptionInfo>
+						<ballotDescriptionInfo>
+							<language>rm</language>
+							<ballotDescriptionLong>Ballot 1 Long</ballotDescriptionLong>
+							<ballotDescriptionShort>Ballot 1</ballotDescriptionShort>
+						</ballotDescriptionInfo>
+					</ballotDescription>
+					<standardBallot>
+						<questionIdentification>ch_q1</questionIdentification>
+						<answerType>2</answerType>
+						<ballotQuestion>
+							<ballotQuestionInfo>
+								<language>de</language>
+								<ballotQuestionTitle>Q1</ballotQuestionTitle>
+								<ballotQuestion>CH question 1</ballotQuestion>
+							</ballotQuestionInfo>
+							<ballotQuestionInfo>
+								<language>fr</language>
+								<ballotQuestionTitle>Q1</ballotQuestionTitle>
+								<ballotQuestion>CH question 1</ballotQuestion>
+							</ballotQuestionInfo>
+							<ballotQuestionInfo>
+								<language>it</language>
+								<ballotQuestionTitle>Q1</ballotQuestionTitle>
+								<ballotQuestion>CH question 1</ballotQuestion>
+							</ballotQuestionInfo>
+							<ballotQuestionInfo>
+								<language>rm</language>
+								<ballotQuestionTitle>Q1</ballotQuestionTitle>
+								<ballotQuestion>CH question 1</ballotQuestion>
+							</ballotQuestionInfo>
+						</ballotQuestion>
+						<answer>
+							<answerIdentification>ch_q1_a1</answerIdentification>
+							<answerPosition>1</answerPosition>
+							<standardAnswerType>YES</standardAnswerType>
+							<hiddenAnswer>false</hiddenAnswer>
+							<answerInfo>
+								<language>de</language>
+								<answer>Ja</answer>
+							</answerInfo>
+							<answerInfo>
+								<language>fr</language>
+								<answer>Oui</answer>
+							</answerInfo>
+							<answerInfo>
+								<language>it</language>
+								<answer>Si</answer>
+							</answerInfo>
+							<answerInfo>
+								<language>rm</language>
+								<answer>Bundi</answer>
+							</answerInfo>
+						</answer>
+						<answer>
+							<answerIdentification>ch_q1_a2</answerIdentification>
+							<answerPosition>2</answerPosition>
+							<standardAnswerType>NO</standardAnswerType>
+							<hiddenAnswer>false</hiddenAnswer>
+							<answerInfo>
+								<language>de</language>
+								<answer>Nein</answer>
+							</answerInfo>
+							<answerInfo>
+								<language>fr</language>
+								<answer>Non</answer>
+							</answerInfo>
+							<answerInfo>
+								<language>it</language>
+								<answer>No</answer>
+							</answerInfo>
+							<answerInfo>
+								<language>rm</language>
+								<answer>No</answer>
+							</answerInfo>
+						</answer>
+						<answer>
+							<answerIdentification>ch_q1_a3</answerIdentification>
+							<answerPosition>3</answerPosition>
+							<standardAnswerType>EMPTY</standardAnswerType>
+							<hiddenAnswer>true</hiddenAnswer>
+							<answerInfo>
+								<language>de</language>
+								<answer>Leer</answer>
+							</answerInfo>
+							<answerInfo>
+								<language>fr</language>
+								<answer>Vote blanc</answer>
+							</answerInfo>
+							<answerInfo>
+								<language>it</language>
+								<answer>voto blanco</answer>
+							</answerInfo>
+							<answerInfo>
+								<language>rm</language>
+								<answer>vut blanks</answer>
+							</answerInfo>
+						</answer>
+					</standardBallot>
+				</ballot>
+			</vote>
+		</voteInformation>
+		<uiProperties>
+			<property>
+				<key>list.attribute.1.text</key>
+				<value>%listIndentureNumber% - %listDescription%</value>
+			</property>
+			<property>
+				<key>list.attribute.1.text.translation.de</key>
+				<value>%listIndentureNumber% - %listDescription%</value>
+			</property>
+			<property>
+				<key>list.attribute.1.text.translation.fr</key>
+				<value>%listIndentureNumber% - %listDescription%</value>
+			</property>
+			<property>
+				<key>list.attribute.1.text.translation.it</key>
+				<value>%listIndentureNumber% - %listDescription%</value>
+			</property>
+			<property>
+				<key>list.attribute.1.text.translation.rm</key>
+				<value>%listIndentureNumber% - %listDescription%</value>
+			</property>
+			<property>
+				<key>list.attribute.1.header.translation.de</key>
+				<value>Party Name</value>
+			</property>
+			<property>
+				<key>list.attribute.1.header.translation.fr</key>
+				<value>Party Name</value>
+			</property>
+			<property>
+				<key>list.attribute.1.header.translation.it</key>
+				<value>Party Name</value>
+			</property>
+			<property>
+				<key>list.attribute.1.header.translation.rm</key>
+				<value>Party Name</value>
+			</property>
+			<property>
+				<key>list.attribute.4.text</key>
+				<value>%listUnion%</value>
+			</property>
+			<property>
+				<key>list.attribute.4.text.translation.de</key>
+				<value>%listUnion%</value>
+			</property>
+			<property>
+				<key>list.attribute.4.text.translation.fr</key>
+				<value>%listUnion%</value>
+			</property>
+			<property>
+				<key>list.attribute.4.text.translation.it</key>
+				<value>%listUnion%</value>
+			</property>
+			<property>
+				<key>list.attribute.4.text.translation.rm</key>
+				<value>%listUnion%</value>
+			</property>
+			<property>
+				<key>list.attribute.4.header.translation.de</key>
+				<value>Listenverbindung</value>
+			</property>
+			<property>
+				<key>list.attribute.4.header.translation.fr</key>
+				<value>Apparentment</value>
+			</property>
+			<property>
+				<key>list.attribute.4.header.translation.it</key>
+				<value>Apparentamento di liste</value>
+			</property>
+			<property>
+				<key>list.attribute.4.header.translation.rm</key>
+				<value>Colliaziun da glistas</value>
+			</property>
+			<property>
+				<key>list.attribute.5.text</key>
+				<value>%subListUnion%</value>
+			</property>
+			<property>
+				<key>list.attribute.5.text.translation.de</key>
+				<value>%subListUnion%</value>
+			</property>
+			<property>
+				<key>list.attribute.5.text.translation.fr</key>
+				<value>%subListUnion%</value>
+			</property>
+			<property>
+				<key>list.attribute.5.text.translation.it</key>
+				<value>%subListUnion%</value>
+			</property>
+			<property>
+				<key>list.attribute.5.text.translation.rm</key>
+				<value>%subListUnion%</value>
+			</property>
+			<property>
+				<key>list.attribute.5.header.translation.de</key>
+				<value>Unterlistenverbindung</value>
+			</property>
+			<property>
+				<key>list.attribute.5.header.translation.fr</key>
+				<value>Sous-apparentement</value>
+			</property>
+			<property>
+				<key>list.attribute.5.header.translation.it</key>
+				<value>Sottocongiunzione di liste</value>
+			</property>
+			<property>
+				<key>list.attribute.5.header.translation.rm</key>
+				<value>Sutcolliaziun da glistas</value>
+			</property>
+			<property>
+				<key>candidate.attribute.1.text</key>
+				<value>%candidateTextOnPosition%</value>
+			</property>
+			<property>
+				<key>candidate.attribute.1.text.translation.de</key>
+				<value>%candidateTextOnPosition%</value>
+			</property>
+			<property>
+				<key>candidate.attribute.1.text.translation.fr</key>
+				<value>%candidateTextOnPosition%</value>
+			</property>
+			<property>
+				<key>candidate.attribute.1.text.translation.it</key>
+				<value>%candidateTextOnPosition%</value>
+			</property>
+			<property>
+				<key>candidate.attribute.1.text.translation.rm</key>
+				<value>%candidateTextOnPosition%</value>
+			</property>
+			<property>
+				<key>candidate.attribute.1.header.translation.de</key>
+				<value>Candidate text</value>
+			</property>
+			<property>
+				<key>candidate.attribute.1.header.translation.fr</key>
+				<value>Candidate text</value>
+			</property>
+			<property>
+				<key>candidate.attribute.1.header.translation.it</key>
+				<value>Candidate text</value>
+			</property>
+			<property>
+				<key>candidate.attribute.1.header.translation.rm</key>
+				<value>Candidate text</value>
+			</property>
+			<property>
+				<key>candidate.attribute.2.text</key>
+				<value>%candidateDateOfBirth%</value>
+			</property>
+			<property>
+				<key>candidate.attribute.2.text.translation.de</key>
+				<value>%candidateDateOfBirth%</value>
+			</property>
+			<property>
+				<key>candidate.attribute.2.text.translation.fr</key>
+				<value>%candidateDateOfBirth%</value>
+			</property>
+			<property>
+				<key>candidate.attribute.2.text.translation.it</key>
+				<value>%candidateDateOfBirth%</value>
+			</property>
+			<property>
+				<key>candidate.attribute.2.text.translation.rm</key>
+				<value>%candidateDateOfBirth%</value>
+			</property>
+			<property>
+				<key>candidate.attribute.2.header.translation.de</key>
+				<value>Candidate Date Of Birth</value>
+			</property>
+			<property>
+				<key>candidate.attribute.2.header.translation.fr</key>
+				<value>Candidate Date Of Birth</value>
+			</property>
+			<property>
+				<key>candidate.attribute.2.header.translation.it</key>
+				<value>Candidate Date Of Birth</value>
+			</property>
+			<property>
+				<key>candidate.attribute.2.header.translation.rm</key>
+				<value>Candidate Date Of Birth</value>
+			</property>
+			<property>
+				<key>candidate.attribute.4.text</key>
+				<value>%initialAccumulation%</value>
+			</property>
+			<property>
+				<key>candidate.attribute.4.header.translation.de</key>
+				<value>Initiales Kumulieren</value>
+			</property>
+			<property>
+				<key>candidate.attribute.4.header.translation.fr</key>
+				<value>Cumul initial</value>
+			</property>
+			<property>
+				<key>candidate.attribute.4.header.translation.it</key>
+				<value>Cumulo iniziale</value>
+			</property>
+			<property>
+				<key>candidate.attribute.4.header.translation.rm</key>
+				<value>Cumular inizial</value>
+			</property>
+		</uiProperties>
+	</contest>
+	<authorizations>
+		<authorization>
+			<authorizationIdentification>fc52c745-f35b-3c20-8ba5-4120b3cc02da</authorizationIdentification>
+			<authorizationName>Wünnewil-Flamatt_1</authorizationName>
+			<authorizationAlias>FR-CH-1006|FR-MU-2309+FR-CT-1006|FR-MU-3309</authorizationAlias>
+			<authorizationTest>false</authorizationTest>
+			<authorizationFromDate>2018-07-18T00:00:00+01:00</authorizationFromDate>
+			<authorizationToDate>2018-07-18T12:00:00+01:00</authorizationToDate>
+			<authorizationGracePeriod>900</authorizationGracePeriod>
+			<authorizationObject>
+				<domainOfInfluence>
+					<id>doi_ch</id>
+					<cantonCode>FR</cantonCode>
+					<type>CH</type>
+					<localId>1006</localId>
+				</domainOfInfluence>
+				<countingCircle>
+					<id>FR-MU-2309</id>
+					<name>Wünnewil-Flamatt</name>
+				</countingCircle>
+			</authorizationObject>
+		<authorizationObject>
+			<domainOfInfluence>
+				<id>doi_ct</id>
+				<cantonCode>FR</cantonCode>
+				<type>CT</type>
+				<localId>1006</localId>
+			</domainOfInfluence>
+			<countingCircle>
+				<id>FR-MU-3309</id>
+				<name>Flamatt_CT</name>
+			</countingCircle>
+		</authorizationObject>
+		<authorizationObject>
+			<domainOfInfluence>
+				<id>doi_mu_1</id>
+				<cantonCode>FR</cantonCode>
+				<type>MU</type>
+				<localId>1006</localId>
+			</domainOfInfluence>
+			<countingCircle>
+				<id>FR-MU-3409</id>
+				<name>Flamatt_MU_1</name>
+			</countingCircle>
+		</authorizationObject>
+		</authorization>
+		<authorization>
+			<authorizationIdentification>fc52c745-f35b-3c20-8ba5-4120b3cc02db</authorizationIdentification>
+			<authorizationName>Wünnewil-Flamatt_2</authorizationName>
+			<authorizationAlias>FR-CT-1006|FR-MU-3309+FR-MU-1006|FR-MU-4409</authorizationAlias>
+			<authorizationTest>false</authorizationTest>
+			<authorizationFromDate>2018-07-18T00:00:00+01:00</authorizationFromDate>
+			<authorizationToDate>2018-07-18T12:00:00+01:00</authorizationToDate>
+			<authorizationGracePeriod>900</authorizationGracePeriod>
+		<authorizationObject>
+			<domainOfInfluence>
+				<id>doi_ct</id>
+				<cantonCode>FR</cantonCode>
+				<type>CT</type>
+				<localId>1006</localId>
+			</domainOfInfluence>
+			<countingCircle>
+				<id>FR-MU-3309</id>
+				<name>Flamatt_CT</name>
+			</countingCircle>
+		</authorizationObject>
+		<authorizationObject>
+			<domainOfInfluence>
+				<id>doi_mu_2</id>
+				<cantonCode>FR</cantonCode>
+				<type>MU</type>
+				<localId>1006</localId>
+			</domainOfInfluence>
+			<countingCircle>
+				<id>FR-MU-4409</id>
+				<name>Flamatt_MU_2</name>
+			</countingCircle>
+		</authorizationObject>
+		</authorization>
+	</authorizations>
+	<register>
+		<voter>
+			<voterIdentification>230910004</voterIdentification>
+			<authorization>fc52c745-f35b-3c20-8ba5-4120b3cc02da</authorization>
+			<extendedAuthenticationKeys>
+				<extendedAuthenticationKey>
+					<name>birthYear</name>
+					<value>1960</value>
+				</extendedAuthenticationKey>
+			</extendedAuthenticationKeys>
+			<sex>MALE</sex>
+			<voterType>SWISSRESIDENT</voterType>
+		</voter>
+		<voter>
+			<voterIdentification>230910011</voterIdentification>
+			<authorization>fc52c745-f35b-3c20-8ba5-4120b3cc02da</authorization>
+			<extendedAuthenticationKeys>
+				<extendedAuthenticationKey>
+					<name>birthYear</name>
+					<value>1960</value>
+				</extendedAuthenticationKey>
+			</extendedAuthenticationKeys>
+			<sex>FEMALE</sex>
+			<voterType>SWISSRESIDENT</voterType>
+		</voter>
+		<voter>
+			<voterIdentification>230910012</voterIdentification>
+			<authorization>fc52c745-f35b-3c20-8ba5-4120b3cc02da</authorization>
+			<extendedAuthenticationKeys>
+				<extendedAuthenticationKey>
+					<name>birthYear</name>
+					<value>1960</value>
+				</extendedAuthenticationKey>
+			</extendedAuthenticationKeys>
+			<sex>MALE</sex>
+			<voterType>SWISSRESIDENT</voterType>
+		</voter>
+		<voter>
+			<voterIdentification>230910013</voterIdentification>
+			<authorization>fc52c745-f35b-3c20-8ba5-4120b3cc02da</authorization>
+			<extendedAuthenticationKeys>
+				<extendedAuthenticationKey>
+					<name>birthYear</name>
+					<value>1960</value>
+				</extendedAuthenticationKey>
+			</extendedAuthenticationKeys>
+			<sex>FEMALE</sex>
+			<voterType>SWISSRESIDENT</voterType>
+		</voter>
+		<voter>
+			<voterIdentification>230910014</voterIdentification>
+			<authorization>fc52c745-f35b-3c20-8ba5-4120b3cc02da</authorization>
+			<extendedAuthenticationKeys>
+				<extendedAuthenticationKey>
+					<name>birthYear</name>
+					<value>1960</value>
+				</extendedAuthenticationKey>
+			</extendedAuthenticationKeys>
+			<sex>MALE</sex>
+			<voterType>SWISSRESIDENT</voterType>
+		</voter>
+		<voter>
+			<voterIdentification>230910015</voterIdentification>
+			<authorization>fc52c745-f35b-3c20-8ba5-4120b3cc02da</authorization>
+			<extendedAuthenticationKeys>
+				<extendedAuthenticationKey>
+					<name>birthYear</name>
+					<value>1960</value>
+				</extendedAuthenticationKey>
+			</extendedAuthenticationKeys>
+			<sex>FEMALE</sex>
+			<voterType>SWISSRESIDENT</voterType>
+		</voter>
+		<voter>
+			<voterIdentification>230910017</voterIdentification>
+			<authorization>fc52c745-f35b-3c20-8ba5-4120b3cc02da</authorization>
+			<extendedAuthenticationKeys>
+				<extendedAuthenticationKey>
+					<name>birthYear</name>
+					<value>1960</value>
+				</extendedAuthenticationKey>
+			</extendedAuthenticationKeys>
+			<sex>MALE</sex>
+			<voterType>SWISSRESIDENT</voterType>
+		</voter>
+		<voter>
+			<voterIdentification>230910018</voterIdentification>
+			<authorization>fc52c745-f35b-3c20-8ba5-4120b3cc02da</authorization>
+			<extendedAuthenticationKeys>
+				<extendedAuthenticationKey>
+					<name>birthYear</name>
+					<value>1960</value>
+				</extendedAuthenticationKey>
+			</extendedAuthenticationKeys>
+			<sex>FEMALE</sex>
+			<voterType>SWISSRESIDENT</voterType>
+		</voter>
+		<voter>
+			<voterIdentification>230910022</voterIdentification>
+			<authorization>fc52c745-f35b-3c20-8ba5-4120b3cc02da</authorization>
+			<extendedAuthenticationKeys>
+				<extendedAuthenticationKey>
+					<name>birthYear</name>
+					<value>1960</value>
+				</extendedAuthenticationKey>
+			</extendedAuthenticationKeys>
+			<sex>MALE</sex>
+			<voterType>SWISSRESIDENT</voterType>
+		</voter>
+		<voter>
+			<voterIdentification>230910024</voterIdentification>
+			<authorization>fc52c745-f35b-3c20-8ba5-4120b3cc02da</authorization>
+			<extendedAuthenticationKeys>
+				<extendedAuthenticationKey>
+					<name>birthYear</name>
+					<value>1960</value>
+				</extendedAuthenticationKey>
+			</extendedAuthenticationKeys>
+			<sex>FEMALE</sex>
+			<voterType>SWISSRESIDENT</voterType>
+		</voter>
+		<voter>
+			<voterIdentification>230910026</voterIdentification>
+			<authorization>fc52c745-f35b-3c20-8ba5-4120b3cc02db</authorization>
+			<extendedAuthenticationKeys>
+				<extendedAuthenticationKey>
+					<name>birthYear</name>
+					<value>1960</value>
+				</extendedAuthenticationKey>
+			</extendedAuthenticationKeys>
+			<sex>MALE</sex>
+			<voterType>SWISSRESIDENT</voterType>
+		</voter>
+		<voter>
+			<voterIdentification>230910027</voterIdentification>
+			<authorization>fc52c745-f35b-3c20-8ba5-4120b3cc02db</authorization>
+			<extendedAuthenticationKeys>
+				<extendedAuthenticationKey>
+					<name>birthYear</name>
+					<value>1960</value>
+				</extendedAuthenticationKey>
+			</extendedAuthenticationKeys>
+			<sex>FEMALE</sex>
+			<voterType>SWISSRESIDENT</voterType>
+		</voter>
+		<voter>
+			<voterIdentification>230910029</voterIdentification>
+			<authorization>fc52c745-f35b-3c20-8ba5-4120b3cc02db</authorization>
+			<extendedAuthenticationKeys>
+				<extendedAuthenticationKey>
+					<name>birthYear</name>
+					<value>1960</value>
+				</extendedAuthenticationKey>
+			</extendedAuthenticationKeys>
+			<sex>MALE</sex>
+			<voterType>SWISSRESIDENT</voterType>
+		</voter>
+		<voter>
+			<voterIdentification>230910030</voterIdentification>
+			<authorization>fc52c745-f35b-3c20-8ba5-4120b3cc02db</authorization>
+			<extendedAuthenticationKeys>
+				<extendedAuthenticationKey>
+					<name>birthYear</name>
+					<value>1960</value>
+				</extendedAuthenticationKey>
+			</extendedAuthenticationKeys>
+			<sex>MALE</sex>
+			<voterType>SWISSRESIDENT</voterType>
+		</voter>
+		<voter>
+			<voterIdentification>230910031</voterIdentification>
+			<authorization>fc52c745-f35b-3c20-8ba5-4120b3cc02db</authorization>
+			<extendedAuthenticationKeys>
+				<extendedAuthenticationKey>
+					<name>birthYear</name>
+					<value>1960</value>
+				</extendedAuthenticationKey>
+			</extendedAuthenticationKeys>
+			<sex>FEMALE</sex>
+			<voterType>SWISSRESIDENT</voterType>
+		</voter>
+		<voter>
+			<voterIdentification>230910032</voterIdentification>
+			<authorization>fc52c745-f35b-3c20-8ba5-4120b3cc02db</authorization>
+			<extendedAuthenticationKeys>
+				<extendedAuthenticationKey>
+					<name>birthYear</name>
+					<value>1960</value>
+				</extendedAuthenticationKey>
+			</extendedAuthenticationKeys>
+			<sex>FEMALE</sex>
+			<voterType>SWISSRESIDENT</voterType>
+		</voter>
+		<voter>
+			<voterIdentification>230910034</voterIdentification>
+			<authorization>fc52c745-f35b-3c20-8ba5-4120b3cc02db</authorization>
+			<extendedAuthenticationKeys>
+				<extendedAuthenticationKey>
+					<name>birthYear</name>
+					<value>1960</value>
+				</extendedAuthenticationKey>
+			</extendedAuthenticationKeys>
+			<sex>FEMALE</sex>
+			<voterType>SWISSRESIDENT</voterType>
+		</voter>
+		<voter>
+			<voterIdentification>230910041</voterIdentification>
+			<authorization>fc52c745-f35b-3c20-8ba5-4120b3cc02db</authorization>
+			<extendedAuthenticationKeys>
+				<extendedAuthenticationKey>
+					<name>birthYear</name>
+					<value>1960</value>
+				</extendedAuthenticationKey>
+			</extendedAuthenticationKeys>
+			<sex>MALE</sex>
+			<voterType>SWISSRESIDENT</voterType>
+		</voter>
+		<voter>
+			<voterIdentification>230910045</voterIdentification>
+			<authorization>fc52c745-f35b-3c20-8ba5-4120b3cc02db</authorization>
+			<extendedAuthenticationKeys>
+				<extendedAuthenticationKey>
+					<name>birthYear</name>
+					<value>1960</value>
+				</extendedAuthenticationKey>
+			</extendedAuthenticationKeys>
+			<sex>FEMALE</sex>
+			<voterType>SWISSRESIDENT</voterType>
+		</voter>
+	</register>
+</configuration>

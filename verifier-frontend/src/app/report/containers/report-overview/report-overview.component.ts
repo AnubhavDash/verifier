@@ -52,12 +52,14 @@ export class ReportOverviewComponent implements OnInit {
       result.color = "green";
     } else if (input.status === "NOK") {
       result.color = "red";
+    } else if (input.status === "NA") {
+      result.color = "grey";
     }
     return result;
   }
 
   initializeWebSocketConnection() {
-    let ws = new SockJS("http://localhost:8080/socket");
+    let ws = new SockJS("https://localhost:8443/socket");
     this.stompClient = Stomp.over(ws);
     let that = this;
     this.stompClient.connect({}, function (frame) {

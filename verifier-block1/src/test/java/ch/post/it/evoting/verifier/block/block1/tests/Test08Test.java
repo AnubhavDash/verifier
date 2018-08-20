@@ -8,10 +8,12 @@
 
 package ch.post.it.evoting.verifier.block.block1.tests;
 
+import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
+import ch.post.it.evoting.verifier.block.block1.diabledTests.Test08;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestResult;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -25,8 +27,6 @@ import java.io.File;
  */
 public class Test08Test {
 
-    // at this point with the current file 2 BigInteger are nok with the euler criterion
-    @Ignore
     @Test
     public void executeTestOK() {
         TestResult testResult = new Test08().executeTest(new File(getClass().getResource("/Test08/OK").getFile()));
@@ -36,21 +36,17 @@ public class Test08Test {
 
     @Test
     public void executeTestNOK() {
-        /*
         TestResult testResult = new Test08().executeTest(new File(getClass().getResource("/Test08/NOK").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
-        */
     }
 
     @Test
     public void executeTestNOKFileNotFound() {
-        /*
         TestResult testResult = new Test08().executeTest(new File(getClass().getResource("/Test08/NOK-NOTFILE").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
-        Assert.assertEquals(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test06.file.not.found.message"), testResult.getMessage());
-        */
+        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test08.file.not.found.message"), testResult.getMessage());
     }
 
 }

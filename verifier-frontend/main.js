@@ -4,7 +4,7 @@ let win;
 let serverProcess;
 let platform = process.platform;
 
-let appUrl = 'http://localhost:8080';
+let appUrl = 'https://localhost:8443';
 
 if (platform === 'win32') {
   serverProcess = require('child_process')
@@ -21,6 +21,17 @@ if (!serverProcess) {
   app.quit();
   return;
 }
+
+app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
+  // console.log("certificate :"+certificate.fingerprint );
+  if (certificate.fingerprint  === 'sha256/ERUEk1Mx1zexjJ7FROwfICOsTc6ueShhtmCxi9o3p8I=') {
+    // Logique de vérification.
+    event.preventDefault()
+    callback(true)
+  } else {
+    callback(false)
+  }
+})
 
 serverProcess.stdout.on('data', function (data) {
   console.log('Server: ' + data);
@@ -43,7 +54,7 @@ const openWindow = function () {
   win.loadURL(`file://${__dirname}/dist/index.html`)
 
   //// uncomment below to open the DevTools.
- // win.webContents.openDevTools()
+  // win.webContents.openDevTools()
 
   // Event when the window is closed.
   win.on('closed', function () {
@@ -68,6 +79,8 @@ const openWindow = function () {
 
 const startUp = function () {
   const requestPromise = require('minimal-request-promise');
+
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
   requestPromise.get(appUrl + "/api/ping").then(function (response) {
     console.log('Server started!');

@@ -11,16 +11,11 @@ package ch.post.it.evoting.verifier.block.block1.tests;
 import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestResult;
-import ch.post.it.evoting.verifier.common.block.tools.LanguageHelper;
-import ch.post.it.evoting.verifier.common.block.tools.TypeHelper;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
-import java.math.BigInteger;
-import java.util.Base64;
-
-import static org.junit.Assert.*;
 
 /**
  * Class Test03Test.
@@ -42,7 +37,7 @@ public class Test03Test {
         TestResult testResult = new Test03().executeTest(new File(getClass().getResource("/Test03/NOK").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
-        Assert.assertEquals(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test03.nok.message"), testResult.getMessage());
+        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test03.nok.message"), testResult.getMessage());
     }
 
     @Test
@@ -50,6 +45,6 @@ public class Test03Test {
         TestResult testResult = new Test03().executeTest(new File(getClass().getResource("/Test03/NOK-NOTFILE").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
-        Assert.assertEquals(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message"), testResult.getMessage());
+        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message"), testResult.getMessage());
     }
 }

@@ -14,9 +14,9 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
-import ch.post.it.evoting.verifier.common.block.tools.JsonMapper;
-import ch.post.it.evoting.verifier.common.block.tools.LanguageHelper;
-import ch.post.it.evoting.verifier.common.block.tools.TypeHelper;
+import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.BallotBox;
 import ch.post.it.evoting.verifier.dto.DataConfigEE;
 import ch.post.it.evoting.verifier.dto.EncryptionParameters;
@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,7 +43,7 @@ public class Test06 extends Test {
         TestDefinition def = new TestDefinition();
         def.setBlockId(1);
         def.setCategory(Category.INTEGRITY);
-        def.setDescription(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test06.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test06.description"));
         def.setId(6);
         def.setName("isQuadraticResidue([vo])");
         return def;
@@ -50,11 +51,11 @@ public class Test06 extends Test {
 
     // common method used to verify if a vo is in error
     // if Euler criterion is not equals to 1 there is an error
-    private boolean isBigIntInError(BigInteger vo, BigInteger p){
+    private boolean isBigIntInError(BigInteger vo, BigInteger p) {
         boolean inError = false;
-        BigInteger exponent = (p.subtract(new BigInteger("1"))).divide(new BigInteger("2"));
+        BigInteger exponent = (p.subtract(BigInteger.ONE)).divide(new BigInteger("2"));
         BigInteger ec = vo.modPow(exponent, p);
-        inError = !ec.equals(new BigInteger("1"));
+        inError = !ec.equals(BigInteger.ONE);
         return inError;
     }
 
@@ -62,16 +63,17 @@ public class Test06 extends Test {
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
+            Path path = inputDirectory.toPath().resolve(Block1TestSuite.PATH_CRYPTO_SETUP);
+            EncryptionParameters encryptionParameters = Deserializer.fromJson(path.toFile(), "encryptionParameters\\.json", EncryptionParameters.class);
+            String pString = encryptionParameters.getP();
+            BigInteger p = TypeConverter.stringToBigInteger(pString);
 
-            EncryptionParameters encryptionParameters = JsonMapper.mapFromJson(inputDirectory, "encryptionParameters.json", EncryptionParameters.class);
-            String pString = encryptionParameters.getZpSubgroup().getP();
-            BigInteger p = TypeHelper.base64ToBigInteger(pString);
-
-            DataConfigEE dataConfigEE = JsonMapper.mapFromJson(inputDirectory, "dataConfig_[EE].json", DataConfigEE.class);
+            path = inputDirectory.toPath().resolve(Block1TestSuite.PATH_ELECTION_SETUP);
+            DataConfigEE dataConfigEE = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", DataConfigEE.class);
             List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
 
             //votations
-            Collection<Integer> errors = ballotBoxes.stream()
+            Collection<Integer> errors = ballotBoxes.parallelStream()
                     .flatMap(bb -> bb.getCountingCircles().stream())
                     .flatMap(cc -> cc.getDomainOfInfluence().stream())
                     .flatMap(doi -> doi.getVotes().stream())
@@ -83,7 +85,7 @@ public class Test06 extends Test {
 
             //lists
             errors.addAll(
-                    ballotBoxes.stream()
+                    ballotBoxes.parallelStream()
                             .flatMap(bb -> bb.getCountingCircles().stream())
                             .flatMap(cc -> cc.getDomainOfInfluence().stream())
                             .flatMap(doi -> doi.getElections().stream())
@@ -94,7 +96,7 @@ public class Test06 extends Test {
 
             //candidates
             errors.addAll(
-                    ballotBoxes.stream()
+                    ballotBoxes.parallelStream()
                             .flatMap(bb -> bb.getCountingCircles().stream())
                             .flatMap(cc -> cc.getDomainOfInfluence().stream())
                             .flatMap(doi -> doi.getElections().stream())
@@ -110,15 +112,15 @@ public class Test06 extends Test {
                 result.setStatus(Status.OK);
             } else {
                 result.setStatus(Status.NOK);
-                result.setMessage(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test06.nok.message", errors.toString()));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test06.nok.message", errors.toString()));
             }
         } catch (Exception e) {
             result.setStatus(Status.NOK);
-            if(e instanceof FileNotFoundException){
-                result.setMessage(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test06.file.not.found.message"));
+            if (e instanceof FileNotFoundException) {
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test06.file.not.found.message"));
             } else {
                 log.error("Unexpected error", e);
-                result.setMessage(LanguageHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
             }
         }
         return result;

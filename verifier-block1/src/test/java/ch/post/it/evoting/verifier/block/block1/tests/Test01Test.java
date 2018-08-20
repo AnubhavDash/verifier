@@ -10,13 +10,10 @@ package ch.post.it.evoting.verifier.block.block1.tests;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestResult;
-import ch.post.it.evoting.verifier.common.block.tools.TypeHelper;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
-import java.math.BigInteger;
-import java.util.Base64;
 
 /**
  * Class Test01isPrimePTest.
