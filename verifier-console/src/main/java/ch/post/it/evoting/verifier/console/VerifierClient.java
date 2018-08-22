@@ -8,6 +8,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.List;
 
 public class VerifierClient {
@@ -20,9 +25,17 @@ public class VerifierClient {
 
     public VerifierClient() {
         try {
-            restTemplate = RestClientHelper.getRestClientSSL(null, null, null, null, null, null, 1000);
-        } catch (Exception e) {
-            e.printStackTrace();
+            restTemplate = RestClientHelper.getRestClientSSL(null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    1000);
+        } catch (KeyManagementException | CertificateException |
+                NoSuchAlgorithmException | KeyStoreException | IOException e) {
+            log.error("Unable to instantiate the restTemplate", e);
+            throw new RuntimeException("Unable to instantiate the restTemplate", e);
         }
     }
 
@@ -31,10 +44,8 @@ public class VerifierClient {
     }
 
     public List<Test> getTests() {
-        return restTemplate.exchange(SERVER_PATH + "tests",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<Test>>() {
+        return restTemplate.exchange(SERVER_PATH + "tests", HttpMethod.GET,
+                null, new ParameterizedTypeReference<List<Test>>() {
                 }).getBody();
     }
 
