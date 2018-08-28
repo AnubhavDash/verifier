@@ -85,7 +85,7 @@ public class Test03 extends Test {
                             String cId = c.getCandidateInformation().getCandidateIdentification();
                             BigInteger decryptCount = getDecryptCount(mapConfig, mapDecrypt, ccId, cId);
                             if (!c.getCountOfVotesTotal().equals(decryptCount)) {
-                                throw new RuntimeException("TODO");
+                                throw new Test03FailureException(cId);
                             }
                         });
                 cc.getElectionResults().stream()
@@ -95,7 +95,7 @@ public class Test03 extends Test {
                             String cId = c.getCandidateInformation().getCandidateIdentification();
                             BigInteger decryptCount = getDecryptCount(mapConfig, mapDecrypt, ccId, cId);
                             if (!c.getCountOfVotesTotal().equals(decryptCount)) {
-                                throw new RuntimeException("TODO");
+                                throw new Test03FailureException(cId);
                             }
                         });
             });
@@ -105,7 +105,9 @@ public class Test03 extends Test {
         } catch (Exception e) {
             result.setStatus(Status.NOK);
 
-            if (e instanceof FileNotFoundException) {
+            if (e instanceof Test03FailureException) {
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test03.nok.message", ((Test03FailureException) e).getCandidateId()));
+            } else if (e instanceof FileNotFoundException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message"));
             } else {
                 log.error("Unexpected error", e);
@@ -136,5 +138,17 @@ public class Test03 extends Test {
         count += Optional.ofNullable(countByCC.get(cId)).orElse(0L);
 
         return BigInteger.valueOf(count);
+    }
+
+    class Test03FailureException extends RuntimeException {
+        private String candidateId;
+
+        public Test03FailureException(String candidateId) {
+            this.candidateId = candidateId;
+        }
+
+        public String getCandidateId() {
+            return candidateId;
+        }
     }
 }
