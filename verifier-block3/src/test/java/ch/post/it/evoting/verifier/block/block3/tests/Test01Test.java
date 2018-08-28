@@ -16,4 +16,10 @@ public class Test01Test {
         TestResult result = new Test01().executeTest(new File(getClass().getResource("/Test01/OK").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
+
+    @Test
+    public void executeTestNOK() {
+        TestResult result = new Test01().executeTest(new File(getClass().getResource("/Test01/NOK").getFile()));
+        Assert.assertEquals(Status.NOK, result.getStatus());
+    }
 }
