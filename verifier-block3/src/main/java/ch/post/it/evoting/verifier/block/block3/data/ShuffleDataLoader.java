@@ -32,30 +32,31 @@ public class ShuffleDataLoader {
     final Ciphertext[][] reencryptedBallotsCiphertext;
 
 
-    public ShuffleDataLoader(File file) throws IOException {
-        Path bbPath = file.toPath().getParent();
-        final String batchName = file.getName();
+    public ShuffleDataLoader(File mixingDirectory) throws IOException {
 
-        zpGroup = BGReader.createZpGroup(bbPath, batchName);
-        publicKey = BGReader.createElGamalPublicKey(batchName, bbPath);
+        Path ballotBoxPath = mixingDirectory.toPath().getParent();
+        final String batchName = mixingDirectory.getName();
+
+        zpGroup = BGReader.createZpGroup(ballotBoxPath, batchName);
+        publicKey = BGReader.createElGamalPublicKey(batchName, ballotBoxPath);
         cryptoSystem = new GjosteenElGamal(zpGroup, publicKey);
 
         encryptedBallots =
-                ElGamalEncryptedBallotsLoader.loadCSV(zpGroup.getP(), zpGroup.getOrder(), bbPath, batchName,
+                ElGamalEncryptedBallotsLoader.loadCSV(zpGroup.getP(), zpGroup.getOrder(), ballotBoxPath, batchName,
                         DefaultLocationNames.ENCRYPTED_BALLOTS_OUTPUT_FILE_NAME + Constants.CSV_FILE_EXTENSION);
 
         reencryptedBallots = ElGamalEncryptedBallotsLoader.loadCSV(
-                zpGroup.getP(), zpGroup.getOrder(), bbPath, batchName,
+                zpGroup.getP(), zpGroup.getOrder(), ballotBoxPath, batchName,
                 DefaultLocationNames.REENCRYPTED_BALLOTS_OUTPUT_FILE_NAME + Constants.CSV_FILE_EXTENSION);
 
         JSONProofsReader proofsReader = new JSONProofsReader();
-        shuffleProof = proofsReader.read(bbPath, batchName);
+        shuffleProof = proofsReader.read(ballotBoxPath, batchName);
 
         final int N = encryptedBallots.getBallots().size();
         final int m = shuffleProof.getInitialMessage().length;
         final int n = N / m;
 
-        commitmentParams = BGReader.createCommitmentParams(zpGroup, n, batchName, bbPath);
+        commitmentParams = BGReader.createCommitmentParams(zpGroup, n, batchName, ballotBoxPath);
         encryptedBallotsCiphertext = MatrixArranger.arrangeInCiphertextMatrix(encryptedBallots, m, n);
         reencryptedBallotsCiphertext = MatrixArranger.arrangeInCiphertextMatrix(reencryptedBallots, m, n);
     }

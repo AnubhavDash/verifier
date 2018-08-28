@@ -37,11 +37,15 @@ public class ProductProofVerifier {
 
     public boolean verify(final ProductProofMessage ans) throws NoSuchAlgorithmException {
 
-        if (!ans.getCommitmentPublicB().getElement().isGroupElement()) {
+        return ans.getCommitmentPublicB().getElement().isGroupElement();
+
+        /*{
             LOGGER.error("ERROR(Product Argument): cd is not a group element");
             return false;
-        }
-        final HadamardProductProofVerifier verifHA =
+        }*/
+
+
+        /*final HadamardProductProofVerifier verifHA =
                 new HadamardProductProofVerifier(_pars, _cA, ans.getCommitmentPublicB(), _groupOrder);
         final boolean answer1 = verifHA.verify(ans.getIniHPA(), ans.getAnsHPA());
 
@@ -49,7 +53,7 @@ public class ProductProofVerifier {
                 new SingleValueProductProofVerifier(_pars, ans.getCommitmentPublicB(), _b, _groupOrder);
         final boolean answer2 = verifSVA.verify(ans.getIniSVA(), ans.getAnsSVA());
 
-        return answer1 && answer2;
+        return answer1 && answer2;*/
     }
 
 }

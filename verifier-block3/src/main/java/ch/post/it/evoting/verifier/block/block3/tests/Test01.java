@@ -38,12 +38,12 @@ public class Test01 extends Test {
         TestResult result = new TestResult(getTestDefinition());
         try {
             Path ballotBoxesPath = inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES);
-            final File[] files = Arrays.stream(Objects.requireNonNull(ballotBoxesPath.toFile().listFiles(File::isDirectory)))
+            final File[] mixingDirectories = Arrays.stream(Objects.requireNonNull(ballotBoxesPath.toFile().listFiles(File::isDirectory)))
                     .flatMap(d -> Arrays.stream(Objects.requireNonNull(d.listFiles(File::isDirectory))))
                     .toArray(File[]::new);
 
-            for (File file : files) {
-                ShuffleDataLoader data = new ShuffleDataLoader(file);
+            for (File mixingDirectory : mixingDirectories) {
+                ShuffleDataLoader data = new ShuffleDataLoader(mixingDirectory);
 
                 LOGGER.debug("Ballots before mixing");
                 if (data.getEncryptedBallots().getBallots().isEmpty()) {
