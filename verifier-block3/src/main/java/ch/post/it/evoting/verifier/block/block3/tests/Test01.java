@@ -8,6 +8,7 @@ import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.TestFailureException;
+import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProof;
 import com.scytl.products.ov.mixnet.proofs.bg.ShuffleProofVerifier;
 import org.apache.log4j.Logger;
 
@@ -57,11 +58,17 @@ public class Test01 extends Test {
                     continue;
                 }
 
-                final ShuffleProofVerifier shuffleProofVerifier = new ShuffleProofVerifier(data.getCryptoSystem(), data.getCommitmentParams(),
-                        data.getEncryptedBallotsCiphertext(), data.getReencryptedBallotsCiphertext());
+                final ShuffleProofVerifier shuffleProofVerifier = new ShuffleProofVerifier(
+                        data.getCryptoSystem(),
+                        data.getCommitmentParams(),
+                        data.getEncryptedBallotsCiphertext(),
+                        data.getReencryptedBallotsCiphertext());
 
-                if (!shuffleProofVerifier.verifyProof(data.getShuffleProof().getInitialMessage(),
-                        data.getShuffleProof().getFirstAnswer(), data.getShuffleProof().getSecondAnswer())) {
+                ShuffleProof shuffleProof = data.getShuffleProof();
+
+                if (!shuffleProofVerifier.verifyProof(shuffleProof.getInitialMessage(),
+                        shuffleProof.getFirstAnswer(),
+                        shuffleProof.getSecondAnswer())) {
                     throw new TestFailureException();
                 }
             }

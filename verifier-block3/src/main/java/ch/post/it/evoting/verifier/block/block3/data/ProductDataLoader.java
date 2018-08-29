@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class ProductDataLoader {
 
-    private final RandomOracleHash _ro;
+
     private final PublicCommitment[] _cPA;
     private final Exponent[][] _vecX;
     private final Exponent _rhsPA;
@@ -29,16 +29,16 @@ public class ProductDataLoader {
         _m = _shuffleData.getReencryptedBallotsCiphertext().length;// m;
         _n = _shuffleData.getReencryptedBallotsCiphertext()[0].length;// n;
 
-        _ro = new RandomOracleHash(_shuffleData.getCommitmentParams().getGroup().getOrder());
-        _ro.addDataToRO(_shuffleData.getEncryptedBallots());
-        _ro.addDataToRO(_shuffleData.getReencryptedBallots());
-        _ro.addDataToRO(_shuffleData.getShuffleProof().getInitialMessage());
-        final Exponent challengeX = _ro.getHash();
-        _ro.addDataToRO(_shuffleData.getShuffleProof().getFirstAnswer());
-        final Exponent challengeY = _ro.getHash();
-        _ro.addDataToRO("1");
-        final Exponent challengeZ = _ro.getHash();
-        _ro.reset();
+        final RandomOracleHash ro = new RandomOracleHash(_shuffleData.getCommitmentParams().getGroup().getOrder());
+        ro.addDataToRO(_shuffleData.getEncryptedBallots());
+        ro.addDataToRO(_shuffleData.getReencryptedBallots());
+        ro.addDataToRO(_shuffleData.getShuffleProof().getInitialMessage());
+        final Exponent challengeX = ro.getHash();
+        ro.addDataToRO(_shuffleData.getShuffleProof().getFirstAnswer());
+        final Exponent challengeY = ro.getHash();
+        ro.addDataToRO("1");
+        final Exponent challengeZ = ro.getHash();
+        ro.reset();
 
         _cPA = computeCommitment(_shuffleData.getShuffleProof().getInitialMessage(), _shuffleData.getShuffleProof().getFirstAnswer(), challengeY, challengeZ);
 

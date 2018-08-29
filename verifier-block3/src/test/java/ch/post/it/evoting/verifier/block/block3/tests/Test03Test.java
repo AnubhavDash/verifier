@@ -8,18 +8,19 @@ import org.junit.Test;
 
 import java.io.File;
 
-public class Test02Test {
+public class Test03Test {
 
     @Test
     public void executeTest() {
-        TestResult result = new Test02().executeTest(new File(getClass().getResource("/Test02/OK").getFile()));
-        //TestResult result = new Test02().executeTest(new File("c:\\work\\projects\\verifier\\dataset\\input2"));
+        //TestResult result = new Test03().executeTest(new File(getClass().getResource("/Test03/OK").getFile()));
+        TestResult result = new Test03().executeTest(new File("c:\\work\\projects\\verifier\\dataset\\input1"));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
+    @Ignore
     public void executeTestNOK() {
-        TestResult result = new Test02().executeTest(new File(getClass().getResource("/Test02/NOK").getFile()));
+        TestResult result = new Test03().executeTest(new File(getClass().getResource("/Test03/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }

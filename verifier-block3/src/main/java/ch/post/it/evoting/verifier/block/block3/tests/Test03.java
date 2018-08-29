@@ -8,7 +8,8 @@ import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.TestFailureException;
-import com.scytl.products.ov.mixnet.proofs.bg.ProductProofVerifier;
+import com.scytl.products.ov.mixnet.commons.beans.proofs.ProductProofMessage;
+import com.scytl.products.ov.mixnet.proofs.bg.HadamardProductProofVerifier;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -16,19 +17,19 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Test02 extends Test {
+public class Test03 extends Test {
 
 
-    private static final Logger LOGGER = Logger.getLogger(Test02.class);
+    private static final Logger LOGGER = Logger.getLogger(Test03.class);
 
     @Override
     public TestDefinition getTestDefinition() {
         TestDefinition definition = new TestDefinition();
 
         definition.setBlockId(3);
-        definition.setId(2);
+        definition.setId(3);
         definition.setCategory(Category.COMPLETENESS);
-        definition.setName("checkProductArgument");
+        definition.setName("checkHadamardArgument");
         definition.setDescription(null); //TODO
         return definition;
     }
@@ -45,10 +46,15 @@ public class Test02 extends Test {
             for (File mixingDirectory : mixingDirectories) {
                 ProductDataLoader data = new ProductDataLoader(mixingDirectory);
 
-                final ProductProofVerifier verifPA = new ProductProofVerifier(data.getShuffleData().getCommitmentParams(),
-                        data.getCPA(), data.getRhsPA(), data.getShuffleData().getCommitmentParams().getGroup().getOrder());
+                ProductProofMessage msgPA = data.getShuffleData().getShuffleProof().getSecondAnswer().getMsgPA();
 
-                if (!verifPA.verify(data.getShuffleData().getShuffleProof().getSecondAnswer().getMsgPA())) {
+                final HadamardProductProofVerifier verifHA = new HadamardProductProofVerifier(
+                        data.getShuffleData().getCommitmentParams(),
+                        data.getCPA(),
+                        msgPA.getCommitmentPublicB(),
+                        data.getShuffleData().getCommitmentParams().getGroup().getOrder());
+
+                if (!verifHA.verify(msgPA.getIniHPA(), msgPA.getAnsHPA())) {
                     throw new TestFailureException();
                 }
             }

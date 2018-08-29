@@ -45,7 +45,7 @@ public class ProductProofVerifier {
         }*/
 
 
-        /*final HadamardProductProofVerifier verifHA =
+       /* final HadamardProductProofVerifier verifHA =
                 new HadamardProductProofVerifier(_pars, _cA, ans.getCommitmentPublicB(), _groupOrder);
         final boolean answer1 = verifHA.verify(ans.getIniHPA(), ans.getAnsHPA());
 

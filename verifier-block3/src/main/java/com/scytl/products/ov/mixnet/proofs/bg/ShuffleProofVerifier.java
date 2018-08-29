@@ -69,7 +69,8 @@ public class ShuffleProofVerifier {
         LOGGER.debug("\n-------------- Start Verification -------------------");
         long initTime = System.currentTimeMillis();
 
-        return isValidCommitment(cA, "cA") && isValidCommitment(cB, "cB");
+         return isValidCommitment(cA, "cA") && isValidCommitment(cB, "cB");
+
 /*
         _RO.addDataToRO(_C);
         _RO.addDataToRO(_Cprime);
@@ -105,7 +106,7 @@ public class ShuffleProofVerifier {
         }
         LOGGER.debug(" Verification done in " + (System.currentTimeMillis() - initTime) + "ms");
         return true;
-*/
+        */
     }
 
     private Exponent[][] computeVecX(final Exponent challengeX) {
