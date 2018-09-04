@@ -2,6 +2,7 @@ package ch.post.it.evoting.verifier.block.block4.tests;
 
 import ch.ech.xmlns.ech_0110._3.Delivery;
 import ch.ech.xmlns.ech_0110._3.ListResultsType;
+import ch.evoting.xmlns.config._3.Configuration;
 import ch.post.it.evoting.verifier.block.block4.Block4TestSuite;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
@@ -19,7 +20,6 @@ import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.AbstractMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -43,8 +43,36 @@ public class Test04 extends Test {
         TestResult result = new TestResult(getTestDefinition());
 
         try {
-            // 2, decrypt file => map<countingCircle, map<electionId, map<ListId, count>>> => map2
-            Path path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS);
+
+            //1, config file => map<listIdentification, List<candidateListIdentification>> => map1 (listEmpty = true) empty positions
+            //config file => map<listIdentification, List<candidateListIdentification>> => map2 list candidate positions
+            Path path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_ELECTION_SETUP);
+            Configuration configuration = Deserializer.fromXml(path.toFile(), "configuration-anonymized.xml", Configuration.class);
+            Map<String, Map<String, Long>> map1 = configuration.getContest().getElectionInformation().stream()
+                    .flatMap(ei -> ei.getList().stream())
+                    .filter(l -> l.isListEmpty())
+                    .map(l -> {
+                        String listIden = l.getListIdentification();
+                        Map<String, Long> cpList = l.getCandidatePosition().stream()
+                                .map(cp -> cp.getCandidateListIdentification())
+                                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+                        return new AbstractMap.SimpleEntry<>(listIden, cpList);
+                    }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+
+            Map<String, Map<String, Long>> map2 = configuration.getContest().getElectionInformation().stream()
+                    .flatMap(ei -> ei.getList().stream())
+                    .filter(l -> !l.isListEmpty())
+                    .map(l -> {
+                        String listIden = l.getListIdentification();
+                        Map<String, Long> cpList = l.getCandidatePosition().stream()
+                                .map(cp -> cp.getCandidateListIdentification())
+                                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+                        return new AbstractMap.SimpleEntry<>(listIden, cpList);
+                    }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+
+
+            // 2, decrypt file => map<countingCircle, map<electionId, map<ListId, count>>> => mapDecrypt
+            path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS);
             Results results = Deserializer.fromXml(path.toFile(), "evoting-decrypt_.*\\.xml", Results.class);
             Map<String, Map<String, Map<String, Long>>> mapDecrypt = results.getBallotsBox().stream()
                     .flatMap(bb -> bb.getCountingCircle().stream())
@@ -55,7 +83,7 @@ public class Test04 extends Test {
                                 .map(e -> {
                                     String electionId = e.getElectionIdentification();
                                     Map<String, Long> answerCount = e.getBallot().stream()
-                                            .map(b -> b.getChosenListIdentification())
+                                            .flatMap(b -> b.getChosenCandidateListIdentification().stream())
                                             .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
                                     return new AbstractMap.SimpleEntry<>(electionId, answerCount);
                                 }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
@@ -65,7 +93,6 @@ public class Test04 extends Test {
                     })
                     .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
-
             path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS);
             Delivery ech110 = Deserializer.fromXml(path.toFile(), "eCH-0110_.*\\.xml", Delivery.class);
             ech110.getResultDelivery().getCountingCircleResults().forEach(cc -> {
@@ -73,16 +100,17 @@ public class Test04 extends Test {
                 cc.getElectionResults().stream()
                         .filter(er -> er.getProportionalElection() != null)
                         .forEach(er -> {
+                            BigInteger electionType = er.getElection().getTypeOfElection();
                             String electionId = er.getElection().getElectionIdentification();
-
                             er.getProportionalElection().getList().stream()
                                     .forEach(l -> {
                                         String listId = l.getListInformation().getListIdentification();
-                                        BigInteger decryptCount = getDecryptCount(mapDecrypt, ccId, electionId, listId);
-                                        BigInteger listCount = getListCount(l);
-                                        if (!listCount.equals(decryptCount)) {
-                                            log.debug(String.format("count not equal : CC:%s electionId:%s list:%s decrypt:%s 110:%s", ccId, electionId, listId, decryptCount, listCount));
-                                            getListCount(l);
+                                        BigInteger countOfCandidatesVotes = getCountOfCandidatesVotes(l);
+                                        BigInteger lcpCount = getCorrectDecryptCountByMap(mapDecrypt, ccId, electionId, listId, map2);
+                                        BigInteger countOfAdditionnalVotes = getCountOfAdditionnalVotes(l);
+                                        BigInteger emptyCount = getCorrectDecryptCountByMap(mapDecrypt, ccId, electionId, listId, map1);
+                                        if (!countOfCandidatesVotes.equals(lcpCount) || !countOfAdditionnalVotes.equals(emptyCount) ) {
+                                            log.debug(String.format("count not equal : CC:%s electionId:%s list:%s decrypt:%s 110:%s", ccId, electionId, listId, lcpCount, countOfCandidatesVotes));
                                             throw new RuntimeException("TODO");
                                         }
                                     });
@@ -105,26 +133,23 @@ public class Test04 extends Test {
 
     }
 
-
-    private BigInteger getListCount(ListResultsType l) {
+    private BigInteger getCountOfCandidatesVotes(ListResultsType l) {
         BigInteger count = BigInteger.ZERO;
-
-        if (l.getCountOfAdditionalVotes() != null) {
-            count = count.add(l.getCountOfAdditionalVotes().getTotal());
-        }
         if (l.getCountOfCandidateVotes() != null) {
             count = count.add(l.getCountOfCandidateVotes().getTotal());
-        }
-        if (l.getCountOfChangedBallots() != null) {
-            count = count.add(l.getCountOfChangedBallots().getTotal());
-        }
-        if (l.getCountOfPartyVotes() != null) {
-            count = count.add(l.getCountOfPartyVotes().getTotal());
         }
         return count;
     }
 
-    private BigInteger getDecryptCount(Map<String,Map<String,Map<String,Long>>> mapDecrypt, String ccId, String electionId, String listId) {
+    private BigInteger getCountOfAdditionnalVotes(ListResultsType l) {
+        BigInteger count = BigInteger.ZERO;
+        if (l.getCountOfCandidateVotes() != null) {
+            count = count.add(l.getCountOfAdditionalVotes().getTotal());
+        }
+        return count;
+    }
+
+    private BigInteger getCorrectDecryptCountByMap(Map<String, Map<String, Map<String, Long>>> mapDecrypt, String ccId, String electionId, String listId, Map<String, Map<String, Long>> map) {
         Map<String, Map<String, Long>> countByCC = mapDecrypt.get(ccId);
         if (countByCC == null) {
             throw new IllegalArgumentException("cannot find the decrypt data for given countingCircle : " + ccId);
@@ -133,7 +158,10 @@ public class Test04 extends Test {
         if (countByElection == null) {
             throw new IllegalArgumentException("cannot find the decrypt data for given election : " + electionId);
         }
-
-        return BigInteger.valueOf(Optional.ofNullable(countByElection.get(listId)).orElse(0L));
+        Map<String, Long> stringLongMap = map.get(listId);
+        BigInteger result = BigInteger.ZERO;
+        result.add(BigInteger.valueOf(stringLongMap.values().stream().mapToInt(Number::intValue).sum()));
+        return result;
     }
+
 }
