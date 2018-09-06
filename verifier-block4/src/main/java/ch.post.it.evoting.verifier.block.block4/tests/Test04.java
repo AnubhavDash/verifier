@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.AbstractMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -78,17 +79,14 @@ public class Test04 extends Test {
                     .flatMap(bb -> bb.getCountingCircle().stream())
                     .map(cc -> {
                         String ccId = cc.getCountingCircleIdentification();
-
                         Map<String, Map<String, Long>> electionCount = cc.getDomainOfInfluence().stream().flatMap(doi -> doi.getElection().stream())
                                 .map(e -> {
                                     String electionId = e.getElectionIdentification();
-                                    Map<String, Long> answerCount = e.getBallot().stream()
+                                    Map<String, Long> listCandidatePositionCount = e.getBallot().stream()
                                             .flatMap(b -> b.getChosenCandidateListIdentification().stream())
                                             .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-                                    return new AbstractMap.SimpleEntry<>(electionId, answerCount);
+                                    return new AbstractMap.SimpleEntry<>(electionId, listCandidatePositionCount);
                                 }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
-
-
                         return new AbstractMap.SimpleEntry<>(ccId, electionCount);
                     })
                     .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
@@ -111,18 +109,19 @@ public class Test04 extends Test {
                                         BigInteger emptyCount = getCorrectDecryptCountByMap(mapDecrypt, ccId, electionId, listId, map1);
                                         if (!countOfCandidatesVotes.equals(lcpCount) || !countOfAdditionnalVotes.equals(emptyCount) ) {
                                             log.debug(String.format("count not equal : CC:%s electionId:%s list:%s decrypt:%s 110:%s", ccId, electionId, listId, lcpCount, countOfCandidatesVotes));
-                                            throw new RuntimeException("TODO");
+                                            throw new Test04FailureException(ccId, listId);
                                         }
                                     });
                         });
             });
-
-
             result.setStatus(Status.OK);
         } catch (Exception e) {
             result.setStatus(Status.NOK);
-
-            if (e instanceof FileNotFoundException) {
+            if (e instanceof Test04.Test04FailureException) {
+                Test04FailureException ex = ((Test04FailureException) e);
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test04.nok.message", ex.getCcId(), ex.getListId()));
+            }
+            else if (e instanceof FileNotFoundException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test04.file.not.found.message"));
             } else {
                 log.error("Unexpected error", e);
@@ -160,8 +159,34 @@ public class Test04 extends Test {
         }
         Map<String, Long> listAndCountMap = map.get(listId);
         BigInteger result = BigInteger.ZERO;
-        result = result.add(BigInteger.valueOf(listAndCountMap.values().stream().mapToInt(Number::intValue).sum()));
+        if (listAndCountMap != null ){
+            //for all values in countByElection check concordance into listAndCountValues
+            List<String> listsToCheck = countByElection.keySet().stream()
+                    .filter(key -> listAndCountMap.get(key) != null)
+                    .collect(Collectors.toList());
+            if(listsToCheck != null && !listsToCheck.isEmpty()){
+                long sum = listsToCheck.stream().map(list -> {
+                    return countByElection.get(list);
+                }).mapToLong(Long::longValue).sum();
+                result = result.add(BigInteger.valueOf(sum));
+            }
+        }
         return result;
+    }
+
+
+    class Test04FailureException extends RuntimeException {
+        private String ccId;
+        private String listId;
+
+        public Test04FailureException(String ccId, String listId) {
+            this.ccId = ccId;
+            this.listId = listId;
+        }
+        public String getCcId() { return ccId; }
+
+        public String getListId() { return listId; }
+
     }
 
 }
