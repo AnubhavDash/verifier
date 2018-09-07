@@ -1,5 +1,7 @@
 package ch.post.it.evoting.verifier.common.block.tools;
 
+import ch.post.it.evoting.verifier.dto.Metadata;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
@@ -13,8 +15,10 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.Security;
+import java.security.Signature;
 import java.security.cert.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -62,6 +66,45 @@ public class SignatureChecker {
             }
         } catch (Exception e) {
             LOGGER.info("Error during signature check", e);
+        }
+        return false;
+    }
+
+    public static boolean verifyMetdata(byte[] sourceData, byte[] metadataData, byte[] signerCert, byte[] rootCert) {
+        if (Security.getProvider("BC") == null) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
+        try {
+            Metadata metadata = Deserializer.fromJson(metadataData, Metadata.class);
+            final X509Certificate sCert = loadCertificate(signerCert);
+
+            if (!metadata.getVersion().equals("1.0")) {
+                throw new UnsupportedOperationException("metadata version not supported : " + metadata.getVersion());
+            }
+
+            final String algoName = StringUtils.isNotEmpty(metadata.getAlg()) ? metadata.getAlg() : "SHA256withRSAandMGF1";
+
+            //signature
+            byte[] signature = TypeConverter.base64ToByte(metadata.getSignature());
+
+            //data
+            StringBuilder sb = new StringBuilder();
+            metadata.getSigned().stream().forEach(s -> sb.append(s.getValue()));
+            byte[] fields = sb.toString().getBytes(StandardCharsets.UTF_8);
+            byte[] source = new byte[sourceData.length + fields.length];
+            System.arraycopy(sourceData, 0, source, 0, sourceData.length);
+            System.arraycopy(fields, 0, source, sourceData.length, fields.length);
+
+            Signature signatureAlgorithm = Signature.getInstance(algoName);
+            signatureAlgorithm.initVerify(sCert.getPublicKey());
+            signatureAlgorithm.update(source);
+
+            if (signatureAlgorithm.verify(signature)) {
+                verifyCertificateChain(sCert, Collections.singletonList(sCert), loadCertificate(rootCert));
+                return true;
+            }
+        } catch (Exception e) {
+            LOGGER.info("signature check failed", e);
         }
         return false;
     }

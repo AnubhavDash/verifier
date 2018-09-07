@@ -30,7 +30,7 @@ public class Test74Test {
     public void executeTestOK() {
         TestResult testResult = new Test74().executeTest(new File(getClass().getResource("/Test74/OK").getFile()));
         Assert.assertNotNull(testResult);
-        Assert.assertEquals(Status.NA, testResult.getStatus());
+        Assert.assertEquals(Status.OK, testResult.getStatus());
     }
 
     @Test

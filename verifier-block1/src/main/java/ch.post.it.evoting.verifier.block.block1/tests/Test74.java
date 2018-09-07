@@ -14,17 +14,21 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
+import ch.post.it.evoting.verifier.common.block.TestFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.nio.file.Files;
 
 /**
  * Test74 of Block1, Step checkSigDataConfig
  */
 public class Test74 extends Test {
 
-    private static final Logger log = Logger.getLogger(Test74.class);
+    private static final Logger LOGGER = Logger.getLogger(Test74.class);
 
     @Override
     public TestDefinition getTestDefinition() {
@@ -40,7 +44,35 @@ public class Test74 extends Test {
     @Override
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
-        result.setStatus(Status.NA);
+
+        try {
+            byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath()
+                            .resolve(Block1TestSuite.PATH_CERTIFICATES)
+                            .resolve(Block1TestSuite.PATH_ADMINBOARD).toFile(),
+                    ".*\\.pem").toPath());
+
+            byte[] rootCA = Files.readAllBytes(inputDirectory.toPath().resolve(Block1TestSuite.PATH_CERTIFICATES).resolve("tenant_100.pem"));
+
+            File[] echFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block1TestSuite.PATH_ELECTION_SETUP).toFile(), "dataConfig.*\\.json");
+
+            for (File echFile : echFiles) {
+                byte[] content = Files.readAllBytes(inputDirectory.toPath().resolve(Block1TestSuite.PATH_ELECTION_SETUP).resolve(echFile.getName()));
+                byte[] signature = Files.readAllBytes(inputDirectory.toPath().resolve(Block1TestSuite.PATH_ELECTION_SETUP).resolve(echFile.getName() + ".metadata"));
+
+                if (!SignatureChecker.verifyMetdata(content, signature, signCertificate, rootCA)) {
+                    throw new TestFailureException(echFile.getName());
+                }
+            }
+            result.setStatus(Status.OK);
+
+        } catch (Exception e) {
+            if (e instanceof TestFailureException) {
+                //TODO result.setMessage();
+            } else {
+                LOGGER.error("unexpected error", e);
+            }
+            result.setStatus(Status.NOK);
+        }
         return result;
     }
 }

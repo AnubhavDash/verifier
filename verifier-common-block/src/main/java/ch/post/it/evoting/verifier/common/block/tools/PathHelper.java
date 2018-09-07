@@ -3,6 +3,7 @@ package ch.post.it.evoting.verifier.common.block.tools;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
+import java.security.InvalidParameterException;
 
 public class PathHelper {
     private PathHelper() {
@@ -23,6 +24,17 @@ public class PathHelper {
             throw new FileNotFoundException(filenamePattern);
         } else {
             return file;
+        }
+    }
+
+    public static File getFile(File inputDirectory, String filenamePattern) throws FileNotFoundException {
+        File[] file = inputDirectory.listFiles((dir, name) -> name.matches(filenamePattern));
+        if (file == null || file.length == 0) {
+            throw new FileNotFoundException(filenamePattern);
+        } else if (file.length > 1) {
+            throw new InvalidParameterException(String.format("more than one file found, filename is not specific enough. Dir:%s filenamePattern:%s ", inputDirectory, filenamePattern));
+        } else {
+            return file[0];
         }
     }
 }
