@@ -8,10 +8,8 @@
 
 package ch.post.it.evoting.verifier.block.block1.tests;
 
-import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestResult;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -30,13 +28,27 @@ public class Test73Test {
     public void executeTestOK() {
         TestResult testResult = new Test73().executeTest(new File(getClass().getResource("/Test73/OK").getFile()));
         Assert.assertNotNull(testResult);
-        Assert.assertEquals(Status.NA, testResult.getStatus());
+        Assert.assertEquals(Status.OK, testResult.getStatus());
     }
 
     @Test
-    public void executeTestNOK() {
-        TestResult testResult = new Test73().executeTest(new File(getClass().getResource("/Test73/NOK").getFile()));
+    public void executeTestNOKCertKo() {
+        TestResult testResult = new Test73().executeTest(new File(getClass().getResource("/Test73/NOK/CERT-NOT-OK").getFile()));
         Assert.assertNotNull(testResult);
-        Assert.assertEquals(Status.NA, testResult.getStatus());
+        Assert.assertEquals(Status.NOK, testResult.getStatus());
+    }
+
+    @Test
+    public void executeTestNOKXmlKo() {
+        TestResult testResult = new Test73().executeTest(new File(getClass().getResource("/Test73/NOK/XML-NOT-OK").getFile()));
+        Assert.assertNotNull(testResult);
+        Assert.assertEquals(Status.NOK, testResult.getStatus());
+    }
+
+    @Test
+    public void executeTestNOKFileNotFound() {
+        TestResult testResult = new Test73().executeTest(new File(getClass().getResource("/Test73/NOK-NOTFILE").getFile()));
+        Assert.assertNotNull(testResult);
+        Assert.assertEquals(Status.NOK, testResult.getStatus());
     }
 }
