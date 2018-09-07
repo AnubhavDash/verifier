@@ -53,14 +53,14 @@ public class Test74 extends Test {
 
             byte[] rootCA = Files.readAllBytes(inputDirectory.toPath().resolve(Block1TestSuite.PATH_CERTIFICATES).resolve("tenant_100.pem"));
 
-            File[] echFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block1TestSuite.PATH_ELECTION_SETUP).toFile(), "dataConfig.*\\.json");
+            File[] dataConfigFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block1TestSuite.PATH_ELECTION_SETUP).toFile(), "dataConfig.*\\.json");
 
-            for (File echFile : echFiles) {
-                byte[] content = Files.readAllBytes(inputDirectory.toPath().resolve(Block1TestSuite.PATH_ELECTION_SETUP).resolve(echFile.getName()));
-                byte[] signature = Files.readAllBytes(inputDirectory.toPath().resolve(Block1TestSuite.PATH_ELECTION_SETUP).resolve(echFile.getName() + ".metadata"));
+            for (File dataConfig : dataConfigFiles) {
+                byte[] content = Files.readAllBytes(inputDirectory.toPath().resolve(Block1TestSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName()));
+                byte[] signature = Files.readAllBytes(inputDirectory.toPath().resolve(Block1TestSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName() + ".metadata"));
 
                 if (!SignatureChecker.verifyMetdata(content, signature, signCertificate, rootCA)) {
-                    throw new TestFailureException(echFile.getName());
+                    throw new TestFailureException(dataConfig.getName());
                 }
             }
             result.setStatus(Status.OK);
