@@ -6,7 +6,7 @@ import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cms.*;
 import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoVerifierBuilder;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.openssl.PEMReader;
+import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.util.Store;
 
 import java.io.BufferedReader;
@@ -45,7 +45,7 @@ public class SignatureChecker {
                 X509Certificate cert = new JcaX509CertificateConverter().setProvider("BC").getCertificate(certHolder);
 
                 if (signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(cert))) {
-                    //signature is valid, checking certificate validity
+                    //signature is valid, checking certificate chain validity
                     X509Certificate root = loadCertificate(rootCert);
                     List<X509Certificate> intermediates = new ArrayList<X509CertificateHolder>(store.getMatches(null)).stream().map(holder -> {
                         try {
@@ -66,9 +66,12 @@ public class SignatureChecker {
         return false;
     }
 
-    private static X509Certificate loadCertificate(byte[] certificate) throws IOException {
-        PEMReader pemReader = new PEMReader(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(certificate))));
-        return (X509Certificate) pemReader.readObject();
+    private static X509Certificate loadCertificate(byte[] certificate) throws IOException, CertificateException {
+        if (Security.getProvider("BC") == null) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
+        PEMParser parser = new PEMParser(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(certificate))));
+        return new JcaX509CertificateConverter().setProvider("BC").getCertificate((X509CertificateHolder) parser.readObject());
     }
 
 
