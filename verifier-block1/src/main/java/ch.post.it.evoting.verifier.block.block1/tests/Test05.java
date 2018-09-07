@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  */
 public class Test05 extends Test {
 
-    private static final Logger log = Logger.getLogger(Test05.class);
+    private static final Logger LOGGER = Logger.getLogger(Test05.class);
 
     @Override
     public TestDefinition getTestDefinition() {
@@ -103,7 +103,7 @@ public class Test05 extends Test {
             if (e instanceof FileNotFoundException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test05.file.not.found.message"));
             } else {
-                log.error("Unexpected error", e);
+                LOGGER.error("Unexpected error", e);
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
             }
         }

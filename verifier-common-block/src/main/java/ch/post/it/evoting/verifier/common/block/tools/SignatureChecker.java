@@ -31,13 +31,13 @@ public class SignatureChecker {
         //private ctor, use static
     }
 
-    public static boolean verifyPKCS7(byte[] data, byte[] signature, byte[] rootCert) {
+    public static boolean verifyPKCS7(byte[] sourceData, byte[] signatureData, byte[] rootCert) {
         try {
             if (Security.getProvider("BC") == null) {
                 Security.addProvider(new BouncyCastleProvider());
             }
-            CMSProcessable signedContent = new CMSProcessableByteArray(data);
-            CMSSignedData cms = new CMSSignedData(signedContent, signature);
+            CMSProcessable signedContent = new CMSProcessableByteArray(sourceData);
+            CMSSignedData cms = new CMSSignedData(signedContent, signatureData);
 
             Store store = cms.getCertificates();
             SignerInformationStore signers = cms.getSignerInfos();
@@ -87,10 +87,12 @@ public class SignatureChecker {
             //signature
             byte[] signature = TypeConverter.base64ToByte(metadata.getSignature());
 
-            //data
+            //take fields to be added to the content
             StringBuilder sb = new StringBuilder();
             metadata.getSigned().stream().forEach(s -> sb.append(s.getValue()));
             byte[] fields = sb.toString().getBytes(StandardCharsets.UTF_8);
+
+            //concatenate sourceData & fields
             byte[] source = new byte[sourceData.length + fields.length];
             System.arraycopy(sourceData, 0, source, 0, sourceData.length);
             System.arraycopy(fields, 0, source, sourceData.length, fields.length);
@@ -123,19 +125,22 @@ public class SignatureChecker {
         if (Security.getProvider("BC") == null) {
             Security.addProvider(new BouncyCastleProvider());
         }
-        X509CertSelector selector = new X509CertSelector();
-        selector.setCertificate(cert);
-
         Set<TrustAnchor> trustAnchors = new HashSet<>();
         trustAnchors.add(new TrustAnchor(rootCA, null));
 
+        X509CertSelector selector = new X509CertSelector();
+        selector.setCertificate(cert);
+
         PKIXBuilderParameters params = new PKIXBuilderParameters(trustAnchors, selector);
+
+        //disable CLR check because we are not online
         params.setRevocationEnabled(false);
 
-        CertStore intermediates = CertStore.getInstance("Collection", new CollectionCertStoreParameters(intermediateCerts), "BC");
-        params.addCertStore(intermediates);
+        params.addCertStore(CertStore.getInstance("Collection",
+                new CollectionCertStoreParameters(intermediateCerts), "BC"));
 
         CertPathBuilder builder = CertPathBuilder.getInstance("PKIX", "BC");
+
         PKIXCertPathBuilderResult result = (PKIXCertPathBuilderResult) builder.build(params);
         return result;
     }
