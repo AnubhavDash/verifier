@@ -73,7 +73,9 @@ public class SignatureChecker {
 
 
     private static PKIXCertPathBuilderResult verifyCertificateChain(X509Certificate cert, List<X509Certificate> intermediateCerts, X509Certificate rootCA) throws GeneralSecurityException {
-
+        if (Security.getProvider("BC") == null) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
         X509CertSelector selector = new X509CertSelector();
         selector.setCertificate(cert);
 
