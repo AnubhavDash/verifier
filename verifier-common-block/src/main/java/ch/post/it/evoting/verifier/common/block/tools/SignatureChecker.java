@@ -6,7 +6,6 @@ import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cms.*;
 import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoVerifierBuilder;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.jce.provider.X509CertificateObject;
 import org.bouncycastle.openssl.PEMReader;
 import org.bouncycastle.util.Store;
 
@@ -56,7 +55,7 @@ public class SignatureChecker {
                         }
                     }).collect(Collectors.toList());
 
-                    verifyCertificate(cert, intermediates, root);
+                    verifyCertificateChain(cert, intermediates, root);
 
                     return true;
                 }
@@ -73,7 +72,7 @@ public class SignatureChecker {
     }
 
 
-    private static PKIXCertPathBuilderResult verifyCertificate(X509Certificate cert, List<X509Certificate> intermediateCerts, X509Certificate rootCA) throws GeneralSecurityException {
+    private static PKIXCertPathBuilderResult verifyCertificateChain(X509Certificate cert, List<X509Certificate> intermediateCerts, X509Certificate rootCA) throws GeneralSecurityException {
 
         X509CertSelector selector = new X509CertSelector();
         selector.setCertificate(cert);
