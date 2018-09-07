@@ -32,10 +32,25 @@ public class Test71Test {
     }
 
     @Test
-    public void executeTestNOK() {
-        TestResult testResult = new Test71().executeTest(new File(getClass().getResource("/Test71/NOK").getFile()));
+    public void executeTestNOKCertKo() {
+        TestResult testResult = new Test71().executeTest(new File(getClass().getResource("/Test71/NOK/CERT-NOT-OK").getFile()));
         Assert.assertNotNull(testResult);
-        Assert.assertEquals(Status.NA, testResult.getStatus());
+        Assert.assertEquals(Status.NOK, testResult.getStatus());
     }
+
+    @Test
+    public void executeTestNOKXmlKo() {
+        TestResult testResult = new Test71().executeTest(new File(getClass().getResource("/Test71/NOK/XML-NOT-OK").getFile()));
+        Assert.assertNotNull(testResult);
+        Assert.assertEquals(Status.NOK, testResult.getStatus());
+    }
+
+    @Test
+    public void executeTestNOKFileNotFound() {
+        TestResult testResult = new Test71().executeTest(new File(getClass().getResource("/Test71/NOK-NOTFILE").getFile()));
+        Assert.assertNotNull(testResult);
+        Assert.assertEquals(Status.NOK, testResult.getStatus());
+    }
+
 
 }

@@ -21,7 +21,9 @@ import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 
 /**
  * Test71 of Block1, Step checkSigEch0045
@@ -61,8 +63,11 @@ public class Test71 extends Test {
 
         } catch (Exception e) {
             if (e instanceof TestFailureException) {
-                //TODO result.setMessage();
-            } else {
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test71.nok.message", ((TestFailureException) e).getArgs()));
+            } else if (e instanceof NoSuchFileException) {
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test71.file.not.found.message", ((NoSuchFileException)e ).getFile()));
+            }
+            else {
                 LOGGER.error("unexpected error", e);
             }
             result.setStatus(Status.NOK);
