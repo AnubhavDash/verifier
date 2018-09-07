@@ -6,8 +6,7 @@ import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cms.*;
 import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoVerifierBuilder;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.jce.provider.X509CertificateObject;
-import org.bouncycastle.openssl.PEMReader;
+import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.util.Store;
 
 import java.io.BufferedReader;
@@ -41,24 +40,22 @@ public class SignatureChecker {
             Iterator signersIt = signers.getSigners().iterator();
             while (signersIt.hasNext()) {
                 SignerInformation signer = (SignerInformation) signersIt.next();
-                Collection certCollection = store.getMatches(signer.getSID());
-                Iterator certIt = certCollection.iterator();
+                Iterator certIt = store.getMatches(signer.getSID()).iterator();
                 X509CertificateHolder certHolder = (X509CertificateHolder) certIt.next();
                 X509Certificate cert = new JcaX509CertificateConverter().setProvider("BC").getCertificate(certHolder);
 
                 if (signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(cert))) {
-
+                    //signature is valid, checking certificate chain validity
                     X509Certificate root = loadCertificate(rootCert);
-
                     List<X509Certificate> intermediates = new ArrayList<X509CertificateHolder>(store.getMatches(null)).stream().map(holder -> {
                         try {
                             return new JcaX509CertificateConverter().setProvider("BC").getCertificate(holder);
                         } catch (CertificateException e) {
-                            throw new RuntimeException(e);
+                            throw new RuntimeException("Unable to convert the certificate", e);
                         }
                     }).collect(Collectors.toList());
 
-                    verifyCertificate(cert, intermediates, root);
+                    verifyCertificateChain(cert, intermediates, root);
 
                     return true;
                 }
@@ -69,15 +66,19 @@ public class SignatureChecker {
         return false;
     }
 
-    private static X509CertificateObject loadCertificate(byte[] certificate) throws IOException {
-        PEMReader pemReader = new PEMReader(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(certificate))));
-        X509CertificateObject cert = (X509CertificateObject) pemReader.readObject();
-        return cert;
+    private static X509Certificate loadCertificate(byte[] certificate) throws IOException, CertificateException {
+        if (Security.getProvider("BC") == null) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
+        PEMParser parser = new PEMParser(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(certificate))));
+        return new JcaX509CertificateConverter().setProvider("BC").getCertificate((X509CertificateHolder) parser.readObject());
     }
 
 
-    private static PKIXCertPathBuilderResult verifyCertificate(X509Certificate cert, List<X509Certificate> intermediateCerts, X509Certificate rootCA) throws GeneralSecurityException {
-
+    private static PKIXCertPathBuilderResult verifyCertificateChain(X509Certificate cert, List<X509Certificate> intermediateCerts, X509Certificate rootCA) throws GeneralSecurityException {
+        if (Security.getProvider("BC") == null) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
         X509CertSelector selector = new X509CertSelector();
         selector.setCertificate(cert);
 
