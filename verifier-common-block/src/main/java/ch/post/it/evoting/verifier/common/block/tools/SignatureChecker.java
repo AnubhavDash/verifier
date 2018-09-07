@@ -100,6 +100,7 @@ public class SignatureChecker {
             signatureAlgorithm.update(source);
 
             if (signatureAlgorithm.verify(signature)) {
+                //signature is valid, checking certificate chain validity
                 verifyCertificateChain(sCert, Collections.singletonList(sCert), loadCertificate(rootCert));
                 return true;
             }

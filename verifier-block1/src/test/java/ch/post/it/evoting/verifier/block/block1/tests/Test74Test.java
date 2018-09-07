@@ -37,7 +37,7 @@ public class Test74Test {
     public void executeTestNOK() {
         TestResult testResult = new Test74().executeTest(new File(getClass().getResource("/Test74/NOK").getFile()));
         Assert.assertNotNull(testResult);
-        Assert.assertEquals(Status.NA, testResult.getStatus());
+        Assert.assertEquals(Status.NOK, testResult.getStatus());
     }
 
 }
