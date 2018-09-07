@@ -24,7 +24,7 @@ import java.io.File;
  */
 public class Test73 extends Test {
 
-    private static final Logger log = Logger.getLogger(Test73.class);
+    private static final Logger LOGGER = Logger.getLogger(Test73.class);
 
     @Override
     public TestDefinition getTestDefinition() {
