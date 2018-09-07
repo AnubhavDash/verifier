@@ -8,10 +8,8 @@
 
 package ch.post.it.evoting.verifier.block.block1.tests;
 
-import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestResult;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -30,7 +28,7 @@ public class Test71Test {
     public void executeTestOK() {
         TestResult testResult = new Test71().executeTest(new File(getClass().getResource("/Test71/OK").getFile()));
         Assert.assertNotNull(testResult);
-        Assert.assertEquals(Status.NA, testResult.getStatus());
+        Assert.assertEquals(Status.OK, testResult.getStatus());
     }
 
     @Test

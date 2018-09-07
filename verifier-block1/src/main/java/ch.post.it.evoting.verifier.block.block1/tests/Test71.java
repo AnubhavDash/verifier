@@ -14,17 +14,21 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
+import ch.post.it.evoting.verifier.common.block.TestFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.nio.file.Files;
 
 /**
  * Test71 of Block1, Step checkSigEch0045
  */
 public class Test71 extends Test {
 
-    private static final Logger log = Logger.getLogger(Test71.class);
+    private static final Logger LOGGER = Logger.getLogger(Test71.class);
 
     @Override
     public TestDefinition getTestDefinition() {
@@ -40,7 +44,29 @@ public class Test71 extends Test {
     @Override
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
-        result.setStatus(Status.NA);
+
+        try {
+            byte[] rootCertificate = Files.readAllBytes(inputDirectory.toPath().resolve(Block1TestSuite.PATH_CERTIFICATES).resolve("integrationCA.pem"));
+
+            File[] echFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block1TestSuite.PATH_ELECTION_SETUP).toFile(), ".*ech0045v.*\\.xml");
+
+            for (File echFile : echFiles) {
+                byte[] content = Files.readAllBytes(inputDirectory.toPath().resolve(Block1TestSuite.PATH_ELECTION_SETUP).resolve(echFile.getName()));
+                byte[] signature = Files.readAllBytes(inputDirectory.toPath().resolve(Block1TestSuite.PATH_ELECTION_SETUP).resolve(echFile.getName() + ".p7"));
+                if (!SignatureChecker.verifyPKCS7(content, signature, rootCertificate)) {
+                    throw new TestFailureException(echFile.getName());
+                }
+            }
+            result.setStatus(Status.OK);
+
+        } catch (Exception e) {
+            if (e instanceof TestFailureException) {
+                //TODO result.setMessage();
+            } else {
+                LOGGER.error("unexpected error", e);
+            }
+            result.setStatus(Status.NOK);
+        }
         return result;
     }
 }
