@@ -41,20 +41,18 @@ public class SignatureChecker {
             Iterator signersIt = signers.getSigners().iterator();
             while (signersIt.hasNext()) {
                 SignerInformation signer = (SignerInformation) signersIt.next();
-                Collection certCollection = store.getMatches(signer.getSID());
-                Iterator certIt = certCollection.iterator();
+                Iterator certIt = store.getMatches(signer.getSID()).iterator();
                 X509CertificateHolder certHolder = (X509CertificateHolder) certIt.next();
                 X509Certificate cert = new JcaX509CertificateConverter().setProvider("BC").getCertificate(certHolder);
 
                 if (signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(cert))) {
-
+                    //signature is valid, checking certificate validity
                     X509Certificate root = loadCertificate(rootCert);
-
                     List<X509Certificate> intermediates = new ArrayList<X509CertificateHolder>(store.getMatches(null)).stream().map(holder -> {
                         try {
                             return new JcaX509CertificateConverter().setProvider("BC").getCertificate(holder);
                         } catch (CertificateException e) {
-                            throw new RuntimeException(e);
+                            throw new RuntimeException("Unable to convert the certificate", e);
                         }
                     }).collect(Collectors.toList());
 
@@ -69,10 +67,9 @@ public class SignatureChecker {
         return false;
     }
 
-    private static X509CertificateObject loadCertificate(byte[] certificate) throws IOException {
+    private static X509Certificate loadCertificate(byte[] certificate) throws IOException {
         PEMReader pemReader = new PEMReader(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(certificate))));
-        X509CertificateObject cert = (X509CertificateObject) pemReader.readObject();
-        return cert;
+        return (X509Certificate) pemReader.readObject();
     }
 
 
