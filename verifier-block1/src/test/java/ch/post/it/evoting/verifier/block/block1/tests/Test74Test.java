@@ -8,10 +8,8 @@
 
 package ch.post.it.evoting.verifier.block.block1.tests;
 
-import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestResult;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -39,5 +37,12 @@ public class Test74Test {
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
     }
+    @Test
+    public void executeTestNOKFileNotFound() {
+        TestResult testResult = new Test74().executeTest(new File(getClass().getResource("/Test74/NOK-NOTFILE").getFile()));
+        Assert.assertNotNull(testResult);
+        Assert.assertEquals(Status.NOK, testResult.getStatus());
+    }
+
 
 }

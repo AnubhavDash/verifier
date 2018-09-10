@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 
 /**
  * Test74 of Block1, Step checkSigDataConfig
@@ -67,8 +68,11 @@ public class Test74 extends Test {
 
         } catch (Exception e) {
             if (e instanceof TestFailureException) {
-                //TODO result.setMessage();
-            } else {
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test74.nok.message"));
+            }else if (e instanceof NoSuchFileException) {
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test74.file.not.found.message", ((NoSuchFileException)e ).getFile()));
+            }
+            else {
                 LOGGER.error("unexpected error", e);
             }
             result.setStatus(Status.NOK);
