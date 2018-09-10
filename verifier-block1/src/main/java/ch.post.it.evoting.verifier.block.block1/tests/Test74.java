@@ -47,6 +47,7 @@ public class Test74 extends Test {
         TestResult result = new TestResult(getTestDefinition());
 
         try {
+
             byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath()
                             .resolve(Block1TestSuite.PATH_CERTIFICATES)
                             .resolve(Block1TestSuite.PATH_ADMINBOARD).toFile(),
