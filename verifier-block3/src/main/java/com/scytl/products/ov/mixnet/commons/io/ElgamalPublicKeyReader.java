@@ -6,6 +6,9 @@
  */
 package com.scytl.products.ov.mixnet.commons.io;
 
+import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
+import ch.post.it.evoting.verifier.dto.PublicKey;
 import com.scytl.products.ov.mixnet.commons.homomorphic.impl.ElGamalPublicKey;
 import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
@@ -20,6 +23,7 @@ import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class ElgamalPublicKeyReader extends SerializedDataReader {
 
@@ -52,6 +56,16 @@ public final class ElgamalPublicKeyReader extends SerializedDataReader {
 		final ZpGroup reconstructedZpGroup;
 		final List<GroupElement> publicKeyGroupElements = new ArrayList<>();
 
+		PublicKey json = Deserializer.fromJson(publicKeyFile.getParent().toFile(), publicKeyFile.getFileName().toString(), PublicKey.class);
+
+		final ZpGroupParams params = new ZpGroupParams(TypeConverter.base64ToBigInteger(json.getPublicKey().getZpSubgroup().getP()), TypeConverter.base64ToBigInteger(json.getPublicKey().getZpSubgroup().getQ()));
+		reconstructedZpGroup = ZpGroupReader.createZpGroupFromParameterStrings(TypeConverter.base64ToBigInteger(json.getPublicKey().getZpSubgroup().getP()).toString(),
+				TypeConverter.base64ToBigInteger(json.getPublicKey().getZpSubgroup().getQ()).toString(),
+				TypeConverter.base64ToBigInteger(json.getPublicKey().getZpSubgroup().getG()).toString());
+
+		publicKeyGroupElements.addAll(json.getPublicKey().getElements().stream().map(e -> new ZpElement(TypeConverter.base64ToBigInteger(e), params)).collect(Collectors.toList()));
+
+/*
 		try (BufferedReader fileReader = new BufferedReader(new FileReader(fileContainingPublicKey))) {
 
 			final String pAsString = readLineAndConfirmNotNull(fileReader, publicKeyFile.toString());
@@ -70,7 +84,7 @@ public final class ElgamalPublicKeyReader extends SerializedDataReader {
 				final BigInteger lineAsBigInteger = new BigInteger(line);
 				publicKeyGroupElements.add(new ZpElement(lineAsBigInteger, params));
 			}
-		}
+		}*/
 
 		return new ElGamalPublicKey(publicKeyGroupElements, reconstructedZpGroup);
 	}

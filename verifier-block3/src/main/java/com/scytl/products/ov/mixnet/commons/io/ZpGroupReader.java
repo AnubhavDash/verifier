@@ -6,6 +6,10 @@
  */
 package com.scytl.products.ov.mixnet.commons.io;
 
+import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
+import ch.post.it.evoting.verifier.dto.EncryptionParameters;
+import ch.post.it.evoting.verifier.dto.EncryptionParametersZpSubGroup;
 import com.scytl.products.ov.mixnet.commons.constants.Constants;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
@@ -27,14 +31,15 @@ public class ZpGroupReader {
 
 		final Properties config = new Properties();
 		final File propertiesFile = encryptionParameters.toFile();
-		try (final FileInputStream inputStream = new FileInputStream(propertiesFile)) {
+		/*try (final FileInputStream inputStream = new FileInputStream(propertiesFile)) {
 			config.load(inputStream);
-		}
+		}*/
+		EncryptionParametersZpSubGroup json = Deserializer.fromJson(encryptionParameters.getParent().toFile(), encryptionParameters.getFileName().toString(), EncryptionParametersZpSubGroup.class);
 
-		ZpGroupParams zpGroupParams = new ZpGroupParams(new BigInteger(config.getProperty(Constants.P)),
-				new BigInteger(config.getProperty(Constants.ORDER)));
-		ZpElement zpElement = new ZpElement(new BigInteger(config.getProperty(Constants.GENERATOR)), zpGroupParams);
-		//ZpGroup zpGroup = new ZpGroup(zpGroupParams, zpElement);
+		ZpGroupParams zpGroupParams = new ZpGroupParams(TypeConverter.base64ToBigInteger(json.getZpSubgroup().getP()),
+				TypeConverter.base64ToBigInteger(json.getZpSubgroup().getQ()));
+		ZpElement zpElement = new ZpElement(TypeConverter.base64ToBigInteger(json.getZpSubgroup().getG()), zpGroupParams);
+
 		return new ZpGroup(zpGroupParams, zpElement);
 	}
 

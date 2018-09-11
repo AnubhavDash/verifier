@@ -11,6 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Randomness;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 
+import java.util.Arrays;
+
 public class MultiExponentiationBasicProofAnswer {
 
     private final Exponent[] _a;
@@ -25,11 +27,11 @@ public class MultiExponentiationBasicProofAnswer {
 
     @JsonCreator
     public MultiExponentiationBasicProofAnswer(@JsonProperty("exponentsA") final Exponent[] a,
-            @JsonProperty("exponentR") final Exponent r, @JsonProperty("exponentsB") final Exponent[] b,
+            @JsonProperty("exponentR") final Exponent r, @JsonProperty("exponentsB") final Exponent b,
             @JsonProperty("exponentS") final Exponent s, @JsonProperty("randomnessTau") final Randomness tau) {
         _a = a;
         _r = r;
-        _b = b;
+        _b = new Exponent[]{b};
         _s = s;
         _tau = tau;
     }

@@ -29,11 +29,32 @@ public class ZpElement implements GroupElement {
         _params = zpGroupParams;
     }
 
-    @JsonCreator
+    /*NAE @JsonCreator
     public ZpElement(@JsonProperty("value") final String value, @JsonProperty("params") final ZpGroupParams params) {
         _value = new BigInteger(value);
         _params = params;
+    }*/
+
+    public ZpElement(final String value, final ZpGroupParams params) {
+        _value = new BigInteger(value);
+        _params = params;
     }
+
+
+    @JsonCreator
+    public ZpElement(final String value) {
+        String[] split = value.split(";");
+        _value = new BigInteger(split[0]);
+        _params = new ZpGroupParams(new BigInteger(split[1]), new BigInteger(split[2]));
+    }
+
+
+    @JsonCreator
+    public ZpElement(@JsonProperty("value") final BigInteger value, @JsonProperty("p") final BigInteger p, @JsonProperty("q") final BigInteger q) {
+        _value = value;
+        _params = new ZpGroupParams(p, q);
+    }
+
 
     public BigInteger getValue() {
         return _value;

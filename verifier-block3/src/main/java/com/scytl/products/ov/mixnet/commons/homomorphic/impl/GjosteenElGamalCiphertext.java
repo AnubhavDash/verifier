@@ -7,6 +7,7 @@
 package com.scytl.products.ov.mixnet.commons.homomorphic.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,14 +24,23 @@ public class GjosteenElGamalCiphertext implements Ciphertext {
 
     private final List<GroupElement> _phis;
 
-    @JsonCreator
-    public GjosteenElGamalCiphertext(@JsonProperty("gamma") final GroupElement gamma,
-            @JsonProperty("phis") final List<GroupElement> phis) {
+    public GjosteenElGamalCiphertext(final GroupElement gamma,
+                                     final List<GroupElement> phis) {
 
         validateInputs(gamma, phis);
 
         _gamma = gamma;
         _phis = phis;
+    }
+
+    @JsonCreator
+    public GjosteenElGamalCiphertext(@JsonProperty("gamma") final GroupElement gamma,
+            @JsonProperty("phis") final GroupElement phis) {
+
+        validateInputs(gamma, Arrays.asList(phis));
+
+        _gamma = gamma;
+        _phis = Arrays.asList(phis);
     }
 
     public GjosteenElGamalCiphertext(final List<GroupElement> elements) {
