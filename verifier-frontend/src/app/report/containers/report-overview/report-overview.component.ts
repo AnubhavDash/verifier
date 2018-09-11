@@ -22,6 +22,11 @@ export class ReportOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     //console.log(navigator.language.toUpperCase());
+    this.initTable();
+    this.initializeWebSocketConnection();
+  }
+
+  initTable() {
     this.processorService.getTestStatus().subscribe(value => {
         for (let i = 0; i < value.length; i++) {
           console.log(JSON.stringify(value[i]));
@@ -30,12 +35,18 @@ export class ReportOverviewComponent implements OnInit {
         this.keys = Object.keys(this.tests);
       }
     );
-    this.initializeWebSocketConnection();
   }
 
   startProcess(): void {
     this.buttonDisabled = true;
     this.processorService.processTests().subscribe();
+  }
+
+  resetProcess(): void {
+    this.processorService.resetTests().subscribe(value => {
+      this.initTable();
+      this.buttonDisabled = false;
+    });
   }
 
   static convert(input: any): TestDefinition {

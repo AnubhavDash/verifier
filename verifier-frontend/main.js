@@ -44,12 +44,12 @@ const openWindow = function () {
 
   // Create the browser window.
   win = new BrowserWindow({
-    width: 1024,
-    height: 768,
+    width: 1200,
+    height: 800,
   })
 
   win.setMenu(null)
-  // win.maximize()
+  win.maximize()
 
   win.loadURL(`file://${__dirname}/dist/index.html`)
 
