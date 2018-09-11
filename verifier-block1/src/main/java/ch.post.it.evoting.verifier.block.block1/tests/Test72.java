@@ -61,8 +61,10 @@ public class Test72 extends Test {
 
         } catch (Exception e) {
             if (e instanceof TestFailureException) {
+                LOGGER.debug("TestFailureException", e);
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test72.nok.message", ((TestFailureException) e).getArgs()));
             } else if (e instanceof NoSuchFileException) {
+                LOGGER.debug("NoSuchFileException", e);
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test72.file.not.found.message", ((NoSuchFileException)e ).getFile()));
             }
             else {
