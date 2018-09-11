@@ -28,7 +28,7 @@ public class Test72Test {
 
     @Test
     public void executeTestOK() {
-        TestResult testResult = new Test72().executeTest(new File(getClass().getResource("/Test72/OK").getFile()));
+        TestResult testResult = new Test72().executeTest(new File(getClass().getResource(File.separator + "Test72" + File.separator + "OK").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.OK, testResult.getStatus());
     }
