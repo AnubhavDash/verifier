@@ -42,7 +42,7 @@ public class Exponent {
     }
 
     @JsonCreator
-    public Exponent(@JsonProperty("value") final String value, @JsonProperty("order") final BigInteger order) {
+    public Exponent(@JsonProperty("value") final String value, @JsonProperty("q") final BigInteger order) {
         this(new BigInteger(value), order, false);
     }
 

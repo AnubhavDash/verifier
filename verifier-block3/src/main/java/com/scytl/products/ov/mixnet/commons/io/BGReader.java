@@ -39,7 +39,7 @@ public class BGReader {
     public static CommitmentParams createCommitmentParams(final ZpGroup zpGroup, final int numberOfVoters,
             final String batchName, final Path rootPath) throws IOException {
 
-        String file = DefaultLocationNames.COMMITMENT_PARAMETERS_OUTPUT_FILE_NAME + Constants.TXT_FILE_EXTENSION;
+        String file = DefaultLocationNames.COMMITMENT_PARAMETERS_OUTPUT_FILE_NAME + Constants.JSON_FILE_EXTENSION;
         Path path = Paths.get(rootPath.toString(), batchName, file);
         LOGGER.debug("Commitment Params path = " + path.toString());
 
@@ -58,7 +58,7 @@ public class BGReader {
      *             if the information is not found in the path
      */
     public static ZpGroup createZpGroup(Path rootPath, final String batchName) throws IOException {
-        String file = DefaultLocationNames.ENCRYPTION_PARAMETERS_OUTPUT_FILE_NAME + Constants.TXT_FILE_EXTENSION;
+        String file = DefaultLocationNames.ENCRYPTION_PARAMETERS_OUTPUT_FILE_NAME + Constants.JSON_FILE_EXTENSION;
         final Path path = Paths.get(rootPath.toString(), batchName, file);
         LOGGER.debug("Encryption Parameters File = " + path.toString());
 
@@ -78,7 +78,7 @@ public class BGReader {
      */
     public static ElGamalPublicKey createElGamalPublicKey(final String batchName, final Path outputPath)
             throws IOException {
-        String file = DefaultLocationNames.PUBLIC_KEY_OUTPUT_FILE_NAME + Constants.TXT_FILE_EXTENSION;
+        String file = DefaultLocationNames.PUBLIC_KEY_OUTPUT_FILE_NAME + Constants.JSON_FILE_EXTENSION;
         Path path = Paths.get(outputPath.toString(), batchName, file);
         LOGGER.debug("ElGamal public key path = " + path.toString());
 
