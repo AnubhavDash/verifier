@@ -6,6 +6,11 @@
  */
 package com.scytl.products.ov.mixnet.proofs.bg;
 
+import java.math.BigInteger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ZeroProofAnswer;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ZeroProofInitialMessage;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
@@ -13,12 +18,9 @@ import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentPara
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
 import com.scytl.products.ov.mixnet.commons.tools.ExponentTools;
 import com.scytl.products.ov.mixnet.commons.tools.RandomOracleHash;
-import org.apache.log4j.Logger;
-
-import java.math.BigInteger;
 
 public class ZeroProofVerifier extends Verifier {
-    private final static Logger LOGGER = Logger.getLogger(ZeroProofVerifier.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(ZeroProofVerifier.class);
 
     private final CommitmentParams _params;
 
@@ -37,7 +39,7 @@ public class ZeroProofVerifier extends Verifier {
     private final Exponent _challengeInnerProduct;
 
     public ZeroProofVerifier(final CommitmentParams params, final PublicCommitment[] cA, final PublicCommitment[] cB,
-                             final BigInteger groupOrder, final Exponent challengeInnerProduct) {
+            final BigInteger groupOrder, final Exponent challengeInnerProduct) {
         super("Zero Argument");
         _params = params;
         _n = _params.getCommitmentLength();
@@ -72,8 +74,8 @@ public class ZeroProofVerifier extends Verifier {
 
         if (!isGroupElement(cD, "cD"))
             return false;
-        if (!cD[_m + 1].verifyOpening(new Exponent[]{new Exponent(0, _groupOrder)}, new Exponent(0, _groupOrder),
-                _params) && (_m != 1)) {
+        if (!cD[_m + 1].verifyOpening(new Exponent[] {new Exponent(0, _groupOrder) }, new Exponent(0, _groupOrder),
+            _params) && (_m != 1)) {
             LOGGER.error("ERROR(Zero Argument): cD[m+1] is not a commitment to 0 with randomness 0");
             return false;
         }
@@ -111,16 +113,16 @@ public class ZeroProofVerifier extends Verifier {
 
     private boolean validate(final ZeroProofAnswer answer) {
         return isValidExponent(answer.getExponentsA(), _n, "a") && isValidExponent(answer.getExponentsB(), _n, "b")
-                && isValidExponent(answer.getExponentR(), "r") && isValidExponent(answer.getExponentS(), "s")
-                && isValidExponent(answer.getExponentT(), "t");
+            && isValidExponent(answer.getExponentR(), "r") && isValidExponent(answer.getExponentS(), "s")
+            && isValidExponent(answer.getExponentT(), "t");
     }
 
     private boolean checkAllOpenings(PublicCommitment comCAR, PublicCommitment comCBS, PublicCommitment comCABT,
-                                     ZeroProofAnswer answer) {
+            ZeroProofAnswer answer) {
         return isValidOpening(answer.getExponentsA(), answer.getExponentR(), comCAR, "a")
-                && isValidOpening(answer.getExponentsB(), answer.getExponentS(), comCBS, "b")
-                && isValidOpening(new Exponent[]{ExponentTools.innerProduct(answer.getExponentsA(), answer.getExponentsB(),
-                _groupOrder, _challengeInnerProduct)}, answer.getExponentT(), comCABT, "inner b");
+            && isValidOpening(answer.getExponentsB(), answer.getExponentS(), comCBS, "b")
+            && isValidOpening(new Exponent[] {ExponentTools.innerProduct(answer.getExponentsA(), answer.getExponentsB(),
+                _groupOrder, _challengeInnerProduct) }, answer.getExponentT(), comCABT, "inner b");
     }
 
     public CommitmentParams getParams() {

@@ -9,24 +9,24 @@
  */
 package com.scytl.products.ov.mixnet.commons.io;
 
+import java.util.List;
+
 import com.googlecode.jcsv.writer.CSVEntryConverter;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallot;
 import com.scytl.products.ov.mixnet.commons.exceptions.InvalidInputException;
-import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
-
-import java.util.List;
+import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 
 final class ElGamalEncryptedBallotEntryConverter implements CSVEntryConverter<ElGamalEncryptedBallot> {
 
     /**
-     * @see com.googlecode.jcsv.writer.CSVEntryConverter#convertEntry(Object)
+     * @see CSVEntryConverter#convertEntry(Object)
      */
     @Override
     public String[] convertEntry(final ElGamalEncryptedBallot encryptedBallot) {
 
         validateInputs(encryptedBallot);
 
-        final List<ZpElement> phis = encryptedBallot.getPhis();
+        final List<GroupElement> phis = encryptedBallot.getPhis();
         final int columnsSize = encryptedBallot.getPhis().size() + 1;
 
         String[] columns = new String[columnsSize];

@@ -6,13 +6,14 @@
  */
 package com.scytl.products.ov.mixnet.proofs.bg;
 
+import java.math.BigInteger;
+
+import org.slf4j.Logger;
+
 import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentParams;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
-import org.apache.log4j.Logger;
-
-import java.math.BigInteger;
 
 abstract class Verifier {
 
@@ -64,7 +65,7 @@ abstract class Verifier {
         for (int k = 0; k < ciphertext.length; k++) {
             if (!ciphertext[k].isCiphertext()) {
                 getLogger()
-                        .error("ERROR(" + errorType + "): " + ciphertextName + "[" + k + "] is not a valid ciphertext");
+                    .error("ERROR(" + errorType + "): " + ciphertextName + "[" + k + "] is not a valid ciphertext");
                 return false;
             }
         }
@@ -88,9 +89,9 @@ abstract class Verifier {
     }
 
     boolean isCommitmentTo0(PublicCommitment commitment, String commitmentName, BigInteger order) {
-        if (!commitment.verifyOpening(new Exponent[]{new Exponent(0, order)}, new Exponent(0, order), getParams())) {
+        if (!commitment.verifyOpening(new Exponent[] {new Exponent(0, order) }, new Exponent(0, order), getParams())) {
             getLogger()
-                    .error("ERROR(" + errorType + "): " + commitmentName + " is not a commitment to 0 with randomness 0");
+                .error("ERROR(" + errorType + "): " + commitmentName + " is not a commitment to 0 with randomness 0");
             return false;
         }
         return true;
@@ -106,10 +107,13 @@ abstract class Verifier {
 
     /**
      * Validates Exponent if it's exponent, if it has valid order, if it has valid length
-     *
-     * @param exponent     Exponent[]
-     * @param validLength  valid length
-     * @param exponentName the name of the exponent for log message
+     * 
+     * @param exponent
+     *            Exponent[]
+     * @param validLength
+     *            valid length
+     * @param exponentName
+     *            the name of the exponent for log message
      * @return true if all the checkings are correct and false otherwise
      */
     boolean isValidExponent(Exponent[] exponent, int validLength, String exponentName) {
@@ -118,9 +122,11 @@ abstract class Verifier {
 
     /**
      * Validates Exponent if it's exponent, if it has valid order
-     *
-     * @param exponent     Exponent
-     * @param exponentName the name of the exponent for log message
+     * 
+     * @param exponent
+     *            Exponent
+     * @param exponentName
+     *            the name of the exponent for log message
      * @return true if all the checkings are correct and false otherwise
      */
     boolean isValidExponent(Exponent exponent, String exponentName) {
@@ -129,9 +135,11 @@ abstract class Verifier {
 
     /**
      * Validates Exponent if it's exponent, if it has valid order
-     *
-     * @param exponent     Exponent[]
-     * @param exponentName the name of the exponent for log message
+     * 
+     * @param exponent
+     *            Exponent[]
+     * @param exponentName
+     *            the name of the exponent for log message
      * @return true if all the checkings are correct and false otherwise
      */
     private boolean isValidExponent(Exponent[] exponent, String exponentName) {

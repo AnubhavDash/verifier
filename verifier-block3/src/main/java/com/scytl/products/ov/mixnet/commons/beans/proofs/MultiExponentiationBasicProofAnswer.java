@@ -1,6 +1,6 @@
 /**
  * @author aescala
- * @date 10/10/2013 16:59:56
+ * @date   10/10/2013 16:59:56
  * Copyright (C) 2013 Scytl Secure Electronic Voting SA
  * All rights reserved.
  */
@@ -25,11 +25,11 @@ public class MultiExponentiationBasicProofAnswer {
 
     @JsonCreator
     public MultiExponentiationBasicProofAnswer(@JsonProperty("exponentsA") final Exponent[] a,
-                                               @JsonProperty("exponentR") final Exponent r, @JsonProperty("exponentsB") final Exponent b,
-                                               @JsonProperty("exponentS") final Exponent s, @JsonProperty("randomnessTau") final Randomness tau) {
+            @JsonProperty("exponentR") final Exponent r, @JsonProperty("exponentsB") final Exponent[] b,
+            @JsonProperty("exponentS") final Exponent s, @JsonProperty("randomnessTau") final Randomness tau) {
         _a = a;
         _r = r;
-        _b = new Exponent[]{b};
+        _b = b;
         _s = s;
         _tau = tau;
     }
@@ -77,7 +77,7 @@ public class MultiExponentiationBasicProofAnswer {
         }
         strbldr.append(_r.toString());
 
-        for (Exponent a_b : _b) {
+        for (final Exponent a_b : _b) {
             strbldr.append(a_b.toString());
         }
 

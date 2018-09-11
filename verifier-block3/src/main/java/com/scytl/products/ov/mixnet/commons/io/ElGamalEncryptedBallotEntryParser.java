@@ -9,36 +9,35 @@
  */
 package com.scytl.products.ov.mixnet.commons.io;
 
-import com.googlecode.jcsv.reader.CSVEntryParser;
-import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallot;
-import com.scytl.products.ov.mixnet.commons.exceptions.InvalidInputException;
-import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
-
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.googlecode.jcsv.reader.CSVEntryParser;
+import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallot;
+import com.scytl.products.ov.mixnet.commons.exceptions.InvalidInputException;
+import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
+import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
+import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroupParams;
+
 final class ElGamalEncryptedBallotEntryParser implements CSVEntryParser<ElGamalEncryptedBallot> {
 
-    private final BigInteger _p;
-    private final BigInteger _q;
+    private final ZpGroupParams _zpGroupParams;
 
-    public ElGamalEncryptedBallotEntryParser(final BigInteger p, final BigInteger q) {
-        _p = p;
-        _q = q;
+    public ElGamalEncryptedBallotEntryParser(final ZpGroupParams zpGroupParams) {
+        _zpGroupParams = zpGroupParams;
     }
 
     /**
-     * @see com.googlecode.jcsv.reader.CSVEntryParser#parseEntry(String[])
+     * @see CSVEntryParser#parseEntry(String[])
      */
     @Override
     public ElGamalEncryptedBallot parseEntry(final String... args) {
 
         validateInputs(args);
 
-        List<ZpElement> elements = new ArrayList<>();
+        List<GroupElement> elements = new ArrayList<>();
         for (String s : args) {
-            elements.add(new ZpElement(s, _p, _q));
+            elements.add(new ZpElement(s, _zpGroupParams));
         }
 
         return new ElGamalEncryptedBallot(elements);

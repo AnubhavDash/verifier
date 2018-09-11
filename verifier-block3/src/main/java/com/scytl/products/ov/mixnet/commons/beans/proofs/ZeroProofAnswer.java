@@ -1,6 +1,6 @@
 /**
  * @author aescala
- * @date 18/09/2013 10:49:52
+ * @date   18/09/2013 10:49:52
  * Copyright (C) 2013 Scytl Secure Electronic Voting SA
  * All rights reserved.
  */
@@ -24,8 +24,8 @@ public class ZeroProofAnswer {
 
     @JsonCreator
     public ZeroProofAnswer(@JsonProperty("exponentsA") final Exponent[] a,
-                           @JsonProperty("exponentsB") final Exponent[] b, @JsonProperty("exponentR") final Exponent r,
-                           @JsonProperty("exponentS") final Exponent s, @JsonProperty("exponentT") final Exponent t) {
+            @JsonProperty("exponentsB") final Exponent[] b, @JsonProperty("exponentR") final Exponent r,
+            @JsonProperty("exponentS") final Exponent s, @JsonProperty("exponentT") final Exponent t) {
         _a = a;
         _b = b;
         _r = r;

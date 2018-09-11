@@ -8,18 +8,18 @@ package com.scytl.products.ov.mixnet.commons.proofs.bg.commitments;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
-import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
 
 /**
  * Encapsulates a public commitment.
  */
 public class PublicCommitment {
 
-    private final ZpElement _commitment;
+    private final GroupElement _commitment;
 
     @JsonCreator
-    public PublicCommitment(@JsonProperty("element") final ZpElement com) {
+    public PublicCommitment(@JsonProperty("element") final GroupElement com) {
         _commitment = com;
     }
 
@@ -31,7 +31,7 @@ public class PublicCommitment {
         return new PublicCommitment(_commitment.exponentiate(expo));
     }
 
-    public ZpElement getElement() {
+    public GroupElement getElement() {
         return _commitment;
     }
 

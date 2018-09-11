@@ -6,14 +6,15 @@
  */
 package com.scytl.products.ov.mixnet.commons.tools;
 
-import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
-import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
-
 import java.math.BigInteger;
+
+import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
+import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
+import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
 
 public final class MultiExponentiationImpl {
 
-    public static ZpElement computeMultiExpo(final ZpElement[] base, final Exponent[] expo) {
+    public static GroupElement computeMultiExpo(final GroupElement[] base, final Exponent[] expo) {
         if (base.length == 0) {
             System.out.println("ERROR: There are no bases to exponentiate");
         }
@@ -35,8 +36,8 @@ public final class MultiExponentiationImpl {
             int[][] windowedExponents = computeWindowedExponents(expo, windowCount, window);
 
             return new ZpElement(
-                computeMultiExponent(windowedExponents, powers, base[0].getP(), window, windowCount),
-                base[0].getP(), base[0].getQ());
+                computeMultiExponent(windowedExponents, powers, base[0].getParams().getP(), window, windowCount),
+                base[0].getParams());
         }
 
     }
@@ -70,9 +71,9 @@ public final class MultiExponentiationImpl {
         return window;
     }
 
-    private static BigInteger[][] computePowers(ZpElement[] bases, int window) {
+    private static BigInteger[][] computePowers(GroupElement[] bases, int window) {
         BigInteger[][] powers = new BigInteger[bases.length][1 << window];
-        BigInteger modulo = bases[0].getP();
+        BigInteger modulo = bases[0].getParams().getP();
         for (int i = 0; i < powers.length; i++) {
             powers[i][0] = BigInteger.ONE;
             for (int j = 1; j < powers[i].length; j++) {

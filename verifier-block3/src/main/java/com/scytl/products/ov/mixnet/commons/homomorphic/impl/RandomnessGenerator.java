@@ -6,11 +6,11 @@
  */
 package com.scytl.products.ov.mixnet.commons.homomorphic.impl;
 
-import com.scytl.products.ov.mixnet.commons.homomorphic.Randomness;
-import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
-
 import java.math.BigInteger;
 import java.util.List;
+
+import com.scytl.products.ov.mixnet.commons.homomorphic.Randomness;
+import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 
 public class RandomnessGenerator {
 

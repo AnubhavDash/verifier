@@ -6,14 +6,14 @@
  */
 package com.scytl.products.ov.mixnet.commons.tools;
 
-import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
-import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
-
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+
+import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
+import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 
 public class RandomOracleHashDecrypt {
 
@@ -26,7 +26,7 @@ public class RandomOracleHashDecrypt {
         _groupOrder = groupOrder;
     }
 
-    public void addDataToRO(final List<ZpElement> elements) {
+    public void addDataToRO(final List<GroupElement> elements) {
         String uniqueIdsConcat = concatValues(elements);
         _md.update(uniqueIdsConcat.getBytes(StandardCharsets.UTF_8));
     }
@@ -44,9 +44,9 @@ public class RandomOracleHashDecrypt {
         _md.reset();
     }
 
-    private String concatValues(final List<ZpElement> elements) {
+    private String concatValues(final List<GroupElement> elements) {
         StringBuilder result = new StringBuilder();
-        for (ZpElement element : elements) {
+        for (GroupElement element : elements) {
             result.append(element.getValue());
         }
         return result.toString();

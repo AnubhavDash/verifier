@@ -6,12 +6,12 @@
  */
 package com.scytl.products.ov.mixnet.commons.tools;
 
-import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
-import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
-
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
+import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 
 public class RandomOracleHash {
 

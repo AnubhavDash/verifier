@@ -6,6 +6,12 @@
  */
 package com.scytl.products.ov.mixnet.proofs.bg;
 
+import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.scytl.products.ov.mixnet.commons.beans.proofs.HadamardProductProofAnswer;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.HadamardProductProofInitialMessage;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
@@ -13,13 +19,9 @@ import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentPara
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PrivateCommitment;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
 import com.scytl.products.ov.mixnet.commons.tools.RandomOracleHash;
-import org.apache.log4j.Logger;
-
-import java.math.BigInteger;
-import java.security.NoSuchAlgorithmException;
 
 public class HadamardProductProofVerifier {
-    private final static Logger LOGGER = Logger.getLogger(HadamardProductProofVerifier.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(HadamardProductProofVerifier.class);
 
     private final CommitmentParams _params;
 
@@ -36,7 +38,7 @@ public class HadamardProductProofVerifier {
     private final BigInteger _groupOrder;
 
     public HadamardProductProofVerifier(final CommitmentParams params, final PublicCommitment[] cA,
-                                        final PublicCommitment cB, final BigInteger groupOrder) {
+            final PublicCommitment cB, final BigInteger groupOrder) {
         _params = params;
         _n = _params.getCommitmentLength();
         _m = cA.length;
@@ -80,11 +82,11 @@ public class HadamardProductProofVerifier {
          */
 
         cZeroArgumentA[_m - 1] =
-                new PrivateCommitment(new Exponent(-1, _groupOrder), new Exponent(0, _groupOrder), _params, _n)
-                        .makePublicCommitment();
+            new PrivateCommitment(new Exponent(-1, _groupOrder), new Exponent(0, _groupOrder), _params, _n)
+                .makePublicCommitment();
 
         final ZeroProofVerifier verifZero =
-                new ZeroProofVerifier(_params, cZeroArgumentA, cD, _groupOrder, challengeInnerProduct);
+            new ZeroProofVerifier(_params, cZeroArgumentA, cD, _groupOrder, challengeInnerProduct);
         if (!verifZero.verify(answer.getInitial(), answer.getAnswer()))
             return false;
 

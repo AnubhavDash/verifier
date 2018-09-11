@@ -6,10 +6,10 @@
  */
 package com.scytl.products.ov.mixnet.commons.homomorphic.impl;
 
+import java.util.List;
+
 import com.scytl.products.ov.mixnet.commons.mathematical.Group;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
-
-import java.util.List;
 
 class ElGamalPrivateKey {
 

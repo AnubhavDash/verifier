@@ -6,14 +6,14 @@
  */
 package com.scytl.products.ov.mixnet.commons.mathematical.impl;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.scytl.products.ov.mixnet.commons.tools.BigIntTools;
-
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Exponent {
 
@@ -42,7 +42,7 @@ public class Exponent {
     }
 
     @JsonCreator
-    public Exponent(@JsonProperty("value") final String value, @JsonProperty("q") final BigInteger order) {
+    public Exponent(@JsonProperty("value") final String value, @JsonProperty("order") final BigInteger order) {
         this(new BigInteger(value), order, false);
     }
 

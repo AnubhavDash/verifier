@@ -6,22 +6,20 @@
  */
 package com.scytl.products.ov.mixnet.commons.mathematical;
 
-import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
-
 import java.math.BigInteger;
 
 /**
  *
  */
 public interface Group {
-    ZpElement getGenerator();
+    GroupElement getGenerator();
 
     BigInteger getOrder();
 
-    ZpElement getRandomElement();
+    GroupElement getRandomElement();
 
-    ZpElement[] getVectorRandomElement(int length);
+    GroupElement[] getVectorRandomElement(int length);
 
-    ZpElement getIdentityElement();
+    GroupElement getIdentityElement();
 
 }
