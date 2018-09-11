@@ -25,24 +25,24 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 
 /**
- * Class Test72
+ * Class Test73.
  * This represents TODO.
  *
  * @author lalandret
  * @version $$Revision$$
  */
-public class Test72 extends Test {
+public class Test73 extends Test {
 
-    private static final Logger LOGGER = Logger.getLogger(Test72.class);
+    private static final Logger LOGGER = Logger.getLogger(Test73.class);
 
     @Override
     public TestDefinition getTestDefinition() {
         TestDefinition def = new TestDefinition();
         def.setBlockId(4);
         def.setCategory(Category.AUTHENTICITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test72.description"));
-        def.setId(72);
-        def.setName("checkSigEvotingDecrypt");
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test73.description"));
+        def.setId(73);
+        def.setName("checkSigEch0110");
         return def;
     }
 
@@ -52,23 +52,23 @@ public class Test72 extends Test {
         try {
             byte[] rootCertificate = Files.readAllBytes(inputDirectory.toPath().resolve(Block4TestSuite.PATH_CERTIFICATES).resolve("tenant_100.pem"));
 
-            File evotingDecrypt = PathHelper.getFile(inputDirectory.toPath()
+            File ech = PathHelper.getFile(inputDirectory.toPath()
                             .resolve(Block4TestSuite.PATH_RESULTS)
                             .toFile(),
-                    ".*evoting-decrypt*.*\\.xml");
+                    ".*eCH-0110*.*\\.xml");
 
-            byte[] content = Files.readAllBytes(inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS).resolve(evotingDecrypt.getName()));
-            byte[] signature = Files.readAllBytes(inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS).resolve(evotingDecrypt.getName() + ".p7"));
+            byte[] content = Files.readAllBytes(inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS).resolve(ech.getName()));
+            byte[] signature = Files.readAllBytes(inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS).resolve(ech.getName() + ".p7"));
             if (!SignatureChecker.verifyPKCS7(content, signature, rootCertificate)) {
-                throw new TestFailureException(evotingDecrypt.getName());
+                throw new TestFailureException(ech.getName());
             }
             result.setStatus(Status.OK);
 
         } catch (Exception e) {
             if (e instanceof TestFailureException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test72.nok.message", ((TestFailureException) e).getArgs()));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test73.nok.message", ((TestFailureException) e).getArgs()));
             } else if (e instanceof NoSuchFileException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test72.file.not.found.message", ((NoSuchFileException)e ).getFile()));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test73.file.not.found.message", ((NoSuchFileException)e ).getFile()));
             }
             else {
                 LOGGER.error("unexpected error", e);
