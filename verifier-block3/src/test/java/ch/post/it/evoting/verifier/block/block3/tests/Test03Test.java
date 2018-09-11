@@ -11,6 +11,7 @@ import java.io.File;
 public class Test03Test {
 
     @Test
+    @Ignore
     public void executeTest() {
         //TestResult result = new Test03().executeTest(new File(getClass().getResource("/Test03/OK").getFile()));
         TestResult result = new Test03().executeTest(new File("c:\\work\\projects\\verifier\\dataset\\input1"));
