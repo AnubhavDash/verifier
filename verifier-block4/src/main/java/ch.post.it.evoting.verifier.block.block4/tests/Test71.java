@@ -1,11 +1,3 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.block.block4.tests;
 
 import ch.post.it.evoting.verifier.block.block4.Block4TestSuite;
@@ -30,8 +22,6 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-
-import static ch.post.it.evoting.verifier.common.block.tools.PathHelper.getFile;
 
 /**
  * Class Test71.
@@ -74,12 +64,12 @@ public class Test71 extends Test {
                 }
             });
 
-            byte[] signCertificate = Files.readAllBytes(getFile(inputDirectory.toPath()
+            byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath()
                             .resolve(Block4TestSuite.PATH_CERTIFICATES)
                             .resolve(Block4TestSuite.PATH_ADMINBOARD).toFile(),
                     ".*\\.pem").toPath());
 
-            byte[] rootCA = Files.readAllBytes(inputDirectory.toPath().resolve(Block4TestSuite.PATH_CERTIFICATES).resolve("tenant_100.pem"));
+            byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block4TestSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
 
             for (File decompressedVote : decompressedVotesFiles) {
                 byte[] content = Files.readAllBytes(decompressedVote.toPath());
@@ -94,10 +84,9 @@ public class Test71 extends Test {
         } catch (Exception e) {
             if (e instanceof TestFailureException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test71.nok.message"));
-            }else if (e instanceof NoSuchFileException || e instanceof FileNotFoundException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test71.file.not.found.message", ((NoSuchFileException)e ).getFile()));
-            }
-            else {
+            } else if (e instanceof NoSuchFileException || e instanceof FileNotFoundException) {
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test71.file.not.found.message", ((NoSuchFileException) e).getFile()));
+            } else {
                 LOGGER.error("unexpected error", e);
             }
             result.setStatus(Status.NOK);
