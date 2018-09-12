@@ -181,7 +181,7 @@ public class Test04 extends Test {
         Map<String, Long> listAndCountMap = map.get(listId);
         if (listAndCountMap != null ){
             List<String> listsToCheck = countByElection.keySet().stream()
-                    .filter(key -> map.get(key) != null)
+                    .filter(key -> map.get(key) != null && listId.equals(key))
                     .collect(Collectors.toList());
 
             if(listsToCheck != null && !listsToCheck.isEmpty()){
