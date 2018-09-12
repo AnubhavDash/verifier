@@ -1,11 +1,3 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.block.block4.tests;
 
 import ch.post.it.evoting.verifier.block.block4.Block4TestSuite;
@@ -50,7 +42,7 @@ public class Test73 extends Test {
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
-            byte[] rootCertificate = Files.readAllBytes(inputDirectory.toPath().resolve(Block4TestSuite.PATH_CERTIFICATES).resolve("tenant_100.pem"));
+            byte[] rootCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block4TestSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
 
             File ech = PathHelper.getFile(inputDirectory.toPath()
                             .resolve(Block4TestSuite.PATH_RESULTS)
@@ -68,9 +60,8 @@ public class Test73 extends Test {
             if (e instanceof TestFailureException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test73.nok.message", ((TestFailureException) e).getArgs()));
             } else if (e instanceof NoSuchFileException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test73.file.not.found.message", ((NoSuchFileException)e ).getFile()));
-            }
-            else {
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test73.file.not.found.message", ((NoSuchFileException) e).getFile()));
+            } else {
                 LOGGER.error("unexpected error", e);
             }
             result.setStatus(Status.NOK);

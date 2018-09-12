@@ -9,6 +9,7 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
+import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import com.scytl.xmlns.decrypt._1.Results;
@@ -127,7 +128,7 @@ public class Test04 extends Test {
                                         BigInteger emptyCount = getEmptyPositionCount(mapDecrypt, ccId, electionId, listId, map1);
                                         if (!countOfCandidatesVotes.equals(lcpCount) || !countOfAdditionnalVotes.equals(emptyCount) ) {
                                             log.debug(String.format("count not equal : CC:%s electionId:%s list:%s decrypt:%s 110:%s", ccId, electionId, listId, lcpCount, countOfCandidatesVotes));
-                                            throw new Test04FailureException(ccId, listId);
+                                            throw new TestFailureException(ccId, listId);
                                         }
                                     });
                         });
@@ -135,9 +136,9 @@ public class Test04 extends Test {
             result.setStatus(Status.OK);
         } catch (Exception e) {
             result.setStatus(Status.NOK);
-            if (e instanceof Test04.Test04FailureException) {
-                Test04FailureException ex = ((Test04FailureException) e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test04.nok.message", ex.getCcId(), ex.getListId()));
+            if (e instanceof TestFailureException) {
+                TestFailureException ex = ((TestFailureException) e);
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test04.nok.message", ex.getArgs()));
             }
             else if (e instanceof FileNotFoundException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test04.file.not.found.message"));

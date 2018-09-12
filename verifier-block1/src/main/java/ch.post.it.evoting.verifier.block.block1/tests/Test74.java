@@ -1,11 +1,3 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.block.block1.tests;
 
 import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
@@ -53,7 +45,7 @@ public class Test74 extends Test {
                             .resolve(Block1TestSuite.PATH_ADMINBOARD).toFile(),
                     ".*\\.pem").toPath());
 
-            byte[] rootCA = Files.readAllBytes(inputDirectory.toPath().resolve(Block1TestSuite.PATH_CERTIFICATES).resolve("tenant_100.pem"));
+            byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block1TestSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
 
             File[] dataConfigFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block1TestSuite.PATH_ELECTION_SETUP).toFile(), "dataConfig.*\\.json");
 
