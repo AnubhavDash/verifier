@@ -49,7 +49,7 @@ public class Test04 extends Test {
             Path path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_ELECTION_SETUP);
             Configuration configuration = Deserializer.fromXml(path.toFile(), "configuration-anonymized.xml", Configuration.class);
 
-            Map<String, Boolean> mapLidIsEmpty = configuration.getContest().getElectionInformation().stream()
+            Map<String, Boolean> mapListIsEmpty = configuration.getContest().getElectionInformation().stream()
                     .flatMap(ei -> ei.getList().stream())
                     .map(l -> new AbstractMap.SimpleEntry<>(l.getListIdentification(), l.isListEmpty()))
                     .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
@@ -59,8 +59,19 @@ public class Test04 extends Test {
                     .map(l -> {
                         String listIden = l.getListIdentification();
                         Map<String, Boolean> map = l.getCandidatePosition().stream()
-                            .map(cp -> new AbstractMap.SimpleEntry<>(cp.getCandidateListIdentification(), mapLidIsEmpty.get(listIden)))
+                            .map(cp -> new AbstractMap.SimpleEntry<>(cp.getCandidateListIdentification(), mapListIsEmpty.get(listIden)))
                             .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+                        return map;
+                    }).flatMap(map -> map.entrySet().stream())
+                    .collect(Collectors.toMap(entry -> entry.getKey(), entry-> entry.getValue()));
+
+            Map<String, String> mapLcIdListId = configuration.getContest().getElectionInformation().stream()
+                    .flatMap(ei -> ei.getList().stream())
+                    .map(l -> {
+                        String listIden = l.getListIdentification();
+                        Map<String, String> map = l.getCandidatePosition().stream()
+                                .map(cp -> new AbstractMap.SimpleEntry<>(cp.getCandidateListIdentification(), listIden))
+                                .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
                         return map;
                     }).flatMap(map -> map.entrySet().stream())
                     .collect(Collectors.toMap(entry -> entry.getKey(), entry-> entry.getValue()));
