@@ -59,11 +59,8 @@ public class Test04 extends Test {
                     .map(l -> {
                         String listIden = l.getListIdentification();
                         Map<String, Boolean> map = l.getCandidatePosition().stream()
-                                .map(cp -> {
-                                    String candidateListIdentification = cp.getCandidateListIdentification();
-                                    Boolean isHisListEmpty = mapLidIsEmpty.get(listIden);
-                                    return new AbstractMap.SimpleEntry<>(candidateListIdentification, isHisListEmpty);
-                                }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+                            .map(cp -> new AbstractMap.SimpleEntry<>(cp.getCandidateListIdentification(), mapLidIsEmpty.get(listIden)))
+                            .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
                         return map;
                     }).flatMap(map -> map.entrySet().stream())
                     .collect(Collectors.toMap(entry -> entry.getKey(), entry-> entry.getValue()));
