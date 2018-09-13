@@ -13,17 +13,16 @@ import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import com.scytl.xmlns.decrypt._1.Results;
-import javafx.util.Pair;
 import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.nio.file.Path;
-import java.util.*;
-import java.util.function.Function;
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Test04 extends Test {
 
@@ -45,7 +44,6 @@ public class Test04 extends Test {
         TestResult result = new TestResult(getTestDefinition());
 
         try {
-
             Path path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_ELECTION_SETUP);
             Configuration configuration = Deserializer.fromXml(path.toFile(), "configuration-anonymized.xml", Configuration.class);
 
@@ -77,38 +75,93 @@ public class Test04 extends Test {
                     .collect(Collectors.toMap(entry -> entry.getKey(), entry-> entry.getValue()));
 
 
-            // 2, decrypt file => map<countingCircle, map<electionId, map<list, map<ListId, count>>>> => mapDecrypt
+            // 2, decrypt file => map<countingCircle, map<ElectionId, map<listId, count>>>
             path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS);
             Results results = Deserializer.fromXml(path.toFile(), "evoting-decrypt_.*\\.xml", Results.class);
-            Map<String, Map<String, Map<String, Map<String, Long>>>> mapDecrypt = results.getBallotsBox().stream()
+            Map<String, Map<String, Map<String, Long>>> countByListId = results.getBallotsBox().stream()
                     .flatMap(bb -> bb.getCountingCircle().stream())
                     .map(cc -> {
                         String ccId = cc.getCountingCircleIdentification();
-                        Map<String, Map<String, Map<String, Long>>> electionCount = cc.getDomainOfInfluence().stream().flatMap(doi -> doi.getElection().stream())
+                        Map<String, Map<String, Long>> electionCount = cc.getDomainOfInfluence().stream().flatMap(doi -> doi.getElection().stream())
                                 .map(e -> {
                                     String electionId = e.getElectionIdentification();
-                                    Map<String, Map<String, Long>> listAndListIdCountMap = new HashMap<>();
-                                    e.getBallot().forEach(ballot -> {
-                                            String chosenListIdentification = ballot.getChosenListIdentification();
-                                            Map<String, Long> listIdCountMap = ballot.getChosenCandidateListIdentification().stream()
-                                                    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-                                            Pair<String, Map<String, Long>> pair = new Pair<String, Map<String, Long>>(chosenListIdentification, listIdCountMap);
-                                            listAndListIdCountMap.computeIfPresent(pair.getKey(), (key, value) -> {
-                                                Map<String, Long> newValue = new HashMap<>();
-                                                newValue.putAll(listAndListIdCountMap.get(key));
-                                                value.keySet().forEach(k -> {
-                                                    if(!newValue.containsKey(k)){
-                                                        newValue.put(k, value.get(k));
+                                    Map<String, Long> listIdCountMap = new HashMap<>();
+                                    e.getBallot().forEach( ballot -> {
+                                        // Pour chaque vote on compte le nb de votes pour une liste
+                                        // A soit il a voté pour une liste vide
+                                        if( mapListIsEmpty.get(ballot.getChosenListIdentification())){
+                                            ballot.getChosenCandidateListIdentification().forEach( lcId -> {
+                                                // a quelle liste appartient le candidat ?
+                                                String listId = mapLcIdListId.get(lcId);
+                                                // on a a faire a une liste normale alors on compte
+                                                if(!mapListIsEmpty.get(listId)){
+                                                    if(listIdCountMap.get(listId) == null){
+                                                        listIdCountMap.put(listId, Long.valueOf(1));
                                                     }else{
-                                                        Long newCount = value.get(k) + newValue.get(k);
-                                                        newValue.put(k, newCount);
+                                                        listIdCountMap.put(listId, listIdCountMap.get(listId) + Long.valueOf(1));
                                                     }
-                                                });
-                                                return newValue;
+                                                }
                                             });
-                                            listAndListIdCountMap.putIfAbsent(pair.getKey(), pair.getValue());
-                                        });
-                                    return new AbstractMap.SimpleEntry<>(electionId, listAndListIdCountMap);
+                                        } else {
+                                        // B soit il a voté pour une liste normale
+                                            ballot.getChosenCandidateListIdentification().forEach( lcId -> {
+                                                // a quelle liste appartient le candidat ?
+                                                String listId = mapLcIdListId.get(lcId);
+                                                // on a a faire a une liste normale alors on compte
+                                                if(!mapListIsEmpty.get(listId)){
+                                                    if(listIdCountMap.get(listId) == null){
+                                                        listIdCountMap.put(listId, Long.valueOf(1));
+                                                    }else{
+                                                        listIdCountMap.put(listId, listIdCountMap.get(listId) + Long.valueOf(1));
+                                                    }
+                                                } else {
+                                                    if(listIdCountMap.get(listId) == null){
+                                                        listIdCountMap.put(listId, Long.valueOf(1));
+                                                    }else{
+                                                        listIdCountMap.put(listId, listIdCountMap.get(listId) + Long.valueOf(1));
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    });
+                                    return new AbstractMap.SimpleEntry<>(electionId, listIdCountMap);
+                                }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+                        return new AbstractMap.SimpleEntry<>(ccId, electionCount);
+                    })
+                    .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+
+
+            Map<String, Map<String, Map<String, Long>>> countOfEmptyValuesByListId = results.getBallotsBox().stream()
+                    .flatMap(bb -> bb.getCountingCircle().stream())
+                    .map(cc -> {
+                        String ccId = cc.getCountingCircleIdentification();
+                        Map<String, Map<String, Long>> electionCount = cc.getDomainOfInfluence().stream().flatMap(doi -> doi.getElection().stream())
+                                .map(e -> {
+                                    String electionId = e.getElectionIdentification();
+                                    Map<String, Long> listIdCountMap = new HashMap<>();
+                                    e.getBallot().forEach( ballot -> {
+                                        // Pour chaque vote on compte le nb de votes pour une liste
+                                        // A soit il a voté pour une liste vide
+                                        if( mapListIsEmpty.get(ballot.getChosenListIdentification())){
+
+                                        } else {
+                                            // B soit il a voté pour une liste normale
+                                            ballot.getChosenCandidateListIdentification().forEach( lcId -> {
+                                                String choosenList = ballot.getChosenListIdentification();
+                                                // a quelle liste appartient le candidat ?
+                                                String listId = mapLcIdListId.get(lcId);
+                                                // on a a faire a une liste vide on compte
+                                                if(mapListIsEmpty.get(listId)){
+                                                    if(listIdCountMap.get(choosenList) == null){
+                                                        listIdCountMap.put(choosenList, Long.valueOf(1));
+                                                    }else{
+                                                        listIdCountMap.put(choosenList, listIdCountMap.get(choosenList) + Long.valueOf(1));
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    });
+                                    return new AbstractMap.SimpleEntry<>(electionId, listIdCountMap);
                                 }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
                         return new AbstractMap.SimpleEntry<>(ccId, electionCount);
                     })
@@ -127,9 +180,9 @@ public class Test04 extends Test {
                                     .forEach(l -> {
                                         String listId = l.getListInformation().getListIdentification();
                                         BigInteger countOfCandidatesVotes = getCountOfCandidatesVotes(l);
-                                        BigInteger lcpCount = BigInteger.ZERO;
+                                        BigInteger lcpCount = getCount(countByListId, ccId, electionId, listId);
                                         BigInteger countOfAdditionnalVotes = getCountOfAdditionnalVotes(l);
-                                        BigInteger emptyCount = BigInteger.ZERO;;
+                                        BigInteger emptyCount = getCount(countOfEmptyValuesByListId, ccId, electionId, listId);
                                         if (!countOfCandidatesVotes.equals(lcpCount) || !countOfAdditionnalVotes.equals(emptyCount) ) {
                                             log.debug(String.format("count not equal : CC:%s electionId:%s list:%s decrypt:%s 110:%s", ccId, electionId, listId, lcpCount, countOfCandidatesVotes));
                                             throw new TestFailureException(ccId, listId);
@@ -172,7 +225,19 @@ public class Test04 extends Test {
     }
 
 
-
-
+    private BigInteger getCount(Map<String, Map<String, Map<String, Long>>> resultMap, String ccId, String electionId, String listId) {
+        Map<String, Map<String, Long>> countByCC = resultMap.get(ccId);
+        if (countByCC == null) {
+            throw new IllegalArgumentException("cannot find the decrypt data for given countingCircle : " + ccId);
+        }
+        Map<String, Long> countByElection = countByCC.get(electionId);
+        if (countByElection == null) {
+            throw new IllegalArgumentException("cannot find the decrypt data for given election : " + electionId);
+        }
+        BigInteger result = BigInteger.ZERO;
+        Long count = countByElection.get(listId) == null ? 0L : countByElection.get(listId) ;
+        result = result.add(BigInteger.valueOf(count));
+        return result;
+    }
 
 }
