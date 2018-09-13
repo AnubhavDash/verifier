@@ -1,0 +1,52 @@
+/**
+ * @author aescala
+ * @date 16/09/2013 16:15:58
+ * Copyright (C) 2013 Scytl Secure Electronic Voting SA
+ * All rights reserved.
+ */
+package com.scytl.products.ov.mixnet.commons.proofs.bg.commitments;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
+import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
+
+/**
+ * Encapsulates a public commitment.
+ */
+public class PublicCommitment {
+
+    private final ZpElement _commitment;
+
+    @JsonCreator
+    public PublicCommitment(@JsonProperty("element") final ZpElement com) {
+        _commitment = com;
+    }
+
+    public PublicCommitment multiply(final PublicCommitment commitment) {
+        return new PublicCommitment(_commitment.multiply(commitment.getElement()));
+    }
+
+    public PublicCommitment exponentiate(final Exponent expo) {
+        return new PublicCommitment(_commitment.exponentiate(expo));
+    }
+
+    public ZpElement getElement() {
+        return _commitment;
+    }
+
+    public boolean verifyOpening(final Exponent[] exponents, final Exponent exponentR, final CommitmentParams params) {
+        final PublicCommitment newCommitment =
+            new PrivateCommitment(exponents, exponentR, params).makePublicCommitment();
+        return _commitment.equals(newCommitment.getElement());
+    }
+
+    public boolean isEqual(final PublicCommitment commitment) {
+        return (_commitment.equals(commitment.getElement()));
+    }
+
+    @Override
+    public String toString() {
+        return _commitment.toString();
+    }
+}

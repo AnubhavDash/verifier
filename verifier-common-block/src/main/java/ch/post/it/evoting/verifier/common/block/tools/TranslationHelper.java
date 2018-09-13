@@ -34,6 +34,6 @@ public class TranslationHelper {
     }
 
     public static String getFromResourceBundle(String resourceBundleName, String key, Locale locale, String... args) {
-        return formatter.format(ResourceBundle.getBundle(resourceBundleName, locale).getString(key), args);
+        return formatter.format(ResourceBundle.getBundle(resourceBundleName, locale).getString(key), (Object[]) args);
     }
 }

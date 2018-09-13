@@ -4,6 +4,7 @@ import ch.post.it.evoting.verifier.console.dto.Status;
 import org.apache.log4j.Logger;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class Main {
 
@@ -15,7 +16,7 @@ public class Main {
     public static void main(String... args) {
         try {
             if (!verifierClient.ping()) {
-                log.info("Server not started");
+                log.error("Server not started");
                 System.exit(0);
             }
 
@@ -31,12 +32,8 @@ public class Main {
             log.info(actualStatus.getStatus());
 
             verifierClient.getTests().forEach(t -> {
-                String output = String.format("Test %s : %s %s", t.getId(), t.getStatus(), Optional.ofNullable(t.getMessage()).orElse(""));
-                if (t.getStatus().equalsIgnoreCase("KO")) {
-                    log.error(output);
-                } else {
-                    log.info(output);
-                }
+                Consumer<Object> logger = t.getStatus().equalsIgnoreCase("KO") ? log::error : log::info;
+                logger.accept(String.format("Test %s : %s %s", t.getId(), t.getStatus(), Optional.ofNullable(t.getMessage()).orElse("")));
             });
 
             //verifierClient.shutdown();

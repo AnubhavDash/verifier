@@ -22,7 +22,7 @@ import java.nio.file.Path;
  */
 public class Test03 extends Test {
 
-    private static final Logger log = Logger.getLogger(Test03.class);
+    private static final Logger LOGGER = Logger.getLogger(Test03.class);
 
     @Override
     public TestDefinition getTestDefinition() {
@@ -57,7 +57,7 @@ public class Test03 extends Test {
             if (e instanceof FileNotFoundException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message"));
             } else {
-                log.error("Unexpected error", e);
+                LOGGER.error("Unexpected error", e);
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
             }
         }

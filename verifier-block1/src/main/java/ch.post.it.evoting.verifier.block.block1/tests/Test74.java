@@ -1,11 +1,3 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.block.block1.tests;
 
 import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
@@ -14,17 +6,22 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
+import ch.post.it.evoting.verifier.common.block.TestFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 
 /**
  * Test74 of Block1, Step checkSigDataConfig
  */
 public class Test74 extends Test {
 
-    private static final Logger log = Logger.getLogger(Test74.class);
+    private static final Logger LOGGER = Logger.getLogger(Test74.class);
 
     @Override
     public TestDefinition getTestDefinition() {
@@ -40,7 +37,39 @@ public class Test74 extends Test {
     @Override
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
-        result.setStatus(Status.NA);
+
+        try {
+
+            byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath()
+                            .resolve(Block1TestSuite.PATH_CERTIFICATES)
+                            .resolve(Block1TestSuite.PATH_ADMINBOARD).toFile(),
+                    ".*\\.pem").toPath());
+
+            byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block1TestSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
+
+            File[] dataConfigFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block1TestSuite.PATH_ELECTION_SETUP).toFile(), "dataConfig.*\\.json");
+
+            for (File dataConfig : dataConfigFiles) {
+                byte[] content = Files.readAllBytes(inputDirectory.toPath().resolve(Block1TestSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName()));
+                byte[] signature = Files.readAllBytes(inputDirectory.toPath().resolve(Block1TestSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName() + ".metadata"));
+
+                if (!SignatureChecker.verifyMetdata(content, signature, signCertificate, rootCA)) {
+                    throw new TestFailureException(dataConfig.getName());
+                }
+            }
+            result.setStatus(Status.OK);
+
+        } catch (Exception e) {
+            if (e instanceof TestFailureException) {
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test74.nok.message"));
+            }else if (e instanceof NoSuchFileException) {
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test74.file.not.found.message", ((NoSuchFileException)e ).getFile()));
+            }
+            else {
+                LOGGER.error("unexpected error", e);
+            }
+            result.setStatus(Status.NOK);
+        }
         return result;
     }
 }

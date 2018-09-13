@@ -15,7 +15,12 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.Base64;
 
 public class RestClientHelper {
@@ -57,7 +62,7 @@ public class RestClientHelper {
     /* Initialize SSL restTemplate  */
     public static RestTemplate getRestClientSSL(String truststoreLocation, String truststorePassword,
                                                 String proxyLocation, Integer proxyPort,
-                                                String proxyUsername, String proxyPassword, int waitTimeForResponseInMilliSeconds) throws Exception {
+                                                String proxyUsername, String proxyPassword, int waitTimeForResponseInMilliSeconds) throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException, KeyManagementException {
 
         SSLContextBuilder sslContextBuilder = SSLContextBuilder.create();
 
@@ -68,7 +73,7 @@ public class RestClientHelper {
         }
 
         HttpClientBuilder clientBuilder = HttpClients.custom()
-                .setSslcontext(sslContextBuilder.build());
+                .setSSLContext(sslContextBuilder.build());
 
         if (StringUtils.hasText(proxyLocation)) {
             clientBuilder.setProxy(new HttpHost(proxyLocation, proxyPort == null ? 3128 : proxyPort));
