@@ -61,7 +61,7 @@ public class Test04 extends Test {
                                 .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
                         return map;
                     }).flatMap(map -> map.entrySet().stream())
-                    .collect(Collectors.toMap(entry -> entry.getKey(), entry-> entry.getValue()));
+                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue()));
 
 
             // 2, decrypt file => map<countingCircle, map<ElectionId, map<listId, count>>>
@@ -75,33 +75,25 @@ public class Test04 extends Test {
                                 .map(e -> {
                                     String electionId = e.getElectionIdentification();
                                     Map<String, Long> listIdCountMap = new HashMap<>();
-                                    e.getBallot().forEach( ballot -> {
-                                        if( mapListIsEmpty.get(ballot.getChosenListIdentification())){
-                                            ballot.getChosenCandidateListIdentification().forEach( lcId -> {
-                                                String listId = mapLcIdListId.get(lcId);
-                                                if(!mapListIsEmpty.get(listId)){
-                                                    if(listIdCountMap.get(listId) == null){
-                                                        listIdCountMap.put(listId, Long.valueOf(1));
-                                                    }else{
-                                                        listIdCountMap.put(listId, listIdCountMap.get(listId) + Long.valueOf(1));
-                                                    }
+                                    e.getBallot().forEach(ballot -> {
+                                        // empty list
+                                        if (mapListIsEmpty.get(ballot.getChosenListIdentification())) {
+                                            ballot.getChosenCandidateListIdentification().forEach(lcId -> {
+                                                String candidateListId = mapLcIdListId.get(lcId);
+                                                if (!mapListIsEmpty.get(candidateListId)) {
+                                                    incrementListVote(listIdCountMap, candidateListId);
                                                 }
                                             });
                                         } else {
-                                            ballot.getChosenCandidateListIdentification().forEach( lcId -> {
-                                                String listId = mapLcIdListId.get(lcId);
-                                                if(!mapListIsEmpty.get(listId)){
-                                                    if(listIdCountMap.get(listId) == null){
-                                                        listIdCountMap.put(listId, Long.valueOf(1));
-                                                    }else{
-                                                        listIdCountMap.put(listId, listIdCountMap.get(listId) + Long.valueOf(1));
-                                                    }
+                                            // normal list
+                                            ballot.getChosenCandidateListIdentification().forEach(lcId -> {
+                                                String candidateListId = mapLcIdListId.get(lcId);
+                                                if (!mapListIsEmpty.get(candidateListId)) {
+                                                    //real candidate
+                                                    incrementListVote(listIdCountMap, candidateListId);
                                                 } else {
-                                                    if(listIdCountMap.get(listId) == null){
-                                                        listIdCountMap.put(listId, Long.valueOf(1));
-                                                    }else{
-                                                        listIdCountMap.put(listId, listIdCountMap.get(listId) + Long.valueOf(1));
-                                                    }
+                                                    //empty candidate
+                                                    incrementListVote(listIdCountMap, ballot.getChosenListIdentification());
                                                 }
                                             });
                                         }
@@ -121,17 +113,15 @@ public class Test04 extends Test {
                                 .map(e -> {
                                     String electionId = e.getElectionIdentification();
                                     Map<String, Long> listIdCountMap = new HashMap<>();
-                                    e.getBallot().forEach( ballot -> {
-                                        if( !mapListIsEmpty.get(ballot.getChosenListIdentification())){
-                                            ballot.getChosenCandidateListIdentification().forEach( lcId -> {
+                                    e.getBallot().forEach(ballot -> {
+                                        if (!mapListIsEmpty.get(ballot.getChosenListIdentification())) {
+                                            //normal list
+                                            ballot.getChosenCandidateListIdentification().forEach(lcId -> {
                                                 String choosenList = ballot.getChosenListIdentification();
-                                                String listId = mapLcIdListId.get(lcId);
-                                                if(mapListIsEmpty.get(listId)){
-                                                    if(listIdCountMap.get(choosenList) == null){
-                                                        listIdCountMap.put(choosenList, Long.valueOf(1));
-                                                    }else{
-                                                        listIdCountMap.put(choosenList, listIdCountMap.get(choosenList) + Long.valueOf(1));
-                                                    }
+                                                String candidateListId = mapLcIdListId.get(lcId);
+                                                if (mapListIsEmpty.get(candidateListId)) {
+                                                    //empty candidate
+                                                    incrementListVote(listIdCountMap, choosenList);
                                                 }
                                             });
                                         }
@@ -149,17 +139,16 @@ public class Test04 extends Test {
                 cc.getElectionResults().stream()
                         .filter(er -> er.getProportionalElection() != null)
                         .forEach(er -> {
-                            BigInteger electionType = er.getElection().getTypeOfElection();
                             String electionId = er.getElection().getElectionIdentification();
                             er.getProportionalElection().getList().stream()
                                     .forEach(l -> {
                                         String listId = l.getListInformation().getListIdentification();
-                                        BigInteger countOfCandidatesVotes = getCountOfCandidatesVotes(l);
-                                        BigInteger lcpCount = getCount(countByListId, ccId, electionId, listId);
-                                        BigInteger countOfAdditionnalVotes = getCountOfAdditionnalVotes(l);
-                                        BigInteger emptyCount = getCount(countOfEmptyValuesByListId, ccId, electionId, listId);
-                                        if (!countOfCandidatesVotes.equals(lcpCount) || !countOfAdditionnalVotes.equals(emptyCount) ) {
-                                            log.debug(String.format("count not equal : CC:%s electionId:%s list:%s decrypt:%s 110:%s", ccId, electionId, listId, lcpCount, countOfCandidatesVotes));
+                                        BigInteger countOfPartyVotes = getCountOfPartyVotes(l);
+                                        BigInteger lcpCount = getVoteCount(countByListId, ccId, electionId, listId);
+                                        BigInteger countOfAdditionalVotes = getCountOfAdditionalVotes(l);
+                                        BigInteger emptyCount = getVoteCount(countOfEmptyValuesByListId, ccId, electionId, listId);
+                                        if (!countOfPartyVotes.equals(lcpCount) || !countOfAdditionalVotes.equals(emptyCount)) {
+                                            log.debug(String.format("count not equal : CC:%s electionId:%s list:%s decrypt:%s 110:%s", ccId, electionId, listId, lcpCount, countOfPartyVotes));
                                             throw new TestFailureException(ccId, listId);
                                         }
                                     });
@@ -171,8 +160,7 @@ public class Test04 extends Test {
             if (e instanceof TestFailureException) {
                 TestFailureException ex = ((TestFailureException) e);
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test04.nok.message", ex.getArgs()));
-            }
-            else if (e instanceof FileNotFoundException) {
+            } else if (e instanceof FileNotFoundException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test04.file.not.found.message"));
             } else {
                 log.error("Unexpected error", e);
@@ -180,25 +168,27 @@ public class Test04 extends Test {
             }
         }
         return result;
+
     }
 
-    private BigInteger getCountOfCandidatesVotes(ListResultsType l) {
-        BigInteger count = BigInteger.ZERO;
-        if (l.getCountOfCandidateVotes() != null) {
-            count = count.add(l.getCountOfCandidateVotes().getTotal());
+    private BigInteger getCountOfPartyVotes(ListResultsType l) {
+        if (l.getCountOfPartyVotes() != null) {
+            return l.getCountOfPartyVotes().getTotal();
+        } else {
+            return BigInteger.ZERO;
         }
-        return count;
     }
 
-    private BigInteger getCountOfAdditionnalVotes(ListResultsType l) {
-        BigInteger count = BigInteger.ZERO;
+    private BigInteger getCountOfAdditionalVotes(ListResultsType l) {
         if (l.getCountOfCandidateVotes() != null) {
-            count = count.add(l.getCountOfAdditionalVotes().getTotal());
+            return l.getCountOfAdditionalVotes().getTotal();
+        } else {
+            return BigInteger.ZERO;
         }
-        return count;
     }
 
-    private BigInteger getCount(Map<String, Map<String, Map<String, Long>>> resultMap, String ccId, String electionId, String listId) {
+
+    private BigInteger getVoteCount(Map<String, Map<String, Map<String, Long>>> resultMap, String ccId, String electionId, String listId) {
         Map<String, Map<String, Long>> countByCC = resultMap.get(ccId);
         if (countByCC == null) {
             throw new IllegalArgumentException("cannot find the decrypt data for given countingCircle : " + ccId);
@@ -207,10 +197,12 @@ public class Test04 extends Test {
         if (countByElection == null) {
             throw new IllegalArgumentException("cannot find the decrypt data for given election : " + electionId);
         }
-        BigInteger result = BigInteger.ZERO;
-        Long count = countByElection.get(listId) == null ? 0L : countByElection.get(listId) ;
-        result = result.add(BigInteger.valueOf(count));
-        return result;
+        return BigInteger.valueOf(countByElection.get(listId) == null ? 0L : countByElection.get(listId));
+    }
+
+    private void incrementListVote(Map<String, Long> map, String listId) {
+        map.putIfAbsent(listId, 0L);
+        map.compute(listId, (key, oldValue) -> oldValue + 1);
     }
 
 }
