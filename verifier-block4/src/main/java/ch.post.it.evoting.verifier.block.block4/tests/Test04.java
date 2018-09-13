@@ -52,17 +52,6 @@ public class Test04 extends Test {
                     .map(l -> new AbstractMap.SimpleEntry<>(l.getListIdentification(), l.isListEmpty()))
                     .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
-            Map<String, Boolean> mapLcIdIsEmpty = configuration.getContest().getElectionInformation().stream()
-                    .flatMap(ei -> ei.getList().stream())
-                    .map(l -> {
-                        String listIden = l.getListIdentification();
-                        Map<String, Boolean> map = l.getCandidatePosition().stream()
-                            .map(cp -> new AbstractMap.SimpleEntry<>(cp.getCandidateListIdentification(), mapListIsEmpty.get(listIden)))
-                            .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
-                        return map;
-                    }).flatMap(map -> map.entrySet().stream())
-                    .collect(Collectors.toMap(entry -> entry.getKey(), entry-> entry.getValue()));
-
             Map<String, String> mapLcIdListId = configuration.getContest().getElectionInformation().stream()
                     .flatMap(ei -> ei.getList().stream())
                     .map(l -> {
@@ -87,13 +76,9 @@ public class Test04 extends Test {
                                     String electionId = e.getElectionIdentification();
                                     Map<String, Long> listIdCountMap = new HashMap<>();
                                     e.getBallot().forEach( ballot -> {
-                                        // Pour chaque vote on compte le nb de votes pour une liste
-                                        // A soit il a voté pour une liste vide
                                         if( mapListIsEmpty.get(ballot.getChosenListIdentification())){
                                             ballot.getChosenCandidateListIdentification().forEach( lcId -> {
-                                                // a quelle liste appartient le candidat ?
                                                 String listId = mapLcIdListId.get(lcId);
-                                                // on a a faire a une liste normale alors on compte
                                                 if(!mapListIsEmpty.get(listId)){
                                                     if(listIdCountMap.get(listId) == null){
                                                         listIdCountMap.put(listId, Long.valueOf(1));
@@ -103,11 +88,8 @@ public class Test04 extends Test {
                                                 }
                                             });
                                         } else {
-                                        // B soit il a voté pour une liste normale
                                             ballot.getChosenCandidateListIdentification().forEach( lcId -> {
-                                                // a quelle liste appartient le candidat ?
                                                 String listId = mapLcIdListId.get(lcId);
-                                                // on a a faire a une liste normale alors on compte
                                                 if(!mapListIsEmpty.get(listId)){
                                                     if(listIdCountMap.get(listId) == null){
                                                         listIdCountMap.put(listId, Long.valueOf(1));
@@ -140,17 +122,10 @@ public class Test04 extends Test {
                                     String electionId = e.getElectionIdentification();
                                     Map<String, Long> listIdCountMap = new HashMap<>();
                                     e.getBallot().forEach( ballot -> {
-                                        // Pour chaque vote on compte le nb de votes pour une liste
-                                        // A soit il a voté pour une liste vide
-                                        if( mapListIsEmpty.get(ballot.getChosenListIdentification())){
-
-                                        } else {
-                                            // B soit il a voté pour une liste normale
+                                        if( !mapListIsEmpty.get(ballot.getChosenListIdentification())){
                                             ballot.getChosenCandidateListIdentification().forEach( lcId -> {
                                                 String choosenList = ballot.getChosenListIdentification();
-                                                // a quelle liste appartient le candidat ?
                                                 String listId = mapLcIdListId.get(lcId);
-                                                // on a a faire a une liste vide on compte
                                                 if(mapListIsEmpty.get(listId)){
                                                     if(listIdCountMap.get(choosenList) == null){
                                                         listIdCountMap.put(choosenList, Long.valueOf(1));
@@ -205,7 +180,6 @@ public class Test04 extends Test {
             }
         }
         return result;
-
     }
 
     private BigInteger getCountOfCandidatesVotes(ListResultsType l) {
@@ -223,7 +197,6 @@ public class Test04 extends Test {
         }
         return count;
     }
-
 
     private BigInteger getCount(Map<String, Map<String, Map<String, Long>>> resultMap, String ccId, String electionId, String listId) {
         Map<String, Map<String, Long>> countByCC = resultMap.get(ccId);
