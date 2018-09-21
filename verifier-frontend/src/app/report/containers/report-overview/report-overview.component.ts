@@ -49,6 +49,10 @@ export class ReportOverviewComponent implements OnInit {
     });
   }
 
+  generatePDF(): void {
+    this.processorService.generatePDF().subscribe();
+  }
+
   static convert(input: any): TestDefinition {
     let result = new TestDefinition();
     result.id = input.id;

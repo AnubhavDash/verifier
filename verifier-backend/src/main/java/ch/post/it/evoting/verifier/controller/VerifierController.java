@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -67,6 +68,16 @@ public class VerifierController {
     public void reset() {
         this.processor.resetExecution();
         this.initializeExecutionStatus();
+    }
+
+    @RequestMapping(value = "/pdf", method = RequestMethod.POST)
+    public void generatePdf() {
+        List<Test> testsStatus = this.processor.getTestStatus();
+        try {
+            this.processor.generatePdf(testsStatus);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @GetMapping("/status")
