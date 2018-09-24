@@ -8,25 +8,21 @@
 
 package ch.post.it.evoting.verifier.report;
 
-import ch.post.it.evoting.verifier.report.dto.TestDto;
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 
 import java.io.File;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
  * Class ReportGenerator.
  * This represents TODO.
  *
- * @author Lalandret
+ * @author lalandret
  * @version $$Revision$$
  */
 public class ReportGenerator {

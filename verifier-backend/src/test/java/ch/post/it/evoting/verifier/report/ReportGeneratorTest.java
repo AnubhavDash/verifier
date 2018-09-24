@@ -8,19 +8,19 @@
 
 package ch.post.it.evoting.verifier.report;
 
-
-import ch.post.it.evoting.verifier.common.Language;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.*;
+
 /**
  * Class ReportGeneratorTest.
  * This represents TODO.
  *
- * @author Lalandret
+ * @author lalandret
  * @version $$Revision$$
  */
 public class ReportGeneratorTest {

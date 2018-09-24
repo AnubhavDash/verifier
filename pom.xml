@@ -31,7 +31,6 @@
         <module>verifier-frontend</module>
         <module>verifier-console</module>
         <module>verifier-block3</module>
-        <module>verifier-report</module>
     </modules>
 
 
