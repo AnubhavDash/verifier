@@ -37,12 +37,13 @@ public class ReportGenerator {
             InputStream report = getClass().getResourceAsStream("/jasper/Vreport-test.jasper");
 
             // URL url = (ReportGenerator.class).newInstance().getClass().getResource("/jasper/Vreport-test.jrxml");
-           // File jrxml = new File(getClass().getResource("/jasper/Vreport-test.jrxml").getFile());
-            // JasperReport jasperReport = JasperCompileManager.compileReport(jrxml.getName());
+            //File jrxml = new File(getClass().getResource("/jasper/Vreport-test.jrxml").getFile());
+            //JasperReport jasperReport = JasperCompileManager.compileReport(jrxml.getName());
 
             Map<String, Object> parameters = content == null ? new HashMap<String, Object>() : content;
 
-            JasperPrint jasperPrint = JasperFillManager.fillReport("/jasper/Vreport-test.jasper", parameters);
+            // JasperPrint jasperPrint = JasperFillManager.fillReport("resources/jasper/Vreport-test.jasper", parameters);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters);
 
             // Make sure the output directory exists.
             File outDir = new File("C:/jasperoutput");

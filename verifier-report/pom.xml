@@ -45,11 +45,6 @@
             <artifactId>itext</artifactId>
             <version>2.1.7</version>
         </dependency>
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.2</version>
-        </dependency>
     </dependencies>
 
 
