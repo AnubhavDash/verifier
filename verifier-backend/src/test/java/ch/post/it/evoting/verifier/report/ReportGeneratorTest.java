@@ -8,11 +8,17 @@
 
 package ch.post.it.evoting.verifier.report;
 
+import ch.post.it.evoting.verifier.common.Language;
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.dto.Block;
+import ch.post.it.evoting.verifier.dto.Document;
+import ch.post.it.evoting.verifier.dto.Report;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
@@ -25,19 +31,49 @@ import static org.junit.Assert.*;
  */
 public class ReportGeneratorTest {
 
+    private Document result;
+
+    @Before
+    public void init(){
+        // provide some data
+        Document result = new Document();
+        Report report = new Report();
+        report.setTitre("Resultat du controle");
+        report.setCanton("Canton de Neuchatel");
+        report.setDate(new Date());
+
+        List<Block> blocks = new ArrayList<>();
+        for (int i = 1; i < 3; i++) {
+            Block block = new Block();
+            block.setTitre("Block " + i);
+            block.setDescription("Description du Block " + i);
+            List tests = new ArrayList();
+            for (int j = 1; j < 11; j++) {
+                ch.post.it.evoting.verifier.dto.Test test = new ch.post.it.evoting.verifier.dto.Test();
+                test.setBlockId(i);
+                test.setId(i + "-" + j);
+                test.setTestId(j);
+                Map<Language,String> desc = new HashMap<>();
+                desc.put(Language.FR, "description du test " + j);
+                desc.put(Language.DE, "beschreibung des tests " + j);
+                test.setDescription(desc);
+                test.setStatus(Status.OK);
+                tests.add(test);
+            }
+            block.setTests(tests);
+            blocks.add(block);
+        }
+        report.setBlocksResults(blocks);
+        result.setReport(report);
+        this.result = result;
+    }
+
     @Ignore
     @Test
-    public void generatePDFTestEntityTest() {
-        Map<String, Object> content = new HashMap<>();
-        content.put("testId", "1");
-        content.put("name", "isprime(p)");
-        content.put("category", "Complitness");
-        content.put("descDE", "description en allemand");
-        content.put("descFR", "description en français");
-        content.put("message", "OK");
-        content.put("status", "OK");
-
+    public void generatePDF() {
         ReportGenerator reportGenerator = new ReportGenerator();
+        Map<String, Object> content = new HashMap<>();
+        content.put("contentDataSet", this.result);
         reportGenerator.generate(content);
     }
 }

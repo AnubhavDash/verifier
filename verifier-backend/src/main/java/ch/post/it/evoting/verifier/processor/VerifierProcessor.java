@@ -120,131 +120,16 @@ public class VerifierProcessor {
     }
 
     public void generatePdf(List<Test> testsStatus) throws IOException {
-        //TODO move the code below in test
-        testsStatus.forEach(t -> {
-            log.info("test status => " + t.toString());
-        });
-        ResultDTO result = new ResultDTO();
-        ReportDTO report = new ReportDTO();
-        report.setTitre("Resultat du controle");
-        report.setCanton("Canton de Neuchatel");
-        report.setDate(new Date());
-
-        HashMap<Integer, BlockDTO> blocksMap = new HashMap<Integer, BlockDTO>();
-        testsStatus.forEach(t -> {
-            int blockId = t.getBlockId();
-            blocksMap.putIfAbsent(blockId, new BlockDTO());
-            BlockDTO blockDTO = blocksMap.get(blockId);
-            blockDTO.setTitre("Block " + blockId);
-            blockDTO.setDewscription("Description du block " +  blockId);
-            List<Test> tests = blockDTO.getTests();
-            tests.add(t);
-        });
-        List<BlockDTO> blockDTOList = blocksMap.values().stream().collect(Collectors.toList());
-        report.setBlocksResults(blockDTOList);
-        result.setReport(report);
-
-        BlockDTO block = blockDTOList.get(0);
-        Test test = block.getTests().get(0);
+        //map List<Test> to a Document Object
         Map<String, Object> content = new HashMap<>();
-        content.put("testId", test.getId());
-        content.put("name", test.getName());
-        content.put("category", test.getCategory().toString());
-        content.put("descDE", test.getDescription().get(Language.DE));
-        content.put("descFR", test.getDescription().get(Language.FR));
-        content.put("message", "OK");
-        content.put("status", test.getStatus().toString());
 
+
+        //Generate PDF with the Document Object
         ReportGenerator reportGenerator = new ReportGenerator();
         reportGenerator.generate(content);
 
-        Deserializer.toJson(result, new File(configurationOutputDirectory + File.separator + jsonReportName));
+        //Deserializer.toJson(result, new File(configurationOutputDirectory + File.separator + jsonReportName));
     }
 
-    public class ResultDTO{
-        private ReportDTO report;
-
-        public ReportDTO getReport() {
-            return report;
-        }
-
-        public void setReport(ReportDTO report) {
-            this.report = report;
-
-        }
-    }
-
-    public class ReportDTO{
-        private String titre;
-        private String canton;
-        private Date date;
-        private List<BlockDTO> blocksResults;
-
-        public String getTitre() {
-            return titre;
-        }
-
-        public void setTitre(String titre) {
-            this.titre = titre;
-        }
-
-        public String getCanton() {
-            return canton;
-        }
-
-        public void setCanton(String canton) {
-            this.canton = canton;
-        }
-
-        public Date getDate() {
-            return date;
-        }
-
-        public void setDate(Date date) {
-            this.date = date;
-        }
-
-        public List<BlockDTO> getBlocksResults() {
-            return blocksResults;
-        }
-
-        public void setBlocksResults(List<BlockDTO> blocksResults) {
-            this.blocksResults = blocksResults;
-        }
-    }
-
-    public class BlockDTO{
-        private String titre;
-        private String dewscription;
-        private List<Test> tests;
-
-        public BlockDTO() {
-            setTests(new ArrayList<>());
-        }
-
-        public String getTitre() {
-            return titre;
-        }
-
-        public void setTitre(String titre) {
-            this.titre = titre;
-        }
-
-        public String getDewscription() {
-            return dewscription;
-        }
-
-        public void setDewscription(String dewscription) {
-            this.dewscription = dewscription;
-        }
-
-        public List<Test> getTests() {
-            return tests;
-        }
-
-        public void setTests(List<Test> tests) {
-            this.tests = tests;
-        }
-    }
 
 }
