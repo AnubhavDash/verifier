@@ -33,9 +33,10 @@ public class ReportGeneratorTest {
     public void init(){
         // provide some data
         Report report = new Report();
-        report.setTitre("Resultat du controle");
-        report.setCanton("Canton de Neuchatel");
-        report.setDate(new Date());
+        report.setTitle("Verifikationsbericht");
+        report.setUrn("Nationalratswahl 23.10.2019");
+        report.setReportDate("23.10.2019");
+        report.setReportTime("11:12:30");
 
         List<Block> blocks = new ArrayList<>();
         for (int i = 1; i < 3; i++) {
@@ -66,8 +67,6 @@ public class ReportGeneratorTest {
     @Test
     public void generatePDF() {
         ReportGenerator reportGenerator = new ReportGenerator();
-        Map<String, Object> content = new HashMap<>();
-        content.put("reportDataSet", this.report);
-        reportGenerator.generate(content);
+        reportGenerator.generate(this.report);
     }
 }

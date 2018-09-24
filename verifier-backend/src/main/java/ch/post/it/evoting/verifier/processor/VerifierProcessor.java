@@ -126,7 +126,7 @@ public class VerifierProcessor {
 
         //Generate PDF with the Document Object
         ReportGenerator reportGenerator = new ReportGenerator();
-        reportGenerator.generate(content);
+       // reportGenerator.generate(content);
 
         //Deserializer.toJson(result, new File(configurationOutputDirectory + File.separator + jsonReportName));
     }

@@ -8,14 +8,17 @@
 
 package ch.post.it.evoting.verifier.report;
 
+import ch.post.it.evoting.verifier.dto.Report;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
-import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,16 +30,17 @@ import java.util.Map;
  */
 public class ReportGenerator {
 
-    public void generate(Map<String, Object> content) {
+    public void generate(Report content) {
 
         try {
             //safe content
-            Map<String, Object> parameters = content == null ? new HashMap<String, Object>() : content;
+            Map<String, Object> parameters = new HashMap<String, Object>();
 
-            InputStream report = getClass().getResourceAsStream("/jasper/Vreport-test.jasper");
-
-            // JasperPrint jasperPrint = JasperFillManager.fillReport("resources/jasper/Vreport-test.jasper", parameters);
-            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters);
+            List<Report> list = new ArrayList<Report>();
+            list.add(content);
+            JRBeanCollectionDataSource jrDataSource = new JRBeanCollectionDataSource(list);
+            InputStream report = this.getClass().getClassLoader().getResourceAsStream("jasper/Vreport.jasper");
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, jrDataSource);
 
             // Export to PDF.
             JasperExportManager.exportReportToPdfFile(jasperPrint, "verifier-backend/target/verifier-result.pdf");

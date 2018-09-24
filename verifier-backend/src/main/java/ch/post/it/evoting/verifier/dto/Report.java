@@ -18,9 +18,10 @@ import java.util.List;
 @Getter
 @Setter
 public class Report {
-    private String titre;
-    private String canton;
-    private Date date;
+    private String title;
+    private String urn;
+    private String reportDate;
+    private String reportTime;
     private List<Block> blocksResults;
 
 }
