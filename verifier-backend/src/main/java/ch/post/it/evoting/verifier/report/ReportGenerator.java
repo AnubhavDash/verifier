@@ -38,12 +38,8 @@ public class ReportGenerator {
             // JasperPrint jasperPrint = JasperFillManager.fillReport("resources/jasper/Vreport-test.jasper", parameters);
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters);
 
-            // Make sure the output directory exists.
-            File outDir = new File("C:/jasperoutput");
-            outDir.mkdirs();
-
             // Export to PDF.
-            JasperExportManager.exportReportToPdfFile(jasperPrint, "C:/jasperoutput/StyledTextReport.pdf");
+            JasperExportManager.exportReportToPdfFile(jasperPrint, "verifier-backend/target/verifier-result.pdf");
 
             System.out.println("Done!");
         } catch (JRException e) {
