@@ -27,16 +27,13 @@ import java.util.Map;
  */
 public class ReportGenerator {
 
-    public void generate(Map<String, Object> content){
+    public void generate(Map<String, Object> content) {
 
         try {
-            InputStream report = getClass().getResourceAsStream("/jasper/Vreport-test.jasper");
-
-            // URL url = (ReportGenerator.class).newInstance().getClass().getResource("/jasper/Vreport-test.jrxml");
-            //File jrxml = new File(getClass().getResource("/jasper/Vreport-test.jrxml").getFile());
-            //JasperReport jasperReport = JasperCompileManager.compileReport(jrxml.getName());
-
+            //safe content
             Map<String, Object> parameters = content == null ? new HashMap<String, Object>() : content;
+
+            InputStream report = getClass().getResourceAsStream("/jasper/Vreport-test.jasper");
 
             // JasperPrint jasperPrint = JasperFillManager.fillReport("resources/jasper/Vreport-test.jasper", parameters);
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters);
@@ -46,7 +43,7 @@ public class ReportGenerator {
             outDir.mkdirs();
 
             // Export to PDF.
-            JasperExportManager.exportReportToPdfFile(jasperPrint,"C:/jasperoutput/StyledTextReport.pdf");
+            JasperExportManager.exportReportToPdfFile(jasperPrint, "C:/jasperoutput/StyledTextReport.pdf");
 
             System.out.println("Done!");
         } catch (JRException e) {

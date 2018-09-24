@@ -11,16 +11,12 @@ package ch.post.it.evoting.verifier.report;
 import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.dto.Block;
-import ch.post.it.evoting.verifier.dto.Document;
 import ch.post.it.evoting.verifier.dto.Report;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static org.junit.Assert.*;
 
 /**
  * Class ReportGeneratorTest.
@@ -31,12 +27,11 @@ import static org.junit.Assert.*;
  */
 public class ReportGeneratorTest {
 
-    private Document result;
+    private Report report;
 
     @Before
     public void init(){
         // provide some data
-        Document result = new Document();
         Report report = new Report();
         report.setTitre("Resultat du controle");
         report.setCanton("Canton de Neuchatel");
@@ -64,8 +59,7 @@ public class ReportGeneratorTest {
             blocks.add(block);
         }
         report.setBlocksResults(blocks);
-        result.setReport(report);
-        this.result = result;
+        this.report = report;
     }
 
     @Ignore
@@ -73,7 +67,7 @@ public class ReportGeneratorTest {
     public void generatePDF() {
         ReportGenerator reportGenerator = new ReportGenerator();
         Map<String, Object> content = new HashMap<>();
-        content.put("contentDataSet", this.result);
+        content.put("reportDataSet", this.report);
         reportGenerator.generate(content);
     }
 }
