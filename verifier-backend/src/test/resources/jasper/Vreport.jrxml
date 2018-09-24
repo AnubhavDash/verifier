@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Vreport" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="7e8e7c97-ce16-4b95-82e4-8ff552777980">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<subDataset name="DatasetBlocks" uuid="63c788b4-e8d7-42d7-86f1-2ed6c31d982f">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+		<queryString language="json">
+			<![CDATA[blocksResults]]>
+		</queryString>
+		<field name="titre" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="titre"/>
+			<fieldDescription><![CDATA[titre]]></fieldDescription>
+		</field>
+		<field name="description" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="description"/>
+			<fieldDescription><![CDATA[description]]></fieldDescription>
+		</field>
+		<field name="testsResults" class="java.util.List">
+			<property name="net.sf.jasperreports.json.field.expression" value="tests"/>
+			<fieldDescription><![CDATA[tests]]></fieldDescription>
+		</field>
+	</subDataset>
+	<subDataset name="DatasetTests" uuid="9af13cc2-dbf7-4cf0-a41d-48a391e46ade">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+		<queryString language="json">
+			<![CDATA[blocksResults.tests]]>
+		</queryString>
+		<field name="id" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="id"/>
+			<fieldDescription><![CDATA[id]]></fieldDescription>
+		</field>
+		<field name="name" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="name"/>
+			<fieldDescription><![CDATA[name]]></fieldDescription>
+		</field>
+		<field name="category" class="java.lang.String"/>
+		<field name="description" class="java.lang.String"/>
+		<field name="status" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="DatasetTitreListTests" uuid="f050c98c-b477-47a1-8ecd-f8f57a367f44">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+	</subDataset>
+	<queryString language="JSON">
+		<![CDATA[]]>
+	</queryString>
+	<field name="title" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="title"/>
+		<fieldDescription><![CDATA[title]]></fieldDescription>
+	</field>
+	<field name="urnLabel" class="java.lang.String"/>
+	<field name="urn" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="urn"/>
+		<fieldDescription><![CDATA[urn]]></fieldDescription>
+	</field>
+	<field name="reportDateLabel" class="java.lang.String"/>
+	<field name="reportDate" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="reportDate"/>
+		<fieldDescription><![CDATA[reportDate]]></fieldDescription>
+	</field>
+	<field name="ReportTimeLabel" class="java.lang.String"/>
+	<field name="reportTime" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="reportTime"/>
+		<fieldDescription><![CDATA[reportTime]]></fieldDescription>
+	</field>
+	<field name="blocksResults" class="java.util.List">
+		<fieldDescription><![CDATA[blocksResults]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="104" splitType="Stretch">
+			<textField>
+				<reportElement x="177" y="0" width="212" height="30" uuid="e805f0b4-8323-4c9b-9d58-4c8bce126a4d"/>
+				<textElement>
+					<font size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="30" y="32" width="78" height="16" uuid="19d815a7-ecf3-4903-bf28-8678404fe95f"/>
+				<textFieldExpression><![CDATA[$F{urnLabel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="30" y="45" width="100" height="16" uuid="51491217-6fe2-4bd3-a7bf-f5dde231cc77"/>
+				<textFieldExpression><![CDATA[$F{reportDateLabel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="30" y="59" width="100" height="17" uuid="419b04f3-b973-4bd4-b5f3-0128bc796841"/>
+				<textFieldExpression><![CDATA[$F{ReportTimeLabel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="128" y="31" width="100" height="18" uuid="255d57ab-8427-4bc4-9f58-66ed73725775"/>
+				<textFieldExpression><![CDATA[$F{urn}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="129" y="46" width="100" height="16" uuid="00e8f48c-fae0-4ab3-8ab1-94e69e3dda5e"/>
+				<textFieldExpression><![CDATA[$F{reportDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="129" y="59" width="100" height="19" uuid="1e14c65a-2d68-455d-9e95-0a674f33dd33"/>
+				<textFieldExpression><![CDATA[$F{reportTime}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="34" splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="243" splitType="Stretch">
+			<componentElement>
+				<reportElement x="0" y="40" width="555" height="120" uuid="46592e2d-98fc-4dfd-85b9-9e414bad4170"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="DatasetBlocks" uuid="40a1cfeb-55e8-4f44-999a-f1c6ec34b9cc">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{blocksResults})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="120" width="555">
+						<textField>
+							<reportElement x="20" y="0" width="50" height="30" uuid="f03dcd33-e0c2-41ba-9b22-dd9ddddfa569"/>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{titre}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="79" y="0" width="410" height="30" uuid="6fb78c71-adda-4dc5-9ee6-e6749133ce51"/>
+							<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+						</textField>
+						<componentElement>
+							<reportElement x="29" y="68" width="510" height="30" uuid="1d4c973b-1e07-4ef6-ae2a-5363f2ae3b7e"/>
+							<jr:list printOrder="Vertical">
+								<datasetRun subDataset="DatasetTests" uuid="87a23e40-2ac0-4ddf-9898-adea718230b4">
+									<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{testsResults})]]></dataSourceExpression>
+								</datasetRun>
+								<jr:listContents height="30" width="510">
+									<textField>
+										<reportElement x="0" y="0" width="50" height="30" uuid="a30bb6ab-b261-4b41-8f87-b24e0cdb92ae"/>
+										<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement x="50" y="0" width="90" height="30" uuid="402b4c5c-43e3-4ec6-81c6-ddfd8d62bf13"/>
+										<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement x="140" y="0" width="100" height="30" uuid="02c1cc17-abcc-49e5-a96f-203b8f8d04aa"/>
+										<textFieldExpression><![CDATA[$F{category}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement x="240" y="0" width="100" height="30" uuid="9f8d1fbf-a907-4768-9571-f2183d299f0e"/>
+										<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement x="340" y="0" width="90" height="30" uuid="de8400d1-cb0d-4324-905e-7c3d7fdb65b3"/>
+										<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+									</textField>
+								</jr:listContents>
+							</jr:list>
+						</componentElement>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

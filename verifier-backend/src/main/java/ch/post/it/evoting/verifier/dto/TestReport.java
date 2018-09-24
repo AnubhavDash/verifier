@@ -8,23 +8,17 @@
 
 package ch.post.it.evoting.verifier.dto;
 
-import ch.post.it.evoting.verifier.processor.VerifierProcessor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
-import java.util.List;
-
 @Getter
 @Setter
-public class Report {
-    private String title;
-    private String urnLabel;
-    private String urn;
-    private String reportDateLabel;
-    private String reportDate;
-    private String reportTimeLabel;
-    private String reportTime;
-    private List<Block> blocksResults;
+public class TestReport {
+    private String id;
+    private String name;
+    private String category;
+    private String description;
+    private String status;
+    private String message;
 
 }
