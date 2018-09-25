@@ -8,17 +8,17 @@
 
 package ch.post.it.evoting.verifier.report;
 
-import ch.post.it.evoting.verifier.dto.Report;
+import ch.post.it.evoting.verifier.report.pojo.Report;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.apache.log4j.Logger;
 
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,24 +30,24 @@ import java.util.Map;
  */
 public class ReportGenerator {
 
-    public void generate(Report content) {
+    private static final Logger LOGGER = Logger.getLogger(ReportGenerator.class);
+
+    public byte[] generate(Report content) {
 
         try {
-            //safe content
-            Map<String, Object> parameters = new HashMap<String, Object>();
+            Map<String, Object> parameters = new HashMap<>();
 
-            List<Report> list = new ArrayList<Report>();
-            list.add(content);
-            JRBeanCollectionDataSource jrDataSource = new JRBeanCollectionDataSource(list);
+            JRBeanCollectionDataSource jrDataSource = new JRBeanCollectionDataSource(Collections.singletonList(content));
+
             InputStream report = this.getClass().getClassLoader().getResourceAsStream("jasper/Vreport.jasper");
+
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, jrDataSource);
 
-            // Export to PDF.
-            JasperExportManager.exportReportToPdfFile(jasperPrint, "verifier-backend/target/verifier-result.pdf");
+            return JasperExportManager.exportReportToPdf(jasperPrint);
 
-            System.out.println("Done!");
         } catch (JRException e) {
-            e.printStackTrace();
+            LOGGER.error("unable to generate the PDF report", e);
+            throw new RuntimeException(e);
         }
     }
 

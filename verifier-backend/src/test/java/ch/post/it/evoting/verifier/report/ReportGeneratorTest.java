@@ -1,11 +1,3 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.report;
 
 import ch.post.it.evoting.verifier.dto.Block;
@@ -31,7 +23,7 @@ public class ReportGeneratorTest {
     private Report report;
 
     @Before
-    public void init() throws IOException {
+    public void init() {
         // provide some data
         Report report = new Report();
         report.setTitle("Verifikationsbericht");

@@ -6,7 +6,7 @@
  * ------------------------------------------------------------------------------------------------
  */
 
-package ch.post.it.evoting.verifier.dto;
+package ch.post.it.evoting.verifier.report.pojo;
 
 import lombok.Getter;
 import lombok.Setter;
