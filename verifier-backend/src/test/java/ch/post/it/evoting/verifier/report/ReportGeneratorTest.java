@@ -2,10 +2,9 @@ package ch.post.it.evoting.verifier.report;
 
 import ch.post.it.evoting.verifier.report.pojo.Block;
 import ch.post.it.evoting.verifier.report.pojo.Report;
-import ch.post.it.evoting.verifier.report.pojo.TestReport;
+import ch.post.it.evoting.verifier.report.pojo.Test;
 import org.junit.Before;
 import org.junit.Ignore;
-import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +44,7 @@ public class ReportGeneratorTest {
             block.setTestStatusLabel("Status");
             List tests = new ArrayList();
             for (int j = 1; j < 11; j++) {
-                TestReport test = new TestReport();
+                Test test = new Test();
                 test.setId("" + j);
                 test.setName("le nom du test " + j);
                 test.setCategory("Integrity");
@@ -66,7 +65,7 @@ public class ReportGeneratorTest {
     }
 
     @Ignore
-    @Test
+    @org.junit.Test
     public void generatePDF() {
         ReportGenerator reportGenerator = new ReportGenerator();
         reportGenerator.generate(this.report);

@@ -13,7 +13,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TestReport {
+public class Test {
     private String id;
     private String name;
     private String category;

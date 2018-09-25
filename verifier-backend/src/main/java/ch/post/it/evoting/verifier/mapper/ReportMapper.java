@@ -9,11 +9,10 @@
 package ch.post.it.evoting.verifier.mapper;
 
 import ch.post.it.evoting.verifier.common.Language;
-import ch.post.it.evoting.verifier.dto.*;
 import ch.post.it.evoting.verifier.report.pojo.Block;
 import ch.post.it.evoting.verifier.report.pojo.Report;
 import ch.post.it.evoting.verifier.report.pojo.ReportMetadata;
-import ch.post.it.evoting.verifier.report.pojo.TestReport;
+import ch.post.it.evoting.verifier.report.pojo.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,13 +29,13 @@ public class ReportMapper {
     {   return INSTANCE;
     }
 
-    public Report map(List<Test> testsList, ReportMetadata metadata, Language lang) {
+    public Report map(List<ch.post.it.evoting.verifier.dto.Test> testsList, ReportMetadata metadata, Language lang) {
         Report result = new Report(metadata);
         result.setBlocksResults(getBlocksResults(testsList, lang));
         return result;
     }
 
-    public List<Block> getBlocksResults(List<Test> testsList, Language lang) {
+    public List<Block> getBlocksResults(List<ch.post.it.evoting.verifier.dto.Test> testsList, Language lang) {
         HashMap<Integer, Block> blocksMap = new HashMap<Integer, Block>();
         testsList.forEach(t -> {
             int blockId = t.getBlockId();
@@ -51,7 +50,7 @@ public class ReportMapper {
             block.setTestDescriptionLabel("Description");
             block.setTestStatusLabel("Status");
             block.setTestMessageLabel("");
-            List<TestReport> tests = block.getTests() == null ? new ArrayList<>() : block.getTests();
+            List<Test> tests = block.getTests() == null ? new ArrayList<>() : block.getTests();
             tests.add(TestReportMapper.INSTANCE.map(t, lang));
             block.setTests(tests);
         });
