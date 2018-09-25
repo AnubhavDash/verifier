@@ -4,7 +4,10 @@ import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.VerifierBlock;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.dto.Report;
+import ch.post.it.evoting.verifier.dto.ReportMetadata;
 import ch.post.it.evoting.verifier.dto.Test;
+import ch.post.it.evoting.verifier.mapper.ReportMapper;
 import ch.post.it.evoting.verifier.mapper.TestExecutionStatusMapper;
 import ch.post.it.evoting.verifier.report.ReportGenerator;
 import ch.post.it.evoting.verifier.util.TestDefinitionTools;
@@ -17,6 +20,7 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -120,15 +124,26 @@ public class VerifierProcessor {
     }
 
     public void generatePdf(List<Test> testsStatus) throws IOException {
-        //map List<Test> to a Document Object
-        Map<String, Object> content = new HashMap<>();
+        //generate met info
+        ReportMetadata infos = new ReportMetadata();
+        infos.setTitle("Verifikationsbericht");
+        infos.setUrnLabel("Urnengang");
+        infos.setUrn("Nationalratshahl 23.10.2019");
+        infos.setReportDateLabel("Datum Bericht");
+        infos.setReportTimeLabel("Zeit Bericht");
+        Date now = new Date();
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.y");
+        SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:s");
+        infos.setReportDate(dateFormatter.format(now));
+        infos.setReportTime(timeFormatter.format(now));
 
+        //map to a Report Object
+        Report content = ReportMapper.getInstance().map(testsStatus, infos, Language.FR);
 
-        //Generate PDF with the Document Object
+        //Generate PDF with the Report Object
         ReportGenerator reportGenerator = new ReportGenerator();
-       // reportGenerator.generate(content);
+        reportGenerator.generate(content);
 
-        //Deserializer.toJson(result, new File(configurationOutputDirectory + File.separator + jsonReportName));
     }
 
 

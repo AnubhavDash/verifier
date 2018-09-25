@@ -8,9 +8,6 @@
 
 package ch.post.it.evoting.verifier.report;
 
-import ch.post.it.evoting.verifier.common.Language;
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.dto.Block;
 import ch.post.it.evoting.verifier.dto.Report;
 import ch.post.it.evoting.verifier.dto.TestReport;
@@ -18,9 +15,9 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class ReportGeneratorTest.
