@@ -6,19 +6,23 @@
  * ------------------------------------------------------------------------------------------------
  */
 
-package ch.post.it.evoting.verifier.dto;
+package ch.post.it.evoting.verifier.report.pojo;
 
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
-public class TestReport {
-    private String id;
-    private String name;
-    private String category;
-    private String description;
-    private String status;
-    private String message;
+public class Report {
+    private String title;
+    private String urnLabel;
+    private String urn;
+    private String reportDateLabel;
+    private String reportDate;
+    private String reportTimeLabel;
+    private String reportTime;
+    private List<Block> blocksResults;
 
 }
