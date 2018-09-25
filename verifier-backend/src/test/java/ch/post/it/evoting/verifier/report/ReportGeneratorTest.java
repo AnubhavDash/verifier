@@ -1,13 +1,12 @@
 package ch.post.it.evoting.verifier.report;
 
-import ch.post.it.evoting.verifier.dto.Block;
-import ch.post.it.evoting.verifier.dto.Report;
-import ch.post.it.evoting.verifier.dto.TestReport;
+import ch.post.it.evoting.verifier.report.pojo.Block;
+import ch.post.it.evoting.verifier.report.pojo.Report;
+import ch.post.it.evoting.verifier.report.pojo.TestReport;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

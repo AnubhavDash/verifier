@@ -10,6 +10,10 @@ package ch.post.it.evoting.verifier.mapper;
 
 import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.dto.*;
+import ch.post.it.evoting.verifier.report.pojo.Block;
+import ch.post.it.evoting.verifier.report.pojo.Report;
+import ch.post.it.evoting.verifier.report.pojo.ReportMetadata;
+import ch.post.it.evoting.verifier.report.pojo.TestReport;
 
 import java.util.ArrayList;
 import java.util.HashMap;

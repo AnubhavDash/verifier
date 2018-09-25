@@ -10,7 +10,7 @@ package ch.post.it.evoting.verifier.mapper;
 
 import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.dto.Test;
-import ch.post.it.evoting.verifier.dto.TestReport;
+import ch.post.it.evoting.verifier.report.pojo.TestReport;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;

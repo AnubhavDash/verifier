@@ -19,7 +19,7 @@ public class Block {
 
     private String titre;
     private String description;
-    private List<Test> tests;
+    private List<TestReport> tests;
     private String testIdLabel;
     private String testNameLabel;
     private String testCategoryLabel;

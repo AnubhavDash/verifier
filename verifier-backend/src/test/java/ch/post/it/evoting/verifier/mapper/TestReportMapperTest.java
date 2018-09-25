@@ -11,7 +11,7 @@ package ch.post.it.evoting.verifier.mapper;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.dto.TestReport;
+import ch.post.it.evoting.verifier.report.pojo.TestReport;
 import org.junit.Assert;
 import org.junit.Before;
 
