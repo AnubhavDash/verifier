@@ -69,7 +69,7 @@ public class VerifierController {
         this.initializeExecutionStatus();
     }
 
-    @RequestMapping(value = "/tests/pdf", method = RequestMethod.POST, produces = "application/pdf")
+    @RequestMapping(value = "/tests/pdf", method = RequestMethod.GET, produces = "application/pdf")
     public byte[] generatePdf() {
         return this.processor.generatePdf();
     }

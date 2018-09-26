@@ -134,7 +134,7 @@ public class VerifierProcessor {
         infos.setReportTime(timeFormatter.format(now));
 
         //map to a Report Object
-        Report content = ReportMapper.getInstance().map(this.getTestStatus(), infos, Language.FR);
+        Report content = ReportMapper.INSTANCE.map(this.getTestStatus(), infos, Language.FR);
 
         //Generate PDF with the Report Object
         ReportGenerator reportGenerator = new ReportGenerator();

@@ -215,8 +215,8 @@
 											<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 											<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 										</box>
-										<textElement textAlignment="Center" verticalAlignment="Middle">
-											<font fontName="Frutiger 45 Light" size="10" isBold="true"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+											<font fontName="Britannic Bold" size="10" isBold="true"/>
 										</textElement>
 										<textFieldExpression><![CDATA[$F{testIdLabel}]]></textFieldExpression>
 									</textField>

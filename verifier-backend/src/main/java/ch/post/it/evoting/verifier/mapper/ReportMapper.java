@@ -1,11 +1,3 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.mapper;
 
 import ch.post.it.evoting.verifier.common.Language;
@@ -18,16 +10,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
 public class ReportMapper {
 
     private ReportMapper(){}
 
-    private static ReportMapper INSTANCE = new ReportMapper();
-
-    public static ReportMapper getInstance()
-    {   return INSTANCE;
-    }
+    public static final ReportMapper INSTANCE = new ReportMapper();
 
     public Report map(List<ch.post.it.evoting.verifier.dto.Test> testsList, ReportMetadata metadata, Language lang) {
         Report result = new Report(metadata);
