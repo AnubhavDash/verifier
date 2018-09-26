@@ -300,7 +300,18 @@
 				</jr:list>
 			</componentElement>
 		</band>
-		<band height="149"/>
+		<band height="236">
+			<break>
+				<reportElement x="0" y="11" width="100" height="1" uuid="832ae07b-5ae9-4241-ab02-3e36a497e8c6"/>
+			</break>
+			<rectangle>
+				<reportElement x="20" y="170" width="511" height="40" uuid="feda82bd-0fe2-465e-a830-9a8f964bfbf2"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="20" width="100" height="10" uuid="55ccc63d-d67b-455c-a4d8-8f0a98a4f57f"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
 	</detail>
 	<pageFooter>
 		<band height="54" splitType="Stretch">

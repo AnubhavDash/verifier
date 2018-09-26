@@ -1,22 +1,18 @@
 package ch.post.it.evoting.verifier.processor;
 
-import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.VerifierBlock;
 import ch.post.it.evoting.verifier.dto.Test;
-import ch.post.it.evoting.verifier.mapper.ReportMapper;
 import ch.post.it.evoting.verifier.mapper.TestExecutionStatusMapper;
 import ch.post.it.evoting.verifier.report.ReportGenerator;
-import ch.post.it.evoting.verifier.report.pojo.Report;
-import ch.post.it.evoting.verifier.report.pojo.ReportMetadata;
 import ch.post.it.evoting.verifier.util.TestDefinitionTools;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -43,6 +39,9 @@ public class VerifierProcessor {
 
     private List<ProcessListener> listeners;
     private boolean processed;
+
+    @Autowired
+    private ReportGenerator reportGenerator;
 
     @PostConstruct
     private void init() {
@@ -120,25 +119,7 @@ public class VerifierProcessor {
     }
 
     public byte[] generatePdf() {
-        //generate met info
-        ReportMetadata infos = new ReportMetadata();
-        infos.setTitle("Verifikationsbericht");
-        infos.setUrnLabel("Urnengang");
-        infos.setUrn("Nationalratshahl 23.10.2019");
-        infos.setReportDateLabel("Datum Bericht");
-        infos.setReportTimeLabel("Zeit Bericht");
-        Date now = new Date();
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.y");
-        SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
-        infos.setReportDate(dateFormatter.format(now));
-        infos.setReportTime(timeFormatter.format(now));
-
-        //map to a Report Object
-        Report content = ReportMapper.INSTANCE.map(this.getTestStatus(), infos, Language.FR);
-
-        //Generate PDF with the Report Object
-        ReportGenerator reportGenerator = new ReportGenerator();
-        return reportGenerator.generate(content);
+        return reportGenerator.generate(this.getTestStatus());
     }
 
 

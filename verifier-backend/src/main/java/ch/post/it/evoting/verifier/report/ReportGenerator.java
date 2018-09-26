@@ -1,26 +1,47 @@
 package ch.post.it.evoting.verifier.report;
 
+import ch.post.it.evoting.verifier.common.Language;
+import ch.post.it.evoting.verifier.dto.Test;
+import ch.post.it.evoting.verifier.mapper.ReportMapper;
 import ch.post.it.evoting.verifier.report.pojo.Report;
+import ch.post.it.evoting.verifier.report.pojo.ReportMetadata;
 import com.lowagie.text.pdf.BaseFont;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
+@Component
 public class ReportGenerator {
 
     private static final Logger LOGGER = Logger.getLogger(ReportGenerator.class);
 
-    public byte[] generate(Report content) {
+    public byte[] generate(List<Test> tests) {
 
         try {
+            ReportMetadata infos = new ReportMetadata();
+            infos.setTitle("Verifikationsbericht");
+            infos.setUrnLabel("Urnengang");
+            infos.setUrn("Nationalratshahl 23.10.2019");
+            infos.setReportDateLabel("Datum Bericht");
+            infos.setReportTimeLabel("Zeit Bericht");
+            Date now = new Date();
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.y");
+            SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
+            infos.setReportDate(dateFormatter.format(now));
+            infos.setReportTime(timeFormatter.format(now));
+
+            //map to a Report Object
+            Report content = ReportMapper.INSTANCE.map(tests, infos, Language.FR);
+
+
             Map<String, Object> parameters = new HashMap<>();
 
             JRBeanCollectionDataSource jrDataSource = new JRBeanCollectionDataSource(Collections.singletonList(content));
