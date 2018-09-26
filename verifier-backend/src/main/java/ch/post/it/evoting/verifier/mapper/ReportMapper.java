@@ -41,15 +41,8 @@ public class ReportMapper {
             int blockId = t.getBlockId();
             blocksMap.putIfAbsent(blockId, new Block());
             Block block = blocksMap.get(blockId);
-            // TODO label should be provided by propertiees files
             block.setTitre("Block " + blockId);
             block.setDescription("Description du block " + blockId);
-            block.setTestIdLabel("N°");
-            block.setTestNameLabel("Name");
-            block.setTestCategoryLabel("Kategorie");
-            block.setTestDescriptionLabel("Description");
-            block.setTestStatusLabel("Status");
-            block.setTestMessageLabel("");
             List<Test> tests = block.getTests() == null ? new ArrayList<>() : block.getTests();
             tests.add(TestReportMapper.INSTANCE.map(t, lang));
             block.setTests(tests);

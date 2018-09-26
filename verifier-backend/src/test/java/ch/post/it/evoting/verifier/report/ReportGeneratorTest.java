@@ -41,14 +41,14 @@ public class ReportGeneratorTest {
             Block block = new Block();
             block.setTitre("Block " + i);
             block.setDescription("Description du Block " + i);
-            block.setTestIdLabel("N°");
-            block.setTestNameLabel("Name");
-            block.setTestCategoryLabel("Kategorie");
-            block.setTestDescriptionLabel("Description");
-            block.setTestStatusLabel("Status");
             List tests = new ArrayList();
             for (int j = 1; j < 11; j++) {
                 Test test = new Test();
+                test.setTestIdLabel("N°");
+                test.setTestNameLabel("Name");
+                test.setTestCategoryLabel("Kategorie");
+                test.setTestDescriptionLabel("Description");
+                test.setTestStatusLabel("Status");
                 test.setId("" + j);
                 test.setName("le nom du test " + j);
                 test.setCategory("Integrity");
