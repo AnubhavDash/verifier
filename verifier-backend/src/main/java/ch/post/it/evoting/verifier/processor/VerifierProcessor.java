@@ -129,7 +129,7 @@ public class VerifierProcessor {
         infos.setReportTimeLabel("Zeit Bericht");
         Date now = new Date();
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.y");
-        SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:s");
+        SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
         infos.setReportDate(dateFormatter.format(now));
         infos.setReportTime(timeFormatter.format(now));
 

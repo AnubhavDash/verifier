@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,9 +34,12 @@ public class ReportGeneratorTest {
         report.setUrnLabel("Urnenang :");
         report.setUrn("Nationalratswahl 23.10.2019");
         report.setReportDateLabel("Datum Bericht :");
-        report.setReportDate("23.10.2019");
         report.setReportTimeLabel("Zeit Bericht :");
-        report.setReportTime("11:12:30");
+        Date now = new Date();
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.y");
+        SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
+        report.setReportDate(dateFormatter.format(now));
+        report.setReportTime(timeFormatter.format(now));
 
         List<Block> blocks = new ArrayList<>();
         for (int i = 1; i < 3; i++) {
@@ -42,7 +47,7 @@ public class ReportGeneratorTest {
             block.setTitre("Block " + i);
             block.setDescription("Description du Block " + i);
             List tests = new ArrayList();
-            for (int j = 1; j < 11; j++) {
+            for (int j = 1; j < 16; j++) {
                 Test test = new Test();
                 test.setTestIdLabel("N°");
                 test.setTestNameLabel("Name");
