@@ -78,6 +78,15 @@
 	<field name="blocksResults" class="java.util.List">
 		<fieldDescription><![CDATA[blocksResults]]></fieldDescription>
 	</field>
+	<field name="commentLabel" class="java.lang.String"/>
+	<field name="signaturetLabel" class="java.lang.String"/>
+	<field name="placeDatetLabel" class="java.lang.String"/>
+	<field name="lastNameLabel" class="java.lang.String"/>
+	<field name="firstNameLabel" class="java.lang.String"/>
+	<field name="footerUrnLabel" class="java.lang.String"/>
+	<field name="footerUrn" class="java.lang.String"/>
+	<field name="footerDateLabel" class="java.lang.String"/>
+	<field name="footerDate" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -298,46 +307,54 @@
 				</jr:list>
 			</componentElement>
 		</band>
-		<band height="442">
+		<band height="480">
 			<break>
 				<reportElement x="0" y="6" width="555" height="1" uuid="666b30aa-9e6a-4731-af62-2ba630f8284b"/>
 			</break>
 			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" x="63" y="80" width="429" height="230" uuid="b11c172e-01f5-46d1-8277-4eb22cd71e2b"/>
+				<reportElement stretchType="RelativeToTallestObject" x="57" y="77" width="440" height="260" uuid="b11c172e-01f5-46d1-8277-4eb22cd71e2b"/>
 			</rectangle>
 			<line>
-				<reportElement x="170" y="379" width="340" height="1" uuid="399f7f4a-c04b-4619-adac-2b21238771a6"/>
+				<reportElement x="170" y="399" width="340" height="1" uuid="399f7f4a-c04b-4619-adac-2b21238771a6"/>
 			</line>
 			<line>
-				<reportElement x="123" y="409" width="180" height="1" uuid="d2d9fb51-f8ee-4f4b-a2a5-cd842eecd7da"/>
+				<reportElement x="123" y="429" width="180" height="1" uuid="d2d9fb51-f8ee-4f4b-a2a5-cd842eecd7da"/>
 			</line>
 			<line>
-				<reportElement x="330" y="409" width="180" height="1" uuid="22fc7519-8649-47b3-91cd-48854ce146d8"/>
+				<reportElement x="330" y="429" width="180" height="1" uuid="22fc7519-8649-47b3-91cd-48854ce146d8"/>
 			</line>
 			<textField>
 				<reportElement x="34" y="53" width="100" height="30" uuid="83266a09-224f-42d0-ab09-ebbf59daa1ca"/>
-				<textFieldExpression><![CDATA[$F{urnLabel}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{commentLabel}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="80" y="372" width="100" height="30" uuid="0567703d-641e-4472-849d-15a41f0d30fd"/>
-				<textFieldExpression><![CDATA[$F{urnLabel}]]></textFieldExpression>
+				<reportElement x="85" y="386" width="100" height="30" uuid="0567703d-641e-4472-849d-15a41f0d30fd"/>
+				<textFieldExpression><![CDATA[$F{placeDatetLabel}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="34" y="336" width="100" height="30" uuid="cf02546e-0f26-4159-ae2e-f5169b15317a"/>
-				<textFieldExpression><![CDATA[$F{urnLabel}]]></textFieldExpression>
+				<reportElement x="34" y="356" width="100" height="30" uuid="cf02546e-0f26-4159-ae2e-f5169b15317a"/>
+				<textFieldExpression><![CDATA[$F{signaturetLabel}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="123" y="409" width="100" height="27" uuid="0a78df2e-62b4-45aa-9e5a-d0334bbe650e"/>
-				<textFieldExpression><![CDATA[$F{reportDateLabel}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="330" y="409" width="100" height="27" uuid="505c0257-ae91-4e8f-93cf-747c5f4a573f"/>
-				<textFieldExpression><![CDATA[$F{reportDateLabel}]]></textFieldExpression>
+				<reportElement x="133" y="429" width="100" height="21" uuid="0a78df2e-62b4-45aa-9e5a-d0334bbe650e"/>
+				<textFieldExpression><![CDATA[$F{lastNameLabel}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="20" width="555" height="40" uuid="e4dd7f75-7498-4dae-9893-448d48705424"/>
 				<text><![CDATA[]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="340" y="429" width="100" height="21" uuid="a31ec9ec-cd98-46a5-9236-7098215f5a88"/>
+				<textFieldExpression><![CDATA[$F{lastNameLabel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="133" y="441" width="100" height="20" uuid="949ef02b-f993-4a3b-ad6a-af4acc9a4806"/>
+				<textFieldExpression><![CDATA[$F{firstNameLabel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="340" y="441" width="100" height="20" uuid="6edfddee-1232-4d07-a46f-33eae9d5c68d"/>
+				<textFieldExpression><![CDATA[$F{firstNameLabel}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>
@@ -348,20 +365,20 @@
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="4" width="60" height="16" uuid="169383ef-6793-469a-9eba-775cf51a6d43"/>
-				<textFieldExpression><![CDATA[$F{urnLabel}]]></textFieldExpression>
+				<reportElement x="0" y="8" width="60" height="16" uuid="169383ef-6793-469a-9eba-775cf51a6d43"/>
+				<textFieldExpression><![CDATA[$F{footerUrnLabel}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="70" y="4" width="60" height="16" uuid="d76daa74-a9ce-4f28-8f68-79c9e2a78351"/>
-				<textFieldExpression><![CDATA[$F{urn}]]></textFieldExpression>
+				<reportElement x="60" y="8" width="120" height="16" uuid="d76daa74-a9ce-4f28-8f68-79c9e2a78351"/>
+				<textFieldExpression><![CDATA[$F{footerUrn}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="70" y="19" width="60" height="16" uuid="05c41548-7228-4e52-ab0f-5f8f9cb89d00"/>
-				<textFieldExpression><![CDATA[$F{reportDate}]]></textFieldExpression>
+				<reportElement x="0" y="23" width="60" height="16" uuid="05c41548-7228-4e52-ab0f-5f8f9cb89d00"/>
+				<textFieldExpression><![CDATA[$F{footerDateLabel}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="130" y="19" width="50" height="16" uuid="83b9bfe2-93e7-4c0c-a869-a677a5b4a486"/>
-				<textFieldExpression><![CDATA[$F{reportTime}]]></textFieldExpression>
+				<reportElement x="60" y="23" width="120" height="16" uuid="83b9bfe2-93e7-4c0c-a869-a677a5b4a486"/>
+				<textFieldExpression><![CDATA[$F{footerDate}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

@@ -26,4 +26,14 @@ public class ReportMetadata {
     private String reportTimeLabel;
     private String reportTime;
 
+    private String commentLabel;
+    private String signaturetLabel;
+    private String placeDatetLabel;
+    private String lastNameLabel;
+    private String firstNameLabel;
+    private String footerUrnLabel;
+    private String footerUrn;
+    private String footerDateLabel;
+    private String footerDate;
+
 }

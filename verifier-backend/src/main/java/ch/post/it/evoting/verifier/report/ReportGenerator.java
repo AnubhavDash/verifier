@@ -28,19 +28,33 @@ public class ReportGenerator {
         try {
             ReportMetadata infos = new ReportMetadata();
             infos.setTitle("Verifikationsbericht");
-            infos.setUrnLabel("Urnengang");
-            infos.setUrn("Nationalratshahl 23.10.2019");
-            infos.setReportDateLabel("Datum Bericht");
-            infos.setReportTimeLabel("Zeit Bericht");
+            infos.setUrnLabel("Urnengang:");
+            infos.setUrn("Nationalratswahl 23.10.2019");
+            infos.setReportDateLabel("Datum Bericht:");
+            infos.setReportTimeLabel("Zeit Bericht:");
             Date now = new Date();
             SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.y");
             SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
             infos.setReportDate(dateFormatter.format(now));
             infos.setReportTime(timeFormatter.format(now));
+            infos.setCommentLabel("Bemerkungen");
+            infos.setSignaturetLabel("Unterschriften");
+            infos.setPlaceDatetLabel("Ort / Datum");
+            infos.setLastNameLabel("Name");
+            infos.setFirstNameLabel("Vorname");
+            infos.setFooterUrnLabel("Urnengang:");
+            infos.setFooterUrn("Nationalratswahl 23.10.2019");
+            infos.setFooterDateLabel("Datum / Zeit:");
+            infos.setFooterDate(dateFormatter.format(now) + " / " + timeFormatter.format(now));
+            /*
+    private String footerUrnLabel;
+    private String footerUrn;
+    private String footerDateLabel;
+    private String footerDate;
+             */
 
             //map to a Report Object
             Report content = ReportMapper.INSTANCE.map(tests, infos, Language.FR);
-
 
             Map<String, Object> parameters = new HashMap<>();
 
