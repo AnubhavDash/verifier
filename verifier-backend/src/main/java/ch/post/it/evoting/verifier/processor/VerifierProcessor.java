@@ -3,12 +3,12 @@ package ch.post.it.evoting.verifier.processor;
 import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.VerifierBlock;
-import ch.post.it.evoting.verifier.report.pojo.Report;
-import ch.post.it.evoting.verifier.report.pojo.ReportMetadata;
 import ch.post.it.evoting.verifier.dto.Test;
 import ch.post.it.evoting.verifier.mapper.ReportMapper;
 import ch.post.it.evoting.verifier.mapper.TestExecutionStatusMapper;
 import ch.post.it.evoting.verifier.report.ReportGenerator;
+import ch.post.it.evoting.verifier.report.pojo.Report;
+import ch.post.it.evoting.verifier.report.pojo.ReportMetadata;
 import ch.post.it.evoting.verifier.util.TestDefinitionTools;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ForkJoinPool;
@@ -120,7 +119,7 @@ public class VerifierProcessor {
         this.listeners = copy;
     }
 
-    public void generatePdf(List<Test> testsStatus) throws IOException {
+    public byte[] generatePdf() {
         //generate met info
         ReportMetadata infos = new ReportMetadata();
         infos.setTitle("Verifikationsbericht");
@@ -135,12 +134,11 @@ public class VerifierProcessor {
         infos.setReportTime(timeFormatter.format(now));
 
         //map to a Report Object
-        Report content = ReportMapper.getInstance().map(testsStatus, infos, Language.FR);
+        Report content = ReportMapper.getInstance().map(this.getTestStatus(), infos, Language.FR);
 
         //Generate PDF with the Report Object
         ReportGenerator reportGenerator = new ReportGenerator();
-        reportGenerator.generate(content);
-
+        return reportGenerator.generate(content);
     }
 
 

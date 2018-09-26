@@ -6,6 +6,10 @@ import ch.post.it.evoting.verifier.report.pojo.Test;
 import org.junit.Before;
 import org.junit.Ignore;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,8 +70,10 @@ public class ReportGeneratorTest {
 
     @Ignore
     @org.junit.Test
-    public void generatePDF() {
+    public void generatePDF() throws IOException {
         ReportGenerator reportGenerator = new ReportGenerator();
-        reportGenerator.generate(this.report);
+        byte[] pdf = reportGenerator.generate(this.report);
+        Path file = Paths.get("c:\\temp\\report.pdf");
+        Files.write(file, pdf);
     }
 }

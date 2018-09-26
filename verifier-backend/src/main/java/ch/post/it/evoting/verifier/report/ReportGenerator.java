@@ -1,11 +1,3 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.report;
 
 import ch.post.it.evoting.verifier.report.pojo.Report;
@@ -21,18 +13,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Class ReportGenerator.
- * This represents TODO.
- *
- * @author lalandret
- * @version $$Revision$$
- */
 public class ReportGenerator {
 
     private static final Logger LOGGER = Logger.getLogger(ReportGenerator.class);
 
-    public void generate(Report content) {
+    public byte[] generate(Report content) {
 
         try {
             Map<String, Object> parameters = new HashMap<>();
@@ -43,9 +28,7 @@ public class ReportGenerator {
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, jrDataSource);
 
-            JasperExportManager.exportReportToPdfFile(jasperPrint, "verifier-backend/target/verifier-result.pdf");
-
-
+            return JasperExportManager.exportReportToPdf(jasperPrint);
         } catch (JRException e) {
             LOGGER.error("unable to generate the PDF report", e);
             throw new RuntimeException(e);
