@@ -91,7 +91,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="108" splitType="Stretch">
+		<band height="93" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="7" width="555" height="30" uuid="e805f0b4-8323-4c9b-9d58-4c8bce126a4d"/>
 				<textElement textAlignment="Center">
@@ -112,7 +112,7 @@
 				<textFieldExpression><![CDATA[$F{reportTimeLabel}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="85" y="38" width="100" height="16" uuid="255d57ab-8427-4bc4-9f58-66ed73725775"/>
+				<reportElement x="85" y="38" width="160" height="16" uuid="255d57ab-8427-4bc4-9f58-66ed73725775"/>
 				<textFieldExpression><![CDATA[$F{urn}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -128,7 +128,7 @@
 	<detail>
 		<band height="197" splitType="Immediate">
 			<componentElement>
-				<reportElement x="0" y="30" width="555" height="139" uuid="46592e2d-98fc-4dfd-85b9-9e414bad4170"/>
+				<reportElement x="0" y="27" width="555" height="139" uuid="46592e2d-98fc-4dfd-85b9-9e414bad4170"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="DatasetBlocks" uuid="40a1cfeb-55e8-4f44-999a-f1c6ec34b9cc">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{blocksResults})]]></dataSourceExpression>
@@ -369,7 +369,7 @@
 				<textFieldExpression><![CDATA[$F{footerUrnLabel}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="60" y="8" width="120" height="16" uuid="d76daa74-a9ce-4f28-8f68-79c9e2a78351"/>
+				<reportElement x="60" y="8" width="160" height="16" uuid="d76daa74-a9ce-4f28-8f68-79c9e2a78351"/>
 				<textFieldExpression><![CDATA[$F{footerUrn}]]></textFieldExpression>
 			</textField>
 			<textField>
