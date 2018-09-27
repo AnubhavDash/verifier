@@ -1,6 +1,8 @@
 package ch.post.it.evoting.verifier.report;
 
+import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
 import ch.post.it.evoting.verifier.common.Language;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.dto.Test;
 import ch.post.it.evoting.verifier.mapper.ReportMapper;
 import ch.post.it.evoting.verifier.report.pojo.Report;
@@ -22,12 +24,17 @@ import java.util.*;
 public class ReportGenerator {
 
     private static final Logger LOGGER = Logger.getLogger(ReportGenerator.class);
+    public static final String MESSAGE_BUNDLE_NAME = "message";
 
     public byte[] generate(List<Test> tests) {
+        return generate(tests, Locale.FRENCH);
+    }
+
+    public byte[] generate(List<Test> tests, Locale locale) {
 
         try {
             ReportMetadata infos = new ReportMetadata();
-            infos.setTitle("Verifikationsbericht");
+            infos.setTitle((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.head.title", locale)));
             infos.setUrnLabel("Urnengang:");
             infos.setUrn("Nationalratswahl 23.10.2019");
             infos.setReportDateLabel("Datum Bericht:");
@@ -46,12 +53,6 @@ public class ReportGenerator {
             infos.setFooterUrn("Nationalratswahl 23.10.2019");
             infos.setFooterDateLabel("Datum / Zeit:");
             infos.setFooterDate(dateFormatter.format(now) + " / " + timeFormatter.format(now));
-            /*
-    private String footerUrnLabel;
-    private String footerUrn;
-    private String footerDateLabel;
-    private String footerDate;
-             */
 
             //map to a Report Object
             Report content = ReportMapper.INSTANCE.map(tests, infos, Language.FR);
