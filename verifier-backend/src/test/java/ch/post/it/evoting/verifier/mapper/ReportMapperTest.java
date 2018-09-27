@@ -41,8 +41,8 @@ public class ReportMapperTest {
         //generate some info
         ReportMetadata infos = new ReportMetadata();
         infos.setTitle("Verifikationsbericht");
-        infos.setUrnLabel("Urnengang");
-        infos.setUrn("Nationalratshahl 23.10.2019");
+        infos.setHeaderTitleLabel("Urnengang");
+        infos.setHeaderTitle("Nationalratshahl 23.10.2019");
         infos.setReportDateLabel("Datum Bericht");
         infos.setReportTimeLabel("Zeit Bericht");
         Date now = new Date();

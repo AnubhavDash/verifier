@@ -18,8 +18,8 @@ import java.util.List;
 public class Report {
 
     private String title;
-    private String urnLabel;
-    private String urn;
+    private String headerTitleLabel;
+    private String headerTitle;
     private String reportDateLabel;
     private String reportDate;
     private String reportTimeLabel;
@@ -29,8 +29,8 @@ public class Report {
     private String placeDatetLabel;
     private String lastNameLabel;
     private String firstNameLabel;
-    private String footerUrnLabel;
-    private String footerUrn;
+    private String footerTitleLabel;
+    private String footerTitle;
     private String footerDateLabel;
     private String footerDate;
 
@@ -41,8 +41,8 @@ public class Report {
 
     public Report(ReportMetadata metadata) {
         this(metadata.getTitle(),
-            metadata.getUrnLabel(),
-            metadata.getUrn(),
+            metadata.getHeaderTitleLabel(),
+            metadata.getHeaderTitle(),
             metadata.getReportDateLabel(),
             metadata.getReportDate(),
             metadata.getReportTimeLabel(),
@@ -52,18 +52,18 @@ public class Report {
             metadata.getPlaceDatetLabel(),
             metadata.getLastNameLabel(),
             metadata.getFirstNameLabel(),
-            metadata.getFooterUrnLabel(),
-            metadata.getFooterUrn(),
+            metadata.getFooterTitleLabel(),
+            metadata.getFooterTitle(),
             metadata.getFooterDateLabel(),
             metadata.getFooterDate());
     }
 
-    public Report(String title, String urnLabel, String urn, String reportDateLabel, String reportDate, String reportTimeLabel, String reportTime,
-            String commentLabel, String signaturetLabel, String placeDatetLabel, String lastNameLabel, String firstNameLabel, String footerUrnLabel, String footerUrn,
-            String footerDateLabel, String footerDate) {
+    public Report(String title, String headerTitleLabel, String headerTitle, String reportDateLabel, String reportDate, String reportTimeLabel, String reportTime,
+                  String commentLabel, String signaturetLabel, String placeDatetLabel, String lastNameLabel, String firstNameLabel, String footerTitleLabel, String footerTitle,
+                  String footerDateLabel, String footerDate) {
         this.title = title;
-        this.urnLabel = urnLabel;
-        this.urn = urn;
+        this.headerTitleLabel = headerTitleLabel;
+        this.headerTitle = headerTitle;
         this.reportDateLabel = reportDateLabel;
         this.reportDate = reportDate;
         this.reportTimeLabel = reportTimeLabel;
@@ -73,8 +73,8 @@ public class Report {
         this.placeDatetLabel = placeDatetLabel;
         this.lastNameLabel = lastNameLabel;
         this.firstNameLabel = firstNameLabel;
-        this.footerUrnLabel = footerUrnLabel;
-        this.footerUrn = footerUrn;
+        this.footerTitleLabel = footerTitleLabel;
+        this.footerTitle = footerTitle;
         this.footerDateLabel = footerDateLabel ;
         this.footerDate = footerDate;
     }
