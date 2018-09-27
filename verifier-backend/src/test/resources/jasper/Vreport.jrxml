@@ -60,10 +60,10 @@
 		<property name="net.sf.jasperreports.json.field.expression" value="title"/>
 		<fieldDescription><![CDATA[title]]></fieldDescription>
 	</field>
-	<field name="urnLabel" class="java.lang.String"/>
-	<field name="urn" class="java.lang.String">
-		<property name="net.sf.jasperreports.json.field.expression" value="urn"/>
-		<fieldDescription><![CDATA[urn]]></fieldDescription>
+	<field name="headerTitleLabel" class="java.lang.String"/>
+	<field name="headerTitle" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="headerTitle"/>
+		<fieldDescription><![CDATA[headerTitle]]></fieldDescription>
 	</field>
 	<field name="reportDateLabel" class="java.lang.String"/>
 	<field name="reportDate" class="java.lang.String">
@@ -83,8 +83,8 @@
 	<field name="placeDatetLabel" class="java.lang.String"/>
 	<field name="lastNameLabel" class="java.lang.String"/>
 	<field name="firstNameLabel" class="java.lang.String"/>
-	<field name="footerUrnLabel" class="java.lang.String"/>
-	<field name="footerUrn" class="java.lang.String"/>
+	<field name="footerTitleLabel" class="java.lang.String"/>
+	<field name="footerTitle" class="java.lang.String"/>
 	<field name="footerDateLabel" class="java.lang.String"/>
 	<field name="footerDate" class="java.lang.String"/>
 	<background>
@@ -100,28 +100,16 @@
 				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="38" width="100" height="16" uuid="19d815a7-ecf3-4903-bf28-8678404fe95f"/>
-				<textFieldExpression><![CDATA[$F{urnLabel}]]></textFieldExpression>
+				<reportElement x="0" y="38" width="260" height="16" uuid="19d815a7-ecf3-4903-bf28-8678404fe95f"/>
+				<textFieldExpression><![CDATA[$F{headerTitleLabel} + $F{headerTitle}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="53" width="100" height="16" uuid="51491217-6fe2-4bd3-a7bf-f5dde231cc77"/>
-				<textFieldExpression><![CDATA[$F{reportDateLabel}]]></textFieldExpression>
+				<reportElement x="0" y="53" width="260" height="16" uuid="51491217-6fe2-4bd3-a7bf-f5dde231cc77"/>
+				<textFieldExpression><![CDATA[$F{reportDateLabel} + $F{reportDate}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="68" width="100" height="16" uuid="419b04f3-b973-4bd4-b5f3-0128bc796841"/>
-				<textFieldExpression><![CDATA[$F{reportTimeLabel}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="85" y="38" width="160" height="16" uuid="255d57ab-8427-4bc4-9f58-66ed73725775"/>
-				<textFieldExpression><![CDATA[$F{urn}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="85" y="53" width="100" height="16" uuid="00e8f48c-fae0-4ab3-8ab1-94e69e3dda5e"/>
-				<textFieldExpression><![CDATA[$F{reportDate}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="85" y="68" width="100" height="16" uuid="1e14c65a-2d68-455d-9e95-0a674f33dd33"/>
-				<textFieldExpression><![CDATA[$F{reportTime}]]></textFieldExpression>
+				<reportElement x="0" y="68" width="260" height="16" uuid="419b04f3-b973-4bd4-b5f3-0128bc796841"/>
+				<textFieldExpression><![CDATA[$F{reportTimeLabel} + $F{reportTime}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -143,6 +131,9 @@
 						</textField>
 						<textField>
 							<reportElement x="50" y="0" width="505" height="20" uuid="6fb78c71-adda-4dc5-9ee6-e6749133ce51"/>
+							<textElement>
+								<paragraph leftIndent="4"/>
+							</textElement>
 							<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
 						</textField>
 						<componentElement>
@@ -365,20 +356,12 @@
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="8" width="60" height="16" uuid="169383ef-6793-469a-9eba-775cf51a6d43"/>
-				<textFieldExpression><![CDATA[$F{footerUrnLabel}]]></textFieldExpression>
+				<reportElement x="0" y="8" width="260" height="16" uuid="169383ef-6793-469a-9eba-775cf51a6d43"/>
+				<textFieldExpression><![CDATA[$F{footerTitleLabel} + $F{footerTitle}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="60" y="8" width="160" height="16" uuid="d76daa74-a9ce-4f28-8f68-79c9e2a78351"/>
-				<textFieldExpression><![CDATA[$F{footerUrn}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="0" y="23" width="60" height="16" uuid="05c41548-7228-4e52-ab0f-5f8f9cb89d00"/>
-				<textFieldExpression><![CDATA[$F{footerDateLabel}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="60" y="23" width="120" height="16" uuid="83b9bfe2-93e7-4c0c-a869-a677a5b4a486"/>
-				<textFieldExpression><![CDATA[$F{footerDate}]]></textFieldExpression>
+				<reportElement x="0" y="23" width="260" height="16" uuid="05c41548-7228-4e52-ab0f-5f8f9cb89d00"/>
+				<textFieldExpression><![CDATA[$F{footerDateLabel} + $F{footerDate}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

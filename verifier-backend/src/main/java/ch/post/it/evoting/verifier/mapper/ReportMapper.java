@@ -1,7 +1,9 @@
 package ch.post.it.evoting.verifier.mapper;
 
 import ch.post.it.evoting.verifier.common.Language;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.dto.Test;
+import ch.post.it.evoting.verifier.report.ReportGenerator;
 import ch.post.it.evoting.verifier.report.pojo.Block;
 import ch.post.it.evoting.verifier.report.pojo.Report;
 import ch.post.it.evoting.verifier.report.pojo.ReportMetadata;
@@ -28,8 +30,8 @@ public interface ReportMapper {
                 .sorted()
                 .map(id -> {
                     Block block = new Block();
-                    block.setTitre("Block " + id);
-                    block.setDescription("Description du block " + id);
+                    block.setTitre((TranslationHelper.getFromResourceBundle(ReportGenerator.MESSAGE_BUNDLE_NAME, "report.block.title", lang.getLocale())) + id );
+                    block.setDescription((TranslationHelper.getFromResourceBundle(ReportGenerator.MESSAGE_BUNDLE_NAME, "report.block"+ id +".description", lang.getLocale())));
                     block.setTests(testsList.stream()
                             .filter(t -> t.getBlockId() == id)
                             .sorted(Comparator.comparingInt(Test::getTestId))

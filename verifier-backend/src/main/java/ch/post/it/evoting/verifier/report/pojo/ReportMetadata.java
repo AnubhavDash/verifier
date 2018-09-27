@@ -19,8 +19,8 @@ import java.util.Map;
 @Setter
 public class ReportMetadata {
     private String title;
-    private String urnLabel;
-    private String urn;
+    private String headerTitleLabel;
+    private String headerTitle;
     private String reportDateLabel;
     private String reportDate;
     private String reportTimeLabel;
@@ -31,8 +31,8 @@ public class ReportMetadata {
     private String placeDatetLabel;
     private String lastNameLabel;
     private String firstNameLabel;
-    private String footerUrnLabel;
-    private String footerUrn;
+    private String footerTitleLabel;
+    private String footerTitle;
     private String footerDateLabel;
     private String footerDate;
 

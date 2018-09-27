@@ -7,9 +7,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,8 +28,8 @@ public class ReportGeneratorTest {
         // provide some data
         Report report = new Report();
         report.setTitle("Verifikationsbericht");
-        report.setUrnLabel("Urnenang :");
-        report.setUrn("Nationalratswahl 23.10.2019");
+        report.setHeaderTitleLabel("Urnenang :");
+        report.setHeaderTitle("Nationalratswahl 23.10.2019");
         report.setReportDateLabel("Datum Bericht :");
         report.setReportTimeLabel("Zeit Bericht :");
         Date now = new Date();
