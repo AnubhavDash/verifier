@@ -61,7 +61,7 @@ public interface ReportMapper {
         if (t.getMessage() != null) {
             return t.getMessage().get(l);
         } else {
-            return null;
+            return "";
         }
     }
 

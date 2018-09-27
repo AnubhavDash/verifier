@@ -218,7 +218,7 @@
 										<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
 									</textField>
 									<textField>
-										<reportElement x="0" y="70" width="554" height="30" isRemoveLineWhenBlank="true" uuid="194dd919-3e9f-4b6d-b02b-650a15ef5437">
+										<reportElement x="0" y="70" width="554" height="30" uuid="194dd919-3e9f-4b6d-b02b-650a15ef5437">
 											<printWhenExpression><![CDATA[!$F{status}.equalsIgnoreCase( "OK" )]]></printWhenExpression>
 										</reportElement>
 										<box>
