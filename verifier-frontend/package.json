@@ -5,14 +5,14 @@
   "main": "main.js",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --proxy-config proxy.config.json",
+    "start": "ng serve --proxy-config proxy.config.json --base-href /",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "electron": "electron .",
     "electron-build": "ng build --prod && electron .",
-    "electron-packager": "electron-packager ."
+    "electron-package": "ng build --prod && electron-packager . --no-prune --ignore=/e2e --ignore=/src --overwrite --out=target --asar=true"
   },
   "private": true,
   "dependencies": {
@@ -34,7 +34,6 @@
     "zone.js": "^0.8.19"
   },
   "devDependencies": {
-    "fsevents": "*",
     "@angular/cli": "~1.7.4",
     "@angular/compiler-cli": "^5.2.0",
     "@angular/language-service": "^5.2.0",
@@ -42,7 +41,7 @@
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
     "codelyzer": "^4.0.1",
-    "electron": "^2.0.4",
+    "electron": "^2.0.10",
     "electron-packager": "^12.1.0",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
