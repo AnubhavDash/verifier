@@ -25,7 +25,8 @@ public class ReportGenerator {
     public static final String MESSAGE_BUNDLE_NAME = "message";
 
     public byte[] generate(List<Test> tests) {
-        return generate(tests, Locale.GERMAN);
+       // return generate(tests, Locale.GERMAN);
+        return generate(tests, Locale.FRENCH);
     }
 
     public byte[] generate(List<Test> tests, Locale locale) {

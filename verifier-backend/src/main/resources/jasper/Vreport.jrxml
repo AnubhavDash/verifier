@@ -131,6 +131,9 @@
 						</textField>
 						<textField>
 							<reportElement x="50" y="0" width="505" height="20" uuid="6fb78c71-adda-4dc5-9ee6-e6749133ce51"/>
+							<textElement>
+								<paragraph leftIndent="4"/>
+							</textElement>
 							<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
 						</textField>
 						<componentElement>
