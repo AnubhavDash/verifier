@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -70,8 +71,8 @@ public class VerifierController {
     }
 
     @RequestMapping(value = "/tests/pdf", method = RequestMethod.GET, produces = "application/pdf")
-    public byte[] generatePdf() {
-        return this.processor.generatePdf();
+    public byte[] generatePdf(Locale locale) {
+        return this.processor.generatePdf(locale);
     }
 
     @GetMapping("/status")
@@ -79,7 +80,7 @@ public class VerifierController {
         return this.executionStatus;
     }
 
-    @GetMapping("/tests")
+   @GetMapping("/tests")
     public List<Test> getTestStatus() {
         return this.processor.getTestStatus();
     }

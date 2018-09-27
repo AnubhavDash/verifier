@@ -14,6 +14,7 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Mapper
@@ -21,9 +22,7 @@ public interface ReportMapper {
 
     ReportMapper INSTANCE = Mappers.getMapper(ReportMapper.class);
 
-    default Report map(List<ch.post.it.evoting.verifier.dto.Test> testsList, ReportMetadata metadata, Language lang) {
-        Report result = new Report(metadata);
-
+    default Report map(Report result, List<ch.post.it.evoting.verifier.dto.Test> testsList, Language lang) {
         List<Block> blockList = testsList.stream()
                 .map(t -> t.getBlockId())
                 .distinct()

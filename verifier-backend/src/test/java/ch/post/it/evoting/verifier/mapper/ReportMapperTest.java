@@ -33,13 +33,13 @@ import java.util.List;
  */
 public class ReportMapperTest {
 
-    private ReportMetadata metadata;
+    private Report metadata;
     private List<ch.post.it.evoting.verifier.dto.Test> testsList;
 
     @Before
     public void init(){
         //generate some info
-        ReportMetadata infos = new ReportMetadata();
+        Report infos = new Report();
         infos.setTitle("Verifikationsbericht");
         infos.setHeaderTitleLabel("Urnengang");
         infos.setHeaderTitle("Nationalratshahl 23.10.2019");
@@ -84,7 +84,7 @@ public class ReportMapperTest {
     @Test
     public void map() {
         //map in French
-        Report report = ReportMapper.INSTANCE.map(this.testsList, this.metadata, Language.FR);
+        Report report = ReportMapper.INSTANCE.map(this.metadata, this.testsList, Language.FR);
         List<Block> blocksResults = report.getBlocksResults();
         Assert.assertEquals("problem with number of blocks in the report", 3, blocksResults.size());
         int z = blocksResults.size();

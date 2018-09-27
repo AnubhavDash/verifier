@@ -5,7 +5,6 @@ import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.dto.Test;
 import ch.post.it.evoting.verifier.mapper.ReportMapper;
 import ch.post.it.evoting.verifier.report.pojo.Report;
-import ch.post.it.evoting.verifier.report.pojo.ReportMetadata;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Component;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 public class ReportGenerator {
@@ -25,51 +23,44 @@ public class ReportGenerator {
     private static final Logger LOGGER = Logger.getLogger(ReportGenerator.class);
     public static final String MESSAGE_BUNDLE_NAME = "message";
 
-    public byte[] generate(List<Test> tests) {
-      // return generate(tests, Locale.GERMAN);
-        return generate(tests, Locale.FRENCH);
-    }
-
-    public byte[] generate(List<Test> tests, Locale locale) {
-
-        //regarding locale retrieve the language
-        Language language = Arrays.stream(Language.values())
-                                    .filter(l -> l.getLocale().equals(locale))
-                                    .collect(Collectors.toList()).get(0);
-
+    public byte[] generate(String contestName, Date contestDate, List<Test> tests, Language language) {
         try {
-            ReportMetadata infos = new ReportMetadata();
-            infos.setTitle((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.head.title", locale)));
-            infos.setHeaderTitleLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.header.title", locale)));
+            Locale locale = language.getLocale();
+
+            final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy");
+            final SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
+
+            Report report = new Report();
+            report.setTitle((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.head.title", locale)));
+            report.setHeaderTitleLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.header.title", locale)));
             // TODO how to get the data to set ?
-            infos.setHeaderTitle("Nationalratswahl 23.10.2019");
-            infos.setReportDateLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.header.date", locale)));
-            infos.setReportTimeLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.header.time", locale)));
+
+            report.setHeaderTitle(String.format("%s %s", contestName, dateFormatter.format(contestDate)));
+            report.setReportDateLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.header.date", locale)));
+            report.setReportTimeLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.header.time", locale)));
             Date now = new Date();
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.y");
-            SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
-            infos.setReportDate(dateFormatter.format(now));
-            infos.setReportTime(timeFormatter.format(now));
-            infos.setCommentLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.lastpage.comment", locale)));
-            infos.setSignaturetLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.lastpage.sign", locale)));
-            infos.setPlaceDatetLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.lastpage.place.date", locale)));
-            infos.setLastNameLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.lastpage.lastname", locale)));
-            infos.setFirstNameLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.lastpage.firstname", locale)));
-            infos.setFooterTitleLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.footer.title", locale)));
-            infos.setFooterTitle("Nationalratswahl 23.10.2019");
-            infos.setFooterDateLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.footer.date", locale)));
-            infos.setFooterDate(dateFormatter.format(now) + " / " + timeFormatter.format(now));
+            report.setReportDate(dateFormatter.format(now));
+            report.setReportTime(timeFormatter.format(now));
+            report.setCommentLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.lastpage.comment", locale)));
+            report.setSignaturetLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.lastpage.sign", locale)));
+            report.setPlaceDatetLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.lastpage.place.date", locale)));
+            report.setLastNameLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.lastpage.lastname", locale)));
+            report.setFirstNameLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.lastpage.firstname", locale)));
+            report.setFooterTitleLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.footer.title", locale)));
+            report.setFooterTitle(report.getHeaderTitle());
+            report.setFooterDateLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.footer.date", locale)));
+            report.setFooterDate(dateFormatter.format(now) + " / " + timeFormatter.format(now));
 
             //map to a Report Object
-            Report content = ReportMapper.INSTANCE.map(tests, infos, language);
+            Report content = ReportMapper.INSTANCE.map(report, tests, language);
 
             Map<String, Object> parameters = new HashMap<>();
 
             JRBeanCollectionDataSource jrDataSource = new JRBeanCollectionDataSource(Collections.singletonList(content));
 
-            InputStream report = this.getClass().getClassLoader().getResourceAsStream("jasper/Vreport.jasper");
+            InputStream jasper = this.getClass().getClassLoader().getResourceAsStream("jasper/Vreport.jasper");
 
-            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, jrDataSource);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parameters, jrDataSource);
 
             return JasperExportManager.exportReportToPdf(jasperPrint);
         } catch (JRException e) {

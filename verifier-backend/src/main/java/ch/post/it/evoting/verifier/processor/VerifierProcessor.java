@@ -1,10 +1,12 @@
 package ch.post.it.evoting.verifier.processor;
 
+import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.VerifierBlock;
 import ch.post.it.evoting.verifier.dto.Test;
 import ch.post.it.evoting.verifier.mapper.TestExecutionStatusMapper;
 import ch.post.it.evoting.verifier.report.ReportGenerator;
+import ch.post.it.evoting.verifier.util.ContestConfigurationReader;
 import ch.post.it.evoting.verifier.util.TestDefinitionTools;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,9 @@ public class VerifierProcessor {
 
     @Autowired
     private ReportGenerator reportGenerator;
+
+    @Autowired
+    private ContestConfigurationReader contestConfigurationReader;
 
     @PostConstruct
     private void init() {
@@ -113,8 +118,21 @@ public class VerifierProcessor {
         this.listeners = copy;
     }
 
-    public byte[] generatePdf() {
-        return reportGenerator.generate(this.getTestStatus());
+    public Language getLanguage(Locale locale) {
+        Language language = Language.DE;
+        Optional<Language> optLanguage = Arrays.stream(Language.values())
+                .filter(l -> l.getLocale().equals(locale))
+                .findFirst();
+        if (optLanguage.isPresent()) {
+            language = optLanguage.get();
+        }
+        return language;
+    }
+
+    public byte[] generatePdf(Locale locale) {
+        Language language = getLanguage(locale);
+        String contestName = contestConfigurationReader.getContestName(language);
+        return reportGenerator.generate(contestName, new Date(), this.getTestStatus(), language);
     }
 
 
