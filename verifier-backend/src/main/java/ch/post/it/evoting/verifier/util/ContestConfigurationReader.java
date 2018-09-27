@@ -12,6 +12,7 @@ import ch.evoting.xmlns.config._3.Configuration;
 import ch.evoting.xmlns.config._3.ContestDescriptionInformationType;
 import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,8 @@ import java.util.Optional;
 
 @Component
 public class ContestConfigurationReader {
+
+    private static final Logger LOGGER = Logger.getLogger(ContestConfigurationReader.class);
 
     private static final String ELECTION_SETUP_PATH = "election_setup";
     @Value("${inputDirectory}")
@@ -37,7 +40,7 @@ public class ContestConfigurationReader {
                 return "";
             }
         } catch (IOException | JAXBException e) {
-            //TODO logger
+            LOGGER.error(String.format("unable to get the contest name in file %s/configuration-anonymized.xml, language: %s", configurationInputDirectory, language.getLocale()), e);
             throw new RuntimeException(e);
         }
     }
