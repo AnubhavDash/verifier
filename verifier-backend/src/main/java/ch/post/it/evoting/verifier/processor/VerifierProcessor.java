@@ -26,11 +26,6 @@ public class VerifierProcessor {
     @Value("${inputDirectory}")
     private String configurationInputDirectory;
 
-    @Value("${outputDirectory}")
-    private String configurationOutputDirectory;
-    @Value("${jsonReportName}")
-    private String jsonReportName;
-
     @Value("#{'${verifier.blocks}'.split(';')}")
     private String[] configurationVerifierBlocks;
 
