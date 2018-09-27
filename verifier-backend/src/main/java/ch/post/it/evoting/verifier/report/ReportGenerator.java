@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class ReportGenerator {
@@ -25,11 +26,16 @@ public class ReportGenerator {
     public static final String MESSAGE_BUNDLE_NAME = "message";
 
     public byte[] generate(List<Test> tests) {
-       // return generate(tests, Locale.GERMAN);
+      // return generate(tests, Locale.GERMAN);
         return generate(tests, Locale.FRENCH);
     }
 
     public byte[] generate(List<Test> tests, Locale locale) {
+
+        //regarding locale retrieve the language
+        Language language = Arrays.stream(Language.values())
+                                    .filter(l -> l.getLocale().equals(locale))
+                                    .collect(Collectors.toList()).get(0);
 
         try {
             ReportMetadata infos = new ReportMetadata();
@@ -55,7 +61,7 @@ public class ReportGenerator {
             infos.setFooterDate(dateFormatter.format(now) + " / " + timeFormatter.format(now));
 
             //map to a Report Object
-            Report content = ReportMapper.INSTANCE.map(tests, infos, Language.FR);
+            Report content = ReportMapper.INSTANCE.map(tests, infos, language);
 
             Map<String, Object> parameters = new HashMap<>();
 

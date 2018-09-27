@@ -45,12 +45,12 @@ public interface ReportMapper {
     }
 
     @Mappings({
-            @Mapping(target = "testIdLabel", expression = "java( getLabel(\"idLabel\", lang) )"),
-            @Mapping(target = "testNameLabel", expression = "java( getLabel(\"nameLabel\", lang) )"),
-            @Mapping(target = "testCategoryLabel", expression = "java( getLabel(\"kategorieLabel\", lang) )"),
-            @Mapping(target = "testDescriptionLabel", expression = "java( getLabel(\"descriptionLabel\", lang) )"),
-            @Mapping(target = "testStatusLabel", expression = "java( getLabel(\"statusLabel\", lang) )"),
-            @Mapping(target = "testMessageLabel", expression = "java( getLabel(\"messageLabel\", lang) )"),
+            @Mapping(target = "testIdLabel", expression = "java( getLabel(\"id\", lang) )"),
+            @Mapping(target = "testNameLabel", expression = "java( getLabel(\"name\", lang) )"),
+            @Mapping(target = "testCategoryLabel", expression = "java( getLabel(\"kategorie\", lang) )"),
+            @Mapping(target = "testDescriptionLabel", expression = "java( getLabel(\"description\", lang) )"),
+            @Mapping(target = "testStatusLabel", expression = "java( getLabel(\"status\", lang) )"),
+            @Mapping(target = "testMessageLabel", expression = "java( getLabel(\"message\", lang) )"),
             @Mapping(target = "id", source = "test.testId"),
             @Mapping(target = "category", source = "test.category"),
             @Mapping(target = "description", expression = "java( test.getDescription().get(lang) )"),
@@ -67,29 +67,7 @@ public interface ReportMapper {
         }
     }
 
-    //TODO Labels should be different regarding the langiuage
     default String getLabel(String key, Language l) {
-        String result = null;
-        switch (key) {
-            case "idLabel":
-                result = "N°";
-                break;
-            case "nameLabel":
-                result = "Name";
-                break;
-            case "kategorieLabel":
-                result = "Kategorie";
-                break;
-            case "descriptionLabel":
-                result = "Description";
-                break;
-            case "statusLabel":
-                result = "Status";
-                break;
-            case "messageLabel":
-                result = "";
-                break;
-        }
-        return result;
+        return TranslationHelper.getFromResourceBundle(ReportGenerator.MESSAGE_BUNDLE_NAME, "report.test." + key, l.getLocale());
     }
 }
