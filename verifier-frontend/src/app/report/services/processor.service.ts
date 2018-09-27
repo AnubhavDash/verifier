@@ -28,9 +28,4 @@ export class ProcessorService {
     return this.http.post(environment.appUrl + '/api/reset', null, this.httpOptions);
   }
 
-  generatePDF(): Observable<Object> {
-    return this.http.post(environment.appUrl + '/api/pdf', null, this.httpOptions);
-  }
-
-
 }

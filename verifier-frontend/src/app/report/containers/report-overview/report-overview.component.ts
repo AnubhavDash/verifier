@@ -3,7 +3,6 @@ import {ProcessorService} from "../../services/processor.service";
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {TestDefinition} from "../../models/TestDefinition.interface";
-import {log} from "util";
 
 @Component({
   templateUrl: 'report-overview.component.html',
@@ -47,10 +46,6 @@ export class ReportOverviewComponent implements OnInit {
       this.initTable();
       this.buttonDisabled = false;
     });
-  }
-
-  generatePDF(): void {
-    this.processorService.generatePDF().subscribe();
   }
 
   static convert(input: any): TestDefinition {

@@ -7,10 +7,12 @@ let platform = process.platform;
 let appUrl = 'https://localhost:8443';
 
 if (platform === 'win32') {
+  console.log(app.getAppPath());
+
   serverProcess = require('child_process')
     .spawn('cmd.exe', ['/c', 'run-backend.bat'],
       {
-        cwd: app.getAppPath() + '/'
+        cwd: app.getAppPath() + '/../'
       });
 } else {
   // serverProcess = require('child_process').spawn(app.getAppPath() + '/run-backend');
@@ -26,10 +28,10 @@ app.on('certificate-error', (event, webContents, url, error, certificate, callba
   // console.log("certificate :"+certificate.fingerprint );
   if (certificate.fingerprint  === 'sha256/ERUEk1Mx1zexjJ7FROwfICOsTc6ueShhtmCxi9o3p8I=') {
     // Logique de vérification.
-    event.preventDefault()
-    callback(true)
+    event.preventDefault();
+    callback(true);
   } else {
-    callback(false)
+    callback(false);
   }
 })
 
@@ -46,12 +48,15 @@ const openWindow = function () {
   win = new BrowserWindow({
     width: 1200,
     height: 800,
-  })
+    webPreferences: {
+      plugins: true
+    }
+  });
 
-  win.setMenu(null)
-  win.maximize()
+  win.setMenu(null);
+  win.maximize();
 
-  win.loadURL(`file://${__dirname}/dist/index.html`)
+  win.loadURL(`file://${__dirname}/dist/index.html`);
 
   //// uncomment below to open the DevTools.
   // win.webContents.openDevTools()
@@ -59,7 +64,8 @@ const openWindow = function () {
   // Event when the window is closed.
   win.on('closed', function () {
     win = null
-  })
+    app.quit();
+  });
 
   win.on('close', function (e) {
     if (serverProcess) {
@@ -74,8 +80,8 @@ const openWindow = function () {
         win.close();
       });
     }
-  })
-}
+  });
+};
 
 const startUp = function () {
   const requestPromise = require('minimal-request-promise');
