@@ -1,4 +1,4 @@
-const {app, BrowserWindow, session} = require('electron')
+const {app, BrowserWindow, session, Menu} = require('electron')
 
 let win;
 let serverProcess;
@@ -26,7 +26,7 @@ if (!serverProcess) {
 
 app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
   // console.log("certificate :"+certificate.fingerprint );
-  if (certificate.fingerprint  === 'sha256/ERUEk1Mx1zexjJ7FROwfICOsTc6ueShhtmCxi9o3p8I=') {
+  if (certificate.fingerprint === 'sha256/ERUEk1Mx1zexjJ7FROwfICOsTc6ueShhtmCxi9o3p8I=') {
     // Logique de vérification.
     event.preventDefault();
     callback(true);
@@ -53,7 +53,26 @@ const openWindow = function () {
     }
   });
 
-  win.setMenu(null);
+  const menu = Menu.buildFromTemplate([
+    {
+      label: 'File',
+      submenu: [
+        {
+          label: 'Toggle developer tools', click() {
+            win.webContents.toggleDevTools();
+          }
+        },
+        {
+          label: 'Exit', click() {
+            app.quit();
+          }
+        }
+      ]
+    }
+  ]);
+  Menu.setApplicationMenu(menu);
+  // win.setMenu(null);
+
   win.maximize();
 
   win.loadURL(`file://${__dirname}/dist/index.html`);
