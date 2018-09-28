@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs/Observable";
 import {environment} from "../../../environments/environment";
+import {Configuration} from "../models/Configuration.interface";
 
 @Injectable()
 export class ProcessorService {
@@ -24,8 +25,15 @@ export class ProcessorService {
     return this.http.post(environment.appUrl + '/api/tests', null, this.httpOptions);
   }
 
-  resetTests() : Observable<Object> {
+  resetTests(): Observable<Object> {
     return this.http.post(environment.appUrl + '/api/reset', null, this.httpOptions);
   }
 
+  getConfigurationInputDirectory(): Observable<Configuration> {
+    return this.http.get<Configuration>(environment.appUrl + '/api/configurationInputDirectory', this.httpOptions);
+  }
+
+  setConfigurationInputDirectory(value: Configuration): Observable<Object> {
+    return this.http.post(environment.appUrl + '/api/configurationInputDirectory', value, this.httpOptions);
+  }
 }

@@ -3,6 +3,7 @@ import {ProcessorService} from "../../services/processor.service";
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {TestDefinition} from "../../models/TestDefinition.interface";
+import {Configuration} from "../../models/Configuration.interface";
 
 @Component({
   templateUrl: 'report-overview.component.html',
@@ -11,6 +12,7 @@ import {TestDefinition} from "../../models/TestDefinition.interface";
 })
 export class ReportOverviewComponent implements OnInit {
 
+  inputDirectory: string;
   private stompClient;
   tests = {};
   keys: string[];
@@ -23,6 +25,10 @@ export class ReportOverviewComponent implements OnInit {
     //console.log(navigator.language.toUpperCase());
     this.initTable();
     this.initializeWebSocketConnection();
+    this.processorService.getConfigurationInputDirectory().subscribe(value => {
+      console.log(value);
+      this.inputDirectory = value.inputDirectory;
+    });
   }
 
   initTable() {
@@ -37,8 +43,12 @@ export class ReportOverviewComponent implements OnInit {
   }
 
   startProcess(): void {
-    this.buttonDisabled = true;
-    this.processorService.processTests().subscribe();
+    const configuration = new Configuration();
+    configuration.inputDirectory = this.inputDirectory;
+    this.processorService.setConfigurationInputDirectory(configuration).subscribe(() => {
+      this.buttonDisabled = true;
+      this.processorService.processTests().subscribe();
+    });
   }
 
   resetProcess(): void {
@@ -80,5 +90,9 @@ export class ReportOverviewComponent implements OnInit {
         }
       })
     });
+  }
+
+  update() {
+    this.initTable();
   }
 }

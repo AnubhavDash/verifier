@@ -4,6 +4,8 @@ import {ReportOverviewComponent} from "./containers/report-overview/report-overv
 import {ProcessorService} from "./services/processor.service";
 import {VerifierCommonModule} from "../verifier-common-module";
 import {ReportPdfComponent} from './containers/report-pdf/report-pdf.component';
+import {BrowserModule} from "@angular/platform-browser";
+import {FormsModule} from "@angular/forms";
 
 const routes: Routes = [
   {
@@ -21,6 +23,8 @@ const routes: Routes = [
     ReportPdfComponent,
   ],
   imports: [
+    BrowserModule,
+    FormsModule,
     RouterModule.forChild(routes),
     VerifierCommonModule
   ],
