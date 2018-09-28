@@ -35,7 +35,7 @@ public class ReportGenerator {
             report.setHeaderTitleLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.header.title", locale)));
             // TODO how to get the data to set ?
 
-            report.setHeaderTitle(String.format("%s %s", contestName, dateFormatter.format(contestDate)));
+            report.setHeaderTitle(String.format("%s %s", contestName, contestDate != null ? dateFormatter.format(contestDate) : ""));
             report.setReportDateLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.header.date", locale)));
             report.setReportTimeLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.header.time", locale)));
             Date now = new Date();

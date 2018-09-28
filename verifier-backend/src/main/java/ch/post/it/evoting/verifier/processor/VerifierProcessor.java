@@ -122,7 +122,8 @@ public class VerifierProcessor {
 
     public byte[] generatePdf(Language language) {
         String contestName = contestConfigurationReader.getContestName(language);
-        return reportGenerator.generate(contestName, new Date(), this.getTestStatus(), language);
+        Date contestDate = contestConfigurationReader.getContestDate();
+        return reportGenerator.generate(contestName, contestDate, this.getTestStatus(), language);
     }
 
     public Configuration getConfiguration() {
