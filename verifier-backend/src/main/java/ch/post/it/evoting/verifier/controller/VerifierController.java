@@ -114,7 +114,7 @@ public class VerifierController {
     private Language getLanguage(Locale locale) {
         Language language = Language.DE;
         Optional<Language> optLanguage = Arrays.stream(Language.values())
-                .filter(l -> l.getLocale().equals(locale))
+                .filter(l -> l.getLocale().getLanguage().equalsIgnoreCase(locale.getLanguage()))
                 .findFirst();
         if (optLanguage.isPresent()) {
             language = optLanguage.get();
