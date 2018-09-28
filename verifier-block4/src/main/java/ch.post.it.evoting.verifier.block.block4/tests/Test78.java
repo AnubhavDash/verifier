@@ -58,7 +58,7 @@ public class Test78 extends Test {
 
             byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block4TestSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
 
-            File[] sivDecryFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS).toFile(), "siv_decryption_*.*\\.csv");
+            File[] sivDecryFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS).toFile(), "siv_decryption_.*\\.csv");
 
             for (File siv : sivDecryFiles) {
                 byte[] content = Files.readAllBytes(inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS).resolve(siv.getName()));
