@@ -21,11 +21,6 @@
     <dependencies>
         <dependency>
             <groupId>ch.post.it.evoting.verifier</groupId>
-            <artifactId>verifier-block-sample</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.post.it.evoting.verifier</groupId>
             <artifactId>verifier-block1</artifactId>
             <version>${project.version}</version>
         </dependency>
