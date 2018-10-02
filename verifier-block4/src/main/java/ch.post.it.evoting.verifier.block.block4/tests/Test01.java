@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
@@ -96,12 +97,13 @@ public class Test01 extends Test {
                         );
                         //TODO candidates without list
 
-                        //2 Generate map<prime, count>, but before retrieve the correct encrypted file
-                        Map<String, Long> primesCountMap = getCorrectFileAndExtractPrimesCount(inputDirectory, ballotBoxId, countingCircleId);
+
+                        //2 Generate map<prime, count>, but before retrieve the ballotbox file
+                        Map<String, Long> primesCountMap = getCorrectFileAndExtractPrimesCount(inputDirectory, ballotBoxId);
 
                         //3 Generate map<alias, count>
                         final Path resultsPath = inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS);
-                        Results decryptResult = decryptResult = Deserializer.fromXml(resultsPath.toFile(), "evoting-decrypt_.*\\.xml", Results.class);
+                        Results decryptResult = Deserializer.fromXml(resultsPath.toFile(), "evoting-decrypt_.*\\.xml", Results.class);
                         Map<String, Long> aliasCountMap = decryptResult.getBallotsBox().stream()
                                 .filter(bb -> ballotBoxAuthId.equals(bb.getBallotBoxIdentification()))
                                 .flatMap(theBb -> theBb.getCountingCircle().stream())
@@ -112,15 +114,51 @@ public class Test01 extends Test {
                                 .flatMap(b -> b.getChosenAnswerIdentification().stream())
                                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
+                        aliasCountMap.putAll(decryptResult.getBallotsBox().stream()
+                                .filter(bb -> {
+                                    return ballotBoxAuthId.equals(bb.getBallotBoxIdentification());
+                                })
+                                .flatMap(theBb -> theBb.getCountingCircle().stream())
+                                .filter(cc -> {
+                                    return countingCircleId.equals(cc.getCountingCircleIdentification());
+                                })
+                                .flatMap(theCc -> {
+                                    return theCc.getDomainOfInfluence().stream();
+                                })
+                                .flatMap(doi -> doi.getElection().stream())
+                                .flatMap(e -> e.getBallot().stream())
+                                .flatMap(b -> Stream.of(b.getChosenCandidateListIdentification().stream(),
+                                        b.getChosenCandidateIdentification().stream(),
+                                        b.getChosenWriteInsCandidateValue().stream().map(s -> "#"+s),
+                                        Stream.of(b.getChosenListIdentification())).flatMap(Function.identity()))
+                                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting())));
+
+
                         // Finally do the check
                         aliasCountMap.forEach((alias, aliasCount) -> {
-                            Long nb = primeAliasMap.entrySet().stream()
-                                    .filter(e -> e.getValue().equals(alias))
-                                    .map(e -> e.getKey())
-                                    .mapToLong(p -> primesCountMap.get(p.toString()))
-                                    .sum();
-                            if (!nb.equals(aliasCount)) {
-                                throw new Test01FailException(alias);
+                            if (alias.startsWith("#")) {
+                                Long nb = primesCountMap.entrySet().stream()
+                                        .filter(e -> e.getKey().endsWith(alias))
+                                        .mapToLong(e -> {
+                                            Long aLong = e.getValue();
+                                            return aLong != null ? aLong : 0L;
+                                        })
+                                        .sum();
+                                if (!nb.equals(aliasCount)) {
+                                    throw new Test01FailException(alias);
+                                }
+                            } else {
+                                Long nb = primeAliasMap.entrySet().stream()
+                                        .filter(e -> e.getValue().equals(alias))
+                                        .map(e -> e.getKey())
+                                        .mapToLong(p -> {
+                                            Long aLong = primesCountMap.get(p.toString());
+                                            return aLong != null ? aLong : 0L;
+                                        })
+                                        .sum();
+                                if (!nb.equals(aliasCount)) {
+                                    throw new Test01FailException(alias);
+                                }
                             }
                         });
                     } catch (IOException | JAXBException e) {
@@ -151,7 +189,7 @@ public class Test01 extends Test {
         return result;
     }
 
-    private Map<String, Long> getCorrectFileAndExtractPrimesCount(File inputDirectory, String ballotboxId, String countingCircleId) throws IOException {
+    private Map<String, Long> getCorrectFileAndExtractPrimesCount(File inputDirectory, String ballotboxId) throws IOException {
         //TODO get the correct file regarding the countingCircleId
         Path path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_BALLOTBOXES).resolve(ballotboxId);
         Iterable<List<String>> iterable = Deserializer.fromCsv(path.toFile(),
