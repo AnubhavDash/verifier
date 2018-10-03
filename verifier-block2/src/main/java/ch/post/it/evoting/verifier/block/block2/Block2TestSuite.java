@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 
 public class Block2TestSuite extends TestSuite {
 
-    public static final String RESOURCE_BUNDLE_NAME = "block1/resources";
+    public static final String RESOURCE_BUNDLE_NAME = "block2/resources";
 
     public static final Path PATH_CRYPTO_SETUP = Paths.get("crypto_setup/");
     public static final Path PATH_CERTIFICATES = Paths.get("certificates/");

@@ -14,10 +14,16 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
+import ch.post.it.evoting.verifier.common.block.dto.SecureLogsData;
+import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.SecureLogsHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Path;
 
 /**
  * Test01 of Block2, Step checkSecureLogIntegrity
@@ -40,6 +46,18 @@ public class Test01 extends Test {
     @Override
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
+
+        try {
+            Path secureLogsPath = PathHelper.getFile(inputDirectory, ".*Evoting_CC_verifier_export_.*\\.json").toPath();
+            File mapping = PathHelper.getFile(inputDirectory, ".*mapping_cc_hosts.*\\.csv");
+            SecureLogsData secureLogsData = SecureLogsHelper.ParseSecureLogs(secureLogsPath, mapping);
+            System.out.println("Done .... ");
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         result.setStatus(Status.OK);
 
