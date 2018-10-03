@@ -9,9 +9,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SecureLogsHelper {
+
+    private static final String IT_EVOTING_CC_VALUE = "it_evoting_cc";
 
     private SecureLogsHelper() {
     }
@@ -31,8 +34,13 @@ public class SecureLogsHelper {
                 e.printStackTrace();
             }
         });
+        int size = logs.size();
         // Filter the entries containing the secure logs of the control components, by filtering the index “it_evoting_cc”
+        List<SecureLog> itEvotingCcList = logs.stream()
+                                                .filter(log -> log.getResult().getIndex().equalsIgnoreCase(IT_EVOTING_CC_VALUE))
+                                                .collect(Collectors.toList());
 
+        int size1 = itEvotingCcList.size();
 
         // Read the “host” of each entry
 
