@@ -7,8 +7,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -41,8 +43,13 @@ public class SecureLogsHelper {
                                                 .collect(Collectors.toList());
 
         int size1 = itEvotingCcList.size();
-
         // Read the “host” of each entry
+        Map<SecureLog, String> logsHostsMap = itEvotingCcList.stream()
+                                                                .map(log -> {
+                                                                    String host = log.getResult().getHost();
+                                                                    return new AbstractMap.SimpleEntry<>(log, host);
+                                                                }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+
 
         return result;
     }
