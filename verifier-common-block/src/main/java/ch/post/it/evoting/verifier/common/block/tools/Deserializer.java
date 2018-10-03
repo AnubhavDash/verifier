@@ -1,6 +1,7 @@
 package ch.post.it.evoting.verifier.common.block.tools;
 
 import ch.post.it.evoting.verifier.common.block.dto.CredentialDataElement;
+import ch.post.it.evoting.verifier.common.block.dto.HostMappingElement;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.xml.bind.JAXBContext;
@@ -57,5 +58,15 @@ public class Deserializer {
         cde.setValue1(array[0]);
         cde.setValue2(array[1]);
         return cde;
+    };
+
+    public static Function<String[], HostMappingElement> toHostMappingElement = array -> {
+        if (array == null || array.length != 2) {
+            throw new IllegalArgumentException("Wrong array input format");
+        }
+        HostMappingElement hm = new HostMappingElement();
+        hm.setHostname(array[0]);
+        hm.setCc(array[1]);
+        return hm;
     };
 }
