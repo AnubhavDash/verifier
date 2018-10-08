@@ -1,9 +1,11 @@
 <div>
-  <h2>Test definitions</h2>
-  <button (click)="startProcess()" [disabled]="buttonDisabled">Start Process</button>
-  <button (click)="resetProcess()" >Reset Process</button>
-  <p></p>
-  <table border="1">
+  <div id="buttonDiv">
+    <h2>Test definitions</h2>
+    <button (click)="startProcess()" [disabled]="buttonDisabled" class="btn">Start Process</button>
+    <button (click)="resetProcess()" class="btn">Reset Process</button>
+    <p></p>
+  </div>
+  <table border="1" class="table table-bordered table-hover">
     <tr>
       <th>Block</th>
       <th>Id</th>
