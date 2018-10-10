@@ -36,9 +36,10 @@ import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
 
 public class DecryptVerifier {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(DecryptVerifier.class);
+	private final static Logger LOGGER = LoggerFactory
+			.getLogger(DecryptVerifier.class);
 
-    public static int verify(Path rootPath) {
+	public static int verify(Path rootPath) {
         try {
             ZpGroup zPGroup;
             ElGamalPublicKey publicKey;
@@ -48,7 +49,7 @@ public class DecryptVerifier {
 
             zPGroup = createZpGroup(rootPath);
             publicKey = ElgamalPublicKeyReader.readPublicKeyFromFile(Paths.get(rootPath.toString(),
-                DefaultLocationNames.PUBLIC_KEY_OUTPUT_FILE_NAME + Constants.TXT_FILE_EXTENSION));
+                DefaultLocationNames.PUBLIC_KEY_OUTPUT_FILE_NAME + Constants.JSON_FILE_EXTENSION));
 
             ballots = ElGamalEncryptedBallotsLoader.loadCSV(zPGroup.getParams(), Paths.get(rootPath.toString()), "",
                 "encryptedBallots.csv");
@@ -74,94 +75,105 @@ public class DecryptVerifier {
         }
     }
 
-    private static ZpGroup createZpGroup(Path rootPath) throws IOException {
+	private static ZpGroup createZpGroup(Path rootPath) throws IOException {
 
-        final Path encryptionParametersFile;
-        encryptionParametersFile = Paths.get(rootPath.toString(), "encryptedParams" + Constants.TXT_FILE_EXTENSION);
-        return ZpGroupReader.build(encryptionParametersFile);
-    }
+		final Path encryptionParametersFile;
+		encryptionParametersFile = Paths.get(rootPath.toString(),
+				"encryptedParams" + Constants.JSON_FILE_EXTENSION);
+		return ZpGroupReader.build(encryptionParametersFile);
+	}
 
-    private static int validate(List<ElGamalEncryptedBallot> ballotsList, List<GjosteenElGamalPlaintext> plaintexts,
-            DecryptionProof[] proofs, ElGamalPublicKey key, ZpGroup zPGroup) {
-        if (!validateSizes(ballotsList, plaintexts, proofs))
-            return 0;
-        for (int i = 0; i < proofs.length; i++) {
-            Boolean proofVerified = false;
-            for (int j = 0; j < ballotsList.size() && !proofVerified; j++) {
-                if (proofs[i].getGammaOfCiphertexts().equals(ballotsList.get(j).getGamma().getValue())) {
-                    if (!DecryptionProofVerifier.verify(ballotsList.get(j), plaintexts.get(i), proofs[i], key,
-                        zPGroup)) {
-                        LOGGER.error("failed at ballot number " + i);
-                        return 0;
-                    }
-                    ballotsList.remove(j);
-                    proofVerified = true;
-                }
-            }
-            if (!proofVerified)
-                return 0;
-        }
-        return 1;
-    }
+	private static int validate(List<ElGamalEncryptedBallot> ballotsList,
+			List<GjosteenElGamalPlaintext> plaintexts,
+			DecryptionProof[] proofs, ElGamalPublicKey key, ZpGroup zPGroup) {
+		if (!validateSizes(ballotsList, plaintexts, proofs))
+			return 0;
+		for (int i = 0; i < proofs.length; i++) {
+			Boolean proofVerified = false;
+			for (int j = 0; j < ballotsList.size() && !proofVerified; j++) {
+				if (proofs[i].getGammaOfCiphertexts().equals(
+						ballotsList.get(j).getGamma().getValue())) {
+					if (!DecryptionProofVerifier.verify(ballotsList.get(j),
+							plaintexts.get(i), proofs[i], key, zPGroup)) {
+						LOGGER.error("failed at ballot number " + i);
+						return 0;
+					}
+					ballotsList.remove(j);
+					proofVerified = true;
+				}
+			}
+			if (!proofVerified)
+				return 0;
+		}
+		return 1;
+	}
 
-    private static boolean validateSizes(List<ElGamalEncryptedBallot> ballotsList,
-            List<GjosteenElGamalPlaintext> plaintexts, DecryptionProof[] proofs) {
-        if (proofs.length != ballotsList.size()) {
-            LOGGER.error("There are not the same amount of ballots and proofs.");
-            return false;
-        }
-        if (proofs.length != plaintexts.size()) {
-            LOGGER.error("There are not the same amount of plaintexts and proofs.");
-            return false;
-        }
-        if (plaintexts.size() != ballotsList.size()) {
-            LOGGER.error("There are not the same amount of ballots and plaintexts.");
-            return false;
-        }
-        return true;
-    }
+	private static boolean validateSizes(
+			List<ElGamalEncryptedBallot> ballotsList,
+			List<GjosteenElGamalPlaintext> plaintexts, DecryptionProof[] proofs) {
+		if (proofs.length != ballotsList.size()) {
+			LOGGER.error("There are not the same amount of ballots and proofs.");
+			return false;
+		}
+		if (proofs.length != plaintexts.size()) {
+			LOGGER.error("There are not the same amount of plaintexts and proofs.");
+			return false;
+		}
+		if (plaintexts.size() != ballotsList.size()) {
+			LOGGER.error("There are not the same amount of ballots and plaintexts.");
+			return false;
+		}
+		return true;
+	}
 
-    private static DecryptionProof[] getProofsFromFile(int amountOfBallots, String path) throws IOException {
-        String csvFile = path.concat("/" + "proofs.csv");
-        String line;// = "";
-        String cvsSplitBy = ";";
-        DecryptionProof[] proofsOutput = new DecryptionProof[amountOfBallots];
+	private static DecryptionProof[] getProofsFromFile(int amountOfBallots,
+			String path) throws IOException {
+		String csvFile = path.concat("/" + "proofs.csv");
+		String line;// = "";
+		String cvsSplitBy = ";";
+		DecryptionProof[] proofsOutput = new DecryptionProof[amountOfBallots];
 
-        BufferedReader br = new BufferedReader(new FileReader(csvFile));
-        for (int i = 0; (line = br.readLine()) != null; i++) {
-            String[] fields = line.split(cvsSplitBy);
+		BufferedReader br = new BufferedReader(new FileReader(csvFile));
+		for (int i = 0; (line = br.readLine()) != null; i++) {
+			String[] fields = line.split(cvsSplitBy);
 
-            byte[] proof = Base64.getDecoder().decode(fields[3]);
-            String JSonProof = new String(proof);
-            proofsOutput[i] = new DecryptionProof(JSonProof);
-            proofsOutput[i].setGammaOfCiphertext(new BigInteger(fields[0]));
-        }
-        return proofsOutput;
-    }
+			byte[] proof = Base64.getDecoder().decode(fields[3]);
+			String JSonProof = new String(proof);
+			proofsOutput[i] = new DecryptionProof(JSonProof);
+			proofsOutput[i].setGammaOfCiphertext(new BigInteger(fields[0]));
+		}
+		return proofsOutput;
+	}
 
-    private static List<GjosteenElGamalPlaintext> getPlaintextsFromFile(String path, ZpGroup group) throws IOException {
-        String filePath = path.concat("/" + "decryptedBallots.csv");
-        String line;
-        String cvsSplitByBallot = ";";
-        // Assuming we use , to separate decryption from different phis.
-        String cvsSplitPhis = ",";
-        List<GjosteenElGamalPlaintext> plaintextsOutput = new ArrayList<>();
+	private static List<GjosteenElGamalPlaintext> getPlaintextsFromFile(
+			String path, ZpGroup group) throws IOException {
+		String filePath = path.concat("/" + "decryptedBallots.csv");
+		String line;
+		String cvsSplitByBallot = ";";
+		// Assuming we use , to separate decryption from different phis.
+		String cvsSplitPhis = ",";
+		List<GjosteenElGamalPlaintext> plaintextsOutput = new ArrayList<>();
 
-        BufferedReader br = new BufferedReader(new FileReader(filePath));
-        while ((line = br.readLine()) != null) {
-            String[] plaintextsPerBallot = line.split(cvsSplitPhis);
-            GroupElement[] plaintextsAsGroupElements = new GroupElement[plaintextsPerBallot.length];
-            for (int i = 0; i < plaintextsPerBallot.length; i++) {
-                String[] multipliedElementsPerPlaintext = plaintextsPerBallot[i].split(cvsSplitByBallot);
-                ZpElement resultingPlaintext = new ZpElement(BigInteger.ONE, group.getParams());
-                for (String multipliedElement : multipliedElementsPerPlaintext) {
-                    ZpElement elementAux = new ZpElement(new BigInteger(multipliedElement), group.getParams());
-                    resultingPlaintext = (ZpElement) resultingPlaintext.multiply(elementAux);
-                }
-                plaintextsAsGroupElements[i] = resultingPlaintext;
-            }
-            plaintextsOutput.add(new GjosteenElGamalPlaintext(plaintextsAsGroupElements));
-        }
-        return plaintextsOutput;
-    }
+		BufferedReader br = new BufferedReader(new FileReader(filePath));
+		while ((line = br.readLine()) != null) {
+			String[] plaintextsPerBallot = line.split(cvsSplitPhis);
+			GroupElement[] plaintextsAsGroupElements = new GroupElement[plaintextsPerBallot.length];
+			for (int i = 0; i < plaintextsPerBallot.length; i++) {
+				String[] multipliedElementsPerPlaintext = plaintextsPerBallot[i]
+						.split(cvsSplitByBallot);
+				ZpElement resultingPlaintext = new ZpElement(BigInteger.ONE,
+						group.getParams());
+				for (String multipliedElement : multipliedElementsPerPlaintext) {
+					ZpElement elementAux = new ZpElement(new BigInteger(
+							multipliedElement), group.getParams());
+					resultingPlaintext = (ZpElement) resultingPlaintext
+							.multiply(elementAux);
+				}
+				plaintextsAsGroupElements[i] = resultingPlaintext;
+			}
+			plaintextsOutput.add(new GjosteenElGamalPlaintext(
+					plaintextsAsGroupElements));
+		}
+		return plaintextsOutput;
+	}
 }

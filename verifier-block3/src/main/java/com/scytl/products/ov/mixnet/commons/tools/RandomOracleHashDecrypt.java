@@ -22,7 +22,7 @@ public class RandomOracleHashDecrypt {
     private final BigInteger _groupOrder;
 
     public RandomOracleHashDecrypt(final BigInteger groupOrder) throws NoSuchAlgorithmException {
-        _md = MessageDigest.getInstance("SHA-512/224");
+        _md = MessageDigest.getInstance("SHA-256");
         _groupOrder = groupOrder;
     }
 

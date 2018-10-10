@@ -19,7 +19,7 @@ import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 final class ElGamalEncryptedBallotEntryConverter implements CSVEntryConverter<ElGamalEncryptedBallot> {
 
     /**
-     * @see CSVEntryConverter#convertEntry(Object)
+     * @see com.googlecode.jcsv.writer.CSVEntryConverter#convertEntry(Object)
      */
     @Override
     public String[] convertEntry(final ElGamalEncryptedBallot encryptedBallot) {

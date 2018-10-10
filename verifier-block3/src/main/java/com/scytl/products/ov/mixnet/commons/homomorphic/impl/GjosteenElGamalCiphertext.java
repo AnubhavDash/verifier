@@ -156,13 +156,14 @@ public class GjosteenElGamalCiphertext implements Ciphertext {
 
     @Override
     public String toString() {
+    	//TODO please, modify this method once the toString() method in the CiphertextImpl class of crypotlib is changed.
         StringBuilder strbrd = new StringBuilder();
+        strbrd.append("CiphertextImpl [gamma=");
         strbrd.append(_gamma.toString());
-        for (GroupElement phi : _phis) {
-            strbrd.append(" ");
-            strbrd.append(phi.toString());
-        }
-
+        strbrd.append(", phis=");
+        GroupElement[] phisArray = new GroupElement[_phis.size()];
+        strbrd.append(Arrays.toString(_phis.toArray(phisArray)));
+        strbrd.append("]");
         return strbrd.toString();
     }
 

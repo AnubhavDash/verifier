@@ -6,6 +6,8 @@
  */
 package com.scytl.products.ov.mixnet.commons.beans.proofs;
 
+import java.util.Arrays;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
@@ -29,9 +31,9 @@ public final class HadamardProductProofInitialMessage {
     @Override
     public String toString() {
         final StringBuilder strbldr = new StringBuilder();
-        for (PublicCommitment a_cB : _cB) {
-            strbldr.append(a_cB.toString());
-        }
+        strbldr.append("HadamardProductProofInitialMessage [_cB=");
+        strbldr.append(Arrays.toString(_cB));
+        strbldr.append("]");
         return strbldr.toString();
     }
 }

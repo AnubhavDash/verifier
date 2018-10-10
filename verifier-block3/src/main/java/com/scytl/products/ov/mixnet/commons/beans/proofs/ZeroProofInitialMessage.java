@@ -6,6 +6,8 @@
  */
 package com.scytl.products.ov.mixnet.commons.beans.proofs;
 
+import java.util.Arrays;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
@@ -50,13 +52,15 @@ public class ZeroProofInitialMessage {
     }
 
     @Override
-    public String toString() {
+    public String toString() {    	
         final StringBuilder strbldr = new StringBuilder();
-        strbldr.append(_cA0.toString());
-        strbldr.append(_cBM.toString());
-        for (PublicCommitment a_cD : _cD) {
-            strbldr.append(a_cD.toString());
-        }
+        strbldr.append("ZeroProofInitialMessage [_cA0=");
+        strbldr.append(_cA0);
+        strbldr.append(", _cBM=");
+        strbldr.append(_cBM);
+        strbldr.append(", _cD=");
+        strbldr.append(Arrays.toString(_cD));
+        strbldr.append("]");
         return strbldr.toString();
     }
 

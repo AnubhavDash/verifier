@@ -28,7 +28,7 @@ final class ElGamalEncryptedBallotEntryParser implements CSVEntryParser<ElGamalE
     }
 
     /**
-     * @see CSVEntryParser#parseEntry(String[])
+     * @see com.googlecode.jcsv.reader.CSVEntryParser#parseEntry(String[])
      */
     @Override
     public ElGamalEncryptedBallot parseEntry(final String... args) {

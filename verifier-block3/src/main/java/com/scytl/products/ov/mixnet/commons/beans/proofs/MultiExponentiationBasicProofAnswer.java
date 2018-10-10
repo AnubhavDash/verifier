@@ -11,8 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Randomness;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 
-import java.util.Arrays;
-
 public class MultiExponentiationBasicProofAnswer {
 
     private final Exponent[] _a;

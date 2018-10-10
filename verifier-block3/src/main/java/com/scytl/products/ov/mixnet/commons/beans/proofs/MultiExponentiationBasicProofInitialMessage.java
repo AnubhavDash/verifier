@@ -6,6 +6,8 @@
  */
 package com.scytl.products.ov.mixnet.commons.beans.proofs;
 
+import java.util.Arrays;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
@@ -52,13 +54,13 @@ public class MultiExponentiationBasicProofInitialMessage {
     @Override
     public String toString() {
         final StringBuilder strbldr = new StringBuilder();
+        strbldr.append("MultiExponentiationBasicProofInitialMessage [_cA0=");
         strbldr.append(_cA0.toString());
-        for (final PublicCommitment a_cB : _cB) {
-            strbldr.append(a_cB.toString());
-        }
-        for (final Ciphertext a_E : _E) {
-            strbldr.append(a_E.toString());
-        }
+        strbldr.append(", _cB=");
+        strbldr.append(Arrays.toString(_cB));
+        strbldr.append(", _E=");
+        strbldr.append(Arrays.toString(_E));
+        strbldr.append("]");
         return strbldr.toString();
     }
 }

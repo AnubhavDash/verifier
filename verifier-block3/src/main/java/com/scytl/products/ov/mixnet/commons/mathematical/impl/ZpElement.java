@@ -143,7 +143,15 @@ public class ZpElement implements GroupElement {
 
     @Override
     public String toString() {
-        return _value.toString();
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("ZpGroupElement [_value=");
+    	builder.append(_value);
+    	builder.append(", _p=");
+    	builder.append(_params.getP());
+    	builder.append(", _q=");
+    	builder.append(_params.getOrder());
+    	builder.append("]");
+        return builder.toString();
     }
 
     /**

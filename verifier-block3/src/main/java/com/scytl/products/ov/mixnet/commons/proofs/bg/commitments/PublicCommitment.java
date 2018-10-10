@@ -47,6 +47,10 @@ public class PublicCommitment {
 
     @Override
     public String toString() {
-        return _commitment.toString();
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("PublicCommitment [_commitment=");
+    	builder.append(_commitment);
+    	builder.append("]");
+    	return builder.toString();
     }
 }
