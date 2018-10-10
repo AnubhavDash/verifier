@@ -8,6 +8,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -50,14 +53,14 @@ public class SecureLogsHelper {
 
         //Assign the control components to the entry based on the “host” and the mapping_cc_hosts.csv
         Iterable<HostMappingElement> iterable = Deserializer.fromCsv(mapping.getParentFile(), mapping.getName(), ";", Deserializer.toHostMappingElement);
-        // get host/CC mapping
+            // create host/CC mapping
         Map<String, String> hostCcMapping = StreamSupport.stream(iterable.spliterator(), false)
                 .filter(hme -> !hme.getHostname().equalsIgnoreCase(HOSTNAME_LABEL_IN_CSV))
                 .map(hme -> {
                     return new AbstractMap.SimpleEntry<>(hme.getHostname(), hme.getCc());
                 }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
-        // create logsCCsMap based on logsHostsMap and host/CC mapping
+          // create logsCCsMap based on logsHostsMap and host/CC mapping
         Map<SecureLog, String> logsCCsMap = logsHostsMap.keySet()
                 .stream()
                 .map(log -> {
@@ -66,6 +69,34 @@ public class SecureLogsHelper {
                     return new AbstractMap.SimpleEntry<>(log, cc);
                 }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
+        // create map<source, <log, timeStamp>
+        Map<String, Map<SecureLog, Date>> map = new HashMap<>();
+        logsCCsMap.keySet()
+                .forEach( log -> {
+                    String source = log.getResult().getSource();
+                    Map<SecureLog, Date> secureLogDateMap = new HashMap();
+                    if (map.get(source) == null){
+                        map.put(source, secureLogDateMap);
+                    }
+                    secureLogDateMap  = map.get(source);
+                    String raw = log.getResult().getRaw();
+                    String[] split = raw.split("\\|");
+                    String timeStamp = split[0];
+                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss,S");
+                    Date logTimeStamp = null;
+                    try {
+                        logTimeStamp = format.parse(timeStamp);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    secureLogDateMap.put(log, logTimeStamp);
+                    map.put(source, secureLogDateMap);
+                });
+
+
+
+        //Output:
+        //Data structure with chronologically ordered secure logs, per control component, per host
         return result;
     }
 
