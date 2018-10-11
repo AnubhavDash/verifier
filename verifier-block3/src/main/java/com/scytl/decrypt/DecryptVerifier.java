@@ -16,8 +16,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import com.scytl.decrypt.beans.DecryptionProof;
 import com.scytl.decrypt.proofs.decrypt.DecryptionProofVerifier;
@@ -36,8 +35,7 @@ import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
 
 public class DecryptVerifier {
 
-	private final static Logger LOGGER = LoggerFactory
-			.getLogger(DecryptVerifier.class);
+	private final static Logger LOGGER = Logger.getLogger(DecryptVerifier.class);
 
 	public static int verify(Path rootPath) {
         try {

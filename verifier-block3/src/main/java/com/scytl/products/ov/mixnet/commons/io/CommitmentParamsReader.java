@@ -11,8 +11,7 @@ import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroupParams;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentParams;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,7 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 class CommitmentParamsReader extends SerializedDataReader {
-	private final static Logger LOGGER = LoggerFactory.getLogger(CommitmentParamsReader.class);
+	private final static Logger LOGGER = Logger.getLogger(CommitmentParamsReader.class);
 
 	/**
 	 * Reads a set of commitment parameters from a file. Note: a set of

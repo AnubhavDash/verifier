@@ -9,14 +9,13 @@ package com.scytl;
 import java.io.File;
 import java.nio.file.Paths;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.scytl.decrypt.DecryptVerifier;
 import com.scytl.products.ov.mixnet.BGVerifier;
+import org.apache.log4j.Logger;
 
 public class Main {
-    private final static Logger LOGGER = LoggerFactory.getLogger(Main.class);
+    private final static Logger LOGGER = Logger.getLogger(Main.class);
 
     public static void main(String[] args) {
         if (args.length == 0) {

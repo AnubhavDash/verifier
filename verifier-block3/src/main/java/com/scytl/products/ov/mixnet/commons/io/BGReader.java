@@ -10,8 +10,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import com.scytl.products.ov.mixnet.BGVerifier;
 import com.scytl.products.ov.mixnet.commons.configuration.locations.DefaultLocationNames;
@@ -21,7 +20,7 @@ import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentParams;
 
 public class BGReader {
-    private final static Logger LOGGER = LoggerFactory.getLogger(BGVerifier.class);
+    private final static Logger LOGGER = Logger.getLogger(BGVerifier.class);
 
     /**
      * Create commitment parameters

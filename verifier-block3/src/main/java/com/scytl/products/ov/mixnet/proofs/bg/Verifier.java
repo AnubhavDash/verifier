@@ -8,12 +8,11 @@ package com.scytl.products.ov.mixnet.proofs.bg;
 
 import java.math.BigInteger;
 
-import org.slf4j.Logger;
-
 import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentParams;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
+import org.apache.log4j.Logger;
 
 abstract class Verifier {
 

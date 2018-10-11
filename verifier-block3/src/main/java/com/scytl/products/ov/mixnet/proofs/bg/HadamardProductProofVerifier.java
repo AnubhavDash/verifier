@@ -9,8 +9,10 @@ package com.scytl.products.ov.mixnet.proofs.bg;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import ch.post.it.evoting.verifier.block.block3.BGResultNotifier;
+import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
+import ch.post.it.evoting.verifier.common.Status;
+import org.apache.log4j.Logger;
 
 import com.scytl.products.ov.mixnet.commons.beans.proofs.HadamardProductProofAnswer;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.HadamardProductProofInitialMessage;
@@ -21,7 +23,7 @@ import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitme
 import com.scytl.products.ov.mixnet.commons.tools.RandomOracleHash;
 
 public class HadamardProductProofVerifier {
-    private final static Logger LOGGER = LoggerFactory.getLogger(HadamardProductProofVerifier.class);
+    private final static Logger LOGGER = Logger.getLogger(HadamardProductProofVerifier.class);
 
     private final CommitmentParams _params;
 
@@ -48,12 +50,15 @@ public class HadamardProductProofVerifier {
         _RO = new RandomOracleHash(_groupOrder);
     }
 
-    public boolean verify(final HadamardProductProofInitialMessage initial, final HadamardProductProofAnswer answer)
+    public boolean verify(final HadamardProductProofInitialMessage initial, final HadamardProductProofAnswer answer, BGResultNotifier notifier)
             throws NoSuchAlgorithmException {
 
         final PublicCommitment[] cGivenB = initial.getCommitmentPublicB();
-        if (!isValidCommitment(cGivenB))
+        if (isValidCommitment(cGivenB, notifier)) {
+            notifier.notify(BGVerificationProcessor.TestType.HadamardProductProof, Status.OK, null);
+        } else {
             return false;
+        }
 
         final PublicCommitment[] cD = new PublicCommitment[_m];
         _RO.addDataToRO(_cA);
@@ -87,34 +92,41 @@ public class HadamardProductProofVerifier {
 
         final ZeroProofVerifier verifZero =
             new ZeroProofVerifier(_params, cZeroArgumentA, cD, _groupOrder, challengeInnerProduct);
-        if (!verifZero.verify(answer.getInitial(), answer.getAnswer()))
+        if (verifZero.verify(answer.getInitial(), answer.getAnswer(), notifier)) {
+            notifier.notify(BGVerificationProcessor.TestType.ZeroProof, Status.OK, null);
+        } else {
             return false;
+        }
 
         LOGGER.info("The Hadamard Argument was verified successfully!");
         return true;
     }
 
-    private boolean isValidCommitment(PublicCommitment[] cGivenB) {
+    private boolean isValidCommitment(PublicCommitment[] cGivenB, BGResultNotifier notifier) {
         if ((cGivenB.length != _m) && (cGivenB.length != 1)) {
             LOGGER.error("ERROR(Hadamard Argument): commitment to B does not have the expected length");
+            notifier.notify(BGVerificationProcessor.TestType.HadamardProductProof, Status.NOK, "ERROR(Hadamard Argument): commitment to B does not have the expected length");
             return false;
         }
 
         for (int i = 0; i < cGivenB.length; i++) {
             if (!cGivenB[i].getElement().isGroupElement()) {
                 LOGGER.error("ERROR(Zero Argument): cB[" + i + "] is not a group element");
+                notifier.notify(BGVerificationProcessor.TestType.HadamardProductProof, Status.NOK, "ERROR(Zero Argument): cB[" + i + "] is not a group element");
                 return false;
             }
         }
 
         if (!cGivenB[0].isEqual(_cA[0])) {
             LOGGER.error("ERROR(Hadamard Argument): commitment to B[0] does not correspond to commitment to A[0]");
+            notifier.notify(BGVerificationProcessor.TestType.HadamardProductProof, Status.NOK, "ERROR(Hadamard Argument): commitment to B[0] does not correspond to commitment to A[0]");
             return false;
         }
 
         if (!cGivenB[_m - 1].isEqual(_cB)) {
             if (!cGivenB[1].isEqual(_cB)) {
                 LOGGER.error("ERROR(Hadamard Argument): commitment to B[m-1] does not correspond to commitment to b");
+                notifier.notify(BGVerificationProcessor.TestType.HadamardProductProof, Status.NOK, "ERROR(Hadamard Argument): commitment to B[m-1] does not correspond to commitment to b");
                 return false;
             }
         }

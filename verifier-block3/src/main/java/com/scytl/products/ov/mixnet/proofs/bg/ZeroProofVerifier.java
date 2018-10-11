@@ -8,8 +8,10 @@ package com.scytl.products.ov.mixnet.proofs.bg;
 
 import java.math.BigInteger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import ch.post.it.evoting.verifier.block.block3.BGResultNotifier;
+import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
+import ch.post.it.evoting.verifier.common.Status;
+import org.apache.log4j.Logger;
 
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ZeroProofAnswer;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ZeroProofInitialMessage;
@@ -20,7 +22,7 @@ import com.scytl.products.ov.mixnet.commons.tools.ExponentTools;
 import com.scytl.products.ov.mixnet.commons.tools.RandomOracleHash;
 
 public class ZeroProofVerifier extends Verifier {
-    private final static Logger LOGGER = LoggerFactory.getLogger(ZeroProofVerifier.class);
+    private final static Logger LOGGER = Logger.getLogger(ZeroProofVerifier.class);
 
     private final CommitmentParams _params;
 
@@ -58,30 +60,38 @@ public class ZeroProofVerifier extends Verifier {
         _challengeInnerProduct = challengeInnerProduct;
     }
 
-    public boolean verify(final ZeroProofInitialMessage initial, final ZeroProofAnswer answer) {
+    public boolean verify(final ZeroProofInitialMessage initial, final ZeroProofAnswer answer, BGResultNotifier notifier) {
 
         final PublicCommitment[] cD = initial.getCommitmentPublicD();
         _cA[0] = initial.getCommitmentPublicA0();
         _cB[_m] = initial.getCommitmentPublicBM();
 
-        if (!(isGroupElement(_cA[0], "cA0") && isGroupElement(_cB[_m], "cBm")))
+        if (!(isGroupElement(_cA[0], "cA0") && isGroupElement(_cB[_m], "cBm"))) {
+            notifier.notify(BGVerificationProcessor.TestType.ZeroProof, Status.NOK, "cA0 or cBm are not GroupElement");
             return false;
+        }
 
         if ((cD.length != 2 * _m + 1) && (_m != 1)) {
             LOGGER.error("ERROR(Zero Argument): cD does not have the expected length");
+            notifier.notify(BGVerificationProcessor.TestType.ZeroProof, Status.NOK, "ERROR(Zero Argument): cD does not have the expected length");
             return false;
         }
 
-        if (!isGroupElement(cD, "cD"))
+        if (!isGroupElement(cD, "cD")) {
+            notifier.notify(BGVerificationProcessor.TestType.ZeroProof, Status.NOK, "cD is not GroupElement");
             return false;
+        }
         if (!cD[_m + 1].verifyOpening(new Exponent[] {new Exponent(0, _groupOrder) }, new Exponent(0, _groupOrder),
             _params) && (_m != 1)) {
             LOGGER.error("ERROR(Zero Argument): cD[m+1] is not a commitment to 0 with randomness 0");
+            notifier.notify(BGVerificationProcessor.TestType.ZeroProof, Status.NOK, "ERROR(Zero Argument): cD[m+1] is not a commitment to 0 with randomness 0");
             return false;
         }
 
-        if (!validate(answer))
+        if (!validate(answer)) {
+            notifier.notify(BGVerificationProcessor.TestType.ZeroProof, Status.NOK, "ZeroProof validation failed");
             return false;
+        }
 
         PublicCommitment comCAR = _cA[0];
         PublicCommitment comCBS = _cB[_m];
@@ -104,8 +114,10 @@ public class ZeroProofVerifier extends Verifier {
             comCABT = comCABT.multiply(cD[i].exponentiate(accumulator));
             accumulator = accumulator.multiply(challengeX);
         }
-        if (!checkAllOpenings(comCAR, comCBS, comCABT, answer))
+        if (!checkAllOpenings(comCAR, comCBS, comCABT, answer)) {
+            notifier.notify(BGVerificationProcessor.TestType.ZeroProof, Status.NOK, "checkAllOpenings failed");
             return false;
+        }
 
         LOGGER.info("The Zero Argument was verified successfully!");
         return true;

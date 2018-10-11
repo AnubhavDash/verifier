@@ -6,15 +6,14 @@
  */
 package com.scytl.products.ov.mixnet.commons.beans.proofs;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 
 public class MultiExponentiationReductionAnswer {
-    private final static Logger LOGGER = LoggerFactory.getLogger(MultiExponentiationReductionAnswer.class);
+    private final static Logger LOGGER = Logger.getLogger(MultiExponentiationReductionAnswer.class);
 
     private final Exponent[] _b;
 

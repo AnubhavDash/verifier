@@ -8,8 +8,10 @@ package com.scytl.products.ov.mixnet.proofs.bg;
 
 import java.math.BigInteger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import ch.post.it.evoting.verifier.block.block3.BGResultNotifier;
+import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
+import ch.post.it.evoting.verifier.common.Status;
+import org.apache.log4j.Logger;
 
 import com.scytl.products.ov.mixnet.commons.beans.proofs.SingleValueProductProofAnswer;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.SingleValueProductProofInitialMessage;
@@ -19,7 +21,7 @@ import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitme
 import com.scytl.products.ov.mixnet.commons.tools.RandomOracleHash;
 
 public class SingleValueProductProofVerifier extends Verifier {
-    private final static Logger LOGGER = LoggerFactory.getLogger(SingleValueProductProofVerifier.class);
+    private final static Logger LOGGER = Logger.getLogger(SingleValueProductProofVerifier.class);
 
     private final CommitmentParams _compars;
 
@@ -41,10 +43,12 @@ public class SingleValueProductProofVerifier extends Verifier {
         _RO = new RandomOracleHash(groupOrder);
     }
 
-    public boolean verify(final SingleValueProductProofInitialMessage ini, final SingleValueProductProofAnswer ans) {
+    public boolean verify(final SingleValueProductProofInitialMessage ini, final SingleValueProductProofAnswer ans, BGResultNotifier notifier) {
 
-        if (!validateInitialData(ini, ans))
+        if (!validateInitialData(ini, ans, notifier)) {
+            notifier.notify(BGVerificationProcessor.TestType.SingleValueProductProof, Status.NOK, "InitialData validation failed");
             return false;
+        }
 
         _RO.addDataToRO(_cA);
         _RO.addDataToRO(_b);
@@ -60,10 +64,13 @@ public class SingleValueProductProofVerifier extends Verifier {
             openingcdeltaDelta[i] = challengeX.multiply(ans.getExponentsTildeB()[i + 1])
                 .add(ans.getExponentsTildeB()[i].multiply(ans.getExponentsTildeA()[i + 1]).negate());
         }
-        if (!validate(ans, challengeX, comCATilde, comCDeltadelta, openingcdeltaDelta))
+        if (!validate(ans, challengeX, comCATilde, comCDeltadelta, openingcdeltaDelta)) {
+            notifier.notify(BGVerificationProcessor.TestType.SingleValueProductProof, Status.NOK, "validation failed");
             return false;
+        }
 
         LOGGER.info("The Single Value Product Argument was verified successfully!");
+        notifier.notify(BGVerificationProcessor.TestType.SingleValueProductProof, Status.OK, null);
         return true;
 
     }
@@ -76,7 +83,7 @@ public class SingleValueProductProofVerifier extends Verifier {
             && areEquals(ans.getExponentsTildeB()[_n - 1], challengeX.multiply(_b), "tilde b and bchallenge");
     }
 
-    private boolean validateInitialData(SingleValueProductProofInitialMessage ini, SingleValueProductProofAnswer ans) {
+    private boolean validateInitialData(SingleValueProductProofInitialMessage ini, SingleValueProductProofAnswer ans, BGResultNotifier notifier) {
         return isGroupElement(ini.getCommitmentPublicD(), "cd")
             && isGroupElement(ini.getCommitmentPublicLowDelta(), "cdelta")
             && isGroupElement(ini.getCommitmentPublicHighDelta(), "cDelta")

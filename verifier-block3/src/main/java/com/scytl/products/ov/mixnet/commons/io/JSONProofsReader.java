@@ -17,15 +17,14 @@ import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
 import com.scytl.products.ov.mixnet.commons.homomorphic.impl.GjosteenElGamalCiphertext;
 import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class JSONProofsReader implements ProofsReader {
-    private final static Logger LOGGER = LoggerFactory.getLogger(JSONProofsReader.class);
+    private final static Logger LOGGER = Logger.getLogger(JSONProofsReader.class);
 
     @Override
     public ShuffleProof read(Path outputParentPath, String batchName) throws IOException {

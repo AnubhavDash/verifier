@@ -12,8 +12,7 @@ import java.io.Reader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import com.googlecode.jcsv.reader.CSVReader;
 import com.googlecode.jcsv.reader.internal.CSVReaderBuilder;
@@ -25,7 +24,7 @@ import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroupParams;
  * Loads an {@code ElGamalEncryptedBallots} from a source.
  */
 public final class ElGamalEncryptedBallotsLoader {
-    private final static Logger LOGGER = LoggerFactory.getLogger(ElGamalEncryptedBallotsLoader.class);
+    private final static Logger LOGGER = Logger.getLogger(ElGamalEncryptedBallotsLoader.class);
 
     public static ElGamalEncryptedBallots loadCSV(final ZpGroupParams groupParams, Path outputParentPath,
             String batchName, String fileName) throws IOException {

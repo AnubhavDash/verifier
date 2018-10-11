@@ -1,16 +1,14 @@
 /**
  * @author aescala  30/10/2013
- *
+ * <p>
  * Copyright (C) 2013 Scytl Secure Electronic Voting SA
  * All rights reserved.
  */
 package com.scytl.products.ov.mixnet.proofs.bg;
 
-import java.security.NoSuchAlgorithmException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import ch.post.it.evoting.verifier.block.block3.BGResultNotifier;
+import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
+import ch.post.it.evoting.verifier.common.Status;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProofSecondAnswer;
 import com.scytl.products.ov.mixnet.commons.constants.Constants;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
@@ -22,9 +20,12 @@ import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PrivateCommitm
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
 import com.scytl.products.ov.mixnet.commons.tools.CiphertextTools;
 import com.scytl.products.ov.mixnet.commons.tools.RandomOracleHash;
+import org.apache.log4j.Logger;
+
+import java.security.NoSuchAlgorithmException;
 
 public class ShuffleProofVerifier {
-    private final static Logger LOGGER = LoggerFactory.getLogger(ShuffleProofVerifier.class);
+    private final static Logger LOGGER = Logger.getLogger(ShuffleProofVerifier.class);
 
     private final Group _group;
 
@@ -47,7 +48,7 @@ public class ShuffleProofVerifier {
     private final int _mu;
 
     private ShuffleProofVerifier(final Group group, final Cryptosystem cryptosystem, final CommitmentParams compars,
-            final Ciphertext[][] C, final Ciphertext[][] cPrime, final int mu, final int numiterations) {
+                                 final Ciphertext[][] C, final Ciphertext[][] cPrime, final int mu, final int numiterations) {
         _group = group;
         _cryptosystem = cryptosystem;
         _compars = compars;
@@ -62,17 +63,21 @@ public class ShuffleProofVerifier {
     }
 
     public ShuffleProofVerifier(final Cryptosystem cryptosystem, final CommitmentParams compars, final Ciphertext[][] C,
-            final Ciphertext[][] cPrime) {
+                                final Ciphertext[][] cPrime) {
         this(compars.getGroup(), cryptosystem, compars, C, cPrime, 0, 0);
     }
 
     public boolean verifyProof(final PublicCommitment[] cA, final PublicCommitment[] cB,
-            final ShuffleProofSecondAnswer ans) throws NoSuchAlgorithmException {
+                               final ShuffleProofSecondAnswer ans, BGResultNotifier notifier) throws NoSuchAlgorithmException {
         LOGGER.debug("\n-------------- Start Verification -------------------");
         long initTime = System.currentTimeMillis();
 
-        if (!(isValidCommitment(cA, "cA") && isValidCommitment(cB, "cB")))
+        boolean shuffleResult = isValidCommitment(cA, "cA", notifier) && isValidCommitment(cB, "cB", notifier);
+        if (shuffleResult) {
+            notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.OK, null);
+        } else {
             return false;
+        }
 
         _RO.addDataToRO(_C);
         _RO.addDataToRO(_Cprime);
@@ -91,9 +96,8 @@ public class ShuffleProofVerifier {
         final Ciphertext lhsME = computeLeftHandMEArg(vecX);
 
         final ProductProofVerifier verifPA = new ProductProofVerifier(_compars, cPA, rhsPA, _group.getOrder());
-
         LOGGER.debug("Verifying Produc Argument...");
-        if (!verifPA.verify(ans.getMsgPA())) {
+        if (!verifPA.verify(ans.getMsgPA(), notifier)) {
             LOGGER.error("ERROR(Shuffle Argument):  Product Argument didn't verify");
             return false;
         }
@@ -101,8 +105,11 @@ public class ShuffleProofVerifier {
         // if (_numiterations == 0) {
         LOGGER.debug("Verifying Multi-Exponentiation Argument...");
         final MultiExponentiationBasicProofVerifier verifME =
-            new MultiExponentiationBasicProofVerifier(_cryptosystem, _compars, _Cprime, lhsME, cB, _group.getOrder());
-        if (!verifME.verify(ans.getIniMEBasic(), ans.getAnsMEBasic())) {
+                new MultiExponentiationBasicProofVerifier(_cryptosystem, _compars, _Cprime, lhsME, cB, _group.getOrder());
+        boolean multiExponentiationProof = verifME.verify(ans.getIniMEBasic(), ans.getAnsMEBasic(), notifier);
+        if (multiExponentiationProof) {
+            notifier.notify(BGVerificationProcessor.TestType.MultiExponentiationProof, Status.OK, null);
+        } else {
             LOGGER.error("ERROR(Shuffle Argument):  MultiExpo argument didn't verify");
             return false;
         }
@@ -129,13 +136,13 @@ public class ShuffleProofVerifier {
     }
 
     private Exponent computeRightHandProductArg(final Exponent challengeY, final Exponent challengeZ,
-            final Exponent[][] vecX) {
+                                                final Exponent[][] vecX) {
         Exponent result = new Exponent(1, _group.getOrder());
         Exponent minusZ = challengeZ.negate();
 
         for (int i = 0; i < _m * _n; i++) {
             final Exponent factor =
-                challengeY.multiply(new Exponent(i + 1, _group.getOrder())).add(vecX[i / _n][i % _n]).add(minusZ);
+                    challengeY.multiply(new Exponent(i + 1, _group.getOrder())).add(vecX[i / _n][i % _n]).add(minusZ);
             result = result.multiply(factor);
         }
         return result;
@@ -150,15 +157,17 @@ public class ShuffleProofVerifier {
         return result;
     }
 
-    private boolean isValidCommitment(PublicCommitment[] commitment, String commitmentName) {
+    private boolean isValidCommitment(PublicCommitment[] commitment, String commitmentName, BGResultNotifier notifier) {
         if (commitment.length != _m) {
             LOGGER.error("ERROR(Shuffle Argument): " + commitmentName + " doesn't have the expected length");
+            notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.NOK, "ERROR(Shuffle Argument): " + commitmentName + " doesn't have the expected length");
             return false;
         }
 
         for (int i = 0; i < commitment.length; i++) {
             if (!commitment[i].getElement().isGroupElement()) {
                 LOGGER.error("ERROR(Shuffle Argument): " + commitmentName + "[" + i + "] is not a group element");
+                notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.NOK, "ERROR(Shuffle Argument): " + commitmentName + "[" + i + "] is not a group element");
                 return false;
             }
         }
@@ -166,13 +175,13 @@ public class ShuffleProofVerifier {
     }
 
     private PublicCommitment[] computeCommitment(PublicCommitment[] cA, PublicCommitment[] cB, Exponent challengeY,
-            Exponent challengeZ) {
+                                                 Exponent challengeZ) {
         final Exponent zNegated = challengeZ.negate();
 
         final PublicCommitment[] cMinusZ = new PublicCommitment[_m];
         Exponent zero = new Exponent(0, _group.getOrder());
         final PublicCommitment minusZCommitment =
-            new PrivateCommitment(zNegated, zero, _compars, _n).makePublicCommitment();
+                new PrivateCommitment(zNegated, zero, _compars, _n).makePublicCommitment();
         for (int i = 0; i < _m; i++) {
             cMinusZ[i] = minusZCommitment;
         }

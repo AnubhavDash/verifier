@@ -6,11 +6,9 @@
  */
 package com.scytl.products.ov.mixnet.proofs.bg;
 
-import java.math.BigInteger;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import ch.post.it.evoting.verifier.block.block3.BGResultNotifier;
+import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
+import ch.post.it.evoting.verifier.common.Status;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.MultiExponentiationBasicProofAnswer;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.MultiExponentiationBasicProofInitialMessage;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
@@ -22,9 +20,12 @@ import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitme
 import com.scytl.products.ov.mixnet.commons.tools.CiphertextTools;
 import com.scytl.products.ov.mixnet.commons.tools.ExponentTools;
 import com.scytl.products.ov.mixnet.commons.tools.RandomOracleHash;
+import org.apache.log4j.Logger;
+
+import java.math.BigInteger;
 
 public class MultiExponentiationBasicProofVerifier extends Verifier {
-    private final static Logger LOGGER = LoggerFactory.getLogger(MultiExponentiationBasicProofVerifier.class);
+    private final static Logger LOGGER = Logger.getLogger(MultiExponentiationBasicProofVerifier.class);
 
     private final Cryptosystem _cryptosystem;
 
@@ -45,7 +46,7 @@ public class MultiExponentiationBasicProofVerifier extends Verifier {
     private final CommitmentParams _comParams;
 
     public MultiExponentiationBasicProofVerifier(final Cryptosystem cryptosystem, final CommitmentParams compars,
-            final Ciphertext[][] vecC, final Ciphertext C, final PublicCommitment[] cA, final BigInteger groupOrder) {
+                                                 final Ciphertext[][] vecC, final Ciphertext C, final PublicCommitment[] cA, final BigInteger groupOrder) {
         super("multiExpoBasicArg");
         _cryptosystem = cryptosystem;
         _comParams = compars;
@@ -59,7 +60,14 @@ public class MultiExponentiationBasicProofVerifier extends Verifier {
     }
 
     public boolean verify(final MultiExponentiationBasicProofInitialMessage initial,
-            final MultiExponentiationBasicProofAnswer answer) {
+                          final MultiExponentiationBasicProofAnswer answer) {
+        return verify(initial, answer, (test, status, message) -> {
+        });
+    }
+
+
+    public boolean verify(final MultiExponentiationBasicProofInitialMessage initial,
+                          final MultiExponentiationBasicProofAnswer answer, BGResultNotifier notifier) {
 
         final PublicCommitment cA0 = initial.getCommitmentPublicA0();
         final PublicCommitment[] cB = initial.getCommitmentPublicB();
@@ -71,11 +79,14 @@ public class MultiExponentiationBasicProofVerifier extends Verifier {
         final Randomness tau = answer.getRandomnessTau();
 
         if (!(checkGroupElements(cA0, cB, E) && checkExponents(a, b, r, s) && checkTau(tau)
-            && isCommitmentTo0(cB[_m], "cB[m]", _groupOrder)))
+                && isCommitmentTo0(cB[_m], "cB[m]", _groupOrder))) {
+            notifier.notify(BGVerificationProcessor.TestType.MultiExponentiationProof, Status.NOK, "checks failed");
             return false;
+        }
 
         if (!_C.equals(E[_m])) {
             LOGGER.error("ERROR(multiExpoBasicArg): C is not equal to E[_m]");
+            notifier.notify(BGVerificationProcessor.TestType.MultiExponentiationProof, Status.NOK, "ERROR(multiExpoBasicArg): C is not equal to E[_m]");
             return false;
         }
 
@@ -112,11 +123,14 @@ public class MultiExponentiationBasicProofVerifier extends Verifier {
             accumulator = accumulator.multiply(challengeX);
         }
 
-        if (!checkOpenings(a, b, r, s, comCA, comCB))
+        if (!checkOpenings(a, b, r, s, comCA, comCB)) {
+            notifier.notify(BGVerificationProcessor.TestType.MultiExponentiationProof, Status.NOK, "checkOpenings failed");
             return false;
+        }
 
         if (!acumE.equals(acumC)) {
             LOGGER.error("ERROR(multiExpoBasicArg): the encryptions don't match");
+            notifier.notify(BGVerificationProcessor.TestType.MultiExponentiationProof, Status.NOK, "ERROR(multiExpoBasicArg): the encryptions don't match");
             return false;
         }
 
@@ -125,7 +139,7 @@ public class MultiExponentiationBasicProofVerifier extends Verifier {
     }
 
     private boolean checkOpenings(Exponent[] a, Exponent[] b, Exponent r, Exponent s, PublicCommitment comCA,
-            PublicCommitment comCB) {
+                                  PublicCommitment comCB) {
         return isValidOpening(a, r, comCA, "a") && isValidOpening(b, s, comCB, "b");
     }
 
@@ -135,12 +149,12 @@ public class MultiExponentiationBasicProofVerifier extends Verifier {
 
     private boolean checkExponents(final Exponent[] a, final Exponent[] b, final Exponent r, final Exponent s) {
         return isValidExponent(a, _n, "a") && isValidExponent(r, "r")
-            && isValidExponent(b, _cryptosystem.getNumberOfMessages(), "b") && isValidExponent(s, "s");
+                && isValidExponent(b, _cryptosystem.getNumberOfMessages(), "b") && isValidExponent(s, "s");
     }
 
     private boolean checkGroupElements(PublicCommitment cA0, PublicCommitment[] cB, Ciphertext[] E) {
         return isGroupElement(cA0, "cA0") && hasValidLength(cB.length, 2 * _m, "cB") && isGroupElement(cB, "cB")
-            && hasValidLength(E.length, 2 * _m, "E") && isCiphertext(E, "E");
+                && hasValidLength(E.length, 2 * _m, "E") && isCiphertext(E, "E");
     }
 
     private boolean isRandomness(Randomness tau, String tauName) {

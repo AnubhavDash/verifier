@@ -9,8 +9,7 @@ package com.scytl.products.ov.mixnet.proofs.bg;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import com.scytl.products.ov.mixnet.commons.beans.proofs.MultiExponentiationReductionAnswer;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.MultiExponentiationReductionInitialMessage;
@@ -25,7 +24,7 @@ import com.scytl.products.ov.mixnet.commons.tools.ExponentTools;
 import com.scytl.products.ov.mixnet.commons.tools.RandomOracleHash;
 
 public class MultiExponentiationReductionProofVerifier extends Verifier {
-    private final static Logger LOGGER = LoggerFactory.getLogger(MultiExponentiationReductionProofVerifier.class);
+    private final static Logger LOGGER = Logger.getLogger(MultiExponentiationReductionProofVerifier.class);
 
     private final Cryptosystem _cryptosystem;
 
