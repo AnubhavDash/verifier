@@ -1,15 +1,21 @@
 package ch.post.it.evoting.verifier.processor;
 
+import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.VerifierBlock;
+import ch.post.it.evoting.verifier.dto.Configuration;
 import ch.post.it.evoting.verifier.dto.Test;
 import ch.post.it.evoting.verifier.mapper.TestExecutionStatusMapper;
+import ch.post.it.evoting.verifier.report.ReportGenerator;
+import ch.post.it.evoting.verifier.util.ContestConfigurationReader;
 import ch.post.it.evoting.verifier.util.TestDefinitionTools;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.util.*;
 import java.util.concurrent.ForkJoinPool;
@@ -32,6 +38,12 @@ public class VerifierProcessor {
 
     private List<ProcessListener> listeners;
     private boolean processed;
+
+    @Autowired
+    private ReportGenerator reportGenerator;
+
+    @Autowired
+    private ContestConfigurationReader contestConfigurationReader;
 
     @PostConstruct
     private void init() {
@@ -106,5 +118,21 @@ public class VerifierProcessor {
         LinkedList<ProcessListener> copy = new LinkedList<>(this.listeners);
         init();
         this.listeners = copy;
+    }
+
+    public byte[] generatePdf(Language language) {
+        String contestName = contestConfigurationReader.getContestName(language);
+        Date contestDate = contestConfigurationReader.getContestDate();
+        return reportGenerator.generate(contestName, contestDate, this.getTestStatus(), language);
+    }
+
+    public Configuration getConfiguration() {
+        Configuration result = new Configuration();
+        result.setInputDirectory(configurationInputDirectory);
+        return result;
+    }
+
+    public void setConfiguration(@NotNull Configuration configuration) {
+        this.configurationInputDirectory = configuration.getInputDirectory();
     }
 }

@@ -37,4 +37,12 @@ public class Test01Test {
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
     }
+
+    @Test
+    public void executeTestOKWriteIns() {
+        TestResult testResult = new Test01().executeTest(new File(getClass().getResource("/Test01/OK-WRITEINS").getFile()));
+        Assert.assertNotNull(testResult);
+        Assert.assertEquals(Status.OK, testResult.getStatus());
+    }
+
 }

@@ -21,6 +21,7 @@ import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 
@@ -66,6 +67,8 @@ public class Test72 extends Test {
             } else if (e instanceof NoSuchFileException) {
                 LOGGER.debug("NoSuchFileException", e);
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test72.file.not.found.message", ((NoSuchFileException)e ).getFile()));
+            } else if (e instanceof FileNotFoundException) {
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test72.file.not.found.message", e.getMessage()));
             }
             else {
                 LOGGER.error("unexpected error", e);

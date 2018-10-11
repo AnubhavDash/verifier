@@ -19,4 +19,18 @@ public class Test {
     private Map<Language, String> description;
     private Status status;
     private Map<Language, String> message;
+
+    @Override
+    public String toString() {
+        return "Test{" +
+                "id='" + id + '\'' +
+                ", testId=" + testId +
+                ", blockId=" + blockId +
+                ", name='" + name + '\'' +
+                ", category=" + category +
+                ", description=" + description +
+                ", status=" + status +
+                ", message=" + message +
+                '}';
+    }
 }

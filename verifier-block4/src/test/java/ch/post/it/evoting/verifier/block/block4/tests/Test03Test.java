@@ -22,4 +22,18 @@ public class Test03Test {
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
     }
+
+    @Test
+    public void executeTestOKWriteIns() {
+        TestResult testResult = new Test03().executeTest(new File(getClass().getResource("/Test03/OK-WRITEINS").getFile()));
+        Assert.assertNotNull(testResult);
+        Assert.assertEquals(Status.OK, testResult.getStatus());
+    }
+
+    @Test
+    public void executeTestNOKWriteIns() {
+        TestResult testResult = new Test03().executeTest(new File(getClass().getResource("/Test03/NOK-WRITEINS").getFile()));
+        Assert.assertNotNull(testResult);
+        Assert.assertEquals(Status.NOK, testResult.getStatus());
+    }
 }
