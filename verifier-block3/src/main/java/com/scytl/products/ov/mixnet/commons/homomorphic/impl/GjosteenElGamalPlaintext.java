@@ -7,22 +7,22 @@
 package com.scytl.products.ov.mixnet.commons.homomorphic.impl;
 
 import com.scytl.products.ov.mixnet.commons.homomorphic.Plaintext;
-import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
+import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 
 public class GjosteenElGamalPlaintext implements Plaintext {
 
-    private final ZpElement[] _m;
+    private final GroupElement[] _m;
 
-    public GjosteenElGamalPlaintext(final ZpElement[] m) {
+    public GjosteenElGamalPlaintext(final GroupElement[] m) {
         _m = m;
     }
 
-    public ZpElement getValue(final int i) {
+    public GroupElement getValue(final int i) {
         return _m[i];
     }
 
     public GjosteenElGamalPlaintext multiply(final Plaintext p) {
-        ZpElement[] aux = new ZpElement[_m.length];
+        GroupElement[] aux = new GroupElement[_m.length];
         for (int i = 0; i < aux.length; i++) {
             aux[i] = _m[i].multiply(((GjosteenElGamalPlaintext) p).getValue(i));
         }
@@ -31,7 +31,7 @@ public class GjosteenElGamalPlaintext implements Plaintext {
 
     public String toString() {
         String output = "[";
-        for (ZpElement element : _m) {
+        for (GroupElement element : _m) {
             output = output.concat(element.toString() + ",");
         }
         output = output.substring(0, output.length() - 1);

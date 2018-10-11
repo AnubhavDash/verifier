@@ -6,13 +6,13 @@
  */
 package com.scytl.products.ov.mixnet.commons.homomorphic.impl;
 
+import java.math.BigInteger;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Randomness;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
-
-import java.math.BigInteger;
 
 public class GjosteenElGamalRandomness implements Randomness {
 

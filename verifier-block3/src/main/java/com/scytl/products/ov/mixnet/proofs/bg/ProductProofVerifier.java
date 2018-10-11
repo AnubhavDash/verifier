@@ -6,6 +6,9 @@
  */
 package com.scytl.products.ov.mixnet.proofs.bg;
 
+import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
+import ch.post.it.evoting.verifier.block.block3.BGResultNotifier;
+import ch.post.it.evoting.verifier.common.Status;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ProductProofMessage;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentParams;
@@ -35,25 +38,27 @@ public class ProductProofVerifier {
 
     }
 
-    public boolean verify(final ProductProofMessage ans) throws NoSuchAlgorithmException {
+    public boolean verify(final ProductProofMessage ans, BGResultNotifier notifier) throws NoSuchAlgorithmException {
 
-        return ans.getCommitmentPublicB().getElement().isGroupElement();
-
-        /*{
+        boolean productProof = ans.getCommitmentPublicB().getElement().isGroupElement();
+        if (productProof) {
+            notifier.notify(BGVerificationProcessor.TestType.ProductProof, Status.OK, null);
+        }
+        else {
             LOGGER.error("ERROR(Product Argument): cd is not a group element");
+            notifier.notify(BGVerificationProcessor.TestType.ProductProof, Status.NOK, "ERROR(Product Argument): cd is not a group element");
             return false;
-        }*/
-
-
-       /* final HadamardProductProofVerifier verifHA =
+        }
+        final HadamardProductProofVerifier verifHA =
                 new HadamardProductProofVerifier(_pars, _cA, ans.getCommitmentPublicB(), _groupOrder);
-        final boolean answer1 = verifHA.verify(ans.getIniHPA(), ans.getAnsHPA());
+        final boolean answer1 = verifHA.verify(ans.getIniHPA(), ans.getAnsHPA(), notifier);
 
         final SingleValueProductProofVerifier verifSVA =
                 new SingleValueProductProofVerifier(_pars, ans.getCommitmentPublicB(), _b, _groupOrder);
-        final boolean answer2 = verifSVA.verify(ans.getIniSVA(), ans.getAnsSVA());
+        final boolean answer2 = verifSVA.verify(ans.getIniSVA(), ans.getAnsSVA(), notifier);
+        notifier.notify(BGVerificationProcessor.TestType.SingleValueProductProof, answer1 ? Status.OK : Status.NOK, "SingleValueProductProof failed");
 
-        return answer1 && answer2;*/
+        return answer1 && answer2;
     }
 
 }

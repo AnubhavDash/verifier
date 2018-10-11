@@ -6,15 +6,15 @@
  */
 package com.scytl.products.ov.mixnet.commons.homomorphic.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.scytl.products.ov.mixnet.commons.homomorphic.Cryptosystem;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Plaintext;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Randomness;
 import com.scytl.products.ov.mixnet.commons.mathematical.Group;
+import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
-import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Implementation of the Gjosteen ElGamal cryptosystem.
@@ -23,9 +23,9 @@ public class GjosteenElGamal implements Cryptosystem {
 
     private final Exponent[] _privateKey;
 
-    private final ZpElement[] _publicKey;
+    private final GroupElement[] _publicKey;
 
-    private final ZpElement _generator;
+    private final GroupElement _generator;
 
     private final Group _group;
 
@@ -46,7 +46,7 @@ public class GjosteenElGamal implements Cryptosystem {
         _privateKey = privKey;
         _generator = group.getGenerator();
         int numKeyElements = privKey.length;
-        _publicKey = new ZpElement[numKeyElements];
+        _publicKey = new GroupElement[numKeyElements];
         for (int i = 0; i < numKeyElements; i++) {
             _publicKey[i] = _generator.exponentiate(_privateKey[i]);
         }
@@ -68,8 +68,8 @@ public class GjosteenElGamal implements Cryptosystem {
         _group = group;
         _generator = group.getGenerator();
         _privateKey = null;
-        List<ZpElement> publicKeyAsListGroupElements = pubKey.getPubKeys();
-        _publicKey = publicKeyAsListGroupElements.toArray(new ZpElement[publicKeyAsListGroupElements.size()]);
+        List<GroupElement> publicKeyAsListGroupElements = pubKey.getPubKeys();
+        _publicKey = publicKeyAsListGroupElements.toArray(new GroupElement[publicKeyAsListGroupElements.size()]);
     }
 
     /**
@@ -103,8 +103,8 @@ public class GjosteenElGamal implements Cryptosystem {
 
     public GjosteenElGamalCiphertext encrypt(final Plaintext plaintext, final Randomness randomness) {
         final Exponent randomExponent = ((GjosteenElGamalRandomness) randomness).getRandomnessValue();
-        final ZpElement gamma = _generator.exponentiate(randomExponent);
-        final List<ZpElement> phis = new ArrayList<>();
+        final GroupElement gamma = _generator.exponentiate(randomExponent);
+        final List<GroupElement> phis = new ArrayList<>();
 
         for (int i = 0, numPhis = _publicKey.length; i < numPhis; i++) {
             phis.add(_publicKey[i].exponentiate(randomExponent)
@@ -117,11 +117,11 @@ public class GjosteenElGamal implements Cryptosystem {
         return encrypt(plaintext, new GjosteenElGamalRandomness(Exponent.getRandomExponent(_group.getOrder())));
     }
 
-    public GjosteenElGamalCiphertext encrypt(final ZpElement[] plaintext, final Randomness randomness) {
+    public GjosteenElGamalCiphertext encrypt(final GroupElement[] plaintext, final Randomness randomness) {
         return encrypt(new GjosteenElGamalPlaintext(plaintext), randomness);
     }
 
-    public GjosteenElGamalCiphertext encrypt(final ZpElement[] plaintext) {
+    public GjosteenElGamalCiphertext encrypt(final GroupElement[] plaintext) {
         return encrypt(plaintext, getFreshRandomness());
     }
 
@@ -132,7 +132,7 @@ public class GjosteenElGamal implements Cryptosystem {
      *            the ciphertext to be decrypted.
      * @return the decrypted plaintext.
      */
-    public ZpElement[] decrypt(final ZpElement[] ciphertext) {
+    public GroupElement[] decrypt(final GroupElement[] ciphertext) {
         validateInputToSingleArgDecrypt(ciphertext);
         return decrypt(ciphertext, _privateKey);
     }
@@ -146,16 +146,16 @@ public class GjosteenElGamal implements Cryptosystem {
      *            the private key to be used to decrypt the ciphertext (as an array of Exponents).
      * @return the decrypted plaintext.
      */
-    public ZpElement[] decrypt(final ZpElement[] ciphertext, final Exponent[] privateKeyExponents) {
+    public GroupElement[] decrypt(final GroupElement[] ciphertext, final Exponent[] privateKeyExponents) {
         validateInputToDoubleArgDecrypt(ciphertext, privateKeyExponents);
-        ZpElement gamma = ciphertext[0];
+        GroupElement gamma = ciphertext[0];
 
         int numPhis = ciphertext.length - 1;
-        ZpElement[] phis = new ZpElement[numPhis];
+        GroupElement[] phis = new GroupElement[numPhis];
         System.arraycopy(ciphertext, 1, phis, 0, numPhis);
 
         Exponent negatedExponent;
-        ZpElement[] plaintext = new ZpElement[numPhis];
+        GroupElement[] plaintext = new GroupElement[numPhis];
 
         for (int i = 0; i < numPhis; i++) {
             negatedExponent = privateKeyExponents[i].negate();
@@ -168,7 +168,7 @@ public class GjosteenElGamal implements Cryptosystem {
         if (b.length != (_publicKey.length)) {
             System.out.println("not expected length");
         }
-        ZpElement[] aux = new ZpElement[_publicKey.length];
+        GroupElement[] aux = new GroupElement[_publicKey.length];
         for (int i = 0; i < aux.length; i++) {
             aux[i] = _group.getGenerator().exponentiate(b[i]);
         }
@@ -177,7 +177,7 @@ public class GjosteenElGamal implements Cryptosystem {
     }
 
     public GjosteenElGamalCiphertext getEncryptionOf1() {
-        ZpElement[] aux = new ZpElement[_publicKey.length];
+        GroupElement[] aux = new GroupElement[_publicKey.length];
         for (int i = 0; i < aux.length; i++) {
             aux[i] = _group.getIdentityElement();
         }
@@ -185,7 +185,7 @@ public class GjosteenElGamal implements Cryptosystem {
     }
 
     public GjosteenElGamalCiphertext getEncryptionOf1(final Randomness r) {
-        ZpElement[] aux = new ZpElement[_publicKey.length];
+        GroupElement[] aux = new GroupElement[_publicKey.length];
         for (int i = 0; i < aux.length; i++) {
             aux[i] = _group.getIdentityElement();
         }
@@ -200,7 +200,7 @@ public class GjosteenElGamal implements Cryptosystem {
         return _publicKey.length;
     }
 
-    private void validateInputToSingleArgDecrypt(final ZpElement[] ciphertext) {
+    private void validateInputToSingleArgDecrypt(final GroupElement[] ciphertext) {
         if (ciphertext == null) {
             throw new RuntimeException("The received ciphertext was null");
         } else if (_privateKey == null) {
@@ -212,7 +212,7 @@ public class GjosteenElGamal implements Cryptosystem {
         }
     }
 
-    private void validateInputToDoubleArgDecrypt(final ZpElement[] ciphertext,
+    private void validateInputToDoubleArgDecrypt(final GroupElement[] ciphertext,
             final Exponent[] privateKeyExponents) {
         if (ciphertext == null) {
             throw new RuntimeException("The received ciphertext was null");

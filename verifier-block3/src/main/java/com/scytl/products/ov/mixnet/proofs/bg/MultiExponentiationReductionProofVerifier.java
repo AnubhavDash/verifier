@@ -6,6 +6,11 @@
  */
 package com.scytl.products.ov.mixnet.proofs.bg;
 
+import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
+
+import org.apache.log4j.Logger;
+
 import com.scytl.products.ov.mixnet.commons.beans.proofs.MultiExponentiationReductionAnswer;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.MultiExponentiationReductionInitialMessage;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
@@ -17,10 +22,6 @@ import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitme
 import com.scytl.products.ov.mixnet.commons.tools.CiphertextTools;
 import com.scytl.products.ov.mixnet.commons.tools.ExponentTools;
 import com.scytl.products.ov.mixnet.commons.tools.RandomOracleHash;
-import org.apache.log4j.Logger;
-
-import java.math.BigInteger;
-import java.security.NoSuchAlgorithmException;
 
 public class MultiExponentiationReductionProofVerifier extends Verifier {
     private final static Logger LOGGER = Logger.getLogger(MultiExponentiationReductionProofVerifier.class);
@@ -50,8 +51,8 @@ public class MultiExponentiationReductionProofVerifier extends Verifier {
     private final RandomOracleHash _RO;
 
     public MultiExponentiationReductionProofVerifier(final Cryptosystem cryptosystem, final Group group,
-                                                     final CommitmentParams compars, final Ciphertext[][] vecC, final Ciphertext C, final PublicCommitment[] cA,
-                                                     final int mu, final int numiterations) {
+            final CommitmentParams compars, final Ciphertext[][] vecC, final Ciphertext C, final PublicCommitment[] cA,
+            final int mu, final int numiterations) {
         super("multiExpoReductionArg");
         _cryptosystem = cryptosystem;
         _lengthB = _cryptosystem.getNumberOfMessages();
@@ -68,7 +69,7 @@ public class MultiExponentiationReductionProofVerifier extends Verifier {
     }
 
     public boolean verify(final MultiExponentiationReductionInitialMessage initial,
-                          final MultiExponentiationReductionAnswer answer) throws NoSuchAlgorithmException {
+            final MultiExponentiationReductionAnswer answer) throws NoSuchAlgorithmException {
 
         _RO.addDataToRO(initial);
         final Exponent challengeX = _RO.getHash();
@@ -101,14 +102,14 @@ public class MultiExponentiationReductionProofVerifier extends Verifier {
 
         if (_numiterationsleft == 0) {
             final MultiExponentiationBasicProofVerifier verifier = new MultiExponentiationBasicProofVerifier(
-                    _cryptosystem, _compars, vecCprime, Cprime, cAprime, _group.getOrder());
+                _cryptosystem, _compars, vecCprime, Cprime, cAprime, _group.getOrder());
             if (!verifier.verify(answer.getIniBasic(), answer.getAnsBasic())) {
                 LOGGER.error("ERROR(multiExpoReductionArg):  MultiExpoBasic argument didn't verify");
                 return false;
             }
         } else {
             final MultiExponentiationReductionProofVerifier verifier = new MultiExponentiationReductionProofVerifier(
-                    _cryptosystem, _group, _compars, vecCprime, Cprime, cAprime, _mu, _numiterationsleft);
+                _cryptosystem, _group, _compars, vecCprime, Cprime, cAprime, _mu, _numiterationsleft);
             if (!verifier.verify(answer.getIniReduct(), answer.getAnsReduct())) {
                 LOGGER.error("ERROR(multiExpoReductionArg):  MultiExpoBasic argument didn't verify");
                 return false;
@@ -120,7 +121,7 @@ public class MultiExponentiationReductionProofVerifier extends Verifier {
     }
 
     private Ciphertext computePrime(final Exponent challengeX, final Ciphertext[] E, final Exponent[] b,
-                                    final Ciphertext[][] vecCprime, final PublicCommitment[] cAprime) {
+            final Ciphertext[][] vecCprime, final PublicCommitment[] cAprime) {
         Exponent one = new Exponent(1, _group.getOrder());
         for (int l = 0; l < _mprime; l++) {
             Exponent xacum = one;
@@ -151,8 +152,8 @@ public class MultiExponentiationReductionProofVerifier extends Verifier {
 
     private boolean validate(PublicCommitment[] cb, Ciphertext[] E, Exponent[] b, Exponent s) {
         return hasValidLength(cb.length, 2 * _mu - 1, "cb") && isGroupElement(cb, "cB")
-                && hasValidLength(E.length, 2 * _mu - 1, "E") && isCiphertext(E, "E") && isValidExponent(b, _lengthB, "b")
-                && isValidExponent(s, "s") && isCommitmentTo0(cb[_mu - 1], "cb[mu-1]", _group.getOrder());
+            && hasValidLength(E.length, 2 * _mu - 1, "E") && isCiphertext(E, "E") && isValidExponent(b, _lengthB, "b")
+            && isValidExponent(s, "s") && isCommitmentTo0(cb[_mu - 1], "cb[mu-1]", _group.getOrder());
     }
 
     public CommitmentParams getParams() {
