@@ -49,6 +49,7 @@ public class BGVerificationProcessor {
     private void reset() {
         this.processed = false;
         this.statuses.clear();
+        this.path = null;
     }
 
     public synchronized void executeProcess(Path path) {

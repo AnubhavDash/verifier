@@ -59,7 +59,7 @@ public class SecureLogBundleCreator {
         if (!bundleAccumulator.finishWithLastRowElement) {
             throw new RuntimeException("SecureLogs doesn't terminate with a LastRowLogEntry");
         }
-        //TODO remove test above bacuase not used anymore
+        //TODO remove test below because not used anymore
         if (bundleAccumulator.lastBundle != null && bundleAccumulator.lastBundle.hasRegularLogEntries()) {
             throw new RuntimeException("SecureLogs doesn't terminate with a checkpoint");
         }
