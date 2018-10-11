@@ -6,9 +6,9 @@
  */
 package com.scytl.products.ov.mixnet.commons.io;
 
-import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProof;
-
 import java.nio.file.Path;
+
+import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProof;
 
 public interface ProofsWriter {
 

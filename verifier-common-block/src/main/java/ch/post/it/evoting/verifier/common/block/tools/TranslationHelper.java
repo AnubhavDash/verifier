@@ -4,6 +4,7 @@ import ch.post.it.evoting.verifier.common.Language;
 
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class TranslationHelper {
 
@@ -35,5 +36,9 @@ public class TranslationHelper {
 
     public static String getFromResourceBundle(String resourceBundleName, String key, Locale locale, String... args) {
         return formatter.format(ResourceBundle.getBundle(resourceBundleName, locale).getString(key), (Object[]) args);
+    }
+
+    public static Map<Language, String> getSameMessageMultiLanguage(String message) {
+        return Arrays.stream(Language.values()).map(l -> new AbstractMap.SimpleEntry<>(l, message == null ? "" : message)).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
     }
 }

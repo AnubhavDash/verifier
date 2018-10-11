@@ -1,85 +1,52 @@
 package ch.post.it.evoting.verifier.block.block3.tests;
 
+import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
 import ch.post.it.evoting.verifier.block.block3.Block3TestSuite;
-import ch.post.it.evoting.verifier.block.block3.data.ShuffleDataLoader;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
-import ch.post.it.evoting.verifier.common.block.TestFailureException;
-import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProof;
-import com.scytl.products.ov.mixnet.proofs.bg.ShuffleProofVerifier;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.AbstractMap;
 
 public class Test01 extends Test {
 
-    private static Logger LOGGER = Logger.getLogger(Test01.class);
+    private static final Logger LOGGER = Logger.getLogger(Test01.class);
+    private final BGVerificationProcessor processor = BGVerificationProcessor.getInstanceAndRegister(this);
 
     @Override
     public TestDefinition getTestDefinition() {
-        TestDefinition definition = new TestDefinition();
 
-        definition.setBlockId(3);
-        definition.setId(1);
-        definition.setCategory(Category.COMPLETENESS);
-        definition.setName("checkShuffleArgument");
-        definition.setDescription(null); //TODO set description
+        TestDefinition testDefinition = new TestDefinition();
+        testDefinition.setBlockId(3);
+        testDefinition.setCategory(Category.COMPLETENESS);
+        testDefinition.setId(1);
+        testDefinition.setName("checkShuffleArgument");
+        testDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test01.description"));
 
-        return definition;
+        return testDefinition;
     }
 
     @Override
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
-            Path ballotBoxesPath = inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES);
-            final File[] mixingDirectories = Arrays.stream(Objects.requireNonNull(ballotBoxesPath.toFile().listFiles(File::isDirectory)))
-                    .flatMap(d -> Arrays.stream(Objects.requireNonNull(d.listFiles(File::isDirectory))))
-                    .toArray(File[]::new);
+            processor.register(this);
+            processor.executeProcess(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES));
 
-            for (File mixingDirectory : mixingDirectories) {
-                ShuffleDataLoader data = new ShuffleDataLoader(mixingDirectory);
-
-                LOGGER.debug("Ballots before mixing");
-                if (data.getEncryptedBallots().getBallots().isEmpty()) {
-                    LOGGER.info("0 ballots, nothing to mix!");
-                    continue;
-                }
-
-                LOGGER.debug("Re-encrypted ballots");
-                if (data.getReencryptedBallots().getBallots().isEmpty()) {
-                    LOGGER.info("0 ballots reencrypted, no mixing performed!");
-                    continue;
-                }
-
-                final ShuffleProofVerifier shuffleProofVerifier = new ShuffleProofVerifier(
-                        data.getCryptoSystem(),
-                        data.getCommitmentParams(),
-                        data.getEncryptedBallotsCiphertext(),
-                        data.getReencryptedBallotsCiphertext());
-
-                ShuffleProof shuffleProof = data.getShuffleProof();
-
-                if (!shuffleProofVerifier.verifyProof(shuffleProof.getInitialMessage(),
-                        shuffleProof.getFirstAnswer(),
-                        shuffleProof.getSecondAnswer())) {
-                    throw new TestFailureException();
-                }
-            }
-            result.setStatus(Status.OK);
+            AbstractMap.SimpleEntry<Status, String> status = processor.getStatus(BGVerificationProcessor.TestType.ShuffleProof);
+            result.setStatus(status.getKey());
+            result.setMessage(TranslationHelper.getSameMessageMultiLanguage(status.getValue()));
         } catch (Exception e) {
-            if (e instanceof TestFailureException) {
-                result.setStatus(Status.NOK);
-            } else {
-                LOGGER.error("Unexpected error", e);
-                result.setStatus(Status.NOK);
-            }
+            LOGGER.error("Unexpected error", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
+        } finally {
+            processor.unregister(this);
         }
         return result;
     }

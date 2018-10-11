@@ -6,13 +6,13 @@
  */
 package com.scytl.products.ov.mixnet.commons.proofs.bg.commitments;
 
+import java.math.BigInteger;
+
 import com.scytl.products.ov.mixnet.commons.mathematical.Group;
+import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
-import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
 import com.scytl.products.ov.mixnet.commons.tools.MultiExponentiationImpl;
-
-import java.math.BigInteger;
 
 public class PrivateCommitment {
 
@@ -22,7 +22,7 @@ public class PrivateCommitment {
 
     private final CommitmentParams _params;
 
-    private ZpElement _commitment;
+    private GroupElement _commitment;
 
     private boolean _repeatedExponents;
 
@@ -59,8 +59,8 @@ public class PrivateCommitment {
     }
 
     private void commit() {
-        final ZpElement aux = _params.getH().exponentiate(_r);
-        ZpElement element;
+        final GroupElement aux = _params.getH().exponentiate(_r);
+        GroupElement element;
         if (_repeatedExponents) {
             element = _params.getG()[0];
             for (int i = 1; i < _exponents.length; i++) {
@@ -68,7 +68,7 @@ public class PrivateCommitment {
             }
             element = element.exponentiate(_exponents[0]);
         } else {
-            ZpElement[] bases = new ZpElement[_exponents.length];
+            GroupElement[] bases = new GroupElement[_exponents.length];
             if (_exponents.length != _params.getG().length) {
                 System.arraycopy(_params.getG(), 0, bases, 0, _exponents.length);
                 element = MultiExponentiationImpl.computeMultiExpo(bases, _exponents);
