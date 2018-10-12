@@ -68,11 +68,7 @@ public abstract class SecureLogEntry {
         }
         return result;
     }
-    /*
-    private String ls;
-    private String tl;
-    private String ts;
-     */
+
     private String getEskFromObjInRaw(String objInsideRaw) {
         String result = null;
         if (objInsideRaw != null) {
