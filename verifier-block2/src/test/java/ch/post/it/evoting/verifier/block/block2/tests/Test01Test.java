@@ -37,7 +37,15 @@ public class Test01Test {
     @Test
     public void testReduceToBundle() throws IOException {
         Path path = new File(getClass().getResource("/Test01/OK/Evoting_CC_verifier_export_7d-json.json").getFile()).toPath();
-        Stream<SecureLogEntry> logEntryStream = Files.lines(path).map(SecureLogEntry::from);
+        Stream<SecureLogEntry> logEntryStream = Files.lines(path).map(line -> {
+            try {
+                return SecureLogEntry.from(line);
+            } catch (IOException e) {
+                //TODO handle exception if deserialize failed
+                e.printStackTrace();
+                return null;
+            }
+        });
 
         Stream<SecureLogBundle> secureLogBundleStream = SecureLogBundleCreator.from(logEntryStream);
         Assert.assertEquals(59717, secureLogBundleStream.count());
