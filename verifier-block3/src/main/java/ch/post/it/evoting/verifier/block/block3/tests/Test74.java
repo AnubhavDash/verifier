@@ -8,7 +8,6 @@
 
 package ch.post.it.evoting.verifier.block.block3.tests;
 
-import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
 import ch.post.it.evoting.verifier.block.block3.Block3TestSuite;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
@@ -29,13 +28,12 @@ import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Test71 extends Test {
+public class Test74 extends Test {
 
-    private static final Logger LOGGER = Logger.getLogger(Test71.class);
+    private static final Logger LOGGER = Logger.getLogger(Test74.class);
 
     @Override
     public TestDefinition getTestDefinition() {
@@ -43,9 +41,9 @@ public class Test71 extends Test {
         TestDefinition testDefinition = new TestDefinition();
         testDefinition.setBlockId(3);
         testDefinition.setCategory(Category.AUTHENTICITY);
-        testDefinition.setId(71);
-        testDefinition.setName("checkSigProofs");
-        testDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test71.description"));
+        testDefinition.setId(74);
+        testDefinition.setName("checkSigCommitmentParameters");
+        testDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test74.description"));
 
         return testDefinition;
     }
@@ -57,13 +55,13 @@ public class Test71 extends Test {
         Path path = inputDirectory.toPath().resolve(Block3TestSuite.PATH_ELECTION_SETUP);
         DataConfigEE dataConfigEE = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", DataConfigEE.class);
         List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
-        List<File> proofsFiles = new ArrayList<>();
+        List<File> commitmentParamFiles = new ArrayList<>();
         ballotBoxes.forEach(ballotBox -> {
             String ballotBoxId = ballotBox.getId();
             try {
-                File[] proofFolders = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES).resolve(ballotBoxId));
-                for(File folder : proofFolders){
-                    proofsFiles.add(PathHelper.getFile(folder, "proofs.*\\.json"));
+                File[] commitmentParamFolders = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES).resolve(ballotBoxId));
+                for(File folder : commitmentParamFolders){
+                    commitmentParamFiles.add(PathHelper.getFile(folder, "commitmentParameters.*\\.json"));
                 }
             } catch (FileNotFoundException e) {
                 throw new TestFailureException("proofs.json not found", inputDirectory.getName(), ballotBoxId);
@@ -77,7 +75,7 @@ public class Test71 extends Test {
 
         byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block3TestSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
 
-        for (File proof : proofsFiles) {
+        for (File proof : commitmentParamFiles) {
             byte[] content = Files.readAllBytes(proof.toPath());
             byte[] signature = Files.readAllBytes(proof.toPath().getParent().resolve(proof.getName() + ".metadata"));
 
