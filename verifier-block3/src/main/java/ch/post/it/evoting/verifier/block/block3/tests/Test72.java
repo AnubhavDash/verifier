@@ -1,11 +1,3 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.block.block3.tests;
 
 import ch.post.it.evoting.verifier.block.block3.Block3TestSuite;
@@ -31,9 +23,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Test74 extends Test {
+public class Test72 extends Test {
 
-    private static final Logger LOGGER = Logger.getLogger(Test74.class);
+    private static final Logger LOGGER = Logger.getLogger(Test72.class);
 
     @Override
     public TestDefinition getTestDefinition() {
@@ -41,9 +33,9 @@ public class Test74 extends Test {
         TestDefinition testDefinition = new TestDefinition();
         testDefinition.setBlockId(3);
         testDefinition.setCategory(Category.AUTHENTICITY);
-        testDefinition.setId(74);
-        testDefinition.setName("checkSigCommitmentParameters");
-        testDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test74.description"));
+        testDefinition.setId(72);
+        testDefinition.setName("checkSigReEncryptedBallots");
+        testDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test72.description"));
 
         return testDefinition;
     }
@@ -55,16 +47,16 @@ public class Test74 extends Test {
         Path path = inputDirectory.toPath().resolve(Block3TestSuite.PATH_ELECTION_SETUP);
         DataConfigEE dataConfigEE = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", DataConfigEE.class);
         List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
-        List<File> commitmentParamFiles = new ArrayList<>();
+        List<File> rEncBallotsFiles = new ArrayList<>();
         ballotBoxes.forEach(ballotBox -> {
             String ballotBoxId = ballotBox.getId();
             try {
-                File[] commitmentParamFolders = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES).resolve(ballotBoxId));
-                for(File folder : commitmentParamFolders){
-                    commitmentParamFiles.add(PathHelper.getFile(folder, "commitmentParameters.*\\.json"));
+                File[] rEncBallotsFolders = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES).resolve(ballotBoxId));
+                for(File folder : rEncBallotsFolders){
+                    rEncBallotsFiles.add(PathHelper.getFile(folder, "reencryptedBallots.*\\.csv"));
                 }
             } catch (FileNotFoundException e) {
-                throw new TestFailureException("commitmentParameters.json not found", inputDirectory.getName(), ballotBoxId);
+                throw new TestFailureException("reencryptedBallots.csv not found", inputDirectory.getName(), ballotBoxId);
             }
         });
 
@@ -75,23 +67,23 @@ public class Test74 extends Test {
 
         byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block3TestSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
 
-        for (File commitmentParam : commitmentParamFiles) {
-            byte[] content = Files.readAllBytes(commitmentParam.toPath());
-            byte[] signature = Files.readAllBytes(commitmentParam.toPath().getParent().resolve(commitmentParam.getName() + ".metadata"));
+        for (File rEncBallot : rEncBallotsFiles) {
+            byte[] content = Files.readAllBytes(rEncBallot.toPath());
+            byte[] signature = Files.readAllBytes(rEncBallot.toPath().getParent().resolve(rEncBallot.getName() + ".metadata"));
 
             if (!SignatureChecker.verifyMetdata(content, signature, signCertificate, rootCA)) {
-                throw new TestFailureException(commitmentParam.getName());
+                throw new TestFailureException(rEncBallot.getName());
             }
         }
         result.setStatus(Status.OK);
 
     } catch (Exception e) {
         if (e instanceof TestFailureException) {
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test74.nok.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test72.nok.message"));
         } else if (e instanceof NoSuchFileException) {
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test74.file.not.found.message", ((NoSuchFileException) e).getFile()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test72.file.not.found.message", ((NoSuchFileException) e).getFile()));
         } else if (e instanceof FileNotFoundException) {
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test74.file.not.found.message", e.getMessage()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test72.file.not.found.message", e.getMessage()));
         } else {
             LOGGER.error("unexpected error", e);
         }

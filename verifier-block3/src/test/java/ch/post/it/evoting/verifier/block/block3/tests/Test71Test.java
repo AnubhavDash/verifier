@@ -1,11 +1,3 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.block.block3.tests;
 
 import ch.post.it.evoting.verifier.common.Status;
@@ -25,7 +17,7 @@ public class Test71Test {
     }
 
     @Test
-    public void executeTestNOKXmlKo() {
+    public void executeTestNOKJsonKo() {
         TestResult testResult = new Test71().executeTest(new File(getClass().getResource("/Test71/NOK/JSON-NOT-OK").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
