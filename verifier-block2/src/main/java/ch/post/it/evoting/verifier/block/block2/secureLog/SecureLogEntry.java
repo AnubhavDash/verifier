@@ -13,6 +13,7 @@ public abstract class SecureLogEntry {
 
     private String host;
     private String index;
+    private String raw;
     private SecureLogMetadata metadata;
 
     protected abstract void deserialize(String line) throws IOException;
@@ -27,6 +28,15 @@ public abstract class SecureLogEntry {
             result = new RegularLogEntry();
         }
         result.deserialize(line);
+        return result;
+    }
+
+    protected String getCleanedRawFromRaw(String raw){
+        String result = null;
+        if(raw != null && !raw.isEmpty()){
+            String objInsideRaw = getObjectInsideRaw(raw) + "*}";
+            result = raw.replace(objInsideRaw, "").trim();
+        }
         return result;
     }
 

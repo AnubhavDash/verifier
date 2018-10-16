@@ -18,8 +18,8 @@ public class CheckPointLogEntry extends SecureLogEntry {
         SecureLogOrigin slo = Deserializer.fromJson(line.getBytes(), SecureLogOrigin.class);
         setHost(slo.getResult().getHost());
         setIndex(slo.getResult().getIndex());
+        setRaw(getCleanedRawFromRaw(slo.getResult().getRaw()));
         setMetadata(getMetadataFromRaw(slo.getResult().getRaw()));
-
     }
 
 }
