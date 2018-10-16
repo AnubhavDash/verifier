@@ -47,8 +47,8 @@ public class Test01Test {
             }
         });
 
-        Stream<SecureLogBundle> secureLogBundleStream = SecureLogBundleCreator.from(logEntryStream);
-        Assert.assertEquals(59717, secureLogBundleStream.count());
+        /*Stream<SecureLogBundle> secureLogBundleStream = SecureLogBundleCreator.from(logEntryStream);
+        Assert.assertEquals(59717, secureLogBundleStream.count());*/
         /*secureLogBundleStream.forEach(b -> {
             try {
                 b.validate();

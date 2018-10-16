@@ -6,17 +6,18 @@
  */
 package com.scytl.products.ov.mixnet.commons.homomorphic.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
 import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
+import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class GjosteenElGamalCiphertext implements Ciphertext {
 
@@ -35,13 +36,16 @@ public class GjosteenElGamalCiphertext implements Ciphertext {
 
     @JsonCreator
     public GjosteenElGamalCiphertext(@JsonProperty("gamma") final GroupElement gamma,
-            @JsonProperty("phis") final GroupElement phis) {
+                                     @JsonProperty("phis") final String phis) {
 
-        validateInputs(gamma, Arrays.asList(phis));
+        List<GroupElement> genPhis = Arrays.stream(phis.split(",")).map(s -> new ZpElement(s)).collect(Collectors.toList());
+
+        validateInputs(gamma, genPhis);
 
         _gamma = gamma;
-        _phis = Arrays.asList(phis);
+        _phis = genPhis;
     }
+
 
     public GjosteenElGamalCiphertext(final List<GroupElement> elements) {
 
@@ -108,7 +112,7 @@ public class GjosteenElGamalCiphertext implements Ciphertext {
         final GroupElement gammaExponentiated = _gamma.exponentiate(exponent);
 
         final List<GroupElement> phisExponentiated =
-            _phis.stream().map(phi -> phi.exponentiate(exponent)).collect(Collectors.toList());
+                _phis.stream().map(phi -> phi.exponentiate(exponent)).collect(Collectors.toList());
 
         return new GjosteenElGamalCiphertext(gammaExponentiated, phisExponentiated);
     }
@@ -156,7 +160,7 @@ public class GjosteenElGamalCiphertext implements Ciphertext {
 
     @Override
     public String toString() {
-    	//TODO please, modify this method once the toString() method in the CiphertextImpl class of crypotlib is changed.
+        //TODO please, modify this method once the toString() method in the CiphertextImpl class of crypotlib is changed.
         StringBuilder strbrd = new StringBuilder();
         strbrd.append("CiphertextImpl [gamma=");
         strbrd.append(_gamma.toString());
@@ -186,7 +190,7 @@ public class GjosteenElGamalCiphertext implements Ciphertext {
 
         if (elements.size() < 2) {
             throw new RuntimeException("The list of elements was " + elements.size()
-                + ", which is less than the minumum size which is two (gamma and one phi).");
+                    + ", which is less than the minumum size which is two (gamma and one phi).");
         }
     }
 
@@ -198,7 +202,7 @@ public class GjosteenElGamalCiphertext implements Ciphertext {
 
         if (elements.length < 2) {
             throw new RuntimeException("The list of elements was " + elements.length
-                + ", which is less than the minumum size which is two (gamma and one phi).");
+                    + ", which is less than the minumum size which is two (gamma and one phi).");
         }
     }
 

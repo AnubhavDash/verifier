@@ -1,16 +1,16 @@
 package ch.post.it.evoting.verifier.block.block2.secureLog;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Stream;
 
 public class SecureLogBundleCreator {
-    private Stream<SecureLogBundle> stream = Stream.empty();
+    private Observable<SecureLogBundle> observable = Observable.empty();
     private List<SecureLogBundle> buffer = new ArrayList<>();
     private SecureLogBundle lastBundle = null;
     private static final int BUFFER_SIZE = 1000;
-    private boolean finishWithLastRowElement = false;
 
     private SecureLogBundleCreator() {
         //private ctor, use static from outside
@@ -26,14 +26,13 @@ public class SecureLogBundleCreator {
     }
 
     private void processBuffer() {
-        stream = Stream.of(stream, buffer.stream()).flatMap(Function.identity());
+        observable = Observable.concat(observable, Observable.fromIterable(buffer::iterator));
         buffer = new ArrayList<>();
     }
 
-    public static Stream<SecureLogBundle> from(Stream<SecureLogEntry> source) {
-        SecureLogBundleCreator bundleAccumulator = source.reduce(new SecureLogBundleCreator(), (accumulator, secureLog) -> {
+    public static Observable<SecureLogBundle> from(Observable<SecureLogEntry> source) {
+        Single<SecureLogBundleCreator> bundleAccumulator = source.reduce(new SecureLogBundleCreator(), (accumulator, secureLog) -> {
             SecureLogBundle last = accumulator.lastBundle;
-            accumulator.finishWithLastRowElement = false;
             if (secureLog instanceof CheckPointLogEntry) {
                 CheckPointLogEntry checkPointLog = (CheckPointLogEntry) secureLog;
                 if (last == null) {
@@ -49,23 +48,25 @@ public class SecureLogBundleCreator {
             } else if (secureLog instanceof RegularLogEntry) {
                 accumulator.lastBundle.addRegularLogEntry((RegularLogEntry) secureLog);
             } else if (secureLog instanceof LastRowLogEntry) {
-                accumulator.finishWithLastRowElement = true;
+                // nothing to do
             } else {
                 throw new UnsupportedOperationException("Unknown SecureLogEntry instance : " + secureLog.getClass());
             }
             return accumulator;
-        }, (bc1, bc2) -> bc1); //no need to combine, because accumulator is treated as a single instance through all reduce process
+        });
 
-        if (!bundleAccumulator.finishWithLastRowElement) {
-            throw new RuntimeException("SecureLogs doesn't terminate with a LastRowLogEntry");
-        }
-        //TODO remove test below because not used anymore
-        if (bundleAccumulator.lastBundle != null && bundleAccumulator.lastBundle.hasRegularLogEntries()) {
-            throw new RuntimeException("SecureLogs doesn't terminate with a checkpoint");
-        }
+        return bundleAccumulator.flatMapObservable(b -> {
+            /*if (!b.finishWithLastRowElement) {
+                throw new RuntimeException("SecureLogs doesn't terminate with a LastRowLogEntry");
+            }
+            //TODO remove test below because not used anymore
+            if (b.lastBundle != null && b.lastBundle.hasRegularLogEntries()) {
+                System.out.println("ERROR");
+                //throw new RuntimeException("SecureLogs doesn't terminate with a checkpoint");
+            }*/
+            b.processBuffer();
+            return b.observable;
+        });
 
-        //do not return the last bundle because it will not be complete
-        bundleAccumulator.processBuffer();
-        return bundleAccumulator.stream.filter(SecureLogBundle::isComplete);
     }
 }

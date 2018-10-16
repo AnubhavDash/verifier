@@ -33,11 +33,10 @@ public class SecureLogBundle {
     }
 
     public void validate() throws SecureLogBundleValidationException {
-        if (!this.isComplete()) {
-            throw new SecureLogBundleValidationException("bundle is not complete");
+        if (!this.isComplete() && this.hasRegularLogEntries()) {
+            throw new SecureLogBundleValidationException("bundle is not finishing with a checkPoint");
         }
-        // TODO uncomment following logger. Was commented due to performance reasons during development (debug level is not enabled for productive use)
-        // LOGGER.debug(String.format("Bundle{prev:%s, curr:%s, elementsCount:%s}", this.beginCheckPoint, this.endCheckPoint, this.regularLogEntries.size()));
-        //TODO implement this
+        //LOGGER.debug(String.format("Bundle{prev:%s, curr:%s, elementsCount:%s}", this.beginCheckPoint, this.endCheckPoint, this.regularLogEntries.size()));
+
     }
 }
