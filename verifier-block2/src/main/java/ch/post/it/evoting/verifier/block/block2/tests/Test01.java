@@ -17,15 +17,13 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.stream.Stream;
 
 /**
@@ -50,18 +48,17 @@ public class Test01 extends Test {
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
-            Path secureLogsPath = PathHelper.getFile(inputDirectory, "secure_logs_2018_10_16.json").toPath();
-            Stream<SecureLogEntry> logEntryStream = Files.lines(secureLogsPath).map(line -> {
-                try {
-                    return SecureLogEntry.from(line);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }).filter(sl -> sl.getIndex() != null && sl.getIndex().equals("it_evoting_cc"));
+            Stream<SecureLogEntry> logEntryStream = Deserializer.fromLines(inputDirectory, "secure_logs_2018_10_16.json",
+                    line -> {
+                        try {
+                            return SecureLogEntry.from(line);
+                        } catch (IOException e) {
+                            throw new RuntimeException("Unable to deserialize SecureLogEntry", e);
+                        }
+                    }).filter(sl -> sl.getIndex() != null && sl.getIndex().equals("it_evoting_cc"));
 
-            Flux<SecureLogEntry> secureLogEntryFlowable = Flux.fromIterable(logEntryStream::iterator);
-
-            secureLogEntryFlowable.groupBy(SecureLogEntry::getHost)
+            Flux.fromIterable(logEntryStream::iterator)
+                    .groupBy(SecureLogEntry::getHost)
                     .flatMap(source -> SecureLogBundleCreator.from(source, source.key()))
                     .subscribe(b -> {
                         try {

@@ -31,7 +31,7 @@ public class SecureLogBundleCreator {
         AtomicReference<SecureLogEntry> last = new AtomicReference<>();
         return source
                 .doOnNext(last::set)
-                .flatMap(e -> {
+                .concatMap(e -> {
                     //duplicate all checkpoints
                     if (e instanceof CheckPointLogEntry) {
                         return Flux.just(e, e);
