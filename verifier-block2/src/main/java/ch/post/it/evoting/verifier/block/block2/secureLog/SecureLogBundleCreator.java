@@ -5,13 +5,9 @@ import lombok.Setter;
 import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
 
-import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class SecureLogBundleCreator {
-    private SecureLogBundle lastBundle = null;
-    private Iterator<SecureLogEntry> iterator;
-
     private static final Logger LOGGER = Logger.getLogger(SecureLogBundleCreator.class);
 
     private SecureLogBundleCreator() {
@@ -25,7 +21,6 @@ public class SecureLogBundleCreator {
         CheckPointLogEntry lastAnalysedCheckPoint;
         boolean terminal = false;
     }
-
 
     public static Flux<SecureLogBundle> from(Flux<SecureLogEntry> source, String host) {
         AtomicReference<SecureLogEntry> last = new AtomicReference<>();
