@@ -2,14 +2,3 @@ table{
   width: 80%;
   margin:auto;
 }
-#buttonDiv{
-  text-align: center;
-}
-button{
-  background-color:white;
-  border-color: grey;
-}
-button:hover{
-  background-color: grey;
-  color:white;
-}
