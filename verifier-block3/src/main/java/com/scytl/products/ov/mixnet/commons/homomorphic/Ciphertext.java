@@ -7,13 +7,13 @@
 package com.scytl.products.ov.mixnet.commons.homomorphic;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
-import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
 public interface Ciphertext {
 
-    ZpElement[] getParts();
+    GroupElement[] getParts();
 
     Ciphertext multiply(Ciphertext c);
 

@@ -6,10 +6,17 @@
  */
 package com.scytl.products.ov.mixnet.commons.io;
 
+import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleAbstractTypeResolver;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProof;
 import com.scytl.products.ov.mixnet.commons.configuration.locations.DefaultLocationNames;
 import com.scytl.products.ov.mixnet.commons.constants.Constants;
+import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
+import com.scytl.products.ov.mixnet.commons.homomorphic.impl.GjosteenElGamalCiphertext;
+import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
+import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -28,6 +35,15 @@ public class JSONProofsReader implements ProofsReader {
         final Path fullPath = proofsPath.toAbsolutePath();
 
         final ObjectMapper mapper = new ObjectMapper();
+
+        //NAE
+        SimpleModule module = new SimpleModule("CustomModel", Version.unknownVersion());
+        SimpleAbstractTypeResolver resolver = new SimpleAbstractTypeResolver();
+        resolver.addMapping(GroupElement.class, ZpElement.class);
+        resolver.addMapping(Ciphertext.class, GjosteenElGamalCiphertext.class);
+        module.setAbstractTypes(resolver);
+        mapper.registerModule(module);
+        //NAE
 
         ShuffleProof shuffleProof;
         shuffleProof = mapper.readValue(fullPath.toFile(), ShuffleProof.class);

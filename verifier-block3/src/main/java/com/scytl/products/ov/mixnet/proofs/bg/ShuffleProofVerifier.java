@@ -6,6 +6,9 @@
  */
 package com.scytl.products.ov.mixnet.proofs.bg;
 
+import ch.post.it.evoting.verifier.block.block3.BGResultNotifier;
+import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
+import ch.post.it.evoting.verifier.common.Status;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProofSecondAnswer;
 import com.scytl.products.ov.mixnet.commons.constants.Constants;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
@@ -65,13 +68,17 @@ public class ShuffleProofVerifier {
     }
 
     public boolean verifyProof(final PublicCommitment[] cA, final PublicCommitment[] cB,
-                               final ShuffleProofSecondAnswer ans) throws NoSuchAlgorithmException {
+                               final ShuffleProofSecondAnswer ans, BGResultNotifier notifier) throws NoSuchAlgorithmException {
         LOGGER.debug("\n-------------- Start Verification -------------------");
         long initTime = System.currentTimeMillis();
 
-         return isValidCommitment(cA, "cA") && isValidCommitment(cB, "cB");
+        boolean shuffleResult = isValidCommitment(cA, "cA", notifier) && isValidCommitment(cB, "cB", notifier);
+        if (shuffleResult) {
+            notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.OK, null);
+        } else {
+            return false;
+        }
 
-/*
         _RO.addDataToRO(_C);
         _RO.addDataToRO(_Cprime);
         _RO.addDataToRO(cA);
@@ -89,9 +96,8 @@ public class ShuffleProofVerifier {
         final Ciphertext lhsME = computeLeftHandMEArg(vecX);
 
         final ProductProofVerifier verifPA = new ProductProofVerifier(_compars, cPA, rhsPA, _group.getOrder());
-
         LOGGER.debug("Verifying Produc Argument...");
-        if (!verifPA.verify(ans.getMsgPA())) {
+        if (!verifPA.verify(ans.getMsgPA(), notifier)) {
             LOGGER.error("ERROR(Shuffle Argument):  Product Argument didn't verify");
             return false;
         }
@@ -100,13 +106,21 @@ public class ShuffleProofVerifier {
         LOGGER.debug("Verifying Multi-Exponentiation Argument...");
         final MultiExponentiationBasicProofVerifier verifME =
                 new MultiExponentiationBasicProofVerifier(_cryptosystem, _compars, _Cprime, lhsME, cB, _group.getOrder());
-        if (!verifME.verify(ans.getIniMEBasic(), ans.getAnsMEBasic())) {
+        boolean multiExponentiationProof = verifME.verify(ans.getIniMEBasic(), ans.getAnsMEBasic(), notifier);
+        if (multiExponentiationProof) {
+            notifier.notify(BGVerificationProcessor.TestType.MultiExponentiationProof, Status.OK, null);
+        } else {
             LOGGER.error("ERROR(Shuffle Argument):  MultiExpo argument didn't verify");
             return false;
         }
+        /*
+         * } else { final MultiExponentiationReductionProofVerifier verifME = new
+         * MultiExponentiationReductionProofVerifier( _cryptosystem, _group, _compars, _Cprime, lhsME, cB, _mu,
+         * _numiterations); if (!verifME.verify(ans.getIniMEReduct(), ans.getAnsMEReduct())) {
+         * LOGGER.error("ERROR(Shuffle Argument):  MultiExpo argument didn't verify"); return false; } }
+         */
         LOGGER.debug(" Verification done in " + (System.currentTimeMillis() - initTime) + "ms");
         return true;
-        */
     }
 
     private Exponent[][] computeVecX(final Exponent challengeX) {
@@ -143,15 +157,17 @@ public class ShuffleProofVerifier {
         return result;
     }
 
-    private boolean isValidCommitment(PublicCommitment[] commitment, String commitmentName) {
+    private boolean isValidCommitment(PublicCommitment[] commitment, String commitmentName, BGResultNotifier notifier) {
         if (commitment.length != _m) {
             LOGGER.error("ERROR(Shuffle Argument): " + commitmentName + " doesn't have the expected length");
+            notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.NOK, "ERROR(Shuffle Argument): " + commitmentName + " doesn't have the expected length");
             return false;
         }
 
         for (int i = 0; i < commitment.length; i++) {
             if (!commitment[i].getElement().isGroupElement()) {
                 LOGGER.error("ERROR(Shuffle Argument): " + commitmentName + "[" + i + "] is not a group element");
+                notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.NOK, "ERROR(Shuffle Argument): " + commitmentName + "[" + i + "] is not a group element");
                 return false;
             }
         }

@@ -6,10 +6,10 @@
  */
 package com.scytl.products.ov.mixnet.commons.ballots;
 
-import com.scytl.products.ov.mixnet.commons.homomorphic.impl.GjosteenElGamalCiphertext;
-import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
-
 import java.util.List;
+
+import com.scytl.products.ov.mixnet.commons.homomorphic.impl.GjosteenElGamalCiphertext;
+import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 
 /**
  * Represents a ballot that has been encrypted using the ElGamal cryptosystem. An ElGamalEncryptedBallot (like a
@@ -22,16 +22,16 @@ import java.util.List;
  */
 public final class ElGamalEncryptedBallot extends GjosteenElGamalCiphertext implements EncryptedBallot {
 
-    public ElGamalEncryptedBallot(final ZpElement[] parts) {
+    public ElGamalEncryptedBallot(final GroupElement[] parts) {
         super(parts);
     }
 
-    public ElGamalEncryptedBallot(final ZpElement gamma, final List<ZpElement> phis) {
+    public ElGamalEncryptedBallot(final GroupElement gamma, final List<GroupElement> phis) {
         super(gamma, phis);
     }
 
     /**
-     * Create an ElGamalEncryptedBallot from the received list of {@link ZpElement}. The element in the first
+     * Create an ElGamalEncryptedBallot from the received list of {@link GroupElement}. The element in the first
      * position in the list (the element at index zero) will be set as gamma, and all of the remaining elements will be
      * set as phi values.
      *
@@ -41,7 +41,7 @@ public final class ElGamalEncryptedBallot extends GjosteenElGamalCiphertext impl
      *             if {@code elements} is null or contains less than two elements.
      */
     // TODO I don't see the benefits of this constructor, only risks
-    public ElGamalEncryptedBallot(final List<ZpElement> elements) {
+    public ElGamalEncryptedBallot(final List<GroupElement> elements) {
         super(elements);
     }
 

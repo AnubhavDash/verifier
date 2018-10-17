@@ -6,38 +6,43 @@
  */
 package com.scytl.products.ov.mixnet.commons.mathematical.impl;
 
-import com.scytl.products.ov.mixnet.commons.mathematical.Group;
-//import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
-import com.scytl.products.ov.mixnet.commons.tools.BigIntTools;
-
 import java.math.BigInteger;
+
+import com.scytl.products.ov.mixnet.commons.mathematical.Group;
+import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
+import com.scytl.products.ov.mixnet.commons.tools.BigIntTools;
 
 public class ZpGroup implements Group {
 
-    private final BigInteger _p;
-    private final BigInteger _q;
+    private final ZpGroupParams _params;
 
     private ZpElement _gen;
 
-    public ZpGroup(final BigInteger p, BigInteger q) {
-        _p = p;
-        _q = q;
+    public ZpGroup(final ZpGroupParams params) {
+        _params = params;
         _gen = getGenerator();
     }
 
+    public ZpGroup(final BigInteger p, final BigInteger q) {
+        this(new ZpGroupParams(p, q));
+    }
+
     public ZpGroup(final BigInteger p, final BigInteger q, final ZpElement generator) {
-        _p = p;
-        _q = q;
+        this(new ZpGroupParams(p, q), generator);
+    }
+
+    public ZpGroup(final ZpGroupParams params, final ZpElement generator) {
+        _params = new ZpGroupParams(params.getP(), params.getOrder());
         _gen = generator;
     }
 
     @Override
     public BigInteger getOrder() {
-        return _q;
+        return _params.getOrder();
     }
 
     public BigInteger getP() {
-        return _p;
+        return _params.getP();
     }
 
     @Override
@@ -46,18 +51,18 @@ public class ZpGroup implements Group {
         if (_gen != null) {
             return _gen;
         } else {
-            BigInteger auxgen = BigIntTools.generateBigInteger(_p);
+            BigInteger auxgen = BigIntTools.generateBigInteger(_params.getP());
 
             while ((auxgen.compareTo(BigInteger.ONE) == 0)
-                || auxgen.modPow(_q, _p).compareTo(BigInteger.ONE) != 0) {
-                auxgen = BigIntTools.generateBigInteger(_p);
+                || auxgen.modPow(_params.getOrder(), _params.getP()).compareTo(BigInteger.ONE) != 0) {
+                auxgen = BigIntTools.generateBigInteger(_params.getP());
             }
-            return new ZpElement(auxgen, _p, _q);
+            return new ZpElement(auxgen, _params);
         }
     }
 
     @Override
-    public ZpElement getRandomElement() {
+    public GroupElement getRandomElement() {
         Exponent expo = Exponent.getRandomExponent(getOrder());
         if (_gen == null) {
             _gen = getGenerator();
@@ -67,8 +72,8 @@ public class ZpGroup implements Group {
     }
 
     @Override
-    public ZpElement[] getVectorRandomElement(final int length) {
-        ZpElement[] result = new ZpElement[length];
+    public GroupElement[] getVectorRandomElement(final int length) {
+        GroupElement[] result = new GroupElement[length];
         for (int i = 0; i < result.length; i++) {
             result[i] = getRandomElement();
         }
@@ -77,7 +82,10 @@ public class ZpGroup implements Group {
 
     @Override
     public ZpElement getIdentityElement() {
-        return new ZpElement(BigInteger.ONE, _p, _q);
+        return new ZpElement(BigInteger.ONE, _params);
     }
 
+    public ZpGroupParams getParams() {
+        return _params;
+    }
 }

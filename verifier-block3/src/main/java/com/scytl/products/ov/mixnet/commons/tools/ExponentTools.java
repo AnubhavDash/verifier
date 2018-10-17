@@ -6,9 +6,9 @@
  */
 package com.scytl.products.ov.mixnet.commons.tools;
 
-import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
-
 import java.math.BigInteger;
+
+import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 
 /**
  * Defines a set of utility methods related to {@code Exponent}.

@@ -61,7 +61,17 @@ public final class SingleValueProductProofInitialMessage {
 
     @Override
     public String toString() {
-        return _cd.toString() + _cdelta.toString() + _cDelta.toString();
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("SingleValueProductProofInitialMessage [cd=");
+    	builder.append(_cd);
+    	builder.append(", commitmentPublicLowDelta=");
+    	builder.append(_cdelta);
+    	builder.append(", commitmentPublicHighDelta=");
+    	builder.append(_cDelta);
+    	builder.append("]");
+    	return builder.toString();
     }
+    
+
 
 }

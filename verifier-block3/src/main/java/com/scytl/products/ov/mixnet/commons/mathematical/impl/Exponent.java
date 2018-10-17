@@ -6,14 +6,14 @@
  */
 package com.scytl.products.ov.mixnet.commons.mathematical.impl;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.scytl.products.ov.mixnet.commons.tools.BigIntTools;
-
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Exponent {
 
@@ -181,7 +181,13 @@ public class Exponent {
 
     @Override
     public String toString() {
-        return _value.toString();
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("Exponent [_q=");
+    	builder.append(_order);
+    	builder.append(", _value=");
+    	builder.append(_value);
+    	builder.append("]");
+        return builder.toString();
     }
 
     // XXX added

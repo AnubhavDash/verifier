@@ -1,0 +1,72 @@
+package ch.post.it.evoting.verifier.report;
+
+import ch.post.it.evoting.verifier.common.Language;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.dto.Test;
+import ch.post.it.evoting.verifier.mapper.ReportMapper;
+import ch.post.it.evoting.verifier.report.pojo.Report;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
+
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+@Component
+public class ReportGenerator {
+
+    private static final Logger LOGGER = Logger.getLogger(ReportGenerator.class);
+    public static final String MESSAGE_BUNDLE_NAME = "message";
+
+    public byte[] generate(String contestName, Date contestDate, List<Test> tests, Language language) {
+        try {
+            Locale locale = language.getLocale();
+
+            final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy");
+            final SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
+
+            Report report = new Report();
+            report.setTitle((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.head.title", locale)));
+            report.setHeaderTitleLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.header.title", locale)));
+            // TODO how to get the data to set ?
+
+            report.setHeaderTitle(String.format("%s %s", contestName, contestDate != null ? dateFormatter.format(contestDate) : ""));
+            report.setReportDateLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.header.date", locale)));
+            report.setReportTimeLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.header.time", locale)));
+            Date now = new Date();
+            report.setReportDate(dateFormatter.format(now));
+            report.setReportTime(timeFormatter.format(now));
+            report.setCommentLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.lastpage.comment", locale)));
+            report.setSignaturetLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.lastpage.sign", locale)));
+            report.setPlaceDatetLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.lastpage.place.date", locale)));
+            report.setLastNameLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.lastpage.lastname", locale)));
+            report.setFirstNameLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.lastpage.firstname", locale)));
+            report.setFooterTitleLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.footer.title", locale)));
+            report.setFooterTitle(report.getHeaderTitle());
+            report.setFooterDateLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.footer.date", locale)));
+            report.setFooterDate(dateFormatter.format(now) + " / " + timeFormatter.format(now));
+
+            //map to a Report Object
+            Report content = ReportMapper.INSTANCE.map(report, tests, language);
+
+            Map<String, Object> parameters = new HashMap<>();
+
+            JRBeanCollectionDataSource jrDataSource = new JRBeanCollectionDataSource(Collections.singletonList(content));
+
+            InputStream jasper = this.getClass().getClassLoader().getResourceAsStream("jasper/Vreport.jasper");
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parameters, jrDataSource);
+
+            return JasperExportManager.exportReportToPdf(jasperPrint);
+        } catch (JRException e) {
+            LOGGER.error("unable to generate the PDF report", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+}

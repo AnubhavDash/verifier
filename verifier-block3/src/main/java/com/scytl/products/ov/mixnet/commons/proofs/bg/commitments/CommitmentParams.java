@@ -6,8 +6,14 @@
  */
 package com.scytl.products.ov.mixnet.commons.proofs.bg.commitments;
 
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+
 import com.scytl.products.ov.mixnet.commons.mathematical.Group;
-import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
+import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
 
 /**
@@ -15,9 +21,9 @@ import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
  */
 public class CommitmentParams {
 
-    private final ZpElement _h;
+    private final GroupElement _h;
 
-    private final ZpElement[] _g;
+    private final GroupElement[] _g;
 
     private final Group _group;
 
@@ -30,18 +36,18 @@ public class CommitmentParams {
         _g = group.getVectorRandomElement(_commitmentlength);
     }
 
-    public CommitmentParams(final Group group, final ZpElement h, final ZpElement[] g) {
+    public CommitmentParams(final Group group, final GroupElement h, final GroupElement[] g) {
         _group = group;
         _h = h;
         _g = g;
         _commitmentlength = _g.length;
     }
 
-    public ZpElement getH() {
+    public GroupElement getH() {
         return _h;
     }
 
-    public ZpElement[] getG() {
+    public GroupElement[] getG() {
         return _g;
     }
 
@@ -75,7 +81,7 @@ public class CommitmentParams {
      * @throws Exception
      *             if the group is not a ZpGroup.
      */
-    /*public void serializeToFile(final Path pathOutputFile) throws Exception {
+    public void serializeToFile(final Path pathOutputFile) throws Exception {
 
         final List<String> linesToBeWritten = new ArrayList<>();
 
@@ -93,7 +99,7 @@ public class CommitmentParams {
         }
 
         FileUtils.writeLines(pathOutputFile.toFile(), linesToBeWritten);
-    }*/
+    }
 
     private ZpGroup extractZpGroup(final Group group) throws Exception {
 

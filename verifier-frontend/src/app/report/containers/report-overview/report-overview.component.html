@@ -1,8 +1,18 @@
 <div>
   <div id="buttonDiv">
     <h2>Test definitions</h2>
-    <button (click)="startProcess()" [disabled]="buttonDisabled" class="btn">Start Process</button>
-    <button (click)="resetProcess()" class="btn">Reset Process</button>
+    <div>
+    <b>Input directory :</b>
+    <input type="text" name="inputDirectory" [(ngModel)]="inputDirectory" style="width:30%">
+    <div>
+      <br/>
+      <button (click)="startProcess()" [disabled]="buttonDisabled" class="btn">Start</button>
+      <button (click)="update()" class="btn">Update</button>
+    <button (click)="resetProcess()" class="btn">Reset</button>
+      |
+      <button routerLink="/report/pdf" class="btn">PDF</button>
+    </div>
+  </div>
     <p></p>
   </div>
   <table border="1" class="table table-bordered table-hover">

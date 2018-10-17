@@ -6,26 +6,26 @@
  */
 package com.scytl.products.ov.mixnet.commons.homomorphic.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
+import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
-import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class GjosteenElGamalCiphertext implements Ciphertext {
 
-    private final ZpElement _gamma;
+    private final GroupElement _gamma;
 
-    private final List<ZpElement> _phis;
+    private final List<GroupElement> _phis;
 
-    @JsonCreator
-    public GjosteenElGamalCiphertext(@JsonProperty("gamma") final ZpElement gamma,
-            @JsonProperty("phis") final List<ZpElement> phis) {
+    public GjosteenElGamalCiphertext(final GroupElement gamma,
+                                     final List<GroupElement> phis) {
 
         validateInputs(gamma, phis);
 
@@ -33,7 +33,17 @@ public class GjosteenElGamalCiphertext implements Ciphertext {
         _phis = phis;
     }
 
-    public GjosteenElGamalCiphertext(final List<ZpElement> elements) {
+    @JsonCreator
+    public GjosteenElGamalCiphertext(@JsonProperty("gamma") final GroupElement gamma,
+            @JsonProperty("phis") final GroupElement phis) {
+
+        validateInputs(gamma, Arrays.asList(phis));
+
+        _gamma = gamma;
+        _phis = Arrays.asList(phis);
+    }
+
+    public GjosteenElGamalCiphertext(final List<GroupElement> elements) {
 
         validateInputs(elements);
 
@@ -41,7 +51,7 @@ public class GjosteenElGamalCiphertext implements Ciphertext {
         _phis = elements.subList(1, elements.size());
     }
 
-    public GjosteenElGamalCiphertext(final ZpElement[] elements) {
+    public GjosteenElGamalCiphertext(final GroupElement[] elements) {
 
         validateInputs(elements);
 
@@ -55,9 +65,9 @@ public class GjosteenElGamalCiphertext implements Ciphertext {
 
     @JsonIgnore
     @Override
-    public ZpElement[] getParts() {
+    public GroupElement[] getParts() {
 
-        ZpElement[] gammaAndPhis = new ZpElement[_phis.size() + 1];
+        GroupElement[] gammaAndPhis = new GroupElement[_phis.size() + 1];
 
         gammaAndPhis[0] = _gamma;
         for (int i = 0, numPhis = _phis.size(); i < numPhis; i++) {
@@ -67,11 +77,11 @@ public class GjosteenElGamalCiphertext implements Ciphertext {
         return gammaAndPhis;
     }
 
-    public ZpElement getGamma() {
+    public GroupElement getGamma() {
         return _gamma;
     }
 
-    public List<ZpElement> getPhis() {
+    public List<GroupElement> getPhis() {
         return _phis;
     }
 
@@ -80,11 +90,11 @@ public class GjosteenElGamalCiphertext implements Ciphertext {
 
         final GjosteenElGamalCiphertext otherGjosteenElGamalCiphertext = validateInputAndCastSafely(otherCiphertext);
 
-        final ZpElement otherGamma = otherGjosteenElGamalCiphertext.getGamma();
-        final ZpElement resultGamma = _gamma.multiply(otherGamma);
+        final GroupElement otherGamma = otherGjosteenElGamalCiphertext.getGamma();
+        final GroupElement resultGamma = _gamma.multiply(otherGamma);
 
-        final List<ZpElement> otherPhis = otherGjosteenElGamalCiphertext.getPhis();
-        final List<ZpElement> resultPhis = new ArrayList<>();
+        final List<GroupElement> otherPhis = otherGjosteenElGamalCiphertext.getPhis();
+        final List<GroupElement> resultPhis = new ArrayList<>();
         for (int i = 0, numPhis = _phis.size(); i < numPhis; i++) {
             resultPhis.add(_phis.get(i).multiply(otherPhis.get(i)));
         }
@@ -95,9 +105,9 @@ public class GjosteenElGamalCiphertext implements Ciphertext {
     @Override
     public GjosteenElGamalCiphertext exponentiate(final Exponent exponent) {
 
-        final ZpElement gammaExponentiated = _gamma.exponentiate(exponent);
+        final GroupElement gammaExponentiated = _gamma.exponentiate(exponent);
 
-        final List<ZpElement> phisExponentiated =
+        final List<GroupElement> phisExponentiated =
             _phis.stream().map(phi -> phi.exponentiate(exponent)).collect(Collectors.toList());
 
         return new GjosteenElGamalCiphertext(gammaExponentiated, phisExponentiated);
@@ -109,7 +119,7 @@ public class GjosteenElGamalCiphertext implements Ciphertext {
         int result = 9;
         int aux = _gamma.hashCode();
         result = 13 * result + aux;
-        for (ZpElement i : _phis) {
+        for (GroupElement i : _phis) {
             aux = i.hashCode();
             result = 11 * result + aux;
         }
@@ -136,7 +146,7 @@ public class GjosteenElGamalCiphertext implements Ciphertext {
         if (!_gamma.isGroupElement()) {
             return false;
         }
-        for (ZpElement phi : _phis) {
+        for (GroupElement phi : _phis) {
             if (!phi.isGroupElement()) {
                 return false;
             }
@@ -146,17 +156,18 @@ public class GjosteenElGamalCiphertext implements Ciphertext {
 
     @Override
     public String toString() {
+    	//TODO please, modify this method once the toString() method in the CiphertextImpl class of crypotlib is changed.
         StringBuilder strbrd = new StringBuilder();
+        strbrd.append("CiphertextImpl [gamma=");
         strbrd.append(_gamma.toString());
-        for (ZpElement phi : _phis) {
-            strbrd.append(" ");
-            strbrd.append(phi.toString());
-        }
-
+        strbrd.append(", phis=");
+        GroupElement[] phisArray = new GroupElement[_phis.size()];
+        strbrd.append(Arrays.toString(_phis.toArray(phisArray)));
+        strbrd.append("]");
         return strbrd.toString();
     }
 
-    private void validateInputs(final ZpElement gamma, final List<ZpElement> phis) {
+    private void validateInputs(final GroupElement gamma, final List<GroupElement> phis) {
 
         if (gamma == null) {
             throw new RuntimeException("The gamma parameter was null");
@@ -167,7 +178,7 @@ public class GjosteenElGamalCiphertext implements Ciphertext {
         }
     }
 
-    private void validateInputs(final List<ZpElement> elements) {
+    private void validateInputs(final List<GroupElement> elements) {
 
         if (elements == null) {
             throw new RuntimeException("The list of elements was null");
@@ -179,7 +190,7 @@ public class GjosteenElGamalCiphertext implements Ciphertext {
         }
     }
 
-    private void validateInputs(final ZpElement[] elements) {
+    private void validateInputs(final GroupElement[] elements) {
 
         if (elements == null) {
             throw new RuntimeException("The array of elements was null");

@@ -6,11 +6,11 @@
  */
 package com.scytl.products.ov.mixnet.commons.tools;
 
+import java.util.List;
+
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallot;
 import com.scytl.products.ov.mixnet.commons.ballots.EncryptedBallots;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
-
-import java.util.List;
 
 public final class MatrixArranger {
 

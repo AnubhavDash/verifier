@@ -6,10 +6,11 @@
  */
 package com.scytl.products.ov.mixnet.commons.beans.proofs;
 
+import org.apache.log4j.Logger;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
-import org.apache.log4j.Logger;
 
 public class MultiExponentiationReductionAnswer {
     private final static Logger LOGGER = Logger.getLogger(MultiExponentiationReductionAnswer.class);
@@ -27,13 +28,13 @@ public class MultiExponentiationReductionAnswer {
     private final MultiExponentiationReductionAnswer _ansReduct;
 
     @JsonCreator
-    public MultiExponentiationReductionAnswer(@JsonProperty("exponentsB") final Exponent b,
-                                              @JsonProperty("exponentS") final Exponent s,
-                                              @JsonProperty("iniBasic") final MultiExponentiationBasicProofInitialMessage iniBasic,
-                                              @JsonProperty("ansBasic") final MultiExponentiationBasicProofAnswer ansBasic,
-                                              @JsonProperty("iniReduct") final MultiExponentiationReductionInitialMessage iniReduct,
-                                              @JsonProperty("ansReduct") final MultiExponentiationReductionAnswer ansReduct) {
-        _b = new Exponent[]{b};
+    public MultiExponentiationReductionAnswer(@JsonProperty("exponentsB") final Exponent[] b,
+            @JsonProperty("exponentS") final Exponent s,
+            @JsonProperty("iniBasic") final MultiExponentiationBasicProofInitialMessage iniBasic,
+            @JsonProperty("ansBasic") final MultiExponentiationBasicProofAnswer ansBasic,
+            @JsonProperty("iniReduct") final MultiExponentiationReductionInitialMessage iniReduct,
+            @JsonProperty("ansReduct") final MultiExponentiationReductionAnswer ansReduct) {
+        _b = b;
         _s = s;
         _iniBasic = iniBasic;
         _ansBasic = ansBasic;
@@ -42,8 +43,8 @@ public class MultiExponentiationReductionAnswer {
     }
 
     public MultiExponentiationReductionAnswer(final Exponent[] b, final Exponent s,
-                                              final MultiExponentiationBasicProofInitialMessage iniBasic,
-                                              final MultiExponentiationBasicProofAnswer ansBasic) {
+            final MultiExponentiationBasicProofInitialMessage iniBasic,
+            final MultiExponentiationBasicProofAnswer ansBasic) {
         _b = b;
         _s = s;
         _iniBasic = iniBasic;
@@ -53,8 +54,8 @@ public class MultiExponentiationReductionAnswer {
     }
 
     public MultiExponentiationReductionAnswer(final Exponent[] b, final Exponent s,
-                                              final MultiExponentiationReductionInitialMessage iniReduct,
-                                              final MultiExponentiationReductionAnswer ansReduct) {
+            final MultiExponentiationReductionInitialMessage iniReduct,
+            final MultiExponentiationReductionAnswer ansReduct) {
         _b = b;
         _s = s;
         _iniBasic = null;
@@ -108,7 +109,7 @@ public class MultiExponentiationReductionAnswer {
     @Override
     public String toString() {
         final StringBuilder strbldr = new StringBuilder();
-        for (Exponent a_b : _b) {
+        for (final Exponent a_b : _b) {
             strbldr.append(a_b.toString());
         }
         strbldr.append(_s.toString());

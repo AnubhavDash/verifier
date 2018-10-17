@@ -6,18 +6,23 @@
  */
 package com.scytl.products.ov.mixnet.commons.homomorphic.impl;
 
-import com.scytl.products.ov.mixnet.commons.mathematical.Group;
-import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
-import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
-
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.commons.io.FileUtils;
+
+import com.scytl.products.ov.mixnet.commons.mathematical.Group;
+import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
+import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
 
 /**
  * Represents a public key in the ElGamal cryptosystem.
  */
 public class ElGamalPublicKey {
 
-    private final List<ZpElement> _pubKeys;
+    private final List<GroupElement> _pubKeys;
 
     private final Group _group;
 
@@ -31,7 +36,7 @@ public class ElGamalPublicKey {
      * @param group
      *            The Zp subgroup that this public key belongs to.
      */
-    public ElGamalPublicKey(final List<ZpElement> pubKeys, final Group group) {
+    public ElGamalPublicKey(final List<GroupElement> pubKeys, final Group group) {
 
         validateInputs(pubKeys, group);
 
@@ -39,7 +44,7 @@ public class ElGamalPublicKey {
         _group = group;
     }
 
-    private void validateInputs(final List<ZpElement> pubKeys, final Group group) throws IllegalArgumentException {
+    private void validateInputs(final List<GroupElement> pubKeys, final Group group) throws IllegalArgumentException {
 
         if ((pubKeys == null) || (pubKeys.isEmpty())) {
             throw new IllegalArgumentException("The public key must be an initialised non-empty list");
@@ -50,7 +55,7 @@ public class ElGamalPublicKey {
         }
     }
 
-    public List<ZpElement> getPubKeys() {
+    public List<GroupElement> getPubKeys() {
         return _pubKeys;
     }
 
@@ -76,7 +81,7 @@ public class ElGamalPublicKey {
      * @throws Exception
      *             if the group is not a ZpGroup.
      */
-    /*public void serializeToFile(final Path pathOutputFile) throws Exception {
+    public void serializeToFile(final Path pathOutputFile) throws Exception {
 
         List<String> linesToBeWritten = new ArrayList<>();
 
@@ -91,7 +96,7 @@ public class ElGamalPublicKey {
             .addAll(_pubKeys.stream().map(element -> element.getValue().toString()).collect(Collectors.toList()));
 
         FileUtils.writeLines(pathOutputFile.toFile(), linesToBeWritten);
-    }*/
+    }
 
     private ZpGroup extractZpGroup(final Group group) throws Exception {
 

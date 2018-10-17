@@ -84,8 +84,10 @@ public class Test71 extends Test {
         } catch (Exception e) {
             if (e instanceof TestFailureException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test71.nok.message"));
-            } else if (e instanceof NoSuchFileException || e instanceof FileNotFoundException) {
+            } else if (e instanceof NoSuchFileException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test71.file.not.found.message", ((NoSuchFileException) e).getFile()));
+            } else if (e instanceof FileNotFoundException) {
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test71.file.not.found.message", e.getMessage()));
             } else {
                 LOGGER.error("unexpected error", e);
             }
