@@ -55,9 +55,9 @@ public class SecureLogBundle {
             throw new SecureLogBundleValidationException("bundle is not finishing with a checkPoint", beginCheckPoint.getHost());
         }
         LOGGER.trace(String.format("Starting validation of Bundle{prev:%s, curr:%s, elementsCount:%s}", this.beginCheckPoint, this.endCheckPoint, this.regularLogEntries.size()));
-        //byte[] beginHmac = validateStartCheckPoint();
-        //byte[] lastHmac = validateRegularLogs(beginHmac);
-        //validateEndCheckPoint(lastHmac);
+        byte[] beginHmac = validateStartCheckPoint();
+        byte[] lastHmac = validateRegularLogs(beginHmac);
+        validateEndCheckPoint(lastHmac);
     }
 
     private void validateEndCheckPoint(byte[] lastHmac) throws SecureLogBundleValidationException {
@@ -71,11 +71,10 @@ public class SecureLogBundle {
         byte[] previousHmac = beginCheckPointHmac;
         for (RegularLogEntry regularLogEntry : regularLogEntries) {
             byte[] text = concat(
-                    previousHmac,
-                    regularLogEntry.getRaw().getBytes(StandardCharsets.UTF_8));
+                    Base64.toBase64String(previousHmac),
+                    regularLogEntry.getRaw());
             byte[] hmac = HmacGenerator.Hash(text, lsk);
-            String hmacString = Base64.toBase64String(hmac);
-            if (!hmacString.equals(regularLogEntry.getMetadata().getHmac())) {
+            if (!Base64.toBase64String(hmac).equals(regularLogEntry.getMetadata().getHmac())) {
                 throw new SecureLogBundleValidationException("Regular log HMAC not valid", beginCheckPoint.getHost());
             }
             previousHmac = hmac;
@@ -86,30 +85,22 @@ public class SecureLogBundle {
     private byte[] validateStartCheckPoint() throws SecureLogBundleValidationException {
         byte[] lsk = Base64.decode(endCheckPoint.getMetadata().getLsk());
         byte[] text = concat(
-                Base64.decode(beginCheckPoint.getMetadata().getPhmac()),
-                Base64.decode(beginCheckPoint.getMetadata().getLsk()),
-                Base64.decode(beginCheckPoint.getMetadata().getEsk()),
-                beginCheckPoint.getRaw().getBytes(StandardCharsets.UTF_8));
+                beginCheckPoint.getMetadata().getPhmac(),
+                beginCheckPoint.getMetadata().getLsk(),
+                beginCheckPoint.getMetadata().getEsk(),
+                beginCheckPoint.getRaw());
         byte[] hmac = HmacGenerator.Hash(text, lsk);
-        String hmacString = Base64.toBase64String(hmac);
-        if (!hmacString.equals(beginCheckPoint.getMetadata().getHmac())) {
+        if (!Base64.toBase64String(hmac).equals(beginCheckPoint.getMetadata().getHmac())) {
             throw new SecureLogBundleValidationException("Begin checkPoint HMAC not valid", beginCheckPoint.getHost());
         }
         return hmac;
     }
 
-    private byte[] concat(byte[]... arrays) {
-        byte[] result = null;
-        for (byte[] array : arrays) {
-            if (result == null) {
-                result = array;
-            } else {
-                byte[] temp = new byte[result.length + array.length];
-                System.arraycopy(result, 0, temp, 0, result.length);
-                System.arraycopy(array, 0, temp, result.length, array.length);
-                result = array;
-            }
+    private byte[] concat(String... arrays) {
+        StringBuilder result = new StringBuilder();
+        for (String array : arrays) {
+            result.append(array);
         }
-        return result;
+        return result.toString().getBytes(StandardCharsets.UTF_8);
     }
 }
