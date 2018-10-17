@@ -50,7 +50,7 @@ public class SecureLogBundle {
         return this.endCheckPoint != null;
     }
 
-    public void validate() throws SecureLogBundleValidationException {
+    public void validateIntegrity() throws SecureLogBundleValidationException {
         if (!this.isComplete() && this.hasRegularLogEntries()) {
             throw new SecureLogBundleValidationException("bundle is not finishing with a checkPoint", beginCheckPoint.getHost());
         }
@@ -58,6 +58,22 @@ public class SecureLogBundle {
         byte[] beginHmac = validateStartCheckPoint();
         byte[] lastHmac = validateRegularLogs(beginHmac);
         validateEndCheckPoint(lastHmac);
+    }
+
+    public void validateSignature() throws SecureLogBundleValidationException {
+        String sg = beginCheckPoint.getMetadata().getSg();
+        byte[] text = concat(
+                beginCheckPoint.getMetadata().getPhmac(),
+                beginCheckPoint.getMetadata().getLsk(),
+                beginCheckPoint.getMetadata().getEsk(),
+                beginCheckPoint.getMetadata().getHmac(),
+                beginCheckPoint.getRaw());
+
+        //TODO build the signature and check it
+        String signature = /*buildSignature(secret, text);*/ sg;
+        if (!sg.equals(signature)) {
+            throw new SecureLogBundleValidationException("Begin Checkpoint signature not valid", beginCheckPoint.getHost());
+        }
     }
 
     private void validateEndCheckPoint(byte[] lastHmac) throws SecureLogBundleValidationException {

@@ -29,18 +29,18 @@ import java.util.stream.Stream;
 /**
  * Test01 of Block2, Step checkSecureLogIntegrity
  */
-public class Test01 extends Test {
+public class Test02 extends Test {
 
-    private static final Logger LOGGER = Logger.getLogger(Test01.class);
+    private static final Logger LOGGER = Logger.getLogger(Test02.class);
 
     @Override
     public TestDefinition getTestDefinition() {
         TestDefinition def = new TestDefinition();
         def.setBlockId(2);
-        def.setCategory(Category.INTEGRITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.description"));
-        def.setId(1);
-        def.setName("checkSecureLogIntegrity");
+        def.setCategory(Category.AUTHENTICITY);
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test02.description"));
+        def.setId(2);
+        def.setName("checkSecureLogSignature");
         return def;
     }
 
@@ -62,7 +62,7 @@ public class Test01 extends Test {
                     .flatMap(source -> SecureLogBundleCreator.from(source, source.key()))
                     .subscribe(b -> {
                         try {
-                            b.validateIntegrity();
+                            b.validateSignature();
                         } catch (SecureLogBundleValidationException e) {
                             LOGGER.error("Validation failed because on host {" + e.getHost() + "} " + e.getMessage());
                             throw new RuntimeException(e);

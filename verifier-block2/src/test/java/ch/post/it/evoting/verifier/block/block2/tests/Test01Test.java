@@ -51,7 +51,7 @@ public class Test01Test {
         Assert.assertEquals(59717, secureLogBundleStream.count());*/
         /*secureLogBundleStream.forEach(b -> {
             try {
-                b.validate();
+                b.validateIntegrity();
             } catch (SecureLogBundleValidationException e) {
                 e.printStackTrace();
             }

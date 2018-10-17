@@ -26,6 +26,11 @@
         </dependency>
         <dependency>
             <groupId>ch.post.it.evoting.verifier</groupId>
+            <artifactId>verifier-block2</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.post.it.evoting.verifier</groupId>
             <artifactId>verifier-block3</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -102,6 +107,11 @@
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports-fonts</artifactId>
             <version>6.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-core</artifactId>
+            <version>3.2.1.RELEASE</version>
         </dependency>
     </dependencies>
 
