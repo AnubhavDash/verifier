@@ -1,8 +1,5 @@
 package ch.post.it.evoting.verifier.block.block2.tests;
 
-import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogBundle;
-import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogBundleCreator;
-import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogBundleValidationException;
 import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestResult;
@@ -11,9 +8,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Test01Test {
@@ -56,5 +56,19 @@ public class Test01Test {
                 e.printStackTrace();
             }
         });*/
+    }
+
+    @Test
+    @Ignore
+    public void reverseFile() throws IOException {
+        Path path = new File(getClass().getResource("/Test01/OK/Evoting_CC_verifier_export_7d-json.json").getFile()).toPath();
+        Stream<String> stream = Files.lines(path);
+        List<String> collect = stream.collect(Collectors.toList());
+        File file = new File("c:\\temp\\result.json");
+        FileWriter fw = new FileWriter("c:\\temp\\result.json");
+        for (int i = collect.size() - 1; i >= 0; i--) {
+            fw.write(collect.get(i) + "\r\n");
+        }
+        fw.close();
     }
 }

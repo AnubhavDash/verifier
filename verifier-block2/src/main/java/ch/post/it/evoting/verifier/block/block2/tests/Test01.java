@@ -9,7 +9,6 @@
 package ch.post.it.evoting.verifier.block.block2.tests;
 
 import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
-import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogBundle;
 import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogBundleCreator;
 import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogBundleValidationException;
 import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogEntry;
@@ -20,11 +19,10 @@ import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import io.reactivex.Observable;
 import org.apache.log4j.Logger;
+import reactor.core.publisher.Flux;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -51,9 +49,8 @@ public class Test01 extends Test {
     @Override
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
-
         try {
-            Path secureLogsPath = PathHelper.getFile(inputDirectory, ".*Evoting_CC_verifier_export_.*\\.json").toPath();
+            Path secureLogsPath = PathHelper.getFile(inputDirectory, "secure_logs_2018_10_16.json").toPath();
             Stream<SecureLogEntry> logEntryStream = Files.lines(secureLogsPath).map(line -> {
                 try {
                     return SecureLogEntry.from(line);
@@ -62,30 +59,31 @@ public class Test01 extends Test {
                 }
             }).filter(sl -> sl.getIndex() != null && sl.getIndex().equals("it_evoting_cc"));
 
-            Observable<SecureLogEntry> secureLogEntryObservable = Observable.fromIterable(logEntryStream::iterator);
+            Flux<SecureLogEntry> secureLogEntryFlowable = Flux.fromIterable(logEntryStream::iterator);
 
-            secureLogEntryObservable.groupBy(sl -> sl.getHost())
-                    .forEach(groups -> {
-                        String host = groups.getKey();
-                        Observable<SecureLogBundle> from = SecureLogBundleCreator.from(groups);
-                        from.forEach(b -> {
-                            try {
-                                b.validate();
-                            } catch (SecureLogBundleValidationException e) {
-                                LOGGER.error("Validation failed on host {" + host + "} because " + e.getMessage());
-                                // throw new RuntimeException(e);
-                            }
-                        });
+            secureLogEntryFlowable.groupBy(SecureLogEntry::getHost)
+                    .flatMap(source -> SecureLogBundleCreator.from(source, source.key()))
+                    .subscribe(b -> {
+                        try {
+                            b.validate();
+                        } catch (SecureLogBundleValidationException e) {
+                            LOGGER.error("Validation failed because on host {" + e.getHost() + "} " + e.getMessage());
+                            throw new RuntimeException(e);
+                        }
                     });
 
+            result.setStatus(Status.OK);
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            result.setStatus(Status.NOK);
+        } catch (RuntimeException e) {
+            result.setStatus(Status.NOK);
+            if (e.getCause() instanceof SecureLogBundleValidationException) {
+                //TODO
+            }
+        } catch (Exception e) {
+            result.setStatus(Status.NOK);
         }
-
-        result.setStatus(Status.OK);
 
         return result;
     }
