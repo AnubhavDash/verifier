@@ -73,25 +73,6 @@ public class Test03 extends Test {
                     }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
             //count in the logs
-            /* OLD VERSION WITHOUT REACTOR
-            Map<String, Long> ccCountMap = new HashMap<>();
-            Deserializer.fromLines(inputDirectory, "secure_logs_2018_10_16.json",
-                    line -> {
-                        try {
-                            return SecureLogEntry.from(line);
-                        } catch (IOException e) {
-                            throw new RuntimeException("Unable to deserialize SecureLogEntry", e);
-                        }
-                    }).filter(sl -> sl.getIndex() != null && sl.getIndex().equals("it_evoting_cc"))
-                    .filter(s1 -> s1 instanceof RegularLogEntry)
-                    .map(s1 -> (RegularLogEntry) s1)
-                    .filter(s1 -> s1.getRaw().contains("GENPCC"))
-                    .forEach(secureLogEntry -> {
-                        String ccId = hostCcMapping.get(secureLogEntry.getHost());
-                        incrementCountByCC(ccCountMap, ccId);
-                    });
-
-             */
             Stream<SecureLogEntry> logEntry = Deserializer.fromLines(inputDirectory, "secure_logs_90_mo.json",
                     line -> {
                         try {
@@ -100,23 +81,6 @@ public class Test03 extends Test {
                             throw new RuntimeException("Unable to deserialize SecureLogEntry", e);
                         }
                     });
-
-            /* NEW VERSION WITH REACTOR
-            // WE CANT DO IT IN ONLY ONE PASS BECAUSE WITH NEED TO COMPARE THE COUNT WITH THE CSV FILES
-            Long nbDistinctValues = Flux.fromStream(logEntry)
-                    .filter(sl -> sl.getIndex() != null && sl.getIndex().equals("it_evoting_cc"))
-                    .filter(s1 -> s1 instanceof RegularLogEntry)
-                    .cast(RegularLogEntry.class)
-                    .filter(s1 -> s1.getRaw().contains("GENPCC"))
-                    .groupBy(s1 -> hostCcMapping.get(s1.getHost()))
-                    .flatMap(group -> {
-                        String ccName = group.key();
-                        return group.count().flux().map(count -> new AbstractMap.SimpleEntry<>(ccName, count));
-                    }).collectMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)
-                    .flatMapMany(m -> Flux.fromStream(m.values().stream()))
-                    .distinct()
-                    .count().block();
-            */
             Map<String, Long> countByCC = Flux.fromStream(logEntry)
                     .filter(sl -> sl.getIndex() != null && sl.getIndex().equals("it_evoting_cc"))
                     .filter(s1 -> s1 instanceof RegularLogEntry)
@@ -146,9 +110,4 @@ public class Test03 extends Test {
         return result;
     }
 
-    // OLD VERSION WITHOUT REACTOR
-    private void incrementCountByCC(Map<String, Long> map, String ccId) {
-        map.putIfAbsent(ccId, 0L);
-        map.compute(ccId, (key, oldValue) -> oldValue + 1);
-    }
 }
