@@ -1,0 +1,29 @@
+package ch.post.it.evoting.verifier.block.block2.tests;
+
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.TestResult;
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import java.io.File;
+
+public class Test03Test {
+
+    @Ignore
+    @Test
+    public void executeTestOK() {
+        TestResult testResult = new Test03().executeTest(new File(getClass().getResource("/Test03/OK").getFile()));
+        Assert.assertNotNull(testResult);
+        Assert.assertEquals(Status.OK, testResult.getStatus());
+    }
+
+    @Ignore
+    @Test
+    public void executeTestNOK() {
+        TestResult testResult = new Test03().executeTest(new File(getClass().getResource("/Test03/NOK").getFile()));
+        Assert.assertNotNull(testResult);
+        Assert.assertEquals(Status.NOK, testResult.getStatus());
+    }
+
+}
