@@ -8,6 +8,7 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
+import ch.post.it.evoting.verifier.common.block.dto.HostMappingElement;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
@@ -16,8 +17,12 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.AbstractMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 
 public class Test03 extends Test {
@@ -54,8 +59,17 @@ public class Test03 extends Test {
                         }
                     }).mapToLong(Long::longValue).sum();
 
+            // create host/CC mapping
+            File mapping = PathHelper.getFile(inputDirectory, "mapping_cc_hosts.csv");
+            Iterable<HostMappingElement> iterable = Deserializer.fromCsv(mapping.getParentFile(), mapping.getName(), ";", Deserializer.toHostMappingElement);
+            Map<String, String> hostCcMapping = StreamSupport.stream(iterable.spliterator(), false)
+                    .filter(hme -> !hme.getHostname().equalsIgnoreCase(Block2TestSuite.HOSTNAME_LABEL_MAPPING_FILE))
+                    .map(hme -> {
+                        return new AbstractMap.SimpleEntry<>(hme.getHostname(), hme.getCc());
+                    }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+
             //count in the logs
-            Stream<SecureLogEntry> logEntryStream = Deserializer.fromLines(inputDirectory, "secure_logs_2018_10_16.json",
+            Stream<SecureLogEntry> logEntryStream = Deserializer.fromLines(inputDirectory, "secure_logs_90_mo.json",
                     line -> {
                         try {
                             return SecureLogEntry.from(line);

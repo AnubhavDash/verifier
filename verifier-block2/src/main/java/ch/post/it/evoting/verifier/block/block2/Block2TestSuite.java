@@ -15,6 +15,8 @@ public class Block2TestSuite extends TestSuite {
     public static final Path PATH_ELECTION_SETUP = Paths.get("election_setup/");
     public static final Path PATH_VOTING_CARD_SETS = Paths.get("voting_card_sets/");
 
+    public static final String HOSTNAME_LABEL_MAPPING_FILE = "hostname";
+
 
     public Block2TestSuite() {
         super(Block2TestSuite.class.getPackage().getName() + ".tests");
