@@ -93,10 +93,16 @@ public class Test03 extends Test {
                     }).collectMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue).block();
 
             long nbDistinctValues = countByCC.values().stream().distinct().count();
-            if ( nbDistinctValues!= 1) {
-                //TODO
+            if ( nbDistinctValues != 1) {
+                //at this point with have 4 distincts values
+                //TODO handle distincts values for the CCs
+                result.setStatus(Status.NOK);
+            }else{
+                //finally check the count with csv files count
+                Long logCount = countByCC.values().stream().findFirst().isPresent() ? countByCC.values().stream().findFirst().get() : null;
+
+                result.setStatus( (voterInformationCount == logCount) ? Status.OK : Status.NOK );
             }
-            result.setStatus(Status.OK);
 
         } catch (RuntimeException e) {
             result.setStatus(Status.NOK);
