@@ -40,7 +40,7 @@ public class PathHelper {
                 if (file == null || file.length == 0) {
                     throw new FileNotFoundException(filenamePattern);
                 } else {
-                    ((ArrayList<File>) files).addAll(Arrays.asList(file));
+                    files.addAll(Arrays.asList(file));
                 }
             }
         } else {
