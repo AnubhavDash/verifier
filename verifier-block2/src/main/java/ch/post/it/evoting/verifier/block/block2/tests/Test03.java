@@ -8,20 +8,15 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
-import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.dto.DataConfigEE;
 import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.util.ArrayList;
+import java.nio.file.Files;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -45,24 +40,19 @@ public class Test03 extends Test {
         TestResult result = new TestResult(getTestDefinition());
         try {
             //Get the voterInformation.csv Files and count
-            Path path = inputDirectory.toPath().resolve(Block2TestSuite.PATH_ELECTION_SETUP);
-            DataConfigEE dataConfigEE = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", DataConfigEE.class);
-            List<String> votingCardSets = dataConfigEE
-                                                    .getElectionEvent()
-                                                    .getBallotBoxes()
-                                                    .stream()
-                                                    .map(ballotBox -> ballotBox.getVcsId())
-                                                    .collect(Collectors.toList());
-            List<File> voterInformationFiles = new ArrayList<>();
-            votingCardSets.forEach( votingCardSet -> {
-                    try {
-                        File folder = inputDirectory.toPath().resolve(Block2TestSuite.PATH_ELECTION_SETUP).resolve(Block2TestSuite.PATH_VOTING_CARD_SETS).resolve(votingCardSet).toFile();
-                        voterInformationFiles.add(PathHelper.getFile(folder, "voterInformation.*\\.csv"));
-                    } catch (FileNotFoundException e) {
-                        throw new TestFailureException("voterInformation.csv not found", inputDirectory.getName());
-                    }
-                });
-
+            List<File> voterInformationFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2TestSuite.PATH_ELECTION_SETUP).resolve(Block2TestSuite.PATH_VOTING_CARD_SETS).toFile(),
+                    "voterInformation.*\\.csv",
+                    true);
+            Long voterInformationCount = voterInformationFiles.stream()
+                    .map(f -> {
+                        try {
+                            Stream<String> lines = Files.lines(f.toPath());
+                            long count1 = lines.count();
+                            return count1;
+                        } catch (IOException e) {
+                            return null;
+                        }
+                    }).mapToLong(Long::longValue).sum();
 
             //count in the logs
             Stream<SecureLogEntry> logEntryStream = Deserializer.fromLines(inputDirectory, "secure_logs_2018_10_16.json",

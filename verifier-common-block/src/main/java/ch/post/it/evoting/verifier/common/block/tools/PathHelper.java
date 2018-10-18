@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 public class PathHelper {
     private PathHelper() {
@@ -25,6 +29,20 @@ public class PathHelper {
         } else {
             return file;
         }
+    }
+
+    public static List<File> getFiles(File inputDirectory, String filenamePattern, Boolean recursive) throws FileNotFoundException {
+        File[] directories = listDirectories(inputDirectory.toPath());
+        List<File> files = new ArrayList<>();
+        for (File directory : directories){
+            File[] file = getFiles(directory, filenamePattern);
+            if (file == null || file.length == 0) {
+                throw new FileNotFoundException(filenamePattern);
+            } else {
+                ((ArrayList<File>) files).addAll(Arrays.asList(file));
+            }
+        }
+        return files;
     }
 
     public static File getFile(File inputDirectory, String filenamePattern) throws FileNotFoundException {
