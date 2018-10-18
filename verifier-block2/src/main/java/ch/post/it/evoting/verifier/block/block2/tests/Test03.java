@@ -1,6 +1,7 @@
 package ch.post.it.evoting.verifier.block.block2.tests;
 
 import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
+import ch.post.it.evoting.verifier.block.block2.secureLog.RegularLogEntry;
 import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogBundleValidationException;
 import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.Category;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.AbstractMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -78,7 +80,16 @@ public class Test03 extends Test {
                         }
                     }).filter(sl -> sl.getIndex() != null && sl.getIndex().equals("it_evoting_cc"));
 
-
+            Map<String, Long> ccCountMap = new HashMap<>();
+            logEntryStream.forEach( secureLogEntry -> {
+                if(secureLogEntry instanceof RegularLogEntry){
+                    String ccId = hostCcMapping.get(secureLogEntry.getHost());
+                    String raw = secureLogEntry.getRaw();
+                    if(raw.contains("GENPCC")){
+                        incrementCountByCC(ccCountMap, ccId);
+                    }
+                }
+            });
 
             result.setStatus(Status.OK);
 
@@ -92,5 +103,10 @@ public class Test03 extends Test {
         }
 
         return result;
+    }
+
+    private void incrementCountByCC(Map<String, Long> map, String ccId) {
+        map.putIfAbsent(ccId, 0L);
+        map.compute(ccId, (key, oldValue) -> oldValue + 1);
     }
 }
