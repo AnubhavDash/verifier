@@ -13,7 +13,7 @@ public class Test04Test {
     @Ignore
     @Test
     public void executeTestOK() {
-        TestResult testResult = new Test03().executeTest(new File(getClass().getResource("/Test03/OK").getFile()));
+        TestResult testResult = new Test04().executeTest(new File(getClass().getResource("/Test04/OK").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.OK, testResult.getStatus());
     }
@@ -21,7 +21,13 @@ public class Test04Test {
     @Ignore
     @Test
     public void executeTestNOK() {
-        TestResult testResult = new Test03().executeTest(new File(getClass().getResource("/Test03/NOK").getFile()));
+        TestResult testResult = new Test04().executeTest(new File(getClass().getResource("/Test04/NOK").getFile()));
+        Assert.assertNotNull(testResult);
+        Assert.assertEquals(Status.NOK, testResult.getStatus());
+    }
+    @Test
+    public void executeTestNOKnotFile() {
+        TestResult testResult = new Test04().executeTest(new File(getClass().getResource("/Test04/NOK-NOTFILE").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
     }

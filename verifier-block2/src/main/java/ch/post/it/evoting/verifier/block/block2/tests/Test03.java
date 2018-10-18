@@ -18,8 +18,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
@@ -104,15 +106,18 @@ public class Test03 extends Test {
                 result.setStatus( (voterInformationCount == logCount) ? Status.OK : Status.NOK );
             }
 
-        } catch (RuntimeException e) {
-            result.setStatus(Status.NOK);
-            if (e.getCause() instanceof SecureLogBundleValidationException) {
-                //TODO
-            }
         } catch (Exception e) {
             result.setStatus(Status.NOK);
+            if( e instanceof  RuntimeException){
+                if (e.getCause() instanceof SecureLogBundleValidationException) {
+                    //TODO
+                }
+            } else if (e instanceof NoSuchFileException) {
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message", ((NoSuchFileException) e).getFile()));
+            } else if (e instanceof FileNotFoundException){
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message", e.getMessage()));
+            }
         }
-
         return result;
     }
 

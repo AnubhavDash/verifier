@@ -17,8 +17,10 @@ import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
@@ -91,26 +93,29 @@ public class Test04 extends Test {
                     }).collectMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue).block();
 
             long nbDistinctValues = countByCC.values().stream().distinct().count();
-            if ( nbDistinctValues != 1) {
+            if (nbDistinctValues != 1) {
                 //at this point with have 4 distincts values
                 //TODO handle distincts values for the CCs
                 result.setStatus(Status.NOK);
-            }else{
+            } else {
                 //finally check the count with csv files count
                 Long logCount = countByCC.values().stream().findFirst().isPresent() ? countByCC.values().stream().findFirst().get() : null;
 
-                result.setStatus( (voterInformationCount == logCount) ? Status.OK : Status.NOK );
+                result.setStatus((voterInformationCount == logCount) ? Status.OK : Status.NOK);
             }
 
-        } catch (RuntimeException e) {
-            result.setStatus(Status.NOK);
-            if (e.getCause() instanceof SecureLogBundleValidationException) {
-                //TODO
-            }
         } catch (Exception e) {
-            result.setStatus(Status.NOK);
+                result.setStatus(Status.NOK);
+                if( e instanceof  RuntimeException){
+                    if (e.getCause() instanceof SecureLogBundleValidationException) {
+                        //TODO
+                    }
+                } else if (e instanceof NoSuchFileException) {
+                    result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test04.file.not.found.message", ((NoSuchFileException) e).getFile()));
+                } else if (e instanceof FileNotFoundException){
+                    result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test04.file.not.found.message", e.getMessage()));
+                }
         }
-
         return result;
     }
 
