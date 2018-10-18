@@ -32,15 +32,19 @@ public class PathHelper {
     }
 
     public static List<File> getFiles(File inputDirectory, String filenamePattern, Boolean recursive) throws FileNotFoundException {
-        File[] directories = listDirectories(inputDirectory.toPath());
         List<File> files = new ArrayList<>();
-        for (File directory : directories){
-            File[] file = getFiles(directory, filenamePattern);
-            if (file == null || file.length == 0) {
-                throw new FileNotFoundException(filenamePattern);
-            } else {
-                ((ArrayList<File>) files).addAll(Arrays.asList(file));
+        if(recursive){
+            File[] directories = listDirectories(inputDirectory.toPath());
+            for (File directory : directories){
+                File[] file = getFiles(directory, filenamePattern);
+                if (file == null || file.length == 0) {
+                    throw new FileNotFoundException(filenamePattern);
+                } else {
+                    ((ArrayList<File>) files).addAll(Arrays.asList(file));
+                }
             }
+        } else {
+            files.addAll(Arrays.asList(getFiles(inputDirectory, filenamePattern)));
         }
         return files;
     }
