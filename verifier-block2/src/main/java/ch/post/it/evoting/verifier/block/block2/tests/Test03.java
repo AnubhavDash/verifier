@@ -58,25 +58,22 @@ public class Test03 extends Test {
             Long voterInformationCount = voterInformationFiles.stream()
                     .map(f -> {
                         try {
-                            Stream<String> lines = Files.lines(f.toPath());
-                            long count1 = lines.count();
-                            return count1;
+                            return Files.lines(f.toPath()).count();
                         } catch (IOException e) {
-                            return null;
+                            throw  new RuntimeException("An error occurs while parsing the voterInformation.csv files", e.getCause());
                         }
                     }).mapToLong(Long::longValue).sum();
 
             // create host/CC mapping
-            File mapping = PathHelper.getFile(inputDirectory, "mapping_cc_hosts.csv");
+            File mapping = PathHelper.getFile(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS).toFile(), "mapping_cc_hosts.csv");
             Iterable<HostMappingElement> iterable = Deserializer.fromCsv(mapping.getParentFile(), mapping.getName(), ";", Deserializer.toHostMappingElement);
             Map<String, String> hostCcMapping = StreamSupport.stream(iterable.spliterator(), false)
                     .skip(1)
-                    .map(hme -> {
-                        return new AbstractMap.SimpleEntry<>(hme.getHostname(), hme.getCc());
-                    }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+                    .map(hme -> new AbstractMap.SimpleEntry<>(hme.getHostname(), hme.getCc()))
+                    .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
             //count in the logs
-            Stream<SecureLogEntry> logEntry = Deserializer.fromLines(inputDirectory, "secure_logs_90_mo.json",
+            Stream<SecureLogEntry> logEntry = Deserializer.fromLines(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS).toFile(), "secure_logs_90_mo.json",
                     line -> {
                         try {
                             return SecureLogEntry.from(line);
@@ -95,30 +92,34 @@ public class Test03 extends Test {
                         return group.count().flux().map(count -> new AbstractMap.SimpleEntry<>(ccName, count));
                     }).collectMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue).block();
 
+            if(countByCC == null){
+                throw new RuntimeException("no values found while counting log foreach control component");
+            }
             long nbDistinctValues = countByCC.values().stream().distinct().count();
             if ( nbDistinctValues != 1) {
                 //at this point with have 4 distincts values
                 throw new TestFailureException("count of log for partial choice code generation is not the same for each control component", countByCC.values().toString());
             }else{
                 //finally check the count with csv files count
-                Long logCount = countByCC.values().stream().findFirst().isPresent() ? countByCC.values().stream().findFirst().get() : null;
-
-                result.setStatus( (voterInformationCount == logCount) ? Status.OK : Status.NOK );
+                Long logCount = countByCC.values().stream().findFirst().get();
+                result.setStatus( (voterInformationCount.equals(logCount)) ? Status.OK : Status.NOK );
             }
 
         } catch (Exception e) {
             result.setStatus(Status.NOK);
-            if( e instanceof  RuntimeException){
+            if( e instanceof  RuntimeException && !(e instanceof TestFailureException)){
+                LOGGER.error("Test failed, cause : " + e.getMessage(), e);
                 if (e.getCause() instanceof SecureLogBundleValidationException) {
                     //TODO
                 }
             } if (e instanceof TestFailureException) {
                 String[] args = ((TestFailureException) e).getArgs();
-                LOGGER.debug("Test failed, cause : " + args[0]  +". Count for the CCs : " + args[1].toString());
+                LOGGER.info("Test failed, cause : " + args[0]  +". Count for the CCs : " + args[1]);
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.nok.message"));
             } else if (e instanceof NoSuchFileException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message", ((NoSuchFileException) e).getFile()));
             } else if (e instanceof FileNotFoundException){
+                LOGGER.error("Test in error, cause : "  + e.getMessage() + " is missing", e);
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message", e.getMessage()));
             }
         }
