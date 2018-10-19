@@ -9,14 +9,12 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
-import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.dto.HostMappingElement;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,7 +22,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.util.AbstractMap;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -32,18 +29,18 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 
-public class Test03 extends Test {
+public class Test05 extends Test {
 
-    private static final Logger LOGGER = Logger.getLogger(Test03.class);
+    private static final Logger LOGGER = Logger.getLogger(Test05.class);
 
     @Override
     public TestDefinition getTestDefinition() {
         TestDefinition def = new TestDefinition();
         def.setBlockId(2);
         def.setCategory(Category.CONSISTENCY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.description"));
-        def.setId(3);
-        def.setName("checkNumberChoiceReturnCodes");
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.description"));
+        def.setId(5);
+        def.setName("checkVoteBallotBox");
         return def;
     }
 
@@ -88,7 +85,7 @@ public class Test03 extends Test {
                     .filter(sl -> sl.getIndex() != null && sl.getIndex().equals("it_evoting_cc"))
                     .filter(s1 -> s1 instanceof RegularLogEntry)
                     .cast(RegularLogEntry.class)
-                    .filter(s1 -> s1.getRaw().contains("GENPCC"))
+                    .filter(s1 -> s1.getRaw().contains("GENPVCC"))
                     .groupBy(s1 -> hostCcMapping.get(s1.getHost()))
                     .flatMap(group -> {
                         String ccName = group.key();
@@ -96,31 +93,28 @@ public class Test03 extends Test {
                     }).collectMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue).block();
 
             long nbDistinctValues = countByCC.values().stream().distinct().count();
-            if ( nbDistinctValues != 1) {
+            if (nbDistinctValues != 1) {
                 //at this point with have 4 distincts values
-                throw new TestFailureException("count of log for partial choice code generation is not the same for each control component", countByCC.values().toString());
-            }else{
+                //TODO handle distincts values for the CCs
+                result.setStatus(Status.NOK);
+            } else {
                 //finally check the count with csv files count
                 Long logCount = countByCC.values().stream().findFirst().isPresent() ? countByCC.values().stream().findFirst().get() : null;
 
-                result.setStatus( (voterInformationCount == logCount) ? Status.OK : Status.NOK );
+                result.setStatus((voterInformationCount == logCount) ? Status.OK : Status.NOK);
             }
 
         } catch (Exception e) {
-            result.setStatus(Status.NOK);
-            if( e instanceof  RuntimeException){
-                if (e.getCause() instanceof SecureLogBundleValidationException) {
-                    //TODO
+                result.setStatus(Status.NOK);
+                if( e instanceof  RuntimeException){
+                    if (e.getCause() instanceof SecureLogBundleValidationException) {
+                        //TODO
+                    }
+                } else if (e instanceof NoSuchFileException) {
+                    result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.file.not.found.message", ((NoSuchFileException) e).getFile()));
+                } else if (e instanceof FileNotFoundException){
+                    result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.file.not.found.message", e.getMessage()));
                 }
-            } if (e instanceof TestFailureException) {
-                String[] args = ((TestFailureException) e).getArgs();
-                LOGGER.debug("Test failed, cause : " + args[0]  +". Count for the CCs : " + args[1].toString());
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.nok.message"));
-            } else if (e instanceof NoSuchFileException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message", ((NoSuchFileException) e).getFile()));
-            } else if (e instanceof FileNotFoundException){
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message", e.getMessage()));
-            }
         }
         return result;
     }

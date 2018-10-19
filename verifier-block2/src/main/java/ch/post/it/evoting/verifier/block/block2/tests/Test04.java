@@ -9,6 +9,7 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
+import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.dto.HostMappingElement;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
@@ -95,8 +96,8 @@ public class Test04 extends Test {
             long nbDistinctValues = countByCC.values().stream().distinct().count();
             if (nbDistinctValues != 1) {
                 //at this point with have 4 distincts values
-                //TODO handle distincts values for the CCs
-                result.setStatus(Status.NOK);
+                throw new TestFailureException("count of log for partial choice code generation is not the same for each control component", countByCC.values().toString());
+
             } else {
                 //finally check the count with csv files count
                 Long logCount = countByCC.values().stream().findFirst().isPresent() ? countByCC.values().stream().findFirst().get() : null;
@@ -105,16 +106,21 @@ public class Test04 extends Test {
             }
 
         } catch (Exception e) {
-                result.setStatus(Status.NOK);
-                if( e instanceof  RuntimeException){
-                    if (e.getCause() instanceof SecureLogBundleValidationException) {
-                        //TODO
-                    }
-                } else if (e instanceof NoSuchFileException) {
-                    result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test04.file.not.found.message", ((NoSuchFileException) e).getFile()));
-                } else if (e instanceof FileNotFoundException){
-                    result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test04.file.not.found.message", e.getMessage()));
+            result.setStatus(Status.NOK);
+            if (e instanceof RuntimeException) {
+                if (e.getCause() instanceof SecureLogBundleValidationException) {
+                    //TODO
                 }
+            }
+            if (e instanceof TestFailureException) {
+                String[] args = ((TestFailureException) e).getArgs();
+                LOGGER.debug("Test failed, cause : " + args[0]  +". Count for the CCs : " + args[1].toString());
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test04.nok.message"));
+            } else if (e instanceof NoSuchFileException) {
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test04.file.not.found.message", ((NoSuchFileException) e).getFile()));
+            } else if (e instanceof FileNotFoundException) {
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test04.file.not.found.message", e.getMessage()));
+            }
         }
         return result;
     }
