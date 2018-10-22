@@ -10,7 +10,7 @@
 
     <dependencySets>
         <dependencySet>
-            <outputDirectory>/Verifier-win32-x64</outputDirectory>
+            <outputDirectory>/</outputDirectory>
             <includes>
                 <include>${project.groupId}:${rootProject}-web-client</include>
             </includes>
@@ -18,7 +18,7 @@
             <useProjectArtifact>false</useProjectArtifact>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/Verifier-win32-x64/resources</outputDirectory>
+            <outputDirectory>/resources</outputDirectory>
             <includes>
                 <include>${project.groupId}:${rootProject}-web</include>
             </includes>
@@ -30,7 +30,7 @@
     <fileSets>
         <fileSet>
             <directory>${basedir}/src/main/resources</directory>
-            <outputDirectory>/Verifier-win32-x64/resources</outputDirectory>
+            <outputDirectory>/resources</outputDirectory>
             <filtered>false</filtered>
         </fileSet>
     </fileSets>
