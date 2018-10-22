@@ -29,9 +29,8 @@
         <module>verifier-block2</module>
         <module>verifier-block3</module>
         <module>verifier-block4</module>
-        <module>verifier-backend</module>
-        <module>verifier-frontend</module>
-        <module>verifier-console</module>
+        <module>verifier-web-client</module>
+        <module>verifier-web</module>
     </modules>
 
 
