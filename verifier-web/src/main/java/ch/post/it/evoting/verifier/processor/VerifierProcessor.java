@@ -47,6 +47,14 @@ public class VerifierProcessor {
 
     @PostConstruct
     private void init() {
+        if (configurationInputDirectory == null || configurationInputDirectory.length() == 0) {
+            String currentDirectory = System.getProperty("user.dir");
+            int lastBackslash = currentDirectory.lastIndexOf("\\");
+            if (lastBackslash != -1) {
+                configurationInputDirectory = currentDirectory.substring(0, lastBackslash);
+            }
+
+        }
         listeners = new LinkedList<>();
         processed = false;
 
