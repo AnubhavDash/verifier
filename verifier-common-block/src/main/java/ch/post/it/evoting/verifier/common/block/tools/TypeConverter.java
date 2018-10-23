@@ -35,7 +35,7 @@ public class TypeConverter {
     }
 
     public static String byteToString(byte[] b) {
-        return new String(b);
+        return new String(b, StandardCharsets.UTF_8);
     }
 
     public static BigInteger stringToBigInteger(String s) {
