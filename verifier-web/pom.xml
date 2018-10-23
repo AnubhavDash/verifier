@@ -24,18 +24,16 @@
             <artifactId>verifier-block1</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!--
-        <dependency>
+        <!--<dependency>
             <groupId>ch.post.it.evoting.verifier</groupId>
             <artifactId>verifier-block2</artifactId>
             <version>${project.version}</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>ch.post.it.evoting.verifier</groupId>
             <artifactId>verifier-block3</artifactId>
             <version>${project.version}</version>
         </dependency>
-        -->
         <dependency>
             <groupId>ch.post.it.evoting.verifier</groupId>
             <artifactId>verifier-block4</artifactId>
