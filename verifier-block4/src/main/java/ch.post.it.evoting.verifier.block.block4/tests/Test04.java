@@ -2,7 +2,7 @@ package ch.post.it.evoting.verifier.block.block4.tests;
 
 import ch.ech.xmlns.ech_0110._3.Delivery;
 import ch.ech.xmlns.ech_0110._3.ListResultsType;
-import ch.evoting.xmlns.config._3.Configuration;
+import ch.evoting.xmlns.config._4.Configuration;
 import ch.post.it.evoting.verifier.block.block4.Block4TestSuite;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
@@ -76,26 +76,30 @@ public class Test04 extends Test {
                                     String electionId = e.getElectionIdentification();
                                     Map<String, Long> listIdCountMap = new HashMap<>();
                                     e.getBallot().forEach(ballot -> {
-                                        // empty list
-                                        if (mapListIsEmpty.get(ballot.getChosenListIdentification())) {
-                                            ballot.getChosenCandidateListIdentification().forEach(lcId -> {
-                                                String candidateListId = mapLcIdListId.get(lcId);
-                                                if (!mapListIsEmpty.get(candidateListId)) {
-                                                    incrementListVote(listIdCountMap, candidateListId);
-                                                }
-                                            });
+                                        if (ballot.getChosenListIdentification() == null) {
+                                            //candidate only election, nothing to do
                                         } else {
-                                            // normal list
-                                            ballot.getChosenCandidateListIdentification().forEach(lcId -> {
-                                                String candidateListId = mapLcIdListId.get(lcId);
-                                                if (!mapListIsEmpty.get(candidateListId)) {
-                                                    //real candidate
-                                                    incrementListVote(listIdCountMap, candidateListId);
-                                                } else {
-                                                    //empty candidate
-                                                    incrementListVote(listIdCountMap, ballot.getChosenListIdentification());
-                                                }
-                                            });
+                                            // empty list
+                                            if (mapListIsEmpty.get(ballot.getChosenListIdentification())) {
+                                                ballot.getChosenCandidateListIdentification().forEach(lcId -> {
+                                                    String candidateListId = mapLcIdListId.get(lcId);
+                                                    if (!mapListIsEmpty.get(candidateListId)) {
+                                                        incrementListVote(listIdCountMap, candidateListId);
+                                                    }
+                                                });
+                                            } else {
+                                                // normal list
+                                                ballot.getChosenCandidateListIdentification().forEach(lcId -> {
+                                                    String candidateListId = mapLcIdListId.get(lcId);
+                                                    if (!mapListIsEmpty.get(candidateListId)) {
+                                                        //real candidate
+                                                        incrementListVote(listIdCountMap, candidateListId);
+                                                    } else {
+                                                        //empty candidate
+                                                        incrementListVote(listIdCountMap, ballot.getChosenListIdentification());
+                                                    }
+                                                });
+                                            }
                                         }
                                     });
                                     return new AbstractMap.SimpleEntry<>(electionId, listIdCountMap);
@@ -114,16 +118,20 @@ public class Test04 extends Test {
                                     String electionId = e.getElectionIdentification();
                                     Map<String, Long> listIdCountMap = new HashMap<>();
                                     e.getBallot().forEach(ballot -> {
-                                        if (!mapListIsEmpty.get(ballot.getChosenListIdentification())) {
-                                            //normal list
-                                            ballot.getChosenCandidateListIdentification().forEach(lcId -> {
-                                                String choosenList = ballot.getChosenListIdentification();
-                                                String candidateListId = mapLcIdListId.get(lcId);
-                                                if (mapListIsEmpty.get(candidateListId)) {
-                                                    //empty candidate
-                                                    incrementListVote(listIdCountMap, choosenList);
-                                                }
-                                            });
+                                        if (ballot.getChosenListIdentification() == null) {
+                                            //candidate only election, nothing to do
+                                        } else {
+                                            if (!mapListIsEmpty.get(ballot.getChosenListIdentification())) {
+                                                //normal list
+                                                ballot.getChosenCandidateListIdentification().forEach(lcId -> {
+                                                    String choosenList = ballot.getChosenListIdentification();
+                                                    String candidateListId = mapLcIdListId.get(lcId);
+                                                    if (mapListIsEmpty.get(candidateListId)) {
+                                                        //empty candidate
+                                                        incrementListVote(listIdCountMap, choosenList);
+                                                    }
+                                                });
+                                            }
                                         }
                                     });
                                     return new AbstractMap.SimpleEntry<>(electionId, listIdCountMap);

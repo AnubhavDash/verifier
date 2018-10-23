@@ -8,9 +8,9 @@
 
 package ch.post.it.evoting.verifier.block.block1.tests;
 
-import ch.evoting.xmlns.config._3.Configuration;
-import ch.evoting.xmlns.config._3.StandardAnswerType;
-import ch.evoting.xmlns.config._3.TiebreakAnswerType;
+import ch.evoting.xmlns.config._4.Configuration;
+import ch.evoting.xmlns.config._4.StandardAnswerType;
+import ch.evoting.xmlns.config._4.TiebreakAnswerType;
 import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
