@@ -11,12 +11,18 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 public class Deserializer {
 
     private Deserializer() {
         //private constructor, use static
+    }
+
+    public static <T> Stream<T> fromLines(File inputFile, String filenamePattern, Function<String, T> mapper) throws IOException {
+        return Files.lines(getFile(inputFile, filenamePattern).toPath()).map(mapper);
     }
 
     public static <T> T fromJson(File inputDirectory, String filenamePattern, Class<T> targetClazz) throws IOException {
@@ -26,7 +32,7 @@ public class Deserializer {
 
     public static <T> T fromJson(byte[] content, Class<T> targetClazz) throws IOException {
         ObjectMapper jsonMapper = new ObjectMapper();
-        return jsonMapper.readValue(new String(content), targetClazz);
+        return jsonMapper.readValue(new String(content, StandardCharsets.UTF_8), targetClazz);
     }
 
     public static void toJson(Object content, File file) throws IOException {

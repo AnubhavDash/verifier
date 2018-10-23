@@ -9,21 +9,22 @@
 package ch.post.it.evoting.verifier.block.block2.tests;
 
 import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
+import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogBundleCreator;
+import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogBundleValidationException;
+import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
-import ch.post.it.evoting.verifier.common.block.dto.SecureLogsData;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
-import ch.post.it.evoting.verifier.common.block.tools.SecureLogsHelper;
+import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
+import reactor.core.publisher.Flux;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Path;
+import java.util.stream.Stream;
 
 /**
  * Test01 of Block2, Step checkSecureLogIntegrity
@@ -46,20 +47,40 @@ public class Test01 extends Test {
     @Override
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
-
         try {
-            Path secureLogsPath = PathHelper.getFile(inputDirectory, ".*Evoting_CC_verifier_export_.*\\.json").toPath();
-            File mapping = PathHelper.getFile(inputDirectory, ".*mapping_cc_hosts.*\\.csv");
-            SecureLogsData secureLogsData = SecureLogsHelper.ParseSecureLogs(secureLogsPath, mapping);
-            System.out.println("Done .... ");
+            Stream<SecureLogEntry> logEntryStream = Deserializer.fromLines(inputDirectory, "secure_logs_2018_10_16.json",
+                    line -> {
+                        try {
+                            return SecureLogEntry.from(line);
+                        } catch (IOException e) {
+                            throw new RuntimeException("Unable to deserialize SecureLogEntry", e);
+                        }
+                    }).filter(sl -> sl.getIndex() != null && sl.getIndex().equals("it_evoting_cc"));
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Flux.fromIterable(logEntryStream::iterator)
+                    .groupBy(SecureLogEntry::getHost)
+                    .flatMap(source -> SecureLogBundleCreator.from(source, source.key()))
+                    .subscribe(b -> {
+                        try {
+                            b.validateIntegrity();
+                        } catch (SecureLogBundleValidationException e) {
+                            LOGGER.error("Validation failed because on host {" + e.getHost() + "} " + e.getMessage());
+                            throw new RuntimeException(e);
+                        }
+                    });
+
+            result.setStatus(Status.OK);
+
         } catch (IOException e) {
-            e.printStackTrace();
+            result.setStatus(Status.NOK);
+        } catch (RuntimeException e) {
+            result.setStatus(Status.NOK);
+            if (e.getCause() instanceof SecureLogBundleValidationException) {
+                //TODO
+            }
+        } catch (Exception e) {
+            result.setStatus(Status.NOK);
         }
-
-        result.setStatus(Status.OK);
 
         return result;
     }

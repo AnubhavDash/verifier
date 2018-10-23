@@ -1,8 +1,8 @@
 package ch.post.it.evoting.verifier.block.block4.tests;
 
 import ch.ech.xmlns.ech_0110._3.Delivery;
-import ch.evoting.xmlns.config._3.CandidatePositionType;
-import ch.evoting.xmlns.config._3.Configuration;
+import ch.evoting.xmlns.config._4.CandidatePositionType;
+import ch.evoting.xmlns.config._4.Configuration;
 import ch.post.it.evoting.verifier.block.block4.Block4TestSuite;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;

@@ -1,0 +1,63 @@
+{
+  "electionEvent" : {
+    "id" : "03620cc739574d05a05029bbcbb3970d",
+    "alias" : "candidate_only_5_2",
+    "ballotBoxes" : [ {
+      "id" : "4ec5272674d44216ad040083bef770cf",
+      "alias" : "FR-BZ-1006|FR-MU-2309",
+      "authId" : "fc52c745-f35b-3c20-8ba5-4120b3cc02da",
+      "vcsId" : "26a9178f92a74838be64924b1c628f0e",
+      "vcsAlias" : "vcs_FR-BZ-1006|FR-MU-2309",
+      "votingCardsGenerated" : 100,
+      "countingCircles" : [ {
+        "id" : "FR-MU-2309",
+        "domainOfInfluence" : [ {
+          "id" : "1B76E565-4DA8-11E6-89C7-00155D28151E",
+          "votes" : [ ],
+          "elections" : [ {
+            "id" : "f551f6028c834f8c91b426594dd1e546",
+            "alias" : "majorz_wahl",
+            "numberOfSeats" : 5,
+            "candidates" : [ {
+              "alias" : "10BDBE6B-A5B6-11E6-ACC2-00155D28151E",
+              "primeNumber" : [ 100169 ],
+              "blank" : false
+            }, {
+              "alias" : "896DA903-A5A9-11E6-ACC2-00155D28151E",
+              "primeNumber" : [ 100003 ],
+              "blank" : false
+            }, {
+              "alias" : "E973F450-A5B6-11E6-ACC2-00155D28151E",
+              "primeNumber" : [ 100019 ],
+              "blank" : false
+            }, {
+              "alias" : "F0713B3E-A5A8-11E6-ACC2-00155D28151E",
+              "primeNumber" : [ 100129 ],
+              "blank" : false
+            }, {
+              "alias" : "9cdff8b8-09f5-3109-ae1e-d92282c72d34",
+              "primeNumber" : [ 10009 ],
+              "blank" : true
+            }, {
+              "alias" : "981c02a3-3348-39c6-90f9-3e9f40b6641d",
+              "primeNumber" : [ 100103 ],
+              "blank" : true
+            }, {
+              "alias" : "a6b13097-7137-33d7-b578-8d3c68a0c89c",
+              "primeNumber" : [ 100109 ],
+              "blank" : true
+            }, {
+              "alias" : "01e0d669-e9ba-31cc-8360-4f8d1da8fe80",
+              "primeNumber" : [ 100153 ],
+              "blank" : true
+            }, {
+              "alias" : "bdeb8bc6-3287-344d-a719-f250efb41cfe",
+              "primeNumber" : [ 100183 ],
+              "blank" : true
+            } ]
+          } ]
+        } ]
+      } ]
+    } ]
+  }
+}

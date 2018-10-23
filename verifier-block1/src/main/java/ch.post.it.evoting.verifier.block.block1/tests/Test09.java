@@ -8,9 +8,10 @@
 
 package ch.post.it.evoting.verifier.block.block1.tests;
 
-import ch.evoting.xmlns.config._3.Configuration;
-import ch.evoting.xmlns.config._3.StandardAnswerType;
-import ch.evoting.xmlns.config._3.TiebreakAnswerType;
+import ch.evoting.xmlns.config._4.Configuration;
+import ch.evoting.xmlns.config._4.ListType;
+import ch.evoting.xmlns.config._4.StandardAnswerType;
+import ch.evoting.xmlns.config._4.TiebreakAnswerType;
 import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
@@ -90,7 +91,9 @@ public class Test09 extends Test {
 
                         BigInteger optionCount = (candidateAccumulation.multiply(BigInteger.valueOf(candidateCount))).add(numberOfMandates.multiply(BigInteger.valueOf(1 + (writeInsAllowed ? 1 : 0))));
                         electionDetail.setOptionCount(optionCount.intValue());
-                        electionDetail.setListCount(ei.getList().size());
+
+                        boolean candidateOnlyElection = ei.getList().stream().allMatch(ListType::isListEmpty) && ei.getList().size() == 1;
+                        electionDetail.setListCount(candidateOnlyElection ? 0 : ei.getList().size());
 
                         return new AbstractMap.SimpleEntry<>(ei.getElection().getElectionIdentification(), electionDetail);
                     }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
@@ -135,9 +138,11 @@ public class Test09 extends Test {
                             long optionDistinctCount = e.getLists().stream()
                                     .flatMap(l -> l.getCandidatePositions().stream())
                                     .flatMap(cp -> cp.getPrimeNumber().stream()).distinct().count();
+                            long optionCandidateOnlyCount = e.getCandidates().stream()
+                                    .flatMap(c -> c.getPrimeNumber().stream()).distinct().count();
                             int writeInsCount = e.getWriteIns().size();
 
-                            if ((optionDistinctCount + writeInsCount) != electionOptionCount.get(electionIdentification).getOptionCount()) {
+                            if ((optionDistinctCount + writeInsCount + optionCandidateOnlyCount) != electionOptionCount.get(electionIdentification).getOptionCount()) {
                                 throw new Test09Exception("test09.nok.message.number.of.candidate.prime.number.and.vo.nok");
                             }
                         });
