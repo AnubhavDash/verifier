@@ -10,7 +10,6 @@ import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.*;
 import ch.post.it.evoting.verifier.dto.BallotBox;
 import ch.post.it.evoting.verifier.dto.DataConfigEE;
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -20,11 +19,9 @@ import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Test08 extends Test {
