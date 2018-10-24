@@ -9,6 +9,7 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
+import ch.post.it.evoting.verifier.common.block.tools.CountMap;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import com.scytl.xmlns.decrypt._1.Results;
@@ -20,7 +21,6 @@ import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.AbstractMap;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -123,7 +123,7 @@ public class Test03 extends Test {
                     .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
             // writeInsEch110Map
-            Map<String, Long> writeInsEch110Map = new HashMap<>();
+            CountMap<String> writeInsEch110Map = new CountMap<>();
             //check writeIns content, fill writeInsEch110Map
             ech110.getResultDelivery().getCountingCircleResults().forEach(cc -> {
                 String ccId = cc.getCountingCircle().getCountingCircleId();
@@ -134,7 +134,7 @@ public class Test03 extends Test {
                         .forEach(c -> {
                             String cId = c.getCandidateInformation().getFamilyName() + " " + c.getCandidateInformation().getCallName();
                             Map<String, Long> writeInsAndCount = writeInsDecryptMap.get(ccId);
-                            incrementValue(writeInsEch110Map, cId);
+                            writeInsEch110Map.increment(cId);
                             if(writeInsAndCount != null && !writeInsAndCount.isEmpty()){
                                 if (!writeInsAndCount.containsKey(cId)) {
                                     throw new Test03FailureException(cId);
@@ -148,7 +148,7 @@ public class Test03 extends Test {
                         .forEach(c -> {
                             String cId = c.getCandidateInformation().getFamilyName() + " " + c.getCandidateInformation().getCallName();
                             Map<String, Long> writeInsAndCount = writeInsDecryptMap.get(ccId);
-                            incrementValue(writeInsEch110Map, cId);
+                            writeInsEch110Map.increment(cId);
                             if(writeInsAndCount != null && !writeInsAndCount.isEmpty()){
                                 if (!writeInsAndCount.containsKey(cId)) {
                                     throw new Test03FailureException(cId);
@@ -238,10 +238,4 @@ public class Test03 extends Test {
             return candidateId;
         }
     }
-
-    private void incrementValue(Map<String, Long> map, String cId) {
-        map.putIfAbsent(cId, 0L);
-        map.compute(cId, (key, oldValue) -> oldValue + 1);
-    }
-
 }

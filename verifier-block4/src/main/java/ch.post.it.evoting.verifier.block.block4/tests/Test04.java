@@ -11,6 +11,7 @@ import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.CountMap;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import com.scytl.xmlns.decrypt._1.Results;
 import org.apache.log4j.Logger;
@@ -74,7 +75,7 @@ public class Test04 extends Test {
                         Map<String, Map<String, Long>> electionCount = cc.getDomainOfInfluence().stream().flatMap(doi -> doi.getElection().stream())
                                 .map(e -> {
                                     String electionId = e.getElectionIdentification();
-                                    Map<String, Long> listIdCountMap = new HashMap<>();
+                                    CountMap<String> listIdCountMap = new CountMap<>();
                                     e.getBallot().forEach(ballot -> {
                                         if (ballot.getChosenListIdentification() == null) {
                                             //candidate only election, nothing to do
@@ -84,7 +85,7 @@ public class Test04 extends Test {
                                                 ballot.getChosenCandidateListIdentification().forEach(lcId -> {
                                                     String candidateListId = mapLcIdListId.get(lcId);
                                                     if (!mapListIsEmpty.get(candidateListId)) {
-                                                        incrementListVote(listIdCountMap, candidateListId);
+                                                        listIdCountMap.increment(candidateListId);
                                                     }
                                                 });
                                             } else {
@@ -92,11 +93,11 @@ public class Test04 extends Test {
                                                 ballot.getChosenCandidateListIdentification().forEach(lcId -> {
                                                     String candidateListId = mapLcIdListId.get(lcId);
                                                     if (!mapListIsEmpty.get(candidateListId)) {
-                                                        //real candidate
-                                                        incrementListVote(listIdCountMap, candidateListId);
+                                                        //real candidate.
+                                                        listIdCountMap.increment(candidateListId);
                                                     } else {
                                                         //empty candidate
-                                                        incrementListVote(listIdCountMap, ballot.getChosenListIdentification());
+                                                        listIdCountMap.increment(ballot.getChosenListIdentification());
                                                     }
                                                 });
                                             }
@@ -128,7 +129,7 @@ public class Test04 extends Test {
                                                     String candidateListId = mapLcIdListId.get(lcId);
                                                     if (mapListIsEmpty.get(candidateListId)) {
                                                         //empty candidate
-                                                        incrementListVote(listIdCountMap, choosenList);
+                                                        listIdCountMap.containsKey(choosenList);
                                                     }
                                                 });
                                             }
@@ -216,10 +217,4 @@ public class Test04 extends Test {
         }
         return BigInteger.valueOf(countByElection.get(listId) == null ? 0L : countByElection.get(listId));
     }
-
-    private void incrementListVote(Map<String, Long> map, String listId) {
-        map.putIfAbsent(listId, 0L);
-        map.compute(listId, (key, oldValue) -> oldValue + 1);
-    }
-
 }
