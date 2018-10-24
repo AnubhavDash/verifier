@@ -19,9 +19,4 @@ public class MathHelper {
         BigInteger ec = vo.modPow(exponent, p);
         return ec.equals(BigInteger.ONE);
     }
-
-    public static boolean isEulerCriterionInvalid(BigInteger vo, BigInteger p) {
-        return !isEulerCriterionValid(vo, p);
-    }
-
 }

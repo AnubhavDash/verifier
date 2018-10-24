@@ -55,7 +55,7 @@ public class Test07 extends Test {
             } else {
                 List<String> errors = elements.stream()
                         .map(element -> TypeConverter.byteToBigInteger(TypeConverter.base64ToByte(element)))
-                        .filter(bigInteger -> MathHelper.isEulerCriterionInvalid(bigInteger, p))
+                        .filter(bigInteger -> !MathHelper.isEulerCriterionValid(bigInteger, p))
                         .map(bi -> TypeConverter.byteToBase64String(TypeConverter.bigIntegerToByte(bi)))
                         .collect(Collectors.toList());
                 if (errors.isEmpty()) {

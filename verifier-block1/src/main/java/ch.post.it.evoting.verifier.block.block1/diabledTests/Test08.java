@@ -67,7 +67,7 @@ public class Test08 extends Test {
                 numbers = numbers.subList(3, numbers.size());
 
                 List<BigInteger> errors = numbers.stream()
-                        .filter(bigInteger -> MathHelper.isEulerCriterionInvalid(bigInteger, p))
+                        .filter(bigInteger -> !MathHelper.isEulerCriterionValid(bigInteger, p))
                         .collect(Collectors.toList());
                 if (errors.isEmpty()) {
                     result.setStatus(Status.OK);

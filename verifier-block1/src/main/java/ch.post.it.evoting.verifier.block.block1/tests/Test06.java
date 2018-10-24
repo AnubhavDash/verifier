@@ -59,7 +59,7 @@ public class Test06 extends Test {
                     .flatMap(doi -> doi.getVotes().stream())
                     .flatMap(v -> v.getQuestions().stream())
                     .flatMap(q -> q.getOptions().stream())
-                    .filter(o -> MathHelper.isEulerCriterionInvalid(BigInteger.valueOf(o.getPrimeNumber()), p))
+                    .filter(o -> !MathHelper.isEulerCriterionValid(BigInteger.valueOf(o.getPrimeNumber()), p))
                     .map(Option::getPrimeNumber)
                     .collect(Collectors.toList());
 
@@ -70,7 +70,7 @@ public class Test06 extends Test {
                             .flatMap(cc -> cc.getDomainOfInfluence().stream())
                             .flatMap(doi -> doi.getElections().stream())
                             .flatMap(e -> e.getLists().stream())
-                            .filter(l -> MathHelper.isEulerCriterionInvalid(BigInteger.valueOf(l.getPrimeNumber()), p))
+                            .filter(l -> !MathHelper.isEulerCriterionValid(BigInteger.valueOf(l.getPrimeNumber()), p))
                             .map(ch.post.it.evoting.verifier.dto.List::getPrimeNumber)
                             .collect(Collectors.toList()));
 
@@ -83,7 +83,7 @@ public class Test06 extends Test {
                             .flatMap(e -> e.getLists().stream())
                             .flatMap(l -> l.getCandidatePositions().stream())
                             .flatMap(cp -> cp.getPrimeNumber().stream())
-                            .filter(v -> MathHelper.isEulerCriterionInvalid(BigInteger.valueOf(v), p))
+                            .filter(v -> !MathHelper.isEulerCriterionValid(BigInteger.valueOf(v), p))
                             .collect(Collectors.toList()));
 
             //TODO check candidates without lists --> not in this example

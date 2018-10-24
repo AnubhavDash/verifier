@@ -90,7 +90,7 @@ public class Test08 extends Test {
                         }
                     })
                     .map(s -> TypeConverter.stringToBigInteger(s))
-                    .filter(bi -> MathHelper.isEulerCriterionInvalid(bi, p)).collect(Collectors.toList());
+                    .filter(bi -> !MathHelper.isEulerCriterionValid(bi, p)).collect(Collectors.toList());
 
             if (errors.isEmpty()) {
                 result.setStatus(Status.OK);
