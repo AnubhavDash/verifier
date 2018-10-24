@@ -1,11 +1,3 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.block.block1.tests;
 
 import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
@@ -30,9 +22,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Test05 of Block1, Step isPrime([vo])
- */
 public class Test05 extends Test {
 
     private static final Logger LOGGER = Logger.getLogger(Test05.class);

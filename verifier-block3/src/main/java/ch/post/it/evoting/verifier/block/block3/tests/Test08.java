@@ -7,10 +7,7 @@ import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.TestFailureException;
-import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
+import ch.post.it.evoting.verifier.common.block.tools.*;
 import ch.post.it.evoting.verifier.dto.BallotBox;
 import ch.post.it.evoting.verifier.dto.DataConfigEE;
 import org.apache.commons.io.FileUtils;
@@ -45,19 +42,10 @@ public class Test08 extends Test {
         return def;
     }
 
-    // common method used to verify if a vo is in error
-    // if Euler criterion is not equals to 1 there is an error
-    private boolean isBigIntInError(BigInteger vo, BigInteger p) {
-        BigInteger exponent = (p.subtract(BigInteger.ONE)).divide(new BigInteger("2"));
-        BigInteger ec = vo.modPow(exponent, p);
-        return !ec.equals(BigInteger.ONE);
-    }
-
     @Override
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
-            // get all commitmentParameters files
             Path path = inputDirectory.toPath().resolve(Block3TestSuite.PATH_ELECTION_SETUP);
             DataConfigEE dataConfigEE = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", DataConfigEE.class);
             List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
@@ -105,7 +93,7 @@ public class Test08 extends Test {
                         }
                     })
                     .map(s -> TypeConverter.stringToBigInteger(s))
-                    .filter(bi -> isBigIntInError(bi, p)).collect(Collectors.toList());
+                    .filter(bi -> MathHelper.isEulerCriterionInvalid(bi, p)).collect(Collectors.toList());
 
             if (errors.isEmpty()) {
                 result.setStatus(Status.OK);

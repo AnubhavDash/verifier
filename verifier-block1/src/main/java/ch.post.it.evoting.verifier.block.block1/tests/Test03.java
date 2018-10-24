@@ -17,9 +17,6 @@ import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.nio.file.Path;
 
-/**
- * Test03 of Block1, Step isStrongPrime(p, q)
- */
 public class Test03 extends Test {
 
     private static final Logger LOGGER = Logger.getLogger(Test03.class);

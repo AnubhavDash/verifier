@@ -1,11 +1,3 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.block.block1.tests;
 
 import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
@@ -15,6 +7,7 @@ import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.BallotBox;
@@ -31,9 +24,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Test06 of Block1, Step isQuadraticResidue([vo])
- */
 public class Test06 extends Test {
 
     private static final Logger LOGGER = Logger.getLogger(Test06.class);
@@ -47,16 +37,6 @@ public class Test06 extends Test {
         def.setId(6);
         def.setName("isQuadraticResidue([vo])");
         return def;
-    }
-
-    // common method used to verify if a vo is in error
-    // if Euler criterion is not equals to 1 there is an error
-    private boolean isBigIntInError(BigInteger vo, BigInteger p) {
-        boolean inError = false;
-        BigInteger exponent = (p.subtract(BigInteger.ONE)).divide(new BigInteger("2"));
-        BigInteger ec = vo.modPow(exponent, p);
-        inError = !ec.equals(BigInteger.ONE);
-        return inError;
     }
 
     @Override
@@ -79,7 +59,7 @@ public class Test06 extends Test {
                     .flatMap(doi -> doi.getVotes().stream())
                     .flatMap(v -> v.getQuestions().stream())
                     .flatMap(q -> q.getOptions().stream())
-                    .filter(o -> isBigIntInError(BigInteger.valueOf(o.getPrimeNumber()), p))
+                    .filter(o -> MathHelper.isEulerCriterionInvalid(BigInteger.valueOf(o.getPrimeNumber()), p))
                     .map(Option::getPrimeNumber)
                     .collect(Collectors.toList());
 
@@ -90,7 +70,7 @@ public class Test06 extends Test {
                             .flatMap(cc -> cc.getDomainOfInfluence().stream())
                             .flatMap(doi -> doi.getElections().stream())
                             .flatMap(e -> e.getLists().stream())
-                            .filter(l -> isBigIntInError(BigInteger.valueOf(l.getPrimeNumber()), p))
+                            .filter(l -> MathHelper.isEulerCriterionInvalid(BigInteger.valueOf(l.getPrimeNumber()), p))
                             .map(ch.post.it.evoting.verifier.dto.List::getPrimeNumber)
                             .collect(Collectors.toList()));
 
@@ -103,7 +83,7 @@ public class Test06 extends Test {
                             .flatMap(e -> e.getLists().stream())
                             .flatMap(l -> l.getCandidatePositions().stream())
                             .flatMap(cp -> cp.getPrimeNumber().stream())
-                            .filter(v -> isBigIntInError(BigInteger.valueOf(v), p))
+                            .filter(v -> MathHelper.isEulerCriterionInvalid(BigInteger.valueOf(v), p))
                             .collect(Collectors.toList()));
 
             //TODO check candidates without lists --> not in this example
