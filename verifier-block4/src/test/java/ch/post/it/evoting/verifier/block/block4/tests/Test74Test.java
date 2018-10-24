@@ -17,7 +17,7 @@ public class Test74Test {
     }
 
     @Test
-    public void executeTestNOKXmlKo() {
+    public void executeTestNOKPdfKo() {
         TestResult testResult = new Test74().executeTest(new File(getClass().getResource("/Test74/NOK/PDF-NOT-OK").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
