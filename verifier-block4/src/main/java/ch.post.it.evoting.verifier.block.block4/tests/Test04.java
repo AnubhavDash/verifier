@@ -117,7 +117,7 @@ public class Test04 extends Test {
                         Map<String, Map<String, Long>> electionCount = cc.getDomainOfInfluence().stream().flatMap(doi -> doi.getElection().stream())
                                 .map(e -> {
                                     String electionId = e.getElectionIdentification();
-                                    Map<String, Long> listIdCountMap = new HashMap<>();
+                                    CountMap<String> listIdCountMap = new CountMap<>();
                                     e.getBallot().forEach(ballot -> {
                                         if (ballot.getChosenListIdentification() == null) {
                                             //candidate only election, nothing to do
@@ -129,7 +129,7 @@ public class Test04 extends Test {
                                                     String candidateListId = mapLcIdListId.get(lcId);
                                                     if (mapListIsEmpty.get(candidateListId)) {
                                                         //empty candidate
-                                                        listIdCountMap.containsKey(choosenList);
+                                                        listIdCountMap.increment(choosenList);
                                                     }
                                                 });
                                             }
