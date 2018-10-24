@@ -12,13 +12,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Class ReportGeneratorTest.
- * This represents TODO.
- *
- * @author lalandret
- * @version $$Revision$$
- */
 public class ReportGeneratorTest {
 
     private Report report;
