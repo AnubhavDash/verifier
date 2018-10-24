@@ -23,13 +23,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Class Test71.
- * This represents TODO.
- *
- * @author lalandret
- * @version $$Revision$$
- */
 public class Test71 extends Test {
 
     private static final Logger LOGGER = Logger.getLogger(Test71.class);
@@ -50,7 +43,6 @@ public class Test71 extends Test {
         TestResult result = new TestResult(getTestDefinition());
 
         try {
-
             Path path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_ELECTION_SETUP);
             DataConfigEE dataConfigEE = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", DataConfigEE.class);
             List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();

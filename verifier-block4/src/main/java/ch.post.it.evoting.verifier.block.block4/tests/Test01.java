@@ -1,11 +1,3 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.block.block4.tests;
 
 import ch.post.it.evoting.verifier.block.block4.Block4TestSuite;
@@ -33,17 +25,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-/**
- * /**
- * Test1 of Block4, Step checkOptionsMapping
- *
- * @author lalandret
- * @version $$Revision$$
- */
 public class Test01 extends Test {
 
     private static final Logger log = Logger.getLogger(Test01.class);
-
 
     @Override
     public TestDefinition getTestDefinition() {
@@ -99,7 +83,6 @@ public class Test01 extends Test {
                                 .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue))
                         );
 
-
                         //2 Generate map<prime, count>, but before retrieve the ballotbox file
                         Map<String, Long> primesCountMap = getCorrectFileAndExtractPrimesCount(inputDirectory, ballotBoxId);
 
@@ -146,7 +129,6 @@ public class Test01 extends Test {
                                     return coll.stream().flatMap(Function.identity());
                                 })
                                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting())));
-
 
                         // Finally do the check
                         aliasCountMap.forEach((alias, aliasCount) -> {

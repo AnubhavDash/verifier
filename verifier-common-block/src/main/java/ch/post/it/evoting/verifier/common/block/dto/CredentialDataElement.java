@@ -1,20 +1,5 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.common.block.dto;
 
-/**
- * Class CredentialDataElement.
- * This represents TODO.
- *
- * @author lalandret
- * @version $$Revision$$
- */
 public class CredentialDataElement {
     String value1;
     String value2;

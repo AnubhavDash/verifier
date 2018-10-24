@@ -14,6 +14,7 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
+import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 
@@ -42,16 +43,6 @@ public class Test08 extends Test {
         return def;
     }
 
-    // common method used to verify if a vo is in error
-    // if Euler criterion is not equals to 1 there is an error
-    private boolean isBigIntInError(BigInteger vo, BigInteger p){
-        boolean inError = false;
-        BigInteger exponent = (p.subtract(BigInteger.ONE)).divide(new BigInteger("2"));
-        BigInteger ec = vo.modPow(exponent, p);
-        inError = !ec.equals(BigInteger.ONE);
-        return inError;
-    }
-
     @Override
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
@@ -76,7 +67,7 @@ public class Test08 extends Test {
                 numbers = numbers.subList(3, numbers.size());
 
                 List<BigInteger> errors = numbers.stream()
-                        .filter(bigInteger -> isBigIntInError(bigInteger, p))
+                        .filter(bigInteger -> !MathHelper.isEulerCriterionValid(bigInteger, p))
                         .collect(Collectors.toList());
                 if (errors.isEmpty()) {
                     result.setStatus(Status.OK);

@@ -1,11 +1,3 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.block.block1.tests;
 
 import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
@@ -15,6 +7,7 @@ import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.ElectoralAuthority;
@@ -30,9 +23,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-/**
- * Test07 of Block1, Step isMemberOfGroup(pk_ea)
- */
 public class Test07 extends Test {
 
     private static final Logger LOGGER = Logger.getLogger(Test07.class);
@@ -46,16 +36,6 @@ public class Test07 extends Test {
         def.setId(7);
         def.setName("isMemberOfGroup(pk_ea)");
         return def;
-    }
-
-    // common method used to verify if a vo is in error
-    // if Euler criterion is not equals to 1 there is an error
-    private boolean isBigIntInError(BigInteger vo, BigInteger p) {
-        boolean inError = false;
-        BigInteger exponent = (p.subtract(BigInteger.ONE)).divide(new BigInteger("2"));
-        BigInteger ec = vo.modPow(exponent, p);
-        inError = !ec.equals(BigInteger.ONE);
-        return inError;
     }
 
     @Override
@@ -75,7 +55,7 @@ public class Test07 extends Test {
             } else {
                 List<String> errors = elements.stream()
                         .map(element -> TypeConverter.byteToBigInteger(TypeConverter.base64ToByte(element)))
-                        .filter(bigInteger -> isBigIntInError(bigInteger, p))
+                        .filter(bigInteger -> !MathHelper.isEulerCriterionValid(bigInteger, p))
                         .map(bi -> TypeConverter.byteToBase64String(TypeConverter.bigIntegerToByte(bi)))
                         .collect(Collectors.toList());
                 if (errors.isEmpty()) {

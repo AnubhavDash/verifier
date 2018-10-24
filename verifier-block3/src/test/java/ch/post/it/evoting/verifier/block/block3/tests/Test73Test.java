@@ -36,6 +36,4 @@ public class Test73Test {
         Assert.assertEquals(Status.NOK, testResult.getStatus());
     }
 
-
-
 }

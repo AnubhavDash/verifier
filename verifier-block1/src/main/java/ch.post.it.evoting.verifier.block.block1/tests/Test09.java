@@ -1,11 +1,3 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.block.block1.tests;
 
 import ch.evoting.xmlns.config._4.Configuration;
@@ -35,9 +27,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * Test09 of Block1, Step checkPrimeNumberOptions([vo])
- */
 public class Test09 extends Test {
 
     private static final Logger LOGGER = Logger.getLogger(Test09.class);

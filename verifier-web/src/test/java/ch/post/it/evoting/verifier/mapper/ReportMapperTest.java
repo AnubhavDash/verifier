@@ -1,11 +1,3 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.mapper;
 
 import ch.post.it.evoting.verifier.common.Category;
@@ -13,7 +5,6 @@ import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.report.pojo.Block;
 import ch.post.it.evoting.verifier.report.pojo.Report;
-import ch.post.it.evoting.verifier.report.pojo.ReportMetadata;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,13 +15,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Class ReportMapperTest.
- * This represents TODO.
- *
- * @author lalandret
- * @version $$Revision$$
- */
 public class ReportMapperTest {
 
     private Report metadata;

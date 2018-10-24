@@ -1,11 +1,3 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.block.block2.tests;
 
 import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
@@ -26,9 +18,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.stream.Stream;
 
-/**
- * Test01 of Block2, Step checkSecureLogIntegrity
- */
 public class Test02 extends Test {
 
     private static final Logger LOGGER = Logger.getLogger(Test02.class);
