@@ -1,0 +1,3 @@
+/opt/jenkins/workspace/evoting-verifier_release/verifier-web/src/test/java/ch/post/it/evoting/verifier/report/ReportGeneratorTest.java
+/opt/jenkins/workspace/evoting-verifier_release/verifier-web/src/test/java/ch/post/it/evoting/verifier/mapper/ReportMapperTest.java
+/opt/jenkins/workspace/evoting-verifier_release/verifier-web/src/test/java/ch/post/it/evoting/verifier/mapper/TestMapperTest.java

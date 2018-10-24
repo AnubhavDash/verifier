@@ -1,0 +1,7 @@
+ch/post/it/evoting/verifier/common/VerifierBlock.class
+ch/post/it/evoting/verifier/common/TestResult.class
+ch/post/it/evoting/verifier/common/Category.class
+ch/post/it/evoting/verifier/common/TestResultSeverity.class
+ch/post/it/evoting/verifier/common/Language.class
+ch/post/it/evoting/verifier/common/TestDefinition.class
+ch/post/it/evoting/verifier/common/Status.class
