@@ -17,18 +17,18 @@ import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 
-public class Test74 extends Test {
+public class Test75 extends Test {
 
-    private static final Logger LOGGER = Logger.getLogger(Test74.class);
+    private static final Logger LOGGER = Logger.getLogger(Test75.class);
 
     @Override
     public TestDefinition getTestDefinition() {
         TestDefinition def = new TestDefinition();
         def.setBlockId(4);
         def.setCategory(Category.AUTHENTICITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test74.description"));
-        def.setId(74);
-        def.setName("checkSigPdfReport");
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test75.description"));
+        def.setId(75);
+        def.setName("checkSigBulletinParBulletin");
         return def;
     }
 
@@ -41,7 +41,7 @@ public class Test74 extends Test {
             File pdfFile = PathHelper.getFile(inputDirectory.toPath()
                             .resolve(Block4TestSuite.PATH_RESULTS)
                             .toFile(),
-                    ".*report*.*\\.pdf");
+                    ".*ballot*.*\\.pdf");
 
             byte[] content = Files.readAllBytes(inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS).resolve(pdfFile.getName()));
             byte[] signature = Files.readAllBytes(inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS).resolve(pdfFile.getName() + ".p7"));
@@ -52,11 +52,11 @@ public class Test74 extends Test {
 
         } catch (Exception e) {
             if (e instanceof TestFailureException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test74.nok.message", ((TestFailureException) e).getArgs()));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test75.nok.message", ((TestFailureException) e).getArgs()));
             } else if (e instanceof NoSuchFileException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test74.file.not.found.message", ((NoSuchFileException) e).getFile()));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test75.file.not.found.message", ((NoSuchFileException) e).getFile()));
             } else if (e instanceof FileNotFoundException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test74.file.not.found.message", e.getMessage()));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test75.file.not.found.message", e.getMessage()));
             } else {
                 LOGGER.error("unexpected error", e);
             }
