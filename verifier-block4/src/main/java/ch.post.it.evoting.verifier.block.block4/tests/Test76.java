@@ -1,11 +1,3 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.block.block4.tests;
 
 import ch.post.it.evoting.verifier.block.block4.Block4TestSuite;
@@ -24,13 +16,6 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 
-/**
- * Class Test76.
- * This represents TODO.
- *
- * @author lalandret
- * @version $$Revision$$
- */
 public class Test76 extends Test {
 
     private static final Logger LOGGER = Logger.getLogger(Test76.class);
