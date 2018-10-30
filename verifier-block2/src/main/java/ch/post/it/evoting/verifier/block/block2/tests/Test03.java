@@ -16,7 +16,6 @@ import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,13 +23,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.util.AbstractMap;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
 
 public class Test03 extends Test {
 

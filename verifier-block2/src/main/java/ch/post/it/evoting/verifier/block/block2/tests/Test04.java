@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-
 public class Test04 extends Test {
 
     private static final Logger LOGGER = Logger.getLogger(Test04.class);

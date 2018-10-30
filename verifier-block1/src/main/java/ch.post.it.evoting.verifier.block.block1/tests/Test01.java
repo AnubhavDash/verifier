@@ -18,9 +18,6 @@ import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.nio.file.Path;
 
-/**
- * Test01 of Block1, Step isPrime(p)
- */
 public class Test01 extends Test {
 
     private static final Logger LOGGER = Logger.getLogger(Test01.class);

@@ -1,11 +1,3 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.block.block4.tests;
 
 import ch.post.it.evoting.verifier.block.block4.Block4TestSuite;
@@ -27,26 +19,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.AbstractMap;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-/**
- * /**
- * Test1 of Block4, Step checkOptionsMapping
- *
- * @author lalandret
- * @version $$Revision$$
- */
 public class Test01 extends Test {
 
     private static final Logger log = Logger.getLogger(Test01.class);
-
 
     @Override
     public TestDefinition getTestDefinition() {
@@ -95,8 +76,12 @@ public class Test01 extends Test {
                                 .flatMap(cp -> cp.getPrimeNumber().stream().map(prime -> new AbstractMap.SimpleEntry<>(prime, cp.getCandidateListId())))
                                 .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue))
                         );
-                        //TODO candidates without list
-
+                        primeAliasMap.putAll(countingCircle.getDomainOfInfluence().stream()
+                                .flatMap(doi -> doi.getElections().stream())
+                                .flatMap(e -> e.getCandidates().stream())
+                                .flatMap(c -> c.getPrimeNumber().stream().map(prime -> new AbstractMap.SimpleEntry<>(prime, c.getAlias())))
+                                .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue))
+                        );
 
                         //2 Generate map<prime, count>, but before retrieve the ballotbox file
                         Map<String, Long> primesCountMap = getCorrectFileAndExtractPrimesCount(inputDirectory, ballotBoxId);
@@ -127,12 +112,23 @@ public class Test01 extends Test {
                                 })
                                 .flatMap(doi -> doi.getElection().stream())
                                 .flatMap(e -> e.getBallot().stream())
-                                .flatMap(b -> Stream.of(b.getChosenCandidateListIdentification().stream(),
-                                        b.getChosenCandidateIdentification().stream(),
-                                        b.getChosenWriteInsCandidateValue().stream().map(s -> "#"+s),
-                                        Stream.of(b.getChosenListIdentification())).flatMap(Function.identity()))
+                                .flatMap(b -> {
+                                    List<Stream<String>> coll = new LinkedList<>();
+                                    if (b.getChosenCandidateListIdentification() != null) {
+                                        coll.add(b.getChosenCandidateListIdentification().stream());
+                                    }
+                                    if (b.getChosenCandidateIdentification() != null) {
+                                        coll.add(b.getChosenCandidateIdentification().stream());
+                                    }
+                                    if (b.getChosenWriteInsCandidateValue() != null) {
+                                        coll.add(b.getChosenWriteInsCandidateValue().stream().map(s -> "#" + s));
+                                    }
+                                    if (b.getChosenListIdentification() != null) {
+                                        coll.add(Stream.of(b.getChosenListIdentification()));
+                                    }
+                                    return coll.stream().flatMap(Function.identity());
+                                })
                                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting())));
-
 
                         // Finally do the check
                         aliasCountMap.forEach((alias, aliasCount) -> {

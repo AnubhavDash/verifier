@@ -1,19 +1,21 @@
 <div>
-  <h2>Test definitions</h2>
-  <div>
+  <div id="buttonDiv">
+    <h2>Test definitions</h2>
+    <div>
     <b>Input directory :</b>
     <input type="text" name="inputDirectory" [(ngModel)]="inputDirectory" style="width:30%">
     <div>
       <br/>
-      <button (click)="startProcess()" [disabled]="buttonDisabled">Start</button>
-      <button (click)="update()">Update</button>
-      <button (click)="resetProcess()">Reset</button>
+      <button (click)="startProcess()" [disabled]="buttonDisabled" class="btn">Start</button>
+      <button (click)="update()" class="btn">Update</button>
+    <button (click)="resetProcess()" class="btn">Reset</button>
       |
-      <button routerLink="/report/pdf">PDF</button>
+      <button routerLink="/report/pdf" class="btn">PDF</button>
     </div>
   </div>
-  <p></p>
-  <table border="1">
+    <p></p>
+  </div>
+  <table border="1" class="table table-bordered table-hover">
     <tr>
       <th>Block</th>
       <th>Id</th>
@@ -29,11 +31,8 @@
       <td>{{tests[key].name}}</td>
       <td>{{tests[key].category}}</td>
       <td>{{tests[key].description}}</td>
-      <td>
-        <div title="{{tests[key].message}}">{{tests[key].status}}</div>
-      </td>
+      <td><div title="{{tests[key].message}}">{{tests[key].status}}</div></td>
       <!--td></td-->
     </tr>
   </table>
-  <br/>
 </div>

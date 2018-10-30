@@ -1,15 +1,7 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.block.block4.tests;
 
 import ch.ech.xmlns.ech_0110._3.Delivery;
-import ch.evoting.xmlns.config._3.Configuration;
+import ch.evoting.xmlns.config._4.Configuration;
 import ch.post.it.evoting.verifier.block.block4.Block4TestSuite;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
@@ -33,17 +25,9 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-/**
- * /**
- * Test2 of Block4, Step checkTallyingAnswers
- *
- * @author lalandret
- * @version $$Revision$$
- */
 public class Test02 extends Test {
 
     private static final Logger log = Logger.getLogger(Test02.class);
-
 
     @Override
     public TestDefinition getTestDefinition() {

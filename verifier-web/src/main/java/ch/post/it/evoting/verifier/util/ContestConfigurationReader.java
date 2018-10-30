@@ -1,15 +1,7 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.util;
 
-import ch.evoting.xmlns.config._3.Configuration;
-import ch.evoting.xmlns.config._3.ContestDescriptionInformationType;
+import ch.evoting.xmlns.config._4.Configuration;
+import ch.evoting.xmlns.config._4.ContestDescriptionInformationType;
 import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.processor.VerifierProcessor;

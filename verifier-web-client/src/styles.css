@@ -2,3 +2,17 @@ html,
 body {
   height: 95%;
 }
+
+
+button{
+  background-color:#eee;
+}
+button:hover{
+  background-color: grey;
+  color:white;
+}
+
+#buttonDiv{
+  text-align: center;
+}
+

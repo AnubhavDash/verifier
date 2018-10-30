@@ -1,14 +1,6 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.block.block1.tests;
 
-import ch.evoting.xmlns.config._3.Configuration;
+import ch.evoting.xmlns.config._4.Configuration;
 import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
@@ -25,9 +17,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 
-/**
- * Test31 of Block1, Step checkNumberCredentials()
- */
 public class Test31 extends Test {
 
     private static final Logger LOGGER = Logger.getLogger(Test31.class);

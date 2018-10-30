@@ -16,9 +16,6 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 
-/**
- * Test74 of Block1, Step checkSigDataConfig
- */
 public class Test74 extends Test {
 
     private static final Logger LOGGER = Logger.getLogger(Test74.class);

@@ -1,11 +1,3 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.common.block.tools;
 
 import io.jsonwebtoken.*;
@@ -16,18 +8,8 @@ import org.junit.Test;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.Date;
 
-import static org.junit.Assert.*;
-
-/**
- * Class JsonWebTokenHelperTest.
- * This represents TODO.
- *
- * @author lalandret
- * @version $$Revision$$
- */
 public class JsonWebTokenHelperTest {
 
     @Test

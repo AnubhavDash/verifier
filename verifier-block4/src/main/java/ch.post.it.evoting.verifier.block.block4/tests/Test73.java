@@ -16,13 +16,6 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 
-/**
- * Class Test73.
- * This represents TODO.
- *
- * @author lalandret
- * @version $$Revision$$
- */
 public class Test73 extends Test {
 
     private static final Logger LOGGER = Logger.getLogger(Test73.class);

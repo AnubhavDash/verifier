@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 public class PathHelper {
@@ -16,7 +15,7 @@ public class PathHelper {
 
     public static File[] listDirectories(Path path) {
         if (path != null && path.toFile().isDirectory()) {
-            return path.toFile().listFiles(((subDir, name) -> subDir.isDirectory()));
+            return path.toFile().listFiles(File::isDirectory);
         } else {
             throw new IllegalArgumentException("Given path is not a directory :" + path);
         }
@@ -33,9 +32,9 @@ public class PathHelper {
 
     public static List<File> getFiles(File inputDirectory, String filenamePattern, Boolean recursive) throws FileNotFoundException {
         List<File> files = new ArrayList<>();
-        if(recursive){
+        if (recursive) {
             File[] directories = listDirectories(inputDirectory.toPath());
-            for (File directory : directories){
+            for (File directory : directories) {
                 File[] file = getFiles(directory, filenamePattern);
                 if (file == null || file.length == 0) {
                     throw new FileNotFoundException(filenamePattern);

@@ -32,7 +32,7 @@ public class Deserializer {
 
     public static <T> T fromJson(byte[] content, Class<T> targetClazz) throws IOException {
         ObjectMapper jsonMapper = new ObjectMapper();
-        return jsonMapper.readValue(new String(content), targetClazz);
+        return jsonMapper.readValue(new String(content, StandardCharsets.UTF_8), targetClazz);
     }
 
     public static void toJson(Object content, File file) throws IOException {
