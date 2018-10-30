@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const logDir = 'logs';
 let now = new Date();
-let suffix = now.getFullYear().toString()+now.getMonth().toString()+now.getDate().toString()+'-'+now.getHours().toString()+now.getMinutes().toString()+'-'+now.getSeconds().toString();
+let suffix = now.getFullYear().toString()+(now.getMonth() + 1).toString()+now.getDate().toString()+'-'+now.getHours().toString()+now.getMinutes().toString()+'-'+now.getSeconds().toString();
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir);
 }
