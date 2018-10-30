@@ -11,6 +11,7 @@ import java.util.Optional;
 @Setter
 public abstract class SecureLogEntry {
 
+    private Boolean preview;
     private String host;
     private String index;
     private String raw;
@@ -35,7 +36,7 @@ public abstract class SecureLogEntry {
         String result = null;
         if(raw != null && !raw.isEmpty()){
             String objInsideRaw = getObjectInsideRaw(raw) + "*}";
-            result = raw.replace(objInsideRaw, "").trim();
+            result = raw.replace(objInsideRaw, "");//.trim();
         }
         return result;
     }

@@ -10,8 +10,8 @@ import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.TestFailureException;
-import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.CountMap;
+import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import com.scytl.xmlns.decrypt._1.Results;
 import org.apache.log4j.Logger;
@@ -21,7 +21,6 @@ import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.AbstractMap;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 

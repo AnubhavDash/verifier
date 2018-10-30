@@ -4,6 +4,9 @@ import ch.post.it.evoting.verifier.common.block.tools.HmacGenerator;
 import org.apache.log4j.Logger;
 import org.bouncycastle.util.encoders.Base64;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -89,7 +92,7 @@ public class SecureLogBundle {
             byte[] text = concat(
                     Base64.toBase64String(previousHmac),
                     regularLogEntry.getRaw());
-            byte[] hmac = HmacGenerator.Hash(text, lsk);
+            byte[] hmac = HmacGenerator.hash(text, lsk);
             if (!Base64.toBase64String(hmac).equals(regularLogEntry.getMetadata().getHmac())) {
                 throw new SecureLogBundleValidationException("Regular log HMAC not valid", beginCheckPoint.getHost());
             }
@@ -100,12 +103,18 @@ public class SecureLogBundle {
 
     private byte[] validateStartCheckPoint() throws SecureLogBundleValidationException {
         byte[] lsk = Base64.decode(endCheckPoint.getMetadata().getLsk());
-        byte[] text = concat(
-                beginCheckPoint.getMetadata().getPhmac(),
-                beginCheckPoint.getMetadata().getLsk(),
-                beginCheckPoint.getMetadata().getEsk(),
-                beginCheckPoint.getRaw());
-        byte[] hmac = HmacGenerator.Hash(text, lsk);
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        try (DataOutputStream stream = new DataOutputStream(bytes)) {
+            stream.write(Base64.decode(beginCheckPoint.getMetadata().getPhmac()));
+            stream.write(Base64.decode(beginCheckPoint.getMetadata().getLsk()));
+            stream.write(Base64.decode(beginCheckPoint.getMetadata().getEsk()));
+            stream.writeLong(Long.parseLong(beginCheckPoint.getMetadata().getTs()));
+            stream.write(beginCheckPoint.getRaw().getBytes(StandardCharsets.UTF_8));
+            bytes.close();
+        } catch (IOException e) {
+            throw new RuntimeException("error during generating the text for the HMAC generation", e);
+        }
+        byte[] hmac = HmacGenerator.hash(bytes.toByteArray(), lsk);
         if (!Base64.toBase64String(hmac).equals(beginCheckPoint.getMetadata().getHmac())) {
             throw new SecureLogBundleValidationException("Begin checkPoint HMAC not valid", beginCheckPoint.getHost());
         }
