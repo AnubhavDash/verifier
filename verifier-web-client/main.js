@@ -3,11 +3,12 @@ const { createLogger, format, transports } = require('winston');
 const fs = require('fs');
 const path = require('path');
 const logDir = 'logs';
-
+let now = new Date();
+let suffix = now.getFullYear().toString()+now.getMonth().toString()+now.getDate().toString()+'-'+now.getHours().toString()+now.getMinutes().toString()+'-'+now.getSeconds().toString();
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir);
 }
-const filename = path.join(logDir, 'verifier.log');
+const filename = path.join(logDir, 'verifier_'+ suffix + '.log');
 const logger = createLogger({
   format: format.combine(
     format.timestamp({
