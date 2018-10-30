@@ -83,7 +83,7 @@ public class Test04 extends Test {
                 throw new RuntimeException("no values found while counting log foreach control component");
             }
             long nbDistinctValues = countByCC.values().stream().distinct().count();
-            if (nbDistinctValues == 0) {
+            if (nbDistinctValues == 0 && voterInformation.getCount() == 0L) {
                 LOGGER.info("no GENPVCC log found for the defined electionEventId : " + voterInformation.getEeid());
                 result.setStatus(Status.OK);
             } else if (nbDistinctValues != 1) {
