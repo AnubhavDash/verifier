@@ -31,9 +31,9 @@ public class OfflinePublicKeyLoader implements PublicKeyLoader {
 
         ZpGroupParams params = new ZpGroupParams(TypeConverter.base64ToBigInteger(publicKey.getZpSubgroup().getP()), TypeConverter.base64ToBigInteger(publicKey.getZpSubgroup().getQ()));
 
-        ZpGroup zpGroup = new ZpGroup(params, new ZpElement(publicKey.getZpSubgroup().getG(), params));
+        ZpGroup zpGroup = new ZpGroup(params, new ZpElement(TypeConverter.base64ToBigInteger(publicKey.getZpSubgroup().getG()), params));
 
-        List<GroupElement> pubKeys = publicKey.getElements().stream().map(s -> new ZpElement(s, params)).collect(Collectors.toList());
+        List<GroupElement> pubKeys = publicKey.getElements().stream().map(s -> new ZpElement(TypeConverter.base64ToBigInteger(s), params)).collect(Collectors.toList());
 
         return new ElGamalPublicKey(pubKeys, zpGroup);
     }
