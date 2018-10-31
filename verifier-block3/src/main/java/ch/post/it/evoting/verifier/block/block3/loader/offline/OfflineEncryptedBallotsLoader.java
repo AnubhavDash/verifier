@@ -7,7 +7,7 @@ import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class OfflineEncryptedBallotsLoader extends OfflineAbstractBallotLoader implements EncryptedBallotsLoader {
+public class OfflineEncryptedBallotsLoader extends AbstractOfflineBallotLoader implements EncryptedBallotsLoader {
 
     public OfflineEncryptedBallotsLoader(Path path) throws IOException {
         super(path);

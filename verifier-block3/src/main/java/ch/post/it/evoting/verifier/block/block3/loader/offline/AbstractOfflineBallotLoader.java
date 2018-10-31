@@ -12,11 +12,11 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Path;
 
-public class OfflineAbstractBallotLoader {
+public class AbstractOfflineBallotLoader {
     protected final Path path;
     private final ZpGroupParams param;
 
-    public OfflineAbstractBallotLoader(Path path) throws IOException {
+    public AbstractOfflineBallotLoader(Path path) throws IOException {
         this.path = path;
         this.param = new OfflineEncryptionParametersLoader(path).getZpGroup().getParams();
     }
