@@ -1,8 +1,13 @@
 package ch.post.it.evoting.verifier.block.block3.loader.offline;
 
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallot;
+import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
+import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
+import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.math.BigInteger;
 
 public class OfflineVoterWithProofLoaderTest {
 
@@ -15,6 +20,7 @@ public class OfflineVoterWithProofLoaderTest {
 
     @Test
     public void getProofs() {
-        OfflineVoterWithProofLoader.convertToProof("\"{\"\"zkProof\"\":{\"\"hash\"\":\"\"AJwOPoTxxVubcFgnIY8KiHwMmBFbrYD6of1C5iP/sI3K\"\",\"\"values\"\":[\"\"HliGu1dPWYeTHoB9Up8oJNWLl91evAQpPI8UL0OweaFmUEQsjGFr9bvH1kVWcRNyPNol1rVXliz6R5OKtFhUVMmfvKBWOPz5UA5L/e4rego+RIT77e+ewwDEs5WgjP4Ro941Ry4yI3QeZWi/MnGH/90uc14wUhZ9b9oyli8nuwWehQSSbj4t0lJQKRMIxnjKlTm1aXYYLeielZe7P++eSsXYZBdyXbW6YkRyiFe3y3+wL2SxTu+iAiQK3+ETIn/BPv3pTL6iDxKuJEttBpHJYMa0ekjVTX/1VyEoRlPdNF1llby8h3a1RXi431QOcCLsF5kuZR3CPv8F8g9jeg8qnA==\"\"],\"\"q\"\":\"\"QNb5hnFnkT59E13r0xAxwLGNzASjG/n9EDuc8sIYWEcXPQsNpgPgKhlRsqbjxLACeHMkQ3ybaT/rspu6+92S7AxGIYk1n6OpW/RgObgFcHqqrMGvipfliekrz/FZZ215zZRTej7Pp7FNffT4uG+ebc447romhgMkUrbteb3ekZXAgdYMJcCDYJNY7KjFLx9j6amxTDY5/3emr7Sibwp8yRzkm2DQ/0kK4PzNgA1bKyD+jnbgBrhDvUopBkXn/ImVUmi20e5ytr8WGeCzOZE0mtV351xr5TFRxQZ51MqRbC+J/vwlpJP4NSSNmaLrsbm2qhm3Tf0xTNWeUNqK+0gfgw==\"\"}}\"", null);
+        OfflineVoterWithProofLoader.convertToProof("\"{\"\"zkProof\"\":{\"\"hash\"\":\"\"AJwOPoTxxVubcFgnIY8KiHwMmBFbrYD6of1C5iP/sI3K\"\",\"\"values\"\":[\"\"HliGu1dPWYeTHoB9Up8oJNWLl91evAQpPI8UL0OweaFmUEQsjGFr9bvH1kVWcRNyPNol1rVXliz6R5OKtFhUVMmfvKBWOPz5UA5L/e4rego+RIT77e+ewwDEs5WgjP4Ro941Ry4yI3QeZWi/MnGH/90uc14wUhZ9b9oyli8nuwWehQSSbj4t0lJQKRMIxnjKlTm1aXYYLeielZe7P++eSsXYZBdyXbW6YkRyiFe3y3+wL2SxTu+iAiQK3+ETIn/BPv3pTL6iDxKuJEttBpHJYMa0ekjVTX/1VyEoRlPdNF1llby8h3a1RXi431QOcCLsF5kuZR3CPv8F8g9jeg8qnA==\"\"],\"\"q\"\":\"\"QNb5hnFnkT59E13r0xAxwLGNzASjG/n9EDuc8sIYWEcXPQsNpgPgKhlRsqbjxLACeHMkQ3ybaT/rspu6+92S7AxGIYk1n6OpW/RgObgFcHqqrMGvipfliekrz/FZZ215zZRTej7Pp7FNffT4uG+ebc447romhgMkUrbteb3ekZXAgdYMJcCDYJNY7KjFLx9j6amxTDY5/3emr7Sibwp8yRzkm2DQ/0kK4PzNgA1bKyD+jnbgBrhDvUopBkXn/ImVUmi20e5ytr8WGeCzOZE0mtV351xr5TFRxQZ51MqRbC+J/vwlpJP4NSSNmaLrsbm2qhm3Tf0xTNWeUNqK+0gfgw==\"\"}}\"", new ZpElement(BigInteger.ONE, null) {
+        });
     }
 }

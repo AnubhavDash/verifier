@@ -1,12 +1,14 @@
 package ch.post.it.evoting.verifier.block.block3.tests;
 
 import ch.post.it.evoting.verifier.block.block3.Block3TestSuite;
+import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import com.scytl.decrypt.DecryptVerifier;
 
 import java.io.File;
@@ -14,9 +16,14 @@ import java.io.File;
 public class Test07 extends Test {
     @Override
     public TestDefinition getTestDefinition() {
-        TestDefinition result = new TestDefinition();
-        //TODO
-        return result;
+        TestDefinition testDefinition = new TestDefinition();
+        testDefinition.setBlockId(3);
+        testDefinition.setCategory(Category.COMPLETENESS);
+        testDefinition.setId(7);
+        testDefinition.setName("checkDecryptionProof");
+        testDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.description"));
+
+        return testDefinition;
     }
 
     @Override

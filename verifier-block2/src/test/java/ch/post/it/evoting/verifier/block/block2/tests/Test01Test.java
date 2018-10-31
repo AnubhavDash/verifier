@@ -73,6 +73,7 @@ public class Test01Test {
         fw.close();
     }
 
+    @Ignore
     @Test
     public void generateHmac() {
         final String endLsk = "U9LwEJ1oDitWij/tX8SJ44FqDGrFFhJXXr+Nakj509w=";

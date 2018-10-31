@@ -11,6 +11,8 @@ import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroupParams;
+import lombok.Getter;
+import lombok.Setter;
 import reactor.core.publisher.Flux;
 
 import java.io.IOException;
@@ -21,6 +23,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class OfflineVoterWithProofLoader implements VoterWithProofLoader {
+
+    @Getter
+    @Setter
+    private class VotesWithProofLine {
+        private String encryptedBallot;
+        private String plainText;
+        private String proof;
+    }
 
     private ElGamalEncryptedBallots encryptedBallots;
     private List<GjosteenElGamalPlaintext> plaintexts;
