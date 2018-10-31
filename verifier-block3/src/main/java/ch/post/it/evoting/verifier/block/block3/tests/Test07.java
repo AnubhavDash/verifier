@@ -12,6 +12,7 @@ import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import com.scytl.decrypt.DecryptVerifier;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 public class Test07 extends Test {
     @Override
@@ -33,12 +34,19 @@ public class Test07 extends Test {
             File[] ballotBoxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES));
             for (File ballotBox : ballotBoxes) {
                 if (DecryptVerifier.verify(ballotBox.toPath()) != 1) {
-                    throw new TestFailureException("TODO", ballotBox.getName());
+                    throw new TestFailureException("The verification failed", ballotBox.getName());
                 }
             }
             result.setStatus(Status.OK);
         } catch (Exception e) {
             result.setStatus(Status.NOK);
+            if (e instanceof TestFailureException) {
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.nok.message", ((TestFailureException) e).getArgs()[1]));
+            } else if(e instanceof RuntimeException){
+                if(e.getCause() instanceof FileNotFoundException) {
+                    result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message",  e.getCause().getLocalizedMessage()));
+                }
+            }
         }
         return result;
     }

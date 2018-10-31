@@ -15,4 +15,11 @@ public class Test07Test {
         TestResult result = new Test07().executeTest(new File(getClass().getResource("/Test07/OK").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
+
+    @Test
+    public void executeTestOKFileNotFound() {
+        TestResult result = new Test07().executeTest(new File(getClass().getResource("/Test07/NOK-NOTFILE").getFile()));
+        Assert.assertEquals(Status.NOK, result.getStatus());
+    }
+
 }
