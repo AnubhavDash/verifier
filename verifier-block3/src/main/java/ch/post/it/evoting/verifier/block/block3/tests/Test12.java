@@ -50,7 +50,7 @@ public class Test12 extends Test {
                     return bigInt;
                 })).collectList().block();
 
-                if (temp != null){
+                if (temp != null) {
                     products.addAll(temp);
                 } else {
                     throw new TestFailureException("error occurs while parsing data in decompressedVotes.csv");
@@ -58,8 +58,10 @@ public class Test12 extends Test {
 
                 // votes with proof
                 OfflineVoterWithProofLoader offlineVoterWithProofLoader = new OfflineVoterWithProofLoader(balloBox.toPath().resolve("0"));
-                List<GjosteenElGamalPlaintext> plaintexts = offlineVoterWithProofLoader.getPlaintexts();
-                List<BigInteger> voterWithProofbigIntList = plaintexts.stream().map(plaintext -> plaintext.getValue(0).getValue()).collect(Collectors.toList());
+                List<BigInteger> voterWithProofbigIntList = offlineVoterWithProofLoader.getPlaintexts()
+                        .stream()
+                        .map(plaintext -> plaintext.getValue(0).getValue())
+                        .collect(Collectors.toList());
 
                 // finally to the check
 
