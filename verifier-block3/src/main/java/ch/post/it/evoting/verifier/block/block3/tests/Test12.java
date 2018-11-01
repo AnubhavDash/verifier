@@ -7,21 +7,25 @@ import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.TestFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import com.scytl.decrypt.DecryptVerifier;
+import reactor.core.publisher.Flux;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Test07 extends Test {
+public class Test12 extends Test {
     @Override
     public TestDefinition getTestDefinition() {
         TestDefinition testDefinition = new TestDefinition();
         testDefinition.setBlockId(3);
         testDefinition.setCategory(Category.COMPLETENESS);
-        testDefinition.setId(7);
-        testDefinition.setName("checkDecryptionProof");
+        testDefinition.setId(12);
+        testDefinition.setName("checkDecryptionFactorization");
         testDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.description"));
 
         return testDefinition;
@@ -32,19 +36,31 @@ public class Test07 extends Test {
         TestResult result = new TestResult(getTestDefinition());
         try {
             File[] ballotBoxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES));
-            for (File ballotBox : ballotBoxes) {
-                if (DecryptVerifier.verify(ballotBox.toPath()) != 1) {
-                    throw new TestFailureException("The verification failed", ballotBox.getName());
+            List<BigInteger> products = new ArrayList<>();
+            for (File balloBox : ballotBoxes) {
+                List<BigInteger> temp = Flux.fromIterable(Deserializer.fromCsv(balloBox, "decompressedVotes\\.csv", ";", tab -> {
+                    BigInteger bigInt = BigInteger.ONE;
+                    for (int i = 0; i < tab.length; i++) {
+                        bigInt = bigInt.multiply(new BigInteger(tab[i]));
+                    }
+                    return bigInt;
+                })).collectList().block();
+
+                if (temp != null){
+                    products.addAll(temp);
+                } else {
+                    throw new TestFailureException("error occurs while parsing data in decompressedVotes.csv");
                 }
             }
+
             result.setStatus(Status.OK);
         } catch (Exception e) {
             result.setStatus(Status.NOK);
             if (e instanceof TestFailureException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.nok.message", ((TestFailureException) e).getArgs()[1]));
-            } else if(e instanceof RuntimeException){
-                if(e.getCause() instanceof FileNotFoundException) {
-                    result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message",  e.getCause().getLocalizedMessage()));
+            } else if (e instanceof RuntimeException) {
+                if (e.getCause() instanceof FileNotFoundException) {
+                    result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message", e.getCause().getLocalizedMessage()));
                 }
             }
         }
