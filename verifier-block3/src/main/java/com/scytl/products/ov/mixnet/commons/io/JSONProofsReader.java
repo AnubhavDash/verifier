@@ -49,4 +49,25 @@ public class JSONProofsReader implements ProofsReader {
         shuffleProof = mapper.readValue(fullPath.toFile(), ShuffleProof.class);
         return shuffleProof;
     }
+
+    @Override
+    public ShuffleProof read(Path path) throws IOException {
+        LOGGER.debug("ShuffleProof path = " + path.toString());
+        final Path fullPath = path.toAbsolutePath();
+
+        final ObjectMapper mapper = new ObjectMapper();
+
+        //NAE
+        SimpleModule module = new SimpleModule("CustomModel", Version.unknownVersion());
+        SimpleAbstractTypeResolver resolver = new SimpleAbstractTypeResolver();
+        resolver.addMapping(GroupElement.class, ZpElement.class);
+        resolver.addMapping(Ciphertext.class, GjosteenElGamalCiphertext.class);
+        module.setAbstractTypes(resolver);
+        mapper.registerModule(module);
+        //NAE
+
+        ShuffleProof shuffleProof;
+        shuffleProof = mapper.readValue(fullPath.toFile(), ShuffleProof.class);
+        return shuffleProof;
+    }
 }

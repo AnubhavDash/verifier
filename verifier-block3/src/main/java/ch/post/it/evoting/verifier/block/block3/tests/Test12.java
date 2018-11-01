@@ -11,13 +11,11 @@ import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import com.scytl.products.ov.mixnet.commons.homomorphic.impl.GjosteenElGamalPlaintext;
 import reactor.core.publisher.Flux;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,24 +59,37 @@ public class Test12 extends Test {
                         .collect(Collectors.toList());
 
                 if (voterWithProofbigIntList == null) {
-                    throw new TestFailureException("error occurs while parsing data in voterWithProofbigIntList.csv");
+                    throw new TestFailureException("error occurs while parsing data in voterWithProofbigIntList.csv", balloBox.getName());
                 }
 
                 // finally to the check
+                if(decompVotesbigIntList.size() != voterWithProofbigIntList.size()){
+                    throw new TestFailureException("factorization not correct !",decompVotesbigIntList.toString());
+                }
 
+                Boolean allMatch = Flux.fromIterable(decompVotesbigIntList)
+                        .zipWith(Flux.fromIterable(voterWithProofbigIntList))
+                        .all(t -> t.getT1().equals(t.getT2()))
+                        .block();
+
+                if (!allMatch) {
+                    throw new TestFailureException("factorization not correct !",decompVotesbigIntList.toString());
+                }
             }
 
             result.setStatus(Status.OK);
         } catch (Exception e) {
             result.setStatus(Status.NOK);
             if (e instanceof TestFailureException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.nok.message", ((TestFailureException) e).getArgs()[1]));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test12.nok.message", ((TestFailureException) e).getArgs()[1]));
             } else if (e instanceof RuntimeException) {
                 if (e.getCause() instanceof FileNotFoundException) {
-                    result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message", e.getCause().getLocalizedMessage()));
+                    result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test12.file.not.found.message", e.getCause().getLocalizedMessage()));
                 }
             }
         }
         return result;
     }
+
+
 }

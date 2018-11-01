@@ -10,6 +10,7 @@ import ch.post.it.evoting.verifier.block.block3.BGResultNotifier;
 import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
 import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflineEncryptedBallotsLoader;
 import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflineReEncryptedBallotsLoader;
+import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflineShuffleProofLoader;
 import ch.post.it.evoting.verifier.common.Status;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProof;
@@ -55,6 +56,7 @@ public class BGVerifier {
                     for (File file : files) {
                         OfflineEncryptedBallotsLoader offlineEncryptedBallotsLoader = new OfflineEncryptedBallotsLoader(file.toPath());
                         OfflineReEncryptedBallotsLoader offlineReEncryptedBallotsLoader = new OfflineReEncryptedBallotsLoader(file.toPath());
+                        OfflineShuffleProofLoader offlineShuffleProofLoader = new OfflineShuffleProofLoader(file.toPath());
                         final String batchName = file.getName();
                         if (!batchName.equals("tally")) {
 
@@ -87,7 +89,8 @@ public class BGVerifier {
                                         /*return true;*/
                                     } else {
 
-                                        final ShuffleProof shuffleProof = proofsReader.read(ballotBox.toPath(), batchName);
+                                        //final ShuffleProof shuffleProof = proofsReader.read(ballotBox.toPath(), batchName);
+                                        final ShuffleProof shuffleProof = offlineShuffleProofLoader.getShuffleProof();
 
                                         final ShuffleProofVerifier shuffleProofVerifier = getVerifier(zpGroup, cryptosystem,
                                                 shuffleProof, ballotBox.toPath(), batchName, encryptedBallots, reencryptedBallots);

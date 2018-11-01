@@ -14,4 +14,6 @@ import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProof;
 interface ProofsReader {
 
     ShuffleProof read(Path path, String batch) throws IOException;
+
+    ShuffleProof read(Path path) throws IOException;
 }
