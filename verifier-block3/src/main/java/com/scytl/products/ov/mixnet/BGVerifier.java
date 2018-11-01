@@ -14,6 +14,7 @@ import ch.post.it.evoting.verifier.block.block3.loader.ShuffleProofLoader;
 import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflineEncryptedBallotsLoader;
 import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflineReEncryptedBallotsLoader;
 import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflineShuffleProofLoader;
+import ch.post.it.evoting.verifier.block.block3.loader.online.OnlineEncryptionParametersLoader;
 import ch.post.it.evoting.verifier.common.Status;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProof;
@@ -51,11 +52,11 @@ public class BGVerifier {
             final Map<String, Boolean> result = new HashMap<>();
             Boolean verified;
 
-
             final File[] ballotBoxes = outputParentPath.toFile().listFiles(File::isDirectory);
             for (File ballotBox : ballotBoxes) {
                 final File[] files = ballotBox.listFiles(File::isDirectory);
                 if (files != null) {
+                    // offline
                     for (File file : files) {
                         EncryptedBallotsLoader offlineEncryptedBallotsLoader = new OfflineEncryptedBallotsLoader(file.toPath());
                         ReEncryptedBallotsLoader offlineReEncryptedBallotsLoader = new OfflineReEncryptedBallotsLoader(file.toPath());
@@ -111,6 +112,16 @@ public class BGVerifier {
                             }
                         }
                     }
+                }
+                // online
+                final File[] onlineMixing = ballotBox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
+                for (File file : onlineMixing) {
+                    OnlineEncryptionParametersLoader onlineEncryptionParametersLoader = new OnlineEncryptionParametersLoader(file.toPath());
+                    // ZpGroup zpGroup = onlineEncryptionParametersLoader.getZpGroup();
+                    // EncryptedBallotsLoader onlineEncryptedBallotsLoader = new OnlineEncryptedBallotsLoader(file.toPath());
+                    // ReEncryptedBallotsLoader offlineReEncryptedBallotsLoader = new OfflineReEncryptedBallotsLoader(file.toPath());
+                    // ShuffleProofLoader offlineShuffleProofLoader = new OfflineShuffleProofLoader(file.toPath());
+
                 }
             }
             return getResult(result);

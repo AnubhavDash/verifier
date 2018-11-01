@@ -21,7 +21,9 @@ import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.AbstractMap;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public class Test04 extends Test {
@@ -58,7 +60,10 @@ public class Test04 extends Test {
                         String listIden = l.getListIdentification();
                         Map<String, String> map = l.getCandidatePosition().stream()
                                 .map(cp -> new AbstractMap.SimpleEntry<>(cp.getCandidateListIdentification(), listIden))
-                                .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+                                .collect(Collectors.toMap(
+                                        AbstractMap.SimpleEntry::getKey,
+                                        AbstractMap.SimpleEntry::getValue,
+                                        (lcid1, lcid2) -> lcid1));
                         return map;
                     }).flatMap(map -> map.entrySet().stream())
                     .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue()));
@@ -106,8 +111,12 @@ public class Test04 extends Test {
                                 }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
                         return new AbstractMap.SimpleEntry<>(ccId, electionCount);
                     })
-                    .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
-
+                    .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue,
+                            (electionMap1, electionMap2) -> {
+                                return concatMap(electionMap1, electionMap2, (listmap1, listmap2) -> {
+                                    return concatMap(listmap1, listmap2, Long::sum);
+                                });
+                            }));
 
             Map<String, Map<String, Map<String, Long>>> countOfEmptyValuesByListId = results.getBallotsBox().stream()
                     .flatMap(bb -> bb.getCountingCircle().stream())
@@ -138,7 +147,12 @@ public class Test04 extends Test {
                                 }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
                         return new AbstractMap.SimpleEntry<>(ccId, electionCount);
                     })
-                    .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+                    .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue,
+                            (electionMap1, electionMap2) -> {
+                                return concatMap(electionMap1, electionMap2, (listCountMap1, listCountMap2) -> {
+                                    return concatMap(listCountMap1, listCountMap2, Long::sum);
+                                });
+                            }));
 
             path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS);
             Delivery ech110 = Deserializer.fromXml(path.toFile(), "eCH-0110_.*\\.xml", Delivery.class);
@@ -179,6 +193,22 @@ public class Test04 extends Test {
         return result;
 
     }
+
+
+    private <K, V> Map<K, V> concatMap(Map<K, V> map1, Map<K, V> map2, BiFunction<V, V, V> mergeFunction) {
+        Map<K, V> result = new HashMap<>(map2);
+        for (Map.Entry<K, V> entry : map1.entrySet()) {
+            if (result.containsKey(entry.getKey())) {
+                //map2 also contains this key, then merge both values together
+                result.replace(entry.getKey(), mergeFunction.apply(entry.getValue(), map2.get(entry.getKey())));
+            } else {
+                //map2 doesn't contains the key, then adding it
+                result.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return result;
+    }
+
 
     private BigInteger getCountOfCandidatesVotes(ListResultsType l) {
         if (l.getCountOfPartyVotes() != null) {
