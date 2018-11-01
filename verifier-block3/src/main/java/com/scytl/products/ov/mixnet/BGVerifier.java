@@ -72,30 +72,32 @@ public class BGVerifier {
                                 final ElGamalEncryptedBallots encryptedBallots = offlineEncryptedBallotsLoader.getEncryptedBallots();
                                 if (encryptedBallots.getBallots().isEmpty()) {
                                     LOGGER.info("0 ballots, nothing to mix!");
-                                    return true;
-                                }
+                                    /*return true;*/
+                                } else {
 
-                                LOGGER.debug("Re-encrypted ballots");
+                                    LOGGER.debug("Re-encrypted ballots");
                                 /*
                                 final ElGamalEncryptedBallots reencryptedBallots = ElGamalEncryptedBallotsLoader.loadCSV(
                                         zpGroup.getParams(), ballotBox.toPath(), batchName,
                                         DefaultLocationNames.REENCRYPTED_BALLOTS_OUTPUT_FILE_NAME + Constants.CSV_FILE_EXTENSION);
                                 */
-                                final ElGamalEncryptedBallots reencryptedBallots = offlineReEncryptedBallotsLoader.getReEncryptedBallots();
-                                if (reencryptedBallots.getBallots().isEmpty()) {
-                                    LOGGER.info("0 ballots reencrypted, no mixing performed!");
-                                    return true;
+                                    final ElGamalEncryptedBallots reencryptedBallots = offlineReEncryptedBallotsLoader.getReEncryptedBallots();
+                                    if (reencryptedBallots.getBallots().isEmpty()) {
+                                        LOGGER.info("0 ballots reencrypted, no mixing performed!");
+                                        /*return true;*/
+                                    } else {
+
+                                        final ShuffleProof shuffleProof = proofsReader.read(ballotBox.toPath(), batchName);
+
+                                        final ShuffleProofVerifier shuffleProofVerifier = getVerifier(zpGroup, cryptosystem,
+                                                shuffleProof, ballotBox.toPath(), batchName, encryptedBallots, reencryptedBallots);
+
+                                        verified = shuffleProofVerifier.verifyProof(shuffleProof.getInitialMessage(),
+                                                shuffleProof.getFirstAnswer(), shuffleProof.getSecondAnswer(), notifier);
+
+                                        result.put(batchName, verified);
+                                    }
                                 }
-
-                                final ShuffleProof shuffleProof = proofsReader.read(ballotBox.toPath(), batchName);
-
-                                final ShuffleProofVerifier shuffleProofVerifier = getVerifier(zpGroup, cryptosystem,
-                                        shuffleProof, ballotBox.toPath(), batchName, encryptedBallots, reencryptedBallots);
-
-                                verified = shuffleProofVerifier.verifyProof(shuffleProof.getInitialMessage(),
-                                        shuffleProof.getFirstAnswer(), shuffleProof.getSecondAnswer(), notifier);
-
-                                result.put(batchName, verified);
 
                             } catch (final Exception e) {
                                 LOGGER.error("An error occurred while verifying batch " + batchName, e);
