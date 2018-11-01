@@ -38,13 +38,19 @@ public class Test12 extends Test {
             File[] ballotBoxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES));
             List<BigInteger> products = new ArrayList<>();
             for (File balloBox : ballotBoxes) {
-                products.addAll(Flux.fromIterable(Deserializer.fromCsv(balloBox, "decompressedVotes\\.csv", ";", tab -> {
+                List<BigInteger> temp = Flux.fromIterable(Deserializer.fromCsv(balloBox, "decompressedVotes\\.csv", ";", tab -> {
                     BigInteger bigInt = BigInteger.ONE;
                     for (int i = 0; i < tab.length; i++) {
                         bigInt = bigInt.multiply(new BigInteger(tab[i]));
                     }
                     return bigInt;
-                })).collectList().block());
+                })).collectList().block();
+
+                if (temp != null){
+                    products.addAll(temp);
+                } else {
+                    throw new TestFailureException("error occurs while parsing data in decompressedVotes.csv");
+                }
             }
 
             result.setStatus(Status.OK);
