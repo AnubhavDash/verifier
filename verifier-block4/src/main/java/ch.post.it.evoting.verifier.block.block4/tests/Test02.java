@@ -18,10 +18,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.nio.file.Path;
-import java.util.AbstractMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -98,7 +95,15 @@ public class Test02 extends Test {
 
                         return new AbstractMap.SimpleEntry<>(ccId, answerCount);
                     })
-                    .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+                    .collect(Collectors.toMap(
+                            AbstractMap.SimpleEntry::getKey,
+                            AbstractMap.SimpleEntry::getValue,
+                            (ccId1, ccId2) -> {
+                                Map<String, Long> concat = new HashMap<>(ccId1);
+                                ccId2.forEach((k, v) -> concat.merge(k, v, Long::sum));
+                                return  concat;
+                            }
+                            ));
 
             // 3, e110 file foreach cc do a loop for each Question get the count
             path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS);
@@ -159,6 +164,8 @@ public class Test02 extends Test {
         }
         return result;
     }
+
+
 
     private BigInteger getDecryptCount(Map<String, Map<String, Long>> mapDecrypt, Map<Map.Entry<String, String>, String> mapConfig, String ccId, String qId, String answerType) {
         Map<String, Long> countByCC = mapDecrypt.get(ccId);
