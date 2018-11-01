@@ -8,6 +8,9 @@ package com.scytl.products.ov.mixnet;
 
 import ch.post.it.evoting.verifier.block.block3.BGResultNotifier;
 import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
+import ch.post.it.evoting.verifier.block.block3.loader.EncryptedBallotsLoader;
+import ch.post.it.evoting.verifier.block.block3.loader.ReEncryptedBallotsLoader;
+import ch.post.it.evoting.verifier.block.block3.loader.ShuffleProofLoader;
 import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflineEncryptedBallotsLoader;
 import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflineReEncryptedBallotsLoader;
 import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflineShuffleProofLoader;
@@ -54,9 +57,9 @@ public class BGVerifier {
                 final File[] files = ballotBox.listFiles(File::isDirectory);
                 if (files != null) {
                     for (File file : files) {
-                        OfflineEncryptedBallotsLoader offlineEncryptedBallotsLoader = new OfflineEncryptedBallotsLoader(file.toPath());
-                        OfflineReEncryptedBallotsLoader offlineReEncryptedBallotsLoader = new OfflineReEncryptedBallotsLoader(file.toPath());
-                        OfflineShuffleProofLoader offlineShuffleProofLoader = new OfflineShuffleProofLoader(file.toPath());
+                        EncryptedBallotsLoader offlineEncryptedBallotsLoader = new OfflineEncryptedBallotsLoader(file.toPath());
+                        ReEncryptedBallotsLoader offlineReEncryptedBallotsLoader = new OfflineReEncryptedBallotsLoader(file.toPath());
+                        ShuffleProofLoader offlineShuffleProofLoader = new OfflineShuffleProofLoader(file.toPath());
                         final String batchName = file.getName();
                         if (!batchName.equals("tally")) {
 

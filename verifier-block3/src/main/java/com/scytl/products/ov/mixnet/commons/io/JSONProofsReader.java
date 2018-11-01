@@ -30,27 +30,9 @@ public class JSONProofsReader implements ProofsReader {
     public ShuffleProof read(Path outputParentPath, String batchName) throws IOException {
         Path proofsPath = Paths.get(outputParentPath.toString(), batchName,
                 DefaultLocationNames.PROOFS_OUTPUT_FILE_NAME + Constants.JSON_FILE_EXTENSION);
-        LOGGER.debug("ShuffleProof path = " + proofsPath.toString());
-
-        final Path fullPath = proofsPath.toAbsolutePath();
-
-        final ObjectMapper mapper = new ObjectMapper();
-
-        //NAE
-        SimpleModule module = new SimpleModule("CustomModel", Version.unknownVersion());
-        SimpleAbstractTypeResolver resolver = new SimpleAbstractTypeResolver();
-        resolver.addMapping(GroupElement.class, ZpElement.class);
-        resolver.addMapping(Ciphertext.class, GjosteenElGamalCiphertext.class);
-        module.setAbstractTypes(resolver);
-        mapper.registerModule(module);
-        //NAE
-
-        ShuffleProof shuffleProof;
-        shuffleProof = mapper.readValue(fullPath.toFile(), ShuffleProof.class);
-        return shuffleProof;
+        return read(proofsPath);
     }
 
-    @Override
     public ShuffleProof read(Path path) throws IOException {
         LOGGER.debug("ShuffleProof path = " + path.toString());
         final Path fullPath = path.toAbsolutePath();

@@ -20,7 +20,6 @@ public class OfflineShuffleProofLoader implements ShuffleProofLoader {
 
     @Override
     public ShuffleProof getShuffleProof() throws IOException {
-        Path file = PathHelper.getFile(path.toFile(), "proofs\\.json").toPath();
-        return jsonProofsReader.read(file);
+        return jsonProofsReader.read(PathHelper.getFile(path.toFile(), "proofs\\.json").toPath());
     }
 }
