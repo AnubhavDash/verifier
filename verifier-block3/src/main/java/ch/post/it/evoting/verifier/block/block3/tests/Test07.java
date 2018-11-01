@@ -33,7 +33,8 @@ public class Test07 extends Test {
         try {
             File[] ballotBoxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES));
             for (File ballotBox : ballotBoxes) {
-                if (DecryptVerifier.verify(ballotBox.toPath()) != 1) {
+                int verificationResultCode = DecryptVerifier.verify(ballotBox.toPath());
+                if (verificationResultCode != 1 && verificationResultCode != -1) {
                     throw new TestFailureException("The verification failed", ballotBox.getName());
                 }
             }
@@ -42,9 +43,9 @@ public class Test07 extends Test {
             result.setStatus(Status.NOK);
             if (e instanceof TestFailureException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.nok.message", ((TestFailureException) e).getArgs()[1]));
-            } else if(e instanceof RuntimeException){
-                if(e.getCause() instanceof FileNotFoundException) {
-                    result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message",  e.getCause().getLocalizedMessage()));
+            } else if (e instanceof RuntimeException) {
+                if (e.getCause() instanceof FileNotFoundException) {
+                    result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message", e.getCause().getLocalizedMessage()));
                 }
             }
         }
