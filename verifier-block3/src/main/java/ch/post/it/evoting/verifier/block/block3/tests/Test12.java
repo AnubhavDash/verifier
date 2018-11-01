@@ -39,10 +39,9 @@ public class Test12 extends Test {
         TestResult result = new TestResult(getTestDefinition());
         try {
             File[] ballotBoxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES));
-            List<BigInteger> products = new ArrayList<>();
             for (File balloBox : ballotBoxes) {
                 // decompressedVotes
-                List<BigInteger> temp = Flux.fromIterable(Deserializer.fromCsv(balloBox, "decompressedVotes\\.csv", ";", tab -> {
+                List<BigInteger> decompVotesbigIntList = Flux.fromIterable(Deserializer.fromCsv(balloBox, "decompressedVotes\\.csv", ";", tab -> {
                     BigInteger bigInt = BigInteger.ONE;
                     for (int i = 0; i < tab.length; i++) {
                         bigInt = bigInt.multiply(new BigInteger(tab[i]));
@@ -50,9 +49,7 @@ public class Test12 extends Test {
                     return bigInt;
                 })).collectList().block();
 
-                if (temp != null) {
-                    products.addAll(temp);
-                } else {
+                if (decompVotesbigIntList == null) {
                     throw new TestFailureException("error occurs while parsing data in decompressedVotes.csv");
                 }
 
@@ -62,6 +59,10 @@ public class Test12 extends Test {
                         .stream()
                         .map(plaintext -> plaintext.getValue(0).getValue())
                         .collect(Collectors.toList());
+
+                if (voterWithProofbigIntList == null) {
+                    throw new TestFailureException("error occurs while parsing data in voterWithProofbigIntList.csv");
+                }
 
                 // finally to the check
 
