@@ -63,10 +63,10 @@ public class Test04 extends Test {
                                 .collect(Collectors.toMap(
                                         AbstractMap.SimpleEntry::getKey,
                                         AbstractMap.SimpleEntry::getValue,
-                                        (lcid1, lcid2) -> lcid1));
+                                        (listId1, listId2) -> listId1));
                         return map;
                     }).flatMap(map -> map.entrySet().stream())
-                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue()));
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
 
             // 2, decrypt file => map<countingCircle, map<ElectionId, map<listId, count>>>
