@@ -4,7 +4,6 @@ package ch.post.it.evoting.verifier.block.block3.loader.offline;
 import ch.post.it.evoting.verifier.block.block3.loader.EncryptionParametersLoader;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
-import ch.post.it.evoting.verifier.dto.EncryptionParameters;
 import ch.post.it.evoting.verifier.dto.EncryptionParametersZpSubGroup;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;

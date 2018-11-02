@@ -25,7 +25,6 @@ public class OfflinePublicKeyLoader implements PublicKeyLoader {
 
     @Override
     public ElGamalPublicKey getPublicKey() throws IOException {
-        // path = ballotboxes / id / 0
         PublicKey json = Deserializer.fromJson(path.toFile(), "publicKey\\.json", PublicKey.class);
         PublicKey__1 publicKey = json.getPublicKey();
 

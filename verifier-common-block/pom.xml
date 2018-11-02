@@ -112,6 +112,27 @@
                     </execution>
                 </executions>
             </plugin>
+            <!--<plugin>
+                <groupId>org.jsonschema2pojo</groupId>
+                <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+                <version>1.0.0-alpha4</version>
+                <configuration>
+                    <sourceDirectory>${basedir}/src/main/resources/schemas/jsonWithBigInteger</sourceDirectory>
+                    <targetPackage>ch.post.it.evoting.verifier.dto.onlinemixing</targetPackage>
+                    <sourceType>json</sourceType>
+                    <includeAdditionalProperties>false</includeAdditionalProperties>
+                    <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
+                    <includeToString>false</includeToString>
+                    <useBigIntegers>true</useBigIntegers>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>-->
             <plugin>
                 <groupId>org.jvnet.jaxb2.maven2</groupId>
                 <artifactId>maven-jaxb2-plugin</artifactId>

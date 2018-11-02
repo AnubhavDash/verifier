@@ -45,6 +45,16 @@ public class BGReader {
         return CommitmentParamsReader.readCommitmentParamsFromFile(zpGroup, path, numberOfVoters);
     }
 
+    public static CommitmentParams createCommitmentParams(final ZpGroup zpGroup, final int numberOfVoters,
+                                                          final Path fullPath) throws IOException {
+
+        String file = DefaultLocationNames.COMMITMENT_PARAMETERS_OUTPUT_FILE_NAME + Constants.JSON_FILE_EXTENSION;
+        Path path = Paths.get(fullPath.toString(), file);
+        LOGGER.debug("Commitment Params path = " + path.toString());
+
+        return CommitmentParamsReader.readCommitmentParamsFromFile(zpGroup, path, numberOfVoters);
+    }
+
     /**
      * Gets Encryption Parameters File and build ZpGroup
      * 
