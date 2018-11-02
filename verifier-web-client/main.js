@@ -1,4 +1,4 @@
-const {app, BrowserWindow, session, Menu} = require('electron')
+const {app, BrowserWindow, session, Menu, dialog} = require('electron')
 const { createLogger, format, transports } = require('winston');
 const fs = require('fs');
 const path = require('path');
@@ -66,17 +66,17 @@ console.log('Server PID: ' + serverProcess.pid);
 logger.log('info', 'Server PID: ' + serverProcess.pid);
 
 
-const openWindow = function () {
+const prepareWindow = function () {
 
   // Create the browser window.
   win = new BrowserWindow({
+    show: false,
     width: 1200,
     height: 800,
     webPreferences: {
       plugins: true
     }
   });
-
   const menu = Menu.buildFromTemplate([
     {
       label: 'File',
@@ -97,9 +97,6 @@ const openWindow = function () {
   Menu.setApplicationMenu(menu);
   // win.setMenu(null);
 
-  win.maximize();
-
-  win.loadURL(`file://${__dirname}/dist/index.html`);
 
   //// uncomment below to open the DevTools.
   // win.webContents.openDevTools()
@@ -127,22 +124,31 @@ const openWindow = function () {
   });
 };
 
-const startUp = function () {
+const startUp = function (counter) {
   const requestPromise = require('minimal-request-promise');
 
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+  app.on('ready', function() {
+    prepareWindow();
+  });
 
   requestPromise.get(appUrl + "/api/ping").then(function (response) {
     console.log('Server started!');
     logger.log('info', 'Server started!');
-    openWindow();
+    win.loadURL(`file://${__dirname}/dist/index.html`);
+    win.maximize();
+    win.show();
   }, function (response) {
-    console.log('Waiting for the server start...');
+    console.log('Waiting for the server start... ('+counter+'/20)');
     logger.log('info', 'Waiting for the server start...');
-    setTimeout(function () {
-      startUp();
-    }, 200);
+    if (counter < 20) {
+      setTimeout(function () {
+        startUp(counter+1);
+      }, 200);
+    } else {
+      dialog.showMessageBox(win, {type: "error", message: "Unable to connect to server. Application will stop"}, function (response) {app.quit()})
+    }
   });
 };
 
-startUp();
+startUp(1);
