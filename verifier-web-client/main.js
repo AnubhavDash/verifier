@@ -24,7 +24,7 @@ let win;
 let serverProcess;
 let platform = process.platform;
 
-let appUrl = 'https://localhost:8443';
+let appUrl = 'https://127.0.0.1:8443';
 
 if (platform === 'win32') {
   console.log(app.getAppPath());
