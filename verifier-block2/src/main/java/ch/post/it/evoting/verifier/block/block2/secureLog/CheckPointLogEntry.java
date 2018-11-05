@@ -15,10 +15,9 @@ public class CheckPointLogEntry extends SecureLogEntry {
     protected void deserialize(String line) throws IOException {
         SecureLogOrigin slo = Deserializer.fromJson(line.getBytes(), SecureLogOrigin.class);
         setPreview(slo.getPreview());
-        setHost(slo.getResult().getHost());
-        setIndex(slo.getResult().getIndex());
-        setRaw(getCleanedRawFromRaw(slo.getResult().getRaw()));
-        setMetadata(getMetadataFromRaw(slo.getResult().getRaw()));
+        setHost(slo.getResult().getEv().substring(0, slo.getResult().getEv().indexOf('|')));
+        setRaw(getCleanedRawFromRaw(slo.getResult().getEv()));
+        setMetadata(getMetadataFromRaw(slo.getResult().getEv()));
     }
 
 }

@@ -37,7 +37,7 @@ public class Test01 extends Test {
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
-            Stream<SecureLogEntry> logEntryStream = Deserializer.fromLines(inputDirectory, "small.json",
+            Stream<SecureLogEntry> logEntryStream = Deserializer.fromLines(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS).toFile(), ".*\\.json",
                     line -> {
                         try {
                             return SecureLogEntry.from(line);
@@ -45,8 +45,7 @@ public class Test01 extends Test {
                             throw new RuntimeException("Unable to deserialize SecureLogEntry", e);
                         }
                     })
-                    .filter(sl -> sl.getPreview() != null && !sl.getPreview())
-                    .filter(sl -> sl.getIndex() != null && sl.getIndex().equals("it_evoting_cc"));
+                    .filter(sl -> sl.getPreview() != null && !sl.getPreview());
 
             Flux.fromIterable(logEntryStream::iterator)
                     .groupBy(SecureLogEntry::getHost)

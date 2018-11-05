@@ -69,7 +69,7 @@ public class Test05 extends Test {
                     .collect(Collectors.toMap(HostMappingElement::getHostname, HostMappingElement::getCc));
 
             //count in the logs
-            Stream<SecureLogEntry> logEntry = Deserializer.fromLines(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS).toFile(), "secure_logs_90_mo.json",
+            Stream<SecureLogEntry> logEntry = Deserializer.fromLines(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS).toFile(), ".*\\.json",
                     line -> {
                         try {
                             return SecureLogEntry.from(line);
@@ -79,7 +79,6 @@ public class Test05 extends Test {
                     });
             Map<String, Long> countByCC = Flux.fromStream(logEntry)
                     .filter(sl -> sl.getPreview() != null && !sl.getPreview())
-                    .filter(sl -> sl.getIndex() != null && sl.getIndex().equals("it_evoting_cc"))
                     .filter(s1 -> s1 instanceof RegularLogEntry)
                     .cast(RegularLogEntry.class)
                     .filter(s1 -> s1.getRaw().contains("GENPVCC"))
@@ -91,6 +90,9 @@ public class Test05 extends Test {
 
             if (countByCC == null) {
                 throw new RuntimeException("no values found while counting log foreach control component");
+            }
+            if (countByCC.size() != 4) {
+                throw new RuntimeException("more than 4 different CC found : "+ countByCC.keySet());
             }
             long nbDistinctValues = countByCC.values().stream().distinct().count();
             if (nbDistinctValues != 1) {

@@ -37,14 +37,14 @@ public class Test02 extends Test {
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
-            Stream<SecureLogEntry> logEntryStream = Deserializer.fromLines(inputDirectory, "secure_logs_2018_10_16.json",
+            Stream<SecureLogEntry> logEntryStream = Deserializer.fromLines(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS).toFile(), ".*\\.json",
                     line -> {
                         try {
                             return SecureLogEntry.from(line);
                         } catch (IOException e) {
                             throw new RuntimeException("Unable to deserialize SecureLogEntry", e);
                         }
-                    }).filter(sl -> sl.getIndex() != null && sl.getIndex().equals("it_evoting_cc"));
+                    });
 
             Flux.fromIterable(logEntryStream::iterator)
                     .groupBy(SecureLogEntry::getHost)

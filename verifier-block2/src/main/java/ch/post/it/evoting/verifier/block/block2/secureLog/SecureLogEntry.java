@@ -13,7 +13,6 @@ public abstract class SecureLogEntry {
 
     private Boolean preview;
     private String host;
-    private String index;
     private String raw;
     private SecureLogMetadata metadata;
 
