@@ -1,6 +1,8 @@
 package ch.post.it.evoting.verifier.block.block2.tests;
 
 import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
+import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationDataExtractor;
+import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationStruct;
 import ch.post.it.evoting.verifier.block.block2.secureLog.RegularLogEntry;
 import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogBundleValidationException;
 import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogEntry;
@@ -9,25 +11,24 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
-import ch.post.it.evoting.verifier.common.block.dto.HostMappingElement;
+import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
 import reactor.util.function.Tuple2;
+import reactor.util.function.Tuple3;
 import reactor.util.function.Tuples;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 public class Test05 extends Test {
 
@@ -48,25 +49,7 @@ public class Test05 extends Test {
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
-            //Get the voterInformation.csv Files and count
-            List<File> voterInformationFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2TestSuite.PATH_ELECTION_SETUP).resolve(Block2TestSuite.PATH_VOTING_CARD_SETS).toFile(),
-                    "voterInformation.*\\.csv",
-                    true);
-            Long voterInformationCount = voterInformationFiles.stream()
-                    .map(f -> {
-                        try {
-                            return Files.lines(f.toPath()).count();
-                        } catch (IOException e) {
-                            throw new RuntimeException("An error occurs while parsing the voterInformation.csv files", e.getCause());
-                        }
-                    }).mapToLong(Long::longValue).sum();
-
-            // create host/CC mapping
-            File mapping = PathHelper.getFile(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS).toFile(), "mapping_cc_hosts.csv");
-            Iterable<HostMappingElement> iterable = Deserializer.fromCsv(mapping.getParentFile(), mapping.getName(), ";", Deserializer.toHostMappingElement);
-            Map<String, String> hostCcMapping = StreamSupport.stream(iterable.spliterator(), false)
-                    .skip(1)
-                    .collect(Collectors.toMap(HostMappingElement::getHostname, HostMappingElement::getCc));
+            VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectory);
 
             //count in the logs
             Stream<SecureLogEntry> logEntry = Deserializer.fromLines(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS).toFile(), ".*\\.json",
@@ -77,33 +60,21 @@ public class Test05 extends Test {
                             throw new RuntimeException("Unable to deserialize SecureLogEntry", e);
                         }
                     });
-            Map<String, Long> countByCC = Flux.fromStream(logEntry)
+            Pattern pattern = Pattern.compile(".*\\|000\\|(.*)\\|.*\\|.*\\|#encryptedOptions=\"(.*);(.*)\" #ccx_id=.*");
+            Map<String, Tuple2<String, String>> votes = Flux.fromStream(logEntry)
                     .filter(sl -> sl.getPreview() != null && !sl.getPreview())
                     .filter(s1 -> s1 instanceof RegularLogEntry)
                     .cast(RegularLogEntry.class)
-                    .filter(s1 -> s1.getRaw().contains("GENPVCC"))
-                    .groupBy(s1 -> hostCcMapping.get(s1.getHost()))
-                    .flatMap(group -> {
-                        String ccName = group.key();
-                        return group.count().flux().map(count -> Tuples.of(ccName, count));
-                    }).collectMap(Tuple2::getT1, Tuple2::getT2).block();
+                    .filter(s1 -> s1.getRaw().matches(".*\\|VOTVAL\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|.*"))
+                    .map(s1 -> {
+                        Matcher matcher = pattern.matcher(s1.getRaw());
+                        matcher.matches();
+                        return Tuples.of(matcher.group(1), matcher.group(2), matcher.group(3));
+                    })
+                    .collectMap(t -> t.getT1(), t -> Tuples.of(t.getT2(), t.getT3())).block();
 
-            if (countByCC == null) {
-                throw new RuntimeException("no values found while counting log foreach control component");
-            }
-            if (countByCC.size() != 4) {
-                throw new RuntimeException("more than 4 different CC found : "+ countByCC.keySet());
-            }
-            long nbDistinctValues = countByCC.values().stream().distinct().count();
-            if (nbDistinctValues != 1) {
-                //at this point with have 4 distincts values
-                //TODO handle distincts values for the CCs
-                result.setStatus(Status.NOK);
-            } else {
-                //finally check the count with csv files count
-                Long logCount = countByCC.values().stream().findFirst().get();
-                result.setStatus((voterInformationCount.equals(logCount)) ? Status.OK : Status.NOK);
-            }
+
+            result.setStatus(Status.OK);
 
         } catch (Exception e) {
             result.setStatus(Status.NOK);
@@ -112,11 +83,16 @@ public class Test05 extends Test {
                 if (e.getCause() instanceof SecureLogBundleValidationException) {
                     //TODO
                 }
+            }
+            if (e instanceof TestFailureException) {
+                String[] args = ((TestFailureException) e).getArgs();
+                LOGGER.debug("Test failed, cause : " + args[0] + ". Count for the CCs : " + args[1].toString());
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test04.nok.message"));
             } else if (e instanceof NoSuchFileException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.file.not.found.message", ((NoSuchFileException) e).getFile()));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test04.file.not.found.message", ((NoSuchFileException) e).getFile()));
             } else if (e instanceof FileNotFoundException) {
                 LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.file.not.found.message", e.getMessage()));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test04.file.not.found.message", e.getMessage()));
             }
         }
         return result;
