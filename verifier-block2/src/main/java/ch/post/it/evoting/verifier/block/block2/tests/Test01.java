@@ -18,11 +18,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.stream.Stream;
 
-public class Test01 extends Test {
+public class Test01 /*extends Test*/ {
 
     private static final Logger LOGGER = Logger.getLogger(Test01.class);
 
-    @Override
+    /*@Override*/
     public TestDefinition getTestDefinition() {
         TestDefinition def = new TestDefinition();
         def.setBlockId(2);
@@ -33,7 +33,7 @@ public class Test01 extends Test {
         return def;
     }
 
-    @Override
+    /*@Override*/
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {

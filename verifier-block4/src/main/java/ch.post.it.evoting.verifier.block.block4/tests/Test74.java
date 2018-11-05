@@ -17,11 +17,11 @@ import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 
-public class Test74 extends Test {
+public class Test74 /*extends Test*/ {
 
     private static final Logger LOGGER = Logger.getLogger(Test74.class);
 
-    @Override
+    /*@Override*/
     public TestDefinition getTestDefinition() {
         TestDefinition def = new TestDefinition();
         def.setBlockId(4);
@@ -32,7 +32,7 @@ public class Test74 extends Test {
         return def;
     }
 
-    @Override
+    /*@Override*/
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
