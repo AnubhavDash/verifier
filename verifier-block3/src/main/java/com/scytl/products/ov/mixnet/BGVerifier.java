@@ -119,6 +119,7 @@ public class BGVerifier {
                 }
                 // online
                 final File[] onlineMixing = ballotBox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
+                //TODO Thierry fix online
 /*                for (File file : onlineMixing) {
                     OnlineMixingProofLoader onlineMixingProofLoader = new OnlineMixingProofLoader(file.toPath());
                     ZpGroup zpGroup = onlineMixingProofLoader.getZpGroup();
@@ -127,7 +128,7 @@ public class BGVerifier {
                     final ElGamalEncryptedBallots encryptedBallots = onlineMixingProofLoader.getEncryptedBallots();
                     if (encryptedBallots.getBallots().isEmpty()) {
                         LOGGER.info("0 ballots, nothing to mix!");
-                        *//*return true;*//*
+                        return true;
                     } else {
 
                         LOGGER.debug("Re-encrypted ballots");

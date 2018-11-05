@@ -11,6 +11,10 @@
 
     <artifactId>verifier-block3</artifactId>
 
+    <properties>
+        <org.mapstruct.version>1.2.0.Final</org.mapstruct.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>ch.post.it.evoting.verifier</groupId>
@@ -42,6 +46,17 @@
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-core</artifactId>
             <version>3.2.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-jdk8</artifactId>
+            <version>${org.mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${org.mapstruct.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
