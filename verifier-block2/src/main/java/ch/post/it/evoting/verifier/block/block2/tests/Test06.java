@@ -4,8 +4,8 @@ import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
 import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationDataExtractor;
 import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationStruct;
 import ch.post.it.evoting.verifier.block.block2.secureLog.RegularLogEntry;
-import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogBundleValidationException;
 import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogEntry;
+import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
@@ -42,7 +42,11 @@ public class Test06 extends Test {
     @Override
     public TestDefinition getTestDefinition() {
         TestDefinition result = new TestDefinition();
-        //TODO
+        result.setBlockId(2);
+        result.setCategory(Category.CONSISTENCY);
+        result.setDescription(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test06.description"));
+        result.setId(6);
+        result.setName("checkVoteUnity");
         return result;
     }
 
@@ -73,7 +77,6 @@ public class Test06 extends Test {
                     .filter(s1 -> s1 instanceof RegularLogEntry)
                     .cast(RegularLogEntry.class)
                     .filter(s1 -> s1.getRaw().matches(".*\\|VOTVAL\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|.*"))
-                    //.groupBy(s1 -> hostCcMapping.containsKey(s1.getHost()) ? hostCcMapping.get(s1.getHost()) : s1.getHost())
                     .map(s1 -> {
                         Matcher matcher = pattern.matcher(s1.getRaw());
                         matcher.matches();
@@ -82,38 +85,29 @@ public class Test06 extends Test {
                     })
                     .groupBy(s1 -> hostCcMapping.containsKey(s1.getT1()) ? hostCcMapping.get(s1.getT1()) : s1.getT1())
                     .flatMap(ccGroup -> {
-                        Mono<Map<String, Long>> map = ccGroup.map(Tuple2::getT2).reduce(Collections.synchronizedMap(new HashMap<String, Long>()), (m, votingCardId) -> {
-                            m.put(votingCardId, m.getOrDefault(votingCardId, 0L) + 1);
+                        return ccGroup.map(Tuple2::getT2).reduce(Collections.synchronizedMap(new HashMap<String, Long>()), (m, votingCardId) -> {
+                            m.put(votingCardId, m.getOrDefault(votingCardId, 0L) + 1L);
                             return m;
-                        });
-                        return map.map(m -> Tuples.of(ccGroup.key(), m));
+                        }).map(m -> Tuples.of(ccGroup.key(), m));
                     })
                     .collectMap(Tuple2::getT1, Tuple2::getT2).block();
 
             if (nbVotingCardPerCC.entrySet().stream().anyMatch(e -> e.getValue().values().stream().anyMatch(v -> v > 1))) {
-                throw new TestFailureException("toto");
+                List<String> problematicVotingCardIds = nbVotingCardPerCC.values().stream().flatMap(m -> m.entrySet().stream()).filter(e -> e.getValue() > 1).map(e -> e.getKey()).collect(Collectors.toList());
+                throw new TestFailureException(problematicVotingCardIds.toArray(new String[]{}));
             }
-
-
             result.setStatus(Status.OK);
-
         } catch (Exception e) {
             result.setStatus(Status.NOK);
-            if (e instanceof RuntimeException) {
-                LOGGER.error("Test failed, cause : " + e.getMessage(), e);
-                if (e.getCause() instanceof SecureLogBundleValidationException) {
-                    //TODO
-                }
-            }
             if (e instanceof TestFailureException) {
                 String[] args = ((TestFailureException) e).getArgs();
-                LOGGER.debug("Test failed, cause : " + args[0] + ". Count for the CCs : " + args[1].toString());
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test04.nok.message"));
+                LOGGER.debug("Test failed, problematic votingcard ids : " + args);
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test06.nok.message", args));
             } else if (e instanceof NoSuchFileException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test04.file.not.found.message", ((NoSuchFileException) e).getFile()));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test06.file.not.found.message", ((NoSuchFileException) e).getFile()));
             } else if (e instanceof FileNotFoundException) {
                 LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test04.file.not.found.message", e.getMessage()));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test06.file.not.found.message", e.getMessage()));
             }
         }
         return result;
