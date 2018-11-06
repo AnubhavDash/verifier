@@ -89,11 +89,11 @@ public class Test06 extends Test {
                     })
                     .collectMap(Tuple2::getT1, Tuple2::getT2).block();
 
-            if (nbVotingCardPerCC.entrySet().stream().anyMatch(e -> e.getValue().values().stream().anyMatch(v -> v > 1))) {
-                List<String> problematicVotingCardIds = nbVotingCardPerCC.values().stream()
-                        .flatMap(m -> m.entrySet().stream())
-                        .filter(e -> e.getValue() > 1)
-                        .map(e -> e.getKey()).collect(Collectors.toList());
+            List<String> problematicVotingCardIds = nbVotingCardPerCC.values().stream()
+                    .flatMap(m -> m.entrySet().stream())
+                    .filter(e -> e.getValue() > 1)
+                    .map(e -> e.getKey()).collect(Collectors.toList());
+            if (!problematicVotingCardIds.isEmpty()) {
                 throw new TestFailureException(problematicVotingCardIds.toArray(new String[]{}));
             }
             result.setStatus(Status.OK);
