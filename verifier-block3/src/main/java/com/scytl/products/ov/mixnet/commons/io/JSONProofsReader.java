@@ -30,9 +30,12 @@ public class JSONProofsReader implements ProofsReader {
     public ShuffleProof read(Path outputParentPath, String batchName) throws IOException {
         Path proofsPath = Paths.get(outputParentPath.toString(), batchName,
                 DefaultLocationNames.PROOFS_OUTPUT_FILE_NAME + Constants.JSON_FILE_EXTENSION);
-        LOGGER.debug("ShuffleProof path = " + proofsPath.toString());
+        return read(proofsPath);
+    }
 
-        final Path fullPath = proofsPath.toAbsolutePath();
+    public ShuffleProof read(Path path) throws IOException {
+        LOGGER.debug("ShuffleProof path = " + path.toString());
+        final Path fullPath = path.toAbsolutePath();
 
         final ObjectMapper mapper = new ObjectMapper();
 

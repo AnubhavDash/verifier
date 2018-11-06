@@ -23,6 +23,8 @@ public class MultiExponentiationBasicProofAnswer {
 
     private final Randomness _tau;
 
+
+
     @JsonCreator
     public MultiExponentiationBasicProofAnswer(@JsonProperty("exponentsA") final Exponent[] a,
             @JsonProperty("exponentR") final Exponent r, @JsonProperty("exponentsB") final Exponent b,
@@ -68,6 +70,8 @@ public class MultiExponentiationBasicProofAnswer {
     public Randomness getRandomnessTau() {
         return _tau;
     }
+
+
 
     @Override
     public String toString() {

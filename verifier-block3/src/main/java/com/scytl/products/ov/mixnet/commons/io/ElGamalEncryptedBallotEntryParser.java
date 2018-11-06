@@ -19,7 +19,7 @@ import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroupParams;
 
-final class ElGamalEncryptedBallotEntryParser implements CSVEntryParser<ElGamalEncryptedBallot> {
+public final class ElGamalEncryptedBallotEntryParser implements CSVEntryParser<ElGamalEncryptedBallot> {
 
     private final ZpGroupParams _zpGroupParams;
 

@@ -1,6 +1,8 @@
 package ch.post.it.evoting.verifier.block.block2.tests;
 
 import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
+import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationDataExtractor;
+import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationStruct;
 import ch.post.it.evoting.verifier.block.block2.secureLog.RegularLogEntry;
 import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogBundleValidationException;
 import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogEntry;
@@ -16,14 +18,13 @@ import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
-import java.util.AbstractMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -49,28 +50,17 @@ public class Test03 extends Test {
         TestResult result = new TestResult(getTestDefinition());
         try {
             //Get the voterInformation.csv Files and count
-            List<File> voterInformationFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2TestSuite.PATH_ELECTION_SETUP).resolve(Block2TestSuite.PATH_VOTING_CARD_SETS).toFile(),
-                    "voterInformation.*\\.csv",
-                    true);
-            Long voterInformationCount = voterInformationFiles.stream()
-                    .map(f -> {
-                        try {
-                            return Files.lines(f.toPath()).count();
-                        } catch (IOException e) {
-                            throw  new RuntimeException("An error occurs while parsing the voterInformation.csv files", e.getCause());
-                        }
-                    }).mapToLong(Long::longValue).sum();
+            VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectory);
 
             // create host/CC mapping
             File mapping = PathHelper.getFile(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS).toFile(), "mapping_cc_hosts.csv");
             Iterable<HostMappingElement> iterable = Deserializer.fromCsv(mapping.getParentFile(), mapping.getName(), ";", Deserializer.toHostMappingElement);
             Map<String, String> hostCcMapping = StreamSupport.stream(iterable.spliterator(), false)
                     .skip(1)
-                    .map(hme -> new AbstractMap.SimpleEntry<>(hme.getHostname(), hme.getCc()))
-                    .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+                    .collect(Collectors.toMap(HostMappingElement::getHostname, HostMappingElement::getCc));
 
             //count in the logs
-            Stream<SecureLogEntry> logEntry = Deserializer.fromLines(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS).toFile(), "secure_logs_90_mo.json",
+            Stream<SecureLogEntry> logEntry = Deserializer.fromLines(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS).toFile(), ".*\\.json",
                     line -> {
                         try {
                             return SecureLogEntry.from(line);
@@ -79,44 +69,51 @@ public class Test03 extends Test {
                         }
                     });
             Map<String, Long> countByCC = Flux.fromStream(logEntry)
-                    .filter(sl -> sl.getIndex() != null && sl.getIndex().equals("it_evoting_cc"))
+                    .filter(sl -> sl.getPreview() != null && !sl.getPreview())
                     .filter(s1 -> s1 instanceof RegularLogEntry)
                     .cast(RegularLogEntry.class)
-                    .filter(s1 -> s1.getRaw().contains("GENPCC"))
-                    .groupBy(s1 -> hostCcMapping.get(s1.getHost()))
+                    .filter(s1 -> s1.getRaw().matches(".*\\|GENPCC\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|.*"))
+                    .groupBy(s1 -> hostCcMapping.containsKey(s1.getHost()) ? hostCcMapping.get(s1.getHost()) : s1.getHost())
                     .flatMap(group -> {
                         String ccName = group.key();
-                        return group.count().flux().map(count -> new AbstractMap.SimpleEntry<>(ccName, count));
-                    }).collectMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue).block();
+                        return group.count().flux().map(count -> Tuples.of(ccName, count));
+                    }).collectMap(Tuple2::getT1, Tuple2::getT2).block();
 
-            if(countByCC == null){
+            if (countByCC == null) {
                 throw new RuntimeException("no values found while counting log foreach control component");
             }
+            if (countByCC.size() != 4) {
+                throw new RuntimeException("more than 4 different CC found : "+ countByCC.keySet());
+            }
             long nbDistinctValues = countByCC.values().stream().distinct().count();
-            if ( nbDistinctValues != 1) {
+            if (nbDistinctValues == 0 && voterInformation.getCount() == 0L) {
+                LOGGER.info("no GENPCC log found for the defined electionEventId : " + voterInformation.getEeid());
+                result.setStatus(Status.OK);
+            } else if (nbDistinctValues != 1) {
                 //at this point with have 4 distincts values
                 throw new TestFailureException("count of log for partial choice code generation is not the same for each control component", countByCC.values().toString());
-            }else{
+            } else {
                 //finally check the count with csv files count
                 Long logCount = countByCC.values().stream().findFirst().get();
-                result.setStatus( (voterInformationCount.equals(logCount)) ? Status.OK : Status.NOK );
+                result.setStatus((logCount.equals(voterInformation.getCount())) ? Status.OK : Status.NOK);
             }
 
         } catch (Exception e) {
             result.setStatus(Status.NOK);
-            if( e instanceof  RuntimeException && !(e instanceof TestFailureException)){
+            if (e instanceof RuntimeException && !(e instanceof TestFailureException)) {
                 LOGGER.error("Test failed, cause : " + e.getMessage(), e);
                 if (e.getCause() instanceof SecureLogBundleValidationException) {
                     //TODO
                 }
-            } if (e instanceof TestFailureException) {
+            }
+            if (e instanceof TestFailureException) {
                 String[] args = ((TestFailureException) e).getArgs();
-                LOGGER.info("Test failed, cause : " + args[0]  +". Count for the CCs : " + args[1]);
+                LOGGER.info("Test failed, cause : " + args[0] + ". Count for the CCs : " + args[1]);
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.nok.message"));
             } else if (e instanceof NoSuchFileException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message", ((NoSuchFileException) e).getFile()));
-            } else if (e instanceof FileNotFoundException){
-                LOGGER.error("Test in error, cause : "  + e.getMessage() + " is missing", e);
+            } else if (e instanceof FileNotFoundException) {
+                LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message", e.getMessage()));
             }
         }

@@ -18,11 +18,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.stream.Stream;
 
-public class Test02 extends Test {
+public class Test02 /*extends Test*/ {
 
     private static final Logger LOGGER = Logger.getLogger(Test02.class);
 
-    @Override
+    /*@Override*/
     public TestDefinition getTestDefinition() {
         TestDefinition def = new TestDefinition();
         def.setBlockId(2);
@@ -33,18 +33,18 @@ public class Test02 extends Test {
         return def;
     }
 
-    @Override
+    /*@Override*/
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
-            Stream<SecureLogEntry> logEntryStream = Deserializer.fromLines(inputDirectory, "secure_logs_2018_10_16.json",
+            Stream<SecureLogEntry> logEntryStream = Deserializer.fromLines(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS).toFile(), ".*\\.json",
                     line -> {
                         try {
                             return SecureLogEntry.from(line);
                         } catch (IOException e) {
                             throw new RuntimeException("Unable to deserialize SecureLogEntry", e);
                         }
-                    }).filter(sl -> sl.getIndex() != null && sl.getIndex().equals("it_evoting_cc"));
+                    });
 
             Flux.fromIterable(logEntryStream::iterator)
                     .groupBy(SecureLogEntry::getHost)

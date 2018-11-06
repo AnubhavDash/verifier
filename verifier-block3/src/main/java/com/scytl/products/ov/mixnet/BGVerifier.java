@@ -8,17 +8,17 @@ package com.scytl.products.ov.mixnet;
 
 import ch.post.it.evoting.verifier.block.block3.BGResultNotifier;
 import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
+import ch.post.it.evoting.verifier.block.block3.loader.*;
+import ch.post.it.evoting.verifier.block.block3.loader.offline.*;
+import ch.post.it.evoting.verifier.block.block3.loader.online.OnlineMixingProofLoader;
 import ch.post.it.evoting.verifier.common.Status;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProof;
-import com.scytl.products.ov.mixnet.commons.configuration.locations.DefaultLocationNames;
-import com.scytl.products.ov.mixnet.commons.constants.Constants;
 import com.scytl.products.ov.mixnet.commons.exceptions.VerifierException;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
 import com.scytl.products.ov.mixnet.commons.homomorphic.impl.ElGamalPublicKey;
 import com.scytl.products.ov.mixnet.commons.homomorphic.impl.GjosteenElGamal;
 import com.scytl.products.ov.mixnet.commons.io.BGReader;
-import com.scytl.products.ov.mixnet.commons.io.ElGamalEncryptedBallotsLoader;
 import com.scytl.products.ov.mixnet.commons.io.JSONProofsReader;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentParams;
@@ -42,76 +42,127 @@ public class BGVerifier {
 
     public static boolean verify(final Path outputParentPath, BGResultNotifier notifier) throws VerifierException {
 
-        JSONProofsReader proofsReader = new JSONProofsReader();
-        final Map<String, Boolean> result = new HashMap<>();
-        Boolean verified;
+        try {
 
-        final File[] ballotBoxes = outputParentPath.toFile().listFiles(File::isDirectory);
-        for (File ballotBox : ballotBoxes) {
-            final File[] files = ballotBox.listFiles(File::isDirectory);
-            if (files != null) {
-                for (File file : files) {
+            JSONProofsReader proofsReader = new JSONProofsReader();
+            final Map<String, Boolean> result = new HashMap<>();
+            Boolean verified;
 
-                    final String batchName = file.getName();
-                    if (!batchName.equals("tally")) {
+            final File[] ballotBoxes = outputParentPath.toFile().listFiles(File::isDirectory);
+            for (File ballotBox : ballotBoxes) {
+                final File[] files = ballotBox.listFiles(File::isDirectory);
+                if (files != null) {
+                    // offline
+                    for (File file : files) {
+                        EncryptionParametersLoader encryptionParametersLoader = new OfflineEncryptionParametersLoader(file.toPath());
+                        PublicKeyLoader publicKeyLoader = new OfflinePublicKeyLoader(file.toPath());
+                        EncryptedBallotsLoader offlineEncryptedBallotsLoader = new OfflineEncryptedBallotsLoader(file.toPath());
+                        ReEncryptedBallotsLoader offlineReEncryptedBallotsLoader = new OfflineReEncryptedBallotsLoader(file.toPath());
+                        ShuffleProofLoader offlineShuffleProofLoader = new OfflineShuffleProofLoader(file.toPath());
+                        CommitmentParametersLoader commitmentParametersLoader = new OfflineCommitmentParametersLoader(file.toPath());
 
-                        try {
-                            ZpGroup zpGroup = BGReader.createZpGroup(ballotBox.toPath(), batchName);
-                            ElGamalPublicKey publicKey = BGReader.createElGamalPublicKey(batchName, ballotBox.toPath());
-                            GjosteenElGamal cryptosystem = new GjosteenElGamal(zpGroup, publicKey);
-                            // System.out.println("path = "+outputParentPath.toString()+"/"+batchName);
-                            LOGGER.debug("Ballots before mixing");
-                            final ElGamalEncryptedBallots encryptedBallots =
-                                    ElGamalEncryptedBallotsLoader.loadCSV(zpGroup.getParams(), ballotBox.toPath(), batchName,
-                                            DefaultLocationNames.ENCRYPTED_BALLOTS_OUTPUT_FILE_NAME + Constants.CSV_FILE_EXTENSION);
-                            if (encryptedBallots.getBallots().isEmpty()) {
-                                LOGGER.info("0 ballots, nothing to mix!");
-                                return true;
+                        final String batchName = file.getName();
+                        if (!batchName.equals("tally")) {
+
+                            try {
+                                // ZpGroup zpGroup = BGReader.createZpGroup(ballotBox.toPath(), batchName);
+                                // ElGamalPublicKey publicKey = BGReader.createElGamalPublicKey(batchName, ballotBox.toPath());
+                                ZpGroup zpGroup = encryptionParametersLoader.getZpGroup();
+                                ElGamalPublicKey publicKey = publicKeyLoader.getPublicKey();
+                                GjosteenElGamal cryptosystem = new GjosteenElGamal(zpGroup, publicKey);
+                                // System.out.println("path = "+outputParentPath.toString()+"/"+batchName);
+                                LOGGER.debug("Ballots before mixing");
+                                /*
+                                final ElGamalEncryptedBallots encryptedBallots =
+                                        ElGamalEncryptedBallotsLoader.loadCSV(zpGroup.getParams(), ballotBox.toPath(), batchName,
+                                                DefaultLocationNames.ENCRYPTED_BALLOTS_OUTPUT_FILE_NAME + Constants.CSV_FILE_EXTENSION);
+                                 */
+                                final ElGamalEncryptedBallots encryptedBallots = offlineEncryptedBallotsLoader.getEncryptedBallots();
+                                if (encryptedBallots.getBallots().isEmpty()) {
+                                    LOGGER.info("0 ballots, nothing to mix!");
+                                    /*return true;*/
+                                } else {
+
+                                    LOGGER.debug("Re-encrypted ballots");
+                                /*
+                                final ElGamalEncryptedBallots reencryptedBallots = ElGamalEncryptedBallotsLoader.loadCSV(
+                                        zpGroup.getParams(), ballotBox.toPath(), batchName,
+                                        DefaultLocationNames.REENCRYPTED_BALLOTS_OUTPUT_FILE_NAME + Constants.CSV_FILE_EXTENSION);
+                                */
+                                    final ElGamalEncryptedBallots reencryptedBallots = offlineReEncryptedBallotsLoader.getReEncryptedBallots();
+                                    if (reencryptedBallots.getBallots().isEmpty()) {
+                                        LOGGER.info("0 ballots reencrypted, no mixing performed!");
+                                        /*return true;*/
+                                    } else {
+
+                                        //final ShuffleProof shuffleProof = proofsReader.read(ballotBox.toPath(), batchName);
+                                        final ShuffleProof shuffleProof = offlineShuffleProofLoader.getShuffleProof();
+
+                                        /*final ShuffleProofVerifier shuffleProofVerifier = getVerifier(zpGroup, cryptosystem,
+                                                shuffleProof, ballotBox.toPath(), batchName, encryptedBallots, reencryptedBallots);*/
+                                        final ShuffleProofVerifier shuffleProofVerifier = getVerifier(zpGroup, cryptosystem,
+                                                shuffleProof, commitmentParametersLoader, encryptedBallots, reencryptedBallots);
+
+                                        verified = shuffleProofVerifier.verifyProof(shuffleProof.getInitialMessage(),
+                                                shuffleProof.getFirstAnswer(), shuffleProof.getSecondAnswer(), notifier);
+
+                                        result.put(batchName, verified);
+                                    }
+                                }
+
+                            } catch (final Exception e) {
+                                LOGGER.error("An error occurred while verifying batch " + batchName, e);
+                                notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.NOK, "An error occurred while verifying batch " + batchName);
                             }
-
-                            LOGGER.debug("Re-encrypted ballots");
-                            final ElGamalEncryptedBallots reencryptedBallots = ElGamalEncryptedBallotsLoader.loadCSV(
-                                    zpGroup.getParams(), ballotBox.toPath(), batchName,
-                                    DefaultLocationNames.REENCRYPTED_BALLOTS_OUTPUT_FILE_NAME + Constants.CSV_FILE_EXTENSION);
-                            if (reencryptedBallots.getBallots().isEmpty()) {
-                                LOGGER.info("0 ballots reencrypted, no mixing performed!");
-                                return true;
-                            }
-
-                            final ShuffleProof shuffleProof = proofsReader.read(ballotBox.toPath(), batchName);
-
-                            final ShuffleProofVerifier shuffleProofVerifier = getVerifier(zpGroup, cryptosystem,
-                                    shuffleProof, ballotBox.toPath(), batchName, encryptedBallots, reencryptedBallots);
-
-                            verified = shuffleProofVerifier.verifyProof(shuffleProof.getInitialMessage(),
-                                    shuffleProof.getFirstAnswer(), shuffleProof.getSecondAnswer(), notifier);
-
-                            result.put(batchName, verified);
-
-                        } catch (final Exception e) {
-                            LOGGER.error("An error occurred while verifying batch " + batchName, e);
-                            notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.NOK, "An error occurred while verifying batch " + batchName);
                         }
                     }
                 }
+                // online
+                final File[] onlineMixing = ballotBox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
+                //TODO Thierry fix online
+/*                for (File file : onlineMixing) {
+                    OnlineMixingProofLoader onlineMixingProofLoader = new OnlineMixingProofLoader(file.toPath());
+                    ZpGroup zpGroup = onlineMixingProofLoader.getZpGroup();
+                    ElGamalPublicKey publicKey = onlineMixingProofLoader.getPublicKey();
+                    GjosteenElGamal cryptosystem = new GjosteenElGamal(zpGroup, publicKey);
+                    final ElGamalEncryptedBallots encryptedBallots = onlineMixingProofLoader.getEncryptedBallots();
+                    if (encryptedBallots.getBallots().isEmpty()) {
+                        LOGGER.info("0 ballots, nothing to mix!");
+                        return true;
+                    } else {
+
+                        LOGGER.debug("Re-encrypted ballots");
+                        final ElGamalEncryptedBallots reencryptedBallots = onlineMixingProofLoader.getReEncryptedBallots();
+                        if (reencryptedBallots.getBallots().isEmpty()) {
+                            LOGGER.info("0 ballots reencrypted, no mixing performed!");
+                        } else {
+                            final ShuffleProof shuffleProof = onlineMixingProofLoader.getShuffleProof();
+                            final ShuffleProofVerifier shuffleProofVerifier = getVerifier(zpGroup, cryptosystem,
+                                    shuffleProof, onlineMixingProofLoader, encryptedBallots, reencryptedBallots);
+                            verified = shuffleProofVerifier.verifyProof(shuffleProof.getInitialMessage(),
+                                    shuffleProof.getFirstAnswer(), shuffleProof.getSecondAnswer(), notifier);
+                            result.put(file.getName(), verified);
+                        }
+                    }
+                }*/
             }
+            return getResult(result);
+        } catch (Exception e) {
+            throw new VerifierException("unable to instantiate the loader", e);
         }
-        return getResult(result);
     }
 
     /**
      * Gets ShuffleProofVerifier
      *
      * @param shuffleProof       The bean containing the output of a shuffle proof
-     * @param outputParentPath   Path to obtain the configuration values
-     * @param batchName          number of the batch
      * @param encryptedBallots   Ballots before being mixed
      * @param reencryptedBallots Ballots mixed and reencrypted
      * @return Shuffle proof verifier configured with the given parameters
      * @throws IOException If files were not accessible or have problems when reading it
      */
     private static ShuffleProofVerifier getVerifier(ZpGroup zpGroup, GjosteenElGamal cryptosystem,
-                                                    ShuffleProof shuffleProof, Path outputParentPath, String batchName,
+                                                    ShuffleProof shuffleProof, CommitmentParametersLoader commitmentParametersLoader,
                                                     ElGamalEncryptedBallots encryptedBallots, ElGamalEncryptedBallots reencryptedBallots) throws IOException {
 
         final int N = encryptedBallots.getBallots().size();
@@ -120,8 +171,8 @@ public class BGVerifier {
 
         LOGGER.debug("Configured n = " + n + " and m = " + m);
 
-        final CommitmentParams commitmentParams =
-                BGReader.createCommitmentParams(zpGroup, n, batchName, outputParentPath);
+        final CommitmentParams commitmentParams = commitmentParametersLoader.getCommitmentParams(zpGroup, n);
+        /*BGReader.createCommitmentParams(zpGroup, n, batchName, outputParentPath);*/
 
         final Ciphertext[][] encryptedBallotsCiphertext =
                 MatrixArranger.arrangeInCiphertextMatrix(encryptedBallots, m, n);

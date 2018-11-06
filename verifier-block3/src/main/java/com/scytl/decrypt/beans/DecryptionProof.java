@@ -8,6 +8,7 @@ package com.scytl.decrypt.beans;
 
 import java.math.BigInteger;
 
+import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 
 public class DecryptionProof {
@@ -17,6 +18,11 @@ public class DecryptionProof {
     private Exponent _challenge;
 
     private Exponent[] _response;
+
+    public DecryptionProof(Exponent challenge, Exponent[] response) {
+        this._challenge = challenge;
+        this._response = response;
+    }
 
     public DecryptionProof(String proof) {
         BigInteger exponentMod = BigInteger.ZERO;
@@ -32,7 +38,7 @@ public class DecryptionProof {
                 }
                 if (subParts[i].equals("hash")) {
                     i = i + 2;
-                    _challenge = new Exponent(new BigInteger(subParts[i]), exponentMod);
+                    _challenge = new Exponent(TypeConverter.base64ToBigInteger(subParts[i]), exponentMod);
                 }
                 if (subParts[i].equals("values")) {
                     i = i + 2;

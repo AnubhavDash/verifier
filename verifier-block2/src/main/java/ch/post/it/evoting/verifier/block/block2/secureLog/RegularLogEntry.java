@@ -14,10 +14,10 @@ public class RegularLogEntry extends SecureLogEntry {
     @Override
     protected void deserialize(String line) throws IOException {
         SecureLogOrigin slo = Deserializer.fromJson(line.getBytes(), SecureLogOrigin.class);
-        setHost(slo.getResult().getHost());
-        setIndex(slo.getResult().getIndex());
-        setRaw(getCleanedRawFromRaw(slo.getResult().getRaw()));
-        setMetadata(getMetadataFromRaw(slo.getResult().getRaw()));
+        setPreview(slo.getPreview());
+        setHost(slo.getResult().getEv().substring(0, slo.getResult().getEv().indexOf('|')));
+        setRaw(getCleanedRawFromRaw(slo.getResult().getEv()));
+        setMetadata(getMetadataFromRaw(slo.getResult().getEv()));
     }
 
 
