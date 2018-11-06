@@ -40,7 +40,7 @@ public class Test07 extends Test {
         TestDefinition result = new TestDefinition();
         result.setBlockId(2);
         result.setCategory(Category.EVIDENCE);
-        result.setDescription(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test06.description"));
+        result.setDescription(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test07.description"));
         result.setId(7);
         result.setName("checkConfirmationCodeAttempts");
         return result;
