@@ -25,10 +25,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -93,7 +90,10 @@ public class Test06 extends Test {
                     .collectMap(Tuple2::getT1, Tuple2::getT2).block();
 
             if (nbVotingCardPerCC.entrySet().stream().anyMatch(e -> e.getValue().values().stream().anyMatch(v -> v > 1))) {
-                List<String> problematicVotingCardIds = nbVotingCardPerCC.values().stream().flatMap(m -> m.entrySet().stream()).filter(e -> e.getValue() > 1).map(e -> e.getKey()).collect(Collectors.toList());
+                List<String> problematicVotingCardIds = nbVotingCardPerCC.values().stream()
+                        .flatMap(m -> m.entrySet().stream())
+                        .filter(e -> e.getValue() > 1)
+                        .map(e -> e.getKey()).collect(Collectors.toList());
                 throw new TestFailureException(problematicVotingCardIds.toArray(new String[]{}));
             }
             result.setStatus(Status.OK);
@@ -101,7 +101,7 @@ public class Test06 extends Test {
             result.setStatus(Status.NOK);
             if (e instanceof TestFailureException) {
                 String[] args = ((TestFailureException) e).getArgs();
-                LOGGER.debug("Test failed, problematic votingcard ids : " + args);
+                LOGGER.debug("Test failed, problematic votingcard ids : " + Arrays.toString(args));
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test06.nok.message", args));
             } else if (e instanceof NoSuchFileException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test06.file.not.found.message", ((NoSuchFileException) e).getFile()));
