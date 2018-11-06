@@ -13,7 +13,9 @@ import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
 import reactor.util.function.Tuple2;
@@ -23,11 +25,13 @@ import reactor.util.function.Tuples;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Test05 extends Test {
@@ -60,8 +64,8 @@ public class Test05 extends Test {
                             throw new RuntimeException("Unable to deserialize SecureLogEntry", e);
                         }
                     });
-            Pattern pattern = Pattern.compile(".*\\|000\\|(.*)\\|.*\\|.*\\|#encryptedOptions=\"(.*);(.*)\" #ccx_id=.*");
-            Map<String, Tuple2<String, String>> votes = Flux.fromStream(logEntry)
+            Pattern pattern = Pattern.compile(".*\\|000\\|(.*)\\|.*\\|.*\\|#encryptedOptions=\"(.*)\" #ccx_id=.*");
+            Map<String, String> mapSecureLogs = Flux.fromStream(logEntry)
                     .filter(sl -> sl.getPreview() != null && !sl.getPreview())
                     .filter(s1 -> s1 instanceof RegularLogEntry)
                     .cast(RegularLogEntry.class)
@@ -69,10 +73,47 @@ public class Test05 extends Test {
                     .map(s1 -> {
                         Matcher matcher = pattern.matcher(s1.getRaw());
                         matcher.matches();
-                        return Tuples.of(matcher.group(1), matcher.group(2), matcher.group(3));
+                        return Tuples.of(matcher.group(1), matcher.group(2));
                     })
-                    .collectMap(t -> t.getT1(), t -> Tuples.of(t.getT2(), t.getT3())).block();
+                    .collectMap(t -> t.getT1(), t -> t.getT2()).block();
 
+            //for all ballotbox
+            //get downloadedBallotBox.csv --> votingCardId, encryptedOptions
+            //foreach mapDownloadedBallotBox
+            //check that mapDownloadedBallotBox[votingCardId] == mapSecuredLogs[votingCardId]
+            Map<String, String> mapDownloadedBallotBoxs = new HashMap<>();
+
+            List<File> downloadedBallotBoxFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2TestSuite.PATH_BALLOTBOXES).toFile(),
+                    "downloadedBallotBox.*\\.csv",
+                    true);
+
+            for(File downloadedBbFile : downloadedBallotBoxFiles){
+                Map<String, String> map = Files.lines(downloadedBbFile.toPath())
+                        .map(line -> extractFromLine(line))
+                        .filter(entry -> entry.getKey() != null)
+                        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+                mapDownloadedBallotBoxs.putAll(map);
+            }
+
+            // finally to the check
+            if(mapSecureLogs.size() !=  mapDownloadedBallotBoxs.size()){
+                throw new TestFailureException("The count of records are not the same in DownloadedBallotBox and SecureLogs !", mapDownloadedBallotBoxs.toString());
+            }
+
+            mapDownloadedBallotBoxs.entrySet()
+                    .stream()
+                    .forEach(entry -> {
+                        String key = entry.getKey();
+                        String value = entry.getValue();
+                        if(mapSecureLogs.containsKey(key)){
+                            if(!value.equals(mapSecureLogs.get(key))){
+                                throw new TestFailureException("encryptedOptions is not the same in DownloadedBallotBox and SecureLogs !", value, mapSecureLogs.get(key));
+                            }
+                        }
+                        else {
+                            throw new TestFailureException("Unknow votingCardId !", key);
+                        }
+                    });
 
             result.setStatus(Status.OK);
 
@@ -96,6 +137,21 @@ public class Test05 extends Test {
             }
         }
         return result;
+    }
+
+    static AbstractMap.SimpleEntry<String, String> extractFromLine(String line) {
+        String vcId = null;
+        String encOptions = null;
+        final String VOTING_CARD_ID_TAG = "\"votingCardId\":\"";
+        final String ENCRYPTED_OPTIONS_TAG = "\"encryptedOptions\":\"";
+        if(line !=null && !line.isEmpty() && line.contains(VOTING_CARD_ID_TAG)){
+            int vcIdStartIndex = line.indexOf(VOTING_CARD_ID_TAG) + VOTING_CARD_ID_TAG.length();
+            vcId = line.substring(vcIdStartIndex, line.indexOf(",", vcIdStartIndex + 1) - 1);
+
+            int encOptionsStartIndex = line.indexOf(ENCRYPTED_OPTIONS_TAG) + ENCRYPTED_OPTIONS_TAG.length();
+            encOptions = line.substring(encOptionsStartIndex, line.indexOf(",", encOptionsStartIndex + 1) - 1);
+        }
+        return new AbstractMap.SimpleEntry(vcId, encOptions);
     }
 
 }
