@@ -22,4 +22,11 @@ public class Test06Test {
         TestResult testResult = new Test06().executeTest(new File(getClass().getResource("/Test06/NOK").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());}
+
+    @Test
+    public void executeTestNOKnotFile() {
+        TestResult testResult = new Test06().executeTest(new File(getClass().getResource("/Test06/NOK-NOTFILE").getFile()));
+        Assert.assertNotNull(testResult);
+        Assert.assertEquals(Status.NOK, testResult.getStatus());
+    }
 }

@@ -106,7 +106,12 @@ public class Test06 extends Test {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test06.file.not.found.message", ((NoSuchFileException) e).getFile()));
             } else if (e instanceof FileNotFoundException) {
                 LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test06.file.not.found.message", e.getMessage()));
+                if( e.getLocalizedMessage().equals(".*\\.json")){
+                    result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test06.file.not.found.message", "logs JSON file"));
+                }
+                 else{
+                     result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test06.file.not.found.message", e.getMessage()));
+                }
             }
         }
         return result;
