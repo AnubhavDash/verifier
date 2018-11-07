@@ -19,7 +19,6 @@ import java.util.stream.Stream;
 
 public class Test01Test {
 
-    @Ignore
     @Test
     public void executeTestOK() {
         TestResult testResult = new Test01().executeTest(new File(getClass().getResource("/Test01/OK").getFile()));
@@ -49,7 +48,6 @@ public class Test01Test {
         fw.close();
     }
 
-    @Ignore
     @Test
     public void generateHmacCheckpoint() {
         final String endLsk = "U9LwEJ1oDitWij/tX8SJ44FqDGrFFhJXXr+Nakj509w=";
@@ -81,7 +79,6 @@ public class Test01Test {
         Assert.assertEquals(hmac, calculatedHmac);
     }
 
-    @Ignore
     @Test
     public void generateHmacRegularLog1() {
         final String endLsk = "MD+KuCAgFCcbqETTqDeI79Fr9P3TMq2lpGfuahpZGp8=";
@@ -114,7 +111,6 @@ public class Test01Test {
         Assert.assertEquals(hmac, calculatedHmac);
     }
 
-    @Ignore
     @Test
     public void generateHmacRegularLog2() {
         final String endLsk = "MD+KuCAgFCcbqETTqDeI79Fr9P3TMq2lpGfuahpZGp8=";
