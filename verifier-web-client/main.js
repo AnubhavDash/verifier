@@ -2,9 +2,11 @@ const {app, BrowserWindow, session, Menu, dialog} = require('electron')
 const { createLogger, format, transports } = require('winston');
 const fs = require('fs');
 const path = require('path');
+const dateFormat = require('dateformat');
+
 const logDir = 'logs';
 let now = new Date();
-let suffix = now.getFullYear().toString()+(now.getMonth() + 1).toString()+now.getDate().toString()+'-'+now.getHours().toString()+now.getMinutes().toString()+'-'+now.getSeconds().toString();
+let suffix = dateFormat(now, "yyyy-mm-dd-HHMMss");
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir);
 }
