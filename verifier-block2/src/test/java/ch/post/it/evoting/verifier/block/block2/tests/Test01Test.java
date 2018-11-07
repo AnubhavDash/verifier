@@ -1,9 +1,9 @@
 package ch.post.it.evoting.verifier.block.block2.tests;
 
-import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.tools.HmacGenerator;
+import org.apache.commons.lang.StringUtils;
 import org.bouncycastle.util.encoders.Base64;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -36,33 +36,9 @@ public class Test01Test {
     }
 
     @Test
-    public void testReduceToBundle() throws IOException {
-        Path path = new File(getClass().getResource("/Test01/OK/Evoting_CC_verifier_export_7d-json.json").getFile()).toPath();
-        Stream<SecureLogEntry> logEntryStream = Files.lines(path).map(line -> {
-            try {
-                return SecureLogEntry.from(line);
-            } catch (IOException e) {
-                //TODO handle exception if deserialize failed
-                e.printStackTrace();
-                return null;
-            }
-        });
-
-        /*Stream<SecureLogBundle> secureLogBundleStream = SecureLogBundleCreator.from(logEntryStream);
-        Assert.assertEquals(59717, secureLogBundleStream.count());*/
-        /*secureLogBundleStream.forEach(b -> {
-            try {
-                b.validateIntegrity();
-            } catch (SecureLogBundleValidationException e) {
-                e.printStackTrace();
-            }
-        });*/
-    }
-
-    @Test
     @Ignore
     public void reverseFile() throws IOException {
-        Path path = new File(getClass().getResource("/Test01/OK/Evoting_CC_verifier_export_7d-json.json").getFile()).toPath();
+        Path path = new File(getClass().getResource("/Test01/OK/secureLogs/Evoting_CC_verifier_export_7d.json").getFile()).toPath();
         Stream<String> stream = Files.lines(path);
         List<String> collect = stream.collect(Collectors.toList());
         File file = new File("c:\\temp\\result.json");
@@ -75,13 +51,13 @@ public class Test01Test {
 
     @Ignore
     @Test
-    public void generateHmac() {
+    public void generateHmacCheckpoint() {
         final String endLsk = "U9LwEJ1oDitWij/tX8SJ44FqDGrFFhJXXr+Nakj509w=";
         final String hmac = "cxEQsXjOFU09oL8gGvDMSC0TzYDwtGrJdfL27iOzNnQ=";
         final String phmac = "qwQjgCt3g7+6MPQen2pB4weT1e/FgBvl2iRn/LOJ3IU=";
         final String lsk = "Jd10KtoV11/a3XgJwIAU71K0PCjDBTDEa+/M7GtYcWg=";
         final String esk = "XFikMrFPxOG+NleCjE7MYZ4XrWgWELyjx8VJJnd/ErnTh/hUk++E0NIFG/PAzYj5HmauQNZbkxXxSvoGZ1DM5U/eCI0paNPzIn5S6W7IgUTT6/ll7vk2j9ZsU1qGrhRMcOZd3Uo+b78OMP58iX7fyofhfJpvhs5M2PbAPfculfLoNQq9OynVIrIDplGX8rF3FOeZ9kXJUnMQK9qrKhHEPer5PXqOb47kqdnVHfDu7cDbDzZc34YDFd7pCWbVhC8GPhfZ/CNUot9A1Wghu1ECg6VHvRSK9q31dk4dNziEBp7yz8M/B6E8HvYcRidHYxOq4Qe9tlB61KwLwLClInX0tiI25dXOV53ux2TS387la2O5MlfFpGV2je3d98UI6E5mSXNO7tlxfRoRDbNebai+HMZr2fuuZ4bztVNkRKhrJmA5CXNwESrv+Q==";
-        final String raw = "2018-10-25 14:25:17,956|DEBUG|TIMER-LOG|New Secret Key generated. ";
+        final String raw = "2018-10-25 14:25:17,956|DEBUG|TIMER-LOG|New Secret Key generated.\n";
         final String ls = "10000";
         final String tl = "300000";
         final String ts = "1540470317956";
@@ -92,8 +68,72 @@ public class Test01Test {
             stream.write(Base64.decode(phmac));
             stream.write(Base64.decode(lsk));
             stream.write(Base64.decode(esk));
-            //stream.writeInt(Integer.parseInt(ls));
-            //stream.writeLong(Long.parseLong(tl));
+            if (StringUtils.isNotEmpty(ls)) stream.writeInt(Integer.parseInt(ls));
+            if (StringUtils.isNotEmpty(tl)) stream.writeLong(Long.parseLong(tl));
+            stream.writeLong(Long.parseLong(ts));
+            stream.write(raw.getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String calculatedHmac = Base64.toBase64String(HmacGenerator.hash(bytes.toByteArray(), Base64.decode(endLsk)));
+
+        Assert.assertEquals(hmac, calculatedHmac);
+    }
+
+    @Ignore
+    @Test
+    public void generateHmacRegularLog1() {
+        final String endLsk = "MD+KuCAgFCcbqETTqDeI79Fr9P3TMq2lpGfuahpZGp8=";
+        final String hmac = "gtGMUiyEZlA/MeVMJAMbSmUj3DYjOkxWm7N+4i9kiZc=";
+        final String phmac = "K2d+ArwhI/x6lSzFqpSc4f3AyxSLDK3109J/oMrEh7Y=";
+        final String lsk = "";
+        final String esk = "";
+        final String raw = "2018-10-25 14:29:44,113|DEBUG|pool-1-thread-57|Log File Name: /data/logs/cg/./logs/cg_secure-20181025-142944-25.log\n";
+        final String ls = "";
+        final String tl = "";
+        final String ts = "1540470584113";
+
+        //2018-10-25 14:29:44,113|DEBUG|pool-1-thread-57|Log File Name: /data/logs/cg/./logs/cg_secure-20181025-142944-25.log {*TS::1540470584113,HMAC::gtGMUiyEZlA/MeVMJAMbSmUj3DYjOkxWm7N+4i9kiZc=*}"}}
+
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        try (DataOutputStream stream = new DataOutputStream(bytes)) {
+            stream.write(Base64.decode(phmac));
+            stream.write(Base64.decode(lsk));
+            stream.write(Base64.decode(esk));
+            if (StringUtils.isNotEmpty(ls)) stream.writeInt(Integer.parseInt(ls));
+            if (StringUtils.isNotEmpty(tl)) stream.writeLong(Long.parseLong(tl));
+            stream.writeLong(Long.parseLong(ts));
+            stream.write(raw.getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String calculatedHmac = Base64.toBase64String(HmacGenerator.hash(bytes.toByteArray(), Base64.decode(endLsk)));
+
+        Assert.assertEquals(hmac, calculatedHmac);
+    }
+
+    @Ignore
+    @Test
+    public void generateHmacRegularLog2() {
+        final String endLsk = "MD+KuCAgFCcbqETTqDeI79Fr9P3TMq2lpGfuahpZGp8=";
+        final String hmac = "JyFYPX1uQVvbEom4GoJE9fcjclMyinscUv1W3tbFp5M=";
+        final String phmac = "gtGMUiyEZlA/MeVMJAMbSmUj3DYjOkxWm7N+4i9kiZc=";
+        final String lsk = "";
+        final String esk = "";
+        final String raw = "2018-10-25 14:29:44,105|INFO|pool-1-thread-57|767905|serverIP|clientIP|tenantID|OV|CCGEN||GENCCCRT|-|-|000|-|7d6e16ea88564b0b864785f2b12bd5df|Control Component Signing Certificate successfully generated|#ccx_id=\"ccn_c2\" #request_id=\"N5H27T56RFX5NUOC\" #issuer_cn=\"CCN_C2 CA\" #pubkey_ids=\"DT3MljLgNROZtzyfsEewoQd5DtkqxQi3VpabeIk8BiM=\" #cert_cn=\"7d6e16ea88564b0b864785f2b12bd5df\" #cert_sn=\"648718858650821711427443097450587215666310197001\" \n";
+        final String ls = "";
+        final String tl = "";
+        final String ts = "1540470584113";
+
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        try (DataOutputStream stream = new DataOutputStream(bytes)) {
+            stream.write(Base64.decode(phmac));
+            stream.write(Base64.decode(lsk));
+            stream.write(Base64.decode(esk));
+            if (StringUtils.isNotEmpty(ls)) stream.writeInt(Integer.parseInt(ls));
+            if (StringUtils.isNotEmpty(tl)) stream.writeLong(Long.parseLong(tl));
             stream.writeLong(Long.parseLong(ts));
             stream.write(raw.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {

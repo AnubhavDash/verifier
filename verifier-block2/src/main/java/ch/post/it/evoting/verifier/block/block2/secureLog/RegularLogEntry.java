@@ -16,7 +16,8 @@ public class RegularLogEntry extends SecureLogEntry {
         SecureLogOrigin slo = Deserializer.fromJson(line.getBytes(), SecureLogOrigin.class);
         setPreview(slo.getPreview());
         setHost(slo.getResult().getEv().substring(0, slo.getResult().getEv().indexOf('|')));
-        setRaw(getCleanedRawFromRaw(slo.getResult().getEv()));
+        String cleanedRawFromRaw = getCleanedRawFromRaw(slo.getResult().getEv());
+        setRaw(cleanedRawFromRaw.substring(cleanedRawFromRaw.indexOf('|')+1));
         setMetadata(getMetadataFromRaw(slo.getResult().getEv()));
     }
 

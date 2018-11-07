@@ -1,6 +1,7 @@
 package ch.post.it.evoting.verifier.block.block2.secureLog;
 
 import ch.post.it.evoting.verifier.common.block.tools.HmacGenerator;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.bouncycastle.util.encoders.Base64;
 
@@ -80,7 +81,7 @@ public class SecureLogBundle {
     }
 
     private void validateEndCheckPoint(byte[] lastHmac) throws SecureLogBundleValidationException {
-        if (!endCheckPoint.getMetadata().getPhmac().equals(lastHmac)) {
+        if (!endCheckPoint.getMetadata().getPhmac().equals(Base64.toBase64String(lastHmac))) {
             throw new SecureLogBundleValidationException("End Checkpoint HMAC not valid", beginCheckPoint.getHost());
         }
     }
@@ -89,10 +90,7 @@ public class SecureLogBundle {
         byte[] lsk = Base64.decode(endCheckPoint.getMetadata().getLsk());
         byte[] previousHmac = beginCheckPointHmac;
         for (RegularLogEntry regularLogEntry : regularLogEntries) {
-            byte[] text = concat(
-                    Base64.toBase64String(previousHmac),
-                    regularLogEntry.getRaw());
-            byte[] hmac = HmacGenerator.hash(text, lsk);
+            byte[] hmac = hmac(regularLogEntry, previousHmac, lsk);
             if (!Base64.toBase64String(hmac).equals(regularLogEntry.getMetadata().getHmac())) {
                 throw new SecureLogBundleValidationException("Regular log HMAC not valid", beginCheckPoint.getHost());
             }
@@ -103,22 +101,39 @@ public class SecureLogBundle {
 
     private byte[] validateStartCheckPoint() throws SecureLogBundleValidationException {
         byte[] lsk = Base64.decode(endCheckPoint.getMetadata().getLsk());
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        try (DataOutputStream stream = new DataOutputStream(bytes)) {
-            stream.write(Base64.decode(beginCheckPoint.getMetadata().getPhmac()));
-            stream.write(Base64.decode(beginCheckPoint.getMetadata().getLsk()));
-            stream.write(Base64.decode(beginCheckPoint.getMetadata().getEsk()));
-            stream.writeLong(Long.parseLong(beginCheckPoint.getMetadata().getTs()));
-            stream.write(beginCheckPoint.getRaw().getBytes(StandardCharsets.UTF_8));
-            bytes.close();
-        } catch (IOException e) {
-            throw new RuntimeException("error during generating the text for the HMAC generation", e);
-        }
-        byte[] hmac = HmacGenerator.hash(bytes.toByteArray(), lsk);
+        byte[] hmac = hmac(beginCheckPoint, null, lsk);
         if (!Base64.toBase64String(hmac).equals(beginCheckPoint.getMetadata().getHmac())) {
             throw new SecureLogBundleValidationException("Begin checkPoint HMAC not valid", beginCheckPoint.getHost());
         }
         return hmac;
+    }
+
+    private byte[] hmac(SecureLogEntry secureLogEntry, byte[] pHmac, byte[] lsk) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        try (DataOutputStream stream = new DataOutputStream(bytes)) {
+            if (secureLogEntry instanceof CheckPointLogEntry) {
+                stream.write(Base64.decode(secureLogEntry.getMetadata().getPhmac()));
+            } else {
+                stream.write(pHmac);
+            }
+            if (StringUtils.isNotEmpty(secureLogEntry.getMetadata().getLsk())) {
+                stream.write(Base64.decode(secureLogEntry.getMetadata().getLsk()));
+            }
+            if (StringUtils.isNotEmpty(secureLogEntry.getMetadata().getEsk())) {
+                stream.write(Base64.decode(secureLogEntry.getMetadata().getEsk()));
+            }
+            if (StringUtils.isNotEmpty(secureLogEntry.getMetadata().getLs())) {
+                stream.writeInt(Integer.parseInt(secureLogEntry.getMetadata().getLs()));
+            }
+            if (StringUtils.isNotEmpty(secureLogEntry.getMetadata().getTl())) {
+                stream.writeLong(Long.parseLong(secureLogEntry.getMetadata().getTl()));
+            }
+            stream.writeLong(Long.parseLong(secureLogEntry.getMetadata().getTs()));
+            stream.write(secureLogEntry.getRaw().getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to serialize secureLogEntry", e);
+        }
+        return HmacGenerator.hash(bytes.toByteArray(), lsk);
     }
 
     private byte[] concat(String... arrays) {

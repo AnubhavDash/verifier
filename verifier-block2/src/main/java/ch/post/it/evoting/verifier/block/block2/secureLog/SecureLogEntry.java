@@ -22,9 +22,9 @@ public abstract class SecureLogEntry {
         SecureLogEntry result;
         if (line.contains("New Secret Key generated")) {
             result = new CheckPointLogEntry();
-        } else if (line.contains("lastrow")) {
+        } /*else if (line.contains("lastrow")) {
             result = new LastRowLogEntry();
-        } else {
+        }*/ else {
             result = new RegularLogEntry();
         }
         result.deserialize(line);
@@ -35,7 +35,8 @@ public abstract class SecureLogEntry {
         String result = null;
         if(raw != null && !raw.isEmpty()){
             String objInsideRaw = getObjectInsideRaw(raw) + "*}";
-            result = raw.replace(objInsideRaw, "");//.trim();
+            result = raw.replace(objInsideRaw, "");
+            result = result.substring(0, result.length()-1)+"\n";
         }
         return result;
     }
