@@ -8,16 +8,13 @@ package com.scytl.products.ov.mixnet.commons.io;
 
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
-import ch.post.it.evoting.verifier.dto.EncryptionParameters;
 import ch.post.it.evoting.verifier.dto.EncryptionParametersZpSubGroup;
-import com.scytl.products.ov.mixnet.commons.constants.Constants;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroupParams;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Path;

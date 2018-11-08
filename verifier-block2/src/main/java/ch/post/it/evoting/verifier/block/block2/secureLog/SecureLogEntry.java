@@ -1,5 +1,7 @@
 package ch.post.it.evoting.verifier.block.block2.secureLog;
 
+import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.dto.SecureLogOrigin;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,19 +13,26 @@ import java.util.Optional;
 @Setter
 public abstract class SecureLogEntry {
 
+    private Boolean preview;
     private String host;
-    private String index;
     private String raw;
+    private String source;
     private SecureLogMetadata metadata;
 
-    protected abstract void deserialize(String line) throws IOException;
+    protected void deserialize(String line) throws IOException {
+        SecureLogOrigin slo = Deserializer.fromJson(line.getBytes(), SecureLogOrigin.class);
+
+        setPreview(slo.getPreview());
+        setSource(slo.getResult().getSource());
+        setHost(slo.getResult().getHost()/*.getRaw().substring(0, slo.getResult().getRaw().indexOf('|'))*/);
+        setRaw(getCleanedRawFromRaw(slo.getResult().getRaw()/*.substring(slo.getResult().getRaw().indexOf('|') + 1)*/));
+        setMetadata(getMetadataFromRaw(slo.getResult().getRaw()));
+    }
 
     public static SecureLogEntry from(String line) throws IOException {
         SecureLogEntry result;
         if (line.contains("New Secret Key generated")) {
             result = new CheckPointLogEntry();
-        } else if (line.contains("lastrow")) {
-            result = new LastRowLogEntry();
         } else {
             result = new RegularLogEntry();
         }
@@ -31,20 +40,21 @@ public abstract class SecureLogEntry {
         return result;
     }
 
-    protected String getCleanedRawFromRaw(String raw){
+    protected String getCleanedRawFromRaw(String raw) {
         String result = null;
-        if(raw != null && !raw.isEmpty()){
+        if (raw != null && !raw.isEmpty()) {
             String objInsideRaw = getObjectInsideRaw(raw) + "*}";
-            result = raw.replace(objInsideRaw, "").trim();
+            result = raw.replace(objInsideRaw, "");
+            result = result.substring(0, result.length() - 1) + "\n";
         }
         return result;
     }
 
-    protected SecureLogMetadata getMetadataFromRaw(String raw){
+    protected SecureLogMetadata getMetadataFromRaw(String raw) {
         SecureLogMetadata metadata = new SecureLogMetadata();
-        if(raw != null && !raw.isEmpty()){
+        if (raw != null && !raw.isEmpty()) {
             String objInsideRaw = getObjectInsideRaw(raw);
-            if(objInsideRaw != null && !objInsideRaw.isEmpty()){
+            if (objInsideRaw != null && !objInsideRaw.isEmpty()) {
                 metadata.setSg(getSignFromObjInRaw(objInsideRaw));
                 metadata.setLsk(getLskFromObjInRaw(objInsideRaw));
                 metadata.setEsk(getEskFromObjInRaw(objInsideRaw));
@@ -63,7 +73,7 @@ public abstract class SecureLogEntry {
         String result = null;
         if (objInsideRaw != null) {
             String[] split = objInsideRaw.split(",");
-            Optional<String> sigPart = Arrays.asList(split).stream().filter(str -> str.contains("SG")).findFirst();
+            Optional<String> sigPart = Arrays.asList(split).stream().filter(str -> str.contains("SG::")).findFirst();
             result = sigPart.isPresent() ? getValueFromKeyValueString(sigPart.get()) : null;
         }
         return result;
@@ -73,7 +83,7 @@ public abstract class SecureLogEntry {
         String result = null;
         if (objInsideRaw != null) {
             String[] split = objInsideRaw.split(",");
-            Optional<String> lsk = Arrays.asList(split).stream().filter(str -> str.contains("LSK")).findFirst();
+            Optional<String> lsk = Arrays.asList(split).stream().filter(str -> str.contains("LSK::")).findFirst();
             result = lsk.isPresent() ? getValueFromKeyValueString(lsk.get()) : null;
         }
         return result;
@@ -83,7 +93,7 @@ public abstract class SecureLogEntry {
         String result = null;
         if (objInsideRaw != null) {
             String[] split = objInsideRaw.split(",");
-            Optional<String> esk = Arrays.asList(split).stream().filter(str -> str.contains("ESK")).findFirst();
+            Optional<String> esk = Arrays.asList(split).stream().filter(str -> str.contains("ESK::")).findFirst();
             result = esk.isPresent() ? getValueFromKeyValueString(esk.get()) : null;
         }
         return result;

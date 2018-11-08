@@ -21,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.AbstractMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -73,7 +74,15 @@ public class Test03 extends Test {
 
                         return new AbstractMap.SimpleEntry<>(ccId, answerCount);
                     })
-                    .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+                    .collect(Collectors.toMap(
+                            AbstractMap.SimpleEntry::getKey,
+                            AbstractMap.SimpleEntry::getValue,
+                            (ccId1, ccId2) -> {
+                                Map<String, Long> concat = new HashMap<>(ccId1);
+                                ccId2.forEach((k, v) -> concat.merge(k, v, Long::sum));
+                                return  concat;
+                            }
+                    ));
 
 
             path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS);
@@ -120,7 +129,15 @@ public class Test03 extends Test {
 
                         return new AbstractMap.SimpleEntry<>(ccId, answerCount);
                     })
-                    .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+                    .collect(Collectors.toMap(
+                            AbstractMap.SimpleEntry::getKey,
+                            AbstractMap.SimpleEntry::getValue,
+                            (ccId1, ccId2) -> {
+                                Map<String, Long> concat = new HashMap<>(ccId1);
+                                ccId2.forEach((k, v) -> concat.merge(k, v, Long::sum));
+                                return  concat;
+                            }
+                    ));
 
             // writeInsEch110Map
             CountMap<String> writeInsEch110Map = new CountMap<>();

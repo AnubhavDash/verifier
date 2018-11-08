@@ -1,0 +1,2992 @@
+{
+  "electionEvents" : [ {
+    "alias" : "demo_bk_04",
+    "title" : "Demo BK Nationale Wahlen Freiburg",
+    "description" : "Demo BK Nationale Wahlen Freiburg",
+    "dateFrom" : "2018-10-30 00:00",
+    "dateTo" : "2018-12-31 23:59",
+    "gracePeriod" : 900,
+    "timeZone" : "+01:00",
+    "ballots" : [ {
+      "entityId" : "ballot_1",
+      "alias" : "ballot_1",
+      "title" : "ballot_Eidgenoessische_Wahlen",
+      "description" : "ballot_Eidgenoessische_Wahlen",
+      "contests" : [ {
+        "entityId" : "contest_Eidgenoessische_Wahlen"
+      } ]
+    } ],
+    "contests" : [ {
+      "entityId" : "contest_Eidgenoessische_Wahlen",
+      "title" : "Nationalratswahl",
+      "alias" : "Eidgenoessische_Wahlen",
+      "description" : "Nationalratswahl",
+      "explanationText" : "",
+      "template" : "listsAndCandidates",
+      "fullBlank" : "true",
+      "extraDataTypes" : {
+        "listType" : [ {
+          "name" : "Party Name",
+          "key" : "attribute1"
+        }, {
+          "name" : "Listenverbindung",
+          "key" : "apparentment"
+        }, {
+          "name" : "Unterlistenverbindung",
+          "key" : "sousApparentment"
+        } ],
+        "candidateType" : [ {
+          "name" : "Candidate text",
+          "key" : "attribute1"
+        }, {
+          "name" : "Candidate Date Of Birth",
+          "key" : "attribute2"
+        }, {
+          "name" : "Initiales Kumulieren",
+          "key" : "initialAccumulation"
+        } ]
+      },
+      "attributes" : [ {
+        "alias" : "L1",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "Liste Nr. 1 : Christlichdemokratische Volkspartei des Kantons Freiburg (CVP)"
+        }, {
+          "text" : "Listenverbindung: 1, 6, 18"
+        }, {
+          "text" : ""
+        } ],
+        "children" : [ {
+          "alias" : "a1594175-ddaa-3dd2-9eb6-c4727faa338c",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "01.01 de Buman Dominique"
+          }, {
+            "text" : "Jurist, Nationalrat, Freiburg"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "536d35fd-af86-318e-a36a-c603f4827e0e",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "01.02 Bulliard-Marbach Christine"
+          }, {
+            "text" : "Leiterin eines Landwirtschaftsbetriebs, Nationalrätin, Gemeindepräsidentin, Ueberstorf"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "1d6a1c2e-926b-32f5-9e85-46c231f9ba71",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "01.03 Collomb Eric"
+          }, {
+            "text" : "Geschäftsführer, Grossrat, Lully"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "8463349b-681a-3840-883a-3c6b9d76b859",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "01.04 Aebischer Susanne"
+          }, {
+            "text" : "Organisationsberaterin, Coach BSO und Erwachsenenbildnerin, Grossrätin, Kerzers"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "8036a112-d6ec-3afb-9a15-dc9f9d5aecbc",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "01.05 Butty Dominique"
+          }, {
+            "text" : "Dr. med. der Veterinärmedizin, Grossrat, Romont"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "95b18e04-696f-3bcb-ac52-592c99aab328",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "01.06 Doutaz Jean-Pierre"
+          }, {
+            "text" : "Unternehmer, Grossrat, Ammann von Gruyères, Epagny"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "86c2bf6c-d997-324a-911a-89c1fcadeb40",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "01.07 Ducotterd Christian"
+          }, {
+            "text" : "Meisterlandwirt, Grossrat, Ammann, Grolley"
+          }, {
+            "text" : "1"
+          } ]
+        } ]
+      }, {
+        "alias" : "L2",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "Liste Nr. 2 : Sozialdemokratische Partei"
+        }, {
+          "text" : "Listenverbindung: 2, 20"
+        }, {
+          "text" : ""
+        } ],
+        "children" : [ {
+          "alias" : "1600de95-a406-38e2-8c14-94daaa401944",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "02.01 Steiert Jean-François"
+          }, {
+            "text" : "Nationalrat, Delegierter für interkantonale Angelegenheiten, Freiburg"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "6031acca-2d86-3a15-bfcf-b28aac455de6",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "02.02 Piller Carrard Valérie"
+          }, {
+            "text" : "Nationalrätin, Kaufmännische Angestellte, Cheyres"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "734adcad-18fb-3e2d-989b-9fe866cc3626",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "02.03 Schneider Schüttel Ursula"
+          }, {
+            "text" : "Nationalrätin, Anwältin, Murten"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "c914a7f3-3d7a-3309-ac84-26333b467ec1",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "02.04 Bonny David"
+          }, {
+            "text" : "Präsident des Grossen Rates, Stellvertreter der Direktion (GYB), Prez-vers-Noréaz"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "3845e764-cd8a-30e5-b3b0-89b83f7c788f",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "02.05 Emonet Gaétan"
+          }, {
+            "text" : "Grossrat, Lehrer, Remaufens"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "23beafc4-cae4-335c-8c1b-d1a5d881a4bb",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "02.06 Krattinger-Jutzet Ursula"
+          }, {
+            "text" : "Grossrätin, Lehrerin, Düdingen"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "7fddcdc7-8d5f-310c-9dba-8ee811ba6733",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "02.07 Mauron Pierre"
+          }, {
+            "text" : "Grossrat, Anwalt, Riaz"
+          }, {
+            "text" : "1"
+          } ]
+        } ]
+      }, {
+        "alias" : "L3",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "Liste Nr. 3 : Freisinnig-Demokratische Partei (FDP)"
+        }, {
+          "text" : ""
+        }, {
+          "text" : ""
+        } ],
+        "children" : [ {
+          "alias" : "d1696d17-3258-3faf-b557-7920188c973d",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "03.01 Bourgeois Jacques"
+          }, {
+            "text" : "Nationalrat, Dipl. Ingenieur Agronom HTL, Avry-sur-Matran"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "7dc6342d-b75b-3927-b3c6-48222cfb4b3d",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "03.02 Glauser Fritz"
+          }, {
+            "text" : "Grossrat, Meisterlandwirt, Châtonnaye"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "96c948a8-70f9-3e31-ae23-92f90ed54665",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "03.03 Gobet Nadine"
+          }, {
+            "text" : "Grossrätin, Vizedirektorin FPE-CIGA, Bulle"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "4f0a644e-4cde-36d0-8980-f33aceb368ff",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "03.04 Ith Markus"
+          }, {
+            "text" : "Grossrat, Betriebsökonom FH, Murten"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "558ed05f-00b1-3932-9a32-8f2db3ee6ff3",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "03.05 Kuehnlin Pascal"
+          }, {
+            "text" : "Unternehmensleiter, Marly"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "1c222a8c-2b60-3d2e-971e-c4895f041db8",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "03.06 Losey Michel"
+          }, {
+            "text" : "Grossrat, Meisterlandwirt, Sévaz"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "77522ce8-efc3-39f8-a9db-b23bfd70f777",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "03.07 Udry Christian"
+          }, {
+            "text" : "Vizeammann, Finanzinspektor, St. Silvester"
+          }, {
+            "text" : "1"
+          } ]
+        } ]
+      }, {
+        "alias" : "L5",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "Liste Nr. 5 : Schweizerische Volkspartei"
+        }, {
+          "text" : ""
+        }, {
+          "text" : ""
+        } ],
+        "children" : [ {
+          "alias" : "7c3e7eb8-9ad1-3250-ac36-5bcbc1ddf197",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "05.01 Rime Jean-François"
+          }, {
+            "text" : "Unternehmer, Nationalrat, Bulle"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "54a5fe20-f1ac-37c7-bdc9-c5ab019a5822",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "05.02 Chardonnens Jean-Daniel"
+          }, {
+            "text" : "Direktor, Verwaltungsrat, Fétigny"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "5a1a15f2-2b18-3223-b4c4-568e01b7a00d",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "05.03 Mesot Roland"
+          }, {
+            "text" : "Unternehmensleiter, Grossrat, Châtel-St-Denis"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "205021c7-f909-3885-8495-44861bad97cd",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "05.04 Page Pierre-André"
+          }, {
+            "text" : "Landwirt EFZ, Grossrat, Châtonnaye"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "540a6b8e-25c3-3161-b944-e32a264b8b82",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "05.05 Schläfli Ruedi"
+          }, {
+            "text" : "Landwirt, Grossrat, Posieux"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "e907b241-6b1d-30d1-8cad-83f97c212120",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "05.06 Thalmann-Bolz Katharina"
+          }, {
+            "text" : "Primarlehrerin, Grossrätin, Murten"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "ebbc7e0a-1222-3371-a869-0b7277d4bd43",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "05.07 Waeber Emanuel"
+          }, {
+            "text" : "Betriebsökonom, Grossrat, St. Antoni"
+          }, {
+            "text" : "1"
+          } ]
+        } ]
+      }, {
+        "alias" : "L6",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "Liste Nr. 6 : Grünliberale (GL)"
+        }, {
+          "text" : "Listenverbindung: 1, 6, 18"
+        }, {
+          "text" : "Unterlistenverbindung: 6, 18"
+        } ],
+        "children" : [ {
+          "alias" : "0a0bee38-fe58-3806-8d18-1e6fc5a20e14",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "06.01 Schmid Ralph"
+          }, {
+            "text" : "Klinikdirektor, Professor, Grossrat, Lugnorre"
+          }, {
+            "text" : "2"
+          } ]
+        }, {
+          "alias" : "65394160-5243-357e-bbd6-d34b9f90f251",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "06.03 Etter Fabienne"
+          }, {
+            "text" : "Kfm. Angestellte, MAS in Ausbildungsmanagement, Freiburg"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "a5e1fa5f-c2b8-3d89-8397-8ada708a52ca",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "06.04 Reck Markus"
+          }, {
+            "text" : "Ökonom, Freiburg"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "3fc07efc-d0e4-367b-8a1e-dc131ab7006b",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "06.05 Bernhard Irene"
+          }, {
+            "text" : "Baujuristin, Villars-sur-Glâne"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "2898c851-f90e-34eb-b088-3507971cbf30",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "06.06 Wismer Daniel"
+          }, {
+            "text" : "Informatiker, Freiburg"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "02a29692-99b4-3a52-8ac9-6cd72faa9e79",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "06.07 Späth Bertrand"
+          }, {
+            "text" : "Ökonom, Marly"
+          }, {
+            "text" : "1"
+          } ]
+        } ]
+      }, {
+        "alias" : "L18",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "Liste Nr. 18 : Unternehmer und Junge Grünliberale"
+        }, {
+          "text" : "Listenverbindung: 1, 6, 18"
+        }, {
+          "text" : "Unterlistenverbindung: 6, 18"
+        } ],
+        "children" : [ {
+          "alias" : "25418555-715c-38d8-8cd2-93f802cfb364",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "18.01 von Mühlenen Walo"
+          }, {
+            "text" : "Betriebswirtschafter, Käse-Affineur, Villars-sur-Glâne"
+          }, {
+            "text" : "2"
+          } ]
+        }, {
+          "alias" : "be28b95e-c2e2-320f-a44c-0f7ad1486541",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "18.03 Savary Daniel"
+          }, {
+            "text" : "Architekt HTL, Verwalter, Avry-devant-Pont"
+          }, {
+            "text" : "2"
+          } ]
+        }, {
+          "alias" : "8beba8f4-3225-32cd-9ddc-aa099e844c10",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "18.05 Grandjean Anaïs"
+          }, {
+            "text" : "Master-Studentin in Kommunikation, La Tour-de-Trême"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "cb90140c-20aa-3fcd-b04a-48109d27b9f3",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "18.06 Grandjean Loris"
+          }, {
+            "text" : "Student in Psychologie und Politikwissenschaften, Bulle"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "f8fe563f-4cfe-3696-8e15-dde156cccb83",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "18.07 Ruffieux Kurt"
+          }, {
+            "text" : "Elektro-Ing. HTL, Arconciel"
+          }, {
+            "text" : "1"
+          } ]
+        } ]
+      }, {
+        "alias" : "L20",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "Liste Nr. 20 : JUSO Freiburg"
+        }, {
+          "text" : "Listenverbindung: 2, 20"
+        }, {
+          "text" : ""
+        } ],
+        "children" : [ {
+          "alias" : "af265c94-271d-3d2a-9717-71fdf2a4f67b",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "20.01 Kubski Grégoire"
+          }, {
+            "text" : "Student in Rechtswissenschaft, Spezialist beim der Staatssekretariat für Migration, Morlon"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "4c7d2378-013d-3397-a618-ec7ce4ba0616",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "20.02 Piller Elsa"
+          }, {
+            "text" : "kaufmännische Lernende, Rueyres-Saint-Laurent"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "b91450f6-95ad-38a6-9c9f-ada89d5ab3bf",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "20.03 Zurich Simon"
+          }, {
+            "text" : "Parlamentarischer Mitarbeiter, Patientenberater, Freiburg"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "ec33a523-146d-3c2a-a7d6-96e51b0692a2",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "20.04 de Jesus Correia Mélanie"
+          }, {
+            "text" : "Studentin, Lully"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "fc0e4c72-3631-337d-800c-888cc2e3a5a6",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "20.05 Fasel Noah"
+          }, {
+            "text" : "Gymnasiast, St. Ursen"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "275cde77-eecb-3b00-b76d-97a0f6046be3",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "20.06 Stirnimann Michelle"
+          }, {
+            "text" : "Studentin in Geografie, Kerzers"
+          }, {
+            "text" : "1"
+          } ]
+        }, {
+          "alias" : "1cf24398-3b97-3cda-8ccb-825e129fb974",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "20.07 Loup Matthieu"
+          }, {
+            "text" : "Student in Rechtswissenschaft, Vize-Präsident ASLOCA FR, Marly"
+          }, {
+            "text" : "1"
+          } ]
+        } ]
+      } ],
+      "questions" : [ {
+        "alias" : "lists",
+        "max" : "1",
+        "min" : "0",
+        "writeIn" : "false",
+        "choices" : [ "L1", "L2", "L3", "L5", "L6", "L18", "L20" ],
+        "fusions" : [ ],
+        "accumulation" : "1",
+        "blankText" : "Leer"
+      }, {
+        "alias" : "candidates",
+        "max" : "7",
+        "min" : "1",
+        "writeIn" : "false",
+        "choices" : [ "a1594175-ddaa-3dd2-9eb6-c4727faa338c", "536d35fd-af86-318e-a36a-c603f4827e0e", "1d6a1c2e-926b-32f5-9e85-46c231f9ba71", "8463349b-681a-3840-883a-3c6b9d76b859", "8036a112-d6ec-3afb-9a15-dc9f9d5aecbc", "95b18e04-696f-3bcb-ac52-592c99aab328", "86c2bf6c-d997-324a-911a-89c1fcadeb40", "1600de95-a406-38e2-8c14-94daaa401944", "6031acca-2d86-3a15-bfcf-b28aac455de6", "734adcad-18fb-3e2d-989b-9fe866cc3626", "c914a7f3-3d7a-3309-ac84-26333b467ec1", "3845e764-cd8a-30e5-b3b0-89b83f7c788f", "23beafc4-cae4-335c-8c1b-d1a5d881a4bb", "7fddcdc7-8d5f-310c-9dba-8ee811ba6733", "d1696d17-3258-3faf-b557-7920188c973d", "7dc6342d-b75b-3927-b3c6-48222cfb4b3d", "96c948a8-70f9-3e31-ae23-92f90ed54665", "4f0a644e-4cde-36d0-8980-f33aceb368ff", "558ed05f-00b1-3932-9a32-8f2db3ee6ff3", "1c222a8c-2b60-3d2e-971e-c4895f041db8", "77522ce8-efc3-39f8-a9db-b23bfd70f777", "7c3e7eb8-9ad1-3250-ac36-5bcbc1ddf197", "54a5fe20-f1ac-37c7-bdc9-c5ab019a5822", "5a1a15f2-2b18-3223-b4c4-568e01b7a00d", "205021c7-f909-3885-8495-44861bad97cd", "540a6b8e-25c3-3161-b944-e32a264b8b82", "e907b241-6b1d-30d1-8cad-83f97c212120", "ebbc7e0a-1222-3371-a869-0b7277d4bd43", "0a0bee38-fe58-3806-8d18-1e6fc5a20e14", "0a0bee38-fe58-3806-8d18-1e6fc5a20e14", "65394160-5243-357e-bbd6-d34b9f90f251", "a5e1fa5f-c2b8-3d89-8397-8ada708a52ca", "3fc07efc-d0e4-367b-8a1e-dc131ab7006b", "2898c851-f90e-34eb-b088-3507971cbf30", "02a29692-99b4-3a52-8ac9-6cd72faa9e79", "25418555-715c-38d8-8cd2-93f802cfb364", "25418555-715c-38d8-8cd2-93f802cfb364", "be28b95e-c2e2-320f-a44c-0f7ad1486541", "be28b95e-c2e2-320f-a44c-0f7ad1486541", "8beba8f4-3225-32cd-9ddc-aa099e844c10", "cb90140c-20aa-3fcd-b04a-48109d27b9f3", "f8fe563f-4cfe-3696-8e15-dde156cccb83", "af265c94-271d-3d2a-9717-71fdf2a4f67b", "4c7d2378-013d-3397-a618-ec7ce4ba0616", "b91450f6-95ad-38a6-9c9f-ada89d5ab3bf", "ec33a523-146d-3c2a-a7d6-96e51b0692a2", "fc0e4c72-3631-337d-800c-888cc2e3a5a6", "275cde77-eecb-3b00-b76d-97a0f6046be3", "1cf24398-3b97-3cda-8ccb-825e129fb974" ],
+        "fusions" : [ ],
+        "accumulation" : "2",
+        "blankText" : "Kein Name ausgewählt"
+      } ]
+    } ],
+    "ballotBoxes" : [ {
+      "entityId" : "fc52c745-f35b-3c20-8ba5-4120b3cc02da",
+      "alias" : "FR-BZ-1006|FR-MU-2309",
+      "title" : "Wünnewil-Flamatt",
+      "description" : "Wünnewil-FlamattFR-BZ-1006|FR-MU-2309",
+      "dateFrom" : "2018-10-30 00:00",
+      "dateTo" : "2018-12-31 23:59",
+      "gracePeriod" : 900,
+      "timeZone" : "+01:00",
+      "ballot" : {
+        "entityId" : "ballot_1"
+      },
+      "electoralAuthority" : {
+        "entityId" : "ea1"
+      },
+      "test" : false
+    } ],
+    "votingCardSets" : [ {
+      "entityId" : "vcs_Wünnewil-Flamatt",
+      "alias" : "vcs_FR-BZ-1006|FR-MU-2309",
+      "title" : "vcs_Wünnewil-Flamatt",
+      "description" : "vcs_Wünnewil-FlamattFR-BZ-1006|FR-MU-2309",
+      "numberOfVotingCardsToGenerate" : 99,
+      "ballotBox" : {
+        "entityId" : "fc52c745-f35b-3c20-8ba5-4120b3cc02da"
+      }
+    } ],
+    "electoralAuthorities" : [ {
+      "entityId" : "ea1",
+      "alias" : "ea1",
+      "title" : "ea1",
+      "description" : "ea1",
+      "minimumThreshold" : "1",
+      "electoralBoard" : [ "Member 1", "Member 2" ]
+    } ],
+    "translations" : [ {
+      "entityId" : "contest_Eidgenoessische_Wahlen",
+      "locale" : "de-CH",
+      "texts" : {
+        "title" : "Nationalratswahl",
+        "description" : "Nationalratswahl",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          }, {
+            "name" : "Listenverbindung",
+            "key" : "apparentment"
+          }, {
+            "name" : "Unterlistenverbindung",
+            "key" : "sousApparentment"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          }, {
+            "name" : "Initiales Kumulieren",
+            "key" : "initialAccumulation"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L1",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 1 : Christlichdemokratische Volkspartei des Kantons Freiburg (CVP)"
+          }, {
+            "text" : "Listenverbindung: 1, 6, 18"
+          }, {
+            "text" : ""
+          } ],
+          "children" : [ {
+            "alias" : "a1594175-ddaa-3dd2-9eb6-c4727faa338c",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.01 de Buman Dominique"
+            }, {
+              "text" : "Jurist, Nationalrat, Freiburg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "536d35fd-af86-318e-a36a-c603f4827e0e",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.02 Bulliard-Marbach Christine"
+            }, {
+              "text" : "Leiterin eines Landwirtschaftsbetriebs, Nationalrätin, Gemeindepräsidentin, Ueberstorf"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "1d6a1c2e-926b-32f5-9e85-46c231f9ba71",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.03 Collomb Eric"
+            }, {
+              "text" : "Geschäftsführer, Grossrat, Lully"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "8463349b-681a-3840-883a-3c6b9d76b859",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.04 Aebischer Susanne"
+            }, {
+              "text" : "Organisationsberaterin, Coach BSO und Erwachsenenbildnerin, Grossrätin, Kerzers"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "8036a112-d6ec-3afb-9a15-dc9f9d5aecbc",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.05 Butty Dominique"
+            }, {
+              "text" : "Dr. med. der Veterinärmedizin, Grossrat, Romont"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "95b18e04-696f-3bcb-ac52-592c99aab328",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.06 Doutaz Jean-Pierre"
+            }, {
+              "text" : "Unternehmer, Grossrat, Ammann von Gruyères, Epagny"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "86c2bf6c-d997-324a-911a-89c1fcadeb40",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.07 Ducotterd Christian"
+            }, {
+              "text" : "Meisterlandwirt, Grossrat, Ammann, Grolley"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L2",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 2 : Sozialdemokratische Partei"
+          }, {
+            "text" : "Listenverbindung: 2, 20"
+          }, {
+            "text" : ""
+          } ],
+          "children" : [ {
+            "alias" : "1600de95-a406-38e2-8c14-94daaa401944",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.01 Steiert Jean-François"
+            }, {
+              "text" : "Nationalrat, Delegierter für interkantonale Angelegenheiten, Freiburg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "6031acca-2d86-3a15-bfcf-b28aac455de6",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.02 Piller Carrard Valérie"
+            }, {
+              "text" : "Nationalrätin, Kaufmännische Angestellte, Cheyres"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "734adcad-18fb-3e2d-989b-9fe866cc3626",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.03 Schneider Schüttel Ursula"
+            }, {
+              "text" : "Nationalrätin, Anwältin, Murten"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "c914a7f3-3d7a-3309-ac84-26333b467ec1",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.04 Bonny David"
+            }, {
+              "text" : "Präsident des Grossen Rates, Stellvertreter der Direktion (GYB), Prez-vers-Noréaz"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "3845e764-cd8a-30e5-b3b0-89b83f7c788f",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.05 Emonet Gaétan"
+            }, {
+              "text" : "Grossrat, Lehrer, Remaufens"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "23beafc4-cae4-335c-8c1b-d1a5d881a4bb",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.06 Krattinger-Jutzet Ursula"
+            }, {
+              "text" : "Grossrätin, Lehrerin, Düdingen"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "7fddcdc7-8d5f-310c-9dba-8ee811ba6733",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.07 Mauron Pierre"
+            }, {
+              "text" : "Grossrat, Anwalt, Riaz"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L3",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 3 : Freisinnig-Demokratische Partei (FDP)"
+          }, {
+            "text" : ""
+          }, {
+            "text" : ""
+          } ],
+          "children" : [ {
+            "alias" : "d1696d17-3258-3faf-b557-7920188c973d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.01 Bourgeois Jacques"
+            }, {
+              "text" : "Nationalrat, Dipl. Ingenieur Agronom HTL, Avry-sur-Matran"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "7dc6342d-b75b-3927-b3c6-48222cfb4b3d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.02 Glauser Fritz"
+            }, {
+              "text" : "Grossrat, Meisterlandwirt, Châtonnaye"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "96c948a8-70f9-3e31-ae23-92f90ed54665",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.03 Gobet Nadine"
+            }, {
+              "text" : "Grossrätin, Vizedirektorin FPE-CIGA, Bulle"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "4f0a644e-4cde-36d0-8980-f33aceb368ff",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.04 Ith Markus"
+            }, {
+              "text" : "Grossrat, Betriebsökonom FH, Murten"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "558ed05f-00b1-3932-9a32-8f2db3ee6ff3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.05 Kuehnlin Pascal"
+            }, {
+              "text" : "Unternehmensleiter, Marly"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "1c222a8c-2b60-3d2e-971e-c4895f041db8",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.06 Losey Michel"
+            }, {
+              "text" : "Grossrat, Meisterlandwirt, Sévaz"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "77522ce8-efc3-39f8-a9db-b23bfd70f777",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.07 Udry Christian"
+            }, {
+              "text" : "Vizeammann, Finanzinspektor, St. Silvester"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L5",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 5 : Schweizerische Volkspartei"
+          }, {
+            "text" : ""
+          }, {
+            "text" : ""
+          } ],
+          "children" : [ {
+            "alias" : "7c3e7eb8-9ad1-3250-ac36-5bcbc1ddf197",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.01 Rime Jean-François"
+            }, {
+              "text" : "Unternehmer, Nationalrat, Bulle"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "54a5fe20-f1ac-37c7-bdc9-c5ab019a5822",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.02 Chardonnens Jean-Daniel"
+            }, {
+              "text" : "Direktor, Verwaltungsrat, Fétigny"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "5a1a15f2-2b18-3223-b4c4-568e01b7a00d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.03 Mesot Roland"
+            }, {
+              "text" : "Unternehmensleiter, Grossrat, Châtel-St-Denis"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "205021c7-f909-3885-8495-44861bad97cd",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.04 Page Pierre-André"
+            }, {
+              "text" : "Landwirt EFZ, Grossrat, Châtonnaye"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "540a6b8e-25c3-3161-b944-e32a264b8b82",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.05 Schläfli Ruedi"
+            }, {
+              "text" : "Landwirt, Grossrat, Posieux"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "e907b241-6b1d-30d1-8cad-83f97c212120",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.06 Thalmann-Bolz Katharina"
+            }, {
+              "text" : "Primarlehrerin, Grossrätin, Murten"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "ebbc7e0a-1222-3371-a869-0b7277d4bd43",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.07 Waeber Emanuel"
+            }, {
+              "text" : "Betriebsökonom, Grossrat, St. Antoni"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L6",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 6 : Grünliberale (GL)"
+          }, {
+            "text" : "Listenverbindung: 1, 6, 18"
+          }, {
+            "text" : "Unterlistenverbindung: 6, 18"
+          } ],
+          "children" : [ {
+            "alias" : "0a0bee38-fe58-3806-8d18-1e6fc5a20e14",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.01 Schmid Ralph"
+            }, {
+              "text" : "Klinikdirektor, Professor, Grossrat, Lugnorre"
+            }, {
+              "text" : "2"
+            } ]
+          }, {
+            "alias" : "65394160-5243-357e-bbd6-d34b9f90f251",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.03 Etter Fabienne"
+            }, {
+              "text" : "Kfm. Angestellte, MAS in Ausbildungsmanagement, Freiburg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "a5e1fa5f-c2b8-3d89-8397-8ada708a52ca",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.04 Reck Markus"
+            }, {
+              "text" : "Ökonom, Freiburg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "3fc07efc-d0e4-367b-8a1e-dc131ab7006b",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.05 Bernhard Irene"
+            }, {
+              "text" : "Baujuristin, Villars-sur-Glâne"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "2898c851-f90e-34eb-b088-3507971cbf30",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.06 Wismer Daniel"
+            }, {
+              "text" : "Informatiker, Freiburg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "02a29692-99b4-3a52-8ac9-6cd72faa9e79",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.07 Späth Bertrand"
+            }, {
+              "text" : "Ökonom, Marly"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L18",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 18 : Unternehmer und Junge Grünliberale"
+          }, {
+            "text" : "Listenverbindung: 1, 6, 18"
+          }, {
+            "text" : "Unterlistenverbindung: 6, 18"
+          } ],
+          "children" : [ {
+            "alias" : "25418555-715c-38d8-8cd2-93f802cfb364",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "18.01 von Mühlenen Walo"
+            }, {
+              "text" : "Betriebswirtschafter, Käse-Affineur, Villars-sur-Glâne"
+            }, {
+              "text" : "2"
+            } ]
+          }, {
+            "alias" : "be28b95e-c2e2-320f-a44c-0f7ad1486541",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "18.03 Savary Daniel"
+            }, {
+              "text" : "Architekt HTL, Verwalter, Avry-devant-Pont"
+            }, {
+              "text" : "2"
+            } ]
+          }, {
+            "alias" : "8beba8f4-3225-32cd-9ddc-aa099e844c10",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "18.05 Grandjean Anaïs"
+            }, {
+              "text" : "Master-Studentin in Kommunikation, La Tour-de-Trême"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "cb90140c-20aa-3fcd-b04a-48109d27b9f3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "18.06 Grandjean Loris"
+            }, {
+              "text" : "Student in Psychologie und Politikwissenschaften, Bulle"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "f8fe563f-4cfe-3696-8e15-dde156cccb83",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "18.07 Ruffieux Kurt"
+            }, {
+              "text" : "Elektro-Ing. HTL, Arconciel"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L20",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 20 : JUSO Freiburg"
+          }, {
+            "text" : "Listenverbindung: 2, 20"
+          }, {
+            "text" : ""
+          } ],
+          "children" : [ {
+            "alias" : "af265c94-271d-3d2a-9717-71fdf2a4f67b",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.01 Kubski Grégoire"
+            }, {
+              "text" : "Student in Rechtswissenschaft, Spezialist beim der Staatssekretariat für Migration, Morlon"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "4c7d2378-013d-3397-a618-ec7ce4ba0616",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.02 Piller Elsa"
+            }, {
+              "text" : "kaufmännische Lernende, Rueyres-Saint-Laurent"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "b91450f6-95ad-38a6-9c9f-ada89d5ab3bf",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.03 Zurich Simon"
+            }, {
+              "text" : "Parlamentarischer Mitarbeiter, Patientenberater, Freiburg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "ec33a523-146d-3c2a-a7d6-96e51b0692a2",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.04 de Jesus Correia Mélanie"
+            }, {
+              "text" : "Studentin, Lully"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "fc0e4c72-3631-337d-800c-888cc2e3a5a6",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.05 Fasel Noah"
+            }, {
+              "text" : "Gymnasiast, St. Ursen"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "275cde77-eecb-3b00-b76d-97a0f6046be3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.06 Stirnimann Michelle"
+            }, {
+              "text" : "Studentin in Geografie, Kerzers"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "1cf24398-3b97-3cda-8ccb-825e129fb974",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.07 Loup Matthieu"
+            }, {
+              "text" : "Student in Rechtswissenschaft, Vize-Präsident ASLOCA FR, Marly"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Leer"
+        }, {
+          "alias" : "candidates",
+          "max" : "7",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "2",
+          "blankText" : "Kein Name ausgewählt"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_Eidgenoessische_Wahlen",
+      "locale" : "fr-CH",
+      "texts" : {
+        "title" : "Election du Conseil national",
+        "description" : "Election du Conseil national",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          }, {
+            "name" : "Apparentment",
+            "key" : "apparentment"
+          }, {
+            "name" : "Sous-apparentement",
+            "key" : "sousApparentment"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          }, {
+            "name" : "Cumul initial",
+            "key" : "initialAccumulation"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L1",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 1 : Parti démocrate-chrétien fribourgeois (PDC)"
+          }, {
+            "text" : "Listes apparentées: 1, 6, 18"
+          }, {
+            "text" : ""
+          } ],
+          "children" : [ {
+            "alias" : "a1594175-ddaa-3dd2-9eb6-c4727faa338c",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.01 de Buman Dominique"
+            }, {
+              "text" : "juriste, conseiller national, Fribourg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "536d35fd-af86-318e-a36a-c603f4827e0e",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.02 Bulliard-Marbach Christine"
+            }, {
+              "text" : "responsable d'une exploitation agricole, conseillère nationale, syndique, Ueberstorf"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "1d6a1c2e-926b-32f5-9e85-46c231f9ba71",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.03 Collomb Eric"
+            }, {
+              "text" : "directeur d'entreprise, député, Lully"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "8463349b-681a-3840-883a-3c6b9d76b859",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.04 Aebischer Susanne"
+            }, {
+              "text" : "conseillère en organisation, coach BSO et formatrice d'adultes, députée, Kerzers"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "8036a112-d6ec-3afb-9a15-dc9f9d5aecbc",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.05 Butty Dominique"
+            }, {
+              "text" : "dr. med. vétérinaire, député, Romont"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "95b18e04-696f-3bcb-ac52-592c99aab328",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.06 Doutaz Jean-Pierre"
+            }, {
+              "text" : "chef d'entreprise, député, syndic de Gruyères, Epagny"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "86c2bf6c-d997-324a-911a-89c1fcadeb40",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.07 Ducotterd Christian"
+            }, {
+              "text" : "maître agriculteur, député, syndic, Grolley"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L2",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 2 : Parti socialiste fribourgeois"
+          }, {
+            "text" : "Listes apparentées: 2, 20"
+          }, {
+            "text" : ""
+          } ],
+          "children" : [ {
+            "alias" : "1600de95-a406-38e2-8c14-94daaa401944",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.01 Steiert Jean-François"
+            }, {
+              "text" : "conseiller national, délégué aux affaires intercantonales, Fribourg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "6031acca-2d86-3a15-bfcf-b28aac455de6",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.02 Piller Carrard Valérie"
+            }, {
+              "text" : "conséillère nationale, employée de commerce, Cheyres"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "734adcad-18fb-3e2d-989b-9fe866cc3626",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.03 Schneider Schüttel Ursula"
+            }, {
+              "text" : "conseillère nationale, avocate, Morat"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "c914a7f3-3d7a-3309-ac84-26333b467ec1",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.04 Bonny David"
+            }, {
+              "text" : "président du Grand Conseil, adj. de direction (GYB), Prez-vers-Noréaz"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "3845e764-cd8a-30e5-b3b0-89b83f7c788f",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.05 Emonet Gaétan"
+            }, {
+              "text" : "député, enseignant, Remaufens"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "23beafc4-cae4-335c-8c1b-d1a5d881a4bb",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.06 Krattinger-Jutzet Ursula"
+            }, {
+              "text" : "députée, enseignante, Guin"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "7fddcdc7-8d5f-310c-9dba-8ee811ba6733",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.07 Mauron Pierre"
+            }, {
+              "text" : "député, avocat, Riaz"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L3",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 3 : Parti libéral-radical fribourgeois (PLR)"
+          }, {
+            "text" : ""
+          }, {
+            "text" : ""
+          } ],
+          "children" : [ {
+            "alias" : "d1696d17-3258-3faf-b557-7920188c973d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.01 Bourgeois Jacques"
+            }, {
+              "text" : "conseiller national, ingénieur agronome HES, Avry-sur-Matran"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "7dc6342d-b75b-3927-b3c6-48222cfb4b3d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.02 Glauser Fritz"
+            }, {
+              "text" : "député, maître agriculteur, Châtonnaye"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "96c948a8-70f9-3e31-ae23-92f90ed54665",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.03 Gobet Nadine"
+            }, {
+              "text" : "députée, dir.-adj. FPE-CIGA, Bulle"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "4f0a644e-4cde-36d0-8980-f33aceb368ff",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.04 Ith Markus"
+            }, {
+              "text" : "député, économiste d’entreprise HEG, Morat"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "558ed05f-00b1-3932-9a32-8f2db3ee6ff3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.05 Kuehnlin Pascal"
+            }, {
+              "text" : "chef d’entreprise, Marly"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "1c222a8c-2b60-3d2e-971e-c4895f041db8",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.06 Losey Michel"
+            }, {
+              "text" : "député, maître agriculteur, Sévaz"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "77522ce8-efc3-39f8-a9db-b23bfd70f777",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.07 Udry Christian"
+            }, {
+              "text" : "vice-syndic, inspecteur des finances, St. Silvester"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L5",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 5 : Union Démocratique du Centre"
+          }, {
+            "text" : ""
+          }, {
+            "text" : ""
+          } ],
+          "children" : [ {
+            "alias" : "7c3e7eb8-9ad1-3250-ac36-5bcbc1ddf197",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.01 Rime Jean-François"
+            }, {
+              "text" : "industriel, conseiller national, Bulle"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "54a5fe20-f1ac-37c7-bdc9-c5ab019a5822",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.02 Chardonnens Jean-Daniel"
+            }, {
+              "text" : "directeur, administrateur, Fétigny"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "5a1a15f2-2b18-3223-b4c4-568e01b7a00d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.03 Mesot Roland"
+            }, {
+              "text" : "chef d’entreprise, député, Châtel-St-Denis"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "205021c7-f909-3885-8495-44861bad97cd",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.04 Page Pierre-André"
+            }, {
+              "text" : "maître agriculteur, député, Châtonnaye"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "540a6b8e-25c3-3161-b944-e32a264b8b82",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.05 Schläfli Ruedi"
+            }, {
+              "text" : "agriculteur, député, Posieux"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "e907b241-6b1d-30d1-8cad-83f97c212120",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.06 Thalmann-Bolz Katharina"
+            }, {
+              "text" : "enseignante primaire, députée, Morat"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "ebbc7e0a-1222-3371-a869-0b7277d4bd43",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.07 Waeber Emanuel"
+            }, {
+              "text" : "économiste d’entreprise, député"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L6",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 6 : Vert'libéraux (VL)"
+          }, {
+            "text" : "Listes apparentées: 1, 6, 18"
+          }, {
+            "text" : "Listes sous-apparentées: 6, 18"
+          } ],
+          "children" : [ {
+            "alias" : "0a0bee38-fe58-3806-8d18-1e6fc5a20e14",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.01 Schmid Ralph"
+            }, {
+              "text" : "directeur de clinique, professeur, député, Lugnorre"
+            }, {
+              "text" : "2"
+            } ]
+          }, {
+            "alias" : "65394160-5243-357e-bbd6-d34b9f90f251",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.03 Etter Fabienne"
+            }, {
+              "text" : "employée de commerce, Master en gestion de formation, Fribourg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "a5e1fa5f-c2b8-3d89-8397-8ada708a52ca",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.04 Reck Markus"
+            }, {
+              "text" : "économiste, Fribourg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "3fc07efc-d0e4-367b-8a1e-dc131ab7006b",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.05 Bernhard Irene"
+            }, {
+              "text" : "juriste du droit de constructions, Villars-sur-Glâne"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "2898c851-f90e-34eb-b088-3507971cbf30",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.06 Wismer Daniel"
+            }, {
+              "text" : "informaticien, Fribourg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "02a29692-99b4-3a52-8ac9-6cd72faa9e79",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.07 Späth Bertrand"
+            }, {
+              "text" : "économiste, Marly"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L18",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 18 : Entrepreneurs et jeunes vert’libéraux"
+          }, {
+            "text" : "Listes apparentées: 1, 6, 18"
+          }, {
+            "text" : "Listes sous-apparentées: 6, 18"
+          } ],
+          "children" : [ {
+            "alias" : "25418555-715c-38d8-8cd2-93f802cfb364",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "18.01 von Mühlenen Walo"
+            }, {
+              "text" : "entrepreneur, affineur de fromages, Villars-sur-Glâne"
+            }, {
+              "text" : "2"
+            } ]
+          }, {
+            "alias" : "be28b95e-c2e2-320f-a44c-0f7ad1486541",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "18.03 Savary Daniel"
+            }, {
+              "text" : "architecte ETS, administrateur, Avry-devant-Pont"
+            }, {
+              "text" : "2"
+            } ]
+          }, {
+            "alias" : "8beba8f4-3225-32cd-9ddc-aa099e844c10",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "18.05 Grandjean Anaïs"
+            }, {
+              "text" : "étudiante de master en communication, La Tour-de-Trême"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "cb90140c-20aa-3fcd-b04a-48109d27b9f3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "18.06 Grandjean Loris"
+            }, {
+              "text" : "étudiant en psychologie et sciences politiques, Bulle"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "f8fe563f-4cfe-3696-8e15-dde156cccb83",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "18.07 Ruffieux Kurt"
+            }, {
+              "text" : "Ing. ETS électricien, Arconciel"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L20",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 20 : Jeunesse socialiste fribourgeoise (JSF)"
+          }, {
+            "text" : "Listes apparentées: 2, 20"
+          }, {
+            "text" : ""
+          } ],
+          "children" : [ {
+            "alias" : "af265c94-271d-3d2a-9717-71fdf2a4f67b",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.01 Kubski Grégoire"
+            }, {
+              "text" : "étudiant en droit, spécialiste au Secrétariat d'Etat aux migrations, Morlon"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "4c7d2378-013d-3397-a618-ec7ce4ba0616",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.02 Piller Elsa"
+            }, {
+              "text" : "apprentie employée de commerce, Rueyres-Saint-Laurent"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "b91450f6-95ad-38a6-9c9f-ada89d5ab3bf",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.03 Zurich Simon"
+            }, {
+              "text" : "collaborateur parlementaire, conseiller aux patients, Fribourg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "ec33a523-146d-3c2a-a7d6-96e51b0692a2",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.04 de Jesus Correia Mélanie"
+            }, {
+              "text" : "étudiante, Lully"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "fc0e4c72-3631-337d-800c-888cc2e3a5a6",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.05 Fasel Noah"
+            }, {
+              "text" : "collégien, St. Ursen"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "275cde77-eecb-3b00-b76d-97a0f6046be3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.06 Stirnimann Michelle"
+            }, {
+              "text" : "étudiante en géographie, Kerzers"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "1cf24398-3b97-3cda-8ccb-825e129fb974",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.07 Loup Matthieu"
+            }, {
+              "text" : "étudiant en droit, vice-président ASLOCA FR, Marly"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Blanc"
+        }, {
+          "alias" : "candidates",
+          "max" : "7",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "2",
+          "blankText" : "Aucun nom sélectionné"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_Eidgenoessische_Wahlen",
+      "locale" : "rm-CH",
+      "texts" : {
+        "title" : "Nationalratswahl",
+        "description" : "Nationalratswahl",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          }, {
+            "name" : "Colliaziun da glistas",
+            "key" : "apparentment"
+          }, {
+            "name" : "Sutcolliaziun da glistas",
+            "key" : "sousApparentment"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          }, {
+            "name" : "Cumular inizial",
+            "key" : "initialAccumulation"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L1",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 1 : Christlichdemokratische Volkspartei des Kantons Freiburg (CVP)"
+          }, {
+            "text" : "Listenverbindung: 1, 6, 18"
+          }, {
+            "text" : ""
+          } ],
+          "children" : [ {
+            "alias" : "a1594175-ddaa-3dd2-9eb6-c4727faa338c",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.01 de Buman Dominique"
+            }, {
+              "text" : "Jurist, Nationalrat, Freiburg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "536d35fd-af86-318e-a36a-c603f4827e0e",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.02 Bulliard-Marbach Christine"
+            }, {
+              "text" : "Leiterin eines Landwirtschaftsbetriebs, Nationalrätin, Gemeindepräsidentin, Ueberstorf"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "1d6a1c2e-926b-32f5-9e85-46c231f9ba71",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.03 Collomb Eric"
+            }, {
+              "text" : "Geschäftsführer, Grossrat, Lully"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "8463349b-681a-3840-883a-3c6b9d76b859",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.04 Aebischer Susanne"
+            }, {
+              "text" : "Organisationsberaterin, Coach BSO und Erwachsenenbildnerin, Grossrätin, Kerzers"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "8036a112-d6ec-3afb-9a15-dc9f9d5aecbc",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.05 Butty Dominique"
+            }, {
+              "text" : "Dr. med. der Veterinärmedizin, Grossrat, Romont"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "95b18e04-696f-3bcb-ac52-592c99aab328",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.06 Doutaz Jean-Pierre"
+            }, {
+              "text" : "Unternehmer, Grossrat, Ammann von Gruyères, Epagny"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "86c2bf6c-d997-324a-911a-89c1fcadeb40",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.07 Ducotterd Christian"
+            }, {
+              "text" : "Meisterlandwirt, Grossrat, Ammann, Grolley"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L2",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 2 : Sozialdemokratische Partei"
+          }, {
+            "text" : "Listenverbindung: 2, 20"
+          }, {
+            "text" : ""
+          } ],
+          "children" : [ {
+            "alias" : "1600de95-a406-38e2-8c14-94daaa401944",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.01 Steiert Jean-François"
+            }, {
+              "text" : "Nationalrat, Delegierter für interkantonale Angelegenheiten, Freiburg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "6031acca-2d86-3a15-bfcf-b28aac455de6",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.02 Piller Carrard Valérie"
+            }, {
+              "text" : "Nationalrätin, Kaufmännische Angestellte, Cheyres"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "734adcad-18fb-3e2d-989b-9fe866cc3626",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.03 Schneider Schüttel Ursula"
+            }, {
+              "text" : "Nationalrätin, Anwältin, Murten"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "c914a7f3-3d7a-3309-ac84-26333b467ec1",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.04 Bonny David"
+            }, {
+              "text" : "Präsident des Grossen Rates, Stellvertreter der Direktion (GYB), Prez-vers-Noréaz"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "3845e764-cd8a-30e5-b3b0-89b83f7c788f",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.05 Emonet Gaétan"
+            }, {
+              "text" : "Grossrat, Lehrer, Remaufens"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "23beafc4-cae4-335c-8c1b-d1a5d881a4bb",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.06 Krattinger-Jutzet Ursula"
+            }, {
+              "text" : "Grossrätin, Lehrerin, Düdingen"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "7fddcdc7-8d5f-310c-9dba-8ee811ba6733",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.07 Mauron Pierre"
+            }, {
+              "text" : "Grossrat, Anwalt, Riaz"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L3",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 3 : Freisinnig-Demokratische Partei (FDP)"
+          }, {
+            "text" : ""
+          }, {
+            "text" : ""
+          } ],
+          "children" : [ {
+            "alias" : "d1696d17-3258-3faf-b557-7920188c973d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.01 Bourgeois Jacques"
+            }, {
+              "text" : "Nationalrat, Dipl. Ingenieur Agronom HTL, Avry-sur-Matran"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "7dc6342d-b75b-3927-b3c6-48222cfb4b3d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.02 Glauser Fritz"
+            }, {
+              "text" : "Grossrat, Meisterlandwirt, Châtonnaye"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "96c948a8-70f9-3e31-ae23-92f90ed54665",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.03 Gobet Nadine"
+            }, {
+              "text" : "Grossrätin, Vizedirektorin FPE-CIGA, Bulle"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "4f0a644e-4cde-36d0-8980-f33aceb368ff",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.04 Ith Markus"
+            }, {
+              "text" : "Grossrat, Betriebsökonom FH, Murten"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "558ed05f-00b1-3932-9a32-8f2db3ee6ff3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.05 Kuehnlin Pascal"
+            }, {
+              "text" : "Unternehmensleiter, Marly"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "1c222a8c-2b60-3d2e-971e-c4895f041db8",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.06 Losey Michel"
+            }, {
+              "text" : "Grossrat, Meisterlandwirt, Sévaz"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "77522ce8-efc3-39f8-a9db-b23bfd70f777",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.07 Udry Christian"
+            }, {
+              "text" : "Vizeammann, Finanzinspektor, St. Silvester"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L5",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 5 : Schweizerische Volkspartei"
+          }, {
+            "text" : ""
+          }, {
+            "text" : ""
+          } ],
+          "children" : [ {
+            "alias" : "7c3e7eb8-9ad1-3250-ac36-5bcbc1ddf197",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.01 Rime Jean-François"
+            }, {
+              "text" : "Unternehmer, Nationalrat, Bulle"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "54a5fe20-f1ac-37c7-bdc9-c5ab019a5822",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.02 Chardonnens Jean-Daniel"
+            }, {
+              "text" : "Direktor, Verwaltungsrat, Fétigny"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "5a1a15f2-2b18-3223-b4c4-568e01b7a00d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.03 Mesot Roland"
+            }, {
+              "text" : "Unternehmensleiter, Grossrat, Châtel-St-Denis"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "205021c7-f909-3885-8495-44861bad97cd",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.04 Page Pierre-André"
+            }, {
+              "text" : "Landwirt EFZ, Grossrat, Châtonnaye"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "540a6b8e-25c3-3161-b944-e32a264b8b82",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.05 Schläfli Ruedi"
+            }, {
+              "text" : "Landwirt, Grossrat, Posieux"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "e907b241-6b1d-30d1-8cad-83f97c212120",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.06 Thalmann-Bolz Katharina"
+            }, {
+              "text" : "Primarlehrerin, Grossrätin, Murten"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "ebbc7e0a-1222-3371-a869-0b7277d4bd43",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.07 Waeber Emanuel"
+            }, {
+              "text" : "Betriebsökonom, Grossrat, St. Antoni"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L6",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 6 : Grünliberale (GL)"
+          }, {
+            "text" : "Listenverbindung: 1, 6, 18"
+          }, {
+            "text" : "Unterlistenverbindung: 6, 18"
+          } ],
+          "children" : [ {
+            "alias" : "0a0bee38-fe58-3806-8d18-1e6fc5a20e14",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.01 Schmid Ralph"
+            }, {
+              "text" : "Klinikdirektor, Professor, Grossrat, Lugnorre"
+            }, {
+              "text" : "2"
+            } ]
+          }, {
+            "alias" : "65394160-5243-357e-bbd6-d34b9f90f251",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.03 Etter Fabienne"
+            }, {
+              "text" : "Kfm. Angestellte, MAS in Ausbildungsmanagement, Freiburg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "a5e1fa5f-c2b8-3d89-8397-8ada708a52ca",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.04 Reck Markus"
+            }, {
+              "text" : "Ökonom, Freiburg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "3fc07efc-d0e4-367b-8a1e-dc131ab7006b",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.05 Bernhard Irene"
+            }, {
+              "text" : "Baujuristin, Villars-sur-Glâne"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "2898c851-f90e-34eb-b088-3507971cbf30",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.06 Wismer Daniel"
+            }, {
+              "text" : "Informatiker, Freiburg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "02a29692-99b4-3a52-8ac9-6cd72faa9e79",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.07 Späth Bertrand"
+            }, {
+              "text" : "Ökonom, Marly"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L18",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 18 : Unternehmer und Junge Grünliberale"
+          }, {
+            "text" : "Listenverbindung: 1, 6, 18"
+          }, {
+            "text" : "Unterlistenverbindung: 6, 18"
+          } ],
+          "children" : [ {
+            "alias" : "25418555-715c-38d8-8cd2-93f802cfb364",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "18.01 von Mühlenen Walo"
+            }, {
+              "text" : "Betriebswirtschafter, Käse-Affineur, Villars-sur-Glâne"
+            }, {
+              "text" : "2"
+            } ]
+          }, {
+            "alias" : "be28b95e-c2e2-320f-a44c-0f7ad1486541",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "18.03 Savary Daniel"
+            }, {
+              "text" : "Architekt HTL, Verwalter, Avry-devant-Pont"
+            }, {
+              "text" : "2"
+            } ]
+          }, {
+            "alias" : "8beba8f4-3225-32cd-9ddc-aa099e844c10",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "18.05 Grandjean Anaïs"
+            }, {
+              "text" : "Master-Studentin in Kommunikation, La Tour-de-Trême"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "cb90140c-20aa-3fcd-b04a-48109d27b9f3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "18.06 Grandjean Loris"
+            }, {
+              "text" : "Student in Psychologie und Politikwissenschaften, Bulle"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "f8fe563f-4cfe-3696-8e15-dde156cccb83",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "18.07 Ruffieux Kurt"
+            }, {
+              "text" : "Elektro-Ing. HTL, Arconciel"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L20",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 20 : JUSO Freiburg"
+          }, {
+            "text" : "Listenverbindung: 2, 20"
+          }, {
+            "text" : ""
+          } ],
+          "children" : [ {
+            "alias" : "af265c94-271d-3d2a-9717-71fdf2a4f67b",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.01 Kubski Grégoire"
+            }, {
+              "text" : "Student in Rechtswissenschaft, Spezialist beim der Staatssekretariat für Migration, Morlon"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "4c7d2378-013d-3397-a618-ec7ce4ba0616",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.02 Piller Elsa"
+            }, {
+              "text" : "kaufmännische Lernende, Rueyres-Saint-Laurent"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "b91450f6-95ad-38a6-9c9f-ada89d5ab3bf",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.03 Zurich Simon"
+            }, {
+              "text" : "Parlamentarischer Mitarbeiter, Patientenberater, Freiburg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "ec33a523-146d-3c2a-a7d6-96e51b0692a2",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.04 de Jesus Correia Mélanie"
+            }, {
+              "text" : "Studentin, Lully"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "fc0e4c72-3631-337d-800c-888cc2e3a5a6",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.05 Fasel Noah"
+            }, {
+              "text" : "Gymnasiast, St. Ursen"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "275cde77-eecb-3b00-b76d-97a0f6046be3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.06 Stirnimann Michelle"
+            }, {
+              "text" : "Studentin in Geografie, Kerzers"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "1cf24398-3b97-3cda-8ccb-825e129fb974",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.07 Loup Matthieu"
+            }, {
+              "text" : "Student in Rechtswissenschaft, Vize-Präsident ASLOCA FR, Marly"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Vid"
+        }, {
+          "alias" : "candidates",
+          "max" : "7",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "2",
+          "blankText" : "Nagin num selecziunà"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_Eidgenoessische_Wahlen",
+      "locale" : "it-CH",
+      "texts" : {
+        "title" : "Election du Conseil national",
+        "description" : "Election du Conseil national",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Party Name",
+            "key" : "attribute1"
+          }, {
+            "name" : "Apparentamento di liste",
+            "key" : "apparentment"
+          }, {
+            "name" : "Sottocongiunzione di liste",
+            "key" : "sousApparentment"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Date Of Birth",
+            "key" : "attribute2"
+          }, {
+            "name" : "Cumulo iniziale",
+            "key" : "initialAccumulation"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "L1",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 1 : Parti démocrate-chrétien fribourgeois (PDC)"
+          }, {
+            "text" : "Listes apparentées: 1, 6, 18"
+          }, {
+            "text" : ""
+          } ],
+          "children" : [ {
+            "alias" : "a1594175-ddaa-3dd2-9eb6-c4727faa338c",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.01 de Buman Dominique"
+            }, {
+              "text" : "juriste, conseiller national, Fribourg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "536d35fd-af86-318e-a36a-c603f4827e0e",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.02 Bulliard-Marbach Christine"
+            }, {
+              "text" : "responsable d'une exploitation agricole, conseillère nationale, syndique, Ueberstorf"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "1d6a1c2e-926b-32f5-9e85-46c231f9ba71",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.03 Collomb Eric"
+            }, {
+              "text" : "directeur d'entreprise, député, Lully"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "8463349b-681a-3840-883a-3c6b9d76b859",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.04 Aebischer Susanne"
+            }, {
+              "text" : "conseillère en organisation, coach BSO et formatrice d'adultes, députée, Kerzers"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "8036a112-d6ec-3afb-9a15-dc9f9d5aecbc",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.05 Butty Dominique"
+            }, {
+              "text" : "dr. med. vétérinaire, député, Romont"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "95b18e04-696f-3bcb-ac52-592c99aab328",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.06 Doutaz Jean-Pierre"
+            }, {
+              "text" : "chef d'entreprise, député, syndic de Gruyères, Epagny"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "86c2bf6c-d997-324a-911a-89c1fcadeb40",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "01.07 Ducotterd Christian"
+            }, {
+              "text" : "maître agriculteur, député, syndic, Grolley"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L2",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 2 : Parti socialiste fribourgeois"
+          }, {
+            "text" : "Listes apparentées: 2, 20"
+          }, {
+            "text" : ""
+          } ],
+          "children" : [ {
+            "alias" : "1600de95-a406-38e2-8c14-94daaa401944",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.01 Steiert Jean-François"
+            }, {
+              "text" : "conseiller national, délégué aux affaires intercantonales, Fribourg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "6031acca-2d86-3a15-bfcf-b28aac455de6",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.02 Piller Carrard Valérie"
+            }, {
+              "text" : "conséillère nationale, employée de commerce, Cheyres"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "734adcad-18fb-3e2d-989b-9fe866cc3626",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.03 Schneider Schüttel Ursula"
+            }, {
+              "text" : "conseillère nationale, avocate, Morat"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "c914a7f3-3d7a-3309-ac84-26333b467ec1",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.04 Bonny David"
+            }, {
+              "text" : "président du Grand Conseil, adj. de direction (GYB), Prez-vers-Noréaz"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "3845e764-cd8a-30e5-b3b0-89b83f7c788f",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.05 Emonet Gaétan"
+            }, {
+              "text" : "député, enseignant, Remaufens"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "23beafc4-cae4-335c-8c1b-d1a5d881a4bb",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.06 Krattinger-Jutzet Ursula"
+            }, {
+              "text" : "députée, enseignante, Guin"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "7fddcdc7-8d5f-310c-9dba-8ee811ba6733",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "02.07 Mauron Pierre"
+            }, {
+              "text" : "député, avocat, Riaz"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L3",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 3 : Parti libéral-radical fribourgeois (PLR)"
+          }, {
+            "text" : ""
+          }, {
+            "text" : ""
+          } ],
+          "children" : [ {
+            "alias" : "d1696d17-3258-3faf-b557-7920188c973d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.01 Bourgeois Jacques"
+            }, {
+              "text" : "conseiller national, ingénieur agronome HES, Avry-sur-Matran"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "7dc6342d-b75b-3927-b3c6-48222cfb4b3d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.02 Glauser Fritz"
+            }, {
+              "text" : "député, maître agriculteur, Châtonnaye"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "96c948a8-70f9-3e31-ae23-92f90ed54665",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.03 Gobet Nadine"
+            }, {
+              "text" : "députée, dir.-adj. FPE-CIGA, Bulle"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "4f0a644e-4cde-36d0-8980-f33aceb368ff",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.04 Ith Markus"
+            }, {
+              "text" : "député, économiste d’entreprise HEG, Morat"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "558ed05f-00b1-3932-9a32-8f2db3ee6ff3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.05 Kuehnlin Pascal"
+            }, {
+              "text" : "chef d’entreprise, Marly"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "1c222a8c-2b60-3d2e-971e-c4895f041db8",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.06 Losey Michel"
+            }, {
+              "text" : "député, maître agriculteur, Sévaz"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "77522ce8-efc3-39f8-a9db-b23bfd70f777",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "03.07 Udry Christian"
+            }, {
+              "text" : "vice-syndic, inspecteur des finances, St. Silvester"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L5",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 5 : Union Démocratique du Centre"
+          }, {
+            "text" : ""
+          }, {
+            "text" : ""
+          } ],
+          "children" : [ {
+            "alias" : "7c3e7eb8-9ad1-3250-ac36-5bcbc1ddf197",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.01 Rime Jean-François"
+            }, {
+              "text" : "industriel, conseiller national, Bulle"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "54a5fe20-f1ac-37c7-bdc9-c5ab019a5822",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.02 Chardonnens Jean-Daniel"
+            }, {
+              "text" : "directeur, administrateur, Fétigny"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "5a1a15f2-2b18-3223-b4c4-568e01b7a00d",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.03 Mesot Roland"
+            }, {
+              "text" : "chef d’entreprise, député, Châtel-St-Denis"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "205021c7-f909-3885-8495-44861bad97cd",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.04 Page Pierre-André"
+            }, {
+              "text" : "maître agriculteur, député, Châtonnaye"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "540a6b8e-25c3-3161-b944-e32a264b8b82",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.05 Schläfli Ruedi"
+            }, {
+              "text" : "agriculteur, député, Posieux"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "e907b241-6b1d-30d1-8cad-83f97c212120",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.06 Thalmann-Bolz Katharina"
+            }, {
+              "text" : "enseignante primaire, députée, Morat"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "ebbc7e0a-1222-3371-a869-0b7277d4bd43",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "05.07 Waeber Emanuel"
+            }, {
+              "text" : "économiste d’entreprise, député"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L6",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 6 : Vert'libéraux (VL)"
+          }, {
+            "text" : "Listes apparentées: 1, 6, 18"
+          }, {
+            "text" : "Listes sous-apparentées: 6, 18"
+          } ],
+          "children" : [ {
+            "alias" : "0a0bee38-fe58-3806-8d18-1e6fc5a20e14",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.01 Schmid Ralph"
+            }, {
+              "text" : "directeur de clinique, professeur, député, Lugnorre"
+            }, {
+              "text" : "2"
+            } ]
+          }, {
+            "alias" : "65394160-5243-357e-bbd6-d34b9f90f251",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.03 Etter Fabienne"
+            }, {
+              "text" : "employée de commerce, Master en gestion de formation, Fribourg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "a5e1fa5f-c2b8-3d89-8397-8ada708a52ca",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.04 Reck Markus"
+            }, {
+              "text" : "économiste, Fribourg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "3fc07efc-d0e4-367b-8a1e-dc131ab7006b",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.05 Bernhard Irene"
+            }, {
+              "text" : "juriste du droit de constructions, Villars-sur-Glâne"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "2898c851-f90e-34eb-b088-3507971cbf30",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.06 Wismer Daniel"
+            }, {
+              "text" : "informaticien, Fribourg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "02a29692-99b4-3a52-8ac9-6cd72faa9e79",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "06.07 Späth Bertrand"
+            }, {
+              "text" : "économiste, Marly"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L18",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 18 : Entrepreneurs et jeunes vert’libéraux"
+          }, {
+            "text" : "Listes apparentées: 1, 6, 18"
+          }, {
+            "text" : "Listes sous-apparentées: 6, 18"
+          } ],
+          "children" : [ {
+            "alias" : "25418555-715c-38d8-8cd2-93f802cfb364",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "18.01 von Mühlenen Walo"
+            }, {
+              "text" : "entrepreneur, affineur de fromages, Villars-sur-Glâne"
+            }, {
+              "text" : "2"
+            } ]
+          }, {
+            "alias" : "be28b95e-c2e2-320f-a44c-0f7ad1486541",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "18.03 Savary Daniel"
+            }, {
+              "text" : "architecte ETS, administrateur, Avry-devant-Pont"
+            }, {
+              "text" : "2"
+            } ]
+          }, {
+            "alias" : "8beba8f4-3225-32cd-9ddc-aa099e844c10",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "18.05 Grandjean Anaïs"
+            }, {
+              "text" : "étudiante de master en communication, La Tour-de-Trême"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "cb90140c-20aa-3fcd-b04a-48109d27b9f3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "18.06 Grandjean Loris"
+            }, {
+              "text" : "étudiant en psychologie et sciences politiques, Bulle"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "f8fe563f-4cfe-3696-8e15-dde156cccb83",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "18.07 Ruffieux Kurt"
+            }, {
+              "text" : "Ing. ETS électricien, Arconciel"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        }, {
+          "alias" : "L20",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "Liste Nr. 20 : Jeunesse socialiste fribourgeoise (JSF)"
+          }, {
+            "text" : "Listes apparentées: 2, 20"
+          }, {
+            "text" : ""
+          } ],
+          "children" : [ {
+            "alias" : "af265c94-271d-3d2a-9717-71fdf2a4f67b",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.01 Kubski Grégoire"
+            }, {
+              "text" : "étudiant en droit, spécialiste au Secrétariat d'Etat aux migrations, Morlon"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "4c7d2378-013d-3397-a618-ec7ce4ba0616",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.02 Piller Elsa"
+            }, {
+              "text" : "apprentie employée de commerce, Rueyres-Saint-Laurent"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "b91450f6-95ad-38a6-9c9f-ada89d5ab3bf",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.03 Zurich Simon"
+            }, {
+              "text" : "collaborateur parlementaire, conseiller aux patients, Fribourg"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "ec33a523-146d-3c2a-a7d6-96e51b0692a2",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.04 de Jesus Correia Mélanie"
+            }, {
+              "text" : "étudiante, Lully"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "fc0e4c72-3631-337d-800c-888cc2e3a5a6",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.05 Fasel Noah"
+            }, {
+              "text" : "collégien, St. Ursen"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "275cde77-eecb-3b00-b76d-97a0f6046be3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.06 Stirnimann Michelle"
+            }, {
+              "text" : "étudiante en géographie, Kerzers"
+            }, {
+              "text" : "1"
+            } ]
+          }, {
+            "alias" : "1cf24398-3b97-3cda-8ccb-825e129fb974",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "20.07 Loup Matthieu"
+            }, {
+              "text" : "étudiant en droit, vice-président ASLOCA FR, Marly"
+            }, {
+              "text" : "1"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "lists",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Bianco"
+        }, {
+          "alias" : "candidates",
+          "max" : "7",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "2",
+          "blankText" : "Nessun nominativo selezionato"
+        } ]
+      }
+    } ]
+  } ]
+}

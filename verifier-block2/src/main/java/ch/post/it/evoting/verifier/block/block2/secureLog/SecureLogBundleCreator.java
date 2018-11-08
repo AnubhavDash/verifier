@@ -22,7 +22,7 @@ public class SecureLogBundleCreator {
         boolean terminal = false;
     }
 
-    public static Flux<SecureLogBundle> from(Flux<SecureLogEntry> source, String host) {
+    public static Flux<SecureLogBundle> from(Flux<SecureLogEntry> source) {
         AtomicReference<SecureLogEntry> last = new AtomicReference<>();
         return source
                 .doOnNext(last::set)
@@ -55,8 +55,9 @@ public class SecureLogBundleCreator {
                     }
                     return result;
                 }).filter(MyStruct::isTerminal).map(MyStruct::getBundle).doOnComplete(() -> {
-                    if (!(last.get() instanceof CheckPointLogEntry)) {
-                        throw new RuntimeException("SecureLog on host {" + host + "} does not terminate with a checkpoint");
+                    SecureLogEntry lastEntry = last.get();
+                    if (lastEntry != null && !(lastEntry instanceof CheckPointLogEntry)) {
+                        throw new RuntimeException("SecureLog on host {" + lastEntry.getHost() + "}, source {" + lastEntry.getSource() + "} does not terminate with a checkpoint");
                     }
                 });
     }

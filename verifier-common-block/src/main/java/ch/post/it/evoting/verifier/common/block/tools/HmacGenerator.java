@@ -9,7 +9,7 @@ public class HmacGenerator {
         //private ctor, use static methods
     }
 
-    public static byte[] Hash(byte[] text, byte[] key) {
+    public static byte[] hash(byte[] text, byte[] key) {
         HMac hmac = new HMac(new SHA256Digest());
 
         hmac.init(new KeyParameter(key));

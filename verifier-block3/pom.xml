@@ -5,11 +5,15 @@
     <parent>
         <artifactId>verifier</artifactId>
         <groupId>ch.post.it.evoting.verifier</groupId>
-        <version>0.1.0</version>
+        <version>0.2.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>verifier-block3</artifactId>
+
+    <properties>
+        <org.mapstruct.version>1.2.0.Final</org.mapstruct.version>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -36,6 +40,22 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.16.14</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-core</artifactId>
+            <version>3.2.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-jdk8</artifactId>
+            <version>${org.mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${org.mapstruct.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

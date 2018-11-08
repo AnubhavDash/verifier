@@ -49,4 +49,12 @@ public class TypeConverter {
     public static byte[] byteToB64ByteArray(byte[] b) {
         return Base64.getEncoder().encode(b);
     }
+
+    public static BigInteger integerToBigInteger(Integer i) {
+        if (i == null) {
+            return null;
+        } else {
+            return BigInteger.valueOf(i.longValue());
+        }
+    }
 }

@@ -7,9 +7,11 @@ import lombok.Setter;
 @Setter
 public class SecureLogBundleValidationException extends Exception {
     private String host;
+    private String source;
 
-    public SecureLogBundleValidationException(String message, String host) {
+    public SecureLogBundleValidationException(String message, String host, String source) {
         super(message);
         this.host = host;
+        this.source = source;
     }
 }

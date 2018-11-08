@@ -9,6 +9,7 @@ public class Block2TestSuite extends TestSuite {
 
     public static final String RESOURCE_BUNDLE_NAME = "block2/resources";
 
+    public static final Path PATH_BALLOTBOXES = Paths.get("ballotboxes/");
     public static final Path PATH_CRYPTO_SETUP = Paths.get("crypto_setup/");
     public static final Path PATH_CERTIFICATES = Paths.get("certificates/");
     public static final Path PATH_ADMINBOARD = Paths.get("adminboard/");

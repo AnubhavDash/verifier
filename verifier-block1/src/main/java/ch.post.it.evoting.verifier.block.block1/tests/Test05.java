@@ -9,6 +9,7 @@ import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.BallotBox;
 import ch.post.it.evoting.verifier.dto.DataConfigEE;
 import ch.post.it.evoting.verifier.dto.Option;
@@ -79,7 +80,16 @@ public class Test05 extends Test {
                             .filter(v -> !MathHelper.isPrime(BigInteger.valueOf(v)))
                             .collect(Collectors.toList()));
 
-            //TODO check candidates without lists --> not in this example
+            //candidates without lists
+            errors.addAll(
+                    ballotBoxes.stream()
+                            .flatMap(bb -> bb.getCountingCircles().stream())
+                            .flatMap(cc -> cc.getDomainOfInfluence().stream())
+                            .flatMap(doi -> doi.getElections().stream())
+                            .flatMap(e -> e.getCandidates().stream())
+                            .flatMap(c -> c.getPrimeNumber().stream())
+                            .filter(p -> !MathHelper.isPrime(TypeConverter.integerToBigInteger(p)))
+                            .collect(Collectors.toList()));
 
             if (errors.isEmpty()) {
                 result.setStatus(Status.OK);
