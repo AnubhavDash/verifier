@@ -63,12 +63,12 @@ public class Test05 extends Test {
                             throw new RuntimeException("Unable to deserialize SecureLogEntry", e);
                         }
                     });
-            Pattern pattern = Pattern.compile(".*\\|000\\|(.*)\\|.*\\|.*\\|#encryptedOptions=\"(.*)\" #ccx_id=.*");
+            Pattern pattern = Pattern.compile(".*\\|000\\|(.*)\\|.*\\|.*\\|#encryptedOptions=\"(.*)\" #ccx_id=.*\n");
             Map<String, String> mapSecureLogs = Flux.fromStream(logEntry)
                     .filter(sl -> sl.getPreview() != null && !sl.getPreview())
                     .filter(s1 -> s1 instanceof RegularLogEntry)
                     .cast(RegularLogEntry.class)
-                    .filter(s1 -> s1.getRaw().matches(".*\\|VOTVAL\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|.*"))
+                    .filter(s1 -> s1.getRaw().matches(".*\\|VOTVAL\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|.*\n"))
                     .map(s1 -> {
                         Matcher matcher = pattern.matcher(s1.getRaw());
                         matcher.matches();
