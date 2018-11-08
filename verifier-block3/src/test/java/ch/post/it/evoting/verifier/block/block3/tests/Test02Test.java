@@ -16,7 +16,6 @@ public class Test02Test {
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
-    @Ignore
     @Test
     public void executeTestNOK() {
         TestResult result = new Test02().executeTest(new File(getClass().getResource("/Test02/NOK").getFile()));

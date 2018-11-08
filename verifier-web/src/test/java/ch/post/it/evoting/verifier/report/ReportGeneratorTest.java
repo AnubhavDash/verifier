@@ -62,13 +62,4 @@ public class ReportGeneratorTest {
         report.setBlocksResults(blocks);
         this.report = report;
     }
-
-    @Ignore
-    @org.junit.Test
-    public void generatePDF() throws IOException {
-        /*ReportGenerator reportGenerator = new ReportGenerator();
-        byte[] pdf = reportGenerator.generate(this.report);
-        Path file = Paths.get("c:\\temp\\report.pdf");
-        Files.write(file, pdf);*/
-    }
 }
