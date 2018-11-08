@@ -49,6 +49,7 @@ public class Test01 /*extends Test*/ {
                     .filter(sl -> sl.getPreview() != null && !sl.getPreview());
 
             Flux.fromIterable(logEntryStream::iterator)
+                    .filter(s -> s.getPreview() != null && !s.getPreview())
                     .groupBy(s -> String.format("%s|%s", s.getHost(), s.getSource()))
                     .flatMap(SecureLogBundleCreator::from)
                     .subscribe(b -> {

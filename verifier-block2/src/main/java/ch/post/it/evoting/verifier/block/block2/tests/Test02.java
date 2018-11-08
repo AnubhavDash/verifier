@@ -8,7 +8,6 @@ import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
-import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
@@ -47,6 +46,7 @@ public class Test02 /*extends Test*/ {
                     });
 
             Flux.fromIterable(logEntryStream::iterator)
+                    .filter(s -> s.getPreview() != null && !s.getPreview())
                     .groupBy(s -> String.format("%s|%s", s.getHost(), s.getSource()))
                     .flatMap(SecureLogBundleCreator::from)
                     .subscribe(b -> {

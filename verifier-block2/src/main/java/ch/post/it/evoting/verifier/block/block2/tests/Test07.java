@@ -112,6 +112,8 @@ public class Test07 extends Test {
                 else{
                     result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message", e.getMessage()));
                 }
+            } else {
+                LOGGER.error("Unexpected error", e);
             }
         }
         return result;

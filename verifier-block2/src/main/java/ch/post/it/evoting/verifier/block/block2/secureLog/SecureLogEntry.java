@@ -23,11 +23,10 @@ public abstract class SecureLogEntry {
         SecureLogOrigin slo = Deserializer.fromJson(line.getBytes(), SecureLogOrigin.class);
 
         setPreview(slo.getPreview());
-        //TODO set the source from SecureLogOrigin object once it will be available from Splunk
-        setSource(""/*slo.getSource()*/);
-        setHost(slo.getResult().getEv().substring(0, slo.getResult().getEv().indexOf('|')));
-        setRaw(getCleanedRawFromRaw(slo.getResult().getEv().substring(slo.getResult().getEv().indexOf('|') + 1)));
-        setMetadata(getMetadataFromRaw(slo.getResult().getEv()));
+        setSource(slo.getResult().getSource());
+        setHost(slo.getResult().getHost()/*.getRaw().substring(0, slo.getResult().getRaw().indexOf('|'))*/);
+        setRaw(getCleanedRawFromRaw(slo.getResult().getRaw()/*.substring(slo.getResult().getRaw().indexOf('|') + 1)*/));
+        setMetadata(getMetadataFromRaw(slo.getResult().getRaw()));
     }
 
     public static SecureLogEntry from(String line) throws IOException {
@@ -74,7 +73,7 @@ public abstract class SecureLogEntry {
         String result = null;
         if (objInsideRaw != null) {
             String[] split = objInsideRaw.split(",");
-            Optional<String> sigPart = Arrays.asList(split).stream().filter(str -> str.contains("SG")).findFirst();
+            Optional<String> sigPart = Arrays.asList(split).stream().filter(str -> str.contains("SG::")).findFirst();
             result = sigPart.isPresent() ? getValueFromKeyValueString(sigPart.get()) : null;
         }
         return result;
@@ -84,7 +83,7 @@ public abstract class SecureLogEntry {
         String result = null;
         if (objInsideRaw != null) {
             String[] split = objInsideRaw.split(",");
-            Optional<String> lsk = Arrays.asList(split).stream().filter(str -> str.contains("LSK")).findFirst();
+            Optional<String> lsk = Arrays.asList(split).stream().filter(str -> str.contains("LSK::")).findFirst();
             result = lsk.isPresent() ? getValueFromKeyValueString(lsk.get()) : null;
         }
         return result;
@@ -94,7 +93,7 @@ public abstract class SecureLogEntry {
         String result = null;
         if (objInsideRaw != null) {
             String[] split = objInsideRaw.split(",");
-            Optional<String> esk = Arrays.asList(split).stream().filter(str -> str.contains("ESK")).findFirst();
+            Optional<String> esk = Arrays.asList(split).stream().filter(str -> str.contains("ESK::")).findFirst();
             result = esk.isPresent() ? getValueFromKeyValueString(esk.get()) : null;
         }
         return result;
