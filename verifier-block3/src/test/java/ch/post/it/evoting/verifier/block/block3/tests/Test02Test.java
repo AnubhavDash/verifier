@@ -3,7 +3,6 @@ package ch.post.it.evoting.verifier.block.block3.tests;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestResult;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -21,5 +20,4 @@ public class Test02Test {
         TestResult result = new Test02().executeTest(new File(getClass().getResource("/Test02/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
-
 }

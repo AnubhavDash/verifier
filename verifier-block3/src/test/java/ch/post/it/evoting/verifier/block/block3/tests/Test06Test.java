@@ -20,5 +20,4 @@ public class Test06Test {
         TestResult result = new Test06().executeTest(new File(getClass().getResource("/Test06/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
-
 }

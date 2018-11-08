@@ -22,6 +22,4 @@ public class Test12Test {
         TestResult result = new Test12().executeTest(new File(getClass().getResource("/Test12/OK").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
-
-
 }

@@ -39,5 +39,4 @@ public class Test08Test {
         Assert.assertEquals(Status.NOK, testResult.getStatus());
         Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test08.file.not.found.message"), testResult.getMessage());
     }
-
 }

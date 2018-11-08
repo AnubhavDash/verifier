@@ -2,13 +2,10 @@ package ch.post.it.evoting.verifier.block.block3.tests;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestResult;
-import com.scytl.decrypt.DecryptVerifier;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
-import java.nio.file.Paths;
 
 public class Test01Test {
 
@@ -23,5 +20,4 @@ public class Test01Test {
         TestResult result = new Test01().executeTest(new File(getClass().getResource("/Test01/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
-
 }

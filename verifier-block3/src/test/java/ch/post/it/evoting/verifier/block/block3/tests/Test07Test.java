@@ -6,7 +6,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
-import java.nio.file.Paths;
 
 public class Test07Test {
 
@@ -21,5 +20,4 @@ public class Test07Test {
         TestResult result = new Test07().executeTest(new File(getClass().getResource("/Test07/NOK-NOTFILE").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
-
 }
