@@ -86,7 +86,17 @@ public class Test06 extends Test {
                             .filter(v -> !MathHelper.isEulerCriterionValid(BigInteger.valueOf(v), p))
                             .collect(Collectors.toList()));
 
-            //TODO check candidates without lists --> not in this example
+            //candidates without lists
+            errors.addAll(
+                    ballotBoxes.stream()
+                            .flatMap(bb -> bb.getCountingCircles().stream())
+                            .flatMap(cc -> cc.getDomainOfInfluence().stream())
+                            .flatMap(doi -> doi.getElections().stream())
+                            .flatMap(e -> e.getCandidates().stream())
+                            .flatMap(c -> c.getPrimeNumber().stream())
+                            .filter(prime -> !MathHelper.isPrime(TypeConverter.integerToBigInteger(prime)))
+                            .collect(Collectors.toList()));
+
 
             if (errors.isEmpty()) {
                 result.setStatus(Status.OK);
