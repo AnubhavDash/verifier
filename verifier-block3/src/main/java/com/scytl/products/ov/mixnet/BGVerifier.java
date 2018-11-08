@@ -78,8 +78,9 @@ public class BGVerifier {
                                                 DefaultLocationNames.ENCRYPTED_BALLOTS_OUTPUT_FILE_NAME + Constants.CSV_FILE_EXTENSION);
                                  */
                                 final ElGamalEncryptedBallots encryptedBallots = offlineEncryptedBallotsLoader.getEncryptedBallots();
-                                if (encryptedBallots.getBallots().isEmpty()) {
-                                    LOGGER.info("0 ballots, nothing to mix!");
+                                if (encryptedBallots.getBallots().size() <= 1) {
+                                    LOGGER.info("0 or 1 ballots, nothing to mix!");
+                                    notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.OK, null);
                                     /*return true;*/
                                 } else {
 
@@ -90,8 +91,9 @@ public class BGVerifier {
                                         DefaultLocationNames.REENCRYPTED_BALLOTS_OUTPUT_FILE_NAME + Constants.CSV_FILE_EXTENSION);
                                 */
                                     final ElGamalEncryptedBallots reencryptedBallots = offlineReEncryptedBallotsLoader.getReEncryptedBallots();
-                                    if (reencryptedBallots.getBallots().isEmpty()) {
-                                        LOGGER.info("0 ballots reencrypted, no mixing performed!");
+                                    if (reencryptedBallots.getBallots().size() <= 1) {
+                                        LOGGER.info("0 or 1 ballots reencrypted, no mixing performed!");
+                                        notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.OK, null);
                                         /*return true;*/
                                     } else {
 

@@ -15,20 +15,19 @@ import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuple3;
 import reactor.util.function.Tuples;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -64,12 +63,12 @@ public class Test05 extends Test {
                             throw new RuntimeException("Unable to deserialize SecureLogEntry", e);
                         }
                     });
-            Pattern pattern = Pattern.compile(".*\\|000\\|(.*)\\|.*\\|.*\\|#encryptedOptions=\"(.*)\" #ccx_id=.*");
+            Pattern pattern = Pattern.compile(".*\\|000\\|(.*)\\|.*\\|.*\\|#encryptedOptions=\"(.*)\" #ccx_id=.*\n");
             Map<String, String> mapSecureLogs = Flux.fromStream(logEntry)
                     .filter(sl -> sl.getPreview() != null && !sl.getPreview())
                     .filter(s1 -> s1 instanceof RegularLogEntry)
                     .cast(RegularLogEntry.class)
-                    .filter(s1 -> s1.getRaw().matches(".*\\|VOTVAL\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|.*"))
+                    .filter(s1 -> s1.getRaw().matches(".*\\|VOTVAL\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|.*\n"))
                     .map(s1 -> {
                         Matcher matcher = pattern.matcher(s1.getRaw());
                         matcher.matches();
@@ -87,7 +86,7 @@ public class Test05 extends Test {
                     "downloadedBallotBox.*\\.csv",
                     true);
 
-            for(File downloadedBbFile : downloadedBallotBoxFiles){
+            for (File downloadedBbFile : downloadedBallotBoxFiles) {
                 Map<String, String> map = Files.lines(downloadedBbFile.toPath())
                         .map(line -> extractFromLine(line))
                         .filter(entry -> entry.getKey() != null)
@@ -95,23 +94,17 @@ public class Test05 extends Test {
                 mapDownloadedBallotBoxs.putAll(map);
             }
 
-            // finally to the check
-            if(mapSecureLogs.size() !=  mapDownloadedBallotBoxs.size()){
-                throw new TestFailureException("The count of records are not the same in DownloadedBallotBox and SecureLogs !", mapDownloadedBallotBoxs.toString());
-            }
-
             mapDownloadedBallotBoxs.entrySet()
                     .stream()
                     .forEach(entry -> {
                         String key = entry.getKey();
                         String value = entry.getValue();
-                        if(mapSecureLogs.containsKey(key)){
-                            if(!value.equals(mapSecureLogs.get(key))){
-                                throw new TestFailureException("encryptedOptions is not the same in DownloadedBallotBox and SecureLogs !", value, mapSecureLogs.get(key));
+                        if (mapSecureLogs.containsKey(key)) {
+                            if (!value.equals(mapSecureLogs.get(key))) {
+                                throw new TestFailureException("encryptedOptions is not the same in DownloadedBallotBox and SecureLogs !", key, value);
                             }
-                        }
-                        else {
-                            throw new TestFailureException("Unknow votingCardId !", key);
+                        } else {
+                            throw new TestFailureException("Unknown votingCardId !", key);
                         }
                     });
 
@@ -127,13 +120,20 @@ public class Test05 extends Test {
             }
             if (e instanceof TestFailureException) {
                 String[] args = ((TestFailureException) e).getArgs();
-                LOGGER.debug("Test failed, cause : " + args[0] + ". Count for the CCs : " + args[1].toString());
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test04.nok.message"));
+                if(args.length == 2){
+                    LOGGER.debug("checkpoint entry : "+ args[1] +" the does not verify", e);
+                    result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.nok.message", args[1], "no data"));
+                }
+                if(args.length == 3){
+                    LOGGER.debug("checkpoint entry and attributes of the entry : "+ args[0] + ", " + args[1] + " the does not verify", e);
+                    result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.nok.message", args[1], args[2]));
+                }
             } else if (e instanceof NoSuchFileException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test04.file.not.found.message", ((NoSuchFileException) e).getFile()));
+                LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.file.not.found.message", ((NoSuchFileException) e).getFile()));
             } else if (e instanceof FileNotFoundException) {
                 LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test04.file.not.found.message", e.getMessage()));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.file.not.found.message", e.getMessage()));
             }
         }
         return result;
@@ -144,7 +144,7 @@ public class Test05 extends Test {
         String encOptions = null;
         final String VOTING_CARD_ID_TAG = "\"votingCardId\":\"";
         final String ENCRYPTED_OPTIONS_TAG = "\"encryptedOptions\":\"";
-        if(line !=null && !line.isEmpty() && line.contains(VOTING_CARD_ID_TAG)){
+        if (line != null && !line.isEmpty() && line.contains(VOTING_CARD_ID_TAG)) {
             int vcIdStartIndex = line.indexOf(VOTING_CARD_ID_TAG) + VOTING_CARD_ID_TAG.length();
             vcId = line.substring(vcIdStartIndex, line.indexOf(",", vcIdStartIndex + 1) - 1);
 

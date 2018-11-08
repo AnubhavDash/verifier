@@ -17,7 +17,6 @@ import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
@@ -25,10 +24,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -43,7 +39,7 @@ public class Test06 extends Test {
     public TestDefinition getTestDefinition() {
         TestDefinition result = new TestDefinition();
         result.setBlockId(2);
-        result.setCategory(Category.CONSISTENCY);
+        result.setCategory(Category.EVIDENCE);
         result.setDescription(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test06.description"));
         result.setId(6);
         result.setName("checkVoteUnity");
@@ -71,12 +67,12 @@ public class Test06 extends Test {
                             throw new RuntimeException("Unable to deserialize SecureLogEntry", e);
                         }
                     });
-            Pattern pattern = Pattern.compile(".*\\|000\\|(.*)\\|.*\\|.*\\|#encryptedOptions=\".*\" #ccx_id=.*");
+            Pattern pattern = Pattern.compile(".*\\|000\\|(.*)\\|.*\\|.*\\|#encryptedOptions=\".*\" #ccx_id=.*\n");
             Map<String, Map<String, Long>> nbVotingCardPerCC = Flux.fromStream(logEntry)
                     .filter(sl -> sl.getPreview() != null && !sl.getPreview())
                     .filter(s1 -> s1 instanceof RegularLogEntry)
                     .cast(RegularLogEntry.class)
-                    .filter(s1 -> s1.getRaw().matches(".*\\|VOTVAL\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|.*"))
+                    .filter(s1 -> s1.getRaw().matches(".*\\|VOTVAL\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|.*\n"))
                     .map(s1 -> {
                         Matcher matcher = pattern.matcher(s1.getRaw());
                         matcher.matches();
@@ -92,8 +88,11 @@ public class Test06 extends Test {
                     })
                     .collectMap(Tuple2::getT1, Tuple2::getT2).block();
 
-            if (nbVotingCardPerCC.entrySet().stream().anyMatch(e -> e.getValue().values().stream().anyMatch(v -> v > 1))) {
-                List<String> problematicVotingCardIds = nbVotingCardPerCC.values().stream().flatMap(m -> m.entrySet().stream()).filter(e -> e.getValue() > 1).map(e -> e.getKey()).collect(Collectors.toList());
+            List<String> problematicVotingCardIds = nbVotingCardPerCC.values().stream()
+                    .flatMap(m -> m.entrySet().stream())
+                    .filter(e -> e.getValue() > 1)
+                    .map(e -> e.getKey()).collect(Collectors.toList());
+            if (!problematicVotingCardIds.isEmpty()) {
                 throw new TestFailureException(problematicVotingCardIds.toArray(new String[]{}));
             }
             result.setStatus(Status.OK);
@@ -101,13 +100,18 @@ public class Test06 extends Test {
             result.setStatus(Status.NOK);
             if (e instanceof TestFailureException) {
                 String[] args = ((TestFailureException) e).getArgs();
-                LOGGER.debug("Test failed, problematic votingcard ids : " + args);
+                LOGGER.debug("Test failed, problematic votingcard ids : " + Arrays.toString(args));
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test06.nok.message", args));
             } else if (e instanceof NoSuchFileException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test06.file.not.found.message", ((NoSuchFileException) e).getFile()));
             } else if (e instanceof FileNotFoundException) {
                 LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test06.file.not.found.message", e.getMessage()));
+                if( e.getLocalizedMessage().equals(".*\\.json")){
+                    result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test06.file.not.found.message", "logs JSON file"));
+                }
+                 else{
+                     result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test06.file.not.found.message", e.getMessage()));
+                }
             }
         }
         return result;

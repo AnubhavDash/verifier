@@ -1,0 +1,378 @@
+{
+  "electionEvent" : {
+    "id" : "0e5ec6854b2948f799ef2e2da4a951a7",
+    "alias" : "demo_bk_04",
+    "ballotBoxes" : [ {
+      "id" : "cad8c72d97d143be89f2e5a2e700e912",
+      "alias" : "FR-BZ-1006|FR-MU-2309",
+      "authId" : "fc52c745-f35b-3c20-8ba5-4120b3cc02da",
+      "vcsId" : "42448c32fd5441319d9378c9ebc259ef",
+      "vcsAlias" : "vcs_FR-BZ-1006|FR-MU-2309",
+      "votingCardsGenerated" : 99,
+      "countingCircles" : [ {
+        "id" : "FR-MU-2309",
+        "domainOfInfluence" : [ {
+          "id" : "1B76E565-4DA8-11E6-89C7-00155D28151E",
+          "votes" : [ ],
+          "elections" : [ {
+            "id" : "1b714a6146984346b9bf61d118749323",
+            "alias" : "Eidgenoessische_Wahlen",
+            "numberOfSeats" : 7,
+            "lists" : [ {
+              "isBlank" : false,
+              "primeNumber" : 462199,
+              "candidatePositions" : [ {
+                "alias" : "CAND-7101",
+                "candidateListId" : "a1594175-ddaa-3dd2-9eb6-c4727faa338c",
+                "primeNumber" : [ 460189, 462337 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7102",
+                "candidateListId" : "536d35fd-af86-318e-a36a-c603f4827e0e",
+                "primeNumber" : [ 46133, 461887 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7103",
+                "candidateListId" : "1d6a1c2e-926b-32f5-9e85-46c231f9ba71",
+                "primeNumber" : [ 460777, 462409 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7104",
+                "candidateListId" : "8463349b-681a-3840-883a-3c6b9d76b859",
+                "primeNumber" : [ 460787, 46187 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7105",
+                "candidateListId" : "8036a112-d6ec-3afb-9a15-dc9f9d5aecbc",
+                "primeNumber" : [ 462221, 462239 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7106",
+                "candidateListId" : "95b18e04-696f-3bcb-ac52-592c99aab328",
+                "primeNumber" : [ 460969, 461297 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7107",
+                "candidateListId" : "86c2bf6c-d997-324a-911a-89c1fcadeb40",
+                "primeNumber" : [ 461053, 461207 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              } ],
+              "alias" : "L1"
+            }, {
+              "isBlank" : false,
+              "primeNumber" : 461627,
+              "candidatePositions" : [ {
+                "alias" : "CAND-7111",
+                "candidateListId" : "1600de95-a406-38e2-8c14-94daaa401944",
+                "primeNumber" : [ 461803, 462149 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7112",
+                "candidateListId" : "6031acca-2d86-3a15-bfcf-b28aac455de6",
+                "primeNumber" : [ 460073, 460301 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7113",
+                "candidateListId" : "734adcad-18fb-3e2d-989b-9fe866cc3626",
+                "primeNumber" : [ 461861, 462307 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7114",
+                "candidateListId" : "c914a7f3-3d7a-3309-ac84-26333b467ec1",
+                "primeNumber" : [ 462361, 462421 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7115",
+                "candidateListId" : "3845e764-cd8a-30e5-b3b0-89b83f7c788f",
+                "primeNumber" : [ 460531, 460627 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7116",
+                "candidateListId" : "23beafc4-cae4-335c-8c1b-d1a5d881a4bb",
+                "primeNumber" : [ 46021, 461191 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7117",
+                "candidateListId" : "7fddcdc7-8d5f-310c-9dba-8ee811ba6733",
+                "primeNumber" : [ 460711, 462331 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              } ],
+              "alias" : "L2"
+            }, {
+              "isBlank" : false,
+              "primeNumber" : 461437,
+              "candidatePositions" : [ {
+                "alias" : "CAND-7121",
+                "candidateListId" : "d1696d17-3258-3faf-b557-7920188c973d",
+                "primeNumber" : [ 461299, 462373 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7122",
+                "candidateListId" : "7dc6342d-b75b-3927-b3c6-48222cfb4b3d",
+                "primeNumber" : [ 460013, 460217 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7123",
+                "candidateListId" : "96c948a8-70f9-3e31-ae23-92f90ed54665",
+                "primeNumber" : [ 461441, 461687 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7124",
+                "candidateListId" : "4f0a644e-4cde-36d0-8980-f33aceb368ff",
+                "primeNumber" : [ 460937, 460987 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7125",
+                "candidateListId" : "558ed05f-00b1-3932-9a32-8f2db3ee6ff3",
+                "primeNumber" : [ 460843, 461327 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7126",
+                "candidateListId" : "1c222a8c-2b60-3d2e-971e-c4895f041db8",
+                "primeNumber" : [ 460451, 461569 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7127",
+                "candidateListId" : "77522ce8-efc3-39f8-a9db-b23bfd70f777",
+                "primeNumber" : [ 460721, 462491 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              } ],
+              "alias" : "L3"
+            }, {
+              "isBlank" : false,
+              "primeNumber" : 46103,
+              "candidatePositions" : [ {
+                "alias" : "CAND-7131",
+                "candidateListId" : "7c3e7eb8-9ad1-3250-ac36-5bcbc1ddf197",
+                "primeNumber" : [ 460409, 461017 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7132",
+                "candidateListId" : "54a5fe20-f1ac-37c7-bdc9-c5ab019a5822",
+                "primeNumber" : [ 460403, 46229 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7133",
+                "candidateListId" : "5a1a15f2-2b18-3223-b4c4-568e01b7a00d",
+                "primeNumber" : [ 460871, 461689 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7134",
+                "candidateListId" : "205021c7-f909-3885-8495-44861bad97cd",
+                "primeNumber" : [ 460891, 461309 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7135",
+                "candidateListId" : "540a6b8e-25c3-3161-b944-e32a264b8b82",
+                "primeNumber" : [ 460913, 461171 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7136",
+                "candidateListId" : "e907b241-6b1d-30d1-8cad-83f97c212120",
+                "primeNumber" : [ 460903, 462041 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7137",
+                "candidateListId" : "ebbc7e0a-1222-3371-a869-0b7277d4bd43",
+                "primeNumber" : [ 460981, 46219 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              } ],
+              "alias" : "L5"
+            }, {
+              "isBlank" : false,
+              "primeNumber" : 461239,
+              "candidatePositions" : [ {
+                "alias" : "CAND-7141",
+                "candidateListId" : "0a0bee38-fe58-3806-8d18-1e6fc5a20e14",
+                "primeNumber" : [ 462097, 462181 ],
+                "initialAccumulation" : 2,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7143",
+                "candidateListId" : "65394160-5243-357e-bbd6-d34b9f90f251",
+                "primeNumber" : [ 461413, 461479 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7144",
+                "candidateListId" : "a5e1fa5f-c2b8-3d89-8397-8ada708a52ca",
+                "primeNumber" : [ 460633, 461467 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7145",
+                "candidateListId" : "3fc07efc-d0e4-367b-8a1e-dc131ab7006b",
+                "primeNumber" : [ 461561, 461717 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7146",
+                "candidateListId" : "2898c851-f90e-34eb-b088-3507971cbf30",
+                "primeNumber" : [ 460091, 46091 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7147",
+                "candidateListId" : "02a29692-99b4-3a52-8ac9-6cd72faa9e79",
+                "primeNumber" : [ 461677, 461843 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              } ],
+              "alias" : "L6"
+            }, {
+              "isBlank" : false,
+              "primeNumber" : 461507,
+              "candidatePositions" : [ {
+                "alias" : "CAND-7151",
+                "candidateListId" : "25418555-715c-38d8-8cd2-93f802cfb364",
+                "primeNumber" : [ 461407, 46237 ],
+                "initialAccumulation" : 2,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7153",
+                "candidateListId" : "be28b95e-c2e2-320f-a44c-0f7ad1486541",
+                "primeNumber" : [ 461273, 46171 ],
+                "initialAccumulation" : 2,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7155",
+                "candidateListId" : "8beba8f4-3225-32cd-9ddc-aa099e844c10",
+                "primeNumber" : [ 460813, 461983 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7156",
+                "candidateListId" : "cb90140c-20aa-3fcd-b04a-48109d27b9f3",
+                "primeNumber" : [ 460247, 460991 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7157",
+                "candidateListId" : "f8fe563f-4cfe-3696-8e15-dde156cccb83",
+                "primeNumber" : [ 460297, 461143 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              } ],
+              "alias" : "L18"
+            }, {
+              "isBlank" : false,
+              "primeNumber" : 46147,
+              "candidatePositions" : [ {
+                "alias" : "CAND-7161",
+                "candidateListId" : "af265c94-271d-3d2a-9717-71fdf2a4f67b",
+                "primeNumber" : [ 461891, 462113 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7162",
+                "candidateListId" : "4c7d2378-013d-3397-a618-ec7ce4ba0616",
+                "primeNumber" : [ 460393, 462481 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7163",
+                "candidateListId" : "b91450f6-95ad-38a6-9c9f-ada89d5ab3bf",
+                "primeNumber" : [ 461, 461917 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7164",
+                "candidateListId" : "ec33a523-146d-3c2a-a7d6-96e51b0692a2",
+                "primeNumber" : [ 460081, 462271 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7165",
+                "candidateListId" : "fc0e4c72-3631-337d-800c-888cc2e3a5a6",
+                "primeNumber" : [ 460063, 461257 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7166",
+                "candidateListId" : "275cde77-eecb-3b00-b76d-97a0f6046be3",
+                "primeNumber" : [ 460079, 462467 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              }, {
+                "alias" : "CAND-7167",
+                "candidateListId" : "1cf24398-3b97-3cda-8ccb-825e129fb974",
+                "primeNumber" : [ 461059, 461393 ],
+                "initialAccumulation" : 1,
+                "isBlank" : false
+              } ],
+              "alias" : "L20"
+            }, {
+              "isBlank" : true,
+              "primeNumber" : 461317,
+              "candidatePositions" : [ {
+                "alias" : "0638675e-7fdf-34e3-acc2-ed8445f046d4",
+                "candidateListId" : "0638675e-7fdf-34e3-acc2-ed8445f046d4",
+                "primeNumber" : [ 460039 ],
+                "isBlank" : true
+              }, {
+                "alias" : "91193e64-885e-3001-af2a-f249d39ad835",
+                "candidateListId" : "91193e64-885e-3001-af2a-f249d39ad835",
+                "primeNumber" : [ 460387 ],
+                "isBlank" : true
+              }, {
+                "alias" : "4cd36e37-80a6-32e6-b52a-3460b70b7d76",
+                "candidateListId" : "4cd36e37-80a6-32e6-b52a-3460b70b7d76",
+                "primeNumber" : [ 46051 ],
+                "isBlank" : true
+              }, {
+                "alias" : "106d69cf-21e5-39f8-b05f-812ba614253b",
+                "candidateListId" : "106d69cf-21e5-39f8-b05f-812ba614253b",
+                "primeNumber" : [ 460637 ],
+                "isBlank" : true
+              }, {
+                "alias" : "fe9b17e6-94db-3f42-8f39-dd7dca35ef19",
+                "candidateListId" : "fe9b17e6-94db-3f42-8f39-dd7dca35ef19",
+                "primeNumber" : [ 461653 ],
+                "isBlank" : true
+              }, {
+                "alias" : "f86d72f7-3f8a-35d6-a335-a3cc8ec2a30b",
+                "candidateListId" : "f86d72f7-3f8a-35d6-a335-a3cc8ec2a30b",
+                "primeNumber" : [ 461921 ],
+                "isBlank" : true
+              }, {
+                "alias" : "be1ccf18-379c-3ab2-a7ea-27bda047a79c",
+                "candidateListId" : "be1ccf18-379c-3ab2-a7ea-27bda047a79c",
+                "primeNumber" : [ 4621 ],
+                "isBlank" : true
+              } ],
+              "alias" : "List99"
+            } ]
+          } ]
+        } ]
+      } ]
+    } ]
+  }
+}
