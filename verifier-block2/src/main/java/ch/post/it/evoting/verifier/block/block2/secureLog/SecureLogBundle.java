@@ -10,7 +10,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class SecureLogBundle {
@@ -19,12 +18,6 @@ public class SecureLogBundle {
     private CheckPointLogEntry beginCheckPoint;
     private CheckPointLogEntry endCheckPoint;
     private List<RegularLogEntry> regularLogEntries = new ArrayList<>();
-
-    public void copyTo(SecureLogBundle other) {
-        other.setBeginCheckPoint(beginCheckPoint);
-        other.setEndCheckPoint(endCheckPoint);
-        other.regularLogEntries = new LinkedList<>(regularLogEntries);
-    }
 
     public void setBeginCheckPoint(CheckPointLogEntry beginCheckPoint) {
         this.beginCheckPoint = beginCheckPoint;
@@ -56,7 +49,7 @@ public class SecureLogBundle {
 
     public void validateIntegrity() throws SecureLogBundleValidationException {
         if (!this.isComplete() && this.hasRegularLogEntries()) {
-            throw new SecureLogBundleValidationException("bundle is not finishing with a checkPoint", beginCheckPoint.getHost());
+            throw new SecureLogBundleValidationException("bundle is not finishing with a checkPoint", beginCheckPoint.getHost(), beginCheckPoint.getSource());
         }
         LOGGER.trace(String.format("Starting validation of Bundle{prev:%s, curr:%s, elementsCount:%s}", this.beginCheckPoint, this.endCheckPoint, this.regularLogEntries.size()));
         byte[] beginHmac = validateStartCheckPoint();
@@ -76,13 +69,13 @@ public class SecureLogBundle {
         //TODO build the signature and check it
         String signature = /*buildSignature(secret, text);*/ sg;
         if (!sg.equals(signature)) {
-            throw new SecureLogBundleValidationException("Begin Checkpoint signature not valid", beginCheckPoint.getHost());
+            throw new SecureLogBundleValidationException("Begin Checkpoint signature not valid", beginCheckPoint.getHost(), beginCheckPoint.getSource());
         }
     }
 
     private void validateEndCheckPoint(byte[] lastHmac) throws SecureLogBundleValidationException {
         if (!endCheckPoint.getMetadata().getPhmac().equals(Base64.toBase64String(lastHmac))) {
-            throw new SecureLogBundleValidationException("End Checkpoint HMAC not valid", beginCheckPoint.getHost());
+            throw new SecureLogBundleValidationException("End Checkpoint HMAC not valid", beginCheckPoint.getHost(), beginCheckPoint.getSource());
         }
     }
 
@@ -92,7 +85,7 @@ public class SecureLogBundle {
         for (RegularLogEntry regularLogEntry : regularLogEntries) {
             byte[] hmac = hmac(regularLogEntry, previousHmac, lsk);
             if (!Base64.toBase64String(hmac).equals(regularLogEntry.getMetadata().getHmac())) {
-                throw new SecureLogBundleValidationException("Regular log HMAC not valid", beginCheckPoint.getHost());
+                throw new SecureLogBundleValidationException("Regular log HMAC not valid", beginCheckPoint.getHost(), beginCheckPoint.getSource());
             }
             previousHmac = hmac;
         }
@@ -103,7 +96,7 @@ public class SecureLogBundle {
         byte[] lsk = Base64.decode(endCheckPoint.getMetadata().getLsk());
         byte[] hmac = hmac(beginCheckPoint, null, lsk);
         if (!Base64.toBase64String(hmac).equals(beginCheckPoint.getMetadata().getHmac())) {
-            throw new SecureLogBundleValidationException("Begin checkPoint HMAC not valid", beginCheckPoint.getHost());
+            throw new SecureLogBundleValidationException("Begin checkPoint HMAC not valid", beginCheckPoint.getHost(), beginCheckPoint.getSource());
         }
         return hmac;
     }

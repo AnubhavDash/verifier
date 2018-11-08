@@ -1,5 +1,7 @@
 package ch.post.it.evoting.verifier.block.block2.secureLog;
 
+import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.dto.SecureLogOrigin;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,38 +16,46 @@ public abstract class SecureLogEntry {
     private Boolean preview;
     private String host;
     private String raw;
+    private String source;
     private SecureLogMetadata metadata;
 
-    protected abstract void deserialize(String line) throws IOException;
+    protected void deserialize(String line) throws IOException {
+        SecureLogOrigin slo = Deserializer.fromJson(line.getBytes(), SecureLogOrigin.class);
+
+        setPreview(slo.getPreview());
+        //TODO set the source from SecureLogOrigin object once it will be available from Splunk
+        setSource(""/*slo.getSource()*/);
+        setHost(slo.getResult().getEv().substring(0, slo.getResult().getEv().indexOf('|')));
+        setRaw(getCleanedRawFromRaw(slo.getResult().getEv().substring(slo.getResult().getEv().indexOf('|') + 1)));
+        setMetadata(getMetadataFromRaw(slo.getResult().getEv()));
+    }
 
     public static SecureLogEntry from(String line) throws IOException {
         SecureLogEntry result;
         if (line.contains("New Secret Key generated")) {
             result = new CheckPointLogEntry();
-        } /*else if (line.contains("lastrow")) {
-            result = new LastRowLogEntry();
-        }*/ else {
+        } else {
             result = new RegularLogEntry();
         }
         result.deserialize(line);
         return result;
     }
 
-    protected String getCleanedRawFromRaw(String raw){
+    protected String getCleanedRawFromRaw(String raw) {
         String result = null;
-        if(raw != null && !raw.isEmpty()){
+        if (raw != null && !raw.isEmpty()) {
             String objInsideRaw = getObjectInsideRaw(raw) + "*}";
             result = raw.replace(objInsideRaw, "");
-            result = result.substring(0, result.length()-1)+"\n";
+            result = result.substring(0, result.length() - 1) + "\n";
         }
         return result;
     }
 
-    protected SecureLogMetadata getMetadataFromRaw(String raw){
+    protected SecureLogMetadata getMetadataFromRaw(String raw) {
         SecureLogMetadata metadata = new SecureLogMetadata();
-        if(raw != null && !raw.isEmpty()){
+        if (raw != null && !raw.isEmpty()) {
             String objInsideRaw = getObjectInsideRaw(raw);
-            if(objInsideRaw != null && !objInsideRaw.isEmpty()){
+            if (objInsideRaw != null && !objInsideRaw.isEmpty()) {
                 metadata.setSg(getSignFromObjInRaw(objInsideRaw));
                 metadata.setLsk(getLskFromObjInRaw(objInsideRaw));
                 metadata.setEsk(getEskFromObjInRaw(objInsideRaw));
