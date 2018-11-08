@@ -24,7 +24,7 @@ public class Test12 extends Test {
     public TestDefinition getTestDefinition() {
         TestDefinition testDefinition = new TestDefinition();
         testDefinition.setBlockId(3);
-        testDefinition.setCategory(Category.COMPLETENESS);
+        testDefinition.setCategory(Category.CONSISTENCY);
         testDefinition.setId(12);
         testDefinition.setName("checkDecryptionFactorization");
         testDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test12.description"));
