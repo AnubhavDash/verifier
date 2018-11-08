@@ -71,7 +71,13 @@ public class Test04 extends Test {
                     .filter(sl -> sl.getPreview() != null && !sl.getPreview())
                     .filter(s1 -> s1 instanceof RegularLogEntry)
                     .cast(RegularLogEntry.class)
-                    .filter(s1 -> s1.getRaw().matches(".*\\|GENPVCC\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|.*"))
+                    .filter(s1 -> {
+                        if(s1.getRaw().matches(".*\\|GENPVCC\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|.*")){
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    })
                     .groupBy(s1 -> hostCcMapping.containsKey(s1.getHost()) ? hostCcMapping.get(s1.getHost()) : s1.getHost())
                     .flatMap(group -> {
                         String ccName = group.key();
@@ -89,13 +95,17 @@ public class Test04 extends Test {
                 LOGGER.info("no GENPVCC log found for the defined electionEventId : " + voterInformation.getEeid());
                 result.setStatus(Status.OK);
             } else if (nbDistinctValues != 1) {
-                //at this point with have 4 distincts values
                 throw new TestFailureException("count of log for partial choice code generation is not the same for each control component", countByCC.values().toString());
 
             } else {
                 //finally check the count with csv files count
                 Long logCount = countByCC.values().stream().findFirst().get();
-                result.setStatus((logCount.equals(voterInformation.getCount())) ? Status.OK : Status.NOK);
+                if(logCount.equals(voterInformation.getCount())){
+                    result.setStatus(Status.OK);
+                }
+                else{
+                    throw new TestFailureException("the number of log entries does not match with the number of voters", "" + logCount + " and " + voterInformation.getCount() );
+                }
             }
 
         } catch (Exception e) {
@@ -108,7 +118,7 @@ public class Test04 extends Test {
             }
             if (e instanceof TestFailureException) {
                 String[] args = ((TestFailureException) e).getArgs();
-                LOGGER.debug("Test failed, cause : " + args[0] + ". Count for the CCs : " + args[1].toString());
+                LOGGER.debug("Test failed, cause : " + args[0] + ". Count for the CCs : " + args[1]);
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test04.nok.message"));
             } else if (e instanceof NoSuchFileException) {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test04.file.not.found.message", ((NoSuchFileException) e).getFile()));
@@ -119,5 +129,4 @@ public class Test04 extends Test {
         }
         return result;
     }
-
 }

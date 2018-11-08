@@ -90,12 +90,17 @@ public class Test03 extends Test {
                 LOGGER.info("no GENPCC log found for the defined electionEventId : " + voterInformation.getEeid());
                 result.setStatus(Status.OK);
             } else if (nbDistinctValues != 1) {
-                //at this point with have 4 distincts values
                 throw new TestFailureException("count of log for partial choice code generation is not the same for each control component", countByCC.values().toString());
             } else {
                 //finally check the count with csv files count
                 Long logCount = countByCC.values().stream().findFirst().get();
-                result.setStatus((logCount.equals(voterInformation.getCount())) ? Status.OK : Status.NOK);
+                if(logCount.equals(voterInformation.getCount())){
+                    result.setStatus(Status.OK);
+                }
+                else{
+                    throw new TestFailureException("the number of log entries does not match with the number of voters", "" + logCount + " and " + voterInformation.getCount() );
+                }
+
             }
 
         } catch (Exception e) {

@@ -28,6 +28,4 @@ public class Test74Test {
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
     }
-
-
 }

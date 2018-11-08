@@ -102,7 +102,7 @@ public class Test09 extends Test {
                             List<Integer> options = v.getQuestions().stream().flatMap(q -> q.getOptions().stream()).map(Option::getPrimeNumber).collect(Collectors.toList());
                             long optionsDistinctCount = v.getQuestions().stream().flatMap(q -> q.getOptions().stream()).map(Option::getPrimeNumber).distinct().count();
                             if (options.size() != optionsDistinctCount) {
-                                throw new Test09Exception("test09.nok.message.prime.number.mutually.distinct.nok", getDoubles(options).toString());
+                                throw new Test09Exception("test09.nok.message.prime.number.mutually.distinct.nok", getDuplicates(options).toString());
                             }
 
                             if (options.size() != voteAnswersCount.get(voteIdentification)) {
@@ -119,7 +119,7 @@ public class Test09 extends Test {
                             List<Integer> listCount = e.getLists().stream().map(l -> l.getPrimeNumber()).collect(Collectors.toList());
                             long listDistinctCount = e.getLists().stream().map(l -> l.getPrimeNumber()).distinct().count();
                             if (listCount.size() != listDistinctCount) {
-                                throw new Test09Exception("test09.nok.message", getDoubles(listCount).toString());
+                                throw new Test09Exception("test09.nok.message", getDuplicates(listCount).toString());
                             }
                             if (listCount.size() != electionOptionCount.get(electionIdentification).getListCount()) {
                                 throw new Test09Exception("test09.nok.message.number.of.distinct.prime.number.and.lists.nok");
@@ -132,7 +132,10 @@ public class Test09 extends Test {
                             int writeInsCount = e.getWriteIns().size();
 
                             if ((optionDistinctCount + writeInsCount + optionCandidateOnlyCount) != electionOptionCount.get(electionIdentification).getOptionCount()) {
-                                throw new Test09Exception("test09.nok.message.number.of.candidate.prime.number.and.vo.nok");
+                                throw new Test09Exception("test09.nok.message.number.of.candidate.prime.number.and.vo.nok",
+                                        "" + (optionDistinctCount + writeInsCount + optionCandidateOnlyCount),
+                                        "" + electionOptionCount.get(electionIdentification).getOptionCount()
+                                );
                             }
                         });
                     });
@@ -152,7 +155,7 @@ public class Test09 extends Test {
         return result;
     }
 
-    private <T> List<T> getDoubles(List<T> entries) {
+    private <T> List<T> getDuplicates(List<T> entries) {
         return entries.stream()
                 .distinct()
                 .map(e -> new AbstractMap.SimpleEntry<>(e, entries.stream().filter(e::equals).count()))
