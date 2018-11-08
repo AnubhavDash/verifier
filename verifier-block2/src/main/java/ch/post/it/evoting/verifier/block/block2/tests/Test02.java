@@ -47,8 +47,8 @@ public class Test02 /*extends Test*/ {
                     });
 
             Flux.fromIterable(logEntryStream::iterator)
-                    .groupBy(SecureLogEntry::getHost)
-                    .flatMap(source -> SecureLogBundleCreator.from(source, source.key()))
+                    .groupBy(s -> String.format("%s|%s", s.getHost(), s.getSource()))
+                    .flatMap(SecureLogBundleCreator::from)
                     .subscribe(b -> {
                         try {
                             b.validateSignature();

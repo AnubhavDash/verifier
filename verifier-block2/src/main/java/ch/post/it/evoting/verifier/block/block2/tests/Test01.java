@@ -50,7 +50,7 @@ public class Test01 /*extends Test*/ {
 
             Flux.fromIterable(logEntryStream::iterator)
                     .groupBy(s -> String.format("%s|%s", s.getHost(), s.getSource()))
-                    .flatMap(source -> SecureLogBundleCreator.from(source, source.key()))
+                    .flatMap(SecureLogBundleCreator::from)
                     .subscribe(b -> {
                         try {
                             b.validateIntegrity();
