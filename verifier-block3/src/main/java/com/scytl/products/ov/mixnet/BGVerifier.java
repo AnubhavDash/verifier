@@ -79,7 +79,7 @@ public class BGVerifier {
                                  */
                                 final ElGamalEncryptedBallots encryptedBallots = offlineEncryptedBallotsLoader.getEncryptedBallots();
                                 if (encryptedBallots.getBallots().size() <= 1) {
-                                    LOGGER.info("0 ballots, nothing to mix!");
+                                    LOGGER.info("0 or 1 ballots, nothing to mix!");
                                     notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.OK, null);
                                     /*return true;*/
                                 } else {
@@ -92,7 +92,7 @@ public class BGVerifier {
                                 */
                                     final ElGamalEncryptedBallots reencryptedBallots = offlineReEncryptedBallotsLoader.getReEncryptedBallots();
                                     if (reencryptedBallots.getBallots().size() <= 1) {
-                                        LOGGER.info("0 ballots reencrypted, no mixing performed!");
+                                        LOGGER.info("0 or 1 ballots reencrypted, no mixing performed!");
                                         notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.OK, null);
                                         /*return true;*/
                                     } else {
