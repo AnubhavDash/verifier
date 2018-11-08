@@ -71,13 +71,7 @@ public class Test04 extends Test {
                     .filter(sl -> sl.getPreview() != null && !sl.getPreview())
                     .filter(s1 -> s1 instanceof RegularLogEntry)
                     .cast(RegularLogEntry.class)
-                    .filter(s1 -> {
-                        if(s1.getRaw().matches(".*\\|GENPVCC\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|.*")){
-                            return true;
-                        }else{
-                            return false;
-                        }
-                    })
+                    .filter(s1 -> s1.getRaw().matches(".*\\|GENPVCC\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|.*\n"))
                     .groupBy(s1 -> hostCcMapping.containsKey(s1.getHost()) ? hostCcMapping.get(s1.getHost()) : s1.getHost())
                     .flatMap(group -> {
                         String ccName = group.key();
