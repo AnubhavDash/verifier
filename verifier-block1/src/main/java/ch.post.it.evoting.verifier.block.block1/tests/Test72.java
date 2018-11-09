@@ -49,20 +49,19 @@ public class Test72 extends Test {
             }
             result.setStatus(Status.OK);
 
-        } catch (Exception e) {
-            if (e instanceof TestFailureException) {
-                LOGGER.debug("TestFailureException", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test72.nok.message", ((TestFailureException) e).getArgs()));
-            } else if (e instanceof NoSuchFileException) {
-                LOGGER.debug("NoSuchFileException", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test72.file.not.found.message", ((NoSuchFileException)e ).getFile()));
-            } else if (e instanceof FileNotFoundException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test72.file.not.found.message", e.getMessage()));
-            }
-            else {
-                LOGGER.error("unexpected error", e);
-            }
+        } catch (TestFailureException e) {
             result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test72.nok.message", e.getArgs()));
+        } catch (NoSuchFileException e) {
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test72.file.not.found.message", e.getFile()));
+        } catch (FileNotFoundException e) {
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test72.file.not.found.message", e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("unexpected error", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }

@@ -143,16 +143,17 @@ public class DecryptVerifier {
 		String cvsSplitBy = ";";
 		DecryptionProof[] proofsOutput = new DecryptionProof[amountOfBallots];
 
-		BufferedReader br = new BufferedReader(new FileReader(csvFile));
-		for (int i = 0; (line = br.readLine()) != null; i++) {
-			String[] fields = line.split(cvsSplitBy);
+		try(BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+			for (int i = 0; (line = br.readLine()) != null; i++) {
+				String[] fields = line.split(cvsSplitBy);
 
-			byte[] proof = Base64.getDecoder().decode(fields[3]);
-			String JSonProof = new String(proof);
-			proofsOutput[i] = new DecryptionProof(JSonProof);
-			proofsOutput[i].setGammaOfCiphertext(new BigInteger(fields[0]));
+				byte[] proof = Base64.getDecoder().decode(fields[3]);
+				String JSonProof = new String(proof);
+				proofsOutput[i] = new DecryptionProof(JSonProof);
+				proofsOutput[i].setGammaOfCiphertext(new BigInteger(fields[0]));
+			}
+			return proofsOutput;
 		}
-		return proofsOutput;
 	}
 
 	private static List<GjosteenElGamalPlaintext> getPlaintextsFromFile(
@@ -164,26 +165,27 @@ public class DecryptVerifier {
 		String cvsSplitPhis = ",";
 		List<GjosteenElGamalPlaintext> plaintextsOutput = new ArrayList<>();
 
-		BufferedReader br = new BufferedReader(new FileReader(filePath));
-		while ((line = br.readLine()) != null) {
-			String[] plaintextsPerBallot = line.split(cvsSplitPhis);
-			GroupElement[] plaintextsAsGroupElements = new GroupElement[plaintextsPerBallot.length];
-			for (int i = 0; i < plaintextsPerBallot.length; i++) {
-				String[] multipliedElementsPerPlaintext = plaintextsPerBallot[i]
-						.split(cvsSplitByBallot);
-				ZpElement resultingPlaintext = new ZpElement(BigInteger.ONE,
-						group.getParams());
-				for (String multipliedElement : multipliedElementsPerPlaintext) {
-					ZpElement elementAux = new ZpElement(new BigInteger(
-							multipliedElement), group.getParams());
-					resultingPlaintext = (ZpElement) resultingPlaintext
-							.multiply(elementAux);
+		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+			while ((line = br.readLine()) != null) {
+				String[] plaintextsPerBallot = line.split(cvsSplitPhis);
+				GroupElement[] plaintextsAsGroupElements = new GroupElement[plaintextsPerBallot.length];
+				for (int i = 0; i < plaintextsPerBallot.length; i++) {
+					String[] multipliedElementsPerPlaintext = plaintextsPerBallot[i]
+							.split(cvsSplitByBallot);
+					ZpElement resultingPlaintext = new ZpElement(BigInteger.ONE,
+							group.getParams());
+					for (String multipliedElement : multipliedElementsPerPlaintext) {
+						ZpElement elementAux = new ZpElement(new BigInteger(
+								multipliedElement), group.getParams());
+						resultingPlaintext = (ZpElement) resultingPlaintext
+								.multiply(elementAux);
+					}
+					plaintextsAsGroupElements[i] = resultingPlaintext;
 				}
-				plaintextsAsGroupElements[i] = resultingPlaintext;
+				plaintextsOutput.add(new GjosteenElGamalPlaintext(
+						plaintextsAsGroupElements));
 			}
-			plaintextsOutput.add(new GjosteenElGamalPlaintext(
-					plaintextsAsGroupElements));
+			return plaintextsOutput;
 		}
-		return plaintextsOutput;
 	}
 }

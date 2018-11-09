@@ -87,11 +87,13 @@ public class Test05 extends Test {
                     true);
 
             for (File downloadedBbFile : downloadedBallotBoxFiles) {
-                Map<String, String> map = Files.lines(downloadedBbFile.toPath())
-                        .map(line -> extractFromLine(line))
-                        .filter(entry -> entry.getKey() != null)
-                        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
-                mapDownloadedBallotBoxs.putAll(map);
+                try(Stream<String> lines = Files.lines(downloadedBbFile.toPath())) {
+                    Map<String, String> map = lines
+                            .map(Test05::extractFromLine)
+                            .filter(entry -> entry.getKey() != null)
+                            .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+                    mapDownloadedBallotBoxs.putAll(map);
+                }
             }
 
             mapDownloadedBallotBoxs.entrySet()

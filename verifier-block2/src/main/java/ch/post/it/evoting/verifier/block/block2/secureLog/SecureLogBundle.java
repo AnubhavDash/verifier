@@ -58,7 +58,8 @@ public class SecureLogBundle {
     }
 
     public void validateSignature() throws SecureLogBundleValidationException {
-        String sg = beginCheckPoint.getMetadata().getSg();
+        //TODO build the signature and check it
+/*        String sg = beginCheckPoint.getMetadata().getSg();
         byte[] text = concat(
                 beginCheckPoint.getMetadata().getPhmac(),
                 beginCheckPoint.getMetadata().getLsk(),
@@ -66,11 +67,10 @@ public class SecureLogBundle {
                 beginCheckPoint.getMetadata().getHmac(),
                 beginCheckPoint.getRaw());
 
-        //TODO build the signature and check it
-        String signature = /*buildSignature(secret, text);*/ sg;
+        String signature = *//*buildSignature(secret, text);*//* sg;
         if (!sg.equals(signature)) {
             throw new SecureLogBundleValidationException("Begin Checkpoint signature not valid", beginCheckPoint.getHost(), beginCheckPoint.getSource());
-        }
+        }*/
     }
 
     private void validateEndCheckPoint(byte[] lastHmac) throws SecureLogBundleValidationException {
@@ -81,7 +81,7 @@ public class SecureLogBundle {
 
     private byte[] validateRegularLogs(byte[] beginCheckPointHmac) throws SecureLogBundleValidationException {
         byte[] lsk = Base64.decode(endCheckPoint.getMetadata().getLsk());
-        byte[] previousHmac = beginCheckPointHmac;
+        byte[] previousHmac = beginCheckPointHmac.clone();
         for (RegularLogEntry regularLogEntry : regularLogEntries) {
             byte[] hmac = hmac(regularLogEntry, previousHmac, lsk);
             if (!Base64.toBase64String(hmac).equals(regularLogEntry.getMetadata().getHmac())) {
@@ -127,13 +127,5 @@ public class SecureLogBundle {
             throw new RuntimeException("Unable to serialize secureLogEntry", e);
         }
         return HmacGenerator.hash(bytes.toByteArray(), lsk);
-    }
-
-    private byte[] concat(String... arrays) {
-        StringBuilder result = new StringBuilder();
-        for (String array : arrays) {
-            result.append(array);
-        }
-        return result.toString().getBytes(StandardCharsets.UTF_8);
     }
 }

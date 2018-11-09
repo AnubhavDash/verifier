@@ -19,8 +19,11 @@ import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
 import com.scytl.products.ov.mixnet.commons.tools.RandomOracleHashDecrypt;
+import org.apache.log4j.Logger;
 
 public class DecryptionProofVerifier {
+
+    private static final Logger LOGGER = Logger.getLogger(DecryptionProofVerifier.class);
 
     public static boolean verify(ElGamalEncryptedBallot ballot, GjosteenElGamalPlaintext plaintext,
             DecryptionProof proof, ElGamalPublicKey key, ZpGroup zPGroup) {
@@ -59,7 +62,8 @@ public class DecryptionProofVerifier {
         try {
             RO = new RandomOracleHashDecrypt(q);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            LOGGER.error("error", e);
             return null;
         }
         RO.addDataToRO(publicValues);

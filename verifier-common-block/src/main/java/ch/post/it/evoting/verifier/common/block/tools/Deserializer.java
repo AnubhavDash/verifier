@@ -56,7 +56,7 @@ public class Deserializer {
         return PathHelper.getFile(inputDirectory, filenamePattern);
     }
 
-    public static Function<String[], CredentialDataElement> toCredentialDataElement = array -> {
+    public final static Function<String[], CredentialDataElement> toCredentialDataElement = array -> {
         if (array == null || array.length != 2) {
             throw new IllegalArgumentException("Wrong array input format");
         }
@@ -66,7 +66,7 @@ public class Deserializer {
         return cde;
     };
 
-    public static Function<String[], HostMappingElement> toHostMappingElement = array -> {
+    public final static Function<String[], HostMappingElement> toHostMappingElement = array -> {
         if (array == null || array.length != 2) {
             throw new IllegalArgumentException("Wrong array input format");
         }

@@ -47,7 +47,7 @@ public class Test31 extends Test {
             int linesCount = 0;
             for (File f : PathHelper.listDirectories(votingCardSetsPath)) {
                 Iterable<CredentialDataElement> iterable = Deserializer.fromCsv(f, "credentialData\\.csv", Deserializer.toCredentialDataElement);
-                for (CredentialDataElement credentialDataElement : iterable) {
+                for (CredentialDataElement ignored : iterable) {
                     linesCount++;
                 }
             }
@@ -59,15 +59,13 @@ public class Test31 extends Test {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test31.nok.message", "" + linesCount, "" + votersCount));
             }
 
-        } catch (Exception e) {
+        } catch (FileNotFoundException e) {
             result.setStatus(Status.NOK);
-
-            if (e instanceof FileNotFoundException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test31.file.not.found.message"));
-            } else {
-                LOGGER.error("Unexpected error", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
-            }
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test31.file.not.found.message"));
+        } catch (Exception e) {
+            LOGGER.error("Unexpected error", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }
