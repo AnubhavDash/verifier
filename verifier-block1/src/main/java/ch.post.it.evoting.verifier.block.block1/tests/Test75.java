@@ -50,16 +50,16 @@ public class Test75 extends Test {
             }
             result.setStatus(Status.OK);
 
-        } catch (Exception e) {
-            if (e instanceof TestFailureException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test75.nok.message"));
-            }else if (e instanceof NoSuchFileException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test75.file.not.found.message", ((NoSuchFileException)e ).getFile()));
-            }
-            else {
-                LOGGER.error("unexpected error", e);
-            }
+        } catch (TestFailureException e) {
             result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test75.nok.message"));
+        } catch (NoSuchFileException e) {
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test75.file.not.found.message", e.getFile()));
+        } catch (Exception e) {
+            LOGGER.error("unexpected error", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }

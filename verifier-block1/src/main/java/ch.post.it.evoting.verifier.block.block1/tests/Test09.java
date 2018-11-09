@@ -141,16 +141,16 @@ public class Test09 extends Test {
                     });
 
             result.setStatus(Status.OK);
-        } catch (Exception e) {
+        } catch (Test09Exception e) {
             result.setStatus(Status.NOK);
-            if (e instanceof Test09Exception) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, ((Test09Exception) e).getKey(), ((Test09Exception) e).getParams()));
-            } else if (e instanceof FileNotFoundException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test09.file.not.found.message"));
-            } else {
-                LOGGER.error("Unexpected error", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
-            }
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, e.getKey(), e.getParams()));
+        } catch (FileNotFoundException e) {
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test09.file.not.found.message"));
+        } catch (Exception e) {
+            LOGGER.error("Unexpected error", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }

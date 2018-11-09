@@ -49,14 +49,13 @@ public class Test03 extends Test {
                 result.setStatus(Status.NOK);
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test03.nok.message"));
             }
-        } catch (Exception e) {
+        } catch (FileNotFoundException e) {
             result.setStatus(Status.NOK);
-            if (e instanceof FileNotFoundException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message"));
-            } else {
-                LOGGER.error("Unexpected error", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
-            }
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message"));
+        } catch (Exception e) {
+            LOGGER.error("Unexpected error", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }
