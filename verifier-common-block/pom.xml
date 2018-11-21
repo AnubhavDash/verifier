@@ -12,13 +12,6 @@
     <artifactId>verifier-common-block</artifactId>
 
     <dependencies>
-        <!--
-                <dependency>
-                    <groupId>org.reflections</groupId>
-                    <artifactId>reflections</artifactId>
-                    <version>0.9.9-RC1</version>
-                </dependency>
-        -->
         <dependency>
             <groupId>ch.post.it.evoting.verifier</groupId>
             <artifactId>verifier-common</artifactId>
@@ -29,6 +22,17 @@
             <artifactId>reflections</artifactId>
             <version>RELEASE</version>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>25.0-jre</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

@@ -120,11 +120,11 @@
             <version>2.1.7</version>
             <exclusions>
                 <exclusion>
-                    <groupId>org.bouncycastle</groupId>
+                    <groupId>bouncycastle</groupId>
                     <artifactId>bcmail-jdk14</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>org.bouncycastle</groupId>
+                    <groupId>bouncycastle</groupId>
                     <artifactId>bcprov-jdk14</artifactId>
                 </exclusion>
                 <exclusion>
