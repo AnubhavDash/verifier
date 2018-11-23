@@ -1,9 +1,9 @@
 package ch.post.it.evoting.verifier.block.block2.tests;
 
 import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
-import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogBundleCreator;
-import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogBundleValidationException;
-import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogEntry;
+import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleCreator;
+import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleValidationException;
+import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;

@@ -1,4 +1,4 @@
-package ch.post.it.evoting.verifier.block.block2.secureLog;
+package ch.post.it.evoting.verifier.block.block2.securelog;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import reactor.core.publisher.Flux;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class SecureLogBundleCreator {
+public final class SecureLogBundleCreator {
     private static final Logger LOGGER = Logger.getLogger(SecureLogBundleCreator.class);
 
     private SecureLogBundleCreator() {

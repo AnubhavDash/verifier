@@ -1,4 +1,4 @@
-package ch.post.it.evoting.verifier.block.block2.secureLog;
+package ch.post.it.evoting.verifier.block.block2.securelog;
 
 import ch.post.it.evoting.verifier.common.block.tools.HmacGenerator;
 import org.apache.commons.lang.StringUtils;
