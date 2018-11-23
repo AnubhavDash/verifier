@@ -30,8 +30,9 @@ public final class SecureLogBundleCreator {
                     //duplicate all checkpoints
                     if (e instanceof CheckPointLogEntry) {
                         return Flux.just(e, e);
-                    } else
+                    } else {
                         return Flux.just(e);
+                    }
                 }).scan(new MyStruct(), (s, e) -> {
                     MyStruct result = new MyStruct();
                     if (e instanceof CheckPointLogEntry) {
