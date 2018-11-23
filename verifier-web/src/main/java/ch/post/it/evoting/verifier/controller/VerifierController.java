@@ -47,7 +47,7 @@ public class VerifierController {
         });
     }
 
-    protected void initializeExecutionStatus() {
+    private void initializeExecutionStatus() {
         this.executionStatus = ExecutionStatus.builder()
                 .testActual(0)
                 .testCount(this.processor.getTestStatus().size())
@@ -62,7 +62,8 @@ public class VerifierController {
     @GetMapping("/shutdown")
     public void shutdown() {
         final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
-        executor.schedule(() -> System.exit(0), 10, TimeUnit.MILLISECONDS);
+        final long DELAY_BEFORE_EXECUTION = 10;
+        executor.schedule(() -> System.exit(0), DELAY_BEFORE_EXECUTION, TimeUnit.MILLISECONDS);
     }
 
     @RequestMapping(value = "/reset", method = RequestMethod.POST)
