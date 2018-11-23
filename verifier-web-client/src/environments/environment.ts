@@ -5,5 +5,6 @@
 
 export const environment = {
   production: false,
-  appUrl: ""
+  appUrl: "",
+  authorizationHeaderValue: 'Basic dmVyaWZpZXItY2xpZW50OlRPX0JFX0RFRklORUQ='
 };
