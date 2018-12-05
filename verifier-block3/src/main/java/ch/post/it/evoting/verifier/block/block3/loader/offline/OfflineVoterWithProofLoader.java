@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -82,7 +81,9 @@ public class OfflineVoterWithProofLoader implements VoterWithProofLoader {
         int valuesIndex = string.indexOf(VALUES_TAG) + VALUES_TAG.length();
         String[] values = string.substring(valuesIndex, string.indexOf("\"\"]", valuesIndex + 1)).split(",");
 
-        List<Exponent> responses = Arrays.stream(values).map(val -> new Exponent(TypeConverter.base64ToBigInteger(val), TypeConverter.base64ToBigInteger(q)))
+        List<Exponent> responses = Arrays.stream(values)
+                .map(val -> val.replaceAll("\"", ""))
+                .map(val -> new Exponent(TypeConverter.base64ToBigInteger(val), TypeConverter.base64ToBigInteger(q)))
                 .collect(Collectors.toList());
 
         DecryptionProof result = new DecryptionProof(challenge, responses.toArray(new Exponent[]{}));
