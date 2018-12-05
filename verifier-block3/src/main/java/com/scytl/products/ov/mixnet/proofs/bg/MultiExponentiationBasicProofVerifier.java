@@ -61,6 +61,7 @@ public class MultiExponentiationBasicProofVerifier extends Verifier {
 
     public boolean verify(final MultiExponentiationBasicProofInitialMessage initial,
                           final MultiExponentiationBasicProofAnswer answer) {
+        System.out.println("de");
         return verify(initial, answer, (test, status, message) -> {
         });
     }
@@ -78,6 +79,7 @@ public class MultiExponentiationBasicProofVerifier extends Verifier {
         final Exponent s = answer.getExponentS();
         final Randomness tau = answer.getRandomnessTau();
 
+        // TODO Thierry test 6 fail checkExponents(a, b, r, s)  is false
         if (!(checkGroupElements(cA0, cB, E) && checkExponents(a, b, r, s) && checkTau(tau)
                 && isCommitmentTo0(cB[_m], "cB[m]", _groupOrder))) {
             notifier.notify(BGVerificationProcessor.TestType.MultiExponentiationProof, Status.NOK, "checks failed");
@@ -147,6 +149,7 @@ public class MultiExponentiationBasicProofVerifier extends Verifier {
         return isRandomness(tau, "tau") && hasValidOrder(tau.getExponent(), "tau exponent");
     }
 
+    // TODO Thierry test 6 write ins fail isValidExponent(b, _cryptosystem.getNumberOfMessages(), "b") false because b.length = 1 and _cryptosystem.getNumberOfMessages().length = 4
     private boolean checkExponents(final Exponent[] a, final Exponent[] b, final Exponent r, final Exponent s) {
         return isValidExponent(a, _n, "a") && isValidExponent(r, "r")
                 && isValidExponent(b, _cryptosystem.getNumberOfMessages(), "b") && isValidExponent(s, "s");
