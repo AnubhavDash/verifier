@@ -16,7 +16,6 @@ public class Test12Test {
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
-    @Ignore
     @Test
     public void executeTestWithWriteInsOK() {
         TestResult result = new Test12().executeTest(new File(getClass().getResource("/Test12/OK-WRITE-INS").getFile()));
