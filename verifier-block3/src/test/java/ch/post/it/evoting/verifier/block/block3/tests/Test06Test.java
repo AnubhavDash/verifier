@@ -10,6 +10,7 @@ import java.io.File;
 
 public class Test06Test {
 
+    @Ignore
     @Test
     public void executeTestOK() {
         TestResult result = new Test06().executeTest(new File(getClass().getResource("/Test06/OK").getFile()));
@@ -23,6 +24,7 @@ public class Test06Test {
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
+    @Ignore
     @Test
     public void executeTestNOK() {
         TestResult result = new Test06().executeTest(new File(getClass().getResource("/Test06/NOK").getFile()));
