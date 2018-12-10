@@ -6,6 +6,7 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
+import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
@@ -51,7 +52,7 @@ public class Test07 extends Test {
             BigInteger p = extractPFromPublicKey(publicKey);
             List<String> elements = extractElementsFromPublicKey(publicKey);
             if (elements.isEmpty()) {
-                throw new Exception("No such Elements was found in the publicKey");
+                throw new TestFailureException("No such Elements was found in the publicKey");
             } else {
                 List<String> errors = elements.stream()
                         .map(element -> TypeConverter.byteToBigInteger(TypeConverter.base64ToByte(element)))
@@ -65,14 +66,17 @@ public class Test07 extends Test {
                     result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test07.nok.message", errors.toString()));
                 }
             }
-        } catch (Exception e) {
+        } catch (TestFailureException e) {
+            LOGGER.error("Error while extracting elements from publicKey", e);
             result.setStatus(Status.NOK);
-            if (e instanceof FileNotFoundException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message"));
-            } else {
-                LOGGER.error("Unexpected error", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
-            }
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
+        } catch (FileNotFoundException e) {
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message"));
+        } catch (Exception e) {
+            LOGGER.error("Unexpected error", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }

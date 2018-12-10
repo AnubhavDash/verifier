@@ -50,18 +50,23 @@ public class Test71 extends Test {
             }
             result.setStatus(Status.OK);
 
-        } catch (Exception e) {
-            if (e instanceof TestFailureException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test71.nok.message", ((TestFailureException) e).getArgs()));
-            } else if (e instanceof NoSuchFileException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test71.file.not.found.message", ((NoSuchFileException)e ).getFile()));
-            } else if (e instanceof FileNotFoundException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test71.file.not.found.message", e.getMessage()));
-            }
-            else {
-                LOGGER.error("unexpected error", e);
-            }
+        }
+        catch (TestFailureException e) {
             result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test71.nok.message", e.getArgs()));
+        }
+        catch (NoSuchFileException e) {
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test71.file.not.found.message", e.getFile()));
+        }
+        catch (FileNotFoundException e) {
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test71.file.not.found.message", e.getMessage()));
+        }
+        catch (Exception e) {
+            LOGGER.error("unexpected error", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }

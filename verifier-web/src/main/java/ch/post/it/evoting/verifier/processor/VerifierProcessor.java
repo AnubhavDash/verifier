@@ -49,7 +49,7 @@ public class VerifierProcessor {
     private void init() {
         if (configurationInputDirectory == null || configurationInputDirectory.length() == 0) {
             String currentDirectory = System.getProperty("user.dir");
-            int lastBackslash = currentDirectory.lastIndexOf("\\");
+            int lastBackslash = currentDirectory.lastIndexOf('\\');
             if (lastBackslash != -1) {
                 configurationInputDirectory = currentDirectory.substring(0, lastBackslash);
             }

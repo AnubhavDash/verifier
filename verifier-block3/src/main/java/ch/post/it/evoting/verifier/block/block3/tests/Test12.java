@@ -42,7 +42,10 @@ public class Test12 extends Test {
                 List<BigInteger> decompVotesbigIntList = Flux.fromIterable(Deserializer.fromCsv(balloBox, "decompressedVotes\\.csv", ";", tab -> {
                     BigInteger bigInt = BigInteger.ONE;
                     for (int i = 0; i < tab.length; i++) {
-                        bigInt = bigInt.multiply(new BigInteger(tab[i]));
+                        // ignore write ins
+                        if(!tab[i].contains("#")){
+                            bigInt = bigInt.multiply(new BigInteger(tab[i]));
+                        }
                     }
                     return bigInt;
                 })).collectList().block();

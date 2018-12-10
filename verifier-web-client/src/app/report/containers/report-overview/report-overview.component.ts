@@ -4,6 +4,7 @@ import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {TestDefinition} from "../../models/TestDefinition.interface";
 import {Configuration} from "../../models/Configuration.interface";
+import {environment} from "../../../../environments/environment";
 
 @Component({
   templateUrl: 'report-overview.component.html',
@@ -82,7 +83,7 @@ export class ReportOverviewComponent implements OnInit {
     let ws = new SockJS("https://localhost:8443/socket");
     this.stompClient = Stomp.over(ws);
     let that = this;
-    this.stompClient.connect({}, function (frame) {
+    this.stompClient.connect({authorization: environment.authorizationHeaderValue}, function (frame) {
       that.stompClient.subscribe("/pushUpdate", (message) => {
         if (message.body) {
           let result = JSON.parse(message.body);

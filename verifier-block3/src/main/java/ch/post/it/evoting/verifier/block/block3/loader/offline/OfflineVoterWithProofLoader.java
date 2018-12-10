@@ -81,13 +81,37 @@ public class OfflineVoterWithProofLoader implements VoterWithProofLoader {
         int valuesIndex = string.indexOf(VALUES_TAG) + VALUES_TAG.length();
         String[] values = string.substring(valuesIndex, string.indexOf("\"\"]", valuesIndex + 1)).split(",");
 
-        List<Exponent> responses = Arrays.stream(values).map(val -> new Exponent(TypeConverter.base64ToBigInteger(val), TypeConverter.base64ToBigInteger(q)))
+        List<Exponent> responses = Arrays.stream(values)
+                .map(val -> cleanWriteInsBoundaryQuotes(val))
+                .map(val -> new Exponent(TypeConverter.base64ToBigInteger(val), TypeConverter.base64ToBigInteger(q)))
                 .collect(Collectors.toList());
 
         DecryptionProof result = new DecryptionProof(challenge, responses.toArray(new Exponent[]{}));
         result.setGammaOfCiphertext(gamma.getValue());
         return result;
     }
+
+
+    private static String cleanWriteInsBoundaryQuotes(String original) {
+        final String QUOTE = "\"";
+        if (original != null) {
+            String result = original;
+            boolean corrected = false;
+
+            if (result.startsWith(QUOTE)) {
+                result = result.substring(1);
+                corrected = true;
+            }
+            if (result.endsWith(QUOTE)) {
+                result = result.substring(0, result.length() - 1);
+                corrected = true;
+            }
+            return corrected ? cleanWriteInsBoundaryQuotes(result) : result;
+        } else {
+            return original;
+        }
+    }
+
 
     @Override
     public ElGamalEncryptedBallots getEncyptedBallots() {

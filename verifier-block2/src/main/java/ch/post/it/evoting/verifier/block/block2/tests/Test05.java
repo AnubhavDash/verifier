@@ -3,9 +3,9 @@ package ch.post.it.evoting.verifier.block.block2.tests;
 import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
 import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationDataExtractor;
 import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationStruct;
-import ch.post.it.evoting.verifier.block.block2.secureLog.RegularLogEntry;
-import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogBundleValidationException;
-import ch.post.it.evoting.verifier.block.block2.secureLog.SecureLogEntry;
+import ch.post.it.evoting.verifier.block.block2.securelog.RegularLogEntry;
+import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleValidationException;
+import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
@@ -87,11 +87,13 @@ public class Test05 extends Test {
                     true);
 
             for (File downloadedBbFile : downloadedBallotBoxFiles) {
-                Map<String, String> map = Files.lines(downloadedBbFile.toPath())
-                        .map(line -> extractFromLine(line))
-                        .filter(entry -> entry.getKey() != null)
-                        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
-                mapDownloadedBallotBoxs.putAll(map);
+                try(Stream<String> lines = Files.lines(downloadedBbFile.toPath())) {
+                    Map<String, String> map = lines
+                            .map(Test05::extractFromLine)
+                            .filter(entry -> entry.getKey() != null)
+                            .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+                    mapDownloadedBallotBoxs.putAll(map);
+                }
             }
 
             mapDownloadedBallotBoxs.entrySet()
