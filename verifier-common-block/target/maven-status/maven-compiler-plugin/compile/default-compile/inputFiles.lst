@@ -42,7 +42,6 @@
 /opt/jenkins/workspace/evoting-verifier_release/verifier-common-block/target/generated-sources/xjc/ch/ech/xmlns/ech_0110/_3/VariantBallotResultType.java
 /opt/jenkins/workspace/evoting-verifier_release/verifier-common-block/target/generated-sources/jsonschema2pojo/ch/post/it/evoting/verifier/dto/Signed.java
 /opt/jenkins/workspace/evoting-verifier_release/verifier-common-block/target/generated-sources/xjc/ch/ech/xmlns/ech_0058/_5/NamedMetaDataType.java
-/opt/jenkins/workspace/evoting-verifier_release/verifier-common-block/src/main/java/ch/post/it/evoting/verifier/common/block/tools/JsonWebTokenHelper.java
 /opt/jenkins/workspace/evoting-verifier_release/verifier-common-block/target/generated-sources/xjc/com/scytl/xmlns/decrypt/_1/VoteType.java
 /opt/jenkins/workspace/evoting-verifier_release/verifier-common-block/target/generated-sources/jsonschema2pojo/ch/post/it/evoting/verifier/dto/List.java
 /opt/jenkins/workspace/evoting-verifier_release/verifier-common-block/target/generated-sources/xjc/ch/evoting/xmlns/config/_4/LanguageType.java
@@ -111,7 +110,6 @@
 /opt/jenkins/workspace/evoting-verifier_release/verifier-common-block/target/generated-sources/xjc/ch/ech/xmlns/ech_0155/_3/VotingCardType.java
 /opt/jenkins/workspace/evoting-verifier_release/verifier-common-block/src/main/java/ch/post/it/evoting/verifier/common/block/dto/SecureLogsData.java
 /opt/jenkins/workspace/evoting-verifier_release/verifier-common-block/target/generated-sources/xjc/ch/evoting/xmlns/config/_4/SexType.java
-/opt/jenkins/workspace/evoting-verifier_release/verifier-common-block/src/main/java/ch/post/it/evoting/verifier/common/block/tools/SecureLogsHelper.java
 /opt/jenkins/workspace/evoting-verifier_release/verifier-common-block/target/generated-sources/xjc/ch/evoting/xmlns/config/_4/DwellingAddressType.java
 /opt/jenkins/workspace/evoting-verifier_release/verifier-common-block/target/generated-sources/xjc/ch/ech/xmlns/ech_0007/_6/CantonAbbreviationType.java
 /opt/jenkins/workspace/evoting-verifier_release/verifier-common-block/target/generated-sources/xjc/ch/evoting/xmlns/config/_4/ReferencedElectionInformationType.java

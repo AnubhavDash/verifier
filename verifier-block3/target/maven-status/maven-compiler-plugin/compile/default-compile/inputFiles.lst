@@ -39,8 +39,8 @@
 /opt/jenkins/workspace/evoting-verifier_release/verifier-block3/src/main/java/ch/post/it/evoting/verifier/block/block3/loader/online/mapper/IniMEBasicMapper.java
 /opt/jenkins/workspace/evoting-verifier_release/verifier-block3/src/main/java/com/scytl/products/ov/mixnet/commons/io/ElGamalEncryptedBallotEntryConverter.java
 /opt/jenkins/workspace/evoting-verifier_release/verifier-block3/src/main/java/com/scytl/Main.java
-/opt/jenkins/workspace/evoting-verifier_release/verifier-block3/src/main/java/ch/post/it/evoting/verifier/block/block3/tests/Test06.java
 /opt/jenkins/workspace/evoting-verifier_release/verifier-block3/src/main/java/ch/post/it/evoting/verifier/block/block3/loader/online/mapper/PublicCommitmentMapper.java
+/opt/jenkins/workspace/evoting-verifier_release/verifier-block3/src/main/java/ch/post/it/evoting/verifier/block/block3/tests/Test06.java
 /opt/jenkins/workspace/evoting-verifier_release/verifier-block3/src/main/java/ch/post/it/evoting/verifier/block/block3/tests/Test03.java
 /opt/jenkins/workspace/evoting-verifier_release/verifier-block3/src/main/java/ch/post/it/evoting/verifier/block/block3/BGVerificationProcessor.java
 /opt/jenkins/workspace/evoting-verifier_release/verifier-block3/src/main/java/ch/post/it/evoting/verifier/block/block3/tests/Test73.java

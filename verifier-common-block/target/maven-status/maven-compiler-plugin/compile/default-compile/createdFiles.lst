@@ -41,7 +41,6 @@ ch/evoting/xmlns/config/_4/CandidateType.class
 ch/ech/xmlns/ech_0155/_3/DomainOfInfluenceType.class
 ch/post/it/evoting/verifier/dto/onlinemixing/ExponentsB__1.class
 ch/ech/xmlns/ech_0155/_3/ListDescriptionInformationType.class
-ch/post/it/evoting/verifier/common/block/tools/JsonWebTokenHelper.class
 ch/post/it/evoting/verifier/dto/DomainOfInfluence.class
 ch/ech/xmlns/ech_0155/_3/ListType.class
 ch/evoting/xmlns/config/_4/BallotDescriptionInformationType$BallotDescriptionInfo.class
@@ -303,6 +302,5 @@ ch/evoting/xmlns/config/_4/LanguageType.class
 ch/ech/xmlns/ech_0110/_3/VotingCardsInformationType.class
 ch/evoting/xmlns/config/_4/ListDescriptionInformationType.class
 ch/post/it/evoting/verifier/dto/Question.class
-ch/post/it/evoting/verifier/common/block/tools/SecureLogsHelper.class
 ch/post/it/evoting/verifier/dto/onlinemixing/CommitmentPublicD__1.class
 ch/ech/xmlns/ech_0155/_3/ElectionType.class
