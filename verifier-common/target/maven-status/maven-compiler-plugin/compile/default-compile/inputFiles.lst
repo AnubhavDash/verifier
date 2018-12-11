@@ -1,7 +1,0 @@
-/opt/jenkins/workspace/evoting-verifier_release/verifier-common/src/main/java/ch/post/it/evoting/verifier/common/Category.java
-/opt/jenkins/workspace/evoting-verifier_release/verifier-common/src/main/java/ch/post/it/evoting/verifier/common/Status.java
-/opt/jenkins/workspace/evoting-verifier_release/verifier-common/src/main/java/ch/post/it/evoting/verifier/common/VerifierBlock.java
-/opt/jenkins/workspace/evoting-verifier_release/verifier-common/src/main/java/ch/post/it/evoting/verifier/common/TestDefinition.java
-/opt/jenkins/workspace/evoting-verifier_release/verifier-common/src/main/java/ch/post/it/evoting/verifier/common/Language.java
-/opt/jenkins/workspace/evoting-verifier_release/verifier-common/src/main/java/ch/post/it/evoting/verifier/common/TestResult.java
-/opt/jenkins/workspace/evoting-verifier_release/verifier-common/src/main/java/ch/post/it/evoting/verifier/common/TestResultSeverity.java
