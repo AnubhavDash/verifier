@@ -86,14 +86,25 @@ public class Test05 extends Test {
                     "downloadedBallotBox.*\\.csv",
                     true);
 
+            int[] numberOfMultipleValueFound = {0};
             for (File downloadedBbFile : downloadedBallotBoxFiles) {
                 try(Stream<String> lines = Files.lines(downloadedBbFile.toPath())) {
                     Map<String, String> map = lines
                             .map(Test05::extractFromLine)
                             .filter(entry -> entry.getKey() != null)
                             .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
-                    mapDownloadedBallotBoxs.putAll(map);
+                    map.keySet().forEach( key -> {
+                                if(mapDownloadedBallotBoxs.containsKey(key)){
+                                    numberOfMultipleValueFound[0]++;
+                                }
+                                mapDownloadedBallotBoxs.put(key, map.get(key));
+                            });
                 }
+            }
+
+            //check sizes
+            if(mapDownloadedBallotBoxs.size() != mapSecureLogs.size() || numberOfMultipleValueFound[0] != 0){
+                throw new TestFailureException("the number of encrypted votes in the secure logs and downloadboxes are not equal");
             }
 
             mapDownloadedBallotBoxs.entrySet()
@@ -122,6 +133,10 @@ public class Test05 extends Test {
             }
             if (e instanceof TestFailureException) {
                 String[] args = ((TestFailureException) e).getArgs();
+                if(args.length == 1){
+                    LOGGER.debug("the number of encrypted votes in the secure logs and downloadboxes are not equal", e);
+                    result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.nok.message", "no data", "no data"));
+                }
                 if(args.length == 2){
                     LOGGER.debug("checkpoint entry : "+ args[1] +" the does not verify", e);
                     result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.nok.message", args[1], "no data"));
