@@ -4,7 +4,6 @@ import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
 import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationDataExtractor;
 import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationStruct;
 import ch.post.it.evoting.verifier.block.block2.securelog.RegularLogEntry;
-import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleValidationException;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
@@ -87,13 +86,20 @@ public class Test05 extends Test {
                     true);
 
             for (File downloadedBbFile : downloadedBallotBoxFiles) {
-                try(Stream<String> lines = Files.lines(downloadedBbFile.toPath())) {
+                try (Stream<String> lines = Files.lines(downloadedBbFile.toPath())) {
                     Map<String, String> map = lines
                             .map(Test05::extractFromLine)
                             .filter(entry -> entry.getKey() != null)
                             .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
-                    mapDownloadedBallotBoxs.putAll(map);
+                    if (!mergeMapWithoutDuplicates(mapDownloadedBallotBoxs, map)) {
+                        throw new TestFailureException("Duplicate votingCardId in downloadedBallotBox files");
+                    }
                 }
+            }
+
+            //check sizes
+            if (mapDownloadedBallotBoxs.size() != mapSecureLogs.size()) {
+                throw new TestFailureException("the number of encrypted votes in the secure logs and downloadboxes are not equal");
             }
 
             mapDownloadedBallotBoxs.entrySet()
@@ -111,34 +117,50 @@ public class Test05 extends Test {
                     });
 
             result.setStatus(Status.OK);
-
-        } catch (Exception e) {
+        } catch (FileNotFoundException e) {
+            LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
             result.setStatus(Status.NOK);
-            if (e instanceof RuntimeException) {
-                LOGGER.error("Test failed, cause : " + e.getMessage(), e);
-                if (e.getCause() instanceof SecureLogBundleValidationException) {
-                    //TODO
-                }
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.file.not.found.message", e.getMessage()));
+        } catch (NoSuchFileException e) {
+            LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.file.not.found.message", ((NoSuchFileException) e).getFile()));
+        } catch (TestFailureException e) {
+            result.setStatus(Status.NOK);
+            String[] args = e.getArgs();
+            if (args.length == 1) {
+                LOGGER.debug("the number of encrypted votes in the secure logs and downloadboxes are not equal", e);
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.nok.numberVotes.mismatch.message"));
             }
-            if (e instanceof TestFailureException) {
-                String[] args = ((TestFailureException) e).getArgs();
-                if(args.length == 2){
-                    LOGGER.debug("checkpoint entry : "+ args[1] +" the does not verify", e);
-                    result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.nok.message", args[1], "no data"));
-                }
-                if(args.length == 3){
-                    LOGGER.debug("checkpoint entry and attributes of the entry : "+ args[0] + ", " + args[1] + " the does not verify", e);
-                    result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.nok.message", args[1], args[2]));
-                }
-            } else if (e instanceof NoSuchFileException) {
-                LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.file.not.found.message", ((NoSuchFileException) e).getFile()));
-            } else if (e instanceof FileNotFoundException) {
-                LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.file.not.found.message", e.getMessage()));
+            if (args.length == 2) {
+                LOGGER.debug("checkpoint entry : " + args[1] + " the does not verify", e);
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.nok.message", args[1], "no data"));
             }
+            if (args.length == 3) {
+                LOGGER.debug("checkpoint entry and attributes of the entry : " + args[0] + ", " + args[1] + " the does not verify", e);
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.nok.message", args[1], args[2]));
+            }
+        } catch (Exception e) {
+            LOGGER.error("Unexpected error", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
+    }
+
+    static boolean mergeMapWithoutDuplicates(Map<String, String> map1, Map<String, String> map2) {
+        try {
+            map2.forEach((k, v) -> {
+                if (map1.containsKey(k)) {
+                    throw new IllegalArgumentException("map1 already contains key");
+                } else {
+                    map1.put(k, v);
+                }
+            });
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     static AbstractMap.SimpleEntry<String, String> extractFromLine(String line) {
