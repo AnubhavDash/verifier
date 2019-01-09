@@ -6,13 +6,13 @@
  */
 package com.scytl.products.ov.mixnet.proofs.bg;
 
-import java.math.BigInteger;
-
 import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentParams;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
 import org.apache.log4j.Logger;
+
+import java.math.BigInteger;
 
 abstract class Verifier {
 
@@ -86,6 +86,15 @@ abstract class Verifier {
         }
         return true;
     }
+
+    boolean isValidOpening(Exponent e1, Exponent e2, PublicCommitment commitment, String name) {
+        if (!commitment.verifyOpening(e1, e2, getParams())) {
+            getLogger().error("ERROR(multiExpoBasicArg): the commitment to" + name + "is incorrect");
+            return false;
+        }
+        return true;
+    }
+
 
     boolean isCommitmentTo0(PublicCommitment commitment, String commitmentName, BigInteger order) {
         if (!commitment.verifyOpening(new Exponent[] {new Exponent(0, order) }, new Exponent(0, order), getParams())) {

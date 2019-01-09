@@ -73,7 +73,7 @@ public class MultiExponentiationBasicProofVerifier extends Verifier {
         final PublicCommitment[] cB = initial.getCommitmentPublicB();
         final Ciphertext[] E = initial.getCiphertextsE();
         final Exponent[] a = answer.getExponentsA();
-        final Exponent[] b = answer.getExponentsB();
+        final Exponent b = answer.getExponentB();
         final Exponent r = answer.getExponentR();
         final Exponent s = answer.getExponentS();
         final Randomness tau = answer.getRandomnessTau();
@@ -138,7 +138,7 @@ public class MultiExponentiationBasicProofVerifier extends Verifier {
         return true;
     }
 
-    private boolean checkOpenings(Exponent[] a, Exponent[] b, Exponent r, Exponent s, PublicCommitment comCA,
+    private boolean checkOpenings(Exponent[] a, Exponent b, Exponent r, Exponent s, PublicCommitment comCA,
                                   PublicCommitment comCB) {
         return isValidOpening(a, r, comCA, "a") && isValidOpening(b, s, comCB, "b");
     }
@@ -147,9 +147,9 @@ public class MultiExponentiationBasicProofVerifier extends Verifier {
         return isRandomness(tau, "tau") && hasValidOrder(tau.getExponent(), "tau exponent");
     }
 
-    private boolean checkExponents(final Exponent[] a, final Exponent[] b, final Exponent r, final Exponent s) {
+    private boolean checkExponents(final Exponent[] a, final Exponent b, final Exponent r, final Exponent s) {
         return isValidExponent(a, _n, "a") && isValidExponent(r, "r")
-                && isValidExponent(b, _cryptosystem.getNumberOfMessages(), "b") && isValidExponent(s, "s");
+                && isValidExponent(b, "b") && isValidExponent(s, "s");
     }
 
     private boolean checkGroupElements(PublicCommitment cA0, PublicCommitment[] cB, Ciphertext[] E) {

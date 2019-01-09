@@ -6,11 +6,6 @@
  */
 package com.scytl.products.ov.mixnet.proofs.bg;
 
-import java.math.BigInteger;
-import java.security.NoSuchAlgorithmException;
-
-import org.apache.log4j.Logger;
-
 import com.scytl.products.ov.mixnet.commons.beans.proofs.MultiExponentiationReductionAnswer;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.MultiExponentiationReductionInitialMessage;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
@@ -20,8 +15,11 @@ import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentParams;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
 import com.scytl.products.ov.mixnet.commons.tools.CiphertextTools;
-import com.scytl.products.ov.mixnet.commons.tools.ExponentTools;
 import com.scytl.products.ov.mixnet.commons.tools.RandomOracleHash;
+import org.apache.log4j.Logger;
+
+import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
 
 public class MultiExponentiationReductionProofVerifier extends Verifier {
     private final static Logger LOGGER = Logger.getLogger(MultiExponentiationReductionProofVerifier.class);
@@ -143,10 +141,10 @@ public class MultiExponentiationReductionProofVerifier extends Verifier {
         }
 
         Ciphertext Cprime = CiphertextTools.compVecCiphVecExp(E, vecX);
-        final Exponent[] auxb = ExponentTools.negate(b);
+        //final Exponent[] auxb = ExponentTools.negate(b);
         _cryptosystem.getEncryptionOf1();
-        final Ciphertext aux = _cryptosystem.encryptRaisingToRandom(auxb, _cryptosystem.get0Randomness());
-        Cprime = Cprime.multiply(aux);
+        //final Ciphertext aux = _cryptosystem.encryptRaisingToRandom(auxb, _cryptosystem.get0Randomness());
+        //Cprime = Cprime.multiply(aux);
         return Cprime;
     }
 

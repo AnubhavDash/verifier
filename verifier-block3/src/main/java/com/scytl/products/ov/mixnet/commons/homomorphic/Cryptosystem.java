@@ -18,7 +18,7 @@ public interface Cryptosystem {
 
     Ciphertext encrypt(final Plaintext p, final Randomness r);
 
-    Ciphertext encryptRaisingToRandom(Exponent[] b, Randomness tau);
+    Ciphertext encryptRaisingToRandom(Exponent b, Randomness tau);
 
     Ciphertext getEncryptionOf1();
 
