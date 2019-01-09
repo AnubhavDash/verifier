@@ -38,8 +38,7 @@ public class Test10 extends Test {
         try {
             Path path = inputDirectory.toPath().resolve(Block1TestSuite.PATH_CRYPTO_SETUP);
             EncryptionParameters encryptionParameters = Deserializer.fromJson(path.toFile(), "encryptionParameters\\.json", EncryptionParameters.class);
-            String gString = encryptionParameters.getG();
-            BigInteger g = TypeConverter.stringToBigInteger(gString);
+            BigInteger g = TypeConverter.stringToBigInteger(encryptionParameters.getG());
 
             if (BigInteger.valueOf(2).equals(g)) {
                 result.setStatus(Status.OK);
