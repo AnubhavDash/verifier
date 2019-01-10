@@ -1,21 +1,10 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.block.block3.loader.online.mapper;
 
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.onlinemixing.CiphertextsE;
-import ch.post.it.evoting.verifier.dto.onlinemixing.CommitmentPublicA0__1;
 import ch.post.it.evoting.verifier.dto.onlinemixing.IniMEBasic;
-import ch.post.it.evoting.verifier.dto.onlinemixing.SecondAnswer;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.MultiExponentiationBasicProofInitialMessage;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.MultiExponentiationReductionInitialMessage;
-import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProofSecondAnswer;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
 import com.scytl.products.ov.mixnet.commons.homomorphic.impl.GjosteenElGamalCiphertext;
 import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
@@ -23,9 +12,6 @@ import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroupParams;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
-import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
 import java.util.Arrays;
@@ -37,9 +23,6 @@ public interface IniMEBasicMapper {
 
     IniMEBasicMapper INSTANCE = Mappers.getMapper(IniMEBasicMapper.class);
 
-    /*
-
-
     default MultiExponentiationBasicProofInitialMessage map(IniMEBasic source) {
         PublicCommitment cA0 = PublicCommitmentMapper.INSTANCE.map(source.getCommitmentPublicA0());
         List<PublicCommitment> cB = source.getCommitmentPublicB().stream().map(e -> PublicCommitmentMapper.INSTANCE.map(e)).collect(Collectors.toList());
@@ -49,8 +32,12 @@ public interface IniMEBasicMapper {
     }
 
     default Ciphertext map(CiphertextsE source, ZpGroupParams params) {
-        GjosteenElGamalCiphertext result = new GjosteenElGamalCiphertext(new ZpElement(TypeConverter.stringToBigInteger(source.getGamma()), params), Arrays.stream(source.getPhis().split(","))
-                .map(p -> new ZpElement(TypeConverter.stringToBigInteger(p), params)).collect(Collectors.toList()));
+        GroupElement gamma = new ZpElement(TypeConverter.stringToBigInteger(source.getGamma().split(";")[0]), params);
+        List<GroupElement> phis = Arrays.stream(source.getPhis().split(",")).map(p -> {
+            return new ZpElement(TypeConverter.stringToBigInteger(p.split(";")[0]), params);
+        }).collect(Collectors.toList())
+                ;
+        GjosteenElGamalCiphertext result = new GjosteenElGamalCiphertext(gamma, phis);
 
         return result;
     }

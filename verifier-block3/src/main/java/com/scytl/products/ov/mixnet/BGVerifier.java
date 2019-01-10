@@ -119,10 +119,28 @@ public class BGVerifier {
                         }
                     }
                 }
+            }
+            return getResult(result);
+        } catch (Exception e) {
+            throw new VerifierException("unable to instantiate the loader", e);
+        }
+    }
+
+    public static boolean verifyOnline(final Path outputParentPath, BGResultNotifier notifier) throws VerifierException {
+
+        try {
+
+            JSONProofsReader proofsReader = new JSONProofsReader();
+            final Map<String, Boolean> result = new HashMap<>();
+            Boolean verified;
+
+            final File[] ballotBoxes = outputParentPath.toFile().listFiles(File::isDirectory);
+            for (File ballotBox : ballotBoxes) {
+
                 // online
                 final File[] onlineMixing = ballotBox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
                 //TODO Thierry fix online
-/*                for (File file : onlineMixing) {
+                for (File file : onlineMixing) {
                     OnlineMixingProofLoader onlineMixingProofLoader = new OnlineMixingProofLoader(file.toPath());
                     ZpGroup zpGroup = onlineMixingProofLoader.getZpGroup();
                     ElGamalPublicKey publicKey = onlineMixingProofLoader.getPublicKey();
@@ -146,7 +164,7 @@ public class BGVerifier {
                             result.put(file.getName(), verified);
                         }
                     }
-                }*/
+                }
             }
             return getResult(result);
         } catch (Exception e) {

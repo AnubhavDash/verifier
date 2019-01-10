@@ -18,21 +18,23 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Mapper
 public interface AnsMEBasicMapper {
 
-
     AnsMEBasicMapper INSTANCE = Mappers.getMapper(AnsMEBasicMapper.class);
-    /*
 
-    @Mappings({
-            @Mapping(target = "_a", source = "exponentsA"),
-            @Mapping(target = "_r", source = "exponentR"),
-            @Mapping(target = "_b", source = "exponentsB"),
-            @Mapping(target = "_s", source = "exponentS"),
-            @Mapping(target = "_tau", source = "randomnessTau")
-    })
-    MultiExponentiationBasicProofAnswer map(AnsMEBasic source);
+    default MultiExponentiationBasicProofAnswer map(AnsMEBasic source){
+        List<Exponent> collect = source.getExponentsA().stream().map(this::map).collect(Collectors.toList());
+        Exponent[] a = collect.toArray(new Exponent[collect.size()]);
+        Exponent r = map(source.getExponentR());
+        Exponent b = map(source.getExponentsB());
+        Exponent s = map(source.getExponentS());
+        Randomness tau = map(source.getRandomnessTau());
+        return new MultiExponentiationBasicProofAnswer(a, r, b, s, tau);
+    }
 
     default MultiExponentiationReductionAnswer mapToReduction(AnsMEBasic ansSource, IniMEBasic iniSource){
         MultiExponentiationBasicProofInitialMessage iniBasic = IniMEBasicMapper.INSTANCE.map(iniSource);
@@ -42,12 +44,6 @@ public interface AnsMEBasicMapper {
 
         MultiExponentiationReductionAnswer result = new MultiExponentiationReductionAnswer(ansBasic.getExponentsB(), ansBasic.getExponentS(), iniBasic, ansBasic, iniReduct, ansReduct);
         return result;
-
-            @JsonProperty("iniBasic") final MultiExponentiationBasicProofInitialMessage iniBasic,
-            @JsonProperty("ansBasic") final MultiExponentiationBasicProofAnswer ansBasic,
-            @JsonProperty("iniReduct") final MultiExponentiationReductionInitialMessage iniReduct,
-            @JsonProperty("ansReduct") final MultiExponentiationReductionAnswer ansReduct) {
-
     }
 
     default Exponent map(ExponentsA__1 source){
@@ -70,21 +66,5 @@ public interface AnsMEBasicMapper {
         Randomness result = new GjosteenElGamalRandomness(source.getRandomnessValue().getValue().longValue(), source.getRandomnessValue().getQ());
         return result;
     }
-
-
-    target
-        private final Exponent[] _a;
-        private final Exponent _r;
-        private final Exponent[] _b;
-        private final Exponent _s;
-        private final Randomness _tau;
-
-    source
-        private List<ExponentsA__1> exponentsA = new ArrayList<ExponentsA__1>();
-        private ExponentR__1 exponentR;
-        private ExponentsB__1 exponentsB;
-        private ExponentS__1 exponentS;
-        private RandomnessTau randomnessTau;
-     */
 
 }

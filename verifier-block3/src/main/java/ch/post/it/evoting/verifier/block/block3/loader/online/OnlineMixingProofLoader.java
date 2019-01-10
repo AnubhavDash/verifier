@@ -43,7 +43,13 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
 
     @Override
     public ElGamalEncryptedBallots getEncryptedBallots() throws IOException {
-        return null;
+        ZpGroup zpGroup = this.getZpGroup();
+        return new ElGamalEncryptedBallots(onlineMixing.getVotes()
+                .stream()
+                .map(vote -> new ElGamalEncryptedBallot(
+                        new ZpElement(vote.getGamma(), zpGroup.getParams()),
+                        vote.getPhis().stream().map(p -> new ZpElement(p, zpGroup.getParams())).collect(Collectors.toList())))
+                .collect(Collectors.toList()));
     }
 
     @Override
@@ -80,8 +86,7 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
         List<PublicCommitment> firstAnswers = onlineShuffleProof.getFirstAnswer().stream().map(fa -> new PublicCommitment(new ZpElement(fa.getElement().getValue(), fa.getElement().getP(), fa.getElement().getQ()))).collect(Collectors.toList());
 
         //TODO Thierry fix mapper second answer
-        // ShuffleProofSecondAnswer secondAnswer = SecondAnswerMapper.INSTANCE.map(onlineShuffleProof.getSecondAnswer());
-        ShuffleProofSecondAnswer secondAnswer = null;
+        ShuffleProofSecondAnswer secondAnswer = SecondAnswerMapper.INSTANCE.map(onlineShuffleProof.getSecondAnswer());
         ShuffleProof result = new ShuffleProof(initialMessages.toArray(new PublicCommitment[]{}), firstAnswers.toArray(new PublicCommitment[]{}), secondAnswer);
         return result;
     }
@@ -109,6 +114,6 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
 
     @Override
     public CommitmentParams getCommitmentParams(ZpGroup zpGroup, int numberOfVoters) throws IOException {
-        return null;
+        return new CommitmentParams(zpGroup, numberOfVoters);
     }
 }
