@@ -17,7 +17,7 @@ public class MultiExponentiationBasicProofAnswer {
 
     private final Exponent _r;
 
-    private final Exponent[] _b;
+    private final Exponent _b;
 
     private final Exponent _s;
 
@@ -31,7 +31,7 @@ public class MultiExponentiationBasicProofAnswer {
             @JsonProperty("exponentS") final Exponent s, @JsonProperty("randomnessTau") final Randomness tau) {
         _a = a;
         _r = r;
-        _b = new Exponent[]{b};
+        _b = b;
         _s = s;
         _tau = tau;
     }
@@ -53,7 +53,7 @@ public class MultiExponentiationBasicProofAnswer {
     /**
      * @return Returns the b.
      */
-    public Exponent[] getExponentsB() {
+    public Exponent getExponentB() {
         return _b;
     }
 
@@ -80,10 +80,7 @@ public class MultiExponentiationBasicProofAnswer {
             strbldr.append(a_a.toString());
         }
         strbldr.append(_r.toString());
-
-        for (final Exponent a_b : _b) {
-            strbldr.append(a_b.toString());
-        }
+        strbldr.append(_b.toString());
 
         strbldr.append(_s.toString());
 

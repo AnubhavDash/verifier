@@ -38,7 +38,13 @@ public class PublicCommitment {
 
     public boolean verifyOpening(final Exponent[] exponents, final Exponent exponentR, final CommitmentParams params) {
         final PublicCommitment newCommitment =
-            new PrivateCommitment(exponents, exponentR, params).makePublicCommitment();
+                new PrivateCommitment(exponents, exponentR, params).makePublicCommitment();
+        return _commitment.equals(newCommitment.getElement());
+    }
+
+    public boolean verifyOpening(final Exponent exponent, final Exponent exponentR, final CommitmentParams params) {
+        final PublicCommitment newCommitment =
+                new PrivateCommitment(exponent, exponentR, params).makePublicCommitment();
         return _commitment.equals(newCommitment.getElement());
     }
 
@@ -48,10 +54,10 @@ public class PublicCommitment {
 
     @Override
     public String toString() {
-    	StringBuilder builder = new StringBuilder();
-    	builder.append("PublicCommitment [_commitment=");
-    	builder.append(_commitment);
-    	builder.append("]");
-    	return builder.toString();
+        StringBuilder builder = new StringBuilder();
+        builder.append("PublicCommitment [_commitment=");
+        builder.append(_commitment);
+        builder.append("]");
+        return builder.toString();
     }
 }

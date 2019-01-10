@@ -111,6 +111,7 @@
         <module>verifier-web-client</module>
         <module>verifier-web</module>
         <module>verifier-assembly</module>
+        <module>verifier-securelogreverser-cli</module>
     </modules>
 
     <dependencies>
