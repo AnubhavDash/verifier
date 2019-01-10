@@ -50,18 +50,4 @@ public interface IniMEBasicMapper {
         return result;
     }
 
-    /*
-        target
-            private final PublicCommitment _cA0;
-            private final PublicCommitment[] _cB;
-            private final Ciphertext[] _E;
-
-        source
-            private CommitmentPublicA0__1 commitmentPublicA0;
-            private List<CommitmentPublicB__2> commitmentPublicB = new ArrayList<CommitmentPublicB__2>();
-            private List<CiphertextsE> ciphertextsE = new ArrayList<CiphertextsE>();
-
-
-     */
-
 }

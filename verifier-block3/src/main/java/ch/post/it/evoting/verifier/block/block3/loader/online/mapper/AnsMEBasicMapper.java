@@ -1,21 +1,11 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.block.block3.loader.online.mapper;
 
 import ch.post.it.evoting.verifier.dto.onlinemixing.*;
-import com.scytl.products.ov.mixnet.commons.beans.proofs.*;
+import com.scytl.products.ov.mixnet.commons.beans.proofs.MultiExponentiationBasicProofAnswer;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Randomness;
 import com.scytl.products.ov.mixnet.commons.homomorphic.impl.GjosteenElGamalRandomness;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -34,16 +24,6 @@ public interface AnsMEBasicMapper {
         Exponent s = map(source.getExponentS());
         Randomness tau = map(source.getRandomnessTau());
         return new MultiExponentiationBasicProofAnswer(a, r, b, s, tau);
-    }
-
-    default MultiExponentiationReductionAnswer mapToReduction(AnsMEBasic ansSource, IniMEBasic iniSource){
-        MultiExponentiationBasicProofInitialMessage iniBasic = IniMEBasicMapper.INSTANCE.map(iniSource);
-        MultiExponentiationReductionInitialMessage iniReduct = IniMEBasicMapper.INSTANCE.mapToReduction(iniSource);
-        MultiExponentiationBasicProofAnswer ansBasic = map(ansSource);
-        MultiExponentiationReductionAnswer ansReduct = null;
-
-        MultiExponentiationReductionAnswer result = new MultiExponentiationReductionAnswer(ansBasic.getExponentsB(), ansBasic.getExponentS(), iniBasic, ansBasic, iniReduct, ansReduct);
-        return result;
     }
 
     default Exponent map(ExponentsA__1 source){

@@ -3,9 +3,8 @@ package ch.post.it.evoting.verifier.block.block3.loader.online;
 import ch.post.it.evoting.verifier.block.block3.loader.*;
 import ch.post.it.evoting.verifier.block.block3.loader.online.mapper.SecondAnswerMapper;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
-import ch.post.it.evoting.verifier.dto.OnlineDecryptionProof;
-import ch.post.it.evoting.verifier.dto.onlinemixing.OnlineShuffleProof;
 import ch.post.it.evoting.verifier.dto.onlinemixing.OnlineMixing;
+import ch.post.it.evoting.verifier.dto.onlinemixing.OnlineShuffleProof;
 import com.scytl.decrypt.beans.DecryptionProof;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallot;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;
@@ -85,7 +84,6 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
         List<PublicCommitment> initialMessages = onlineShuffleProof.getInitialMessage().stream().map(im -> new PublicCommitment(new ZpElement(im.getElement().getValue(), im.getElement().getP(), im.getElement().getQ()))).collect(Collectors.toList());
         List<PublicCommitment> firstAnswers = onlineShuffleProof.getFirstAnswer().stream().map(fa -> new PublicCommitment(new ZpElement(fa.getElement().getValue(), fa.getElement().getP(), fa.getElement().getQ()))).collect(Collectors.toList());
 
-        //TODO Thierry fix mapper second answer
         ShuffleProofSecondAnswer secondAnswer = SecondAnswerMapper.INSTANCE.map(onlineShuffleProof.getSecondAnswer());
         ShuffleProof result = new ShuffleProof(initialMessages.toArray(new PublicCommitment[]{}), firstAnswers.toArray(new PublicCommitment[]{}), secondAnswer);
         return result;

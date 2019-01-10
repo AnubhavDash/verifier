@@ -2,13 +2,9 @@ package ch.post.it.evoting.verifier.block.block3.loader.online.mapper;
 
 import ch.post.it.evoting.verifier.dto.onlinemixing.*;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.*;
-import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
-import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -29,7 +25,6 @@ public interface SecondAnswerMapper {
     default ProductProofMessage map(MsgPA source){
         PublicCommitment cb = new PublicCommitment(PublicCommitmentMapper.INSTANCE.map(source.getCommitmentPublicB().getElement()));
         SingleValueProductProofInitialMessage iniSVA = map(source.getIniSVA());
-        // TODO Thierry do the 3 mappers below in order to create the result object
         SingleValueProductProofAnswer ansVa = map(source.getAnsSVA());
         HadamardProductProofInitialMessage iniHpa = map(source.getIniHPA());
         HadamardProductProofAnswer ansHpa = map(source.getAnsHPA());
