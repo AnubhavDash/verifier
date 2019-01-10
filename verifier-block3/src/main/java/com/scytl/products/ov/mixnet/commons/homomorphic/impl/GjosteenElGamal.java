@@ -6,15 +6,15 @@
  */
 package com.scytl.products.ov.mixnet.commons.homomorphic.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.scytl.products.ov.mixnet.commons.homomorphic.Cryptosystem;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Plaintext;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Randomness;
 import com.scytl.products.ov.mixnet.commons.mathematical.Group;
 import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation of the Gjosteen ElGamal cryptosystem.
@@ -164,13 +164,11 @@ public class GjosteenElGamal implements Cryptosystem {
         return plaintext;
     }
 
-    public GjosteenElGamalCiphertext encryptRaisingToRandom(final Exponent[] b, final Randomness tau) {
-        if (b.length != (_publicKey.length)) {
-            System.out.println("not expected length");
-        }
+    public GjosteenElGamalCiphertext encryptRaisingToRandom(final Exponent b, final Randomness tau) {
         GroupElement[] aux = new GroupElement[_publicKey.length];
+        GroupElement aux2 = _group.getGenerator().exponentiate(b);
         for (int i = 0; i < aux.length; i++) {
-            aux[i] = _group.getGenerator().exponentiate(b[i]);
+            aux[i] = aux2;
         }
         Plaintext p = new GjosteenElGamalPlaintext(aux);
         return encrypt(p, tau);

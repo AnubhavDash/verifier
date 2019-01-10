@@ -16,7 +16,7 @@ import java.util.AbstractMap;
 public class Test06 extends Test {
 
     private static final Logger LOGGER = Logger.getLogger(Test06.class);
-    //private final BGVerificationProcessor processor = BGVerificationProcessor.getInstanceAndRegister(this);
+    private final BGVerificationProcessor processor = BGVerificationProcessor.getInstanceAndRegister(this);
 
     @Override
     public TestDefinition getTestDefinition() {
@@ -34,8 +34,7 @@ public class Test06 extends Test {
     @Override
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
-        result.setStatus(Status.NA);
-        /*try {
+        try {
             processor.register(this);
             processor.executeProcess(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES));
 
@@ -48,7 +47,7 @@ public class Test06 extends Test {
             result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         } finally {
             processor.unregister(this);
-        }*/
+        }
         return result;
     }
 }
