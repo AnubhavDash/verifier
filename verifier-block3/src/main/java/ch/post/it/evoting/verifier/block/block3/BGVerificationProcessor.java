@@ -52,14 +52,14 @@ public class BGVerificationProcessor {
         this.path = null;
     }
 
-    public synchronized void executeProcess(Path path) {
+    public void executeProcess(Path path) {
         executeProcess(path, false);
     }
-    public synchronized void executeProcessOnline(Path path) {
+    public void executeProcessOnline(Path path) {
         executeProcess(path, true);
     }
 
-    public synchronized void executeProcess(Path path, boolean online) {
+    private synchronized void executeProcess(Path path, boolean online) {
         if (this.path == null) {
             this.path = path;
         } else if (!this.path.equals(path)) {
