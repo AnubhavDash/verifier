@@ -102,11 +102,20 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
 
     @Override
     public List<GjosteenElGamalPlaintext> getPlaintexts() {
+        // TODO Thierry getPlaintexts()
+        ZpGroup zpGroup = this.getZpGroup();
+        GroupElement[] m;
+        List<ZpElement> collect = onlineMixing.getShuffledVotes().stream().map(v -> {
+            BigInteger[] bigIntegers = v.getPhis().toArray(new BigInteger[0]);
+            return new ZpElement(bigIntegers[0], bigIntegers[1], bigIntegers[2]);
+        }).collect(Collectors.toList());
+        //collect.stream().map(z -> return new GjosteenElGamalPlaintext())
         return null;
     }
 
     @Override
     public DecryptionProof[] getProofs() {
+        // TODO Thierry getProofs()
         return new DecryptionProof[0];
     }
 

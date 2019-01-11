@@ -129,8 +129,6 @@ public class BGVerifier {
     public static boolean verifyOnline(final Path outputParentPath, BGResultNotifier notifier) throws VerifierException {
 
         try {
-
-            JSONProofsReader proofsReader = new JSONProofsReader();
             final Map<String, Boolean> result = new HashMap<>();
             Boolean verified;
 
@@ -139,7 +137,6 @@ public class BGVerifier {
 
                 // online
                 final File[] onlineMixing = ballotBox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
-                //TODO Thierry fix online
                 for (File file : onlineMixing) {
                     OnlineMixingProofLoader onlineMixingProofLoader = new OnlineMixingProofLoader(file.toPath());
                     ZpGroup zpGroup = onlineMixingProofLoader.getZpGroup();

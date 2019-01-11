@@ -7,6 +7,7 @@
 package com.scytl.decrypt;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -22,6 +23,9 @@ import ch.post.it.evoting.verifier.block.block3.loader.VoterWithProofLoader;
 import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflineEncryptionParametersLoader;
 import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflinePublicKeyLoader;
 import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflineVoterWithProofLoader;
+import ch.post.it.evoting.verifier.block.block3.loader.online.OnlineMixingProofLoader;
+import com.scytl.products.ov.mixnet.commons.exceptions.VerifierException;
+import com.scytl.products.ov.mixnet.commons.homomorphic.impl.GjosteenElGamal;
 import org.apache.log4j.Logger;
 
 import com.scytl.decrypt.beans.DecryptionProof;
@@ -39,6 +43,35 @@ import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
 public class DecryptVerifier {
 
 	private final static Logger LOGGER = Logger.getLogger(DecryptVerifier.class);
+
+	public static int verifyOnline(Path rootPath) {
+		try{
+				OnlineMixingProofLoader onlineMixingProofLoader = new OnlineMixingProofLoader(rootPath);
+				ZpGroup zPGroup = onlineMixingProofLoader.getZpGroup();
+				ElGamalPublicKey publicKey = onlineMixingProofLoader.getPublicKey();
+				ElGamalEncryptedBallots ballots = onlineMixingProofLoader.getEncyptedBallots();
+				List<GjosteenElGamalPlaintext> plaintexts = onlineMixingProofLoader.getPlaintexts();
+				DecryptionProof[] proofs = onlineMixingProofLoader.getProofs();
+
+			if (ballots.getBallots().isEmpty()) {
+				LOGGER.info("There are no ballots to be decrypted.");
+				return -1;
+			}
+			if (plaintexts.isEmpty()) {
+				LOGGER.info("There are no decrypted ballots.");
+				return -1;
+			}
+			if (proofs.length == 0) {
+				LOGGER.info("There are no decryption proofs.");
+				return -1;
+			}
+			return validate(ballots.getBallots(), plaintexts, proofs, publicKey, zPGroup);
+		} catch (IOException e) {
+			LOGGER.error("Problems loading files: " + e.getMessage());
+			return -2;
+		}
+	}
+
 
 	public static int verify(Path rootPath) {
         try {
@@ -188,4 +221,5 @@ public class DecryptVerifier {
 			return plaintextsOutput;
 		}
 	}
+
 }
