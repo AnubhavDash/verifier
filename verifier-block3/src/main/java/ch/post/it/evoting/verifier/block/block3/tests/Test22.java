@@ -1,11 +1,3 @@
-/*
- * ------------------------------------------------------------------------------------------------
- * Copyright 2014 by Swiss Post, Information Technology Services
- * ------------------------------------------------------------------------------------------------
- * $Id$
- * ------------------------------------------------------------------------------------------------
- */
-
 package ch.post.it.evoting.verifier.block.block3.tests;
 
 import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
@@ -21,9 +13,9 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.util.AbstractMap;
 
-public class Test21 extends Test {
+public class Test22 extends Test {
 
-    private static final Logger LOGGER = Logger.getLogger(Test21.class);
+    private static final Logger LOGGER = Logger.getLogger(Test22.class);
     private final BGVerificationProcessor processor = BGVerificationProcessor.getInstanceAndRegister(this);
 
     @Override
@@ -32,9 +24,9 @@ public class Test21 extends Test {
         TestDefinition testDefinition = new TestDefinition();
         testDefinition.setBlockId(3);
         testDefinition.setCategory(Category.COMPLETENESS);
-        testDefinition.setId(21);
-        testDefinition.setName("checkShuffleArgumentOnline");
-        testDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test21.description"));
+        testDefinition.setId(22);
+        testDefinition.setName("checkProductArgument");
+        testDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test22.description"));
 
         return testDefinition;
     }
@@ -46,7 +38,7 @@ public class Test21 extends Test {
             processor.register(this);
             processor.executeOnlineProcess(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES));
 
-            AbstractMap.SimpleEntry<Status, String> status = processor.getStatus(BGVerificationProcessor.TestType.ShuffleProof);
+            AbstractMap.SimpleEntry<Status, String> status = processor.getStatus(BGVerificationProcessor.TestType.ProductProof);
             result.setStatus(status.getKey());
             result.setMessage(TranslationHelper.getSameMessageMultiLanguage(status.getValue()));
         } catch (Exception e) {
