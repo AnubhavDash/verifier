@@ -44,7 +44,7 @@ public class Test21 extends Test {
         TestResult result = new TestResult(getTestDefinition());
         try {
             processor.register(this);
-            processor.executeOnlineProcess(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES));
+            processor.executeProcessOnline(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES));
 
             AbstractMap.SimpleEntry<Status, String> status = processor.getStatus(BGVerificationProcessor.TestType.ShuffleProof);
             result.setStatus(status.getKey());

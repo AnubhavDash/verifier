@@ -55,7 +55,7 @@ public class BGVerificationProcessor {
     public synchronized void executeProcess(Path path) {
         executeProcess(path, false);
     }
-    public synchronized void executeOnlineProcess(Path path) {
+    public synchronized void executeProcessOnline(Path path) {
         executeProcess(path, true);
     }
 

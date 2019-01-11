@@ -13,9 +13,9 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.util.AbstractMap;
 
-public class Test22 extends Test {
+public class Test23 extends Test {
 
-    private static final Logger LOGGER = Logger.getLogger(Test22.class);
+    private static final Logger LOGGER = Logger.getLogger(Test23.class);
     private final BGVerificationProcessor processor = BGVerificationProcessor.getInstanceAndRegister(this);
 
     @Override
@@ -24,9 +24,9 @@ public class Test22 extends Test {
         TestDefinition testDefinition = new TestDefinition();
         testDefinition.setBlockId(3);
         testDefinition.setCategory(Category.COMPLETENESS);
-        testDefinition.setId(22);
-        testDefinition.setName("checkProductArgumentOnline");
-        testDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test22.description"));
+        testDefinition.setId(23);
+        testDefinition.setName("checkHadamardArgumentOnline");
+        testDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test23.description"));
 
         return testDefinition;
     }
@@ -38,7 +38,7 @@ public class Test22 extends Test {
             processor.register(this);
             processor.executeProcessOnline(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES));
 
-            AbstractMap.SimpleEntry<Status, String> status = processor.getStatus(BGVerificationProcessor.TestType.ProductProof);
+            AbstractMap.SimpleEntry<Status, String> status = processor.getStatus(BGVerificationProcessor.TestType.HadamardProductProof);
             result.setStatus(status.getKey());
             result.setMessage(TranslationHelper.getSameMessageMultiLanguage(status.getValue()));
         } catch (Exception e) {
