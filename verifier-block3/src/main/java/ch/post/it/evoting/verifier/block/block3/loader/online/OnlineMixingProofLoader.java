@@ -68,7 +68,7 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
     }
 
     @Override
-    public ElGamalEncryptedBallots getReEncryptedBallots() throws IOException {
+    public ElGamalEncryptedBallots getReEncryptedBallots() {
         ZpGroup zpGroup = this.getZpGroup();
         return new ElGamalEncryptedBallots(onlineMixing.getShuffledVotes()
                 .stream()
@@ -102,15 +102,19 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
 
     @Override
     public List<GjosteenElGamalPlaintext> getPlaintexts() {
-        // TODO Thierry getPlaintexts()
         ZpGroup zpGroup = this.getZpGroup();
-        GroupElement[] m;
-        List<ZpElement> collect = onlineMixing.getShuffledVotes().stream().map(v -> {
-            BigInteger[] bigIntegers = v.getPhis().toArray(new BigInteger[0]);
-            return new ZpElement(bigIntegers[0], bigIntegers[1], bigIntegers[2]);
-        }).collect(Collectors.toList());
-        //collect.stream().map(z -> return new GjosteenElGamalPlaintext())
-        return null;
+        List<GjosteenElGamalPlaintext> gjosteenElGamalPlaintexts = onlineMixing.getVotes()
+                .stream()
+                .map(vote -> {
+                    return new GjosteenElGamalPlaintext(
+                            vote.getPhis()
+                                    .stream()
+                                    .map(phis -> new ZpElement(phis, zpGroup.getParams()))
+                                    .collect(Collectors.toList()).toArray(new GroupElement[]{}));
+                })
+                .collect(Collectors.toList());
+
+        return gjosteenElGamalPlaintexts;
     }
 
     @Override
