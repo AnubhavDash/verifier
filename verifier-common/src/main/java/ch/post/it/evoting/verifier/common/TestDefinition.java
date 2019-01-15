@@ -1,5 +1,7 @@
 package ch.post.it.evoting.verifier.common;
 
+import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
 
 public class TestDefinition {
@@ -7,6 +9,7 @@ public class TestDefinition {
     private int blockId;
     private String name;
     private Category category;
+    private EnumSet<TestTrait> testTraits = EnumSet.noneOf( TestTrait.class);
     private Map<Language, String> description;
 
     public int getId() {
@@ -41,11 +44,17 @@ public class TestDefinition {
         this.category = category;
     }
 
-    public Map<Language, String> getDescription() {
-        return description;
-    }
+    public boolean containsTestTrait( TestTrait trait ) { return this.testTraits.contains(trait); }
 
-    public void setDescription(Map<Language, String> description) {
-        this.description = description;
-    }
+    public boolean containsAnyTestTrait( List<TestTrait> traits ) { return !this.testTraits.isEmpty() && this.testTraits.stream().anyMatch(t -> traits.contains(t)); }
+
+    public void addTestTrait(TestTrait trait) { this.testTraits.add(trait); }
+
+    public void removeTestTrait(TestTrait trait) { this.testTraits.remove(trait); }
+
+    public EnumSet<TestTrait> getTestTraits() { return this.testTraits; }
+
+    public Map<Language, String> getDescription() { return description; }
+
+    public void setDescription(Map<Language, String> description) { this.description = description; }
 }
