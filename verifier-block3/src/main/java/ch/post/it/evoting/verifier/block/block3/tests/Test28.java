@@ -43,8 +43,6 @@ public class Test28 extends Test {
                 final File[] onlineMixings = ballotBox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
                 for (File file : onlineMixings) {
 
-                    Optional<String> optionalfirst = Files.lines(file.toPath()).findFirst();
-
                     OnlineMixing onlineMixing = Deserializer.fromJson(Files.readAllBytes(file.toPath()), OnlineMixing.class);
                     List<String> commitmentParameters = onlineMixing.getCommitmentParameters();
                     if (commitmentParameters.isEmpty()) {
