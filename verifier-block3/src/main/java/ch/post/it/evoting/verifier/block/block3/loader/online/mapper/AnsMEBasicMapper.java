@@ -43,7 +43,7 @@ public interface AnsMEBasicMapper {
     }
 
     default Randomness map(RandomnessTau source){
-        Randomness result = new GjosteenElGamalRandomness(source.getRandomnessValue().getValue().longValue(), source.getRandomnessValue().getQ());
+        Randomness result = new GjosteenElGamalRandomness(source.getRandomnessValue().getValue(), source.getRandomnessValue().getQ());
         return result;
     }
 

@@ -22,6 +22,10 @@ public class GjosteenElGamalRandomness implements Randomness {
         this(new Exponent(BigInteger.valueOf(value), order));
     }
 
+    public GjosteenElGamalRandomness(final BigInteger value, final BigInteger order) {
+        this(new Exponent(value, order));
+    }
+
     @JsonCreator
     public GjosteenElGamalRandomness(@JsonProperty("randomnessValue") final Exponent r) {
         _r = r;

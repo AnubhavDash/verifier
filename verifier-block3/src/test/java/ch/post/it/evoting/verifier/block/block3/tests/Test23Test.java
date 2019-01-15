@@ -10,7 +10,6 @@ import java.io.File;
 
 public class Test23Test {
 
-    @Ignore
     @Test
     public void executeTestOK() {
         TestResult result = new Test23().executeTest(new File(getClass().getResource("/Test23/OK").getFile()));

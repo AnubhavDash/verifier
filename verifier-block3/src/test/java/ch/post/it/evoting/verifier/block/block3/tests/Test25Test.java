@@ -3,14 +3,12 @@ package ch.post.it.evoting.verifier.block.block3.tests;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestResult;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
 
 public class Test25Test {
 
-    @Ignore
     @Test
     public void executeTestOK() {
         TestResult result = new Test25().executeTest(new File(getClass().getResource("/Test25/OK").getFile()));

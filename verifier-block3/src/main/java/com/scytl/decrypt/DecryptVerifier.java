@@ -6,17 +6,6 @@
  */
 package com.scytl.decrypt;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-
 import ch.post.it.evoting.verifier.block.block3.loader.EncryptionParametersLoader;
 import ch.post.it.evoting.verifier.block.block3.loader.PublicKeyLoader;
 import ch.post.it.evoting.verifier.block.block3.loader.VoterWithProofLoader;
@@ -24,10 +13,6 @@ import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflineEncryption
 import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflinePublicKeyLoader;
 import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflineVoterWithProofLoader;
 import ch.post.it.evoting.verifier.block.block3.loader.online.OnlineMixingProofLoader;
-import com.scytl.products.ov.mixnet.commons.exceptions.VerifierException;
-import com.scytl.products.ov.mixnet.commons.homomorphic.impl.GjosteenElGamal;
-import org.apache.log4j.Logger;
-
 import com.scytl.decrypt.beans.DecryptionProof;
 import com.scytl.decrypt.proofs.decrypt.DecryptionProofVerifier;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallot;
@@ -39,6 +24,17 @@ import com.scytl.products.ov.mixnet.commons.io.ZpGroupReader;
 import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
+import org.apache.log4j.Logger;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 
 public class DecryptVerifier {
 
@@ -49,7 +45,7 @@ public class DecryptVerifier {
 				OnlineMixingProofLoader onlineMixingProofLoader = new OnlineMixingProofLoader(rootPath);
 				ZpGroup zPGroup = onlineMixingProofLoader.getZpGroup();
 				ElGamalPublicKey publicKey = onlineMixingProofLoader.getPublicKey();
-				ElGamalEncryptedBallots ballots = onlineMixingProofLoader.getEncyptedBallots();
+				ElGamalEncryptedBallots ballots = onlineMixingProofLoader.getReEncryptedBallots();
 				List<GjosteenElGamalPlaintext> plaintexts = onlineMixingProofLoader.getPlaintexts();
 				DecryptionProof[] proofs = onlineMixingProofLoader.getProofs();
 

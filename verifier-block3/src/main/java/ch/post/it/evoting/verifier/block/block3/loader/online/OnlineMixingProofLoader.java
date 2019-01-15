@@ -23,6 +23,7 @@ import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroupParams;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentParams;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
+import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -33,13 +34,10 @@ import java.util.stream.Collectors;
 
 public class OnlineMixingProofLoader implements EncryptedBallotsLoader, EncryptionParametersLoader, PublicKeyLoader, ReEncryptedBallotsLoader, ShuffleProofLoader, VoterWithProofLoader, CommitmentParametersLoader {
 
-    //private final Path path;
     private final OnlineMixing onlineMixing;
 
     public OnlineMixingProofLoader(Path path) throws IOException {
-        //this.path=path;
         this.onlineMixing = load(path);
-        //this.other = mapper(this.onlineMixing.monStringQuiFaitchier);
     }
 
     protected OnlineMixing load(Path path) throws IOException {
@@ -49,7 +47,7 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
     @Override
     public ElGamalEncryptedBallots getEncryptedBallots() throws IOException {
         ZpGroup zpGroup = this.getZpGroup();
-        return new ElGamalEncryptedBallots(onlineMixing.getVotes()
+        return new ElGamalEncryptedBallots(onlineMixing.getPreviousVotes()
                 .stream()
                 .map(vote -> new ElGamalEncryptedBallot(
                         new ZpElement(vote.getGamma(), zpGroup.getParams()),
@@ -67,6 +65,13 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
 
     @Override
     public ElGamalPublicKey getPublicKey() throws IOException {
+        ZpGroupParams params = new ZpGroupParams(onlineMixing.getPreviousVoteEncryptionKey().getZpSubgroup().getP(), onlineMixing.getPreviousVoteEncryptionKey().getZpSubgroup().getQ());
+        ZpGroup zpGroup = new ZpGroup(params, new ZpElement(onlineMixing.getPreviousVoteEncryptionKey().getZpSubgroup().getG(), params));
+        List<GroupElement> pubKeys = onlineMixing.getPreviousVoteEncryptionKey().getElements().stream().map(bigInt -> new ZpElement(bigInt, params)).collect(Collectors.toList());
+        return new ElGamalPublicKey(pubKeys, zpGroup);
+    }
+
+    public ElGamalPublicKey getDecryptionPublicKey() throws IOException {
         ZpGroupParams params = new ZpGroupParams(onlineMixing.getVoteEncryptionKey().getZpSubgroup().getP(), onlineMixing.getVoteEncryptionKey().getZpSubgroup().getQ());
         ZpGroup zpGroup = new ZpGroup(params, new ZpElement(onlineMixing.getVoteEncryptionKey().getZpSubgroup().getG(), params));
         List<GroupElement> pubKeys = onlineMixing.getVoteEncryptionKey().getElements().stream().map(bigInt -> new ZpElement(bigInt, params)).collect(Collectors.toList());
@@ -125,14 +130,26 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
 
     @Override
     public DecryptionProof[] getProofs() {
-        return onlineMixing.getDecryptionProofs()
-                    .stream()
-                    .map(dpStr -> createDecryptionProofFromString(dpStr))
-                    .collect(Collectors.toList())
-                    .toArray(new DecryptionProof[]{});
+        Flux<BigInteger> gammas = Flux.fromStream(this.onlineMixing.getShuffledVotes().stream().map(sv -> sv.getGamma()));
+
+        DecryptionProof[] decryptionProofs =
+                Flux.fromStream(onlineMixing.getDecryptionProofs().stream())
+                        .zipWith(gammas)
+                        .map(tuple -> createDecryptionProofFromString(tuple.getT1(), tuple.getT2()))
+                        .collectList()
+                        .block()
+                        .toArray(new DecryptionProof[]{});
+
+        return decryptionProofs;
     }
 
-    private DecryptionProof createDecryptionProofFromString(String str){
+    /*private void updateDecryptionProofsSetGamma(DecryptionProof[] decryptionProofs, List<BigInteger> gammas) {
+        for(int i = 0; i < decryptionProofs.length; i++ ){
+            decryptionProofs[i].setGammaOfCiphertext(gammas.get(i));
+        }
+    }*/
+
+    private DecryptionProof createDecryptionProofFromString(String str, BigInteger gammaOfCiphertext) {
         Exponent challenge = null;
         Exponent[] response = new Exponent[]{};
         try {
@@ -153,12 +170,35 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
             e.printStackTrace();
             throw new VerifierException("Todo");
         }
+        DecryptionProof decryptionProof = new DecryptionProof(challenge, response);
+        decryptionProof.setGammaOfCiphertext(gammaOfCiphertext);
 
-        return new DecryptionProof(challenge, response);
+        return decryptionProof;
     }
 
     @Override
     public CommitmentParams getCommitmentParams(ZpGroup zpGroup, int numberOfVoters) throws IOException {
-        return new CommitmentParams(zpGroup, numberOfVoters);
+        CommitmentParams result = null;
+        List<String> commitmentParameters = onlineMixing.getCommitmentParameters();
+        //[0] p, [1] q, [2] g, [3] h, [4] n G
+        if (commitmentParameters.size() >= 5) {
+            GroupElement h = new ZpElement(commitmentParameters.get(3), zpGroup.getParams());
+            GroupElement[] g = commitmentParameters.stream()
+                    .skip(4)
+                    .map(str -> new ZpElement(TypeConverter.stringToBigInteger(str), zpGroup.getParams()))
+                    .collect(Collectors.toList()).toArray(new GroupElement[]{});
+            result = new CommitmentParams(zpGroup, h, g);
+        }
+        return result;
+    }
+
+    public CommitmentParams getCommitmentParams() throws IOException {
+        final int N = getEncryptedBallots().getBallots().size();
+        int n = 0;
+        if (N != 0) {
+            final int m = getShuffleProof().getInitialMessage().length;
+            n = N / m;
+        }
+        return getCommitmentParams(getZpGroup(), n);
     }
 }

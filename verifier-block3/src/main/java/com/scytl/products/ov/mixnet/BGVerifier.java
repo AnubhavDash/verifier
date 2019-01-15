@@ -18,7 +18,6 @@ import com.scytl.products.ov.mixnet.commons.exceptions.VerifierException;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
 import com.scytl.products.ov.mixnet.commons.homomorphic.impl.ElGamalPublicKey;
 import com.scytl.products.ov.mixnet.commons.homomorphic.impl.GjosteenElGamal;
-import com.scytl.products.ov.mixnet.commons.io.BGReader;
 import com.scytl.products.ov.mixnet.commons.io.JSONProofsReader;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentParams;
@@ -145,7 +144,8 @@ public class BGVerifier {
                     final ElGamalEncryptedBallots encryptedBallots = onlineMixingProofLoader.getEncryptedBallots();
                     if (encryptedBallots.getBallots().isEmpty()) {
                         LOGGER.info("0 ballots, nothing to mix!");
-                        return true;
+                        notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.OK, null);
+                        //return true;
                     } else {
 
                         LOGGER.debug("Re-encrypted ballots");

@@ -1,22 +1,23 @@
 package ch.post.it.evoting.verifier.block.block3.tests;
 
 import ch.post.it.evoting.verifier.block.block3.Block3TestSuite;
+import ch.post.it.evoting.verifier.block.block3.loader.online.OnlineMixingProofLoader;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.common.block.Test;
-import ch.post.it.evoting.verifier.common.block.TestFailureException;
-import ch.post.it.evoting.verifier.common.block.tools.*;
-import ch.post.it.evoting.verifier.dto.onlinemixing.OnlineMixing;
+import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentParams;
 import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigInteger;
-import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Test28 extends Test {
@@ -41,47 +42,37 @@ public class Test28 extends Test {
             File[] ballotBoxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES));
             for (File ballotBox : ballotBoxes) {
                 final File[] onlineMixings = ballotBox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
-                for (File file : onlineMixings) {
 
-                    OnlineMixing onlineMixing = Deserializer.fromJson(Files.readAllBytes(file.toPath()), OnlineMixing.class);
-                    List<String> commitmentParameters = onlineMixing.getCommitmentParameters();
-                    if (commitmentParameters.isEmpty()) {
-                        throw new TestFailureException("no commitmentParameters found");
+                if (onlineMixings.length == 0) {
+                    result.setStatus(Status.NOK);
+                    result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test28.file.not.found.message"));
+                } else {
+                    for (File file : onlineMixings) {
+
+                        OnlineMixingProofLoader loader = new OnlineMixingProofLoader(file.toPath());
+                        CommitmentParams commitmentParams = loader.getCommitmentParams();
+                        BigInteger p = loader.getZpGroup().getP();
+
+                        List<BigInteger> errors = Arrays.stream(commitmentParams.getG())
+                                .map(groupElement -> groupElement.getValue())
+                                .filter(bi -> !MathHelper.isEulerCriterionValid(bi, p)).collect(Collectors.toList());
+
+                        if (errors.isEmpty()) {
+                            result.setStatus(Status.OK);
+                        } else {
+                            result.setStatus(Status.NOK);
+                            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test28.nok.message", errors.toString()));
+                        }
                     }
-                    final BigInteger p;
-                    Optional<String> optional = commitmentParameters.stream().findFirst();
-                    if (optional.isPresent()) {
-                        p = TypeConverter.stringToBigInteger(optional.get());
-                    } else {
-                        throw new RuntimeException("no first element in commitmentParameters");
-                    }
-
-                    List<BigInteger> errors = commitmentParameters.stream()
-                            .skip(3)
-                            .map(s -> TypeConverter.stringToBigInteger(s))
-                            .filter(bi -> !MathHelper.isEulerCriterionValid(bi, p)).collect(Collectors.toList());
-
-                    if (errors.isEmpty()) {
-                        result.setStatus(Status.OK);
-                    } else {
-                        result.setStatus(Status.NOK);
-                        result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test28.nok.message", errors.toString()));
-                    }
-
                 }
             }
-
-        } catch (Exception e) {
+        } catch (IOException e) {
             result.setStatus(Status.NOK);
-            if (e instanceof FileNotFoundException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test28.file.not.found.message"));
-            }
-            else if (e instanceof TestFailureException && ((TestFailureException) e).getArgs()[0].equals("commitmentParameters not found")) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test28.file.not.found.message"));
-            }else {
-                LOGGER.error("Unexpected error", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
-            }
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test28.file.not.found.message"));
+        } catch (Exception e) {
+            LOGGER.error("Unexpected error", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }
