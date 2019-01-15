@@ -35,6 +35,7 @@ public class Test05 extends Test {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test05.description"));
         def.setId(5);
         def.setName("isPrime([vo])");
+        def.addTestTrait(TestTrait.PreDecryption);
         return def;
     }
 

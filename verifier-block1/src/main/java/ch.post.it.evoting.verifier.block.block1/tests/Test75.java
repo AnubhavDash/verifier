@@ -28,6 +28,7 @@ public class Test75 extends Test {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test75.description"));
         def.setId(75);
         def.setName("checkSigElectionImport");
+        def.addTestTrait(TestTrait.PreDecryption);
         return def;
     }
 

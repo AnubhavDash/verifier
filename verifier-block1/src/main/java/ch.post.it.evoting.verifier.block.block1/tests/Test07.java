@@ -36,6 +36,7 @@ public class Test07 extends Test {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test07.description"));
         def.setId(7);
         def.setName("isMemberOfGroup(pk_ea)");
+        def.addTestTrait(TestTrait.PreDecryption);
         return def;
     }
 

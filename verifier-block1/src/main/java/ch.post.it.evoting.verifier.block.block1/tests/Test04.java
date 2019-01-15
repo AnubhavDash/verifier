@@ -29,6 +29,7 @@ public class Test04 extends Test {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test04.description"));
         def.setId(4);
         def.setName("hasSufficientSize(p)");
+        def.addTestTrait(TestTrait.PreDecryption);
         return def;
     }
 

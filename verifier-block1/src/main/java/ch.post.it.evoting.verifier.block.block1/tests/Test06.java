@@ -36,6 +36,7 @@ public class Test06 extends Test {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test06.description"));
         def.setId(6);
         def.setName("isQuadraticResidue([vo])");
+        def.addTestTrait(TestTrait.PreDecryption);
         return def;
     }
 

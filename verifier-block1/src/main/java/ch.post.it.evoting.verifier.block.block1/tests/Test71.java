@@ -29,6 +29,7 @@ public class Test71 extends Test {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test71.description"));
         def.setId(71);
         def.setName("checkSigEch0045");
+        def.addTestTrait(TestTrait.PreDecryption);
         return def;
     }
 

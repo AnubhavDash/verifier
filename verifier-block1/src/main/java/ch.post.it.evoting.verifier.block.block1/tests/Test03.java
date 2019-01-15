@@ -29,6 +29,7 @@ public class Test03 extends Test {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test03.description"));
         def.setId(3);
         def.setName("isStrongPrime(p,q)");
+        def.addTestTrait(TestTrait.PreDecryption);
         return def;
     }
 

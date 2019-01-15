@@ -28,6 +28,7 @@ public class Test74 extends Test {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test74.description"));
         def.setId(74);
         def.setName("checkSigDataConfig");
+        def.addTestTrait(TestTrait.PreDecryption);
         return def;
     }
 
