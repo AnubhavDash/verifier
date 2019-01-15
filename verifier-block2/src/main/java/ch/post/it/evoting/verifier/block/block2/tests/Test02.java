@@ -29,6 +29,7 @@ public class Test02 /*extends Test*/ {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test02.description"));
         def.setId(2);
         def.setName("checkSecureLogSignature");
+        def.addTestTrait(TestTrait.PreDecryption);
         return def;
     }
 

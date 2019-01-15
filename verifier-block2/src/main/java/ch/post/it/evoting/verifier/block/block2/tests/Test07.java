@@ -37,13 +37,14 @@ public class Test07 extends Test {
 
     @Override
     public TestDefinition getTestDefinition() {
-        TestDefinition result = new TestDefinition();
-        result.setBlockId(2);
-        result.setCategory(Category.EVIDENCE);
-        result.setDescription(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test07.description"));
-        result.setId(7);
-        result.setName("checkConfirmationCodeAttempts");
-        return result;
+        TestDefinition def = new TestDefinition();
+        def.setBlockId(2);
+        def.setCategory(Category.EVIDENCE);
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test07.description"));
+        def.setId(7);
+        def.setName("checkConfirmationCodeAttempts");
+        def.addTestTrait(TestTrait.PreDecryption);
+        return def;
     }
 
     @Override

@@ -42,6 +42,7 @@ public class Test03 extends Test {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.description"));
         def.setId(3);
         def.setName("checkNumberChoiceReturnCodes");
+        def.addTestTrait(TestTrait.PreDecryption);
         return def;
     }
 

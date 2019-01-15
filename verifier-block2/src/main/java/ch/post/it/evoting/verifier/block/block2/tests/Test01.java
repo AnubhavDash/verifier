@@ -31,6 +31,7 @@ public class Test01 /*extends Test*/ {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.description"));
         def.setId(1);
         def.setName("checkSecureLogIntegrity");
+        def.addTestTrait(TestTrait.PreDecryption);
         return def;
     }
 
