@@ -3,6 +3,9 @@ package ch.post.it.evoting.verifier.block.block3.loader.online;
 import ch.post.it.evoting.verifier.block.block3.loader.*;
 import ch.post.it.evoting.verifier.block.block3.loader.online.mapper.SecondAnswerMapper;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
+import ch.post.it.evoting.verifier.dto.OnlineDecryptionProof;
+import ch.post.it.evoting.verifier.dto.ZkProof;
 import ch.post.it.evoting.verifier.dto.onlinemixing.OnlineMixing;
 import ch.post.it.evoting.verifier.dto.onlinemixing.OnlineShuffleProof;
 import com.scytl.decrypt.beans.DecryptionProof;
@@ -10,9 +13,11 @@ import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallot;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProof;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProofSecondAnswer;
+import com.scytl.products.ov.mixnet.commons.exceptions.VerifierException;
 import com.scytl.products.ov.mixnet.commons.homomorphic.impl.ElGamalPublicKey;
 import com.scytl.products.ov.mixnet.commons.homomorphic.impl.GjosteenElGamalPlaintext;
 import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
+import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroupParams;
@@ -21,6 +26,7 @@ import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitme
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -119,8 +125,36 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
 
     @Override
     public DecryptionProof[] getProofs() {
-        // TODO Thierry getProofs()
-        return new DecryptionProof[0];
+        return onlineMixing.getDecryptionProofs()
+                    .stream()
+                    .map(dpStr -> createDecryptionProofFromString(dpStr))
+                    .collect(Collectors.toList())
+                    .toArray(new DecryptionProof[]{});
+    }
+
+    private DecryptionProof createDecryptionProofFromString(String str){
+        Exponent challenge = null;
+        Exponent[] response = new Exponent[]{};
+        try {
+            OnlineDecryptionProof onlineDecryptionProof = Deserializer.fromJson(str.getBytes(StandardCharsets.UTF_8), OnlineDecryptionProof.class);
+            ZkProof zkProof = onlineDecryptionProof.getZkProof();
+            String q = zkProof.getQ();
+            String hash = zkProof.getHash();
+            List<String> values = zkProof.getValues();
+
+            BigInteger exponentMod = TypeConverter.base64ToBigInteger(q);
+            challenge = new Exponent(TypeConverter.base64ToBigInteger(hash), exponentMod);
+            response = values.stream()
+                    .map(value -> new Exponent(TypeConverter.base64ToBigInteger(value), exponentMod))
+                    .collect(Collectors.toList())
+                    .toArray(new Exponent[]{});
+        } catch (IOException e) {
+            //TODO handle exception throw a new VerifierException?
+            e.printStackTrace();
+            throw new VerifierException("Todo");
+        }
+
+        return new DecryptionProof(challenge, response);
     }
 
     @Override

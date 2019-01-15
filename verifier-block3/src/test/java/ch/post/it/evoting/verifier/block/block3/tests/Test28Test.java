@@ -8,19 +8,18 @@ import org.junit.Test;
 
 import java.io.File;
 
-public class Test27Test {
+public class Test28Test {
 
     @Ignore
     @Test
     public void executeTestOK() {
-        TestResult result = new Test27().executeTest(new File(getClass().getResource("/Test27/OK").getFile()));
+        TestResult result = new Test28().executeTest(new File(getClass().getResource("/Test28/OK").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
-
     @Ignore
     @Test
     public void executeTestNOK() {
-        TestResult result = new Test27().executeTest(new File(getClass().getResource("/Test27/NOK").getFile()));
+        TestResult result = new Test28().executeTest(new File(getClass().getResource("/Test28/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 
