@@ -14,10 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -103,7 +100,7 @@ public class VerifierController {
     public ResponseEntity process( @RequestParam(required = false) String runOptions ) {
         this.executionStatus.setStatus(Status.RUNNING);
         try {
-            List<TestTrait> traits = getTraits(runOptions);
+            Set<TestTrait> traits = getTraits(runOptions);
             this.processor.processTests(traits);
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (AlreadyStartedException e) {
@@ -114,12 +111,12 @@ public class VerifierController {
     /*
         Converts a comma separated list to a list of test traits
      */
-    protected List<TestTrait> getTraits(String runOptions) {
-        List<TestTrait> traits = null;
+    protected Set<TestTrait> getTraits(String runOptions) {
+        Set<TestTrait> traits = null;
         if ( runOptions != null ) {
             traits = Arrays.asList(runOptions.split(",")).stream()
                     .map(t -> TestTrait.fromValue(t))
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toSet());
         }
         return traits;
     }

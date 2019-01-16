@@ -6,6 +6,7 @@ import org.reflections.Reflections;
 
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -31,7 +32,7 @@ public abstract class TestSuite implements VerifierBlock {
     }
 
     @Override
-    public Stream<TestResult> process(File inputDirectory, List<TestTrait> options) {
+    public Stream<TestResult> process(File inputDirectory, Set<TestTrait> options) {
         return tests.stream().map(t -> {
             TestDefinition def = t.getTestDefinition();
             // Do skip the test ift there are any defined restrictions

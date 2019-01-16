@@ -80,7 +80,7 @@ public class VerifierProcessor {
         return result;
     }
 
-    public void processTests(List<TestTrait> options) throws AlreadyStartedException {
+    public void processTests(Set<TestTrait> options) throws AlreadyStartedException {
         if (!processed) {
             processed = true;
 

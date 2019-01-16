@@ -3,6 +3,7 @@ package ch.post.it.evoting.verifier.common;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class TestDefinition {
     private int id;
@@ -46,7 +47,7 @@ public class TestDefinition {
 
     public boolean containsTestTrait( TestTrait trait ) { return this.testTraits.contains(trait); }
 
-    public boolean containsAnyTestTrait( List<TestTrait> traits ) { return !this.testTraits.isEmpty() && this.testTraits.stream().anyMatch(t -> traits.contains(t)); }
+    public boolean containsAnyTestTrait( Set<TestTrait> traits ) { return !this.testTraits.isEmpty() && this.testTraits.stream().anyMatch(t -> traits.contains(t)); }
 
     public void addTestTrait(TestTrait trait) { this.testTraits.add(trait); }
 
