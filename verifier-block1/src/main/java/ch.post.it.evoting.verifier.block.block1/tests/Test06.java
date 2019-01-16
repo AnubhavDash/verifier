@@ -94,7 +94,7 @@ public class Test06 extends Test {
                             .flatMap(doi -> doi.getElections().stream())
                             .flatMap(e -> e.getCandidates().stream())
                             .flatMap(c -> c.getPrimeNumber().stream())
-                            .filter(prime -> !MathHelper.isPrime(TypeConverter.integerToBigInteger(prime)))
+                            .filter(v -> !MathHelper.isEulerCriterionValid(BigInteger.valueOf(v), p))
                             .collect(Collectors.toList()));
 
 
