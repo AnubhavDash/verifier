@@ -21,11 +21,11 @@ import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.util.stream.Stream;
 
-public class Test01 /*extends Test*/ {
+public class Test01 extends Test {
 
     private static final Logger LOGGER = Logger.getLogger(Test01.class);
 
-    /*@Override*/
+    @Override
     public TestDefinition getTestDefinition() {
         TestDefinition def = new TestDefinition();
         def.setBlockId(2);
@@ -37,7 +37,7 @@ public class Test01 /*extends Test*/ {
         return def;
     }
 
-    /*@Override*/
+    @Override
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
@@ -66,18 +66,18 @@ public class Test01 /*extends Test*/ {
 
             result.setStatus(Status.OK);
 
+        } catch (NoSuchFileException e) {
+            LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message", ((NoSuchFileException) e).getFile()));
+        } catch (FileNotFoundException e) {
+            LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message", e.getMessage()));
         } catch (Exception e) {
             result.setStatus(Status.NOK);
-            if (e instanceof NoSuchFileException) {
-                LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message", ((NoSuchFileException) e).getFile()));
-            } else if (e instanceof FileNotFoundException) {
-                LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message", e.getMessage()));
-            } else {
-                LOGGER.error("SecureLogs integrity validation failed", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.nok.message", e.getMessage()));
-            }
+            LOGGER.error("SecureLogs integrity validation failed", e);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.nok.message", e.getMessage()));
         }
 
         return result;
