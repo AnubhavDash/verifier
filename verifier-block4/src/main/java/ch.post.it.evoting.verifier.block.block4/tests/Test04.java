@@ -209,15 +209,6 @@ public class Test04 extends Test {
         return result;
     }
 
-
-    private BigInteger getCountOfCandidatesVotes(ListResultsType l) {
-        if (l.getCountOfPartyVotes() != null) {
-            return l.getCountOfCandidateVotes().getTotal();
-        } else {
-            return BigInteger.ZERO;
-        }
-    }
-
     private BigInteger getCountOfPartyVotes(ListResultsType l) {
         if (l.getCountOfPartyVotes() != null) {
             return l.getCountOfPartyVotes().getTotal();

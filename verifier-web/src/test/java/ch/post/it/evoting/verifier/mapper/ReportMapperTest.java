@@ -71,7 +71,6 @@ public class ReportMapperTest {
         Report report = ReportMapper.INSTANCE.map(this.metadata, this.testsList, Language.FR);
         List<Block> blocksResults = report.getBlocksResults();
         Assert.assertEquals("problem with number of blocks in the report", 3, blocksResults.size());
-        int z = blocksResults.size();
     }
 
 

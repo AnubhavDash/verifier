@@ -23,16 +23,8 @@ public class SecureLogBundle {
         this.beginCheckPoint = beginCheckPoint;
     }
 
-    public CheckPointLogEntry getBeginCheckPoint() {
-        return beginCheckPoint;
-    }
-
     public void setEndCheckPoint(CheckPointLogEntry endCheckPoint) {
         this.endCheckPoint = endCheckPoint;
-    }
-
-    public CheckPointLogEntry getEndCheckPoint() {
-        return endCheckPoint;
     }
 
     public void addRegularLogEntry(RegularLogEntry regularLogEntry) {
