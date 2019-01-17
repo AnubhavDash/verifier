@@ -59,7 +59,10 @@ public final class SecureLogBundleCreator {
                         result.setLastAnalysedCheckPoint(s.getLastAnalysedCheckPoint());
                         result.setBundle(s.getBundle());
                         result.getBundle().addRegularLogEntry((RegularLogEntry) e);
-                    } else {
+                    } else if (e instanceof LastRowEntry) {
+                        //just ignore
+                    }
+                    else {
                         throw new IllegalArgumentException("Unsupported SecureLogEntry implementation : " + e.getClass());
                     }
                     return result;

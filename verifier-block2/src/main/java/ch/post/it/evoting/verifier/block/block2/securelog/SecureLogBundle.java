@@ -2,6 +2,7 @@ package ch.post.it.evoting.verifier.block.block2.securelog;
 
 import ch.post.it.evoting.verifier.common.block.tools.HmacGenerator;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
+import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.bouncycastle.util.encoders.Base64;
@@ -70,7 +71,7 @@ public class SecureLogBundle {
 
     public void validateSignature() throws SecureLogBundleValidationException {
         byte[] sg = beginCheckPoint.getMetadata().getSg().getBytes(StandardCharsets.UTF_8);
-        ;
+
         byte[] text = concat(
                 beginCheckPoint.getMetadata().getPhmac(),
                 beginCheckPoint.getMetadata().getLsk(),
@@ -78,7 +79,7 @@ public class SecureLogBundle {
                 beginCheckPoint.getMetadata().getHmac(),
                 beginCheckPoint.getRaw());
 
-        if ( null == getPem() || !SignatureChecker.verifySignature(text, sg, getPem())) {
+        if (this.getPem() == null || !SignatureChecker.verifySignature(text, sg, this.getPem())) {
             throw new SecureLogBundleValidationException("Begin Checkpoint signature not valid", beginCheckPoint.getHost(), beginCheckPoint.getSource());
         }
     }
@@ -86,7 +87,7 @@ public class SecureLogBundle {
     private byte[] concat(String... element) {
         StringBuilder sb = new StringBuilder();
         Arrays.stream(element).forEach(sb::append);
-        return sb.toString().getBytes(StandardCharsets.UTF_8);
+        return TypeConverter.stringToByte(sb.toString());
     }
 
     private String buildSignature(String secret, byte[] text) {

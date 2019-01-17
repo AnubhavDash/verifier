@@ -174,7 +174,27 @@ public class SignatureChecker {
         return result;
     }
 
-    public static boolean verifySignature(byte[] originalText, byte[] existingSignature, byte[] publickeyWhichHadsigned) {
-        return true;
+    public static boolean verifySignature(byte[] source, byte[] signature, byte[] certificate) {
+        if (Security.getProvider("BC") == null) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
+        try {
+            final X509Certificate sCert = loadCertificate(certificate);
+            final String algoName = "SHA256withRSAandMGF1";
+
+            Signature signatureAlgorithm = Signature.getInstance(algoName);
+            signatureAlgorithm.initVerify(sCert.getPublicKey());
+            signatureAlgorithm.update(source);
+
+            if (signatureAlgorithm.verify(signature)) {
+                //TODO check if we have to check the chain or not
+                //signature is valid, checking certificate chain validity
+                //verifyCertificateChain(sCert, Collections.singletonList(sCert), loadCertificate(rootCert));
+                return true;
+            }
+        } catch (Exception e) {
+            LOGGER.info("signature check failed", e);
+        }
+        return false;
     }
 }
