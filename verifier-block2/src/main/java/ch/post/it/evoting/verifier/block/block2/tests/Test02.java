@@ -53,7 +53,7 @@ public class Test02 extends Test {
                     .collect(Collectors.toMap(HostMappingElement::getHostname, HostMappingElement::getCc));
 
             // create CC/Pem mapping
-            File[] pemFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2TestSuite.PATH_CC_CERTIFICATES).toFile(), ".*cc.*_ca.pem");
+            File[] pemFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2TestSuite.PATH_CC_CERTIFICATES).toFile(), ".*cc.*_log_sign.pem");
             Map<String, byte[]> ccPemMapping = Arrays.stream(pemFiles).map(f -> {
                 try {
                     return new AbstractMap.SimpleEntry<>(f.getName().substring(0, 3).toUpperCase(), Files.readAllBytes(f.toPath()));

@@ -70,16 +70,32 @@ public class SecureLogBundle {
     }
 
     public void validateSignature() throws SecureLogBundleValidationException {
-        byte[] sg = beginCheckPoint.getMetadata().getSg().getBytes(StandardCharsets.UTF_8);
+       // byte[] sg = beginCheckPoint.getMetadata().getSg().getBytes(StandardCharsets.UTF_8);
+        byte[] sg = Base64.decode(beginCheckPoint.getMetadata().getSg());
 
-        byte[] text = concat(
+        /*byte[] text = concat(
                 beginCheckPoint.getMetadata().getPhmac(),
                 beginCheckPoint.getMetadata().getLsk(),
                 beginCheckPoint.getMetadata().getEsk(),
                 beginCheckPoint.getMetadata().getHmac(),
-                beginCheckPoint.getRaw());
+                beginCheckPoint.getRaw());*/
 
-        if (this.getPem() == null || !SignatureChecker.verifySignature(text, sg, this.getPem())) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        try (DataOutputStream stream = new DataOutputStream(bytes)) {
+            stream.write(Base64.decode(beginCheckPoint.getMetadata().getPhmac()));
+            if (StringUtils.isNotEmpty(beginCheckPoint.getMetadata().getLsk())) {
+                stream.write(Base64.decode(beginCheckPoint.getMetadata().getLsk()));
+            }
+            if (StringUtils.isNotEmpty(beginCheckPoint.getMetadata().getEsk())) {
+                stream.write(Base64.decode(beginCheckPoint.getMetadata().getEsk()));
+            }
+            stream.write(Base64.decode(beginCheckPoint.getMetadata().getHmac()));
+            stream.write(beginCheckPoint.getRaw().getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to serialize secureLogEntry", e);
+        }
+
+        if (this.getPem() == null || !SignatureChecker.verifySignature(bytes.toByteArray(), sg, this.getPem())) {
             throw new SecureLogBundleValidationException("Begin Checkpoint signature not valid", beginCheckPoint.getHost(), beginCheckPoint.getSource());
         }
     }
