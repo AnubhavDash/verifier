@@ -6,6 +6,7 @@ import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
+import ch.post.it.evoting.verifier.common.TestTrait;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.dto.CredentialDataElement;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
@@ -29,6 +30,7 @@ public class Test31 extends Test {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test31.description"));
         def.setId(31);
         def.setName("checkNumberCredentials()");
+        def.addTestTrait(TestTrait.PreDecryption);
         return def;
     }
 

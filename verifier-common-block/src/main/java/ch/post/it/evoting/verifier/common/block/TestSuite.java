@@ -1,13 +1,12 @@
 package ch.post.it.evoting.verifier.common.block;
 
-import ch.post.it.evoting.verifier.common.TestDefinition;
-import ch.post.it.evoting.verifier.common.TestResult;
-import ch.post.it.evoting.verifier.common.VerifierBlock;
+import ch.post.it.evoting.verifier.common.*;
 import org.apache.log4j.Logger;
 import org.reflections.Reflections;
 
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -33,7 +32,19 @@ public abstract class TestSuite implements VerifierBlock {
     }
 
     @Override
-    public Stream<TestResult> process(File inputDirectory) {
-        return tests.stream().map(t -> t.executeTest(inputDirectory));
+    public Stream<TestResult> process(File inputDirectory, Set<TestTrait> options) {
+        return tests.stream().map(t -> {
+            TestDefinition def = t.getTestDefinition();
+            // Do skip the test if there are any defined restrictions
+            // and the test trait does not match the restriction
+            if ( ( options != null && !options.isEmpty())
+                    && !def.containsAnyTestTrait(options)) {
+                TestResult result = new TestResult(def);
+                result.setStatus(Status.NA);
+                return result;
+            } else {
+                return t.executeTest(inputDirectory);
+            }
+        });
     }
 }

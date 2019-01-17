@@ -1,6 +1,7 @@
 package ch.post.it.evoting.verifier.controller;
 
 import ch.post.it.evoting.verifier.common.Language;
+import ch.post.it.evoting.verifier.common.TestTrait;
 import ch.post.it.evoting.verifier.dto.Configuration;
 import ch.post.it.evoting.verifier.dto.ExecutionStatus;
 import ch.post.it.evoting.verifier.dto.Status;
@@ -13,12 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/")
@@ -98,14 +97,28 @@ public class VerifierController {
     }
 
     @RequestMapping(value = "/tests", method = RequestMethod.POST)
-    public ResponseEntity process() {
+    public ResponseEntity process( @RequestParam(required = false) String runOptions ) {
         this.executionStatus.setStatus(Status.RUNNING);
         try {
-            this.processor.processTests();
+            Set<TestTrait> traits = getTraits(runOptions);
+            this.processor.processTests(traits);
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (AlreadyStartedException e) {
             return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body("Process already started");
         }
+    }
+
+    /*
+        Converts a comma separated list to a list of test traits
+     */
+    protected Set<TestTrait> getTraits(String runOptions) {
+        Set<TestTrait> traits = null;
+        if ( runOptions != null ) {
+            traits = Arrays.asList(runOptions.split(",")).stream()
+                    .map(t -> TestTrait.fromValue(t))
+                    .collect(Collectors.toSet());
+        }
+        return traits;
     }
 
     protected void notifyUpdate(Test executionStatus) {

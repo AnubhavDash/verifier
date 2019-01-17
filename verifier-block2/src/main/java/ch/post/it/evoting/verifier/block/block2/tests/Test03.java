@@ -10,6 +10,7 @@ import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
+import ch.post.it.evoting.verifier.common.TestTrait;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.dto.HostMappingElement;
@@ -42,6 +43,7 @@ public class Test03 extends Test {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.description"));
         def.setId(3);
         def.setName("checkNumberChoiceReturnCodes");
+        def.addTestTrait(TestTrait.PreDecryption);
         return def;
     }
 
