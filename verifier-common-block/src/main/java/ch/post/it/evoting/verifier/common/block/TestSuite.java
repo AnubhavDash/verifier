@@ -35,15 +35,16 @@ public abstract class TestSuite implements VerifierBlock {
     public Stream<TestResult> process(File inputDirectory, Set<TestTrait> options) {
         return tests.stream().map(t -> {
             TestDefinition def = t.getTestDefinition();
-            // Do skip the test ift there are any defined restrictions
+            // Do skip the test if there are any defined restrictions
             // and the test trait does not match the restriction
             if ( ( options != null && !options.isEmpty())
                     && !def.containsAnyTestTrait(options)) {
                 TestResult result = new TestResult(def);
                 result.setStatus(Status.NA);
                 return result;
+            } else {
+                return t.executeTest(inputDirectory);
             }
-            return t.executeTest(inputDirectory);
         });
     }
 }
