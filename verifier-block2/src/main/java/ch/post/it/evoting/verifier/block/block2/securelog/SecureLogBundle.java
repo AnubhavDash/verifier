@@ -1,6 +1,7 @@
 package ch.post.it.evoting.verifier.block.block2.securelog;
 
 import ch.post.it.evoting.verifier.common.block.tools.HmacGenerator;
+import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.bouncycastle.util.encoders.Base64;
@@ -10,6 +11,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SecureLogBundle {
@@ -18,6 +20,15 @@ public class SecureLogBundle {
     private CheckPointLogEntry beginCheckPoint;
     private CheckPointLogEntry endCheckPoint;
     private List<RegularLogEntry> regularLogEntries = new ArrayList<>();
+    private byte[] pem;
+
+    public byte[] getPem() {
+        return pem;
+    }
+
+    public void setPem(byte[] pem) {
+        this.pem = pem;
+    }
 
     public void setBeginCheckPoint(CheckPointLogEntry beginCheckPoint) {
         this.beginCheckPoint = beginCheckPoint;
@@ -58,8 +69,8 @@ public class SecureLogBundle {
     }
 
     public void validateSignature() throws SecureLogBundleValidationException {
-        //TODO build the signature and check it
-/*        String sg = beginCheckPoint.getMetadata().getSg();
+        byte[] sg = beginCheckPoint.getMetadata().getSg().getBytes(StandardCharsets.UTF_8);
+        ;
         byte[] text = concat(
                 beginCheckPoint.getMetadata().getPhmac(),
                 beginCheckPoint.getMetadata().getLsk(),
@@ -67,10 +78,19 @@ public class SecureLogBundle {
                 beginCheckPoint.getMetadata().getHmac(),
                 beginCheckPoint.getRaw());
 
-        String signature = *//*buildSignature(secret, text);*//* sg;
-        if (!sg.equals(signature)) {
+        if ( null == getPem() || !SignatureChecker.verifySignature(text, sg, getPem())) {
             throw new SecureLogBundleValidationException("Begin Checkpoint signature not valid", beginCheckPoint.getHost(), beginCheckPoint.getSource());
-        }*/
+        }
+    }
+
+    private byte[] concat(String... element) {
+        StringBuilder sb = new StringBuilder();
+        Arrays.stream(element).forEach(sb::append);
+        return sb.toString().getBytes(StandardCharsets.UTF_8);
+    }
+
+    private String buildSignature(String secret, byte[] text) {
+        return null;
     }
 
     private void validateEndCheckPoint(byte[] lastHmac) throws SecureLogBundleValidationException {

@@ -163,4 +163,7 @@ public abstract class SecureLogEntry {
         return str.substring(firstColon + 2);
     }
 
+    public String getHost() {
+        return host;
+    }
 }
