@@ -3,6 +3,7 @@ package ch.post.it.evoting.verifier.block.block3.loader.offline;
 import ch.post.it.evoting.verifier.block.block3.loader.VoterWithProofLoader;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
+import ch.post.it.evoting.verifier.dto.OnlineDecryptionProof;
 import com.scytl.decrypt.beans.DecryptionProof;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallot;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;
@@ -66,28 +67,24 @@ public class OfflineVoterWithProofLoader implements VoterWithProofLoader {
         }
     }
 
-    static DecryptionProof convertToProof(String string, GroupElement gamma) {
-        final String HASH_TAG = "\"\"hash\"\":\"\"";
-        final String Q_TAG = "\"\"q\"\":\"\"";
-        final String VALUES_TAG = "\"\"values\"\":[\"\"";
-        int hashStartIndex = string.indexOf(HASH_TAG) + HASH_TAG.length();
-        String hash = string.substring(hashStartIndex, string.indexOf("\"", hashStartIndex + 1));
+    static DecryptionProof convertToProof(String proofString, GroupElement gamma) {
+        DecryptionProof result = null;
+        try {
+            OnlineDecryptionProof odp = Deserializer.fromJson(TypeConverter.stringToByte(proofString.substring(1, proofString.length() - 1).replace("\"\"", "\"")), OnlineDecryptionProof.class);
 
-        int qStartIndex = string.indexOf(Q_TAG) + Q_TAG.length();
-        String q = string.substring(qStartIndex, string.indexOf("\"", qStartIndex + 1));
+            Exponent challenge = new Exponent(TypeConverter.base64ToBigInteger(odp.getZkProof().getHash()), TypeConverter.base64ToBigInteger(odp.getZkProof().getQ()));
 
-        Exponent challenge = new Exponent(TypeConverter.base64ToBigInteger(hash), TypeConverter.base64ToBigInteger(q));
+            List<Exponent> responses = Arrays.stream(odp.getZkProof().getValues().toArray(new String[0]))
+                    .map(val -> cleanWriteInsBoundaryQuotes(val))
+                    .map(val -> new Exponent(TypeConverter.base64ToBigInteger(val), TypeConverter.base64ToBigInteger(odp.getZkProof().getQ())))
+                    .collect(Collectors.toList());
 
-        int valuesIndex = string.indexOf(VALUES_TAG) + VALUES_TAG.length();
-        String[] values = string.substring(valuesIndex, string.indexOf("\"\"]", valuesIndex + 1)).split(",");
+            result = new DecryptionProof(challenge, responses.toArray(new Exponent[]{}));
+            result.setGammaOfCiphertext(gamma.getValue());
 
-        List<Exponent> responses = Arrays.stream(values)
-                .map(val -> cleanWriteInsBoundaryQuotes(val))
-                .map(val -> new Exponent(TypeConverter.base64ToBigInteger(val), TypeConverter.base64ToBigInteger(q)))
-                .collect(Collectors.toList());
-
-        DecryptionProof result = new DecryptionProof(challenge, responses.toArray(new Exponent[]{}));
-        result.setGammaOfCiphertext(gamma.getValue());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return result;
     }
 
