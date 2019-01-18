@@ -5,6 +5,7 @@ import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
+import ch.post.it.evoting.verifier.common.TestTrait;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
@@ -36,6 +37,7 @@ public class Test06 extends Test {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test06.description"));
         def.setId(6);
         def.setName("isQuadraticResidue([vo])");
+        def.addTestTrait(TestTrait.PreDecryption);
         return def;
     }
 
@@ -94,7 +96,7 @@ public class Test06 extends Test {
                             .flatMap(doi -> doi.getElections().stream())
                             .flatMap(e -> e.getCandidates().stream())
                             .flatMap(c -> c.getPrimeNumber().stream())
-                            .filter(prime -> !MathHelper.isPrime(TypeConverter.integerToBigInteger(prime)))
+                            .filter(v -> !MathHelper.isEulerCriterionValid(BigInteger.valueOf(v), p))
                             .collect(Collectors.toList()));
 
 

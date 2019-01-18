@@ -10,6 +10,7 @@ import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
+import ch.post.it.evoting.verifier.common.TestTrait;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.dto.HostMappingElement;
@@ -42,6 +43,7 @@ public class Test04 extends Test {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test04.description"));
         def.setId(4);
         def.setName("checkNumberVoteCastCodes");
+        def.addTestTrait(TestTrait.PreDecryption);
         return def;
     }
 
@@ -89,7 +91,7 @@ public class Test04 extends Test {
                 LOGGER.info("no GENPVCC log found for the defined electionEventId : " + voterInformation.getEeid());
                 result.setStatus(Status.OK);
             } else if (nbDistinctValues != 1) {
-                throw new TestFailureException("count of log for partial choice code generation is not the same for each control component", countByCC.values().toString());
+                throw new TestFailureException("count of log for partial vote cast code generation is not the same for each control component", countByCC.values().toString());
 
             } else {
                 //finally check the count with csv files count
