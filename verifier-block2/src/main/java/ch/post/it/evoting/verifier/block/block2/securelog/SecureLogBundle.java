@@ -49,6 +49,10 @@ public class SecureLogBundle {
         validateEndCheckPoint(lastHmac);
     }
 
+    public CheckPointLogEntry getBeginCheckPoint() {
+        return beginCheckPoint;
+    }
+
     public void validateSignature() throws SecureLogBundleValidationException {
         //TODO build the signature and check it
 /*        String sg = beginCheckPoint.getMetadata().getSg();

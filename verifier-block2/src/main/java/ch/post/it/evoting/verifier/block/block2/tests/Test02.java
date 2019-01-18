@@ -1,6 +1,7 @@
 package ch.post.it.evoting.verifier.block.block2.tests;
 
 import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
+import ch.post.it.evoting.verifier.block.block2.securelog.CheckPointLogEntry;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleCreator;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleValidationException;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
@@ -8,6 +9,7 @@ import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
+import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
@@ -54,23 +56,24 @@ public class Test02 /*extends Test*/ {
                             b.validateSignature();
                         } catch (SecureLogBundleValidationException e) {
                             LOGGER.error("Validation failed because on host {" + e.getHost() + "} " + e.getMessage());
-                            throw new RuntimeException(e);
+                            throw new TestFailureException(b.getBeginCheckPoint().toString(), b.getBeginCheckPoint().getMetadata().toString() );
                         }
                     });
 
             result.setStatus(Status.OK);
 
         } catch (IOException e) {
+            LOGGER.error("a IOException error occurred", e);
             result.setStatus(Status.NOK);
-        } catch (RuntimeException e) {
+        } catch (TestFailureException e) {
             result.setStatus(Status.NOK);
-            if (e.getCause() instanceof SecureLogBundleValidationException) {
-                //TODO
-            }
+            String[] args = e.getArgs();
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test02.nok.message", args[0], args[1]));
         } catch (Exception e) {
+            LOGGER.error("Unexpected error", e);
             result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
-
         return result;
     }
 }

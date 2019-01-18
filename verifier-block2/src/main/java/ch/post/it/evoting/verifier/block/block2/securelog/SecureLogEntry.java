@@ -163,4 +163,11 @@ public abstract class SecureLogEntry {
         return str.substring(firstColon + 2);
     }
 
+    @Override
+    public String toString() {
+        return "SecureLogEntry{" +
+                "host='" + host + '\'' +
+                ", raw='" + raw + '\'' +
+                '}';
+    }
 }
