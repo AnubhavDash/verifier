@@ -4,6 +4,7 @@ import ch.post.it.evoting.verifier.block.block3.loader.VoterWithProofLoader;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.OnlineDecryptionProof;
+import ch.post.it.evoting.verifier.dto.onlinemixing.EncryptedBallot;
 import com.scytl.decrypt.beans.DecryptionProof;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallot;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;
@@ -83,7 +84,7 @@ public class OfflineVoterWithProofLoader implements VoterWithProofLoader {
             result.setGammaOfCiphertext(gamma.getValue());
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Unable to convert to proof", e);
         }
         return result;
     }
@@ -115,30 +116,17 @@ public class OfflineVoterWithProofLoader implements VoterWithProofLoader {
         return encryptedBallots;
     }
 
-    static ElGamalEncryptedBallot convertToEncryptedBallot(String ebs) {
+    static ElGamalEncryptedBallot convertToEncryptedBallot(String ebsString) {
         List<GroupElement> zpElements = new ArrayList<>();
-
-        final String VALUE_TAG = "\"\"value\"\":";
-        final String P_TAG = "\"\"p\"\":";
-        final String Q_TAG = "\"\"q\"\":";
-
-        int valueIndex = 0;
-        while ((valueIndex = ebs.indexOf(VALUE_TAG, valueIndex + 1)) != -1) {
-            valueIndex = valueIndex + VALUE_TAG.length();
-            int endValueIndex = ebs.indexOf(',', valueIndex);
-            String value = ebs.substring(valueIndex, endValueIndex);
-
-            int pIndex = ebs.indexOf(P_TAG, endValueIndex) + P_TAG.length();
-            int endPIndex = ebs.indexOf(',', pIndex + 1);
-            String p = ebs.substring(pIndex, endPIndex);
-
-            int qIndex = ebs.indexOf(Q_TAG, endPIndex) + Q_TAG.length();
-            int endQIndex = ebs.indexOf('}', qIndex + 1);
-            String q = ebs.substring(qIndex, endQIndex);
-            zpElements.add(new ZpElement(TypeConverter.stringToBigInteger(value),
-                    TypeConverter.stringToBigInteger(p),
-                    TypeConverter.stringToBigInteger(q)));
+        try {
+            EncryptedBallot[] ebs = Deserializer.fromJson(TypeConverter.stringToByte(ebsString.substring(1, ebsString.length() - 1).replace("\"\"", "\"")), EncryptedBallot[].class);
+            for (EncryptedBallot eb : ebs) {
+                zpElements.add(new ZpElement(eb.getValue(), eb.getP(), eb.getQ()));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to convert to EncryptedBallot", e);
         }
+
         return new ElGamalEncryptedBallot(zpElements);
     }
 
