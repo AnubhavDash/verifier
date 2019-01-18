@@ -1,15 +1,11 @@
 package ch.post.it.evoting.verifier.block.block2.tests;
 
 import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
-import ch.post.it.evoting.verifier.block.block2.securelog.CheckPointLogEntry;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleCreator;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleValidationException;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
-import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.TestDefinition;
-import ch.post.it.evoting.verifier.common.TestResult;
-import ch.post.it.evoting.verifier.common.TestTrait;
+import ch.post.it.evoting.verifier.common.*;
+import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
