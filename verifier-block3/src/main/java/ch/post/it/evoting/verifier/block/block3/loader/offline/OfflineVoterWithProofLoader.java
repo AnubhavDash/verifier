@@ -18,6 +18,7 @@ import lombok.Setter;
 import reactor.core.publisher.Flux;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -135,14 +136,16 @@ public class OfflineVoterWithProofLoader implements VoterWithProofLoader {
         return plaintexts;
     }
 
-    static GjosteenElGamalPlaintext convertToPlainText(String string, ZpGroupParams params) {
-        int startIndex = string.indexOf('[');
-        int endIndex = string.indexOf(']');
-        String content = string.substring(startIndex + 1, endIndex);
-
-        ZpElement[] zpElements = Arrays.stream(content.split(","))
-                .map(value -> new ZpElement(TypeConverter.stringToBigInteger(value), params))
-                .collect(Collectors.toList()).toArray(new ZpElement[]{});
+    static GjosteenElGamalPlaintext convertToPlainText(String gjosteenElGamalsString, ZpGroupParams params) {
+        ZpElement[] zpElements = null;
+        try {
+            BigInteger[] gjosteenElGamals = Deserializer.fromJson(TypeConverter.stringToByte(gjosteenElGamalsString), BigInteger[].class);
+            zpElements = Arrays.stream(gjosteenElGamals)
+                    .map(value -> new ZpElement(value, params))
+                    .collect(Collectors.toList()).toArray(new ZpElement[]{});
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to convert to plaintext", e);
+        }
         return new GjosteenElGamalPlaintext(zpElements);
     }
 
