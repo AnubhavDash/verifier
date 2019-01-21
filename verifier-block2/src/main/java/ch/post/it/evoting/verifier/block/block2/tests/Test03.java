@@ -4,13 +4,8 @@ import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
 import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationDataExtractor;
 import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationStruct;
 import ch.post.it.evoting.verifier.block.block2.securelog.RegularLogEntry;
-import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleValidationException;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
-import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.TestDefinition;
-import ch.post.it.evoting.verifier.common.TestResult;
-import ch.post.it.evoting.verifier.common.TestTrait;
+import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.dto.HostMappingElement;
@@ -85,7 +80,7 @@ public class Test03 extends Test {
                 throw new RuntimeException("no values found while counting log foreach control component");
             }
             if (countByCC.size() != 4) {
-                throw new RuntimeException("more than 4 different CC found : "+ countByCC.keySet());
+                throw new RuntimeException("more than 4 different CC found : " + countByCC.keySet());
             }
             long nbDistinctValues = countByCC.values().stream().distinct().count();
             if (nbDistinctValues == 0 && voterInformation.getCount() == 0L) {
@@ -96,33 +91,34 @@ public class Test03 extends Test {
             } else {
                 //finally check the count with csv files count
                 Long logCount = countByCC.values().stream().findFirst().get();
-                if(logCount.equals(voterInformation.getCount())){
+                if (logCount.equals(voterInformation.getCount())) {
                     result.setStatus(Status.OK);
-                }
-                else{
-                    throw new TestFailureException("the number of log entries does not match with the number of voters", "" + logCount + " and " + voterInformation.getCount() );
+                } else {
+                    throw new TestFailureException("the number of log entries does not match with the number of voters", "" + logCount + " and " + voterInformation.getCount());
                 }
 
             }
 
-        } catch (Exception e) {
+        } catch (NoSuchFileException e) {
+            LOGGER.error("a NoSuchFileException error occurred", e);
             result.setStatus(Status.NOK);
-            if (e instanceof RuntimeException && !(e instanceof TestFailureException)) {
-                LOGGER.error("Test failed, cause : " + e.getMessage(), e);
-                if (e.getCause() instanceof SecureLogBundleValidationException) {
-                    //TODO
-                }
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message", e.getFile()));
+        } catch (FileNotFoundException e) {
+            LOGGER.error("a FileNotFoundException error occurred", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message", e.getMessage()));
+
+        } catch (TestFailureException e) {
+            String[] args = e.getArgs();
+            if(args.length >= 2){
+                LOGGER.info("Test failed, cause : " + args[0] + ". Details : " + args[1]);
             }
-            if (e instanceof TestFailureException) {
-                String[] args = ((TestFailureException) e).getArgs();
-                LOGGER.info("Test failed, cause : " + args[0] + ". Count for the CCs : " + args[1]);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.nok.message"));
-            } else if (e instanceof NoSuchFileException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message", ((NoSuchFileException) e).getFile()));
-            } else if (e instanceof FileNotFoundException) {
-                LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message", e.getMessage()));
-            }
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.nok.message"));
+        } catch (Exception e) {
+            LOGGER.error("an unexpected error occurred", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }

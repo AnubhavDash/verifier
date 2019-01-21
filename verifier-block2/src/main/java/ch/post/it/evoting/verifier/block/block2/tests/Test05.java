@@ -119,14 +119,14 @@ public class Test05 extends Test {
                     });
 
             result.setStatus(Status.OK);
-        } catch (FileNotFoundException e) {
-            LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.file.not.found.message", e.getMessage()));
         } catch (NoSuchFileException e) {
-            LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
+            LOGGER.error("a NoSuchFileException error occurred", e);
             result.setStatus(Status.NOK);
             result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.file.not.found.message", ((NoSuchFileException) e).getFile()));
+        } catch (FileNotFoundException e) {
+            LOGGER.error("a FileNotFoundException error occurred", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.file.not.found.message", e.getMessage()));
         } catch (TestFailureException e) {
             result.setStatus(Status.NOK);
             String[] args = e.getArgs();
