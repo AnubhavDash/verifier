@@ -24,8 +24,8 @@ public abstract class SecureLogEntry {
 
         setPreview(slo.getPreview());
         setSource(slo.getResult().getSource());
-        setHost(slo.getResult().getHost()/*.getRaw().substring(0, slo.getResult().getRaw().indexOf('|'))*/);
-        setRaw(getCleanedRawFromRaw(slo.getResult().getRaw()/*.substring(slo.getResult().getRaw().indexOf('|') + 1)*/));
+        setHost(slo.getResult().getHost());
+        setRaw(getCleanedRawFromRaw(slo.getResult().getRaw()));
         setMetadata(getMetadataFromRaw(slo.getResult().getRaw()));
     }
 
