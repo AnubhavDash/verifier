@@ -90,7 +90,13 @@ public class Test05 extends Test {
             for (File downloadedBbFile : downloadedBallotBoxFiles) {
                 try (Stream<String> lines = Files.lines(downloadedBbFile.toPath())) {
                     Map<String, String> map = lines
-                            .map(Test05::extractFromLine)
+                            .map(l -> {
+                                try {
+                                    return extractFromLine(l);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            })
                             .filter(entry -> entry.getKey() != null)
                             .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
                     if (!mergeMapWithoutDuplicates(mapDownloadedBallotBoxs, map)) {
@@ -165,15 +171,11 @@ public class Test05 extends Test {
         }
     }
 
-    static AbstractMap.SimpleEntry<String, String> extractFromLine(String line) {
-        if (!line.isEmpty()) {
+    static AbstractMap.SimpleEntry<String, String> extractFromLine(String line) throws IOException {
+        if (!line.isEmpty() && line.indexOf("}}|") != -1) {
             line = line.substring(0, line.indexOf("}}|") + 2);
             DownloadedBallot db = null;
-            try {
-                db = Deserializer.fromJson(TypeConverter.stringToByte(line), DownloadedBallot.class);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            db = Deserializer.fromJson(TypeConverter.stringToByte(line), DownloadedBallot.class);
             return new AbstractMap.SimpleEntry(db.getVote().getVotingCardId(), db.getVote().getEncryptedOptions());
         } else {
             return new AbstractMap.SimpleEntry(null, null);
