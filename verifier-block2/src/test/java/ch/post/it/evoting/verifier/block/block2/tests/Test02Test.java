@@ -21,6 +21,7 @@ import java.security.cert.X509Certificate;
 
 public class Test02Test {
 
+    @Ignore
     @Test
     public void executeTestOK() {
         TestResult testResult = new Test02().executeTest(new File(getClass().getResource("/Test02/OK").getFile()));
