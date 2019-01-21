@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 public class Test02 extends Test {
 
-    private static final Logger log = Logger.getLogger(Test02.class);
+    private static final Logger LOGGER = Logger.getLogger(Test02.class);
 
     @Override
     public TestDefinition getTestDefinition() {
@@ -101,9 +101,9 @@ public class Test02 extends Test {
                             (ccId1, ccId2) -> {
                                 Map<String, Long> concat = new HashMap<>(ccId1);
                                 ccId2.forEach((k, v) -> concat.merge(k, v, Long::sum));
-                                return  concat;
+                                return concat;
                             }
-                            ));
+                    ));
 
             // 3, e110 file foreach cc do a loop for each Question get the count
             path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS);
@@ -150,22 +150,20 @@ public class Test02 extends Test {
 
             result.setStatus(Status.OK);
 
-        } catch (Exception e) {
+        } catch (Test02Exception e) {
             result.setStatus(Status.NOK);
-
-            if (e instanceof Test02Exception) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test02.nok.message", ((Test02Exception) e).getQuestionId(), ((Test02Exception) e).getAnswerType()));
-            } else if (e instanceof FileNotFoundException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test02.file.not.found.message"));
-            } else {
-                log.error("Unexpected error", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
-            }
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test02.nok.message", e.getQuestionId(), e.getAnswerType()));
+        } catch (FileNotFoundException e) {
+            LOGGER.error("a FileNotFoundException error occurred", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test02.file.not.found.message"));
+        } catch (Exception e) {
+            LOGGER.error("an unexpected error occurred", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }
-
-
 
     private BigInteger getDecryptCount(Map<String, Map<String, Long>> mapDecrypt, Map<Map.Entry<String, String>, String> mapConfig, String ccId, String qId, String answerType) {
         Map<String, Long> countByCC = mapDecrypt.get(ccId);
@@ -184,16 +182,16 @@ public class Test02 extends Test {
         private String questionId;
         private String answerType;
 
-        public Test02Exception(String questionIdentification, String answerType) {
+        Test02Exception(String questionIdentification, String answerType) {
             this.questionId = questionIdentification;
             this.answerType = answerType;
         }
 
-        public String getQuestionId() {
+        String getQuestionId() {
             return questionId;
         }
 
-        public String getAnswerType() {
+        String getAnswerType() {
             return answerType;
         }
     }

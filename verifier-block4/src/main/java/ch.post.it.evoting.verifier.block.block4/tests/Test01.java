@@ -27,7 +27,7 @@ import java.util.stream.StreamSupport;
 
 public class Test01 extends Test {
 
-    private static final Logger log = Logger.getLogger(Test01.class);
+    private static final Logger LOGGER = Logger.getLogger(Test01.class);
 
     @Override
     public TestDefinition getTestDefinition() {
@@ -146,7 +146,7 @@ public class Test01 extends Test {
                             } else {
                                 Long nb = primeAliasMap.entrySet().stream()
                                         .filter(e -> e.getValue().equals(alias))
-                                        .map(e -> e.getKey())
+                                        .map(Map.Entry::getKey)
                                         .mapToLong(p -> {
                                             Long aLong = primesCountMap.get(p.toString());
                                             return aLong != null ? aLong : 0L;
@@ -163,41 +163,41 @@ public class Test01 extends Test {
                 });
 
             });
-
             result.setStatus(Status.OK);
 
-        } catch (Exception e) {
+        } catch (FileNotFoundException e) {
+            LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
-            if (e instanceof Test01WrapperException) {
-                //unwrap the wrapped exception
-                e = (Exception) e.getCause();
-            }
-            if (e instanceof Test01FailException) {
-                result.setStatus(Status.NOK);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test01.nok.message", ((Test01FailException) e).getAliasInError()));
-            } else if (e instanceof FileNotFoundException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message"));
-            } else {
-                log.error("Unexpected error", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
-            }
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message"));
+        } catch (Test01FailException e) {
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test01.nok.message", ((Test01FailException) e).getAliasInError()));
+        } catch (Test01WrapperException e) {
+            LOGGER.error("an unexpected error occurred", e);
+            //unwrap the wrapped exception
+            e = (Test01WrapperException) e.getCause();
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
+        } catch (Exception e) {
+            LOGGER.error("an unexpected error occurred", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }
 
     private Map<String, Long> getCorrectFileAndExtractPrimesCount(File inputDirectory, String ballotboxId) throws IOException {
-        //TODO get the correct file regarding the countingCircleId
         Path path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_BALLOTBOXES).resolve(ballotboxId);
         Iterable<List<String>> iterable = Deserializer.fromCsv(path.toFile(),
                 "decompressedVotes\\.csv", ";", Arrays::asList);
 
         return StreamSupport.stream(iterable.spliterator(), false)
-                .flatMap(l -> l.stream())
+                .flatMap(Collection::stream)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
 
     class Test01WrapperException extends RuntimeException {
-        public Test01WrapperException(Exception root) {
+        Test01WrapperException(Exception root) {
             super(root);
         }
     }
@@ -205,11 +205,11 @@ public class Test01 extends Test {
     class Test01FailException extends RuntimeException {
         private String aliasInError;
 
-        public Test01FailException(String aliasInError) {
+        Test01FailException(String aliasInError) {
             this.aliasInError = aliasInError;
         }
 
-        public String getAliasInError() {
+        String getAliasInError() {
             return aliasInError;
         }
     }

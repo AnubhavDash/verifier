@@ -30,7 +30,7 @@ import java.util.stream.Stream;
 
 public class Test03 extends Test {
 
-    private static final Logger log = Logger.getLogger(Test03.class);
+    private static final Logger LOGGER = Logger.getLogger(Test03.class);
 
     @Override
     public TestDefinition getTestDefinition() {
@@ -68,8 +68,8 @@ public class Test03 extends Test {
                         Map<String, Long> answerCount = cc.getDomainOfInfluence().stream().flatMap(doi -> doi.getElection().stream())
                                 .flatMap(e -> e.getBallot().stream())
                                 .flatMap(b -> Stream.of(b.getChosenCandidateIdentification().stream(),
-                                                        b.getChosenCandidateListIdentification().stream(),
-                                                        b.getChosenWriteInsCandidateValue().stream()).flatMap(Function.identity()))
+                                        b.getChosenCandidateListIdentification().stream(),
+                                        b.getChosenWriteInsCandidateValue().stream()).flatMap(Function.identity()))
                                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
                         return new AbstractMap.SimpleEntry<>(ccId, answerCount);
@@ -80,7 +80,7 @@ public class Test03 extends Test {
                             (ccId1, ccId2) -> {
                                 Map<String, Long> concat = new HashMap<>(ccId1);
                                 ccId2.forEach((k, v) -> concat.merge(k, v, Long::sum));
-                                return  concat;
+                                return concat;
                             }
                     ));
 
@@ -93,7 +93,7 @@ public class Test03 extends Test {
                         .filter(er -> er.getMajoralElection() != null)
                         .flatMap(er -> er.getMajoralElection().getCandidate().stream())
                         .forEach(c -> {
-                            if(c.getCandidateInformation().isOfficialCandidateYesNo()){
+                            if (c.getCandidateInformation().isOfficialCandidateYesNo()) {
                                 String cId = c.getCandidateInformation().getCandidateIdentification();
                                 BigInteger decryptCount = getDecryptCount(mapConfig, mapDecrypt, ccId, cId);
                                 if (!c.getCountOfVotesTotal().equals(decryptCount)) {
@@ -105,7 +105,7 @@ public class Test03 extends Test {
                         .filter(er -> er.getProportionalElection() != null)
                         .flatMap(er -> er.getProportionalElection().getCandidate().stream())
                         .forEach(c -> {
-                            if(c.getCandidateInformation().isOfficialCandidateYesNo()){
+                            if (c.getCandidateInformation().isOfficialCandidateYesNo()) {
                                 String cId = c.getCandidateInformation().getCandidateIdentification();
                                 BigInteger decryptCount = getDecryptCount(mapConfig, mapDecrypt, ccId, cId);
                                 if (!c.getCountOfVotesTotal().equals(decryptCount)) {
@@ -135,7 +135,7 @@ public class Test03 extends Test {
                             (ccId1, ccId2) -> {
                                 Map<String, Long> concat = new HashMap<>(ccId1);
                                 ccId2.forEach((k, v) -> concat.merge(k, v, Long::sum));
-                                return  concat;
+                                return concat;
                             }
                     ));
 
@@ -152,7 +152,7 @@ public class Test03 extends Test {
                             String cId = c.getCandidateInformation().getFamilyName() + " " + c.getCandidateInformation().getCallName();
                             Map<String, Long> writeInsAndCount = writeInsDecryptMap.get(ccId);
                             writeInsEch110Map.increment(cId);
-                            if(writeInsAndCount != null && !writeInsAndCount.isEmpty()){
+                            if (writeInsAndCount != null && !writeInsAndCount.isEmpty()) {
                                 if (!writeInsAndCount.containsKey(cId)) {
                                     throw new Test03FailureException(cId);
                                 }
@@ -166,7 +166,7 @@ public class Test03 extends Test {
                             String cId = c.getCandidateInformation().getFamilyName() + " " + c.getCandidateInformation().getCallName();
                             Map<String, Long> writeInsAndCount = writeInsDecryptMap.get(ccId);
                             writeInsEch110Map.increment(cId);
-                            if(writeInsAndCount != null && !writeInsAndCount.isEmpty()){
+                            if (writeInsAndCount != null && !writeInsAndCount.isEmpty()) {
                                 if (!writeInsAndCount.containsKey(cId)) {
                                     throw new Test03FailureException(cId);
                                 }
@@ -184,7 +184,7 @@ public class Test03 extends Test {
                         .forEach(c -> {
                             String cId = c.getCandidateInformation().getFamilyName() + " " + c.getCandidateInformation().getCallName();
                             Map<String, Long> writeInsAndCount = writeInsDecryptMap.get(ccId);
-                            if(writeInsAndCount != null && !writeInsAndCount.isEmpty()){
+                            if (writeInsAndCount != null && !writeInsAndCount.isEmpty()) {
                                 if (!writeInsAndCount.get(cId).equals(writeInsEch110Map.get(cId))) {
                                     throw new Test03FailureException(cId);
                                 }
@@ -197,7 +197,7 @@ public class Test03 extends Test {
                         .forEach(c -> {
                             String cId = c.getCandidateInformation().getFamilyName() + " " + c.getCandidateInformation().getCallName();
                             Map<String, Long> writeInsAndCount = writeInsDecryptMap.get(ccId);
-                            if(writeInsAndCount != null && !writeInsAndCount.isEmpty()){
+                            if (writeInsAndCount != null && !writeInsAndCount.isEmpty()) {
                                 if (!writeInsAndCount.get(cId).equals(writeInsEch110Map.get(cId))) {
                                     throw new Test03FailureException(cId);
                                 }
@@ -206,20 +206,19 @@ public class Test03 extends Test {
             });
 
             result.setStatus(Status.OK);
-        } catch (Exception e) {
+        } catch (Test03FailureException e) {
             result.setStatus(Status.NOK);
-
-            if (e instanceof Test03FailureException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test03.nok.message", ((Test03FailureException) e).getCandidateId()));
-            } else if (e instanceof FileNotFoundException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message"));
-            } else {
-                log.error("Unexpected error", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
-            }
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test03.nok.message", e.getCandidateId()));
+        } catch (FileNotFoundException e) {
+            LOGGER.error("a FileNotFoundException error occurred", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message"));
+        } catch (Exception e) {
+            LOGGER.error("an unexpected error occurred", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
-
     }
 
     private BigInteger getDecryptCount(Map<String, String> mapConfig, Map<String, Map<String, Long>> mapDecrypt, String ccId, String cId) {
@@ -247,11 +246,11 @@ public class Test03 extends Test {
     class Test03FailureException extends RuntimeException {
         private String candidateId;
 
-        public Test03FailureException(String candidateId) {
+        Test03FailureException(String candidateId) {
             this.candidateId = candidateId;
         }
 
-        public String getCandidateId() {
+        String getCandidateId() {
             return candidateId;
         }
     }

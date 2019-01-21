@@ -49,16 +49,17 @@ public class Test72 extends Test {
             }
             result.setStatus(Status.OK);
 
-        } catch (Exception e) {
-            if (e instanceof TestFailureException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test72.nok.message", ((TestFailureException) e).getArgs()));
-            } else if (e instanceof NoSuchFileException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test72.file.not.found.message", ((NoSuchFileException)e ).getFile()));
-            }
-            else {
-                LOGGER.error("unexpected error", e);
-            }
+        } catch (TestFailureException e) {
             result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test72.nok.message", e.getArgs()));
+        } catch (NoSuchFileException e) {
+            LOGGER.error("a NoSuchFileException error occurred", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test72.file.not.found.message", e.getFile()));
+        } catch (Exception e) {
+            LOGGER.error("an unexpected error occurred", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }
