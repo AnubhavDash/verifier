@@ -10,7 +10,6 @@ import java.io.File;
 
 public class Test08Test {
 
-    @Ignore
     @Test
     public void executeTest() {
         TestResult testResult = new Test08().executeTest(new File(getClass().getResource("/Test08/OK").getFile()));
@@ -18,7 +17,6 @@ public class Test08Test {
         Assert.assertEquals(Status.OK, testResult.getStatus());
     }
 
-    @Ignore
     @Test
     public void executeTestNOK() {
         TestResult testResult = new Test08().executeTest(new File(getClass().getResource("/Test08/NOK").getFile()));
@@ -26,7 +24,6 @@ public class Test08Test {
         Assert.assertEquals(Status.NOK, testResult.getStatus());
     }
 
-    @Ignore
     @Test
     public void executeTestNOKnotFile() {
         TestResult testResult = new Test08().executeTest(new File(getClass().getResource("/Test08/NOK-NOTFILE").getFile()));
