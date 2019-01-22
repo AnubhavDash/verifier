@@ -174,8 +174,7 @@ public class Test05 extends Test {
     static AbstractMap.SimpleEntry<String, String> extractFromLine(String line) throws IOException {
         if (!line.isEmpty() && line.indexOf("}}|") != -1) {
             line = line.substring(0, line.indexOf("}}|") + 2);
-            DownloadedBallot db = null;
-            db = Deserializer.fromJson(TypeConverter.stringToByte(line), DownloadedBallot.class);
+            DownloadedBallot db = Deserializer.fromJson(TypeConverter.stringToByte(line), DownloadedBallot.class);
             return new AbstractMap.SimpleEntry(db.getVote().getVotingCardId(), db.getVote().getEncryptedOptions());
         } else {
             return new AbstractMap.SimpleEntry(null, null);
