@@ -15,6 +15,8 @@ import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
+import ch.post.it.evoting.verifier.dto.DownloadedBallot;
 import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
 import reactor.util.function.Tuples;
@@ -90,7 +92,13 @@ public class Test05 extends Test {
             for (File downloadedBbFile : downloadedBallotBoxFiles) {
                 try (Stream<String> lines = Files.lines(downloadedBbFile.toPath())) {
                     Map<String, String> map = lines
-                            .map(Test05::extractFromLine)
+                            .map(l -> {
+                                try {
+                                    return extractFromLine(l);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            })
                             .filter(entry -> entry.getKey() != null)
                             .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
                     if (!mergeMapWithoutDuplicates(mapDownloadedBallotBoxs, map)) {
@@ -165,19 +173,14 @@ public class Test05 extends Test {
         }
     }
 
-    static AbstractMap.SimpleEntry<String, String> extractFromLine(String line) {
-        String vcId = null;
-        String encOptions = null;
-        final String VOTING_CARD_ID_TAG = "\"votingCardId\":\"";
-        final String ENCRYPTED_OPTIONS_TAG = "\"encryptedOptions\":\"";
-        if (line != null && !line.isEmpty() && line.contains(VOTING_CARD_ID_TAG)) {
-            int vcIdStartIndex = line.indexOf(VOTING_CARD_ID_TAG) + VOTING_CARD_ID_TAG.length();
-            vcId = line.substring(vcIdStartIndex, line.indexOf(",", vcIdStartIndex + 1) - 1);
-
-            int encOptionsStartIndex = line.indexOf(ENCRYPTED_OPTIONS_TAG) + ENCRYPTED_OPTIONS_TAG.length();
-            encOptions = line.substring(encOptionsStartIndex, line.indexOf(",", encOptionsStartIndex + 1) - 1);
+    static AbstractMap.SimpleEntry<String, String> extractFromLine(String line) throws IOException {
+        if (!line.isEmpty() && line.indexOf("}}|") != -1) {
+            line = line.substring(0, line.indexOf("}}|") + 2);
+            DownloadedBallot db = Deserializer.fromJson(TypeConverter.stringToByte(line), DownloadedBallot.class);
+            return new AbstractMap.SimpleEntry(db.getVote().getVotingCardId(), db.getVote().getEncryptedOptions());
+        } else {
+            return new AbstractMap.SimpleEntry(null, null);
         }
-        return new AbstractMap.SimpleEntry(vcId, encOptions);
     }
 
 }

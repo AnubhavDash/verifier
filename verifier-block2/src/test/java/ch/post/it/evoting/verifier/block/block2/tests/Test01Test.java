@@ -141,45 +141,4 @@ public class Test01Test {
 
         Assert.assertEquals(hmac, calculatedHmac);
     }
-
-
-    @Test
-    @Ignore
-    public void updateJSONFile() throws IOException {
-        final String dir = "C:\\work\\projects\\verifier\\verifier-block2\\src\\test\\resources\\Test04\\OK\\secureLogs";
-        Stream<String> lines = Files.lines(Paths.get(dir, "Evoting_CC_verifier_export_7d.json"));
-
-        FileOutputStream fos = new FileOutputStream(Paths.get(dir, "result.json").toFile());
-
-        lines.map(l -> {
-            try {
-                StringBuffer result = new StringBuffer();
-                int evIndex = l.indexOf("\"ev\"");
-                int endHostIndex = l.indexOf("|");
-                String host = l.substring(evIndex + 6, endHostIndex);
-                result.append(l, 0, evIndex);
-                result.append("\"_raw\":\"");
-                int endMetadataIndex = l.indexOf("*}\"") + 3;
-                if (endMetadataIndex == 2) endMetadataIndex = l.length() -2;
-                result.append(l, endHostIndex + 1, endMetadataIndex);
-                result.append(", \"host\":\"" + host + "\"");
-                result.append("}}\n");
-                return result.toString();
-            }
-            catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }).forEach(l -> {
-            try {
-                fos.write(l.getBytes(StandardCharsets.UTF_8));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
-        fos.close();
-
-    }
-
-
 }

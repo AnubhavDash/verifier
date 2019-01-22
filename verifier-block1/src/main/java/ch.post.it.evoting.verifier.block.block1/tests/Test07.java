@@ -13,17 +13,16 @@ import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.ElectoralAuthority;
+import ch.post.it.evoting.verifier.dto.PublicKey;
 import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class Test07 extends Test {
 
@@ -83,27 +82,14 @@ public class Test07 extends Test {
         return result;
     }
 
-    private BigInteger extractPFromPublicKey(String publicKey) {
-        int index = publicKey.toLowerCase().indexOf("\"p\"");
+    private BigInteger extractPFromPublicKey(String publicKey) throws IOException {
 
-        int startDoubleQuote = publicKey.indexOf("\"", index + 4);
-        int endDoubleQuote = publicKey.indexOf("\"", startDoubleQuote + 2);
-
-        return TypeConverter.base64ToBigInteger(publicKey.substring(startDoubleQuote + 1, endDoubleQuote));
+        PublicKey pk = Deserializer.fromJson(TypeConverter.stringToByte(publicKey), PublicKey.class);
+        return TypeConverter.base64ToBigInteger(pk.getPublicKey().getZpSubgroup().getP());
     }
 
-    private List<String> extractElementsFromPublicKey(String publicKey) {
-        List<String> result = new ArrayList<>();
-        if (publicKey != null && !publicKey.isEmpty() && publicKey.contains("elements")) {
-            String[] split = publicKey.split("\"");
-            int indexOf = Arrays.asList(split).indexOf("elements");
-
-            result.addAll(IntStream
-                    .range(0, split.length)
-                    .filter(i -> (i > indexOf && i % 2 == 1))
-                    .mapToObj(i -> split[i])
-                    .collect(Collectors.toList()));
-        }
-        return result;
+    private List<String> extractElementsFromPublicKey(String publicKey) throws IOException {
+        PublicKey pk = Deserializer.fromJson(TypeConverter.stringToByte(publicKey), PublicKey.class);
+        return (pk.getPublicKey().getElements());
     }
 }
