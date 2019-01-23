@@ -2,10 +2,7 @@ package ch.post.it.evoting.verifier.block.block3.tests;
 
 import ch.post.it.evoting.verifier.block.block3.Block3TestSuite;
 import ch.post.it.evoting.verifier.block.block3.loader.online.OnlineMixingProofLoader;
-import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.TestDefinition;
-import ch.post.it.evoting.verifier.common.TestResult;
+import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
@@ -29,9 +26,10 @@ public class Test28 extends Test {
         TestDefinition def = new TestDefinition();
         def.setBlockId(3);
         def.setCategory(Category.INTEGRITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test28.description"));
         def.setId(28);
         def.setName("checkCommitmentParametersOnline");
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test28.description"));
+        def.addTestTrait(TestTrait.PreDecryption);
         return def;
     }
 

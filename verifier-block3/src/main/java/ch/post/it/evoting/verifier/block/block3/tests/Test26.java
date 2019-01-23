@@ -2,10 +2,7 @@ package ch.post.it.evoting.verifier.block.block3.tests;
 
 import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
 import ch.post.it.evoting.verifier.block.block3.Block3TestSuite;
-import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.TestDefinition;
-import ch.post.it.evoting.verifier.common.TestResult;
+import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
@@ -21,14 +18,14 @@ public class Test26 extends Test {
     @Override
     public TestDefinition getTestDefinition() {
 
-        TestDefinition testDefinition = new TestDefinition();
-        testDefinition.setBlockId(3);
-        testDefinition.setCategory(Category.COMPLETENESS);
-        testDefinition.setId(26);
-        testDefinition.setName("checkMultiExponentationArgument");
-        testDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test06.description"));
-
-        return testDefinition;
+        TestDefinition def = new TestDefinition();
+        def.setBlockId(3);
+        def.setCategory(Category.COMPLETENESS);
+        def.setId(26);
+        def.setName("checkMultiExponentationArgument");
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test06.description"));
+        def.addTestTrait(TestTrait.PreDecryption);
+        return def;
     }
 
     @Override
