@@ -52,7 +52,14 @@ public class BGVerificationProcessor {
         this.path = null;
     }
 
-    public synchronized void executeProcess(Path path) {
+    public void executeProcess(Path path) {
+        executeProcess(path, false);
+    }
+    public void executeProcessOnline(Path path) {
+        executeProcess(path, true);
+    }
+
+    private synchronized void executeProcess(Path path, boolean online) {
         if (this.path == null) {
             this.path = path;
         } else if (!this.path.equals(path)) {
@@ -60,11 +67,19 @@ public class BGVerificationProcessor {
         }
 
         if (!this.processed) {
-            BGVerifier.verify(this.path, (TestType t, Status s, String m) -> {
-                if (!statuses.containsKey(t) || !statuses.get(t).getKey().equals(Status.NOK)) {
-                    statuses.put(t, new AbstractMap.SimpleEntry<>(s, s == Status.NOK ? m : null));
-                }
-            });
+            if(online){
+                BGVerifier.verifyOnline(this.path, (TestType t, Status s, String m) -> {
+                    if (!statuses.containsKey(t) || !statuses.get(t).getKey().equals(Status.NOK)) {
+                        statuses.put(t, new AbstractMap.SimpleEntry<>(s, s == Status.NOK ? m : null));
+                    }
+                });
+            } else {
+                BGVerifier.verify(this.path, (TestType t, Status s, String m) -> {
+                    if (!statuses.containsKey(t) || !statuses.get(t).getKey().equals(Status.NOK)) {
+                        statuses.put(t, new AbstractMap.SimpleEntry<>(s, s == Status.NOK ? m : null));
+                    }
+                });
+            }
             this.processed = true;
         }
     }

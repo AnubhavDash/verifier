@@ -6,24 +6,13 @@
  */
 package com.scytl.decrypt;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-
 import ch.post.it.evoting.verifier.block.block3.loader.EncryptionParametersLoader;
 import ch.post.it.evoting.verifier.block.block3.loader.PublicKeyLoader;
 import ch.post.it.evoting.verifier.block.block3.loader.VoterWithProofLoader;
 import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflineEncryptionParametersLoader;
 import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflinePublicKeyLoader;
 import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflineVoterWithProofLoader;
-import org.apache.log4j.Logger;
-
+import ch.post.it.evoting.verifier.block.block3.loader.online.OnlineMixingProofLoader;
 import com.scytl.decrypt.beans.DecryptionProof;
 import com.scytl.decrypt.proofs.decrypt.DecryptionProofVerifier;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallot;
@@ -35,10 +24,50 @@ import com.scytl.products.ov.mixnet.commons.io.ZpGroupReader;
 import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
+import org.apache.log4j.Logger;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 
 public class DecryptVerifier {
 
 	private final static Logger LOGGER = Logger.getLogger(DecryptVerifier.class);
+
+	public static int verifyOnline(Path rootPath) {
+		try{
+				OnlineMixingProofLoader onlineMixingProofLoader = new OnlineMixingProofLoader(rootPath);
+				ZpGroup zPGroup = onlineMixingProofLoader.getZpGroup();
+				ElGamalPublicKey publicKey = onlineMixingProofLoader.getPublicKey();
+				ElGamalEncryptedBallots ballots = onlineMixingProofLoader.getReEncryptedBallots();
+				List<GjosteenElGamalPlaintext> plaintexts = onlineMixingProofLoader.getPlaintexts();
+				DecryptionProof[] proofs = onlineMixingProofLoader.getProofs();
+
+			if (ballots.getBallots().isEmpty()) {
+				LOGGER.info("There are no ballots to be decrypted.");
+				return -1;
+			}
+			if (plaintexts.isEmpty()) {
+				LOGGER.info("There are no decrypted ballots.");
+				return -1;
+			}
+			if (proofs.length == 0) {
+				LOGGER.info("There are no decryption proofs.");
+				return -1;
+			}
+			return validate(ballots.getBallots(), plaintexts, proofs, publicKey, zPGroup);
+		} catch (IOException e) {
+			LOGGER.error("Problems loading files: " + e.getMessage());
+			return -2;
+		}
+	}
+
 
 	public static int verify(Path rootPath) {
         try {
@@ -188,4 +217,5 @@ public class DecryptVerifier {
 			return plaintextsOutput;
 		}
 	}
+
 }
