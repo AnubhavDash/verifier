@@ -6,6 +6,7 @@ import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.CcMixingPublicKey;
 import ch.post.it.evoting.verifier.dto.OnlineDecryptionProof;
+import ch.post.it.evoting.verifier.dto.PublicKey;
 import ch.post.it.evoting.verifier.dto.ZkProof;
 import ch.post.it.evoting.verifier.dto.onlinemixing.OnlineMixing;
 import ch.post.it.evoting.verifier.dto.onlinemixing.OnlineShuffleProof;
@@ -31,7 +32,10 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class OnlineMixingProofLoader implements EncryptedBallotsLoader, EncryptionParametersLoader, PublicKeyLoader, ReEncryptedBallotsLoader, ShuffleProofLoader, VoterWithProofLoader, CommitmentParametersLoader {
@@ -86,7 +90,17 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
                 .map(entry -> new AbstractMap.SimpleEntry<>(entry.getElectionEventId(), entry.getPublicKey()))
                 .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
         String pKeyStr = mapEeidPkey.get(electionEventId);
-        String decode = TypeConverter.byteToString(TypeConverter.hexaStringToByte(pKeyStr));
+        String decodedPkey = TypeConverter.byteToString(TypeConverter.hexaStringToByte(pKeyStr));
+
+        //check how many elements the final key is supposed to have
+        long count = onlineMixing.getVoteEncryptionKey().getElements().stream().count();
+
+        PublicKey publicKey = Deserializer.fromJson(TypeConverter.hexaStringToByte(pKeyStr), PublicKey.class);
+        // In case the final key has only 1 element: Multiply all “elements” from CCN mixing public key modulo p
+        // In case that the key has more than 1 element (n elements), the first n-1 elements of the CCN mixing public key can be used directly. For the last mixing public key elements, multiply the remaining elements together
+        if (count == 1) {
+
+        }
 
         return new ElGamalPublicKey(pubKeys, zpGroup);
     }
