@@ -40,7 +40,7 @@ public class Test75 /*extends Test*/ {
             File pdfFile = PathHelper.getFile(inputDirectory.toPath()
                             .resolve(Block4TestSuite.PATH_RESULTS)
                             .toFile(),
-                    ".*ballot*.*\\.pdf");
+                    ".*ballot.*\\.pdf");
 
             byte[] content = Files.readAllBytes(inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS).resolve(pdfFile.getName()));
             byte[] signature = Files.readAllBytes(inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS).resolve(pdfFile.getName() + ".p7"));

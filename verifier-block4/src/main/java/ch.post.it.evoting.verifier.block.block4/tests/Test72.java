@@ -40,7 +40,7 @@ public class Test72 extends Test {
             File evotingDecrypt = PathHelper.getFile(inputDirectory.toPath()
                             .resolve(Block4TestSuite.PATH_RESULTS)
                             .toFile(),
-                    ".*evoting-decrypt*.*\\.xml");
+                    ".*evoting-decrypt.*\\.xml");
 
             byte[] content = Files.readAllBytes(inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS).resolve(evotingDecrypt.getName()));
             byte[] signature = Files.readAllBytes(inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS).resolve(evotingDecrypt.getName() + ".p7"));

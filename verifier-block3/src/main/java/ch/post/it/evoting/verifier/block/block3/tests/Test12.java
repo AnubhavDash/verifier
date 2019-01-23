@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -87,15 +87,14 @@ public class Test12 extends Test {
         } catch (TestFailureException e) {
             result.setStatus(Status.NOK);
             result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test12.nok.message", e.getArgs()[1]));
+        } catch (IOException e) {
+            result.setStatus(Status.NOK);
+            LOGGER.error("a IOException error occurred", e);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test12.file.not.found.message", e.getCause().getLocalizedMessage()));
         } catch (Exception e) {
             result.setStatus(Status.NOK);
-            if (e.getCause() instanceof FileNotFoundException) {
-                LOGGER.error("a FileNotFoundException error occurred", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test12.file.not.found.message", e.getCause().getLocalizedMessage()));
-            } else {
-                LOGGER.error("an unexpected error occurred", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
-            }
+            LOGGER.error("an unexpected error occurred", e);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }

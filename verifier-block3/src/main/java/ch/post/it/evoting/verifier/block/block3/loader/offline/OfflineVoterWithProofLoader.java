@@ -36,34 +36,30 @@ public class OfflineVoterWithProofLoader implements VoterWithProofLoader {
     private List<GjosteenElGamalPlaintext> plaintexts;
     private List<DecryptionProof> decryptionProofs;
 
-    public OfflineVoterWithProofLoader(Path path) {
-        try {
-            List<ElGamalEncryptedBallot> encryptedBallotList = new ArrayList<>();
-            List<GjosteenElGamalPlaintext> plaintextList = new ArrayList<>();
-            List<DecryptionProof> decryptionProofList = new ArrayList<>();
+    public OfflineVoterWithProofLoader(Path path) throws IOException {
+        List<ElGamalEncryptedBallot> encryptedBallotList = new ArrayList<>();
+        List<GjosteenElGamalPlaintext> plaintextList = new ArrayList<>();
+        List<DecryptionProof> decryptionProofList = new ArrayList<>();
 
-            Flux.fromIterable(Deserializer.fromCsv(path.toFile(), "votesWithProof\\.csv", ";", tab -> {
-                VotesWithProofLine result = new VotesWithProofLine();
-                result.setEncryptedBallot(tab[0]);
-                result.setPlainText(tab[1]);
-                result.setProof(tab[2]);
-                return result;
-            })).subscribe(votesWithProofLine -> {
-                ElGamalEncryptedBallot encryptedBallot = convertToEncryptedBallot(votesWithProofLine.getEncryptedBallot());
-                encryptedBallotList.add(encryptedBallot);
-                GroupElement gamma = encryptedBallot.getGamma();
+        Flux.fromIterable(Deserializer.fromCsv(path.toFile(), "votesWithProof\\.csv", ";", tab -> {
+            VotesWithProofLine result = new VotesWithProofLine();
+            result.setEncryptedBallot(tab[0]);
+            result.setPlainText(tab[1]);
+            result.setProof(tab[2]);
+            return result;
+        })).subscribe(votesWithProofLine -> {
+            ElGamalEncryptedBallot encryptedBallot = convertToEncryptedBallot(votesWithProofLine.getEncryptedBallot());
+            encryptedBallotList.add(encryptedBallot);
+            GroupElement gamma = encryptedBallot.getGamma();
 
-                plaintextList.add(convertToPlainText(votesWithProofLine.getPlainText(), gamma.getParams()));
+            plaintextList.add(convertToPlainText(votesWithProofLine.getPlainText(), gamma.getParams()));
 
-                decryptionProofList.add(convertToProof(votesWithProofLine.getProof(), gamma));
-            });
+            decryptionProofList.add(convertToProof(votesWithProofLine.getProof(), gamma));
+        });
 
-            this.encryptedBallots = new ElGamalEncryptedBallots(encryptedBallotList);
-            this.plaintexts = plaintextList;
-            this.decryptionProofs = decryptionProofList;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        this.encryptedBallots = new ElGamalEncryptedBallots(encryptedBallotList);
+        this.plaintexts = plaintextList;
+        this.decryptionProofs = decryptionProofList;
     }
 
     static DecryptionProof convertToProof(String string, GroupElement gamma) {

@@ -1,11 +1,7 @@
 package ch.post.it.evoting.verifier.block.block1.tests;
 
 import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
-import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.TestDefinition;
-import ch.post.it.evoting.verifier.common.TestResult;
-import ch.post.it.evoting.verifier.common.TestTrait;
+import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
@@ -43,7 +39,7 @@ public class Test75 extends Test {
             File electionImport = PathHelper.getFile(inputDirectory.toPath()
                             .resolve(Block1TestSuite.PATH_ELECTION_SETUP)
                             .toFile(),
-                    "AP_election_import_*.*\\.json");
+                    "AP_election_import_.*\\.json");
 
             byte[] content = Files.readAllBytes(inputDirectory.toPath().resolve(Block1TestSuite.PATH_ELECTION_SETUP).resolve(electionImport.getName()));
             byte[] signature = Files.readAllBytes(inputDirectory.toPath().resolve(Block1TestSuite.PATH_ELECTION_SETUP).resolve(electionImport.getName() + ".p7"));

@@ -40,7 +40,7 @@ public class Test73 extends Test {
             File ech = PathHelper.getFile(inputDirectory.toPath()
                             .resolve(Block4TestSuite.PATH_RESULTS)
                             .toFile(),
-                    ".*eCH-0110*.*\\.xml");
+                    ".*eCH-0110.*\\.xml");
 
             byte[] content = Files.readAllBytes(inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS).resolve(ech.getName()));
             byte[] signature = Files.readAllBytes(inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS).resolve(ech.getName() + ".p7"));
