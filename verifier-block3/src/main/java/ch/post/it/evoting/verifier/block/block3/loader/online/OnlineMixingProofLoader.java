@@ -86,9 +86,7 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
                 .map(entry -> new AbstractMap.SimpleEntry<>(entry.getElectionEventId(), entry.getPublicKey()))
                 .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
         String pKeyStr = mapEeidPkey.get(electionEventId);
-        byte[] decode = Base64.getDecoder().decode(pKeyStr.getBytes(StandardCharsets.UTF_8));
-        String decodedString = new String(decode);
-
+        String decode = TypeConverter.byteToString(TypeConverter.hexaStringToByte(pKeyStr));
 
         return new ElGamalPublicKey(pubKeys, zpGroup);
     }

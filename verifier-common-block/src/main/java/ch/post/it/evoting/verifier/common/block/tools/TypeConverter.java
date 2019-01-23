@@ -1,5 +1,6 @@
 package ch.post.it.evoting.verifier.common.block.tools;
 
+import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -44,6 +45,16 @@ public class TypeConverter {
 
     public static String bigIntegerToB64String(BigInteger bigInt) {
         return Base64.getEncoder().encodeToString(bigInt.toByteArray());
+    }
+
+
+    public static byte[] hexaStringToByte(String hex) {
+        ByteArrayOutputStream bas = new ByteArrayOutputStream();
+        for (int i = 0; i < hex.length(); i+=2) {
+            int b = Integer.parseInt(hex.substring(i, i + 2), 16);
+            bas.write(b);
+        }
+        return bas.toByteArray();
     }
 
     public static byte[] byteToB64ByteArray(byte[] b) {
