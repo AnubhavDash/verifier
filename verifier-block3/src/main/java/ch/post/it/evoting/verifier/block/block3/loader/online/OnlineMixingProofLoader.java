@@ -32,10 +32,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.AbstractMap;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class OnlineMixingProofLoader implements EncryptedBallotsLoader, EncryptionParametersLoader, PublicKeyLoader, ReEncryptedBallotsLoader, ShuffleProofLoader, VoterWithProofLoader, CommitmentParametersLoader {
@@ -101,7 +98,9 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
         if (count == 1) {
 
         }
-
+        else if( count >= 2){
+            List<GroupElement> pubKeys2 = publicKey.getPublicKey().getElements().stream().map(bigIntStr -> new ZpElement(TypeConverter.stringToBigInteger(bigIntStr), params)).collect(Collectors.toList());
+        }
         return new ElGamalPublicKey(pubKeys, zpGroup);
     }
 
