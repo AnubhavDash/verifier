@@ -4,6 +4,7 @@ import ch.post.it.evoting.verifier.block.block3.loader.*;
 import ch.post.it.evoting.verifier.block.block3.loader.online.mapper.SecondAnswerMapper;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
+import ch.post.it.evoting.verifier.dto.CcMixingPublicKey;
 import ch.post.it.evoting.verifier.dto.OnlineDecryptionProof;
 import ch.post.it.evoting.verifier.dto.ZkProof;
 import ch.post.it.evoting.verifier.dto.onlinemixing.OnlineMixing;
@@ -25,11 +26,12 @@ import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentPara
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
 import reactor.core.publisher.Flux;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class OnlineMixingProofLoader implements EncryptedBallotsLoader, EncryptionParametersLoader, PublicKeyLoader, ReEncryptedBallotsLoader, ShuffleProofLoader, VoterWithProofLoader, CommitmentParametersLoader {
@@ -71,10 +73,23 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
         return new ElGamalPublicKey(pubKeys, zpGroup);
     }
 
-    public ElGamalPublicKey getDecryptionPublicKey() throws IOException {
+    public ElGamalPublicKey getDecryptionPublicKey(File pkJsonFile) throws IOException {
+        // TODO Thierry 3 lines below are keept in order to keep alive but they need work
         ZpGroupParams params = new ZpGroupParams(onlineMixing.getVoteEncryptionKey().getZpSubgroup().getP(), onlineMixing.getVoteEncryptionKey().getZpSubgroup().getQ());
         ZpGroup zpGroup = new ZpGroup(params, new ZpElement(onlineMixing.getVoteEncryptionKey().getZpSubgroup().getG(), params));
         List<GroupElement> pubKeys = onlineMixing.getVoteEncryptionKey().getElements().stream().map(bigInt -> new ZpElement(bigInt, params)).collect(Collectors.toList());
+
+        //retrieve in the file the pkey regarding the eeid
+        String electionEventId = onlineMixing.getVoteSetId().getBallotBoxId().getElectionEventId();
+        CcMixingPublicKey[] ccMixingPublicKey = Deserializer.fromJson(pkJsonFile.getParentFile(), pkJsonFile.getName(), CcMixingPublicKey[].class);
+        Map<String, String> mapEeidPkey = Arrays.stream(ccMixingPublicKey)
+                .map(entry -> new AbstractMap.SimpleEntry<>(entry.getElectionEventId(), entry.getPublicKey()))
+                .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+        String pKeyStr = mapEeidPkey.get(electionEventId);
+        byte[] decode = Base64.getDecoder().decode(pKeyStr.getBytes(StandardCharsets.UTF_8));
+        String decodedString = new String(decode);
+
+
         return new ElGamalPublicKey(pubKeys, zpGroup);
     }
 

@@ -27,6 +27,7 @@ import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -40,11 +41,12 @@ public class DecryptVerifier {
 
 	private final static Logger LOGGER = Logger.getLogger(DecryptVerifier.class);
 
-	public static int verifyOnline(Path rootPath) {
+	public static int verifyOnline(Path rootPath, File pkJsonFile) {
 		try{
 				OnlineMixingProofLoader onlineMixingProofLoader = new OnlineMixingProofLoader(rootPath);
 				ZpGroup zPGroup = onlineMixingProofLoader.getZpGroup();
-				ElGamalPublicKey publicKey = onlineMixingProofLoader.getPublicKey();
+				//ElGamalPublicKey publicKey = onlineMixingProofLoader.getPublicKey();
+				ElGamalPublicKey publicKey = onlineMixingProofLoader.getDecryptionPublicKey(pkJsonFile);
 				ElGamalEncryptedBallots ballots = onlineMixingProofLoader.getReEncryptedBallots();
 				List<GjosteenElGamalPlaintext> plaintexts = onlineMixingProofLoader.getPlaintexts();
 				DecryptionProof[] proofs = onlineMixingProofLoader.getProofs();

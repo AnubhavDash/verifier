@@ -10,6 +10,9 @@ import com.scytl.decrypt.DecryptVerifier;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Test27 extends Test {
     @Override
@@ -29,10 +32,14 @@ public class Test27 extends Test {
         TestResult result = new TestResult(getTestDefinition());
         try {
             File[] ballotBoxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES));
+            File[] ccMixingKeys = PathHelper.getFiles(inputDirectory.toPath().resolve(Block3TestSuite.PATH_CC_MIXING_KEYS).toFile(), "cc.*_mixing_public_key.json");
+
             for (File ballotBox : ballotBoxes) {
-                final File[] onlineMixing = ballotBox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
-                for (File file : onlineMixing) {
-                    int verificationResultCode = DecryptVerifier.verifyOnline(file.toPath());
+                final File[] onlineMixings = ballotBox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
+                for (File onlineMixing : onlineMixings) {
+                    //for this onlineMixing, so for this ccn , get the correct ccX_mixing_public_key.json file
+                    File pkJsonFile = getPkJsonFile(onlineMixing.getName(), ccMixingKeys);
+                    int verificationResultCode = DecryptVerifier.verifyOnline(onlineMixing.toPath(), pkJsonFile);
                     if (verificationResultCode != 1 && verificationResultCode != -1) {
                         throw new TestFailureException("The verification failed", ballotBox.getName());
                     }
@@ -50,5 +57,19 @@ public class Test27 extends Test {
             }
         }
         return result;
+    }
+
+    private File getPkJsonFile(String name, File[] ccMixingKeys) {
+        File[] result = new File[1];
+        Pattern pattern = Pattern.compile(".*ccn_m(.?)\\.json");
+        Matcher matcher = pattern.matcher(name);
+        matcher.matches();
+        String id = matcher.group(1);
+        Arrays.stream(ccMixingKeys).forEach( file -> {
+                    if (file.getName().contains(id)){
+                        result[0] = file;
+                    }
+                });
+        return result[0];
     }
 }
