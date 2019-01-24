@@ -109,9 +109,8 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
     }
 
     private BigInteger calculateOthersByMultiply(List<BigInteger> elements, BigInteger p, boolean multiplyAll) {
-        BigInteger[] result = new BigInteger[]{BigInteger.ONE};
-
         if (elements != null && !elements.isEmpty() && p != null) {
+            BigInteger[] result = new BigInteger[]{BigInteger.ONE};
             if (multiplyAll) {
                 elements.forEach(elem -> {
                     result[0] = result[0].multiply(elem).mod(p);
@@ -121,8 +120,10 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
                     result[0] = result[0].multiply(elem).mod(p);
                 });
             }
+            return result[0];
+        } else {
+            return null;
         }
-        return result[0];
     }
 
     @Override
