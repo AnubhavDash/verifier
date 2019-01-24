@@ -36,11 +36,4 @@ public class TestResult {
         this.message = message;
     }
 
-    public TestResultSeverity getSeverity() {
-        return severity;
-    }
-
-    public void setSeverity(TestResultSeverity severity) {
-        this.severity = severity;
-    }
 }

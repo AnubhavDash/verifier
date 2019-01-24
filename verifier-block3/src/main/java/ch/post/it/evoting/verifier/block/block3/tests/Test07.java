@@ -10,11 +10,15 @@ import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import com.scytl.decrypt.DecryptVerifier;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
 public class Test07 extends Test {
+
+    private static final Logger LOGGER = Logger.getLogger(Test07.class);
+
     @Override
     public TestDefinition getTestDefinition() {
         TestDefinition testDefinition = new TestDefinition();
@@ -39,14 +43,17 @@ public class Test07 extends Test {
                 }
             }
             result.setStatus(Status.OK);
+        } catch (TestFailureException e) {
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.nok.message", e.getArgs()[1]));
         } catch (Exception e) {
             result.setStatus(Status.NOK);
-            if (e instanceof TestFailureException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.nok.message", ((TestFailureException) e).getArgs()[1]));
-            } else if (e instanceof RuntimeException) {
-                if (e.getCause() instanceof FileNotFoundException) {
-                    result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message", e.getCause().getLocalizedMessage()));
-                }
+            if (e.getCause() instanceof FileNotFoundException) {
+                LOGGER.error("a FileNotFoundException error occurred", e);
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message", e.getCause().getLocalizedMessage()));
+            } else{
+                LOGGER.error("an unexpected error occurred", e);
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
             }
         }
         return result;

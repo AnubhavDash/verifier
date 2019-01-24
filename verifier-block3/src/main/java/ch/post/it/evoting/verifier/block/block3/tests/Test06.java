@@ -43,7 +43,7 @@ public class Test06 extends Test {
             result.setStatus(status.getKey());
             result.setMessage(TranslationHelper.getSameMessageMultiLanguage(status.getValue()));
         } catch (Exception e) {
-            LOGGER.error("Unexpected error", e);
+            LOGGER.error("an unexpected error occurred", e);
             result.setStatus(Status.NOK);
             result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         } finally {

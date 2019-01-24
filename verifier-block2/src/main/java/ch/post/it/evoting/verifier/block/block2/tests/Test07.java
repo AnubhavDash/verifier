@@ -5,11 +5,7 @@ import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationDataExtra
 import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationStruct;
 import ch.post.it.evoting.verifier.block.block2.securelog.RegularLogEntry;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
-import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.TestDefinition;
-import ch.post.it.evoting.verifier.common.TestResult;
-import ch.post.it.evoting.verifier.common.TestTrait;
+import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.dto.HostMappingElement;
@@ -98,27 +94,28 @@ public class Test07 extends Test {
                 throw new TestFailureException(problematicVotingCardIds.toArray(new String[]{}));
             }
             result.setStatus(Status.OK);
-        } catch (Exception e) {
+        } catch (NoSuchFileException e) {
+            LOGGER.error("a NoSuchFileException error occurred", e);
             result.setStatus(Status.NOK);
-            if (e instanceof TestFailureException) {
-                String[] args = ((TestFailureException) e).getArgs();
-                LOGGER.debug("Test failed, problematic votingcard ids : " + Arrays.toString(args));
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test07.nok.message", args));
-            } else if (e instanceof NoSuchFileException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message", ((NoSuchFileException) e).getFile()));
-            } else if (e instanceof FileNotFoundException) {
-                LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
-                if( e.getLocalizedMessage().equals(".*\\.json")){
-                    result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message", "logs JSON file"));
-                }
-                else{
-                    result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message", e.getMessage()));
-                }
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message", ((NoSuchFileException) e).getFile()));
+        } catch (FileNotFoundException e) {
+            LOGGER.error("a FileNotFoundException error occurred", e);
+            result.setStatus(Status.NOK);
+            if (e.getLocalizedMessage().equals(".*\\.json")) {
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message", "logs JSON file"));
             } else {
-                LOGGER.error("Unexpected error", e);
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message", e.getMessage()));
             }
+        } catch (TestFailureException e) {
+            String[] args = e.getArgs();
+            LOGGER.debug("Test failed, problematic votingcard ids : " + Arrays.toString(args));
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test07.nok.message", args));
+        } catch (Exception e) {
+            LOGGER.error("an unexpected error occurred", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }
-
 }
