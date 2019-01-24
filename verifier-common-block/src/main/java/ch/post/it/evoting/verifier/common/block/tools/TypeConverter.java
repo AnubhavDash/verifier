@@ -42,13 +42,6 @@ public class TypeConverter {
         return new BigInteger(s);
     }
 
-    public static String bigIntegerToB64String(BigInteger bigInt) {
-        return Base64.getEncoder().encodeToString(bigInt.toByteArray());
-    }
-
-    public static byte[] byteToB64ByteArray(byte[] b) {
-        return Base64.getEncoder().encode(b);
-    }
 
     public static BigInteger integerToBigInteger(Integer i) {
         if (i == null) {

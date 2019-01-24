@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 
 public class Test04 extends Test {
 
-    private static final Logger log = Logger.getLogger(Test04.class);
+    private static final Logger LOGGER = Logger.getLogger(Test04.class);
 
     @Override
     public TestDefinition getTestDefinition() {
@@ -162,7 +162,7 @@ public class Test04 extends Test {
                         .filter(er -> er.getProportionalElection() != null)
                         .forEach(er -> {
                             String electionId = er.getElection().getElectionIdentification();
-                            er.getProportionalElection().getList().stream()
+                            er.getProportionalElection().getList()
                                     .forEach(l -> {
                                         String listId = l.getListInformation().getListIdentification();
                                         // BigInteger countOfPartyVotes = getCountOfCandidatesVotes(l);
@@ -171,24 +171,24 @@ public class Test04 extends Test {
                                         BigInteger countOfAdditionalVotes = getCountOfAdditionalVotes(l);
                                         BigInteger emptyCount = getVoteCount(countOfEmptyValuesByListId, ccId, electionId, listId);
                                         if (!countOfPartyVotes.equals(lcpCount) || !countOfAdditionalVotes.equals(emptyCount)) {
-                                            log.debug(String.format("count not equal : CC:%s electionId:%s list:%s decrypt:%s 110:%s", ccId, electionId, listId, lcpCount, countOfPartyVotes));
+                                            LOGGER.debug(String.format("count not equal : CC:%s electionId:%s list:%s decrypt:%s 110:%s", ccId, electionId, listId, lcpCount, countOfPartyVotes));
                                             throw new TestFailureException(ccId, listId);
                                         }
                                     });
                         });
             });
             result.setStatus(Status.OK);
-        } catch (Exception e) {
+        } catch (TestFailureException e) {
             result.setStatus(Status.NOK);
-            if (e instanceof TestFailureException) {
-                TestFailureException ex = ((TestFailureException) e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test04.nok.message", ex.getArgs()));
-            } else if (e instanceof FileNotFoundException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test04.file.not.found.message"));
-            } else {
-                log.error("Unexpected error", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
-            }
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test04.nok.message", e.getArgs()));
+        } catch (FileNotFoundException e) {
+            LOGGER.error("a FileNotFoundException error occurred", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test04.file.not.found.message"));
+        } catch (Exception e) {
+            LOGGER.error("an unexpected error occurred", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
 
@@ -207,15 +207,6 @@ public class Test04 extends Test {
             }
         }
         return result;
-    }
-
-
-    private BigInteger getCountOfCandidatesVotes(ListResultsType l) {
-        if (l.getCountOfPartyVotes() != null) {
-            return l.getCountOfCandidateVotes().getTotal();
-        } else {
-            return BigInteger.ZERO;
-        }
     }
 
     private BigInteger getCountOfPartyVotes(ListResultsType l) {

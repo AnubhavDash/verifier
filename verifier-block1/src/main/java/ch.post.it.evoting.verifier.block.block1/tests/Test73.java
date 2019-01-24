@@ -55,6 +55,7 @@ public class Test73 extends Test {
             result.setStatus(Status.NOK);
             result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test73.nok.message", e.getArgs()));
         } catch (NoSuchFileException e) {
+            LOGGER.error("a NotSuchFileException error occurred", e);
             result.setStatus(Status.NOK);
             result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test73.file.not.found.message", e.getFile()));
         } catch (Exception e) {

@@ -31,44 +31,4 @@ public class Report {
     public Report() {
     }
 
-    public Report(ReportMetadata metadata) {
-        this(metadata.getTitle(),
-            metadata.getHeaderTitleLabel(),
-            metadata.getHeaderTitle(),
-            metadata.getReportDateLabel(),
-            metadata.getReportDate(),
-            metadata.getReportTimeLabel(),
-            metadata.getReportTime(),
-            metadata.getCommentLabel(),
-            metadata.getSignaturetLabel(),
-            metadata.getPlaceDatetLabel(),
-            metadata.getLastNameLabel(),
-            metadata.getFirstNameLabel(),
-            metadata.getFooterTitleLabel(),
-            metadata.getFooterTitle(),
-            metadata.getFooterDateLabel(),
-            metadata.getFooterDate());
-    }
-
-    public Report(String title, String headerTitleLabel, String headerTitle, String reportDateLabel, String reportDate, String reportTimeLabel, String reportTime,
-                  String commentLabel, String signaturetLabel, String placeDatetLabel, String lastNameLabel, String firstNameLabel, String footerTitleLabel, String footerTitle,
-                  String footerDateLabel, String footerDate) {
-        this.title = title;
-        this.headerTitleLabel = headerTitleLabel;
-        this.headerTitle = headerTitle;
-        this.reportDateLabel = reportDateLabel;
-        this.reportDate = reportDate;
-        this.reportTimeLabel = reportTimeLabel;
-        this.reportTime = reportTime;
-        this.commentLabel = commentLabel;
-        this.signaturetLabel = signaturetLabel;
-        this.placeDatetLabel = placeDatetLabel;
-        this.lastNameLabel = lastNameLabel;
-        this.firstNameLabel = firstNameLabel;
-        this.footerTitleLabel = footerTitleLabel;
-        this.footerTitle = footerTitle;
-        this.footerDateLabel = footerDateLabel ;
-        this.footerDate = footerDate;
-    }
-
 }

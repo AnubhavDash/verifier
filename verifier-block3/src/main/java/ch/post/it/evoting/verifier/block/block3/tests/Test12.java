@@ -11,15 +11,19 @@ import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Test12 extends Test {
+
+    private static final Logger LOGGER = Logger.getLogger(Test12.class);
+
     @Override
     public TestDefinition getTestDefinition() {
         TestDefinition testDefinition = new TestDefinition();
@@ -43,7 +47,7 @@ public class Test12 extends Test {
                     BigInteger bigInt = BigInteger.ONE;
                     for (int i = 0; i < tab.length; i++) {
                         // ignore write ins
-                        if(!tab[i].contains("#")){
+                        if (!tab[i].contains("#")) {
                             bigInt = bigInt.multiply(new BigInteger(tab[i]));
                         }
                     }
@@ -66,8 +70,8 @@ public class Test12 extends Test {
                 }
 
                 // finally to the check
-                if(decompVotesbigIntList.size() != voterWithProofbigIntList.size()){
-                    throw new TestFailureException("factorization not correct !",decompVotesbigIntList.toString());
+                if (decompVotesbigIntList.size() != voterWithProofbigIntList.size()) {
+                    throw new TestFailureException("factorization not correct !", decompVotesbigIntList.toString());
                 }
 
                 Boolean allMatch = Flux.fromIterable(decompVotesbigIntList)
@@ -76,23 +80,22 @@ public class Test12 extends Test {
                         .block();
 
                 if (!allMatch) {
-                    throw new TestFailureException("factorization not correct !",decompVotesbigIntList.toString());
+                    throw new TestFailureException("factorization not correct !", decompVotesbigIntList.toString());
                 }
             }
-
             result.setStatus(Status.OK);
+        } catch (TestFailureException e) {
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test12.nok.message", e.getArgs()[1]));
+        } catch (IOException e) {
+            result.setStatus(Status.NOK);
+            LOGGER.error("a IOException error occurred", e);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test12.file.not.found.message", e.getCause().getLocalizedMessage()));
         } catch (Exception e) {
             result.setStatus(Status.NOK);
-            if (e instanceof TestFailureException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test12.nok.message", ((TestFailureException) e).getArgs()[1]));
-            } else if (e instanceof RuntimeException) {
-                if (e.getCause() instanceof FileNotFoundException) {
-                    result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test12.file.not.found.message", e.getCause().getLocalizedMessage()));
-                }
-            }
+            LOGGER.error("an unexpected error occurred", e);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }
-
-
 }

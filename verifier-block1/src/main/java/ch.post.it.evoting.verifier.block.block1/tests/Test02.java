@@ -51,6 +51,7 @@ public class Test02 extends Test {
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test02.nok.message"));
             }
         } catch (FileNotFoundException e) {
+            LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
             result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test02.file.not.found.message"));
         } catch (Exception e) {

@@ -69,7 +69,7 @@ public class Test01 extends Test {
         } catch (NoSuchFileException e) {
             LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message", ((NoSuchFileException) e).getFile()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message", e.getFile()));
         } catch (FileNotFoundException e) {
             LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
             result.setStatus(Status.NOK);
