@@ -1,7 +1,8 @@
 package ch.post.it.evoting.verifier.block.block3.tests;
 
-import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
+import ch.post.it.evoting.verifier.block.block3.BGOnlineVerificationProcessor;
 import ch.post.it.evoting.verifier.block.block3.Block3TestSuite;
+import ch.post.it.evoting.verifier.block.block3.TestType;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
@@ -13,7 +14,7 @@ import java.util.AbstractMap;
 public class Test24 extends Test {
 
     private static final Logger LOGGER = Logger.getLogger(Test24.class);
-    private final BGVerificationProcessor processor = BGVerificationProcessor.getInstanceAndRegister(this);
+    private final BGOnlineVerificationProcessor processor = BGOnlineVerificationProcessor.getInstanceAndRegister(this);
 
     @Override
     public TestDefinition getTestDefinition() {
@@ -33,9 +34,9 @@ public class Test24 extends Test {
         TestResult result = new TestResult(getTestDefinition());
         try {
             processor.register(this);
-            processor.executeProcessOnline(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES));
+            processor.executeProcess(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES));
 
-            AbstractMap.SimpleEntry<Status, String> status = processor.getStatus(BGVerificationProcessor.TestType.ZeroProof);
+            AbstractMap.SimpleEntry<Status, String> status = processor.getStatus(TestType.ZeroProof);
             result.setStatus(status.getKey());
             result.setMessage(TranslationHelper.getSameMessageMultiLanguage(status.getValue()));
         } catch (Exception e) {

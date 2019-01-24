@@ -6,29 +6,20 @@ import com.scytl.products.ov.mixnet.BGVerifier;
 import java.nio.file.Path;
 import java.util.*;
 
-public class BGVerificationProcessor {
+public class BGOnlineVerificationProcessor {
 
-    public enum TestType {
-        ShuffleProof,
-        ProductProof,
-        HadamardProductProof,
-        MultiExponentiationProof,
-        SingleValueProductProof,
-        ZeroProof
-    }
-
-    private static final BGVerificationProcessor instance = new BGVerificationProcessor();
+    private static final BGOnlineVerificationProcessor instance = new BGOnlineVerificationProcessor();
     private List<Object> attachedClients = new LinkedList<>();
     private Path path;
     private boolean processed = false;
 
     private final Map<TestType, AbstractMap.SimpleEntry<Status, String>> statuses = new HashMap<>();
 
-    private BGVerificationProcessor() {
+    private BGOnlineVerificationProcessor() {
         //singleton, use static getInstanceAndRegister method
     }
 
-    public static BGVerificationProcessor getInstanceAndRegister(Object o) {
+    public static BGOnlineVerificationProcessor getInstanceAndRegister(Object o) {
         instance.register(o);
         return instance;
     }
@@ -52,14 +43,7 @@ public class BGVerificationProcessor {
         this.path = null;
     }
 
-    public void executeProcess(Path path) {
-        executeProcess(path, false);
-    }
-    public void executeProcessOnline(Path path) {
-        executeProcess(path, true);
-    }
-
-    private synchronized void executeProcess(Path path, boolean online) {
+    public synchronized void executeProcess(Path path) {
         if (this.path == null) {
             this.path = path;
         } else if (!this.path.equals(path)) {
@@ -67,19 +51,11 @@ public class BGVerificationProcessor {
         }
 
         if (!this.processed) {
-            if(online){
-                BGVerifier.verifyOnline(this.path, (TestType t, Status s, String m) -> {
-                    if (!statuses.containsKey(t) || !statuses.get(t).getKey().equals(Status.NOK)) {
-                        statuses.put(t, new AbstractMap.SimpleEntry<>(s, s == Status.NOK ? m : null));
-                    }
-                });
-            } else {
-                BGVerifier.verify(this.path, (TestType t, Status s, String m) -> {
-                    if (!statuses.containsKey(t) || !statuses.get(t).getKey().equals(Status.NOK)) {
-                        statuses.put(t, new AbstractMap.SimpleEntry<>(s, s == Status.NOK ? m : null));
-                    }
-                });
-            }
+            BGVerifier.verifyOnline(this.path, (TestType t, Status s, String m) -> {
+                if (!statuses.containsKey(t) || !statuses.get(t).getKey().equals(Status.NOK)) {
+                    statuses.put(t, new AbstractMap.SimpleEntry<>(s, s == Status.NOK ? m : null));
+                }
+            });
             this.processed = true;
         }
     }

@@ -7,10 +7,10 @@
 package com.scytl.products.ov.mixnet;
 
 import ch.post.it.evoting.verifier.block.block3.BGResultNotifier;
-import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
 import ch.post.it.evoting.verifier.block.block3.loader.*;
 import ch.post.it.evoting.verifier.block.block3.loader.offline.*;
 import ch.post.it.evoting.verifier.block.block3.loader.online.OnlineMixingProofLoader;
+import ch.post.it.evoting.verifier.block.block3.TestType;
 import ch.post.it.evoting.verifier.common.Status;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProof;
@@ -79,7 +79,7 @@ public class BGVerifier {
                                 final ElGamalEncryptedBallots encryptedBallots = offlineEncryptedBallotsLoader.getEncryptedBallots();
                                 if (encryptedBallots.getBallots().size() <= 1) {
                                     LOGGER.info("0 or 1 ballots, nothing to mix!");
-                                    notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.OK, null);
+                                    notifier.notify(TestType.ShuffleProof, Status.OK, null);
                                     /*return true;*/
                                 } else {
 
@@ -92,7 +92,7 @@ public class BGVerifier {
                                     final ElGamalEncryptedBallots reencryptedBallots = offlineReEncryptedBallotsLoader.getReEncryptedBallots();
                                     if (reencryptedBallots.getBallots().size() <= 1) {
                                         LOGGER.info("0 or 1 ballots reencrypted, no mixing performed!");
-                                        notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.OK, null);
+                                        notifier.notify(TestType.ShuffleProof, Status.OK, null);
                                         /*return true;*/
                                     } else {
 
@@ -113,7 +113,7 @@ public class BGVerifier {
 
                             } catch (final Exception e) {
                                 LOGGER.error("An error occurred while verifying batch " + batchName, e);
-                                notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.NOK, "An error occurred while verifying batch " + batchName);
+                                notifier.notify(TestType.ShuffleProof, Status.NOK, "An error occurred while verifying batch " + batchName);
                             }
                         }
                     }
@@ -144,8 +144,7 @@ public class BGVerifier {
                     final ElGamalEncryptedBallots encryptedBallots = onlineMixingProofLoader.getEncryptedBallots();
                     if (encryptedBallots.getBallots().isEmpty()) {
                         LOGGER.info("0 ballots, nothing to mix!");
-                        notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.OK, null);
-                        //return true;
+                        notifier.notify(TestType.ShuffleProof, Status.OK, null);
                     } else {
 
                         LOGGER.debug("Re-encrypted ballots");

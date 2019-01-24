@@ -6,8 +6,9 @@
  */
 package com.scytl.products.ov.mixnet.proofs.bg;
 
-import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
+import ch.post.it.evoting.verifier.block.block3.BGOfflineVerificationProcessor;
 import ch.post.it.evoting.verifier.block.block3.BGResultNotifier;
+import ch.post.it.evoting.verifier.block.block3.TestType;
 import ch.post.it.evoting.verifier.common.Status;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ProductProofMessage;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
@@ -42,11 +43,11 @@ public class ProductProofVerifier {
 
         boolean productProof = ans.getCommitmentPublicB().getElement().isGroupElement();
         if (productProof) {
-            notifier.notify(BGVerificationProcessor.TestType.ProductProof, Status.OK, null);
+            notifier.notify(TestType.ProductProof, Status.OK, null);
         }
         else {
             LOGGER.error("ERROR(Product Argument): cd is not a group element");
-            notifier.notify(BGVerificationProcessor.TestType.ProductProof, Status.NOK, "ERROR(Product Argument): cd is not a group element");
+            notifier.notify(TestType.ProductProof, Status.NOK, "ERROR(Product Argument): cd is not a group element");
             return false;
         }
         final HadamardProductProofVerifier verifHA =
@@ -56,7 +57,7 @@ public class ProductProofVerifier {
         final SingleValueProductProofVerifier verifSVA =
                 new SingleValueProductProofVerifier(_pars, ans.getCommitmentPublicB(), _b, _groupOrder);
         final boolean answer2 = verifSVA.verify(ans.getIniSVA(), ans.getAnsSVA(), notifier);
-        notifier.notify(BGVerificationProcessor.TestType.SingleValueProductProof, answer1 ? Status.OK : Status.NOK, "SingleValueProductProof failed");
+        notifier.notify(TestType.SingleValueProductProof, answer1 ? Status.OK : Status.NOK, "SingleValueProductProof failed");
 
         return answer1 && answer2;
     }

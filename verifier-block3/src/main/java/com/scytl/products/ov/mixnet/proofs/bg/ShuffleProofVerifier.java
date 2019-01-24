@@ -7,7 +7,8 @@
 package com.scytl.products.ov.mixnet.proofs.bg;
 
 import ch.post.it.evoting.verifier.block.block3.BGResultNotifier;
-import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
+import ch.post.it.evoting.verifier.block.block3.BGOfflineVerificationProcessor;
+import ch.post.it.evoting.verifier.block.block3.TestType;
 import ch.post.it.evoting.verifier.common.Status;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProofSecondAnswer;
 import com.scytl.products.ov.mixnet.commons.constants.Constants;
@@ -74,7 +75,7 @@ public class ShuffleProofVerifier {
 
         boolean shuffleResult = isValidCommitment(cA, "cA", notifier) && isValidCommitment(cB, "cB", notifier);
         if (shuffleResult) {
-            notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.OK, null);
+            notifier.notify(TestType.ShuffleProof, Status.OK, null);
         } else {
             return false;
         }
@@ -108,7 +109,7 @@ public class ShuffleProofVerifier {
                 new MultiExponentiationBasicProofVerifier(_cryptosystem, _compars, _Cprime, lhsME, cB, _group.getOrder());
         boolean multiExponentiationProof = verifME.verify(ans.getIniMEBasic(), ans.getAnsMEBasic(), notifier);
         if (multiExponentiationProof) {
-            notifier.notify(BGVerificationProcessor.TestType.MultiExponentiationProof, Status.OK, null);
+            notifier.notify(TestType.MultiExponentiationProof, Status.OK, null);
         } else {
             LOGGER.error("ERROR(Shuffle Argument):  MultiExpo argument didn't verify");
             return false;
@@ -160,14 +161,14 @@ public class ShuffleProofVerifier {
     private boolean isValidCommitment(PublicCommitment[] commitment, String commitmentName, BGResultNotifier notifier) {
         if (commitment.length != _m) {
             LOGGER.error("ERROR(Shuffle Argument): " + commitmentName + " doesn't have the expected length");
-            notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.NOK, "ERROR(Shuffle Argument): " + commitmentName + " doesn't have the expected length");
+            notifier.notify(TestType.ShuffleProof, Status.NOK, "ERROR(Shuffle Argument): " + commitmentName + " doesn't have the expected length");
             return false;
         }
 
         for (int i = 0; i < commitment.length; i++) {
             if (!commitment[i].getElement().isGroupElement()) {
                 LOGGER.error("ERROR(Shuffle Argument): " + commitmentName + "[" + i + "] is not a group element");
-                notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.NOK, "ERROR(Shuffle Argument): " + commitmentName + "[" + i + "] is not a group element");
+                notifier.notify(TestType.ShuffleProof, Status.NOK, "ERROR(Shuffle Argument): " + commitmentName + "[" + i + "] is not a group element");
                 return false;
             }
         }
