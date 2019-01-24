@@ -21,8 +21,13 @@ export class ProcessorService {
     return this.http.get<any>(environment.appUrl + '/api/tests', this.httpOptions);
   }
 
-  processTests(): Observable<Object> {
-    return this.http.post(environment.appUrl + '/api/tests', null, this.httpOptions);
+  processTests(runOptions?: string): Observable<Object> {
+    var runParams = "";
+    if ( runOptions != undefined )
+    {
+      runParams = `?runOptions=${runOptions}`;
+    }
+    return this.http.post(environment.appUrl + '/api/tests'+ runParams, null, this.httpOptions);
   }
 
   resetTests(): Observable<Object> {

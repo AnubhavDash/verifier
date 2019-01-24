@@ -8,6 +8,7 @@ import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
+import ch.post.it.evoting.verifier.common.TestTrait;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
@@ -32,6 +33,7 @@ public class Test01 extends Test {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.description"));
         def.setId(1);
         def.setName("checkSecureLogIntegrity");
+        def.addTestTrait(TestTrait.PreDecryption);
         return def;
     }
 
@@ -67,7 +69,7 @@ public class Test01 extends Test {
         } catch (NoSuchFileException e) {
             LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message", ((NoSuchFileException) e).getFile()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message", e.getFile()));
         } catch (FileNotFoundException e) {
             LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
             result.setStatus(Status.NOK);

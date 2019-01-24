@@ -38,6 +38,7 @@ public class Test02 extends Test {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test02.description"));
         def.setId(2);
         def.setName("checkSecureLogSignature");
+        def.addTestTrait(TestTrait.PreDecryption);
         return def;
     }
 
@@ -82,23 +83,24 @@ public class Test02 extends Test {
                             b.validateSignature();
                         } catch (SecureLogBundleValidationException e) {
                             LOGGER.error("Validation failed because on host {" + e.getHost() + "} " + e.getMessage());
-                            throw new RuntimeException(e);
+                            throw new TestFailureException(b.getBeginCheckPoint().toString(), b.getBeginCheckPoint().getMetadata().toString());
                         }
                     });
 
             result.setStatus(Status.OK);
 
         } catch (IOException e) {
+            LOGGER.error("a IOException error occurred", e);
             result.setStatus(Status.NOK);
-        } catch (RuntimeException e) {
+        } catch (TestFailureException e) {
             result.setStatus(Status.NOK);
-            if (e.getCause() instanceof SecureLogBundleValidationException) {
-                //TODO
-            }
+            String[] args = e.getArgs();
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test02.nok.message", args[0], args[1]));
         } catch (Exception e) {
+            LOGGER.error("an unexpected error occurred", e);
             result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
-
         return result;
     }
 }

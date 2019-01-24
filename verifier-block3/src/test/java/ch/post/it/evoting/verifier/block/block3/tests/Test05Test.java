@@ -11,13 +11,13 @@ public class Test05Test {
 
     @Test
     public void executeTestOK() {
-        TestResult result = new Test04().executeTest(new File(getClass().getResource("/Test04/OK").getFile()));
+        TestResult result = new Test05().executeTest(new File(getClass().getResource("/Test05/OK").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestNOK() {
-        TestResult result = new Test04().executeTest(new File(getClass().getResource("/Test04/NOK").getFile()));
+        TestResult result = new Test05().executeTest(new File(getClass().getResource("/Test05/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }

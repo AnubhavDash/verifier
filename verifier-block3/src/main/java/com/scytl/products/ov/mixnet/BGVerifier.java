@@ -7,10 +7,10 @@
 package com.scytl.products.ov.mixnet;
 
 import ch.post.it.evoting.verifier.block.block3.BGResultNotifier;
-import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
 import ch.post.it.evoting.verifier.block.block3.loader.*;
 import ch.post.it.evoting.verifier.block.block3.loader.offline.*;
 import ch.post.it.evoting.verifier.block.block3.loader.online.OnlineMixingProofLoader;
+import ch.post.it.evoting.verifier.block.block3.TestType;
 import ch.post.it.evoting.verifier.common.Status;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProof;
@@ -18,7 +18,6 @@ import com.scytl.products.ov.mixnet.commons.exceptions.VerifierException;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
 import com.scytl.products.ov.mixnet.commons.homomorphic.impl.ElGamalPublicKey;
 import com.scytl.products.ov.mixnet.commons.homomorphic.impl.GjosteenElGamal;
-import com.scytl.products.ov.mixnet.commons.io.BGReader;
 import com.scytl.products.ov.mixnet.commons.io.JSONProofsReader;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentParams;
@@ -80,7 +79,7 @@ public class BGVerifier {
                                 final ElGamalEncryptedBallots encryptedBallots = offlineEncryptedBallotsLoader.getEncryptedBallots();
                                 if (encryptedBallots.getBallots().size() <= 1) {
                                     LOGGER.info("0 or 1 ballots, nothing to mix!");
-                                    notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.OK, null);
+                                    notifier.notify(TestType.ShuffleProof, Status.OK, null);
                                     /*return true;*/
                                 } else {
 
@@ -93,7 +92,7 @@ public class BGVerifier {
                                     final ElGamalEncryptedBallots reencryptedBallots = offlineReEncryptedBallotsLoader.getReEncryptedBallots();
                                     if (reencryptedBallots.getBallots().size() <= 1) {
                                         LOGGER.info("0 or 1 ballots reencrypted, no mixing performed!");
-                                        notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.OK, null);
+                                        notifier.notify(TestType.ShuffleProof, Status.OK, null);
                                         /*return true;*/
                                     } else {
 
@@ -114,15 +113,30 @@ public class BGVerifier {
 
                             } catch (final Exception e) {
                                 LOGGER.error("An error occurred while verifying batch " + batchName, e);
-                                notifier.notify(BGVerificationProcessor.TestType.ShuffleProof, Status.NOK, "An error occurred while verifying batch " + batchName);
+                                notifier.notify(TestType.ShuffleProof, Status.NOK, "An error occurred while verifying batch " + batchName);
                             }
                         }
                     }
                 }
+            }
+            return getResult(result);
+        } catch (Exception e) {
+            throw new VerifierException("unable to instantiate the loader", e);
+        }
+    }
+
+    public static boolean verifyOnline(final Path outputParentPath, BGResultNotifier notifier) throws VerifierException {
+
+        try {
+            final Map<String, Boolean> result = new HashMap<>();
+            Boolean verified;
+
+            final File[] ballotBoxes = outputParentPath.toFile().listFiles(File::isDirectory);
+            for (File ballotBox : ballotBoxes) {
+
                 // online
                 final File[] onlineMixing = ballotBox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
-                //TODO Thierry fix online
-/*                for (File file : onlineMixing) {
+                for (File file : onlineMixing) {
                     OnlineMixingProofLoader onlineMixingProofLoader = new OnlineMixingProofLoader(file.toPath());
                     ZpGroup zpGroup = onlineMixingProofLoader.getZpGroup();
                     ElGamalPublicKey publicKey = onlineMixingProofLoader.getPublicKey();
@@ -130,7 +144,7 @@ public class BGVerifier {
                     final ElGamalEncryptedBallots encryptedBallots = onlineMixingProofLoader.getEncryptedBallots();
                     if (encryptedBallots.getBallots().isEmpty()) {
                         LOGGER.info("0 ballots, nothing to mix!");
-                        return true;
+                        notifier.notify(TestType.ShuffleProof, Status.OK, null);
                     } else {
 
                         LOGGER.debug("Re-encrypted ballots");
@@ -146,7 +160,7 @@ public class BGVerifier {
                             result.put(file.getName(), verified);
                         }
                     }
-                }*/
+                }
             }
             return getResult(result);
         } catch (Exception e) {

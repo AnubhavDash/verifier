@@ -43,12 +43,12 @@ export class ReportOverviewComponent implements OnInit {
     );
   }
 
-  startProcess(): void {
+  startProcess( runOptions?: string): void {
     const configuration = new Configuration();
     configuration.inputDirectory = this.inputDirectory;
     this.processorService.setConfigurationInputDirectory(configuration).subscribe(() => {
       this.buttonDisabled = true;
-      this.processorService.processTests().subscribe();
+      this.processorService.processTests(runOptions).subscribe();
     });
   }
 
@@ -97,3 +97,4 @@ export class ReportOverviewComponent implements OnInit {
     this.initTable();
   }
 }
+

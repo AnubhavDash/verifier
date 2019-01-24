@@ -35,6 +35,7 @@ public class PublicCommitment {
         return _commitment;
     }
 
+
     public boolean verifyOpening(final Exponent[] exponents, final Exponent exponentR, final CommitmentParams params) {
         final PublicCommitment newCommitment =
                 new PrivateCommitment(exponents, exponentR, params).makePublicCommitment();

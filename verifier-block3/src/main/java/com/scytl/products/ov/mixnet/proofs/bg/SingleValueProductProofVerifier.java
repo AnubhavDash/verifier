@@ -9,7 +9,8 @@ package com.scytl.products.ov.mixnet.proofs.bg;
 import java.math.BigInteger;
 
 import ch.post.it.evoting.verifier.block.block3.BGResultNotifier;
-import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
+import ch.post.it.evoting.verifier.block.block3.BGOfflineVerificationProcessor;
+import ch.post.it.evoting.verifier.block.block3.TestType;
 import ch.post.it.evoting.verifier.common.Status;
 import org.apache.log4j.Logger;
 
@@ -46,7 +47,7 @@ public class SingleValueProductProofVerifier extends Verifier {
     public boolean verify(final SingleValueProductProofInitialMessage ini, final SingleValueProductProofAnswer ans, BGResultNotifier notifier) {
 
         if (!validateInitialData(ini, ans, notifier)) {
-            notifier.notify(BGVerificationProcessor.TestType.SingleValueProductProof, Status.NOK, "InitialData validation failed");
+            notifier.notify(TestType.SingleValueProductProof, Status.NOK, "InitialData validation failed");
             return false;
         }
 
@@ -65,12 +66,12 @@ public class SingleValueProductProofVerifier extends Verifier {
                 .add(ans.getExponentsTildeB()[i].multiply(ans.getExponentsTildeA()[i + 1]).negate());
         }
         if (!validate(ans, challengeX, comCATilde, comCDeltadelta, openingcdeltaDelta)) {
-            notifier.notify(BGVerificationProcessor.TestType.SingleValueProductProof, Status.NOK, "validation failed");
+            notifier.notify(TestType.SingleValueProductProof, Status.NOK, "validation failed");
             return false;
         }
 
         LOGGER.info("The Single Value Product Argument was verified successfully!");
-        notifier.notify(BGVerificationProcessor.TestType.SingleValueProductProof, Status.OK, null);
+        notifier.notify(TestType.SingleValueProductProof, Status.OK, null);
         return true;
 
     }

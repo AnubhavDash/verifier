@@ -6,29 +6,20 @@ import com.scytl.products.ov.mixnet.BGVerifier;
 import java.nio.file.Path;
 import java.util.*;
 
-public class BGVerificationProcessor {
+public class BGOnlineVerificationProcessor {
 
-    public enum TestType {
-        ShuffleProof,
-        ProductProof,
-        HadamardProductProof,
-        MultiExponentiationProof,
-        SingleValueProductProof,
-        ZeroProof
-    }
-
-    private static final BGVerificationProcessor instance = new BGVerificationProcessor();
+    private static final BGOnlineVerificationProcessor instance = new BGOnlineVerificationProcessor();
     private List<Object> attachedClients = new LinkedList<>();
     private Path path;
     private boolean processed = false;
 
     private final Map<TestType, AbstractMap.SimpleEntry<Status, String>> statuses = new HashMap<>();
 
-    private BGVerificationProcessor() {
+    private BGOnlineVerificationProcessor() {
         //singleton, use static getInstanceAndRegister method
     }
 
-    public static BGVerificationProcessor getInstanceAndRegister(Object o) {
+    public static BGOnlineVerificationProcessor getInstanceAndRegister(Object o) {
         instance.register(o);
         return instance;
     }
@@ -60,7 +51,7 @@ public class BGVerificationProcessor {
         }
 
         if (!this.processed) {
-            BGVerifier.verify(this.path, (TestType t, Status s, String m) -> {
+            BGVerifier.verifyOnline(this.path, (TestType t, Status s, String m) -> {
                 if (!statuses.containsKey(t) || !statuses.get(t).getKey().equals(Status.NOK)) {
                     statuses.put(t, new AbstractMap.SimpleEntry<>(s, s == Status.NOK ? m : null));
                 }

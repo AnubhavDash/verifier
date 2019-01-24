@@ -25,8 +25,8 @@ public abstract class SecureLogEntry {
         setPreview(slo.getPreview());
         if (slo.getResult() != null) {
             setSource(slo.getResult().getSource());
-            setHost(slo.getResult().getHost()/*.getRaw().substring(0, slo.getResult().getRaw().indexOf('|'))*/);
-            setRaw(getCleanedRawFromRaw(slo.getResult().getRaw()/*.substring(slo.getResult().getRaw().indexOf('|') + 1)*/));
+            setHost(slo.getResult().getHost());
+            setRaw(getCleanedRawFromRaw(slo.getResult().getRaw()));
             setMetadata(getMetadataFromRaw(slo.getResult().getRaw()));
         }
     }
@@ -166,6 +166,14 @@ public abstract class SecureLogEntry {
     private String getValueFromKeyValueString(String str) {
         int firstColon = str.indexOf("::");
         return str.substring(firstColon + 2);
+    }
+
+    @Override
+    public String toString() {
+        return "SecureLogEntry{" +
+                "host='" + host + '\'' +
+                ", raw='" + raw + '\'' +
+                '}';
     }
 
     public String getHost() {
