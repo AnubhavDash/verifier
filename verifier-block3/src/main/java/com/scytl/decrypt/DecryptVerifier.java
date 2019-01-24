@@ -24,6 +24,7 @@ import com.scytl.products.ov.mixnet.commons.io.ZpGroupReader;
 import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
+import org.apache.commons.codec.DecoderException;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -45,7 +46,6 @@ public class DecryptVerifier {
 		try{
 				OnlineMixingProofLoader onlineMixingProofLoader = new OnlineMixingProofLoader(rootPath);
 				ZpGroup zPGroup = onlineMixingProofLoader.getZpGroup();
-				//ElGamalPublicKey publicKey = onlineMixingProofLoader.getPublicKey();
 				ElGamalPublicKey publicKey = onlineMixingProofLoader.getDecryptionPublicKey(pkJsonFile);
 				ElGamalEncryptedBallots ballots = onlineMixingProofLoader.getReEncryptedBallots();
 				List<GjosteenElGamalPlaintext> plaintexts = onlineMixingProofLoader.getPlaintexts();
@@ -64,8 +64,8 @@ public class DecryptVerifier {
 				return -1;
 			}
 			return validate(ballots.getBallots(), plaintexts, proofs, publicKey, zPGroup);
-		} catch (IOException e) {
-			LOGGER.error("Problems loading files: " + e.getMessage());
+		} catch (IOException | DecoderException e) {
+			LOGGER.error("Problems loading files: " + e.getMessage(), e);
 			return -2;
 		}
 	}

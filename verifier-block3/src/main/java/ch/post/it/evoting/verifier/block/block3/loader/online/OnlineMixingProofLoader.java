@@ -25,6 +25,7 @@ import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroupParams;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentParams;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
+import org.apache.commons.codec.DecoderException;
 import reactor.core.publisher.Flux;
 
 import java.io.File;
@@ -74,7 +75,7 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
         return new ElGamalPublicKey(pubKeys, zpGroup);
     }
 
-    public ElGamalPublicKey getDecryptionPublicKey(File pkJsonFile) throws IOException {
+    public ElGamalPublicKey getDecryptionPublicKey(File pkJsonFile) throws IOException, DecoderException {
         ZpGroupParams params = new ZpGroupParams(onlineMixing.getVoteEncryptionKey().getZpSubgroup().getP(), onlineMixing.getVoteEncryptionKey().getZpSubgroup().getQ());
         ZpGroup zpGroup = new ZpGroup(params, new ZpElement(onlineMixing.getVoteEncryptionKey().getZpSubgroup().getG(), params));
         List<GroupElement> pubKeys = new ArrayList<>();
