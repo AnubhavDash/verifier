@@ -1,22 +1,15 @@
 package ch.post.it.evoting.verifier.controller;
 
-import java.net.MalformedURLException;
 import java.util.*;
 
 import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.TestTrait;
 import ch.post.it.evoting.verifier.dto.Configuration;
-import ch.post.it.evoting.verifier.dto.Status;
 import ch.post.it.evoting.verifier.processor.AlreadyStartedException;
 import ch.post.it.evoting.verifier.processor.VerifierProcessor;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
