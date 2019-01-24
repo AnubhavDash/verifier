@@ -33,7 +33,10 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class OnlineMixingProofLoader implements EncryptedBallotsLoader, EncryptionParametersLoader, PublicKeyLoader, ReEncryptedBallotsLoader, ShuffleProofLoader, VoterWithProofLoader, CommitmentParametersLoader {
@@ -82,48 +85,48 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
 
         //retrieve in the file the pkey regarding the eeid
         String electionEventId = onlineMixing.getVoteSetId().getBallotBoxId().getElectionEventId();
+
         CcMixingPublicKey[] ccMixingPublicKey = Deserializer.fromJson(pkJsonFile.getParentFile(), pkJsonFile.getName(), CcMixingPublicKey[].class);
-        Map<String, String> mapEeidPkey = Arrays.stream(ccMixingPublicKey)
-                .map(entry -> new AbstractMap.SimpleEntry<>(entry.getElectionEventId(), entry.getPublicKey()))
-                .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
-        String pKeyStr = mapEeidPkey.get(electionEventId);
-        String decodedPkey = TypeConverter.byteToString(TypeConverter.hexaStringToByte(pKeyStr));
 
-        //check how many elements the final key is supposed to have
-        long count = (long) onlineMixing.getVoteEncryptionKey().getElements().size();
+        String pKeyStr = Arrays.stream(ccMixingPublicKey)
+                .filter(e -> electionEventId.equals(e.getElectionEventId()))
+                .map(e -> e.getPublicKey())
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Unable to retrieve the publicKey"));
 
-        PublicKey publicKey = Deserializer.fromJson(TypeConverter.hexaStringToByte(pKeyStr), PublicKey.class);
+        byte[] decodedPkey = TypeConverter.hexaStringToByte(pKeyStr);
+        PublicKey publicKey = Deserializer.fromJson(decodedPkey, PublicKey.class);
+
+
         List<BigInteger> elements = publicKey.getPublicKey().getElements().stream().map(TypeConverter::base64ToBigInteger).collect(Collectors.toList());
+        if (elements.isEmpty()) {
+            throw new IllegalArgumentException("No elements found in publicKey");
+        }
         // In case the final key has only 1 element: Multiply all “elements” from CCN mixing public key modulo p
         // In case that the key has more than 1 element (n elements), the first n-1 elements of the CCN mixing public key can be used directly. For the last mixing public key elements, multiply the remaining elements together
-        if (count == 1) {
-            BigInteger all = calculateOthersByMultiply(elements, params.getP(), true);
-            pubKeys.add(new ZpElement(all, params));
-        } else if (count >= 2) {
+
+        boolean hasManyElements = onlineMixing.getVoteEncryptionKey().getElements().size() > 1;
+        if (hasManyElements) {
             BigInteger first = elements.get(0);
-            BigInteger others = calculateOthersByMultiply(elements, params.getP(), false);
+            BigInteger second = multiplyElements(elements.subList(1, elements.size()), params.getP());
             pubKeys.add(new ZpElement(first, params));
-            pubKeys.add(new ZpElement(others, params));
+            pubKeys.add(new ZpElement(second, params));
+        } else {
+            BigInteger first = multiplyElements(elements, params.getP());
+            pubKeys.add(new ZpElement(first, params));
         }
         return new ElGamalPublicKey(pubKeys, zpGroup);
     }
 
-    private BigInteger calculateOthersByMultiply(List<BigInteger> elements, BigInteger p, boolean multiplyAll) {
+    private BigInteger multiplyElements(List<BigInteger> elements, BigInteger p) {
         if (elements != null && !elements.isEmpty() && p != null) {
-            BigInteger[] result = new BigInteger[]{BigInteger.ONE};
-            if (multiplyAll) {
-                elements.forEach(elem -> {
-                    result[0] = result[0].multiply(elem).mod(p);
-                });
-            } else {
-                elements.stream().skip(1).forEach(elem -> {
-                    result[0] = result[0].multiply(elem).mod(p);
-                });
-            }
-            return result[0];
+            AtomicReference<BigInteger> result = new AtomicReference<>(BigInteger.ONE);
+            elements.forEach(elem -> result.set(result.get().multiply(elem).mod(p)));
+            return result.get();
         } else {
-            return null;
+            throw new IllegalArgumentException("Invalid input parameters");
         }
+
     }
 
     @Override

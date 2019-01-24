@@ -71,8 +71,8 @@ public class Test27 extends Test {
         matcher.matches();
         String id = matcher.group(1);
         return Arrays.stream(ccMixingKeys)
-                .filter(file -> file.getName().contains(id))
+                .filter(file -> file.getName().contains(String.format("cc%s_mixing_public_key.json", id)))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> new IllegalArgumentException("PublicKey file not found"));
     }
 }
