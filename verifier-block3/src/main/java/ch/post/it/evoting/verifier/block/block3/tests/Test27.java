@@ -7,6 +7,7 @@ import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import com.scytl.decrypt.DecryptVerifier;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,6 +16,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Test27 extends Test {
+
+    private static final Logger LOGGER = Logger.getLogger(Test27.class);
+
     @Override
     public TestDefinition getTestDefinition() {
         TestDefinition def = new TestDefinition();
@@ -46,30 +50,29 @@ public class Test27 extends Test {
                 }
             }
             result.setStatus(Status.OK);
-        } catch (Exception e) {
+        } catch (TestFailureException e) {
             result.setStatus(Status.NOK);
-            if (e instanceof TestFailureException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.nok.message", ((TestFailureException) e).getArgs()[1]));
-            } else if (e instanceof RuntimeException) {
-                if (e.getCause() instanceof FileNotFoundException) {
-                    result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message", e.getCause().getLocalizedMessage()));
-                }
-            }
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.nok.message", ((TestFailureException) e).getArgs()[1]));
+        } catch (FileNotFoundException e) {
+            LOGGER.error("a FileNotFoundException error occurred", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message", e.getCause().getLocalizedMessage()));
+        } catch (Exception e) {
+            LOGGER.error("Unexpected error", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }
 
     private File getPkJsonFile(String name, File[] ccMixingKeys) {
-        File[] result = new File[1];
         Pattern pattern = Pattern.compile(".*ccn_m(.?)\\.json");
         Matcher matcher = pattern.matcher(name);
         matcher.matches();
         String id = matcher.group(1);
-        Arrays.stream(ccMixingKeys).forEach( file -> {
-                    if (file.getName().contains(id)){
-                        result[0] = file;
-                    }
-                });
-        return result[0];
+        return Arrays.stream(ccMixingKeys)
+                .filter(file -> file.getName().contains(id))
+                .findFirst()
+                .orElse(null);
     }
 }
