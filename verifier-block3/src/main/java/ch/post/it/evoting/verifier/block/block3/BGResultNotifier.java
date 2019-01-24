@@ -4,5 +4,5 @@ import ch.post.it.evoting.verifier.common.Status;
 
 @FunctionalInterface
 public interface BGResultNotifier {
-    void notify(BGVerificationProcessor.TestType t, Status s, String errorMessage);
+    void notify(TestType t, Status s, String errorMessage);
 }

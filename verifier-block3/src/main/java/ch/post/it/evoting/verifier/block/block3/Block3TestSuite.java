@@ -11,6 +11,7 @@ public class Block3TestSuite extends TestSuite {
     public static final Path PATH_ELECTION_SETUP = Paths.get("election_setup/");
     public static final Path PATH_BALLOTBOXES = Paths.get("ballotboxes/");
     public static final Path PATH_CERTIFICATES = Paths.get("certificates/");
+    public static final Path PATH_CC_MIXING_KEYS = Paths.get("certificates/cc_mixing_keys/");
     public static final Path PATH_ADMINBOARD = Paths.get("adminboard/");
 
     public Block3TestSuite() {

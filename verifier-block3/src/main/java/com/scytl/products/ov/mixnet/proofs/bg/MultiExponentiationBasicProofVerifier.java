@@ -7,7 +7,8 @@
 package com.scytl.products.ov.mixnet.proofs.bg;
 
 import ch.post.it.evoting.verifier.block.block3.BGResultNotifier;
-import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
+import ch.post.it.evoting.verifier.block.block3.BGOfflineVerificationProcessor;
+import ch.post.it.evoting.verifier.block.block3.TestType;
 import ch.post.it.evoting.verifier.common.Status;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.MultiExponentiationBasicProofAnswer;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.MultiExponentiationBasicProofInitialMessage;
@@ -80,13 +81,13 @@ public class MultiExponentiationBasicProofVerifier extends Verifier {
 
         if (!(checkGroupElements(cA0, cB, E) && checkExponents(a, b, r, s) && checkTau(tau)
                 && isCommitmentTo0(cB[_m], "cB[m]", _groupOrder))) {
-            notifier.notify(BGVerificationProcessor.TestType.MultiExponentiationProof, Status.NOK, "checks failed");
+            notifier.notify(TestType.MultiExponentiationProof, Status.NOK, "checks failed");
             return false;
         }
 
         if (!_C.equals(E[_m])) {
             LOGGER.error("ERROR(multiExpoBasicArg): C is not equal to E[_m]");
-            notifier.notify(BGVerificationProcessor.TestType.MultiExponentiationProof, Status.NOK, "ERROR(multiExpoBasicArg): C is not equal to E[_m]");
+            notifier.notify(TestType.MultiExponentiationProof, Status.NOK, "ERROR(multiExpoBasicArg): C is not equal to E[_m]");
             return false;
         }
 
@@ -124,13 +125,13 @@ public class MultiExponentiationBasicProofVerifier extends Verifier {
         }
 
         if (!checkOpenings(a, b, r, s, comCA, comCB)) {
-            notifier.notify(BGVerificationProcessor.TestType.MultiExponentiationProof, Status.NOK, "checkOpenings failed");
+            notifier.notify(TestType.MultiExponentiationProof, Status.NOK, "checkOpenings failed");
             return false;
         }
 
         if (!acumE.equals(acumC)) {
             LOGGER.error("ERROR(multiExpoBasicArg): the encryptions don't match");
-            notifier.notify(BGVerificationProcessor.TestType.MultiExponentiationProof, Status.NOK, "ERROR(multiExpoBasicArg): the encryptions don't match");
+            notifier.notify(TestType.MultiExponentiationProof, Status.NOK, "ERROR(multiExpoBasicArg): the encryptions don't match");
             return false;
         }
 
