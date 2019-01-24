@@ -67,7 +67,7 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
     }
 
     @Override
-    public ElGamalPublicKey getPublicKey() throws IOException {
+    public ElGamalPublicKey getPublicKey() {
         ZpGroupParams params = new ZpGroupParams(onlineMixing.getPreviousVoteEncryptionKey().getZpSubgroup().getP(), onlineMixing.getPreviousVoteEncryptionKey().getZpSubgroup().getQ());
         ZpGroup zpGroup = new ZpGroup(params, new ZpElement(onlineMixing.getPreviousVoteEncryptionKey().getZpSubgroup().getG(), params));
         List<GroupElement> pubKeys = onlineMixing.getPreviousVoteEncryptionKey().getElements().stream().map(bigInt -> new ZpElement(bigInt, params)).collect(Collectors.toList());
@@ -75,10 +75,9 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
     }
 
     public ElGamalPublicKey getDecryptionPublicKey(File pkJsonFile) throws IOException {
-        // TODO Thierry 3 lines below are keept in order to keep alive but they need work
         ZpGroupParams params = new ZpGroupParams(onlineMixing.getVoteEncryptionKey().getZpSubgroup().getP(), onlineMixing.getVoteEncryptionKey().getZpSubgroup().getQ());
         ZpGroup zpGroup = new ZpGroup(params, new ZpElement(onlineMixing.getVoteEncryptionKey().getZpSubgroup().getG(), params));
-        List<GroupElement> pubKeys = onlineMixing.getVoteEncryptionKey().getElements().stream().map(bigInt -> new ZpElement(bigInt, params)).collect(Collectors.toList());
+        List<GroupElement> pubKeys = new ArrayList<>();
 
         //retrieve in the file the pkey regarding the eeid
         String electionEventId = onlineMixing.getVoteSetId().getBallotBoxId().getElectionEventId();
@@ -90,18 +89,39 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
         String decodedPkey = TypeConverter.byteToString(TypeConverter.hexaStringToByte(pKeyStr));
 
         //check how many elements the final key is supposed to have
-        long count = onlineMixing.getVoteEncryptionKey().getElements().stream().count();
+        long count = (long) onlineMixing.getVoteEncryptionKey().getElements().size();
 
         PublicKey publicKey = Deserializer.fromJson(TypeConverter.hexaStringToByte(pKeyStr), PublicKey.class);
+        List<BigInteger> elements = publicKey.getPublicKey().getElements().stream().map(TypeConverter::base64ToBigInteger).collect(Collectors.toList());
         // In case the final key has only 1 element: Multiply all “elements” from CCN mixing public key modulo p
         // In case that the key has more than 1 element (n elements), the first n-1 elements of the CCN mixing public key can be used directly. For the last mixing public key elements, multiply the remaining elements together
         if (count == 1) {
-
-        }
-        else if( count >= 2){
-            List<GroupElement> pubKeys2 = publicKey.getPublicKey().getElements().stream().map(bigIntStr -> new ZpElement(TypeConverter.stringToBigInteger(bigIntStr), params)).collect(Collectors.toList());
+            BigInteger all = calculateOthersByMultiply(elements, params.getP(), true);
+            pubKeys.add(new ZpElement(all, params));
+        } else if (count >= 2) {
+            BigInteger first = elements.get(0);
+            BigInteger others = calculateOthersByMultiply(elements, params.getP(), false);
+            pubKeys.add(new ZpElement(first, params));
+            pubKeys.add(new ZpElement(others, params));
         }
         return new ElGamalPublicKey(pubKeys, zpGroup);
+    }
+
+    private BigInteger calculateOthersByMultiply(List<BigInteger> elements, BigInteger p, boolean multiplyAll) {
+        BigInteger[] result = new BigInteger[]{BigInteger.ONE};
+
+        if (elements != null && !elements.isEmpty() && p != null) {
+            if (multiplyAll) {
+                elements.forEach(elem -> {
+                    result[0] = result[0].multiply(elem).mod(p);
+                });
+            } else {
+                elements.stream().skip(1).forEach(elem -> {
+                    result[0] = result[0].multiply(elem).mod(p);
+                });
+            }
+        }
+        return result[0];
     }
 
     @Override
