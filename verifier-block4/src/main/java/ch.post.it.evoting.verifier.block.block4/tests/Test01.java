@@ -171,7 +171,7 @@ public class Test01 extends Test {
             result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message"));
         } catch (Test01FailException e) {
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test01.nok.message", ((Test01FailException) e).getAliasInError()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test01.nok.message", e.getAliasInError()));
         } catch (Test01WrapperException e) {
             LOGGER.error("an unexpected error occurred", e);
             //unwrap the wrapped exception

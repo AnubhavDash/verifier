@@ -45,7 +45,7 @@ public class Test07 extends Test {
             result.setStatus(Status.OK);
         } catch (TestFailureException e) {
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.nok.message", ((TestFailureException) e).getArgs()[1]));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.nok.message", e.getArgs()[1]));
         } catch (Exception e) {
             result.setStatus(Status.NOK);
             if (e.getCause() instanceof FileNotFoundException) {
