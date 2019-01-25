@@ -1,5 +1,8 @@
 package ch.post.it.evoting.verifier.common.block.tools;
 
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
+
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -46,15 +49,15 @@ public class TypeConverter {
         return Base64.getEncoder().encodeToString(bigInt.toByteArray());
     }
 
+    public static byte[] hexaStringToByte(String hex) throws DecoderException {
+        return hex == null ? null : Hex.decodeHex(hex.toCharArray());
+    }
+
     public static byte[] byteToB64ByteArray(byte[] b) {
         return Base64.getEncoder().encode(b);
     }
 
     public static BigInteger integerToBigInteger(Integer i) {
-        if (i == null) {
-            return null;
-        } else {
-            return BigInteger.valueOf(i.longValue());
-        }
+        return i == null ? null : BigInteger.valueOf(i.longValue());
     }
 }

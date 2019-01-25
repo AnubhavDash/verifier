@@ -5,6 +5,7 @@ import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
+import ch.post.it.evoting.verifier.common.TestTrait;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
@@ -28,6 +29,7 @@ public class Test74 extends Test {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test74.description"));
         def.setId(74);
         def.setName("checkSigDataConfig");
+        def.addTestTrait(TestTrait.PreDecryption);
         return def;
     }
 
@@ -60,6 +62,7 @@ public class Test74 extends Test {
             result.setStatus(Status.NOK);
             result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test74.nok.message"));
         } catch (NoSuchFileException e) {
+            LOGGER.error("a NoSuchFileException error occurred", e);
             result.setStatus(Status.NOK);
             result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test74.file.not.found.message", e.getFile()));
         } catch (Exception e) {

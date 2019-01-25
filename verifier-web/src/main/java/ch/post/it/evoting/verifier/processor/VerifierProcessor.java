@@ -2,6 +2,7 @@ package ch.post.it.evoting.verifier.processor;
 
 import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.TestResult;
+import ch.post.it.evoting.verifier.common.TestTrait;
 import ch.post.it.evoting.verifier.common.VerifierBlock;
 import ch.post.it.evoting.verifier.dto.Configuration;
 import ch.post.it.evoting.verifier.dto.Test;
@@ -79,7 +80,7 @@ public class VerifierProcessor {
         return result;
     }
 
-    public void processTests() throws AlreadyStartedException {
+    public void processTests(Set<TestTrait> options) throws AlreadyStartedException {
         if (!processed) {
             processed = true;
 
@@ -90,12 +91,12 @@ public class VerifierProcessor {
                 {
                     final File inputDirectory = new File(configurationInputDirectory);
                     blocks.stream()
-                            .map(b -> b.process(inputDirectory).parallel())
+                            .map(b -> b.process(inputDirectory, options).parallel())
                             .reduce(Stream.empty(), Stream::concat)
                             .parallel()
                             .forEach(t ->
                             {
-                                log.debug(String.format("Test '%02d-%02d' performed on Thread '%s'", t.getTestDefinition().getBlockId(), t.getTestDefinition().getId(), Thread.currentThread().getName()));
+                                log.debug(String.format("Test '%02d-%02d' performed on Thread '%s' %s", t.getTestDefinition().getBlockId(), t.getTestDefinition().getId(), Thread.currentThread().getName(), t.getStatus()));
                                 testProcessed(t);
                             });
                     // FLATMAP kill the parallelism. Use concat instead --> TODO view this with LBO

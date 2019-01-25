@@ -35,11 +35,6 @@ public class Deserializer {
         return jsonMapper.readValue(new String(content, StandardCharsets.UTF_8), targetClazz);
     }
 
-    public static void toJson(Object content, File file) throws IOException {
-        ObjectMapper jsonMapper = new ObjectMapper();
-        jsonMapper.writeValue(file, content);
-    }
-
     public static <T> T fromXml(File inputDirectory, String filenamePattern, Class<T> targetClazz) throws IOException, JAXBException {
         return (T) JAXBContext.newInstance(targetClazz).createUnmarshaller().unmarshal(new FileInputStream(getFile(inputDirectory, filenamePattern)));
     }

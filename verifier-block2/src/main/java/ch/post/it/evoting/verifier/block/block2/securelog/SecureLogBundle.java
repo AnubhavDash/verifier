@@ -1,6 +1,8 @@
 package ch.post.it.evoting.verifier.block.block2.securelog;
 
 import ch.post.it.evoting.verifier.common.block.tools.HmacGenerator;
+import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
+import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.bouncycastle.util.encoders.Base64;
@@ -18,21 +20,22 @@ public class SecureLogBundle {
     private CheckPointLogEntry beginCheckPoint;
     private CheckPointLogEntry endCheckPoint;
     private List<RegularLogEntry> regularLogEntries = new ArrayList<>();
+    private byte[] pem;
+
+    public byte[] getPem() {
+        return pem;
+    }
+
+    public void setPem(byte[] pem) {
+        this.pem = pem;
+    }
 
     public void setBeginCheckPoint(CheckPointLogEntry beginCheckPoint) {
         this.beginCheckPoint = beginCheckPoint;
     }
 
-    public CheckPointLogEntry getBeginCheckPoint() {
-        return beginCheckPoint;
-    }
-
     public void setEndCheckPoint(CheckPointLogEntry endCheckPoint) {
         this.endCheckPoint = endCheckPoint;
-    }
-
-    public CheckPointLogEntry getEndCheckPoint() {
-        return endCheckPoint;
     }
 
     public void addRegularLogEntry(RegularLogEntry regularLogEntry) {
@@ -57,20 +60,25 @@ public class SecureLogBundle {
         validateEndCheckPoint(lastHmac);
     }
 
-    public void validateSignature() throws SecureLogBundleValidationException {
-        //TODO build the signature and check it
-/*        String sg = beginCheckPoint.getMetadata().getSg();
-        byte[] text = concat(
-                beginCheckPoint.getMetadata().getPhmac(),
-                beginCheckPoint.getMetadata().getLsk(),
-                beginCheckPoint.getMetadata().getEsk(),
-                beginCheckPoint.getMetadata().getHmac(),
-                beginCheckPoint.getRaw());
+    public CheckPointLogEntry getBeginCheckPoint() {
+        return beginCheckPoint;
+    }
 
-        String signature = *//*buildSignature(secret, text);*//* sg;
-        if (!sg.equals(signature)) {
+    public void validateSignature() throws SecureLogBundleValidationException {
+        String bytes = String.format("%s {*LSK::%s,ESK::%s,PHMAC::%s,LS::%s,TL::%s,TS::%s,HMAC::%s*}\\n",
+                this.getBeginCheckPoint().getRaw().substring(0, this.getBeginCheckPoint().getRaw().length() - 1), //remove the ending \n
+                this.getBeginCheckPoint().getMetadata().getLsk(),
+                this.getBeginCheckPoint().getMetadata().getEsk(),
+                this.getBeginCheckPoint().getMetadata().getPhmac(),
+                this.getBeginCheckPoint().getMetadata().getLs(),
+                this.getBeginCheckPoint().getMetadata().getTl(),
+                this.getBeginCheckPoint().getMetadata().getTs(),
+                this.getBeginCheckPoint().getMetadata().getHmac());
+
+        if (this.getPem() == null || !SignatureChecker.verifySignature(bytes.getBytes(StandardCharsets.UTF_8),
+                TypeConverter.base64ToByte(this.getBeginCheckPoint().getMetadata().getSg()), this.getPem())) {
             throw new SecureLogBundleValidationException("Begin Checkpoint signature not valid", beginCheckPoint.getHost(), beginCheckPoint.getSource());
-        }*/
+        }
     }
 
     private void validateEndCheckPoint(byte[] lastHmac) throws SecureLogBundleValidationException {

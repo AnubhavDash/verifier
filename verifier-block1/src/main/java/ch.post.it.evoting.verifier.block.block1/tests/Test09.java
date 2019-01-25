@@ -9,6 +9,7 @@ import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
+import ch.post.it.evoting.verifier.common.TestTrait;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
@@ -39,6 +40,7 @@ public class Test09 extends Test {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test09.description"));
         def.setId(9);
         def.setName("checkPrimeNumberOptions([vo])");
+        def.addTestTrait(TestTrait.PreDecryption);
         return def;
     }
 
@@ -145,6 +147,7 @@ public class Test09 extends Test {
             result.setStatus(Status.NOK);
             result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, e.getKey(), e.getParams()));
         } catch (FileNotFoundException e) {
+            LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
             result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test09.file.not.found.message"));
         } catch (Exception e) {

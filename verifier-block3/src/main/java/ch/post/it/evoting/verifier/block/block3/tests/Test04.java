@@ -1,7 +1,8 @@
 package ch.post.it.evoting.verifier.block.block3.tests;
 
-import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
+import ch.post.it.evoting.verifier.block.block3.BGOfflineVerificationProcessor;
 import ch.post.it.evoting.verifier.block.block3.Block3TestSuite;
+import ch.post.it.evoting.verifier.block.block3.TestType;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
@@ -16,7 +17,7 @@ import java.util.AbstractMap;
 public class Test04 extends Test {
 
     private static final Logger LOGGER = Logger.getLogger(Test04.class);
-    private final BGVerificationProcessor processor = BGVerificationProcessor.getInstanceAndRegister(this);
+    private final BGOfflineVerificationProcessor processor = BGOfflineVerificationProcessor.getInstanceAndRegister(this);
 
     @Override
     public TestDefinition getTestDefinition() {
@@ -38,11 +39,11 @@ public class Test04 extends Test {
             processor.register(this);
             processor.executeProcess(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES));
 
-            AbstractMap.SimpleEntry<Status, String> status = processor.getStatus(BGVerificationProcessor.TestType.ZeroProof);
+            AbstractMap.SimpleEntry<Status, String> status = processor.getStatus(TestType.ZeroProof);
             result.setStatus(status.getKey());
             result.setMessage(TranslationHelper.getSameMessageMultiLanguage(status.getValue()));
         } catch (Exception e) {
-            LOGGER.error("Unexpected error", e);
+            LOGGER.error("an unexpected error occurred", e);
             result.setStatus(Status.NOK);
             result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         } finally {

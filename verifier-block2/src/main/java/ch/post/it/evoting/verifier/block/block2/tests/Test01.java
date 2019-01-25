@@ -4,10 +4,9 @@ import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleCreator;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleValidationException;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
-import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.TestDefinition;
-import ch.post.it.evoting.verifier.common.TestResult;
+import ch.post.it.evoting.verifier.common.*;
+import ch.post.it.evoting.verifier.common.block.Test;
+import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
@@ -17,13 +16,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
-public class Test01 /*extends Test*/ {
+public class Test01 extends Test {
 
     private static final Logger LOGGER = Logger.getLogger(Test01.class);
 
-    /*@Override*/
+    @Override
     public TestDefinition getTestDefinition() {
         TestDefinition def = new TestDefinition();
         def.setBlockId(2);
@@ -31,10 +31,11 @@ public class Test01 /*extends Test*/ {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.description"));
         def.setId(1);
         def.setName("checkSecureLogIntegrity");
+        def.addTestTrait(TestTrait.PreDecryption);
         return def;
     }
 
-    /*@Override*/
+    @Override
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
@@ -57,24 +58,34 @@ public class Test01 /*extends Test*/ {
                             b.validateIntegrity();
                         } catch (SecureLogBundleValidationException e) {
                             LOGGER.error("Validation failed on host {" + e.getHost() + "}, source {" + e.getSource() + "} : " + e.getMessage());
+                            throw new TestFailureException(b.getBeginCheckPoint().toString(), b.getBeginCheckPoint().getMetadata().toString());
+                        }
+                    }, e -> {
+                        if (e instanceof TestFailureException) {
+                            throw (TestFailureException) e;
+                        } else {
                             throw new RuntimeException(e);
                         }
                     });
 
             result.setStatus(Status.OK);
 
+        } catch (TestFailureException e) {
+            LOGGER.error("Test in error, cause : " + Arrays.toString(e.getArgs()), e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.nok.message", e.getArgs()));
+        } catch (NoSuchFileException e) {
+            LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message", e.getFile()));
+        } catch (FileNotFoundException e) {
+            LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message", e.getMessage()));
         } catch (Exception e) {
             result.setStatus(Status.NOK);
-            if (e instanceof NoSuchFileException) {
-                LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message", ((NoSuchFileException) e).getFile()));
-            } else if (e instanceof FileNotFoundException) {
-                LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message", e.getMessage()));
-            } else {
-                LOGGER.error("SecureLogs integrity validation failed", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.nok.message", e.getMessage()));
-            }
+            LOGGER.error("Unexpected error occured", e);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
 
         return result;

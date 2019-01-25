@@ -98,17 +98,18 @@ public class Test08 extends Test {
                 result.setStatus(Status.NOK);
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test08.nok.message", errors.toString()));
             }
-        } catch (Exception e) {
+        } catch (FileNotFoundException e) {
+            LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
-            if (e instanceof FileNotFoundException) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test08.file.not.found.message"));
-            }
-            else if (e instanceof TestFailureException && ((TestFailureException) e).getArgs()[0].equals("commitmentParameters.json not found")) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test08.file.not.found.message"));
-            }else {
-                LOGGER.error("Unexpected error", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
-            }
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test08.file.not.found.message"));
+        } catch (TestFailureException e) {
+            LOGGER.error("no commitmentParameters.json found");
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test08.file.not.found.message"));
+        } catch (Exception e) {
+            LOGGER.error("an unexpected error occurred", e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }

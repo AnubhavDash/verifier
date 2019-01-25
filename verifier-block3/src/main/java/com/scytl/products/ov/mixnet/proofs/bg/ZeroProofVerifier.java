@@ -6,13 +6,9 @@
  */
 package com.scytl.products.ov.mixnet.proofs.bg;
 
-import java.math.BigInteger;
-
 import ch.post.it.evoting.verifier.block.block3.BGResultNotifier;
-import ch.post.it.evoting.verifier.block.block3.BGVerificationProcessor;
+import ch.post.it.evoting.verifier.block.block3.TestType;
 import ch.post.it.evoting.verifier.common.Status;
-import org.apache.log4j.Logger;
-
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ZeroProofAnswer;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ZeroProofInitialMessage;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
@@ -20,6 +16,9 @@ import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentPara
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
 import com.scytl.products.ov.mixnet.commons.tools.ExponentTools;
 import com.scytl.products.ov.mixnet.commons.tools.RandomOracleHash;
+import org.apache.log4j.Logger;
+
+import java.math.BigInteger;
 
 public class ZeroProofVerifier extends Verifier {
     private final static Logger LOGGER = Logger.getLogger(ZeroProofVerifier.class);
@@ -41,7 +40,7 @@ public class ZeroProofVerifier extends Verifier {
     private final Exponent _challengeInnerProduct;
 
     public ZeroProofVerifier(final CommitmentParams params, final PublicCommitment[] cA, final PublicCommitment[] cB,
-            final BigInteger groupOrder, final Exponent challengeInnerProduct) {
+                             final BigInteger groupOrder, final Exponent challengeInnerProduct) {
         super("Zero Argument");
         _params = params;
         _n = _params.getCommitmentLength();
@@ -67,29 +66,29 @@ public class ZeroProofVerifier extends Verifier {
         _cB[_m] = initial.getCommitmentPublicBM();
 
         if (!(isGroupElement(_cA[0], "cA0") && isGroupElement(_cB[_m], "cBm"))) {
-            notifier.notify(BGVerificationProcessor.TestType.ZeroProof, Status.NOK, "cA0 or cBm are not GroupElement");
+            notifier.notify(TestType.ZeroProof, Status.NOK, "cA0 or cBm are not GroupElement");
             return false;
         }
 
         if ((cD.length != 2 * _m + 1) && (_m != 1)) {
             LOGGER.error("ERROR(Zero Argument): cD does not have the expected length");
-            notifier.notify(BGVerificationProcessor.TestType.ZeroProof, Status.NOK, "ERROR(Zero Argument): cD does not have the expected length");
+            notifier.notify(TestType.ZeroProof, Status.NOK, "ERROR(Zero Argument): cD does not have the expected length");
             return false;
         }
 
         if (!isGroupElement(cD, "cD")) {
-            notifier.notify(BGVerificationProcessor.TestType.ZeroProof, Status.NOK, "cD is not GroupElement");
+            notifier.notify(TestType.ZeroProof, Status.NOK, "cD is not GroupElement");
             return false;
         }
-        if (!cD[_m + 1].verifyOpening(new Exponent[] {new Exponent(0, _groupOrder) }, new Exponent(0, _groupOrder),
-            _params) && (_m != 1)) {
+        if (!cD[_m + 1].verifyOpening(new Exponent[]{new Exponent(0, _groupOrder)}, new Exponent(0, _groupOrder),
+                _params) && (_m != 1)) {
             LOGGER.error("ERROR(Zero Argument): cD[m+1] is not a commitment to 0 with randomness 0");
-            notifier.notify(BGVerificationProcessor.TestType.ZeroProof, Status.NOK, "ERROR(Zero Argument): cD[m+1] is not a commitment to 0 with randomness 0");
+            notifier.notify(TestType.ZeroProof, Status.NOK, "ERROR(Zero Argument): cD[m+1] is not a commitment to 0 with randomness 0");
             return false;
         }
 
         if (!validate(answer)) {
-            notifier.notify(BGVerificationProcessor.TestType.ZeroProof, Status.NOK, "ZeroProof validation failed");
+            notifier.notify(TestType.ZeroProof, Status.NOK, "ZeroProof validation failed");
             return false;
         }
 
@@ -115,7 +114,7 @@ public class ZeroProofVerifier extends Verifier {
             accumulator = accumulator.multiply(challengeX);
         }
         if (!checkAllOpenings(comCAR, comCBS, comCABT, answer)) {
-            notifier.notify(BGVerificationProcessor.TestType.ZeroProof, Status.NOK, "checkAllOpenings failed");
+            notifier.notify(TestType.ZeroProof, Status.NOK, "checkAllOpenings failed");
             return false;
         }
 
@@ -125,16 +124,16 @@ public class ZeroProofVerifier extends Verifier {
 
     private boolean validate(final ZeroProofAnswer answer) {
         return isValidExponent(answer.getExponentsA(), _n, "a") && isValidExponent(answer.getExponentsB(), _n, "b")
-            && isValidExponent(answer.getExponentR(), "r") && isValidExponent(answer.getExponentS(), "s")
-            && isValidExponent(answer.getExponentT(), "t");
+                && isValidExponent(answer.getExponentR(), "r") && isValidExponent(answer.getExponentS(), "s")
+                && isValidExponent(answer.getExponentT(), "t");
     }
 
     private boolean checkAllOpenings(PublicCommitment comCAR, PublicCommitment comCBS, PublicCommitment comCABT,
-            ZeroProofAnswer answer) {
+                                     ZeroProofAnswer answer) {
         return isValidOpening(answer.getExponentsA(), answer.getExponentR(), comCAR, "a")
-            && isValidOpening(answer.getExponentsB(), answer.getExponentS(), comCBS, "b")
-            && isValidOpening(new Exponent[] {ExponentTools.innerProduct(answer.getExponentsA(), answer.getExponentsB(),
-                _groupOrder, _challengeInnerProduct) }, answer.getExponentT(), comCABT, "inner b");
+                && isValidOpening(answer.getExponentsB(), answer.getExponentS(), comCBS, "b")
+                && isValidOpening(new Exponent[]{ExponentTools.innerProduct(answer.getExponentsA(), answer.getExponentsB(),
+                _groupOrder, _challengeInnerProduct)}, answer.getExponentT(), comCABT, "inner b");
     }
 
     public CommitmentParams getParams() {

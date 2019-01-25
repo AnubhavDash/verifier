@@ -15,4 +15,17 @@ public class SecureLogMetadata {
     private String tl;
     private String ts;
 
+    @Override
+    public String toString() {
+        return "SecureLogMetadata{" +
+                "sg='" + sg + '\'' +
+                ", lsk='" + lsk + '\'' +
+                ", esk='" + esk + '\'' +
+                ", hmac='" + hmac + '\'' +
+                ", phmac='" + phmac + '\'' +
+                ", ls='" + ls + '\'' +
+                ", tl='" + tl + '\'' +
+                ", ts='" + ts + '\'' +
+                '}';
+    }
 }
