@@ -24,7 +24,7 @@ public class Test26 extends Test {
         def.setCategory(Category.COMPLETENESS);
         def.setId(26);
         def.setName("checkMultiExponentationArgument");
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test06.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test26.description"));
         def.addTestTrait(TestTrait.PreDecryption);
         return def;
     }

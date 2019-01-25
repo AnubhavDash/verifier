@@ -7,10 +7,10 @@
 package com.scytl.products.ov.mixnet;
 
 import ch.post.it.evoting.verifier.block.block3.BGResultNotifier;
+import ch.post.it.evoting.verifier.block.block3.TestType;
 import ch.post.it.evoting.verifier.block.block3.loader.*;
 import ch.post.it.evoting.verifier.block.block3.loader.offline.*;
 import ch.post.it.evoting.verifier.block.block3.loader.online.OnlineMixingProofLoader;
-import ch.post.it.evoting.verifier.block.block3.TestType;
 import ch.post.it.evoting.verifier.common.Status;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProof;
@@ -142,14 +142,14 @@ public class BGVerifier {
                     ElGamalPublicKey publicKey = onlineMixingProofLoader.getPublicKey();
                     GjosteenElGamal cryptosystem = new GjosteenElGamal(zpGroup, publicKey);
                     final ElGamalEncryptedBallots encryptedBallots = onlineMixingProofLoader.getEncryptedBallots();
-                    if (encryptedBallots.getBallots().isEmpty()) {
-                        LOGGER.info("0 ballots, nothing to mix!");
+                    if (encryptedBallots.getBallots().size() <= 1) {
+                        LOGGER.info("0 or 1 ballots, nothing to mix!");
                         notifier.notify(TestType.ShuffleProof, Status.OK, null);
                     } else {
 
                         LOGGER.debug("Re-encrypted ballots");
                         final ElGamalEncryptedBallots reencryptedBallots = onlineMixingProofLoader.getReEncryptedBallots();
-                        if (reencryptedBallots.getBallots().isEmpty()) {
+                        if (reencryptedBallots.getBallots().size() <= 1) {
                             LOGGER.info("0 ballots reencrypted, no mixing performed!");
                         } else {
                             final ShuffleProof shuffleProof = onlineMixingProofLoader.getShuffleProof();
