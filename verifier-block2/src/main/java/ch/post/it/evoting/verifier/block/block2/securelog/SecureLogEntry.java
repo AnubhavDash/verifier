@@ -23,20 +23,25 @@ public abstract class SecureLogEntry {
         SecureLogOrigin slo = Deserializer.fromJson(line.getBytes(), SecureLogOrigin.class);
 
         setPreview(slo.getPreview());
-        setSource(slo.getResult().getSource());
-        setHost(slo.getResult().getHost());
-        setRaw(getCleanedRawFromRaw(slo.getResult().getRaw()));
-        setMetadata(getMetadataFromRaw(slo.getResult().getRaw()));
+        if (slo.getResult() != null) {
+            setSource(slo.getResult().getSource());
+            setHost(slo.getResult().getHost());
+            setRaw(getCleanedRawFromRaw(slo.getResult().getRaw()));
+            setMetadata(getMetadataFromRaw(slo.getResult().getRaw()));
+        }
     }
 
     public static SecureLogEntry from(String line) throws IOException {
         SecureLogEntry result;
-        if (line.contains("New Secret Key generated")) {
+        if (line.contains("lastrow")) {
+            result = new LastRowEntry();
+        } else if (line.contains("New Secret Key generated")) {
             result = new CheckPointLogEntry();
+            result.deserialize(line);
         } else {
             result = new RegularLogEntry();
+            result.deserialize(line);
         }
-        result.deserialize(line);
         return result;
     }
 
@@ -169,5 +174,9 @@ public abstract class SecureLogEntry {
                 "host='" + host + '\'' +
                 ", raw='" + raw + '\'' +
                 '}';
+    }
+
+    public String getHost() {
+        return host;
     }
 }

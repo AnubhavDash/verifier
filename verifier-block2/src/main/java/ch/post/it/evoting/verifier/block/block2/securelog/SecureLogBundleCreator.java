@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
 
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 public final class SecureLogBundleCreator {
@@ -23,6 +24,10 @@ public final class SecureLogBundleCreator {
     }
 
     public static Flux<SecureLogBundle> from(Flux<SecureLogEntry> source) {
+        return from(source, null);
+    }
+
+    public static Flux<SecureLogBundle> from(Flux<SecureLogEntry> source, final Map<String, byte[]> hostPEMMapping) {
         AtomicReference<SecureLogEntry> last = new AtomicReference<>();
         return source
                 .doOnNext(last::set)
@@ -40,6 +45,9 @@ public final class SecureLogBundleCreator {
                             //this checkpoint is a duplicate one -> create new Bundle
                             result.setBundle(new SecureLogBundle());
                             result.getBundle().setBeginCheckPoint((CheckPointLogEntry) e);
+                            if (hostPEMMapping != null) {
+                                result.getBundle().setPem(hostPEMMapping.get(e.getHost()));
+                            }
                         } else if (s.getLastAnalysedCheckPoint() != null) {
                             //this checkpoint is not the first one of the Flux
                             result.setBundle(s.getBundle());
@@ -48,9 +56,16 @@ public final class SecureLogBundleCreator {
                         }
                         result.setLastAnalysedCheckPoint((CheckPointLogEntry) e);
                     } else if (e instanceof RegularLogEntry) {
-                        result.setLastAnalysedCheckPoint(s.getLastAnalysedCheckPoint());
-                        result.setBundle(s.getBundle());
-                        result.getBundle().addRegularLogEntry((RegularLogEntry) e);
+                        if (s.getBundle() == null) {
+                            LOGGER.fatal(String.format("Regular log found without prior CheckPoint in file : %s. Raw : %s", e.getSource(), e.getRaw()));
+                            throw new IllegalArgumentException("Regular log found without prior CheckPoint in file : " + e.getSource());
+                        } else {
+                            result.setLastAnalysedCheckPoint(s.getLastAnalysedCheckPoint());
+                            result.setBundle(s.getBundle());
+                            result.getBundle().addRegularLogEntry((RegularLogEntry) e);
+                        }
+                    } else if (e instanceof LastRowEntry) {
+                        //just ignore
                     } else {
                         throw new IllegalArgumentException("Unsupported SecureLogEntry implementation : " + e.getClass());
                     }
