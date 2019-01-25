@@ -4,12 +4,9 @@ import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleCreator;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleValidationException;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
-import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.TestDefinition;
-import ch.post.it.evoting.verifier.common.TestResult;
-import ch.post.it.evoting.verifier.common.TestTrait;
+import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.Test;
+import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
@@ -60,12 +57,22 @@ public class Test01 extends Test {
                             b.validateIntegrity();
                         } catch (SecureLogBundleValidationException e) {
                             LOGGER.error("Validation failed on host {" + e.getHost() + "}, source {" + e.getSource() + "} : " + e.getMessage());
+                            throw new TestFailureException(b.getBeginCheckPoint().toString(), b.getBeginCheckPoint().getMetadata().toString());
+                        }
+                    }, e -> {
+                        if (e instanceof TestFailureException) {
+                            throw (TestFailureException) e;
+                        } else {
                             throw new RuntimeException(e);
                         }
                     });
 
             result.setStatus(Status.OK);
 
+        } catch (TestFailureException e) {
+            LOGGER.error("Test in error, cause : " + e.getArgs(), e);
+            result.setStatus(Status.NOK);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.nok.message", e.getArgs()));
         } catch (NoSuchFileException e) {
             LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
             result.setStatus(Status.NOK);
@@ -76,8 +83,8 @@ public class Test01 extends Test {
             result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message", e.getMessage()));
         } catch (Exception e) {
             result.setStatus(Status.NOK);
-            LOGGER.error("SecureLogs integrity validation failed", e);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.nok.message", e.getMessage()));
+            LOGGER.error("Unexpected error occured", e);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
 
         return result;

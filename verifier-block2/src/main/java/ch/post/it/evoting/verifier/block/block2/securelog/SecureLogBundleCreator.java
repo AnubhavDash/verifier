@@ -56,13 +56,17 @@ public final class SecureLogBundleCreator {
                         }
                         result.setLastAnalysedCheckPoint((CheckPointLogEntry) e);
                     } else if (e instanceof RegularLogEntry) {
-                        result.setLastAnalysedCheckPoint(s.getLastAnalysedCheckPoint());
-                        result.setBundle(s.getBundle());
-                        result.getBundle().addRegularLogEntry((RegularLogEntry) e);
+                        if (s.getBundle() == null) {
+                            LOGGER.fatal(String.format("Regular log found without prior CheckPoint in file : %s. Raw : %s", e.getSource(), e.getRaw()));
+                            throw new IllegalArgumentException("Regular log found without prior CheckPoint in file : " + e.getSource());
+                        } else {
+                            result.setLastAnalysedCheckPoint(s.getLastAnalysedCheckPoint());
+                            result.setBundle(s.getBundle());
+                            result.getBundle().addRegularLogEntry((RegularLogEntry) e);
+                        }
                     } else if (e instanceof LastRowEntry) {
                         //just ignore
-                    }
-                    else {
+                    } else {
                         throw new IllegalArgumentException("Unsupported SecureLogEntry implementation : " + e.getClass());
                     }
                     return result;

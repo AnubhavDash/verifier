@@ -81,7 +81,13 @@ public class Test02 extends Test {
                             b.validateSignature();
                         } catch (SecureLogBundleValidationException e) {
                             LOGGER.error("Validation failed because on host {" + e.getHost() + "} " + e.getMessage());
-                            throw new TestFailureException(b.getBeginCheckPoint().toString(), b.getBeginCheckPoint().getMetadata().toString());
+                            throw new TestFailureException(b.getBeginCheckPoint().getRaw());
+                        }
+                    }, e -> {
+                        if (e instanceof TestFailureException) {
+                            throw (TestFailureException) e;
+                        } else {
+                            throw new RuntimeException(e);
                         }
                     });
 
@@ -92,8 +98,7 @@ public class Test02 extends Test {
             result.setStatus(Status.NOK);
         } catch (TestFailureException e) {
             result.setStatus(Status.NOK);
-            String[] args = e.getArgs();
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test02.nok.message", args[0], args[1]));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test02.nok.message", e.getArgs()));
         } catch (Exception e) {
             LOGGER.error("an unexpected error occurred", e);
             result.setStatus(Status.NOK);
