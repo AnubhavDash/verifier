@@ -12,7 +12,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class SecureLogBundle {
@@ -80,16 +79,6 @@ public class SecureLogBundle {
                 TypeConverter.base64ToByte(this.getBeginCheckPoint().getMetadata().getSg()), this.getPem())) {
             throw new SecureLogBundleValidationException("Begin Checkpoint signature not valid", beginCheckPoint.getHost(), beginCheckPoint.getSource());
         }
-    }
-
-    private byte[] concat(String... element) {
-        StringBuilder sb = new StringBuilder();
-        Arrays.stream(element).forEach(sb::append);
-        return TypeConverter.stringToByte(sb.toString());
-    }
-
-    private String buildSignature(String secret, byte[] text) {
-        return null;
     }
 
     private void validateEndCheckPoint(byte[] lastHmac) throws SecureLogBundleValidationException {
