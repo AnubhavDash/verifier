@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class Test01 extends Test {
@@ -70,7 +71,7 @@ public class Test01 extends Test {
             result.setStatus(Status.OK);
 
         } catch (TestFailureException e) {
-            LOGGER.error("Test in error, cause : " + e.getArgs(), e);
+            LOGGER.error("Test in error, cause : " + Arrays.toString(e.getArgs()), e);
             result.setStatus(Status.NOK);
             result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.nok.message", e.getArgs()));
         } catch (NoSuchFileException e) {
