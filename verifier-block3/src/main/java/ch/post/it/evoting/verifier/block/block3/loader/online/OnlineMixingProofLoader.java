@@ -15,7 +15,6 @@ import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallot;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProof;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProofSecondAnswer;
-import com.scytl.products.ov.mixnet.commons.exceptions.VerifierException;
 import com.scytl.products.ov.mixnet.commons.homomorphic.impl.ElGamalPublicKey;
 import com.scytl.products.ov.mixnet.commons.homomorphic.impl.GjosteenElGamalPlaintext;
 import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
@@ -217,9 +216,7 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
                     .collect(Collectors.toList())
                     .toArray(new Exponent[]{});
         } catch (IOException e) {
-            //TODO handle exception throw a new VerifierException?
-            e.printStackTrace();
-            throw new VerifierException("Todo");
+            throw new RuntimeException(e);
         }
         DecryptionProof decryptionProof = new DecryptionProof(challenge, response);
         decryptionProof.setGammaOfCiphertext(gammaOfCiphertext);
