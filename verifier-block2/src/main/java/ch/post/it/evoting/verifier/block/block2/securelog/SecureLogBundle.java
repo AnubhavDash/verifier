@@ -66,32 +66,18 @@ public class SecureLogBundle {
     }
 
     public void validateSignature() throws SecureLogBundleValidationException {
-       // byte[] sg = beginCheckPoint.getMetadata().getSg().getBytes(StandardCharsets.UTF_8);
-        byte[] sg = Base64.decode(beginCheckPoint.getMetadata().getSg());
+        String bytes = String.format("%s {*LSK::%s,ESK::%s,PHMAC::%s,LS::%s,TL::%s,TS::%s,HMAC::%s*}\\n",
+                this.getBeginCheckPoint().getRaw().substring(0, this.getBeginCheckPoint().getRaw().length() - 1), //remove the ending \n
+                this.getBeginCheckPoint().getMetadata().getLsk(),
+                this.getBeginCheckPoint().getMetadata().getEsk(),
+                this.getBeginCheckPoint().getMetadata().getPhmac(),
+                this.getBeginCheckPoint().getMetadata().getLs(),
+                this.getBeginCheckPoint().getMetadata().getTl(),
+                this.getBeginCheckPoint().getMetadata().getTs(),
+                this.getBeginCheckPoint().getMetadata().getHmac());
 
-        /*byte[] text = concat(
-                beginCheckPoint.getMetadata().getPhmac(),
-                beginCheckPoint.getMetadata().getLsk(),
-                beginCheckPoint.getMetadata().getEsk(),
-                beginCheckPoint.getMetadata().getHmac(),
-                beginCheckPoint.getRaw());*/
-
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        try (DataOutputStream stream = new DataOutputStream(bytes)) {
-            stream.write(Base64.decode(beginCheckPoint.getMetadata().getPhmac()));
-            if (StringUtils.isNotEmpty(beginCheckPoint.getMetadata().getLsk())) {
-                stream.write(Base64.decode(beginCheckPoint.getMetadata().getLsk()));
-            }
-            if (StringUtils.isNotEmpty(beginCheckPoint.getMetadata().getEsk())) {
-                stream.write(Base64.decode(beginCheckPoint.getMetadata().getEsk()));
-            }
-            stream.write(Base64.decode(beginCheckPoint.getMetadata().getHmac()));
-            stream.write(beginCheckPoint.getRaw().getBytes(StandardCharsets.UTF_8));
-        } catch (IOException e) {
-            throw new RuntimeException("Unable to serialize secureLogEntry", e);
-        }
-
-        if (this.getPem() == null || !SignatureChecker.verifySignature(bytes.toByteArray(), sg, this.getPem())) {
+        if (this.getPem() == null || !SignatureChecker.verifySignature(bytes.getBytes(StandardCharsets.UTF_8),
+                TypeConverter.base64ToByte(this.getBeginCheckPoint().getMetadata().getSg()), this.getPem())) {
             throw new SecureLogBundleValidationException("Begin Checkpoint signature not valid", beginCheckPoint.getHost(), beginCheckPoint.getSource());
         }
     }
