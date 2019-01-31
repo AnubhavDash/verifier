@@ -2,7 +2,6 @@ package ch.post.it.evoting.verifier.block.block3.tests;
 
 import ch.post.it.evoting.verifier.block.block3.Block3TestSuite;
 import ch.post.it.evoting.verifier.common.*;
-import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
@@ -15,11 +14,11 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Test27 extends Test {
+public class Test27 /*extends Test*/ {
 
     private static final Logger LOGGER = Logger.getLogger(Test27.class);
 
-    @Override
+    /*@Override*/
     public TestDefinition getTestDefinition() {
         TestDefinition def = new TestDefinition();
         def.setBlockId(3);
@@ -31,7 +30,7 @@ public class Test27 extends Test {
         return def;
     }
 
-    @Override
+    /*@Override*/
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
