@@ -1,25 +1,19 @@
 package ch.post.it.evoting.verifier.block.block2.tests;
 
+import ch.post.it.evoting.verifier.block.block2.securelog.CheckPointLogEntry;
+import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundle;
+import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogMetadata;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestResult;
-import org.bouncycastle.cert.X509CertificateHolder;
-import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.openssl.PEMParser;
+import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import org.bouncycastle.util.encoders.Base64;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.security.Security;
-import java.security.Signature;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.security.spec.MGF1ParameterSpec;
-import java.security.spec.PSSParameterSpec;
 
 public class Test02Test {
 
@@ -41,46 +35,53 @@ public class Test02Test {
 
 
     @Test
-    @Ignore
-    public void testSignature() throws Exception {
+    public void testSignatureAlgorithm() throws Exception {
 
-        File cert = new File(getClass().getResource("/Test02/OK/certificates/log_sign_keys/cc2_log_sign.pem").getFile());
+        File cert = new File(getClass().getResource("/Test02/testSignature/cc1_log_sign.pem").getFile());
 
         /*
         Original from SPLUNK
-        {"preview":false,"offset":59,"result":{"_raw":"2019-01-14 09:22:03,717|DEBUG|TIMER-LOG|New Secret Key generated. {*LSK::KX306Ie4plliuOVMXSY5veD/M3bnrKYBzfqcsNHkw4c=,ESK::ffAfKu/eCIXP1fHJT1b9+3ezwzMuj8wGy0Rua4AMy62TQokWrYLA0UQlUDA/dyhA6mgJQ4cLMoh+rwyr7Svg7Ckw2STVbNpKBOAOmAJn3xWPiOX8uXn73j0jdqzi6ITKakLOB0OJDYOnWTib1084m/lY2mv0/ZutA41PXJDxWKPpiuzvwWPBNA4GrOZGa3JRGy1C8sfXuVG3LxbvbUH8coxNRXFA6kmMey8ue5qJj+SpIpaCLaNjP+e+vjJ/viTsrUdj09vNPvqKol+HRBX+fHnV1qjbtv3IivaM036LAfe5A+ildl/WsQ0jwkSjP6fWF625ggvWgIccTkto51vl7GgHImMM/wA2JPQ4SfnE+WU5kTYyjWqbwtXKyJJuqgsr/5/J8uhSMtJbGdymdUKdyX3bcP0MmzM/2NW9NpgSHOnhYEhBqVa5ug==,PHMAC::mZIMnPtLjp2j0rts1J9+UtDZRNt6GwCygztb9n5NXmM=,LS::10000,TL::300000,TS::1547454123717,HMAC::9Ygco8ibe2riiJfe6WdQhtq8pNae5uSiKs2OMPFI+uI=,SG::UYECVxcmNH2yuNEBIn+/9F7D1pUMC8sN4yQ3QzdivEupBOixPJqR906OQDuP7eu3IMEIdXcRDIAthe5/Mj4AjzIxqrs0zAtHZd4GMqJ/zwYfDCn5R7CKPGel25ii9QYfZZNq9ofNC+zd0eVfMJq9z1jpIHr2JSxIJPNLo7R3jWDb6vPyzB+kPQb5gUton3fc2ovmT6bUtYWHUaW+QpK4qwlaHmg7ApDm5DFdKPfoJ8vdQVSWtDQaYSbBzI8fyr6CJeLwo00onsSSxgjaAggaUwt6POVa3z7p5KF/YBQFt6tb2AE8Ok0/23QlaQw6ZnevhoDNTfHiZkPpU7fC/3IAXw==*}","_time":"2019-01-14T09:22:03.717+0100","host":"h002gp","index":"it_evoting_cc","linecount":"1","source":"D:\\logs_3\\cv\\logs\\cv_secure-20190114-083203-4.log","sourcetype":"post_evoting_securelogs","splunk_server":"hin03a.pnet.ch"}}
+        {"preview":false,"offset":2204,"result":{"_raw":"2019-01-29 00:02:38,204|DEBUG|TIMER-LOG|New Secret Key generated. {*LSK::EZHSddXYfgf5bACUt4R9f1XuIU+bjwewPNrVGWq3crs=,ESK::g9PB+b3UVRxBv/d349PO2VdOVD4JJMGljtobS+CD2sAW/1fnKqOYqzjBJPB1ZE/nTrzxFUnmO+31yTHY3ORWNZsG7DcmtZt4RT4ckqvuEzx8TOb26mhZ+YJ8Lc5Ln+14tXZ5uZBpUFVXprw5rwZ48PNj8UaC9O4nw1Tmi0LGnI2bRr7bLLvEfKJACRitNLf5uVUTnvsJcf7iMU0mWJsApptBz2z9IxiA/+alX8jwk1RCIaFKTsxSEwpmim52aDjYZSEJgyo9wfdtmHofZdXnX7Aq3BEfl2S8iuEYFes6xKOAzxENEGoNfUeD5YJxNIj9IGUBwrck0Ys17i5pUiNAxheZwl9/HyE0B9/ApGcMhmC4tSU/EQ8R7cItnJ1llnwPdhG+647klQuZrjZq9C75ak/YtPbDY62k5WSHZThg/4k7xW3b3SS0mg==,PHMAC::LU9MozP14HFR7ggG7NSesx2Ztksa3PmPNiuR9qK9DF4=,LS::10000,TL::300000,TS::1548716558205,HMAC::XxzCeo2Zb2sgvZY8fUM/hHBGYkx4Oo8xdsUvT5O0cZA=,SG::pUFV4DWoimWtePDunO5VapLy0YtBkDFYF5f1UhXftYRxOx5ID7XmU/m2R12w0YNFY9+boelq9wSMC6ARbVkFMJ5I9Nud3gjIvIuT+LKZrHMoPkGiM9mWqiO0v19YpNz3HfD2GKLrg3ZS+L/NW2jRUSgywqPBFcAkcmu7TY5p9flVDBR2y6Bu33dpmzZ0g/ERbnDrBUH4UxqdPNw9noIdGKjbQjQZu5/CnybUR4sO2M4sXO4F1Ces0h7hUBw9n81WgOgXK78YNusR8inoviwq3v5kVMrwX/DsThgYdcJSiLCeJ03Yls6ssBI0fM2cZIeRbdBL3G1ANRrsPK1ZtPn6Hg==*}","_time":"2019-01-29T00:02:38.204+0100","arrivalcode":"6592061","cd":"68:6592061","host":"h002gb","index":"it_evoting_cc","linecount":"1","minute":"05290002","source":"/data/logs/cv/logs/cv_secure-20190125-113237-106.log","sourcetype":"post_evoting_securelogs","splunk_server":"hin01a.pnet.ch"}}
 
         Original from FILE
-        2019-01-14 09:22:03,717|DEBUG|TIMER-LOG|New Secret Key generated. {*LSK::KX306Ie4plliuOVMXSY5veD/M3bnrKYBzfqcsNHkw4c=,ESK::ffAfKu/eCIXP1fHJT1b9+3ezwzMuj8wGy0Rua4AMy62TQokWrYLA0UQlUDA/dyhA6mgJQ4cLMoh+rwyr7Svg7Ckw2STVbNpKBOAOmAJn3xWPiOX8uXn73j0jdqzi6ITKakLOB0OJDYOnWTib1084m/lY2mv0/ZutA41PXJDxWKPpiuzvwWPBNA4GrOZGa3JRGy1C8sfXuVG3LxbvbUH8coxNRXFA6kmMey8ue5qJj+SpIpaCLaNjP+e+vjJ/viTsrUdj09vNPvqKol+HRBX+fHnV1qjbtv3IivaM036LAfe5A+ildl/WsQ0jwkSjP6fWF625ggvWgIccTkto51vl7GgHImMM/wA2JPQ4SfnE+WU5kTYyjWqbwtXKyJJuqgsr/5/J8uhSMtJbGdymdUKdyX3bcP0MmzM/2NW9NpgSHOnhYEhBqVa5ug==,PHMAC::mZIMnPtLjp2j0rts1J9+UtDZRNt6GwCygztb9n5NXmM=,LS::10000,TL::300000,TS::1547454123717,HMAC::9Ygco8ibe2riiJfe6WdQhtq8pNae5uSiKs2OMPFI+uI=,SG::UYECVxcmNH2yuNEBIn+/9F7D1pUMC8sN4yQ3QzdivEupBOixPJqR906OQDuP7eu3IMEIdXcRDIAthe5/Mj4AjzIxqrs0zAtHZd4GMqJ/zwYfDCn5R7CKPGel25ii9QYfZZNq9ofNC+zd0eVfMJq9z1jpIHr2JSxIJPNLo7R3jWDb6vPyzB+kPQb5gUton3fc2ovmT6bUtYWHUaW+QpK4qwlaHmg7ApDm5DFdKPfoJ8vdQVSWtDQaYSbBzI8fyr6CJeLwo00onsSSxgjaAggaUwt6POVa3z7p5KF/YBQFt6tb2AE8Ok0/23QlaQw6ZnevhoDNTfHiZkPpU7fC/3IAXw==*}
+        2019-01-29 00:02:38,204|DEBUG|TIMER-LOG|New Secret Key generated. {*LSK::EZHSddXYfgf5bACUt4R9f1XuIU+bjwewPNrVGWq3crs=,ESK::g9PB+b3UVRxBv/d349PO2VdOVD4JJMGljtobS+CD2sAW/1fnKqOYqzjBJPB1ZE/nTrzxFUnmO+31yTHY3ORWNZsG7DcmtZt4RT4ckqvuEzx8TOb26mhZ+YJ8Lc5Ln+14tXZ5uZBpUFVXprw5rwZ48PNj8UaC9O4nw1Tmi0LGnI2bRr7bLLvEfKJACRitNLf5uVUTnvsJcf7iMU0mWJsApptBz2z9IxiA/+alX8jwk1RCIaFKTsxSEwpmim52aDjYZSEJgyo9wfdtmHofZdXnX7Aq3BEfl2S8iuEYFes6xKOAzxENEGoNfUeD5YJxNIj9IGUBwrck0Ys17i5pUiNAxheZwl9/HyE0B9/ApGcMhmC4tSU/EQ8R7cItnJ1llnwPdhG+647klQuZrjZq9C75ak/YtPbDY62k5WSHZThg/4k7xW3b3SS0mg==,PHMAC::LU9MozP14HFR7ggG7NSesx2Ztksa3PmPNiuR9qK9DF4=,LS::10000,TL::300000,TS::1548716558205,HMAC::XxzCeo2Zb2sgvZY8fUM/hHBGYkx4Oo8xdsUvT5O0cZA=*}
+
+        SG::pUFV4DWoimWtePDunO5VapLy0YtBkDFYF5f1UhXftYRxOx5ID7XmU/m2R12w0YNFY9+boelq9wSMC6ARbVkFMJ5I9Nud3gjIvIuT+LKZrHMoPkGiM9mWqiO0v19YpNz3HfD2GKLrg3ZS+L/NW2jRUSgywqPBFcAkcmu7TY5p9flVDBR2y6Bu33dpmzZ0g/ERbnDrBUH4UxqdPNw9noIdGKjbQjQZu5/CnybUR4sO2M4sXO4F1Ces0h7hUBw9n81WgOgXK78YNusR8inoviwq3v5kVMrwX/DsThgYdcJSiLCeJ03Yls6ssBI0fM2cZIeRbdBL3G1ANRrsPK1ZtPn6Hg==
     */
 
 
-        String sg = "UYECVxcmNH2yuNEBIn+/9F7D1pUMC8sN4yQ3QzdivEupBOixPJqR906OQDuP7eu3IMEIdXcRDIAthe5/Mj4AjzIxqrs0zAtHZd4GMqJ/zwYfDCn5R7CKPGel25ii9QYfZZNq9ofNC+zd0eVfMJq9z1jpIHr2JSxIJPNLo7R3jWDb6vPyzB+kPQb5gUton3fc2ovmT6bUtYWHUaW+QpK4qwlaHmg7ApDm5DFdKPfoJ8vdQVSWtDQaYSbBzI8fyr6CJeLwo00onsSSxgjaAggaUwt6POVa3z7p5KF/YBQFt6tb2AE8Ok0/23QlaQw6ZnevhoDNTfHiZkPpU7fC/3IAXw==";
+        String sg = "pUFV4DWoimWtePDunO5VapLy0YtBkDFYF5f1UhXftYRxOx5ID7XmU/m2R12w0YNFY9+boelq9wSMC6ARbVkFMJ5I9Nud3gjIvIuT+LKZrHMoPkGiM9mWqiO0v19YpNz3HfD2GKLrg3ZS+L/NW2jRUSgywqPBFcAkcmu7TY5p9flVDBR2y6Bu33dpmzZ0g/ERbnDrBUH4UxqdPNw9noIdGKjbQjQZu5/CnybUR4sO2M4sXO4F1Ces0h7hUBw9n81WgOgXK78YNusR8inoviwq3v5kVMrwX/DsThgYdcJSiLCeJ03Yls6ssBI0fM2cZIeRbdBL3G1ANRrsPK1ZtPn6Hg==";
 
-        String value = "2019-01-14 09:22:03,717|DEBUG|TIMER-LOG|New Secret Key generated. {*LSK::KX306Ie4plliuOVMXSY5veD/M3bnrKYBzfqcsNHkw4c=,ESK::ffAfKu/eCIXP1fHJT1b9+3ezwzMuj8wGy0Rua4AMy62TQokWrYLA0UQlUDA/dyhA6mgJQ4cLMoh+rwyr7Svg7Ckw2STVbNpKBOAOmAJn3xWPiOX8uXn73j0jdqzi6ITKakLOB0OJDYOnWTib1084m/lY2mv0/ZutA41PXJDxWKPpiuzvwWPBNA4GrOZGa3JRGy1C8sfXuVG3LxbvbUH8coxNRXFA6kmMey8ue5qJj+SpIpaCLaNjP+e+vjJ/viTsrUdj09vNPvqKol+HRBX+fHnV1qjbtv3IivaM036LAfe5A+ildl/WsQ0jwkSjP6fWF625ggvWgIccTkto51vl7GgHImMM/wA2JPQ4SfnE+WU5kTYyjWqbwtXKyJJuqgsr/5/J8uhSMtJbGdymdUKdyX3bcP0MmzM/2NW9NpgSHOnhYEhBqVa5ug==,PHMAC::mZIMnPtLjp2j0rts1J9+UtDZRNt6GwCygztb9n5NXmM=,LS::10000,TL::300000,TS::1547454123717,HMAC::9Ygco8ibe2riiJfe6WdQhtq8pNae5uSiKs2OMPFI+uI=*}\n";
+        String value = "2019-01-29 00:02:38,204|DEBUG|TIMER-LOG|New Secret Key generated. {*LSK::EZHSddXYfgf5bACUt4R9f1XuIU+bjwewPNrVGWq3crs=,ESK::g9PB+b3UVRxBv/d349PO2VdOVD4JJMGljtobS+CD2sAW/1fnKqOYqzjBJPB1ZE/nTrzxFUnmO+31yTHY3ORWNZsG7DcmtZt4RT4ckqvuEzx8TOb26mhZ+YJ8Lc5Ln+14tXZ5uZBpUFVXprw5rwZ48PNj8UaC9O4nw1Tmi0LGnI2bRr7bLLvEfKJACRitNLf5uVUTnvsJcf7iMU0mWJsApptBz2z9IxiA/+alX8jwk1RCIaFKTsxSEwpmim52aDjYZSEJgyo9wfdtmHofZdXnX7Aq3BEfl2S8iuEYFes6xKOAzxENEGoNfUeD5YJxNIj9IGUBwrck0Ys17i5pUiNAxheZwl9/HyE0B9/ApGcMhmC4tSU/EQ8R7cItnJ1llnwPdhG+647klQuZrjZq9C75ak/YtPbDY62k5WSHZThg/4k7xW3b3SS0mg==,PHMAC::LU9MozP14HFR7ggG7NSesx2Ztksa3PmPNiuR9qK9DF4=,LS::10000,TL::300000,TS::1548716558205,HMAC::XxzCeo2Zb2sgvZY8fUM/hHBGYkx4Oo8xdsUvT5O0cZA=*}\n";
 
-        if (Security.getProvider("BC") == null) {
-            Security.addProvider(new BouncyCastleProvider());
-        }
-        final X509Certificate sCert = loadCertificate(Files.readAllBytes(cert.toPath()));
-        final String algoName = "SHA256withRSAandMGF1";
+        boolean b = SignatureChecker.verifySignature(value.getBytes(StandardCharsets.UTF_8), Base64.decode(sg), Files.readAllBytes(cert.toPath()));
 
-        Signature signatureAlgorithm = Signature.getInstance(algoName);
-        signatureAlgorithm.setParameter(new PSSParameterSpec("SHA-256", "MGF1",
-                new MGF1ParameterSpec("SHA-256"), 32, 1));
-
-        signatureAlgorithm.initVerify(sCert.getPublicKey());
-        signatureAlgorithm.update(value.getBytes(StandardCharsets.UTF_8));
-
-        Assert.assertTrue(signatureAlgorithm.verify(Base64.decode(sg)));
+        Assert.assertTrue(b);
     }
 
-    private X509Certificate loadCertificate(byte[] certificate) throws IOException, CertificateException {
-        if (Security.getProvider("BC") == null) {
-            Security.addProvider(new BouncyCastleProvider());
-        }
-        PEMParser parser = new PEMParser(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(certificate))));
-        return new JcaX509CertificateConverter().setProvider("BC").getCertificate((X509CertificateHolder) parser.readObject());
-    }
+    @Test
+    public void testSecureLogBundleSignature() throws Exception {
+        File cert = new File(getClass().getResource("/Test02/testSignature/cc1_log_sign.pem").getFile());
 
+        SecureLogBundle bundle = new SecureLogBundle();
+        CheckPointLogEntry checkpoint = new CheckPointLogEntry();
+        SecureLogMetadata metadata = new SecureLogMetadata();
+
+        metadata.setLsk("EZHSddXYfgf5bACUt4R9f1XuIU+bjwewPNrVGWq3crs=");
+        metadata.setEsk("g9PB+b3UVRxBv/d349PO2VdOVD4JJMGljtobS+CD2sAW/1fnKqOYqzjBJPB1ZE/nTrzxFUnmO+31yTHY3ORWNZsG7DcmtZt4RT4ckqvuEzx8TOb26mhZ+YJ8Lc5Ln+14tXZ5uZBpUFVXprw5rwZ48PNj8UaC9O4nw1Tmi0LGnI2bRr7bLLvEfKJACRitNLf5uVUTnvsJcf7iMU0mWJsApptBz2z9IxiA/+alX8jwk1RCIaFKTsxSEwpmim52aDjYZSEJgyo9wfdtmHofZdXnX7Aq3BEfl2S8iuEYFes6xKOAzxENEGoNfUeD5YJxNIj9IGUBwrck0Ys17i5pUiNAxheZwl9/HyE0B9/ApGcMhmC4tSU/EQ8R7cItnJ1llnwPdhG+647klQuZrjZq9C75ak/YtPbDY62k5WSHZThg/4k7xW3b3SS0mg==");
+        metadata.setPhmac("LU9MozP14HFR7ggG7NSesx2Ztksa3PmPNiuR9qK9DF4=");
+        metadata.setLs("10000");
+        metadata.setTl("300000");
+        metadata.setTs("1548716558205");
+        metadata.setHmac("XxzCeo2Zb2sgvZY8fUM/hHBGYkx4Oo8xdsUvT5O0cZA=");
+        metadata.setSg("pUFV4DWoimWtePDunO5VapLy0YtBkDFYF5f1UhXftYRxOx5ID7XmU/m2R12w0YNFY9+boelq9wSMC6ARbVkFMJ5I9Nud3gjIvIuT+LKZrHMoPkGiM9mWqiO0v19YpNz3HfD2GKLrg3ZS+L/NW2jRUSgywqPBFcAkcmu7TY5p9flVDBR2y6Bu33dpmzZ0g/ERbnDrBUH4UxqdPNw9noIdGKjbQjQZu5/CnybUR4sO2M4sXO4F1Ces0h7hUBw9n81WgOgXK78YNusR8inoviwq3v5kVMrwX/DsThgYdcJSiLCeJ03Yls6ssBI0fM2cZIeRbdBL3G1ANRrsPK1ZtPn6Hg==");
+
+        checkpoint.setRaw("2019-01-29 00:02:38,204|DEBUG|TIMER-LOG|New Secret Key generated.\n");
+        checkpoint.setMetadata(metadata);
+
+        bundle.setPem(Files.readAllBytes(cert.toPath()));
+        bundle.setBeginCheckPoint(checkpoint);
+
+        bundle.validateSignature();
+    }
 }

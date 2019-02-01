@@ -66,7 +66,7 @@ public class SecureLogBundle {
     }
 
     public void validateSignature() throws SecureLogBundleValidationException {
-        String bytes = String.format("%s {*LSK::%s,ESK::%s,PHMAC::%s,LS::%s,TL::%s,TS::%s,HMAC::%s*}\\n",
+        String bytes = String.format("%s {*LSK::%s,ESK::%s,PHMAC::%s,LS::%s,TL::%s,TS::%s,HMAC::%s*}\n",
                 this.getBeginCheckPoint().getRaw().substring(0, this.getBeginCheckPoint().getRaw().length() - 1), //remove the ending \n
                 this.getBeginCheckPoint().getMetadata().getLsk(),
                 this.getBeginCheckPoint().getMetadata().getEsk(),
