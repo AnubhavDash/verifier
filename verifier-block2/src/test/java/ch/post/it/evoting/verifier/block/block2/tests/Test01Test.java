@@ -6,17 +6,13 @@ import ch.post.it.evoting.verifier.common.block.tools.HmacGenerator;
 import org.apache.commons.lang.StringUtils;
 import org.bouncycastle.util.encoders.Base64;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Test01Test {
 
@@ -27,26 +23,11 @@ public class Test01Test {
         Assert.assertEquals(Status.OK, testResult.getStatus());
     }
 
-    @Ignore
     @Test
     public void executeTestNOK() {
         TestResult testResult = new Test01().executeTest(new File(getClass().getResource("/Test01/NOK").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
-    }
-
-    @Test
-    @Ignore
-    public void reverseFile() throws IOException {
-        Path path = new File(getClass().getResource("/Test01/OK/secureLogs/Evoting_CC_verifier_export_7d.json").getFile()).toPath();
-        Stream<String> stream = Files.lines(path);
-        List<String> collect = stream.collect(Collectors.toList());
-        File file = new File("c:\\temp\\result.json");
-        FileWriter fw = new FileWriter("c:\\temp\\result.json");
-        for (int i = collect.size() - 1; i >= 0; i--) {
-            fw.write(collect.get(i) + "\r\n");
-        }
-        fw.close();
     }
 
     @Test
@@ -72,7 +53,7 @@ public class Test01Test {
             stream.writeLong(Long.parseLong(ts));
             stream.write(raw.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
-            e.printStackTrace();
+            Assert.fail(e.getMessage());
         }
 
         String calculatedHmac = Base64.toBase64String(HmacGenerator.hash(bytes.toByteArray(), Base64.decode(endLsk)));
@@ -81,7 +62,7 @@ public class Test01Test {
     }
 
     @Test
-    public void generateHmacRegularLog1() {
+    public void generateHmacRegularLog() {
         final String endLsk = "MD+KuCAgFCcbqETTqDeI79Fr9P3TMq2lpGfuahpZGp8=";
         final String hmac = "gtGMUiyEZlA/MeVMJAMbSmUj3DYjOkxWm7N+4i9kiZc=";
         final String phmac = "K2d+ArwhI/x6lSzFqpSc4f3AyxSLDK3109J/oMrEh7Y=";
@@ -104,37 +85,7 @@ public class Test01Test {
             stream.writeLong(Long.parseLong(ts));
             stream.write(raw.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        String calculatedHmac = Base64.toBase64String(HmacGenerator.hash(bytes.toByteArray(), Base64.decode(endLsk)));
-
-        Assert.assertEquals(hmac, calculatedHmac);
-    }
-
-    @Test
-    public void generateHmacRegularLog2() {
-        final String endLsk = "MD+KuCAgFCcbqETTqDeI79Fr9P3TMq2lpGfuahpZGp8=";
-        final String hmac = "JyFYPX1uQVvbEom4GoJE9fcjclMyinscUv1W3tbFp5M=";
-        final String phmac = "gtGMUiyEZlA/MeVMJAMbSmUj3DYjOkxWm7N+4i9kiZc=";
-        final String lsk = "";
-        final String esk = "";
-        final String raw = "2018-10-25 14:29:44,105|INFO|pool-1-thread-57|767905|serverIP|clientIP|tenantID|OV|CCGEN||GENCCCRT|-|-|000|-|7d6e16ea88564b0b864785f2b12bd5df|Control Component Signing Certificate successfully generated|#ccx_id=\"ccn_c2\" #request_id=\"N5H27T56RFX5NUOC\" #issuer_cn=\"CCN_C2 CA\" #pubkey_ids=\"DT3MljLgNROZtzyfsEewoQd5DtkqxQi3VpabeIk8BiM=\" #cert_cn=\"7d6e16ea88564b0b864785f2b12bd5df\" #cert_sn=\"648718858650821711427443097450587215666310197001\" \n";
-        final String ls = "";
-        final String tl = "";
-        final String ts = "1540470584113";
-
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        try (DataOutputStream stream = new DataOutputStream(bytes)) {
-            stream.write(Base64.decode(phmac));
-            stream.write(Base64.decode(lsk));
-            stream.write(Base64.decode(esk));
-            if (StringUtils.isNotEmpty(ls)) stream.writeInt(Integer.parseInt(ls));
-            if (StringUtils.isNotEmpty(tl)) stream.writeLong(Long.parseLong(tl));
-            stream.writeLong(Long.parseLong(ts));
-            stream.write(raw.getBytes(StandardCharsets.UTF_8));
-        } catch (IOException e) {
-            e.printStackTrace();
+            Assert.fail(e.getMessage());
         }
 
         String calculatedHmac = Base64.toBase64String(HmacGenerator.hash(bytes.toByteArray(), Base64.decode(endLsk)));
