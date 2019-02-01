@@ -194,7 +194,7 @@ public class SignatureChecker {
                     } catch (CertificateException | IOException e) {
                         throw new RuntimeException(e);
                     }
-                }).collect(Collectors.toList()) : Collections.emptyList();
+                }).collect(Collectors.toList()) : new LinkedList<>();
                 intermediates.add(sCert);
                 verifyCertificateChain(sCert, intermediates, loadCertificate(rootCertificate));
                 return true;

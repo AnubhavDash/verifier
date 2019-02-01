@@ -78,7 +78,7 @@ public class SecureLogBundle {
         if (this.getCertificates() == null || !SignatureChecker.verifySignature(bytes.getBytes(StandardCharsets.UTF_8),
                 TypeConverter.base64ToByte(this.getBeginCheckPoint().getMetadata().getSg()),
                 this.getCertificates().getCertificate(),
-                new byte[][]{this.getCertificates().getIntermediate()},
+                this.getCertificates().getIntermediate() != null ? new byte[][]{this.getCertificates().getIntermediate()} : null,
                 this.getCertificates().getRoot())) {
             throw new SecureLogBundleValidationException("Begin Checkpoint signature not valid", beginCheckPoint.getHost(), beginCheckPoint.getSource());
         }
