@@ -1,6 +1,7 @@
 package ch.post.it.evoting.verifier.block.block2.tests;
 
 import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
+import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleCertificates;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleCreator;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleValidationException;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
@@ -51,17 +52,39 @@ public class Test02 extends Test {
                     .skip(1)
                     .collect(Collectors.toMap(HostMappingElement::getHostname, HostMappingElement::getCc));
 
-            // create CC/Pem mapping
-            File[] pemFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2TestSuite.PATH_CC_CERTIFICATES).toFile(), ".*cc.*_log_sign.pem");
-            Map<String, byte[]> ccPemMapping = Arrays.stream(pemFiles).map(f -> {
+            // loading certificates
+            File[] certificates = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2TestSuite.PATH_CC_LOG_SIGN_CERTIFICATES).toFile(), ".*cc.*_log_sign.pem");
+            Map<String, byte[]> ccCertificateMapping = Arrays.stream(certificates).map(f -> {
                 try {
                     return new AbstractMap.SimpleEntry<>(f.getName().substring(0, 3).toUpperCase(), Files.readAllBytes(f.toPath()));
-                } catch (IOException e1) {
-                    throw new RuntimeException(e1);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
-            Map<String, byte[]> mapPem = hostCcMapping.entrySet().stream().map(entry -> new AbstractMap.SimpleEntry<>(entry.getKey(), ccPemMapping.get(entry.getValue()))).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)); //TODO
+            File[] intermediates = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2TestSuite.PATH_CC_CA_CERTIFICATES).toFile(), ".*cc.*_ca.pem");
+            Map<String, byte[]> ccIntermediateMapping = Arrays.stream(intermediates).map(f -> {
+                try {
+                    return new AbstractMap.SimpleEntry<>(f.getName().substring(0, 3).toUpperCase(), Files.readAllBytes(f.toPath()));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+
+            File root = PathHelper.getFile(inputDirectory.toPath().resolve(Block2TestSuite.PATH_CERTIFICATES).toFile(), "platformRootCA.pem");
+
+            Map<String, SecureLogBundleCertificates> mapCertificates = hostCcMapping.entrySet().stream()
+                    .map(entry -> {
+                        try {
+                            SecureLogBundleCertificates certs = new SecureLogBundleCertificates();
+                            certs.setCertificate(ccCertificateMapping.get(entry.getValue()));
+                            certs.setIntermediate(ccIntermediateMapping.get(entry.getValue()));
+                            certs.setRoot(Files.readAllBytes(root.toPath()));
+                            return new AbstractMap.SimpleEntry<>(entry.getKey(), certs);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
             Stream<SecureLogEntry> logEntryStream = Deserializer.fromLines(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS).toFile(), ".*\\.json",
                     line -> {
@@ -75,7 +98,7 @@ public class Test02 extends Test {
             Flux.fromIterable(logEntryStream::iterator)
                     .filter(s -> s.getPreview() != null && !s.getPreview())
                     .groupBy(s -> String.format("%s|%s", s.getHost(), s.getSource()))
-                    .flatMap(s -> SecureLogBundleCreator.from(s, mapPem))
+                    .flatMap(s -> SecureLogBundleCreator.from(s, mapCertificates))
                     .subscribe(b -> {
                         try {
                             b.validateSignature();

@@ -2,6 +2,7 @@ package ch.post.it.evoting.verifier.block.block2.tests;
 
 import ch.post.it.evoting.verifier.block.block2.securelog.CheckPointLogEntry;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundle;
+import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleCertificates;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogMetadata;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestResult;
@@ -38,6 +39,8 @@ public class Test02Test {
     public void testSignatureAlgorithm() throws Exception {
 
         File cert = new File(getClass().getResource("/Test02/testSignature/cc1_log_sign.pem").getFile());
+        File intermediate = new File(getClass().getResource("/Test02/testSignature/cc1_ca.pem").getFile());
+        File root = new File(getClass().getResource("/Test02/testSignature/platformRootCA.pem").getFile());
 
         /*
         Original from SPLUNK
@@ -54,7 +57,7 @@ public class Test02Test {
 
         String value = "2019-01-29 00:02:38,204|DEBUG|TIMER-LOG|New Secret Key generated. {*LSK::EZHSddXYfgf5bACUt4R9f1XuIU+bjwewPNrVGWq3crs=,ESK::g9PB+b3UVRxBv/d349PO2VdOVD4JJMGljtobS+CD2sAW/1fnKqOYqzjBJPB1ZE/nTrzxFUnmO+31yTHY3ORWNZsG7DcmtZt4RT4ckqvuEzx8TOb26mhZ+YJ8Lc5Ln+14tXZ5uZBpUFVXprw5rwZ48PNj8UaC9O4nw1Tmi0LGnI2bRr7bLLvEfKJACRitNLf5uVUTnvsJcf7iMU0mWJsApptBz2z9IxiA/+alX8jwk1RCIaFKTsxSEwpmim52aDjYZSEJgyo9wfdtmHofZdXnX7Aq3BEfl2S8iuEYFes6xKOAzxENEGoNfUeD5YJxNIj9IGUBwrck0Ys17i5pUiNAxheZwl9/HyE0B9/ApGcMhmC4tSU/EQ8R7cItnJ1llnwPdhG+647klQuZrjZq9C75ak/YtPbDY62k5WSHZThg/4k7xW3b3SS0mg==,PHMAC::LU9MozP14HFR7ggG7NSesx2Ztksa3PmPNiuR9qK9DF4=,LS::10000,TL::300000,TS::1548716558205,HMAC::XxzCeo2Zb2sgvZY8fUM/hHBGYkx4Oo8xdsUvT5O0cZA=*}\n";
 
-        boolean b = SignatureChecker.verifySignature(value.getBytes(StandardCharsets.UTF_8), Base64.decode(sg), Files.readAllBytes(cert.toPath()));
+        boolean b = SignatureChecker.verifySignature(value.getBytes(StandardCharsets.UTF_8), Base64.decode(sg), Files.readAllBytes(cert.toPath()), new byte[][]{Files.readAllBytes(intermediate.toPath())}, Files.readAllBytes(root.toPath()));
 
         Assert.assertTrue(b);
     }
@@ -62,10 +65,13 @@ public class Test02Test {
     @Test
     public void testSecureLogBundleSignature() throws Exception {
         File cert = new File(getClass().getResource("/Test02/testSignature/cc1_log_sign.pem").getFile());
+        File intermediate = new File(getClass().getResource("/Test02/testSignature/cc1_ca.pem").getFile());
+        File root = new File(getClass().getResource("/Test02/testSignature/platformRootCA.pem").getFile());
 
         SecureLogBundle bundle = new SecureLogBundle();
         CheckPointLogEntry checkpoint = new CheckPointLogEntry();
         SecureLogMetadata metadata = new SecureLogMetadata();
+        SecureLogBundleCertificates certificates = new SecureLogBundleCertificates();
 
         metadata.setLsk("EZHSddXYfgf5bACUt4R9f1XuIU+bjwewPNrVGWq3crs=");
         metadata.setEsk("g9PB+b3UVRxBv/d349PO2VdOVD4JJMGljtobS+CD2sAW/1fnKqOYqzjBJPB1ZE/nTrzxFUnmO+31yTHY3ORWNZsG7DcmtZt4RT4ckqvuEzx8TOb26mhZ+YJ8Lc5Ln+14tXZ5uZBpUFVXprw5rwZ48PNj8UaC9O4nw1Tmi0LGnI2bRr7bLLvEfKJACRitNLf5uVUTnvsJcf7iMU0mWJsApptBz2z9IxiA/+alX8jwk1RCIaFKTsxSEwpmim52aDjYZSEJgyo9wfdtmHofZdXnX7Aq3BEfl2S8iuEYFes6xKOAzxENEGoNfUeD5YJxNIj9IGUBwrck0Ys17i5pUiNAxheZwl9/HyE0B9/ApGcMhmC4tSU/EQ8R7cItnJ1llnwPdhG+647klQuZrjZq9C75ak/YtPbDY62k5WSHZThg/4k7xW3b3SS0mg==");
@@ -79,7 +85,11 @@ public class Test02Test {
         checkpoint.setRaw("2019-01-29 00:02:38,204|DEBUG|TIMER-LOG|New Secret Key generated.\n");
         checkpoint.setMetadata(metadata);
 
-        bundle.setPem(Files.readAllBytes(cert.toPath()));
+        certificates.setCertificate(Files.readAllBytes(cert.toPath()));
+        certificates.setIntermediate(Files.readAllBytes(intermediate.toPath()));
+        certificates.setRoot(Files.readAllBytes(root.toPath()));
+
+        bundle.setCertificates(certificates);
         bundle.setBeginCheckPoint(checkpoint);
 
         bundle.validateSignature();
