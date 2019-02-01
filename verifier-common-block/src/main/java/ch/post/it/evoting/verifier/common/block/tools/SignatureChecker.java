@@ -188,13 +188,13 @@ public class SignatureChecker {
 
             if (signatureAlgorithm.verify(signature)) {
                 //signature is valid, checking certificate chain validity
-                List<X509Certificate> intermediates = Arrays.stream(intermediateCertificates).map(bytes -> {
+                List<X509Certificate> intermediates = intermediateCertificates != null ? Arrays.stream(intermediateCertificates).map(bytes -> {
                     try {
                         return loadCertificate(bytes);
                     } catch (CertificateException | IOException e) {
                         throw new RuntimeException(e);
                     }
-                }).collect(Collectors.toList());
+                }).collect(Collectors.toList()) : Collections.emptyList();
                 intermediates.add(sCert);
                 verifyCertificateChain(sCert, intermediates, loadCertificate(rootCertificate));
                 return true;
