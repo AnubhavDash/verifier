@@ -51,8 +51,8 @@ public abstract class SecureLogEntry {
     protected String getRawWithoutMetadata(String raw) {
         String result = null;
         if (raw != null && !raw.isEmpty()) {
-            Matcher matcher = Pattern.compile("(.*)\\{\\*.*").matcher(raw);
-            if (matcher.matches() && matcher.groupCount() == 1) {
+            Matcher matcher = Pattern.compile("(.*?)(\\{\\*.*)?$").matcher(raw);
+            if (matcher.matches()) {
                 result = matcher.group(1);
 
                 //replace the last character and with a line feed.
@@ -86,7 +86,7 @@ public abstract class SecureLogEntry {
         String result = null;
         if (raw != null && !raw.isEmpty()) {
             Matcher matcher = Pattern.compile(".*\\{\\*(.*)\\*\\}.*").matcher(raw);
-            if (matcher.matches() && matcher.groupCount() == 1) {
+            if (matcher.matches()) {
                 result = matcher.group(1);
             }
         }
