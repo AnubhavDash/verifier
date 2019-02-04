@@ -16,9 +16,9 @@ public class AbstractOfflineBallotLoader {
     protected final Path path;
     private final ZpGroupParams param;
 
-    public AbstractOfflineBallotLoader(Path path) throws IOException {
+    public AbstractOfflineBallotLoader(Path path, Path rootPath) throws IOException {
         this.path = path;
-        this.param = new OfflineEncryptionParametersLoader(path).getZpGroup().getParams();
+        this.param = new OfflineEncryptionParametersLoader(rootPath).getZpGroup().getParams();
     }
 
     protected ElGamalEncryptedBallots get(Path fullPath) throws IOException {

@@ -53,10 +53,10 @@ public class BGVerifier {
                 if (files != null) {
                     // offline
                     for (File file : files) {
-                        EncryptionParametersLoader encryptionParametersLoader = new OfflineEncryptionParametersLoader(file.toPath());
+                        EncryptionParametersLoader encryptionParametersLoader = new OfflineEncryptionParametersLoader(outputParentPath.getParent());
                         PublicKeyLoader publicKeyLoader = new OfflinePublicKeyLoader(file.toPath());
-                        EncryptedBallotsLoader offlineEncryptedBallotsLoader = new OfflineEncryptedBallotsLoader(file.toPath());
-                        ReEncryptedBallotsLoader offlineReEncryptedBallotsLoader = new OfflineReEncryptedBallotsLoader(file.toPath());
+                        EncryptedBallotsLoader offlineEncryptedBallotsLoader = new OfflineEncryptedBallotsLoader(file.toPath(), outputParentPath.getParent());
+                        ReEncryptedBallotsLoader offlineReEncryptedBallotsLoader = new OfflineReEncryptedBallotsLoader(file.toPath(), outputParentPath.getParent());
                         ShuffleProofLoader offlineShuffleProofLoader = new OfflineShuffleProofLoader(file.toPath());
                         CommitmentParametersLoader commitmentParametersLoader = new OfflineCommitmentParametersLoader(file.toPath());
 

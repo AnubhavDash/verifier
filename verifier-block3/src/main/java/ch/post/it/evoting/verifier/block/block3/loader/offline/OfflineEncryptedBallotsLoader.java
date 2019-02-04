@@ -9,8 +9,8 @@ import java.nio.file.Path;
 
 public class OfflineEncryptedBallotsLoader extends AbstractOfflineBallotLoader implements EncryptedBallotsLoader {
 
-    public OfflineEncryptedBallotsLoader(Path path) throws IOException {
-        super(path);
+    public OfflineEncryptedBallotsLoader(Path path, Path rootPath) throws IOException {
+        super(path, rootPath);
     }
 
     @Override

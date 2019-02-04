@@ -1,10 +1,11 @@
 package ch.post.it.evoting.verifier.block.block3.loader.offline;
 
 
+import ch.post.it.evoting.verifier.block.block3.Block3TestSuite;
 import ch.post.it.evoting.verifier.block.block3.loader.EncryptionParametersLoader;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
-import ch.post.it.evoting.verifier.dto.EncryptionParametersZpSubGroup;
+import ch.post.it.evoting.verifier.dto.EncryptionParameters;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroupParams;
@@ -24,10 +25,10 @@ public class OfflineEncryptionParametersLoader implements EncryptionParametersLo
     @Override
     public ZpGroup getZpGroup() throws IOException {
         // path = inputDirectory.toPath().resolve(Block1TestSuite.PATH_CRYPTO_SETUP);
-        EncryptionParametersZpSubGroup ep = Deserializer.fromJson(path.toFile(), "encryptionParameters\\.json", EncryptionParametersZpSubGroup.class);
-        BigInteger p = TypeConverter.base64ToBigInteger(ep.getZpSubgroup().getP());
-        BigInteger q = TypeConverter.base64ToBigInteger(ep.getZpSubgroup().getQ());
+        EncryptionParameters ep = Deserializer.fromJson(path.resolve(Block3TestSuite.PATH_CRYPTO_SETUP).toFile(), "encryptionParameters\\.json", EncryptionParameters.class);
+        BigInteger p = TypeConverter.stringToBigInteger(ep.getP());
+        BigInteger q = TypeConverter.stringToBigInteger(ep.getQ());
         ZpGroupParams zpGroupParams = new ZpGroupParams(p, q);
-        return new ZpGroup(zpGroupParams, new ZpElement(TypeConverter.base64ToBigInteger(ep.getZpSubgroup().getG()), zpGroupParams));
+        return new ZpGroup(zpGroupParams, new ZpElement(TypeConverter.stringToBigInteger(ep.getG()), zpGroupParams));
     }
 }

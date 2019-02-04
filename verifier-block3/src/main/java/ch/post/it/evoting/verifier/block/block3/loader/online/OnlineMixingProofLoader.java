@@ -77,7 +77,7 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
         return new ElGamalPublicKey(pubKeys, zpGroup);
     }
 
-    public ElGamalPublicKey getDecryptionPublicKey(File pkJsonFile) throws IOException, DecoderException {
+    public ElGamalPublicKey getDecryptionPublicKey(File pkJsonFile, int nbKeys) throws IOException, DecoderException {
         ZpGroupParams params = new ZpGroupParams(onlineMixing.getVoteEncryptionKey().getZpSubgroup().getP(), onlineMixing.getVoteEncryptionKey().getZpSubgroup().getQ());
         ZpGroup zpGroup = new ZpGroup(params, new ZpElement(onlineMixing.getVoteEncryptionKey().getZpSubgroup().getG(), params));
         List<GroupElement> pubKeys = new ArrayList<>();
@@ -104,16 +104,11 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
         // In case the final key has only 1 element: Multiply all “elements” from CCN mixing public key modulo p
         // In case that the key has more than 1 element (n elements), the first n-1 elements of the CCN mixing public key can be used directly. For the last mixing public key elements, multiply the remaining elements together
 
-        boolean hasManyElements = onlineMixing.getVoteEncryptionKey().getElements().size() > 1;
-        if (hasManyElements) {
-            BigInteger first = elements.get(0);
-            BigInteger second = multiplyElements(elements.subList(1, elements.size()), params.getP());
-            pubKeys.add(new ZpElement(first, params));
-            pubKeys.add(new ZpElement(second, params));
-        } else {
-            BigInteger first = multiplyElements(elements, params.getP());
-            pubKeys.add(new ZpElement(first, params));
+        for (int i = 0; i < nbKeys - 1; i++) {
+            pubKeys.add(new ZpElement(elements.get(i), params));
         }
+        pubKeys.add(new ZpElement(multiplyElements(elements.subList(nbKeys - 1, elements.size()), params.getP()), params));
+
         return new ElGamalPublicKey(pubKeys, zpGroup);
     }
 
@@ -242,8 +237,8 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
 
     public CommitmentParams getCommitmentParams() throws IOException {
         final int N = getEncryptedBallots().getBallots().size();
-        int n = 0;
-        if (N != 0) {
+        int n = N;
+        if (N != 0 && N != 1) {
             final int m = getShuffleProof().getInitialMessage().length;
             n = N / m;
         }
