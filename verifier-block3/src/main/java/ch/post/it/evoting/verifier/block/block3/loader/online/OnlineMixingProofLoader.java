@@ -245,8 +245,8 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
 
     public CommitmentParams getCommitmentParams() throws IOException {
         final int N = getEncryptedBallots().getBallots().size();
-        int n = 0;
-        if (N != 0) {
+        int n = N;
+        if (N != 0 && N != 1) {
             final int m = getShuffleProof().getInitialMessage().length;
             n = N / m;
         }

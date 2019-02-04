@@ -71,11 +71,11 @@ public class DecryptVerifier {
 	}
 
 
-	public static int verify(Path rootPath) {
+	public static int verify(Path rootPath, Path ballotboxPath) {
         try {
-			EncryptionParametersLoader encryptionParametersLoader = new OfflineEncryptionParametersLoader(rootPath.resolve("0"));
-			PublicKeyLoader publicKeyLoader = new OfflinePublicKeyLoader(rootPath);
-			VoterWithProofLoader voterWithProofLoader = new OfflineVoterWithProofLoader(rootPath.resolve("0"));
+			EncryptionParametersLoader encryptionParametersLoader = new OfflineEncryptionParametersLoader(rootPath);
+			PublicKeyLoader publicKeyLoader = new OfflinePublicKeyLoader(ballotboxPath);
+			VoterWithProofLoader voterWithProofLoader = new OfflineVoterWithProofLoader(ballotboxPath);
             ZpGroup zPGroup = encryptionParametersLoader.getZpGroup();
             ElGamalPublicKey publicKey = publicKeyLoader.getPublicKey();
             ElGamalEncryptedBallots ballots = voterWithProofLoader.getEncyptedBallots();

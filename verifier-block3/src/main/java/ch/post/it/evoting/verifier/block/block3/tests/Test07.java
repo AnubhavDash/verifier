@@ -37,7 +37,7 @@ public class Test07 extends Test {
         try {
             File[] ballotBoxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES));
             for (File ballotBox : ballotBoxes) {
-                int verificationResultCode = DecryptVerifier.verify(ballotBox.toPath());
+                int verificationResultCode = DecryptVerifier.verify(inputDirectory.toPath(), ballotBox.toPath().resolve("0"));
                 if (verificationResultCode != 1 && verificationResultCode != -1) {
                     throw new TestFailureException("The verification failed", ballotBox.getName());
                 }

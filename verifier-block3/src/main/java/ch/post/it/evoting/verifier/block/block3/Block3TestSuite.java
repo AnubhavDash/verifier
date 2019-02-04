@@ -13,6 +13,7 @@ public class Block3TestSuite extends TestSuite {
     public static final Path PATH_CERTIFICATES = Paths.get("certificates/");
     public static final Path PATH_CC_MIXING_KEYS = Paths.get("certificates/cc_mixing_keys/");
     public static final Path PATH_ADMINBOARD = Paths.get("adminboard/");
+    public static final Path PATH_CRYPTO_SETUP = Paths.get("crypto_setup/");
 
     public Block3TestSuite() {
         super(Block3TestSuite.class.getPackage().getName() + ".tests");
