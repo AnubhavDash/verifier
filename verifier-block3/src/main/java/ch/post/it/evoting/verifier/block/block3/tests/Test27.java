@@ -36,7 +36,7 @@ public class Test27 extends Test {
         TestResult result = new TestResult(getTestDefinition());
         try {
             File[] ballotBoxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES));
-            File[] ccMixingKeys = PathHelper.getFiles(inputDirectory.toPath().resolve(Block3TestSuite.PATH_CC_MIXING_KEYS).toFile(), "cc.*_mixing_keys\\.json");
+            File[] ccMixingKeys = PathHelper.getFiles(inputDirectory.toPath().resolve(Block3TestSuite.PATH_CC_MIXING_KEYS).toFile(), "cc.*_mixing_.*key.*\\.json");
 
             for (File ballotBox : ballotBoxes) {
                 final File[] onlineMixings = ballotBox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
@@ -71,7 +71,7 @@ public class Test27 extends Test {
         matcher.matches();
         String id = matcher.group(1);
         return Arrays.stream(ccMixingKeys)
-                .filter(file -> file.getName().contains(String.format("cc%s_mixing_keys.json", id)))
+                .filter(file -> file.getName().contains(String.format("cc%s_mixing", id)))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("PublicKey file not found"));
     }
