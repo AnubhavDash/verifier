@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<eCH-0110:delivery xmlns:eCH-0110="http://www.ech.ch/xmlns/eCH-0110/3"
-                   xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
-                   xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3">
+<eCH-0110:delivery xmlns:eCH-0110="http://www.ech.ch/xmlns/eCH-0110/3" xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008/3" xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3">
     <eCH-0110:deliveryHeader>
         <eCH-0058:senderId>http://www.post.ch</eCH-0058:senderId>
         <eCH-0058:messageId>1549282656314</eCH-0058:messageId>
@@ -26,23 +24,19 @@
             <eCH-0155:contestDescription>
                 <eCH-0155:contestDescriptionInfo>
                     <eCH-0155:language>de</eCH-0155:language>
-                    <eCH-0155:contestDescription>Testdaten für Zertifizierung KPMG Feb 2019
-                    </eCH-0155:contestDescription>
+                    <eCH-0155:contestDescription>Testdaten für Zertifizierung KPMG Feb 2019</eCH-0155:contestDescription>
                 </eCH-0155:contestDescriptionInfo>
                 <eCH-0155:contestDescriptionInfo>
                     <eCH-0155:language>fr</eCH-0155:language>
-                    <eCH-0155:contestDescription>Testdaten für Zertifizierung KPMG Feb 2019
-                    </eCH-0155:contestDescription>
+                    <eCH-0155:contestDescription>Testdaten für Zertifizierung KPMG Feb 2019</eCH-0155:contestDescription>
                 </eCH-0155:contestDescriptionInfo>
                 <eCH-0155:contestDescriptionInfo>
                     <eCH-0155:language>it</eCH-0155:language>
-                    <eCH-0155:contestDescription>Testdaten für Zertifizierung KPMG Feb 2019
-                    </eCH-0155:contestDescription>
+                    <eCH-0155:contestDescription>Testdaten für Zertifizierung KPMG Feb 2019</eCH-0155:contestDescription>
                 </eCH-0155:contestDescriptionInfo>
                 <eCH-0155:contestDescriptionInfo>
                     <eCH-0155:language>rm</eCH-0155:language>
-                    <eCH-0155:contestDescription>Testdaten für Zertifizierung KPMG Feb 2019
-                    </eCH-0155:contestDescription>
+                    <eCH-0155:contestDescription>Testdaten für Zertifizierung KPMG Feb 2019</eCH-0155:contestDescription>
                 </eCH-0155:contestDescriptionInfo>
             </eCH-0155:contestDescription>
         </eCH-0110:contestInformation>
@@ -62,23 +56,19 @@
                     <eCH-0155:voteDescription>
                         <eCH-0155:voteDescriptionInfo>
                             <eCH-0155:language>de</eCH-0155:language>
-                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:voteDescription>
+                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit</eCH-0155:voteDescription>
                         </eCH-0155:voteDescriptionInfo>
                         <eCH-0155:voteDescriptionInfo>
                             <eCH-0155:language>fr</eCH-0155:language>
-                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:voteDescription>
+                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit</eCH-0155:voteDescription>
                         </eCH-0155:voteDescriptionInfo>
                         <eCH-0155:voteDescriptionInfo>
                             <eCH-0155:language>it</eCH-0155:language>
-                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:voteDescription>
+                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit</eCH-0155:voteDescription>
                         </eCH-0155:voteDescriptionInfo>
                         <eCH-0155:voteDescriptionInfo>
                             <eCH-0155:language>rm</eCH-0155:language>
-                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:voteDescription>
+                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit</eCH-0155:voteDescription>
                         </eCH-0155:voteDescriptionInfo>
                     </eCH-0155:voteDescription>
                 </eCH-0110:vote>
@@ -91,23 +81,19 @@
                     <eCH-0110:ballotDescription>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>de</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>fr</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>it</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>rm</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                     </eCH-0110:ballotDescription>
                     <eCH-0110:countOfReceivedBallotsTotal>
@@ -133,27 +119,19 @@
                         <eCH-0110:question>
                             <eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:language>de</eCH-0155:language>
-                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die
-                                    Ernährungssicherheit annehmen?
-                                </eCH-0155:ballotQuestion>
+                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?</eCH-0155:ballotQuestion>
                             </eCH-0155:ballotQuestionInfo>
                             <eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:language>fr</eCH-0155:language>
-                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die
-                                    Ernährungssicherheit annehmen?
-                                </eCH-0155:ballotQuestion>
+                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?</eCH-0155:ballotQuestion>
                             </eCH-0155:ballotQuestionInfo>
                             <eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:language>it</eCH-0155:language>
-                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die
-                                    Ernährungssicherheit annehmen?
-                                </eCH-0155:ballotQuestion>
+                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?</eCH-0155:ballotQuestion>
                             </eCH-0155:ballotQuestionInfo>
                             <eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:language>rm</eCH-0155:language>
-                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die
-                                    Ernährungssicherheit annehmen?
-                                </eCH-0155:ballotQuestion>
+                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?</eCH-0155:ballotQuestion>
                             </eCH-0155:ballotQuestionInfo>
                         </eCH-0110:question>
                         <eCH-0110:countOfAnswerYes>
@@ -203,23 +181,19 @@
                     <eCH-0110:ballotDescription>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>de</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>fr</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>it</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>rm</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                     </eCH-0110:ballotDescription>
                     <eCH-0110:countOfReceivedBallotsTotal>
@@ -239,35 +213,26 @@
                     </eCH-0110:countOfUnaccountedInvalidBallots>
                     <eCH-0110:variantBallot>
                         <eCH-0110:questionInformation>
-                            <eCH-0110:questionIdentification>1045776773-EVotingAbstimmungsfrage
-                            </eCH-0110:questionIdentification>
+                            <eCH-0110:questionIdentification>1045776773-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
                             <eCH-0110:answerType>
                                 <eCH-0155:answerType>2</eCH-0155:answerType>
                             </eCH-0110:answerType>
                             <eCH-0110:question>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>de</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende"
-                                        annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende" annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>fr</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende"
-                                        annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende" annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>it</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende"
-                                        annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende" annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>rm</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende"
-                                        annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende" annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                             </eCH-0110:question>
                             <eCH-0110:countOfAnswerYes>
@@ -284,35 +249,26 @@
                             </eCH-0110:countOfAnswerEmpty>
                         </eCH-0110:questionInformation>
                         <eCH-0110:questionInformation>
-                            <eCH-0110:questionIdentification>1045776773-EVotingAbstiFrageGegenvorschlag
-                            </eCH-0110:questionIdentification>
+                            <eCH-0110:questionIdentification>1045776773-EVotingAbstiFrageGegenvorschlag</eCH-0110:questionIdentification>
                             <eCH-0110:answerType>
                                 <eCH-0155:answerType>2</eCH-0155:answerType>
                             </eCH-0110:answerType>
                             <eCH-0110:question>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>de</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des
-                                        V. Nachtrags zum Energiegesetz annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>fr</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des
-                                        V. Nachtrags zum Energiegesetz annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>it</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des
-                                        V. Nachtrags zum Energiegesetz annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>rm</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des
-                                        V. Nachtrags zum Energiegesetz annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                             </eCH-0110:question>
                             <eCH-0110:countOfAnswerYes>
@@ -336,27 +292,19 @@
                             <eCH-0110:tieBreakQuestion>
                                 <eCH-0155:tieBreakQuestionInfo>
                                     <eCH-0155:language>de</eCH-0155:language>
-                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag
-                                        den Vorzug?
-                                    </eCH-0155:tieBreakQuestion>
+                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?</eCH-0155:tieBreakQuestion>
                                 </eCH-0155:tieBreakQuestionInfo>
                                 <eCH-0155:tieBreakQuestionInfo>
                                     <eCH-0155:language>fr</eCH-0155:language>
-                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag
-                                        den Vorzug?
-                                    </eCH-0155:tieBreakQuestion>
+                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?</eCH-0155:tieBreakQuestion>
                                 </eCH-0155:tieBreakQuestionInfo>
                                 <eCH-0155:tieBreakQuestionInfo>
                                     <eCH-0155:language>it</eCH-0155:language>
-                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag
-                                        den Vorzug?
-                                    </eCH-0155:tieBreakQuestion>
+                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?</eCH-0155:tieBreakQuestion>
                                 </eCH-0155:tieBreakQuestionInfo>
                                 <eCH-0155:tieBreakQuestionInfo>
                                     <eCH-0155:language>rm</eCH-0155:language>
-                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag
-                                        den Vorzug?
-                                    </eCH-0155:tieBreakQuestion>
+                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?</eCH-0155:tieBreakQuestion>
                                 </eCH-0155:tieBreakQuestionInfo>
                             </eCH-0110:tieBreakQuestion>
                             <eCH-0110:countOfAnswerInvalid>
@@ -366,15 +314,13 @@
                                 <eCH-0110:total>1</eCH-0110:total>
                             </eCH-0110:countOfAnswerEmpty>
                             <eCH-0110:countInFavourOf>
-                                <eCH-0110:questionIdentification>1045776773-EVotingAbstimmungsfrage
-                                </eCH-0110:questionIdentification>
+                                <eCH-0110:questionIdentification>1045776773-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
                                 <eCH-0110:countOfValidAnswers>
                                     <eCH-0110:total>1</eCH-0110:total>
                                 </eCH-0110:countOfValidAnswers>
                             </eCH-0110:countInFavourOf>
                             <eCH-0110:countInFavourOf>
-                                <eCH-0110:questionIdentification>1045776773-EVotingAbstiFrageGegenvorschlag
-                                </eCH-0110:questionIdentification>
+                                <eCH-0110:questionIdentification>1045776773-EVotingAbstiFrageGegenvorschlag</eCH-0110:questionIdentification>
                                 <eCH-0110:countOfValidAnswers>
                                     <eCH-0110:total>1</eCH-0110:total>
                                 </eCH-0110:countOfValidAnswers>
@@ -400,23 +346,19 @@
                     <eCH-0155:voteDescription>
                         <eCH-0155:voteDescriptionInfo>
                             <eCH-0155:language>de</eCH-0155:language>
-                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:voteDescription>
+                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit</eCH-0155:voteDescription>
                         </eCH-0155:voteDescriptionInfo>
                         <eCH-0155:voteDescriptionInfo>
                             <eCH-0155:language>fr</eCH-0155:language>
-                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:voteDescription>
+                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit</eCH-0155:voteDescription>
                         </eCH-0155:voteDescriptionInfo>
                         <eCH-0155:voteDescriptionInfo>
                             <eCH-0155:language>it</eCH-0155:language>
-                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:voteDescription>
+                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit</eCH-0155:voteDescription>
                         </eCH-0155:voteDescriptionInfo>
                         <eCH-0155:voteDescriptionInfo>
                             <eCH-0155:language>rm</eCH-0155:language>
-                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:voteDescription>
+                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit</eCH-0155:voteDescription>
                         </eCH-0155:voteDescriptionInfo>
                     </eCH-0155:voteDescription>
                 </eCH-0110:vote>
@@ -429,23 +371,19 @@
                     <eCH-0110:ballotDescription>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>de</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>fr</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>it</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>rm</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                     </eCH-0110:ballotDescription>
                     <eCH-0110:countOfReceivedBallotsTotal>
@@ -471,27 +409,19 @@
                         <eCH-0110:question>
                             <eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:language>de</eCH-0155:language>
-                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die
-                                    Ernährungssicherheit annehmen?
-                                </eCH-0155:ballotQuestion>
+                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?</eCH-0155:ballotQuestion>
                             </eCH-0155:ballotQuestionInfo>
                             <eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:language>fr</eCH-0155:language>
-                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die
-                                    Ernährungssicherheit annehmen?
-                                </eCH-0155:ballotQuestion>
+                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?</eCH-0155:ballotQuestion>
                             </eCH-0155:ballotQuestionInfo>
                             <eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:language>it</eCH-0155:language>
-                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die
-                                    Ernährungssicherheit annehmen?
-                                </eCH-0155:ballotQuestion>
+                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?</eCH-0155:ballotQuestion>
                             </eCH-0155:ballotQuestionInfo>
                             <eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:language>rm</eCH-0155:language>
-                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die
-                                    Ernährungssicherheit annehmen?
-                                </eCH-0155:ballotQuestion>
+                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?</eCH-0155:ballotQuestion>
                             </eCH-0155:ballotQuestionInfo>
                         </eCH-0110:question>
                         <eCH-0110:countOfAnswerYes>
@@ -541,23 +471,19 @@
                     <eCH-0110:ballotDescription>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>de</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>fr</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>it</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>rm</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                     </eCH-0110:ballotDescription>
                     <eCH-0110:countOfReceivedBallotsTotal>
@@ -577,35 +503,26 @@
                     </eCH-0110:countOfUnaccountedInvalidBallots>
                     <eCH-0110:variantBallot>
                         <eCH-0110:questionInformation>
-                            <eCH-0110:questionIdentification>1045776773-EVotingAbstimmungsfrage
-                            </eCH-0110:questionIdentification>
+                            <eCH-0110:questionIdentification>1045776773-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
                             <eCH-0110:answerType>
                                 <eCH-0155:answerType>2</eCH-0155:answerType>
                             </eCH-0110:answerType>
                             <eCH-0110:question>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>de</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende"
-                                        annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende" annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>fr</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende"
-                                        annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende" annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>it</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende"
-                                        annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende" annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>rm</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende"
-                                        annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende" annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                             </eCH-0110:question>
                             <eCH-0110:countOfAnswerYes>
@@ -622,35 +539,26 @@
                             </eCH-0110:countOfAnswerEmpty>
                         </eCH-0110:questionInformation>
                         <eCH-0110:questionInformation>
-                            <eCH-0110:questionIdentification>1045776773-EVotingAbstiFrageGegenvorschlag
-                            </eCH-0110:questionIdentification>
+                            <eCH-0110:questionIdentification>1045776773-EVotingAbstiFrageGegenvorschlag</eCH-0110:questionIdentification>
                             <eCH-0110:answerType>
                                 <eCH-0155:answerType>2</eCH-0155:answerType>
                             </eCH-0110:answerType>
                             <eCH-0110:question>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>de</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des
-                                        V. Nachtrags zum Energiegesetz annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>fr</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des
-                                        V. Nachtrags zum Energiegesetz annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>it</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des
-                                        V. Nachtrags zum Energiegesetz annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>rm</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des
-                                        V. Nachtrags zum Energiegesetz annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                             </eCH-0110:question>
                             <eCH-0110:countOfAnswerYes>
@@ -674,27 +582,19 @@
                             <eCH-0110:tieBreakQuestion>
                                 <eCH-0155:tieBreakQuestionInfo>
                                     <eCH-0155:language>de</eCH-0155:language>
-                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag
-                                        den Vorzug?
-                                    </eCH-0155:tieBreakQuestion>
+                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?</eCH-0155:tieBreakQuestion>
                                 </eCH-0155:tieBreakQuestionInfo>
                                 <eCH-0155:tieBreakQuestionInfo>
                                     <eCH-0155:language>fr</eCH-0155:language>
-                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag
-                                        den Vorzug?
-                                    </eCH-0155:tieBreakQuestion>
+                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?</eCH-0155:tieBreakQuestion>
                                 </eCH-0155:tieBreakQuestionInfo>
                                 <eCH-0155:tieBreakQuestionInfo>
                                     <eCH-0155:language>it</eCH-0155:language>
-                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag
-                                        den Vorzug?
-                                    </eCH-0155:tieBreakQuestion>
+                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?</eCH-0155:tieBreakQuestion>
                                 </eCH-0155:tieBreakQuestionInfo>
                                 <eCH-0155:tieBreakQuestionInfo>
                                     <eCH-0155:language>rm</eCH-0155:language>
-                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag
-                                        den Vorzug?
-                                    </eCH-0155:tieBreakQuestion>
+                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?</eCH-0155:tieBreakQuestion>
                                 </eCH-0155:tieBreakQuestionInfo>
                             </eCH-0110:tieBreakQuestion>
                             <eCH-0110:countOfAnswerInvalid>
@@ -704,15 +604,13 @@
                                 <eCH-0110:total>0</eCH-0110:total>
                             </eCH-0110:countOfAnswerEmpty>
                             <eCH-0110:countInFavourOf>
-                                <eCH-0110:questionIdentification>1045776773-EVotingAbstimmungsfrage
-                                </eCH-0110:questionIdentification>
+                                <eCH-0110:questionIdentification>1045776773-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
                                 <eCH-0110:countOfValidAnswers>
                                     <eCH-0110:total>0</eCH-0110:total>
                                 </eCH-0110:countOfValidAnswers>
                             </eCH-0110:countInFavourOf>
                             <eCH-0110:countInFavourOf>
-                                <eCH-0110:questionIdentification>1045776773-EVotingAbstiFrageGegenvorschlag
-                                </eCH-0110:questionIdentification>
+                                <eCH-0110:questionIdentification>1045776773-EVotingAbstiFrageGegenvorschlag</eCH-0110:questionIdentification>
                                 <eCH-0110:countOfValidAnswers>
                                     <eCH-0110:total>0</eCH-0110:total>
                                 </eCH-0110:countOfValidAnswers>
@@ -738,23 +636,19 @@
                     <eCH-0155:voteDescription>
                         <eCH-0155:voteDescriptionInfo>
                             <eCH-0155:language>de</eCH-0155:language>
-                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:voteDescription>
+                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit</eCH-0155:voteDescription>
                         </eCH-0155:voteDescriptionInfo>
                         <eCH-0155:voteDescriptionInfo>
                             <eCH-0155:language>fr</eCH-0155:language>
-                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:voteDescription>
+                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit</eCH-0155:voteDescription>
                         </eCH-0155:voteDescriptionInfo>
                         <eCH-0155:voteDescriptionInfo>
                             <eCH-0155:language>it</eCH-0155:language>
-                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:voteDescription>
+                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit</eCH-0155:voteDescription>
                         </eCH-0155:voteDescriptionInfo>
                         <eCH-0155:voteDescriptionInfo>
                             <eCH-0155:language>rm</eCH-0155:language>
-                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:voteDescription>
+                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit</eCH-0155:voteDescription>
                         </eCH-0155:voteDescriptionInfo>
                     </eCH-0155:voteDescription>
                 </eCH-0110:vote>
@@ -767,23 +661,19 @@
                     <eCH-0110:ballotDescription>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>de</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>fr</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>it</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>rm</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                     </eCH-0110:ballotDescription>
                     <eCH-0110:countOfReceivedBallotsTotal>
@@ -809,27 +699,19 @@
                         <eCH-0110:question>
                             <eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:language>de</eCH-0155:language>
-                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die
-                                    Ernährungssicherheit annehmen?
-                                </eCH-0155:ballotQuestion>
+                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?</eCH-0155:ballotQuestion>
                             </eCH-0155:ballotQuestionInfo>
                             <eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:language>fr</eCH-0155:language>
-                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die
-                                    Ernährungssicherheit annehmen?
-                                </eCH-0155:ballotQuestion>
+                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?</eCH-0155:ballotQuestion>
                             </eCH-0155:ballotQuestionInfo>
                             <eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:language>it</eCH-0155:language>
-                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die
-                                    Ernährungssicherheit annehmen?
-                                </eCH-0155:ballotQuestion>
+                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?</eCH-0155:ballotQuestion>
                             </eCH-0155:ballotQuestionInfo>
                             <eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:language>rm</eCH-0155:language>
-                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die
-                                    Ernährungssicherheit annehmen?
-                                </eCH-0155:ballotQuestion>
+                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?</eCH-0155:ballotQuestion>
                             </eCH-0155:ballotQuestionInfo>
                         </eCH-0110:question>
                         <eCH-0110:countOfAnswerYes>
@@ -879,23 +761,19 @@
                     <eCH-0110:ballotDescription>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>de</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>fr</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>it</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>rm</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                     </eCH-0110:ballotDescription>
                     <eCH-0110:countOfReceivedBallotsTotal>
@@ -915,35 +793,26 @@
                     </eCH-0110:countOfUnaccountedInvalidBallots>
                     <eCH-0110:variantBallot>
                         <eCH-0110:questionInformation>
-                            <eCH-0110:questionIdentification>1045776773-EVotingAbstimmungsfrage
-                            </eCH-0110:questionIdentification>
+                            <eCH-0110:questionIdentification>1045776773-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
                             <eCH-0110:answerType>
                                 <eCH-0155:answerType>2</eCH-0155:answerType>
                             </eCH-0110:answerType>
                             <eCH-0110:question>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>de</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende"
-                                        annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende" annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>fr</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende"
-                                        annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende" annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>it</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende"
-                                        annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende" annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>rm</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende"
-                                        annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende" annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                             </eCH-0110:question>
                             <eCH-0110:countOfAnswerYes>
@@ -960,35 +829,26 @@
                             </eCH-0110:countOfAnswerEmpty>
                         </eCH-0110:questionInformation>
                         <eCH-0110:questionInformation>
-                            <eCH-0110:questionIdentification>1045776773-EVotingAbstiFrageGegenvorschlag
-                            </eCH-0110:questionIdentification>
+                            <eCH-0110:questionIdentification>1045776773-EVotingAbstiFrageGegenvorschlag</eCH-0110:questionIdentification>
                             <eCH-0110:answerType>
                                 <eCH-0155:answerType>2</eCH-0155:answerType>
                             </eCH-0110:answerType>
                             <eCH-0110:question>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>de</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des
-                                        V. Nachtrags zum Energiegesetz annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>fr</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des
-                                        V. Nachtrags zum Energiegesetz annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>it</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des
-                                        V. Nachtrags zum Energiegesetz annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>rm</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des
-                                        V. Nachtrags zum Energiegesetz annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                             </eCH-0110:question>
                             <eCH-0110:countOfAnswerYes>
@@ -1012,27 +872,19 @@
                             <eCH-0110:tieBreakQuestion>
                                 <eCH-0155:tieBreakQuestionInfo>
                                     <eCH-0155:language>de</eCH-0155:language>
-                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag
-                                        den Vorzug?
-                                    </eCH-0155:tieBreakQuestion>
+                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?</eCH-0155:tieBreakQuestion>
                                 </eCH-0155:tieBreakQuestionInfo>
                                 <eCH-0155:tieBreakQuestionInfo>
                                     <eCH-0155:language>fr</eCH-0155:language>
-                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag
-                                        den Vorzug?
-                                    </eCH-0155:tieBreakQuestion>
+                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?</eCH-0155:tieBreakQuestion>
                                 </eCH-0155:tieBreakQuestionInfo>
                                 <eCH-0155:tieBreakQuestionInfo>
                                     <eCH-0155:language>it</eCH-0155:language>
-                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag
-                                        den Vorzug?
-                                    </eCH-0155:tieBreakQuestion>
+                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?</eCH-0155:tieBreakQuestion>
                                 </eCH-0155:tieBreakQuestionInfo>
                                 <eCH-0155:tieBreakQuestionInfo>
                                     <eCH-0155:language>rm</eCH-0155:language>
-                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag
-                                        den Vorzug?
-                                    </eCH-0155:tieBreakQuestion>
+                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?</eCH-0155:tieBreakQuestion>
                                 </eCH-0155:tieBreakQuestionInfo>
                             </eCH-0110:tieBreakQuestion>
                             <eCH-0110:countOfAnswerInvalid>
@@ -1042,15 +894,13 @@
                                 <eCH-0110:total>0</eCH-0110:total>
                             </eCH-0110:countOfAnswerEmpty>
                             <eCH-0110:countInFavourOf>
-                                <eCH-0110:questionIdentification>1045776773-EVotingAbstimmungsfrage
-                                </eCH-0110:questionIdentification>
+                                <eCH-0110:questionIdentification>1045776773-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
                                 <eCH-0110:countOfValidAnswers>
                                     <eCH-0110:total>1</eCH-0110:total>
                                 </eCH-0110:countOfValidAnswers>
                             </eCH-0110:countInFavourOf>
                             <eCH-0110:countInFavourOf>
-                                <eCH-0110:questionIdentification>1045776773-EVotingAbstiFrageGegenvorschlag
-                                </eCH-0110:questionIdentification>
+                                <eCH-0110:questionIdentification>1045776773-EVotingAbstiFrageGegenvorschlag</eCH-0110:questionIdentification>
                                 <eCH-0110:countOfValidAnswers>
                                     <eCH-0110:total>1</eCH-0110:total>
                                 </eCH-0110:countOfValidAnswers>
@@ -1076,23 +926,19 @@
                     <eCH-0155:voteDescription>
                         <eCH-0155:voteDescriptionInfo>
                             <eCH-0155:language>de</eCH-0155:language>
-                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:voteDescription>
+                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit</eCH-0155:voteDescription>
                         </eCH-0155:voteDescriptionInfo>
                         <eCH-0155:voteDescriptionInfo>
                             <eCH-0155:language>fr</eCH-0155:language>
-                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:voteDescription>
+                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit</eCH-0155:voteDescription>
                         </eCH-0155:voteDescriptionInfo>
                         <eCH-0155:voteDescriptionInfo>
                             <eCH-0155:language>it</eCH-0155:language>
-                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:voteDescription>
+                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit</eCH-0155:voteDescription>
                         </eCH-0155:voteDescriptionInfo>
                         <eCH-0155:voteDescriptionInfo>
                             <eCH-0155:language>rm</eCH-0155:language>
-                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:voteDescription>
+                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit</eCH-0155:voteDescription>
                         </eCH-0155:voteDescriptionInfo>
                     </eCH-0155:voteDescription>
                 </eCH-0110:vote>
@@ -1105,23 +951,19 @@
                     <eCH-0110:ballotDescription>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>de</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>fr</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>it</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>rm</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                     </eCH-0110:ballotDescription>
                     <eCH-0110:countOfReceivedBallotsTotal>
@@ -1147,27 +989,19 @@
                         <eCH-0110:question>
                             <eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:language>de</eCH-0155:language>
-                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die
-                                    Ernährungssicherheit annehmen?
-                                </eCH-0155:ballotQuestion>
+                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?</eCH-0155:ballotQuestion>
                             </eCH-0155:ballotQuestionInfo>
                             <eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:language>fr</eCH-0155:language>
-                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die
-                                    Ernährungssicherheit annehmen?
-                                </eCH-0155:ballotQuestion>
+                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?</eCH-0155:ballotQuestion>
                             </eCH-0155:ballotQuestionInfo>
                             <eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:language>it</eCH-0155:language>
-                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die
-                                    Ernährungssicherheit annehmen?
-                                </eCH-0155:ballotQuestion>
+                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?</eCH-0155:ballotQuestion>
                             </eCH-0155:ballotQuestionInfo>
                             <eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:language>rm</eCH-0155:language>
-                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die
-                                    Ernährungssicherheit annehmen?
-                                </eCH-0155:ballotQuestion>
+                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?</eCH-0155:ballotQuestion>
                             </eCH-0155:ballotQuestionInfo>
                         </eCH-0110:question>
                         <eCH-0110:countOfAnswerYes>
@@ -1217,23 +1051,19 @@
                     <eCH-0110:ballotDescription>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>de</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>fr</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>it</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>rm</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                     </eCH-0110:ballotDescription>
                     <eCH-0110:countOfReceivedBallotsTotal>
@@ -1253,35 +1083,26 @@
                     </eCH-0110:countOfUnaccountedInvalidBallots>
                     <eCH-0110:variantBallot>
                         <eCH-0110:questionInformation>
-                            <eCH-0110:questionIdentification>1045776773-EVotingAbstimmungsfrage
-                            </eCH-0110:questionIdentification>
+                            <eCH-0110:questionIdentification>1045776773-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
                             <eCH-0110:answerType>
                                 <eCH-0155:answerType>2</eCH-0155:answerType>
                             </eCH-0110:answerType>
                             <eCH-0110:question>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>de</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende"
-                                        annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende" annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>fr</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende"
-                                        annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende" annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>it</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende"
-                                        annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende" annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>rm</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende"
-                                        annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende" annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                             </eCH-0110:question>
                             <eCH-0110:countOfAnswerYes>
@@ -1298,35 +1119,26 @@
                             </eCH-0110:countOfAnswerEmpty>
                         </eCH-0110:questionInformation>
                         <eCH-0110:questionInformation>
-                            <eCH-0110:questionIdentification>1045776773-EVotingAbstiFrageGegenvorschlag
-                            </eCH-0110:questionIdentification>
+                            <eCH-0110:questionIdentification>1045776773-EVotingAbstiFrageGegenvorschlag</eCH-0110:questionIdentification>
                             <eCH-0110:answerType>
                                 <eCH-0155:answerType>2</eCH-0155:answerType>
                             </eCH-0110:answerType>
                             <eCH-0110:question>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>de</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des
-                                        V. Nachtrags zum Energiegesetz annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>fr</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des
-                                        V. Nachtrags zum Energiegesetz annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>it</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des
-                                        V. Nachtrags zum Energiegesetz annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>rm</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des
-                                        V. Nachtrags zum Energiegesetz annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                             </eCH-0110:question>
                             <eCH-0110:countOfAnswerYes>
@@ -1350,27 +1162,19 @@
                             <eCH-0110:tieBreakQuestion>
                                 <eCH-0155:tieBreakQuestionInfo>
                                     <eCH-0155:language>de</eCH-0155:language>
-                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag
-                                        den Vorzug?
-                                    </eCH-0155:tieBreakQuestion>
+                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?</eCH-0155:tieBreakQuestion>
                                 </eCH-0155:tieBreakQuestionInfo>
                                 <eCH-0155:tieBreakQuestionInfo>
                                     <eCH-0155:language>fr</eCH-0155:language>
-                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag
-                                        den Vorzug?
-                                    </eCH-0155:tieBreakQuestion>
+                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?</eCH-0155:tieBreakQuestion>
                                 </eCH-0155:tieBreakQuestionInfo>
                                 <eCH-0155:tieBreakQuestionInfo>
                                     <eCH-0155:language>it</eCH-0155:language>
-                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag
-                                        den Vorzug?
-                                    </eCH-0155:tieBreakQuestion>
+                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?</eCH-0155:tieBreakQuestion>
                                 </eCH-0155:tieBreakQuestionInfo>
                                 <eCH-0155:tieBreakQuestionInfo>
                                     <eCH-0155:language>rm</eCH-0155:language>
-                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag
-                                        den Vorzug?
-                                    </eCH-0155:tieBreakQuestion>
+                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?</eCH-0155:tieBreakQuestion>
                                 </eCH-0155:tieBreakQuestionInfo>
                             </eCH-0110:tieBreakQuestion>
                             <eCH-0110:countOfAnswerInvalid>
@@ -1380,15 +1184,13 @@
                                 <eCH-0110:total>0</eCH-0110:total>
                             </eCH-0110:countOfAnswerEmpty>
                             <eCH-0110:countInFavourOf>
-                                <eCH-0110:questionIdentification>1045776773-EVotingAbstimmungsfrage
-                                </eCH-0110:questionIdentification>
+                                <eCH-0110:questionIdentification>1045776773-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
                                 <eCH-0110:countOfValidAnswers>
                                     <eCH-0110:total>0</eCH-0110:total>
                                 </eCH-0110:countOfValidAnswers>
                             </eCH-0110:countInFavourOf>
                             <eCH-0110:countInFavourOf>
-                                <eCH-0110:questionIdentification>1045776773-EVotingAbstiFrageGegenvorschlag
-                                </eCH-0110:questionIdentification>
+                                <eCH-0110:questionIdentification>1045776773-EVotingAbstiFrageGegenvorschlag</eCH-0110:questionIdentification>
                                 <eCH-0110:countOfValidAnswers>
                                     <eCH-0110:total>0</eCH-0110:total>
                                 </eCH-0110:countOfValidAnswers>
@@ -1414,23 +1216,19 @@
                     <eCH-0155:voteDescription>
                         <eCH-0155:voteDescriptionInfo>
                             <eCH-0155:language>de</eCH-0155:language>
-                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:voteDescription>
+                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit</eCH-0155:voteDescription>
                         </eCH-0155:voteDescriptionInfo>
                         <eCH-0155:voteDescriptionInfo>
                             <eCH-0155:language>fr</eCH-0155:language>
-                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:voteDescription>
+                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit</eCH-0155:voteDescription>
                         </eCH-0155:voteDescriptionInfo>
                         <eCH-0155:voteDescriptionInfo>
                             <eCH-0155:language>it</eCH-0155:language>
-                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:voteDescription>
+                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit</eCH-0155:voteDescription>
                         </eCH-0155:voteDescriptionInfo>
                         <eCH-0155:voteDescriptionInfo>
                             <eCH-0155:language>rm</eCH-0155:language>
-                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:voteDescription>
+                            <eCH-0155:voteDescription>Bundesbeschluss über Ernährungssicherheit</eCH-0155:voteDescription>
                         </eCH-0155:voteDescriptionInfo>
                     </eCH-0155:voteDescription>
                 </eCH-0110:vote>
@@ -1443,23 +1241,19 @@
                     <eCH-0110:ballotDescription>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>de</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>fr</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>it</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>rm</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Bundesbeschluss über Ernährungssicherheit</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                     </eCH-0110:ballotDescription>
                     <eCH-0110:countOfReceivedBallotsTotal>
@@ -1485,27 +1279,19 @@
                         <eCH-0110:question>
                             <eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:language>de</eCH-0155:language>
-                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die
-                                    Ernährungssicherheit annehmen?
-                                </eCH-0155:ballotQuestion>
+                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?</eCH-0155:ballotQuestion>
                             </eCH-0155:ballotQuestionInfo>
                             <eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:language>fr</eCH-0155:language>
-                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die
-                                    Ernährungssicherheit annehmen?
-                                </eCH-0155:ballotQuestion>
+                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?</eCH-0155:ballotQuestion>
                             </eCH-0155:ballotQuestionInfo>
                             <eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:language>it</eCH-0155:language>
-                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die
-                                    Ernährungssicherheit annehmen?
-                                </eCH-0155:ballotQuestion>
+                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?</eCH-0155:ballotQuestion>
                             </eCH-0155:ballotQuestionInfo>
                             <eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:language>rm</eCH-0155:language>
-                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die
-                                    Ernährungssicherheit annehmen?
-                                </eCH-0155:ballotQuestion>
+                                <eCH-0155:ballotQuestion>Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?</eCH-0155:ballotQuestion>
                             </eCH-0155:ballotQuestionInfo>
                         </eCH-0110:question>
                         <eCH-0110:countOfAnswerYes>
@@ -1555,23 +1341,19 @@
                     <eCH-0110:ballotDescription>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>de</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>fr</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>it</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                         <eCH-0155:ballotDescriptionInfo>
                             <eCH-0155:language>rm</eCH-0155:language>
-                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"
-                            </eCH-0155:ballotDescriptionLong>
+                            <eCH-0155:ballotDescriptionLong>Einheitsinitiative "Energiewende"</eCH-0155:ballotDescriptionLong>
                         </eCH-0155:ballotDescriptionInfo>
                     </eCH-0110:ballotDescription>
                     <eCH-0110:countOfReceivedBallotsTotal>
@@ -1591,35 +1373,26 @@
                     </eCH-0110:countOfUnaccountedInvalidBallots>
                     <eCH-0110:variantBallot>
                         <eCH-0110:questionInformation>
-                            <eCH-0110:questionIdentification>1045776773-EVotingAbstimmungsfrage
-                            </eCH-0110:questionIdentification>
+                            <eCH-0110:questionIdentification>1045776773-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
                             <eCH-0110:answerType>
                                 <eCH-0155:answerType>2</eCH-0155:answerType>
                             </eCH-0110:answerType>
                             <eCH-0110:question>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>de</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende"
-                                        annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende" annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>fr</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende"
-                                        annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende" annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>it</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende"
-                                        annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende" annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>rm</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende"
-                                        annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie die Einheitsinitiative "Energiewende" annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                             </eCH-0110:question>
                             <eCH-0110:countOfAnswerYes>
@@ -1636,35 +1409,26 @@
                             </eCH-0110:countOfAnswerEmpty>
                         </eCH-0110:questionInformation>
                         <eCH-0110:questionInformation>
-                            <eCH-0110:questionIdentification>1045776773-EVotingAbstiFrageGegenvorschlag
-                            </eCH-0110:questionIdentification>
+                            <eCH-0110:questionIdentification>1045776773-EVotingAbstiFrageGegenvorschlag</eCH-0110:questionIdentification>
                             <eCH-0110:answerType>
                                 <eCH-0155:answerType>2</eCH-0155:answerType>
                             </eCH-0110:answerType>
                             <eCH-0110:question>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>de</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des
-                                        V. Nachtrags zum Energiegesetz annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>fr</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des
-                                        V. Nachtrags zum Energiegesetz annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>it</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des
-                                        V. Nachtrags zum Energiegesetz annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                                 <eCH-0155:ballotQuestionInfo>
                                     <eCH-0155:language>rm</eCH-0155:language>
-                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des
-                                        V. Nachtrags zum Energiegesetz annehmen?
-                                    </eCH-0155:ballotQuestion>
+                                    <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?</eCH-0155:ballotQuestion>
                                 </eCH-0155:ballotQuestionInfo>
                             </eCH-0110:question>
                             <eCH-0110:countOfAnswerYes>
@@ -1688,27 +1452,19 @@
                             <eCH-0110:tieBreakQuestion>
                                 <eCH-0155:tieBreakQuestionInfo>
                                     <eCH-0155:language>de</eCH-0155:language>
-                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag
-                                        den Vorzug?
-                                    </eCH-0155:tieBreakQuestion>
+                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?</eCH-0155:tieBreakQuestion>
                                 </eCH-0155:tieBreakQuestionInfo>
                                 <eCH-0155:tieBreakQuestionInfo>
                                     <eCH-0155:language>fr</eCH-0155:language>
-                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag
-                                        den Vorzug?
-                                    </eCH-0155:tieBreakQuestion>
+                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?</eCH-0155:tieBreakQuestion>
                                 </eCH-0155:tieBreakQuestionInfo>
                                 <eCH-0155:tieBreakQuestionInfo>
                                     <eCH-0155:language>it</eCH-0155:language>
-                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag
-                                        den Vorzug?
-                                    </eCH-0155:tieBreakQuestion>
+                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?</eCH-0155:tieBreakQuestion>
                                 </eCH-0155:tieBreakQuestionInfo>
                                 <eCH-0155:tieBreakQuestionInfo>
                                     <eCH-0155:language>rm</eCH-0155:language>
-                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag
-                                        den Vorzug?
-                                    </eCH-0155:tieBreakQuestion>
+                                    <eCH-0155:tieBreakQuestion>Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?</eCH-0155:tieBreakQuestion>
                                 </eCH-0155:tieBreakQuestionInfo>
                             </eCH-0110:tieBreakQuestion>
                             <eCH-0110:countOfAnswerInvalid>
@@ -1718,15 +1474,13 @@
                                 <eCH-0110:total>1</eCH-0110:total>
                             </eCH-0110:countOfAnswerEmpty>
                             <eCH-0110:countInFavourOf>
-                                <eCH-0110:questionIdentification>1045776773-EVotingAbstimmungsfrage
-                                </eCH-0110:questionIdentification>
+                                <eCH-0110:questionIdentification>1045776773-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
                                 <eCH-0110:countOfValidAnswers>
                                     <eCH-0110:total>0</eCH-0110:total>
                                 </eCH-0110:countOfValidAnswers>
                             </eCH-0110:countInFavourOf>
                             <eCH-0110:countInFavourOf>
-                                <eCH-0110:questionIdentification>1045776773-EVotingAbstiFrageGegenvorschlag
-                                </eCH-0110:questionIdentification>
+                                <eCH-0110:questionIdentification>1045776773-EVotingAbstiFrageGegenvorschlag</eCH-0110:questionIdentification>
                                 <eCH-0110:countOfValidAnswers>
                                     <eCH-0110:total>0</eCH-0110:total>
                                 </eCH-0110:countOfValidAnswers>

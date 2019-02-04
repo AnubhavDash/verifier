@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<eCH-0045:voterDelivery xmlns:eCH-0045="http://www.ech.ch/xmlns/eCH-0045/3"
-                        xmlns:eCH-0007="http://www.ech.ch/xmlns/eCH-0007/5"
-                        xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008/3"
-                        xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/5"
-                        xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/3"
-                        xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4"
-                        xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/1"
-                        xmlns:eCH-CCM="www.countingCircleMapping.ch">
+<eCH-0045:voterDelivery xmlns:eCH-0045="http://www.ech.ch/xmlns/eCH-0045/3" xmlns:eCH-0007="http://www.ech.ch/xmlns/eCH-0007/5" xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008/3" xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/5" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/3" xmlns:eCH-0046="http://www.ech.ch/xmlns/eCH-0046/2" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/1" xmlns:eCH-CCM="www.countingCircleMapping.ch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <eCH-0045:deliveryHeader>
         <eCH-0058:senderId>2-SP-14</eCH-0058:senderId>
         <eCH-0058:recipientId>0-sedex-0</eCH-0058:recipientId>
@@ -54,8 +47,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_AG
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_AG</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -116,8 +108,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_AG
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_AG</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -178,8 +169,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_AG
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_AG</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -240,8 +230,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_AG
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_AG</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -302,8 +291,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_AG
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_AG</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -364,8 +352,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_AG
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_AG</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -426,8 +413,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_AG
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_AG</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -488,8 +474,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_AG
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_AG</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -550,8 +535,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_AG
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_AG</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -612,8 +596,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_AG
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_AG</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -674,8 +657,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BE
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BE</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -736,8 +718,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BE
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BE</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -798,8 +779,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BE
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BE</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -860,8 +840,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BE
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BE</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -922,8 +901,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BE
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BE</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -984,8 +962,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BE
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BE</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -1046,8 +1023,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BE
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BE</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -1108,8 +1084,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BE
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BE</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -1170,8 +1145,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BE
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BE</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -1232,8 +1206,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BE
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BE</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -1294,8 +1267,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKa
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKa</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -1356,8 +1328,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKa
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKa</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -1418,8 +1389,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKa
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKa</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -1480,8 +1450,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKa
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKa</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -1542,8 +1511,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKa
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKa</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -1604,8 +1572,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKa
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKa</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -1666,8 +1633,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKa
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKa</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -1728,8 +1694,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKa
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKa</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -1790,8 +1755,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKa
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKa</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -1852,8 +1816,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKa
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKa</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -1914,8 +1877,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKb
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKb</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -1976,8 +1938,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKb
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKb</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -2038,8 +1999,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKb
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKb</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -2100,8 +2060,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKb
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKb</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -2162,8 +2121,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKb
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKb</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -2224,8 +2182,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKb
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKb</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -2286,8 +2243,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKb
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKb</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -2348,8 +2304,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKb
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKb</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -2410,8 +2365,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKb
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKb</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -2472,8 +2426,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKb
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_BKb</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -2534,8 +2487,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_SG
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_SG</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -2596,8 +2548,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_SG
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_SG</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -2658,8 +2609,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_SG
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_SG</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -2720,8 +2670,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_SG
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_SG</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -2782,8 +2731,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_SG
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_SG</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -2844,8 +2792,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_SG
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_SG</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -2906,8 +2853,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_SG
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_SG</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -2968,8 +2914,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_SG
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_SG</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -3030,8 +2975,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_SG
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_SG</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
@@ -3092,8 +3036,7 @@
                             <eCH-CCM:countingCircleMapping>
                                 <eCH-CCM:mapping>
                                     <eCH-CCM:domainOfInfluencetId>1</eCH-CCM:domainOfInfluencetId>
-                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_SG
-                                    </eCH-CCM:countingCircleId>
+                                    <eCH-CCM:countingCircleId>Gemeinde_CH-Abroad_Kontrollurne_SG</eCH-CCM:countingCircleId>
                                 </eCH-CCM:mapping>
                             </eCH-CCM:countingCircleMapping>
                         </eCH-0045:extension>
