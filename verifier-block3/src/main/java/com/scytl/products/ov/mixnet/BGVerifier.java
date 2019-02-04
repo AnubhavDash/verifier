@@ -80,6 +80,11 @@ public class BGVerifier {
                                 if (encryptedBallots.getBallots().size() <= 1) {
                                     LOGGER.info("0 or 1 ballots, nothing to mix!");
                                     notifier.notify(TestType.ShuffleProof, Status.OK, null);
+                                    notifier.notify(TestType.ProductProof, Status.OK, null);
+                                    notifier.notify(TestType.HadamardProductProof, Status.OK, null);
+                                    notifier.notify(TestType.ZeroProof, Status.OK, null);
+                                    notifier.notify(TestType.SingleValueProductProof, Status.OK, null);
+                                    notifier.notify(TestType.MultiExponentiationProof, Status.OK, null);
                                     /*return true;*/
                                 } else {
 
@@ -143,14 +148,19 @@ public class BGVerifier {
                     GjosteenElGamal cryptosystem = new GjosteenElGamal(zpGroup, publicKey);
                     final ElGamalEncryptedBallots encryptedBallots = onlineMixingProofLoader.getEncryptedBallots();
                     if (encryptedBallots.getBallots().size() <= 1) {
-                        LOGGER.info("0 ballots, nothing to mix!");
+                        LOGGER.info("0 or 1 ballots, nothing to mix!");
                         notifier.notify(TestType.ShuffleProof, Status.OK, null);
+                        notifier.notify(TestType.ProductProof, Status.OK, null);
+                        notifier.notify(TestType.HadamardProductProof, Status.OK, null);
+                        notifier.notify(TestType.ZeroProof, Status.OK, null);
+                        notifier.notify(TestType.SingleValueProductProof, Status.OK, null);
+                        notifier.notify(TestType.MultiExponentiationProof, Status.OK, null);
                     } else {
 
                         LOGGER.debug("Re-encrypted ballots");
                         final ElGamalEncryptedBallots reencryptedBallots = onlineMixingProofLoader.getReEncryptedBallots();
                         if (reencryptedBallots.getBallots().size() <= 1) {
-                            LOGGER.info("0 ballots reencrypted, no mixing performed!");
+                            LOGGER.info("0 or 1 ballots reencrypted, no mixing performed!");
                         } else {
                             final ShuffleProof shuffleProof = onlineMixingProofLoader.getShuffleProof();
                             final ShuffleProofVerifier shuffleProofVerifier = getVerifier(zpGroup, cryptosystem,
