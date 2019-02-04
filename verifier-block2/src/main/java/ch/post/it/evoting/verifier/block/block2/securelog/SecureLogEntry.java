@@ -4,13 +4,16 @@ import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.dto.SecureLogOrigin;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Getter
 @Setter
+@ToString
 public abstract class SecureLogEntry {
 
     private Boolean preview;
@@ -18,18 +21,6 @@ public abstract class SecureLogEntry {
     private String raw;
     private String source;
     private SecureLogMetadata metadata;
-
-    protected void deserialize(String line) throws IOException {
-        SecureLogOrigin slo = Deserializer.fromJson(line.getBytes(), SecureLogOrigin.class);
-
-        setPreview(slo.getPreview());
-        if (slo.getResult() != null) {
-            setSource(slo.getResult().getSource());
-            setHost(slo.getResult().getHost());
-            setRaw(getCleanedRawFromRaw(slo.getResult().getRaw()));
-            setMetadata(getMetadataFromRaw(slo.getResult().getRaw()));
-        }
-    }
 
     public static SecureLogEntry from(String line) throws IOException {
         SecureLogEntry result;
@@ -45,12 +36,30 @@ public abstract class SecureLogEntry {
         return result;
     }
 
-    protected String getCleanedRawFromRaw(String raw) {
+    protected void deserialize(String line) throws IOException {
+        SecureLogOrigin slo = Deserializer.fromJson(line.getBytes(), SecureLogOrigin.class);
+
+        setPreview(slo.getPreview());
+        if (slo.getResult() != null) {
+            setSource(slo.getResult().getSource());
+            setHost(slo.getResult().getHost());
+            setRaw(getRawWithoutMetadata(slo.getResult().getRaw()));
+            setMetadata(getMetadataFromRaw(slo.getResult().getRaw()));
+        }
+    }
+
+    protected String getRawWithoutMetadata(String raw) {
         String result = null;
         if (raw != null && !raw.isEmpty()) {
-            String objInsideRaw = getObjectInsideRaw(raw) + "*}";
-            result = raw.replace(objInsideRaw, "");
-            result = result.substring(0, result.length() - 1) + "\n";
+            Matcher matcher = Pattern.compile("(.*?)(\\{\\*.*)?$").matcher(raw);
+            if (matcher.matches()) {
+                result = matcher.group(1);
+
+                //replace the last character and with a line feed.
+                if (result.length() > 0) {
+                    result = result.substring(0, result.length() - 1) + "\n";
+                }
+            }
         }
         return result;
     }
@@ -58,125 +67,39 @@ public abstract class SecureLogEntry {
     protected SecureLogMetadata getMetadataFromRaw(String raw) {
         SecureLogMetadata metadata = new SecureLogMetadata();
         if (raw != null && !raw.isEmpty()) {
-            String objInsideRaw = getObjectInsideRaw(raw);
-            if (objInsideRaw != null && !objInsideRaw.isEmpty()) {
-                metadata.setSg(getSignFromObjInRaw(objInsideRaw));
-                metadata.setLsk(getLskFromObjInRaw(objInsideRaw));
-                metadata.setEsk(getEskFromObjInRaw(objInsideRaw));
-                metadata.setHmac(getHmacFromObjInRaw(objInsideRaw));
-                metadata.setPhmac(getPhmacFromObjInRaw(objInsideRaw));
-                metadata.setLs(getLsFromObjInRaw(objInsideRaw));
-                metadata.setTl(getTlFromObjInRaw(objInsideRaw));
-                metadata.setTs(getTsFromObjInRaw(objInsideRaw));
+            String metadataString = getMetadataString(raw);
+            if (metadataString != null && !metadataString.isEmpty()) {
+                metadata.setSg(getMetadataValue(metadataString, "SG"));
+                metadata.setLsk(getMetadataValue(metadataString, "LSK"));
+                metadata.setEsk(getMetadataValue(metadataString, "ESK"));
+                metadata.setHmac(getMetadataValue(metadataString, "HMAC"));
+                metadata.setPhmac(getMetadataValue(metadataString, "PHMAC"));
+                metadata.setLs(getMetadataValue(metadataString, "LS"));
+                metadata.setTl(getMetadataValue(metadataString, "TL"));
+                metadata.setTs(getMetadataValue(metadataString, "TS"));
             }
         }
         return metadata;
     }
 
-
-    private String getSignFromObjInRaw(String objInsideRaw) {
+    private String getMetadataString(String raw) {
         String result = null;
-        if (objInsideRaw != null) {
-            String[] split = objInsideRaw.split(",");
-            Optional<String> sigPart = Arrays.asList(split).stream().filter(str -> str.contains("SG::")).findFirst();
-            result = sigPart.isPresent() ? getValueFromKeyValueString(sigPart.get()) : null;
+        if (raw != null && !raw.isEmpty()) {
+            Matcher matcher = Pattern.compile(".*\\{\\*(.*)\\*\\}.*").matcher(raw);
+            if (matcher.matches()) {
+                result = matcher.group(1);
+            }
         }
         return result;
     }
 
-    private String getLskFromObjInRaw(String objInsideRaw) {
-        String result = null;
-        if (objInsideRaw != null) {
-            String[] split = objInsideRaw.split(",");
-            Optional<String> lsk = Arrays.asList(split).stream().filter(str -> str.contains("LSK::")).findFirst();
-            result = lsk.isPresent() ? getValueFromKeyValueString(lsk.get()) : null;
-        }
-        return result;
-    }
-
-    private String getEskFromObjInRaw(String objInsideRaw) {
-        String result = null;
-        if (objInsideRaw != null) {
-            String[] split = objInsideRaw.split(",");
-            Optional<String> esk = Arrays.asList(split).stream().filter(str -> str.contains("ESK::")).findFirst();
-            result = esk.isPresent() ? getValueFromKeyValueString(esk.get()) : null;
-        }
-        return result;
-    }
-
-    private String getHmacFromObjInRaw(String objInsideRaw) {
-        String result = null;
-        if (objInsideRaw != null) {
-            String[] split = objInsideRaw.split(",");
-            Optional<String> hmacPart = Arrays.asList(split).stream().filter(str -> str.startsWith("HMAC::")).findFirst();
-            result = hmacPart.isPresent() ? getValueFromKeyValueString(hmacPart.get()) : null;
-        }
-        return result;
-    }
-
-    private String getPhmacFromObjInRaw(String objInsideRaw) {
-        String result = null;
-        if (objInsideRaw != null) {
-            String[] split = objInsideRaw.split(",");
-            Optional<String> phmacPart = Arrays.asList(split).stream().filter(str -> str.contains("PHMAC::")).findFirst();
-            result = phmacPart.isPresent() ? getValueFromKeyValueString(phmacPart.get()) : null;
-        }
-        return result;
-    }
-
-    private String getLsFromObjInRaw(String objInsideRaw) {
-        String result = null;
-        if (objInsideRaw != null) {
-            String[] split = objInsideRaw.split(",");
-            Optional<String> ls = Arrays.asList(split).stream().filter(str -> str.contains("LS::")).findFirst();
-            result = ls.isPresent() ? getValueFromKeyValueString(ls.get()) : null;
-        }
-        return result;
-    }
-
-    private String getTlFromObjInRaw(String objInsideRaw) {
-        String result = null;
-        if (objInsideRaw != null) {
-            String[] split = objInsideRaw.split(",");
-            Optional<String> tl = Arrays.asList(split).stream().filter(str -> str.contains("TL::")).findFirst();
-            result = tl.isPresent() ? getValueFromKeyValueString(tl.get()) : null;
-        }
-        return result;
-    }
-
-    private String getTsFromObjInRaw(String objInsideRaw) {
-        String result = null;
-        if (objInsideRaw != null) {
-            String[] split = objInsideRaw.split(",");
-            Optional<String> ts = Arrays.asList(split).stream().filter(str -> str.contains("TS::")).findFirst();
-            result = ts.isPresent() ? getValueFromKeyValueString(ts.get()) : null;
-        }
-        return result;
-    }
-
-    private String getObjectInsideRaw(String raw) {
-        int startBracket = raw.indexOf("{*", 0);
-        if (startBracket == -1) {
-            return null;
-        }
-        int endBracket = raw.indexOf("*}", startBracket);
-        return raw.substring(startBracket, endBracket);
-    }
-
-    private String getValueFromKeyValueString(String str) {
-        int firstColon = str.indexOf("::");
-        return str.substring(firstColon + 2);
-    }
-
-    @Override
-    public String toString() {
-        return "SecureLogEntry{" +
-                "host='" + host + '\'' +
-                ", raw='" + raw + '\'' +
-                '}';
-    }
-
-    public String getHost() {
-        return host;
+    private String getMetadataValue(String metadataString, String key) {
+        return Arrays.stream(metadataString.split(","))
+                .filter(val -> val.startsWith(key.toUpperCase() + "::"))
+                .map(val -> val.split("::"))
+                .filter(tab -> tab.length == 2)
+                .map(val -> val[1])
+                .findFirst()
+                .orElse(null);
     }
 }

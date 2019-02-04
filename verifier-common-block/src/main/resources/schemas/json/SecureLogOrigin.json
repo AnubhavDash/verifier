@@ -5,9 +5,12 @@
   "result": {
     "_raw": "",
     "_time": "2018-11-07T23:59:51.992+0100",
+    "arrivalcode": "2659795",
+    "cd": "53:2659795",
     "host": "h002h6",
     "index": "it_evoting_cc",
     "linecount": "1",
+    "minute": "05290002",
     "source": "D:\\logs\\cg\\logs\\cg_secure-20181107-174451-2.log",
     "sourcetype": "post_evoting_securelogs",
     "splunk_server": "hin01a.pnet.ch"
