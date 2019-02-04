@@ -1,0 +1,20 @@
+[04.02.2019 - 12:52:24] - Ordnerstruktur erstellt/ueberprueft unter C:\Users\esseivao\Documents\eVoting\Verifier\kpmg_audit_03
+[04.02.2019 - 12:52:37] - Kopieren von EEID 13abb8e438be42d4ae1f6059214f9321
+[04.02.2019 - 12:52:37] - Zertifikate (CRT)
+[04.02.2019 - 12:52:37] - XML und P7 von DIS kopiert
+[04.02.2019 - 12:52:37] - Zertifikate (PEM) kopiert
+[04.02.2019 - 12:52:37] - Kopieren von Adminboard e91496d3f73a49299be0dbdf7533d951.pem
+[04.02.2019 - 12:52:37] - EA 34dc82006e8740eb9d7ccca02f25ad93 kopiert
+[04.02.2019 - 12:52:37] - Pre-Election Datenset kopiert nach C:\Users\esseivao\Documents\eVoting\Verifier\kpmg_audit_03
+[04.02.2019 - 13:18:05] - Ordnerstruktur erstellt/ueberprueft unter C:\Users\esseivao\Documents\eVoting\Verifier\kpmg_audit_03
+[04.02.2019 - 13:18:07] - Ballotboxen kopiert
+[04.02.2019 - 13:18:07] - Pre-Decryption Datenset kopiert nach C:\Users\esseivao\Documents\eVoting\Verifier\kpmg_audit_03
+[04.02.2019 - 13:20:33] - Ordnerstruktur erstellt/ueberprueft unter C:\Users\esseivao\Documents\eVoting\Verifier\kpmg_audit_03
+[04.02.2019 - 13:20:35] - SIV, SVV, Decrypt und ech-Files kopiert
+[04.02.2019 - 13:20:35] - Final Datenset kopiert nach C:\Users\esseivao\Documents\eVoting\Verifier\kpmg_audit_03
+[04.02.2019 - 13:37:18] - Ordnerstruktur erstellt/ueberprueft unter C:\Users\esseivao\Documents\eVoting\Verifier\kpmg_audit_03
+[04.02.2019 - 13:37:20] - SIV, SVV, Decrypt und ech-Files kopiert
+[04.02.2019 - 13:37:20] - Final Datenset kopiert nach C:\Users\esseivao\Documents\eVoting\Verifier\kpmg_audit_03
+[04.02.2019 - 13:38:49] - Ordnerstruktur erstellt/ueberprueft unter C:\Users\esseivao\Documents\eVoting\Verifier\kpmg_audit_03
+[04.02.2019 - 13:38:51] - SIV, SVV, Decrypt und ech-Files kopiert
+[04.02.2019 - 13:38:51] - Final Datenset kopiert nach C:\Users\esseivao\Documents\eVoting\Verifier\kpmg_audit_03

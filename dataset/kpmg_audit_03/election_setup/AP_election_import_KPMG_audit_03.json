@@ -1,0 +1,1303 @@
+{
+  "electionEvents": [
+    {
+      "alias": "KPMG_audit_03",
+      "title": "Testdaten für Zertifizierung KPMG Feb 2019",
+      "description": "Testdaten für Zertifizierung KPMG Feb 2019",
+      "dateFrom": "2019-02-01 00:00",
+      "dateTo": "2019-05-31 23:59",
+      "gracePeriod": 900,
+      "timeZone": "+01:00",
+      "ballots": [
+        {
+          "entityId": "ballot_1",
+          "alias": "ballot_1",
+          "title": "ballot_1045776772_1045776773",
+          "description": "ballot_1045776772_1045776773",
+          "contests": [
+            {
+              "entityId": "contest_1045776772"
+            },
+            {
+              "entityId": "contest_1045776773"
+            }
+          ]
+        },
+        {
+          "entityId": "ballot_2",
+          "alias": "ballot_2",
+          "title": "ballot_1045776772_1045776773",
+          "description": "ballot_1045776772_1045776773",
+          "contests": [
+            {
+              "entityId": "contest_1045776772"
+            },
+            {
+              "entityId": "contest_1045776773"
+            }
+          ]
+        },
+        {
+          "entityId": "ballot_3",
+          "alias": "ballot_3",
+          "title": "ballot_1045776772_1045776773",
+          "description": "ballot_1045776772_1045776773",
+          "contests": [
+            {
+              "entityId": "contest_1045776772"
+            },
+            {
+              "entityId": "contest_1045776773"
+            }
+          ]
+        },
+        {
+          "entityId": "ballot_4",
+          "alias": "ballot_4",
+          "title": "ballot_1045776772_1045776773",
+          "description": "ballot_1045776772_1045776773",
+          "contests": [
+            {
+              "entityId": "contest_1045776772"
+            },
+            {
+              "entityId": "contest_1045776773"
+            }
+          ]
+        },
+        {
+          "entityId": "ballot_5",
+          "alias": "ballot_5",
+          "title": "ballot_1045776772_1045776773",
+          "description": "ballot_1045776772_1045776773",
+          "contests": [
+            {
+              "entityId": "contest_1045776772"
+            },
+            {
+              "entityId": "contest_1045776773"
+            }
+          ]
+        }
+      ],
+      "contests": [
+        {
+          "entityId": "contest_1045776772",
+          "title": "Bundesbeschluss über Ernährungssicherheit",
+          "alias": "1045776772",
+          "description": "Bundesbeschluss über Ernährungssicherheit",
+          "explanationText": "",
+          "template": "options",
+          "fullBlank": "false",
+          "extraDataTypes": {
+            "questionType": [
+              {
+                "name": "text",
+                "key": "text"
+              }
+            ],
+            "answerType": [
+              {
+                "name": "text",
+                "key": "text"
+              }
+            ]
+          },
+          "attributes": [
+            {
+              "alias": "1",
+              "extraDataType": "questionType",
+              "extraDataValues": [
+                {
+                  "text": "Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?"
+                }
+              ],
+              "children": [
+                {
+                  "alias": "ea66c06c-1e1c-35fa-9f1a-a39d98dc5bc1",
+                  "extraDataType": "answerType",
+                  "extraDataValues": [
+                    {
+                      "text": "Ja"
+                    }
+                  ]
+                },
+                {
+                  "alias": "98c6f2c2-287f-3c73-8ea3-d40ae7ec3ff2",
+                  "extraDataType": "answerType",
+                  "extraDataValues": [
+                    {
+                      "text": "Nein"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "questions": [
+            {
+              "alias": "1",
+              "max": "1",
+              "min": "0",
+              "writeIn": "false",
+              "choices": [
+                "ea66c06c-1e1c-35fa-9f1a-a39d98dc5bc1",
+                "98c6f2c2-287f-3c73-8ea3-d40ae7ec3ff2"
+              ],
+              "fusions": [],
+              "accumulation": "1",
+              "blankText": "Leer"
+            }
+          ]
+        },
+        {
+          "entityId": "contest_1045776773",
+          "title": "Einheitsinitiative \"Energiewende\"",
+          "alias": "1045776773",
+          "description": "Einheitsinitiative \"Energiewende\"",
+          "explanationText": "",
+          "template": "options",
+          "fullBlank": "false",
+          "extraDataTypes": {
+            "questionType": [
+              {
+                "name": "text",
+                "key": "text"
+              }
+            ],
+            "answerType": [
+              {
+                "name": "text",
+                "key": "text"
+              }
+            ]
+          },
+          "attributes": [
+            {
+              "alias": "1045776773-EVotingAbstimmungsfrage",
+              "extraDataType": "questionType",
+              "extraDataValues": [
+                {
+                  "text": "Wollen Sie die Einheitsinitiative \"Energiewende\" annehmen?"
+                }
+              ],
+              "children": [
+                {
+                  "alias": "2c00a454-10cc-3754-a823-ab7cb449cacd",
+                  "extraDataType": "answerType",
+                  "extraDataValues": [
+                    {
+                      "text": "Ja"
+                    }
+                  ]
+                },
+                {
+                  "alias": "c9ab2f84-f056-3b0e-bc4f-a5376a7c0319",
+                  "extraDataType": "answerType",
+                  "extraDataValues": [
+                    {
+                      "text": "Nein"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "alias": "1045776773-EVotingAbstiFrageGegenvorschlag",
+              "extraDataType": "questionType",
+              "extraDataValues": [
+                {
+                  "text": "Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?"
+                }
+              ],
+              "children": [
+                {
+                  "alias": "8590d31f-01c3-357d-b23e-a6488dfd1382",
+                  "extraDataType": "answerType",
+                  "extraDataValues": [
+                    {
+                      "text": "Ja"
+                    }
+                  ]
+                },
+                {
+                  "alias": "61036778-2461-3b0a-8301-cac11372a1be",
+                  "extraDataType": "answerType",
+                  "extraDataValues": [
+                    {
+                      "text": "Nein"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "alias": "1045776773",
+              "extraDataType": "questionType",
+              "extraDataValues": [
+                {
+                  "text": "Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?"
+                }
+              ],
+              "children": [
+                {
+                  "alias": "4fa925f8-07c2-3666-93c2-fd306d7183c7",
+                  "extraDataType": "answerType",
+                  "extraDataValues": [
+                    {
+                      "text": "Initiative"
+                    }
+                  ]
+                },
+                {
+                  "alias": "0de05d34-35e2-3e08-85bb-f633d24378fb",
+                  "extraDataType": "answerType",
+                  "extraDataValues": [
+                    {
+                      "text": "Gegenentwurf"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "questions": [
+            {
+              "alias": "1045776773-EVotingAbstimmungsfrage",
+              "max": "1",
+              "min": "0",
+              "writeIn": "false",
+              "choices": [
+                "2c00a454-10cc-3754-a823-ab7cb449cacd",
+                "c9ab2f84-f056-3b0e-bc4f-a5376a7c0319"
+              ],
+              "fusions": [],
+              "accumulation": "1",
+              "blankText": "Leer"
+            },
+            {
+              "alias": "1045776773-EVotingAbstiFrageGegenvorschlag",
+              "max": "1",
+              "min": "0",
+              "writeIn": "false",
+              "choices": [
+                "8590d31f-01c3-357d-b23e-a6488dfd1382",
+                "61036778-2461-3b0a-8301-cac11372a1be"
+              ],
+              "fusions": [],
+              "accumulation": "1",
+              "blankText": "Leer"
+            },
+            {
+              "alias": "1045776773",
+              "max": "1",
+              "min": "0",
+              "writeIn": "false",
+              "choices": [
+                "4fa925f8-07c2-3666-93c2-fd306d7183c7",
+                "0de05d34-35e2-3e08-85bb-f633d24378fb"
+              ],
+              "fusions": [],
+              "accumulation": "1",
+              "blankText": "Leer"
+            }
+          ]
+        }
+      ],
+      "ballotBoxes": [
+        {
+          "entityId": "fc8137d6-d753-305c-affd-d12b38febfaa",
+          "alias": "TG-CH-1|TG-MU-10002",
+          "title": "ACH_Kontrollwaehler_Kontrollurne_AG",
+          "description": "ACH_Kontrollwaehler_Kontrollurne_AGTG-CH-1|TG-MU-10002",
+          "dateFrom": "2019-02-01 00:00",
+          "dateTo": "2019-05-31 23:59",
+          "gracePeriod": 900,
+          "timeZone": "+01:00",
+          "ballot": {
+            "entityId": "ballot_1"
+          },
+          "electoralAuthority": {
+            "entityId": "KPMG_EA_01"
+          },
+          "test": true
+        },
+        {
+          "entityId": "45fa3b7b-d0d7-394f-ac2e-c2f62448d077",
+          "alias": "TG-CH-1|TG-MU-10004",
+          "title": "ACH_Kontrollwaehler_Kontrollurne_BE",
+          "description": "ACH_Kontrollwaehler_Kontrollurne_BETG-CH-1|TG-MU-10004",
+          "dateFrom": "2019-02-01 00:00",
+          "dateTo": "2019-05-31 23:59",
+          "gracePeriod": 900,
+          "timeZone": "+01:00",
+          "ballot": {
+            "entityId": "ballot_2"
+          },
+          "electoralAuthority": {
+            "entityId": "KPMG_EA_01"
+          },
+          "test": true
+        },
+        {
+          "entityId": "f1035604-92a9-365f-ba4b-0a2f9bb15019",
+          "alias": "TG-CH-1|TG-MU-10010",
+          "title": "ACH_Kontrollwaehler_Kontrollurne_BKa",
+          "description": "ACH_Kontrollwaehler_Kontrollurne_BKaTG-CH-1|TG-MU-10010",
+          "dateFrom": "2019-02-01 00:00",
+          "dateTo": "2019-05-31 23:59",
+          "gracePeriod": 900,
+          "timeZone": "+01:00",
+          "ballot": {
+            "entityId": "ballot_3"
+          },
+          "electoralAuthority": {
+            "entityId": "KPMG_EA_01"
+          },
+          "test": true
+        },
+        {
+          "entityId": "88cb284d-e9bd-3133-89ed-78f711581afc",
+          "alias": "TG-CH-1|TG-MU-10012",
+          "title": "ACH_Kontrollwaehler_Kontrollurne_BKb",
+          "description": "ACH_Kontrollwaehler_Kontrollurne_BKbTG-CH-1|TG-MU-10012",
+          "dateFrom": "2019-02-01 00:00",
+          "dateTo": "2019-05-31 23:59",
+          "gracePeriod": 900,
+          "timeZone": "+01:00",
+          "ballot": {
+            "entityId": "ballot_4"
+          },
+          "electoralAuthority": {
+            "entityId": "KPMG_EA_01"
+          },
+          "test": true
+        },
+        {
+          "entityId": "b457b306-b89e-3c58-95ca-a31804b14ee6",
+          "alias": "TG-CH-1|TG-MU-10006",
+          "title": "ACH_Kontrollwaehler_Kontrollurne_SG",
+          "description": "ACH_Kontrollwaehler_Kontrollurne_SGTG-CH-1|TG-MU-10006",
+          "dateFrom": "2019-02-01 00:00",
+          "dateTo": "2019-05-31 23:59",
+          "gracePeriod": 900,
+          "timeZone": "+01:00",
+          "ballot": {
+            "entityId": "ballot_5"
+          },
+          "electoralAuthority": {
+            "entityId": "KPMG_EA_01"
+          },
+          "test": true
+        }
+      ],
+      "votingCardSets": [
+        {
+          "entityId": "vcs_ACH_Kontrollwaehler_Kontrollurne_AG",
+          "alias": "vcs_TG-CH-1|TG-MU-10002",
+          "title": "vcs_ACH_Kontrollwaehler_Kontrollurne_AG",
+          "description": "vcs_ACH_Kontrollwaehler_Kontrollurne_AGTG-CH-1|TG-MU-10002",
+          "numberOfVotingCardsToGenerate": 10,
+          "ballotBox": {
+            "entityId": "fc8137d6-d753-305c-affd-d12b38febfaa"
+          }
+        },
+        {
+          "entityId": "vcs_ACH_Kontrollwaehler_Kontrollurne_BE",
+          "alias": "vcs_TG-CH-1|TG-MU-10004",
+          "title": "vcs_ACH_Kontrollwaehler_Kontrollurne_BE",
+          "description": "vcs_ACH_Kontrollwaehler_Kontrollurne_BETG-CH-1|TG-MU-10004",
+          "numberOfVotingCardsToGenerate": 10,
+          "ballotBox": {
+            "entityId": "45fa3b7b-d0d7-394f-ac2e-c2f62448d077"
+          }
+        },
+        {
+          "entityId": "vcs_ACH_Kontrollwaehler_Kontrollurne_BKa",
+          "alias": "vcs_TG-CH-1|TG-MU-10010",
+          "title": "vcs_ACH_Kontrollwaehler_Kontrollurne_BKa",
+          "description": "vcs_ACH_Kontrollwaehler_Kontrollurne_BKaTG-CH-1|TG-MU-10010",
+          "numberOfVotingCardsToGenerate": 10,
+          "ballotBox": {
+            "entityId": "f1035604-92a9-365f-ba4b-0a2f9bb15019"
+          }
+        },
+        {
+          "entityId": "vcs_ACH_Kontrollwaehler_Kontrollurne_BKb",
+          "alias": "vcs_TG-CH-1|TG-MU-10012",
+          "title": "vcs_ACH_Kontrollwaehler_Kontrollurne_BKb",
+          "description": "vcs_ACH_Kontrollwaehler_Kontrollurne_BKbTG-CH-1|TG-MU-10012",
+          "numberOfVotingCardsToGenerate": 10,
+          "ballotBox": {
+            "entityId": "88cb284d-e9bd-3133-89ed-78f711581afc"
+          }
+        },
+        {
+          "entityId": "vcs_ACH_Kontrollwaehler_Kontrollurne_SG",
+          "alias": "vcs_TG-CH-1|TG-MU-10006",
+          "title": "vcs_ACH_Kontrollwaehler_Kontrollurne_SG",
+          "description": "vcs_ACH_Kontrollwaehler_Kontrollurne_SGTG-CH-1|TG-MU-10006",
+          "numberOfVotingCardsToGenerate": 10,
+          "ballotBox": {
+            "entityId": "b457b306-b89e-3c58-95ca-a31804b14ee6"
+          }
+        }
+      ],
+      "electoralAuthorities": [
+        {
+          "entityId": "KPMG_EA_01",
+          "alias": "KPMG_Electoral_Authority",
+          "title": "KPMG_Electoral_Authority",
+          "description": "KPMG Electoral Authority for 100% certification",
+          "minimumThreshold": "1",
+          "electoralBoard": [
+            "Clemens Hüppe",
+            "Roman Gribi"
+          ]
+        }
+      ],
+      "translations": [
+        {
+          "entityId": "contest_1045776772",
+          "locale": "de-CH",
+          "texts": {
+            "title": "Bundesbeschluss über Ernährungssicherheit",
+            "description": "Bundesbeschluss über Ernährungssicherheit",
+            "explanationText": "",
+            "extraDataTypes": {
+              "questionType": [
+                {
+                  "name": "text",
+                  "key": "text"
+                }
+              ],
+              "answerType": [
+                {
+                  "name": "text",
+                  "key": "text"
+                }
+              ]
+            },
+            "attributes": [
+              {
+                "alias": "1",
+                "extraDataType": "questionType",
+                "extraDataValues": [
+                  {
+                    "text": "Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?"
+                  }
+                ],
+                "children": [
+                  {
+                    "alias": "ea66c06c-1e1c-35fa-9f1a-a39d98dc5bc1",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Ja"
+                      }
+                    ]
+                  },
+                  {
+                    "alias": "98c6f2c2-287f-3c73-8ea3-d40ae7ec3ff2",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Nein"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "questions": [
+              {
+                "alias": "1",
+                "max": "1",
+                "min": "0",
+                "writeIn": "false",
+                "choices": [],
+                "fusions": [],
+                "accumulation": "1",
+                "blankText": "Leer"
+              }
+            ]
+          }
+        },
+        {
+          "entityId": "contest_1045776773",
+          "locale": "de-CH",
+          "texts": {
+            "title": "Einheitsinitiative \"Energiewende\"",
+            "description": "Einheitsinitiative \"Energiewende\"",
+            "explanationText": "",
+            "extraDataTypes": {
+              "questionType": [
+                {
+                  "name": "text",
+                  "key": "text"
+                }
+              ],
+              "answerType": [
+                {
+                  "name": "text",
+                  "key": "text"
+                }
+              ]
+            },
+            "attributes": [
+              {
+                "alias": "1045776773-EVotingAbstimmungsfrage",
+                "extraDataType": "questionType",
+                "extraDataValues": [
+                  {
+                    "text": "Wollen Sie die Einheitsinitiative \"Energiewende\" annehmen?"
+                  }
+                ],
+                "children": [
+                  {
+                    "alias": "2c00a454-10cc-3754-a823-ab7cb449cacd",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Ja"
+                      }
+                    ]
+                  },
+                  {
+                    "alias": "c9ab2f84-f056-3b0e-bc4f-a5376a7c0319",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Nein"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "alias": "1045776773-EVotingAbstiFrageGegenvorschlag",
+                "extraDataType": "questionType",
+                "extraDataValues": [
+                  {
+                    "text": "Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?"
+                  }
+                ],
+                "children": [
+                  {
+                    "alias": "8590d31f-01c3-357d-b23e-a6488dfd1382",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Ja"
+                      }
+                    ]
+                  },
+                  {
+                    "alias": "61036778-2461-3b0a-8301-cac11372a1be",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Nein"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "alias": "1045776773",
+                "extraDataType": "questionType",
+                "extraDataValues": [
+                  {
+                    "text": "Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?"
+                  }
+                ],
+                "children": [
+                  {
+                    "alias": "4fa925f8-07c2-3666-93c2-fd306d7183c7",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Initiative"
+                      }
+                    ]
+                  },
+                  {
+                    "alias": "0de05d34-35e2-3e08-85bb-f633d24378fb",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Gegenentwurf"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "questions": [
+              {
+                "alias": "1045776773-EVotingAbstimmungsfrage",
+                "max": "1",
+                "min": "0",
+                "writeIn": "false",
+                "choices": [],
+                "fusions": [],
+                "accumulation": "1",
+                "blankText": "Leer"
+              },
+              {
+                "alias": "1045776773-EVotingAbstiFrageGegenvorschlag",
+                "max": "1",
+                "min": "0",
+                "writeIn": "false",
+                "choices": [],
+                "fusions": [],
+                "accumulation": "1",
+                "blankText": "Leer"
+              },
+              {
+                "alias": "1045776773",
+                "max": "1",
+                "min": "0",
+                "writeIn": "false",
+                "choices": [],
+                "fusions": [],
+                "accumulation": "1",
+                "blankText": "Leer"
+              }
+            ]
+          }
+        },
+        {
+          "entityId": "contest_1045776772",
+          "locale": "fr-CH",
+          "texts": {
+            "title": "Bundesbeschluss über Ernährungssicherheit",
+            "description": "Bundesbeschluss über Ernährungssicherheit",
+            "explanationText": "",
+            "extraDataTypes": {
+              "questionType": [
+                {
+                  "name": "text",
+                  "key": "text"
+                }
+              ],
+              "answerType": [
+                {
+                  "name": "text",
+                  "key": "text"
+                }
+              ]
+            },
+            "attributes": [
+              {
+                "alias": "1",
+                "extraDataType": "questionType",
+                "extraDataValues": [
+                  {
+                    "text": "Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?"
+                  }
+                ],
+                "children": [
+                  {
+                    "alias": "ea66c06c-1e1c-35fa-9f1a-a39d98dc5bc1",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Oui"
+                      }
+                    ]
+                  },
+                  {
+                    "alias": "98c6f2c2-287f-3c73-8ea3-d40ae7ec3ff2",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Non"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "questions": [
+              {
+                "alias": "1",
+                "max": "1",
+                "min": "0",
+                "writeIn": "false",
+                "choices": [],
+                "fusions": [],
+                "accumulation": "1",
+                "blankText": "Blanc"
+              }
+            ]
+          }
+        },
+        {
+          "entityId": "contest_1045776773",
+          "locale": "fr-CH",
+          "texts": {
+            "title": "Einheitsinitiative \"Energiewende\"",
+            "description": "Einheitsinitiative \"Energiewende\"",
+            "explanationText": "",
+            "extraDataTypes": {
+              "questionType": [
+                {
+                  "name": "text",
+                  "key": "text"
+                }
+              ],
+              "answerType": [
+                {
+                  "name": "text",
+                  "key": "text"
+                }
+              ]
+            },
+            "attributes": [
+              {
+                "alias": "1045776773-EVotingAbstimmungsfrage",
+                "extraDataType": "questionType",
+                "extraDataValues": [
+                  {
+                    "text": "Wollen Sie die Einheitsinitiative \"Energiewende\" annehmen?"
+                  }
+                ],
+                "children": [
+                  {
+                    "alias": "2c00a454-10cc-3754-a823-ab7cb449cacd",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Oui"
+                      }
+                    ]
+                  },
+                  {
+                    "alias": "c9ab2f84-f056-3b0e-bc4f-a5376a7c0319",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Non"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "alias": "1045776773-EVotingAbstiFrageGegenvorschlag",
+                "extraDataType": "questionType",
+                "extraDataValues": [
+                  {
+                    "text": "Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?"
+                  }
+                ],
+                "children": [
+                  {
+                    "alias": "8590d31f-01c3-357d-b23e-a6488dfd1382",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Oui"
+                      }
+                    ]
+                  },
+                  {
+                    "alias": "61036778-2461-3b0a-8301-cac11372a1be",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Non"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "alias": "1045776773",
+                "extraDataType": "questionType",
+                "extraDataValues": [
+                  {
+                    "text": "Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?"
+                  }
+                ],
+                "children": [
+                  {
+                    "alias": "4fa925f8-07c2-3666-93c2-fd306d7183c7",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Initiative"
+                      }
+                    ]
+                  },
+                  {
+                    "alias": "0de05d34-35e2-3e08-85bb-f633d24378fb",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Contre-projet"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "questions": [
+              {
+                "alias": "1045776773-EVotingAbstimmungsfrage",
+                "max": "1",
+                "min": "0",
+                "writeIn": "false",
+                "choices": [],
+                "fusions": [],
+                "accumulation": "1",
+                "blankText": "Blanc"
+              },
+              {
+                "alias": "1045776773-EVotingAbstiFrageGegenvorschlag",
+                "max": "1",
+                "min": "0",
+                "writeIn": "false",
+                "choices": [],
+                "fusions": [],
+                "accumulation": "1",
+                "blankText": "Blanc"
+              },
+              {
+                "alias": "1045776773",
+                "max": "1",
+                "min": "0",
+                "writeIn": "false",
+                "choices": [],
+                "fusions": [],
+                "accumulation": "1",
+                "blankText": "Blanc"
+              }
+            ]
+          }
+        },
+        {
+          "entityId": "contest_1045776772",
+          "locale": "rm-CH",
+          "texts": {
+            "title": "Bundesbeschluss über Ernährungssicherheit",
+            "description": "Bundesbeschluss über Ernährungssicherheit",
+            "explanationText": "",
+            "extraDataTypes": {
+              "questionType": [
+                {
+                  "name": "text",
+                  "key": "text"
+                }
+              ],
+              "answerType": [
+                {
+                  "name": "text",
+                  "key": "text"
+                }
+              ]
+            },
+            "attributes": [
+              {
+                "alias": "1",
+                "extraDataType": "questionType",
+                "extraDataValues": [
+                  {
+                    "text": "Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?"
+                  }
+                ],
+                "children": [
+                  {
+                    "alias": "ea66c06c-1e1c-35fa-9f1a-a39d98dc5bc1",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Gea"
+                      }
+                    ]
+                  },
+                  {
+                    "alias": "98c6f2c2-287f-3c73-8ea3-d40ae7ec3ff2",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Na"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "questions": [
+              {
+                "alias": "1",
+                "max": "1",
+                "min": "0",
+                "writeIn": "false",
+                "choices": [],
+                "fusions": [],
+                "accumulation": "1",
+                "blankText": "Vid"
+              }
+            ]
+          }
+        },
+        {
+          "entityId": "contest_1045776773",
+          "locale": "rm-CH",
+          "texts": {
+            "title": "Einheitsinitiative \"Energiewende\"",
+            "description": "Einheitsinitiative \"Energiewende\"",
+            "explanationText": "",
+            "extraDataTypes": {
+              "questionType": [
+                {
+                  "name": "text",
+                  "key": "text"
+                }
+              ],
+              "answerType": [
+                {
+                  "name": "text",
+                  "key": "text"
+                }
+              ]
+            },
+            "attributes": [
+              {
+                "alias": "1045776773-EVotingAbstimmungsfrage",
+                "extraDataType": "questionType",
+                "extraDataValues": [
+                  {
+                    "text": "Wollen Sie die Einheitsinitiative \"Energiewende\" annehmen?"
+                  }
+                ],
+                "children": [
+                  {
+                    "alias": "2c00a454-10cc-3754-a823-ab7cb449cacd",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Gea"
+                      }
+                    ]
+                  },
+                  {
+                    "alias": "c9ab2f84-f056-3b0e-bc4f-a5376a7c0319",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Na"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "alias": "1045776773-EVotingAbstiFrageGegenvorschlag",
+                "extraDataType": "questionType",
+                "extraDataValues": [
+                  {
+                    "text": "Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?"
+                  }
+                ],
+                "children": [
+                  {
+                    "alias": "8590d31f-01c3-357d-b23e-a6488dfd1382",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Gea"
+                      }
+                    ]
+                  },
+                  {
+                    "alias": "61036778-2461-3b0a-8301-cac11372a1be",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Na"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "alias": "1045776773",
+                "extraDataType": "questionType",
+                "extraDataValues": [
+                  {
+                    "text": "Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?"
+                  }
+                ],
+                "children": [
+                  {
+                    "alias": "4fa925f8-07c2-3666-93c2-fd306d7183c7",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Iniziativa"
+                      }
+                    ]
+                  },
+                  {
+                    "alias": "0de05d34-35e2-3e08-85bb-f633d24378fb",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Cuntraproposta"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "questions": [
+              {
+                "alias": "1045776773-EVotingAbstimmungsfrage",
+                "max": "1",
+                "min": "0",
+                "writeIn": "false",
+                "choices": [],
+                "fusions": [],
+                "accumulation": "1",
+                "blankText": "Vid"
+              },
+              {
+                "alias": "1045776773-EVotingAbstiFrageGegenvorschlag",
+                "max": "1",
+                "min": "0",
+                "writeIn": "false",
+                "choices": [],
+                "fusions": [],
+                "accumulation": "1",
+                "blankText": "Vid"
+              },
+              {
+                "alias": "1045776773",
+                "max": "1",
+                "min": "0",
+                "writeIn": "false",
+                "choices": [],
+                "fusions": [],
+                "accumulation": "1",
+                "blankText": "Vid"
+              }
+            ]
+          }
+        },
+        {
+          "entityId": "contest_1045776772",
+          "locale": "it-CH",
+          "texts": {
+            "title": "Bundesbeschluss über Ernährungssicherheit",
+            "description": "Bundesbeschluss über Ernährungssicherheit",
+            "explanationText": "",
+            "extraDataTypes": {
+              "questionType": [
+                {
+                  "name": "text",
+                  "key": "text"
+                }
+              ],
+              "answerType": [
+                {
+                  "name": "text",
+                  "key": "text"
+                }
+              ]
+            },
+            "attributes": [
+              {
+                "alias": "1",
+                "extraDataType": "questionType",
+                "extraDataValues": [
+                  {
+                    "text": "Wollen Sie den Bundesbeschluss vom 14. März 2017 über die Ernährungssicherheit annehmen?"
+                  }
+                ],
+                "children": [
+                  {
+                    "alias": "ea66c06c-1e1c-35fa-9f1a-a39d98dc5bc1",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Si"
+                      }
+                    ]
+                  },
+                  {
+                    "alias": "98c6f2c2-287f-3c73-8ea3-d40ae7ec3ff2",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "No"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "questions": [
+              {
+                "alias": "1",
+                "max": "1",
+                "min": "0",
+                "writeIn": "false",
+                "choices": [],
+                "fusions": [],
+                "accumulation": "1",
+                "blankText": "Bianco"
+              }
+            ]
+          }
+        },
+        {
+          "entityId": "contest_1045776773",
+          "locale": "it-CH",
+          "texts": {
+            "title": "Einheitsinitiative \"Energiewende\"",
+            "description": "Einheitsinitiative \"Energiewende\"",
+            "explanationText": "",
+            "extraDataTypes": {
+              "questionType": [
+                {
+                  "name": "text",
+                  "key": "text"
+                }
+              ],
+              "answerType": [
+                {
+                  "name": "text",
+                  "key": "text"
+                }
+              ]
+            },
+            "attributes": [
+              {
+                "alias": "1045776773-EVotingAbstimmungsfrage",
+                "extraDataType": "questionType",
+                "extraDataValues": [
+                  {
+                    "text": "Wollen Sie die Einheitsinitiative \"Energiewende\" annehmen?"
+                  }
+                ],
+                "children": [
+                  {
+                    "alias": "2c00a454-10cc-3754-a823-ab7cb449cacd",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Si"
+                      }
+                    ]
+                  },
+                  {
+                    "alias": "c9ab2f84-f056-3b0e-bc4f-a5376a7c0319",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "No"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "alias": "1045776773-EVotingAbstiFrageGegenvorschlag",
+                "extraDataType": "questionType",
+                "extraDataValues": [
+                  {
+                    "text": "Wollen Sie den Gegenvorschlag des Nationalrates in Form des V. Nachtrags zum Energiegesetz annehmen?"
+                  }
+                ],
+                "children": [
+                  {
+                    "alias": "8590d31f-01c3-357d-b23e-a6488dfd1382",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Si"
+                      }
+                    ]
+                  },
+                  {
+                    "alias": "61036778-2461-3b0a-8301-cac11372a1be",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "No"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "alias": "1045776773",
+                "extraDataType": "questionType",
+                "extraDataValues": [
+                  {
+                    "text": "Geben Sie der Einheitsinitiative oder dem Gegenvorschlag den Vorzug?"
+                  }
+                ],
+                "children": [
+                  {
+                    "alias": "4fa925f8-07c2-3666-93c2-fd306d7183c7",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Iniziativa"
+                      }
+                    ]
+                  },
+                  {
+                    "alias": "0de05d34-35e2-3e08-85bb-f633d24378fb",
+                    "extraDataType": "answerType",
+                    "extraDataValues": [
+                      {
+                        "text": "Controprogetto"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "questions": [
+              {
+                "alias": "1045776773-EVotingAbstimmungsfrage",
+                "max": "1",
+                "min": "0",
+                "writeIn": "false",
+                "choices": [],
+                "fusions": [],
+                "accumulation": "1",
+                "blankText": "Bianco"
+              },
+              {
+                "alias": "1045776773-EVotingAbstiFrageGegenvorschlag",
+                "max": "1",
+                "min": "0",
+                "writeIn": "false",
+                "choices": [],
+                "fusions": [],
+                "accumulation": "1",
+                "blankText": "Bianco"
+              },
+              {
+                "alias": "1045776773",
+                "max": "1",
+                "min": "0",
+                "writeIn": "false",
+                "choices": [],
+                "fusions": [],
+                "accumulation": "1",
+                "blankText": "Bianco"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
