@@ -20,14 +20,14 @@ public class SecureLogBundle {
     private CheckPointLogEntry beginCheckPoint;
     private CheckPointLogEntry endCheckPoint;
     private List<RegularLogEntry> regularLogEntries = new ArrayList<>();
-    private byte[] pem;
+    private SecureLogBundleCertificates certificates;
 
-    public byte[] getPem() {
-        return pem;
+    public SecureLogBundleCertificates getCertificates() {
+        return certificates;
     }
 
-    public void setPem(byte[] pem) {
-        this.pem = pem;
+    public void setCertificates(SecureLogBundleCertificates certificates) {
+        this.certificates = certificates;
     }
 
     public void setBeginCheckPoint(CheckPointLogEntry beginCheckPoint) {
@@ -65,7 +65,7 @@ public class SecureLogBundle {
     }
 
     public void validateSignature() throws SecureLogBundleValidationException {
-        String bytes = String.format("%s {*LSK::%s,ESK::%s,PHMAC::%s,LS::%s,TL::%s,TS::%s,HMAC::%s*}\\n",
+        String bytes = String.format("%s {*LSK::%s,ESK::%s,PHMAC::%s,LS::%s,TL::%s,TS::%s,HMAC::%s*}\n",
                 this.getBeginCheckPoint().getRaw().substring(0, this.getBeginCheckPoint().getRaw().length() - 1), //remove the ending \n
                 this.getBeginCheckPoint().getMetadata().getLsk(),
                 this.getBeginCheckPoint().getMetadata().getEsk(),
@@ -75,8 +75,11 @@ public class SecureLogBundle {
                 this.getBeginCheckPoint().getMetadata().getTs(),
                 this.getBeginCheckPoint().getMetadata().getHmac());
 
-        if (this.getPem() == null || !SignatureChecker.verifySignature(bytes.getBytes(StandardCharsets.UTF_8),
-                TypeConverter.base64ToByte(this.getBeginCheckPoint().getMetadata().getSg()), this.getPem())) {
+        if (this.getCertificates() == null || !SignatureChecker.verifySignature(bytes.getBytes(StandardCharsets.UTF_8),
+                TypeConverter.base64ToByte(this.getBeginCheckPoint().getMetadata().getSg()),
+                this.getCertificates().getCertificate(),
+                this.getCertificates().getIntermediate() != null ? new byte[][]{this.getCertificates().getIntermediate()} : null,
+                this.getCertificates().getRoot())) {
             throw new SecureLogBundleValidationException("Begin Checkpoint signature not valid", beginCheckPoint.getHost(), beginCheckPoint.getSource());
         }
     }

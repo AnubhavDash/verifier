@@ -27,7 +27,7 @@ public final class SecureLogBundleCreator {
         return from(source, null);
     }
 
-    public static Flux<SecureLogBundle> from(Flux<SecureLogEntry> source, final Map<String, byte[]> hostPEMMapping) {
+    public static Flux<SecureLogBundle> from(Flux<SecureLogEntry> source, final Map<String, SecureLogBundleCertificates> hostPEMMapping) {
         AtomicReference<SecureLogEntry> last = new AtomicReference<>();
         return source
                 .doOnNext(last::set)
@@ -46,7 +46,7 @@ public final class SecureLogBundleCreator {
                             result.setBundle(new SecureLogBundle());
                             result.getBundle().setBeginCheckPoint((CheckPointLogEntry) e);
                             if (hostPEMMapping != null) {
-                                result.getBundle().setPem(hostPEMMapping.get(e.getHost()));
+                                result.getBundle().setCertificates(hostPEMMapping.get(e.getHost()));
                             }
                         } else if (s.getLastAnalysedCheckPoint() != null) {
                             //this checkpoint is not the first one of the Flux

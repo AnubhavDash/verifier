@@ -174,7 +174,7 @@ public class SignatureChecker {
         return result;
     }
 
-    public static boolean verifySignature(byte[] source, byte[] signature, byte[] certificate) {
+    public static boolean verifySignature(byte[] source, byte[] signature, byte[] certificate, byte[][] intermediateCertificates, byte[] rootCertificate) {
         if (Security.getProvider("BC") == null) {
             Security.addProvider(new BouncyCastleProvider());
         }
@@ -187,9 +187,16 @@ public class SignatureChecker {
             signatureAlgorithm.update(source);
 
             if (signatureAlgorithm.verify(signature)) {
-                //TODO check if we have to check the chain or not
                 //signature is valid, checking certificate chain validity
-                //verifyCertificateChain(sCert, Collections.singletonList(sCert), loadCertificate(rootCert));
+                List<X509Certificate> intermediates = intermediateCertificates != null ? Arrays.stream(intermediateCertificates).map(bytes -> {
+                    try {
+                        return loadCertificate(bytes);
+                    } catch (CertificateException | IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).collect(Collectors.toList()) : new LinkedList<>();
+                intermediates.add(sCert);
+                verifyCertificateChain(sCert, intermediates, loadCertificate(rootCertificate));
                 return true;
             }
         } catch (Exception e) {
