@@ -1,13 +1,13 @@
 Hostname;Control Component
 h002ga;CC1
 h002gb;CC1
-h002h6;CC2
-h002gn;CC2
-h002gd;CC3
-h002ge;CC3
-h002gh;CC4
-h002gi;CC4
+h002h6;CC4
+h002gn;CC4
+h002gd;CC2
+h002ge;CC2
+h002gh;CC3
+h002gi;CC3
 h002gc;CC1
-h002gp;CC2
-h002gf;CC3
-h002gj;CC4
+h002gp;CC4
+h002gf;CC2
+h002gj;CC3

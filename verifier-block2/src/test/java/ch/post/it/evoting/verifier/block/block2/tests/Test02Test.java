@@ -19,15 +19,14 @@ import java.nio.file.Files;
 public class Test02Test {
 
     @Test
-    @Ignore
     public void executeTestOK() {
         TestResult testResult = new Test02().executeTest(new File(getClass().getResource("/Test02/OK").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.OK, testResult.getStatus());
     }
 
-    @Ignore
     @Test
+    @Ignore
     public void executeTestNOK() {
         TestResult testResult = new Test02().executeTest(new File(getClass().getResource("/Test02/NOK").getFile()));
         Assert.assertNotNull(testResult);
