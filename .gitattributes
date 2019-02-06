@@ -1,4 +1,4 @@
-dataset/*.* -crlf
+dataset/** -crlf
 verifier-block1/src/test/resources/** -crlf
 verifier-block2/src/test/resources/** -crlf
 verifier-block3/src/test/resources/** -crlf
