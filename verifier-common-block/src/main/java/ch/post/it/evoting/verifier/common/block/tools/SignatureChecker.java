@@ -27,9 +27,6 @@ public class SignatureChecker {
 
     private static final Logger LOGGER = Logger.getLogger(SignatureChecker.class);
 
-    private static final String CRLF = "\r\n";
-    private static final String LF = "\n";
-
     private SignatureChecker() {
         //private ctor, use static
     }
