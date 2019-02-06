@@ -1,0 +1,422 @@
+{
+  "electionEvent" : {
+    "id" : "13abb8e438be42d4ae1f6059214f9321",
+    "alias" : "KPMG_audit_03",
+    "ballotBoxes" : [ {
+      "id" : "98c5f94e928843a4b1bd084979c5c59b",
+      "alias" : "TG-CH-1|TG-MU-10002",
+      "authId" : "fc8137d6-d753-305c-affd-d12b38febfaa",
+      "vcsId" : "726ef8e176464154ac200c4d9952a985",
+      "vcsAlias" : "vcs_TG-CH-1|TG-MU-10002",
+      "votingCardsGenerated" : 10,
+      "countingCircles" : [ {
+        "id" : "TG-MU-10002",
+        "domainOfInfluence" : [ {
+          "id" : "1033803945",
+          "votes" : [ {
+            "id" : "563c29fedd564b4cb5007e93aa9cfee1",
+            "alias" : "1045776772",
+            "questions" : [ {
+              "alias" : "1",
+              "options" : [ {
+                "id" : "d7e34cc7afb94866b1464b5a2c079913",
+                "alias" : "ea66c06c-1e1c-35fa-9f1a-a39d98dc5bc1",
+                "primeNumber" : 18701
+              }, {
+                "id" : "9182c6b3576d42fba04d96030f4b1235",
+                "alias" : "98c6f2c2-287f-3c73-8ea3-d40ae7ec3ff2",
+                "primeNumber" : 187009
+              }, {
+                "id" : "a26fb6ede1644422aa67f4cf59da2181",
+                "alias" : "13cee27a-2bd9-3915-879f-049378cffdd3",
+                "primeNumber" : 187069
+              } ]
+            } ]
+          }, {
+            "id" : "14d33ed023e94633845d6745072054ae",
+            "alias" : "1045776773",
+            "questions" : [ {
+              "alias" : "1045776773-EVotingAbstimmungsfrage",
+              "options" : [ {
+                "id" : "93a1dd17d0e64291a1c27b773a20a4a2",
+                "alias" : "2c00a454-10cc-3754-a823-ab7cb449cacd",
+                "primeNumber" : 187219
+              }, {
+                "id" : "6f82c2fc6e8b47849728222935464244",
+                "alias" : "c9ab2f84-f056-3b0e-bc4f-a5376a7c0319",
+                "primeNumber" : 187177
+              }, {
+                "id" : "6d2b5a827fcf4cdfa453815e6077ac17",
+                "alias" : "bc42374b-7035-3fd5-a812-fece753e6dfd",
+                "primeNumber" : 187223
+              } ]
+            }, {
+              "alias" : "1045776773-EVotingAbstiFrageGegenvorschlag",
+              "options" : [ {
+                "id" : "d98bd11bae424be4916bced3f1ff5a10",
+                "alias" : "8590d31f-01c3-357d-b23e-a6488dfd1382",
+                "primeNumber" : 187133
+              }, {
+                "id" : "6c7c6cf80e73493f8ac2d57afa71dd10",
+                "alias" : "61036778-2461-3b0a-8301-cac11372a1be",
+                "primeNumber" : 187129
+              }, {
+                "id" : "73f251a1a1e7488cbb6a45f9e9b2a4b7",
+                "alias" : "002702c0-80a0-3cae-8cee-0bd5b0cea12e",
+                "primeNumber" : 187081
+              } ]
+            }, {
+              "alias" : "1045776773",
+              "options" : [ {
+                "id" : "a1fb87719f4d4d989799148692c4f8fc",
+                "alias" : "4fa925f8-07c2-3666-93c2-fd306d7183c7",
+                "primeNumber" : 187111
+              }, {
+                "id" : "ae1d165518374a93ba42783e098d17c1",
+                "alias" : "0de05d34-35e2-3e08-85bb-f633d24378fb",
+                "primeNumber" : 187163
+              }, {
+                "id" : "df94a71720064a4b901c8789d2752c1e",
+                "alias" : "1df3abf4-12a8-3b5d-9d4c-ca3ac0be7976",
+                "primeNumber" : 18713
+              } ]
+            } ]
+          } ],
+          "elections" : [ ]
+        } ]
+      } ]
+    }, {
+      "id" : "c449bbc91f90477d9a1c69b7d29a4424",
+      "alias" : "TG-CH-1|TG-MU-10004",
+      "authId" : "45fa3b7b-d0d7-394f-ac2e-c2f62448d077",
+      "vcsId" : "2b5de578fab44c2581bf35be46bc40ad",
+      "vcsAlias" : "vcs_TG-CH-1|TG-MU-10004",
+      "votingCardsGenerated" : 10,
+      "countingCircles" : [ {
+        "id" : "TG-MU-10004",
+        "domainOfInfluence" : [ {
+          "id" : "1033803945",
+          "votes" : [ {
+            "id" : "563c29fedd564b4cb5007e93aa9cfee1",
+            "alias" : "1045776772",
+            "questions" : [ {
+              "alias" : "1",
+              "options" : [ {
+                "id" : "d7e34cc7afb94866b1464b5a2c079913",
+                "alias" : "ea66c06c-1e1c-35fa-9f1a-a39d98dc5bc1",
+                "primeNumber" : 18701
+              }, {
+                "id" : "9182c6b3576d42fba04d96030f4b1235",
+                "alias" : "98c6f2c2-287f-3c73-8ea3-d40ae7ec3ff2",
+                "primeNumber" : 187009
+              }, {
+                "id" : "a26fb6ede1644422aa67f4cf59da2181",
+                "alias" : "13cee27a-2bd9-3915-879f-049378cffdd3",
+                "primeNumber" : 187069
+              } ]
+            } ]
+          }, {
+            "id" : "14d33ed023e94633845d6745072054ae",
+            "alias" : "1045776773",
+            "questions" : [ {
+              "alias" : "1045776773-EVotingAbstimmungsfrage",
+              "options" : [ {
+                "id" : "93a1dd17d0e64291a1c27b773a20a4a2",
+                "alias" : "2c00a454-10cc-3754-a823-ab7cb449cacd",
+                "primeNumber" : 187219
+              }, {
+                "id" : "6f82c2fc6e8b47849728222935464244",
+                "alias" : "c9ab2f84-f056-3b0e-bc4f-a5376a7c0319",
+                "primeNumber" : 187177
+              }, {
+                "id" : "6d2b5a827fcf4cdfa453815e6077ac17",
+                "alias" : "bc42374b-7035-3fd5-a812-fece753e6dfd",
+                "primeNumber" : 187223
+              } ]
+            }, {
+              "alias" : "1045776773-EVotingAbstiFrageGegenvorschlag",
+              "options" : [ {
+                "id" : "d98bd11bae424be4916bced3f1ff5a10",
+                "alias" : "8590d31f-01c3-357d-b23e-a6488dfd1382",
+                "primeNumber" : 187133
+              }, {
+                "id" : "6c7c6cf80e73493f8ac2d57afa71dd10",
+                "alias" : "61036778-2461-3b0a-8301-cac11372a1be",
+                "primeNumber" : 187129
+              }, {
+                "id" : "73f251a1a1e7488cbb6a45f9e9b2a4b7",
+                "alias" : "002702c0-80a0-3cae-8cee-0bd5b0cea12e",
+                "primeNumber" : 187081
+              } ]
+            }, {
+              "alias" : "1045776773",
+              "options" : [ {
+                "id" : "a1fb87719f4d4d989799148692c4f8fc",
+                "alias" : "4fa925f8-07c2-3666-93c2-fd306d7183c7",
+                "primeNumber" : 187111
+              }, {
+                "id" : "ae1d165518374a93ba42783e098d17c1",
+                "alias" : "0de05d34-35e2-3e08-85bb-f633d24378fb",
+                "primeNumber" : 187163
+              }, {
+                "id" : "df94a71720064a4b901c8789d2752c1e",
+                "alias" : "1df3abf4-12a8-3b5d-9d4c-ca3ac0be7976",
+                "primeNumber" : 18713
+              } ]
+            } ]
+          } ],
+          "elections" : [ ]
+        } ]
+      } ]
+    }, {
+      "id" : "2b285f7a312a465ca300310572e02422",
+      "alias" : "TG-CH-1|TG-MU-10010",
+      "authId" : "f1035604-92a9-365f-ba4b-0a2f9bb15019",
+      "vcsId" : "b41c56be9eff4608803d51e7771490f4",
+      "vcsAlias" : "vcs_TG-CH-1|TG-MU-10010",
+      "votingCardsGenerated" : 10,
+      "countingCircles" : [ {
+        "id" : "TG-MU-10010",
+        "domainOfInfluence" : [ {
+          "id" : "1033803945",
+          "votes" : [ {
+            "id" : "563c29fedd564b4cb5007e93aa9cfee1",
+            "alias" : "1045776772",
+            "questions" : [ {
+              "alias" : "1",
+              "options" : [ {
+                "id" : "d7e34cc7afb94866b1464b5a2c079913",
+                "alias" : "ea66c06c-1e1c-35fa-9f1a-a39d98dc5bc1",
+                "primeNumber" : 18701
+              }, {
+                "id" : "9182c6b3576d42fba04d96030f4b1235",
+                "alias" : "98c6f2c2-287f-3c73-8ea3-d40ae7ec3ff2",
+                "primeNumber" : 187009
+              }, {
+                "id" : "a26fb6ede1644422aa67f4cf59da2181",
+                "alias" : "13cee27a-2bd9-3915-879f-049378cffdd3",
+                "primeNumber" : 187069
+              } ]
+            } ]
+          }, {
+            "id" : "14d33ed023e94633845d6745072054ae",
+            "alias" : "1045776773",
+            "questions" : [ {
+              "alias" : "1045776773-EVotingAbstimmungsfrage",
+              "options" : [ {
+                "id" : "93a1dd17d0e64291a1c27b773a20a4a2",
+                "alias" : "2c00a454-10cc-3754-a823-ab7cb449cacd",
+                "primeNumber" : 187219
+              }, {
+                "id" : "6f82c2fc6e8b47849728222935464244",
+                "alias" : "c9ab2f84-f056-3b0e-bc4f-a5376a7c0319",
+                "primeNumber" : 187177
+              }, {
+                "id" : "6d2b5a827fcf4cdfa453815e6077ac17",
+                "alias" : "bc42374b-7035-3fd5-a812-fece753e6dfd",
+                "primeNumber" : 187223
+              } ]
+            }, {
+              "alias" : "1045776773-EVotingAbstiFrageGegenvorschlag",
+              "options" : [ {
+                "id" : "d98bd11bae424be4916bced3f1ff5a10",
+                "alias" : "8590d31f-01c3-357d-b23e-a6488dfd1382",
+                "primeNumber" : 187133
+              }, {
+                "id" : "6c7c6cf80e73493f8ac2d57afa71dd10",
+                "alias" : "61036778-2461-3b0a-8301-cac11372a1be",
+                "primeNumber" : 187129
+              }, {
+                "id" : "73f251a1a1e7488cbb6a45f9e9b2a4b7",
+                "alias" : "002702c0-80a0-3cae-8cee-0bd5b0cea12e",
+                "primeNumber" : 187081
+              } ]
+            }, {
+              "alias" : "1045776773",
+              "options" : [ {
+                "id" : "a1fb87719f4d4d989799148692c4f8fc",
+                "alias" : "4fa925f8-07c2-3666-93c2-fd306d7183c7",
+                "primeNumber" : 187111
+              }, {
+                "id" : "ae1d165518374a93ba42783e098d17c1",
+                "alias" : "0de05d34-35e2-3e08-85bb-f633d24378fb",
+                "primeNumber" : 187163
+              }, {
+                "id" : "df94a71720064a4b901c8789d2752c1e",
+                "alias" : "1df3abf4-12a8-3b5d-9d4c-ca3ac0be7976",
+                "primeNumber" : 18713
+              } ]
+            } ]
+          } ],
+          "elections" : [ ]
+        } ]
+      } ]
+    }, {
+      "id" : "d11800d3d1a34d8c8c7aafc58e10d87e",
+      "alias" : "TG-CH-1|TG-MU-10012",
+      "authId" : "88cb284d-e9bd-3133-89ed-78f711581afc",
+      "vcsId" : "107e8ec912484f95a45cf23b042f9c02",
+      "vcsAlias" : "vcs_TG-CH-1|TG-MU-10012",
+      "votingCardsGenerated" : 10,
+      "countingCircles" : [ {
+        "id" : "TG-MU-10012",
+        "domainOfInfluence" : [ {
+          "id" : "1033803945",
+          "votes" : [ {
+            "id" : "563c29fedd564b4cb5007e93aa9cfee1",
+            "alias" : "1045776772",
+            "questions" : [ {
+              "alias" : "1",
+              "options" : [ {
+                "id" : "d7e34cc7afb94866b1464b5a2c079913",
+                "alias" : "ea66c06c-1e1c-35fa-9f1a-a39d98dc5bc1",
+                "primeNumber" : 18701
+              }, {
+                "id" : "9182c6b3576d42fba04d96030f4b1235",
+                "alias" : "98c6f2c2-287f-3c73-8ea3-d40ae7ec3ff2",
+                "primeNumber" : 187009
+              }, {
+                "id" : "a26fb6ede1644422aa67f4cf59da2181",
+                "alias" : "13cee27a-2bd9-3915-879f-049378cffdd3",
+                "primeNumber" : 187069
+              } ]
+            } ]
+          }, {
+            "id" : "14d33ed023e94633845d6745072054ae",
+            "alias" : "1045776773",
+            "questions" : [ {
+              "alias" : "1045776773-EVotingAbstimmungsfrage",
+              "options" : [ {
+                "id" : "93a1dd17d0e64291a1c27b773a20a4a2",
+                "alias" : "2c00a454-10cc-3754-a823-ab7cb449cacd",
+                "primeNumber" : 187219
+              }, {
+                "id" : "6f82c2fc6e8b47849728222935464244",
+                "alias" : "c9ab2f84-f056-3b0e-bc4f-a5376a7c0319",
+                "primeNumber" : 187177
+              }, {
+                "id" : "6d2b5a827fcf4cdfa453815e6077ac17",
+                "alias" : "bc42374b-7035-3fd5-a812-fece753e6dfd",
+                "primeNumber" : 187223
+              } ]
+            }, {
+              "alias" : "1045776773-EVotingAbstiFrageGegenvorschlag",
+              "options" : [ {
+                "id" : "d98bd11bae424be4916bced3f1ff5a10",
+                "alias" : "8590d31f-01c3-357d-b23e-a6488dfd1382",
+                "primeNumber" : 187133
+              }, {
+                "id" : "6c7c6cf80e73493f8ac2d57afa71dd10",
+                "alias" : "61036778-2461-3b0a-8301-cac11372a1be",
+                "primeNumber" : 187129
+              }, {
+                "id" : "73f251a1a1e7488cbb6a45f9e9b2a4b7",
+                "alias" : "002702c0-80a0-3cae-8cee-0bd5b0cea12e",
+                "primeNumber" : 187081
+              } ]
+            }, {
+              "alias" : "1045776773",
+              "options" : [ {
+                "id" : "a1fb87719f4d4d989799148692c4f8fc",
+                "alias" : "4fa925f8-07c2-3666-93c2-fd306d7183c7",
+                "primeNumber" : 187111
+              }, {
+                "id" : "ae1d165518374a93ba42783e098d17c1",
+                "alias" : "0de05d34-35e2-3e08-85bb-f633d24378fb",
+                "primeNumber" : 187163
+              }, {
+                "id" : "df94a71720064a4b901c8789d2752c1e",
+                "alias" : "1df3abf4-12a8-3b5d-9d4c-ca3ac0be7976",
+                "primeNumber" : 18713
+              } ]
+            } ]
+          } ],
+          "elections" : [ ]
+        } ]
+      } ]
+    }, {
+      "id" : "dac3e864dde4432cb895726189b0cabc",
+      "alias" : "TG-CH-1|TG-MU-10006",
+      "authId" : "b457b306-b89e-3c58-95ca-a31804b14ee6",
+      "vcsId" : "71349a785a234866901f379a973e6b89",
+      "vcsAlias" : "vcs_TG-CH-1|TG-MU-10006",
+      "votingCardsGenerated" : 10,
+      "countingCircles" : [ {
+        "id" : "TG-MU-10006",
+        "domainOfInfluence" : [ {
+          "id" : "1033803945",
+          "votes" : [ {
+            "id" : "563c29fedd564b4cb5007e93aa9cfee1",
+            "alias" : "1045776772",
+            "questions" : [ {
+              "alias" : "1",
+              "options" : [ {
+                "id" : "d7e34cc7afb94866b1464b5a2c079913",
+                "alias" : "ea66c06c-1e1c-35fa-9f1a-a39d98dc5bc1",
+                "primeNumber" : 18701
+              }, {
+                "id" : "9182c6b3576d42fba04d96030f4b1235",
+                "alias" : "98c6f2c2-287f-3c73-8ea3-d40ae7ec3ff2",
+                "primeNumber" : 187009
+              }, {
+                "id" : "a26fb6ede1644422aa67f4cf59da2181",
+                "alias" : "13cee27a-2bd9-3915-879f-049378cffdd3",
+                "primeNumber" : 187069
+              } ]
+            } ]
+          }, {
+            "id" : "14d33ed023e94633845d6745072054ae",
+            "alias" : "1045776773",
+            "questions" : [ {
+              "alias" : "1045776773-EVotingAbstimmungsfrage",
+              "options" : [ {
+                "id" : "93a1dd17d0e64291a1c27b773a20a4a2",
+                "alias" : "2c00a454-10cc-3754-a823-ab7cb449cacd",
+                "primeNumber" : 187219
+              }, {
+                "id" : "6f82c2fc6e8b47849728222935464244",
+                "alias" : "c9ab2f84-f056-3b0e-bc4f-a5376a7c0319",
+                "primeNumber" : 187177
+              }, {
+                "id" : "6d2b5a827fcf4cdfa453815e6077ac17",
+                "alias" : "bc42374b-7035-3fd5-a812-fece753e6dfd",
+                "primeNumber" : 187223
+              } ]
+            }, {
+              "alias" : "1045776773-EVotingAbstiFrageGegenvorschlag",
+              "options" : [ {
+                "id" : "d98bd11bae424be4916bced3f1ff5a10",
+                "alias" : "8590d31f-01c3-357d-b23e-a6488dfd1382",
+                "primeNumber" : 187133
+              }, {
+                "id" : "6c7c6cf80e73493f8ac2d57afa71dd10",
+                "alias" : "61036778-2461-3b0a-8301-cac11372a1be",
+                "primeNumber" : 187129
+              }, {
+                "id" : "73f251a1a1e7488cbb6a45f9e9b2a4b7",
+                "alias" : "002702c0-80a0-3cae-8cee-0bd5b0cea12e",
+                "primeNumber" : 187081
+              } ]
+            }, {
+              "alias" : "1045776773",
+              "options" : [ {
+                "id" : "a1fb87719f4d4d989799148692c4f8fc",
+                "alias" : "4fa925f8-07c2-3666-93c2-fd306d7183c7",
+                "primeNumber" : 187111
+              }, {
+                "id" : "ae1d165518374a93ba42783e098d17c1",
+                "alias" : "0de05d34-35e2-3e08-85bb-f633d24378fb",
+                "primeNumber" : 187163
+              }, {
+                "id" : "df94a71720064a4b901c8789d2752c1e",
+                "alias" : "1df3abf4-12a8-3b5d-9d4c-ca3ac0be7976",
+                "primeNumber" : 18713
+              } ]
+            } ]
+          } ],
+          "elections" : [ ]
+        } ]
+      } ]
+    } ]
+  }
+}

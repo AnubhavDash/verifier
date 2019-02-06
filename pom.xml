@@ -7,7 +7,7 @@
     <groupId>ch.post.it.evoting.verifier</groupId>
     <artifactId>verifier</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0.1-SNAPSHOT</version>
+    <version>1.0.1.1-SNAPSHOT</version>
 
     <developers>
         <developer>
@@ -111,7 +111,6 @@
         <module>verifier-web-client</module>
         <module>verifier-web</module>
         <module>verifier-assembly</module>
-        <module>verifier-securelogreverser-cli</module>
     </modules>
 
     <dependencies>
