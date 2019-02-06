@@ -35,32 +35,6 @@ public class SignatureChecker {
     }
 
     public static boolean verifyPKCS7(byte[] sourceData, byte[] signatureData, byte[] rootCert) {
-        boolean result = processPKCS7(sourceData, signatureData, rootCert);
-        /*if (!result) {
-            String s = TypeConverter.byteToString(sourceData);
-            if (s.contains(CRLF)) {
-                result = processPKCS7(TypeConverter.stringToByte(s.replaceAll(CRLF, LF)), signatureData, rootCert);
-            } else if (s.contains(LF)) {
-                result = processPKCS7(TypeConverter.stringToByte(s.replaceAll(LF, CRLF)), signatureData, rootCert);
-            }
-        }*/
-        return result;
-    }
-
-    public static boolean verifyMetdata(byte[] sourceData, byte[] metadataData, byte[] signerCert, byte[] rootCert) {
-        boolean result = processMetdata(sourceData, metadataData, signerCert, rootCert);
-        /*if (!result) {
-            String s = TypeConverter.byteToString(sourceData);
-            if (s.contains(CRLF)) {
-                result = processMetdata(TypeConverter.stringToByte(s.replaceAll(CRLF, LF)), metadataData, signerCert, rootCert);
-            } else if (s.contains(LF)) {
-                result = processMetdata(TypeConverter.stringToByte(s.replaceAll(LF, CRLF)), metadataData, signerCert, rootCert);
-            }
-        }*/
-        return result;
-    }
-
-    private static boolean processPKCS7(byte[] sourceData, byte[] signatureData, byte[] rootCert) {
         try {
             if (Security.getProvider("BC") == null) {
                 Security.addProvider(new BouncyCastleProvider());
@@ -99,7 +73,7 @@ public class SignatureChecker {
         return false;
     }
 
-    private static boolean processMetdata(byte[] sourceData, byte[] metadataData, byte[] signerCert, byte[] rootCert) {
+    public static boolean verifyMetdata(byte[] sourceData, byte[] metadataData, byte[] signerCert, byte[] rootCert) {
         if (Security.getProvider("BC") == null) {
             Security.addProvider(new BouncyCastleProvider());
         }
