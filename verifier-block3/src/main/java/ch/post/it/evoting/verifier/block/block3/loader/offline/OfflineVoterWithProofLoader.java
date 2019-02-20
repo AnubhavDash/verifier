@@ -1,6 +1,6 @@
 package ch.post.it.evoting.verifier.block.block3.loader.offline;
 
-import ch.post.it.evoting.verifier.block.block3.loader.VoterWithProofLoader;
+import ch.post.it.evoting.verifier.block.block3.scytl.loader.VoterWithProofLoader;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.OnlineDecryptionProof;
@@ -81,7 +81,7 @@ public class OfflineVoterWithProofLoader implements VoterWithProofLoader {
             result.setGammaOfCiphertext(gamma.getValue());
 
         } catch (IOException e) {
-            throw new RuntimeException("Unable to convert to proof", e);
+            throw new RuntimeException("Unable to map to proof", e);
         }
         return result;
     }
@@ -121,7 +121,7 @@ public class OfflineVoterWithProofLoader implements VoterWithProofLoader {
                 zpElements.add(new ZpElement(eb.getValue(), eb.getP(), eb.getQ()));
             }
         } catch (IOException e) {
-            throw new RuntimeException("Unable to convert to EncryptedBallot", e);
+            throw new RuntimeException("Unable to map to EncryptedBallot", e);
         }
 
         return new ElGamalEncryptedBallot(zpElements);
@@ -140,7 +140,7 @@ public class OfflineVoterWithProofLoader implements VoterWithProofLoader {
                     .map(value -> new ZpElement(value, params))
                     .collect(Collectors.toList()).toArray(new ZpElement[]{});
         } catch (IOException e) {
-            throw new RuntimeException("Unable to convert to plaintext", e);
+            throw new RuntimeException("Unable to map to plaintext", e);
         }
         return new GjosteenElGamalPlaintext(zpElements);
     }

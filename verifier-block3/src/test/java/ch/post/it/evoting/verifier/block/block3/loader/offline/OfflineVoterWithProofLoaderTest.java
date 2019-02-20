@@ -1,9 +1,7 @@
 package ch.post.it.evoting.verifier.block.block3.loader.offline;
 
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallot;
-import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
-import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
 import org.junit.Assert;
 import org.junit.Test;
 

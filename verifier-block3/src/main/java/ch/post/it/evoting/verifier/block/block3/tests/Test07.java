@@ -1,6 +1,10 @@
 package ch.post.it.evoting.verifier.block.block3.tests;
 
 import ch.post.it.evoting.verifier.block.block3.Block3TestSuite;
+import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflineEncryptionParametersLoader;
+import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflinePublicKeyLoader;
+import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflineVoterWithProofLoader;
+import ch.post.it.evoting.verifier.block.block3.scytl.loader.OfflineDataLoader;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;
@@ -14,6 +18,7 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.file.Path;
 
 public class Test07 extends Test {
 
@@ -37,7 +42,13 @@ public class Test07 extends Test {
         try {
             File[] ballotBoxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES));
             for (File ballotBox : ballotBoxes) {
-                int verificationResultCode = DecryptVerifier.verify(inputDirectory.toPath(), ballotBox.toPath().resolve("0"));
+                Path ballotboxPath = ballotBox.toPath().resolve("0");
+                OfflineDataLoader offlineDataLoader = new OfflineDataLoader();
+                offlineDataLoader.setEncryptionParametersLoader(new OfflineEncryptionParametersLoader(inputDirectory.toPath()));
+                offlineDataLoader.setPublicKeyLoader(new OfflinePublicKeyLoader(ballotboxPath));
+                offlineDataLoader.setVoterWithProofLoader(new OfflineVoterWithProofLoader(ballotboxPath));
+
+                int verificationResultCode = DecryptVerifier.verify(offlineDataLoader);
                 if (verificationResultCode != 1 && verificationResultCode != -1) {
                     throw new TestFailureException("The verification failed", ballotBox.getName());
                 }
@@ -51,7 +62,7 @@ public class Test07 extends Test {
             if (e.getCause() instanceof FileNotFoundException) {
                 LOGGER.error("a FileNotFoundException error occurred", e);
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message", e.getCause().getLocalizedMessage()));
-            } else{
+            } else {
                 LOGGER.error("an unexpected error occurred", e);
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
             }

@@ -1,6 +1,6 @@
 package ch.post.it.evoting.verifier.block.block3.loader.offline;
 
-import ch.post.it.evoting.verifier.block.block3.loader.ReEncryptedBallotsLoader;
+import ch.post.it.evoting.verifier.block.block3.scytl.loader.ReEncryptedBallotsLoader;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;
 

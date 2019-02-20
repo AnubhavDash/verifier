@@ -2,7 +2,7 @@ package ch.post.it.evoting.verifier.block.block3.tests;
 
 import ch.post.it.evoting.verifier.block.block3.BGOfflineVerificationProcessor;
 import ch.post.it.evoting.verifier.block.block3.Block3TestSuite;
-import ch.post.it.evoting.verifier.block.block3.TestType;
+import ch.post.it.evoting.verifier.block.block3.scytl.TestType;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestDefinition;

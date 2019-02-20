@@ -1,10 +1,15 @@
 package ch.post.it.evoting.verifier.block.block3;
 
+import ch.post.it.evoting.verifier.block.block3.loader.offline.*;
+import ch.post.it.evoting.verifier.block.block3.scytl.TestType;
+import ch.post.it.evoting.verifier.block.block3.scytl.loader.OfflineDataLoader;
 import ch.post.it.evoting.verifier.common.Status;
 import com.scytl.products.ov.mixnet.BGVerifier;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.BiFunction;
 
 public class BGOfflineVerificationProcessor {
 
@@ -43,19 +48,37 @@ public class BGOfflineVerificationProcessor {
         this.path = null;
     }
 
-    public  synchronized void executeProcess(Path path) {
+    public synchronized void executeProcess(Path path) {
         if (this.path == null) {
             this.path = path;
         } else if (!this.path.equals(path)) {
             throw new RuntimeException("Not unique Path defined");
         }
 
+        BiFunction<Path, Path, OfflineDataLoader> offlineDataLoaderBiFunction = (p, outputParentPath) -> {
+            try {
+                OfflineDataLoader result = new OfflineDataLoader();
+
+                result.setEncryptionParametersLoader(new OfflineEncryptionParametersLoader(outputParentPath.getParent()));
+                result.setPublicKeyLoader(new OfflinePublicKeyLoader(p));
+                result.setEncryptedBallotsLoader(new OfflineEncryptedBallotsLoader(p, outputParentPath.getParent()));
+                result.setReEncryptedBallotsLoader(new OfflineReEncryptedBallotsLoader(p, outputParentPath.getParent()));
+                result.setShuffleProofLoader(new OfflineShuffleProofLoader(p));
+                result.setCommitmentParametersLoader(new OfflineCommitmentParametersLoader(p));
+
+                return result;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        };
+
         if (!this.processed) {
-            BGVerifier.verify(this.path, (TestType t, Status s, String m) -> {
+            BGVerifier.verify(this.path, (TestType t, ch.post.it.evoting.verifier.block.block3.scytl.Status s, String m) -> {
                 if (!statuses.containsKey(t) || !statuses.get(t).getKey().equals(Status.NOK)) {
-                    statuses.put(t, new AbstractMap.SimpleEntry<>(s, s == Status.NOK ? m : null));
+                    Status status = StatusConverter.map(s);
+                    statuses.put(t, new AbstractMap.SimpleEntry<>(status, status == Status.NOK ? m : null));
                 }
-            });
+            }, offlineDataLoaderBiFunction);
             this.processed = true;
         }
     }
