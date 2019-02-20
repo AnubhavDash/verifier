@@ -141,6 +141,9 @@ public class BGVerifier {
 
                 // online
                 final File[] onlineMixing = ballotBox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
+                if(onlineMixing.length != 3 ){
+                    throw new VerifierException("the number of control components expected is 3 but actual is " + onlineMixing.length);
+                }
                 for (File file : onlineMixing) {
                     OnlineMixingProofLoader onlineMixingProofLoader = new OnlineMixingProofLoader(file.toPath());
                     ZpGroup zpGroup = onlineMixingProofLoader.getZpGroup();
