@@ -122,7 +122,6 @@
     </build>
 
     <modules>
-        <module>verifier-block3-scytl</module>
         <module>verifier-common</module>
         <module>verifier-common-block</module>
         <module>verifier-block1</module>
