@@ -7,6 +7,7 @@ import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import com.scytl.decrypt.DecryptVerifier;
+import com.scytl.products.ov.mixnet.commons.exceptions.VerifierException;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -40,6 +41,9 @@ public class Test27 extends Test {
 
             for (File ballotBox : ballotBoxes) {
                 final File[] onlineMixings = ballotBox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
+                if(onlineMixings.length != 3 ){
+                    throw new VerifierException("the number of control components expected is 3 but actual is " + onlineMixings.length);
+                }
                 for (File onlineMixing : onlineMixings) {
                     //for this onlineMixing, so for this ccn , get the correct ccX_mixing_public_key.json file
                     File pkJsonFile = getPkJsonFile(onlineMixing.getName(), ccMixingKeys);
