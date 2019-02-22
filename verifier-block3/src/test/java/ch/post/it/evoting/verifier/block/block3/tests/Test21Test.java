@@ -20,4 +20,10 @@ public class Test21Test {
         TestResult result = new Test21().executeTest(new File(getClass().getResource("/Test21/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
+
+    @Test
+    public void executeTestNOKnot3ControlComponents() {
+        TestResult result = new Test21().executeTest(new File(getClass().getResource("/Test21/NOK-CC").getFile()));
+        Assert.assertEquals(Status.NOK, result.getStatus());
+    }
 }

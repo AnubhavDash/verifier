@@ -7,6 +7,7 @@ import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import com.scytl.products.ov.mixnet.commons.exceptions.VerifierException;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentParams;
 import org.apache.log4j.Logger;
 
@@ -40,7 +41,9 @@ public class Test28 extends Test {
             File[] ballotBoxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES));
             for (File ballotBox : ballotBoxes) {
                 final File[] onlineMixings = ballotBox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
-
+                if(onlineMixings.length != 3 ){
+                    throw new VerifierException("the number of control components expected is 3 but actual is " + onlineMixings.length);
+                }
                 if (onlineMixings.length == 0) {
                     result.setStatus(Status.NOK);
                     result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test28.file.not.found.message"));
