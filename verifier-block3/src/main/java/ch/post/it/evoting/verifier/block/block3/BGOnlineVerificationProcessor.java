@@ -1,10 +1,15 @@
 package ch.post.it.evoting.verifier.block.block3;
 
+import ch.post.it.evoting.verifier.block.block3.loader.online.OnlineMixingProofLoader;
+import ch.post.it.evoting.verifier.block.block3.scytl.TestType;
+import ch.post.it.evoting.verifier.block.block3.scytl.loader.OnlineDataLoader;
 import ch.post.it.evoting.verifier.common.Status;
 import com.scytl.products.ov.mixnet.BGVerifier;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Function;
 
 public class BGOnlineVerificationProcessor {
 
@@ -50,15 +55,29 @@ public class BGOnlineVerificationProcessor {
             throw new RuntimeException("Not unique Path defined");
         }
 
+        Function<Path, OnlineDataLoader> dataLoaderFunction = p -> {
+            try {
+                return new OnlineMixingProofLoader(p);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        };
+
+
         if (!this.processed) {
-            BGVerifier.verifyOnline(this.path, (TestType t, Status s, String m) -> {
+            BGVerifier.verifyOnline(this.path, (TestType t, ch.post.it.evoting.verifier.block.block3.scytl.Status
+                    s, String m) -> {
                 if (!statuses.containsKey(t) || !statuses.get(t).getKey().equals(Status.NOK)) {
-                    statuses.put(t, new AbstractMap.SimpleEntry<>(s, s == Status.NOK ? m : null));
+                    Status status = StatusConverter.map(s);
+                    statuses.put(t, new AbstractMap.SimpleEntry<>(status, status == Status.NOK ? m : null));
                 }
-            });
+            }, dataLoaderFunction);
             this.processed = true;
         }
     }
+
+
+
 
     public AbstractMap.SimpleEntry<Status, String> getStatus(TestType type) {
         if (!processed) {

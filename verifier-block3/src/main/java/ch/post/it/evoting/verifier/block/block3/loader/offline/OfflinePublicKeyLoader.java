@@ -1,6 +1,6 @@
 package ch.post.it.evoting.verifier.block.block3.loader.offline;
 
-import ch.post.it.evoting.verifier.block.block3.loader.PublicKeyLoader;
+import ch.post.it.evoting.verifier.block.block3.scytl.loader.PublicKeyLoader;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.PublicKey;

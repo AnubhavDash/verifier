@@ -22,19 +22,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.googlecode.jcsv</groupId>
-            <artifactId>jcsv</artifactId>
-            <version>1.4.0</version>
-        </dependency>
-        <!--<dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.21</version>
-        </dependency>-->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>1.3.2</version>
+            <groupId>ch.post.it.evoting.verifier</groupId>
+            <artifactId>verifier-block3-scytl</artifactId>
+            <version>1.0.1.1</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

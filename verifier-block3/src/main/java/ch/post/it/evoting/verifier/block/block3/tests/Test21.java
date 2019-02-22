@@ -2,7 +2,7 @@ package ch.post.it.evoting.verifier.block.block3.tests;
 
 import ch.post.it.evoting.verifier.block.block3.BGOnlineVerificationProcessor;
 import ch.post.it.evoting.verifier.block.block3.Block3TestSuite;
-import ch.post.it.evoting.verifier.block.block3.TestType;
+import ch.post.it.evoting.verifier.block.block3.scytl.TestType;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;

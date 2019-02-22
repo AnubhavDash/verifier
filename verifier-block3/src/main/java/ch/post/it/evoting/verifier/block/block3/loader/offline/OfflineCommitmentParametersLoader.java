@@ -8,7 +8,7 @@
 
 package ch.post.it.evoting.verifier.block.block3.loader.offline;
 
-import ch.post.it.evoting.verifier.block.block3.loader.CommitmentParametersLoader;
+import ch.post.it.evoting.verifier.block.block3.scytl.loader.CommitmentParametersLoader;
 import com.scytl.products.ov.mixnet.commons.io.BGReader;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentParams;

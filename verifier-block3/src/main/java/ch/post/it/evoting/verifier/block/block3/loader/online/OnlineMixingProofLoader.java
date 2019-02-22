@@ -1,7 +1,7 @@
 package ch.post.it.evoting.verifier.block.block3.loader.online;
 
-import ch.post.it.evoting.verifier.block.block3.loader.*;
 import ch.post.it.evoting.verifier.block.block3.loader.online.mapper.SecondAnswerMapper;
+import ch.post.it.evoting.verifier.block.block3.scytl.loader.OnlineDataLoader;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.CcMixingPublicKey;
@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-public class OnlineMixingProofLoader implements EncryptedBallotsLoader, EncryptionParametersLoader, PublicKeyLoader, ReEncryptedBallotsLoader, ShuffleProofLoader, VoterWithProofLoader, CommitmentParametersLoader {
+public class OnlineMixingProofLoader implements OnlineDataLoader {
 
     private final OnlineMixing onlineMixing;
 
@@ -77,39 +77,44 @@ public class OnlineMixingProofLoader implements EncryptedBallotsLoader, Encrypti
         return new ElGamalPublicKey(pubKeys, zpGroup);
     }
 
-    public ElGamalPublicKey getDecryptionPublicKey(File pkJsonFile, int nbKeys) throws IOException, DecoderException {
-        ZpGroupParams params = new ZpGroupParams(onlineMixing.getVoteEncryptionKey().getZpSubgroup().getP(), onlineMixing.getVoteEncryptionKey().getZpSubgroup().getQ());
-        ZpGroup zpGroup = new ZpGroup(params, new ZpElement(onlineMixing.getVoteEncryptionKey().getZpSubgroup().getG(), params));
-        List<GroupElement> pubKeys = new ArrayList<>();
+    public ElGamalPublicKey getDecryptionPublicKey(File pkJsonFile, int nbKeys) throws IOException {
+        try {
+            ZpGroupParams params = new ZpGroupParams(onlineMixing.getVoteEncryptionKey().getZpSubgroup().getP(), onlineMixing.getVoteEncryptionKey().getZpSubgroup().getQ());
+            ZpGroup zpGroup = new ZpGroup(params, new ZpElement(onlineMixing.getVoteEncryptionKey().getZpSubgroup().getG(), params));
+            List<GroupElement> pubKeys = new ArrayList<>();
 
-        //retrieve in the file the pkey regarding the eeid
-        String electionEventId = onlineMixing.getVoteSetId().getBallotBoxId().getElectionEventId();
+            //retrieve in the file the pkey regarding the eeid
+            String electionEventId = onlineMixing.getVoteSetId().getBallotBoxId().getElectionEventId();
 
-        CcMixingPublicKey[] ccMixingPublicKey = Deserializer.fromJson(pkJsonFile.getParentFile(), pkJsonFile.getName(), CcMixingPublicKey[].class);
+            CcMixingPublicKey[] ccMixingPublicKey = Deserializer.fromJson(pkJsonFile.getParentFile(), pkJsonFile.getName(), CcMixingPublicKey[].class);
 
-        String pKeyStr = Arrays.stream(ccMixingPublicKey)
-                .filter(e -> electionEventId.equals(e.getElectionEventId()))
-                .map(e -> e.getPublicKey())
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Unable to retrieve the publicKey"));
+            String pKeyStr = Arrays.stream(ccMixingPublicKey)
+                    .filter(e -> electionEventId.equals(e.getElectionEventId()))
+                    .map(e -> e.getPublicKey())
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Unable to retrieve the publicKey"));
 
-        byte[] decodedPkey = TypeConverter.hexaStringToByte(pKeyStr);
-        PublicKey publicKey = Deserializer.fromJson(decodedPkey, PublicKey.class);
+            byte[] decodedPkey = TypeConverter.hexaStringToByte(pKeyStr);
+            PublicKey publicKey = Deserializer.fromJson(decodedPkey, PublicKey.class);
 
 
-        List<BigInteger> elements = publicKey.getPublicKey().getElements().stream().map(TypeConverter::base64ToBigInteger).collect(Collectors.toList());
-        if (elements.isEmpty()) {
-            throw new IllegalArgumentException("No elements found in publicKey");
+            List<BigInteger> elements = publicKey.getPublicKey().getElements().stream().map(TypeConverter::base64ToBigInteger).collect(Collectors.toList());
+            if (elements.isEmpty()) {
+                throw new IllegalArgumentException("No elements found in publicKey");
+            }
+            // In case the final key has only 1 element: Multiply all “elements” from CCN mixing public key modulo p
+            // In case that the key has more than 1 element (n elements), the first n-1 elements of the CCN mixing public key can be used directly. For the last mixing public key elements, multiply the remaining elements together
+
+            for (int i = 0; i < nbKeys - 1; i++) {
+                pubKeys.add(new ZpElement(elements.get(i), params));
+            }
+            pubKeys.add(new ZpElement(multiplyElements(elements.subList(nbKeys - 1, elements.size()), params.getP()), params));
+
+            return new ElGamalPublicKey(pubKeys, zpGroup);
         }
-        // In case the final key has only 1 element: Multiply all “elements” from CCN mixing public key modulo p
-        // In case that the key has more than 1 element (n elements), the first n-1 elements of the CCN mixing public key can be used directly. For the last mixing public key elements, multiply the remaining elements together
-
-        for (int i = 0; i < nbKeys - 1; i++) {
-            pubKeys.add(new ZpElement(elements.get(i), params));
+        catch (DecoderException e) {
+            throw new RuntimeException(e);
         }
-        pubKeys.add(new ZpElement(multiplyElements(elements.subList(nbKeys - 1, elements.size()), params.getP()), params));
-
-        return new ElGamalPublicKey(pubKeys, zpGroup);
     }
 
     private BigInteger multiplyElements(List<BigInteger> elements, BigInteger p) {

@@ -1,6 +1,6 @@
 package ch.post.it.evoting.verifier.block.block3.loader.offline;
 
-import ch.post.it.evoting.verifier.block.block3.loader.ShuffleProofLoader;
+import ch.post.it.evoting.verifier.block.block3.scytl.loader.ShuffleProofLoader;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProof;
 import com.scytl.products.ov.mixnet.commons.io.JSONProofsReader;

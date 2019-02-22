@@ -1,6 +1,8 @@
 package ch.post.it.evoting.verifier.block.block3.tests;
 
 import ch.post.it.evoting.verifier.block.block3.Block3TestSuite;
+import ch.post.it.evoting.verifier.block.block3.loader.online.OnlineMixingProofLoader;
+import ch.post.it.evoting.verifier.block.block3.scytl.loader.OnlineDataLoader;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.TestFailureException;
@@ -47,7 +49,8 @@ public class Test27 extends Test {
                 for (File onlineMixing : onlineMixings) {
                     //for this onlineMixing, so for this ccn , get the correct ccX_mixing_public_key.json file
                     File pkJsonFile = getPkJsonFile(onlineMixing.getName(), ccMixingKeys);
-                    int verificationResultCode = DecryptVerifier.verifyOnline(onlineMixing.toPath(), pkJsonFile);
+                    OnlineDataLoader onlineDataLoader = new OnlineMixingProofLoader(onlineMixing.toPath());
+                    int verificationResultCode = DecryptVerifier.verifyOnline(pkJsonFile, onlineDataLoader);
                     if (verificationResultCode != 1 && verificationResultCode != -1) {
                         throw new TestFailureException("The verification failed", ballotBox.getName());
                     }
