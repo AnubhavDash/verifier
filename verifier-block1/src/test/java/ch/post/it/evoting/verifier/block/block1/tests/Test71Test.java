@@ -32,7 +32,7 @@ public class Test71Test {
 
     @Test
     public void executeTestNOKFileNotFound() {
-        TestResult testResult = new Test71().executeTest(new File(getClass().getResource("/Test71/NOK-NOTFILE").getFile()));
+        TestResult testResult = new Test71().executeTest(new File(getClass().getResource("/Test71/NOK/NOK-NOFILE").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
     }

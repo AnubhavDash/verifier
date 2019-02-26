@@ -18,14 +18,14 @@ public class Test74Test {
 
     @Test
     public void executeTestNOK() {
-        TestResult testResult = new Test74().executeTest(new File(getClass().getResource("/Test74/NOK").getFile()));
+        TestResult testResult = new Test74().executeTest(new File(getClass().getResource("/Test74/NOK/NOK").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
     }
 
     @Test
     public void executeTestNOKFileNotFound() {
-        TestResult testResult = new Test74().executeTest(new File(getClass().getResource("/Test74/NOK-NOTFILE").getFile()));
+        TestResult testResult = new Test74().executeTest(new File(getClass().getResource("/Test74/NOK/NOK-NOFILE").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
     }
