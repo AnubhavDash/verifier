@@ -50,6 +50,10 @@ public class OnlineMixingProofLoader implements OnlineDataLoader {
         return Deserializer.fromJson(path.toFile().getParentFile(), path.toFile().getName(), OnlineMixing.class);
     }
 
+    public OnlineMixing getOnlineMixing() {
+        return onlineMixing;
+    }
+
     @Override
     public ElGamalEncryptedBallots getEncryptedBallots() throws IOException {
         ZpGroup zpGroup = this.getZpGroup();
