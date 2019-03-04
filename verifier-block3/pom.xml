@@ -24,7 +24,7 @@
         <dependency>
             <groupId>ch.post.it.evoting.verifier</groupId>
             <artifactId>verifier-block3-scytl</artifactId>
-            <version>1.0.2.1</version>
+            <version>1.0.2.4</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
