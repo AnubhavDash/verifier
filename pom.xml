@@ -123,12 +123,14 @@
                 <artifactId>license-maven-plugin</artifactId>
                 <version>3.0</version>
                 <configuration>
-                    <header>${basedir}/license-post-header.txt</header>
+                    <basedir>${basedir}</basedir>
+                    <header>license-post-header.txt</header>
                     <mapping>
                         <javadoc_style>JAVADOC_STYLE</javadoc_style>
                     </mapping>
                     <includes>
                         <include>**/*.java</include>
+                        <include>**/*.html</include>
                         <include>**/*.js</include>
                         <include>**/*.ts</include>
                     </includes>
