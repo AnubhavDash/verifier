@@ -107,9 +107,8 @@ public class OfflineVoterWithProofLoader implements VoterWithProofLoader {
         }
     }
 
-
     @Override
-    public ElGamalEncryptedBallots getEncyptedBallots() {
+    public ElGamalEncryptedBallots getEncryptedBallots() {
         return encryptedBallots;
     }
 
