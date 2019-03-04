@@ -144,10 +144,6 @@ public class OfflineVoterWithProofLoader implements VoterWithProofLoader {
         return new GjosteenElGamalPlaintext(zpElements);
     }
 
-    public ElGamalEncryptedBallots getVotes() {
-        return getVotes();
-    }
-
     @Override
     public DecryptionProof[] getProofs() {
         return decryptionProofs.toArray(new DecryptionProof[]{});

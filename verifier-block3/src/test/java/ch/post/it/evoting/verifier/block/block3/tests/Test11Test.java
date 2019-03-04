@@ -21,9 +21,4 @@ public class Test11Test {
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 
-    @Test
-    public void executeTestOKFileNotFound() {
-        TestResult result = new Test11().executeTest(new File(getClass().getResource("/Test11/NOK-NOTFILE").getFile()));
-        Assert.assertEquals(Status.NOK, result.getStatus());
-    }
 }

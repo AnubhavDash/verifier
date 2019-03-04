@@ -19,7 +19,6 @@ import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
@@ -66,7 +65,7 @@ public class Test31 extends Test {
             boolean isEquivalent = false;
             for (File ballotbox : ballotboxes) {
 
-                // OFFLINE
+                // Offline
                 File downloadedBallotBoxFile = PathHelper.getFile(ballotbox.toPath().toFile(), "downloadedBallotBox.csv");
                 List<GammaPhis> offlineGammaPhisList;
                 try (Stream<String> lines = Files.lines(downloadedBallotBoxFile.toPath())) {
@@ -82,7 +81,6 @@ public class Test31 extends Test {
                             .collect(Collectors.toList());
                 }
 
-                // 3 ONLINES
                 final File[] onlineMixings = ballotbox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
                 Iterable<File> iterableFile = Arrays.asList(onlineMixings);
                 Iterator iteratorFile = iterableFile.iterator();
@@ -93,7 +91,6 @@ public class Test31 extends Test {
                 while (iteratorFile.hasNext() && !isEquivalent) {
                     File online = (File) iteratorFile.next();
 
-                    //3 ONLINES
                     OnlineMixingProofLoader onlineMixingProofLoader = new OnlineMixingProofLoader(online.toPath());
 
                     onlinePreviousVotes = onlineMixingProofLoader.getEncryptedBallots().getBallots()
@@ -117,7 +114,7 @@ public class Test31 extends Test {
                 // All data is loaded
                 List<GammaPhis> votesToCheck = offlineGammaPhisList;
 
-                // CONTROL
+                // Business check
                 int nbControlled = 0;
                 if (map.size() == 3) {
                     while (nbControlled != 3) {
@@ -144,13 +141,8 @@ public class Test31 extends Test {
             result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test11.nok.message"));
         } catch (Exception e) {
             result.setStatus(Status.NOK);
-            if (e.getCause() instanceof FileNotFoundException) {
-                LOGGER.error("a FileNotFoundException error occurred", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test11.file.not.found.message", e.getCause().getLocalizedMessage()));
-            } else {
-                LOGGER.error("an unexpected error occurred", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
-            }
+            LOGGER.error("an unexpected error occurred", e);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }
