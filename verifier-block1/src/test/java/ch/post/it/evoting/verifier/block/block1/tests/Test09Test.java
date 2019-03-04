@@ -20,14 +20,14 @@ public class Test09Test {
 
     @Test
     public void executeTestNOK() {
-        TestResult testResult = new Test09().executeTest(new File(getClass().getResource("/Test09/NOK").getFile()));
+        TestResult testResult = new Test09().executeTest(new File(getClass().getResource("/Test09/NOK/NOK").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
     }
 
     @Test
     public void executeTestNOKFileNotFound() {
-        TestResult testResult = new Test09().executeTest(new File(getClass().getResource("/Test09/NOK-NOTFILE").getFile()));
+        TestResult testResult = new Test09().executeTest(new File(getClass().getResource("/Test09/NOK/NOK-NOFILE").getFile()));
         Assert.assertNotNull(testResult);
         Assert.assertEquals(Status.NOK, testResult.getStatus());
         Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test09.file.not.found.message"), testResult.getMessage());
