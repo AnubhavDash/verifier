@@ -51,7 +51,7 @@ public class OnlineMixingProofLoader implements OnlineDataLoader {
     }
 
     @Override
-    public ElGamalEncryptedBallots getEncryptedBallots() throws IOException {
+    public ElGamalEncryptedBallots getEncryptedBallots() {
         ZpGroup zpGroup = this.getZpGroup();
         return new ElGamalEncryptedBallots(onlineMixing.getPreviousVotes()
                 .stream()
@@ -151,17 +151,6 @@ public class OnlineMixingProofLoader implements OnlineDataLoader {
     }
 
     @Override
-    public ElGamalEncryptedBallots getEncyptedBallots() {
-        ZpGroup zpGroup = this.getZpGroup();
-        return new ElGamalEncryptedBallots(onlineMixing.getPreviousVotes()
-                .stream()
-                .map(pv -> new ElGamalEncryptedBallot(
-                        new ZpElement(pv.getGamma(), zpGroup.getParams()),
-                        pv.getPhis().stream().map(p -> new ZpElement(p, zpGroup.getParams())).collect(Collectors.toList())))
-                .collect(Collectors.toList()));
-    }
-
-    @Override
     public List<GjosteenElGamalPlaintext> getPlaintexts() {
         ZpGroup zpGroup = this.getZpGroup();
         List<GjosteenElGamalPlaintext> gjosteenElGamalPlaintexts = onlineMixing.getVotes()
@@ -176,6 +165,16 @@ public class OnlineMixingProofLoader implements OnlineDataLoader {
                 .collect(Collectors.toList());
 
         return gjosteenElGamalPlaintexts;
+    }
+
+    public ElGamalEncryptedBallots getVotes() {
+        ZpGroup zpGroup = this.getZpGroup();
+        return new ElGamalEncryptedBallots(onlineMixing.getVotes()
+                .stream()
+                .map(pv -> new ElGamalEncryptedBallot(
+                        new ZpElement(pv.getGamma(), zpGroup.getParams()),
+                        pv.getPhis().stream().map(p -> new ZpElement(p, zpGroup.getParams())).collect(Collectors.toList())))
+                .collect(Collectors.toList()));
     }
 
     @Override

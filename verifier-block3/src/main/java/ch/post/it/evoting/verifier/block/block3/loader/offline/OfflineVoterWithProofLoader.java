@@ -107,9 +107,8 @@ public class OfflineVoterWithProofLoader implements VoterWithProofLoader {
         }
     }
 
-
     @Override
-    public ElGamalEncryptedBallots getEncyptedBallots() {
+    public ElGamalEncryptedBallots getEncryptedBallots() {
         return encryptedBallots;
     }
 
@@ -143,6 +142,10 @@ public class OfflineVoterWithProofLoader implements VoterWithProofLoader {
             throw new RuntimeException("Unable to map to plaintext", e);
         }
         return new GjosteenElGamalPlaintext(zpElements);
+    }
+
+    public ElGamalEncryptedBallots getVotes() {
+        return getVotes();
     }
 
     @Override
