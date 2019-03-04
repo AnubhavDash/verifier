@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -76,6 +77,10 @@ public class Test11 extends Test {
         } catch (TestFailureException e) {
             result.setStatus(Status.NOK);
             result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test11.nok.message"));
+        } catch (FileNotFoundException e) {
+            result.setStatus(Status.NOK);
+            LOGGER.error("a FileNotFoundException error occurred", e);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test11.file.not.found.message", e.getCause().getLocalizedMessage()));
         } catch (Exception e) {
             result.setStatus(Status.NOK);
             LOGGER.error("an unexpected error occurred", e);

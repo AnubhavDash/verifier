@@ -19,6 +19,7 @@ import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
@@ -138,7 +139,11 @@ public class Test31 extends Test {
             result.setStatus(Status.OK);
         } catch (TestFailureException e) {
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test11.nok.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test31.nok.message"));
+        } catch (FileNotFoundException e) {
+            result.setStatus(Status.NOK);
+            LOGGER.error("a FileNotFoundException error occurred", e);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test31.file.not.found.message", e.getCause().getLocalizedMessage()));
         } catch (Exception e) {
             result.setStatus(Status.NOK);
             LOGGER.error("an unexpected error occurred", e);
