@@ -54,7 +54,7 @@ if (!serverProcess) {
 }
 
 app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
-  if (certificate.serialNumber === config.serverCertificateSerialNumberToTrust()) {
+  if (certificate.serialNumber.endsWith(config.serverCertificateSerialNumberToTrust())) {
     event.preventDefault();
     callback(true);
   } else {
