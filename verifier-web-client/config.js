@@ -5,8 +5,8 @@
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.  If not, see <https://www.gnu.org/licenses/>.
  */
 module.exports = {
-  serverFingerprint: function() {
-    return 'sha256/ERUEk1Mx1zexjJ7FROwfICOsTc6ueShhtmCxi9o3p8I=';
+  serverCertificateSerialNumberToTrust: function() {
+    return '2E640E44';
   },
 
   serverConnectionCheckUrl: function() {

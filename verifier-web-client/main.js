@@ -54,11 +54,11 @@ if (!serverProcess) {
 }
 
 app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
-  // console.log("certificate :"+certificate.fingerprint );
-  if (certificate.fingerprint === config.serverFingerprint()) {
+  if (certificate.serialNumber === config.serverCertificateSerialNumberToTrust()) {
     event.preventDefault();
     callback(true);
   } else {
+    console.log("Untrusted certificate serialNumber :" + certificate.serialNumber);
     callback(false);
   }
 })
