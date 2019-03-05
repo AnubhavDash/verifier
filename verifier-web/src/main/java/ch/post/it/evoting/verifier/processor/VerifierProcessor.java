@@ -101,8 +101,6 @@ public class VerifierProcessor {
                                 log.debug(String.format("Test '%02d-%02d' performed on Thread '%s' %s", t.getTestDefinition().getBlockId(), t.getTestDefinition().getId(), Thread.currentThread().getName(), t.getStatus()));
                                 testProcessed(t);
                             });
-                    // FLATMAP kill the parallelism. Use concat instead --> TODO view this with LBO
-                    // flatMap(b -> b.process(inputDirectory).parallel());
                 });
             });
         } else {
