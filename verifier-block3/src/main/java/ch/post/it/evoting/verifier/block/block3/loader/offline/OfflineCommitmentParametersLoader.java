@@ -14,13 +14,6 @@ import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentPara
 import java.io.IOException;
 import java.nio.file.Path;
 
-/**
- * Class OfflineCommitmentParametersLoader.
- * This represents TODO.
- *
- * @author lalandret
- * @version $$Revision$$
- */
 public class OfflineCommitmentParametersLoader implements CommitmentParametersLoader {
 
     private final Path path;
