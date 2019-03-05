@@ -12,7 +12,6 @@ import ch.post.it.evoting.verifier.dto.Test;
 import ch.post.it.evoting.verifier.mapper.TestExecutionStatusMapper;
 import ch.post.it.evoting.verifier.report.ReportGenerator;
 import ch.post.it.evoting.verifier.util.ContestConfigurationReader;
-import ch.post.it.evoting.verifier.util.TestDefinitionTools;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
