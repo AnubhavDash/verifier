@@ -6,10 +6,7 @@
  */
 package ch.post.it.evoting.verifier.processor;
 
-import ch.post.it.evoting.verifier.common.Language;
-import ch.post.it.evoting.verifier.common.TestResult;
-import ch.post.it.evoting.verifier.common.TestTrait;
-import ch.post.it.evoting.verifier.common.VerifierBlock;
+import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.dto.Configuration;
 import ch.post.it.evoting.verifier.dto.Test;
 import ch.post.it.evoting.verifier.mapper.TestExecutionStatusMapper;
@@ -77,7 +74,7 @@ public class VerifierProcessor {
 
         executionStatus = blocks.parallelStream()
                 .flatMap(VerifierBlock::getTests)
-                .collect(Collectors.toMap(TestDefinitionTools::computeUniqueKey, TestExecutionStatusMapper.INSTANCE::map));
+                .collect(Collectors.toMap(TestDefinition::computeUniqueKey, TestExecutionStatusMapper.INSTANCE::map));
     }
 
     public List<Test> getTestStatus() {
@@ -115,7 +112,7 @@ public class VerifierProcessor {
     }
 
     protected synchronized void testProcessed(TestResult testResult) {
-        Test testExecutionStatus = executionStatus.get(TestDefinitionTools.computeUniqueKey(testResult.getTestDefinition()));
+        Test testExecutionStatus = executionStatus.get(testResult.getTestDefinition().computeUniqueKey());
         TestExecutionStatusMapper.INSTANCE.update(testExecutionStatus, testResult);
 
         listeners.forEach(l -> l.testProcessed(testExecutionStatus));
