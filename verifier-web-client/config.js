@@ -7,5 +7,9 @@
 module.exports = {
   serverFingerprint: function() {
     return 'sha256/ERUEk1Mx1zexjJ7FROwfICOsTc6ueShhtmCxi9o3p8I=';
+  },
+
+  serverConnectionCheckUrl: function() {
+    return 'https://127.0.0.1:8443/api/ping';
   }
 }

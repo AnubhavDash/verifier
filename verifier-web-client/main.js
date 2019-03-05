@@ -5,7 +5,7 @@
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.  If not, see <https://www.gnu.org/licenses/>.
  */
 const {app, BrowserWindow, session, Menu, dialog} = require('electron')
-const { createLogger, format, transports } = require('winston');
+const {createLogger, format, transports} = require('winston');
 const fs = require('fs');
 const path = require('path');
 const dateFormat = require('dateformat');
@@ -17,7 +17,7 @@ let suffix = dateFormat(now, "yyyy-mm-dd-HHMMss");
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir);
 }
-const filename = path.join(logDir, 'verifier_'+ suffix + '.log');
+const filename = path.join(logDir, 'verifier_' + suffix + '.log');
 const logger = createLogger({
   format: format.combine(
     format.timestamp({
@@ -25,15 +25,13 @@ const logger = createLogger({
     }),
     format.json()
   ),
-  transports: [ new transports.File({ filename }) ]
+  transports: [new transports.File({filename})]
 });
 
 
 let win;
 let serverProcess;
 let platform = process.platform;
-
-let appUrl = 'https://127.0.0.1:8443';
 
 if (platform === 'win32') {
   console.log(app.getAppPath());
@@ -58,7 +56,6 @@ if (!serverProcess) {
 app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
   // console.log("certificate :"+certificate.fingerprint );
   if (certificate.fingerprint === config.serverFingerprint()) {
-    // Logique de vérification.
     event.preventDefault();
     callback(true);
   } else {
@@ -137,25 +134,30 @@ const startUp = function (counter) {
   const requestPromise = require('minimal-request-promise');
 
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-  app.on('ready', function() {
+  app.on('ready', function () {
     prepareWindow();
   });
 
-  requestPromise.get(appUrl + "/api/ping").then(function (response) {
+  requestPromise.get(config.serverConnectionCheckUrl()).then(function (response) {
     console.log('Server started!');
     logger.log('info', 'Server started!');
     win.loadURL(`file://${__dirname}/dist/index.html`);
     win.maximize();
     win.show();
   }, function (response) {
-    console.log('Waiting for the server start... ('+counter+'/20)');
+    console.log('Waiting for the server start... (' + counter + '/20)');
     logger.log('info', 'Waiting for the server start...');
     if (counter < 20) {
       setTimeout(function () {
-        startUp(counter+1);
+        startUp(counter + 1);
       }, 200);
     } else {
-      dialog.showMessageBox(win, {type: "error", message: "Unable to connect to server. Application will stop"}, function (response) {app.quit()})
+      dialog.showMessageBox(win, {
+        type: "error",
+        message: "Unable to connect to server. Application will stop"
+      }, function (response) {
+        app.quit()
+      })
     }
   });
 };
