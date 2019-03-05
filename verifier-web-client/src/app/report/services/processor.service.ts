@@ -5,11 +5,11 @@
 /// You should have received a copy of the GNU General Public License along with Verifier Swiss Post.  If not, see <https://www.gnu.org/licenses/>.
 ///
 
-import {Injectable} from "@angular/core";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs/Observable";
-import {environment} from "../../../environments/environment";
-import {Configuration} from "../models/Configuration.interface";
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
+import {environment} from '../../../environments/environment';
+import {Configuration} from '../models/Configuration.interface';
 
 @Injectable()
 export class ProcessorService {
@@ -29,12 +29,11 @@ export class ProcessorService {
   }
 
   processTests(runOptions?: string): Observable<Object> {
-    var runParams = "";
-    if ( runOptions != undefined )
-    {
+    let runParams = '';
+    if (runOptions !== undefined) {
       runParams = `?runOptions=${runOptions}`;
     }
-    return this.http.post(environment.appUrl + '/api/tests'+ runParams, null, this.httpOptions);
+    return this.http.post(environment.appUrl + '/api/tests' + runParams, null, this.httpOptions);
   }
 
   resetTests(): Observable<Object> {

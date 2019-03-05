@@ -10,12 +10,12 @@ import {NgModule} from '@angular/core';
 
 
 import {AppComponent} from './app.component';
-import {ReportModule} from "./report/report.module";
-import {RouterModule, Routes} from "@angular/router";
-import {HomeComponent} from "./home.component";
-import {HttpClientModule} from "@angular/common/http";
-import {CommonModule} from "@angular/common";
-import {VerifierCommonModule} from "./verifier-common-module";
+import {ReportModule} from './report/report.module';
+import {RouterModule, Routes} from '@angular/router';
+import {HomeComponent} from './home.component';
+import {HttpClientModule} from '@angular/common/http';
+import {CommonModule} from '@angular/common';
+import {VerifierCommonModule} from './verifier-common-module';
 
 const routes: Routes = [
   {path: '**', component: HomeComponent}

@@ -5,11 +5,11 @@
 /// You should have received a copy of the GNU General Public License along with Verifier Swiss Post.  If not, see <https://www.gnu.org/licenses/>.
 ///
 
-import {Component, OnInit} from "@angular/core";
-import {Router} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
-  selector: 'home-redirect',
+  selector: 'app-home-redirect',
   template: ''
 })
 export class HomeComponent implements OnInit {

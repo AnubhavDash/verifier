@@ -5,10 +5,10 @@
 /// You should have received a copy of the GNU General Public License along with Verifier Swiss Post.  If not, see <https://www.gnu.org/licenses/>.
 ///
 
-import {NgModule} from "@angular/core";
-import {ProcessorService} from "./report/services/processor.service";
-import {CommonModule} from "@angular/common";
-import {BrowserModule} from "@angular/platform-browser";
+import {NgModule} from '@angular/core';
+import {ProcessorService} from './report/services/processor.service';
+import {CommonModule} from '@angular/common';
+import {BrowserModule} from '@angular/platform-browser';
 
 @NgModule({
   declarations: [],
