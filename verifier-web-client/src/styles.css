@@ -5,10 +5,10 @@ body {
 
 
 button{
-  background-color:#eee;
+  background-color:#eee !important;
 }
 button:hover{
-  background-color: grey;
+  background-color: grey !important;
   color:white;
 }
 
