@@ -64,4 +64,6 @@ public class TestDefinition {
     public Map<Language, String> getDescription() { return description; }
 
     public void setDescription(Map<Language, String> description) { this.description = description; }
+
+    public String computeUniqueKey( ) { return String.format("%02d-%02d", this.getBlockId(), this.getId()); }
 }

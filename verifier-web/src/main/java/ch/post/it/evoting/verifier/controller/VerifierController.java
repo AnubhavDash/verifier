@@ -44,11 +44,8 @@ public class VerifierController {
 
         processor.registerProcessListener(t -> {
             notifyUpdate(t);
-            this.executionStatus.setTestActual(this.getStatus().getTestActual() + 1);
-
-            if (this.getStatus().getTestActual() == this.getStatus().getTestCount()) {
-                this.executionStatus.setStatus(Status.COMPLETED);
-            }
+            incrementStatus();
+            updateIfCompleted();
         });
     }
 
@@ -129,6 +126,16 @@ public class VerifierController {
 
     protected void notifyUpdate(Test executionStatus) {
         this.template.convertAndSend("/pushUpdate", executionStatus);
+    }
+
+    protected void incrementStatus() {
+        this.executionStatus.setTestActual(this.getStatus().getTestActual() + 1);
+    }
+
+    protected void updateIfCompleted() {
+        if (this.getStatus().getTestActual() == this.getStatus().getTestCount()) {
+            this.executionStatus.setStatus(Status.COMPLETED);
+        }
     }
 
     private Language getLanguage(Locale locale) {

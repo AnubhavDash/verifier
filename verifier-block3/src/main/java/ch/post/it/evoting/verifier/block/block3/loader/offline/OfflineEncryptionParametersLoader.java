@@ -6,7 +6,6 @@
  */
 package ch.post.it.evoting.verifier.block.block3.loader.offline;
 
-
 import ch.post.it.evoting.verifier.block.block3.Block3TestSuite;
 import ch.post.it.evoting.verifier.block.block3.scytl.loader.EncryptionParametersLoader;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;

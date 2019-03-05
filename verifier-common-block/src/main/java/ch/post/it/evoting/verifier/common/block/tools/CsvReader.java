@@ -13,9 +13,6 @@ import java.nio.file.Paths;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-/**
- * Created by aellenn on 29.03.2017.
- */
 public class CsvReader<T> {
     private Function<String[], T> mapper;
     private Stream<String> stream;
