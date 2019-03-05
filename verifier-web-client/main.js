@@ -9,6 +9,7 @@ const { createLogger, format, transports } = require('winston');
 const fs = require('fs');
 const path = require('path');
 const dateFormat = require('dateformat');
+const config = require('./config');
 
 const logDir = 'logs';
 let now = new Date();
@@ -56,7 +57,7 @@ if (!serverProcess) {
 
 app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
   // console.log("certificate :"+certificate.fingerprint );
-  if (certificate.fingerprint === 'sha256/ERUEk1Mx1zexjJ7FROwfICOsTc6ueShhtmCxi9o3p8I=') {
+  if (certificate.fingerprint === config.serverFingerprint()) {
     // Logique de vérification.
     event.preventDefault();
     callback(true);
