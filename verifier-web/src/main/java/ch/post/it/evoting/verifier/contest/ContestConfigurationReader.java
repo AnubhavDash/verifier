@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package ch.post.it.evoting.verifier.util;
+package ch.post.it.evoting.verifier.contest;
 
 import ch.evoting.xmlns.config._4.Configuration;
 import ch.evoting.xmlns.config._4.ContestDescriptionInformationType;

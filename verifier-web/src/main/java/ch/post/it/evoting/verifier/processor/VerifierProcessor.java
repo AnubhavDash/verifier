@@ -19,7 +19,7 @@ import ch.post.it.evoting.verifier.dto.Configuration;
 import ch.post.it.evoting.verifier.dto.Test;
 import ch.post.it.evoting.verifier.mapper.TestExecutionStatusMapper;
 import ch.post.it.evoting.verifier.report.ReportGenerator;
-import ch.post.it.evoting.verifier.util.ContestConfigurationReader;
+import ch.post.it.evoting.verifier.contest.ContestConfigurationReader;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,11 +50,15 @@ public class VerifierProcessor {
     private List<ProcessListener> listeners;
     private boolean processed;
 
-    @Autowired
-    private ReportGenerator reportGenerator;
+    private final ReportGenerator reportGenerator;
+
+    private final ContestConfigurationReader contestConfigurationReader;
 
     @Autowired
-    private ContestConfigurationReader contestConfigurationReader;
+    public VerifierProcessor(ReportGenerator reportGenerator, ContestConfigurationReader contestConfigurationReader) {
+        this.reportGenerator = reportGenerator;
+        this.contestConfigurationReader = contestConfigurationReader;
+    }
 
     @PostConstruct
     private void init() {
@@ -116,7 +120,7 @@ public class VerifierProcessor {
         }
     }
 
-    protected synchronized void testProcessed(TestResult testResult) {
+    private void testProcessed(TestResult testResult) {
         Test testExecutionStatus = executionStatus.get(testResult.getTestDefinition().computeUniqueKey());
         TestExecutionStatusMapper.INSTANCE.update(testExecutionStatus, testResult);
 
@@ -125,10 +129,6 @@ public class VerifierProcessor {
 
     public void registerProcessListener(ProcessListener listener) {
         listeners.add(listener);
-    }
-
-    public void unregisterProcessListener(ProcessListener listener) {
-        listeners.remove(listener);
     }
 
     public void resetExecution() {
