@@ -5,7 +5,7 @@ The following guide provide step by step informations to build the Verifier Swis
 
 1. Ensure you have Maven and Node installed. We tested with following versions :
     - Maven : 3.3.1
-    - Node : v8.3.0-x64
+    - Node : v10.15.3-x64
     
 2. First go to the <i>verifier-block3-scytl</i> library (repository evoting-verifier-block3-scytl) and build it using Maven
     - <code>mvn clean install</code>
