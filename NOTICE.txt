@@ -22,12 +22,17 @@ This project can includes or depends on code from third party projects.
 It concerns a library developed by Scytl Company, covered by a owner license.
 
 ==========================================================================
-How to use project with  Scytl library
+How to use project with Scytl library
 ==========================================================================
-If you want to use the software with
-the complementary part (verifier-block3 module)
+To use the software with the complementary part (verifier-block3-scytl library)
 Please follow the instructions in the README file
 
+ Otherwize
+    - Edit pom.xml to remove module verifier-block3
+    - Edit verifier-web\src\main\resources\verifier.properties and remove
+      ch.post.it.evoting.verifier.block.block3.Block3TestSuite element from 
+      verifier.blocks property
+      
 ==========================================================================
 Other Dependencies
 ==========================================================================
