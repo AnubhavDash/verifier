@@ -148,13 +148,17 @@
                     <useDefaultExcludes>true</useDefaultExcludes>
                     <strictCheck>true</strictCheck>
                     <aggregate>true</aggregate>
-                    <skip>true</skip>
+                    <skip>false</skip>
+                    <keywords>
+                        <keyword>This file is part of Verifier Swiss Post.</keyword>
+                    </keywords>
                 </configuration>
                 <executions>
                     <execution>
                         <goals>
                             <goal>check</goal>
                         </goals>
+                        <phase>process-sources</phase>
                     </execution>
                 </executions>
             </plugin>
