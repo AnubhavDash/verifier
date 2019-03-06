@@ -9,19 +9,18 @@ package ch.post.it.evoting.verifier.mapper;
 import ch.post.it.evoting.verifier.common.TestDefinition;
 import ch.post.it.evoting.verifier.common.TestResult;
 import ch.post.it.evoting.verifier.dto.Test;
-import ch.post.it.evoting.verifier.util.TestDefinitionTools;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(imports = {TestDefinitionTools.class})
+@Mapper
 public interface TestExecutionStatusMapper {
     TestExecutionStatusMapper INSTANCE = Mappers.getMapper(TestExecutionStatusMapper.class);
 
     @Mappings({
-            @Mapping(target = "id", expression = "java( TestDefinitionTools.computeUniqueKey(testDefinition) )"),
+            @Mapping(target = "id", expression = "java( testDefinition.computeUniqueKey() )"),
             @Mapping(target = "testId", source = "id"),
             @Mapping(target = "status", ignore = true),
             @Mapping(target = "message", ignore = true),

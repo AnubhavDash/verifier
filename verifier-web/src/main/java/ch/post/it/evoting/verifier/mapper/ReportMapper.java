@@ -50,7 +50,7 @@ public interface ReportMapper {
     @Mappings({
             @Mapping(target = "testIdLabel", expression = "java( getLabel(\"id\", lang) )"),
             @Mapping(target = "testNameLabel", expression = "java( getLabel(\"name\", lang) )"),
-            @Mapping(target = "testCategoryLabel", expression = "java( getLabel(\"kategorie\", lang) )"),
+            @Mapping(target = "testCategoryLabel", expression = "java( getLabel(\"category\", lang) )"),
             @Mapping(target = "testDescriptionLabel", expression = "java( getLabel(\"description\", lang) )"),
             @Mapping(target = "testStatusLabel", expression = "java( getLabel(\"status\", lang) )"),
             @Mapping(target = "testMessageLabel", expression = "java( getLabel(\"message\", lang) )"),
