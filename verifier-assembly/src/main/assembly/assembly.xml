@@ -33,5 +33,10 @@
             <outputDirectory>/resources</outputDirectory>
             <filtered>false</filtered>
         </fileSet>
+        <fileSet>
+            <directory>${project.build.directory}/jdk</directory>
+            <outputDirectory>/resources</outputDirectory>
+            <filtered>false</filtered>
+        </fileSet>
     </fileSets>
 </assembly>
