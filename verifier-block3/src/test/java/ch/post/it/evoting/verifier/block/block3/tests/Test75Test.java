@@ -39,10 +39,13 @@ public class Test75Test {
     @Ignore
     @Test
     public void tddTest75() throws IOException {
-        byte[] platformRootCA = Files.readAllBytes(new File(getClass().getResource("/Test75/OK/certificates/platformRootCA.pem").getFile()).toPath());
-        File file = new File(getClass().getResource("/Test75/OK/ballotboxes/dd1b845f19ee422dbb855b6dab93486e/100-03c685d26f7c421d858f8fab7ee7261c-dd1b845f19ee422dbb855b6dab93486e-0-ccn_m1.json").getFile());
-        OnlineMixingProofLoader loader = new OnlineMixingProofLoader(file.toPath());
+        //byte[] platformRootCA = Files.readAllBytes(new File(getClass().getResource("/Test75/OK/EMPTY-VOTES/certificates/platformRootCA.pem").getFile()).toPath());
+        //File file = new File(getClass().getResource("/Test75/OK/EMPTY-VOTES/ballotboxes/dd1b845f19ee422dbb855b6dab93486e/100-03c685d26f7c421d858f8fab7ee7261c-dd1b845f19ee422dbb855b6dab93486e-0-ccn_m1.json").getFile());
 
+        byte[] platformRootCA = Files.readAllBytes(new File(getClass().getResource("/Test75/OK/WITH-VOTES/certificates/platformRootCA.pem").getFile()).toPath());
+        File file = new File(getClass().getResource("/Test75/OK/WITH-VOTES/ballotboxes/1decf6d9fce14e2cb75a3b9c25ee2582/100-2cfa68a7d755489a84ff617afb2e6bc4-1decf6d9fce14e2cb75a3b9c25ee2582-0-ccn_m1.json").getFile());
+
+        OnlineMixingProofLoader loader = new OnlineMixingProofLoader(file.toPath());
         OnlineMixing onlineMixing = loader.getOnlineMixing();
 
         Signature sig = onlineMixing.getSignature();
@@ -60,18 +63,7 @@ public class Test75Test {
 
         ObjectMapper jsonMapper = new ObjectMapper();
         StringBuilder sb = new StringBuilder();
-        /*
 
-        sb.append(jsonMapper.writeValueAsString(onlineMixing.getVoteSetId()));
-        sb.append(jsonMapper.writeValueAsString(onlineMixing.getVoteEncryptionKey()));
-        sb.append(jsonMapper.writeValueAsString(onlineMixing.getCommitmentParameters()));
-        sb.append(jsonMapper.writeValueAsString(onlineMixing.getDecryptionProofs()));
-        sb.append(jsonMapper.writeValueAsString(onlineMixing.getShuffledVotes()));
-        sb.append(jsonMapper.writeValueAsString(onlineMixing.getShuffleProof()));
-        sb.append(jsonMapper.writeValueAsString(onlineMixing.getTimestamp()));
-        sb.append(jsonMapper.writeValueAsString(onlineMixing.getPreviousVotes()));
-        sb.append(jsonMapper.writeValueAsString(onlineMixing.getPreviousVoteEncryptionKey()));
-         */
         BigInteger index = onlineMixing.getVoteSetId().getIndex();
         BallotBoxId ballotBoxId = onlineMixing.getVoteSetId().getBallotBoxId();
         String voteSetId = String.format("%s-%s-%s-%d", ballotBoxId.getTenantId(), ballotBoxId.getElectionEventId(), ballotBoxId.getId(), index);
