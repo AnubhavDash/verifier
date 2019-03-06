@@ -18,7 +18,7 @@ import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.TestTrait;
 import ch.post.it.evoting.verifier.dto.Configuration;
 import ch.post.it.evoting.verifier.dto.ExecutionStatus;
-import ch.post.it.evoting.verifier.dto.Status;
+import ch.post.it.evoting.verifier.dto.LifecycleStatus;
 import ch.post.it.evoting.verifier.dto.Test;
 import ch.post.it.evoting.verifier.processor.AlreadyStartedException;
 import ch.post.it.evoting.verifier.processor.VerifierProcessor;
@@ -61,7 +61,7 @@ public class VerifierController {
         this.executionStatus = ExecutionStatus.builder()
                 .testActual(0)
                 .testCount(this.processor.getTestStatus().size())
-                .status(Status.NOT_STARTED).build();
+                .status(LifecycleStatus.NOT_STARTED).build();
     }
 
     @GetMapping("/ping")
@@ -109,7 +109,7 @@ public class VerifierController {
 
     @RequestMapping(value = "/tests", method = RequestMethod.POST)
     public ResponseEntity process( @RequestParam(required = false) String runOptions ) {
-        this.executionStatus.setStatus(Status.RUNNING);
+        this.executionStatus.setStatus(LifecycleStatus.RUNNING);
         try {
             Set<TestTrait> traits = getTraits(runOptions);
             this.processor.processTests(traits);
@@ -142,7 +142,7 @@ public class VerifierController {
 
     protected void updateIfCompleted() {
         if (this.getStatus().getTestActual() == this.getStatus().getTestCount()) {
-            this.executionStatus.setStatus(Status.COMPLETED);
+            this.executionStatus.setStatus(LifecycleStatus.COMPLETED);
         }
     }
 

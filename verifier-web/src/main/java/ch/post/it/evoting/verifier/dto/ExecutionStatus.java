@@ -24,7 +24,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class ExecutionStatus {
-    private Status status;
+    private LifecycleStatus status;
     private int testActual;
     private int testCount;
 }
