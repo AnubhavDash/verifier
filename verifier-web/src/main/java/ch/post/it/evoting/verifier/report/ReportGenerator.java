@@ -18,7 +18,7 @@ import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.dto.Test;
 import ch.post.it.evoting.verifier.mapper.ReportMapper;
-import ch.post.it.evoting.verifier.report.pojo.Report;
+import ch.post.it.evoting.verifier.report.model.Report;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
