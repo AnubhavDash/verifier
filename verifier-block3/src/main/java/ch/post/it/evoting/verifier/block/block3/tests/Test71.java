@@ -85,7 +85,7 @@ public class Test71 extends Test {
                 byte[] content = Files.readAllBytes(proof.toPath());
                 byte[] signature = Files.readAllBytes(proof.toPath().getParent().resolve(proof.getName() + ".metadata"));
 
-                if (!SignatureChecker.verifyMetdata(content, signature, signCertificate, rootCA)) {
+                if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCA)) {
                     throw new TestFailureException(proof.getName());
                 }
             }

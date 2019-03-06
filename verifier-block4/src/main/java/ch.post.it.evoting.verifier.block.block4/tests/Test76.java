@@ -63,7 +63,7 @@ public class Test76 extends Test {
                 byte[] content = Files.readAllBytes(inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS).resolve(siv.getName()));
                 byte[] signature = Files.readAllBytes(inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS).resolve(siv.getName() + ".metadata"));
 
-                if (!SignatureChecker.verifyMetdata(content, signature, signCertificate, rootCA)) {
+                if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCA)) {
                     throw new TestFailureException(siv.getName());
                 }
             }
