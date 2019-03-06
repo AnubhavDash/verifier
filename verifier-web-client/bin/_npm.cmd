@@ -9,7 +9,7 @@ rem ****************************************************************************
 
 SETLOCAL
 
-set node_version=v8.3.0-x64
+set node_version=v10.15.3-x64
 set JREPO_LOCAL=C:\work\jrepo-local
 set JREPO_LOCAL_TOOLS=%JREPO_LOCAL%\tools
 

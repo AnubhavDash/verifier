@@ -148,7 +148,7 @@
                     <useDefaultExcludes>true</useDefaultExcludes>
                     <strictCheck>true</strictCheck>
                     <aggregate>true</aggregate>
-                    <skip>false</skip>
+                    <skip>true</skip>
                     <keywords>
                         <keyword>This file is part of Verifier Swiss Post.</keyword>
                     </keywords>
