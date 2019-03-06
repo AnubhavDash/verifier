@@ -118,6 +118,46 @@
                     <preparationGoals>clean install</preparationGoals>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>3.0</version>
+                <configuration>
+                    <basedir>${basedir}</basedir>
+                    <header>license-post-header.txt</header>
+                    <mapping>
+                        <javadoc_style>JAVADOC_STYLE</javadoc_style>
+                    </mapping>
+                    <includes>
+                        <include>**/*.java</include>
+                        <include>**/*.html</include>
+                        <include>**/*.js</include>
+                        <include>**/*.ts</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/target/**</exclude>
+                        <exclude>**/bower_components/**</exclude>
+                        <exclude>**/build/**</exclude>
+                        <exclude>**/dist/**</exclude>
+                        <exclude>**/node_modules/**</exclude>
+                        <exclude>**/**.conf.js</exclude>
+                    </excludes>
+                    <properties>
+                        <currentYear>2019</currentYear>
+                    </properties>
+                    <useDefaultExcludes>true</useDefaultExcludes>
+                    <strictCheck>true</strictCheck>
+                    <aggregate>true</aggregate>
+                    <skip>true</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 

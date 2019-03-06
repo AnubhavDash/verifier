@@ -1,10 +1,17 @@
-import {Component, OnInit} from "@angular/core";
-import {ProcessorService} from "../../services/processor.service";
+///
+/// This file is part of Verifier Swiss Post.
+/// Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+/// Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+/// You should have received a copy of the GNU General Public License along with Verifier Swiss Post.  If not, see <https://www.gnu.org/licenses/>.
+///
+
+import {Component, OnInit} from '@angular/core';
+import {ProcessorService} from '../../services/processor.service';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
-import {TestDefinition} from "../../models/TestDefinition.interface";
-import {Configuration} from "../../models/Configuration.interface";
-import {environment} from "../../../../environments/environment";
+import {TestDefinition} from '../../models/TestDefinition.interface';
+import {Configuration} from '../../models/Configuration.interface';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   templateUrl: 'report-overview.component.html',
@@ -22,8 +29,27 @@ export class ReportOverviewComponent implements OnInit {
   constructor(private processorService: ProcessorService) {
   }
 
+  static convert(input: any): TestDefinition {
+    const result = new TestDefinition();
+    result.id = input.id;
+    result.testId = input.testId;
+    result.blockId = input.blockId;
+    result.name = input.name;
+    result.category = input.category;
+    result.status = input.status;
+    result.description = input.description ? input.description[navigator.language.toUpperCase().substr(0, 2)] : null;
+    result.message = input.message ? input.message[navigator.language.toUpperCase().substr(0, 2)] : null;
+    if (input.status === 'OK') {
+      result.color = 'green';
+    } else if (input.status === 'NOK') {
+      result.color = 'red';
+    } else if (input.status === 'NA') {
+      result.color = 'grey';
+    }
+    return result;
+  }
+
   ngOnInit(): void {
-    //console.log(navigator.language.toUpperCase());
     this.initTable();
     this.initializeWebSocketConnection();
     this.processorService.getConfigurationInputDirectory().subscribe(value => {
@@ -59,42 +85,23 @@ export class ReportOverviewComponent implements OnInit {
     });
   }
 
-  static convert(input: any): TestDefinition {
-    let result = new TestDefinition();
-    result.id = input.id;
-    result.testId = input.testId;
-    result.blockId = input.blockId;
-    result.name = input.name;
-    result.category = input.category;
-    result.status = input.status;
-    result.description = input.description ? input.description[navigator.language.toUpperCase().substr(0, 2)] : null;
-    result.message = input.message ? input.message[navigator.language.toUpperCase().substr(0, 2)] : null;
-    if (input.status === "OK") {
-      result.color = "green";
-    } else if (input.status === "NOK") {
-      result.color = "red";
-    } else if (input.status === "NA") {
-      result.color = "grey";
-    }
-    return result;
-  }
-
   initializeWebSocketConnection() {
-    let ws = new SockJS("https://localhost:8443/socket");
+    const ws = new SockJS('https://localhost:8443/socket');
     this.stompClient = Stomp.over(ws);
-    let that = this;
+    const that = this;
     this.stompClient.connect({authorization: environment.authorizationHeaderValue}, function (frame) {
-      that.stompClient.subscribe("/pushUpdate", (message) => {
+      that.stompClient.subscribe('/pushUpdate', (message) => {
         if (message.body) {
-          let result = JSON.parse(message.body);
+          const result = JSON.parse(message.body);
           that.tests[result.id] = ReportOverviewComponent.convert(result);
         }
-      })
+      });
     });
   }
 
   update() {
     this.initTable();
   }
+
 }
 
