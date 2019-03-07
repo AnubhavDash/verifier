@@ -37,7 +37,6 @@ public class OfflineEncryptionParametersLoader implements EncryptionParametersLo
 
     @Override
     public ZpGroup getZpGroup() throws IOException {
-        // path = inputDirectory.toPath().resolve(Block1TestSuite.PATH_CRYPTO_SETUP);
         EncryptionParameters ep = Deserializer.fromJson(path.resolve(Block3TestSuite.PATH_CRYPTO_SETUP).toFile(), "encryptionParameters\\.json", EncryptionParameters.class);
         BigInteger p = TypeConverter.stringToBigInteger(ep.getP());
         BigInteger q = TypeConverter.stringToBigInteger(ep.getQ());

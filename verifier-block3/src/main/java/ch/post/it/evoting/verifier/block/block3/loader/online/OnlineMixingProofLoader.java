@@ -210,12 +210,6 @@ public class OnlineMixingProofLoader implements OnlineDataLoader {
         return decryptionProofs;
     }
 
-    /*private void updateDecryptionProofsSetGamma(DecryptionProof[] decryptionProofs, List<BigInteger> gammas) {
-        for(int i = 0; i < decryptionProofs.length; i++ ){
-            decryptionProofs[i].setGammaOfCiphertext(gammas.get(i));
-        }
-    }*/
-
     private DecryptionProof createDecryptionProofFromString(String str, BigInteger gammaOfCiphertext) {
         Exponent challenge = null;
         Exponent[] response = new Exponent[]{};
