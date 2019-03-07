@@ -172,16 +172,18 @@ public class SignatureChecker {
             signatureAlgorithm.update(source);
 
             if (signatureAlgorithm.verify(signature)) {
-                //signature is valid, checking certificate chain validity
-                List<X509Certificate> intermediates = intermediateCertificates != null ? Arrays.stream(intermediateCertificates).map(bytes -> {
-                    try {
-                        return loadCertificate(bytes);
-                    } catch (CertificateException | IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }).collect(Collectors.toList()) : new LinkedList<>();
-                intermediates.add(sCert);
-                verifyCertificateChain(sCert, intermediates, loadCertificate(rootCertificate));
+                if (rootCertificate !=null) {
+                    //signature is valid, checking certificate chain validity
+                    List<X509Certificate> intermediates = intermediateCertificates != null ? Arrays.stream(intermediateCertificates).map(bytes -> {
+                        try {
+                            return loadCertificate(bytes);
+                        } catch (CertificateException | IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }).collect(Collectors.toList()) : new LinkedList<>();
+                    intermediates.add(sCert);
+                    verifyCertificateChain(sCert, intermediates, loadCertificate(rootCertificate));
+                }
                 return true;
             }
         } catch (Exception e) {
