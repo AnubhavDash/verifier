@@ -52,6 +52,8 @@ if (platform === 'win32') {
       });
 } else {
   // serverProcess = require('child_process').spawn(app.getAppPath() + '/run-backend');
+  console.error('Non windows OS is currently not implemented');
+  logger.log('error', 'Non windows OS is currently not implemented');
 }
 
 if (!serverProcess) {

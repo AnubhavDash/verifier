@@ -179,7 +179,6 @@ public class Test04 extends Test {
                             er.getProportionalElection().getList()
                                     .forEach(l -> {
                                         String listId = l.getListInformation().getListIdentification();
-                                        // BigInteger countOfPartyVotes = getCountOfCandidatesVotes(l);
                                         BigInteger countOfPartyVotes = getCountOfPartyVotes(l);
                                         BigInteger lcpCount = getVoteCount(countByListId, ccId, electionId, listId);
                                         BigInteger countOfAdditionalVotes = getCountOfAdditionalVotes(l);

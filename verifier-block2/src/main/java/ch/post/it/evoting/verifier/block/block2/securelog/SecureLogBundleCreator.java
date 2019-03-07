@@ -79,7 +79,7 @@ public final class SecureLogBundleCreator {
                             result.getBundle().addRegularLogEntry((RegularLogEntry) e);
                         }
                     } else if (e instanceof LastRowEntry) {
-                        //just ignore
+                        //lastRows are just ignored
                     } else {
                         throw new IllegalArgumentException("Unsupported SecureLogEntry implementation : " + e.getClass());
                     }
