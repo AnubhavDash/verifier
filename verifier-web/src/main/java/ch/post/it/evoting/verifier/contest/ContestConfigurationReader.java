@@ -1,14 +1,14 @@
 /**
  * This file is part of Verifier Swiss Post.
- *
+ * <p>
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
  * the GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
- *
+ * <p>
  * Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
@@ -18,7 +18,6 @@ import ch.evoting.xmlns.config._4.Configuration;
 import ch.evoting.xmlns.config._4.ContestDescriptionInformationType;
 import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
-import ch.post.it.evoting.verifier.processor.VerifierProcessor;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
@@ -36,26 +35,21 @@ public class ContestConfigurationReader {
 
     private static final String ELECTION_SETUP_PATH = "election_setup";
 
-    private VerifierProcessor processor;
 
-    public ContestConfigurationReader(VerifierProcessor processor) {
-        this.processor = processor;
-    }
-
-    private Configuration loadConfiguration() {
+    private Configuration loadConfiguration(String inputDirectory) {
         try {
-            return Deserializer.fromXml(Paths.get(processor.getConfiguration().getInputDirectory()).resolve(ELECTION_SETUP_PATH).toFile(), "configuration-anonymized.xml", Configuration.class);
+            return Deserializer.fromXml(Paths.get(inputDirectory).resolve(ELECTION_SETUP_PATH).toFile(), "configuration-anonymized.xml", Configuration.class);
         } catch (FileNotFoundException e) {
             LOGGER.error("Unable to locate the configuration-anonymized file based on given configuration directory");
         } catch (IOException | JAXBException e) {
-            LOGGER.error(String.format("unable to get the contest name in file %s/configuration-anonymized.xml", processor.getConfiguration().getInputDirectory()), e);
+            LOGGER.error(String.format("unable to get the contest name in file %s/configuration-anonymized.xml", inputDirectory), e);
             throw new RuntimeException(e);
         }
         return null;
     }
 
-    public String getContestName(Language language) {
-        Configuration configuration = loadConfiguration();
+    public String getContestName(String inputDirectory, Language language) {
+        Configuration configuration = loadConfiguration(inputDirectory);
         if (configuration != null) {
             Optional<ContestDescriptionInformationType.ContestDescriptionInfo> optDesc = configuration.getContest().getContestDescription().getContestDescriptionInfo().stream().filter(o -> o.getLanguage().value().equalsIgnoreCase(language.toString())).findFirst();
             if (optDesc.isPresent()) {
@@ -67,8 +61,8 @@ public class ContestConfigurationReader {
         return "";
     }
 
-    public Date getContestDate() {
-        Configuration configuration = loadConfiguration();
+    public Date getContestDate(String inputDirectory) {
+        Configuration configuration = loadConfiguration(inputDirectory);
         if (configuration != null) {
             return configuration.getContest().getContestDate().toGregorianCalendar().getTime();
         }

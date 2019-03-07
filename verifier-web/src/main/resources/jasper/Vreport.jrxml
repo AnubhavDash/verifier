@@ -16,9 +16,9 @@
 		<queryString language="json">
 			<![CDATA[blocksResults]]>
 		</queryString>
-		<field name="titre" class="java.lang.String">
-			<property name="net.sf.jasperreports.json.field.expression" value="titre"/>
-			<fieldDescription><![CDATA[titre]]></fieldDescription>
+		<field name="title" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="title"/>
+			<fieldDescription><![CDATA[title]]></fieldDescription>
 		</field>
 		<field name="description" class="java.lang.String">
 			<property name="net.sf.jasperreports.json.field.expression" value="description"/>
@@ -127,7 +127,7 @@
 							<textElement markup="styled">
 								<font isBold="true"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{titre}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
 						</textField>
 						<textField>
 							<reportElement x="50" y="0" width="505" height="20" uuid="6fb78c71-adda-4dc5-9ee6-e6749133ce51"/>
