@@ -12,21 +12,30 @@
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package ch.post.it.evoting.verifier.dto;
+package ch.post.it.evoting.verifier.report.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@Builder
-public class ExecutionStatus {
-    private LifecycleStatus status;
-    private int testActual;
-    private int testCount;
+public class ReportMetadata {
+    private String title;
+    private String headerTitleLabel;
+    private String headerTitle;
+    private String reportDateLabel;
+    private String reportDate;
+    private String reportTimeLabel;
+    private String reportTime;
+
+    private String commentLabel;
+    private String signaturetLabel;
+    private String placeDatetLabel;
+    private String lastNameLabel;
+    private String firstNameLabel;
+    private String footerTitleLabel;
+    private String footerTitle;
+    private String footerDateLabel;
+    private String footerDate;
+
 }
-
-

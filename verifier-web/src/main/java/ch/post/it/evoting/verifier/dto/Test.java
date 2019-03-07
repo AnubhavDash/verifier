@@ -19,11 +19,13 @@ import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.Status;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Map;
 
 @Getter
 @Setter
+@ToString
 public class Test {
     private String id;
     private int testId;
@@ -33,18 +35,4 @@ public class Test {
     private Map<Language, String> description;
     private Status status;
     private Map<Language, String> message;
-
-    @Override
-    public String toString() {
-        return "Test{" +
-                "id='" + id + '\'' +
-                ", testId=" + testId +
-                ", blockId=" + blockId +
-                ", name='" + name + '\'' +
-                ", category=" + category +
-                ", description=" + description +
-                ", status=" + status +
-                ", message=" + message +
-                '}';
-    }
 }

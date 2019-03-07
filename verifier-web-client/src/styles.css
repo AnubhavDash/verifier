@@ -4,15 +4,16 @@ body {
 }
 
 
-button{
-  background-color:#eee !important;
-}
-button:hover{
-  background-color: grey !important;
-  color:white;
+button {
+  background-color: #eee !important;
 }
 
-#buttonDiv{
+button:hover {
+  background-color: grey !important;
+  color: white;
+}
+
+#buttonDiv {
   text-align: center;
 }
 

@@ -1,7 +1,7 @@
                       Project Verifier
                       ================
 
-Copyright (c) 2018, 2019 Swiss Post IT and/or its affiliates. All rights reserved.
+Copyright (c) 2018, 2019 Swiss Post and/or its affiliates. All rights reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ limitations under the License.
 ==========================================================================
 Third Party Dependencies
 ==========================================================================
-This project can includes or depends on code from third party projects.
+This project can include or depends on code from third party projects.
 It concerns a library developed by Scytl Company, covered by a owner license.
 
 ==========================================================================
@@ -27,7 +27,7 @@ How to use project with Scytl library
 To use the software with the complementary part (verifier-block3-scytl library)
 Please follow the instructions in the README file
 
- Otherwize
+ Otherwise
     - Edit pom.xml to remove module verifier-block3
     - Edit verifier-web\src\main\resources\verifier.properties and remove
       ch.post.it.evoting.verifier.block.block3.Block3TestSuite element from 

@@ -85,7 +85,7 @@ public class Test74 extends Test {
                 byte[] content = Files.readAllBytes(commitmentParam.toPath());
                 byte[] signature = Files.readAllBytes(commitmentParam.toPath().getParent().resolve(commitmentParam.getName() + ".metadata"));
 
-                if (!SignatureChecker.verifyMetdata(content, signature, signCertificate, rootCA)) {
+                if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCA)) {
                     throw new TestFailureException(commitmentParam.getName());
                 }
             }

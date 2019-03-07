@@ -81,7 +81,7 @@ public class Test71 extends Test {
                 byte[] content = Files.readAllBytes(decompressedVote.toPath());
                 byte[] signature = Files.readAllBytes(decompressedVote.toPath().getParent().resolve(decompressedVote.getName() + ".metadata"));
 
-                if (!SignatureChecker.verifyMetdata(content, signature, signCertificate, rootCA)) {
+                if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCA)) {
                     throw new TestFailureException(decompressedVote.getName());
                 }
             }

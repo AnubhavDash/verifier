@@ -196,6 +196,10 @@ public class Test31 extends Test {
                 return true;
             return (this.gamma.equals(((GammaPhis) obj).getGamma()) && this.phis.equals(((GammaPhis) obj).getPhis()));
         }
-    }
 
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.gamma, this.phis);
+        }
+    }
 }

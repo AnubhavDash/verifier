@@ -31,6 +31,25 @@
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>com.googlecode.maven-download-plugin</groupId>
+                        <artifactId>download-maven-plugin</artifactId>
+                        <version>1.4.1</version>
+                        <executions>
+                            <execution>
+                                <id>install-openjdk</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>wget</goal>
+                                </goals>
+                                <configuration>
+                                    <url>https://github.com/ojdkbuild/ojdkbuild/releases/download/1.8.0.201-1/java-1.8.0-openjdk-1.8.0.201-1.b09.ojdkbuild.windows.x86_64.zip</url>
+                                    <unpack>true</unpack>
+                                    <outputDirectory>${project.build.directory}/jdk</outputDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-assembly-plugin</artifactId>
                         <executions>
@@ -42,7 +61,7 @@
                                 </goals>
                                 <configuration>
                                     <descriptors>
-                                        <descriptor>${project.basedir}/src/main/assembly/depo-assembly.xml</descriptor>
+                                        <descriptor>src/main/assembly/assembly.xml</descriptor>
                                     </descriptors>
                                 </configuration>
                             </execution>

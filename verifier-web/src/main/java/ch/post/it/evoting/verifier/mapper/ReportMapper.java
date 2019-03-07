@@ -18,8 +18,8 @@ import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.dto.Test;
 import ch.post.it.evoting.verifier.report.ReportGenerator;
-import ch.post.it.evoting.verifier.report.pojo.Block;
-import ch.post.it.evoting.verifier.report.pojo.Report;
+import ch.post.it.evoting.verifier.report.model.Block;
+import ch.post.it.evoting.verifier.report.model.Report;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -41,7 +41,7 @@ public interface ReportMapper {
                 .sorted()
                 .map(id -> {
                     Block block = new Block();
-                    block.setTitre((TranslationHelper.getFromResourceBundle(ReportGenerator.MESSAGE_BUNDLE_NAME, "report.block.title", lang.getLocale())) + id );
+                    block.setTitle((TranslationHelper.getFromResourceBundle(ReportGenerator.MESSAGE_BUNDLE_NAME, "report.block.title", lang.getLocale())) + id );
                     block.setDescription((TranslationHelper.getFromResourceBundle(ReportGenerator.MESSAGE_BUNDLE_NAME, "report.block"+ id +".description", lang.getLocale())));
                     block.setTests(testsList.stream()
                             .filter(t -> t.getBlockId() == id)
@@ -68,7 +68,7 @@ public interface ReportMapper {
             @Mapping(target = "status", source = "test.status"),
             @Mapping(target = "message", expression = "java( getMessage(test, lang) )")
     })
-    ch.post.it.evoting.verifier.report.pojo.Test map(ch.post.it.evoting.verifier.dto.Test test, Language lang);
+    ch.post.it.evoting.verifier.report.model.Test map(ch.post.it.evoting.verifier.dto.Test test, Language lang);
 
     default String getMessage(ch.post.it.evoting.verifier.dto.Test t, Language l) {
         if (t.getMessage() != null) {

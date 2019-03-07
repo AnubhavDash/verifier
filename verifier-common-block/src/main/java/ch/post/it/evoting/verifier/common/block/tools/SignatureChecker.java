@@ -84,7 +84,7 @@ public class SignatureChecker {
         return false;
     }
 
-    public static boolean verifyMetdata(byte[] sourceData, byte[] metadataData, byte[] signerCert, byte[] rootCert) {
+    public static boolean verifyMetadata(byte[] sourceData, byte[] metadataData, byte[] signerCert, byte[] rootCert) {
         if (Security.getProvider("BC") == null) {
             Security.addProvider(new BouncyCastleProvider());
         }
