@@ -94,7 +94,7 @@ export class ReportOverviewComponent implements OnInit {
   }
 
   initializeWebSocketConnection() {
-    const ws = new SockJS('https://localhost:8443/socket');
+    const ws = new SockJS('/socket');
     this.stompClient = Stomp.over(ws);
     const that = this;
     this.stompClient.connect({authorization: environment.authorizationHeaderValue}, function (frame) {
