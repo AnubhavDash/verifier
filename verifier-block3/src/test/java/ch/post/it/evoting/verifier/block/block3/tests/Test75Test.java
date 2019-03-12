@@ -55,11 +55,8 @@ public class Test75Test {
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 
-    @Ignore
     @Test
     public void tddTest75() throws IOException {
-        /*byte[] platformRootCA = Files.readAllBytes(new File(getClass().getResource("/Test75/OK/EMPTY-VOTES/certificates/platformRootCA.pem").getFile()).toPath());
-        File file = new File(getClass().getResource("/Test75/OK/EMPTY-VOTES/ballotboxes/dd1b845f19ee422dbb855b6dab93486e/100-03c685d26f7c421d858f8fab7ee7261c-dd1b845f19ee422dbb855b6dab93486e-0-ccn_m1.json").getFile());*/
 
         byte[] platformRootCA = Files.readAllBytes(new File(getClass().getResource("/Test75/OK/WITH-VOTES/certificates/platformRootCA.pem").getFile()).toPath());
         File file = new File(getClass().getResource("/Test75/OK/WITH-VOTES/ballotboxes/1decf6d9fce14e2cb75a3b9c25ee2582/100-2cfa68a7d755489a84ff617afb2e6bc4-1decf6d9fce14e2cb75a3b9c25ee2582-0-ccn_m1.json").getFile());
@@ -70,7 +67,7 @@ public class Test75Test {
         Signature sig = onlineMixing.getSignature();
         List<String> certificateChain = sig.getCertificateChain();
         String certificate = certificateChain.get(0);
-        //byte[][] intermediates = certificateChain.stream().skip(1).map(str -> str.getBytes(StandardCharsets.UTF_8)).toArray(byte[][]::new);
+        byte[][] intermediates = certificateChain.stream().skip(1).map(str -> str.getBytes(StandardCharsets.UTF_8)).toArray(byte[][]::new);
         String signature = sig.getSignatureContents();
 
         String content = serialize(onlineMixing, loader.getShuffleProof());
@@ -78,8 +75,8 @@ public class Test75Test {
         boolean b = SignatureChecker.verifySignature(content.getBytes(StandardCharsets.UTF_8),
                 TypeConverter.base64ToByte(signature),
                 certificate.getBytes(StandardCharsets.UTF_8),
-                null,
-                null);
+                intermediates,
+                platformRootCA);
         Assert.assertTrue(b);
 
     }
