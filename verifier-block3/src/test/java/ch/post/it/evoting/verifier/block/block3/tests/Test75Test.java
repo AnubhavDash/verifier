@@ -213,25 +213,19 @@ public class Test75Test {
                 ballotBoxId.getElectionEventId(),
                 ballotBoxId.getId(),
                 onlineMixing.getVoteSetId().getIndex(),
-                //onlineMixing.getVotes().stream()
-                //        .map(vote -> TypeConverter.bigIntegerToB64String(vote.getGamma()) + vote.getPhis().stream().map(TypeConverter::bigIntegerToB64String).collect(Collectors.joining()))
-                //        .collect(Collectors.joining()),
                 onlineMixing.getVotes().stream()
                         .map(vote -> vote.getGamma() + ";" + vote.getPhis().stream().map(String::valueOf).collect(Collectors.joining()))
                         .collect(Collectors.joining()),
                 voteEnc,
                 onlineMixing.getCommitmentParameters().stream().collect(Collectors.joining()),
                 onlineMixing.getDecryptionProofs().stream().collect(Collectors.joining()),
-                //onlineMixing.getShuffledVotes().stream()
-                //        .map(vote -> TypeConverter.bigIntegerToB64String(vote.getGamma()) + vote.getPhis().stream().map(TypeConverter::bigIntegerToB64String).collect(Collectors.joining()))
-                //        .collect(Collectors.joining()),
                 onlineMixing.getShuffledVotes().stream()
                         .map(vote -> vote.getGamma() +  ";" + vote.getPhis().stream().map(String::valueOf).collect(Collectors.joining()))
                         .collect(Collectors.joining()),
                 serialize(shuffleProof),
                 onlineMixing.getTimestamp(),
                 onlineMixing.getPreviousVotes().stream()
-                        .map(vote -> TypeConverter.bigIntegerToB64String(vote.getGamma()) + vote.getPhis().stream().map(TypeConverter::bigIntegerToB64String).collect(Collectors.joining()))
+                        .map(vote -> vote.getGamma() + ";" + vote.getPhis().stream().map(String::valueOf).collect(Collectors.joining()))
                         .collect(Collectors.joining()),
                 prevVoteEnc);
         return result;
