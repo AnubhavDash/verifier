@@ -114,7 +114,7 @@ public class Test75 extends Test {
     }
 
 
-    private String serialize(OnlineMixing onlineMixing, ShuffleProof shuffleProof) {
+    String serialize(OnlineMixing onlineMixing, ShuffleProof shuffleProof) {
         BallotBoxId ballotBoxId = onlineMixing.getVoteSetId().getBallotBoxId();
 
         String voteEnc = String.format("{\"publicKey\":{\"zpSubgroup\":{\"g\":\"%s\",\"p\":\"%s\",\"q\":\"%s\"},\"elements\":[%s]}}",
