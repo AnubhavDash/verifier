@@ -1,14 +1,14 @@
 /**
  * This file is part of Verifier Swiss Post.
- *
+ * <p>
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
  * the GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
- *
+ * <p>
  * Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
@@ -39,6 +39,7 @@ import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroupParams;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentParams;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
 import org.apache.commons.codec.DecoderException;
+import org.apache.commons.lang.StringUtils;
 import reactor.core.publisher.Flux;
 
 import java.io.File;
@@ -129,8 +130,7 @@ public class OnlineMixingProofLoader implements OnlineDataLoader {
             pubKeys.add(new ZpElement(multiplyElements(elements.subList(nbKeys - 1, elements.size()), params.getP()), params));
 
             return new ElGamalPublicKey(pubKeys, zpGroup);
-        }
-        catch (DecoderException e) {
+        } catch (DecoderException e) {
             throw new RuntimeException(e);
         }
     }
@@ -159,12 +159,14 @@ public class OnlineMixingProofLoader implements OnlineDataLoader {
 
     @Override
     public ShuffleProof getShuffleProof() throws IOException {
-        OnlineShuffleProof onlineShuffleProof = Deserializer.fromJson(onlineMixing.getShuffleProof().getBytes(), OnlineShuffleProof.class);
-        List<PublicCommitment> initialMessages = onlineShuffleProof.getInitialMessage().stream().map(im -> new PublicCommitment(new ZpElement(im.getElement().getValue(), im.getElement().getP(), im.getElement().getQ()))).collect(Collectors.toList());
-        List<PublicCommitment> firstAnswers = onlineShuffleProof.getFirstAnswer().stream().map(fa -> new PublicCommitment(new ZpElement(fa.getElement().getValue(), fa.getElement().getP(), fa.getElement().getQ()))).collect(Collectors.toList());
-
-        ShuffleProofSecondAnswer secondAnswer = SecondAnswerMapper.INSTANCE.map(onlineShuffleProof.getSecondAnswer());
-        ShuffleProof result = new ShuffleProof(initialMessages.toArray(new PublicCommitment[]{}), firstAnswers.toArray(new PublicCommitment[]{}), secondAnswer);
+        ShuffleProof result = null;
+        if (StringUtils.isNotBlank(onlineMixing.getShuffleProof())) {
+            OnlineShuffleProof onlineShuffleProof = Deserializer.fromJson(onlineMixing.getShuffleProof().getBytes(), OnlineShuffleProof.class);
+            List<PublicCommitment> initialMessages = onlineShuffleProof.getInitialMessage().stream().map(im -> new PublicCommitment(new ZpElement(im.getElement().getValue(), im.getElement().getP(), im.getElement().getQ()))).collect(Collectors.toList());
+            List<PublicCommitment> firstAnswers = onlineShuffleProof.getFirstAnswer().stream().map(fa -> new PublicCommitment(new ZpElement(fa.getElement().getValue(), fa.getElement().getP(), fa.getElement().getQ()))).collect(Collectors.toList());
+            ShuffleProofSecondAnswer secondAnswer = SecondAnswerMapper.INSTANCE.map(onlineShuffleProof.getSecondAnswer());
+            result = new ShuffleProof(initialMessages.toArray(new PublicCommitment[]{}), firstAnswers.toArray(new PublicCommitment[]{}), secondAnswer);
+        }
         return result;
     }
 
