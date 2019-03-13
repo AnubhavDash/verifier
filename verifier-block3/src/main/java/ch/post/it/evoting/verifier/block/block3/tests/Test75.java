@@ -91,7 +91,7 @@ public class Test75 extends Test {
 
                     if (!success) {
                         result.setStatus(Status.NOK);
-                        result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test75.nok.message"));
+                        result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test75.nok.message", file.getName()));
                         return result;
                     }
                 }
