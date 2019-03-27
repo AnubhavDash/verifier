@@ -17,28 +17,21 @@ package ch.post.it.evoting.verifier.block.block2.tests;
 import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
 import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationDataExtractor;
 import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationStruct;
-import ch.post.it.evoting.verifier.block.block2.securelog.RegularLogEntry;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.TestFailureException;
-import ch.post.it.evoting.verifier.common.block.dto.HostMappingElement;
-import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
+import ch.post.it.evoting.verifier.block.block2.securelog.HostMappingElement;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
-import reactor.core.publisher.Flux;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+import java.util.regex.Pattern;
 
 public class Test04 extends Test {
 
@@ -63,26 +56,11 @@ public class Test04 extends Test {
             VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectory);
 
             // create host/CC mapping
-            File mapping = PathHelper.getFile(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS).toFile(), "mapping_cc_hosts.csv");
-            Iterable<HostMappingElement> iterable = Deserializer.fromCsv(mapping.getParentFile(), mapping.getName(), ";", Deserializer.toHostMappingElement);
-            Map<String, String> hostCcMapping = StreamSupport.stream(iterable.spliterator(), false)
-                    .skip(1)
-                    .collect(Collectors.toMap(HostMappingElement::getHostname, HostMappingElement::getCc));
+            Map<String, String> hostCcMapping = HostMappingElement.loadHostMapping(inputDirectory);
 
+            final Pattern pattern = Pattern.compile("\\|GENPVCC\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|");
             //count in the logs
-            Stream<SecureLogEntry> logEntry = Deserializer.fromLines(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS).toFile(), ".*\\.json",
-                    line -> {
-                        try {
-                            return SecureLogEntry.from(line);
-                        } catch (IOException e) {
-                            throw new RuntimeException("Unable to deserialize SecureLogEntry", e);
-                        }
-                    });
-            Map<String, Long> countByCC = Flux.fromStream(logEntry)
-                    .filter(sl -> sl.getPreview() != null && !sl.getPreview())
-                    .filter(s1 -> s1 instanceof RegularLogEntry)
-                    .cast(RegularLogEntry.class)
-                    .filter(s1 -> s1.getRaw().matches(".*\\|GENPVCC\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|.*\n"))
+            Map<String, Long> countByCC = SecureLogEntry.loadRegularLogs(inputDirectory, pattern)
                     .groupBy(s1 -> hostCcMapping.containsKey(s1.getHost()) ? hostCcMapping.get(s1.getHost()) : s1.getHost())
                     .flatMap(group -> {
                         String ccName = group.key();

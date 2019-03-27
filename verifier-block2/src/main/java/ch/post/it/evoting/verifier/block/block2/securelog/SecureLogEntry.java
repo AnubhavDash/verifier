@@ -14,106 +14,111 @@
  */
 package ch.post.it.evoting.verifier.block.block2.securelog;
 
-import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
-import ch.post.it.evoting.verifier.dto.SecureLogOrigin;
+import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.lang.StringUtils;
+import org.reactivestreams.Publisher;
+import reactor.core.publisher.Flux;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
-import java.util.regex.Matcher;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @ToString
 public abstract class SecureLogEntry {
 
-    private Boolean preview;
     private String host;
     private String raw;
     private String source;
     private SecureLogMetadata metadata;
 
-    public static SecureLogEntry from(String line) throws IOException {
+    public static SecureLogEntry from(String line, String hostName, String filename) {
         SecureLogEntry result;
         if (line.contains("lastrow")) {
             result = new LastRowEntry();
         } else if (line.contains("New Secret Key generated")) {
             result = new CheckPointLogEntry();
-            result.deserialize(line);
         } else {
             result = new RegularLogEntry();
-            result.deserialize(line);
         }
+        result.setHost(hostName);
+        result.setSource(filename);
+        result.deserialize(line);
         return result;
     }
 
-    protected void deserialize(String line) throws IOException {
-        SecureLogOrigin slo = Deserializer.fromJson(line.getBytes(), SecureLogOrigin.class);
+    private final static String METADATA_START_TAG = " {*";
+    private final static String METADATA_END_TAG = "*}";
 
-        setPreview(slo.getPreview());
-        if (slo.getResult() != null) {
-            setSource(slo.getResult().getSource());
-            setHost(slo.getResult().getHost());
-            setRaw(getRawWithoutMetadata(slo.getResult().getRaw()));
-            setMetadata(getMetadataFromRaw(slo.getResult().getRaw()));
-        }
-    }
+    protected void deserialize(String line) {
+        if (StringUtils.isNotEmpty(line)) {
+            //Using substring and not PatternMatching because of performance considerations
+            int endOfRawIndex = line.indexOf(METADATA_START_TAG);
+            this.setRaw(line.substring(0, endOfRawIndex) + "\n");
 
-    protected String getRawWithoutMetadata(String raw) {
-        String result = null;
-        if (raw != null && !raw.isEmpty()) {
-            Matcher matcher = Pattern.compile("(.*?)(\\{\\*.*)?$").matcher(raw);
-            if (matcher.matches()) {
-                result = matcher.group(1);
-
-                //replace the last character and with a line feed.
-                if (result.length() > 0) {
-                    result = result.substring(0, result.length() - 1) + "\n";
-                }
-            }
-        }
-        return result;
-    }
-
-    protected SecureLogMetadata getMetadataFromRaw(String raw) {
-        SecureLogMetadata metadata = new SecureLogMetadata();
-        if (raw != null && !raw.isEmpty()) {
-            String metadataString = getMetadataString(raw);
+            SecureLogMetadata metadata = new SecureLogMetadata();
+            String metadataString = line.substring(endOfRawIndex + METADATA_START_TAG.length(), line.indexOf(METADATA_END_TAG));
             if (metadataString != null && !metadataString.isEmpty()) {
-                metadata.setSg(getMetadataValue(metadataString, "SG"));
-                metadata.setLsk(getMetadataValue(metadataString, "LSK"));
-                metadata.setEsk(getMetadataValue(metadataString, "ESK"));
-                metadata.setHmac(getMetadataValue(metadataString, "HMAC"));
-                metadata.setPhmac(getMetadataValue(metadataString, "PHMAC"));
-                metadata.setLs(getMetadataValue(metadataString, "LS"));
-                metadata.setTl(getMetadataValue(metadataString, "TL"));
-                metadata.setTs(getMetadataValue(metadataString, "TS"));
+                Map<String, String> metaDataValues = getMetadataValues(metadataString);
+                metadata.setSg(metaDataValues.get("SG"));
+                metadata.setLsk(metaDataValues.get("LSK"));
+                metadata.setEsk(metaDataValues.get("ESK"));
+                metadata.setHmac(metaDataValues.get("HMAC"));
+                metadata.setPhmac(metaDataValues.get("PHMAC"));
+                metadata.setLs(metaDataValues.get("LS"));
+                metadata.setTl(metaDataValues.get("TL"));
+                metadata.setTs(metaDataValues.get("TS"));
             }
+            this.setMetadata(metadata);
         }
-        return metadata;
     }
 
-    private String getMetadataString(String raw) {
-        String result = null;
-        if (raw != null && !raw.isEmpty()) {
-            Matcher matcher = Pattern.compile(".*\\{\\*(.*)\\*\\}.*").matcher(raw);
-            if (matcher.matches()) {
-                result = matcher.group(1);
-            }
-        }
-        return result;
-    }
-
-    private String getMetadataValue(String metadataString, String key) {
+    private Map<String, String> getMetadataValues(String metadataString) {
         return Arrays.stream(metadataString.split(","))
-                .filter(val -> val.startsWith(key.toUpperCase() + "::"))
                 .map(val -> val.split("::"))
                 .filter(tab -> tab.length == 2)
-                .map(val -> val[1])
-                .findFirst()
-                .orElse(null);
+                .collect(Collectors.toMap(tab -> tab[0], tab -> tab[1]));
     }
+
+
+    public static Function<File, Flux<SecureLogEntry>> loadLogDirectory = logDir -> {
+        try {
+            return Flux.fromArray(PathHelper.getFiles(logDir, ".*\\.log"))
+                    .sort(Comparator.comparing(File::getName))
+                    .concatMap(SecureLogEntry.loadFile);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("directory without log files :" + logDir.getName(), e);
+        }
+    };
+
+    public static Flux<RegularLogEntry> loadRegularLogs(File inputDirectory, Pattern pattern) {
+        return Flux.fromArray(PathHelper.listDirectories(inputDirectory.toPath().resolve("SecureLogs")))
+                .flatMap(hostDir -> Flux.fromArray(PathHelper.listDirectories(hostDir.toPath())))
+                .flatMap(instanceDir -> Flux.fromArray(PathHelper.listDirectories(instanceDir.toPath())))
+                .flatMap(SecureLogEntry.loadLogDirectory)
+                .filter(s1 -> s1 instanceof RegularLogEntry)
+                .cast(RegularLogEntry.class)
+                .filter(s1 -> pattern.matcher(s1.getRaw()).find());
+    }
+
+    private static Function<File, Publisher<SecureLogEntry>> loadFile = file -> {
+        try {
+            String hostName = file.getParentFile().getParentFile().getParentFile().getName();
+            return Flux.fromStream(Files.lines(file.toPath()))
+                    .map(line -> SecureLogEntry.from(line, hostName, file.getName()));
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to read file : " + file.getName(), e);
+        }
+    };
 }

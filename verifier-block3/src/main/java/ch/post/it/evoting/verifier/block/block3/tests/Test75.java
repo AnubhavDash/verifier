@@ -15,17 +15,12 @@
 package ch.post.it.evoting.verifier.block.block3.tests;
 
 import ch.post.it.evoting.verifier.block.block3.Block3TestSuite;
-import ch.post.it.evoting.verifier.block.block3.loader.online.OnlineMixingProofLoader;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.Test;
-import ch.post.it.evoting.verifier.common.block.TestFailureException;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
-import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.onlinemixing.BallotBoxId;
 import ch.post.it.evoting.verifier.dto.onlinemixing.OnlineMixing;
-import ch.post.it.evoting.verifier.dto.onlinemixing.Signature;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProof;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Randomness;
@@ -34,11 +29,7 @@ import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitme
 import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class Test75 extends Test {
@@ -60,6 +51,8 @@ public class Test75 extends Test {
     @Override
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
+        result.setStatus(Status.NA);
+        /* Temporary commented - feedback about original sentence needed
         try {
             File[] ballotBoxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES));
             for (File ballotBox : ballotBoxes) {
@@ -108,7 +101,7 @@ public class Test75 extends Test {
             LOGGER.error("Unexpected error", e);
             result.setStatus(Status.NOK);
             result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
-        }
+        }*/
         return result;
     }
 
@@ -237,14 +230,14 @@ public class Test75 extends Test {
 
         private static String serialize(Ciphertext c) {
             return String.format("{\n        \"gamma\" : \"%s\",\n        \"phis\" : \"%s\"\n      }",
-                    String.valueOf(c.getParts()[0].getValue() + ";" + c.getParts()[0].getParams().getP() + ";" + c.getParts()[0].getParams().getOrder()),
-                    String.valueOf(Arrays.asList(c.getParts()).subList(1, c.getParts().length).get(0).getValue()) + ";" + c.getParts()[0].getParams().getP() + ";" + c.getParts()[0].getParams().getOrder());
+                    c.getParts()[0].getValue() + ";" + c.getParts()[0].getParams().getP() + ";" + c.getParts()[0].getParams().getOrder(),
+                    Arrays.asList(c.getParts()).subList(1, c.getParts().length).get(0).getValue()) + ";" + c.getParts()[0].getParams().getP() + ";" + c.getParts()[0].getParams().getOrder();
         }
 
         private static String serialize(Randomness r) {
             return String.format("{\n        \"class\" : \"%s\",\n        \"randomnessValue\" : %s\n      }",
-                    String.valueOf(r.getClass().getTypeName()),
-                    String.valueOf(serializeWithOneIndent(r.getExponent())));
+                    r.getClass().getTypeName(),
+                    serializeWithOneIndent(r.getExponent()));
         }
 
     }

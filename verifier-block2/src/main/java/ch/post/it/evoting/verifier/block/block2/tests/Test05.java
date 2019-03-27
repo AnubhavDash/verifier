@@ -17,13 +17,8 @@ package ch.post.it.evoting.verifier.block.block2.tests;
 import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
 import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationDataExtractor;
 import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationStruct;
-import ch.post.it.evoting.verifier.block.block2.securelog.RegularLogEntry;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
-import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.TestDefinition;
-import ch.post.it.evoting.verifier.common.TestResult;
-import ch.post.it.evoting.verifier.common.TestTrait;
+import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.TestFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
@@ -32,7 +27,6 @@ import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.DownloadedBallot;
 import org.apache.log4j.Logger;
-import reactor.core.publisher.Flux;
 import reactor.util.function.Tuples;
 
 import java.io.File;
@@ -40,10 +34,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -72,22 +63,11 @@ public class Test05 extends Test {
             VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectory);
 
             //count in the logs
-            Stream<SecureLogEntry> logEntry = Deserializer.fromLines(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS).toFile(), ".*\\.json",
-                    line -> {
-                        try {
-                            return SecureLogEntry.from(line);
-                        } catch (IOException e) {
-                            throw new RuntimeException("Unable to deserialize SecureLogEntry", e);
-                        }
-                    });
-            Pattern pattern = Pattern.compile(".*\\|000\\|(.*)\\|.*\\|.*\\|#encryptedOptions=\"(.*)\" #ccx_id=.*\n");
-            Map<String, String> mapSecureLogs = Flux.fromStream(logEntry)
-                    .filter(sl -> sl.getPreview() != null && !sl.getPreview())
-                    .filter(s1 -> s1 instanceof RegularLogEntry)
-                    .cast(RegularLogEntry.class)
-                    .filter(s1 -> s1.getRaw().matches(".*\\|VOTVAL\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|.*\n"))
+            final Pattern patternEncryptedOption = Pattern.compile(".*\\|000\\|(.*)\\|.*\\|.*\\|#encryptedOptions=\"(.*)\" #ccx_id=.*\n");
+            final Pattern pattern = Pattern.compile("\\|VOTVAL\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|");
+            Map<String, String> mapSecureLogs = SecureLogEntry.loadRegularLogs(inputDirectory, pattern)
                     .map(s1 -> {
-                        Matcher matcher = pattern.matcher(s1.getRaw());
+                        Matcher matcher = patternEncryptedOption.matcher(s1.getRaw());
                         matcher.matches();
                         return Tuples.of(matcher.group(1), matcher.group(2));
                     })

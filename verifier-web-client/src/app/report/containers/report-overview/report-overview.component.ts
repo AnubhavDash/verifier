@@ -77,7 +77,7 @@ export class ReportOverviewComponent implements OnInit {
     );
   }
 
-  startProcess( runOptions?: string): void {
+  startProcess(runOptions?: string): void {
     const configuration = new Configuration();
     configuration.inputDirectory = this.inputDirectory;
     this.processorService.setConfigurationInputDirectory(configuration).subscribe(() => {
@@ -94,7 +94,7 @@ export class ReportOverviewComponent implements OnInit {
   }
 
   initializeWebSocketConnection() {
-    const ws = new SockJS('/socket');
+    const ws = new SockJS(environment.appUrl + '/socket');
     this.stompClient = Stomp.over(ws);
     const that = this;
     this.stompClient.connect({authorization: environment.authorizationHeaderValue}, function (frame) {
