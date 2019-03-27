@@ -36,10 +36,6 @@ public class SecureLogBundle {
     private List<RegularLogEntry> regularLogEntries = new ArrayList<>();
     private SecureLogBundleCertificates certificates;
 
-    public SecureLogBundleCertificates getCertificates() {
-        return certificates;
-    }
-
     public void setCertificates(SecureLogBundleCertificates certificates) {
         this.certificates = certificates;
     }
@@ -48,8 +44,16 @@ public class SecureLogBundle {
         this.beginCheckPoint = beginCheckPoint;
     }
 
+    public CheckPointLogEntry getBeginCheckPoint() {
+        return this.beginCheckPoint;
+    }
+
     public void setEndCheckPoint(CheckPointLogEntry endCheckPoint) {
         this.endCheckPoint = endCheckPoint;
+    }
+
+    public CheckPointLogEntry getEndCheckPoint() {
+        return this.endCheckPoint;
     }
 
     public void addRegularLogEntry(RegularLogEntry regularLogEntry) {
@@ -80,42 +84,51 @@ public class SecureLogBundle {
         }
     }
 
-    public CheckPointLogEntry getBeginCheckPoint() {
-        return beginCheckPoint;
-    }
-
     public boolean validateSignature() {
-        String bytes;
+        if (StringUtils.isEmpty(beginCheckPoint.getMetadata().getPhmac())) {
+            //This is the first Bundle, also check the begin checkpoint signature
+            String source = String.format("%s {*ESK::%s,LS::%s,TL::%s,TS::%s,HMAC::%s*}\n",
+                    beginCheckPoint.getRaw().substring(0, beginCheckPoint.getRaw().length() - 1), //remove the ending \n
+                    beginCheckPoint.getMetadata().getEsk(),
+                    beginCheckPoint.getMetadata().getLs(),
+                    beginCheckPoint.getMetadata().getTl(),
+                    beginCheckPoint.getMetadata().getTs(),
+                    beginCheckPoint.getMetadata().getHmac());
 
-        if (StringUtils.isNotEmpty(this.getBeginCheckPoint().getMetadata().getPhmac())) {
-            bytes = String.format("%s {*LSK::%s,ESK::%s,PHMAC::%s,LS::%s,TL::%s,TS::%s,HMAC::%s*}\n",
-                    this.getBeginCheckPoint().getRaw().substring(0, this.getBeginCheckPoint().getRaw().length() - 1), //remove the ending \n
-                    this.getBeginCheckPoint().getMetadata().getLsk(),
-                    this.getBeginCheckPoint().getMetadata().getEsk(),
-                    this.getBeginCheckPoint().getMetadata().getPhmac(),
-                    this.getBeginCheckPoint().getMetadata().getLs(),
-                    this.getBeginCheckPoint().getMetadata().getTl(),
-                    this.getBeginCheckPoint().getMetadata().getTs(),
-                    this.getBeginCheckPoint().getMetadata().getHmac());
-        } else {
-            bytes = String.format("%s {*ESK::%s,LS::%s,TL::%s,TS::%s,HMAC::%s*}\n",
-                    this.getBeginCheckPoint().getRaw().substring(0, this.getBeginCheckPoint().getRaw().length() - 1), //remove the ending \n
-                    this.getBeginCheckPoint().getMetadata().getEsk(),
-                    this.getBeginCheckPoint().getMetadata().getLs(),
-                    this.getBeginCheckPoint().getMetadata().getTl(),
-                    this.getBeginCheckPoint().getMetadata().getTs(),
-                    this.getBeginCheckPoint().getMetadata().getHmac());
+            if (!validateSignature(source, beginCheckPoint.getMetadata().getSg())) {
+                LOGGER.error(String.format("Begin Checkpoint signature not valid. Host: %s Source: %s", beginCheckPoint.getHost(), beginCheckPoint.getSource()));
+                return false;
+            }
         }
 
-        if (this.getCertificates() == null || !SignatureChecker.verifySignature(bytes.getBytes(StandardCharsets.UTF_8),
-                TypeConverter.base64ToByte(this.getBeginCheckPoint().getMetadata().getSg()),
-                this.getCertificates().getCertificate(),
-                this.getCertificates().getIntermediate() != null ? new byte[][]{this.getCertificates().getIntermediate()} : null,
-                this.getCertificates().getRoot())) {
-            LOGGER.error(String.format("Begin Checkpoint signature not valid. Host: %s Source: %s", beginCheckPoint.getHost(), beginCheckPoint.getSource()));
+        String source = String.format("%s {*LSK::%s,ESK::%s,PHMAC::%s,LS::%s,TL::%s,TS::%s,HMAC::%s*}\n",
+                endCheckPoint.getRaw().substring(0, endCheckPoint.getRaw().length() - 1), //remove the ending \n
+                endCheckPoint.getMetadata().getLsk(),
+                endCheckPoint.getMetadata().getEsk(),
+                endCheckPoint.getMetadata().getPhmac(),
+                endCheckPoint.getMetadata().getLs(),
+                endCheckPoint.getMetadata().getTl(),
+                endCheckPoint.getMetadata().getTs(),
+                endCheckPoint.getMetadata().getHmac());
+
+        if (!validateSignature(source, endCheckPoint.getMetadata().getSg())) {
+            LOGGER.error(String.format("End Checkpoint signature not valid. Host: %s Source: %s", endCheckPoint.getHost(), endCheckPoint.getSource()));
             return false;
         }
         return true;
+    }
+
+    private boolean validateSignature(String source, String signature) {
+        if (certificates == null) {
+            LOGGER.error("No certificates for checking the signature");
+            return false;
+        } else {
+            return SignatureChecker.verifySignature(source.getBytes(StandardCharsets.UTF_8),
+                    TypeConverter.base64ToByte(signature),
+                    certificates.getCertificate(),
+                    certificates.getIntermediate() != null ? new byte[][]{certificates.getIntermediate()} : null,
+                    certificates.getRoot());
+        }
     }
 
     private void validateEndCheckPoint(byte[] lastHmac) throws SecureLogBundleValidationException {
@@ -149,8 +162,10 @@ public class SecureLogBundle {
     private byte[] hmac(SecureLogEntry secureLogEntry, byte[] pHmac, byte[] lsk) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         try (DataOutputStream stream = new DataOutputStream(bytes)) {
-            if (secureLogEntry instanceof CheckPointLogEntry && StringUtils.isNotEmpty(secureLogEntry.getMetadata().getPhmac())) {
-                stream.write(Base64.decode(secureLogEntry.getMetadata().getPhmac()));
+            if (secureLogEntry instanceof CheckPointLogEntry) {
+                if (StringUtils.isNotEmpty(secureLogEntry.getMetadata().getPhmac())) {
+                    stream.write(Base64.decode(secureLogEntry.getMetadata().getPhmac()));
+                }
             } else {
                 stream.write(pHmac);
             }

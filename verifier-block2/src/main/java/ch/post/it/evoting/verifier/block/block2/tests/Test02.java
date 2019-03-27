@@ -63,11 +63,11 @@ public class Test02 extends Test {
                         if (b.validateSignature()) {
                             return Optional.<TestFailureException>empty();
                         } else {
-                            return Optional.of(new TestFailureException(b.getBeginCheckPoint().getRaw()));
+                            return Optional.of(new TestFailureException(b.getEndCheckPoint().getRaw()));
                         }
                     })
-                    .filter(o -> o.isPresent())
-                    .map(o -> o.get())
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
                     .blockFirst();
 
             if (ex != null) {

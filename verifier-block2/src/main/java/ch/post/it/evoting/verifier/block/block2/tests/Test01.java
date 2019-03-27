@@ -64,8 +64,8 @@ public class Test01 extends Test {
                             return Optional.of(new TestFailureException(b.getBeginCheckPoint().toString(), b.getBeginCheckPoint().getMetadata().toString()));
                         }
                     })
-                    .filter(opt -> opt.isPresent())
-                    .map(opt -> opt.get())
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
                     .blockFirst();
 
             if (ex != null) {
