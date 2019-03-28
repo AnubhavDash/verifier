@@ -51,21 +51,15 @@ public class Test02 extends Test {
         TestResult result = new TestResult(getTestDefinition());
         try {
             Map<String, SecureLogBundleCertificates> mapCertificates = SecureLogBundleCertificates.loadAllHostsBundleCertificates(inputDirectory);
-
             File[] hosts = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS));
+
             TestFailureException ex = Flux.fromArray(hosts)
                     .onErrorStop()
                     .flatMap(hostDir -> Flux.fromArray(PathHelper.listDirectories(hostDir.toPath())))
                     .flatMap(instanceDir -> Flux.fromArray(PathHelper.listDirectories(instanceDir.toPath())))
                     .map(SecureLogEntry.loadLogDirectory)
                     .flatMap(flux -> SecureLogBundleCreator.from(flux, mapCertificates))
-                    .map(b -> {
-                        if (b.validateSignature()) {
-                            return Optional.<TestFailureException>empty();
-                        } else {
-                            return Optional.of(new TestFailureException(b.getEndCheckPoint().getRaw()));
-                        }
-                    })
+                    .map(b -> Optional.ofNullable(b.validateSignature() ? null : new TestFailureException(b.getEndCheckPoint().getRaw())))
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .blockFirst();

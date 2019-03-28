@@ -57,13 +57,7 @@ public class Test01 extends Test {
                     .flatMap(instanceDir -> Flux.fromArray(PathHelper.listDirectories(instanceDir.toPath())))
                     .map(SecureLogEntry.loadLogDirectory)
                     .flatMap(SecureLogBundleCreator::from)
-                    .map(b -> {
-                        if (b.validateIntegrity()) {
-                            return Optional.<TestFailureException>empty();
-                        } else {
-                            return Optional.of(new TestFailureException(b.getBeginCheckPoint().toString(), b.getBeginCheckPoint().getMetadata().toString()));
-                        }
-                    })
+                    .map(b -> Optional.ofNullable(b.validateIntegrity() ? null : new TestFailureException(b.getBeginCheckPoint().toString(), b.getBeginCheckPoint().getMetadata().toString())))
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .blockFirst();
