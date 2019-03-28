@@ -1,20 +1,21 @@
 /**
  * This file is part of Verifier Swiss Post.
- *
+ * <p>
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
  * the GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
- *
+ * <p>
  * Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
 package ch.post.it.evoting.verifier.block.block2.tests;
 
 import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
+import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundle;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleCreator;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.*;
@@ -52,16 +53,13 @@ public class Test01 extends Test {
         try {
             File[] hosts = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS));
 
-            if (hosts.length == 0) {
-                throw new FileNotFoundException("host directories does not exist");
-            }
-
             TestFailureException ex = Flux.fromArray(hosts)
                     .onErrorStop()
                     .flatMap(hostDir -> Flux.fromArray(PathHelper.listDirectories(hostDir.toPath())))
                     .flatMap(instanceDir -> Flux.fromArray(PathHelper.listDirectories(instanceDir.toPath())))
                     .map(SecureLogEntry.loadLogDirectory)
                     .flatMap(SecureLogBundleCreator::from)
+                    .switchIfEmpty(Flux.<SecureLogBundle>empty().doOnComplete(() -> {throw new RuntimeException("No secureLog bundle found");}))
                     .map(b -> Optional.ofNullable(b.validateIntegrity() ? null : new TestFailureException(b.getBeginCheckPoint().toString(), b.getBeginCheckPoint().getMetadata().toString())))
                     .filter(Optional::isPresent)
                     .map(Optional::get)

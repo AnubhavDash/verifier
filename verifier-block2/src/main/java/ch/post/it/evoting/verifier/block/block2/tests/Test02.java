@@ -15,6 +15,7 @@
 package ch.post.it.evoting.verifier.block.block2.tests;
 
 import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
+import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundle;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleCertificates;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleCreator;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
@@ -54,16 +55,13 @@ public class Test02 extends Test {
             Map<String, SecureLogBundleCertificates> mapCertificates = SecureLogBundleCertificates.loadAllHostsBundleCertificates(inputDirectory);
             File[] hosts = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS));
 
-            if (hosts.length == 0) {
-                throw new FileNotFoundException("host directories does not exist");
-            }
-
             TestFailureException ex = Flux.fromArray(hosts)
                     .onErrorStop()
                     .flatMap(hostDir -> Flux.fromArray(PathHelper.listDirectories(hostDir.toPath())))
                     .flatMap(instanceDir -> Flux.fromArray(PathHelper.listDirectories(instanceDir.toPath())))
                     .map(SecureLogEntry.loadLogDirectory)
                     .flatMap(flux -> SecureLogBundleCreator.from(flux, mapCertificates))
+                    .switchIfEmpty(Flux.<SecureLogBundle>empty().doOnComplete(() -> {throw new RuntimeException("No secureLog bundle found");}))
                     .map(b -> Optional.ofNullable(b.validateSignature() ? null : new TestFailureException(b.getEndCheckPoint().getRaw())))
                     .filter(Optional::isPresent)
                     .map(Optional::get)

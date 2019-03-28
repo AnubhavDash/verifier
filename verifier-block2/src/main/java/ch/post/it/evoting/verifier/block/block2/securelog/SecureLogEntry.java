@@ -93,7 +93,7 @@ public abstract class SecureLogEntry {
     }
 
 
-    public static Function<File, Flux<SecureLogEntry>> loadLogDirectory = logDir -> {
+    public final static Function<File, Flux<SecureLogEntry>> loadLogDirectory = logDir -> {
         try {
             return Flux.fromArray(PathHelper.getFiles(logDir, ".*\\.log"))
                     .sort(Comparator.comparing(File::getName))
@@ -105,9 +105,11 @@ public abstract class SecureLogEntry {
 
     public static Flux<RegularLogEntry> loadRegularLogs(File inputDirectory, Pattern pattern) {
         return Flux.fromArray(PathHelper.listDirectories(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS)))
+                .onErrorStop()
                 .flatMap(hostDir -> Flux.fromArray(PathHelper.listDirectories(hostDir.toPath())))
                 .flatMap(instanceDir -> Flux.fromArray(PathHelper.listDirectories(instanceDir.toPath())))
                 .flatMap(SecureLogEntry.loadLogDirectory)
+                .switchIfEmpty(Flux.<SecureLogEntry>empty().doOnComplete(() -> {throw new RuntimeException("No secureLog found");}))
                 .filter(s1 -> s1 instanceof RegularLogEntry)
                 .cast(RegularLogEntry.class)
                 .filter(s1 -> pattern.matcher(s1.getRaw()).find());
