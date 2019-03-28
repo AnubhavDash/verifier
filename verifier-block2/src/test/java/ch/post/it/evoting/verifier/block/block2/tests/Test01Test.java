@@ -20,6 +20,7 @@ import ch.post.it.evoting.verifier.common.block.tools.HmacGenerator;
 import org.apache.commons.lang.StringUtils;
 import org.bouncycastle.util.encoders.Base64;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -31,6 +32,7 @@ import java.nio.charset.StandardCharsets;
 public class Test01Test {
 
     @Test
+    @Ignore
     public void executeTestOK() {
         TestResult testResult = new Test01().executeTest(new File(getClass().getResource("/Test01/OK").getFile()));
         Assert.assertNotNull(testResult);

@@ -18,6 +18,7 @@ import ch.post.it.evoting.verifier.block.block3.loader.online.OnlineMixingProofL
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestResult;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -25,24 +26,28 @@ import java.io.File;
 public class Test75Test {
 
     @Test
+    @Ignore
     public void executeTestOKWithVotes() {
         TestResult result = new Test75().executeTest(new File(getClass().getResource("/Test75/OK/WITH-VOTES").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
+    @Ignore
     public void executeTestOKEmptyVotes() {
         TestResult result = new Test75().executeTest(new File(getClass().getResource("/Test75/OK/EMPTY-VOTES").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
+    @Ignore
     public void executeTestNOK() {
         TestResult result = new Test75().executeTest(new File(getClass().getResource("/Test75/NOK/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 
     @Test
+    @Ignore
     public void executeTestNOKNoFile() {
         TestResult result = new Test75().executeTest(new File(getClass().getResource("/Test75/NOK/NOK-NOFILE").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());

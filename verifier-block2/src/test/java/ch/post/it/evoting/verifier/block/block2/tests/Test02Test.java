@@ -33,6 +33,7 @@ import java.nio.file.Files;
 public class Test02Test {
 
     @Test
+    @Ignore
     public void executeTestOK() {
         TestResult testResult = new Test02().executeTest(new File(getClass().getResource("/Test02/OK").getFile()));
         Assert.assertNotNull(testResult);
@@ -104,6 +105,7 @@ public class Test02Test {
 
         bundle.setCertificates(certificates);
         bundle.setBeginCheckPoint(checkpoint);
+        bundle.setEndCheckPoint(checkpoint);
 
         bundle.validateSignature();
     }

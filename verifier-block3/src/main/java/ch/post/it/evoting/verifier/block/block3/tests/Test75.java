@@ -230,14 +230,14 @@ public class Test75 extends Test {
 
         private static String serialize(Ciphertext c) {
             return String.format("{\n        \"gamma\" : \"%s\",\n        \"phis\" : \"%s\"\n      }",
-                    c.getParts()[0].getValue() + ";" + c.getParts()[0].getParams().getP() + ";" + c.getParts()[0].getParams().getOrder(),
-                    Arrays.asList(c.getParts()).subList(1, c.getParts().length).get(0).getValue()) + ";" + c.getParts()[0].getParams().getP() + ";" + c.getParts()[0].getParams().getOrder();
+                    String.valueOf(c.getParts()[0].getValue() + ";" + c.getParts()[0].getParams().getP() + ";" + c.getParts()[0].getParams().getOrder()),
+                    String.valueOf(Arrays.asList(c.getParts()).subList(1, c.getParts().length).get(0).getValue()) + ";" + c.getParts()[0].getParams().getP() + ";" + c.getParts()[0].getParams().getOrder());
         }
 
         private static String serialize(Randomness r) {
             return String.format("{\n        \"class\" : \"%s\",\n        \"randomnessValue\" : %s\n      }",
-                    r.getClass().getTypeName(),
-                    serializeWithOneIndent(r.getExponent()));
+                    String.valueOf(r.getClass().getTypeName()),
+                    String.valueOf(serializeWithOneIndent(r.getExponent())));
         }
 
     }

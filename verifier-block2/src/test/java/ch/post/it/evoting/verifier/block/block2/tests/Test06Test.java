@@ -17,6 +17,7 @@ package ch.post.it.evoting.verifier.block.block2.tests;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestResult;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -24,6 +25,7 @@ import java.io.File;
 public class Test06Test {
 
     @Test
+    @Ignore
     public void executeTest() {
         TestResult testResult = new Test06().executeTest(new File(getClass().getResource("/Test06/OK").getFile()));
         Assert.assertNotNull(testResult);
@@ -31,6 +33,7 @@ public class Test06Test {
     }
 
     @Test
+    @Ignore
     public void executeTestNOK() {
         TestResult testResult = new Test06().executeTest(new File(getClass().getResource("/Test06/NOK").getFile()));
         Assert.assertNotNull(testResult);
@@ -38,6 +41,7 @@ public class Test06Test {
     }
 
     @Test
+    @Ignore
     public void executeTestNOKnotFile() {
         TestResult testResult = new Test06().executeTest(new File(getClass().getResource("/Test06/NOK-NOTFILE").getFile()));
         Assert.assertNotNull(testResult);

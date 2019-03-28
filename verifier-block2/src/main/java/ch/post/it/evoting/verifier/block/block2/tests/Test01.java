@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -50,6 +51,10 @@ public class Test01 extends Test {
         TestResult result = new TestResult(getTestDefinition());
         try {
             File[] hosts = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS));
+
+            if (hosts.length == 0) {
+                throw new FileNotFoundException("host directories does not exist");
+            }
 
             TestFailureException ex = Flux.fromArray(hosts)
                     .onErrorStop()

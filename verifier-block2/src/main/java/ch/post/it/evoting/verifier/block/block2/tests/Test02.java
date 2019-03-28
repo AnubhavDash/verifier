@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -52,6 +53,10 @@ public class Test02 extends Test {
         try {
             Map<String, SecureLogBundleCertificates> mapCertificates = SecureLogBundleCertificates.loadAllHostsBundleCertificates(inputDirectory);
             File[] hosts = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS));
+
+            if (hosts.length == 0) {
+                throw new FileNotFoundException("host directories does not exist");
+            }
 
             TestFailureException ex = Flux.fromArray(hosts)
                     .onErrorStop()

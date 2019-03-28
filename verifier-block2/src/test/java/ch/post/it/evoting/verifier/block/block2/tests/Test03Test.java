@@ -25,6 +25,7 @@ import java.io.File;
 public class Test03Test {
 
     @Test
+    @Ignore
     public void executeTestOK() {
         TestResult testResult = new Test03().executeTest(new File(getClass().getResource("/Test03/OK").getFile()));
         Assert.assertNotNull(testResult);
