@@ -84,7 +84,7 @@ public class Test04 extends Test {
                 //finally check the count with csv files count
                 Long logCount = countByCC.values().stream().findFirst().get();
                 if (logCount.equals(voterInformation.getCount())) {
-                    result.setStatus(Status.OK);
+                    result.setStatus(Status.NOK);
                 } else {
                     throw new TestFailureException("the number of log entries does not match with the number of voters", "" + logCount + " and " + voterInformation.getCount());
                 }

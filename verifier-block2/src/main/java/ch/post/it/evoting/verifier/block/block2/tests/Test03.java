@@ -78,7 +78,7 @@ public class Test03 extends Test {
             long nbDistinctValues = countByCC.values().stream().distinct().count();
             if (nbDistinctValues == 0 && voterInformation.getCount() == 0L) {
                 LOGGER.info("no GENPCC log found for the defined electionEventId : " + voterInformation.getEeid());
-                result.setStatus(Status.OK);
+                result.setStatus(Status.NOK);
             } else if (nbDistinctValues != 1) {
                 throw new TestFailureException("count of log for partial choice code generation is not the same for each control component", countByCC.values().toString());
             } else {
