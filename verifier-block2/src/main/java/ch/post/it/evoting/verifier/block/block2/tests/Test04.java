@@ -76,7 +76,7 @@ public class Test04 extends Test {
             long nbDistinctValues = countByCC.values().stream().distinct().count();
             if (nbDistinctValues == 0 && voterInformation.getCount() == 0L) {
                 LOGGER.info("no GENPVCC log found for the defined electionEventId : " + voterInformation.getEeid());
-                result.setStatus(Status.OK);
+                result.setStatus(Status.NOK);
             } else if (nbDistinctValues != 1) {
                 throw new TestFailureException("count of log for partial vote cast code generation is not the same for each control component", countByCC.values().toString());
 
@@ -84,7 +84,7 @@ public class Test04 extends Test {
                 //finally check the count with csv files count
                 Long logCount = countByCC.values().stream().findFirst().get();
                 if (logCount.equals(voterInformation.getCount())) {
-                    result.setStatus(Status.NOK);
+                    result.setStatus(Status.OK);
                 } else {
                     throw new TestFailureException("the number of log entries does not match with the number of voters", "" + logCount + " and " + voterInformation.getCount());
                 }
