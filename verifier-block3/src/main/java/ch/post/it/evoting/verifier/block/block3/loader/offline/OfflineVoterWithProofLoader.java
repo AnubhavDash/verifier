@@ -1,14 +1,14 @@
 /**
  * This file is part of Verifier Swiss Post.
- *
+ * <p>
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
  * the GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
- *
+ * <p>
  * Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
@@ -30,6 +30,8 @@ import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroupParams;
 import lombok.Getter;
 import lombok.Setter;
 import reactor.core.publisher.Flux;
+import reactor.util.function.Tuple3;
+import reactor.util.function.Tuples;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -54,33 +56,32 @@ public class OfflineVoterWithProofLoader implements VoterWithProofLoader {
     private List<DecryptionProof> decryptionProofs;
 
     public OfflineVoterWithProofLoader(Path path) throws IOException {
-        List<ElGamalEncryptedBallot> encryptedBallotList = new ArrayList<>();
-        List<GjosteenElGamalPlaintext> plaintextList = new ArrayList<>();
-        List<DecryptionProof> decryptionProofList = new ArrayList<>();
-
-        Flux.fromIterable(Deserializer.fromCsv(path.toFile(), "votesWithProof\\.csv", ";", tab -> {
+        Iterable<VotesWithProofLine> votesWithProofLines = Deserializer.fromCsv(path.toFile(), "votesWithProof\\.csv", ";", tab -> {
             VotesWithProofLine result = new VotesWithProofLine();
             result.setEncryptedBallot(tab[0]);
             result.setPlainText(tab[1]);
             result.setProof(tab[2]);
             return result;
-        })).subscribe(votesWithProofLine -> {
-            ElGamalEncryptedBallot encryptedBallot = convertToEncryptedBallot(votesWithProofLine.getEncryptedBallot());
-            encryptedBallotList.add(encryptedBallot);
-            GroupElement gamma = encryptedBallot.getGamma();
-
-            plaintextList.add(convertToPlainText(votesWithProofLine.getPlainText(), gamma.getParams()));
-
-            decryptionProofList.add(convertToProof(votesWithProofLine.getProof(), gamma));
         });
 
-        this.encryptedBallots = new ElGamalEncryptedBallots(encryptedBallotList);
-        this.plaintexts = plaintextList;
-        this.decryptionProofs = decryptionProofList;
+        List<Tuple3<ElGamalEncryptedBallot, GjosteenElGamalPlaintext, DecryptionProof>> list = Flux.fromIterable(votesWithProofLines)
+                .map(votesWithProofLine -> {
+                    ElGamalEncryptedBallot encryptedBallot = convertToEncryptedBallot(votesWithProofLine.getEncryptedBallot());
+                    GroupElement gamma = encryptedBallot.getGamma();
+
+                    return Tuples.of(encryptedBallot,
+                            convertToPlainText(votesWithProofLine.getPlainText(), gamma.getParams()),
+                            convertToProof(votesWithProofLine.getProof(), gamma));
+                })
+                .collectList()
+                .block();
+
+        this.encryptedBallots = new ElGamalEncryptedBallots(list.stream().map(t -> t.getT1()).collect(Collectors.toList()));
+        this.plaintexts = list.stream().map(t -> t.getT2()).collect(Collectors.toList());
+        this.decryptionProofs = list.stream().map(t -> t.getT3()).collect(Collectors.toList());
     }
 
     static DecryptionProof convertToProof(String proofString, GroupElement gamma) {
-        DecryptionProof result = null;
         try {
             OnlineDecryptionProof odp = Deserializer.fromJson(TypeConverter.stringToByte(proofString.substring(1, proofString.length() - 1).replace("\"\"", "\"")), OnlineDecryptionProof.class);
 
@@ -91,13 +92,13 @@ public class OfflineVoterWithProofLoader implements VoterWithProofLoader {
                     .map(val -> new Exponent(TypeConverter.base64ToBigInteger(val), TypeConverter.base64ToBigInteger(odp.getZkProof().getQ())))
                     .collect(Collectors.toList());
 
-            result = new DecryptionProof(challenge, responses.toArray(new Exponent[]{}));
+            DecryptionProof result = new DecryptionProof(challenge, responses.toArray(new Exponent[]{}));
             result.setGammaOfCiphertext(gamma.getValue());
+            return result;
 
         } catch (IOException e) {
             throw new RuntimeException("Unable to map to proof", e);
         }
-        return result;
     }
 
 
@@ -117,7 +118,7 @@ public class OfflineVoterWithProofLoader implements VoterWithProofLoader {
             }
             return corrected ? cleanWriteInsBoundaryQuotes(result) : result;
         } else {
-            return original;
+            return null;
         }
     }
 
@@ -146,16 +147,15 @@ public class OfflineVoterWithProofLoader implements VoterWithProofLoader {
     }
 
     static GjosteenElGamalPlaintext convertToPlainText(String gjosteenElGamalsString, ZpGroupParams params) {
-        ZpElement[] zpElements = null;
         try {
             BigInteger[] gjosteenElGamals = Deserializer.fromJson(TypeConverter.stringToByte(gjosteenElGamalsString), BigInteger[].class);
-            zpElements = Arrays.stream(gjosteenElGamals)
+            ZpElement[] zpElements = Arrays.stream(gjosteenElGamals)
                     .map(value -> new ZpElement(value, params))
                     .collect(Collectors.toList()).toArray(new ZpElement[]{});
+            return new GjosteenElGamalPlaintext(zpElements);
         } catch (IOException e) {
             throw new RuntimeException("Unable to map to plaintext", e);
         }
-        return new GjosteenElGamalPlaintext(zpElements);
     }
 
     @Override
