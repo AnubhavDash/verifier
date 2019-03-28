@@ -17,6 +17,7 @@ package ch.post.it.evoting.verifier.block.block2.tests;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.TestResult;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -24,6 +25,7 @@ import java.io.File;
 public class Test05Test {
 
     @Test
+    @Ignore
     public void executeTestOK() {
         TestResult testResult = new Test05().executeTest(new File(getClass().getResource("/Test05/OK").getFile()));
         Assert.assertNotNull(testResult);

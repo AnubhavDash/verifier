@@ -21,6 +21,7 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PathHelper {
     private PathHelper() {
@@ -36,37 +37,41 @@ public class PathHelper {
     }
 
     public static File[] getFiles(File inputDirectory, String filenamePattern) throws FileNotFoundException {
-        File[] file = inputDirectory.listFiles((dir, name) -> name.matches(filenamePattern));
-        if (file == null || file.length == 0) {
+        File[] file = getFilesInternal(inputDirectory, filenamePattern, false).toArray(new File[]{});
+        if (file.length == 0) {
             throw new FileNotFoundException(filenamePattern);
         } else {
             return file;
         }
     }
 
-    public static List<File> getFiles(File inputDirectory, String filenamePattern, Boolean recursive) throws FileNotFoundException {
-        List<File> files = new ArrayList<>();
-        if (recursive) {
-            File[] directories = listDirectories(inputDirectory.toPath());
-            for (File directory : directories) {
-                File[] file = getFiles(directory, filenamePattern);
-                if (file == null || file.length == 0) {
-                    throw new FileNotFoundException(filenamePattern);
-                } else {
-                    files.addAll(Arrays.asList(file));
-                }
-            }
-        } else {
-            files.addAll(Arrays.asList(getFiles(inputDirectory, filenamePattern)));
+    public static List<File> getFiles(File inputDirectory, String filenamePattern, boolean recursive) throws FileNotFoundException {
+        List<File> result = getFilesInternal(inputDirectory, filenamePattern, recursive);
+        if (result.size() == 0) {
+            throw new FileNotFoundException(filenamePattern);
         }
-        return files;
+        return result;
+    }
+
+    private static List<File> getFilesInternal(File inputDirectory, String filenamePattern, boolean recursive) {
+        List<File> result = new ArrayList<>();
+
+        File[] files = inputDirectory.listFiles((dir, name) -> name.matches(filenamePattern));
+        if (files != null) {
+            result.addAll(Arrays.stream(files).filter(File::isFile).collect(Collectors.toList()));
+        }
+
+        if (recursive) {
+            for (File directory : listDirectories(inputDirectory.toPath())) {
+                result.addAll(getFilesInternal(directory, filenamePattern, true));
+            }
+        }
+        return result;
     }
 
     public static File getFile(File inputDirectory, String filenamePattern) throws FileNotFoundException {
-        File[] file = inputDirectory.listFiles((dir, name) -> name.matches(filenamePattern));
-        if (file == null || file.length == 0) {
-            throw new FileNotFoundException(filenamePattern);
-        } else if (file.length > 1) {
+        File[] file = getFiles(inputDirectory, filenamePattern);
+        if (file.length > 1) {
             throw new InvalidParameterException(String.format("more than one file found, filename is not specific enough. Dir:%s filenamePattern:%s ", inputDirectory, filenamePattern));
         } else {
             return file[0];

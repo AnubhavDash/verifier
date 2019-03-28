@@ -1,14 +1,14 @@
 /**
  * This file is part of Verifier Swiss Post.
- *
+ * <p>
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
  * the GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
- *
+ * <p>
  * Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
@@ -36,10 +36,6 @@ public class SecureLogBundle {
     private List<RegularLogEntry> regularLogEntries = new ArrayList<>();
     private SecureLogBundleCertificates certificates;
 
-    public SecureLogBundleCertificates getCertificates() {
-        return certificates;
-    }
-
     public void setCertificates(SecureLogBundleCertificates certificates) {
         this.certificates = certificates;
     }
@@ -48,8 +44,16 @@ public class SecureLogBundle {
         this.beginCheckPoint = beginCheckPoint;
     }
 
+    public CheckPointLogEntry getBeginCheckPoint() {
+        return this.beginCheckPoint;
+    }
+
     public void setEndCheckPoint(CheckPointLogEntry endCheckPoint) {
         this.endCheckPoint = endCheckPoint;
+    }
+
+    public CheckPointLogEntry getEndCheckPoint() {
+        return this.endCheckPoint;
     }
 
     public void addRegularLogEntry(RegularLogEntry regularLogEntry) {
@@ -64,37 +68,66 @@ public class SecureLogBundle {
         return this.endCheckPoint != null;
     }
 
-    public void validateIntegrity() throws SecureLogBundleValidationException {
-        if (!this.isComplete() && this.hasRegularLogEntries()) {
-            throw new SecureLogBundleValidationException("bundle is not finishing with a checkPoint", beginCheckPoint.getHost(), beginCheckPoint.getSource());
+    public boolean validateIntegrity() {
+        try {
+            if (!this.isComplete() && this.hasRegularLogEntries()) {
+                throw new SecureLogBundleValidationException("bundle is not finishing with a checkPoint", beginCheckPoint.getHost(), beginCheckPoint.getSource());
+            }
+            LOGGER.trace(String.format("Starting validation of Bundle{prev:%s, curr:%s, elementsCount:%s}", this.beginCheckPoint, this.endCheckPoint, this.regularLogEntries.size()));
+            byte[] beginHmac = validateStartCheckPoint();
+            byte[] lastHmac = validateRegularLogs(beginHmac);
+            validateEndCheckPoint(lastHmac);
+            return true;
+        } catch (SecureLogBundleValidationException e) {
+            LOGGER.error("Validation failed on host {" + e.getHost() + "}, source {" + e.getSource() + "} : " + e.getMessage());
+            return false;
         }
-        LOGGER.trace(String.format("Starting validation of Bundle{prev:%s, curr:%s, elementsCount:%s}", this.beginCheckPoint, this.endCheckPoint, this.regularLogEntries.size()));
-        byte[] beginHmac = validateStartCheckPoint();
-        byte[] lastHmac = validateRegularLogs(beginHmac);
-        validateEndCheckPoint(lastHmac);
     }
 
-    public CheckPointLogEntry getBeginCheckPoint() {
-        return beginCheckPoint;
+    public boolean validateSignature() {
+        if (StringUtils.isEmpty(beginCheckPoint.getMetadata().getPhmac())) {
+            //This is the first Bundle, also check the begin checkpoint signature
+            String source = String.format("%s {*ESK::%s,LS::%s,TL::%s,TS::%s,HMAC::%s*}\n",
+                    beginCheckPoint.getRaw().substring(0, beginCheckPoint.getRaw().length() - 1), //remove the ending \n
+                    beginCheckPoint.getMetadata().getEsk(),
+                    beginCheckPoint.getMetadata().getLs(),
+                    beginCheckPoint.getMetadata().getTl(),
+                    beginCheckPoint.getMetadata().getTs(),
+                    beginCheckPoint.getMetadata().getHmac());
+
+            if (!validateSignature(source, beginCheckPoint.getMetadata().getSg())) {
+                LOGGER.error(String.format("Begin Checkpoint signature not valid. Host: %s Source: %s", beginCheckPoint.getHost(), beginCheckPoint.getSource()));
+                return false;
+            }
+        }
+
+        String source = String.format("%s {*LSK::%s,ESK::%s,PHMAC::%s,LS::%s,TL::%s,TS::%s,HMAC::%s*}\n",
+                endCheckPoint.getRaw().substring(0, endCheckPoint.getRaw().length() - 1), //remove the ending \n
+                endCheckPoint.getMetadata().getLsk(),
+                endCheckPoint.getMetadata().getEsk(),
+                endCheckPoint.getMetadata().getPhmac(),
+                endCheckPoint.getMetadata().getLs(),
+                endCheckPoint.getMetadata().getTl(),
+                endCheckPoint.getMetadata().getTs(),
+                endCheckPoint.getMetadata().getHmac());
+
+        if (!validateSignature(source, endCheckPoint.getMetadata().getSg())) {
+            LOGGER.error(String.format("End Checkpoint signature not valid. Host: %s Source: %s", endCheckPoint.getHost(), endCheckPoint.getSource()));
+            return false;
+        }
+        return true;
     }
 
-    public void validateSignature() throws SecureLogBundleValidationException {
-        String bytes = String.format("%s {*LSK::%s,ESK::%s,PHMAC::%s,LS::%s,TL::%s,TS::%s,HMAC::%s*}\n",
-                this.getBeginCheckPoint().getRaw().substring(0, this.getBeginCheckPoint().getRaw().length() - 1), //remove the ending \n
-                this.getBeginCheckPoint().getMetadata().getLsk(),
-                this.getBeginCheckPoint().getMetadata().getEsk(),
-                this.getBeginCheckPoint().getMetadata().getPhmac(),
-                this.getBeginCheckPoint().getMetadata().getLs(),
-                this.getBeginCheckPoint().getMetadata().getTl(),
-                this.getBeginCheckPoint().getMetadata().getTs(),
-                this.getBeginCheckPoint().getMetadata().getHmac());
-
-        if (this.getCertificates() == null || !SignatureChecker.verifySignature(bytes.getBytes(StandardCharsets.UTF_8),
-                TypeConverter.base64ToByte(this.getBeginCheckPoint().getMetadata().getSg()),
-                this.getCertificates().getCertificate(),
-                this.getCertificates().getIntermediate() != null ? new byte[][]{this.getCertificates().getIntermediate()} : null,
-                this.getCertificates().getRoot())) {
-            throw new SecureLogBundleValidationException("Begin Checkpoint signature not valid", beginCheckPoint.getHost(), beginCheckPoint.getSource());
+    private boolean validateSignature(String source, String signature) {
+        if (certificates == null) {
+            LOGGER.error("No certificates for checking the signature");
+            return false;
+        } else {
+            return SignatureChecker.verifySignature(source.getBytes(StandardCharsets.UTF_8),
+                    TypeConverter.base64ToByte(signature),
+                    certificates.getCertificate(),
+                    certificates.getIntermediate() != null ? new byte[][]{certificates.getIntermediate()} : null,
+                    certificates.getRoot());
         }
     }
 
@@ -130,7 +163,9 @@ public class SecureLogBundle {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         try (DataOutputStream stream = new DataOutputStream(bytes)) {
             if (secureLogEntry instanceof CheckPointLogEntry) {
-                stream.write(Base64.decode(secureLogEntry.getMetadata().getPhmac()));
+                if (StringUtils.isNotEmpty(secureLogEntry.getMetadata().getPhmac())) {
+                    stream.write(Base64.decode(secureLogEntry.getMetadata().getPhmac()));
+                }
             } else {
                 stream.write(pHmac);
             }

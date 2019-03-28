@@ -16,22 +16,19 @@ package ch.post.it.evoting.verifier.block.block2.tests;
 
 import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleCreator;
-import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleValidationException;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.TestFailureException;
-import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.NoSuchFileException;
 import java.util.Arrays;
-import java.util.stream.Stream;
+import java.util.Optional;
 
 public class Test01 extends Test {
 
@@ -53,49 +50,31 @@ public class Test01 extends Test {
     public TestResult executeTest(File inputDirectory) {
         TestResult result = new TestResult(getTestDefinition());
         try {
-            Stream<SecureLogEntry> logEntryStream = Deserializer.fromLines(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS).toFile(), ".*\\.json",
-                    line -> {
-                        try {
-                            return SecureLogEntry.from(line);
-                        } catch (IOException e) {
-                            throw new RuntimeException("Unable to deserialize SecureLogEntry", e);
-                        }
-                    })
-                    .filter(sl -> sl.getPreview() != null && !sl.getPreview());
+            File[] hosts = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS));
 
-            Flux.fromIterable(logEntryStream::iterator)
-                    .filter(s -> s.getPreview() != null && !s.getPreview())
-                    .groupBy(s -> String.format("%s|%s", s.getHost(), s.getSource()))
+            if (hosts.length == 0) {
+                throw new FileNotFoundException("host directories does not exist");
+            }
+
+            TestFailureException ex = Flux.fromArray(hosts)
+                    .onErrorStop()
+                    .flatMap(hostDir -> Flux.fromArray(PathHelper.listDirectories(hostDir.toPath())))
+                    .flatMap(instanceDir -> Flux.fromArray(PathHelper.listDirectories(instanceDir.toPath())))
+                    .map(SecureLogEntry.loadLogDirectory)
                     .flatMap(SecureLogBundleCreator::from)
-                    .subscribe(b -> {
-                        try {
-                            b.validateIntegrity();
-                        } catch (SecureLogBundleValidationException e) {
-                            LOGGER.error("Validation failed on host {" + e.getHost() + "}, source {" + e.getSource() + "} : " + e.getMessage());
-                            throw new TestFailureException(b.getBeginCheckPoint().toString(), b.getBeginCheckPoint().getMetadata().toString());
-                        }
-                    }, e -> {
-                        if (e instanceof TestFailureException) {
-                            throw (TestFailureException) e;
-                        } else {
-                            throw new RuntimeException(e);
-                        }
-                    });
+                    .map(b -> Optional.ofNullable(b.validateIntegrity() ? null : new TestFailureException(b.getBeginCheckPoint().toString(), b.getBeginCheckPoint().getMetadata().toString())))
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .blockFirst();
 
+            if (ex != null) {
+                throw ex;
+            }
             result.setStatus(Status.OK);
-
         } catch (TestFailureException e) {
             LOGGER.error("Test in error, cause : " + Arrays.toString(e.getArgs()), e);
             result.setStatus(Status.NOK);
             result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.nok.message", e.getArgs()));
-        } catch (NoSuchFileException e) {
-            LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message", e.getFile()));
-        } catch (FileNotFoundException e) {
-            LOGGER.error("Test in error, cause : " + e.getMessage() + " is missing", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message", e.getMessage()));
         } catch (Exception e) {
             result.setStatus(Status.NOK);
             LOGGER.error("Unexpected error occured", e);

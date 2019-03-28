@@ -100,7 +100,7 @@ public class VerifierProcessor {
 
             final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
             executor.execute(() -> {
-                ForkJoinPool forkJoinPool = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
+                ForkJoinPool forkJoinPool = new ForkJoinPool(Runtime.getRuntime().availableProcessors() - 1);
                 forkJoinPool.submit(() ->
                 {
                     final File inputDirectory = new File(configurationInputDirectory);
