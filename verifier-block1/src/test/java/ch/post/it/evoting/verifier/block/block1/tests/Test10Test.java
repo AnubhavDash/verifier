@@ -38,6 +38,13 @@ public class Test10Test {
     }
 
     @Test
+    public void executeTestNOKEulerCriterion() {
+        TestResult testResult = new Test10().executeTest(new File(getClass().getResource("/Test10/NOK/NOK-EULER").getFile()));
+        Assert.assertNotNull(testResult);
+        Assert.assertEquals(Status.NOK, testResult.getStatus());
+    }
+
+    @Test
     public void executeTestNOKFileNotFound() {
         TestResult testResult = new Test10().executeTest(new File(getClass().getResource("/Test10/NOK/NOK-NOFILE").getFile()));
         Assert.assertNotNull(testResult);

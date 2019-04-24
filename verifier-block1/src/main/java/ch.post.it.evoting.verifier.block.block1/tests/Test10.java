@@ -18,6 +18,7 @@ import ch.post.it.evoting.verifier.block.block1.Block1TestSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.Test;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.EncryptionParameters;
@@ -51,6 +52,7 @@ public class Test10 extends Test {
             Path path = inputDirectory.toPath().resolve(Block1TestSuite.PATH_CRYPTO_SETUP);
             EncryptionParameters encryptionParameters = Deserializer.fromJson(path.toFile(), "encryptionParameters\\.json", EncryptionParameters.class);
             BigInteger g = TypeConverter.stringToBigInteger(encryptionParameters.getG());
+            BigInteger p = TypeConverter.stringToBigInteger(encryptionParameters.getP());
 
             if (BigInteger.valueOf(2).equals(g)) {
                 result.setStatus(Status.OK);
@@ -58,6 +60,14 @@ public class Test10 extends Test {
                 result.setStatus(Status.NOK);
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test10.nok.message"));
             }
+
+            if (MathHelper.isEulerCriterionValid(g, p)) {
+                result.setStatus(Status.OK);
+            } else {
+                result.setStatus(Status.NOK);
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test10.euler.nok.message"));
+            }
+
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
