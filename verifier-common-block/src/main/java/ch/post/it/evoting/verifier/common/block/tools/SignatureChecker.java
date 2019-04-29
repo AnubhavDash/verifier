@@ -79,7 +79,7 @@ public class SignatureChecker {
                 }
             }
         } catch (Exception e) {
-            LOGGER.w("Error during signature check", e);
+            LOGGER.warn("Error during signature check", e);
         }
         return false;
     }
