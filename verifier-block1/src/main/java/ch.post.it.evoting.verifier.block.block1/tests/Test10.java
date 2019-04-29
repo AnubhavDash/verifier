@@ -1,14 +1,14 @@
 /**
  * This file is part of Verifier Swiss Post.
- *
+ * <p>
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
  * the GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
- *
+ * <p>
  * Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.nio.file.Path;
+import java.util.Map;
 
 public class Test10 extends Test {
 
@@ -57,16 +58,20 @@ public class Test10 extends Test {
             if (BigInteger.valueOf(2).equals(g)) {
                 result.setStatus(Status.OK);
             } else {
-                result.setStatus(Status.NOK);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test10.nok.message"));
+                throw new Test10Exception("two", TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test10.nok.message"));
             }
 
             if (MathHelper.isEulerCriterionValid(g, p)) {
                 result.setStatus(Status.OK);
             } else {
-                result.setStatus(Status.NOK);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test10.euler.nok.message"));
+                throw new Test10Exception("euler", TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test10.euler.nok.message"));
             }
+
+        } catch (Test10Exception e) {
+            result.setStatus(Status.NOK);
+            result.setMessage(e.getMsg());
+            String detail = (e.getType().equals("two")) ? "g does not equal 2" : "g is not part of the subgroup q";
+            LOGGER.debug(String.format("Block1 Test10 failed, because %s", detail));
 
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
@@ -78,5 +83,24 @@ public class Test10 extends Test {
             result.setMessage(TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
+    }
+
+    class Test10Exception extends RuntimeException {
+        String type;
+        Map<Language, String> msg;
+
+        Test10Exception(String type, Map<Language, String> msg) {
+            this.type = type;
+            this.msg = msg;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public Map<Language, String> getMsg() {
+            return msg;
+        }
+
     }
 }
