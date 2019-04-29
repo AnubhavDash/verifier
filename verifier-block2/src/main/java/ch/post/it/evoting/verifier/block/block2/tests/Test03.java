@@ -104,7 +104,7 @@ public class Test03 extends Test {
         } catch (TestFailureException e) {
             String[] args = e.getArgs();
             if (args.length >= 2) {
-                LOGGER.info("Test failed, cause : " + args[0] + ". Details : " + args[1]);
+                LOGGER.error("Test failed, cause : " + args[0] + ". Details : " + args[1]);
             }
             result.setStatus(Status.NOK);
             result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.nok.message"));

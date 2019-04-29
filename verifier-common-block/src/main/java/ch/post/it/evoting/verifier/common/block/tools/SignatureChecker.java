@@ -79,7 +79,7 @@ public class SignatureChecker {
                 }
             }
         } catch (Exception e) {
-            LOGGER.info("Error during signature check", e);
+            LOGGER.warn("Error during signature check", e);
         }
         return false;
     }
@@ -121,7 +121,7 @@ public class SignatureChecker {
                 return true;
             }
         } catch (Exception e) {
-            LOGGER.info("signature check failed", e);
+            LOGGER.warn("signature check failed", e);
         }
         return false;
     }
@@ -187,7 +187,7 @@ public class SignatureChecker {
                 return true;
             }
         } catch (Exception e) {
-            LOGGER.info("signature check failed", e);
+            LOGGER.warn("signature check failed", e);
         }
         return false;
     }
