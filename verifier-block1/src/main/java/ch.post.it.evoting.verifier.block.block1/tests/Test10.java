@@ -55,24 +55,19 @@ public class Test10 extends Test {
             BigInteger g = TypeConverter.stringToBigInteger(encryptionParameters.getG());
             BigInteger p = TypeConverter.stringToBigInteger(encryptionParameters.getP());
 
-            if (BigInteger.valueOf(2).equals(g)) {
-                result.setStatus(Status.OK);
-            } else {
-                throw new Test10Exception("two", TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test10.nok.message"));
+            if (!BigInteger.valueOf(2).equals(g)) {
+                throw new Test10Exception("g does not equal 2", TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test10.nok.message"));
             }
 
-            if (MathHelper.isEulerCriterionValid(g, p)) {
-                result.setStatus(Status.OK);
-            } else {
-                throw new Test10Exception("euler", TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test10.euler.nok.message"));
+            if (!MathHelper.isEulerCriterionValid(g, p)) {
+                throw new Test10Exception("g is not part of the subgroup q", TranslationHelper.getFromResourceBundle(Block1TestSuite.RESOURCE_BUNDLE_NAME, "test10.euler.nok.message"));
             }
 
+            result.setStatus(Status.OK);
         } catch (Test10Exception e) {
+            LOGGER.info(String.format("Block1 Test10 failed, because %s", e.getDetail()));
             result.setStatus(Status.NOK);
             result.setMessage(e.getMsg());
-            String detail = (e.getType().equals("two")) ? "g does not equal 2" : "g is not part of the subgroup q";
-            LOGGER.debug(String.format("Block1 Test10 failed, because %s", detail));
-
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
@@ -86,16 +81,16 @@ public class Test10 extends Test {
     }
 
     class Test10Exception extends RuntimeException {
-        String type;
+        String detail;
         Map<Language, String> msg;
 
-        Test10Exception(String type, Map<Language, String> msg) {
-            this.type = type;
+        Test10Exception(String detail, Map<Language, String> msg) {
+            this.detail = detail;
             this.msg = msg;
         }
 
-        public String getType() {
-            return type;
+        public String getDetail() {
+            return detail;
         }
 
         public Map<Language, String> getMsg() {
