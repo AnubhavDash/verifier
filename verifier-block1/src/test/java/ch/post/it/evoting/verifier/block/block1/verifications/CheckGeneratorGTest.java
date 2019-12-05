@@ -31,7 +31,7 @@ public class CheckGeneratorGTest {
     }
 
     @Test
-    public void executeTestNOK() {
+    public void executeTestNOKPrimality() {
         VerificationResult verificationResult = new CheckGeneratorG().executeVerification(new File(getClass().getResource("/CheckGeneratorGTest/NOK/NOK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
@@ -40,6 +40,13 @@ public class CheckGeneratorGTest {
     @Test
     public void executeTestNOKEulerCriterion() {
         VerificationResult verificationResult = new CheckGeneratorG().executeVerification(new File(getClass().getResource("/CheckGeneratorGTest/NOK/NOK-EULER").getFile()));
+        Assert.assertNotNull(verificationResult);
+        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    }
+
+    @Test
+    public void executeTestNOKSubgroupSmallest() {
+        VerificationResult verificationResult = new CheckGeneratorG().executeVerification(new File(getClass().getResource("/CheckGeneratorGTest/NOK/NOK-SMALLEST").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
