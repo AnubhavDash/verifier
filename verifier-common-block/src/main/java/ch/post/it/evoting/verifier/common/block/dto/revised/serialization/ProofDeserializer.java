@@ -31,12 +31,11 @@ public abstract class ProofDeserializer<T> extends JsonDeserializer<T> {
         Base64.Decoder decoder = Base64.getDecoder();
         BigInteger q = new BigInteger(decoder.decode(zkProof.path("q").asText()));
         String hash = zkProof.path("hash").asText();
-        byte[] h = decoder.decode(hash);
         JsonNode values = zkProof.path("values");
 
-        return instantiateProof(q, h, values, jsonParser);
+        return instantiateProof(q, hash, values, jsonParser);
     }
 
-    protected abstract T instantiateProof(BigInteger q, byte[] h, JsonNode values,
+    protected abstract T instantiateProof(BigInteger q, String hash, JsonNode values,
                                           JsonParser jsonParser) throws InvalidFormatException;
 }

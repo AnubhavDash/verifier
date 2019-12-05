@@ -48,9 +48,9 @@ public class BallotParserTest {
         assertThat(ballot.vote.votingCardId,
                    CoreMatchers.equalTo(UUID.fromString("da427fb5-4017-48e6-9cb0-67d5ae65e4b7")));
 
-        System.out.println(DatatypeConverter.printHexBinary(ballot.vote.plainTextEqualityProof.h));
+        System.out.println(DatatypeConverter.printHexBinary(ballot.vote.plainTextEqualityProof.getH()));
 
-        assertArrayEquals(ballot.vote.plainTextEqualityProof.h, DatatypeConverter.parseHexBinary(
+        assertArrayEquals(ballot.vote.plainTextEqualityProof.getH(), DatatypeConverter.parseHexBinary(
                 "0096df8c993e9224883a95ac2bc031baa6f360928d0a6544452ca79b17a62248c5"));
     }
 }
