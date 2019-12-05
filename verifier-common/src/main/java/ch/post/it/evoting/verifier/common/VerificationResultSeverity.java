@@ -14,12 +14,32 @@
  */
 package ch.post.it.evoting.verifier.common;
 
-import java.io.File;
-import java.util.Set;
-import java.util.stream.Stream;
+public class VerificationResultSeverity {
+    private int k;
+    private int n;
+    private int r;
 
-public interface VerifierBlock {
-    Stream<VerificationDefinition> getVerifications();
+    public int getK() {
+        return k;
+    }
 
-    Stream<VerificationResult> process(File inputDirectory, Set<VerificationTrait> options);
+    public void setK(int k) {
+        this.k = k;
+    }
+
+    public int getN() {
+        return n;
+    }
+
+    public void setN(int n) {
+        this.n = n;
+    }
+
+    public int getR() {
+        return r;
+    }
+
+    public void setR(int r) {
+        this.r = r;
+    }
 }

@@ -12,14 +12,16 @@
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package ch.post.it.evoting.verifier.common;
+package ch.post.it.evoting.verifier.common.block;
 
-import java.io.File;
-import java.util.Set;
-import java.util.stream.Stream;
+public class VerificationFailureException extends RuntimeException {
+    private String[] args;
 
-public interface VerifierBlock {
-    Stream<VerificationDefinition> getVerifications();
+    public VerificationFailureException(String... args) {
+        this.args = args;
+    }
 
-    Stream<VerificationResult> process(File inputDirectory, Set<VerificationTrait> options);
+    public String[] getArgs() {
+        return args;
+    }
 }

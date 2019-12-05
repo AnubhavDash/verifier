@@ -84,8 +84,8 @@ public class VerifierProcessor {
         }).collect(Collectors.toList());
 
         executionStatus = blocks.parallelStream()
-                .flatMap(VerifierBlock::getTests)
-                .collect(Collectors.toMap(TestDefinition::computeUniqueKey, TestExecutionStatusMapper.INSTANCE::map));
+                .flatMap(VerifierBlock::getVerifications)
+                .collect(Collectors.toMap(VerificationDefinition::computeUniqueKey, TestExecutionStatusMapper.INSTANCE::map));
     }
 
     public List<Test> getTestStatus() {
@@ -94,7 +94,7 @@ public class VerifierProcessor {
         return result;
     }
 
-    public void processTests(Set<TestTrait> options) throws AlreadyStartedException {
+    public void processTests(Set<VerificationTrait> options) throws AlreadyStartedException {
         if (!processed) {
             processed = true;
 
@@ -110,7 +110,7 @@ public class VerifierProcessor {
                             .parallel()
                             .forEach(t ->
                             {
-                                log.debug(String.format("Test '%02d-%02d' performed on Thread '%s' %s", t.getTestDefinition().getBlockId(), t.getTestDefinition().getId(), Thread.currentThread().getName(), t.getStatus()));
+                                log.debug(String.format("Test '%02d-%02d' performed on Thread '%s' %s", t.getVerificationDefinition().getBlockId(), t.getVerificationDefinition().getId(), Thread.currentThread().getName(), t.getStatus()));
                                 testProcessed(t);
                             });
                 });
@@ -120,9 +120,9 @@ public class VerifierProcessor {
         }
     }
 
-    private void testProcessed(TestResult testResult) {
-        Test testExecutionStatus = executionStatus.get(testResult.getTestDefinition().computeUniqueKey());
-        TestExecutionStatusMapper.INSTANCE.update(testExecutionStatus, testResult);
+    private void testProcessed(VerificationResult verificationResult) {
+        Test testExecutionStatus = executionStatus.get(verificationResult.getVerificationDefinition().computeUniqueKey());
+        TestExecutionStatusMapper.INSTANCE.update(testExecutionStatus, verificationResult);
 
         listeners.forEach(l -> l.testProcessed(testExecutionStatus));
     }

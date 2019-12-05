@@ -12,14 +12,20 @@
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package ch.post.it.evoting.verifier.common;
+package ch.post.it.evoting.verifier.common.block;
+
+import ch.post.it.evoting.verifier.common.VerificationDefinition;
+import ch.post.it.evoting.verifier.common.VerificationResult;
 
 import java.io.File;
-import java.util.Set;
-import java.util.stream.Stream;
 
-public interface VerifierBlock {
-    Stream<VerificationDefinition> getVerifications();
+public abstract class Verification {
 
-    Stream<VerificationResult> process(File inputDirectory, Set<VerificationTrait> options);
+    public Verification() {
+        //force having a non-arg constructor
+    }
+
+    public abstract VerificationDefinition getVerificationDefinition();
+
+    public abstract VerificationResult executeVerification(File inputDirectory);
 }

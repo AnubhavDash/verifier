@@ -14,12 +14,14 @@
  */
 package ch.post.it.evoting.verifier.common;
 
-import java.io.File;
-import java.util.Set;
-import java.util.stream.Stream;
+/**
+ * Used to group tests for execution
+ */
+public enum VerificationTrait {
 
-public interface VerifierBlock {
-    Stream<VerificationDefinition> getVerifications();
+    PreDecryption;
 
-    Stream<VerificationResult> process(File inputDirectory, Set<VerificationTrait> options);
+    public static VerificationTrait fromValue(String value) throws IllegalArgumentException  {
+        return VerificationTrait.valueOf(value);
+    }
 }

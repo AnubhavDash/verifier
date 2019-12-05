@@ -14,8 +14,8 @@
  */
 package ch.post.it.evoting.verifier.mapper;
 
-import ch.post.it.evoting.verifier.common.TestDefinition;
-import ch.post.it.evoting.verifier.common.TestResult;
+import ch.post.it.evoting.verifier.common.VerificationDefinition;
+import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.dto.Test;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -33,7 +33,7 @@ public interface TestExecutionStatusMapper {
             @Mapping(target = "status", ignore = true),
             @Mapping(target = "message", ignore = true),
     })
-    Test map(TestDefinition testDefinition);
+    Test map(VerificationDefinition verificationDefinition);
 
     @Mappings({
             @Mapping(target = "status", source = "status"),
@@ -45,5 +45,5 @@ public interface TestExecutionStatusMapper {
             @Mapping(target = "category", ignore = true),
             @Mapping(target = "description", ignore = true),
     })
-    void update(@MappingTarget Test testExecutionStatus, TestResult testResult);
+    void update(@MappingTarget Test testExecutionStatus, VerificationResult verificationResult);
 }

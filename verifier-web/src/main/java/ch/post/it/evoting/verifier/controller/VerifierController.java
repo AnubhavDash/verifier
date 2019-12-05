@@ -15,7 +15,7 @@
 package ch.post.it.evoting.verifier.controller;
 
 import ch.post.it.evoting.verifier.common.Language;
-import ch.post.it.evoting.verifier.common.TestTrait;
+import ch.post.it.evoting.verifier.common.VerificationTrait;
 import ch.post.it.evoting.verifier.dto.Configuration;
 import ch.post.it.evoting.verifier.dto.ExecutionStatus;
 import ch.post.it.evoting.verifier.dto.LifecycleStatus;
@@ -111,7 +111,7 @@ public class VerifierController {
     public ResponseEntity process( @RequestParam(required = false) String runOptions ) {
         this.executionStatus.setStatus(LifecycleStatus.RUNNING);
         try {
-            Set<TestTrait> traits = getTraits(runOptions);
+            Set<VerificationTrait> traits = getTraits(runOptions);
             this.processor.processTests(traits);
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (AlreadyStartedException e) {
@@ -122,11 +122,11 @@ public class VerifierController {
     /*
         Converts a comma separated list to a list of test traits
      */
-    protected Set<TestTrait> getTraits(String runOptions) {
-        Set<TestTrait> traits = null;
+    protected Set<VerificationTrait> getTraits(String runOptions) {
+        Set<VerificationTrait> traits = null;
         if ( runOptions != null ) {
             traits = Arrays.asList(runOptions.split(",")).stream()
-                    .map(t -> TestTrait.fromValue(t))
+                    .map(t -> VerificationTrait.fromValue(t))
                     .collect(Collectors.toSet());
         }
         return traits;
