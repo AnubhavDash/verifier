@@ -14,12 +14,12 @@
  */
 package ch.post.it.evoting.verifier.block.block4;
 
-import ch.post.it.evoting.verifier.common.block.TestSuite;
+import ch.post.it.evoting.verifier.common.block.VerificationSuite;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class Block4TestSuite extends TestSuite {
+public class Block4VerificationSuite extends VerificationSuite {
 
     public static final String RESOURCE_BUNDLE_NAME = "block4/resources";
 
@@ -29,8 +29,8 @@ public class Block4TestSuite extends TestSuite {
     public static final Path PATH_BALLOTBOXES = Paths.get("ballotboxes/");
     public static final Path PATH_RESULTS = Paths.get("results/");
 
-    public Block4TestSuite() {
-        super(Block4TestSuite.class.getPackage().getName() + ".tests");
+    public Block4VerificationSuite() {
+        super(Block4VerificationSuite.class.getPackage().getName() + ".verifications");
     }
 
 }

@@ -14,12 +14,12 @@
  */
 package ch.post.it.evoting.verifier.block.block4.tests;
 
-import ch.post.it.evoting.verifier.block.block4.Block4TestSuite;
+import ch.post.it.evoting.verifier.block.block4.Block4VerificationSuite;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.TestDefinition;
-import ch.post.it.evoting.verifier.common.TestResult;
-import ch.post.it.evoting.verifier.common.block.Test;
+import ch.post.it.evoting.verifier.common.VerificationDefinition;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.Verification;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.dto.BallotBox;
@@ -39,26 +39,26 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class Test01 extends Test {
+public class CheckOptionsMapping extends Verification {
 
-    private static final Logger LOGGER = Logger.getLogger(Test01.class);
+    private static final Logger LOGGER = Logger.getLogger(CheckOptionsMapping.class);
 
     @Override
-    public TestDefinition getTestDefinition() {
-        TestDefinition def = new TestDefinition();
+    public VerificationDefinition getVerificationDefinition() {
+        VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(4);
         def.setCategory(Category.CONSISTENCY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test01.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "test01.description"));
         def.setId(1);
         def.setName("checkOptionsMapping");
         return def;
     }
 
     @Override
-    public TestResult executeTest(File inputDirectory) {
-        TestResult result = new TestResult(getTestDefinition());
+    public VerificationResult executeVerification(File inputDirectory) {
+        VerificationResult result = new VerificationResult(getVerificationDefinition());
         try {
-            Path path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_ELECTION_SETUP);
+            Path path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_ELECTION_SETUP);
             DataConfigEE dataConfigEE = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", DataConfigEE.class);
             List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
 
@@ -101,7 +101,7 @@ public class Test01 extends Test {
                         Map<String, Long> primesCountMap = getCorrectFileAndExtractPrimesCount(inputDirectory, ballotBoxId);
 
                         //3 Generate map<alias, count>
-                        final Path resultsPath = inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS);
+                        final Path resultsPath = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_RESULTS);
                         Results decryptResult = Deserializer.fromXml(resultsPath.toFile(), "evoting-decrypt_.*\\.xml", Results.class);
                         Map<String, Long> aliasCountMap = decryptResult.getBallotsBox().stream()
                                 .filter(bb -> ballotBoxAuthId.equals(bb.getBallotBoxIdentification()))
@@ -182,26 +182,26 @@ public class Test01 extends Test {
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message"));
         } catch (Test01FailException e) {
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test01.nok.message", e.getAliasInError()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "test01.nok.message", e.getAliasInError()));
         } catch (Test01WrapperException e) {
             LOGGER.error("an unexpected error occurred", e);
             //unwrap the wrapped exception
             e = (Test01WrapperException) e.getCause();
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         } catch (Exception e) {
             LOGGER.error("an unexpected error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }
 
     private Map<String, Long> getCorrectFileAndExtractPrimesCount(File inputDirectory, String ballotboxId) throws IOException {
-        Path path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_BALLOTBOXES).resolve(ballotboxId);
+        Path path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_BALLOTBOXES).resolve(ballotboxId);
         Iterable<List<String>> iterable = Deserializer.fromCsv(path.toFile(),
                 "decompressedVotes\\.csv", ";", Arrays::asList);
 

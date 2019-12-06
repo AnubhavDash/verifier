@@ -15,25 +15,25 @@
 package ch.post.it.evoting.verifier.block.block4.tests;
 
 import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.TestResult;
+import ch.post.it.evoting.verifier.common.VerificationResult;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
 
-public class Test04Test {
+public class CheckTallyingAnswersTest {
 
     @Test
     public void executeTestOK() {
-        TestResult testResult = new Test04().executeTest(new File(getClass().getResource("/Test04/OK").getFile()));
-        Assert.assertNotNull(testResult);
-        Assert.assertEquals(Status.OK, testResult.getStatus());
+        VerificationResult verificationResult = new CheckTallyingAnswers().executeVerification(new File(getClass().getResource("/CheckTallyingAnswersTest/OK").getFile()));
+        Assert.assertNotNull(verificationResult);
+        Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOK() {
-        TestResult testResult = new Test04().executeTest(new File(getClass().getResource("/Test04/NOK").getFile()));
-        Assert.assertNotNull(testResult);
-        Assert.assertEquals(Status.NOK, testResult.getStatus());
+        VerificationResult verificationResult = new CheckTallyingAnswers().executeVerification(new File(getClass().getResource("/CheckTallyingAnswersTest/NOK").getFile()));
+        Assert.assertNotNull(verificationResult);
+        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 }

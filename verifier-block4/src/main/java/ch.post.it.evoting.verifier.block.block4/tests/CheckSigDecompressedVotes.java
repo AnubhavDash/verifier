@@ -14,13 +14,13 @@
  */
 package ch.post.it.evoting.verifier.block.block4.tests;
 
-import ch.post.it.evoting.verifier.block.block4.Block4TestSuite;
+import ch.post.it.evoting.verifier.block.block4.Block4VerificationSuite;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.TestDefinition;
-import ch.post.it.evoting.verifier.common.TestResult;
-import ch.post.it.evoting.verifier.common.block.Test;
-import ch.post.it.evoting.verifier.common.block.TestFailureException;
+import ch.post.it.evoting.verifier.common.VerificationDefinition;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.Verification;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
@@ -37,71 +37,71 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Test71 extends Test {
+public class CheckSigDecompressedVotes extends Verification {
 
-    private static final Logger LOGGER = Logger.getLogger(Test71.class);
+    private static final Logger LOGGER = Logger.getLogger(CheckSigDecompressedVotes.class);
 
     @Override
-    public TestDefinition getTestDefinition() {
-        TestDefinition def = new TestDefinition();
+    public VerificationDefinition getVerificationDefinition() {
+        VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(4);
         def.setCategory(Category.AUTHENTICITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test71.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "test71.description"));
         def.setId(71);
         def.setName("checkSigDecompressedVotes");
         return def;
     }
 
     @Override
-    public TestResult executeTest(File inputDirectory) {
-        TestResult result = new TestResult(getTestDefinition());
+    public VerificationResult executeVerification(File inputDirectory) {
+        VerificationResult result = new VerificationResult(getVerificationDefinition());
 
         try {
-            Path path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_ELECTION_SETUP);
+            Path path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_ELECTION_SETUP);
             DataConfigEE dataConfigEE = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", DataConfigEE.class);
             List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
             List<File> decompressedVotesFiles = new ArrayList<>(ballotBoxes.size());
             ballotBoxes.forEach(ballotBox -> {
                 String ballotBoxId = ballotBox.getId();
                 try {
-                    decompressedVotesFiles.add(PathHelper.getFile(inputDirectory.toPath().resolve(Block4TestSuite.PATH_BALLOTBOXES).resolve(ballotBoxId).toFile(), "decompressedVotes.*\\.csv"));
+                    decompressedVotesFiles.add(PathHelper.getFile(inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_BALLOTBOXES).resolve(ballotBoxId).toFile(), "decompressedVotes.*\\.csv"));
                 } catch (FileNotFoundException e) {
-                    throw new TestFailureException("decompressedVotes.csv not found", inputDirectory.getName(), ballotBoxId);
+                    throw new VerificationFailureException("decompressedVotes.csv not found", inputDirectory.getName(), ballotBoxId);
                 }
             });
 
             byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath()
-                            .resolve(Block4TestSuite.PATH_CERTIFICATES)
-                            .resolve(Block4TestSuite.PATH_ADMINBOARD).toFile(),
+                            .resolve(Block4VerificationSuite.PATH_CERTIFICATES)
+                            .resolve(Block4VerificationSuite.PATH_ADMINBOARD).toFile(),
                     ".*\\.pem").toPath());
 
-            byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block4TestSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
+            byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
 
             for (File decompressedVote : decompressedVotesFiles) {
                 byte[] content = Files.readAllBytes(decompressedVote.toPath());
                 byte[] signature = Files.readAllBytes(decompressedVote.toPath().getParent().resolve(decompressedVote.getName() + ".metadata"));
 
                 if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCA)) {
-                    throw new TestFailureException(decompressedVote.getName());
+                    throw new VerificationFailureException(decompressedVote.getName());
                 }
             }
             result.setStatus(Status.OK);
 
-        } catch (TestFailureException e) {
+        } catch (VerificationFailureException e) {
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test71.nok.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "test71.nok.message"));
         } catch (NoSuchFileException e) {
             LOGGER.error("a NoSuchFileException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test71.file.not.found.message", e.getFile()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "test71.file.not.found.message", e.getFile()));
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test71.file.not.found.message", e.getMessage()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "test71.file.not.found.message", e.getMessage()));
         } catch (Exception e) {
             LOGGER.error("an unexpected error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }

@@ -15,32 +15,32 @@
 package ch.post.it.evoting.verifier.block.block4.tests;
 
 import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.TestResult;
+import ch.post.it.evoting.verifier.common.VerificationResult;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
 
-public class Test01Test {
+public class CheckOptionsMappingTest {
 
     @Test
     public void executeTestOK() {
-        TestResult testResult = new Test01().executeTest(new File(getClass().getResource("/Test01/OK").getFile()));
-        Assert.assertNotNull(testResult);
-        Assert.assertEquals(Status.OK, testResult.getStatus());
+        VerificationResult verificationResult = new CheckOptionsMapping().executeVerification(new File(getClass().getResource("/CheckOptionsMappingTest/OK").getFile()));
+        Assert.assertNotNull(verificationResult);
+        Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOK() {
-        TestResult testResult = new Test01().executeTest(new File(getClass().getResource("/Test01/NOK").getFile()));
-        Assert.assertNotNull(testResult);
-        Assert.assertEquals(Status.NOK, testResult.getStatus());
+        VerificationResult verificationResult = new CheckOptionsMapping().executeVerification(new File(getClass().getResource("/CheckOptionsMappingTest/NOK").getFile()));
+        Assert.assertNotNull(verificationResult);
+        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestOKWriteIns() {
-        TestResult testResult = new Test01().executeTest(new File(getClass().getResource("/Test01/OK-WRITEINS").getFile()));
-        Assert.assertNotNull(testResult);
-        Assert.assertEquals(Status.OK, testResult.getStatus());
+        VerificationResult verificationResult = new CheckOptionsMapping().executeVerification(new File(getClass().getResource("/CheckOptionsMappingTest/OK-WRITEINS").getFile()));
+        Assert.assertNotNull(verificationResult);
+        Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 }

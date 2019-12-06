@@ -17,12 +17,12 @@ package ch.post.it.evoting.verifier.block.block4.tests;
 import ch.ech.xmlns.ech_0110._3.Delivery;
 import ch.evoting.xmlns.config._4.CandidatePositionType;
 import ch.evoting.xmlns.config._4.Configuration;
-import ch.post.it.evoting.verifier.block.block4.Block4TestSuite;
+import ch.post.it.evoting.verifier.block.block4.Block4VerificationSuite;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.TestDefinition;
-import ch.post.it.evoting.verifier.common.TestResult;
-import ch.post.it.evoting.verifier.common.block.Test;
+import ch.post.it.evoting.verifier.common.VerificationDefinition;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.Verification;
 import ch.post.it.evoting.verifier.common.block.tools.CountMap;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
@@ -42,28 +42,28 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Test03 extends Test {
+public class CheckTallyingCandidates extends Verification {
 
-    private static final Logger LOGGER = Logger.getLogger(Test03.class);
+    private static final Logger LOGGER = Logger.getLogger(CheckTallyingCandidates.class);
 
     @Override
-    public TestDefinition getTestDefinition() {
-        TestDefinition definition = new TestDefinition();
+    public VerificationDefinition getVerificationDefinition() {
+        VerificationDefinition definition = new VerificationDefinition();
         definition.setBlockId(4);
         definition.setId(3);
         definition.setCategory(Category.COMPLETENESS);
-        definition.setDescription(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test03.description"));
+        definition.setDescription(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "test03.description"));
         definition.setName("checkTallyingCandidates");
         return definition;
     }
 
     @Override
-    public TestResult executeTest(File inputDirectory) {
-        TestResult result = new TestResult(getTestDefinition());
+    public VerificationResult executeVerification(File inputDirectory) {
+        VerificationResult result = new VerificationResult(getVerificationDefinition());
 
         try {
             //1, config file => map<candidateListId, candidateId> => map1
-            Path path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_ELECTION_SETUP);
+            Path path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_ELECTION_SETUP);
             Configuration configuration = Deserializer.fromXml(path.toFile(), "configuration-anonymized.xml", Configuration.class);
             Map<String, String> mapConfig = configuration.getContest().getElectionInformation().stream()
                     .flatMap(ei -> ei.getList().stream())
@@ -72,7 +72,7 @@ public class Test03 extends Test {
                     .collect(Collectors.toMap(CandidatePositionType::getCandidateListIdentification, CandidatePositionType::getCandidateIdentification, (id1, id2) -> id1));
 
             // 2, decrypt file => map<countingCircle, map<ListCandidateId||CandidateId, count>> => map2
-            path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS);
+            path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_RESULTS);
             Results results = Deserializer.fromXml(path.toFile(), "evoting-decrypt_.*\\.xml", Results.class);
             Map<String, Map<String, Long>> mapDecrypt = results.getBallotsBox().stream()
                     .flatMap(bb -> bb.getCountingCircle().stream())
@@ -99,7 +99,7 @@ public class Test03 extends Test {
                     ));
 
 
-            path = inputDirectory.toPath().resolve(Block4TestSuite.PATH_RESULTS);
+            path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_RESULTS);
             Delivery ech110 = Deserializer.fromXml(path.toFile(), "eCH-0110_.*\\.xml", Delivery.class);
             ech110.getResultDelivery().getCountingCircleResults().forEach(cc -> {
                 String ccId = cc.getCountingCircle().getCountingCircleId();
@@ -222,15 +222,15 @@ public class Test03 extends Test {
             result.setStatus(Status.OK);
         } catch (Test03FailureException e) {
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test03.nok.message", e.getCandidateId()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "test03.nok.message", e.getCandidateId()));
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message"));
         } catch (Exception e) {
             LOGGER.error("an unexpected error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }
