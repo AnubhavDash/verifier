@@ -21,8 +21,11 @@
       <b>Input directory :</b>
       <input type="text" name="inputDirectory" [(ngModel)]="inputDirectory" style="width:30%">
       <div>
-        <button type="button" (click)="startProcess('PreDecryption')" [disabled]="buttonDisabled" class="btn">
-          Start pre-decryption
+        <button type="button" (click)="startProcess(testTrait.BLOCK_1)" [disabled]="buttonDisabled" class="btn">
+          Start block 1
+        </button>
+        <button type="button" (click)="startProcess(testTrait.PRE_DECRYPTION)" [disabled]="buttonDisabled" class="btn">Start
+          pre-decryption
         </button>
         <button (click)="startProcess()" [disabled]="buttonDisabled" class="btn">Start all</button>
         <button (click)="update()" class="btn">Update</button>

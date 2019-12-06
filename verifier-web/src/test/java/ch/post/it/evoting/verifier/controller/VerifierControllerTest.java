@@ -45,9 +45,9 @@ public class VerifierControllerTest {
 
     @Test
     public void tests_process_callsProcessWithTraits() throws AlreadyStartedException {
-        controller.process(VerificationTrait.PreDecryption.toString());
+        controller.process(VerificationTrait.PRE_DECRYPTION.toString());
         Set<VerificationTrait> arguments = new HashSet<VerificationTrait>();
-        arguments.add(VerificationTrait.PreDecryption);
+        arguments.add(VerificationTrait.PRE_DECRYPTION);
         verify(processorMock).processVerifications(arguments);
     }
 

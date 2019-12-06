@@ -43,7 +43,7 @@ public class CheckSecureLogSignature extends AbstractVerification {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification02.description"));
         def.setId(2);
         def.setName("checkSecureLogSignature");
-        def.addVerificationTrait(VerificationTrait.PreDecryption);
+        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
         return def;
     }
 

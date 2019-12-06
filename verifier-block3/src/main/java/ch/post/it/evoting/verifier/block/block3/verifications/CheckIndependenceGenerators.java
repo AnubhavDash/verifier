@@ -34,7 +34,7 @@ public class CheckIndependenceGenerators extends AbstractVerification {
         def.setId(9);
         def.setName("checkIndependenceGenerators");
         def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification09.description"));
-        def.addVerificationTrait(VerificationTrait.PreDecryption);
+        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
         return def;
     }
 

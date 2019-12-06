@@ -47,7 +47,7 @@ public class CheckConfirmationAttempts extends AbstractVerification {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification07.description"));
         def.setId(7);
         def.setName("checkConfirmationAttempts");
-        def.addVerificationTrait(VerificationTrait.PreDecryption);
+        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
         return def;
     }
 

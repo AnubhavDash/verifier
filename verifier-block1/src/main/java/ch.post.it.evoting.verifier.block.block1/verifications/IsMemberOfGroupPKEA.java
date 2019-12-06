@@ -47,7 +47,8 @@ public class IsMemberOfGroupPKEA extends AbstractVerification {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification07.description"));
         def.setId(7);
         def.setName("isMemberOfGroup(pk_ea)");
-        def.addVerificationTrait(VerificationTrait.PreDecryption);
+        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+        def.addVerificationTrait(VerificationTrait.BLOCK_1);
         return def;
     }
 

@@ -47,7 +47,7 @@ public class CheckVoteUnity extends AbstractVerification {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification06.description"));
         def.setId(6);
         def.setName("checkVoteUnity");
-        def.addVerificationTrait(VerificationTrait.PreDecryption);
+        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
         return def;
     }
 

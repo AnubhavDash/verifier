@@ -39,7 +39,7 @@ public class CheckMultiExponentationArgumentOnline extends AbstractVerification 
         def.setId(26);
         def.setName("checkMultiExponentationArgumentOnline");
         def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification26.description"));
-        def.addVerificationTrait(VerificationTrait.PreDecryption);
+        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
         return def;
     }
 

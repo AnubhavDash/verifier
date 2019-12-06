@@ -41,7 +41,8 @@ public class CheckNumberCredentials extends AbstractVerification {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification31.description"));
         def.setId(31);
         def.setName("checkNumberCredentials()");
-        def.addVerificationTrait(VerificationTrait.PreDecryption);
+        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+        def.addVerificationTrait(VerificationTrait.BLOCK_1);
         return def;
     }
 

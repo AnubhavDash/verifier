@@ -45,7 +45,7 @@ public class CheckNumberChoiceReturnCodes extends AbstractVerification {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.description"));
         def.setId(3);
         def.setName("checkNumberChoiceReturnCodes");
-        def.addVerificationTrait(VerificationTrait.PreDecryption);
+        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
         return def;
     }
 

@@ -44,7 +44,7 @@ public class CheckCommitmentParametersOnline extends AbstractVerification {
         def.setId(28);
         def.setName("checkCommitmentParametersOnline");
         def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification28.description"));
-        def.addVerificationTrait(VerificationTrait.PreDecryption);
+        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
         return def;
     }
 

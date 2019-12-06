@@ -50,7 +50,7 @@ public class CheckConfirmedVotesBallotBox extends AbstractVerification {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification08.description"));
         def.setId(8);
         def.setName("checkConfirmedVotesBallotBox");
-        def.addVerificationTrait(VerificationTrait.PreDecryption);
+        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
         return def;
     }
 

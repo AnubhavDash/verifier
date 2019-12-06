@@ -19,7 +19,11 @@ package ch.post.it.evoting.verifier.common;
  */
 public enum VerificationTrait {
 
-    PreDecryption;
+    PRE_DECRYPTION,
+    BLOCK_1,
+    BLOCK_2,
+    BLOCK_3,
+    BLOCK_4;
 
     public static VerificationTrait fromValue(String value) throws IllegalArgumentException  {
         return VerificationTrait.valueOf(value);
