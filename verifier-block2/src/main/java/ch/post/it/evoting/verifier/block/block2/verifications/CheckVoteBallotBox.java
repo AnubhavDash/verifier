@@ -12,15 +12,15 @@
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package ch.post.it.evoting.verifier.block.block2.tests;
+package ch.post.it.evoting.verifier.block.block2.verifications;
 
-import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
+import ch.post.it.evoting.verifier.block.block2.Block2VerificationSuite;
 import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationDataExtractor;
 import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationStruct;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.*;
-import ch.post.it.evoting.verifier.common.block.Test;
-import ch.post.it.evoting.verifier.common.block.TestFailureException;
+import ch.post.it.evoting.verifier.common.block.Verification;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
@@ -40,25 +40,25 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Test05 extends Test {
+public class CheckVoteBallotBox extends Verification {
 
-    private static final Logger LOGGER = Logger.getLogger(Test05.class);
+    private static final Logger LOGGER = Logger.getLogger(CheckVoteBallotBox.class);
 
     @Override
-    public TestDefinition getTestDefinition() {
-        TestDefinition def = new TestDefinition();
+    public VerificationDefinition getVerificationDefinition() {
+        VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(2);
         def.setCategory(Category.CONSISTENCY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test05.description"));
         def.setId(5);
         def.setName("checkVoteBallotBox");
-        def.addTestTrait(TestTrait.PreDecryption);
+        def.addVerificationTrait(VerificationTrait.PreDecryption);
         return def;
     }
 
     @Override
-    public TestResult executeTest(File inputDirectory) {
-        TestResult result = new TestResult(getTestDefinition());
+    public VerificationResult executeVerification(File inputDirectory) {
+        VerificationResult result = new VerificationResult(getVerificationDefinition());
         try {
             VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectory);
 
@@ -79,7 +79,7 @@ public class Test05 extends Test {
             //check that mapDownloadedBallotBox[votingCardId] == mapSecuredLogs[votingCardId]
             Map<String, String> mapDownloadedBallotBoxs = new HashMap<>();
 
-            List<File> downloadedBallotBoxFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2TestSuite.PATH_BALLOTBOXES).toFile(),
+            List<File> downloadedBallotBoxFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2VerificationSuite.PATH_BALLOTBOXES).toFile(),
                     "downloadedBallotBox.*\\.csv",
                     true);
 
@@ -96,14 +96,14 @@ public class Test05 extends Test {
                             .filter(entry -> entry.getKey() != null)
                             .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
                     if (!mergeMapWithoutDuplicates(mapDownloadedBallotBoxs, map)) {
-                        throw new TestFailureException("Duplicate votingCardId in downloadedBallotBox files");
+                        throw new VerificationFailureException("Duplicate votingCardId in downloadedBallotBox files");
                     }
                 }
             }
 
             //check sizes
             if (mapDownloadedBallotBoxs.size() != mapSecureLogs.size()) {
-                throw new TestFailureException("the number of encrypted votes in the secure logs and downloadboxes are not equal");
+                throw new VerificationFailureException("the number of encrypted votes in the secure logs and downloadboxes are not equal");
             }
 
             mapDownloadedBallotBoxs.entrySet()
@@ -113,10 +113,10 @@ public class Test05 extends Test {
                         String value = entry.getValue();
                         if (mapSecureLogs.containsKey(key)) {
                             if (!value.equals(mapSecureLogs.get(key))) {
-                                throw new TestFailureException("encryptedOptions is not the same in DownloadedBallotBox and SecureLogs !", key, value);
+                                throw new VerificationFailureException("encryptedOptions is not the same in DownloadedBallotBox and SecureLogs !", key, value);
                             }
                         } else {
-                            throw new TestFailureException("Unknown votingCardId !", key);
+                            throw new VerificationFailureException("Unknown votingCardId !", key);
                         }
                     });
 
@@ -124,30 +124,30 @@ public class Test05 extends Test {
         } catch (NoSuchFileException e) {
             LOGGER.error("a NoSuchFileException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.file.not.found.message", e.getFile()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test05.file.not.found.message", e.getFile()));
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.file.not.found.message", e.getMessage()));
-        } catch (TestFailureException e) {
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test05.file.not.found.message", e.getMessage()));
+        } catch (VerificationFailureException e) {
             result.setStatus(Status.NOK);
             String[] args = e.getArgs();
             if (args.length == 1) {
                 LOGGER.debug("the number of encrypted votes in the secure logs and downloadboxes are not equal", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.nok.numberVotes.mismatch.message"));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test05.nok.numberVotes.mismatch.message"));
             }
             if (args.length == 2) {
                 LOGGER.debug("checkpoint entry : " + args[1] + " the does not verify", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.nok.message", args[1], "no data"));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test05.nok.message", args[1], "no data"));
             }
             if (args.length == 3) {
                 LOGGER.debug("checkpoint entry and attributes of the entry : " + args[0] + ", " + args[1] + " the does not verify", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test05.nok.message", args[1], args[2]));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test05.nok.message", args[1], args[2]));
             }
         } catch (Exception e) {
             LOGGER.error("Unexpected error", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }

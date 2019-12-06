@@ -12,15 +12,15 @@
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package ch.post.it.evoting.verifier.block.block2.tests;
+package ch.post.it.evoting.verifier.block.block2.verifications;
 
-import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
+import ch.post.it.evoting.verifier.block.block2.Block2VerificationSuite;
 import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationDataExtractor;
 import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationStruct;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.*;
-import ch.post.it.evoting.verifier.common.block.Test;
-import ch.post.it.evoting.verifier.common.block.TestFailureException;
+import ch.post.it.evoting.verifier.common.block.Verification;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.block.block2.securelog.HostMappingElement;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
@@ -33,34 +33,32 @@ import java.nio.file.NoSuchFileException;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class Test03 extends Test {
+public class CheckNumberVoteCastCodes extends Verification {
 
-    private static final Logger LOGGER = Logger.getLogger(Test03.class);
+    private static final Logger LOGGER = Logger.getLogger(CheckNumberVoteCastCodes.class);
 
     @Override
-    public TestDefinition getTestDefinition() {
-        TestDefinition def = new TestDefinition();
+    public VerificationDefinition getVerificationDefinition() {
+        VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(2);
         def.setCategory(Category.CONSISTENCY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.description"));
-        def.setId(3);
-        def.setName("checkNumberChoiceReturnCodes");
-        def.addTestTrait(TestTrait.PreDecryption);
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test04.description"));
+        def.setId(4);
+        def.setName("checkNumberVoteCastCodes");
+        def.addVerificationTrait(VerificationTrait.PreDecryption);
         return def;
     }
 
     @Override
-    public TestResult executeTest(File inputDirectory) {
-        TestResult result = new TestResult(getTestDefinition());
+    public VerificationResult executeVerification(File inputDirectory) {
+        VerificationResult result = new VerificationResult(getVerificationDefinition());
         try {
-            //Get the voterInformation.csv Files and count
             VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectory);
 
             // create host/CC mapping
             Map<String, String> hostCcMapping = HostMappingElement.loadHostMapping(inputDirectory);
 
-            final Pattern pattern = Pattern.compile("\\|GENPCC\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|");
-
+            final Pattern pattern = Pattern.compile("\\|GENPVCC\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|");
             //count in the logs
             Map<String, Long> countByCC = SecureLogEntry.loadRegularLogs(inputDirectory, pattern)
                     .groupBy(s1 -> hostCcMapping.containsKey(s1.getHost()) ? hostCcMapping.get(s1.getHost()) : s1.getHost())
@@ -77,43 +75,41 @@ public class Test03 extends Test {
             }
             long nbDistinctValues = countByCC.values().stream().distinct().count();
             if (nbDistinctValues == 0 && voterInformation.getCount() == 0L) {
-                LOGGER.info("no GENPCC log found for the defined electionEventId : " + voterInformation.getEeid());
+                LOGGER.info("no GENPVCC log found for the defined electionEventId : " + voterInformation.getEeid());
                 result.setStatus(Status.NOK);
             } else if (nbDistinctValues != 1) {
-                throw new TestFailureException("count of log for partial choice code generation is not the same for each control component", countByCC.values().toString());
+                throw new VerificationFailureException("count of log for partial vote cast code generation is not the same for each control component", countByCC.values().toString());
+
             } else {
                 //finally check the count with csv files count
                 Long logCount = countByCC.values().stream().findFirst().get();
                 if (logCount.equals(voterInformation.getCount())) {
                     result.setStatus(Status.OK);
                 } else {
-                    throw new TestFailureException("the number of log entries does not match with the number of voters", "" + logCount + " and " + voterInformation.getCount());
+                    throw new VerificationFailureException("the number of log entries does not match with the number of voters", "" + logCount + " and " + voterInformation.getCount());
                 }
-
             }
 
         } catch (NoSuchFileException e) {
             LOGGER.error("a NoSuchFileException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message", e.getFile()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test04.file.not.found.message", e.getFile()));
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message", e.getMessage()));
-
-        } catch (TestFailureException e) {
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test04.file.not.found.message", e.getMessage()));
+        } catch (VerificationFailureException e) {
             String[] args = e.getArgs();
-            if (args.length >= 2) {
-                LOGGER.error("Test failed, cause : " + args[0] + ". Details : " + args[1]);
+            if(args.length >= 2){
+                LOGGER.debug("Test failed, cause : " + args[0] + ". Details: " + args[1]);
             }
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test03.nok.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test04.nok.message"));
         } catch (Exception e) {
             LOGGER.error("an unexpected error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }
-
 }

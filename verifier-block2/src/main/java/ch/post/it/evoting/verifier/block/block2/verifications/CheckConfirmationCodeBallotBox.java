@@ -12,12 +12,12 @@
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package ch.post.it.evoting.verifier.block.block2.tests;
+package ch.post.it.evoting.verifier.block.block2.verifications;
 
-import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
+import ch.post.it.evoting.verifier.block.block2.Block2VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
-import ch.post.it.evoting.verifier.common.block.Test;
-import ch.post.it.evoting.verifier.common.block.TestFailureException;
+import ch.post.it.evoting.verifier.common.block.Verification;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
@@ -38,27 +38,27 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class Test08 extends Test {
+public class CheckConfirmationCodeBallotBox extends Verification {
 
-    private static final Logger LOGGER = Logger.getLogger(Test08.class);
+    private static final Logger LOGGER = Logger.getLogger(CheckConfirmationCodeBallotBox.class);
 
     @Override
-    public TestDefinition getTestDefinition() {
-        TestDefinition def = new TestDefinition();
+    public VerificationDefinition getVerificationDefinition() {
+        VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(2);
         def.setCategory(Category.CONSISTENCY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test08.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test08.description"));
         def.setId(8);
         def.setName("checkConfirmationCodeBallotBox");
-        def.addTestTrait(TestTrait.PreDecryption);
+        def.addVerificationTrait(VerificationTrait.PreDecryption);
         return def;
     }
 
     @Override
-    public TestResult executeTest(File inputDirectory) {
-        TestResult result = new TestResult(getTestDefinition());
+    public VerificationResult executeVerification(File inputDirectory) {
+        VerificationResult result = new VerificationResult(getVerificationDefinition());
         try {
-            List<File> downloadedBallotBoxFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2TestSuite.PATH_BALLOTBOXES).toFile(),
+            List<File> downloadedBallotBoxFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2VerificationSuite.PATH_BALLOTBOXES).toFile(),
                     "downloadedBallotBox.*\\.csv",
                     true);
 
@@ -101,7 +101,7 @@ public class Test08 extends Test {
 
                     //test size
                     if (mapDownloadedBb.size() != (votingCardSuccessList.size() + votingCardFailedList.size())) {
-                        throw new TestFailureException("there is a mismatch count between the list of successful or failed votes and the download ballot box");
+                        throw new VerificationFailureException("there is a mismatch count between the list of successful or failed votes and the download ballot box");
                     }
 
                     //test existence in success or failed list
@@ -116,29 +116,29 @@ public class Test08 extends Test {
                             })
                             .filter(val -> val == false)
                             .count() > 0) {
-                        throw new TestFailureException("there is a mismatch between the list of successful or failed votes and the download ballot box");
+                        throw new VerificationFailureException("there is a mismatch between the list of successful or failed votes and the download ballot box");
                     }
                 }
             }
 
             result.setStatus(Status.OK);
 
-        } catch (TestFailureException e) {
+        } catch (VerificationFailureException e) {
             LOGGER.debug(e.getArgs()[0], e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test08.nok.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test08.nok.message"));
         } catch (NoSuchFileException e) {
             LOGGER.error("a NoSuchFileException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test08.file.not.found.message", e.getFile()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test08.file.not.found.message", e.getFile()));
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test08.file.not.found.message", e.getMessage()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test08.file.not.found.message", e.getMessage()));
         } catch (Exception e) {
             LOGGER.error("an unexpected error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }

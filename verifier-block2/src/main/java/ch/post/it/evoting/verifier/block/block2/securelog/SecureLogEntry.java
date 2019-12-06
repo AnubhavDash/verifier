@@ -14,7 +14,7 @@
  */
 package ch.post.it.evoting.verifier.block.block2.securelog;
 
-import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
+import ch.post.it.evoting.verifier.block.block2.Block2VerificationSuite;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import lombok.Getter;
 import lombok.Setter;
@@ -104,7 +104,7 @@ public abstract class SecureLogEntry {
     };
 
     public static Flux<RegularLogEntry> loadRegularLogs(File inputDirectory, Pattern pattern) {
-        return Flux.fromArray(PathHelper.listDirectories(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS)))
+        return Flux.fromArray(PathHelper.listDirectories(inputDirectory.toPath().resolve(Block2VerificationSuite.PATH_SECURE_LOGS)))
                 .onErrorStop()
                 .flatMap(hostDir -> Flux.fromArray(PathHelper.listDirectories(hostDir.toPath())))
                 .flatMap(instanceDir -> Flux.fromArray(PathHelper.listDirectories(instanceDir.toPath())))

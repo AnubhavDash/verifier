@@ -12,39 +12,39 @@
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package ch.post.it.evoting.verifier.block.block2.tests;
+package ch.post.it.evoting.verifier.block.block2.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.TestResult;
+import ch.post.it.evoting.verifier.common.VerificationResult;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
 
-public class Test07Test {
+public class CheckConfirmationCodeAttemptsTest {
 
     @Test
     /* remove ignore when we got secureLog files with correct pattern */
     @Ignore
     public void executeTest() {
-        TestResult testResult = new Test07().executeTest(new File(getClass().getResource("/Test07/OK").getFile()));
-        Assert.assertNotNull(testResult);
-        Assert.assertEquals(Status.OK, testResult.getStatus());
+        VerificationResult verificationResult = new CheckConfirmationCodeAttempts().executeVerification(new File(getClass().getResource("/CheckConfirmationCodeAttemptsTest/OK").getFile()));
+        Assert.assertNotNull(verificationResult);
+        Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     @Ignore
     public void executeTestNOK() {
-        TestResult testResult = new Test07().executeTest(new File(getClass().getResource("/Test07/NOK").getFile()));
-        Assert.assertNotNull(testResult);
-        Assert.assertEquals(Status.NOK, testResult.getStatus());
+        VerificationResult verificationResult = new CheckConfirmationCodeAttempts().executeVerification(new File(getClass().getResource("/CheckConfirmationCodeAttemptsTest/NOK").getFile()));
+        Assert.assertNotNull(verificationResult);
+        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKnotFile() {
-        TestResult testResult = new Test07().executeTest(new File(getClass().getResource("/Test07/NOK-NOTFILE").getFile()));
-        Assert.assertNotNull(testResult);
-        Assert.assertEquals(Status.NOK, testResult.getStatus());
+        VerificationResult verificationResult = new CheckConfirmationCodeAttempts().executeVerification(new File(getClass().getResource("/CheckConfirmationCodeAttemptsTest/NOK-NOTFILE").getFile()));
+        Assert.assertNotNull(verificationResult);
+        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 }

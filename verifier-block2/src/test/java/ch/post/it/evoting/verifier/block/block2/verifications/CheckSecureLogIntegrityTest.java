@@ -12,10 +12,10 @@
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package ch.post.it.evoting.verifier.block.block2.tests;
+package ch.post.it.evoting.verifier.block.block2.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.TestResult;
+import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.tools.HmacGenerator;
 import org.apache.commons.lang.StringUtils;
 import org.bouncycastle.util.encoders.Base64;
@@ -29,21 +29,21 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-public class Test01Test {
+public class CheckSecureLogIntegrityTest {
 
     @Test
     @Ignore
     public void executeTestOK() {
-        TestResult testResult = new Test01().executeTest(new File(getClass().getResource("/Test01/OK").getFile()));
-        Assert.assertNotNull(testResult);
-        Assert.assertEquals(Status.OK, testResult.getStatus());
+        VerificationResult verificationResult = new CheckSecureLogIntegrity().executeVerification(new File(getClass().getResource("/CheckSecureLogIntegrityTest/OK").getFile()));
+        Assert.assertNotNull(verificationResult);
+        Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOK() {
-        TestResult testResult = new Test01().executeTest(new File(getClass().getResource("/Test01/NOK").getFile()));
-        Assert.assertNotNull(testResult);
-        Assert.assertEquals(Status.NOK, testResult.getStatus());
+        VerificationResult verificationResult = new CheckSecureLogIntegrity().executeVerification(new File(getClass().getResource("/CheckSecureLogIntegrityTest/NOK").getFile()));
+        Assert.assertNotNull(verificationResult);
+        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test

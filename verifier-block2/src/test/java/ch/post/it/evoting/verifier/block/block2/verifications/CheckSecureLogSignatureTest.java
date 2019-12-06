@@ -12,14 +12,14 @@
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package ch.post.it.evoting.verifier.block.block2.tests;
+package ch.post.it.evoting.verifier.block.block2.verifications;
 
 import ch.post.it.evoting.verifier.block.block2.securelog.CheckPointLogEntry;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundle;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleCertificates;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogMetadata;
 import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.TestResult;
+import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import org.bouncycastle.util.encoders.Base64;
 import org.junit.Assert;
@@ -30,31 +30,31 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
-public class Test02Test {
+public class CheckSecureLogSignatureTest {
 
     @Test
     @Ignore
     public void executeTestOK() {
-        TestResult testResult = new Test02().executeTest(new File(getClass().getResource("/Test02/OK").getFile()));
-        Assert.assertNotNull(testResult);
-        Assert.assertEquals(Status.OK, testResult.getStatus());
+        VerificationResult verificationResult = new CheckSecureLogSignature().executeVerification(new File(getClass().getResource("/CheckSecureLogSignatureTest/OK").getFile()));
+        Assert.assertNotNull(verificationResult);
+        Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     @Ignore
     public void executeTestNOK() {
-        TestResult testResult = new Test02().executeTest(new File(getClass().getResource("/Test02/NOK").getFile()));
-        Assert.assertNotNull(testResult);
-        Assert.assertEquals(Status.NOK, testResult.getStatus());
+        VerificationResult verificationResult = new CheckSecureLogSignature().executeVerification(new File(getClass().getResource("/CheckSecureLogSignatureTest/NOK").getFile()));
+        Assert.assertNotNull(verificationResult);
+        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
 
     @Test
     public void testSignatureAlgorithm() throws Exception {
 
-        File cert = new File(getClass().getResource("/Test02/testSignature/cc1_log_sign.pem").getFile());
-        File intermediate = new File(getClass().getResource("/Test02/testSignature/cc1_ca.pem").getFile());
-        File root = new File(getClass().getResource("/Test02/testSignature/platformRootCA.pem").getFile());
+        File cert = new File(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_log_sign.pem").getFile());
+        File intermediate = new File(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_ca.pem").getFile());
+        File root = new File(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/platformRootCA.pem").getFile());
 
         /*
         Original from SPLUNK
@@ -78,9 +78,9 @@ public class Test02Test {
 
     @Test
     public void testSecureLogBundleSignature() throws Exception {
-        File cert = new File(getClass().getResource("/Test02/testSignature/cc1_log_sign.pem").getFile());
-        File intermediate = new File(getClass().getResource("/Test02/testSignature/cc1_ca.pem").getFile());
-        File root = new File(getClass().getResource("/Test02/testSignature/platformRootCA.pem").getFile());
+        File cert = new File(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_log_sign.pem").getFile());
+        File intermediate = new File(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_ca.pem").getFile());
+        File root = new File(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/platformRootCA.pem").getFile());
 
         SecureLogBundle bundle = new SecureLogBundle();
         CheckPointLogEntry checkpoint = new CheckPointLogEntry();

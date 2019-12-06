@@ -12,15 +12,15 @@
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package ch.post.it.evoting.verifier.block.block2.tests;
+package ch.post.it.evoting.verifier.block.block2.verifications;
 
-import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
+import ch.post.it.evoting.verifier.block.block2.Block2VerificationSuite;
 import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationDataExtractor;
 import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationStruct;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.*;
-import ch.post.it.evoting.verifier.common.block.Test;
-import ch.post.it.evoting.verifier.common.block.TestFailureException;
+import ch.post.it.evoting.verifier.common.block.Verification;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.block.block2.securelog.HostMappingElement;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
@@ -35,33 +35,33 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class Test06 extends Test {
+public class CheckConfirmationCodeAttempts extends Verification {
 
-    private static final Logger LOGGER = Logger.getLogger(Test06.class);
+    private static final Logger LOGGER = Logger.getLogger(CheckConfirmationCodeAttempts.class);
 
     @Override
-    public TestDefinition getTestDefinition() {
-        TestDefinition def = new TestDefinition();
+    public VerificationDefinition getVerificationDefinition() {
+        VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(2);
         def.setCategory(Category.EVIDENCE);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test06.description"));
-        def.setId(6);
-        def.setName("checkVoteUnity");
-        def.addTestTrait(TestTrait.PreDecryption);
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test07.description"));
+        def.setId(7);
+        def.setName("checkConfirmationCodeAttempts");
+        def.addVerificationTrait(VerificationTrait.PreDecryption);
         return def;
     }
 
     @Override
-    public TestResult executeTest(File inputDirectory) {
-        TestResult result = new TestResult(getTestDefinition());
+    public VerificationResult executeVerification(File inputDirectory) {
+        VerificationResult result = new VerificationResult(getVerificationDefinition());
         try {
             VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectory);
 
             // create host/CC mapping
             Map<String, String> hostCcMapping = HostMappingElement.loadHostMapping(inputDirectory);
 
-            final Pattern patternVotingCardId = Pattern.compile(".*\\|000\\|(.*)\\|.*\\|.*\\|#encryptedOptions=\".*\" #ccx_id=.*\n");
-            final Pattern pattern = Pattern.compile("\\|VOTVAL\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|");
+            final Pattern patternVotingCardId = Pattern.compile(".*\\|000\\|(.*)\\|.*\\|.*\\|#confirmationMessage=\".*\" #ccx_id=.*\n");
+            final Pattern pattern = Pattern.compile("\\|CMVAL\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|");
             Map<String, Map<String, Long>> nbVotingCardPerCC = SecureLogEntry.loadRegularLogs(inputDirectory, pattern)
                     .map(s1 -> {
                         Matcher matcher = patternVotingCardId.matcher(s1.getRaw());
@@ -80,33 +80,33 @@ public class Test06 extends Test {
 
             List<String> problematicVotingCardIds = nbVotingCardPerCC.values().stream()
                     .flatMap(m -> m.entrySet().stream())
-                    .filter(e -> e.getValue() > 1)
+                    .filter(e -> e.getValue() > 5)
                     .map(e -> e.getKey()).collect(Collectors.toList());
             if (!problematicVotingCardIds.isEmpty()) {
-                throw new TestFailureException(problematicVotingCardIds.toArray(new String[]{}));
+                throw new VerificationFailureException(problematicVotingCardIds.toArray(new String[]{}));
             }
             result.setStatus(Status.OK);
         } catch (NoSuchFileException e) {
             LOGGER.error("a NoSuchFileException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test06.file.not.found.message", e.getFile()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message", ((NoSuchFileException) e).getFile()));
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
             if (e.getLocalizedMessage().equals(".*\\.json")) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test06.file.not.found.message", "logs JSON file"));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message", "logs JSON file"));
             } else {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test06.file.not.found.message", e.getMessage()));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message", e.getMessage()));
             }
-        } catch (TestFailureException e) {
+        } catch (VerificationFailureException e) {
             String[] args = e.getArgs();
             LOGGER.debug("Test failed, problematic votingcard ids : " + Arrays.toString(args));
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "test06.nok.message", args));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test07.nok.message", args));
         } catch (Exception e) {
             LOGGER.error("an unexpected error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2TestSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }

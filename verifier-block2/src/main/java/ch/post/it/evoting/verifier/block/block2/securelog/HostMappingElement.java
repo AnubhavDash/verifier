@@ -18,14 +18,13 @@
  */
 package ch.post.it.evoting.verifier.block.block2.securelog;
 
-import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
+import ch.post.it.evoting.verifier.block.block2.Block2VerificationSuite;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 import java.util.function.Function;
@@ -39,7 +38,7 @@ public class HostMappingElement {
     private String cc;
 
     public final static Map<String, String> loadHostMapping(File inputDirectory) throws IOException {
-        File mapping = PathHelper.getFile(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS).toFile(), "mapping_cc_hosts.csv");
+        File mapping = PathHelper.getFile(inputDirectory.toPath().resolve(Block2VerificationSuite.PATH_SECURE_LOGS).toFile(), "mapping_cc_hosts.csv");
         Iterable<HostMappingElement> iterable = Deserializer.fromCsv(mapping.getParentFile(), mapping.getName(), ";", map);
         return StreamSupport.stream(iterable.spliterator(), false)
                 .skip(1)
