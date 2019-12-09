@@ -9,11 +9,11 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import java.io.IOException;
 import java.util.UUID;
 
-public class UuidFromStringDeserializer extends JsonDeserializer<UUID> {
+public class UuidDeserializer extends JsonDeserializer<UUID> {
     @Override
     public UUID deserialize(JsonParser jsonParser,
                             DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
-        String value = jsonParser.readValueAs(String.class);
+        String value = jsonParser.getValueAsString();
         if (value.length() == 32) {
             value = String.format("%s-%s-%s-%s-%s", value.substring(0, 8), value.substring(8, 12),
                                   value.substring(12, 16), value.substring(16, 20), value.substring(20, 32));

@@ -1,11 +1,11 @@
 package ch.post.it.evoting.verifier.common.block.dto.revised.serialization;
 
-import ch.post.it.evoting.verifier.common.block.dto.revised.AuthenticationToken;
+import ch.post.it.evoting.verifier.common.block.dto.revised.ElectionEvent;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
@@ -14,12 +14,11 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class AuthenticationTokenDeserializer extends JsonDeserializer<AuthenticationToken> {
+public class ElectionEventDeserializer extends JsonDeserializer<ElectionEvent> {
     private final ObjectMapper mapper;
 
-    public AuthenticationTokenDeserializer() {
+    public ElectionEventDeserializer() {
         mapper = new ObjectMapper();
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
         SimpleModule typesModule = new SimpleModule();
         typesModule.addDeserializer(UUID.class, new UuidDeserializer());
@@ -29,13 +28,10 @@ public class AuthenticationTokenDeserializer extends JsonDeserializer<Authentica
     }
 
     @Override
-    public AuthenticationToken deserialize(JsonParser jsonParser,
-                                           DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
-        if (jsonParser.currentToken().isStructStart()) {
-            return mapper.readValue(jsonParser, AuthenticationToken.class);
-        } else {
-            String value = jsonParser.getValueAsString();
-            return mapper.readValue(value, AuthenticationToken.class);
-        }
+    public ElectionEvent deserialize(JsonParser jsonParser,
+                                     DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+        JsonNode root = mapper.readTree(jsonParser);
+
+        return mapper.readValue(root.path("electionEvent").traverse(), ElectionEvent.class);
     }
 }

@@ -30,10 +30,18 @@ public class PublicKeyDeserializer extends JsonDeserializer<PublicKey> {
     @Override
     public PublicKey deserialize(JsonParser jsonParser,
                                  DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
-        String value = jsonParser.readValueAs(String.class);
-        byte[] bytes = TypeConverter.base64ToByte(value);
+        boolean isStructure = jsonParser.currentToken().isStructStart();
 
-        JsonNode root = mapper.readTree(bytes);
+        JsonNode root;
+        if (!isStructure) {
+            String value = jsonParser.readValueAs(String.class);
+
+            byte[] bytes = TypeConverter.base64ToByte(value);
+
+            root = mapper.readTree(bytes);
+        } else {
+            root = mapper.readTree(jsonParser);
+        }
         JsonNode publicKeyNode = root.path("publicKey");
 
         EncryptionGroup group = mapper.readValue(publicKeyNode.path("zpSubgroup").traverse(), EncryptionGroup.class);

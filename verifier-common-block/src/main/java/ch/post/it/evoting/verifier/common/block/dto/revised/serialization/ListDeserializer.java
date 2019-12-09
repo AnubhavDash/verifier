@@ -21,7 +21,7 @@ public class ListDeserializer extends JsonDeserializer<List<?>> {
         mapper = new ObjectMapper();
 
         SimpleModule typesModule = new SimpleModule();
-        typesModule.addDeserializer(UUID.class, new UuidFromStringDeserializer());
+        typesModule.addDeserializer(UUID.class, new UuidDeserializer());
         mapper.registerModule(typesModule);
     }
 
