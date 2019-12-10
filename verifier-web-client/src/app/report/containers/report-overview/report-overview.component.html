@@ -43,17 +43,17 @@
       <th>Status</th>
       <!--th>Message</th-->
     </tr>
-    <tr *ngFor="let key of keys"
-        [class.bg-success]="verifications[key].status === 'OK'"
-        [class.bg-danger]="verifications[key].status === 'NOK'"
-        [class.bg-secondary]="verifications[key].status === 'NA'">
-      <td [class.text-light]="verifications[key].status !== null">{{verifications[key].blockId}}</td>
-      <td [class.text-light]="verifications[key].status !== null">{{verifications[key].verificationId}}</td>
-      <td [class.text-light]="verifications[key].status !== null">{{verifications[key].name}}</td>
-      <td [class.text-light]="verifications[key].status !== null">{{verifications[key].category}}</td>
-      <td [class.text-light]="verifications[key].status !== null">{{verifications[key].description}}</td>
-      <td [class.text-light]="verifications[key].status !== null">
-        <div title="{{verifications[key].message}}">{{verifications[key].status}}</div>
+    <tr *ngFor="let verification of verifications | keyvalue"
+        [class.bg-success]="verification.value.status === 'OK'"
+        [class.bg-danger]="verification.value.status === 'NOK'"
+        [class.bg-secondary]="verification.value.status === 'NA'">
+      <td [class.text-light]="verification.value.status !== null">{{verification.value.blockId}}</td>
+      <td [class.text-light]="verification.value.status !== null">{{verification.value.verificationId}}</td>
+      <td [class.text-light]="verification.value.status !== null">{{verification.value.name}}</td>
+      <td [class.text-light]="verification.value.status !== null">{{verification.value.category}}</td>
+      <td [class.text-light]="verification.value.status !== null">{{verification.value.description}}</td>
+      <td [class.text-light]="verification.value.status !== null">
+        <div title="{{verification.value.message}}">{{verification.value.status}}</div>
       </td>
       <!--td></td-->
     </tr>

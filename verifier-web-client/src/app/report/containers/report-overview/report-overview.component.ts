@@ -31,7 +31,6 @@ export class ReportOverviewComponent implements OnInit {
   inputDirectory: string;
   private stompClient;
   verifications = {};
-  keys: string[];
   buttonDisabled = false;
 
   constructor(private processorService: ProcessorService) {
@@ -65,7 +64,6 @@ export class ReportOverviewComponent implements OnInit {
           console.log(JSON.stringify(value[i]));
           this.verifications[value[i].id] = ReportOverviewComponent.convert(value[i]);
         }
-        this.keys = Object.keys(this.verifications);
       }
     );
   }
