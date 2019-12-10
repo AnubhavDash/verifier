@@ -39,7 +39,7 @@ public class CheckSecureLogIntegrity extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(2);
         def.setCategory(Category.INTEGRITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test01.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.description"));
         def.setId(1);
         def.setName("checkSecureLogIntegrity");
         def.addVerificationTrait(VerificationTrait.PreDecryption);
@@ -71,7 +71,7 @@ public class CheckSecureLogIntegrity extends AbstractVerification {
         } catch (VerificationFailureException e) {
             LOGGER.error("Test in error, cause : " + Arrays.toString(e.getArgs()), e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test01.nok.message", e.getArgs()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.nok.message", e.getArgs()));
         } catch (Exception e) {
             result.setStatus(Status.NOK);
             LOGGER.error("Unexpected error occured", e);

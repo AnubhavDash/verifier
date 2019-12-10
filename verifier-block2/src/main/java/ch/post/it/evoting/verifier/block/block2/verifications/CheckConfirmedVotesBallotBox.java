@@ -47,7 +47,7 @@ public class CheckConfirmedVotesBallotBox extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(2);
         def.setCategory(Category.CONSISTENCY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test08.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification08.description"));
         def.setId(8);
         def.setName("checkConfirmedVotesBallotBox");
         def.addVerificationTrait(VerificationTrait.PreDecryption);
@@ -126,15 +126,15 @@ public class CheckConfirmedVotesBallotBox extends AbstractVerification {
         } catch (VerificationFailureException e) {
             LOGGER.debug(e.getArgs()[0], e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test08.nok.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification08.nok.message"));
         } catch (NoSuchFileException e) {
             LOGGER.error("a NoSuchFileException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test08.file.not.found.message", e.getFile()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification08.file.not.found.message", e.getFile()));
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test08.file.not.found.message", e.getMessage()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification08.file.not.found.message", e.getMessage()));
         } catch (Exception e) {
             LOGGER.error("an unexpected error occurred", e);
             result.setStatus(Status.NOK);

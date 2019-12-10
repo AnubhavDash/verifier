@@ -49,7 +49,7 @@ public class CheckVoteBallotBox extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(2);
         def.setCategory(Category.CONSISTENCY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test05.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification05.description"));
         def.setId(5);
         def.setName("checkVoteBallotBox");
         def.addVerificationTrait(VerificationTrait.PreDecryption);
@@ -124,25 +124,25 @@ public class CheckVoteBallotBox extends AbstractVerification {
         } catch (NoSuchFileException e) {
             LOGGER.error("a NoSuchFileException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test05.file.not.found.message", e.getFile()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification05.file.not.found.message", e.getFile()));
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test05.file.not.found.message", e.getMessage()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification05.file.not.found.message", e.getMessage()));
         } catch (VerificationFailureException e) {
             result.setStatus(Status.NOK);
             String[] args = e.getArgs();
             if (args.length == 1) {
                 LOGGER.debug("the number of encrypted votes in the secure logs and downloadboxes are not equal", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test05.nok.numberVotes.mismatch.message"));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification05.nok.numberVotes.mismatch.message"));
             }
             if (args.length == 2) {
                 LOGGER.debug("checkpoint entry : " + args[1] + " the does not verify", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test05.nok.message", args[1], "no data"));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification05.nok.message", args[1], "no data"));
             }
             if (args.length == 3) {
                 LOGGER.debug("checkpoint entry and attributes of the entry : " + args[0] + ", " + args[1] + " the does not verify", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test05.nok.message", args[1], args[2]));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification05.nok.message", args[1], args[2]));
             }
         } catch (Exception e) {
             LOGGER.error("Unexpected error", e);

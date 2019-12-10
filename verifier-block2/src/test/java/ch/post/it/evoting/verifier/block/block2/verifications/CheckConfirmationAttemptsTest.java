@@ -28,7 +28,7 @@ public class CheckConfirmationAttemptsTest {
     /* remove ignore when we got secureLog files with correct pattern */
     @Ignore
     public void executeTest() {
-        VerificationResult verificationResult = new CheckConfirmationAttempts().executeVerification(new File(getClass().getResource("/CheckConfirmationCodeAttemptsTest/OK").getFile()));
+        VerificationResult verificationResult = new CheckConfirmationAttempts().executeVerification(new File(getClass().getResource("/CheckConfirmationAttemptsTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -36,14 +36,14 @@ public class CheckConfirmationAttemptsTest {
     @Test
     @Ignore
     public void executeTestNOK() {
-        VerificationResult verificationResult = new CheckConfirmationAttempts().executeVerification(new File(getClass().getResource("/CheckConfirmationCodeAttemptsTest/NOK").getFile()));
+        VerificationResult verificationResult = new CheckConfirmationAttempts().executeVerification(new File(getClass().getResource("/CheckConfirmationAttemptsTest/NOK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKnotFile() {
-        VerificationResult verificationResult = new CheckConfirmationAttempts().executeVerification(new File(getClass().getResource("/CheckConfirmationCodeAttemptsTest/NOK-NOTFILE").getFile()));
+        VerificationResult verificationResult = new CheckConfirmationAttempts().executeVerification(new File(getClass().getResource("/CheckConfirmationAttemptsTest/NOK-NOTFILE").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }

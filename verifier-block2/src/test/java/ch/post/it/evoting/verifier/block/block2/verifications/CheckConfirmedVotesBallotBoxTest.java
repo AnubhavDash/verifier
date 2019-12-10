@@ -25,21 +25,21 @@ public class CheckConfirmedVotesBallotBoxTest {
 
     @Test
     public void executeTest() {
-        VerificationResult verificationResult = new CheckConfirmedVotesBallotBox().executeVerification(new File(getClass().getResource("/CheckConfirmationCodeBallotBox/OK").getFile()));
+        VerificationResult verificationResult = new CheckConfirmedVotesBallotBox().executeVerification(new File(getClass().getResource("/CheckConfirmedVotesBallotBoxTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOK() {
-        VerificationResult verificationResult = new CheckConfirmedVotesBallotBox().executeVerification(new File(getClass().getResource("/CheckConfirmationCodeBallotBox/NOK").getFile()));
+        VerificationResult verificationResult = new CheckConfirmedVotesBallotBox().executeVerification(new File(getClass().getResource("/CheckConfirmedVotesBallotBoxTest/NOK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKnotFile() {
-        VerificationResult verificationResult = new CheckConfirmedVotesBallotBox().executeVerification(new File(getClass().getResource("/CheckConfirmationCodeBallotBox/NOK-NOTFILE").getFile()));
+        VerificationResult verificationResult = new CheckConfirmedVotesBallotBox().executeVerification(new File(getClass().getResource("/CheckConfirmedVotesBallotBoxTest/NOK-NOTFILE").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }

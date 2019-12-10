@@ -40,7 +40,7 @@ public class CheckSecureLogSignature extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(2);
         def.setCategory(Category.AUTHENTICITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test02.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification02.description"));
         def.setId(2);
         def.setName("checkSecureLogSignature");
         def.addVerificationTrait(VerificationTrait.PreDecryption);
@@ -72,7 +72,7 @@ public class CheckSecureLogSignature extends AbstractVerification {
             result.setStatus(Status.OK);
         } catch (VerificationFailureException e) {
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test02.nok.message", e.getArgs()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification02.nok.message", e.getArgs()));
         } catch (Exception e) {
             LOGGER.error("an unexpected error occurred", e);
             result.setStatus(Status.NOK);

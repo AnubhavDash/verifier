@@ -42,7 +42,7 @@ public class CheckNumberChoiceReturnCodes extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(2);
         def.setCategory(Category.CONSISTENCY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test03.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.description"));
         def.setId(3);
         def.setName("checkNumberChoiceReturnCodes");
         def.addVerificationTrait(VerificationTrait.PreDecryption);
@@ -95,11 +95,11 @@ public class CheckNumberChoiceReturnCodes extends AbstractVerification {
         } catch (NoSuchFileException e) {
             LOGGER.error("a NoSuchFileException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message", e.getFile()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.file.not.found.message", e.getFile()));
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message", e.getMessage()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.file.not.found.message", e.getMessage()));
 
         } catch (VerificationFailureException e) {
             String[] args = e.getArgs();
@@ -107,7 +107,7 @@ public class CheckNumberChoiceReturnCodes extends AbstractVerification {
                 LOGGER.error("Test failed, cause : " + args[0] + ". Details : " + args[1]);
             }
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test03.nok.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.nok.message"));
         } catch (Exception e) {
             LOGGER.error("an unexpected error occurred", e);
             result.setStatus(Status.NOK);

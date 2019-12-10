@@ -44,7 +44,7 @@ public class CheckConfirmationAttempts extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(2);
         def.setCategory(Category.EVIDENCE);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test07.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification07.description"));
         def.setId(7);
         def.setName("checkConfirmationAttempts");
         def.addVerificationTrait(VerificationTrait.PreDecryption);
@@ -89,20 +89,20 @@ public class CheckConfirmationAttempts extends AbstractVerification {
         } catch (NoSuchFileException e) {
             LOGGER.error("a NoSuchFileException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message", ((NoSuchFileException) e).getFile()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification07.file.not.found.message", ((NoSuchFileException) e).getFile()));
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
             if (e.getLocalizedMessage().equals(".*\\.json")) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message", "logs JSON file"));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification07.file.not.found.message", "logs JSON file"));
             } else {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message", e.getMessage()));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification07.file.not.found.message", e.getMessage()));
             }
         } catch (VerificationFailureException e) {
             String[] args = e.getArgs();
             LOGGER.debug("Test failed, problematic votingcard ids : " + Arrays.toString(args));
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "test07.nok.message", args));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification07.nok.message", args));
         } catch (Exception e) {
             LOGGER.error("an unexpected error occurred", e);
             result.setStatus(Status.NOK);
