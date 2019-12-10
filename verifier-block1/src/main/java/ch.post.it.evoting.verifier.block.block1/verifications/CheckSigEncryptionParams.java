@@ -36,7 +36,7 @@ public class CheckSigEncryptionParams extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(1);
         def.setCategory(Category.AUTHENTICITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test76.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification76.description"));
         def.setId(76);
         def.setName("checkSigEncryptionParams");
         def.addVerificationTrait(VerificationTrait.PreDecryption);
@@ -64,11 +64,11 @@ public class CheckSigEncryptionParams extends AbstractVerification {
 
         } catch (VerificationFailureException e) {
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test76.nok.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification76.nok.message"));
         } catch (NoSuchFileException e) {
             LOGGER.error("a NoSuchFileException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test76.file.not.found.message", e.getFile()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification76.file.not.found.message", e.getFile()));
         } catch (Exception e) {
             LOGGER.error("unexpected error", e);
             result.setStatus(Status.NOK);

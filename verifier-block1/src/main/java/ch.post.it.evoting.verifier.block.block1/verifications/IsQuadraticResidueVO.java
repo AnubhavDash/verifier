@@ -45,7 +45,7 @@ public class IsQuadraticResidueVO extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(1);
         def.setCategory(Category.INTEGRITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test06.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification06.description"));
         def.setId(6);
         def.setName("isQuadraticResidue([vo])");
         def.addVerificationTrait(VerificationTrait.PreDecryption);
@@ -115,12 +115,12 @@ public class IsQuadraticResidueVO extends AbstractVerification {
                 result.setStatus(Status.OK);
             } else {
                 result.setStatus(Status.NOK);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test06.nok.message", errors.toString()));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification06.nok.message", errors.toString()));
             }
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test06.file.not.found.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification06.file.not.found.message"));
         } catch (Exception e) {
             LOGGER.error("Unexpected error", e);
             result.setStatus(Status.NOK);

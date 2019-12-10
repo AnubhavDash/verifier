@@ -38,7 +38,7 @@ public class CheckNumberCredentials extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(1);
         def.setCategory(Category.COMPLETENESS);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test31.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification31.description"));
         def.setId(31);
         def.setName("checkNumberCredentials()");
         def.addVerificationTrait(VerificationTrait.PreDecryption);
@@ -69,13 +69,13 @@ public class CheckNumberCredentials extends AbstractVerification {
                 result.setStatus(Status.OK);
             } else {
                 result.setStatus(Status.NOK);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test31.nok.message", "" + linesCount, "" + votersCount));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification31.nok.message", "" + linesCount, "" + votersCount));
             }
 
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test31.file.not.found.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification31.file.not.found.message"));
         } catch (Exception e) {
             LOGGER.error("Unexpected error", e);
             result.setStatus(Status.NOK);

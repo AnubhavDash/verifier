@@ -39,7 +39,7 @@ public class IsPrimeP extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(1);
         def.setCategory(Category.INTEGRITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test01.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.description"));
         def.setId(1);
         def.setName("isPrime(p)");
         def.addVerificationTrait(VerificationTrait.PreDecryption);
@@ -59,12 +59,12 @@ public class IsPrimeP extends AbstractVerification {
                 result.setStatus(Status.OK);
             } else {
                 result.setStatus(Status.NOK);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test01.nok.message"));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.nok.message"));
             }
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.file.not.found.message"));
         } catch (Exception e) {
             LOGGER.error("Unexpected error", e);
             result.setStatus(Status.NOK);

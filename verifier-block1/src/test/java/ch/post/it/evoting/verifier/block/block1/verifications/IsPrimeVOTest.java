@@ -44,6 +44,6 @@ public class IsPrimeVOTest {
         VerificationResult verificationResult = new IsPrimeVO().executeVerification(new File(getClass().getResource("/IsPrimeVOTest/NOK/NOK-NOFILE").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
-        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test05.file.not.found.message"), verificationResult.getMessage());
+        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification05.file.not.found.message"), verificationResult.getMessage());
     }
 }

@@ -44,6 +44,6 @@ public class IsMemberOfGroupPKEATest {
         VerificationResult verificationResult = new IsMemberOfGroupPKEA().executeVerification(new File(getClass().getResource("/IsMemberOfGroupPKEATest/NOK/NOK-NOFILE").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
-        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message"), verificationResult.getMessage());
+        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification07.file.not.found.message"), verificationResult.getMessage());
     }
 }

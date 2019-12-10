@@ -48,7 +48,7 @@ public class CheckPrimeNumberOptionsVO extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(1);
         def.setCategory(Category.INTEGRITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test09.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification09.description"));
         def.setId(9);
         def.setName("checkPrimeNumberOptions([vo])");
         def.addVerificationTrait(VerificationTrait.PreDecryption);
@@ -109,33 +109,33 @@ public class CheckPrimeNumberOptionsVO extends AbstractVerification {
                         doi.getVotes().forEach(v -> {
                             String voteIdentification = v.getAlias();
                             if (!voteAnswersCount.containsKey(voteIdentification)) {
-                                throw new Test09Exception("test09.nok.message.alias.vote.nok", voteIdentification);
+                                throw new Test09Exception("verification09.nok.message.alias.vote.nok", voteIdentification);
                             }
 
                             List<Integer> options = v.getQuestions().stream().flatMap(q -> q.getOptions().stream()).map(Option::getPrimeNumber).collect(Collectors.toList());
                             long optionsDistinctCount = v.getQuestions().stream().flatMap(q -> q.getOptions().stream()).map(Option::getPrimeNumber).distinct().count();
                             if (options.size() != optionsDistinctCount) {
-                                throw new Test09Exception("test09.nok.message.prime.number.mutually.distinct.nok", getDuplicates(options).toString());
+                                throw new Test09Exception("verification09.nok.message.prime.number.mutually.distinct.nok", getDuplicates(options).toString());
                             }
 
                             if (options.size() != voteAnswersCount.get(voteIdentification)) {
-                                throw new Test09Exception("test09.nok.message.number.of.prime.number.and.answer.nok");
+                                throw new Test09Exception("verification09.nok.message.number.of.prime.number.and.answer.nok");
                             }
                         });
 
                         doi.getElections().forEach(e -> {
                             String electionIdentification = e.getAlias();
                             if (!electionOptionCount.containsKey(electionIdentification)) {
-                                throw new Test09Exception("test09.nok.message.alias.election.nok", electionIdentification);
+                                throw new Test09Exception("verification09.nok.message.alias.election.nok", electionIdentification);
                             }
 
                             List<Integer> listCount = e.getLists().stream().map(l -> l.getPrimeNumber()).collect(Collectors.toList());
                             long listDistinctCount = e.getLists().stream().map(l -> l.getPrimeNumber()).distinct().count();
                             if (listCount.size() != listDistinctCount) {
-                                throw new Test09Exception("test09.nok.message", getDuplicates(listCount).toString());
+                                throw new Test09Exception("verification09.nok.message", getDuplicates(listCount).toString());
                             }
                             if (listCount.size() != electionOptionCount.get(electionIdentification).getListCount()) {
-                                throw new Test09Exception("test09.nok.message.number.of.distinct.prime.number.and.lists.nok");
+                                throw new Test09Exception("verification09.nok.message.number.of.distinct.prime.number.and.lists.nok");
                             }
                             long optionDistinctCount = e.getLists().stream()
                                     .flatMap(l -> l.getCandidatePositions().stream())
@@ -145,7 +145,7 @@ public class CheckPrimeNumberOptionsVO extends AbstractVerification {
                             int writeInsCount = e.getWriteIns().size();
 
                             if ((optionDistinctCount + writeInsCount + optionCandidateOnlyCount) != electionOptionCount.get(electionIdentification).getOptionCount()) {
-                                throw new Test09Exception("test09.nok.message.number.of.candidate.prime.number.and.vo.nok",
+                                throw new Test09Exception("verification09.nok.message.number.of.candidate.prime.number.and.vo.nok",
                                         "" + (optionDistinctCount + writeInsCount + optionCandidateOnlyCount),
                                         "" + electionOptionCount.get(electionIdentification).getOptionCount()
                                 );
@@ -160,7 +160,7 @@ public class CheckPrimeNumberOptionsVO extends AbstractVerification {
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test09.file.not.found.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification09.file.not.found.message"));
         } catch (Exception e) {
             LOGGER.error("Unexpected error", e);
             result.setStatus(Status.NOK);

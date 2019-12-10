@@ -37,7 +37,7 @@ public class IsStrongPrimePQTest {
         VerificationResult verificationResult = new IsStrongPrimePQ().executeVerification(new File(getClass().getResource("/IsStrongPrimePQTest/NOK/NOK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
-        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test03.nok.message"), verificationResult.getMessage());
+        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.nok.message"), verificationResult.getMessage());
     }
 
     @Test
@@ -45,6 +45,6 @@ public class IsStrongPrimePQTest {
         VerificationResult verificationResult = new IsStrongPrimePQ().executeVerification(new File(getClass().getResource("/IsStrongPrimePQTest/NOK/NOK-NOFILE").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
-        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message"), verificationResult.getMessage());
+        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.file.not.found.message"), verificationResult.getMessage());
     }
 }

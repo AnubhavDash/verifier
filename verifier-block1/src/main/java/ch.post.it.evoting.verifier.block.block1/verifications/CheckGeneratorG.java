@@ -39,7 +39,7 @@ public class CheckGeneratorG extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(1);
         def.setCategory(Category.INTEGRITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test10.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification10.description"));
         def.setId(10);
         def.setName("checkGenerator(g)");
         def.addVerificationTrait(VerificationTrait.PreDecryption);
@@ -56,11 +56,11 @@ public class CheckGeneratorG extends AbstractVerification {
             BigInteger p = TypeConverter.stringToBigInteger(encryptionParameters.getP());
 
             if (!BigInteger.valueOf(2).equals(g)) {
-                throw new Test10Exception("g does not equal 2", TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test10.nok.message"));
+                throw new Test10Exception("g does not equal 2", TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification10.nok.message"));
             }
 
             if (!MathHelper.isEulerCriterionValid(g, p)) {
-                throw new Test10Exception("g is not part of the subgroup q", TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test10.euler.nok.message"));
+                throw new Test10Exception("g is not part of the subgroup q", TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification10.euler.nok.message"));
             }
 
             result.setStatus(Status.OK);
@@ -71,7 +71,7 @@ public class CheckGeneratorG extends AbstractVerification {
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test10.file.not.found.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification10.file.not.found.message"));
         } catch (Exception e) {
             LOGGER.error("Unexpected error", e);
             result.setStatus(Status.NOK);

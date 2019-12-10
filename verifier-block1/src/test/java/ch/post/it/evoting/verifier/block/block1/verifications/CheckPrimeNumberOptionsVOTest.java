@@ -44,6 +44,6 @@ public class CheckPrimeNumberOptionsVOTest {
         VerificationResult verificationResult = new CheckPrimeNumberOptionsVO().executeVerification(new File(getClass().getResource("/CheckPrimeNumberOptionsVOTest/NOK/NOK-NOFILE").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
-        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test09.file.not.found.message"), verificationResult.getMessage());
+        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification09.file.not.found.message"), verificationResult.getMessage());
     }
 }

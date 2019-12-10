@@ -44,6 +44,6 @@ public class IsQuadraticResidueVOTest {
         VerificationResult verificationResult = new IsQuadraticResidueVO().executeVerification(new File(getClass().getResource("/IsQuadraticResidueVOTest/NOK/NOK-NOFILE").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
-        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test06.file.not.found.message"), verificationResult.getMessage());
+        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification06.file.not.found.message"), verificationResult.getMessage());
     }
 }

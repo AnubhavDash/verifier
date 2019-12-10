@@ -37,7 +37,7 @@ public class IsPrimeQTest {
         VerificationResult verificationResult = new IsPrimeQ().executeVerification(new File(getClass().getResource("/IsPrimeQTest/NOK/NOK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
-        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test02.nok.message"), verificationResult.getMessage());
+        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification02.nok.message"), verificationResult.getMessage());
     }
 
     @Test
@@ -45,6 +45,6 @@ public class IsPrimeQTest {
         VerificationResult verificationResult = new IsPrimeQ().executeVerification(new File(getClass().getResource("/IsPrimeQTest/NOK/NOK-NOFILE").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
-        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "test02.file.not.found.message"), verificationResult.getMessage());
+        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification02.file.not.found.message"), verificationResult.getMessage());
     }
 }

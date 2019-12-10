@@ -25,21 +25,21 @@ public class CheckSizePTest {
 
     @Test
     public void executeTestOK() {
-        VerificationResult verificationResult = new CheckSizeP().executeVerification(new File(getClass().getResource("/HasSufficientSizePTest/OK").getFile()));
+        VerificationResult verificationResult = new CheckSizeP().executeVerification(new File(getClass().getResource("/CheckSizePTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOK() {
-        VerificationResult verificationResult = new CheckSizeP().executeVerification(new File(getClass().getResource("/HasSufficientSizePTest/NOK/NOK").getFile()));
+        VerificationResult verificationResult = new CheckSizeP().executeVerification(new File(getClass().getResource("/CheckSizePTest/NOK/NOK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKFileNotFound() {
-        VerificationResult verificationResult = new CheckSizeP().executeVerification(new File(getClass().getResource("/HasSufficientSizePTest/NOK/NOK-NOFILE").getFile()));
+        VerificationResult verificationResult = new CheckSizeP().executeVerification(new File(getClass().getResource("/CheckSizePTest/NOK/NOK-NOFILE").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
