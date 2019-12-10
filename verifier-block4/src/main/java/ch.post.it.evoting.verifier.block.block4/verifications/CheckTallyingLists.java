@@ -50,7 +50,7 @@ public class CheckTallyingLists extends AbstractVerification {
         definition.setBlockId(4);
         definition.setId(4);
         definition.setCategory(Category.COMPLETENESS);
-        definition.setDescription(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "test04.description"));
+        definition.setDescription(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification04.description"));
         definition.setName("checkTallyingLists");
         return definition;
     }
@@ -193,11 +193,11 @@ public class CheckTallyingLists extends AbstractVerification {
             result.setStatus(Status.OK);
         } catch (VerificationFailureException e) {
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "test04.nok.message", e.getArgs()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification04.nok.message", e.getArgs()));
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "test04.file.not.found.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification04.file.not.found.message"));
         } catch (Exception e) {
             LOGGER.error("an unexpected error occurred", e);
             result.setStatus(Status.NOK);

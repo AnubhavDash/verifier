@@ -52,7 +52,7 @@ public class CheckTallyingCandidates extends AbstractVerification {
         definition.setBlockId(4);
         definition.setId(3);
         definition.setCategory(Category.COMPLETENESS);
-        definition.setDescription(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "test03.description"));
+        definition.setDescription(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.description"));
         definition.setName("checkTallyingCandidates");
         return definition;
     }
@@ -222,11 +222,11 @@ public class CheckTallyingCandidates extends AbstractVerification {
             result.setStatus(Status.OK);
         } catch (Test03FailureException e) {
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "test03.nok.message", e.getCandidateId()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.nok.message", e.getCandidateId()));
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "test03.file.not.found.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.file.not.found.message"));
         } catch (Exception e) {
             LOGGER.error("an unexpected error occurred", e);
             result.setStatus(Status.NOK);

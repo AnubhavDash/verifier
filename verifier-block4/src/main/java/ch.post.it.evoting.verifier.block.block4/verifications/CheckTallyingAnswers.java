@@ -45,7 +45,7 @@ public class CheckTallyingAnswers extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(4);
         def.setCategory(Category.COMPLETENESS);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "test02.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification02.description"));
         def.setId(2);
         def.setName("checkTallyingAnswers");
         return def;
@@ -166,11 +166,11 @@ public class CheckTallyingAnswers extends AbstractVerification {
 
         } catch (Test02Exception e) {
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "test02.nok.message", e.getQuestionId(), e.getAnswerType()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification02.nok.message", e.getQuestionId(), e.getAnswerType()));
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "test02.file.not.found.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification02.file.not.found.message"));
         } catch (Exception e) {
             LOGGER.error("an unexpected error occurred", e);
             result.setStatus(Status.NOK);

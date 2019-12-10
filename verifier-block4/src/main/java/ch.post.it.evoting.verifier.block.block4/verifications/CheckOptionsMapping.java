@@ -48,7 +48,7 @@ public class CheckOptionsMapping extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(4);
         def.setCategory(Category.CONSISTENCY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "test01.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.description"));
         def.setId(1);
         def.setName("checkOptionsMapping");
         return def;
@@ -182,10 +182,10 @@ public class CheckOptionsMapping extends AbstractVerification {
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "test01.file.not.found.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.file.not.found.message"));
         } catch (Test01FailException e) {
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "test01.nok.message", e.getAliasInError()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.nok.message", e.getAliasInError()));
         } catch (Test01WrapperException e) {
             LOGGER.error("an unexpected error occurred", e);
             //unwrap the wrapped exception
