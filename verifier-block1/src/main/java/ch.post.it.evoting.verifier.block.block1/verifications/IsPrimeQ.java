@@ -17,7 +17,7 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.block.Verification;
+import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
@@ -30,7 +30,7 @@ import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.nio.file.Path;
 
-public class IsPrimeQ extends Verification {
+public class IsPrimeQ extends AbstractVerification {
 
     private static final Logger LOGGER = Logger.getLogger(IsPrimeQ.class);
 

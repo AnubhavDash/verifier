@@ -18,14 +18,14 @@ import ch.post.it.evoting.verifier.block.block3.BGOnlineVerificationProcessor;
 import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
 import ch.post.it.evoting.verifier.block.block3.scytl.TestType;
 import ch.post.it.evoting.verifier.common.*;
-import ch.post.it.evoting.verifier.common.block.Verification;
+import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.util.AbstractMap;
 
-public class CheckZeroArgumentOnline extends Verification {
+public class CheckZeroArgumentOnline extends AbstractVerification {
 
     private static final Logger LOGGER = Logger.getLogger(CheckZeroArgumentOnline.class);
     private final BGOnlineVerificationProcessor processor = BGOnlineVerificationProcessor.getInstanceAndRegister(this);

@@ -20,7 +20,7 @@ import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.Verification;
+import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
@@ -34,7 +34,7 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CheckDecryptionFactorization extends Verification {
+public class CheckDecryptionFactorization extends AbstractVerification {
 
     private static final Logger LOGGER = Logger.getLogger(CheckDecryptionFactorization.class);
 

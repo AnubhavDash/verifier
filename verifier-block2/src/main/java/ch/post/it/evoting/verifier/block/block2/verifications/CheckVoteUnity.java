@@ -19,7 +19,7 @@ import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationDataExtra
 import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationStruct;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.*;
-import ch.post.it.evoting.verifier.common.block.Verification;
+import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.block.block2.securelog.HostMappingElement;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
@@ -35,7 +35,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class CheckVoteUnity extends Verification {
+public class CheckVoteUnity extends AbstractVerification {
 
     private static final Logger LOGGER = Logger.getLogger(CheckVoteUnity.class);
 

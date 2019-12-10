@@ -20,7 +20,7 @@ import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleCertifi
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleCreator;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.*;
-import ch.post.it.evoting.verifier.common.block.Verification;
+import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
@@ -31,7 +31,7 @@ import java.io.File;
 import java.util.Map;
 import java.util.Optional;
 
-public class CheckSecureLogSignature extends Verification {
+public class CheckSecureLogSignature extends AbstractVerification {
 
     private static final Logger LOGGER = Logger.getLogger(CheckSecureLogSignature.class);
 

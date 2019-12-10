@@ -21,14 +21,14 @@ import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.Verification;
+import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.util.AbstractMap;
 
-public class CheckSingleValueProductArgument extends Verification {
+public class CheckSingleValueProductArgument extends AbstractVerification {
 
     private static final Logger LOGGER = Logger.getLogger(CheckSingleValueProductArgument.class);
     private final BGOfflineVerificationProcessor processor = BGOfflineVerificationProcessor.getInstanceAndRegister(this);

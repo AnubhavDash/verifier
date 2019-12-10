@@ -19,7 +19,7 @@ import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.Verification;
+import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
@@ -37,7 +37,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CheckSigCommitmentParameters extends Verification {
+public class CheckSigCommitmentParameters extends AbstractVerification {
 
     private static final Logger LOGGER = Logger.getLogger(CheckSigCommitmentParameters.class);
 

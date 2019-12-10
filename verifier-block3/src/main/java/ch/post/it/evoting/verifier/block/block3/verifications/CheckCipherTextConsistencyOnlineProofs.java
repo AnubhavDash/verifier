@@ -20,7 +20,7 @@ import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.Verification;
+import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
@@ -40,7 +40,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CheckCipherTextConsistencyOnlineProofs extends Verification {
+public class CheckCipherTextConsistencyOnlineProofs extends AbstractVerification {
 
     private static final Logger LOGGER = Logger.getLogger(CheckCipherTextConsistencyOnlineProofs.class);
 

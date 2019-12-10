@@ -23,7 +23,7 @@ import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.Verification;
+import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
@@ -34,7 +34,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 
-public class CheckDecryptionProof extends Verification {
+public class CheckDecryptionProof extends AbstractVerification {
 
     private static final Logger LOGGER = Logger.getLogger(CheckDecryptionProof.class);
 

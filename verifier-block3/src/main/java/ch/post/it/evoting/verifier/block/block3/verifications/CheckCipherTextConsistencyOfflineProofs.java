@@ -21,7 +21,7 @@ import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.Verification;
+import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
@@ -36,7 +36,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-public class CheckCipherTextConsistencyOfflineProofs extends Verification {
+public class CheckCipherTextConsistencyOfflineProofs extends AbstractVerification {
 
     private static final Logger LOGGER = Logger.getLogger(CheckCipherTextConsistencyOfflineProofs.class);
 

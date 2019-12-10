@@ -16,13 +16,13 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 
 import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
-import ch.post.it.evoting.verifier.common.block.Verification;
+import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 
 import java.io.File;
 
-public class CheckIndependenceGenerators extends Verification {
+public class CheckIndependenceGenerators extends AbstractVerification {
 
     private static final Logger LOGGER = Logger.getLogger(CheckIndependenceGenerators.class);
 

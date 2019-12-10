@@ -21,7 +21,7 @@ import ch.evoting.xmlns.config._4.TiebreakAnswerType;
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.block.Verification;
+import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.dto.DataConfigEE;
@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CheckPrimeNumberOptionsVO extends Verification {
+public class CheckPrimeNumberOptionsVO extends AbstractVerification {
 
     private static final Logger LOGGER = Logger.getLogger(CheckPrimeNumberOptionsVO.class);
 

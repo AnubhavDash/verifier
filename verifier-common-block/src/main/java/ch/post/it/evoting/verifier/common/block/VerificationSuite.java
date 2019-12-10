@@ -26,13 +26,13 @@ import java.util.stream.Stream;
 
 public abstract class VerificationSuite implements VerifierBlock {
     private static Logger log = Logger.getLogger(VerificationSuite.class);
-    private List<Verification> verifications;
+    private List<AbstractVerification> verifications;
 
     protected VerificationSuite(String packagePrefix) {
         Reflections reflections = new Reflections(packagePrefix);
-        verifications = reflections.getSubTypesOf(Verification.class).parallelStream().map(c -> {
+        verifications = reflections.getSubTypesOf(AbstractVerification.class).parallelStream().map(c -> {
             try {
-                return (Verification) c.newInstance();
+                return (AbstractVerification) c.newInstance();
             } catch (InstantiationException | IllegalAccessException e) {
                 log.error(e.getMessage(), e);
                 throw new RuntimeException("Unable to instantiate the verifications", e);
@@ -42,7 +42,7 @@ public abstract class VerificationSuite implements VerifierBlock {
 
     @Override
     public Stream<VerificationDefinition> getVerifications() {
-        return verifications.stream().map(Verification::getVerificationDefinition);
+        return verifications.stream().map(AbstractVerification::getVerificationDefinition);
     }
 
     @Override

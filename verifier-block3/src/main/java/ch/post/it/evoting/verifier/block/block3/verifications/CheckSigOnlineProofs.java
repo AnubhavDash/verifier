@@ -16,7 +16,7 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 
 import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
-import ch.post.it.evoting.verifier.common.block.Verification;
+import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.onlinemixing.BallotBoxId;
@@ -32,7 +32,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class CheckSigOnlineProofs extends Verification {
+public class CheckSigOnlineProofs extends AbstractVerification {
 
     private static final Logger LOGGER = Logger.getLogger(CheckSigOnlineProofs.class);
 

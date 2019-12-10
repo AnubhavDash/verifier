@@ -18,7 +18,7 @@ import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
 import ch.post.it.evoting.verifier.block.block3.loader.online.OnlineMixingProofLoader;
 import ch.post.it.evoting.verifier.block.block3.scytl.loader.OnlineDataLoader;
 import ch.post.it.evoting.verifier.common.*;
-import ch.post.it.evoting.verifier.common.block.Verification;
+import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
@@ -32,7 +32,7 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CheckDecryptionProofOnline extends Verification {
+public class CheckDecryptionProofOnline extends AbstractVerification {
 
     private static final Logger LOGGER = Logger.getLogger(CheckDecryptionProofOnline.class);
 
