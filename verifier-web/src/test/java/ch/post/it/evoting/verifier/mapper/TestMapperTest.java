@@ -17,6 +17,7 @@ package ch.post.it.evoting.verifier.mapper;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.dto.Verification;
 import ch.post.it.evoting.verifier.report.model.Test;
 import org.junit.Assert;
 import org.junit.Before;
@@ -26,31 +27,31 @@ import java.util.Map;
 
 public class TestMapperTest {
 
-    private ch.post.it.evoting.verifier.dto.Test testDto;
+    private Verification verificationDto;
 
     @Before
     public void init() {
-        testDto = new ch.post.it.evoting.verifier.dto.Test();
-        testDto.setBlockId(1);
-        testDto.setTestId(1);
-        testDto.setId("1-1");
-        testDto.setName("is prime de p");
-        testDto.setCategory(Category.INTEGRITY);
-        testDto.setStatus(Status.NOK);
+        verificationDto = new Verification();
+        verificationDto.setBlockId(1);
+        verificationDto.setVerificationId(1);
+        verificationDto.setId("1-1");
+        verificationDto.setName("is prime de p");
+        verificationDto.setCategory(Category.INTEGRITY);
+        verificationDto.setStatus(Status.NOK);
         Map<Language, String> description = new HashMap<>();
         description.put(Language.FR, "desc in french");
         description.put(Language.DE, "desc in deutch");
-        testDto.setDescription(description);
+        verificationDto.setDescription(description);
         Map<Language, String> message = new HashMap<>();
         message.put(Language.FR, "the test failed (french)");
         message.put(Language.DE, "the test failed (deutch)");
-        testDto.setMessage(message);
+        verificationDto.setMessage(message);
     }
 
     @org.junit.Test
     public void map() {
         // map in french
-        Test result = ReportMapper.INSTANCE.map(testDto, Language.FR);
+        Test result = ReportMapper.INSTANCE.map(verificationDto, Language.FR);
         Assert.assertEquals("id mapping failed", "1", result.getId());
         Assert.assertEquals("name mapping failed", "is prime de p", result.getName());
         Assert.assertEquals("description mapping failed", "desc in french", result.getDescription());
@@ -58,7 +59,7 @@ public class TestMapperTest {
         Assert.assertEquals("message mapping failed", "the test failed (french)", result.getMessage());
 
         // map in deutch
-        result = ReportMapper.INSTANCE.map(testDto, Language.DE);
+        result = ReportMapper.INSTANCE.map(verificationDto, Language.DE);
         Assert.assertEquals("id mapping failed", "1", result.getId());
         Assert.assertEquals("name mapping failed", "is prime de p", result.getName());
         Assert.assertEquals("description mapping failed", "desc in deutch", result.getDescription());

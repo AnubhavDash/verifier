@@ -26,9 +26,9 @@ import java.util.Map;
 @Getter
 @Setter
 @ToString
-public class Test {
+public class Verification {
     private String id;
-    private int testId;
+    private int verificationId;
     private int blockId;
     private String name;
     private Category category;

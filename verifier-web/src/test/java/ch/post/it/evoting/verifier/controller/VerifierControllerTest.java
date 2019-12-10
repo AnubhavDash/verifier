@@ -48,13 +48,13 @@ public class VerifierControllerTest {
         controller.process(VerificationTrait.PreDecryption.toString());
         Set<VerificationTrait> arguments = new HashSet<VerificationTrait>();
         arguments.add(VerificationTrait.PreDecryption);
-        verify(processorMock).processTests(arguments);
+        verify(processorMock).processVerifications(arguments);
     }
 
     @Test
     public void tests_process_callsProcessWithoutTraits() throws AlreadyStartedException {
         controller.process(null);
-        verify(processorMock).processTests( ArgumentMatchers.isNull());
+        verify(processorMock).processVerifications( ArgumentMatchers.isNull());
     }
 
     @Test
@@ -72,7 +72,7 @@ public class VerifierControllerTest {
     @Test
     public void tests_get_callsGetTestStatus()  {
         controller.getTestStatus();
-        verify(processorMock, atLeast(1)).getTestStatus();
+        verify(processorMock, atLeast(1)).getVerificationStatus();
     }
 
     @Test

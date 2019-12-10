@@ -17,8 +17,8 @@ package ch.post.it.evoting.verifier.processor;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.contest.ContestConfigurationReader;
 import ch.post.it.evoting.verifier.dto.Configuration;
-import ch.post.it.evoting.verifier.dto.Test;
-import ch.post.it.evoting.verifier.mapper.TestExecutionStatusMapper;
+import ch.post.it.evoting.verifier.dto.Verification;
+import ch.post.it.evoting.verifier.mapper.VerificationExecutionStatusMapper;
 import ch.post.it.evoting.verifier.report.ReportGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ public class VerifierProcessor {
     @Value("#{'${verifier.blocks}'.split(';')}")
     private String[] configurationVerifierBlocks;
 
-    private Map<String, Test> executionStatus;
+    private Map<String, Verification> executionStatus;
     private List<VerifierBlock> blocks;
 
     private List<ProcessListener> listeners;
@@ -85,16 +85,16 @@ public class VerifierProcessor {
 
         executionStatus = blocks.parallelStream()
                 .flatMap(VerifierBlock::getVerifications)
-                .collect(Collectors.toMap(VerificationDefinition::computeUniqueKey, TestExecutionStatusMapper.INSTANCE::map));
+                .collect(Collectors.toMap(VerificationDefinition::computeUniqueKey, VerificationExecutionStatusMapper.INSTANCE::map));
     }
 
-    public List<Test> getTestStatus() {
-        List<Test> result = new LinkedList<>(executionStatus.values());
-        result.sort(Comparator.comparingInt(Test::getBlockId).thenComparingInt(Test::getTestId));
+    public List<Verification> getVerificationStatus() {
+        List<Verification> result = new LinkedList<>(executionStatus.values());
+        result.sort(Comparator.comparingInt(Verification::getBlockId).thenComparingInt(Verification::getVerificationId));
         return result;
     }
 
-    public void processTests(Set<VerificationTrait> options) throws AlreadyStartedException {
+    public void processVerifications(Set<VerificationTrait> options) throws AlreadyStartedException {
         if (!processed) {
             processed = true;
 
@@ -108,10 +108,10 @@ public class VerifierProcessor {
                             .map(b -> b.process(inputDirectory, options).parallel())
                             .reduce(Stream.empty(), Stream::concat)
                             .parallel()
-                            .forEach(t ->
+                            .forEach(v ->
                             {
-                                log.debug(String.format("Test '%02d-%02d' performed on Thread '%s' %s", t.getVerificationDefinition().getBlockId(), t.getVerificationDefinition().getId(), Thread.currentThread().getName(), t.getStatus()));
-                                testProcessed(t);
+                                log.debug(String.format("Verification '%02d-%02d' performed on Thread '%s' %s", v.getVerificationDefinition().getBlockId(), v.getVerificationDefinition().getId(), Thread.currentThread().getName(), v.getStatus()));
+                                verificationProcessed(v);
                             });
                 });
             });
@@ -120,11 +120,11 @@ public class VerifierProcessor {
         }
     }
 
-    private void testProcessed(VerificationResult verificationResult) {
-        Test testExecutionStatus = executionStatus.get(verificationResult.getVerificationDefinition().computeUniqueKey());
-        TestExecutionStatusMapper.INSTANCE.update(testExecutionStatus, verificationResult);
+    private void verificationProcessed(VerificationResult verificationResult) {
+        Verification verificationExecutionStatus = executionStatus.get(verificationResult.getVerificationDefinition().computeUniqueKey());
+        VerificationExecutionStatusMapper.INSTANCE.update(verificationExecutionStatus, verificationResult);
 
-        listeners.forEach(l -> l.testProcessed(testExecutionStatus));
+        listeners.forEach(l -> l.testProcessed(verificationExecutionStatus));
     }
 
     public void registerProcessListener(ProcessListener listener) {
@@ -140,7 +140,7 @@ public class VerifierProcessor {
     public byte[] generatePdf(Language language) {
         String contestName = contestConfigurationReader.getContestName(this.getConfiguration().getInputDirectory(), language);
         Date contestDate = contestConfigurationReader.getContestDate(this.getConfiguration().getInputDirectory());
-        return reportGenerator.generate(contestName, contestDate, this.getTestStatus(), language);
+        return reportGenerator.generate(contestName, contestDate, this.getVerificationStatus(), language);
     }
 
     public Configuration getConfiguration() {

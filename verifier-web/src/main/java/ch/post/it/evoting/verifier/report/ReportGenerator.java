@@ -16,7 +16,7 @@ package ch.post.it.evoting.verifier.report;
 
 import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.dto.Test;
+import ch.post.it.evoting.verifier.dto.Verification;
 import ch.post.it.evoting.verifier.mapper.ReportMapper;
 import ch.post.it.evoting.verifier.report.model.Report;
 import net.sf.jasperreports.engine.JRException;
@@ -37,7 +37,7 @@ public class ReportGenerator {
     private static final Logger LOGGER = Logger.getLogger(ReportGenerator.class);
     public static final String MESSAGE_BUNDLE_NAME = "message";
 
-    public byte[] generate(String contestName, Date contestDate, List<Test> tests, Language language) {
+    public byte[] generate(String contestName, Date contestDate, List<Verification> verifications, Language language) {
         try {
             Locale locale = language.getLocale();
 
@@ -65,7 +65,7 @@ public class ReportGenerator {
             report.setFooterDate(dateFormatter.format(now) + " / " + timeFormatter.format(now));
 
             //map to a Report Object
-            Report content = ReportMapper.INSTANCE.map(report, tests, language);
+            Report content = ReportMapper.INSTANCE.map(report, verifications, language);
 
             Map<String, Object> parameters = new HashMap<>();
 

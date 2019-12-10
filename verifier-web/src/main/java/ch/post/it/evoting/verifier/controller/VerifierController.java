@@ -19,7 +19,7 @@ import ch.post.it.evoting.verifier.common.VerificationTrait;
 import ch.post.it.evoting.verifier.dto.Configuration;
 import ch.post.it.evoting.verifier.dto.ExecutionStatus;
 import ch.post.it.evoting.verifier.dto.LifecycleStatus;
-import ch.post.it.evoting.verifier.dto.Test;
+import ch.post.it.evoting.verifier.dto.Verification;
 import ch.post.it.evoting.verifier.processor.AlreadyStartedException;
 import ch.post.it.evoting.verifier.processor.VerifierProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class VerifierController {
     private void initializeExecutionStatus() {
         this.executionStatus = ExecutionStatus.builder()
                 .testActual(0)
-                .testCount(this.processor.getTestStatus().size())
+                .testCount(this.processor.getVerificationStatus().size())
                 .status(LifecycleStatus.NOT_STARTED).build();
     }
 
@@ -82,7 +82,7 @@ public class VerifierController {
         this.initializeExecutionStatus();
     }
 
-    @RequestMapping(value = "/tests/*.pdf", method = RequestMethod.GET, produces = "application/pdf")
+    @RequestMapping(value = "/verifications/*.pdf", method = RequestMethod.GET, produces = "application/pdf")
     public byte[] generatePdf(Locale locale) {
         return this.processor.generatePdf(getLanguage(locale));
     }
@@ -102,17 +102,17 @@ public class VerifierController {
         this.processor.setConfiguration(value);
     }
 
-    @GetMapping("/tests")
-    public List<Test> getTestStatus() {
-        return this.processor.getTestStatus();
+    @GetMapping("/verifications")
+    public List<Verification> getTestStatus() {
+        return this.processor.getVerificationStatus();
     }
 
-    @RequestMapping(value = "/tests", method = RequestMethod.POST)
+    @RequestMapping(value = "/verifications", method = RequestMethod.POST)
     public ResponseEntity process( @RequestParam(required = false) String runOptions ) {
         this.executionStatus.setStatus(LifecycleStatus.RUNNING);
         try {
             Set<VerificationTrait> traits = getTraits(runOptions);
-            this.processor.processTests(traits);
+            this.processor.processVerifications(traits);
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (AlreadyStartedException e) {
             return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body("Process already started");
@@ -132,7 +132,7 @@ public class VerifierController {
         return traits;
     }
 
-    protected void notifyUpdate(Test executionStatus) {
+    protected void notifyUpdate(Verification executionStatus) {
         this.template.convertAndSend("/pushUpdate", executionStatus);
     }
 

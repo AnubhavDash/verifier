@@ -13,14 +13,13 @@
 /// If not, see <https://www.gnu.org/licenses/>.
 ///
 
-export class TestDefinition {
+export class VerificationDefinition {
   id: string;
-  testId: number;
+  verificationId: number;
   blockId: number;
   name: string;
   category: string;
   description: string;
   status: string;
   message: string;
-  color: string;
 }
