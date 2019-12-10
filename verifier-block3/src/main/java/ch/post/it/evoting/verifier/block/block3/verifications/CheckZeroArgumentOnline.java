@@ -38,7 +38,7 @@ public class CheckZeroArgumentOnline extends AbstractVerification {
         def.setCategory(Category.COMPLETENESS);
         def.setId(24);
         def.setName("checkZeroArgumentOnline");
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "test24.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification24.description"));
         def.addVerificationTrait(VerificationTrait.PreDecryption);
         return def;
     }

@@ -45,7 +45,7 @@ public class CheckDecryptionFactorization extends AbstractVerification {
         verificationDefinition.setCategory(Category.CONSISTENCY);
         verificationDefinition.setId(12);
         verificationDefinition.setName("checkDecryptionFactorization");
-        verificationDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "test12.description"));
+        verificationDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification12.description"));
 
         return verificationDefinition;
     }
@@ -100,11 +100,11 @@ public class CheckDecryptionFactorization extends AbstractVerification {
             result.setStatus(Status.OK);
         } catch (VerificationFailureException e) {
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "test12.nok.message", e.getArgs()[1]));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification12.nok.message", e.getArgs()[1]));
         } catch (IOException e) {
             result.setStatus(Status.NOK);
             LOGGER.error("a IOException error occurred", e);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "test12.file.not.found.message", e.getCause().getLocalizedMessage()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification12.file.not.found.message", e.getCause().getLocalizedMessage()));
         } catch (Exception e) {
             result.setStatus(Status.NOK);
             LOGGER.error("an unexpected error occurred", e);

@@ -41,7 +41,7 @@ public class CheckHadamardArgument extends AbstractVerification {
         verificationDefinition.setCategory(Category.COMPLETENESS);
         verificationDefinition.setId(3);
         verificationDefinition.setName("checkHadamardArgument");
-        verificationDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "test03.description"));
+        verificationDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.description"));
 
         return verificationDefinition;
     }

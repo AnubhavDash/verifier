@@ -47,7 +47,7 @@ public class CheckCipherTextConsistencyOfflineProofs extends AbstractVerificatio
         verificationDefinition.setCategory(Category.COMPLETENESS);
         verificationDefinition.setId(11);
         verificationDefinition.setName("checkCipherTextConsistencyOfflineProofs");
-        verificationDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "test11.description"));
+        verificationDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification11.description"));
 
         return verificationDefinition;
     }
@@ -90,11 +90,11 @@ public class CheckCipherTextConsistencyOfflineProofs extends AbstractVerificatio
             result.setStatus(Status.OK);
         } catch (VerificationFailureException e) {
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "test11.nok.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification11.nok.message"));
         } catch (FileNotFoundException e) {
             result.setStatus(Status.NOK);
             LOGGER.error("a FileNotFoundException error occurred", e);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "test11.file.not.found.message", e.getCause().getLocalizedMessage()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification11.file.not.found.message", e.getCause().getLocalizedMessage()));
         } catch (Exception e) {
             result.setStatus(Status.NOK);
             LOGGER.error("an unexpected error occurred", e);

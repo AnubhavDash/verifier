@@ -45,7 +45,7 @@ public class CheckDecryptionProof extends AbstractVerification {
         verificationDefinition.setCategory(Category.COMPLETENESS);
         verificationDefinition.setId(7);
         verificationDefinition.setName("checkDecryptionProof");
-        verificationDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "test07.description"));
+        verificationDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification07.description"));
 
         return verificationDefinition;
     }
@@ -70,12 +70,12 @@ public class CheckDecryptionProof extends AbstractVerification {
             result.setStatus(Status.OK);
         } catch (VerificationFailureException e) {
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "test07.nok.message", e.getArgs()[1]));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification07.nok.message", e.getArgs()[1]));
         } catch (Exception e) {
             result.setStatus(Status.NOK);
             if (e.getCause() instanceof FileNotFoundException) {
                 LOGGER.error("a FileNotFoundException error occurred", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "test07.file.not.found.message", e.getCause().getLocalizedMessage()));
+                result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification07.file.not.found.message", e.getCause().getLocalizedMessage()));
             } else {
                 LOGGER.error("an unexpected error occurred", e);
                 result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));

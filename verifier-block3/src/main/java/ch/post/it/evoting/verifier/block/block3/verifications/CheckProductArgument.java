@@ -41,7 +41,7 @@ public class CheckProductArgument extends AbstractVerification {
         verificationDefinition.setCategory(Category.COMPLETENESS);
         verificationDefinition.setId(2);
         verificationDefinition.setName("checkProductArgument");
-        verificationDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "test02.description"));
+        verificationDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification02.description"));
 
         return verificationDefinition;
     }

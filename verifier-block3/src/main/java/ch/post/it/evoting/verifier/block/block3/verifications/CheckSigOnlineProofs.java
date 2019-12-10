@@ -43,7 +43,7 @@ public class CheckSigOnlineProofs extends AbstractVerification {
         def.setCategory(Category.INTEGRITY);
         def.setId(75);
         def.setName("checkSigOnlineProofs");
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "test75.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification75.description"));
         def.addVerificationTrait(VerificationTrait.PreDecryption);
         return def;
     }
@@ -84,7 +84,7 @@ public class CheckSigOnlineProofs extends AbstractVerification {
 
                     if (!success) {
                         result.setStatus(Status.NOK);
-                        result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test75.nok.message", file.getName()));
+                        result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "verification75.nok.message", file.getName()));
                         return result;
                     }
                 }
@@ -92,11 +92,11 @@ public class CheckSigOnlineProofs extends AbstractVerification {
             }
         } catch (TestFailureException e) {
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test75.ccnumber.nok.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "verification75.ccnumber.nok.message"));
         } catch (IOException e) {
             LOGGER.error("File not found", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "test75.file.not.found.message", e.getLocalizedMessage()));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3TestSuite.RESOURCE_BUNDLE_NAME, "verification75.file.not.found.message", e.getLocalizedMessage()));
         } catch (Exception e) {
             LOGGER.error("Unexpected error", e);
             result.setStatus(Status.NOK);

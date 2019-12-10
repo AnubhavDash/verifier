@@ -41,7 +41,7 @@ public class CheckShuffleArgument extends AbstractVerification {
         verificationDefinition.setCategory(Category.COMPLETENESS);
         verificationDefinition.setId(1);
         verificationDefinition.setName("checkShuffleArgument");
-        verificationDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "test01.description"));
+        verificationDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.description"));
 
         return verificationDefinition;
     }

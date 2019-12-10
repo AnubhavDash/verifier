@@ -41,7 +41,7 @@ public class CheckMultiExponentationArgument extends AbstractVerification {
         verificationDefinition.setCategory(Category.COMPLETENESS);
         verificationDefinition.setId(6);
         verificationDefinition.setName("checkMultiExponentationArgument");
-        verificationDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "test06.description"));
+        verificationDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification06.description"));
 
         return verificationDefinition;
     }

@@ -38,7 +38,7 @@ public class CheckSingleValueProductArgumentOnline extends AbstractVerification 
         def.setCategory(Category.COMPLETENESS);
         def.setId(25);
         def.setName("checkSingleValueProductArgumentOnline");
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "test25.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification25.description"));
         def.addVerificationTrait(VerificationTrait.PreDecryption);
         return def;
     }

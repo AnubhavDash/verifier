@@ -43,7 +43,7 @@ public class CheckCommitmentParametersOnline extends AbstractVerification {
         def.setCategory(Category.INTEGRITY);
         def.setId(28);
         def.setName("checkCommitmentParametersOnline");
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "test28.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification28.description"));
         def.addVerificationTrait(VerificationTrait.PreDecryption);
         return def;
     }
@@ -60,7 +60,7 @@ public class CheckCommitmentParametersOnline extends AbstractVerification {
                 }
                 if (onlineMixings.length == 0) {
                     result.setStatus(Status.NOK);
-                    result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "test28.file.not.found.message"));
+                    result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification28.file.not.found.message"));
                 } else {
                     for (File file : onlineMixings) {
 
@@ -76,14 +76,14 @@ public class CheckCommitmentParametersOnline extends AbstractVerification {
                             result.setStatus(Status.OK);
                         } else {
                             result.setStatus(Status.NOK);
-                            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "test28.nok.message", errors.toString()));
+                            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification28.nok.message", errors.toString()));
                         }
                     }
                 }
             }
         } catch (IOException e) {
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "test28.file.not.found.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification28.file.not.found.message"));
         } catch (Exception e) {
             LOGGER.error("Unexpected error", e);
             result.setStatus(Status.NOK);
