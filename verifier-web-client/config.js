@@ -13,11 +13,7 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 module.exports = {
-  serverCertificateSerialNumberToTrust: function() {
-    return '2E640E44';
-  },
-
   serverConnectionCheckUrl: function() {
-    return 'https://127.0.0.1:8443/api/ping';
+    return 'https://127.0.0.1:8080/api/ping';
   }
 }
