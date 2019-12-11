@@ -63,16 +63,6 @@ if (!serverProcess) {
   return;
 }
 
-app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
-  if (certificate.serialNumber.endsWith(config.serverCertificateSerialNumberToTrust())) {
-    event.preventDefault();
-    callback(true);
-  } else {
-    console.log("Untrusted certificate serialNumber :" + certificate.serialNumber);
-    callback(false);
-  }
-})
-
 serverProcess.stdout.on('data', function (data) {
   console.log('Server: ' + data);
   logger.log('info', 'Server: ' + data);
