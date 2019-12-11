@@ -40,7 +40,8 @@ public class CheckSigConfig extends AbstractVerification {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification73.description"));
         def.setId(73);
         def.setName("checkSigConfig");
-        def.addVerificationTrait(VerificationTrait.PreDecryption);
+        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+        def.addVerificationTrait(VerificationTrait.BLOCK_1);
         return def;
     }
 

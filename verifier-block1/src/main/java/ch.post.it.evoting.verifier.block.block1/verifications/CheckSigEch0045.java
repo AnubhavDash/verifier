@@ -41,7 +41,8 @@ public class CheckSigEch0045 extends AbstractVerification {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification71.description"));
         def.setId(71);
         def.setName("checkSigEch0045");
-        def.addVerificationTrait(VerificationTrait.PreDecryption);
+        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+        def.addVerificationTrait(VerificationTrait.BLOCK_1);
         return def;
     }
 

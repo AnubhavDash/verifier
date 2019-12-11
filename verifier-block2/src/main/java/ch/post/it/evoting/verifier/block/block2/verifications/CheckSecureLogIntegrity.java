@@ -42,7 +42,7 @@ public class CheckSecureLogIntegrity extends AbstractVerification {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.description"));
         def.setId(1);
         def.setName("checkSecureLogIntegrity");
-        def.addVerificationTrait(VerificationTrait.PreDecryption);
+        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
         return def;
     }
 

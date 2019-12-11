@@ -39,7 +39,7 @@ public class CheckShuffleArgumentOnline extends AbstractVerification {
         def.setId(21);
         def.setName("checkShuffleArgumentOnline");
         def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification21.description"));
-        def.addVerificationTrait(VerificationTrait.PreDecryption);
+        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
         return def;
     }
 

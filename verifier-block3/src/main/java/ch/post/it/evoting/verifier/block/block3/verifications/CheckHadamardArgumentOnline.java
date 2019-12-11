@@ -39,7 +39,7 @@ public class CheckHadamardArgumentOnline extends AbstractVerification {
         def.setId(23);
         def.setName("checkHadamardArgumentOnline");
         def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification23.description"));
-        def.addVerificationTrait(VerificationTrait.PreDecryption);
+        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
         return def;
     }
 

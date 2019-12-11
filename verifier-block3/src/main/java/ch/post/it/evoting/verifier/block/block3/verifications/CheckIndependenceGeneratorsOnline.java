@@ -34,7 +34,7 @@ public class CheckIndependenceGeneratorsOnline extends AbstractVerification {
         def.setId(29);
         def.setName("checkIndependenceGeneratorsOnline");
         def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification29.description"));
-        def.addVerificationTrait(VerificationTrait.PreDecryption);
+        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
         return def;
     }
 

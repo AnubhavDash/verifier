@@ -44,7 +44,7 @@ public class CheckSigOnlineProofs extends AbstractVerification {
         def.setId(75);
         def.setName("checkSigOnlineProofs");
         def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification75.description"));
-        def.addVerificationTrait(VerificationTrait.PreDecryption);
+        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
         return def;
     }
 

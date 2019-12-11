@@ -39,7 +39,7 @@ public class CheckSingleValueProductArgumentOnline extends AbstractVerification 
         def.setId(25);
         def.setName("checkSingleValueProductArgumentOnline");
         def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification25.description"));
-        def.addVerificationTrait(VerificationTrait.PreDecryption);
+        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
         return def;
     }
 

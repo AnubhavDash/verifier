@@ -44,7 +44,7 @@ public class CheckDecryptionProofOnline extends AbstractVerification {
         def.setId(27);
         def.setName("checkDecryptionProofOnline");
         def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification27.description"));
-        def.addVerificationTrait(VerificationTrait.PreDecryption);
+        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
         return def;
     }
 

@@ -45,7 +45,7 @@ public class CheckNumberVoteCastCodes extends AbstractVerification {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification04.description"));
         def.setId(4);
         def.setName("checkNumberVoteCastCodes");
-        def.addVerificationTrait(VerificationTrait.PreDecryption);
+        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
         return def;
     }
 
