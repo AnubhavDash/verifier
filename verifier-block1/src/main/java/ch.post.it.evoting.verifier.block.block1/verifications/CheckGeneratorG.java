@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  * <p>
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -29,10 +29,12 @@ import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.stream.LongStream;
 
 public class CheckGeneratorG extends AbstractVerification {
 
     private static final Logger LOGGER = Logger.getLogger(CheckGeneratorG.class);
+    private static final BigInteger BIG_INTEGER_TWO = new BigInteger("2");
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -56,12 +58,23 @@ public class CheckGeneratorG extends AbstractVerification {
             BigInteger g = TypeConverter.stringToBigInteger(encryptionParameters.getG());
             BigInteger p = TypeConverter.stringToBigInteger(encryptionParameters.getP());
 
-            if (!BigInteger.valueOf(2).equals(g)) {
-                throw new Test10Exception("g does not equal 2", TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification10.nok.message"));
+            if (!MathHelper.isPrime(g)) {
+                throw new Test10Exception("The generator g is not prime",
+                        TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification10.nok.message",
+                                encryptionParameters.getG()));
             }
 
             if (!MathHelper.isEulerCriterionValid(g, p)) {
-                throw new Test10Exception("g is not part of the subgroup q", TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification10.euler.nok.message"));
+                throw new Test10Exception("g is not part of the subgroup q",
+                        TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification10.euler.nok.message",
+                                encryptionParameters.getG()));
+            }
+
+            BigInteger smaller = findSmallerOfSubgroup(encryptionParameters, g, p);
+            if (!g.equals(smaller)) {
+                throw new Test10Exception("g must be the smallest prime number in the subgroup (p, q).",
+                        TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification10.smallest.nok.message",
+                                smaller.toString(), g.toString()));
             }
 
             result.setStatus(Status.OK);
@@ -81,7 +94,23 @@ public class CheckGeneratorG extends AbstractVerification {
         return result;
     }
 
-    class Test10Exception extends RuntimeException {
+    private BigInteger findSmallerOfSubgroup(EncryptionParameters encryptionParameters, BigInteger g, BigInteger p) {
+        if (g.compareTo(BIG_INTEGER_TWO) == 0) {
+            return g;
+        } else {
+            // Check is there is a prime number less than g (except 2) that is also a quadratic residue.
+            // Be aware that if g is greater than Long.MAX_VALUE, a NumberFormatException is thrown.
+            return LongStream.range(2, Long.parseLong(encryptionParameters.getG()))
+                    .parallel()
+                    .mapToObj(BigInteger::valueOf)
+                    .filter(MathHelper::isPrime)
+                    .filter(prime -> MathHelper.isEulerCriterionValid(prime, p))
+                    .findAny()
+                    .orElse(g);
+        }
+    }
+
+    static class Test10Exception extends RuntimeException {
         String detail;
         Map<Language, String> msg;
 
@@ -90,11 +119,11 @@ public class CheckGeneratorG extends AbstractVerification {
             this.msg = msg;
         }
 
-        public String getDetail() {
+        String getDetail() {
             return detail;
         }
 
-        public Map<Language, String> getMsg() {
+        Map<Language, String> getMsg() {
             return msg;
         }
 
