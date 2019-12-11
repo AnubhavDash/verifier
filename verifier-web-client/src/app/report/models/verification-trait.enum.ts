@@ -1,4 +1,4 @@
-export enum TestTrait {
+export enum VerificationTrait {
   PRE_DECRYPTION = 'PRE_DECRYPTION',
   BLOCK_1 = 'BLOCK_1',
   BLOCK_2 = 'BLOCK_2',

@@ -20,7 +20,7 @@ import * as SockJS from 'sockjs-client';
 import {VerificationDefinition} from '../../models/VerificationDefinition.interface';
 import {Configuration} from '../../models/Configuration.interface';
 import {environment} from '../../../../environments/environment';
-import {TestTrait} from "../../models/test-trait.enum";
+import {VerificationTrait} from '../../models/verification-trait.enum';
 
 @Component({
   templateUrl: 'report-overview.component.html',
@@ -33,7 +33,7 @@ export class ReportOverviewComponent implements OnInit {
   private stompClient;
   verifications = {};
   buttonDisabled = false;
-  testTrait = TestTrait;
+  verificationTrait = VerificationTrait;
 
   constructor(private processorService: ProcessorService) {
   }
