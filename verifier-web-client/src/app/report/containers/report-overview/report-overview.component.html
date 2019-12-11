@@ -16,13 +16,13 @@
 -->
 <div>
   <div id="buttonDiv">
-    <h2>Test definitions</h2>
+    <h2>Verification definitions</h2>
     <div>
       <b>Input directory :</b>
       <input type="text" name="inputDirectory" [(ngModel)]="inputDirectory" style="width:30%">
       <div>
-        <button type="button" (click)="startProcess('PreDecryption')" [disabled]="buttonDisabled" class="btn">Start
-          pre-decryption
+        <button type="button" (click)="startProcess('PreDecryption')" [disabled]="buttonDisabled" class="btn">
+          Start pre-decryption
         </button>
         <button (click)="startProcess()" [disabled]="buttonDisabled" class="btn">Start all</button>
         <button (click)="update()" class="btn">Update</button>
@@ -33,8 +33,8 @@
     </div>
     <p></p>
   </div>
-  <table border="1" class="table table-bordered table-hover">
-    <tr>
+  <table class="table table-bordered table-hover">
+    <tr class="table-secondary">
       <th>Block</th>
       <th>Id</th>
       <th>Name</th>
@@ -43,14 +43,17 @@
       <th>Status</th>
       <!--th>Message</th-->
     </tr>
-    <tr *ngFor="let key of keys" [ngStyle]="{'background-color':tests[key].color}">
-      <td>{{tests[key].blockId}}</td>
-      <td>{{tests[key].testId}}</td>
-      <td>{{tests[key].name}}</td>
-      <td>{{tests[key].category}}</td>
-      <td>{{tests[key].description}}</td>
-      <td>
-        <div title="{{tests[key].message}}">{{tests[key].status}}</div>
+    <tr *ngFor="let verification of verifications | keyvalue"
+        [class.bg-success]="verification.value.status === 'OK'"
+        [class.bg-danger]="verification.value.status === 'NOK'"
+        [class.bg-secondary]="verification.value.status === 'NA'">
+      <td [class.text-light]="verification.value.status !== null">{{verification.value.blockId}}</td>
+      <td [class.text-light]="verification.value.status !== null">{{verification.value.verificationId}}</td>
+      <td [class.text-light]="verification.value.status !== null">{{verification.value.name}}</td>
+      <td [class.text-light]="verification.value.status !== null">{{verification.value.category}}</td>
+      <td [class.text-light]="verification.value.status !== null">{{verification.value.description}}</td>
+      <td [class.text-light]="verification.value.status !== null">
+        <div title="{{verification.value.message}}">{{verification.value.status}}</div>
       </td>
       <!--td></td-->
     </tr>

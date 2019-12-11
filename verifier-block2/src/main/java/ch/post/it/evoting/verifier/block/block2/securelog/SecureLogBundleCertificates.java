@@ -14,7 +14,7 @@
  */
 package ch.post.it.evoting.verifier.block.block2.securelog;
 
-import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
+import ch.post.it.evoting.verifier.block.block2.Block2VerificationSuite;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,13 +40,13 @@ public class SecureLogBundleCertificates {
             Map<String, String> hostCcMapping = HostMappingElement.loadHostMapping(inputDirectory);
 
             // loading certificates
-            File[] certificates = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2TestSuite.PATH_CC_LOG_SIGN_CERTIFICATES).toFile(), ".*cc.*_log_sign.pem");
+            File[] certificates = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2VerificationSuite.PATH_CC_LOG_SIGN_CERTIFICATES).toFile(), ".*cc.*_log_sign.pem");
             Map<String, byte[]> ccCertificateMapping = loadCertificates(certificates);
 
-            File[] intermediates = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2TestSuite.PATH_CC_CA_CERTIFICATES).toFile(), ".*cc.*_ca.pem");
+            File[] intermediates = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2VerificationSuite.PATH_CC_CA_CERTIFICATES).toFile(), ".*cc.*_ca.pem");
             Map<String, byte[]> ccIntermediateMapping = loadCertificates(intermediates);
 
-            byte[] root = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block2TestSuite.PATH_CERTIFICATES).toFile(), "platformRootCA.pem").toPath());
+            byte[] root = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block2VerificationSuite.PATH_CERTIFICATES).toFile(), "platformRootCA.pem").toPath());
 
             return hostCcMapping.entrySet().stream()
                     .map(entry -> {

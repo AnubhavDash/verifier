@@ -14,7 +14,7 @@
  */
 package ch.post.it.evoting.verifier.block.block3.loader.offline;
 
-import ch.post.it.evoting.verifier.block.block3.Block3TestSuite;
+import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
 import ch.post.it.evoting.verifier.block.block3.scytl.loader.EncryptionParametersLoader;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
@@ -37,7 +37,7 @@ public class OfflineEncryptionParametersLoader implements EncryptionParametersLo
 
     @Override
     public ZpGroup getZpGroup() throws IOException {
-        EncryptionParameters ep = Deserializer.fromJson(path.resolve(Block3TestSuite.PATH_CRYPTO_SETUP).toFile(), "encryptionParameters\\.json", EncryptionParameters.class);
+        EncryptionParameters ep = Deserializer.fromJson(path.resolve(Block3VerificationSuite.PATH_CRYPTO_SETUP).toFile(), "encryptionParameters\\.json", EncryptionParameters.class);
         BigInteger p = TypeConverter.stringToBigInteger(ep.getP());
         BigInteger q = TypeConverter.stringToBigInteger(ep.getQ());
         ZpGroupParams zpGroupParams = new ZpGroupParams(p, q);

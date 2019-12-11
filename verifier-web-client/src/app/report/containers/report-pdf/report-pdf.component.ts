@@ -29,7 +29,7 @@ export class ReportPdfComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.setInnerHtml(environment.appUrl + '/api/tests/verifier-report.pdf');
+    this.setInnerHtml(environment.appUrl + '/api/verifications/verifier-report.pdf');
   }
 
   public setInnerHtml(pdfurl: string) {
