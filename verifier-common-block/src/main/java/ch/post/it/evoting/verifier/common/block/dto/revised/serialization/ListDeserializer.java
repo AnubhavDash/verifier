@@ -27,8 +27,19 @@ public class ListDeserializer extends JsonDeserializer<List<?>> {
 
     @Override
     public List<?> deserialize(JsonParser jsonParser,
-                               DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
-        String value = jsonParser.readValueAs(String.class);
+                               DeserializationContext deserializationContext) throws IOException {
+        boolean isStructure = jsonParser.currentToken().isStructStart();
+
+        if (!isStructure) {
+            return parseAsString(jsonParser);
+        } else {
+            // json structure
+            return mapper.readValue(jsonParser, List.class);
+        }
+    }
+
+    private List<?> parseAsString(JsonParser jsonParser) throws IOException {
+        String value = jsonParser.getValueAsString();
         if (value.matches("[0-9;]+")) {
             // Semi-column separated list of BigIntegers.
             String[] strings = value.split(";");

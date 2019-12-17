@@ -100,6 +100,21 @@ public class JsonParserTest {
         assertFalse(countingCircle.domainsOfInfluence.isEmpty());
     }
 
+    @Test
+    public void deserializeMetadata() throws IOException {
+        InputStream inputStream = getResourceStream("schemas/json/metadata.json");
+        Metadata metadata = mapper.readValue(inputStream, Metadata.class);
+
+        assertNotNull(metadata);
+        assertEquals("toto", metadata.algorithm);
+        assertEquals("1.0", metadata.version);
+        assertNotNull(metadata.signedItems);
+        assertEquals(2, metadata.signedItems.size());
+        assertArrayEquals(DatatypeConverter.parseBase64Binary(
+                "GhcMhwBb1b1ngv9xvcWvXYHdgchaX5fF0tz5WIPBi2E0aYzZpqmFEylaAJ0XfvmSoqwc3fePMKdUKYXG2JY3tXM1LG70YT6azBFYG038jWaCXXz6NyUkYAz0Oz2vICck53ksyH9PY1zd2QzSwWz8L7bznBhTKgL5/UsuLqcCDvQXLYc82vxOUoIkP4HsreTMKdA5YnaoZjJg/2brDKdqcf2oWvahOI9QDu5+guHZhEOMK7cseQr/1dl3DmgjdaqoXQx5xjd2qemiu+70E6L+g2xk29X0VLiPDqLKF4a8KLB/VyJCkbYYm0VDIogl8mxB91imHo4q5FlC2g1Fjw6RIA=="),
+                          metadata.getSignature());
+    }
+
 
     private InputStream getResourceStream(String resource) {
         return this.getClass().getClassLoader().getResourceAsStream(
