@@ -2,9 +2,11 @@ package ch.post.it.evoting.verifier.common.block.dto.revised;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 import java.util.UUID;
 
+@Getter
 public class VoterInformation {
     public final UUID electionEventId;
     public final UUID votingCardId;

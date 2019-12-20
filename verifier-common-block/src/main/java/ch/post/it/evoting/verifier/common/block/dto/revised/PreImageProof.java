@@ -1,11 +1,12 @@
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
-import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 import java.math.BigInteger;
 import java.util.Base64;
 
+@Getter
 public class PreImageProof {
     public final BigInteger q; // Check if necessary ?!? why is it repeated here?
     public final String base64hash;

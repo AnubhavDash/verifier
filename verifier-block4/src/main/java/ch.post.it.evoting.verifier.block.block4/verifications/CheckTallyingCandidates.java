@@ -58,7 +58,7 @@ public class CheckTallyingCandidates extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult executeVerification(File inputDirectory) {
+    public VerificationResult verify(File inputDirectory) {
         VerificationResult result = new VerificationResult(getVerificationDefinition());
 
         try {

@@ -25,19 +25,19 @@ public class CheckDecryptionProofOnlineTest {
 
     @Test
     public void executeTestOK() {
-        VerificationResult result = new CheckDecryptionProofOnline().executeVerification(new File(getClass().getResource("/CheckDecryptionProofOnlineTest/OK").getFile()));
+        VerificationResult result = new CheckDecryptionProofOnline().verify(new File(getClass().getResource("/CheckDecryptionProofOnlineTest/OK").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestNOK() {
-        VerificationResult result = new CheckDecryptionProofOnline().executeVerification(new File(getClass().getResource("/CheckDecryptionProofOnlineTest/NOK").getFile()));
+        VerificationResult result = new CheckDecryptionProofOnline().verify(new File(getClass().getResource("/CheckDecryptionProofOnlineTest/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 
     @Test
     public void executeTestNOKNotFile() {
-        VerificationResult result = new CheckDecryptionProofOnline().executeVerification(new File(getClass().getResource("/CheckDecryptionProofOnlineTest/NOK-NOTFILE").getFile()));
+        VerificationResult result = new CheckDecryptionProofOnline().verify(new File(getClass().getResource("/CheckDecryptionProofOnlineTest/NOK-NOTFILE").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 

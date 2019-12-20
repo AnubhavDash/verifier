@@ -21,11 +21,12 @@ import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.dto.revised.BallotBox;
+import ch.post.it.evoting.verifier.common.block.dto.revised.ElectionEvent;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.dto.BallotBox;
 import ch.post.it.evoting.verifier.dto.DataConfigEE;
 import org.apache.log4j.Logger;
 
@@ -55,15 +56,15 @@ public class CheckSigProofs extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult executeVerification(File inputDirectory) {
+    public VerificationResult verify(File inputDirectory) {
         VerificationResult result = new VerificationResult(getVerificationDefinition());
         try {
             Path path = inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_ELECTION_SETUP);
-            DataConfigEE dataConfigEE = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", DataConfigEE.class);
-            List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
+            ElectionEvent electionEvent = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", ElectionEvent.class);
+            List<BallotBox> ballotBoxes = electionEvent.getBallotBoxes();
             List<File> proofsFiles = new ArrayList<>();
             ballotBoxes.forEach(ballotBox -> {
-                String ballotBoxId = ballotBox.getId();
+                String ballotBoxId = ballotBox.getId().toString();
                 try {
                     File[] proofFolders = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_BALLOTBOXES).resolve(ballotBoxId));
                     for (File folder : proofFolders) {

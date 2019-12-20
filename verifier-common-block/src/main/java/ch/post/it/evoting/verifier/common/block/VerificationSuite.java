@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class VerificationSuite implements VerifierBlock {
-    private static Logger log = Logger.getLogger(VerificationSuite.class);
+    private static Logger LOGGER = Logger.getLogger(VerificationSuite.class);
     private List<AbstractVerification> verifications;
 
     protected VerificationSuite(String packagePrefix) {
@@ -34,7 +34,7 @@ public abstract class VerificationSuite implements VerifierBlock {
             try {
                 return (AbstractVerification) c.newInstance();
             } catch (InstantiationException | IllegalAccessException e) {
-                log.error(e.getMessage(), e);
+                LOGGER.error(e.getMessage(), e);
                 throw new RuntimeException("Unable to instantiate the verifications", e);
             }
         }).collect(Collectors.toList());
@@ -49,15 +49,18 @@ public abstract class VerificationSuite implements VerifierBlock {
     public Stream<VerificationResult> process(File inputDirectory, Set<VerificationTrait> options) {
         return verifications.stream().map(t -> {
             VerificationDefinition def = t.getVerificationDefinition();
+            VerificationResult result = new VerificationResult(def);
             // Do skip the test if there are any defined restrictions
             // and the test trait does not match the restriction
             if ( ( options != null && !options.isEmpty())
                     && !def.containsAnyVerificationTrait(options)) {
-                VerificationResult result = new VerificationResult(def);
                 result.setStatus(Status.NA);
                 return result;
             } else {
-                return t.executeVerification(inputDirectory);
+                VerificationResult verificationResult = t.executeVerification(inputDirectory);
+                result.setStatus(verificationResult.getStatus());
+                result.setMessage(verificationResult.getMessage());
+                return result;
             }
         });
     }

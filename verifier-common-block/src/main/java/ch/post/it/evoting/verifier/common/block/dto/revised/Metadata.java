@@ -2,6 +2,8 @@ package ch.post.it.evoting.verifier.common.block.dto.revised;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.collect.ImmutableList;
+import lombok.Getter;
 
 import java.util.Base64;
 import java.util.List;
@@ -18,7 +20,7 @@ public class Metadata {
                     @JsonProperty("alg") String algorithm,
                     @JsonProperty("signature") String base64Signature) {
         this.version = version;
-        this.signedItems = signedItems;
+        this.signedItems = ImmutableList.copyOf(signedItems);
         this.algorithm = algorithm;
         this.base64Signature = base64Signature;
     }

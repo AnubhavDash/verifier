@@ -25,19 +25,19 @@ public class CheckMultiExponentationArgumentTest {
 
     @Test
     public void executeTestOK() {
-        VerificationResult result = new CheckMultiExponentationArgument().executeVerification(new File(getClass().getResource("/CheckMultiExponentationArgumentTest/OK").getFile()));
+        VerificationResult result = new CheckMultiExponentationArgument().verify(new File(getClass().getResource("/CheckMultiExponentationArgumentTest/OK").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestWithWriteInsOK() {
-        VerificationResult result = new CheckMultiExponentationArgument().executeVerification(new File(getClass().getResource("/CheckMultiExponentationArgumentTest/OK-WRITE-INS").getFile()));
+        VerificationResult result = new CheckMultiExponentationArgument().verify(new File(getClass().getResource("/CheckMultiExponentationArgumentTest/OK-WRITE-INS").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestNOK() {
-        VerificationResult result = new CheckMultiExponentationArgument().executeVerification(new File(getClass().getResource("/CheckMultiExponentationArgumentTest/NOK").getFile()));
+        VerificationResult result = new CheckMultiExponentationArgument().verify(new File(getClass().getResource("/CheckMultiExponentationArgumentTest/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }

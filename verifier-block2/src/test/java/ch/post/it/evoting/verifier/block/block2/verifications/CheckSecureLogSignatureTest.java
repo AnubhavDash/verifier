@@ -20,32 +20,41 @@ import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleCertifi
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogMetadata;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import org.bouncycastle.util.encoders.Base64;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 public class CheckSecureLogSignatureTest {
+    private CheckSecureLogSignature checkSecureLogSignature;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
+    @Before
+    public void setup() {
+        checkSecureLogSignature = new CheckSecureLogSignature();
+    }
 
     @Test
     @Ignore
-    public void executeTestOK() {
-        VerificationResult verificationResult = new CheckSecureLogSignature().executeVerification(new File(getClass().getResource("/CheckSecureLogSignatureTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult verificationResult = new CheckSecureLogSignature().verify(new File(getClass().getResource("/CheckSecureLogSignatureTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     @Ignore
-    public void executeTestNOK() {
-        VerificationResult verificationResult = new CheckSecureLogSignature().executeVerification(new File(getClass().getResource("/CheckSecureLogSignatureTest/NOK").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOK() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("Checkpoint entry and attributes of the entry, the signature does not verify");
+        VerificationResult verificationResult = new CheckSecureLogSignature().verify(new File(getClass().getResource("/CheckSecureLogSignatureTest/NOK").getFile()));
     }
 
 

@@ -1,12 +1,13 @@
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
-import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 import java.math.BigInteger;
 import java.util.Base64;
 
+@Getter
 public class PlaintextEqualityProof {
     public final BigInteger q; // Does it really have to be repeated?
     public final String base64hash;

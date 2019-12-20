@@ -16,33 +16,50 @@ package ch.post.it.evoting.verifier.block.block2.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import org.junit.*;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
+import java.io.IOException;
 
 public class CheckVoteBallotBoxTest {
+    private CheckVoteBallotBox checkVoteBallotBox;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
+    @Before
+    public void setup() {
+        checkVoteBallotBox = new CheckVoteBallotBox();
+    }
 
     @Test
     @Ignore
-    public void executeTestOK() {
-        VerificationResult verificationResult = new CheckVoteBallotBox().executeVerification(new File(getClass().getResource("/CheckVoteBallotBoxTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult verificationResult = checkVoteBallotBox.verify(new File(getClass().getResource("/CheckVoteBallotBoxTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOK() {
-        VerificationResult verificationResult = new CheckVoteBallotBox().executeVerification(new File(getClass().getResource("/CheckVoteBallotBoxTest/NOK").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOK() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("TODO");
+        checkVoteBallotBox.verify(new File(getClass().getResource("/CheckVoteBallotBoxTest/NOK").getFile()));
     }
 
+    // TODO Implement the following missing tests cases:
+    // - Duplicate votingCardId in downloadedBallotBox files
+    // - The number of encrypted votes in the secure logs and downloadboxes are not equal
+    // - EncryptedOptions is not the same in DownloadedBallotBox and SecureLogs
+    // - Unknown votingCardId
+
     @Test
-    public void executeTestNOKnotFile() {
-        VerificationResult verificationResult = new CheckVoteBallotBox().executeVerification(new File(getClass().getResource("/CheckVoteBallotBoxTest/NOK-NOTFILE").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOKnotFile() throws Exception {
+        exceptionRule.expect(IOException.class);
+        exceptionRule.expectMessage("voterInformation.*\\.csv");
+        checkVoteBallotBox.verify(new File(getClass().getResource("/CheckVoteBallotBoxTest/NOK-NOTFILE").getFile()));
     }
+
 }

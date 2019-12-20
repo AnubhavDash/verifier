@@ -16,38 +16,68 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
+import java.io.IOException;
 
 public class CheckSigEch015XTest {
+    private CheckSigEch015X checkSigEch015X;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
+    @Before
+    public void setup() {
+        checkSigEch015X = new CheckSigEch015X();
+    }
 
     @Test
-    public void executeTestOK() {
-        VerificationResult verificationResult = new CheckSigEch015X().executeVerification(new File(getClass().getResource("/CheckSigEch015XTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult verificationResult = new CheckSigEch015X().verify(new File(getClass().getResource("/CheckSigEch015XTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOKCertKo() {
-        VerificationResult verificationResult = new CheckSigEch015X().executeVerification(new File(getClass().getResource("/CheckSigEch015XTest/NOK/CERT-NOT-OK").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOKCertKo() throws Exception {
+        // TODO Check if test is relevant, because executeTestNOKXmlKo got the same error
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("The signature verification of the file failed");
+        checkSigEch015X.verify(new File(getClass().getResource("/CheckSigEch015XTest/NOK/CERT-NOT-OK").getFile()));
     }
 
     @Test
-    public void executeTestNOKXmlKo() {
-        VerificationResult verificationResult = new CheckSigEch015X().executeVerification(new File(getClass().getResource("/CheckSigEch015XTest/NOK/XML-NOT-OK").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOKXmlKo() throws Exception {
+        // TODO Check if test is relevant, because executeTestNOKCertKo got the same error
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("The signature verification of the file failed");
+        checkSigEch015X.verify(new File(getClass().getResource("/CheckSigEch015XTest/NOK/XML-NOT-OK").getFile()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound() {
-        VerificationResult verificationResult = new CheckSigEch015X().executeVerification(new File(getClass().getResource("/CheckSigEch015XTest/NOK/NOK-NOFILE").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOKFileNotFound() throws Exception {
+        exceptionRule.expect(IOException.class);
+        exceptionRule.expectMessage("integrationCA.pem");
+        checkSigEch015X.verify(new File(getClass().getResource("/CheckSigEch015XTest/NOK/NOK-NOFILE").getFile()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFound2() throws Exception {
+        exceptionRule.expect(IOException.class);
+        exceptionRule.expectMessage(".*ech015.*\\.xml");
+        checkSigEch015X.verify(new File(getClass().getResource("/CheckSigEch015XTest/NOK/NOK-NOFILE2").getFile()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFound3() throws Exception {
+        exceptionRule.expect(IOException.class);
+        exceptionRule.expectMessage("ech0157v3.xml.p7");
+        checkSigEch015X.verify(new File(getClass().getResource("/CheckSigEch015XTest/NOK/NOK-NOFILE3").getFile()));
     }
 }

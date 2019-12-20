@@ -14,14 +14,28 @@
  */
 package ch.post.it.evoting.verifier.common.block;
 
+import ch.post.it.evoting.verifier.common.Language;
+
+import java.util.Map;
+
 public class VerificationFailureException extends RuntimeException {
     private String[] args;
+    private Map<Language, String> failureMessage;
 
     public VerificationFailureException(String... args) {
         this.args = args;
     }
 
+    public VerificationFailureException(String message, Map<Language, String> failureMessage) {
+        super(message);
+        this.failureMessage = failureMessage;
+    }
+
     public String[] getArgs() {
         return args;
+    }
+
+    public Map<Language, String> getFailureMessage() {
+        return failureMessage;
     }
 }

@@ -51,7 +51,7 @@ public class CheckDecryptionProof extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult executeVerification(File inputDirectory) {
+    public VerificationResult verify(File inputDirectory) {
         VerificationResult result = new VerificationResult(getVerificationDefinition());
         try {
             File[] ballotBoxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
@@ -71,15 +71,14 @@ public class CheckDecryptionProof extends AbstractVerification {
         } catch (VerificationFailureException e) {
             result.setStatus(Status.NOK);
             result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification07.nok.message", e.getArgs()[1]));
+        } catch (FileNotFoundException e) {
+            result.setStatus(Status.NOK);
+            LOGGER.error("a FileNotFoundException error occurred", e);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification07.file.not.found.message", e.getCause().getLocalizedMessage()));
         } catch (Exception e) {
             result.setStatus(Status.NOK);
-            if (e.getCause() instanceof FileNotFoundException) {
-                LOGGER.error("a FileNotFoundException error occurred", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification07.file.not.found.message", e.getCause().getLocalizedMessage()));
-            } else {
-                LOGGER.error("an unexpected error occurred", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
-            }
+            LOGGER.error("an unexpected error occurred", e);
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
         return result;
     }

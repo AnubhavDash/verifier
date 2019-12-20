@@ -25,28 +25,28 @@ public class CheckSigValidVotesTest {
 
     @Test
     public void executeTestOK() {
-        VerificationResult verificationResult = new CheckSigValidVotes().executeVerification(new File(getClass().getResource("/CheckSigValidVotesTest/OK").getFile()));
+        VerificationResult verificationResult = new CheckSigValidVotes().verify(new File(getClass().getResource("/CheckSigValidVotesTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKcsvKo() {
-        VerificationResult verificationResult = new CheckSigValidVotes().executeVerification(new File(getClass().getResource("/CheckSigValidVotesTest/NOK/CSV-NOT-OK").getFile()));
+        VerificationResult verificationResult = new CheckSigValidVotes().verify(new File(getClass().getResource("/CheckSigValidVotesTest/NOK/CSV-NOT-OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKCertKo() {
-        VerificationResult verificationResult = new CheckSigValidVotes().executeVerification(new File(getClass().getResource("/CheckSigValidVotesTest/NOK/CERT-NOT-OK").getFile()));
+        VerificationResult verificationResult = new CheckSigValidVotes().verify(new File(getClass().getResource("/CheckSigValidVotesTest/NOK/CERT-NOT-OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKFileNotFound() {
-        VerificationResult verificationResult = new CheckSigValidVotes().executeVerification(new File(getClass().getResource("/CheckSigValidVotesTest/NOK-NOTFILE").getFile()));
+        VerificationResult verificationResult = new CheckSigValidVotes().verify(new File(getClass().getResource("/CheckSigValidVotesTest/NOK-NOTFILE").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }

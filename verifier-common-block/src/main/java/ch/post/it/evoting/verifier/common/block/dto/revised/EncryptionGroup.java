@@ -2,9 +2,11 @@ package ch.post.it.evoting.verifier.common.block.dto.revised;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 import java.math.BigInteger;
 
+@Getter
 public class EncryptionGroup {
     public final BigInteger p;
     public final BigInteger q;

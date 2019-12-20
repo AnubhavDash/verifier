@@ -27,28 +27,28 @@ public class CheckCommitmentParametersTest {
 
     @Test
     public void executeTestOK() {
-        VerificationResult verificationResult = new CheckCommitmentParameters().executeVerification(new File(getClass().getResource("/CheckCommitmentParametersTest/OK").getFile()));
+        VerificationResult verificationResult = new CheckCommitmentParameters().verify(new File(getClass().getResource("/CheckCommitmentParametersTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKpIsNotUnique() {
-        VerificationResult verificationResult = new CheckCommitmentParameters().executeVerification(new File(getClass().getResource("/CheckCommitmentParametersTest/NOK/P-NOK").getFile()));
+        VerificationResult verificationResult = new CheckCommitmentParameters().verify(new File(getClass().getResource("/CheckCommitmentParametersTest/NOK/P-NOK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKEulerCriterionKo() {
-        VerificationResult verificationResult = new CheckCommitmentParameters().executeVerification(new File(getClass().getResource("/CheckCommitmentParametersTest/NOK/BIGINT-NOK").getFile()));
+        VerificationResult verificationResult = new CheckCommitmentParameters().verify(new File(getClass().getResource("/CheckCommitmentParametersTest/NOK/BIGINT-NOK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKFileNotFound() {
-        VerificationResult verificationResult = new CheckCommitmentParameters().executeVerification(new File(getClass().getResource("/CheckCommitmentParametersTest/NOK-NOTFILE").getFile()));
+        VerificationResult verificationResult = new CheckCommitmentParameters().verify(new File(getClass().getResource("/CheckCommitmentParametersTest/NOK-NOTFILE").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
         Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification08.file.not.found.message"), verificationResult.getMessage());

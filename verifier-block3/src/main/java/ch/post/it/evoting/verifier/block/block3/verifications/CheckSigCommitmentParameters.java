@@ -55,7 +55,7 @@ public class CheckSigCommitmentParameters extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult executeVerification(File inputDirectory) {
+    public VerificationResult verify(File inputDirectory) {
         VerificationResult result = new VerificationResult(getVerificationDefinition());
         try {
             Path path = inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_ELECTION_SETUP);

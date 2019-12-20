@@ -25,27 +25,27 @@ public class CheckSigEch0110Test {
 
     @Test
     public void executeTestOK() {
-        VerificationResult verificationResult = new CheckSigEch0110().executeVerification(new File(getClass().getResource("/CheckSigEch0110Test/OK").getFile()));
+        VerificationResult verificationResult = new CheckSigEch0110().verify(new File(getClass().getResource("/CheckSigEch0110Test/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKXmlKo() {
-        VerificationResult verificationResult = new CheckSigEch0110().executeVerification(new File(getClass().getResource("/CheckSigEch0110Test/NOK/XML-NOT-OK").getFile()));
+        VerificationResult verificationResult = new CheckSigEch0110().verify(new File(getClass().getResource("/CheckSigEch0110Test/NOK/XML-NOT-OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKCertKo() {
-        VerificationResult verificationResult = new CheckSigEch0110().executeVerification(new File(getClass().getResource("/CheckSigEch0110Test/NOK/CERT-NOT-OK").getFile()));
+        VerificationResult verificationResult = new CheckSigEch0110().verify(new File(getClass().getResource("/CheckSigEch0110Test/NOK/CERT-NOT-OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
     @Test
     public void executeTestNOKFileNotFound() {
-        VerificationResult verificationResult = new CheckSigEch0110().executeVerification(new File(getClass().getResource("/CheckSigEch0110Test/NOK-NOTFILE").getFile()));
+        VerificationResult verificationResult = new CheckSigEch0110().verify(new File(getClass().getResource("/CheckSigEch0110Test/NOK-NOTFILE").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }

@@ -21,11 +21,11 @@ import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.dto.revised.Ballot;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
-import ch.post.it.evoting.verifier.dto.DownloadedBallot;
 import org.apache.log4j.Logger;
 import reactor.util.function.Tuples;
 
@@ -57,102 +57,91 @@ public class CheckVoteBallotBox extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult executeVerification(File inputDirectory) {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
-        try {
-            VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectory);
+    public VerificationResult verify(File inputDirectory) throws Exception {
+        VerificationResult result = new VerificationResult();
+        VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectory);
 
-            //count in the logs
-            final Pattern patternEncryptedOption = Pattern.compile(".*\\|000\\|(.*)\\|.*\\|.*\\|#encryptedOptions=\"(.*)\" #ccx_id=.*\n");
-            final Pattern pattern = Pattern.compile("\\|VOTVAL\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|");
-            Map<String, String> mapSecureLogs = SecureLogEntry.loadRegularLogs(inputDirectory, pattern)
-                    .map(s1 -> {
-                        Matcher matcher = patternEncryptedOption.matcher(s1.getRaw());
-                        matcher.matches();
-                        return Tuples.of(matcher.group(1), matcher.group(2));
-                    })
-                    .collectMap(t -> t.getT1(), t -> t.getT2()).block();
+        // Count in the logs
+        final Pattern patternEncryptedOption = Pattern.compile(".*\\|000\\|(.*)\\|.*\\|.*\\|#encryptedOptions=\"(.*)\" #ccx_id=.*\n");
+        final Pattern pattern = Pattern.compile("\\|VOTVAL\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|");
+        Map<String, String> mapSecureLogs = SecureLogEntry.loadRegularLogs(inputDirectory, pattern)
+                .map(s1 -> {
+                    Matcher matcher = patternEncryptedOption.matcher(s1.getRaw());
+                    matcher.matches();
+                    return Tuples.of(matcher.group(1), matcher.group(2));
+                })
+                .collectMap(t -> t.getT1(), t -> t.getT2()).block();
 
-            //for all ballotbox
-            //get downloadedBallotBox.csv --> votingCardId, encryptedOptions
-            //foreach mapDownloadedBallotBox
-            //check that mapDownloadedBallotBox[votingCardId] == mapSecuredLogs[votingCardId]
-            Map<String, String> mapDownloadedBallotBoxs = new HashMap<>();
+        // for all ballotbox
+        // get downloadedBallotBox.csv --> votingCardId, encryptedOptions
+        // foreach mapDownloadedBallotBox
+        // check that mapDownloadedBallotBox[votingCardId] == mapSecuredLogs[votingCardId]
+        Map<String, String> mapDownloadedBallotBoxs = new HashMap<>();
 
-            List<File> downloadedBallotBoxFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2VerificationSuite.PATH_BALLOTBOXES).toFile(),
-                    "downloadedBallotBox.*\\.csv",
-                    true);
+        List<File> downloadedBallotBoxFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2VerificationSuite.PATH_BALLOTBOXES).toFile(),
+                "downloadedBallotBox.*\\.csv",
+                true);
 
-            for (File downloadedBbFile : downloadedBallotBoxFiles) {
-                try (Stream<String> lines = Files.lines(downloadedBbFile.toPath())) {
-                    Map<String, String> map = lines
-                            .map(l -> {
-                                try {
-                                    return extractFromLine(l);
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            })
-                            .filter(entry -> entry.getKey() != null)
-                            .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
-                    if (!mergeMapWithoutDuplicates(mapDownloadedBallotBoxs, map)) {
-                        throw new VerificationFailureException("Duplicate votingCardId in downloadedBallotBox files");
-                    }
+        for (File downloadedBbFile : downloadedBallotBoxFiles) {
+            try (Stream<String> lines = Files.lines(downloadedBbFile.toPath())) {
+                Map<String, String> map = lines
+                        .map(l -> {
+                            try {
+                                return extractFromLine(l);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        })
+                        .filter(entry -> entry.getKey() != null)
+                        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+                if (!mergeMapWithoutDuplicates(mapDownloadedBallotBoxs, map)) {
+                    throw buildVerificationFailureException(
+                            "Duplicate votingCardId in downloadedBallotBox files",
+                            Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
+                            "verification05.nok.duplicate.message"
+                    );
                 }
             }
-
-            //check sizes
-            if (mapDownloadedBallotBoxs.size() != mapSecureLogs.size()) {
-                throw new VerificationFailureException("the number of encrypted votes in the secure logs and downloadboxes are not equal");
-            }
-
-            mapDownloadedBallotBoxs.entrySet()
-                    .stream()
-                    .forEach(entry -> {
-                        String key = entry.getKey();
-                        String value = entry.getValue();
-                        if (mapSecureLogs.containsKey(key)) {
-                            if (!value.equals(mapSecureLogs.get(key))) {
-                                throw new VerificationFailureException("encryptedOptions is not the same in DownloadedBallotBox and SecureLogs !", key, value);
-                            }
-                        } else {
-                            throw new VerificationFailureException("Unknown votingCardId !", key);
-                        }
-                    });
-
-            result.setStatus(Status.OK);
-        } catch (NoSuchFileException e) {
-            LOGGER.error("a NoSuchFileException error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification05.file.not.found.message", e.getFile()));
-        } catch (FileNotFoundException e) {
-            LOGGER.error("a FileNotFoundException error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification05.file.not.found.message", e.getMessage()));
-        } catch (VerificationFailureException e) {
-            result.setStatus(Status.NOK);
-            String[] args = e.getArgs();
-            if (args.length == 1) {
-                LOGGER.debug("the number of encrypted votes in the secure logs and downloadboxes are not equal", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification05.nok.numberVotes.mismatch.message"));
-            }
-            if (args.length == 2) {
-                LOGGER.debug("checkpoint entry : " + args[1] + " the does not verify", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification05.nok.message", args[1], "no data"));
-            }
-            if (args.length == 3) {
-                LOGGER.debug("checkpoint entry and attributes of the entry : " + args[0] + ", " + args[1] + " the does not verify", e);
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification05.nok.message", args[1], args[2]));
-            }
-        } catch (Exception e) {
-            LOGGER.error("Unexpected error", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
+
+        // Check sizes
+        if (mapDownloadedBallotBoxs.size() != mapSecureLogs.size()) {
+            throw buildVerificationFailureException(
+                    "The number of encrypted votes in the secure logs and downloadboxes are not equal",
+                    Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
+                    "verification05.nok.numberVotes.mismatch.message"
+            );
+        }
+
+        mapDownloadedBallotBoxs.entrySet()
+                .stream()
+                .forEach(entry -> {
+                    String key = entry.getKey();
+                    String value = entry.getValue();
+                    if (mapSecureLogs.containsKey(key)) {
+                        if (!value.equals(mapSecureLogs.get(key))) {
+                            throw buildVerificationFailureException(
+                                    "EncryptedOptions is not the same in DownloadedBallotBox and SecureLogs",
+                                    Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
+                                    "verification05.nok.encryptedOptions.mismatch.message",
+                                    key, value
+                            );
+                        }
+                    } else {
+                        throw buildVerificationFailureException(
+                                "Unknown votingCardId",
+                                Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
+                                "verification05.nok.unknow.votingCardId.message",
+                                key
+                        );
+                    }
+                });
+
+        result.setStatus(Status.OK);
         return result;
     }
 
-    static boolean mergeMapWithoutDuplicates(Map<String, String> map1, Map<String, String> map2) {
+    private static boolean mergeMapWithoutDuplicates(Map<String, String> map1, Map<String, String> map2) {
         try {
             map2.forEach((k, v) -> {
                 if (map1.containsKey(k)) {
@@ -167,11 +156,11 @@ public class CheckVoteBallotBox extends AbstractVerification {
         }
     }
 
-    static AbstractMap.SimpleEntry<String, String> extractFromLine(String line) throws IOException {
-        if (!line.isEmpty() && line.indexOf("}}|") != -1) {
+    private static AbstractMap.SimpleEntry<String, String> extractFromLine(String line) throws IOException {
+        if (!line.isEmpty() && line.contains("}}|")) {
             line = line.substring(0, line.indexOf("}}|") + 2);
-            DownloadedBallot db = Deserializer.fromJson(TypeConverter.stringToByte(line), DownloadedBallot.class);
-            return new AbstractMap.SimpleEntry(db.getVote().getVotingCardId(), db.getVote().getEncryptedOptions());
+            Ballot ballot = Deserializer.fromJson(TypeConverter.stringToByte(line), Ballot.class);
+            return new AbstractMap.SimpleEntry(ballot.getVote().getVotingCardId().toString(), ballot.getVote().getEncryptedOptions());
         } else {
             return new AbstractMap.SimpleEntry(null, null);
         }

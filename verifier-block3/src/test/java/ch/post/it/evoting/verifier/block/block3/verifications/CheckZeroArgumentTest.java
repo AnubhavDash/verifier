@@ -25,13 +25,13 @@ public class CheckZeroArgumentTest {
 
     @Test
     public void executeTestOK() {
-        VerificationResult result = new CheckZeroArgument().executeVerification(new File(getClass().getResource("/CheckZeroArgumentTest/OK").getFile()));
+        VerificationResult result = new CheckZeroArgument().verify(new File(getClass().getResource("/CheckZeroArgumentTest/OK").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestNOK() {
-        VerificationResult result = new CheckZeroArgument().executeVerification(new File(getClass().getResource("/CheckZeroArgumentTest/NOK").getFile()));
+        VerificationResult result = new CheckZeroArgument().verify(new File(getClass().getResource("/CheckZeroArgumentTest/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }

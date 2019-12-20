@@ -17,19 +17,15 @@ package ch.post.it.evoting.verifier.block.block2.verifications;
 import ch.post.it.evoting.verifier.block.block2.Block2VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.DownloadedBallot;
-import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +35,6 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class CheckConfirmedVotesBallotBox extends AbstractVerification {
-
-    private static final Logger LOGGER = Logger.getLogger(CheckConfirmedVotesBallotBox.class);
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -55,91 +49,83 @@ public class CheckConfirmedVotesBallotBox extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult executeVerification(File inputDirectory) {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
-        try {
-            List<File> downloadedBallotBoxFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2VerificationSuite.PATH_BALLOTBOXES).toFile(),
-                    "downloadedBallotBox.*\\.csv",
-                    true);
+    public VerificationResult verify(File inputDirectory) throws Exception {
+        VerificationResult result = new VerificationResult();
 
-            for (File downloadedBbFile : downloadedBallotBoxFiles) {
+        List<File> downloadedBallotBoxFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2VerificationSuite.PATH_BALLOTBOXES).toFile(),
+                "downloadedBallotBox.*\\.csv",
+                true);
 
-                File successVotes = downloadedBbFile.toPath().getParent().resolve("successfulVotes.csv").toFile();
-                File failedVotes = downloadedBbFile.toPath().getParent().resolve("failedVotes.csv").toFile();
+        for (File downloadedBbFile : downloadedBallotBoxFiles) {
 
-                try (Stream<String> lines = Files.lines(downloadedBbFile.toPath())) {
-                    Map<String, Boolean> mapDownloadedBb = lines
-                            .map(line -> {
-                                try {
-                                    return extractDbInfosFromLine(line);
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            })
-                            .filter(entry -> entry.getKey() != null)
-                            .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+            File successVotes = downloadedBbFile.toPath().getParent().resolve("successfulVotes.csv").toFile();
+            File failedVotes = downloadedBbFile.toPath().getParent().resolve("failedVotes.csv").toFile();
 
-                    List<String> votingCardSuccessList = StreamSupport.stream(
-                            Deserializer.fromCsv(successVotes.getParentFile(), successVotes.getName(), ";", array -> {
-                                if (array == null || array.length <= 2) {
-                                    return null;
-                                }
-                                return array[0];
-                            }).spliterator(), false)
-                            .filter(Objects::nonNull)
-                            .collect(Collectors.toList());
+            try (Stream<String> lines = Files.lines(downloadedBbFile.toPath())) {
+                Map<String, Boolean> mapDownloadedBb = lines
+                        .map(line -> {
+                            try {
+                                return extractDbInfosFromLine(line);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        })
+                        .filter(entry -> entry.getKey() != null)
+                        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
-                    List<String> votingCardFailedList = StreamSupport.stream(
-                            Deserializer.fromCsv(failedVotes.getParentFile(), failedVotes.getName(), ";", array -> {
-                                if (array == null || array.length <= 2) {
-                                    return null;
-                                }
-                                return array[0];
-                            }).spliterator(), false)
-                            .filter(Objects::nonNull)
-                            .collect(Collectors.toList());
+                List<String> votingCardSuccessList = StreamSupport.stream(
+                        Deserializer.fromCsv(successVotes.getParentFile(), successVotes.getName(), ";", array -> {
+                            if (array == null || array.length <= 2) {
+                                return null;
+                            }
+                            return array[0];
+                        }).spliterator(), false)
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
 
-                    //test size
-                    if (mapDownloadedBb.size() != (votingCardSuccessList.size() + votingCardFailedList.size())) {
-                        throw new VerificationFailureException("there is a mismatch count between the list of successful or failed votes and the download ballot box");
-                    }
+                List<String> votingCardFailedList = StreamSupport.stream(
+                        Deserializer.fromCsv(failedVotes.getParentFile(), failedVotes.getName(), ";", array -> {
+                            if (array == null || array.length <= 2) {
+                                return null;
+                            }
+                            return array[0];
+                        }).spliterator(), false)
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
 
-                    //test existence in success or failed list
-                    if (mapDownloadedBb.entrySet()
-                            .stream()
-                            .map(e -> {
-                                if (e.getValue()) {
-                                    return votingCardSuccessList.contains(e.getKey());
-                                } else {
-                                    return votingCardFailedList.contains(e.getKey());
-                                }
-                            })
-                            .filter(val -> val == false)
-                            .count() > 0) {
-                        throw new VerificationFailureException("there is a mismatch between the list of successful or failed votes and the download ballot box");
-                    }
+                //test size
+                if (mapDownloadedBb.size() != (votingCardSuccessList.size() + votingCardFailedList.size())) {
+                    throw buildVerificationFailureException(
+                            "There is a mismatch count between the list of successful or failed votes and the download ballot box",
+                            Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
+                            "verification08.nok.message"
+                    );
+                }
+
+                //test existence in success or failed list
+                long count = mapDownloadedBb.entrySet()
+                        .stream()
+                        .map(e -> {
+                            if (e.getValue()) {
+                                return votingCardSuccessList.contains(e.getKey());
+                            } else {
+                                return votingCardFailedList.contains(e.getKey());
+                            }
+                        })
+                        .filter(val -> val == false)
+                        .count();
+
+                if (count > 0) {
+                    throw buildVerificationFailureException(
+                            "There is a mismatch between the list of successful or failed votes and the download ballot box",
+                            Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
+                            "verification08.nok.message"
+                    );
                 }
             }
-
-            result.setStatus(Status.OK);
-
-        } catch (VerificationFailureException e) {
-            LOGGER.debug(e.getArgs()[0], e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification08.nok.message"));
-        } catch (NoSuchFileException e) {
-            LOGGER.error("a NoSuchFileException error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification08.file.not.found.message", e.getFile()));
-        } catch (FileNotFoundException e) {
-            LOGGER.error("a FileNotFoundException error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification08.file.not.found.message", e.getMessage()));
-        } catch (Exception e) {
-            LOGGER.error("an unexpected error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
+
+        result.setStatus(Status.OK);
         return result;
     }
 

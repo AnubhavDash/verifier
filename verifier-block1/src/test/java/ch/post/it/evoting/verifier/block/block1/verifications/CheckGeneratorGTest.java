@@ -16,45 +16,58 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
+import java.io.IOException;
 
 public class CheckGeneratorGTest {
+    private CheckGeneratorG checkGeneratorG;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
+    @Before
+    public void setup() {
+        checkGeneratorG = new CheckGeneratorG();
+    }
 
     @Test
-    public void executeTestOK() {
-        VerificationResult verificationResult = new CheckGeneratorG().executeVerification(new File(getClass().getResource("/CheckGeneratorGTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult verificationResult = checkGeneratorG.verify(new File(getClass().getResource("/CheckGeneratorGTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOKPrimality() {
-        VerificationResult verificationResult = new CheckGeneratorG().executeVerification(new File(getClass().getResource("/CheckGeneratorGTest/NOK/NOK").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOKPrimality() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("The generator g is not prime");
+        checkGeneratorG.verify(new File(getClass().getResource("/CheckGeneratorGTest/NOK/NOK").getFile()));
     }
 
     @Test
-    public void executeTestNOKEulerCriterion() {
-        VerificationResult verificationResult = new CheckGeneratorG().executeVerification(new File(getClass().getResource("/CheckGeneratorGTest/NOK/NOK-EULER").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOKEulerCriterion() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("g is not part of the subgroup q");
+        checkGeneratorG.verify(new File(getClass().getResource("/CheckGeneratorGTest/NOK/NOK-EULER").getFile()));
     }
 
     @Test
-    public void executeTestNOKSubgroupSmallest() {
-        VerificationResult verificationResult = new CheckGeneratorG().executeVerification(new File(getClass().getResource("/CheckGeneratorGTest/NOK/NOK-SMALLEST").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOKSubgroupSmallest() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("g must be the smallest prime number in the subgroup (p, q)");
+        checkGeneratorG.verify(new File(getClass().getResource("/CheckGeneratorGTest/NOK/NOK-SMALLEST").getFile()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound() {
-        VerificationResult verificationResult = new CheckGeneratorG().executeVerification(new File(getClass().getResource("/CheckGeneratorGTest/NOK/NOK-NOFILE").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOKFileNotFound() throws Exception {
+        exceptionRule.expect(IOException.class);
+        checkGeneratorG.verify(new File(getClass().getResource("/CheckGeneratorGTest/NOK/NOK-NOFILE").getFile()));
     }
 }

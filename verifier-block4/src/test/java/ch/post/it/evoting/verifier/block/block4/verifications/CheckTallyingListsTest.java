@@ -25,14 +25,14 @@ public class CheckTallyingListsTest {
 
     @Test
     public void executeTestOK() {
-        VerificationResult verificationResult = new CheckTallyingLists().executeVerification(new File(getClass().getResource("/CheckTallyingListsTest/OK").getFile()));
+        VerificationResult verificationResult = new CheckTallyingLists().verify(new File(getClass().getResource("/CheckTallyingListsTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOK() {
-        VerificationResult verificationResult = new CheckTallyingLists().executeVerification(new File(getClass().getResource("/CheckTallyingListsTest/NOK").getFile()));
+        VerificationResult verificationResult = new CheckTallyingLists().verify(new File(getClass().getResource("/CheckTallyingListsTest/NOK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }

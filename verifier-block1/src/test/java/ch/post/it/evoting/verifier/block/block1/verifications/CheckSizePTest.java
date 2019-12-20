@@ -16,31 +16,45 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
+import java.io.IOException;
 
 public class CheckSizePTest {
+    private CheckSizeP checkSizeP;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
+    @Before
+    public void setup() {
+        checkSizeP = new CheckSizeP();
+    }
 
     @Test
-    public void executeTestOK() {
-        VerificationResult verificationResult = new CheckSizeP().executeVerification(new File(getClass().getResource("/CheckSizePTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult verificationResult = checkSizeP.verify(new File(getClass().getResource("/CheckSizePTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOK() {
-        VerificationResult verificationResult = new CheckSizeP().executeVerification(new File(getClass().getResource("/CheckSizePTest/NOK/NOK").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOK() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("p does not have the right size");
+        checkSizeP.verify(new File(getClass().getResource("/CheckSizePTest/NOK/NOK").getFile()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound() {
-        VerificationResult verificationResult = new CheckSizeP().executeVerification(new File(getClass().getResource("/CheckSizePTest/NOK/NOK-NOFILE").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOKFileNotFound() throws Exception {
+        exceptionRule.expect(IOException.class);
+        exceptionRule.expectMessage("encryptionParameters\\.json");
+        checkSizeP.verify(new File(getClass().getResource("/CheckSizePTest/NOK/NOK-NOFILE").getFile()));
     }
 }

@@ -53,7 +53,7 @@ public class CheckCipherTextConsistencyOfflineProofs extends AbstractVerificatio
     }
 
     @Override
-    public VerificationResult executeVerification(File inputDirectory) {
+    public VerificationResult verify(File inputDirectory) {
         VerificationResult result = new VerificationResult(getVerificationDefinition());
         try {
             File[] ballotboxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_BALLOTBOXES));

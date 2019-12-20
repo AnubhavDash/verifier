@@ -15,7 +15,11 @@
 package ch.post.it.evoting.verifier.common.block.tools;
 
 import ch.post.it.evoting.verifier.common.block.dto.CredentialDataElement;
+import ch.post.it.evoting.verifier.common.block.dto.revised.*;
+import ch.post.it.evoting.verifier.common.block.dto.revised.serialization.*;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -23,8 +27,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.security.cert.X509Certificate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -34,17 +43,37 @@ public class Deserializer {
         //private constructor, use static
     }
 
+    public static ObjectMapper initObjectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+//        mapper.enable(DeserializationFeature.FAIL_ON_NULL_CREATOR_PROPERTIES);
+
+        SimpleModule typesModule = new SimpleModule();
+        typesModule.addDeserializer(BigInteger.class, new Base64BigIntegerDeserializer());
+        typesModule.addDeserializer(UUID.class, new UuidDeserializer());
+        typesModule.addDeserializer(List.class, new ListDeserializer());
+        typesModule.addDeserializer(PublicKey.class, new PublicKeyDeserializer());
+        typesModule.addDeserializer(X509Certificate.class, new X509Deserializer());
+        typesModule.addDeserializer(AuthenticationToken.class, new AuthenticationTokenDeserializer());
+        typesModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer());
+        typesModule.addDeserializer(PreImageProof.class, new PreImageProofDeserializer());
+        typesModule.addDeserializer(PlaintextEqualityProof.class, new PlaintextEqualityProofDeserializer());
+        typesModule.addDeserializer(ElectionEvent.class, new ElectionEventDeserializer());
+        mapper.registerModule(typesModule);
+        return mapper;
+    }
+
     public static <T> Stream<T> fromLines(File inputFile, String filenamePattern, Function<String, T> mapper) throws IOException {
         return Files.lines(getFile(inputFile, filenamePattern).toPath()).map(mapper);
     }
 
     public static <T> T fromJson(File inputDirectory, String filenamePattern, Class<T> targetClazz) throws IOException {
-        ObjectMapper jsonMapper = new ObjectMapper();
+        ObjectMapper jsonMapper = initObjectMapper();
         return jsonMapper.readValue(getFile(inputDirectory, filenamePattern), targetClazz);
     }
 
     public static <T> T fromJson(byte[] content, Class<T> targetClazz) throws IOException {
-        ObjectMapper jsonMapper = new ObjectMapper();
+        ObjectMapper jsonMapper = initObjectMapper();
         return jsonMapper.readValue(new String(content, StandardCharsets.UTF_8), targetClazz);
     }
 

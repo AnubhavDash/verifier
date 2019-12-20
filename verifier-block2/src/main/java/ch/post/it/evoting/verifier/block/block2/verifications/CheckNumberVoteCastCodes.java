@@ -17,25 +17,19 @@ package ch.post.it.evoting.verifier.block.block2.verifications;
 import ch.post.it.evoting.verifier.block.block2.Block2VerificationSuite;
 import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationDataExtractor;
 import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationStruct;
+import ch.post.it.evoting.verifier.block.block2.securelog.HostMappingElement;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
-import ch.post.it.evoting.verifier.block.block2.securelog.HostMappingElement;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import org.apache.log4j.Logger;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.nio.file.NoSuchFileException;
 import java.util.Map;
 import java.util.regex.Pattern;
 
 public class CheckNumberVoteCastCodes extends AbstractVerification {
-
-    private static final Logger LOGGER = Logger.getLogger(CheckNumberVoteCastCodes.class);
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -50,66 +44,72 @@ public class CheckNumberVoteCastCodes extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult executeVerification(File inputDirectory) {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
-        try {
-            VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectory);
+    public VerificationResult verify(File inputDirectory) throws Exception {
+        VerificationResult result = new VerificationResult();
 
-            // create host/CC mapping
-            Map<String, String> hostCcMapping = HostMappingElement.loadHostMapping(inputDirectory);
+        // Get the voterInformation.csv Files and count
+        VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectory);
 
-            final Pattern pattern = Pattern.compile("\\|GENPVCC\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|");
-            //count in the logs
-            Map<String, Long> countByCC = SecureLogEntry.loadRegularLogs(inputDirectory, pattern)
-                    .groupBy(s1 -> hostCcMapping.containsKey(s1.getHost()) ? hostCcMapping.get(s1.getHost()) : s1.getHost())
-                    .flatMap(group -> {
-                        String ccName = group.key();
-                        return group.count().flux().map(count -> Tuples.of(ccName, count));
-                    }).collectMap(Tuple2::getT1, Tuple2::getT2).block();
+        // Create host/CC mapping
+        Map<String, String> hostCcMapping = HostMappingElement.loadHostMapping(inputDirectory);
 
-            if (countByCC == null) {
-                throw new RuntimeException("no values found while counting log foreach control component");
-            }
-            if (countByCC.size() != 4) {
-                throw new RuntimeException("more than 4 different CC found : " + countByCC.keySet());
-            }
-            long nbDistinctValues = countByCC.values().stream().distinct().count();
-            if (nbDistinctValues == 0 && voterInformation.getCount() == 0L) {
-                LOGGER.info("no GENPVCC log found for the defined electionEventId : " + voterInformation.getEeid());
-                result.setStatus(Status.NOK);
-            } else if (nbDistinctValues != 1) {
-                throw new VerificationFailureException("count of log for partial vote cast code generation is not the same for each control component", countByCC.values().toString());
+        // Count in the logs
+        final Pattern pattern = Pattern.compile("\\|GENPVCC\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|");
+        Map<String, Long> countByCC = SecureLogEntry.loadRegularLogs(inputDirectory, pattern)
+                .groupBy(s1 -> hostCcMapping.containsKey(s1.getHost()) ? hostCcMapping.get(s1.getHost()) : s1.getHost())
+                .flatMap(group -> {
+                    String ccName = group.key();
+                    return group.count().flux().map(count -> Tuples.of(ccName, count));
+                }).collectMap(Tuple2::getT1, Tuple2::getT2).block();
 
-            } else {
-                //finally check the count with csv files count
-                Long logCount = countByCC.values().stream().findFirst().get();
-                if (logCount.equals(voterInformation.getCount())) {
-                    result.setStatus(Status.OK);
-                } else {
-                    throw new VerificationFailureException("the number of log entries does not match with the number of voters", "" + logCount + " and " + voterInformation.getCount());
-                }
-            }
-
-        } catch (NoSuchFileException e) {
-            LOGGER.error("a NoSuchFileException error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification04.file.not.found.message", e.getFile()));
-        } catch (FileNotFoundException e) {
-            LOGGER.error("a FileNotFoundException error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification04.file.not.found.message", e.getMessage()));
-        } catch (VerificationFailureException e) {
-            String[] args = e.getArgs();
-            if(args.length >= 2){
-                LOGGER.debug("Test failed, cause : " + args[0] + ". Details: " + args[1]);
-            }
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification04.nok.message"));
-        } catch (Exception e) {
-            LOGGER.error("an unexpected error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
+        // Count by control component must not be null
+        if (countByCC == null) {
+            throw buildVerificationFailureException(
+                    "No values found while counting log foreach control component",
+                    Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
+                    "verification04.nok.no.value.message"
+            );
         }
+
+        // Count by control component must be 4
+        if (countByCC.size() != 4) {
+            throw buildVerificationFailureException(
+                    "Number of component control is not 4",
+                    Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
+                    "verification04.nok.number.control.component.message",
+                    String.valueOf(countByCC.size())
+            );
+        }
+
+        // Distinct values
+        long nbDistinctValues = countByCC.values().stream().distinct().count();
+        if (nbDistinctValues == 0 && voterInformation.getCount() == 0L) {
+            throw buildVerificationFailureException(
+                    "No GENPVCC log found for the defined electionEventId",
+                    Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
+                    "verification04.nok.no.genpvccc.log.found.message",
+                    voterInformation.getEeid()
+            );
+        } else if (nbDistinctValues != 1) {
+            throw buildVerificationFailureException(
+                    "Count of log for partial vote cast code generation is not the same for each control component",
+                    Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
+                    "verification04.nok.count.control.component.message"
+            );
+        } else {
+            // Finally check the count with csv files count
+            Long logCount = countByCC.values().stream().findFirst().get();
+            if (!logCount.equals(voterInformation.getCount())) {
+                throw buildVerificationFailureException(
+                        "The number of log entries does not match with the number of voters",
+                        Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
+                        "verification04.nok.logs.mismatch.voters.message",
+                        String.valueOf(logCount), String.valueOf(voterInformation.getCount())
+                );
+            }
+        }
+
+        result.setStatus(Status.OK);
         return result;
     }
 }

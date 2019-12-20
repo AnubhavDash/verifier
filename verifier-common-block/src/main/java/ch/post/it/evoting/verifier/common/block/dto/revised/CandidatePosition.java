@@ -3,11 +3,13 @@ package ch.post.it.evoting.verifier.common.block.dto.revised;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableList;
+import lombok.Getter;
 
 import java.math.BigInteger;
 import java.util.List;
 import java.util.UUID;
 
+@Getter
 public class CandidatePosition {
     public final String alias;
     // TODO: why to candidate positions hold candidate list ids ?

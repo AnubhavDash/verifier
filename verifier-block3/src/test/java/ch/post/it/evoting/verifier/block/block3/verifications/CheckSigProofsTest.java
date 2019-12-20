@@ -25,28 +25,28 @@ public class CheckSigProofsTest {
 
     @Test
     public void executeTestOK() {
-        VerificationResult verificationResult = new CheckSigProofs().executeVerification(new File(getClass().getResource("/CheckSigProofsTest/OK").getFile()));
+        VerificationResult verificationResult = new CheckSigProofs().verify(new File(getClass().getResource("/CheckSigProofsTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKJsonKo() {
-        VerificationResult verificationResult = new CheckSigProofs().executeVerification(new File(getClass().getResource("/CheckSigProofsTest/NOK/JSON-NOT-OK").getFile()));
+        VerificationResult verificationResult = new CheckSigProofs().verify(new File(getClass().getResource("/CheckSigProofsTest/NOK/JSON-NOT-OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKCertKo() {
-        VerificationResult verificationResult = new CheckSigProofs().executeVerification(new File(getClass().getResource("/CheckSigProofsTest/NOK/CERT-NOT-OK").getFile()));
+        VerificationResult verificationResult = new CheckSigProofs().verify(new File(getClass().getResource("/CheckSigProofsTest/NOK/CERT-NOT-OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKFileNotFound() {
-        VerificationResult verificationResult = new CheckSigProofs().executeVerification(new File(getClass().getResource("/CheckSigProofsTest/NOK-NOTFILE").getFile()));
+        VerificationResult verificationResult = new CheckSigProofs().verify(new File(getClass().getResource("/CheckSigProofsTest/NOK-NOTFILE").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }

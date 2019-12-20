@@ -25,19 +25,19 @@ public class CheckDecryptionProofTest {
 
     @Test
     public void executeTestOK() {
-        VerificationResult result = new CheckDecryptionProof().executeVerification(new File(getClass().getResource("/CheckDecryptionProofTest/OK").getFile()));
+        VerificationResult result = new CheckDecryptionProof().verify(new File(getClass().getResource("/CheckDecryptionProofTest/OK").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestWithWriteInsOK() {
-        VerificationResult result = new CheckDecryptionProof().executeVerification(new File(getClass().getResource("/CheckDecryptionProofTest/OK-WRITE-INS").getFile()));
+        VerificationResult result = new CheckDecryptionProof().verify(new File(getClass().getResource("/CheckDecryptionProofTest/OK-WRITE-INS").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestOKFileNotFound() {
-        VerificationResult result = new CheckDecryptionProof().executeVerification(new File(getClass().getResource("/CheckDecryptionProofTest/NOK-NOTFILE").getFile()));
+        VerificationResult result = new CheckDecryptionProof().verify(new File(getClass().getResource("/CheckDecryptionProofTest/NOK-NOTFILE").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }

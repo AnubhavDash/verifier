@@ -113,6 +113,9 @@ public class JsonParserTest {
         assertArrayEquals(DatatypeConverter.parseBase64Binary(
                 "GhcMhwBb1b1ngv9xvcWvXYHdgchaX5fF0tz5WIPBi2E0aYzZpqmFEylaAJ0XfvmSoqwc3fePMKdUKYXG2JY3tXM1LG70YT6azBFYG038jWaCXXz6NyUkYAz0Oz2vICck53ksyH9PY1zd2QzSwWz8L7bznBhTKgL5/UsuLqcCDvQXLYc82vxOUoIkP4HsreTMKdA5YnaoZjJg/2brDKdqcf2oWvahOI9QDu5+guHZhEOMK7cseQr/1dl3DmgjdaqoXQx5xjd2qemiu+70E6L+g2xk29X0VLiPDqLKF4a8KLB/VyJCkbYYm0VDIogl8mxB91imHo4q5FlC2g1Fjw6RIA=="),
                           metadata.getSignature());
+
+        StringBuilder sb = new StringBuilder();
+        metadata.signedItems.stream().forEach(s -> sb.append(s.value));
     }
 
 

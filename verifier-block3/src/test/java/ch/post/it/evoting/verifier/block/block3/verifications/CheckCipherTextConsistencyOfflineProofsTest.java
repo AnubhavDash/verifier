@@ -25,13 +25,13 @@ public class CheckCipherTextConsistencyOfflineProofsTest {
 
     @Test
     public void executeTestOK() {
-        VerificationResult result = new CheckCipherTextConsistencyOfflineProofs().executeVerification(new File(getClass().getResource("/CheckCiphertextConsistencyOfflineProofsTest/OK").getFile()));
+        VerificationResult result = new CheckCipherTextConsistencyOfflineProofs().verify(new File(getClass().getResource("/CheckCiphertextConsistencyOfflineProofsTest/OK").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestNOK() {
-        VerificationResult result = new CheckCipherTextConsistencyOfflineProofs().executeVerification(new File(getClass().getResource("/CheckCiphertextConsistencyOfflineProofsTest/NOK").getFile()));
+        VerificationResult result = new CheckCipherTextConsistencyOfflineProofs().verify(new File(getClass().getResource("/CheckCiphertextConsistencyOfflineProofsTest/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 

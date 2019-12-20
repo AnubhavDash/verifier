@@ -47,9 +47,10 @@
       <!--th>Message</th-->
     </tr>
     <tr *ngFor="let verification of verifications | keyvalue"
-        [class.bg-success]="verification.value.status === 'OK'"
-        [class.bg-danger]="verification.value.status === 'NOK'"
-        [class.bg-secondary]="verification.value.status === 'NA'">
+        [class.bg-success]="isOK(verification.value.status)"
+        [class.bg-danger]="isNotOK(verification.value.status)"
+        [class.bg-warning]="isError(verification.value.status)"
+        [class.bg-secondary]="isNA(verification.value.status)">
       <td [class.text-light]="verification.value.status !== null">{{verification.value.blockId}}</td>
       <td [class.text-light]="verification.value.status !== null">{{verification.value.verificationId}}</td>
       <td [class.text-light]="verification.value.status !== null">{{verification.value.name}}</td>

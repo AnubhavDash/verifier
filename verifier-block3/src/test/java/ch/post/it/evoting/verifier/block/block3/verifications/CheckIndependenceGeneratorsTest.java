@@ -27,14 +27,14 @@ public class CheckIndependenceGeneratorsTest {
     @Ignore
     @Test
     public void executeTestOK() {
-        VerificationResult result = new CheckIndependenceGenerators().executeVerification(new File(getClass().getResource("/CheckIndependenceGeneratorsTest/OK").getFile()));
+        VerificationResult result = new CheckIndependenceGenerators().verify(new File(getClass().getResource("/CheckIndependenceGeneratorsTest/OK").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Ignore
     @Test
     public void executeTestNOK() {
-        VerificationResult result = new CheckIndependenceGenerators().executeVerification(new File(getClass().getResource("/CheckIndependenceGeneratorsTest/NOK").getFile()));
+        VerificationResult result = new CheckIndependenceGenerators().verify(new File(getClass().getResource("/CheckIndependenceGeneratorsTest/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 

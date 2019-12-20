@@ -25,13 +25,13 @@ public class CheckShuffleArgumentTest {
 
     @Test
     public void executeTestOK() {
-        VerificationResult result = new CheckShuffleArgument().executeVerification(new File(getClass().getResource("/CheckShuffleArgumentTest/OK").getFile()));
+        VerificationResult result = new CheckShuffleArgument().verify(new File(getClass().getResource("/CheckShuffleArgumentTest/OK").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestNOK() {
-        VerificationResult result = new CheckShuffleArgument().executeVerification(new File(getClass().getResource("/CheckShuffleArgumentTest/NOK").getFile()));
+        VerificationResult result = new CheckShuffleArgument().verify(new File(getClass().getResource("/CheckShuffleArgumentTest/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }

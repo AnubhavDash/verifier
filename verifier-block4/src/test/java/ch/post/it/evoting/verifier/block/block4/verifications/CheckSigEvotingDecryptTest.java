@@ -25,27 +25,27 @@ public class CheckSigEvotingDecryptTest {
 
     @Test
     public void executeTestOK() {
-        VerificationResult verificationResult = new CheckSigEvotingDecrypt().executeVerification(new File(getClass().getResource("/CheckSigEvotingDecryptTest/OK").getFile()));
+        VerificationResult verificationResult = new CheckSigEvotingDecrypt().verify(new File(getClass().getResource("/CheckSigEvotingDecryptTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKXmlKo() {
-        VerificationResult verificationResult = new CheckSigEvotingDecrypt().executeVerification(new File(getClass().getResource("/CheckSigEvotingDecryptTest/NOK/XML-NOT-OK").getFile()));
+        VerificationResult verificationResult = new CheckSigEvotingDecrypt().verify(new File(getClass().getResource("/CheckSigEvotingDecryptTest/NOK/XML-NOT-OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKCertKo() {
-        VerificationResult verificationResult = new CheckSigEvotingDecrypt().executeVerification(new File(getClass().getResource("/CheckSigEvotingDecryptTest/NOK/CERT-NOT-OK").getFile()));
+        VerificationResult verificationResult = new CheckSigEvotingDecrypt().verify(new File(getClass().getResource("/CheckSigEvotingDecryptTest/NOK/CERT-NOT-OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
     @Test
     public void executeTestNOKFileNotFound() {
-        VerificationResult verificationResult = new CheckSigEvotingDecrypt().executeVerification(new File(getClass().getResource("/CheckSigEvotingDecryptTest/NOK-NOTFILE").getFile()));
+        VerificationResult verificationResult = new CheckSigEvotingDecrypt().verify(new File(getClass().getResource("/CheckSigEvotingDecryptTest/NOK-NOTFILE").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }

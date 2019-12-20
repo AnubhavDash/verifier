@@ -52,7 +52,7 @@ public class CheckTallyingAnswers extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult executeVerification(File inputDirectory) {
+    public VerificationResult verify(File inputDirectory) {
         VerificationResult result = new VerificationResult(getVerificationDefinition());
         try {
             // 1, config file => map<Tuple<Qid, Atype>, answerId> => map1

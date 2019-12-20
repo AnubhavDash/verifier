@@ -2,10 +2,12 @@ package ch.post.it.evoting.verifier.common.block.dto.revised;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.Base64;
 
+@Getter
 public class AuthenticationToken {
     public final String id;
     public final VoterInformation voterInformation;

@@ -25,21 +25,21 @@ public class CheckOptionsMappingTest {
 
     @Test
     public void executeTestOK() {
-        VerificationResult verificationResult = new CheckOptionsMapping().executeVerification(new File(getClass().getResource("/CheckOptionsMappingTest/OK").getFile()));
+        VerificationResult verificationResult = new CheckOptionsMapping().verify(new File(getClass().getResource("/CheckOptionsMappingTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOK() {
-        VerificationResult verificationResult = new CheckOptionsMapping().executeVerification(new File(getClass().getResource("/CheckOptionsMappingTest/NOK").getFile()));
+        VerificationResult verificationResult = new CheckOptionsMapping().verify(new File(getClass().getResource("/CheckOptionsMappingTest/NOK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestOKWriteIns() {
-        VerificationResult verificationResult = new CheckOptionsMapping().executeVerification(new File(getClass().getResource("/CheckOptionsMappingTest/OK-WRITEINS").getFile()));
+        VerificationResult verificationResult = new CheckOptionsMapping().verify(new File(getClass().getResource("/CheckOptionsMappingTest/OK-WRITEINS").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }

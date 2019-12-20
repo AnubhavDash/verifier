@@ -28,28 +28,28 @@ public class CheckSigOnlineProofsTest {
     @Test
     @Ignore
     public void executeTestOKWithVotes() {
-        VerificationResult result = new CheckSigOnlineProofs().executeVerification(new File(getClass().getResource("/CheckSigOnlineProofsTest/OK/WITH-VOTES").getFile()));
+        VerificationResult result = new CheckSigOnlineProofs().verify(new File(getClass().getResource("/CheckSigOnlineProofsTest/OK/WITH-VOTES").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     @Ignore
     public void executeTestOKEmptyVotes() {
-        VerificationResult result = new CheckSigOnlineProofs().executeVerification(new File(getClass().getResource("/CheckSigOnlineProofsTest/OK/EMPTY-VOTES").getFile()));
+        VerificationResult result = new CheckSigOnlineProofs().verify(new File(getClass().getResource("/CheckSigOnlineProofsTest/OK/EMPTY-VOTES").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     @Ignore
     public void executeTestNOK() {
-        VerificationResult result = new CheckSigOnlineProofs().executeVerification(new File(getClass().getResource("/CheckSigOnlineProofsTest/NOK/NOK").getFile()));
+        VerificationResult result = new CheckSigOnlineProofs().verify(new File(getClass().getResource("/CheckSigOnlineProofsTest/NOK/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 
     @Test
     @Ignore
     public void executeTestNOKNoFile() {
-        VerificationResult result = new CheckSigOnlineProofs().executeVerification(new File(getClass().getResource("/CheckSigOnlineProofsTest/NOK/NOK-NOFILE").getFile()));
+        VerificationResult result = new CheckSigOnlineProofs().verify(new File(getClass().getResource("/CheckSigOnlineProofsTest/NOK/NOK-NOFILE").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 

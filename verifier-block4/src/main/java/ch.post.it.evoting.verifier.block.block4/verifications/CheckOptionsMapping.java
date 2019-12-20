@@ -20,11 +20,12 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.block.dto.revised.BallotBox;
+import ch.post.it.evoting.verifier.common.block.dto.revised.CandidateList;
+import ch.post.it.evoting.verifier.common.block.dto.revised.ElectionEvent;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.dto.BallotBox;
-import ch.post.it.evoting.verifier.dto.DataConfigEE;
-import ch.post.it.evoting.verifier.dto.Option;
+import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import com.scytl.xmlns.decrypt._1.Results;
 import org.apache.log4j.Logger;
 
@@ -32,6 +33,7 @@ import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Function;
@@ -55,45 +57,46 @@ public class CheckOptionsMapping extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult executeVerification(File inputDirectory) {
+    public VerificationResult verify(File inputDirectory) {
         VerificationResult result = new VerificationResult(getVerificationDefinition());
         try {
             Path path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_ELECTION_SETUP);
-            DataConfigEE dataConfigEE = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", DataConfigEE.class);
-            List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
+            ElectionEvent electionEvent = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", ElectionEvent.class);
+            List<BallotBox> ballotBoxes = electionEvent.getBallotBoxes();
 
             ballotBoxes.forEach(ballotBox -> {
-                String ballotBoxId = ballotBox.getId();
-                String ballotBoxAuthId = ballotBox.getAuthId();
+                // Prepare ballot box ids
+                String ballotBoxId = TypeConverter.UUIDToStringWithoutDash(ballotBox.getId());
+                String ballotBoxAuthId = TypeConverter.UUIDToStringWithoutDash(ballotBox.getAuthId());
 
                 ballotBox.getCountingCircles().forEach(countingCircle -> {
                     try {
                         String countingCircleId = countingCircle.getId();
                         //1 Generate map<prime, alias>
                         //votations
-                        Map<Integer, String> primeAliasMap = countingCircle.getDomainOfInfluence().stream()
+                        Map<BigInteger, String> primeAliasMap = countingCircle.getDomainsOfInfluence().stream()
                                 .flatMap(doi -> doi.getVotes().stream())
                                 .flatMap(v -> v.getQuestions().stream())
-                                .flatMap(q -> q.getOptions().stream())
-                                .collect(Collectors.toMap(Option::getPrimeNumber, Option::getAlias));
+                                .flatMap(q -> q.getOptions().stream().map(option -> new AbstractMap.SimpleEntry<>(option.getPrimeNumber(), option.getAlias().toString())))
+                                .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
                         //lists
-                        primeAliasMap.putAll(countingCircle.getDomainOfInfluence().stream()
+                        primeAliasMap.putAll(countingCircle.getDomainsOfInfluence().stream()
                                 .flatMap(doi -> doi.getElections().stream())
                                 .flatMap(e -> e.getLists().stream())
-                                .collect(Collectors.toMap(ch.post.it.evoting.verifier.dto.List::getPrimeNumber, ch.post.it.evoting.verifier.dto.List::getAlias))
+                                .collect(Collectors.toMap(CandidateList::getPrimeNumber, CandidateList::getAlias))
                         );
                         //candidates
-                        primeAliasMap.putAll(countingCircle.getDomainOfInfluence().stream()
+                        primeAliasMap.putAll(countingCircle.getDomainsOfInfluence().stream()
                                 .flatMap(doi -> doi.getElections().stream())
                                 .flatMap(e -> e.getLists().stream())
                                 .flatMap(l -> l.getCandidatePositions().stream())
-                                .flatMap(cp -> cp.getPrimeNumber().stream().map(prime -> new AbstractMap.SimpleEntry<>(prime, cp.getCandidateListId())))
+                                .flatMap(cp -> cp.getPrimeNumbers().stream().map(prime -> new AbstractMap.SimpleEntry<>(prime, cp.getCandidateListId().toString())))
                                 .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue))
                         );
-                        primeAliasMap.putAll(countingCircle.getDomainOfInfluence().stream()
+                        primeAliasMap.putAll(countingCircle.getDomainsOfInfluence().stream()
                                 .flatMap(doi -> doi.getElections().stream())
                                 .flatMap(e -> e.getCandidates().stream())
-                                .flatMap(c -> c.getPrimeNumber().stream().map(prime -> new AbstractMap.SimpleEntry<>(prime, c.getAlias())))
+                                .flatMap(c -> c.getPrimeNumbers().stream().map(prime -> new AbstractMap.SimpleEntry<>(prime, c.getAlias().toString())))
                                 .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue))
                         );
 
@@ -155,7 +158,7 @@ public class CheckOptionsMapping extends AbstractVerification {
                                         })
                                         .sum();
                                 if (!nb.equals(aliasCount)) {
-                                    throw new Test01FailException(alias);
+                                    throw new CheckOptionsMappingFailException(alias);
                                 }
                             } else {
                                 Long nb = primeAliasMap.entrySet().stream()
@@ -167,12 +170,12 @@ public class CheckOptionsMapping extends AbstractVerification {
                                         })
                                         .sum();
                                 if (!nb.equals(aliasCount)) {
-                                    throw new Test01FailException(alias);
+                                    throw new CheckOptionsMappingFailException(alias);
                                 }
                             }
                         });
                     } catch (IOException | JAXBException e) {
-                        throw new Test01WrapperException(e);
+                        throw new CheckOptionsMappingWrapperException(e);
                     }
                 });
 
@@ -183,13 +186,13 @@ public class CheckOptionsMapping extends AbstractVerification {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
             result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.file.not.found.message"));
-        } catch (Test01FailException e) {
+        } catch (CheckOptionsMappingFailException e) {
             result.setStatus(Status.NOK);
             result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.nok.message", e.getAliasInError()));
-        } catch (Test01WrapperException e) {
+        } catch (CheckOptionsMappingWrapperException e) {
             LOGGER.error("an unexpected error occurred", e);
             //unwrap the wrapped exception
-            e = (Test01WrapperException) e.getCause();
+            e = (CheckOptionsMappingWrapperException) e.getCause();
             result.setStatus(Status.NOK);
             result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         } catch (Exception e) {
@@ -210,16 +213,16 @@ public class CheckOptionsMapping extends AbstractVerification {
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
 
-    class Test01WrapperException extends RuntimeException {
-        Test01WrapperException(Exception root) {
+    class CheckOptionsMappingWrapperException extends RuntimeException {
+        CheckOptionsMappingWrapperException(Exception root) {
             super(root);
         }
     }
 
-    class Test01FailException extends RuntimeException {
+    class CheckOptionsMappingFailException extends RuntimeException {
         private String aliasInError;
 
-        Test01FailException(String aliasInError) {
+        CheckOptionsMappingFailException(String aliasInError) {
             this.aliasInError = aliasInError;
         }
 

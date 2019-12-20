@@ -25,19 +25,19 @@ public class CheckShuffleArgumentOnlineTest {
 
     @Test
     public void executeTestOK() {
-        VerificationResult result = new CheckShuffleArgumentOnline().executeVerification(new File(getClass().getResource("/CheckShuffleArgumentOnlineTest/OK").getFile()));
+        VerificationResult result = new CheckShuffleArgumentOnline().verify(new File(getClass().getResource("/CheckShuffleArgumentOnlineTest/OK").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestNOK() {
-        VerificationResult result = new CheckShuffleArgumentOnline().executeVerification(new File(getClass().getResource("/CheckShuffleArgumentOnlineTest/NOK").getFile()));
+        VerificationResult result = new CheckShuffleArgumentOnline().verify(new File(getClass().getResource("/CheckShuffleArgumentOnlineTest/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 
     @Test
     public void executeTestNOKnot3ControlComponents() {
-        VerificationResult result = new CheckShuffleArgumentOnline().executeVerification(new File(getClass().getResource("/CheckShuffleArgumentOnlineTest/NOK-CC").getFile()));
+        VerificationResult result = new CheckShuffleArgumentOnline().verify(new File(getClass().getResource("/CheckShuffleArgumentOnlineTest/NOK-CC").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }

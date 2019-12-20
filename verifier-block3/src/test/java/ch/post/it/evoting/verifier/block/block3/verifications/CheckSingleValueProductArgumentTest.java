@@ -25,13 +25,13 @@ public class CheckSingleValueProductArgumentTest {
 
     @Test
     public void executeTestOK() {
-        VerificationResult result = new CheckSingleValueProductArgument().executeVerification(new File(getClass().getResource("/CheckSingleValueProductArgumentTest/OK").getFile()));
+        VerificationResult result = new CheckSingleValueProductArgument().verify(new File(getClass().getResource("/CheckSingleValueProductArgumentTest/OK").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestNOK() {
-        VerificationResult result = new CheckSingleValueProductArgument().executeVerification(new File(getClass().getResource("/CheckSingleValueProductArgumentTest/NOK").getFile()));
+        VerificationResult result = new CheckSingleValueProductArgument().verify(new File(getClass().getResource("/CheckSingleValueProductArgumentTest/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }

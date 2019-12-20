@@ -25,12 +25,12 @@ public class CheckCommitmentParametersOnlineTest {
 
     @Test
     public void executeTestOK() {
-        VerificationResult result = new CheckCommitmentParametersOnline().executeVerification(new File(getClass().getResource("/CheckCommitmentParametersOnlineTest/OK").getFile()));
+        VerificationResult result = new CheckCommitmentParametersOnline().verify(new File(getClass().getResource("/CheckCommitmentParametersOnlineTest/OK").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
     @Test
     public void executeTestNOK() {
-        VerificationResult result = new CheckCommitmentParametersOnline().executeVerification(new File(getClass().getResource("/CheckCommitmentParametersOnlineTest/NOK").getFile()));
+        VerificationResult result = new CheckCommitmentParametersOnline().verify(new File(getClass().getResource("/CheckCommitmentParametersOnlineTest/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 

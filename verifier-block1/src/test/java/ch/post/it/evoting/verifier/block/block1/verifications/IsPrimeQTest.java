@@ -14,37 +14,47 @@
  */
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
-import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
+import java.io.IOException;
 
 public class IsPrimeQTest {
+    private IsPrimeQ isPrimeQ;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
+    @Before
+    public void setup() {
+        isPrimeQ = new IsPrimeQ();
+    }
 
     @Test
-    public void executeTestOK() {
-        VerificationResult verificationResult = new IsPrimeQ().executeVerification(new File(getClass().getResource("/IsPrimeQTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult verificationResult = isPrimeQ.verify(new File(getClass().getResource("/IsPrimeQTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOK() {
-        VerificationResult verificationResult = new IsPrimeQ().executeVerification(new File(getClass().getResource("/IsPrimeQTest/NOK/NOK").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
-        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification02.nok.message"), verificationResult.getMessage());
+    public void executeTestNOK() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("q is not prime");
+        isPrimeQ.verify(new File(getClass().getResource("/IsPrimeQTest/NOK/NOK").getFile()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound() {
-        VerificationResult verificationResult = new IsPrimeQ().executeVerification(new File(getClass().getResource("/IsPrimeQTest/NOK/NOK-NOFILE").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
-        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification02.file.not.found.message"), verificationResult.getMessage());
+    public void executeTestNOKFileNotFound() throws Exception {
+        exceptionRule.expect(IOException.class);
+        exceptionRule.expectMessage("encryptionParameters\\.json");
+        isPrimeQ.verify(new File(getClass().getResource("/IsPrimeQTest/NOK/NOK-NOFILE").getFile()));
     }
 }

@@ -25,28 +25,28 @@ public class CheckSigDecompressedVotesTest {
 
     @Test
     public void executeTestOK() {
-        VerificationResult verificationResult = new CheckSigDecompressedVotes().executeVerification(new File(getClass().getResource("/CheckSigDecompressedVotesTest/OK").getFile()));
+        VerificationResult verificationResult = new CheckSigDecompressedVotes().verify(new File(getClass().getResource("/CheckSigDecompressedVotesTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKXmlKo() {
-        VerificationResult verificationResult = new CheckSigDecompressedVotes().executeVerification(new File(getClass().getResource("/CheckSigDecompressedVotesTest/NOK/CSV-NOT-OK").getFile()));
+        VerificationResult verificationResult = new CheckSigDecompressedVotes().verify(new File(getClass().getResource("/CheckSigDecompressedVotesTest/NOK/CSV-NOT-OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKCertKo() {
-        VerificationResult verificationResult = new CheckSigDecompressedVotes().executeVerification(new File(getClass().getResource("/CheckSigDecompressedVotesTest/NOK/CERT-NOT-OK").getFile()));
+        VerificationResult verificationResult = new CheckSigDecompressedVotes().verify(new File(getClass().getResource("/CheckSigDecompressedVotesTest/NOK/CERT-NOT-OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKFileNotFound() {
-        VerificationResult verificationResult = new CheckSigDecompressedVotes().executeVerification(new File(getClass().getResource("/CheckSigDecompressedVotesTest/NOK-NOTFILE").getFile()));
+        VerificationResult verificationResult = new CheckSigDecompressedVotes().verify(new File(getClass().getResource("/CheckSigDecompressedVotesTest/NOK-NOTFILE").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }

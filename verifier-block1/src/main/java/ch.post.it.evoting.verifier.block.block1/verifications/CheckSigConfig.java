@@ -16,21 +16,15 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
-import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 
 public class CheckSigConfig extends AbstractVerification {
-
-    private static final Logger LOGGER = Logger.getLogger(CheckSigConfig.class);
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -46,9 +40,8 @@ public class CheckSigConfig extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult executeVerification(File inputDirectory) {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
-        try {
+    public VerificationResult verify(File inputDirectory) throws Exception {
+        VerificationResult result = new VerificationResult();
             byte[] rootCertificate = Files.readAllBytes(inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_CERTIFICATES).resolve("integrationCA.pem"));
 
             File dataConfig = PathHelper.getFile(inputDirectory.toPath()
@@ -59,22 +52,28 @@ public class CheckSigConfig extends AbstractVerification {
             byte[] content = Files.readAllBytes(inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName()));
             byte[] signature = Files.readAllBytes(inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName() + ".p7"));
             if (!SignatureChecker.verifyPKCS7(content, signature, rootCertificate)) {
-                throw new VerificationFailureException(dataConfig.getName());
+                throw buildVerificationFailureException(
+                        "The signature verification of the file failed",
+                        Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                        "verification73.nok.message",
+                        dataConfig.getName()
+                );
+//                throw new VerificationFailureException(dataConfig.getName());
             }
             result.setStatus(Status.OK);
 
-        } catch (VerificationFailureException e) {
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification73.nok.message", e.getArgs()));
-        } catch (NoSuchFileException e) {
-            LOGGER.error("a NotSuchFileException error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification73.file.not.found.message", e.getFile()));
-        } catch (Exception e) {
-            LOGGER.error("unexpected error", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
-        }
+//        } catch (VerificationFailureException e) {
+//            result.setStatus(Status.NOK);
+//            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification73.nok.message", e.getArgs()));
+//        } catch (NoSuchFileException e) {
+//            LOGGER.error("a NotSuchFileException error occurred", e);
+//            result.setStatus(Status.FILE_ERROR);
+//            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification73.file.not.found.message", e.getFile()));
+//        } catch (Exception e) {
+//            LOGGER.error("unexpected error", e);
+//            result.setStatus(Status.UNEXPECTED_ERROR);
+//            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
+//        }
         return result;
     }
 }

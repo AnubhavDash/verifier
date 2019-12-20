@@ -16,12 +16,12 @@ package ch.post.it.evoting.verifier.block.block2.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.HmacGenerator;
 import org.apache.commons.lang.StringUtils;
 import org.bouncycastle.util.encoders.Base64;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.rules.ExpectedException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -30,20 +30,30 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class CheckSecureLogIntegrityTest {
+    private CheckSecureLogIntegrity checkSecureLogIntegrity;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
+    @Before
+    public void setup() {
+        checkSecureLogIntegrity = new CheckSecureLogIntegrity();
+    }
 
     @Test
     @Ignore
-    public void executeTestOK() {
-        VerificationResult verificationResult = new CheckSecureLogIntegrity().executeVerification(new File(getClass().getResource("/CheckSecureLogIntegrityTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult verificationResult = checkSecureLogIntegrity.verify(new File(getClass().getResource("/CheckSecureLogIntegrityTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOK() {
-        VerificationResult verificationResult = new CheckSecureLogIntegrity().executeVerification(new File(getClass().getResource("/CheckSecureLogIntegrityTest/NOK").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    @Ignore
+    public void executeTestNOK() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("Check secure log integrity failed");
+        checkSecureLogIntegrity.verify(new File(getClass().getResource("/CheckSecureLogIntegrityTest/NOK").getFile()));
     }
 
     @Test

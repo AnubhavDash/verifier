@@ -16,38 +16,68 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
+import java.io.IOException;
 
 public class CheckSigElectionImportTest {
+    private CheckSigElectionImport checkSigElectionImport;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
+    @Before
+    public void setup() {
+        checkSigElectionImport = new CheckSigElectionImport();
+    }
 
     @Test
-    public void executeTestOK() {
-        VerificationResult verificationResult = new CheckSigElectionImport().executeVerification(new File(getClass().getResource("/CheckSigElectionImportTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult verificationResult = checkSigElectionImport.verify(new File(getClass().getResource("/CheckSigElectionImportTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOKCertKo() {
-        VerificationResult verificationResult = new CheckSigElectionImport().executeVerification(new File(getClass().getResource("/CheckSigElectionImportTest/NOK/CERT-NOT-OK").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOKCertKo() throws Exception {
+        // TODO Check if test is relevant, because executeTestNOKJsonKo got the same error
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("The signature verification of the file failed");
+        checkSigElectionImport.verify(new File(getClass().getResource("/CheckSigElectionImportTest/NOK/CERT-NOT-OK").getFile()));
     }
 
     @Test
-    public void executeTestNOKjsonKo() {
-        VerificationResult verificationResult = new CheckSigElectionImport().executeVerification(new File(getClass().getResource("/CheckSigElectionImportTest/NOK/JSON-NOT-OK").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOKJsonKo() throws Exception {
+        // TODO Check if test is relevant, because executeTestNOKCertKo got the same error
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("The signature verification of the file failed");
+        checkSigElectionImport.verify(new File(getClass().getResource("/CheckSigElectionImportTest/NOK/JSON-NOT-OK").getFile()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound() {
-        VerificationResult verificationResult = new CheckSigElectionImport().executeVerification(new File(getClass().getResource("/CheckSigElectionImportTest/NOK/NOK-NOFILE").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOKFileNotFound() throws Exception {
+        exceptionRule.expect(IOException.class);
+        exceptionRule.expectMessage("integrationCA.pem");
+        checkSigElectionImport.verify(new File(getClass().getResource("/CheckSigElectionImportTest/NOK/NOK-NOFILE").getFile()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFound2() throws Exception {
+        exceptionRule.expect(IOException.class);
+        exceptionRule.expectMessage("AP_election_import_.*\\.json");
+        checkSigElectionImport.verify(new File(getClass().getResource("/CheckSigElectionImportTest/NOK/NOK-NOFILE2").getFile()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFound3() throws Exception {
+        exceptionRule.expect(IOException.class);
+        exceptionRule.expectMessage("AP_election_import_demo_bk_06.json.p7");
+        checkSigElectionImport.verify(new File(getClass().getResource("/CheckSigElectionImportTest/NOK/NOK-NOFILE3").getFile()));
     }
 }

@@ -25,19 +25,19 @@ public class CheckDecryptionFactorizationTest {
 
     @Test
     public void executeTestOK() {
-        VerificationResult result = new CheckDecryptionFactorization().executeVerification(new File(getClass().getResource("/CheckDecryptionFactorizationTest/OK").getFile()));
+        VerificationResult result = new CheckDecryptionFactorization().verify(new File(getClass().getResource("/CheckDecryptionFactorizationTest/OK").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestWithWriteInsOK() {
-        VerificationResult result = new CheckDecryptionFactorization().executeVerification(new File(getClass().getResource("/CheckDecryptionFactorizationTest/OK-WRITE-INS").getFile()));
+        VerificationResult result = new CheckDecryptionFactorization().verify(new File(getClass().getResource("/CheckDecryptionFactorizationTest/OK-WRITE-INS").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestNOK() {
-        VerificationResult result = new CheckDecryptionFactorization().executeVerification(new File(getClass().getResource("/CheckDecryptionFactorizationTest/NOK").getFile()));
+        VerificationResult result = new CheckDecryptionFactorization().verify(new File(getClass().getResource("/CheckDecryptionFactorizationTest/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }

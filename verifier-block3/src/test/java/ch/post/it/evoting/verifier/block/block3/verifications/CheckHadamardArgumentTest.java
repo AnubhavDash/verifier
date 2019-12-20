@@ -25,13 +25,13 @@ public class CheckHadamardArgumentTest {
 
     @Test
     public void executeTestOK() {
-        VerificationResult result = new CheckHadamardArgument().executeVerification(new File(getClass().getResource("/CheckHadamardArgumentTest/OK").getFile()));
+        VerificationResult result = new CheckHadamardArgument().verify(new File(getClass().getResource("/CheckHadamardArgumentTest/OK").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestNOK() {
-        VerificationResult result = new CheckHadamardArgument().executeVerification(new File(getClass().getResource("/CheckHadamardArgumentTest/NOK").getFile()));
+        VerificationResult result = new CheckHadamardArgument().verify(new File(getClass().getResource("/CheckHadamardArgumentTest/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }
