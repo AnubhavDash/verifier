@@ -65,6 +65,8 @@ public class CheckOptionsMappingTest {
         checkOptionsMapping.verify(new File(getClass().getResource("/CheckOptionsMappingTest/NOK-NOFILE").getFile()));
     }
 
+    // TODO File not found error test evoting-decrypt_.*\.xml
+
     @Test
     public void executeTestNOKFileNotFound2() throws Exception {
         exceptionRule.expect(FileNotFoundException.class);
@@ -72,5 +74,4 @@ public class CheckOptionsMappingTest {
         checkOptionsMapping.verify(new File(getClass().getResource("/CheckOptionsMappingTest/NOK-NOFILE2").getFile()));
     }
 
-    // TODO File not found error test
 }

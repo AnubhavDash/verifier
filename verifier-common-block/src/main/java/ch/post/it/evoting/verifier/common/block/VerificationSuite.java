@@ -30,14 +30,17 @@ public abstract class VerificationSuite implements VerifierBlock {
 
     protected VerificationSuite(String packagePrefix) {
         Reflections reflections = new Reflections(packagePrefix);
-        verifications = reflections.getSubTypesOf(AbstractVerification.class).parallelStream().map(c -> {
-            try {
-                return (AbstractVerification) c.newInstance();
-            } catch (InstantiationException | IllegalAccessException e) {
-                LOGGER.error(e.getMessage(), e);
-                throw new RuntimeException("Unable to instantiate the verifications", e);
-            }
-        }).collect(Collectors.toList());
+        verifications = reflections.getSubTypesOf(AbstractVerification.class).parallelStream()
+                .map(c -> {
+                    try {
+                        return (AbstractVerification) c.newInstance();
+                    } catch (InstantiationException | IllegalAccessException e) {
+                        LOGGER.error(e.getMessage(), e);
+                        throw new RuntimeException("Unable to instantiate the verifications", e);
+                    }
+                })
+                .filter(i -> !i.getVerificationDefinition().isDeactivated()) // Exclude deactivated verifications
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -52,7 +55,7 @@ public abstract class VerificationSuite implements VerifierBlock {
             VerificationResult result = new VerificationResult(def);
             // Do skip the test if there are any defined restrictions
             // and the test trait does not match the restriction
-            if ( ( options != null && !options.isEmpty())
+            if ((options != null && !options.isEmpty())
                     && !def.containsAnyVerificationTrait(options)) {
                 result.setStatus(Status.NA);
                 return result;
