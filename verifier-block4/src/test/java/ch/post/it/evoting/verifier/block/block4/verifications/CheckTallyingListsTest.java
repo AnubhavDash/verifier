@@ -38,9 +38,11 @@ public class CheckTallyingListsTest {
     checkTallyingLists = new CheckTallyingLists();
   }
 
-  @Test
+    @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkTallyingLists.verify(new File(getClass().getResource("/CheckTallyingListsTest/OK").getFile()));
+        VerificationResult verificationResult = checkTallyingLists.
+                verify(new File(getClass().getResource("/CheckTallyingListsTest/OK").getFile()));
+
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -48,9 +50,29 @@ public class CheckTallyingListsTest {
     @Test
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("The occurrences for list are different for counting Circle in eCH-0110 and evoting-decrypt");
+        exceptionRule.expectMessage(
+                "The occurrences for list are different for counting Circle in eCH-0110 and evoting-decrypt");
 
-        VerificationResult verificationResult = checkTallyingLists.verify(new File(getClass().getResource("/CheckTallyingListsTest/NOK").getFile()));
+        VerificationResult verificationResult = checkTallyingLists.
+                verify(new File(getClass().getResource("/CheckTallyingListsTest/NOK").getFile()));
+    }
+
+    @Test
+    public void executeTestNOKVoteCountCountingCircle() throws Exception {
+        exceptionRule.expect(IllegalArgumentException.class);
+        exceptionRule.expectMessage("cannot find the decrypt data for given countingCircle");
+
+        VerificationResult verificationResult = checkTallyingLists.verify(new File(
+                getClass().getResource("/CheckTallyingListsTest/NOK-VOTECOUNT-COUNTINGCIRCLE").getFile()));
+    }
+
+    @Test
+    public void executeTestNOKVoteCountElection() throws Exception {
+        exceptionRule.expect(IllegalArgumentException.class);
+        exceptionRule.expectMessage("cannot find the decrypt data for given election");
+
+        VerificationResult verificationResult = checkTallyingLists.verify(
+                new File(getClass().getResource("/CheckTallyingListsTest/NOK-VOTECOUNT-ELECTION").getFile()));
     }
 
     @Test
@@ -58,7 +80,8 @@ public class CheckTallyingListsTest {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage("configuration-anonymized.xml");
 
-        VerificationResult verificationResult = checkTallyingLists.verify(new File(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-CONFIG").getFile()));
+        VerificationResult verificationResult = checkTallyingLists.
+                verify(new File(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-CONFIG").getFile()));
     }
 
     @Test
@@ -66,7 +89,8 @@ public class CheckTallyingListsTest {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage("evoting-decrypt_.*\\.xml");
 
-        VerificationResult verificationResult = checkTallyingLists.verify(new File(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-EVOTING").getFile()));
+        VerificationResult verificationResult = checkTallyingLists.
+                verify(new File(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-EVOTING").getFile()));
     }
 
     @Test
@@ -74,6 +98,7 @@ public class CheckTallyingListsTest {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage("eCH-0110_.*\\.xml");
 
-        VerificationResult verificationResult = checkTallyingLists.verify(new File(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-eCH").getFile()));
+        VerificationResult verificationResult = checkTallyingLists.
+                verify(new File(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-eCH").getFile()));
     }
 }
