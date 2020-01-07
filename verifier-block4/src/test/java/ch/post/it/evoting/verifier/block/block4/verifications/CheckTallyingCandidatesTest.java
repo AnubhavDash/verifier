@@ -16,38 +16,62 @@ package ch.post.it.evoting.verifier.block.block4.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
 
 public class CheckTallyingCandidatesTest {
 
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
+    private CheckTallyingCandidates checkTallyingCandidates;
+
+    @Before
+    public void setup() {
+        checkTallyingCandidates = new CheckTallyingCandidates();
+    }
+
     @Test
-    public void executeTestOK() {
-        VerificationResult verificationResult = new CheckTallyingCandidates().verify(new File(getClass().getResource("/CheckTallyingCandidates/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult verificationResult = checkTallyingCandidates.verify(new File(getClass().getResource("/CheckTallyingCandidates/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOK() {
-        VerificationResult verificationResult = new CheckTallyingCandidates().verify(new File(getClass().getResource("/CheckTallyingCandidates/NOK").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOKMajoralCountOfVotesTotal() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("The count of votes total for the candidate does not match in majoral election");
+
+        VerificationResult verificationResult = checkTallyingCandidates.verify(new File(getClass().getResource("/CheckTallyingCandidates/NOK1").getFile()));
     }
 
     @Test
-    public void executeTestOKWriteIns() {
-        VerificationResult verificationResult = new CheckTallyingCandidates().verify(new File(getClass().getResource("/CheckTallyingCandidates/OK-WRITEINS").getFile()));
+    public void executeTestNOKProportionalCountOfVotesTotal() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("The count of votes total for the candidate does not match in proportional election");
+
+        VerificationResult verificationResult = checkTallyingCandidates.verify(new File(getClass().getResource("/CheckTallyingCandidates/NOK2").getFile()));
+    }
+
+    @Test
+    public void executeTestOKWriteIns() throws Exception {
+        VerificationResult verificationResult = checkTallyingCandidates.verify(new File(getClass().getResource("/CheckTallyingCandidates/OK-WRITEINS").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOKWriteIns() {
-        VerificationResult verificationResult = new CheckTallyingCandidates().verify(new File(getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOKWriteIns() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("The count for the candidate does not match");
+
+        VerificationResult verificationResult = checkTallyingCandidates.verify(new File(getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS").getFile()));
     }
 }

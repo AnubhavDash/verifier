@@ -31,7 +31,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.AbstractMap;
@@ -58,184 +57,186 @@ public class CheckTallyingCandidates extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) {
+    public VerificationResult verify(File inputDirectory) throws Exception {
         VerificationResult result = new VerificationResult(getVerificationDefinition());
 
-        try {
-            //1, config file => map<candidateListId, candidateId> => map1
-            Path path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_ELECTION_SETUP);
-            Configuration configuration = Deserializer.fromXml(path.toFile(), "configuration-anonymized.xml", Configuration.class);
-            Map<String, String> mapConfig = configuration.getContest().getElectionInformation().stream()
-                    .flatMap(ei -> ei.getList().stream())
-                    .flatMap(l -> l.getCandidatePosition().stream())
-                    .filter(cp -> StringUtils.isNotEmpty(cp.getCandidateIdentification()))
-                    .collect(Collectors.toMap(CandidatePositionType::getCandidateListIdentification, CandidatePositionType::getCandidateIdentification, (id1, id2) -> id1));
+        //1, config file => map<candidateListId, candidateId> => map1
+        Path path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_ELECTION_SETUP);
+        Configuration configuration = Deserializer.fromXml(path.toFile(), "configuration-anonymized.xml",
+                Configuration.class);
+        Map<String, String> mapConfig = configuration.getContest().getElectionInformation().stream()
+                .flatMap(ei -> ei.getList().stream())
+                .flatMap(l -> l.getCandidatePosition().stream())
+                .filter(cp -> StringUtils.isNotEmpty(cp.getCandidateIdentification()))
+                .collect(Collectors.toMap(CandidatePositionType::getCandidateListIdentification,
+                        CandidatePositionType::getCandidateIdentification, (id1, id2) -> id1));
 
-            // 2, decrypt file => map<countingCircle, map<ListCandidateId||CandidateId, count>> => map2
-            path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_RESULTS);
-            Results results = Deserializer.fromXml(path.toFile(), "evoting-decrypt_.*\\.xml", Results.class);
-            Map<String, Map<String, Long>> mapDecrypt = results.getBallotsBox().stream()
-                    .flatMap(bb -> bb.getCountingCircle().stream())
-                    .map(cc -> {
-                        String ccId = cc.getCountingCircleIdentification();
+        // 2, decrypt file => map<countingCircle, map<ListCandidateId||CandidateId, count>> => map2
+        path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_RESULTS);
+        Results results = Deserializer.fromXml(path.toFile(), "evoting-decrypt_.*\\.xml", Results.class);
+        Map<String, Map<String, Long>> mapDecrypt = results.getBallotsBox().stream()
+                .flatMap(bb -> bb.getCountingCircle().stream())
+                .map(cc -> {
+                    String ccId = cc.getCountingCircleIdentification();
 
-                        Map<String, Long> answerCount = cc.getDomainOfInfluence().stream().flatMap(doi -> doi.getElection().stream())
-                                .flatMap(e -> e.getBallot().stream())
-                                .flatMap(b -> Stream.of(b.getChosenCandidateIdentification().stream(),
-                                        b.getChosenCandidateListIdentification().stream(),
-                                        b.getChosenWriteInsCandidateValue().stream()).flatMap(Function.identity()))
-                                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+                    Map<String, Long> answerCount =
+                            cc.getDomainOfInfluence().stream().flatMap(doi -> doi.getElection().stream())
+                            .flatMap(e -> e.getBallot().stream())
+                            .flatMap(b -> Stream.of(b.getChosenCandidateIdentification().stream(),
+                                    b.getChosenCandidateListIdentification().stream(),
+                                    b.getChosenWriteInsCandidateValue().stream()).flatMap(Function.identity()))
+                            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
-                        return new AbstractMap.SimpleEntry<>(ccId, answerCount);
-                    })
-                    .collect(Collectors.toMap(
-                            AbstractMap.SimpleEntry::getKey,
-                            AbstractMap.SimpleEntry::getValue,
-                            (ccId1, ccId2) -> {
-                                Map<String, Long> concat = new HashMap<>(ccId1);
-                                ccId2.forEach((k, v) -> concat.merge(k, v, Long::sum));
-                                return concat;
+                    return new AbstractMap.SimpleEntry<>(ccId, answerCount);
+                })
+                .collect(Collectors.toMap(
+                        AbstractMap.SimpleEntry::getKey,
+                        AbstractMap.SimpleEntry::getValue,
+                        (ccId1, ccId2) -> {
+                            Map<String, Long> concat = new HashMap<>(ccId1);
+                            ccId2.forEach((k, v) -> concat.merge(k, v, Long::sum));
+                            return concat;
+                        }
+                ));
+
+
+        path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_RESULTS);
+        Delivery ech110 = Deserializer.fromXml(path.toFile(), "eCH-0110_.*\\.xml", Delivery.class);
+        ech110.getResultDelivery().getCountingCircleResults().forEach(cc -> {
+            String ccId = cc.getCountingCircle().getCountingCircleId();
+            cc.getElectionResults().stream()
+                    .filter(er -> er.getMajoralElection() != null)
+                    .flatMap(er -> er.getMajoralElection().getCandidate().stream())
+                    .forEach(c -> {
+                        if (c.getCandidateInformation().isOfficialCandidateYesNo()) {
+                            String cId = c.getCandidateInformation().getCandidateIdentification();
+                            BigInteger decryptCount = getDecryptCount(mapConfig, mapDecrypt, ccId, cId);
+                            if (!c.getCountOfVotesTotal().equals(decryptCount)) {
+                                throw buildVerificationFailureException("The count of votes total for the candidate does not match in majoral election",
+                                        Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.nok.message", cId);
                             }
-                    ));
-
-
-            path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_RESULTS);
-            Delivery ech110 = Deserializer.fromXml(path.toFile(), "eCH-0110_.*\\.xml", Delivery.class);
-            ech110.getResultDelivery().getCountingCircleResults().forEach(cc -> {
-                String ccId = cc.getCountingCircle().getCountingCircleId();
-                cc.getElectionResults().stream()
-                        .filter(er -> er.getMajoralElection() != null)
-                        .flatMap(er -> er.getMajoralElection().getCandidate().stream())
-                        .forEach(c -> {
-                            if (c.getCandidateInformation().isOfficialCandidateYesNo()) {
-                                String cId = c.getCandidateInformation().getCandidateIdentification();
-                                BigInteger decryptCount = getDecryptCount(mapConfig, mapDecrypt, ccId, cId);
-                                if (!c.getCountOfVotesTotal().equals(decryptCount)) {
-                                    throw new Test03FailureException(cId);
-                                }
+                        }
+                    });
+            cc.getElectionResults().stream()
+                    .filter(er -> er.getProportionalElection() != null)
+                    .flatMap(er -> er.getProportionalElection().getCandidate().stream())
+                    .forEach(c -> {
+                        if (c.getCandidateInformation().isOfficialCandidateYesNo()) {
+                            String cId = c.getCandidateInformation().getCandidateIdentification();
+                            BigInteger decryptCount = getDecryptCount(mapConfig, mapDecrypt, ccId, cId);
+                            if (!c.getCountOfVotesTotal().equals(decryptCount)) {
+                                throw buildVerificationFailureException("The count of votes total for the candidate does not match in proportional election",
+                                        Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.nok.message", cId);
                             }
-                        });
-                cc.getElectionResults().stream()
-                        .filter(er -> er.getProportionalElection() != null)
-                        .flatMap(er -> er.getProportionalElection().getCandidate().stream())
-                        .forEach(c -> {
-                            if (c.getCandidateInformation().isOfficialCandidateYesNo()) {
-                                String cId = c.getCandidateInformation().getCandidateIdentification();
-                                BigInteger decryptCount = getDecryptCount(mapConfig, mapDecrypt, ccId, cId);
-                                if (!c.getCountOfVotesTotal().equals(decryptCount)) {
-                                    throw new Test03FailureException(cId);
-                                }
-                            }
-                        });
-            });
+                        }
+                    });
+        });
 
-            //Write Ins
-            // writeInsDecryptMap
-            Map<String, Map<String, Long>> writeInsDecryptMap = results.getBallotsBox().stream()
-                    .flatMap(bb -> bb.getCountingCircle().stream())
-                    .map(cc -> {
-                        String ccId = cc.getCountingCircleIdentification();
+        //Write Ins
+        // writeInsDecryptMap
+        Map<String, Map<String, Long>> writeInsDecryptMap = results.getBallotsBox().stream()
+                .flatMap(bb -> bb.getCountingCircle().stream())
+                .map(cc -> {
+                    String ccId = cc.getCountingCircleIdentification();
 
-                        Map<String, Long> answerCount = cc.getDomainOfInfluence().stream().flatMap(doi -> doi.getElection().stream())
-                                .flatMap(e -> e.getBallot().stream())
-                                .flatMap(b -> b.getChosenWriteInsCandidateValue().stream())
-                                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+                    Map<String, Long> answerCount =
+                            cc.getDomainOfInfluence().stream().flatMap(doi -> doi.getElection().stream())
+                            .flatMap(e -> e.getBallot().stream())
+                            .flatMap(b -> b.getChosenWriteInsCandidateValue().stream())
+                            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
-                        return new AbstractMap.SimpleEntry<>(ccId, answerCount);
-                    })
-                    .collect(Collectors.toMap(
-                            AbstractMap.SimpleEntry::getKey,
-                            AbstractMap.SimpleEntry::getValue,
-                            (ccId1, ccId2) -> {
-                                Map<String, Long> concat = new HashMap<>(ccId1);
-                                ccId2.forEach((k, v) -> concat.merge(k, v, Long::sum));
-                                return concat;
-                            }
-                    ));
+                    return new AbstractMap.SimpleEntry<>(ccId, answerCount);
+                })
+                .collect(Collectors.toMap(
+                        AbstractMap.SimpleEntry::getKey,
+                        AbstractMap.SimpleEntry::getValue,
+                        (ccId1, ccId2) -> {
+                            Map<String, Long> concat = new HashMap<>(ccId1);
+                            ccId2.forEach((k, v) -> concat.merge(k, v, Long::sum));
+                            return concat;
+                        }
+                ));
 
-            // writeInsEch110Map
-            CountMap<String> writeInsEch110Map = new CountMap<>();
-            //check writeIns content, fill writeInsEch110Map
-            ech110.getResultDelivery().getCountingCircleResults().forEach(cc -> {
-                String ccId = cc.getCountingCircle().getCountingCircleId();
-                cc.getElectionResults().stream()
-                        .filter(er -> er.getMajoralElection() != null)
-                        .flatMap(er -> er.getMajoralElection().getCandidate().stream())
-                        .filter(c -> !c.getCandidateInformation().isOfficialCandidateYesNo())
-                        .forEach(c -> {
-                            String cId = c.getCandidateInformation().getFamilyName() + " " + c.getCandidateInformation().getCallName();
-                            Map<String, Long> writeInsAndCount = writeInsDecryptMap.get(ccId);
-                            writeInsEch110Map.increment(cId);
-                            if (writeInsAndCount != null && !writeInsAndCount.isEmpty()) {
-                                if (!writeInsAndCount.containsKey(cId)) {
-                                    throw new Test03FailureException(cId);
-                                }
+        // writeInsEch110Map
+        CountMap<String> writeInsEch110Map = new CountMap<>();
+        //check writeIns content, fill writeInsEch110Map
+        ech110.getResultDelivery().getCountingCircleResults().forEach(cc -> {
+            String ccId = cc.getCountingCircle().getCountingCircleId();
+            cc.getElectionResults().stream()
+                    .filter(er -> er.getMajoralElection() != null)
+                    .flatMap(er -> er.getMajoralElection().getCandidate().stream())
+                    .filter(c -> !c.getCandidateInformation().isOfficialCandidateYesNo())
+                    .forEach(c -> {
+                        String cId =
+                                c.getCandidateInformation().getFamilyName() + " " + c.getCandidateInformation().getCallName();
+                        Map<String, Long> writeInsAndCount = writeInsDecryptMap.get(ccId);
+                        writeInsEch110Map.increment(cId);
+                        if (writeInsAndCount != null && !writeInsAndCount.isEmpty()) {
+                            if (!writeInsAndCount.containsKey(cId)) {
+                                throw buildVerificationFailureException("The count for the candidate does not match",
+                                        Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.nok.message", cId);
                             }
-                        });
-                cc.getElectionResults().stream()
-                        .filter(er -> er.getProportionalElection() != null)
-                        .flatMap(er -> er.getProportionalElection().getCandidate().stream())
-                        .filter(c -> !c.getCandidateInformation().isOfficialCandidateYesNo())
-                        .forEach(c -> {
-                            String cId = c.getCandidateInformation().getFamilyName() + " " + c.getCandidateInformation().getCallName();
-                            Map<String, Long> writeInsAndCount = writeInsDecryptMap.get(ccId);
-                            writeInsEch110Map.increment(cId);
-                            if (writeInsAndCount != null && !writeInsAndCount.isEmpty()) {
-                                if (!writeInsAndCount.containsKey(cId)) {
-                                    throw new Test03FailureException(cId);
-                                }
+                        }
+                    });
+            cc.getElectionResults().stream()
+                    .filter(er -> er.getProportionalElection() != null)
+                    .flatMap(er -> er.getProportionalElection().getCandidate().stream())
+                    .filter(c -> !c.getCandidateInformation().isOfficialCandidateYesNo())
+                    .forEach(c -> {
+                        String cId =
+                                c.getCandidateInformation().getFamilyName() + " " + c.getCandidateInformation().getCallName();
+                        Map<String, Long> writeInsAndCount = writeInsDecryptMap.get(ccId);
+                        writeInsEch110Map.increment(cId);
+                        if (writeInsAndCount != null && !writeInsAndCount.isEmpty()) {
+                            if (!writeInsAndCount.containsKey(cId)) {
+                                throw buildVerificationFailureException("The count for the candidate does not match",
+                                        Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.nok.message", cId);
                             }
-                        });
-            });
+                        }
+                    });
+        });
 
-            //check writeIns count
-            ech110.getResultDelivery().getCountingCircleResults().forEach(cc -> {
-                String ccId = cc.getCountingCircle().getCountingCircleId();
-                cc.getElectionResults().stream()
-                        .filter(er -> er.getMajoralElection() != null)
-                        .flatMap(er -> er.getMajoralElection().getCandidate().stream())
-                        .filter(c -> !c.getCandidateInformation().isOfficialCandidateYesNo())
-                        .forEach(c -> {
-                            String cId = c.getCandidateInformation().getFamilyName() + " " + c.getCandidateInformation().getCallName();
-                            Map<String, Long> writeInsAndCount = writeInsDecryptMap.get(ccId);
-                            if (writeInsAndCount != null && !writeInsAndCount.isEmpty()) {
-                                if (!writeInsAndCount.get(cId).equals(writeInsEch110Map.get(cId))) {
-                                    throw new Test03FailureException(cId);
-                                }
+        //check writeIns count
+        ech110.getResultDelivery().getCountingCircleResults().forEach(cc -> {
+            String ccId = cc.getCountingCircle().getCountingCircleId();
+            cc.getElectionResults().stream()
+                    .filter(er -> er.getMajoralElection() != null)
+                    .flatMap(er -> er.getMajoralElection().getCandidate().stream())
+                    .filter(c -> !c.getCandidateInformation().isOfficialCandidateYesNo())
+                    .forEach(c -> {
+                        String cId =
+                                c.getCandidateInformation().getFamilyName() + " " + c.getCandidateInformation().getCallName();
+                        Map<String, Long> writeInsAndCount = writeInsDecryptMap.get(ccId);
+                        if (writeInsAndCount != null && !writeInsAndCount.isEmpty()) {
+                            if (!writeInsAndCount.get(cId).equals(writeInsEch110Map.get(cId))) {
+                                throw buildVerificationFailureException("The count for the candidate does not match",
+                                        Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.nok.message", cId);
                             }
-                        });
-                cc.getElectionResults().stream()
-                        .filter(er -> er.getProportionalElection() != null)
-                        .flatMap(er -> er.getProportionalElection().getCandidate().stream())
-                        .filter(c -> !c.getCandidateInformation().isOfficialCandidateYesNo())
-                        .forEach(c -> {
-                            String cId = c.getCandidateInformation().getFamilyName() + " " + c.getCandidateInformation().getCallName();
-                            Map<String, Long> writeInsAndCount = writeInsDecryptMap.get(ccId);
-                            if (writeInsAndCount != null && !writeInsAndCount.isEmpty()) {
-                                if (!writeInsAndCount.get(cId).equals(writeInsEch110Map.get(cId))) {
-                                    throw new Test03FailureException(cId);
-                                }
+                        }
+                    });
+            cc.getElectionResults().stream()
+                    .filter(er -> er.getProportionalElection() != null)
+                    .flatMap(er -> er.getProportionalElection().getCandidate().stream())
+                    .filter(c -> !c.getCandidateInformation().isOfficialCandidateYesNo())
+                    .forEach(c -> {
+                        String cId =
+                                c.getCandidateInformation().getFamilyName() + " " + c.getCandidateInformation().getCallName();
+                        Map<String, Long> writeInsAndCount = writeInsDecryptMap.get(ccId);
+                        if (writeInsAndCount != null && !writeInsAndCount.isEmpty()) {
+                            if (!writeInsAndCount.get(cId).equals(writeInsEch110Map.get(cId))) {
+                                throw buildVerificationFailureException("The count for the candidate does not match",
+                                        Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.nok.message", cId);
                             }
-                        });
-            });
+                        }
+                    });
+        });
 
-            result.setStatus(Status.OK);
-        } catch (Test03FailureException e) {
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.nok.message", e.getCandidateId()));
-        } catch (FileNotFoundException e) {
-            LOGGER.error("a FileNotFoundException error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.file.not.found.message"));
-        } catch (Exception e) {
-            LOGGER.error("an unexpected error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
-        }
+        result.setStatus(Status.OK);
         return result;
     }
 
-    private BigInteger getDecryptCount(Map<String, String> mapConfig, Map<String, Map<String, Long>> mapDecrypt, String ccId, String cId) {
+    private BigInteger getDecryptCount(Map<String, String> mapConfig, Map<String, Map<String, Long>> mapDecrypt,
+                                       String ccId, String cId) {
         Map<String, Long> countByCC = mapDecrypt.get(ccId);
         if (countByCC == null) {
             throw new IllegalArgumentException("cannot find the decrypt data for given countingCircle : " + ccId);
@@ -257,15 +258,4 @@ public class CheckTallyingCandidates extends AbstractVerification {
         return BigInteger.valueOf(count);
     }
 
-    class Test03FailureException extends RuntimeException {
-        private String candidateId;
-
-        Test03FailureException(String candidateId) {
-            this.candidateId = candidateId;
-        }
-
-        String getCandidateId() {
-            return candidateId;
-        }
-    }
 }
