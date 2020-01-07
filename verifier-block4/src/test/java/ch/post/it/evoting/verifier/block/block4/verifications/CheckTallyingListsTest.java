@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 public class CheckTallyingListsTest {
 
@@ -50,5 +51,29 @@ public class CheckTallyingListsTest {
         exceptionRule.expectMessage("The occurrences for list are different for counting Circle in eCH-0110 and evoting-decrypt");
 
         VerificationResult verificationResult = checkTallyingLists.verify(new File(getClass().getResource("/CheckTallyingListsTest/NOK").getFile()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFoundConfiguration() throws Exception {
+        exceptionRule.expect(FileNotFoundException.class);
+        exceptionRule.expectMessage("configuration-anonymized.xml");
+
+        VerificationResult verificationResult = checkTallyingLists.verify(new File(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-CONFIG").getFile()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFoundEvoting() throws Exception {
+        exceptionRule.expect(FileNotFoundException.class);
+        exceptionRule.expectMessage("evoting-decrypt_.*\\.xml");
+
+        VerificationResult verificationResult = checkTallyingLists.verify(new File(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-EVOTING").getFile()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFoundECH() throws Exception {
+        exceptionRule.expect(FileNotFoundException.class);
+        exceptionRule.expectMessage("eCH-0110_.*\\.xml");
+
+        VerificationResult verificationResult = checkTallyingLists.verify(new File(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-eCH").getFile()));
     }
 }
