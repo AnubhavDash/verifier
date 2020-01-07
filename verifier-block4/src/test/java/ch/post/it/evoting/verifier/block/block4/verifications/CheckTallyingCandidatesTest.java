@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 public class CheckTallyingCandidatesTest {
 
@@ -73,5 +74,32 @@ public class CheckTallyingCandidatesTest {
         exceptionRule.expectMessage("The count for the candidate does not match");
 
         VerificationResult verificationResult = checkTallyingCandidates.verify(new File(getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS").getFile()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFoundConfiguration() throws Exception {
+        exceptionRule.expect(FileNotFoundException.class);
+        exceptionRule.expectMessage("configuration-anonymized.xml");
+
+        VerificationResult verificationResult = checkTallyingCandidates.
+                verify(new File(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-CONFIG").getFile()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFoundEvoting() throws Exception {
+        exceptionRule.expect(FileNotFoundException.class);
+        exceptionRule.expectMessage("evoting-decrypt_.*\\.xml");
+
+        VerificationResult verificationResult = checkTallyingCandidates.
+                verify(new File(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-EVOTING").getFile()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFoundECH() throws Exception {
+        exceptionRule.expect(FileNotFoundException.class);
+        exceptionRule.expectMessage("eCH-0110_.*\\.xml");
+
+        VerificationResult verificationResult = checkTallyingCandidates.
+                verify(new File(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-eCH").getFile()));
     }
 }
