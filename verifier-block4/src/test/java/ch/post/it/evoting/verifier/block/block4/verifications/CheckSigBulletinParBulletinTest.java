@@ -17,7 +17,6 @@ package ch.post.it.evoting.verifier.block.block4.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureWrappedException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
