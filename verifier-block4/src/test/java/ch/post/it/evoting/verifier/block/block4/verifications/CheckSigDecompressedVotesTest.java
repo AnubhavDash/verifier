@@ -16,38 +16,83 @@ package ch.post.it.evoting.verifier.block.block4.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.nio.file.NoSuchFileException;
 
 public class CheckSigDecompressedVotesTest {
+    private CheckSigDecompressedVotes checkSigDecompressedVotes;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
+    @Before
+    public void setup() {
+        checkSigDecompressedVotes = new CheckSigDecompressedVotes();
+    }
 
     @Test
-    public void executeTestOK() {
-        VerificationResult verificationResult = new CheckSigDecompressedVotes().verify(new File(getClass().getResource("/CheckSigDecompressedVotesTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult verificationResult = checkSigDecompressedVotes.verify(new File(getClass().getResource("/CheckSigDecompressedVotesTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOKXmlKo() {
-        VerificationResult verificationResult = new CheckSigDecompressedVotes().verify(new File(getClass().getResource("/CheckSigDecompressedVotesTest/NOK/CSV-NOT-OK").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOKXmlKo() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("The signature verification of the decompressedVotes.csv failed");
+        checkSigDecompressedVotes.verify(new File(getClass().getResource("/CheckSigDecompressedVotesTest/NOK/CSV-NOT-OK").getFile()));
     }
 
     @Test
-    public void executeTestNOKCertKo() {
-        VerificationResult verificationResult = new CheckSigDecompressedVotes().verify(new File(getClass().getResource("/CheckSigDecompressedVotesTest/NOK/CERT-NOT-OK").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOKCertKo() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("The signature verification of the decompressedVotes.csv failed");
+        checkSigDecompressedVotes.verify(new File(getClass().getResource("/CheckSigDecompressedVotesTest/NOK/CERT-NOT-OK").getFile()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound() {
-        VerificationResult verificationResult = new CheckSigDecompressedVotes().verify(new File(getClass().getResource("/CheckSigDecompressedVotesTest/NOK-NOTFILE").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOKFileNotFound() throws Exception {
+        exceptionRule.expect(FileNotFoundException.class);
+        exceptionRule.expectMessage("dataConfig_updated_.*\\.json");
+        checkSigDecompressedVotes.verify(new File(getClass().getResource("/CheckSigDecompressedVotesTest/NOK-NOTFILE").getFile()));
     }
+
+    @Test
+    public void executeTestNOKFileNotFound2() throws Exception {
+        exceptionRule.expect(FileNotFoundException.class);
+        exceptionRule.expectMessage("decompressedVotes.*\\.csv");
+        checkSigDecompressedVotes.verify(new File(getClass().getResource("/CheckSigDecompressedVotesTest/NOK-NOTFILE2").getFile()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFound3() throws Exception {
+        exceptionRule.expect(FileNotFoundException.class);
+        exceptionRule.expectMessage(".*\\.pem");
+        checkSigDecompressedVotes.verify(new File(getClass().getResource("/CheckSigDecompressedVotesTest/NOK-NOTFILE3").getFile()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFound4() throws Exception {
+        exceptionRule.expect(FileNotFoundException.class);
+        exceptionRule.expectMessage("tenant_.*\\.pem");
+        checkSigDecompressedVotes.verify(new File(getClass().getResource("/CheckSigDecompressedVotesTest/NOK-NOTFILE4").getFile()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFound5() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
+        exceptionRule.expectMessage("decompressedVotes.csv.metadata");
+        checkSigDecompressedVotes.verify(new File(getClass().getResource("/CheckSigDecompressedVotesTest/NOK-NOTFILE5").getFile()));
+    }
+
+    // TODO Test other files
 }
