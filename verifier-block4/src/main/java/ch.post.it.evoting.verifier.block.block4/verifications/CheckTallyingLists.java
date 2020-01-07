@@ -23,7 +23,6 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.CountMap;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
@@ -31,7 +30,6 @@ import com.scytl.xmlns.decrypt._1.Results;
 import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.AbstractMap;
@@ -56,155 +54,154 @@ public class CheckTallyingLists extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) {
+    public VerificationResult verify(File inputDirectory) throws Exception {
         VerificationResult result = new VerificationResult(getVerificationDefinition());
 
-        try {
-            Path path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_ELECTION_SETUP);
-            Configuration configuration = Deserializer.fromXml(path.toFile(), "configuration-anonymized.xml", Configuration.class);
+        Path path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_ELECTION_SETUP);
+        Configuration configuration = Deserializer.fromXml(path.toFile(), "configuration-anonymized.xml",
+                Configuration.class);
 
-            Map<String, Boolean> mapListIsEmpty = configuration.getContest().getElectionInformation().stream()
-                    .flatMap(ei -> ei.getList().stream())
-                    .map(l -> new AbstractMap.SimpleEntry<>(l.getListIdentification(), l.isListEmpty()))
-                    .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+        Map<String, Boolean> mapListIsEmpty = configuration.getContest().getElectionInformation().stream()
+                .flatMap(ei -> ei.getList().stream())
+                .map(l -> new AbstractMap.SimpleEntry<>(l.getListIdentification(), l.isListEmpty()))
+                .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
-            Map<String, String> mapLcIdListId = configuration.getContest().getElectionInformation().stream()
-                    .flatMap(ei -> ei.getList().stream())
-                    .map(l -> {
-                        String listIden = l.getListIdentification();
-                        Map<String, String> map = l.getCandidatePosition().stream()
-                                .map(cp -> new AbstractMap.SimpleEntry<>(cp.getCandidateListIdentification(), listIden))
-                                .collect(Collectors.toMap(
-                                        AbstractMap.SimpleEntry::getKey,
-                                        AbstractMap.SimpleEntry::getValue,
-                                        (listId1, listId2) -> listId1));
-                        return map;
-                    }).flatMap(map -> map.entrySet().stream())
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        Map<String, String> mapLcIdListId = configuration.getContest().getElectionInformation().stream()
+                .flatMap(ei -> ei.getList().stream())
+                .map(l -> {
+                    String listIden = l.getListIdentification();
+                    Map<String, String> map = l.getCandidatePosition().stream()
+                            .map(cp -> new AbstractMap.SimpleEntry<>(cp.getCandidateListIdentification(), listIden))
+                            .collect(Collectors.toMap(
+                                    AbstractMap.SimpleEntry::getKey,
+                                    AbstractMap.SimpleEntry::getValue,
+                                    (listId1, listId2) -> listId1));
+                    return map;
+                }).flatMap(map -> map.entrySet().stream())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
 
-            // 2, decrypt file => map<countingCircle, map<ElectionId, map<listId, count>>>
-            path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_RESULTS);
-            Results results = Deserializer.fromXml(path.toFile(), "evoting-decrypt_.*\\.xml", Results.class);
-            Map<String, Map<String, Map<String, Long>>> countByListId = results.getBallotsBox().stream()
-                    .flatMap(bb -> bb.getCountingCircle().stream())
-                    .map(cc -> {
-                        String ccId = cc.getCountingCircleIdentification();
-                        Map<String, Map<String, Long>> electionCount = cc.getDomainOfInfluence().stream().flatMap(doi -> doi.getElection().stream())
-                                .map(e -> {
-                                    String electionId = e.getElectionIdentification();
-                                    CountMap<String> listIdCountMap = new CountMap<>();
-                                    e.getBallot().forEach(ballot -> {
-                                        if (ballot.getChosenListIdentification() == null) {
-                                            //candidate only election, nothing to do
+        // 2, decrypt file => map<countingCircle, map<ElectionId, map<listId, count>>>
+        path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_RESULTS);
+        Results results = Deserializer.fromXml(path.toFile(), "evoting-decrypt_.*\\.xml", Results.class);
+        Map<String, Map<String, Map<String, Long>>> countByListId = results.getBallotsBox().stream()
+                .flatMap(bb -> bb.getCountingCircle().stream())
+                .map(cc -> {
+                    String ccId = cc.getCountingCircleIdentification();
+                    Map<String, Map<String, Long>> electionCount =
+                            cc.getDomainOfInfluence().stream().flatMap(doi -> doi.getElection().stream())
+                            .map(e -> {
+                                String electionId = e.getElectionIdentification();
+                                CountMap<String> listIdCountMap = new CountMap<>();
+                                e.getBallot().forEach(ballot -> {
+                                    if (ballot.getChosenListIdentification() == null) {
+                                        //candidate only election, nothing to do
+                                    } else {
+                                        // empty list
+                                        if (mapListIsEmpty.get(ballot.getChosenListIdentification())) {
+                                            ballot.getChosenCandidateListIdentification().forEach(lcId -> {
+                                                String candidateListId = mapLcIdListId.get(lcId);
+                                                if (!mapListIsEmpty.get(candidateListId)) {
+                                                    listIdCountMap.increment(candidateListId);
+                                                }
+                                            });
                                         } else {
-                                            // empty list
-                                            if (mapListIsEmpty.get(ballot.getChosenListIdentification())) {
-                                                ballot.getChosenCandidateListIdentification().forEach(lcId -> {
-                                                    String candidateListId = mapLcIdListId.get(lcId);
-                                                    if (!mapListIsEmpty.get(candidateListId)) {
-                                                        listIdCountMap.increment(candidateListId);
-                                                    }
-                                                });
-                                            } else {
-                                                // normal list
-                                                ballot.getChosenCandidateListIdentification().forEach(lcId -> {
-                                                    String candidateListId = mapLcIdListId.get(lcId);
-                                                    if (!mapListIsEmpty.get(candidateListId)) {
-                                                        //real candidate.
-                                                        listIdCountMap.increment(candidateListId);
-                                                    } else {
-                                                        //empty candidate
-                                                        listIdCountMap.increment(ballot.getChosenListIdentification());
-                                                    }
-                                                });
-                                            }
+                                            // normal list
+                                            ballot.getChosenCandidateListIdentification().forEach(lcId -> {
+                                                String candidateListId = mapLcIdListId.get(lcId);
+                                                if (!mapListIsEmpty.get(candidateListId)) {
+                                                    //real candidate.
+                                                    listIdCountMap.increment(candidateListId);
+                                                } else {
+                                                    //empty candidate
+                                                    listIdCountMap.increment(ballot.getChosenListIdentification());
+                                                }
+                                            });
                                         }
-                                    });
-                                    return new AbstractMap.SimpleEntry<>(electionId, listIdCountMap);
-                                }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
-                        return new AbstractMap.SimpleEntry<>(ccId, electionCount);
-                    })
-                    .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue,
-                            (electionMap1, electionMap2) -> {
-                                return concatMap(electionMap1, electionMap2, (listmap1, listmap2) -> {
-                                    return concatMap(listmap1, listmap2, Long::sum);
+                                    }
                                 });
-                            }));
+                                return new AbstractMap.SimpleEntry<>(electionId, listIdCountMap);
+                            }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey,
+                                    AbstractMap.SimpleEntry::getValue));
+                    return new AbstractMap.SimpleEntry<>(ccId, electionCount);
+                })
+                .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue,
+                        (electionMap1, electionMap2) -> {
+                            return concatMap(electionMap1, electionMap2, (listmap1, listmap2) -> {
+                                return concatMap(listmap1, listmap2, Long::sum);
+                            });
+                        }));
 
-            Map<String, Map<String, Map<String, Long>>> countOfEmptyValuesByListId = results.getBallotsBox().stream()
-                    .flatMap(bb -> bb.getCountingCircle().stream())
-                    .map(cc -> {
-                        String ccId = cc.getCountingCircleIdentification();
-                        Map<String, Map<String, Long>> electionCount = cc.getDomainOfInfluence().stream().flatMap(doi -> doi.getElection().stream())
-                                .map(e -> {
-                                    String electionId = e.getElectionIdentification();
-                                    CountMap<String> listIdCountMap = new CountMap<>();
-                                    e.getBallot().forEach(ballot -> {
-                                        if (ballot.getChosenListIdentification() == null) {
-                                            //candidate only election, nothing to do
-                                        } else {
-                                            if (!mapListIsEmpty.get(ballot.getChosenListIdentification())) {
-                                                //normal list
-                                                ballot.getChosenCandidateListIdentification().forEach(lcId -> {
-                                                    String choosenList = ballot.getChosenListIdentification();
-                                                    String candidateListId = mapLcIdListId.get(lcId);
-                                                    if (mapListIsEmpty.get(candidateListId)) {
-                                                        //empty candidate
-                                                        listIdCountMap.increment(choosenList);
-                                                    }
-                                                });
-                                            }
+        Map<String, Map<String, Map<String, Long>>> countOfEmptyValuesByListId = results.getBallotsBox().stream()
+                .flatMap(bb -> bb.getCountingCircle().stream())
+                .map(cc -> {
+                    String ccId = cc.getCountingCircleIdentification();
+                    Map<String, Map<String, Long>> electionCount =
+                            cc.getDomainOfInfluence().stream().flatMap(doi -> doi.getElection().stream())
+                            .map(e -> {
+                                String electionId = e.getElectionIdentification();
+                                CountMap<String> listIdCountMap = new CountMap<>();
+                                e.getBallot().forEach(ballot -> {
+                                    if (ballot.getChosenListIdentification() == null) {
+                                        //candidate only election, nothing to do
+                                    } else {
+                                        if (!mapListIsEmpty.get(ballot.getChosenListIdentification())) {
+                                            //normal list
+                                            ballot.getChosenCandidateListIdentification().forEach(lcId -> {
+                                                String choosenList = ballot.getChosenListIdentification();
+                                                String candidateListId = mapLcIdListId.get(lcId);
+                                                if (mapListIsEmpty.get(candidateListId)) {
+                                                    //empty candidate
+                                                    listIdCountMap.increment(choosenList);
+                                                }
+                                            });
                                         }
-                                    });
-                                    return new AbstractMap.SimpleEntry<>(electionId, listIdCountMap);
-                                }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
-                        return new AbstractMap.SimpleEntry<>(ccId, electionCount);
-                    })
-                    .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue,
-                            (electionMap1, electionMap2) -> {
-                                return concatMap(electionMap1, electionMap2, (listCountMap1, listCountMap2) -> {
-                                    return concatMap(listCountMap1, listCountMap2, Long::sum);
+                                    }
                                 });
-                            }));
+                                return new AbstractMap.SimpleEntry<>(electionId, listIdCountMap);
+                            }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey,
+                                    AbstractMap.SimpleEntry::getValue));
+                    return new AbstractMap.SimpleEntry<>(ccId, electionCount);
+                })
+                .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue,
+                        (electionMap1, electionMap2) -> {
+                            return concatMap(electionMap1, electionMap2, (listCountMap1, listCountMap2) -> {
+                                return concatMap(listCountMap1, listCountMap2, Long::sum);
+                            });
+                        }));
 
-            path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_RESULTS);
-            Delivery ech110 = Deserializer.fromXml(path.toFile(), "eCH-0110_.*\\.xml", Delivery.class);
-            ech110.getResultDelivery().getCountingCircleResults().forEach(cc -> {
-                String ccId = cc.getCountingCircle().getCountingCircleId();
-                cc.getElectionResults().stream()
-                        .filter(er -> er.getProportionalElection() != null)
-                        .forEach(er -> {
-                            String electionId = er.getElection().getElectionIdentification();
-                            er.getProportionalElection().getList()
-                                    .forEach(l -> {
-                                        String listId = l.getListInformation().getListIdentification();
-                                        BigInteger countOfPartyVotes = getCountOfPartyVotes(l);
-                                        BigInteger lcpCount = getVoteCount(countByListId, ccId, electionId, listId);
-                                        BigInteger countOfAdditionalVotes = getCountOfAdditionalVotes(l);
-                                        BigInteger emptyCount = getVoteCount(countOfEmptyValuesByListId, ccId, electionId, listId);
-                                        if (!countOfPartyVotes.equals(lcpCount) || !countOfAdditionalVotes.equals(emptyCount)) {
-                                            LOGGER.debug(String.format("count not equal : CC:%s electionId:%s list:%s decrypt:%s 110:%s", ccId, electionId, listId, lcpCount, countOfPartyVotes));
-                                            throw new VerificationFailureException(ccId, listId);
-                                        }
-                                    });
-                        });
-            });
-            result.setStatus(Status.OK);
-        } catch (VerificationFailureException e) {
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification04.nok.message", e.getArgs()));
-        } catch (FileNotFoundException e) {
-            LOGGER.error("a FileNotFoundException error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification04.file.not.found.message"));
-        } catch (Exception e) {
-            LOGGER.error("an unexpected error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
-        }
+        path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_RESULTS);
+        Delivery ech110 = Deserializer.fromXml(path.toFile(), "eCH-0110_.*\\.xml", Delivery.class);
+        ech110.getResultDelivery().getCountingCircleResults().forEach(cc -> {
+            String ccId = cc.getCountingCircle().getCountingCircleId();
+            cc.getElectionResults().stream()
+                    .filter(er -> er.getProportionalElection() != null)
+                    .forEach(er -> {
+                        String electionId = er.getElection().getElectionIdentification();
+                        er.getProportionalElection().getList()
+                                .forEach(l -> {
+                                    String listId = l.getListInformation().getListIdentification();
+                                    BigInteger countOfPartyVotes = getCountOfPartyVotes(l);
+                                    BigInteger lcpCount = getVoteCount(countByListId, ccId, electionId, listId);
+                                    BigInteger countOfAdditionalVotes = getCountOfAdditionalVotes(l);
+                                    BigInteger emptyCount = getVoteCount(countOfEmptyValuesByListId, ccId, electionId
+                                            , listId);
+                                    if (!countOfPartyVotes.equals(lcpCount) || !countOfAdditionalVotes.equals(emptyCount)) {
+                                        LOGGER.debug(String.format("count not equal : CC:%s electionId:%s list:%s " +
+                                                "decrypt:%s 110:%s", ccId, electionId, listId, lcpCount,
+                                                countOfPartyVotes));
+                                        throw buildVerificationFailureException(
+                                                "The occurrences for list are different for counting Circle in " +
+                                                        "eCH-0110 and evoting-decrypt",
+                                                Block4VerificationSuite.RESOURCE_BUNDLE_NAME,
+                                                "verification04.nok.message", listId, ccId);
+                                    }
+                                });
+                    });
+        });
+
+        result.setStatus(Status.OK);
         return result;
-
     }
 
 

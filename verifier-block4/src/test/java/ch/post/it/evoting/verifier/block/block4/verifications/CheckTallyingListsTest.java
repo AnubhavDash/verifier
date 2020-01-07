@@ -16,24 +16,39 @@ package ch.post.it.evoting.verifier.block.block4.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
 
 public class CheckTallyingListsTest {
 
-    @Test
-    public void executeTestOK() {
-        VerificationResult verificationResult = new CheckTallyingLists().verify(new File(getClass().getResource("/CheckTallyingListsTest/OK").getFile()));
+  @Rule
+  public ExpectedException exceptionRule = ExpectedException.none();
+
+  private CheckTallyingLists checkTallyingLists;
+
+  @Before
+  public void setup() {
+    checkTallyingLists = new CheckTallyingLists();
+  }
+
+  @Test
+    public void executeTestOK() throws Exception {
+        VerificationResult verificationResult = checkTallyingLists.verify(new File(getClass().getResource("/CheckTallyingListsTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOK() {
-        VerificationResult verificationResult = new CheckTallyingLists().verify(new File(getClass().getResource("/CheckTallyingListsTest/NOK").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOK() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("The occurrences for list are different for counting Circle in eCH-0110 and evoting-decrypt");
+
+        VerificationResult verificationResult = checkTallyingLists.verify(new File(getClass().getResource("/CheckTallyingListsTest/NOK").getFile()));
     }
 }
