@@ -117,6 +117,15 @@ public class CheckTallyingCandidatesTest {
     }
 
     @Test
+    public void executeTestNOKDecryptCount() throws Exception {
+        exceptionRule.expect(IllegalArgumentException.class);
+        exceptionRule.expectMessage("cannot find the decrypt data for given countingCircle");
+
+        VerificationResult verificationResult = checkTallyingCandidates.
+                verify(new File(getClass().getResource("/CheckTallyingCandidates/NOK-DECRYPTCOUNT").getFile()));
+    }
+
+    @Test
     public void executeTestNOKFileNotFoundConfiguration() throws Exception {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage("configuration-anonymized.xml");
