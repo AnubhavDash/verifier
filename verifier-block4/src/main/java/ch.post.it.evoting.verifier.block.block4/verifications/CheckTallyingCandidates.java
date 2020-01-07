@@ -112,8 +112,10 @@ public class CheckTallyingCandidates extends AbstractVerification {
                             String cId = c.getCandidateInformation().getCandidateIdentification();
                             BigInteger decryptCount = getDecryptCount(mapConfig, mapDecrypt, ccId, cId);
                             if (!c.getCountOfVotesTotal().equals(decryptCount)) {
-                                throw buildVerificationFailureException("The count of votes total for the candidate does not match in majoral election",
-                                        Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.nok.message", cId);
+                                throw buildVerificationFailureException(
+                                        "The count of votes total for the candidate does not match in majoral election",
+                                        Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.nok.message",
+                                        cId);
                             }
                         }
                     });
@@ -125,8 +127,10 @@ public class CheckTallyingCandidates extends AbstractVerification {
                             String cId = c.getCandidateInformation().getCandidateIdentification();
                             BigInteger decryptCount = getDecryptCount(mapConfig, mapDecrypt, ccId, cId);
                             if (!c.getCountOfVotesTotal().equals(decryptCount)) {
-                                throw buildVerificationFailureException("The count of votes total for the candidate does not match in proportional election",
-                                        Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.nok.message", cId);
+                                throw buildVerificationFailureException(
+                                        "The count of votes total for the candidate does not match in proportional election",
+                                        Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.nok.message",
+                                        cId);
                             }
                         }
                     });
@@ -173,8 +177,10 @@ public class CheckTallyingCandidates extends AbstractVerification {
                         writeInsEch110Map.increment(cId);
                         if (writeInsAndCount != null && !writeInsAndCount.isEmpty()) {
                             if (!writeInsAndCount.containsKey(cId)) {
-                                throw buildVerificationFailureException("The count for the candidate does not match",
-                                        Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.nok.message", cId);
+                                throw buildVerificationFailureException(
+                                        "The count for the candidate does not match in writeIns-containsKey majoral election",
+                                        Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.nok.message",
+                                        cId);
                             }
                         }
                     });
@@ -189,7 +195,8 @@ public class CheckTallyingCandidates extends AbstractVerification {
                         writeInsEch110Map.increment(cId);
                         if (writeInsAndCount != null && !writeInsAndCount.isEmpty()) {
                             if (!writeInsAndCount.containsKey(cId)) {
-                                throw buildVerificationFailureException("The count for the candidate does not match",
+                                throw buildVerificationFailureException(
+                                        "The count for the candidate does not match in writeIns-containsKey proportional election",
                                         Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.nok.message", cId);
                             }
                         }
@@ -209,7 +216,8 @@ public class CheckTallyingCandidates extends AbstractVerification {
                         Map<String, Long> writeInsAndCount = writeInsDecryptMap.get(ccId);
                         if (writeInsAndCount != null && !writeInsAndCount.isEmpty()) {
                             if (!writeInsAndCount.get(cId).equals(writeInsEch110Map.get(cId))) {
-                                throw buildVerificationFailureException("The count for the candidate does not match",
+                                throw buildVerificationFailureException(
+                                        "The count for the candidate does not match in writeIns-equals majoral election",
                                         Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.nok.message", cId);
                             }
                         }
@@ -224,7 +232,8 @@ public class CheckTallyingCandidates extends AbstractVerification {
                         Map<String, Long> writeInsAndCount = writeInsDecryptMap.get(ccId);
                         if (writeInsAndCount != null && !writeInsAndCount.isEmpty()) {
                             if (!writeInsAndCount.get(cId).equals(writeInsEch110Map.get(cId))) {
-                                throw buildVerificationFailureException("The count for the candidate does not match",
+                                throw buildVerificationFailureException(
+                                        "The count for the candidate does not match in writeIns-equals proportional election",
                                         Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.nok.message", cId);
                             }
                         }

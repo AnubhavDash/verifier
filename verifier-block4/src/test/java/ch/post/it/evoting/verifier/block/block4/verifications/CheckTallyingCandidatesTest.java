@@ -77,12 +77,43 @@ public class CheckTallyingCandidatesTest {
     }
 
     @Test
-    public void executeTestNOKWriteIns() throws Exception {
+    public void executeTestNOKWriteInsContainsKeyMajoral() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("The count for the candidate does not match");
+        exceptionRule.expectMessage(
+                "The count for the candidate does not match in writeIns-containsKey majoral election");
 
-        VerificationResult verificationResult = checkTallyingCandidates.
-                verify(new File(getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS").getFile()));
+        VerificationResult verificationResult = checkTallyingCandidates.verify(new File(
+                getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-CONTAINSKEY-MAJORAL").getFile()));
+    }
+
+    @Test
+    public void executeTestNOKWriteInsContainsKeyProportional() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage(
+                "The count for the candidate does not match in writeIns-containsKey proportional election");
+
+        VerificationResult verificationResult = checkTallyingCandidates.verify(new File(
+                getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-CONTAINSKEY-PROPORTIONAL").getFile()));
+    }
+
+    @Test
+    public void executeTestNOKWriteInsEqualsMajoral() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage(
+                "The count for the candidate does not match in writeIns-equals majoral election");
+
+        VerificationResult verificationResult = checkTallyingCandidates.verify(new File(
+                getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-EQUALS-MAJORAL").getFile()));
+    }
+
+    @Test
+    public void executeTestNOKWriteInsEqualsProportional() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage(
+                "The count for the candidate does not match in writeIns-equals proportional election");
+
+        VerificationResult verificationResult = checkTallyingCandidates.verify(new File(
+                getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-EQUALS-PROPORTIONAL").getFile()));
     }
 
     @Test
