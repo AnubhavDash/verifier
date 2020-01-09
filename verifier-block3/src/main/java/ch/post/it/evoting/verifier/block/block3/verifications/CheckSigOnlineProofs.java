@@ -26,15 +26,12 @@ import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Randomness;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
-import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class CheckSigOnlineProofs extends AbstractVerification {
-
-    private static final Logger LOGGER = Logger.getLogger(CheckSigOnlineProofs.class);
 
     @Override
     public VerificationDefinition getVerificationDefinition() {

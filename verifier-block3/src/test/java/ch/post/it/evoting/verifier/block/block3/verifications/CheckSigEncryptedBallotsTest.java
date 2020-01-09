@@ -24,28 +24,28 @@ import java.io.File;
 public class CheckSigEncryptedBallotsTest {
 
     @Test
-    public void executeTestOK() {
+    public void executeTestOK() throws Exception {
         VerificationResult verificationResult = new CheckSigEncryptedBallots().verify(new File(getClass().getResource("/CheckSigEncryptedBallotsTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOKCsvKo() {
+    public void executeTestNOKCsvKo() throws Exception {
         VerificationResult verificationResult = new CheckSigEncryptedBallots().verify(new File(getClass().getResource("/CheckSigEncryptedBallotsTest/NOK/CSV-NOT-OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOKCertKo() {
+    public void executeTestNOKCertKo() throws Exception {
         VerificationResult verificationResult = new CheckSigEncryptedBallots().verify(new File(getClass().getResource("/CheckSigEncryptedBallotsTest/NOK/CERT-NOT-OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOKFileNotFound() {
+    public void executeTestNOKFileNotFound() throws Exception {
         VerificationResult verificationResult = new CheckSigEncryptedBallots().verify(new File(getClass().getResource("/CheckSigEncryptedBallotsTest/NOK-NOTFILE").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());

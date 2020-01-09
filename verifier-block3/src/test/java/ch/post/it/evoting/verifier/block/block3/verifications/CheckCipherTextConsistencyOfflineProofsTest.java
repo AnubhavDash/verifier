@@ -24,13 +24,13 @@ import java.io.File;
 public class CheckCipherTextConsistencyOfflineProofsTest {
 
     @Test
-    public void executeTestOK() {
+    public void executeTestOK() throws Exception {
         VerificationResult result = new CheckCipherTextConsistencyOfflineProofs().verify(new File(getClass().getResource("/CheckCiphertextConsistencyOfflineProofsTest/OK").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
-    public void executeTestNOK() {
+    public void executeTestNOK() throws Exception {
         VerificationResult result = new CheckCipherTextConsistencyOfflineProofs().verify(new File(getClass().getResource("/CheckCiphertextConsistencyOfflineProofsTest/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }

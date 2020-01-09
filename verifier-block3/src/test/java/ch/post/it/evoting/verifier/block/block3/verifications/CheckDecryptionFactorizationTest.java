@@ -24,19 +24,19 @@ import java.io.File;
 public class CheckDecryptionFactorizationTest {
 
     @Test
-    public void executeTestOK() {
+    public void executeTestOK() throws Exception {
         VerificationResult result = new CheckDecryptionFactorization().verify(new File(getClass().getResource("/CheckDecryptionFactorizationTest/OK").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
-    public void executeTestWithWriteInsOK() {
+    public void executeTestWithWriteInsOK() throws Exception {
         VerificationResult result = new CheckDecryptionFactorization().verify(new File(getClass().getResource("/CheckDecryptionFactorizationTest/OK-WRITE-INS").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
-    public void executeTestNOK() {
+    public void executeTestNOK() throws Exception {
         VerificationResult result = new CheckDecryptionFactorization().verify(new File(getClass().getResource("/CheckDecryptionFactorizationTest/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }

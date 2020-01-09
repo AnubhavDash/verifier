@@ -1,14 +1,14 @@
 /**
  * This file is part of Verifier Swiss Post.
- *
+ * <p>
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
  * the GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
- *
+ * <p>
  * Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
@@ -20,7 +20,6 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.dto.revised.BallotBox;
 import ch.post.it.evoting.verifier.common.block.dto.revised.ElectionEvent;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
@@ -28,19 +27,14 @@ import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.dto.DataConfigEE;
-import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CheckSigEncryptedBallots extends AbstractVerification {
-
-    private static final Logger LOGGER = Logger.getLogger(CheckSigEncryptedBallots.class);
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -56,59 +50,42 @@ public class CheckSigEncryptedBallots extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) {
+    public VerificationResult verify(File inputDirectory) throws Exception {
         VerificationResult result = new VerificationResult(getVerificationDefinition());
-        try {
-            Path path = inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_ELECTION_SETUP);
-            DataConfigEE dataConfigEE = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", DataConfigEE.class);
-            ElectionEvent electionEvent = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", ElectionEvent.class);
-            List<BallotBox> ballotBoxes = electionEvent.getBallotBoxes();
-            List<File> encBallotsFiles = new ArrayList<>();
-            ballotBoxes.forEach(ballotBox -> {
-                String ballotBoxId = ballotBox.getId().toString();
-                try {
-                    File[] encBallotsFolders = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_BALLOTBOXES).resolve(ballotBoxId));
-                    for (File folder : encBallotsFolders) {
-                        encBallotsFiles.add(PathHelper.getFile(folder, "encryptedBallots.*\\.csv"));
-                    }
-                } catch (FileNotFoundException e) {
-                    throw new VerificationFailureException("encryptedBallots.csv not found", inputDirectory.getName(), ballotBoxId);
-                }
-            });
-
-            byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath()
-                            .resolve(Block3VerificationSuite.PATH_CERTIFICATES)
-                            .resolve(Block3VerificationSuite.PATH_ADMINBOARD).toFile(),
-                    ".*\\.pem").toPath());
-
-            byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
-
-            for (File encBallot : encBallotsFiles) {
-                byte[] content = Files.readAllBytes(encBallot.toPath());
-                byte[] signature = Files.readAllBytes(encBallot.toPath().getParent().resolve(encBallot.getName() + ".metadata"));
-
-                if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCA)) {
-                    throw new VerificationFailureException(encBallot.getName());
-                }
+        Path path = inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_ELECTION_SETUP);
+        DataConfigEE dataConfigEE = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", DataConfigEE.class);
+        ElectionEvent electionEvent = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", ElectionEvent.class);
+        List<BallotBox> ballotBoxes = electionEvent.getBallotBoxes();
+        List<File> encBallotsFiles = new ArrayList<>();
+        for (BallotBox ballotBox : ballotBoxes) {
+            String ballotBoxId = ballotBox.getId().toString();
+            File[] encBallotsFolders = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_BALLOTBOXES).resolve(ballotBoxId));
+            for (File folder : encBallotsFolders) {
+                encBallotsFiles.add(PathHelper.getFile(folder, "encryptedBallots.*\\.csv"));
             }
-            result.setStatus(Status.OK);
 
-        } catch (VerificationFailureException e) {
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification73.nok.message"));
-        } catch (NoSuchFileException e) {
-            LOGGER.error("a NoSuchFileException error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification73.file.not.found.message", e.getFile()));
-        } catch (FileNotFoundException e) {
-            LOGGER.error("a FileNotFoundException error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification73.file.not.found.message", e.getMessage()));
-        } catch (Exception e) {
-            LOGGER.error("an unexpected error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
+
+        byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath()
+                        .resolve(Block3VerificationSuite.PATH_CERTIFICATES)
+                        .resolve(Block3VerificationSuite.PATH_ADMINBOARD).toFile(),
+                ".*\\.pem").toPath());
+
+        byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
+
+        for (File encBallot : encBallotsFiles) {
+            byte[] content = Files.readAllBytes(encBallot.toPath());
+            byte[] signature = Files.readAllBytes(encBallot.toPath().getParent().resolve(encBallot.getName() + ".metadata"));
+
+            if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCA)) {
+                throw buildVerificationFailureException(
+                        "the signature verification failed",
+                        Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
+                        "verification73.nok.message"
+                );
+            }
+        }
+        result.setStatus(Status.OK);
         return result;
     }
 }

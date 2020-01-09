@@ -24,28 +24,28 @@ import java.io.File;
 public class CheckSigProofsTest {
 
     @Test
-    public void executeTestOK() {
+    public void executeTestOK() throws Exception {
         VerificationResult verificationResult = new CheckSigProofs().verify(new File(getClass().getResource("/CheckSigProofsTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOKJsonKo() {
+    public void executeTestNOKJsonKo() throws Exception {
         VerificationResult verificationResult = new CheckSigProofs().verify(new File(getClass().getResource("/CheckSigProofsTest/NOK/JSON-NOT-OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOKCertKo() {
+    public void executeTestNOKCertKo() throws Exception {
         VerificationResult verificationResult = new CheckSigProofs().verify(new File(getClass().getResource("/CheckSigProofsTest/NOK/CERT-NOT-OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOKFileNotFound() {
+    public void executeTestNOKFileNotFound() throws Exception {
         VerificationResult verificationResult = new CheckSigProofs().verify(new File(getClass().getResource("/CheckSigProofsTest/NOK-NOTFILE").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());

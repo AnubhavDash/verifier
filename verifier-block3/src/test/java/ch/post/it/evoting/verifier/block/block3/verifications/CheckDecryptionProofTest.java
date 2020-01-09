@@ -24,19 +24,19 @@ import java.io.File;
 public class CheckDecryptionProofTest {
 
     @Test
-    public void executeTestOK() {
+    public void executeTestOK() throws Exception {
         VerificationResult result = new CheckDecryptionProof().verify(new File(getClass().getResource("/CheckDecryptionProofTest/OK").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
-    public void executeTestWithWriteInsOK() {
+    public void executeTestWithWriteInsOK() throws Exception {
         VerificationResult result = new CheckDecryptionProof().verify(new File(getClass().getResource("/CheckDecryptionProofTest/OK-WRITE-INS").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
-    public void executeTestOKFileNotFound() {
+    public void executeTestOKFileNotFound() throws Exception {
         VerificationResult result = new CheckDecryptionProof().verify(new File(getClass().getResource("/CheckDecryptionProofTest/NOK-NOTFILE").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }

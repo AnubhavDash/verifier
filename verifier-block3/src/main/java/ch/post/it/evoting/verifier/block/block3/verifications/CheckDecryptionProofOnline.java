@@ -1,14 +1,14 @@
 /**
  * This file is part of Verifier Swiss Post.
- *
+ * <p>
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
  * the GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
- *
+ * <p>
  * Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
@@ -19,22 +19,16 @@ import ch.post.it.evoting.verifier.block.block3.loader.online.OnlineMixingProofL
 import ch.post.it.evoting.verifier.block.block3.scytl.loader.OnlineDataLoader;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import com.scytl.decrypt.DecryptVerifier;
-import com.scytl.products.ov.mixnet.commons.exceptions.VerifierException;
-import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CheckDecryptionProofOnline extends AbstractVerification {
-
-    private static final Logger LOGGER = Logger.getLogger(CheckDecryptionProofOnline.class);
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -49,40 +43,39 @@ public class CheckDecryptionProofOnline extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) {
+    public VerificationResult verify(File inputDirectory) throws Exception {
         VerificationResult result = new VerificationResult(getVerificationDefinition());
-        try {
-            File[] ballotBoxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
-            File[] ccMixingKeys = PathHelper.getFiles(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_CC_MIXING_KEYS).toFile(), "cc.*_mixing_.*key.*\\.json");
 
-            for (File ballotBox : ballotBoxes) {
-                final File[] onlineMixings = ballotBox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
-                if(onlineMixings.length != 3 ){
-                    throw new VerifierException("the number of control components expected is 3 but actual is " + onlineMixings.length);
-                }
-                for (File onlineMixing : onlineMixings) {
-                    //for this onlineMixing, so for this ccn , get the correct ccX_mixing_public_key.json file
-                    File pkJsonFile = getPkJsonFile(onlineMixing.getName(), ccMixingKeys);
-                    OnlineDataLoader onlineDataLoader = new OnlineMixingProofLoader(onlineMixing.toPath());
-                    int verificationResultCode = DecryptVerifier.verifyOnline(pkJsonFile, onlineDataLoader);
-                    if (verificationResultCode != 1 && verificationResultCode != -1) {
-                        throw new VerificationFailureException("The verification failed", ballotBox.getName());
-                    }
+        File[] ballotBoxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
+        File[] ccMixingKeys = PathHelper.getFiles(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_CC_MIXING_KEYS).toFile(), "cc.*_mixing_.*key.*\\.json");
+
+        for (File ballotBox : ballotBoxes) {
+            final File[] onlineMixings = ballotBox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
+            if (onlineMixings.length != 3) {
+                throw buildVerificationFailureException(
+                        "the number of control components expected is 3 but actual is " + onlineMixings.length,
+                        Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
+                        "verification07.nok.message",
+                        ballotBox.getName()
+                );
+            }
+            for (File onlineMixing : onlineMixings) {
+                //for this onlineMixing, so for this ccn , get the correct ccX_mixing_public_key.json file
+                File pkJsonFile = getPkJsonFile(onlineMixing.getName(), ccMixingKeys);
+                OnlineDataLoader onlineDataLoader = new OnlineMixingProofLoader(onlineMixing.toPath());
+                int verificationResultCode = DecryptVerifier.verifyOnline(pkJsonFile, onlineDataLoader);
+                if (verificationResultCode != 1 && verificationResultCode != -1) {
+                    throw buildVerificationFailureException(
+                            "The verification failed",
+                            Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
+                            "verification07.nok.message",
+                            ballotBox.getName()
+                    );
                 }
             }
-            result.setStatus(Status.OK);
-        } catch (VerificationFailureException e) {
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification07.nok.message", ((VerificationFailureException) e).getArgs()[1]));
-        } catch (FileNotFoundException e) {
-            LOGGER.error("a FileNotFoundException error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification07.file.not.found.message", e.getMessage()));
-        } catch (Exception e) {
-            LOGGER.error("Unexpected error", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
+        result.setStatus(Status.OK);
+
         return result;
     }
 

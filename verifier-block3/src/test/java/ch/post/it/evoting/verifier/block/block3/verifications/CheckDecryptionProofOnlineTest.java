@@ -24,19 +24,19 @@ import java.io.File;
 public class CheckDecryptionProofOnlineTest {
 
     @Test
-    public void executeTestOK() {
+    public void executeTestOK() throws Exception {
         VerificationResult result = new CheckDecryptionProofOnline().verify(new File(getClass().getResource("/CheckDecryptionProofOnlineTest/OK").getFile()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
-    public void executeTestNOK() {
+    public void executeTestNOK() throws Exception {
         VerificationResult result = new CheckDecryptionProofOnline().verify(new File(getClass().getResource("/CheckDecryptionProofOnlineTest/NOK").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 
     @Test
-    public void executeTestNOKNotFile() {
+    public void executeTestNOKNotFile() throws Exception {
         VerificationResult result = new CheckDecryptionProofOnline().verify(new File(getClass().getResource("/CheckDecryptionProofOnlineTest/NOK-NOTFILE").getFile()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }

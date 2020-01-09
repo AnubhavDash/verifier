@@ -26,28 +26,28 @@ import java.io.File;
 public class CheckCommitmentParametersTest {
 
     @Test
-    public void executeTestOK() {
+    public void executeTestOK() throws Exception {
         VerificationResult verificationResult = new CheckCommitmentParameters().verify(new File(getClass().getResource("/CheckCommitmentParametersTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOKpIsNotUnique() {
+    public void executeTestNOKpIsNotUnique() throws Exception {
         VerificationResult verificationResult = new CheckCommitmentParameters().verify(new File(getClass().getResource("/CheckCommitmentParametersTest/NOK/P-NOK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOKEulerCriterionKo() {
+    public void executeTestNOKEulerCriterionKo() throws Exception {
         VerificationResult verificationResult = new CheckCommitmentParameters().verify(new File(getClass().getResource("/CheckCommitmentParametersTest/NOK/BIGINT-NOK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOKFileNotFound() {
+    public void executeTestNOKFileNotFound() throws Exception {
         VerificationResult verificationResult = new CheckCommitmentParameters().verify(new File(getClass().getResource("/CheckCommitmentParametersTest/NOK-NOTFILE").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
