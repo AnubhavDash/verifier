@@ -16,7 +16,7 @@ The following guide provide step by step informations to build the Verifier Swis
     - Set the NODE_HOME variable to your node directory location
 
 4. Create your SSL certificate for REST endpoint
-    - <code>openssl req -newkey rsa:2048 -keyout serverkey.pem -x509 -days 365 -out servercertificate.pem -subj /CN=localhost</code>
+    - <code>openssl req -newkey rsa:2048 -keyout serverkey.pem -x509 -days 365 -out servercertificate.pem -subj /CN=localhost</code> You might have problems when executing this command from a Git Bash prompt due to /CN=localhost beeing expanded to a file path. To solve this, take a look at https://stackoverflow.com/questions/54258996/git-bash-string-parameter-with-at-start-is-being-expanded-to-a-file-path. Also, when using the Git Bash, openssl commands will hang and not respond. To avoid this behavior, prefix your commands with 'winpty' as explained at https://superuser.com/questions/1273181/why-do-i-need-prefix-openssl-with-winpty-on-windows-bash.
     - <code>openssl pkcs12 -inkey serverkey.pem -in servercertificate.pem -export -out server-keystore.p12</code>
     - Copy the keystore to verifier-web\src\main\resources
     - Edit verifier-web\src\main\resources\application.properties with the configuration of your keystore :
