@@ -42,7 +42,7 @@
                                     <goal>wget</goal>
                                 </goals>
                                 <configuration>
-                                    <url>https://github.com/ojdkbuild/ojdkbuild/releases/download/1.8.0.201-1/java-1.8.0-openjdk-1.8.0.201-1.b09.ojdkbuild.windows.x86_64.zip</url>
+                                    <url>https://github.com/ojdkbuild/ojdkbuild/releases/download/java-11-openjdk-11.0.5.10-2/java-11-openjdk-11.0.5.10-2.windows.ojdkbuild.x86_64.zip</url>
                                     <unpack>true</unpack>
                                     <outputDirectory>${project.build.directory}/jdk</outputDirectory>
                                 </configuration>
