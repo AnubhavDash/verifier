@@ -1,2 +1,2 @@
-.\java-1.8.0-openjdk-1.8.0.201-1.b09.ojdkbuild.windows.x86_64\bin\java.exe -jar ./verifier-web.jar
+.\java-11-openjdk-11.0.5.10-2.windows.ojdkbuild.x86_64\bin\java.exe -jar ./verifier-web.jar
 pause

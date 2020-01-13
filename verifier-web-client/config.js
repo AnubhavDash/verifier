@@ -14,6 +14,6 @@
  */
 module.exports = {
   serverConnectionCheckUrl: function() {
-    return 'https://127.0.0.1:8080/api/ping';
+    return 'http://127.0.0.1:8080/api/ping';
   }
 }
