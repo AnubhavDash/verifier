@@ -28,7 +28,6 @@ import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import com.scytl.xmlns.decrypt._1.Results;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.math.BigInteger;
@@ -43,8 +42,6 @@ import java.util.stream.Stream;
 
 public class CheckTallyingCandidates extends AbstractVerification {
 
-    private static final Logger LOGGER = Logger.getLogger(CheckTallyingCandidates.class);
-
     @Override
     public VerificationDefinition getVerificationDefinition() {
         VerificationDefinition definition = new VerificationDefinition();
@@ -58,7 +55,7 @@ public class CheckTallyingCandidates extends AbstractVerification {
 
     @Override
     public VerificationResult verify(File inputDirectory) throws Exception {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
+        VerificationResult result = new VerificationResult();
 
         //1, config file => map<candidateListId, candidateId> => map1
         Path path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_ELECTION_SETUP);

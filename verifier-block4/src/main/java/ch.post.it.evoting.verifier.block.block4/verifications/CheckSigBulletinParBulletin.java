@@ -37,13 +37,14 @@ public class CheckSigBulletinParBulletin extends AbstractVerification {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification75.description"));
         def.setId(75);
         def.setName("checkSigBulletinParBulletin");
-        def.setDeactivated(true); // Verification is not executed in the Verifier
+        def.setDeactivated(true); // This verification is excluded and not executed in the Verifier
         return def;
     }
 
     @Override
     public VerificationResult verify(File inputDirectory) throws Exception {
         VerificationResult result = new VerificationResult();
+
         byte[] rootCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
 
         File pdfFile = PathHelper.getFile(inputDirectory.toPath()

@@ -20,19 +20,14 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 
 public class CheckSigInvalidVotes extends AbstractVerification {
-
-    private static final Logger LOGGER = Logger.getLogger(CheckSigInvalidVotes.class);
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -47,7 +42,7 @@ public class CheckSigInvalidVotes extends AbstractVerification {
 
     @Override
     public VerificationResult verify(File inputDirectory) throws Exception {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
+        VerificationResult result = new VerificationResult();
 
         byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath()
                         .resolve(Block4VerificationSuite.PATH_CERTIFICATES)

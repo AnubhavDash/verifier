@@ -182,8 +182,8 @@ public class CheckOptionsMapping extends AbstractVerification {
                     }
                 });
             }
-
         }
+
         result.setStatus(Status.OK);
         return result;
     }

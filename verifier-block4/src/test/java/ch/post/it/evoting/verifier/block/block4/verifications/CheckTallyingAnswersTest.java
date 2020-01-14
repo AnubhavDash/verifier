@@ -17,10 +17,7 @@ package ch.post.it.evoting.verifier.block.block4.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
 
 import java.io.File;
@@ -44,12 +41,13 @@ public class CheckTallyingAnswersTest {
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
-//    @Test
-//    public void executeTestNOK() throws Exception {
-//        exceptionRule.expect(VerificationFailureException.class);
-//        exceptionRule.expectMessage("Business Failure");
-//        checkTallyingAnswers.verify(new File(getClass().getResource("/CheckTallyingAnswersTest/NOK").getFile()));
-//    }
+    @Test
+    @Ignore
+    public void executeTestNOK() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("Business Failure");
+        checkTallyingAnswers.verify(new File(getClass().getResource("/CheckTallyingAnswersTest/NOK").getFile()));
+    }
 
     // TODO The following NOK tests must be implemented:
     //  - Number of YES votes verification failed in standard ballot

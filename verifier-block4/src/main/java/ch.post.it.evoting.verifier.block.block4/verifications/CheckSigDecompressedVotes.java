@@ -52,12 +52,8 @@ public class CheckSigDecompressedVotes extends AbstractVerification {
         List<BallotBox> ballotBoxes = electionEvent.getBallotBoxes();
         List<File> decompressedVotesFiles = new ArrayList<>(ballotBoxes.size());
         for (BallotBox ballotBox : ballotBoxes) {
-//            try {
             String ballotBoxId = TypeConverter.UUIDToStringWithoutDash(ballotBox.getId());
             decompressedVotesFiles.add(PathHelper.getFile(inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_BALLOTBOXES).resolve(ballotBoxId).toFile(), "decompressedVotes.*\\.csv"));
-//            } catch (FileNotFoundException e) {
-//                throw new VerificationFailureException("decompressedVotes.csv not found", inputDirectory.getName(), ballotBoxId);
-//            }
         }
 
         byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath()
@@ -79,8 +75,8 @@ public class CheckSigDecompressedVotes extends AbstractVerification {
                 );
             }
         }
-        result.setStatus(Status.OK);
 
+        result.setStatus(Status.OK);
         return result;
     }
 

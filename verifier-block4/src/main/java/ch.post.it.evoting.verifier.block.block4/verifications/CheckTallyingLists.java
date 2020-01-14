@@ -55,7 +55,7 @@ public class CheckTallyingLists extends AbstractVerification {
 
     @Override
     public VerificationResult verify(File inputDirectory) throws Exception {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
+        VerificationResult result = new VerificationResult();
 
         Path path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_ELECTION_SETUP);
         Configuration configuration = Deserializer.fromXml(path.toFile(), "configuration-anonymized.xml",

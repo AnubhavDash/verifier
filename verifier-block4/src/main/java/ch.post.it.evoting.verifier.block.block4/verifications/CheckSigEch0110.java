@@ -43,6 +43,7 @@ public class CheckSigEch0110 extends AbstractVerification {
     @Override
     public VerificationResult verify(File inputDirectory) throws Exception {
         VerificationResult result = new VerificationResult();
+
         byte[] rootCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
 
         File ech = PathHelper.getFile(inputDirectory.toPath()
@@ -59,6 +60,7 @@ public class CheckSigEch0110 extends AbstractVerification {
                     "verification73.nok.message"
             );
         }
+
         result.setStatus(Status.OK);
         return result;
     }

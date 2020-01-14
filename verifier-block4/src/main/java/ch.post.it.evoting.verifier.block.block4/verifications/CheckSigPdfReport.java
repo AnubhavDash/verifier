@@ -61,6 +61,7 @@ public class CheckSigPdfReport extends AbstractVerification {
                     "verification74.nok.message"
             );
         }
+
         result.setStatus(Status.OK);
         return result;
     }
