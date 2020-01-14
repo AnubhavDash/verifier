@@ -47,6 +47,7 @@ public class CheckSecureLogIntegrity extends AbstractVerification {
     @Override
     public VerificationResult verify(File inputDirectory) throws Exception {
         VerificationResult result = new VerificationResult();
+
         File[] hosts = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block2VerificationSuite.PATH_SECURE_LOGS));
 
         VerificationFailureException ex = Flux.fromArray(hosts)

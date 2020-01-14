@@ -37,8 +37,6 @@ import java.util.stream.Collectors;
 
 public class CheckVoteUnity extends AbstractVerification {
 
-    private static final Logger LOGGER = Logger.getLogger(CheckVoteUnity.class);
-
     @Override
     public VerificationDefinition getVerificationDefinition() {
         VerificationDefinition def = new VerificationDefinition();

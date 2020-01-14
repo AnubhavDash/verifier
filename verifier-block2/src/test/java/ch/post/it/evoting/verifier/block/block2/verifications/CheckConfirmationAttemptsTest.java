@@ -47,7 +47,7 @@ public class CheckConfirmationAttemptsTest {
     @Ignore
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("TOTO");
+        exceptionRule.expectMessage("TODO");
         checkConfirmationAttempts.verify(new File(getClass().getResource("/CheckConfirmationAttemptsTest/NOK").getFile()));
     }
 

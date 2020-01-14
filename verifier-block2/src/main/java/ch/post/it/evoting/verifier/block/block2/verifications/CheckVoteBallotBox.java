@@ -20,29 +20,26 @@ import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationStruct;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.dto.revised.Ballot;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
-import org.apache.log4j.Logger;
 import reactor.util.function.Tuples;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CheckVoteBallotBox extends AbstractVerification {
-
-    private static final Logger LOGGER = Logger.getLogger(CheckVoteBallotBox.class);
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -59,6 +56,7 @@ public class CheckVoteBallotBox extends AbstractVerification {
     @Override
     public VerificationResult verify(File inputDirectory) throws Exception {
         VerificationResult result = new VerificationResult();
+
         VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectory);
 
         // Count in the logs

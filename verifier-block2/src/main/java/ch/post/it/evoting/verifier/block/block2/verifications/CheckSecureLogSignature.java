@@ -24,7 +24,6 @@ import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
 
 import java.io.File;
@@ -32,8 +31,6 @@ import java.util.Map;
 import java.util.Optional;
 
 public class CheckSecureLogSignature extends AbstractVerification {
-
-    private static final Logger LOGGER = Logger.getLogger(CheckSecureLogSignature.class);
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -48,7 +45,7 @@ public class CheckSecureLogSignature extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(File inputDirectory) {
         VerificationResult result = new VerificationResult();
 
         Map<String, SecureLogBundleCertificates> mapCertificates = SecureLogBundleCertificates.loadAllHostsBundleCertificates(inputDirectory);

@@ -46,16 +46,16 @@ public class CheckNumberVoteCastCodesTest {
     @Ignore
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("TOTO");
+        exceptionRule.expectMessage("TODO");
         checkNumberVoteCastCodes.verify(new File(getClass().getResource("/CheckNumberVoteCastCodesTest/NOK").getFile()));
     }
 
     // TODO Implement the following missing tests cases:
-    // - No values found while counting log foreach control component
-    // - Number of component control is not 4
-    // - No GENPVCC log found for the defined electionEventId
-    // - Count of log for partial vote cast code generation is not the same for each control component
-    // - The number of log entries does not match with the number of voters
+    //  - No values found while counting log foreach control component
+    //  - Number of component control is not 4
+    //  - No GENPVCC log found for the defined electionEventId
+    //  - Count of log for partial vote cast code generation is not the same for each control component
+    //  - The number of log entries does not match with the number of voters
 
     @Test
     public void executeTestNOKnotFile() throws Exception {

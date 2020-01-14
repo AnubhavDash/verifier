@@ -43,7 +43,7 @@ public class CheckSecureLogSignatureTest {
 
     @Test
     @Ignore
-    public void executeTestOK() throws Exception {
+    public void executeTestOK() {
         VerificationResult verificationResult = new CheckSecureLogSignature().verify(new File(getClass().getResource("/CheckSecureLogSignatureTest/OK").getFile()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
@@ -51,16 +51,15 @@ public class CheckSecureLogSignatureTest {
 
     @Test
     @Ignore
-    public void executeTestNOK() throws Exception {
+    public void executeTestNOK() {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("Checkpoint entry and attributes of the entry, the signature does not verify");
         VerificationResult verificationResult = new CheckSecureLogSignature().verify(new File(getClass().getResource("/CheckSecureLogSignatureTest/NOK").getFile()));
     }
 
-
     @Test
+    // TODO Extract this test to another class, as it is not testing CheckSecureLogSignature code
     public void testSignatureAlgorithm() throws Exception {
-
         File cert = new File(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_log_sign.pem").getFile());
         File intermediate = new File(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_ca.pem").getFile());
         File root = new File(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/platformRootCA.pem").getFile());
@@ -86,6 +85,7 @@ public class CheckSecureLogSignatureTest {
     }
 
     @Test
+    // TODO Extract this test to another class, as it is not testing CheckSecureLogSignature code
     public void testSecureLogBundleSignature() throws Exception {
         File cert = new File(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_log_sign.pem").getFile());
         File intermediate = new File(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_ca.pem").getFile());

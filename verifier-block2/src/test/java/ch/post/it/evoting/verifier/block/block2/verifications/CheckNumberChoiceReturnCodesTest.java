@@ -46,16 +46,16 @@ public class CheckNumberChoiceReturnCodesTest {
     @Ignore
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("TOTO");
+        exceptionRule.expectMessage("TODO");
         checkNumberChoiceReturnCodes.verify(new File(getClass().getResource("/CheckNumberChoiceReturnCodesTest/NOK").getFile()));
     }
 
     // TODO Implement the following missing tests cases:
-    // - No values found while counting log foreach control component
-    // - Number of component control is not 4
-    // - No GENPCC log found for the defined electionEventId
-    // - Count of log for partial choice code generation is not the same for each control component
-    // - The number of log entries does not match with the number of voters
+    //  - No values found while counting log foreach control component
+    //  - Number of component control is not 4
+    //  - No GENPCC log found for the defined electionEventId
+    //  - Count of log for partial choice code generation is not the same for each control component
+    //  - The number of log entries does not match with the number of voters
 
     @Test
     public void executeTestNOKnotFile() throws Exception {

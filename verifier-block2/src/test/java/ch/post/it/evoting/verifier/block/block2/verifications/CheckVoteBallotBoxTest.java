@@ -50,10 +50,10 @@ public class CheckVoteBallotBoxTest {
     }
 
     // TODO Implement the following missing tests cases:
-    // - Duplicate votingCardId in downloadedBallotBox files
-    // - The number of encrypted votes in the secure logs and downloadboxes are not equal
-    // - EncryptedOptions is not the same in DownloadedBallotBox and SecureLogs
-    // - Unknown votingCardId
+    //  - Duplicate votingCardId in downloadedBallotBox files
+    //  - The number of encrypted votes in the secure logs and downloadboxes are not equal
+    //  - EncryptedOptions is not the same in DownloadedBallotBox and SecureLogs
+    //  - Unknown votingCardId
 
     @Test
     public void executeTestNOKnotFile() throws Exception {

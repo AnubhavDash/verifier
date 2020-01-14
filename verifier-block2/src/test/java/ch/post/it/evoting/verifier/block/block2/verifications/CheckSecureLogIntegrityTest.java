@@ -57,6 +57,7 @@ public class CheckSecureLogIntegrityTest {
     }
 
     @Test
+    // TODO Extract this test to another class, as it is not testing CheckSecureLogIntegrity code
     public void generateHmacCheckpoint() {
         final String endLsk = "U9LwEJ1oDitWij/tX8SJ44FqDGrFFhJXXr+Nakj509w=";
         final String hmac = "cxEQsXjOFU09oL8gGvDMSC0TzYDwtGrJdfL27iOzNnQ=";
@@ -88,6 +89,7 @@ public class CheckSecureLogIntegrityTest {
     }
 
     @Test
+    // TODO Extract this test to another class, as it is not testing CheckSecureLogIntegrity code
     public void generateHmacRegularLog() {
         final String endLsk = "MD+KuCAgFCcbqETTqDeI79Fr9P3TMq2lpGfuahpZGp8=";
         final String hmac = "gtGMUiyEZlA/MeVMJAMbSmUj3DYjOkxWm7N+4i9kiZc=";
