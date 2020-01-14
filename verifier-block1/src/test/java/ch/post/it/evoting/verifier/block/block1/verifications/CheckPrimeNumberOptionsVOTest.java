@@ -53,13 +53,13 @@ public class CheckPrimeNumberOptionsVOTest {
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
-    // TODO Implements the following NOK tests:
-    // - the prime number fields are not mutually distinct
-    // - The number of prime numbers does not correspond to the number of answerElements
-    // - alias does not correspond to electionIdentification
-    // - The prime numbers are repeated
-    // - The number of distinct prime numbers does not correspond to the number of list elements
-    // - The number of candidate prime numbers does not correspond to the expected number of voting options for candidates
+    // TODO Implements the following NOK tests
+    //  - the prime number fields are not mutually distinct
+    //  - The number of prime numbers does not correspond to the number of answerElements
+    //  - alias does not correspond to electionIdentification
+    //  - The prime numbers are repeated
+    //  - The number of distinct prime numbers does not correspond to the number of list elements
+    //  - The number of candidate prime numbers does not correspond to the expected number of voting options for candidates
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {

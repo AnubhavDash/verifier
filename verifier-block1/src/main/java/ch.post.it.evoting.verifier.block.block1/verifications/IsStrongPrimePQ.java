@@ -42,7 +42,8 @@ public class IsStrongPrimePQ extends AbstractVerification {
 
     @Override
     public VerificationResult verify(File inputDirectory) throws Exception {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
+        VerificationResult result = new VerificationResult();
+
         Path path = inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_CRYPTO_SETUP);
         EncryptionGroup encryptionGroup = Deserializer.fromJson(path.toFile(), "encryptionParameters\\.json", EncryptionGroup.class);
 

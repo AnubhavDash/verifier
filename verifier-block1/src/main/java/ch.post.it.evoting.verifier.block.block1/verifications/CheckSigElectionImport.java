@@ -41,7 +41,7 @@ public class CheckSigElectionImport extends AbstractVerification {
 
     @Override
     public VerificationResult verify(File inputDirectory) throws Exception {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
+        VerificationResult result = new VerificationResult();
 
         byte[] rootCertificate = Files.readAllBytes(inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_CERTIFICATES).resolve("integrationCA.pem"));
 

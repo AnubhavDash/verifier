@@ -41,19 +41,20 @@ public class CheckSizeP extends AbstractVerification {
 
     @Override
     public VerificationResult verify(File inputDirectory) throws Exception {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
+        VerificationResult result = new VerificationResult();
+
         Path path = inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_CRYPTO_SETUP);
         EncryptionGroup encryptionGroup = Deserializer.fromJson(path.toFile(), "encryptionParameters\\.json", EncryptionGroup.class);
 
-        if (encryptionGroup.getP().bitLength() >= 2048) {
-            result.setStatus(Status.OK);
-        } else {
+        if (encryptionGroup.getP().bitLength() < 2048) {
             throw buildVerificationFailureException(
                     "p does not have the right size",
                     Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
                     "verification04.nok.message"
             );
         }
+
+        result.setStatus(Status.OK);
         return result;
     }
 }

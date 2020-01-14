@@ -48,7 +48,8 @@ public class IsMemberOfGroupPKEA extends AbstractVerification {
 
     @Override
     public VerificationResult verify(File inputDirectory) throws Exception {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
+        VerificationResult result = new VerificationResult();
+
         Path path = inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_CRYPTO_SETUP);
         ElectoralAuthority electoralAuthority = Deserializer.fromJson(path.toFile(), "electoralAuthority\\.json", ElectoralAuthority.class);
         String publicKeyB64 = electoralAuthority.getPublicKey();
@@ -69,9 +70,8 @@ public class IsMemberOfGroupPKEA extends AbstractVerification {
                     .filter(bigInteger -> !MathHelper.isEulerCriterionValid(bigInteger, p))
                     .map(bi -> TypeConverter.bigIntegerToB64String(bi))
                     .collect(Collectors.toList());
-            if (errors.isEmpty()) {
-                result.setStatus(Status.OK);
-            } else {
+
+            if (!errors.isEmpty()) {
                 throw buildVerificationFailureException(
                         "Euler criterion does not equal to 1",
                         Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
@@ -80,6 +80,8 @@ public class IsMemberOfGroupPKEA extends AbstractVerification {
                 );
             }
         }
+
+        result.setStatus(Status.OK);
         return result;
     }
 
