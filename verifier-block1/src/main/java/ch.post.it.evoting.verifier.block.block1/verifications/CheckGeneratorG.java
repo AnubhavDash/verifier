@@ -29,6 +29,7 @@ import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.LongStream;
 
 public class CheckGeneratorG extends AbstractVerification {
@@ -41,7 +42,8 @@ public class CheckGeneratorG extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(1);
         def.setCategory(Category.INTEGRITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification10.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                "verification10.description"));
         def.setId(10);
         def.setName("checkGenerator(g)");
         def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
@@ -54,7 +56,8 @@ public class CheckGeneratorG extends AbstractVerification {
         VerificationResult result = new VerificationResult(getVerificationDefinition());
         try {
             Path path = inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_CRYPTO_SETUP);
-            EncryptionParameters encryptionParameters = Deserializer.fromJson(path.toFile(), "encryptionParameters\\.json", EncryptionParameters.class);
+            EncryptionParameters encryptionParameters = Deserializer.fromJson(path.toFile(), "encryptionParameters\\.json",
+                    EncryptionParameters.class);
             BigInteger g = TypeConverter.stringToBigInteger(encryptionParameters.getG());
             BigInteger p = TypeConverter.stringToBigInteger(encryptionParameters.getP());
 
@@ -66,16 +69,15 @@ public class CheckGeneratorG extends AbstractVerification {
 
             if (!MathHelper.isEulerCriterionValid(g, p)) {
                 throw new Test10Exception("g is not part of the subgroup q",
-                        TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification10.euler.nok.message",
-                                encryptionParameters.getG()));
+                        TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                                "verification10.euler.nok.message", encryptionParameters.getG()));
             }
 
-            BigInteger smaller = findSmallerOfSubgroup(encryptionParameters, g, p);
-            if (!g.equals(smaller)) {
+            findSmallerPrimeOfSubgroup(encryptionParameters, g, p).ifPresent(s -> {
                 throw new Test10Exception("g must be the smallest prime number in the subgroup (p, q).",
-                        TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification10.smallest.nok.message",
-                                smaller.toString(), g.toString()));
-            }
+                        TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                                "verification10.smallest.nok.message", s.toString(), g.toString()));
+            });
 
             result.setStatus(Status.OK);
         } catch (Test10Exception e) {
@@ -85,18 +87,27 @@ public class CheckGeneratorG extends AbstractVerification {
         } catch (FileNotFoundException e) {
             LOGGER.error("a FileNotFoundException error occurred", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification10.file.not.found.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                    "verification10.file.not.found.message"));
         } catch (Exception e) {
             LOGGER.error("Unexpected error", e);
             result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
+            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                    "error.generic.message"));
         }
         return result;
     }
 
-    private BigInteger findSmallerOfSubgroup(EncryptionParameters encryptionParameters, BigInteger g, BigInteger p) {
+
+    /**
+     * Check if there is a smaller prime in the subgroup. The parameter g has to be prime and be part of the subgroup. These checks are
+     * NOT done in this method.
+     *
+     * @return A smaller prime of the subgroup if any.
+     */
+    private Optional<BigInteger> findSmallerPrimeOfSubgroup(EncryptionParameters encryptionParameters, BigInteger g, BigInteger p) {
         if (g.compareTo(BIG_INTEGER_TWO) == 0) {
-            return g;
+            return Optional.empty();
         } else {
             // Check is there is a prime number less than g (except 2) that is also a quadratic residue.
             // Be aware that if g is greater than Long.MAX_VALUE, a NumberFormatException is thrown.
@@ -105,8 +116,7 @@ public class CheckGeneratorG extends AbstractVerification {
                     .mapToObj(BigInteger::valueOf)
                     .filter(MathHelper::isPrime)
                     .filter(prime -> MathHelper.isEulerCriterionValid(prime, p))
-                    .findAny()
-                    .orElse(g);
+                    .findAny();
         }
     }
 
