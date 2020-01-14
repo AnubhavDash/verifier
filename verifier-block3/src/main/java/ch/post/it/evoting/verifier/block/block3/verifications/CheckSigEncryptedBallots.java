@@ -51,7 +51,8 @@ public class CheckSigEncryptedBallots extends AbstractVerification {
 
     @Override
     public VerificationResult verify(File inputDirectory) throws Exception {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
+        VerificationResult result = new VerificationResult();
+
         Path path = inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_ELECTION_SETUP);
         DataConfigEE dataConfigEE = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", DataConfigEE.class);
         ElectionEvent electionEvent = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", ElectionEvent.class);
@@ -85,6 +86,7 @@ public class CheckSigEncryptedBallots extends AbstractVerification {
                 );
             }
         }
+
         result.setStatus(Status.OK);
         return result;
     }

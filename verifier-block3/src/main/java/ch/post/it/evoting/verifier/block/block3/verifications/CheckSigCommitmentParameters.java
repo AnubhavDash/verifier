@@ -50,7 +50,7 @@ public class CheckSigCommitmentParameters extends AbstractVerification {
 
     @Override
     public VerificationResult verify(File inputDirectory) throws Exception {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
+        VerificationResult result = new VerificationResult();
 
         Path path = inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_ELECTION_SETUP);
         DataConfigEE dataConfigEE = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", DataConfigEE.class);
@@ -62,9 +62,6 @@ public class CheckSigCommitmentParameters extends AbstractVerification {
             for (File folder : commitmentParamFolders) {
                 commitmentParamFiles.add(PathHelper.getFile(folder, "commitmentParameters.*\\.json"));
             }
-
-//                throw new VerificationFailureException("commitmentParameters.json not found", inputDirectory.getName(), ballotBoxId);
-
         }
 
         byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath()
@@ -87,6 +84,7 @@ public class CheckSigCommitmentParameters extends AbstractVerification {
                 );
             }
         }
+
         result.setStatus(Status.OK);
         return result;
     }

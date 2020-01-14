@@ -44,7 +44,7 @@ public class CheckDecryptionProofOnline extends AbstractVerification {
 
     @Override
     public VerificationResult verify(File inputDirectory) throws Exception {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
+        VerificationResult result = new VerificationResult();
 
         File[] ballotBoxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
         File[] ccMixingKeys = PathHelper.getFiles(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_CC_MIXING_KEYS).toFile(), "cc.*_mixing_.*key.*\\.json");
@@ -74,8 +74,8 @@ public class CheckDecryptionProofOnline extends AbstractVerification {
                 }
             }
         }
-        result.setStatus(Status.OK);
 
+        result.setStatus(Status.OK);
         return result;
     }
 

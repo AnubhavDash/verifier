@@ -47,7 +47,7 @@ public class CheckDecryptionProof extends AbstractVerification {
 
     @Override
     public VerificationResult verify(File inputDirectory) throws Exception {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
+        VerificationResult result = new VerificationResult();
 
         File[] ballotBoxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
         for (File ballotBox : ballotBoxes) {
@@ -67,6 +67,7 @@ public class CheckDecryptionProof extends AbstractVerification {
                 );
             }
         }
+
         result.setStatus(Status.OK);
         return result;
     }

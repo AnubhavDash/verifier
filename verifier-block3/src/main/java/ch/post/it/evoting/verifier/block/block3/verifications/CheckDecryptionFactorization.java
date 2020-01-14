@@ -47,7 +47,8 @@ public class CheckDecryptionFactorization extends AbstractVerification {
 
     @Override
     public VerificationResult verify(File inputDirectory) throws Exception {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
+        VerificationResult result = new VerificationResult();
+
         File[] ballotBoxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
         for (File balloBox : ballotBoxes) {
             // decompressedVotes
@@ -107,8 +108,8 @@ public class CheckDecryptionFactorization extends AbstractVerification {
                         decompVotesbigIntList.toString());
             }
         }
-        result.setStatus(Status.OK);
 
+        result.setStatus(Status.OK);
         return result;
     }
 }

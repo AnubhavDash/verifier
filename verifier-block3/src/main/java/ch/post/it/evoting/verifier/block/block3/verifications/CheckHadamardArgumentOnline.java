@@ -45,7 +45,8 @@ public class CheckHadamardArgumentOnline extends AbstractVerification {
 
     @Override
     public VerificationResult verify(File inputDirectory) {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
+        VerificationResult result = new VerificationResult();
+
         try {
             processor.register(this);
             processor.executeProcess(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
@@ -60,6 +61,7 @@ public class CheckHadamardArgumentOnline extends AbstractVerification {
         } finally {
             processor.unregister(this);
         }
+
         return result;
     }
 }

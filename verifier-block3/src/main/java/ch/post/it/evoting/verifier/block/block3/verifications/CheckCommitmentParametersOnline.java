@@ -47,7 +47,8 @@ public class CheckCommitmentParametersOnline extends AbstractVerification {
 
     @Override
     public VerificationResult verify(File inputDirectory) throws Exception {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
+        VerificationResult result = new VerificationResult();
+
         File[] ballotBoxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
         for (File ballotBox : ballotBoxes) {
             final File[] onlineMixings = ballotBox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
@@ -79,6 +80,7 @@ public class CheckCommitmentParametersOnline extends AbstractVerification {
                 }
             }
         }
+
         result.setStatus(Status.OK);
         return result;
     }

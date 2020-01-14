@@ -47,7 +47,7 @@ public class CheckSigOnlineProofs extends AbstractVerification {
 
     @Override
     public VerificationResult verify(File inputDirectory) {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
+        VerificationResult result = new VerificationResult();
         result.setStatus(Status.NA);
         /* Temporary commented - feedback about original sentence needed
         try {

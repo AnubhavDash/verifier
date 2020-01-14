@@ -51,8 +51,8 @@ public class CheckCommitmentParameters extends AbstractVerification {
 
     @Override
     public VerificationResult verify(File inputDirectory) throws Exception {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
-//        try {
+        VerificationResult result = new VerificationResult();
+
         Path path = inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_ELECTION_SETUP);
         DataConfigEE dataConfigEE = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", DataConfigEE.class);
         List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();

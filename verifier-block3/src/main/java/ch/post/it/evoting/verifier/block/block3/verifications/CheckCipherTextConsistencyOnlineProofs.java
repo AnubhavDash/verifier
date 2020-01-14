@@ -69,7 +69,8 @@ public class CheckCipherTextConsistencyOnlineProofs extends AbstractVerification
 
     @Override
     public VerificationResult verify(File inputDirectory) throws Exception {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
+        VerificationResult result = new VerificationResult();
+
         File[] ballotboxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
         boolean isEquivalent = false;
         for (File ballotbox : ballotboxes) {
@@ -152,6 +153,7 @@ public class CheckCipherTextConsistencyOnlineProofs extends AbstractVerification
                 );
             }
         }
+
         result.setStatus(Status.OK);
         return result;
     }

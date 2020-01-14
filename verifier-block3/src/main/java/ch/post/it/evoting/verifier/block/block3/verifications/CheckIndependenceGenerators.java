@@ -40,7 +40,8 @@ public class CheckIndependenceGenerators extends AbstractVerification {
 
     @Override
     public VerificationResult verify(File inputDirectory) {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
+        VerificationResult result = new VerificationResult();
+
         try {
             result.setStatus(Status.NA);
         } catch (Exception e) {
@@ -48,6 +49,7 @@ public class CheckIndependenceGenerators extends AbstractVerification {
             result.setStatus(Status.NOK);
             result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
+
         return result;
     }
 }
