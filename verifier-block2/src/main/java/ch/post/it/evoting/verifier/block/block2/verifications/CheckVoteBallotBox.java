@@ -30,6 +30,7 @@ import reactor.util.function.Tuples;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
@@ -54,15 +55,15 @@ public class CheckVoteBallotBox extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectory);
+        VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectoryPath);
 
         // Count in the logs
         final Pattern patternEncryptedOption = Pattern.compile(".*\\|000\\|(.*)\\|.*\\|.*\\|#encryptedOptions=\"(.*)\" #ccx_id=.*\n");
         final Pattern pattern = Pattern.compile("\\|VOTVAL\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|");
-        Map<String, String> mapSecureLogs = SecureLogEntry.loadRegularLogs(inputDirectory, pattern)
+        Map<String, String> mapSecureLogs = SecureLogEntry.loadRegularLogs(inputDirectoryPath, pattern)
                 .map(s1 -> {
                     Matcher matcher = patternEncryptedOption.matcher(s1.getRaw());
                     matcher.matches();
@@ -76,7 +77,7 @@ public class CheckVoteBallotBox extends AbstractVerification {
         // check that mapDownloadedBallotBox[votingCardId] == mapSecuredLogs[votingCardId]
         Map<String, String> mapDownloadedBallotBoxs = new HashMap<>();
 
-        List<File> downloadedBallotBoxFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2VerificationSuite.PATH_BALLOTBOXES).toFile(),
+        List<File> downloadedBallotBoxFiles = PathHelper.getFiles(inputDirectoryPath.resolve(Block2VerificationSuite.PATH_BALLOTBOXES).toFile(),
                 "downloadedBallotBox.*\\.csv",
                 true);
 

@@ -24,7 +24,6 @@ import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.ElectoralAuthority;
 import ch.post.it.evoting.verifier.dto.PublicKey;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Path;
@@ -47,10 +46,10 @@ public class IsMemberOfGroupPKEA extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        Path path = inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_CRYPTO_SETUP);
+        Path path = inputDirectoryPath.resolve(Block1VerificationSuite.PATH_CRYPTO_SETUP);
         ElectoralAuthority electoralAuthority = Deserializer.fromJson(path.toFile(), "electoralAuthority\\.json", ElectoralAuthority.class);
         String publicKeyB64 = electoralAuthority.getPublicKey();
         byte[] decoded = TypeConverter.base64ToByte(publicKeyB64);

@@ -29,7 +29,6 @@ import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import com.scytl.xmlns.decrypt._1.Results;
 import org.apache.log4j.Logger;
 
-import java.io.File;
 import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.AbstractMap;
@@ -54,10 +53,10 @@ public class CheckTallyingLists extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        Path path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_ELECTION_SETUP);
+        Path path = inputDirectoryPath.resolve(Block4VerificationSuite.PATH_ELECTION_SETUP);
         Configuration configuration = Deserializer.fromXml(path.toFile(), "configuration-anonymized.xml",
                 Configuration.class);
 
@@ -82,7 +81,7 @@ public class CheckTallyingLists extends AbstractVerification {
 
 
         // 2, decrypt file => map<countingCircle, map<ElectionId, map<listId, count>>>
-        path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_RESULTS);
+        path = inputDirectoryPath.resolve(Block4VerificationSuite.PATH_RESULTS);
         Results results = Deserializer.fromXml(path.toFile(), "evoting-decrypt_.*\\.xml", Results.class);
         Map<String, Map<String, Map<String, Long>>> countByListId = results.getBallotsBox().stream()
                 .flatMap(bb -> bb.getCountingCircle().stream())
@@ -170,7 +169,7 @@ public class CheckTallyingLists extends AbstractVerification {
                             });
                         }));
 
-        path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_RESULTS);
+        path = inputDirectoryPath.resolve(Block4VerificationSuite.PATH_RESULTS);
         Delivery ech110 = Deserializer.fromXml(path.toFile(), "eCH-0110_.*\\.xml", Delivery.class);
         ech110.getResultDelivery().getCountingCircleResults().forEach(cc -> {
             String ccId = cc.getCountingCircle().getCountingCircleId();

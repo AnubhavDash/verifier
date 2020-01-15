@@ -25,6 +25,7 @@ import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.file.Paths;
 
 public class CheckOptionsMappingTest {
     private CheckOptionsMapping checkOptionsMapping;
@@ -39,14 +40,14 @@ public class CheckOptionsMappingTest {
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkOptionsMapping.verify(new File(getClass().getResource("/CheckOptionsMappingTest/OK").getFile()));
+        VerificationResult verificationResult = checkOptionsMapping.verify(Paths.get(getClass().getResource("/CheckOptionsMappingTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestOKWriteIns() throws Exception {
-        VerificationResult verificationResult = checkOptionsMapping.verify(new File(getClass().getResource("/CheckOptionsMappingTest/OK-WRITEINS").getFile()));
+        VerificationResult verificationResult = checkOptionsMapping.verify(Paths.get(getClass().getResource("/CheckOptionsMappingTest/OK-WRITEINS").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -55,14 +56,14 @@ public class CheckOptionsMappingTest {
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("TODO");
-        checkOptionsMapping.verify(new File(getClass().getResource("/CheckOptionsMappingTest/NOK").getFile()));
+        checkOptionsMapping.verify(Paths.get(getClass().getResource("/CheckOptionsMappingTest/NOK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage("dataConfig_updated_.*\\.json");
-        checkOptionsMapping.verify(new File(getClass().getResource("/CheckOptionsMappingTest/NOK-NOFILE").getFile()));
+        checkOptionsMapping.verify(Paths.get(getClass().getResource("/CheckOptionsMappingTest/NOK-NOFILE").toURI()));
     }
 
     // TODO File not found error test evoting-decrypt_.*\.xml
@@ -71,7 +72,7 @@ public class CheckOptionsMappingTest {
     public void executeTestNOKFileNotFound2() throws Exception {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage("decompressedVotes\\.csv");
-        checkOptionsMapping.verify(new File(getClass().getResource("/CheckOptionsMappingTest/NOK-NOFILE2").getFile()));
+        checkOptionsMapping.verify(Paths.get(getClass().getResource("/CheckOptionsMappingTest/NOK-NOFILE2").toURI()));
     }
 
 }

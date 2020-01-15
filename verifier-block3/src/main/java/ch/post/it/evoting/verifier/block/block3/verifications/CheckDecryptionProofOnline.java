@@ -24,6 +24,7 @@ import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import com.scytl.decrypt.DecryptVerifier;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,11 +44,11 @@ public class CheckDecryptionProofOnline extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        File[] ballotBoxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
-        File[] ccMixingKeys = PathHelper.getFiles(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_CC_MIXING_KEYS).toFile(), "cc.*_mixing_.*key.*\\.json");
+        File[] ballotBoxes = PathHelper.listDirectories(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
+        File[] ccMixingKeys = PathHelper.getFiles(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_CC_MIXING_KEYS).toFile(), "cc.*_mixing_.*key.*\\.json");
 
         for (File ballotBox : ballotBoxes) {
             final File[] onlineMixings = ballotBox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));

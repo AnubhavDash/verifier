@@ -23,8 +23,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 public class CheckGeneratorGTest {
     private CheckGeneratorG checkGeneratorG;
@@ -39,7 +39,7 @@ public class CheckGeneratorGTest {
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkGeneratorG.verify(new File(getClass().getResource("/CheckGeneratorGTest/OK").getFile()));
+        VerificationResult verificationResult = checkGeneratorG.verify(Paths.get(getClass().getResource("/CheckGeneratorGTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -48,26 +48,26 @@ public class CheckGeneratorGTest {
     public void executeTestNOKPrimality() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The generator g is not prime");
-        checkGeneratorG.verify(new File(getClass().getResource("/CheckGeneratorGTest/NOK/NOK").getFile()));
+        checkGeneratorG.verify(Paths.get(getClass().getResource("/CheckGeneratorGTest/NOK/NOK").toURI()));
     }
 
     @Test
     public void executeTestNOKEulerCriterion() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("g is not part of the subgroup q");
-        checkGeneratorG.verify(new File(getClass().getResource("/CheckGeneratorGTest/NOK/NOK-EULER").getFile()));
+        checkGeneratorG.verify(Paths.get(getClass().getResource("/CheckGeneratorGTest/NOK/NOK-EULER").toURI()));
     }
 
     @Test
     public void executeTestNOKSubgroupSmallest() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("g must be the smallest prime number in the subgroup (p, q)");
-        checkGeneratorG.verify(new File(getClass().getResource("/CheckGeneratorGTest/NOK/NOK-SMALLEST").getFile()));
+        checkGeneratorG.verify(Paths.get(getClass().getResource("/CheckGeneratorGTest/NOK/NOK-SMALLEST").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(IOException.class);
-        checkGeneratorG.verify(new File(getClass().getResource("/CheckGeneratorGTest/NOK/NOK-NOFILE").getFile()));
+        checkGeneratorG.verify(Paths.get(getClass().getResource("/CheckGeneratorGTest/NOK/NOK-NOFILE").toURI()));
     }
 }

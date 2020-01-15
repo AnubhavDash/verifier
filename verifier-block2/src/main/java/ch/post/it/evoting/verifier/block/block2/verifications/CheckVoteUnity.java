@@ -20,16 +20,12 @@ import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationStruct;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.block.block2.securelog.HostMappingElement;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import org.apache.log4j.Logger;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,17 +46,17 @@ public class CheckVoteUnity extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectory);
+        VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectoryPath);
 
         // create host/CC mapping
-        Map<String, String> hostCcMapping = HostMappingElement.loadHostMapping(inputDirectory);
+        Map<String, String> hostCcMapping = HostMappingElement.loadHostMapping(inputDirectoryPath);
 
         final Pattern patternVotingCardId = Pattern.compile(".*\\|000\\|(.*)\\|.*\\|.*\\|#encryptedOptions=\".*\" #ccx_id=.*\n");
         final Pattern pattern = Pattern.compile("\\|VOTVAL\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|");
-        Map<String, Map<String, Long>> nbVotingCardPerCC = SecureLogEntry.loadRegularLogs(inputDirectory, pattern)
+        Map<String, Map<String, Long>> nbVotingCardPerCC = SecureLogEntry.loadRegularLogs(inputDirectoryPath, pattern)
                 .map(s1 -> {
                     Matcher matcher = patternVotingCardId.matcher(s1.getRaw());
                     matcher.matches();

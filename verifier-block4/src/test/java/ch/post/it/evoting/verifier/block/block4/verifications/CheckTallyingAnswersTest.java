@@ -21,6 +21,7 @@ import org.junit.*;
 import org.junit.rules.ExpectedException;
 
 import java.io.File;
+import java.nio.file.Paths;
 
 public class CheckTallyingAnswersTest {
     private CheckTallyingAnswers checkTallyingAnswers;
@@ -36,7 +37,7 @@ public class CheckTallyingAnswersTest {
     @Test
     public void executeTestOK() throws Exception {
         // TODO The eCH0110 must contains vote results to be valid
-        VerificationResult verificationResult = checkTallyingAnswers.verify(new File(getClass().getResource("/CheckTallyingAnswersTest/OK").getFile()));
+        VerificationResult verificationResult = checkTallyingAnswers.verify(Paths.get(getClass().getResource("/CheckTallyingAnswersTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -46,7 +47,7 @@ public class CheckTallyingAnswersTest {
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("Business Failure");
-        checkTallyingAnswers.verify(new File(getClass().getResource("/CheckTallyingAnswersTest/NOK").getFile()));
+        checkTallyingAnswers.verify(Paths.get(getClass().getResource("/CheckTallyingAnswersTest/NOK").toURI()));
     }
 
     // TODO The following NOK tests must be implemented:

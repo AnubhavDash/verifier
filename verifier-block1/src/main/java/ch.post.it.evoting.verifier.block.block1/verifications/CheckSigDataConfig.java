@@ -23,6 +23,7 @@ import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class CheckSigDataConfig extends AbstractVerification {
 
@@ -40,21 +41,21 @@ public class CheckSigDataConfig extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath()
+        byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath
                         .resolve(Block1VerificationSuite.PATH_CERTIFICATES)
                         .resolve(Block1VerificationSuite.PATH_ADMINBOARD).toFile(),
                 ".*\\.pem").toPath());
 
-        byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
+        byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
 
-        File[] dataConfigFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).toFile(), "dataConfig.*\\.json");
+        File[] dataConfigFiles = PathHelper.getFiles(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).toFile(), "dataConfig.*\\.json");
 
         for (File dataConfig : dataConfigFiles) {
-            byte[] content = Files.readAllBytes(inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName()));
-            byte[] signature = Files.readAllBytes(inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName() + ".metadata"));
+            byte[] content = Files.readAllBytes(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName()));
+            byte[] signature = Files.readAllBytes(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName() + ".metadata"));
 
             if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCA)) {
                 throw buildVerificationFailureException(

@@ -20,24 +20,25 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.file.Paths;
 
 public class CheckDecryptionProofTest {
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult result = new CheckDecryptionProof().verify(new File(getClass().getResource("/CheckDecryptionProofTest/OK").getFile()));
+        VerificationResult result = new CheckDecryptionProof().verify(Paths.get(getClass().getResource("/CheckDecryptionProofTest/OK").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestWithWriteInsOK() throws Exception {
-        VerificationResult result = new CheckDecryptionProof().verify(new File(getClass().getResource("/CheckDecryptionProofTest/OK-WRITE-INS").getFile()));
+        VerificationResult result = new CheckDecryptionProof().verify(Paths.get(getClass().getResource("/CheckDecryptionProofTest/OK-WRITE-INS").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestOKFileNotFound() throws Exception {
-        VerificationResult result = new CheckDecryptionProof().verify(new File(getClass().getResource("/CheckDecryptionProofTest/NOK-NOTFILE").getFile()));
+        VerificationResult result = new CheckDecryptionProof().verify(Paths.get(getClass().getResource("/CheckDecryptionProofTest/NOK-NOTFILE").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }

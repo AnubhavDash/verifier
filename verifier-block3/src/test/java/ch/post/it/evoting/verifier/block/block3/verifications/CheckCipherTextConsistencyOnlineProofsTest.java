@@ -20,18 +20,19 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.file.Paths;
 
 public class CheckCipherTextConsistencyOnlineProofsTest {
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult result = new CheckCipherTextConsistencyOnlineProofs().verify(new File(getClass().getResource("/CheckCipherTextConsistencyOnlineProofsTest/OK").getFile()));
+        VerificationResult result = new CheckCipherTextConsistencyOnlineProofs().verify(Paths.get(getClass().getResource("/CheckCipherTextConsistencyOnlineProofsTest/OK").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestNOK() throws Exception {
-        VerificationResult result = new CheckCipherTextConsistencyOnlineProofs().verify(new File(getClass().getResource("/CheckCipherTextConsistencyOnlineProofsTest/NOK").getFile()));
+        VerificationResult result = new CheckCipherTextConsistencyOnlineProofs().verify(Paths.get(getClass().getResource("/CheckCipherTextConsistencyOnlineProofsTest/NOK").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 

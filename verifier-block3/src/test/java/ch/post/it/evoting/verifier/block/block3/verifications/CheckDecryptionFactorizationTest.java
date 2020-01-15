@@ -20,24 +20,25 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.file.Paths;
 
 public class CheckDecryptionFactorizationTest {
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult result = new CheckDecryptionFactorization().verify(new File(getClass().getResource("/CheckDecryptionFactorizationTest/OK").getFile()));
+        VerificationResult result = new CheckDecryptionFactorization().verify(Paths.get(getClass().getResource("/CheckDecryptionFactorizationTest/OK").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestWithWriteInsOK() throws Exception {
-        VerificationResult result = new CheckDecryptionFactorization().verify(new File(getClass().getResource("/CheckDecryptionFactorizationTest/OK-WRITE-INS").getFile()));
+        VerificationResult result = new CheckDecryptionFactorization().verify(Paths.get(getClass().getResource("/CheckDecryptionFactorizationTest/OK-WRITE-INS").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestNOK() throws Exception {
-        VerificationResult result = new CheckDecryptionFactorization().verify(new File(getClass().getResource("/CheckDecryptionFactorizationTest/NOK").getFile()));
+        VerificationResult result = new CheckDecryptionFactorization().verify(Paths.get(getClass().getResource("/CheckDecryptionFactorizationTest/NOK").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }

@@ -20,20 +20,15 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.dto.revised.BallotBox;
 import ch.post.it.evoting.verifier.common.block.dto.revised.ElectionEvent;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.dto.DataConfigEE;
-import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,27 +49,27 @@ public class CheckSigProofs extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        Path path = inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_ELECTION_SETUP);
+        Path path = inputDirectoryPath.resolve(Block3VerificationSuite.PATH_ELECTION_SETUP);
         ElectionEvent electionEvent = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", ElectionEvent.class);
         List<BallotBox> ballotBoxes = electionEvent.getBallotBoxes();
         List<File> proofsFiles = new ArrayList<>();
         for (BallotBox ballotBox : ballotBoxes) {
             String ballotBoxId = ballotBox.getId().toString();
-            File[] proofFolders = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_BALLOTBOXES).resolve(ballotBoxId));
+            File[] proofFolders = PathHelper.listDirectories(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_BALLOTBOXES).resolve(ballotBoxId));
             for (File folder : proofFolders) {
                 proofsFiles.add(PathHelper.getFile(folder, "proofs.*\\.json"));
             }
         }
 
-        byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath()
+        byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath
                         .resolve(Block3VerificationSuite.PATH_CERTIFICATES)
                         .resolve(Block3VerificationSuite.PATH_ADMINBOARD).toFile(),
                 ".*\\.pem").toPath());
 
-        byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
+        byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
 
         for (File proof : proofsFiles) {
             byte[] content = Files.readAllBytes(proof.toPath());

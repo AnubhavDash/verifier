@@ -24,7 +24,6 @@ import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 
-import java.io.File;
 import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.Collection;
@@ -46,10 +45,10 @@ public class IsPrimeVO extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        Path path = inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_ELECTION_SETUP);
+        Path path = inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP);
         ElectionEvent electionEvent = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", ElectionEvent.class);
 
         // Votations

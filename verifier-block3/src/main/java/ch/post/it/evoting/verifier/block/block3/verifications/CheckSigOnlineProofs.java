@@ -27,7 +27,7 @@ import com.scytl.products.ov.mixnet.commons.homomorphic.Randomness;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -46,19 +46,19 @@ public class CheckSigOnlineProofs extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) {
+    public VerificationResult verify(Path inputDirectoryPath) {
         VerificationResult result = new VerificationResult();
         result.setStatus(Status.NA);
         /* Temporary commented - feedback about original sentence needed
         try {
-            File[] ballotBoxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3TestSuite.PATH_BALLOTBOXES));
+            File[] ballotBoxes = PathHelper.listDirectories(inputDirectoryPath.resolve(Block3TestSuite.PATH_BALLOTBOXES));
             for (File ballotBox : ballotBoxes) {
                 final File[] onlineMixings = ballotBox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
                 if (onlineMixings == null || onlineMixings.length != 3) {
                     throw new TestFailureException("the number of control components expected is 3 but actual is " + (onlineMixings == null ? "0" : onlineMixings.length));
                 }
 
-                byte[] platformRootCA = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block3TestSuite.PATH_CERTIFICATES).toFile(), "platformRootCA.*\\.pem").toPath());
+                byte[] platformRootCA = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath.resolve(Block3TestSuite.PATH_CERTIFICATES).toFile(), "platformRootCA.*\\.pem").toPath());
 
                 for (File file : onlineMixings) {
 

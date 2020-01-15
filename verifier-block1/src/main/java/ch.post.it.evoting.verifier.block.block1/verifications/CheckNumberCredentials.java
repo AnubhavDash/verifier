@@ -42,10 +42,10 @@ public class CheckNumberCredentials extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
         // number of voters
-        Path path = inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_ELECTION_SETUP);
+        Path path = inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP);
         Configuration configuration = Deserializer.fromXml(path.toFile(), "configuration-anonymized.xml", Configuration.class);
         int votersCount = configuration.getRegister().getVoter().size();
 

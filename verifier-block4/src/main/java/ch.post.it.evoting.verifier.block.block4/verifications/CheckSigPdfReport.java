@@ -26,6 +26,7 @@ import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class CheckSigPdfReport extends AbstractVerification {
 
@@ -42,18 +43,18 @@ public class CheckSigPdfReport extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        byte[] rootCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
+        byte[] rootCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath.resolve(Block4VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
 
-        File pdfFile = PathHelper.getFile(inputDirectory.toPath()
+        File pdfFile = PathHelper.getFile(inputDirectoryPath
                         .resolve(Block4VerificationSuite.PATH_RESULTS)
                         .toFile(),
                 ".*report.*\\.pdf");
 
-        byte[] content = Files.readAllBytes(inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_RESULTS).resolve(pdfFile.getName()));
-        byte[] signature = Files.readAllBytes(inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_RESULTS).resolve(pdfFile.getName() + ".p7"));
+        byte[] content = Files.readAllBytes(inputDirectoryPath.resolve(Block4VerificationSuite.PATH_RESULTS).resolve(pdfFile.getName()));
+        byte[] signature = Files.readAllBytes(inputDirectoryPath.resolve(Block4VerificationSuite.PATH_RESULTS).resolve(pdfFile.getName() + ".p7"));
         if (!SignatureChecker.verifyPKCS7(content, signature, rootCertificate)) {
             throw buildVerificationFailureException(
                     "The signature verification of PDF Report failed",

@@ -20,7 +20,7 @@ import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 
-import java.io.File;
+import java.nio.file.Path;
 
 public class CheckIndependenceGeneratorsOnline extends AbstractVerification {
 
@@ -39,7 +39,7 @@ public class CheckIndependenceGeneratorsOnline extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) {
+    public VerificationResult verify(Path inputDirectoryPath) {
         VerificationResult result = new VerificationResult();
 
         try {

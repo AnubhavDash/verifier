@@ -26,6 +26,7 @@ import org.junit.rules.ExpectedException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.NoSuchFileException;
+import java.nio.file.Paths;
 
 public class CheckSigEvotingDecryptTest {
     private CheckSigEvotingDecrypt checkSigEvotingDecrypt;
@@ -40,7 +41,7 @@ public class CheckSigEvotingDecryptTest {
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkSigEvotingDecrypt.verify(new File(getClass().getResource("/CheckSigEvotingDecryptTest/OK").getFile()));
+        VerificationResult verificationResult = checkSigEvotingDecrypt.verify(Paths.get(getClass().getResource("/CheckSigEvotingDecryptTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -50,7 +51,7 @@ public class CheckSigEvotingDecryptTest {
         // TODO Check if test is relevant, because executeTestNOKCertKo got the same error
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The signature verification of the evoting-decrypt.xml failed");
-        checkSigEvotingDecrypt.verify(new File(getClass().getResource("/CheckSigEvotingDecryptTest/NOK/XML-NOT-OK").getFile()));
+        checkSigEvotingDecrypt.verify(Paths.get(getClass().getResource("/CheckSigEvotingDecryptTest/NOK/XML-NOT-OK").toURI()));
     }
 
     @Test
@@ -58,28 +59,28 @@ public class CheckSigEvotingDecryptTest {
         // TODO Check if test is relevant, because executeTestNOKXmlKo got the same error
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The signature verification of the evoting-decrypt.xml failed");
-        checkSigEvotingDecrypt.verify(new File(getClass().getResource("/CheckSigEvotingDecryptTest/NOK/CERT-NOT-OK").getFile()));
+        checkSigEvotingDecrypt.verify(Paths.get(getClass().getResource("/CheckSigEvotingDecryptTest/NOK/CERT-NOT-OK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage("tenant_.*\\.pem");
-        checkSigEvotingDecrypt.verify(new File(getClass().getResource("/CheckSigEvotingDecryptTest/NOK-NOTFILE").getFile()));
+        checkSigEvotingDecrypt.verify(Paths.get(getClass().getResource("/CheckSigEvotingDecryptTest/NOK-NOTFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound2() throws Exception {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage(".*evoting-decrypt.*\\.xml");
-        checkSigEvotingDecrypt.verify(new File(getClass().getResource("/CheckSigEvotingDecryptTest/NOK-NOTFILE2").getFile()));
+        checkSigEvotingDecrypt.verify(Paths.get(getClass().getResource("/CheckSigEvotingDecryptTest/NOK-NOTFILE2").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound3() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
         exceptionRule.expectMessage(".xml.p7");
-        checkSigEvotingDecrypt.verify(new File(getClass().getResource("/CheckSigEvotingDecryptTest/NOK-NOTFILE3").getFile()));
+        checkSigEvotingDecrypt.verify(Paths.get(getClass().getResource("/CheckSigEvotingDecryptTest/NOK-NOTFILE3").toURI()));
     }
 
 }

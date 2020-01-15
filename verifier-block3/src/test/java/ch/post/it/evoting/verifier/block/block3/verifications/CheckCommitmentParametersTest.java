@@ -22,33 +22,34 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.file.Paths;
 
 public class CheckCommitmentParametersTest {
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = new CheckCommitmentParameters().verify(new File(getClass().getResource("/CheckCommitmentParametersTest/OK").getFile()));
+        VerificationResult verificationResult = new CheckCommitmentParameters().verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKpIsNotUnique() throws Exception {
-        VerificationResult verificationResult = new CheckCommitmentParameters().verify(new File(getClass().getResource("/CheckCommitmentParametersTest/NOK/P-NOK").getFile()));
+        VerificationResult verificationResult = new CheckCommitmentParameters().verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK/P-NOK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKEulerCriterionKo() throws Exception {
-        VerificationResult verificationResult = new CheckCommitmentParameters().verify(new File(getClass().getResource("/CheckCommitmentParametersTest/NOK/BIGINT-NOK").getFile()));
+        VerificationResult verificationResult = new CheckCommitmentParameters().verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK/BIGINT-NOK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
-        VerificationResult verificationResult = new CheckCommitmentParameters().verify(new File(getClass().getResource("/CheckCommitmentParametersTest/NOK-NOTFILE").getFile()));
+        VerificationResult verificationResult = new CheckCommitmentParameters().verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK-NOTFILE").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
         Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification08.file.not.found.message"), verificationResult.getMessage());

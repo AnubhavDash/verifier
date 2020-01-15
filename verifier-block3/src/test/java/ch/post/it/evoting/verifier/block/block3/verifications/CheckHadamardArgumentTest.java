@@ -20,18 +20,19 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.file.Paths;
 
 public class CheckHadamardArgumentTest {
 
     @Test
-    public void executeTestOK() {
-        VerificationResult result = new CheckHadamardArgument().verify(new File(getClass().getResource("/CheckHadamardArgumentTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult result = new CheckHadamardArgument().verify(Paths.get(getClass().getResource("/CheckHadamardArgumentTest/OK").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
-    public void executeTestNOK() {
-        VerificationResult result = new CheckHadamardArgument().verify(new File(getClass().getResource("/CheckHadamardArgumentTest/NOK").getFile()));
+    public void executeTestNOK() throws Exception {
+        VerificationResult result = new CheckHadamardArgument().verify(Paths.get(getClass().getResource("/CheckHadamardArgumentTest/NOK").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }

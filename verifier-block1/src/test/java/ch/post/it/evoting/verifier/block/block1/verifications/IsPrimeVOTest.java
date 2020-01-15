@@ -23,8 +23,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 public class IsPrimeVOTest {
     private IsPrimeVO isPrimeVO;
@@ -39,7 +39,7 @@ public class IsPrimeVOTest {
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = isPrimeVO.verify(new File(getClass().getResource("/IsPrimeVOTest/OK").getFile()));
+        VerificationResult verificationResult = isPrimeVO.verify(Paths.get(getClass().getResource("/IsPrimeVOTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -48,13 +48,13 @@ public class IsPrimeVOTest {
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("vo is not prime");
-        isPrimeVO.verify(new File(getClass().getResource("/IsPrimeVOTest/NOK/NOK").getFile()));
+        isPrimeVO.verify(Paths.get(getClass().getResource("/IsPrimeVOTest/NOK/NOK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("dataConfig_updated_.*\\.json");
-        isPrimeVO.verify(new File(getClass().getResource("/IsPrimeVOTest/NOK/NOK-NOFILE").getFile()));
+        isPrimeVO.verify(Paths.get(getClass().getResource("/IsPrimeVOTest/NOK/NOK-NOFILE").toURI()));
     }
 }

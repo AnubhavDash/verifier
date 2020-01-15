@@ -29,7 +29,6 @@ import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import com.scytl.xmlns.decrypt._1.Results;
 import org.apache.commons.lang.StringUtils;
 
-import java.io.File;
 import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.AbstractMap;
@@ -54,11 +53,11 @@ public class CheckTallyingCandidates extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
         //1, config file => map<candidateListId, candidateId> => map1
-        Path path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_ELECTION_SETUP);
+        Path path = inputDirectoryPath.resolve(Block4VerificationSuite.PATH_ELECTION_SETUP);
         Configuration configuration = Deserializer.fromXml(path.toFile(), "configuration-anonymized.xml",
                 Configuration.class);
         Map<String, String> mapConfig = configuration.getContest().getElectionInformation().stream()
@@ -69,7 +68,7 @@ public class CheckTallyingCandidates extends AbstractVerification {
                         CandidatePositionType::getCandidateIdentification, (id1, id2) -> id1));
 
         // 2, decrypt file => map<countingCircle, map<ListCandidateId||CandidateId, count>> => map2
-        path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_RESULTS);
+        path = inputDirectoryPath.resolve(Block4VerificationSuite.PATH_RESULTS);
         Results results = Deserializer.fromXml(path.toFile(), "evoting-decrypt_.*\\.xml", Results.class);
         Map<String, Map<String, Long>> mapDecrypt = results.getBallotsBox().stream()
                 .flatMap(bb -> bb.getCountingCircle().stream())
@@ -97,7 +96,7 @@ public class CheckTallyingCandidates extends AbstractVerification {
                 ));
 
 
-        path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_RESULTS);
+        path = inputDirectoryPath.resolve(Block4VerificationSuite.PATH_RESULTS);
         Delivery ech110 = Deserializer.fromXml(path.toFile(), "eCH-0110_.*\\.xml", Delivery.class);
         ech110.getResultDelivery().getCountingCircleResults().forEach(cc -> {
             String ccId = cc.getCountingCircle().getCountingCircleId();

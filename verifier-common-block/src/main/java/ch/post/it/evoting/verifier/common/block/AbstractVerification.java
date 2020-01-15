@@ -20,10 +20,9 @@ import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 
 public abstract class AbstractVerification {
 
@@ -36,10 +35,10 @@ public abstract class AbstractVerification {
 
     public abstract VerificationDefinition getVerificationDefinition();
 
-    public final VerificationResult executeVerification(File inputDirectory) {
+    public final VerificationResult executeVerification(Path inputDirectoryPath) {
         VerificationResult result = new VerificationResult();
         try {
-            result = verify(inputDirectory);
+            result = verify(inputDirectoryPath);
         }
         // Business exception
         catch (VerificationFailureException e) {
@@ -62,7 +61,7 @@ public abstract class AbstractVerification {
         return result;
     }
 
-    protected abstract VerificationResult verify(File inputDirectory) throws Exception;
+    protected abstract VerificationResult verify(Path inputDirectoryPath) throws Exception;
 
     protected final VerificationFailureException buildVerificationFailureException(String message, String resourceBundleName, String messageKey, String... details) {
         return new VerificationFailureException(

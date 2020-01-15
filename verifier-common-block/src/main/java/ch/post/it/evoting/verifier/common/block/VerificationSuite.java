@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import org.reflections.Reflections;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -49,7 +50,7 @@ public abstract class VerificationSuite implements VerifierBlock {
     }
 
     @Override
-    public Stream<VerificationResult> process(File inputDirectory, Set<VerificationTrait> options) {
+    public Stream<VerificationResult> process(Path inputDirectoryPath, Set<VerificationTrait> options) {
         return verifications.stream().map(t -> {
             VerificationDefinition def = t.getVerificationDefinition();
             VerificationResult result = new VerificationResult(def);
@@ -60,7 +61,7 @@ public abstract class VerificationSuite implements VerifierBlock {
                 result.setStatus(Status.NA);
                 return result;
             } else {
-                VerificationResult verificationResult = t.executeVerification(inputDirectory);
+                VerificationResult verificationResult = t.executeVerification(inputDirectoryPath);
                 result.setStatus(verificationResult.getStatus());
                 result.setMessage(verificationResult.getMessage());
                 return result;

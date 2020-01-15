@@ -22,6 +22,7 @@ import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 public class CheckConfirmationAttemptsTest {
     private CheckConfirmationAttempts checkConfirmationAttempts;
@@ -38,7 +39,7 @@ public class CheckConfirmationAttemptsTest {
     /* remove ignore when we got secureLog files with correct pattern */
     @Ignore
     public void executeTest() throws Exception {
-        VerificationResult verificationResult = checkConfirmationAttempts.verify(new File(getClass().getResource("/CheckConfirmationAttemptsTest/OK").getFile()));
+        VerificationResult verificationResult = checkConfirmationAttempts.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -48,21 +49,21 @@ public class CheckConfirmationAttemptsTest {
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("TODO");
-        checkConfirmationAttempts.verify(new File(getClass().getResource("/CheckConfirmationAttemptsTest/NOK").getFile()));
+        checkConfirmationAttempts.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/NOK").toURI()));
     }
 
     @Test
     public void executeTestNOKnotFile() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("voterInformation.*\\.csv");
-        checkConfirmationAttempts.verify(new File(getClass().getResource("/CheckConfirmationAttemptsTest/NOK-NOTFILE").getFile()));
+        checkConfirmationAttempts.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/NOK-NOTFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKnotFile2() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("mapping_cc_hosts.csv");
-        checkConfirmationAttempts.verify(new File(getClass().getResource("/CheckConfirmationAttemptsTest/NOK-NOTFILE2").getFile()));
+        checkConfirmationAttempts.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/NOK-NOTFILE2").toURI()));
     }
 
     @Test
@@ -71,7 +72,7 @@ public class CheckConfirmationAttemptsTest {
         // TODO Check for secureLogs file
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("secureLogs");
-        checkConfirmationAttempts.verify(new File(getClass().getResource("/CheckConfirmationAttemptsTest/NOK-NOTFILE3").getFile()));
+        checkConfirmationAttempts.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/NOK-NOTFILE3").toURI()));
     }
 
 }

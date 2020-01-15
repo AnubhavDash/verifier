@@ -26,6 +26,7 @@ import org.junit.rules.ExpectedException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.NoSuchFileException;
+import java.nio.file.Paths;
 
 public class CheckSigPdfReportTest {
     private CheckSigPdfReport checkSigPdfReport;
@@ -40,7 +41,7 @@ public class CheckSigPdfReportTest {
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkSigPdfReport.verify(new File(getClass().getResource("/CheckSigPdfReportTest/OK").getFile()));
+        VerificationResult verificationResult = checkSigPdfReport.verify(Paths.get(getClass().getResource("/CheckSigPdfReportTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -50,7 +51,7 @@ public class CheckSigPdfReportTest {
         // TODO Check if test is relevant, because executeTestNOKCertKo got the same error
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The signature verification of PDF Report failed");
-        checkSigPdfReport.verify(new File(getClass().getResource("/CheckSigPdfReportTest/NOK/PDF-NOT-OK").getFile()));
+        checkSigPdfReport.verify(Paths.get(getClass().getResource("/CheckSigPdfReportTest/NOK/PDF-NOT-OK").toURI()));
     }
 
     @Test
@@ -58,28 +59,28 @@ public class CheckSigPdfReportTest {
         // TODO Check if test is relevant, because executeTestNOKPdfKo got the same error
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The signature verification of PDF Report failed");
-        checkSigPdfReport.verify(new File(getClass().getResource("/CheckSigPdfReportTest/NOK/CERT-NOT-OK").getFile()));
+        checkSigPdfReport.verify(Paths.get(getClass().getResource("/CheckSigPdfReportTest/NOK/CERT-NOT-OK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage("tenant_.*\\.pem");
-        checkSigPdfReport.verify(new File(getClass().getResource("/CheckSigPdfReportTest/NOK-NOTFILE").getFile()));
+        checkSigPdfReport.verify(Paths.get(getClass().getResource("/CheckSigPdfReportTest/NOK-NOTFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound2() throws Exception {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage(".*report.*\\.pdf");
-        checkSigPdfReport.verify(new File(getClass().getResource("/CheckSigPdfReportTest/NOK-NOTFILE2").getFile()));
+        checkSigPdfReport.verify(Paths.get(getClass().getResource("/CheckSigPdfReportTest/NOK-NOTFILE2").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound3() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
         exceptionRule.expectMessage("report.pdf.p7");
-        checkSigPdfReport.verify(new File(getClass().getResource("/CheckSigPdfReportTest/NOK-NOTFILE3").getFile()));
+        checkSigPdfReport.verify(Paths.get(getClass().getResource("/CheckSigPdfReportTest/NOK-NOTFILE3").toURI()));
     }
 
 }

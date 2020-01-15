@@ -28,6 +28,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 
 public class CheckSecureLogIntegrityTest {
     private CheckSecureLogIntegrity checkSecureLogIntegrity;
@@ -43,7 +44,7 @@ public class CheckSecureLogIntegrityTest {
     @Test
     @Ignore
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkSecureLogIntegrity.verify(new File(getClass().getResource("/CheckSecureLogIntegrityTest/OK").getFile()));
+        VerificationResult verificationResult = checkSecureLogIntegrity.verify(Paths.get(getClass().getResource("/CheckSecureLogIntegrityTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -53,7 +54,7 @@ public class CheckSecureLogIntegrityTest {
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("Check secure log integrity failed");
-        checkSecureLogIntegrity.verify(new File(getClass().getResource("/CheckSecureLogIntegrityTest/NOK").getFile()));
+        checkSecureLogIntegrity.verify(Paths.get(getClass().getResource("/CheckSecureLogIntegrityTest/NOK").toURI()));
     }
 
     @Test

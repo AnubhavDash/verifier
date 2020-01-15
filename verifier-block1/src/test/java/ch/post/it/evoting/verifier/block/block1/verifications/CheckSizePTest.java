@@ -23,8 +23,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 public class CheckSizePTest {
     private CheckSizeP checkSizeP;
@@ -39,7 +39,7 @@ public class CheckSizePTest {
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkSizeP.verify(new File(getClass().getResource("/CheckSizePTest/OK").getFile()));
+        VerificationResult verificationResult = checkSizeP.verify(Paths.get(getClass().getResource("/CheckSizePTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -48,13 +48,13 @@ public class CheckSizePTest {
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("p does not have the right size");
-        checkSizeP.verify(new File(getClass().getResource("/CheckSizePTest/NOK/NOK").getFile()));
+        checkSizeP.verify(Paths.get(getClass().getResource("/CheckSizePTest/NOK/NOK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("encryptionParameters\\.json");
-        checkSizeP.verify(new File(getClass().getResource("/CheckSizePTest/NOK/NOK-NOFILE").getFile()));
+        checkSizeP.verify(Paths.get(getClass().getResource("/CheckSizePTest/NOK/NOK-NOFILE").toURI()));
     }
 }

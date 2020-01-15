@@ -29,6 +29,7 @@ import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;
 import reactor.core.publisher.Flux;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -48,16 +49,16 @@ public class CheckCipherTextConsistencyOfflineProofs extends AbstractVerificatio
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        File[] ballotboxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
+        File[] ballotboxes = PathHelper.listDirectories(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
 
         for (File ballotbox : ballotboxes) {
             boolean isEquivalent = false;
 
             // Offline
-            OfflineEncryptedBallotsLoader offlineEncryptedBallotsLoader = new OfflineEncryptedBallotsLoader(ballotbox.toPath().resolve("0"), inputDirectory.toPath());
+            OfflineEncryptedBallotsLoader offlineEncryptedBallotsLoader = new OfflineEncryptedBallotsLoader(ballotbox.toPath().resolve("0"), inputDirectoryPath);
 
             ElGamalEncryptedBallots offlineEncryptedBallots = offlineEncryptedBallotsLoader.getEncryptedBallots();
 

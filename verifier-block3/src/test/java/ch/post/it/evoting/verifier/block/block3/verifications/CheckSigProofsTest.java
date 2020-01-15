@@ -20,33 +20,34 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.file.Paths;
 
 public class CheckSigProofsTest {
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = new CheckSigProofs().verify(new File(getClass().getResource("/CheckSigProofsTest/OK").getFile()));
+        VerificationResult verificationResult = new CheckSigProofs().verify(Paths.get(getClass().getResource("/CheckSigProofsTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKJsonKo() throws Exception {
-        VerificationResult verificationResult = new CheckSigProofs().verify(new File(getClass().getResource("/CheckSigProofsTest/NOK/JSON-NOT-OK").getFile()));
+        VerificationResult verificationResult = new CheckSigProofs().verify(Paths.get(getClass().getResource("/CheckSigProofsTest/NOK/JSON-NOT-OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKCertKo() throws Exception {
-        VerificationResult verificationResult = new CheckSigProofs().verify(new File(getClass().getResource("/CheckSigProofsTest/NOK/CERT-NOT-OK").getFile()));
+        VerificationResult verificationResult = new CheckSigProofs().verify(Paths.get(getClass().getResource("/CheckSigProofsTest/NOK/CERT-NOT-OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
-        VerificationResult verificationResult = new CheckSigProofs().verify(new File(getClass().getResource("/CheckSigProofsTest/NOK-NOTFILE").getFile()));
+        VerificationResult verificationResult = new CheckSigProofs().verify(Paths.get(getClass().getResource("/CheckSigProofsTest/NOK-NOTFILE").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }

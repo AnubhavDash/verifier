@@ -22,6 +22,7 @@ import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 public class CheckNumberChoiceReturnCodesTest {
     private CheckNumberChoiceReturnCodes checkNumberChoiceReturnCodes;
@@ -37,7 +38,7 @@ public class CheckNumberChoiceReturnCodesTest {
     @Test
     @Ignore
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkNumberChoiceReturnCodes.verify(new File(getClass().getResource("/CheckNumberChoiceReturnCodesTest/OK").getFile()));
+        VerificationResult verificationResult = checkNumberChoiceReturnCodes.verify(Paths.get(getClass().getResource("/CheckNumberChoiceReturnCodesTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -47,7 +48,7 @@ public class CheckNumberChoiceReturnCodesTest {
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("TODO");
-        checkNumberChoiceReturnCodes.verify(new File(getClass().getResource("/CheckNumberChoiceReturnCodesTest/NOK").getFile()));
+        checkNumberChoiceReturnCodes.verify(Paths.get(getClass().getResource("/CheckNumberChoiceReturnCodesTest/NOK").toURI()));
     }
 
     // TODO Implement the following missing tests cases:
@@ -61,14 +62,14 @@ public class CheckNumberChoiceReturnCodesTest {
     public void executeTestNOKnotFile() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("voterInformation.*\\.csv");
-        checkNumberChoiceReturnCodes.verify(new File(getClass().getResource("/CheckNumberChoiceReturnCodesTest/NOK-NOTFILE").getFile()));
+        checkNumberChoiceReturnCodes.verify(Paths.get(getClass().getResource("/CheckNumberChoiceReturnCodesTest/NOK-NOTFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKnotFile2() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("mapping_cc_hosts.csv");
-        checkNumberChoiceReturnCodes.verify(new File(getClass().getResource("/CheckNumberChoiceReturnCodesTest/NOK-NOTFILE2").getFile()));
+        checkNumberChoiceReturnCodes.verify(Paths.get(getClass().getResource("/CheckNumberChoiceReturnCodesTest/NOK-NOTFILE2").toURI()));
     }
 
 }

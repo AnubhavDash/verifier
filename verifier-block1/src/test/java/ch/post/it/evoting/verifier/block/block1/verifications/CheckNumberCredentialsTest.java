@@ -23,8 +23,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 public class CheckNumberCredentialsTest {
     private CheckNumberCredentials checkNumberCredentials;
@@ -39,7 +39,7 @@ public class CheckNumberCredentialsTest {
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkNumberCredentials.verify(new File(getClass().getResource("/CheckNumberCredentialsTest/OK").getFile()));
+        VerificationResult verificationResult = checkNumberCredentials.verify(Paths.get(getClass().getResource("/CheckNumberCredentialsTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -48,20 +48,20 @@ public class CheckNumberCredentialsTest {
     public void executeTestNOK()  throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The number of credentials and the number of expected voters do not match");
-        checkNumberCredentials.verify(new File(getClass().getResource("/CheckNumberCredentialsTest/NOK/NOK").getFile()));
+        checkNumberCredentials.verify(Paths.get(getClass().getResource("/CheckNumberCredentialsTest/NOK/NOK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("configuration-anonymized.xml");
-        checkNumberCredentials.verify(new File(getClass().getResource("/CheckNumberCredentialsTest/NOK/NOK-NOFILE").getFile()));
+        checkNumberCredentials.verify(Paths.get(getClass().getResource("/CheckNumberCredentialsTest/NOK/NOK-NOFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound2() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("credentialData.csv");
-        checkNumberCredentials.verify(new File(getClass().getResource("/CheckNumberCredentialsTest/NOK/NOK-NOFILE2").getFile()));
+        checkNumberCredentials.verify(Paths.get(getClass().getResource("/CheckNumberCredentialsTest/NOK/NOK-NOFILE2").toURI()));
     }
 }

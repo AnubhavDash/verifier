@@ -46,27 +46,27 @@ public class CheckSigReEncryptedBallots extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        Path path = inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_ELECTION_SETUP);
+        Path path = inputDirectoryPath.resolve(Block3VerificationSuite.PATH_ELECTION_SETUP);
         ElectionEvent electionEvent = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", ElectionEvent.class);
         List<BallotBox> ballotBoxes = electionEvent.getBallotBoxes();
         List<File> rEncBallotsFiles = new ArrayList<>();
         for (BallotBox ballotBox : ballotBoxes) {// Remove dashes from UUID
             String ballotBoxId = TypeConverter.UUIDToStringWithoutDash(ballotBox.getId());
-            File[] rEncBallotsFolders = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_BALLOTBOXES).resolve(ballotBoxId));
+            File[] rEncBallotsFolders = PathHelper.listDirectories(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_BALLOTBOXES).resolve(ballotBoxId));
             for (File folder : rEncBallotsFolders) {
                 rEncBallotsFiles.add(PathHelper.getFile(folder, "reencryptedBallots.*\\.csv"));
             }
         }
 
-        byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath()
+        byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath
                         .resolve(Block3VerificationSuite.PATH_CERTIFICATES)
                         .resolve(Block3VerificationSuite.PATH_ADMINBOARD).toFile(),
                 ".*\\.pem").toPath());
 
-        byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
+        byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
 
         for (File rEncBallot : rEncBallotsFiles) {
             byte[] content = Files.readAllBytes(rEncBallot.toPath());

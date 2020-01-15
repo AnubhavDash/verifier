@@ -22,7 +22,7 @@ import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.AbstractMap;
 
 public class CheckProductArgumentOnline extends AbstractVerification {
@@ -44,12 +44,12 @@ public class CheckProductArgumentOnline extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) {
+    public VerificationResult verify(Path inputDirectoryPath) {
         VerificationResult result = new VerificationResult();
 
         try {
             processor.register(this);
-            processor.executeProcess(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
+            processor.executeProcess(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
 
             AbstractMap.SimpleEntry<Status, String> status = processor.getStatus(TestType.ProductProof);
             result.setStatus(status.getKey());

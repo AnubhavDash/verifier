@@ -20,24 +20,25 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.file.Paths;
 
 public class CheckMultiExponentationArgumentTest {
 
     @Test
-    public void executeTestOK() {
-        VerificationResult result = new CheckMultiExponentationArgument().verify(new File(getClass().getResource("/CheckMultiExponentationArgumentTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult result = new CheckMultiExponentationArgument().verify(Paths.get(getClass().getResource("/CheckMultiExponentationArgumentTest/OK").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
-    public void executeTestWithWriteInsOK() {
-        VerificationResult result = new CheckMultiExponentationArgument().verify(new File(getClass().getResource("/CheckMultiExponentationArgumentTest/OK-WRITE-INS").getFile()));
+    public void executeTestWithWriteInsOK() throws Exception {
+        VerificationResult result = new CheckMultiExponentationArgument().verify(Paths.get(getClass().getResource("/CheckMultiExponentationArgumentTest/OK-WRITE-INS").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
-    public void executeTestNOK() {
-        VerificationResult result = new CheckMultiExponentationArgument().verify(new File(getClass().getResource("/CheckMultiExponentationArgumentTest/NOK").getFile()));
+    public void executeTestNOK() throws Exception {
+        VerificationResult result = new CheckMultiExponentationArgument().verify(Paths.get(getClass().getResource("/CheckMultiExponentationArgumentTest/NOK").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }

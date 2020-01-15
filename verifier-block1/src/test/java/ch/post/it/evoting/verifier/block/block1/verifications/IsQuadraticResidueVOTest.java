@@ -23,8 +23,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 public class IsQuadraticResidueVOTest {
     private IsQuadraticResidueVO isQuadraticResidueVO;
@@ -39,7 +39,7 @@ public class IsQuadraticResidueVOTest {
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = isQuadraticResidueVO.verify(new File(getClass().getResource("/IsQuadraticResidueVOTest/OK").getFile()));
+        VerificationResult verificationResult = isQuadraticResidueVO.verify(Paths.get(getClass().getResource("/IsQuadraticResidueVOTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -48,20 +48,20 @@ public class IsQuadraticResidueVOTest {
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("Euler criterion does not equal to 1");
-        isQuadraticResidueVO.verify(new File(getClass().getResource("/IsQuadraticResidueVOTest/NOK/NOK").getFile()));
+        isQuadraticResidueVO.verify(Paths.get(getClass().getResource("/IsQuadraticResidueVOTest/NOK/NOK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("encryptionParameters\\.json");
-        isQuadraticResidueVO.verify(new File(getClass().getResource("/IsQuadraticResidueVOTest/NOK/NOK-NOFILE").getFile()));
+        isQuadraticResidueVO.verify(Paths.get(getClass().getResource("/IsQuadraticResidueVOTest/NOK/NOK-NOFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound2() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("dataConfig_updated_.*\\.json");
-        isQuadraticResidueVO.verify(new File(getClass().getResource("/IsQuadraticResidueVOTest/NOK/NOK-NOFILE2").getFile()));
+        isQuadraticResidueVO.verify(Paths.get(getClass().getResource("/IsQuadraticResidueVOTest/NOK/NOK-NOFILE2").toURI()));
     }
 }

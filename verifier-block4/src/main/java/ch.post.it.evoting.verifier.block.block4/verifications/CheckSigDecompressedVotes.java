@@ -44,24 +44,24 @@ public class CheckSigDecompressedVotes extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        Path path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_ELECTION_SETUP);
+        Path path = inputDirectoryPath.resolve(Block4VerificationSuite.PATH_ELECTION_SETUP);
         ElectionEvent electionEvent = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", ElectionEvent.class);
         List<BallotBox> ballotBoxes = electionEvent.getBallotBoxes();
         List<File> decompressedVotesFiles = new ArrayList<>(ballotBoxes.size());
         for (BallotBox ballotBox : ballotBoxes) {
             String ballotBoxId = TypeConverter.UUIDToStringWithoutDash(ballotBox.getId());
-            decompressedVotesFiles.add(PathHelper.getFile(inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_BALLOTBOXES).resolve(ballotBoxId).toFile(), "decompressedVotes.*\\.csv"));
+            decompressedVotesFiles.add(PathHelper.getFile(inputDirectoryPath.resolve(Block4VerificationSuite.PATH_BALLOTBOXES).resolve(ballotBoxId).toFile(), "decompressedVotes.*\\.csv"));
         }
 
-        byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath()
+        byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath
                         .resolve(Block4VerificationSuite.PATH_CERTIFICATES)
                         .resolve(Block4VerificationSuite.PATH_ADMINBOARD).toFile(),
                 ".*\\.pem").toPath());
 
-        byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
+        byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath.resolve(Block4VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
 
         for (File decompressedVote : decompressedVotesFiles) {
             byte[] content = Files.readAllBytes(decompressedVote.toPath());

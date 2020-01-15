@@ -26,6 +26,7 @@ import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class CheckSigValidVotes extends AbstractVerification {
 
@@ -41,21 +42,21 @@ public class CheckSigValidVotes extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath()
+        byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath
                         .resolve(Block4VerificationSuite.PATH_CERTIFICATES)
                         .resolve(Block4VerificationSuite.PATH_ADMINBOARD).toFile(),
                 ".*\\.pem").toPath());
 
-        byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
+        byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath.resolve(Block4VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
 
-        File[] svvFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_RESULTS).toFile(), "svv_.*\\.csv");
+        File[] svvFiles = PathHelper.getFiles(inputDirectoryPath.resolve(Block4VerificationSuite.PATH_RESULTS).toFile(), "svv_.*\\.csv");
 
         for (File svv : svvFiles) {
-            byte[] content = Files.readAllBytes(inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_RESULTS).resolve(svv.getName()));
-            byte[] signature = Files.readAllBytes(inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_RESULTS).resolve(svv.getName() + ".metadata"));
+            byte[] content = Files.readAllBytes(inputDirectoryPath.resolve(Block4VerificationSuite.PATH_RESULTS).resolve(svv.getName()));
+            byte[] signature = Files.readAllBytes(inputDirectoryPath.resolve(Block4VerificationSuite.PATH_RESULTS).resolve(svv.getName() + ".metadata"));
 
             if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCA)) {
                 throw buildVerificationFailureException(

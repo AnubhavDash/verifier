@@ -23,11 +23,10 @@ import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
 
 import java.io.File;
-import java.util.Arrays;
+import java.nio.file.Path;
 import java.util.Optional;
 
 public class CheckSecureLogIntegrity extends AbstractVerification {
@@ -45,10 +44,10 @@ public class CheckSecureLogIntegrity extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        File[] hosts = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block2VerificationSuite.PATH_SECURE_LOGS));
+        File[] hosts = PathHelper.listDirectories(inputDirectoryPath.resolve(Block2VerificationSuite.PATH_SECURE_LOGS));
 
         VerificationFailureException ex = Flux.fromArray(hosts)
                 .onErrorStop()

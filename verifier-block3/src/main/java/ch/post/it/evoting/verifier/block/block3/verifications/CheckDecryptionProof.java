@@ -46,14 +46,14 @@ public class CheckDecryptionProof extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        File[] ballotBoxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
+        File[] ballotBoxes = PathHelper.listDirectories(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
         for (File ballotBox : ballotBoxes) {
             Path ballotboxPath = ballotBox.toPath().resolve("0");
             OfflineDataLoader offlineDataLoader = new OfflineDataLoader();
-            offlineDataLoader.setEncryptionParametersLoader(new OfflineEncryptionParametersLoader(inputDirectory.toPath()));
+            offlineDataLoader.setEncryptionParametersLoader(new OfflineEncryptionParametersLoader(inputDirectoryPath));
             offlineDataLoader.setPublicKeyLoader(new OfflinePublicKeyLoader(ballotboxPath));
             offlineDataLoader.setVoterWithProofLoader(new OfflineVoterWithProofLoader(ballotboxPath));
 

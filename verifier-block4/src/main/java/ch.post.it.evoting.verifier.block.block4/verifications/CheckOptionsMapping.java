@@ -53,10 +53,10 @@ public class CheckOptionsMapping extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        Path path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_ELECTION_SETUP);
+        Path path = inputDirectoryPath.resolve(Block4VerificationSuite.PATH_ELECTION_SETUP);
         ElectionEvent electionEvent = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", ElectionEvent.class);
         List<BallotBox> ballotBoxes = electionEvent.getBallotBoxes();
 
@@ -97,10 +97,10 @@ public class CheckOptionsMapping extends AbstractVerification {
                 );
 
                 // 2 Generate map<prime, count>, but before retrieve the ballotbox file
-                Map<String, Long> primesCountMap = getCorrectFileAndExtractPrimesCount(inputDirectory, ballotBoxId);
+                Map<String, Long> primesCountMap = getCorrectFileAndExtractPrimesCount(inputDirectoryPath, ballotBoxId);
 
                 // 3 Generate map<alias, count>
-                final Path resultsPath = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_RESULTS);
+                final Path resultsPath = inputDirectoryPath.resolve(Block4VerificationSuite.PATH_RESULTS);
                 Results decryptResult = Deserializer.fromXml(resultsPath.toFile(), "evoting-decrypt_.*\\.xml", Results.class);
                 Map<String, Long> aliasCountMap = decryptResult.getBallotsBox().stream()
                         .filter(bb -> ballotBoxAuthId.equals(bb.getBallotBoxIdentification()))
@@ -188,8 +188,8 @@ public class CheckOptionsMapping extends AbstractVerification {
         return result;
     }
 
-    private Map<String, Long> getCorrectFileAndExtractPrimesCount(File inputDirectory, String ballotBoxId) throws IOException {
-        Path path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_BALLOTBOXES).resolve(ballotBoxId);
+    private Map<String, Long> getCorrectFileAndExtractPrimesCount(Path inputDirectoryPath, String ballotBoxId) throws IOException {
+        Path path = inputDirectoryPath.resolve(Block4VerificationSuite.PATH_BALLOTBOXES).resolve(ballotBoxId);
         Iterable<List<String>> iterable = Deserializer.fromCsv(path.toFile(),
                 "decompressedVotes\\.csv", ";", Arrays::asList);
 

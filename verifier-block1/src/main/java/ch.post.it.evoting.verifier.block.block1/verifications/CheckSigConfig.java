@@ -23,6 +23,7 @@ import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class CheckSigConfig extends AbstractVerification {
 
@@ -40,18 +41,18 @@ public class CheckSigConfig extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        byte[] rootCertificate = Files.readAllBytes(inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_CERTIFICATES).resolve("integrationCA.pem"));
+        byte[] rootCertificate = Files.readAllBytes(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_CERTIFICATES).resolve("integrationCA.pem"));
 
-        File dataConfig = PathHelper.getFile(inputDirectory.toPath()
+        File dataConfig = PathHelper.getFile(inputDirectoryPath
                         .resolve(Block1VerificationSuite.PATH_ELECTION_SETUP)
                         .toFile(),
                 ".*configuration-anonymized.*\\.xml");
 
-        byte[] content = Files.readAllBytes(inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName()));
-        byte[] signature = Files.readAllBytes(inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName() + ".p7"));
+        byte[] content = Files.readAllBytes(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName()));
+        byte[] signature = Files.readAllBytes(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName() + ".p7"));
         if (!SignatureChecker.verifyPKCS7(content, signature, rootCertificate)) {
             throw buildVerificationFailureException(
                     "The signature verification of the file failed",

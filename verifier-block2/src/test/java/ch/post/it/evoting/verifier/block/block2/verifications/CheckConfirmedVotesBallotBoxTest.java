@@ -25,6 +25,7 @@ import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 public class CheckConfirmedVotesBallotBoxTest {
     private CheckConfirmedVotesBallotBox checkConfirmedVotesBallotBox;
@@ -39,7 +40,7 @@ public class CheckConfirmedVotesBallotBoxTest {
 
     @Test
     public void executeTest() throws Exception {
-        VerificationResult verificationResult = checkConfirmedVotesBallotBox.verify(new File(getClass().getResource("/CheckConfirmedVotesBallotBoxTest/OK").getFile()));
+        VerificationResult verificationResult = checkConfirmedVotesBallotBox.verify(Paths.get(getClass().getResource("/CheckConfirmedVotesBallotBoxTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -48,7 +49,7 @@ public class CheckConfirmedVotesBallotBoxTest {
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("There is a mismatch between the list of successful or failed votes and the download ballot box");
-        checkConfirmedVotesBallotBox.verify(new File(getClass().getResource("/CheckConfirmedVotesBallotBoxTest/NOK").getFile()));
+        checkConfirmedVotesBallotBox.verify(Paths.get(getClass().getResource("/CheckConfirmedVotesBallotBoxTest/NOK").toURI()));
     }
 
     // TODO NOK for count mismatch
@@ -57,20 +58,20 @@ public class CheckConfirmedVotesBallotBoxTest {
     public void executeTestNOKnotFile() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("downloadedBallotBox.*\\.csv");
-        checkConfirmedVotesBallotBox.verify(new File(getClass().getResource("/CheckConfirmedVotesBallotBoxTest/NOK-NOTFILE").getFile()));
+        checkConfirmedVotesBallotBox.verify(Paths.get(getClass().getResource("/CheckConfirmedVotesBallotBoxTest/NOK-NOTFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKnotFile2() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("successfulVotes.csv");
-        checkConfirmedVotesBallotBox.verify(new File(getClass().getResource("/CheckConfirmedVotesBallotBoxTest/NOK-NOTFILE2").getFile()));
+        checkConfirmedVotesBallotBox.verify(Paths.get(getClass().getResource("/CheckConfirmedVotesBallotBoxTest/NOK-NOTFILE2").toURI()));
     }
 
     @Test
     public void executeTestNOKnotFile3() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("failedVotes.csv");
-        checkConfirmedVotesBallotBox.verify(new File(getClass().getResource("/CheckConfirmedVotesBallotBoxTest/NOK-NOTFILE3").getFile()));
+        checkConfirmedVotesBallotBox.verify(Paths.get(getClass().getResource("/CheckConfirmedVotesBallotBoxTest/NOK-NOTFILE3").toURI()));
     }
 }

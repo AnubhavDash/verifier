@@ -50,16 +50,16 @@ public class CheckCommitmentParameters extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        Path path = inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_ELECTION_SETUP);
+        Path path = inputDirectoryPath.resolve(Block3VerificationSuite.PATH_ELECTION_SETUP);
         DataConfigEE dataConfigEE = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", DataConfigEE.class);
         List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
         List<File> commitmentParamFiles = new ArrayList<>();
         for (BallotBox ballotBox : ballotBoxes) {
             String ballotBoxId = ballotBox.getId();
-            File[] commitmentParamFolders = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_BALLOTBOXES).resolve(ballotBoxId));
+            File[] commitmentParamFolders = PathHelper.listDirectories(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_BALLOTBOXES).resolve(ballotBoxId));
             for (File folder : commitmentParamFolders) {
                 commitmentParamFiles.add(PathHelper.getFile(folder, "commitmentParameters.*\\.json"));
             }

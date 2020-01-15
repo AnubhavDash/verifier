@@ -23,8 +23,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 public class IsPrimeQTest {
     private IsPrimeQ isPrimeQ;
@@ -39,7 +39,7 @@ public class IsPrimeQTest {
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = isPrimeQ.verify(new File(getClass().getResource("/IsPrimeQTest/OK").getFile()));
+        VerificationResult verificationResult = isPrimeQ.verify(Paths.get(getClass().getResource("/IsPrimeQTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -48,13 +48,13 @@ public class IsPrimeQTest {
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("q is not prime");
-        isPrimeQ.verify(new File(getClass().getResource("/IsPrimeQTest/NOK/NOK").getFile()));
+        isPrimeQ.verify(Paths.get(getClass().getResource("/IsPrimeQTest/NOK/NOK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("encryptionParameters\\.json");
-        isPrimeQ.verify(new File(getClass().getResource("/IsPrimeQTest/NOK/NOK-NOFILE").getFile()));
+        isPrimeQ.verify(Paths.get(getClass().getResource("/IsPrimeQTest/NOK/NOK-NOFILE").toURI()));
     }
 }

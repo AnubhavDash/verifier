@@ -22,6 +22,7 @@ import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 public class CheckNumberVoteCastCodesTest {
     private CheckNumberVoteCastCodes checkNumberVoteCastCodes;
@@ -37,7 +38,7 @@ public class CheckNumberVoteCastCodesTest {
     @Test
     @Ignore
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkNumberVoteCastCodes.verify(new File(getClass().getResource("/CheckNumberVoteCastCodesTest/OK").getFile()));
+        VerificationResult verificationResult = checkNumberVoteCastCodes.verify(Paths.get(getClass().getResource("/CheckNumberVoteCastCodesTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -47,7 +48,7 @@ public class CheckNumberVoteCastCodesTest {
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("TODO");
-        checkNumberVoteCastCodes.verify(new File(getClass().getResource("/CheckNumberVoteCastCodesTest/NOK").getFile()));
+        checkNumberVoteCastCodes.verify(Paths.get(getClass().getResource("/CheckNumberVoteCastCodesTest/NOK").toURI()));
     }
 
     // TODO Implement the following missing tests cases:
@@ -61,13 +62,13 @@ public class CheckNumberVoteCastCodesTest {
     public void executeTestNOKnotFile() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("voterInformation.*\\.csv");
-        checkNumberVoteCastCodes.verify(new File(getClass().getResource("/CheckNumberVoteCastCodesTest/NOK-NOTFILE").getFile()));
+        checkNumberVoteCastCodes.verify(Paths.get(getClass().getResource("/CheckNumberVoteCastCodesTest/NOK-NOTFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKnotFile2() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("mapping_cc_hosts.csv");
-        checkNumberVoteCastCodes.verify(new File(getClass().getResource("/CheckNumberVoteCastCodesTest/NOK-NOTFILE2").getFile()));
+        checkNumberVoteCastCodes.verify(Paths.get(getClass().getResource("/CheckNumberVoteCastCodesTest/NOK-NOTFILE2").toURI()));
     }
 }

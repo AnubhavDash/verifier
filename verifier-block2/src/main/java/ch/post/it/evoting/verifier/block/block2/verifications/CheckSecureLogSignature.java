@@ -27,6 +27,7 @@ import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import reactor.core.publisher.Flux;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.Optional;
 
@@ -45,11 +46,11 @@ public class CheckSecureLogSignature extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) {
+    public VerificationResult verify(Path inputDirectoryPath) {
         VerificationResult result = new VerificationResult();
 
-        Map<String, SecureLogBundleCertificates> mapCertificates = SecureLogBundleCertificates.loadAllHostsBundleCertificates(inputDirectory);
-        File[] hosts = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block2VerificationSuite.PATH_SECURE_LOGS));
+        Map<String, SecureLogBundleCertificates> mapCertificates = SecureLogBundleCertificates.loadAllHostsBundleCertificates(inputDirectoryPath);
+        File[] hosts = PathHelper.listDirectories(inputDirectoryPath.resolve(Block2VerificationSuite.PATH_SECURE_LOGS));
 
         VerificationFailureException ex = Flux.fromArray(hosts)
                 .onErrorStop()

@@ -25,7 +25,7 @@ import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -44,18 +44,18 @@ public class CheckNumberChoiceReturnCodes extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
         // Get the voterInformation.csv Files and count
-        VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectory);
+        VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectoryPath);
 
         // Create host/CC mapping
-        Map<String, String> hostCcMapping = HostMappingElement.loadHostMapping(inputDirectory);
+        Map<String, String> hostCcMapping = HostMappingElement.loadHostMapping(inputDirectoryPath);
 
         // Count in the logs
         final Pattern pattern = Pattern.compile("\\|GENPCC\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|");
-        Map<String, Long> countByCC = SecureLogEntry.loadRegularLogs(inputDirectory, pattern)
+        Map<String, Long> countByCC = SecureLogEntry.loadRegularLogs(inputDirectoryPath, pattern)
                 .groupBy(s1 -> hostCcMapping.containsKey(s1.getHost()) ? hostCcMapping.get(s1.getHost()) : s1.getHost())
                 .flatMap(group -> {
                     String ccName = group.key();

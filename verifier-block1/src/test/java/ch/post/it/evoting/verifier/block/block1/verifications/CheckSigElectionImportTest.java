@@ -23,8 +23,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 public class CheckSigElectionImportTest {
     private CheckSigElectionImport checkSigElectionImport;
@@ -39,7 +39,7 @@ public class CheckSigElectionImportTest {
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkSigElectionImport.verify(new File(getClass().getResource("/CheckSigElectionImportTest/OK").getFile()));
+        VerificationResult verificationResult = checkSigElectionImport.verify(Paths.get(getClass().getResource("/CheckSigElectionImportTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -49,7 +49,7 @@ public class CheckSigElectionImportTest {
         // TODO Check if test is relevant, because executeTestNOKJsonKo got the same error
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The signature verification of the file failed");
-        checkSigElectionImport.verify(new File(getClass().getResource("/CheckSigElectionImportTest/NOK/CERT-NOT-OK").getFile()));
+        checkSigElectionImport.verify(Paths.get(getClass().getResource("/CheckSigElectionImportTest/NOK/CERT-NOT-OK").toURI()));
     }
 
     @Test
@@ -57,27 +57,27 @@ public class CheckSigElectionImportTest {
         // TODO Check if test is relevant, because executeTestNOKCertKo got the same error
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The signature verification of the file failed");
-        checkSigElectionImport.verify(new File(getClass().getResource("/CheckSigElectionImportTest/NOK/JSON-NOT-OK").getFile()));
+        checkSigElectionImport.verify(Paths.get(getClass().getResource("/CheckSigElectionImportTest/NOK/JSON-NOT-OK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("integrationCA.pem");
-        checkSigElectionImport.verify(new File(getClass().getResource("/CheckSigElectionImportTest/NOK/NOK-NOFILE").getFile()));
+        checkSigElectionImport.verify(Paths.get(getClass().getResource("/CheckSigElectionImportTest/NOK/NOK-NOFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound2() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("AP_election_import_.*\\.json");
-        checkSigElectionImport.verify(new File(getClass().getResource("/CheckSigElectionImportTest/NOK/NOK-NOFILE2").getFile()));
+        checkSigElectionImport.verify(Paths.get(getClass().getResource("/CheckSigElectionImportTest/NOK/NOK-NOFILE2").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound3() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("AP_election_import_demo_bk_06.json.p7");
-        checkSigElectionImport.verify(new File(getClass().getResource("/CheckSigElectionImportTest/NOK/NOK-NOFILE3").getFile()));
+        checkSigElectionImport.verify(Paths.get(getClass().getResource("/CheckSigElectionImportTest/NOK/NOK-NOFILE3").toURI()));
     }
 }

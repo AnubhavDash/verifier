@@ -22,6 +22,7 @@ import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 public class CheckVoteUnityTest {
     private CheckVoteUnity checkVoteUnity;
@@ -37,7 +38,7 @@ public class CheckVoteUnityTest {
     @Test
     @Ignore
     public void executeTest() throws Exception {
-        VerificationResult verificationResult = checkVoteUnity.verify(new File(getClass().getResource("/CheckVoteUnityTest/OK").getFile()));
+        VerificationResult verificationResult = checkVoteUnity.verify(Paths.get(getClass().getResource("/CheckVoteUnityTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -47,7 +48,7 @@ public class CheckVoteUnityTest {
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("Voting Card Id contain multiple votes in the secure logs");
-        checkVoteUnity.verify(new File(getClass().getResource("/CheckVoteUnityTest/NOK").getFile()));
+        checkVoteUnity.verify(Paths.get(getClass().getResource("/CheckVoteUnityTest/NOK").toURI()));
     }
 
     @Test
@@ -55,6 +56,6 @@ public class CheckVoteUnityTest {
     public void executeTestNOKnotFile() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("TODO");
-        checkVoteUnity.verify(new File(getClass().getResource("/CheckVoteUnityTest/NOK-NOTFILE").getFile()));
+        checkVoteUnity.verify(Paths.get(getClass().getResource("/CheckVoteUnityTest/NOK-NOTFILE").toURI()));
     }
 }

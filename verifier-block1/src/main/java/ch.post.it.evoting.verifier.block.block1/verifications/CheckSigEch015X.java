@@ -23,6 +23,7 @@ import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class CheckSigEch015X extends AbstractVerification {
 
@@ -40,16 +41,16 @@ public class CheckSigEch015X extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        byte[] rootCertificate = Files.readAllBytes(inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_CERTIFICATES).resolve("integrationCA.pem"));
+        byte[] rootCertificate = Files.readAllBytes(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_CERTIFICATES).resolve("integrationCA.pem"));
 
-        File[] echFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).toFile(), ".*ech015.*\\.xml");
+        File[] echFiles = PathHelper.getFiles(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).toFile(), ".*ech015.*\\.xml");
 
         for (File echFile : echFiles) {
-            byte[] content = Files.readAllBytes(inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(echFile.getName()));
-            byte[] signature = Files.readAllBytes(inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(echFile.getName() + ".p7"));
+            byte[] content = Files.readAllBytes(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(echFile.getName()));
+            byte[] signature = Files.readAllBytes(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(echFile.getName() + ".p7"));
             if (!SignatureChecker.verifyPKCS7(content, signature, rootCertificate)) {
                 throw buildVerificationFailureException(
                         "The signature verification of the file failed",

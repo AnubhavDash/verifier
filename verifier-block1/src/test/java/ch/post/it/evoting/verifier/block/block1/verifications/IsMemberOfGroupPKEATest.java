@@ -17,16 +17,14 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
-import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.File;
 import java.io.IOException;
-import java.math.BigInteger;
+import java.nio.file.Paths;
 
 public class IsMemberOfGroupPKEATest {
     private IsMemberOfGroupPKEA isMemberOfGroupPKEA;
@@ -41,7 +39,7 @@ public class IsMemberOfGroupPKEATest {
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = isMemberOfGroupPKEA.verify(new File(getClass().getResource("/IsMemberOfGroupPKEATest/OK").getFile()));
+        VerificationResult verificationResult = isMemberOfGroupPKEA.verify(Paths.get(getClass().getResource("/IsMemberOfGroupPKEATest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -50,21 +48,21 @@ public class IsMemberOfGroupPKEATest {
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("No such Elements was found in the publicKey");
-        isMemberOfGroupPKEA.verify(new File(getClass().getResource("/IsMemberOfGroupPKEATest/NOK/NOK").getFile()));
+        isMemberOfGroupPKEA.verify(Paths.get(getClass().getResource("/IsMemberOfGroupPKEATest/NOK/NOK").toURI()));
     }
 
     @Test
     public void executeTestNOK2() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("Euler criterion does not equal to 1");
-        isMemberOfGroupPKEA.verify(new File(getClass().getResource("/IsMemberOfGroupPKEATest/NOK/NOK2").getFile()));
+        isMemberOfGroupPKEA.verify(Paths.get(getClass().getResource("/IsMemberOfGroupPKEATest/NOK/NOK2").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("electoralAuthority\\.json");
-        isMemberOfGroupPKEA.verify(new File(getClass().getResource("/IsMemberOfGroupPKEATest/NOK/NOK-NOFILE").getFile()));
+        isMemberOfGroupPKEA.verify(Paths.get(getClass().getResource("/IsMemberOfGroupPKEATest/NOK/NOK-NOFILE").toURI()));
     }
 
 }

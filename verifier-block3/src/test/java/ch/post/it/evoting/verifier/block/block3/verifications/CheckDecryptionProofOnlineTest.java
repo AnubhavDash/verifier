@@ -20,24 +20,25 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.file.Paths;
 
 public class CheckDecryptionProofOnlineTest {
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult result = new CheckDecryptionProofOnline().verify(new File(getClass().getResource("/CheckDecryptionProofOnlineTest/OK").getFile()));
+        VerificationResult result = new CheckDecryptionProofOnline().verify(Paths.get(getClass().getResource("/CheckDecryptionProofOnlineTest/OK").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestNOK() throws Exception {
-        VerificationResult result = new CheckDecryptionProofOnline().verify(new File(getClass().getResource("/CheckDecryptionProofOnlineTest/NOK").getFile()));
+        VerificationResult result = new CheckDecryptionProofOnline().verify(Paths.get(getClass().getResource("/CheckDecryptionProofOnlineTest/NOK").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 
     @Test
     public void executeTestNOKNotFile() throws Exception {
-        VerificationResult result = new CheckDecryptionProofOnline().verify(new File(getClass().getResource("/CheckDecryptionProofOnlineTest/NOK-NOTFILE").getFile()));
+        VerificationResult result = new CheckDecryptionProofOnline().verify(Paths.get(getClass().getResource("/CheckDecryptionProofOnlineTest/NOK-NOTFILE").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 

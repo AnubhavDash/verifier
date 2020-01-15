@@ -25,7 +25,7 @@ import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -49,18 +49,18 @@ public class CheckConfirmationAttempts extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(File inputDirectory) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectory);
+        VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectoryPath);
 
         // Create host/CC mapping
-        Map<String, String> hostCcMapping = HostMappingElement.loadHostMapping(inputDirectory);
+        Map<String, String> hostCcMapping = HostMappingElement.loadHostMapping(inputDirectoryPath);
 
         final Pattern patternVotingCardId = Pattern.compile(".*\\|000\\|(.*)\\|.*\\|.*\\|#confirmationMessage=\".*\" #ccx_id=.*\n");
         final Pattern pattern = Pattern.compile("\\|CMVAL\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|");
 
-        Map<String, Map<String, Long>> nbVotingCardPerCC = SecureLogEntry.loadRegularLogs(inputDirectory, pattern)
+        Map<String, Map<String, Long>> nbVotingCardPerCC = SecureLogEntry.loadRegularLogs(inputDirectoryPath, pattern)
                 .map(s1 -> {
                     Matcher matcher = patternVotingCardId.matcher(s1.getRaw());
                     matcher.matches();

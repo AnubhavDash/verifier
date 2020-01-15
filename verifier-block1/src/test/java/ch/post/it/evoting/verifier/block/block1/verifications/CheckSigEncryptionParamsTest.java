@@ -23,8 +23,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 public class CheckSigEncryptionParamsTest {
     private CheckSigEncryptionParams checkSigEncryptionParams;
@@ -39,7 +39,7 @@ public class CheckSigEncryptionParamsTest {
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkSigEncryptionParams.verify(new File(getClass().getResource("/CheckSigEncryptionParamsTest/OK").getFile()));
+        VerificationResult verificationResult = checkSigEncryptionParams.verify(Paths.get(getClass().getResource("/CheckSigEncryptionParamsTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -49,7 +49,7 @@ public class CheckSigEncryptionParamsTest {
         // TODO Check if test is relevant, because executeTestNOKJsonKo got the same error
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The signature verification of the file encryptionParameters.json failed");
-        checkSigEncryptionParams.verify(new File(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/CERT-NOT-OK").getFile()));
+        checkSigEncryptionParams.verify(Paths.get(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/CERT-NOT-OK").toURI()));
     }
 
     @Test
@@ -57,27 +57,27 @@ public class CheckSigEncryptionParamsTest {
         // TODO Check if test is relevant, because executeTestNOKCertKo got the same error
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The signature verification of the file encryptionParameters.json failed");
-        checkSigEncryptionParams.verify(new File(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/JSON-NOT-OK").getFile()));
+        checkSigEncryptionParams.verify(Paths.get(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/JSON-NOT-OK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("integrationCA.pem");
-        checkSigEncryptionParams.verify(new File(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/NOK-NOFILE").getFile()));
+        checkSigEncryptionParams.verify(Paths.get(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/NOK-NOFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound2() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("encryptionParameters.*\\.json");
-        checkSigEncryptionParams.verify(new File(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/NOK-NOFILE2").getFile()));
+        checkSigEncryptionParams.verify(Paths.get(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/NOK-NOFILE2").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound3() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("encryptionParameters.json.p7");
-        checkSigEncryptionParams.verify(new File(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/NOK-NOFILE3").getFile()));
+        checkSigEncryptionParams.verify(Paths.get(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/NOK-NOFILE3").toURI()));
     }
 }
