@@ -2,6 +2,8 @@ package ch.post.it.evoting.verifier.common.block.tools;
 
 import ch.post.it.evoting.verifier.common.block.dto.ModExpHexParameters;
 import ch.post.it.evoting.verifier.common.block.dto.ModExpParameters;
+import ch.post.it.evoting.verifier.common.block.dto.ModExpProductHexParameters;
+import ch.post.it.evoting.verifier.common.block.dto.ModExpProductParameters;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
@@ -22,8 +24,9 @@ public class MathHelperTest {
     public void modExpWithSimpleValues() {
         List<ModExpParameters> modExpParametersList = readValues("modExpSimpleValues.json", ModExpParameters[].class);
         modExpParametersList.forEach(modExpParameters -> {
-            BigInteger o = MathHelper.modExp(modExpParameters.getB(), modExpParameters.getE(), modExpParameters.getM());
-            Assert.assertEquals("Error in dataset for id : " + modExpParameters.getId(), 0, o.compareTo(modExpParameters.getOutput()));
+            BigInteger output = MathHelper.modExp(modExpParameters.getB(), modExpParameters.getE(), modExpParameters.getM());
+
+            assertEquals(modExpParameters.getId(), output, modExpParameters.getOutput());
         });
     }
 
@@ -31,11 +34,35 @@ public class MathHelperTest {
     public void modExpWithRealSizeValues() {
         List<ModExpHexParameters> modExpParametersList = readValues("modExpRealSizeValues.json", ModExpHexParameters[].class);
         modExpParametersList.forEach(modExpHexParameters -> {
-            BigInteger o = MathHelper.modExp(modExpHexParameters.getB(), modExpHexParameters.getE(), modExpHexParameters.getM());
-            Assert.assertEquals("Error in dataset for id : " + modExpHexParameters.getId(), 0, o.compareTo(modExpHexParameters.getOutput()));
+            BigInteger output = MathHelper.modExp(modExpHexParameters.getB(), modExpHexParameters.getE(), modExpHexParameters.getM());
+
+            assertEquals(modExpHexParameters.getId(), output, modExpHexParameters.getOutput());
         });
     }
 
+    @Test
+    public void modExpProductWithSimpleValues() {
+        List<ModExpProductParameters> modExpProductParametersList =
+                readValues("modExpProductSimpleValues.json", ModExpProductParameters[].class);
+        modExpProductParametersList.forEach(modExpProductParameters -> {
+            BigInteger output = MathHelper.modExpProduct(
+                    modExpProductParameters.getB(), modExpProductParameters.getE(), modExpProductParameters.getM());
+
+            assertEquals(modExpProductParameters.getId(), output, modExpProductParameters.getOutput());
+        });
+    }
+
+    @Test
+    public void modExpProductWithRealSizeValues() {
+        List<ModExpProductHexParameters> modExpProductHexParametersList =
+                readValues("modExpProductRealSizeValues.json", ModExpProductHexParameters[].class);
+        modExpProductHexParametersList.forEach(modExpProductHexParameters -> {
+            BigInteger output = MathHelper.modExpProduct(modExpProductHexParameters.getB(),
+                    modExpProductHexParameters.getE(), modExpProductHexParameters.getM());
+
+            assertEquals(modExpProductHexParameters.getId(), output, modExpProductHexParameters.getOutput());
+        });
+    }
 
     private <T> List<T> readValues(String jsonFileName, Class<T[]> clazz) {
         return Arrays.asList(readValue(jsonFileName, clazz));
@@ -48,9 +75,12 @@ public class MathHelperTest {
             ObjectMapper jsonMapper = new ObjectMapper();
             return jsonMapper.readValue(is, clazz);
         } catch (IOException | URISyntaxException e) {
-            Assert.fail("Read values failed for file " + jsonFileName);
-            return null;
+            throw new RuntimeException("Read values failed for file " + jsonFileName);
         }
+    }
+
+    private void assertEquals(String id, BigInteger expected, BigInteger actual) {
+        Assert.assertEquals("Error in dataset for id : " + id, 0, expected.compareTo(actual));
     }
 
 }

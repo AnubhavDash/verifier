@@ -15,6 +15,7 @@
 package ch.post.it.evoting.verifier.common.block.tools;
 
 import java.math.BigInteger;
+import java.util.Vector;
 
 public class MathHelper {
 
@@ -46,5 +47,30 @@ public class MathHelper {
     public static BigInteger modExp(BigInteger b, BigInteger e, BigInteger m) {
         // Naive implementation before optimisation
         return b.modPow(e, m);
+    }
+
+    /**
+     * Modular exponentiations product
+     *
+     * @param b_vec a list of bases
+     * @param e_vec a list of exponents
+     * @param m the modulus
+     * @return the product of the modular exponentiations
+     */
+    public static BigInteger modExpProduct(Vector<BigInteger> b_vec, Vector<BigInteger> e_vec, BigInteger m) {
+
+        int dimension = b_vec.size();
+        if (dimension != e_vec.size()) {
+            throw new IllegalArgumentException("Bases and exponents vectors must have the same dimension.");
+        }
+
+        // Naive implementation before optimisation
+        BigInteger acc = BigInteger.ONE;
+        for (int i = 0; i < dimension; i++) {
+            acc = acc.multiply(modExp(b_vec.get(i), e_vec.get(i), m));
+        }
+        acc = acc.mod(m);
+
+        return acc;
     }
 }
