@@ -33,4 +33,18 @@ public class MathHelper {
         BigInteger ec = vo.modPow(exponent, p);
         return ec.equals(BigInteger.ONE);
     }
+
+
+    /**
+     * Modular Exponentiation
+     *
+     * @param b the base
+     * @param e the exponent
+     * @param m the modulus
+     * @return the modular exponentiation b exp(e) mod m
+     */
+    public static BigInteger modExp(BigInteger b, BigInteger e, BigInteger m) {
+        // Naive implementation before optimisation
+        return b.modPow(e, m);
+    }
 }

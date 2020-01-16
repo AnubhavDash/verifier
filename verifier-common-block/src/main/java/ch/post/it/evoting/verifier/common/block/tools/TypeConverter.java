@@ -79,4 +79,15 @@ public class TypeConverter {
     public static String UUIDToStringWithoutDash(UUID uuid) {
         return uuid.toString().replace("-", "");
     }
+
+    public static BigInteger hexaStringToBigInteger(String hex) {
+        int index = 0;
+        if (hex.startsWith("0x", index) || hex.startsWith("0X", index)) {
+            index += 2;
+        }
+        else if (hex.startsWith("#", index)) {
+            index ++;
+        }
+        return new BigInteger(hex.substring(index), 16);
+    }
 }
