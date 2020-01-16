@@ -1,16 +1,17 @@
 package ch.post.it.evoting.verifier.common.block.dto;
 
-import ch.post.it.evoting.verifier.common.block.converter.HexStringArrayToBigIntegerVectorConverter;
+import ch.post.it.evoting.verifier.common.block.converter.HexStringArrayToBigIntegerListConverter;
 import ch.post.it.evoting.verifier.common.block.converter.HexStringToBigIntegerConverter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.google.common.collect.ImmutableList;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigInteger;
-import java.util.Vector;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,12 +29,12 @@ public class ModExpProductHexParameters {
     private String id;
 
     @JsonProperty("b")
-    @JsonDeserialize(converter = HexStringArrayToBigIntegerVectorConverter.class)
-    private Vector<BigInteger> b;
+    @JsonDeserialize(converter = HexStringArrayToBigIntegerListConverter.class)
+    private List<BigInteger> b;
 
     @JsonProperty("e")
-    @JsonDeserialize(converter = HexStringArrayToBigIntegerVectorConverter.class)
-    private Vector<BigInteger> e;
+    @JsonDeserialize(converter = HexStringArrayToBigIntegerListConverter.class)
+    private List<BigInteger> e;
 
     @JsonProperty("m")
     @JsonDeserialize(converter = HexStringToBigIntegerConverter.class)
