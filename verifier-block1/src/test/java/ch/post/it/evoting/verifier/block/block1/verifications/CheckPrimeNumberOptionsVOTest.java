@@ -14,36 +14,64 @@
  */
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
-import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 
 public class CheckPrimeNumberOptionsVOTest {
+    private CheckPrimeNumberOptionsVO checkPrimeNumberOptionsVO;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
+    @Before
+    public void setup() {
+        checkPrimeNumberOptionsVO = new CheckPrimeNumberOptionsVO();
+    }
 
     @Test
-    public void executeTestOK() {
-        VerificationResult verificationResult = new CheckPrimeNumberOptionsVO().executeVerification(new File(getClass().getResource("/CheckPrimeNumberOptionsVOTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult verificationResult = checkPrimeNumberOptionsVO.verify(Paths.get(getClass().getResource("/CheckPrimeNumberOptionsVOTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOK() {
-        VerificationResult verificationResult = new CheckPrimeNumberOptionsVO().executeVerification(new File(getClass().getResource("/CheckPrimeNumberOptionsVOTest/NOK/NOK").getFile()));
+    public void executeTestNOK() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("alias does not correspond to voteIdentification");
+        VerificationResult verificationResult = checkPrimeNumberOptionsVO.verify(Paths.get(getClass().getResource("/CheckPrimeNumberOptionsVOTest/NOK/NOK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
+    // TODO Implements the following NOK tests
+    //  - the prime number fields are not mutually distinct
+    //  - The number of prime numbers does not correspond to the number of answerElements
+    //  - alias does not correspond to electionIdentification
+    //  - The prime numbers are repeated
+    //  - The number of distinct prime numbers does not correspond to the number of list elements
+    //  - The number of candidate prime numbers does not correspond to the expected number of voting options for candidates
+
     @Test
-    public void executeTestNOKFileNotFound() {
-        VerificationResult verificationResult = new CheckPrimeNumberOptionsVO().executeVerification(new File(getClass().getResource("/CheckPrimeNumberOptionsVOTest/NOK/NOK-NOFILE").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
-        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification09.file.not.found.message"), verificationResult.getMessage());
+    public void executeTestNOKFileNotFound() throws Exception {
+        exceptionRule.expect(IOException.class);
+        exceptionRule.expectMessage("configuration-anonymized.xml");
+        checkPrimeNumberOptionsVO.verify(Paths.get(getClass().getResource("/CheckPrimeNumberOptionsVOTest/NOK/NOK-NOFILE").toURI()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFound2() throws Exception {
+        exceptionRule.expect(IOException.class);
+        exceptionRule.expectMessage("dataConfig_updated_.*\\.json");
+        checkPrimeNumberOptionsVO.verify(Paths.get(getClass().getResource("/CheckPrimeNumberOptionsVOTest/NOK/NOK-NOFILE2").toURI()));
     }
 }

@@ -23,16 +23,13 @@ import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
 
 import java.io.File;
-import java.util.Arrays;
+import java.nio.file.Path;
 import java.util.Optional;
 
 public class CheckSecureLogIntegrity extends AbstractVerification {
-
-    private static final Logger LOGGER = Logger.getLogger(CheckSecureLogIntegrity.class);
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -47,37 +44,35 @@ public class CheckSecureLogIntegrity extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult executeVerification(File inputDirectory) {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
-        try {
-            File[] hosts = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block2VerificationSuite.PATH_SECURE_LOGS));
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
+        VerificationResult result = new VerificationResult();
 
-            VerificationFailureException ex = Flux.fromArray(hosts)
-                    .onErrorStop()
-                    .flatMap(hostDir -> Flux.fromArray(PathHelper.listDirectories(hostDir.toPath())))
-                    .flatMap(instanceDir -> Flux.fromArray(PathHelper.listDirectories(instanceDir.toPath())))
-                    .map(SecureLogEntry.loadLogDirectory)
-                    .flatMap(SecureLogBundleCreator::from)
-                    .switchIfEmpty(Flux.<SecureLogBundle>empty().doOnComplete(() -> {throw new RuntimeException("No secureLog bundle found");}))
-                    .map(b -> Optional.ofNullable(b.validateIntegrity() ? null : new VerificationFailureException(b.getBeginCheckPoint().toString(), b.getBeginCheckPoint().getMetadata().toString())))
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .blockFirst();
+        File[] hosts = PathHelper.listDirectories(inputDirectoryPath.resolve(Block2VerificationSuite.PATH_SECURE_LOGS));
 
-            if (ex != null) {
-                throw ex;
-            }
-            result.setStatus(Status.OK);
-        } catch (VerificationFailureException e) {
-            LOGGER.error("Test in error, cause : " + Arrays.toString(e.getArgs()), e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.nok.message", e.getArgs()));
-        } catch (Exception e) {
-            result.setStatus(Status.NOK);
-            LOGGER.error("Unexpected error occured", e);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
-        }
+        VerificationFailureException ex = Flux.fromArray(hosts)
+                .onErrorStop()
+                .flatMap(hostDir -> Flux.fromArray(PathHelper.listDirectories(hostDir.toPath())))
+                .flatMap(instanceDir -> Flux.fromArray(PathHelper.listDirectories(instanceDir.toPath())))
+                .map(SecureLogEntry.loadLogDirectory)
+                .flatMap(SecureLogBundleCreator::from)
+                .switchIfEmpty(Flux.<SecureLogBundle>empty().doOnComplete(() -> {throw new RuntimeException("No secureLog bundle found");}))
+                .map(b -> Optional.ofNullable(b.validateIntegrity()
+                        ? null
+                        : buildVerificationFailureException(
+                                "Check secure log integrity failed",
+                                Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
+                                "verification01.nok.message",
+                                b.getBeginCheckPoint().toString(), b.getBeginCheckPoint().getMetadata().toString()
+                        )
+                ))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .blockFirst();
 
+        if (ex != null)
+            throw ex;
+
+        result.setStatus(Status.OK);
         return result;
     }
 }

@@ -21,6 +21,7 @@ import reactor.core.publisher.Flux;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 public class VoterInformationDataExtractor {
@@ -28,8 +29,8 @@ public class VoterInformationDataExtractor {
         //private ctor, use static
     }
 
-    public static VoterInformationStruct getInfo(File inputDirectory) throws IOException {
-        List<File> voterInformationFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2VerificationSuite.PATH_ELECTION_SETUP).resolve(Block2VerificationSuite.PATH_VOTING_CARD_SETS).toFile(),
+    public static VoterInformationStruct getInfo(Path inputDirectoryPath) throws IOException {
+        List<File> voterInformationFiles = PathHelper.getFiles(inputDirectoryPath.resolve(Block2VerificationSuite.PATH_ELECTION_SETUP).resolve(Block2VerificationSuite.PATH_VOTING_CARD_SETS).toFile(),
                 "voterInformation.*\\.csv",
                 true);
 

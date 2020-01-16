@@ -23,6 +23,7 @@ public class VerificationDefinition {
     private int blockId;
     private String name;
     private Category category;
+    private boolean deactivated;
     private EnumSet<VerificationTrait> verificationTraits = EnumSet.noneOf( VerificationTrait.class);
     private Map<Language, String> description;
 
@@ -56,6 +57,14 @@ public class VerificationDefinition {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public boolean isDeactivated() {
+        return deactivated;
+    }
+
+    public void setDeactivated(boolean deactivated) {
+        this.deactivated = deactivated;
     }
 
     public boolean containsVerificationTrait(VerificationTrait trait ) { return this.verificationTraits.contains(trait); }

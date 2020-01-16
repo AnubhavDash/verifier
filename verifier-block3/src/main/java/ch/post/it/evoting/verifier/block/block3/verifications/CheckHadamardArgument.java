@@ -25,7 +25,7 @@ import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.AbstractMap;
 
 public class CheckHadamardArgument extends AbstractVerification {
@@ -47,11 +47,12 @@ public class CheckHadamardArgument extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult executeVerification(File inputDirectory) {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
+    public VerificationResult verify(Path inputDirectoryPath) {
+        VerificationResult result = new VerificationResult();
+
         try {
             processor.register(this);
-            processor.executeProcess(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
+            processor.executeProcess(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
 
             AbstractMap.SimpleEntry<Status, String> status = processor.getStatus(TestType.HadamardProductProof);
             result.setStatus(status.getKey());
@@ -63,6 +64,7 @@ public class CheckHadamardArgument extends AbstractVerification {
         } finally {
             processor.unregister(this);
         }
+
         return result;
     }
 }

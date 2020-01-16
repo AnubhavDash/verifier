@@ -14,7 +14,7 @@
  */
 package ch.post.it.evoting.verifier.common.block.tools;
 
-import ch.post.it.evoting.verifier.dto.Metadata;
+import ch.post.it.evoting.verifier.common.block.dto.revised.Metadata;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.bouncycastle.cert.X509CertificateHolder;
@@ -92,18 +92,18 @@ public class SignatureChecker {
             Metadata metadata = Deserializer.fromJson(metadataData, Metadata.class);
             final X509Certificate sCert = loadCertificate(signerCert);
 
-            if (!metadata.getVersion().equals("1.0")) {
-                throw new UnsupportedOperationException("metadata version not supported : " + metadata.getVersion());
+            if (!metadata.version.equals("1.0")) {
+                throw new UnsupportedOperationException("metadata version not supported : " + metadata.version);
             }
 
-            final String algoName = StringUtils.isNotEmpty(metadata.getAlg()) ? metadata.getAlg() : "SHA256withRSAandMGF1";
+            final String algoName = StringUtils.isNotEmpty(metadata.algorithm) ? metadata.algorithm : "SHA256withRSAandMGF1";
 
             //signature
-            byte[] signature = TypeConverter.base64ToByte(metadata.getSignature());
+            byte[] signature = metadata.getSignature();
 
             //take fields to be added to the content
             StringBuilder sb = new StringBuilder();
-            metadata.getSigned().stream().forEach(s -> sb.append(s.getValue()));
+            metadata.signedItems.stream().forEach(s -> sb.append(s.value));
             byte[] fields = sb.toString().getBytes(StandardCharsets.UTF_8);
 
             //concatenate sourceData & fields

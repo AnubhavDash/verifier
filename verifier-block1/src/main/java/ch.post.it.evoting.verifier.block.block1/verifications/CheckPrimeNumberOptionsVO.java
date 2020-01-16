@@ -20,17 +20,13 @@ import ch.evoting.xmlns.config._4.StandardAnswerType;
 import ch.evoting.xmlns.config._4.TiebreakAnswerType;
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
-import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.block.dto.revised.DomainOfInfluence;
+import ch.post.it.evoting.verifier.common.block.dto.revised.ElectionEvent;
+import ch.post.it.evoting.verifier.common.block.dto.revised.VoteOption;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.dto.DataConfigEE;
-import ch.post.it.evoting.verifier.dto.DomainOfInfluence;
-import ch.post.it.evoting.verifier.dto.Option;
-import org.apache.log4j.Logger;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.AbstractMap;
@@ -40,8 +36,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CheckPrimeNumberOptionsVO extends AbstractVerification {
-
-    private static final Logger LOGGER = Logger.getLogger(CheckPrimeNumberOptionsVO.class);
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -57,116 +51,134 @@ public class CheckPrimeNumberOptionsVO extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult executeVerification(File inputDirectory) {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
-        try {
-            Path path = inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_ELECTION_SETUP);
-            Configuration configuration = Deserializer.fromXml(path.toFile(), "configuration-anonymized.xml", Configuration.class);
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
+        VerificationResult result = new VerificationResult();
+        Path path = inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP);
+        Configuration configuration = Deserializer.fromXml(path.toFile(), "configuration-anonymized.xml", Configuration.class);
 
-            // vote
-            Map<String, Long> voteAnswersCount = configuration.getContest().getVoteInformation().stream()
-                    .map(vi -> {
-                        String id = vi.getVote().getVoteIdentification();
-                        long nbAnswer = vi.getVote().getBallot().stream()
-                                .flatMap(b -> {
-                                    if (b.getStandardBallot() != null) {
-                                        return b.getStandardBallot().getAnswer().stream();
-                                    } else {
-                                        Stream<StandardAnswerType> s1 = b.getVariantBallot().getStandardQuestion().stream().flatMap(sq -> sq.getAnswer().stream());
-                                        Stream<TiebreakAnswerType> s2 = b.getVariantBallot().getTieBreakQuestion().stream().flatMap(tq -> tq.getAnswer().stream());
-                                        return Stream.concat(s1, s2);
-                                    }
-                                }).count();
+        // vote
+        Map<String, Long> voteAnswersCount = configuration.getContest().getVoteInformation().stream()
+                .map(vi -> {
+                    String id = vi.getVote().getVoteIdentification();
+                    long nbAnswer = vi.getVote().getBallot().stream()
+                            .flatMap(b -> {
+                                if (b.getStandardBallot() != null) {
+                                    return b.getStandardBallot().getAnswer().stream();
+                                } else {
+                                    Stream<StandardAnswerType> s1 = b.getVariantBallot().getStandardQuestion().stream().flatMap(sq -> sq.getAnswer().stream());
+                                    Stream<TiebreakAnswerType> s2 = b.getVariantBallot().getTieBreakQuestion().stream().flatMap(tq -> tq.getAnswer().stream());
+                                    return Stream.concat(s1, s2);
+                                }
+                            }).count();
 
-                        return new AbstractMap.SimpleEntry<>(id, nbAnswer);
-                    })
-                    .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+                    return new AbstractMap.SimpleEntry<>(id, nbAnswer);
+                })
+                .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
-            // election
-            Map<String, ElectionDetail> electionOptionCount = configuration.getContest().getElectionInformation().stream()
-                    .map(ei -> {
-                        ElectionDetail electionDetail = new ElectionDetail();
+        // election
+        Map<String, ElectionDetail> electionOptionCount = configuration.getContest().getElectionInformation().stream()
+                .map(ei -> {
+                    ElectionDetail electionDetail = new ElectionDetail();
 
-                        int candidateCount = ei.getCandidate().size();
-                        BigInteger numberOfMandates = ei.getElection().getNumberOfMandates();
-                        boolean writeInsAllowed = ei.getElection().isWriteInsAllowed();
-                        BigInteger candidateAccumulation = ei.getElection().getCandidateAccumulation();
+                    int candidateCount = ei.getCandidate().size();
+                    BigInteger numberOfMandates = ei.getElection().getNumberOfMandates();
+                    boolean writeInsAllowed = ei.getElection().isWriteInsAllowed();
+                    BigInteger candidateAccumulation = ei.getElection().getCandidateAccumulation();
 
-                        BigInteger optionCount = (candidateAccumulation.multiply(BigInteger.valueOf(candidateCount))).add(numberOfMandates.multiply(BigInteger.valueOf(1 + (writeInsAllowed ? 1 : 0))));
-                        electionDetail.setOptionCount(optionCount.intValue());
+                    BigInteger optionCount = (candidateAccumulation.multiply(BigInteger.valueOf(candidateCount))).add(numberOfMandates.multiply(BigInteger.valueOf(1 + (writeInsAllowed ? 1 : 0))));
+                    electionDetail.setOptionCount(optionCount.intValue());
 
-                        boolean candidateOnlyElection = ei.getList().stream().allMatch(ListType::isListEmpty) && ei.getList().size() == 1;
-                        electionDetail.setListCount(candidateOnlyElection ? 0 : ei.getList().size());
+                    boolean candidateOnlyElection = ei.getList().stream().allMatch(ListType::isListEmpty) && ei.getList().size() == 1;
+                    electionDetail.setListCount(candidateOnlyElection ? 0 : ei.getList().size());
 
-                        return new AbstractMap.SimpleEntry<>(ei.getElection().getElectionIdentification(), electionDetail);
-                    }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+                    return new AbstractMap.SimpleEntry<>(ei.getElection().getElectionIdentification(), electionDetail);
+                }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
-            //check correspondences between config and dataConfig
-            DataConfigEE dataConfigEE = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", DataConfigEE.class);
-            dataConfigEE.getElectionEvent().getBallotBoxes().stream()
-                    .flatMap(bb -> bb.getCountingCircles().stream())
-                    .flatMap(cc -> cc.getDomainOfInfluence().stream())
-                    .forEach((DomainOfInfluence doi) -> {
-                        doi.getVotes().forEach(v -> {
-                            String voteIdentification = v.getAlias();
-                            if (!voteAnswersCount.containsKey(voteIdentification)) {
-                                throw new Test09Exception("verification09.nok.message.alias.vote.nok", voteIdentification);
-                            }
+        // Check correspondences between config and dataConfig
+        ElectionEvent electionEvent = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", ElectionEvent.class);
+        electionEvent.getBallotBoxes().stream()
+                .flatMap(bb -> bb.getCountingCircles().stream())
+                .flatMap(cc -> cc.getDomainsOfInfluence().stream())
+                .forEach((DomainOfInfluence doi) -> {
+                    doi.getVotes().forEach(v -> {
+                        String voteIdentification = v.getAlias();
+                        if (!voteAnswersCount.containsKey(voteIdentification)) {
+                            throw buildVerificationFailureException(
+                                    "alias does not correspond to voteIdentification",
+                                    Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                                    "verification09.nok.message.alias.vote.nok",
+                                    voteIdentification
+                            );
+                        }
 
-                            List<Integer> options = v.getQuestions().stream().flatMap(q -> q.getOptions().stream()).map(Option::getPrimeNumber).collect(Collectors.toList());
-                            long optionsDistinctCount = v.getQuestions().stream().flatMap(q -> q.getOptions().stream()).map(Option::getPrimeNumber).distinct().count();
-                            if (options.size() != optionsDistinctCount) {
-                                throw new Test09Exception("verification09.nok.message.prime.number.mutually.distinct.nok", getDuplicates(options).toString());
-                            }
+                        List<BigInteger> options = v.getQuestions().stream().flatMap(q -> q.getOptions().stream()).map(VoteOption::getPrimeNumber).collect(Collectors.toList());
+                        long optionsDistinctCount = v.getQuestions().stream().flatMap(q -> q.getOptions().stream()).map(VoteOption::getPrimeNumber).distinct().count();
+                        if (options.size() != optionsDistinctCount) {
+                            throw buildVerificationFailureException(
+                                    "the prime number fields are not mutually distinct",
+                                    Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                                    "verification09.nok.message.prime.number.mutually.distinct.nok",
+                                    getDuplicates(options).toString()
+                            );
+                        }
 
-                            if (options.size() != voteAnswersCount.get(voteIdentification)) {
-                                throw new Test09Exception("verification09.nok.message.number.of.prime.number.and.answer.nok");
-                            }
-                        });
-
-                        doi.getElections().forEach(e -> {
-                            String electionIdentification = e.getAlias();
-                            if (!electionOptionCount.containsKey(electionIdentification)) {
-                                throw new Test09Exception("verification09.nok.message.alias.election.nok", electionIdentification);
-                            }
-
-                            List<Integer> listCount = e.getLists().stream().map(l -> l.getPrimeNumber()).collect(Collectors.toList());
-                            long listDistinctCount = e.getLists().stream().map(l -> l.getPrimeNumber()).distinct().count();
-                            if (listCount.size() != listDistinctCount) {
-                                throw new Test09Exception("verification09.nok.message", getDuplicates(listCount).toString());
-                            }
-                            if (listCount.size() != electionOptionCount.get(electionIdentification).getListCount()) {
-                                throw new Test09Exception("verification09.nok.message.number.of.distinct.prime.number.and.lists.nok");
-                            }
-                            long optionDistinctCount = e.getLists().stream()
-                                    .flatMap(l -> l.getCandidatePositions().stream())
-                                    .flatMap(cp -> cp.getPrimeNumber().stream()).distinct().count();
-                            long optionCandidateOnlyCount = e.getCandidates().stream()
-                                    .flatMap(c -> c.getPrimeNumber().stream()).distinct().count();
-                            int writeInsCount = e.getWriteIns().size();
-
-                            if ((optionDistinctCount + writeInsCount + optionCandidateOnlyCount) != electionOptionCount.get(electionIdentification).getOptionCount()) {
-                                throw new Test09Exception("verification09.nok.message.number.of.candidate.prime.number.and.vo.nok",
-                                        "" + (optionDistinctCount + writeInsCount + optionCandidateOnlyCount),
-                                        "" + electionOptionCount.get(electionIdentification).getOptionCount()
-                                );
-                            }
-                        });
+                        if (options.size() != voteAnswersCount.get(voteIdentification)) {
+                            throw buildVerificationFailureException(
+                                    "The number of prime numbers does not correspond to the number of answerElements",
+                                    Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                                    "verification09.nok.message.number.of.prime.number.and.answer.nok"
+                            );
+                        }
                     });
 
-            result.setStatus(Status.OK);
-        } catch (Test09Exception e) {
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, e.getKey(), e.getParams()));
-        } catch (FileNotFoundException e) {
-            LOGGER.error("a FileNotFoundException error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification09.file.not.found.message"));
-        } catch (Exception e) {
-            LOGGER.error("Unexpected error", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
-        }
+                    doi.getElections().forEach(e -> {
+                        String electionIdentification = e.getAlias();
+                        if (!electionOptionCount.containsKey(electionIdentification)) {
+                            throw buildVerificationFailureException(
+                                    "alias does not correspond to electionIdentification",
+                                    Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                                    "verification09.nok.message.alias.election.nok",
+                                    electionIdentification
+                            );
+                        }
+
+                        List<BigInteger> listCount = e.getLists().stream().map(l -> l.getPrimeNumber()).collect(Collectors.toList());
+                        long listDistinctCount = e.getLists().stream().map(l -> l.getPrimeNumber()).distinct().count();
+                        if (listCount.size() != listDistinctCount) {
+                            throw buildVerificationFailureException(
+                                    "The prime numbers are repeated",
+                                    Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                                    "verification09.nok.message",
+                                    getDuplicates(listCount).toString()
+                            );
+                        }
+                        if (listCount.size() != electionOptionCount.get(electionIdentification).getListCount()) {
+                            throw buildVerificationFailureException(
+                                    "The number of distinct prime numbers does not correspond to the number of list elements",
+                                    Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                                    "verification09.nok.message.number.of.distinct.prime.number.and.lists.nok"
+                            );
+                        }
+                        long optionDistinctCount = e.getLists().stream()
+                                .flatMap(l -> l.getCandidatePositions().stream())
+                                .flatMap(cp -> cp.getPrimeNumbers().stream()).distinct().count();
+                        long optionCandidateOnlyCount = e.getCandidates().stream()
+                                .flatMap(c -> c.getPrimeNumbers().stream()).distinct().count();
+                        int writeInsCount = e.getWriteIns().size();
+
+                        if ((optionDistinctCount + writeInsCount + optionCandidateOnlyCount) != electionOptionCount.get(electionIdentification).getOptionCount()) {
+                            throw buildVerificationFailureException(
+                                    "The number of candidate prime numbers does not correspond to the expected number of voting options for candidates",
+                                    Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                                    "verification09.nok.message.number.of.candidate.prime.number.and.vo.nok",
+                                    String.valueOf((optionDistinctCount + writeInsCount + optionCandidateOnlyCount)),
+                                    String.valueOf(electionOptionCount.get(electionIdentification).getOptionCount())
+                            );
+                        }
+                    });
+                });
+
+        result.setStatus(Status.OK);
         return result;
     }
 
@@ -200,11 +212,11 @@ public class CheckPrimeNumberOptionsVO extends AbstractVerification {
         }
     }
 
-    class Test09Exception extends RuntimeException {
+    class CheckPrimeNumberOptionsVOException extends RuntimeException {
         String key;
         String[] params;
 
-        Test09Exception(String key, String... params) {
+        CheckPrimeNumberOptionsVOException(String key, String... params) {
             this.key = key;
             this.params = params;
         }

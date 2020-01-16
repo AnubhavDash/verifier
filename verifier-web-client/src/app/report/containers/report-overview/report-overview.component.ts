@@ -104,5 +104,21 @@ export class ReportOverviewComponent implements OnInit {
     this.initTable();
   }
 
+  isOK (status) {
+    return status === 'OK';
+  }
+
+  isNotOK (status) {
+    return status === 'NOK';
+  }
+
+  isNA (status) {
+    return status === 'NA';
+  }
+
+  isError (status) {
+    return status === 'UNEXPECTED_ERROR' || status === 'FILE_ERROR';
+  }
+
 }
 

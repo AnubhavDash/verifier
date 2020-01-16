@@ -16,35 +16,46 @@ package ch.post.it.evoting.verifier.block.block2.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import org.junit.*;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 
 public class CheckVoteUnityTest {
+    private CheckVoteUnity checkVoteUnity;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
+    @Before
+    public void setup() {
+        checkVoteUnity = new CheckVoteUnity();
+    }
 
     @Test
     @Ignore
-    public void executeTest() {
-        VerificationResult verificationResult = new CheckVoteUnity().executeVerification(new File(getClass().getResource("/CheckVoteUnityTest/OK").getFile()));
+    public void executeTest() throws Exception {
+        VerificationResult verificationResult = checkVoteUnity.verify(Paths.get(getClass().getResource("/CheckVoteUnityTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     @Ignore
-    public void executeTestNOK() {
-        VerificationResult verificationResult = new CheckVoteUnity().executeVerification(new File(getClass().getResource("/CheckVoteUnityTest/NOK").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOK() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("Voting Card Id contain multiple votes in the secure logs");
+        checkVoteUnity.verify(Paths.get(getClass().getResource("/CheckVoteUnityTest/NOK").toURI()));
     }
 
     @Test
     @Ignore
-    public void executeTestNOKnotFile() {
-        VerificationResult verificationResult = new CheckVoteUnity().executeVerification(new File(getClass().getResource("/CheckVoteUnityTest/NOK-NOTFILE").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOKnotFile() throws Exception {
+        exceptionRule.expect(IOException.class);
+        exceptionRule.expectMessage("TODO");
+        checkVoteUnity.verify(Paths.get(getClass().getResource("/CheckVoteUnityTest/NOK-NOTFILE").toURI()));
     }
 }

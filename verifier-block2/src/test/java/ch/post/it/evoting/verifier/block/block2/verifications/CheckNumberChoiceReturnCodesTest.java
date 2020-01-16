@@ -16,33 +16,60 @@ package ch.post.it.evoting.verifier.block.block2.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import org.junit.*;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 
 public class CheckNumberChoiceReturnCodesTest {
+    private CheckNumberChoiceReturnCodes checkNumberChoiceReturnCodes;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
+    @Before
+    public void setup() {
+        checkNumberChoiceReturnCodes = new CheckNumberChoiceReturnCodes();
+    }
 
     @Test
     @Ignore
-    public void executeTestOK() {
-        VerificationResult verificationResult = new CheckNumberChoiceReturnCodes().executeVerification(new File(getClass().getResource("/CheckNumberChoiceReturnCodesTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult verificationResult = checkNumberChoiceReturnCodes.verify(Paths.get(getClass().getResource("/CheckNumberChoiceReturnCodesTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOK() {
-        VerificationResult verificationResult = new CheckNumberChoiceReturnCodes().executeVerification(new File(getClass().getResource("/CheckNumberChoiceReturnCodesTest/NOK").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    @Ignore
+    public void executeTestNOK() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("TODO");
+        checkNumberChoiceReturnCodes.verify(Paths.get(getClass().getResource("/CheckNumberChoiceReturnCodesTest/NOK").toURI()));
+    }
+
+    // TODO Implement the following missing tests cases:
+    //  - No values found while counting log foreach control component
+    //  - Number of component control is not 4
+    //  - No GENPCC log found for the defined electionEventId
+    //  - Count of log for partial choice code generation is not the same for each control component
+    //  - The number of log entries does not match with the number of voters
+
+    @Test
+    public void executeTestNOKnotFile() throws Exception {
+        exceptionRule.expect(IOException.class);
+        exceptionRule.expectMessage("voterInformation.*\\.csv");
+        checkNumberChoiceReturnCodes.verify(Paths.get(getClass().getResource("/CheckNumberChoiceReturnCodesTest/NOK-NOTFILE").toURI()));
     }
 
     @Test
-    public void executeTestNOKnotFile() {
-        VerificationResult verificationResult = new CheckNumberChoiceReturnCodes().executeVerification(new File(getClass().getResource("/CheckNumberChoiceReturnCodesTest/NOK-NOTFILE").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOKnotFile2() throws Exception {
+        exceptionRule.expect(IOException.class);
+        exceptionRule.expectMessage("mapping_cc_hosts.csv");
+        checkNumberChoiceReturnCodes.verify(Paths.get(getClass().getResource("/CheckNumberChoiceReturnCodesTest/NOK-NOTFILE2").toURI()));
     }
+
 }

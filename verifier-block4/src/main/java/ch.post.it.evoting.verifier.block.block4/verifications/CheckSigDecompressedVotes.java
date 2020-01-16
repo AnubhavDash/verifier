@@ -20,26 +20,17 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
-import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
-import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.dto.BallotBox;
-import ch.post.it.evoting.verifier.dto.DataConfigEE;
-import org.apache.log4j.Logger;
+import ch.post.it.evoting.verifier.common.block.dto.revised.BallotBox;
+import ch.post.it.evoting.verifier.common.block.dto.revised.ElectionEvent;
+import ch.post.it.evoting.verifier.common.block.tools.*;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CheckSigDecompressedVotes extends AbstractVerification {
-
-    private static final Logger LOGGER = Logger.getLogger(CheckSigDecompressedVotes.class);
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -53,56 +44,39 @@ public class CheckSigDecompressedVotes extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult executeVerification(File inputDirectory) {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
+        VerificationResult result = new VerificationResult();
 
-        try {
-            Path path = inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_ELECTION_SETUP);
-            DataConfigEE dataConfigEE = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", DataConfigEE.class);
-            List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
-            List<File> decompressedVotesFiles = new ArrayList<>(ballotBoxes.size());
-            ballotBoxes.forEach(ballotBox -> {
-                String ballotBoxId = ballotBox.getId();
-                try {
-                    decompressedVotesFiles.add(PathHelper.getFile(inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_BALLOTBOXES).resolve(ballotBoxId).toFile(), "decompressedVotes.*\\.csv"));
-                } catch (FileNotFoundException e) {
-                    throw new VerificationFailureException("decompressedVotes.csv not found", inputDirectory.getName(), ballotBoxId);
-                }
-            });
-
-            byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath()
-                            .resolve(Block4VerificationSuite.PATH_CERTIFICATES)
-                            .resolve(Block4VerificationSuite.PATH_ADMINBOARD).toFile(),
-                    ".*\\.pem").toPath());
-
-            byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block4VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
-
-            for (File decompressedVote : decompressedVotesFiles) {
-                byte[] content = Files.readAllBytes(decompressedVote.toPath());
-                byte[] signature = Files.readAllBytes(decompressedVote.toPath().getParent().resolve(decompressedVote.getName() + ".metadata"));
-
-                if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCA)) {
-                    throw new VerificationFailureException(decompressedVote.getName());
-                }
-            }
-            result.setStatus(Status.OK);
-
-        } catch (VerificationFailureException e) {
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification71.nok.message"));
-        } catch (NoSuchFileException e) {
-            LOGGER.error("a NoSuchFileException error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification71.file.not.found.message", e.getFile()));
-        } catch (FileNotFoundException e) {
-            LOGGER.error("a FileNotFoundException error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification71.file.not.found.message", e.getMessage()));
-        } catch (Exception e) {
-            LOGGER.error("an unexpected error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
+        Path path = inputDirectoryPath.resolve(Block4VerificationSuite.PATH_ELECTION_SETUP);
+        ElectionEvent electionEvent = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", ElectionEvent.class);
+        List<BallotBox> ballotBoxes = electionEvent.getBallotBoxes();
+        List<File> decompressedVotesFiles = new ArrayList<>(ballotBoxes.size());
+        for (BallotBox ballotBox : ballotBoxes) {
+            String ballotBoxId = TypeConverter.UUIDToStringWithoutDash(ballotBox.getId());
+            decompressedVotesFiles.add(PathHelper.getFile(inputDirectoryPath.resolve(Block4VerificationSuite.PATH_BALLOTBOXES).resolve(ballotBoxId).toFile(), "decompressedVotes.*\\.csv"));
         }
+
+        byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath
+                        .resolve(Block4VerificationSuite.PATH_CERTIFICATES)
+                        .resolve(Block4VerificationSuite.PATH_ADMINBOARD).toFile(),
+                ".*\\.pem").toPath());
+
+        byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath.resolve(Block4VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
+
+        for (File decompressedVote : decompressedVotesFiles) {
+            byte[] content = Files.readAllBytes(decompressedVote.toPath());
+            byte[] signature = Files.readAllBytes(decompressedVote.toPath().getParent().resolve(decompressedVote.getName() + ".metadata"));
+
+            if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCA)) {
+                throw buildVerificationFailureException(
+                        "The signature verification of the decompressedVotes.csv failed",
+                        Block4VerificationSuite.RESOURCE_BUNDLE_NAME,
+                        "verification71.nok.message"
+                );
+            }
+        }
+
+        result.setStatus(Status.OK);
         return result;
     }
 

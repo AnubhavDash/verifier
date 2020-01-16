@@ -20,18 +20,19 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.file.Paths;
 
 public class CheckZeroArgumentTest {
 
     @Test
-    public void executeTestOK() {
-        VerificationResult result = new CheckZeroArgument().executeVerification(new File(getClass().getResource("/CheckZeroArgumentTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult result = new CheckZeroArgument().verify(Paths.get(getClass().getResource("/CheckZeroArgumentTest/OK").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
-    public void executeTestNOK() {
-        VerificationResult result = new CheckZeroArgument().executeVerification(new File(getClass().getResource("/CheckZeroArgumentTest/NOK").getFile()));
+    public void executeTestNOK() throws Exception {
+        VerificationResult result = new CheckZeroArgument().verify(Paths.get(getClass().getResource("/CheckZeroArgumentTest/NOK").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }

@@ -20,17 +20,18 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.file.Paths;
 
 public class CheckCommitmentParametersOnlineTest {
 
     @Test
-    public void executeTestOK() {
-        VerificationResult result = new CheckCommitmentParametersOnline().executeVerification(new File(getClass().getResource("/CheckCommitmentParametersOnlineTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult result = new CheckCommitmentParametersOnline().verify(Paths.get(getClass().getResource("/CheckCommitmentParametersOnlineTest/OK").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
     @Test
-    public void executeTestNOK() {
-        VerificationResult result = new CheckCommitmentParametersOnline().executeVerification(new File(getClass().getResource("/CheckCommitmentParametersOnlineTest/NOK").getFile()));
+    public void executeTestNOK() throws Exception {
+        VerificationResult result = new CheckCommitmentParametersOnline().verify(Paths.get(getClass().getResource("/CheckCommitmentParametersOnlineTest/NOK").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 

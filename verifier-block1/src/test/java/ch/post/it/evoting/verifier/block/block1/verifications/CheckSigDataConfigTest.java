@@ -16,31 +16,66 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 
 public class CheckSigDataConfigTest {
+    private CheckSigDataConfig checkSigDataConfig;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
+    @Before
+    public void setup() {
+        checkSigDataConfig = new CheckSigDataConfig();
+    }
 
     @Test
-    public void executeTestOK() {
-        VerificationResult verificationResult = new CheckSigDataConfig().executeVerification(new File(getClass().getResource("/CheckSigDataConfigTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult verificationResult = checkSigDataConfig.verify(Paths.get(getClass().getResource("/CheckSigDataConfigTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOK() {
-        VerificationResult verificationResult = new CheckSigDataConfig().executeVerification(new File(getClass().getResource("/CheckSigDataConfigTest/NOK/NOK").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOK() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("The signature verification of the file dataConfig_updated failed");
+        checkSigDataConfig.verify(Paths.get(getClass().getResource("/CheckSigDataConfigTest/NOK/NOK").toURI()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound() {
-        VerificationResult verificationResult = new CheckSigDataConfig().executeVerification(new File(getClass().getResource("/CheckSigDataConfigTest/NOK/NOK-NOFILE").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOKFileNotFound() throws Exception {
+        exceptionRule.expect(IOException.class);
+        exceptionRule.expectMessage(".*\\.pem");
+        checkSigDataConfig.verify(Paths.get(getClass().getResource("/CheckSigDataConfigTest/NOK/NOK-NOFILE").toURI()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFound2() throws Exception {
+        exceptionRule.expect(IOException.class);
+        exceptionRule.expectMessage("tenant_.*\\.pem");
+        checkSigDataConfig.verify(Paths.get(getClass().getResource("/CheckSigDataConfigTest/NOK/NOK-NOFILE2").toURI()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFound3() throws Exception {
+        exceptionRule.expect(IOException.class);
+        exceptionRule.expectMessage("dataConfig.*\\.json");
+        checkSigDataConfig.verify(Paths.get(getClass().getResource("/CheckSigDataConfigTest/NOK/NOK-NOFILE3").toURI()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFound4() throws Exception {
+        exceptionRule.expect(IOException.class);
+        exceptionRule.expectMessage(".metadata");
+        checkSigDataConfig.verify(Paths.get(getClass().getResource("/CheckSigDataConfigTest/NOK/NOK-NOFILE4").toURI()));
     }
 }

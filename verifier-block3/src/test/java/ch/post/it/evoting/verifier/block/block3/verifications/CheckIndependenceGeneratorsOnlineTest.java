@@ -21,20 +21,21 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.file.Paths;
 
 public class CheckIndependenceGeneratorsOnlineTest {
 
     @Ignore
     @Test
-    public void executeTestOK() {
-        VerificationResult result = new CheckIndependenceGeneratorsOnline().executeVerification(new File(getClass().getResource("/CheckIndependenceGeneratorsOnlineTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult result = new CheckIndependenceGeneratorsOnline().verify(Paths.get(getClass().getResource("/CheckIndependenceGeneratorsOnlineTest/OK").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Ignore
     @Test
-    public void executeTestNOK() {
-        VerificationResult result = new CheckIndependenceGeneratorsOnline().executeVerification(new File(getClass().getResource("/CheckIndependenceGeneratorsOnlineTest/NOK").getFile()));
+    public void executeTestNOK() throws Exception {
+        VerificationResult result = new CheckIndependenceGeneratorsOnline().verify(Paths.get(getClass().getResource("/CheckIndependenceGeneratorsOnlineTest/NOK").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 

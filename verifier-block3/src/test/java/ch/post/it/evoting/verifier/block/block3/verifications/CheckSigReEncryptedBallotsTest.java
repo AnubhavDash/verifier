@@ -20,33 +20,34 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.file.Paths;
 
 public class CheckSigReEncryptedBallotsTest {
 
     @Test
-    public void executeTestOK() {
-        VerificationResult verificationResult = new CheckSigReEncryptedBallots().executeVerification(new File(getClass().getResource("/CheckSigReEncryptedBallotsTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult verificationResult = new CheckSigReEncryptedBallots().verify(Paths.get(getClass().getResource("/CheckSigReEncryptedBallotsTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOKCsvKo() {
-        VerificationResult verificationResult = new CheckSigReEncryptedBallots().executeVerification(new File(getClass().getResource("/CheckSigReEncryptedBallotsTest/NOK/CSV-NOT-OK").getFile()));
+    public void executeTestNOKCsvKo() throws Exception {
+        VerificationResult verificationResult = new CheckSigReEncryptedBallots().verify(Paths.get(getClass().getResource("/CheckSigReEncryptedBallotsTest/NOK/CSV-NOT-OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOKCertKo() {
-        VerificationResult verificationResult = new CheckSigReEncryptedBallots().executeVerification(new File(getClass().getResource("/CheckSigReEncryptedBallotsTest/NOK/CERT-NOT-OK").getFile()));
+    public void executeTestNOKCertKo() throws Exception {
+        VerificationResult verificationResult = new CheckSigReEncryptedBallots().verify(Paths.get(getClass().getResource("/CheckSigReEncryptedBallotsTest/NOK/CERT-NOT-OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOKFileNotFound() {
-        VerificationResult verificationResult = new CheckSigReEncryptedBallots().executeVerification(new File(getClass().getResource("/CheckSigReEncryptedBallotsTest/NOK-NOTFILE").getFile()));
+    public void executeTestNOKFileNotFound() throws Exception {
+        VerificationResult verificationResult = new CheckSigReEncryptedBallots().verify(Paths.get(getClass().getResource("/CheckSigReEncryptedBallotsTest/NOK-NOTFILE").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }

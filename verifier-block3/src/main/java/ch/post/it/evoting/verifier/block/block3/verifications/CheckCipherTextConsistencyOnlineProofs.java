@@ -1,14 +1,14 @@
 /**
  * This file is part of Verifier Swiss Post.
- *
+ * <p>
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
  * the GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
- *
+ * <p>
  * Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
@@ -21,28 +21,24 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.DownloadedBallot;
-import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CheckCipherTextConsistencyOnlineProofs extends AbstractVerification {
-
-    private static final Logger LOGGER = Logger.getLogger(CheckCipherTextConsistencyOnlineProofs.class);
 
     static GammaPhis extractFromLine(String line) throws IOException {
         int pipePosition = line.indexOf("}}|");
@@ -73,96 +69,93 @@ public class CheckCipherTextConsistencyOnlineProofs extends AbstractVerification
     }
 
     @Override
-    public VerificationResult executeVerification(File inputDirectory) {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
-        try {
-            File[] ballotboxes = PathHelper.listDirectories(inputDirectory.toPath().resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
-            boolean isEquivalent = false;
-            for (File ballotbox : ballotboxes) {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
+        VerificationResult result = new VerificationResult();
 
-                // Offline
-                File downloadedBallotBoxFile = PathHelper.getFile(ballotbox.toPath().toFile(), "downloadedBallotBox.csv");
-                List<GammaPhis> offlineGammaPhisList;
-                try (Stream<String> lines = Files.lines(downloadedBallotBoxFile.toPath())) {
-                    offlineGammaPhisList = lines
-                            .map(l -> {
-                                try {
-                                    return extractFromLine(l);
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            })
-                            .filter(entry -> entry.getGamma() != null)
-                            .collect(Collectors.toList());
-                }
+        File[] ballotboxes = PathHelper.listDirectories(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
+        boolean isEquivalent = false;
+        for (File ballotbox : ballotboxes) {
 
-                final File[] onlineMixings = ballotbox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
-                Iterable<File> iterableFile = Arrays.asList(onlineMixings);
-                Iterator iteratorFile = iterableFile.iterator();
-                Map<String, Tuple2<List<GammaPhis>, List<GammaPhis>>> map = new HashMap();
-                List<GammaPhis> onlinePreviousVotes;
-                List<GammaPhis> onlineVotes;
-
-                while (iteratorFile.hasNext() && !isEquivalent) {
-                    File online = (File) iteratorFile.next();
-
-                    OnlineMixingProofLoader onlineMixingProofLoader = new OnlineMixingProofLoader(online.toPath());
-
-                    onlinePreviousVotes = onlineMixingProofLoader.getEncryptedBallots().getBallots()
-                            .stream()
-                            .map(b -> new GammaPhis(b.getGamma().getValue().toString(),
-                                    b.getPhis().stream().map(p -> p.getValue().toString()).collect(Collectors.toList())))
-                            .collect(Collectors.toList());
-
-                    onlineVotes = onlineMixingProofLoader.getVotes().getBallots()
-                            .stream()
-                            .map(b -> new GammaPhis(b.getGamma().getValue().toString(),
-                                    b.getPhis().stream().map(p -> p.getValue().toString()).collect(Collectors.toList())))
-                            .collect(Collectors.toList());
-
-
-                    Tuple2<List<GammaPhis>, List<GammaPhis>> tuple = Tuples.of(onlinePreviousVotes, onlineVotes);
-
-                    map.put(online.getName(), tuple);
-                }
-
-                // All data is loaded
-                List<GammaPhis> votesToCheck = offlineGammaPhisList;
-
-                // Business check
-                int nbControlled = 0;
-                if (map.size() == 3) {
-                    while (nbControlled != 3) {
-                        int nbNotFound = 0;
-                        for (Map.Entry<String, Tuple2<List<GammaPhis>, List<GammaPhis>>> tuple : map.entrySet()) {
-                            if (isDowloadedOnlineEncryptedBallotsEquals(votesToCheck, tuple.getValue().getT1())) {
-                                votesToCheck = tuple.getValue().getT2();
-                                nbControlled++;
-                                break;
+            // Offline
+            File downloadedBallotBoxFile = PathHelper.getFile(ballotbox.toPath().toFile(), "downloadedBallotBox.csv");
+            List<GammaPhis> offlineGammaPhisList;
+            try (Stream<String> lines = Files.lines(downloadedBallotBoxFile.toPath())) {
+                offlineGammaPhisList = lines
+                        .map(l -> {
+                            try {
+                                return extractFromLine(l);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
                             }
-                            nbNotFound++;
-                            if (nbNotFound == 3) {
-                                throw new VerificationFailureException("Same vote not exist (vote non confirmé)");
-                            }
+                        })
+                        .filter(entry -> entry.getGamma() != null)
+                        .collect(Collectors.toList());
+            }
+
+            final File[] onlineMixings = ballotbox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
+            Iterable<File> iterableFile = Arrays.asList(onlineMixings);
+            Iterator iteratorFile = iterableFile.iterator();
+            Map<String, Tuple2<List<GammaPhis>, List<GammaPhis>>> map = new HashMap();
+            List<GammaPhis> onlinePreviousVotes;
+            List<GammaPhis> onlineVotes;
+
+            while (iteratorFile.hasNext() && !isEquivalent) {
+                File online = (File) iteratorFile.next();
+
+                OnlineMixingProofLoader onlineMixingProofLoader = new OnlineMixingProofLoader(online.toPath());
+
+                onlinePreviousVotes = onlineMixingProofLoader.getEncryptedBallots().getBallots()
+                        .stream()
+                        .map(b -> new GammaPhis(b.getGamma().getValue().toString(),
+                                b.getPhis().stream().map(p -> p.getValue().toString()).collect(Collectors.toList())))
+                        .collect(Collectors.toList());
+
+                onlineVotes = onlineMixingProofLoader.getVotes().getBallots()
+                        .stream()
+                        .map(b -> new GammaPhis(b.getGamma().getValue().toString(),
+                                b.getPhis().stream().map(p -> p.getValue().toString()).collect(Collectors.toList())))
+                        .collect(Collectors.toList());
+
+
+                Tuple2<List<GammaPhis>, List<GammaPhis>> tuple = Tuples.of(onlinePreviousVotes, onlineVotes);
+
+                map.put(online.getName(), tuple);
+            }
+
+            // All data is loaded
+            List<GammaPhis> votesToCheck = offlineGammaPhisList;
+
+            // Business check
+            int nbControlled = 0;
+            if (map.size() == 3) {
+                while (nbControlled != 3) {
+                    int nbNotFound = 0;
+                    for (Map.Entry<String, Tuple2<List<GammaPhis>, List<GammaPhis>>> tuple : map.entrySet()) {
+                        if (isDowloadedOnlineEncryptedBallotsEquals(votesToCheck, tuple.getValue().getT1())) {
+                            votesToCheck = tuple.getValue().getT2();
+                            nbControlled++;
+                            break;
+                        }
+                        nbNotFound++;
+                        if (nbNotFound == 3) {
+                            throw buildVerificationFailureException(
+                                    "Same vote not exist (vote non confirmé)",
+                                    Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
+                                    "verification31.nok.message"
+                            );
                         }
                     }
-                } else {
-                    throw new VerificationFailureException("There aren't 3 online control component proof");
                 }
+            } else {
+                throw buildVerificationFailureException(
+                        "There aren't 3 online control component proof",
+                        Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
+                        "verification31.nok.message"
+                );
             }
-            result.setStatus(Status.OK);
-        } catch (VerificationFailureException e) {
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification31.nok.message"));
-        } catch (FileNotFoundException e) {
-            result.setStatus(Status.NOK);
-            LOGGER.error("a FileNotFoundException error occurred", e);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification31.file.not.found.message", e.getCause().getLocalizedMessage()));
-        } catch (Exception e) {
-            result.setStatus(Status.NOK);
-            LOGGER.error("an unexpected error occurred", e);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
+
+        result.setStatus(Status.OK);
         return result;
     }
 

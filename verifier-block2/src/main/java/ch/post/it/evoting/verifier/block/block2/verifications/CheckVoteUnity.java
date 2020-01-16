@@ -20,24 +20,18 @@ import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationStruct;
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.block.block2.securelog.HostMappingElement;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import org.apache.log4j.Logger;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class CheckVoteUnity extends AbstractVerification {
-
-    private static final Logger LOGGER = Logger.getLogger(CheckVoteUnity.class);
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -52,62 +46,47 @@ public class CheckVoteUnity extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult executeVerification(File inputDirectory) {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
-        try {
-            VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectory);
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
+        VerificationResult result = new VerificationResult();
 
-            // create host/CC mapping
-            Map<String, String> hostCcMapping = HostMappingElement.loadHostMapping(inputDirectory);
+        VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectoryPath);
 
-            final Pattern patternVotingCardId = Pattern.compile(".*\\|000\\|(.*)\\|.*\\|.*\\|#encryptedOptions=\".*\" #ccx_id=.*\n");
-            final Pattern pattern = Pattern.compile("\\|VOTVAL\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|");
-            Map<String, Map<String, Long>> nbVotingCardPerCC = SecureLogEntry.loadRegularLogs(inputDirectory, pattern)
-                    .map(s1 -> {
-                        Matcher matcher = patternVotingCardId.matcher(s1.getRaw());
-                        matcher.matches();
-                        String votingCardId = matcher.group(1);
-                        return Tuples.of(s1.getHost(), votingCardId);
-                    })
-                    .groupBy(s1 -> hostCcMapping.containsKey(s1.getT1()) ? hostCcMapping.get(s1.getT1()) : s1.getT1())
-                    .flatMap(ccGroup -> {
-                        return ccGroup.map(Tuple2::getT2).reduce(Collections.synchronizedMap(new HashMap<String, Long>()), (m, votingCardId) -> {
-                            m.put(votingCardId, m.getOrDefault(votingCardId, 0L) + 1L);
-                            return m;
-                        }).map(m -> Tuples.of(ccGroup.key(), m));
-                    })
-                    .collectMap(Tuple2::getT1, Tuple2::getT2).block();
+        // create host/CC mapping
+        Map<String, String> hostCcMapping = HostMappingElement.loadHostMapping(inputDirectoryPath);
 
-            List<String> problematicVotingCardIds = nbVotingCardPerCC.values().stream()
-                    .flatMap(m -> m.entrySet().stream())
-                    .filter(e -> e.getValue() > 1)
-                    .map(e -> e.getKey()).collect(Collectors.toList());
-            if (!problematicVotingCardIds.isEmpty()) {
-                throw new VerificationFailureException(problematicVotingCardIds.toArray(new String[]{}));
-            }
-            result.setStatus(Status.OK);
-        } catch (NoSuchFileException e) {
-            LOGGER.error("a NoSuchFileException error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification06.file.not.found.message", e.getFile()));
-        } catch (FileNotFoundException e) {
-            LOGGER.error("a FileNotFoundException error occurred", e);
-            result.setStatus(Status.NOK);
-            if (e.getLocalizedMessage().equals(".*\\.json")) {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification06.file.not.found.message", "logs JSON file"));
-            } else {
-                result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification06.file.not.found.message", e.getMessage()));
-            }
-        } catch (VerificationFailureException e) {
-            String[] args = e.getArgs();
-            LOGGER.debug("Test failed, problematic votingcard ids : " + Arrays.toString(args));
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification06.nok.message", args));
-        } catch (Exception e) {
-            LOGGER.error("an unexpected error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
+        final Pattern patternVotingCardId = Pattern.compile(".*\\|000\\|(.*)\\|.*\\|.*\\|#encryptedOptions=\".*\" #ccx_id=.*\n");
+        final Pattern pattern = Pattern.compile("\\|VOTVAL\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|");
+        Map<String, Map<String, Long>> nbVotingCardPerCC = SecureLogEntry.loadRegularLogs(inputDirectoryPath, pattern)
+                .map(s1 -> {
+                    Matcher matcher = patternVotingCardId.matcher(s1.getRaw());
+                    matcher.matches();
+                    String votingCardId = matcher.group(1);
+                    return Tuples.of(s1.getHost(), votingCardId);
+                })
+                .groupBy(s1 -> hostCcMapping.containsKey(s1.getT1()) ? hostCcMapping.get(s1.getT1()) : s1.getT1())
+                .flatMap(ccGroup -> {
+                    return ccGroup.map(Tuple2::getT2).reduce(Collections.synchronizedMap(new HashMap<String, Long>()), (m, votingCardId) -> {
+                        m.put(votingCardId, m.getOrDefault(votingCardId, 0L) + 1L);
+                        return m;
+                    }).map(m -> Tuples.of(ccGroup.key(), m));
+                })
+                .collectMap(Tuple2::getT1, Tuple2::getT2).block();
+
+        List<String> problematicVotingCardIds = nbVotingCardPerCC.values().stream()
+                .flatMap(m -> m.entrySet().stream())
+                .filter(e -> e.getValue() > 1)
+                .map(e -> e.getKey()).collect(Collectors.toList());
+
+        if (!problematicVotingCardIds.isEmpty()) {
+            throw buildVerificationFailureException(
+                    "Voting Card Id contain multiple votes in the secure logs",
+                    Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
+                    "verification06.nok.message",
+                    problematicVotingCardIds.toArray(new String[]{})
+            );
         }
+
+        result.setStatus(Status.OK);
         return result;
     }
 }

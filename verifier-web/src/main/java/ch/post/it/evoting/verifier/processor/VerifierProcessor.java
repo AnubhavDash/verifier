@@ -28,6 +28,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotNull;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -104,8 +106,9 @@ public class VerifierProcessor {
                 forkJoinPool.submit(() ->
                 {
                     final File inputDirectory = new File(configurationInputDirectory);
+                    final Path inputDirectoryPath = Paths.get(configurationInputDirectory);
                     blocks.stream()
-                            .map(b -> b.process(inputDirectory, options).parallel())
+                            .map(b -> b.process(inputDirectoryPath, options).parallel())
                             .reduce(Stream.empty(), Stream::concat)
                             .parallel()
                             .forEach(v ->

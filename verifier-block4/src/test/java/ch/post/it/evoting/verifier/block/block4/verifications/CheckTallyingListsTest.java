@@ -16,24 +16,90 @@ package ch.post.it.evoting.verifier.block.block4.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.nio.file.Paths;
 
 public class CheckTallyingListsTest {
 
+  @Rule
+  public ExpectedException exceptionRule = ExpectedException.none();
+
+  private CheckTallyingLists checkTallyingLists;
+
+  @Before
+  public void setup() {
+    checkTallyingLists = new CheckTallyingLists();
+  }
+
     @Test
-    public void executeTestOK() {
-        VerificationResult verificationResult = new CheckTallyingLists().executeVerification(new File(getClass().getResource("/CheckTallyingListsTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult verificationResult = checkTallyingLists.
+                verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/OK").toURI()));
+
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOK() {
-        VerificationResult verificationResult = new CheckTallyingLists().executeVerification(new File(getClass().getResource("/CheckTallyingListsTest/NOK").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOK() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage(
+                "The occurrences for list are different for counting Circle in eCH-0110 and evoting-decrypt");
+
+        VerificationResult verificationResult = checkTallyingLists.
+                verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK").toURI()));
+    }
+
+    @Test
+    public void executeTestNOKVoteCountCountingCircle() throws Exception {
+        exceptionRule.expect(IllegalArgumentException.class);
+        exceptionRule.expectMessage("cannot find the decrypt data for given countingCircle");
+
+        VerificationResult verificationResult = checkTallyingLists.verify(Paths.get(
+                getClass().getResource("/CheckTallyingListsTest/NOK-VOTECOUNT-COUNTINGCIRCLE").toURI()));
+    }
+
+    @Test
+    public void executeTestNOKVoteCountElection() throws Exception {
+        exceptionRule.expect(IllegalArgumentException.class);
+        exceptionRule.expectMessage("cannot find the decrypt data for given election");
+
+        VerificationResult verificationResult = checkTallyingLists.verify(
+                Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-VOTECOUNT-ELECTION").toURI()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFoundConfiguration() throws Exception {
+        exceptionRule.expect(FileNotFoundException.class);
+        exceptionRule.expectMessage("configuration-anonymized.xml");
+
+        VerificationResult verificationResult = checkTallyingLists.
+                verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-CONFIG").toURI()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFoundEvoting() throws Exception {
+        exceptionRule.expect(FileNotFoundException.class);
+        exceptionRule.expectMessage("evoting-decrypt_.*\\.xml");
+
+        VerificationResult verificationResult = checkTallyingLists.
+                verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-EVOTING").toURI()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFoundECH() throws Exception {
+        exceptionRule.expect(FileNotFoundException.class);
+        exceptionRule.expectMessage("eCH-0110_.*\\.xml");
+
+        VerificationResult verificationResult = checkTallyingLists.
+                verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-eCH").toURI()));
     }
 }

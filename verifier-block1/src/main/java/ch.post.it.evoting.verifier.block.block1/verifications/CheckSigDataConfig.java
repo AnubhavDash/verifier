@@ -16,21 +16,16 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
-import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 
 public class CheckSigDataConfig extends AbstractVerification {
-
-    private static final Logger LOGGER = Logger.getLogger(CheckSigDataConfig.class);
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -46,42 +41,32 @@ public class CheckSigDataConfig extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult executeVerification(File inputDirectory) {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
+        VerificationResult result = new VerificationResult();
 
-        try {
+        byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath
+                        .resolve(Block1VerificationSuite.PATH_CERTIFICATES)
+                        .resolve(Block1VerificationSuite.PATH_ADMINBOARD).toFile(),
+                ".*\\.pem").toPath());
 
-            byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath()
-                            .resolve(Block1VerificationSuite.PATH_CERTIFICATES)
-                            .resolve(Block1VerificationSuite.PATH_ADMINBOARD).toFile(),
-                    ".*\\.pem").toPath());
+        byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
 
-            byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
+        File[] dataConfigFiles = PathHelper.getFiles(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).toFile(), "dataConfig.*\\.json");
 
-            File[] dataConfigFiles = PathHelper.getFiles(inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).toFile(), "dataConfig.*\\.json");
+        for (File dataConfig : dataConfigFiles) {
+            byte[] content = Files.readAllBytes(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName()));
+            byte[] signature = Files.readAllBytes(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName() + ".metadata"));
 
-            for (File dataConfig : dataConfigFiles) {
-                byte[] content = Files.readAllBytes(inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName()));
-                byte[] signature = Files.readAllBytes(inputDirectory.toPath().resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName() + ".metadata"));
-
-                if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCA)) {
-                    throw new VerificationFailureException(dataConfig.getName());
-                }
+            if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCA)) {
+                throw buildVerificationFailureException(
+                        "The signature verification of the file dataConfig_updated failed",
+                        Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                        "verification74.nok.message"
+                );
             }
-            result.setStatus(Status.OK);
-
-        } catch (VerificationFailureException e) {
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification74.nok.message"));
-        } catch (NoSuchFileException e) {
-            LOGGER.error("a NoSuchFileException error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification74.file.not.found.message", e.getFile()));
-        } catch (Exception e) {
-            LOGGER.error("unexpected error", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
+
+        result.setStatus(Status.OK);
         return result;
     }
 }

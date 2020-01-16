@@ -16,31 +16,63 @@ package ch.post.it.evoting.verifier.block.block4.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.nio.file.Paths;
 
 public class CheckOptionsMappingTest {
+    private CheckOptionsMapping checkOptionsMapping;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
+    @Before
+    public void setup() {
+        checkOptionsMapping = new CheckOptionsMapping();
+    }
 
     @Test
-    public void executeTestOK() {
-        VerificationResult verificationResult = new CheckOptionsMapping().executeVerification(new File(getClass().getResource("/CheckOptionsMappingTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult verificationResult = checkOptionsMapping.verify(Paths.get(getClass().getResource("/CheckOptionsMappingTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOK() {
-        VerificationResult verificationResult = new CheckOptionsMapping().executeVerification(new File(getClass().getResource("/CheckOptionsMappingTest/NOK").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
-    }
-
-    @Test
-    public void executeTestOKWriteIns() {
-        VerificationResult verificationResult = new CheckOptionsMapping().executeVerification(new File(getClass().getResource("/CheckOptionsMappingTest/OK-WRITEINS").getFile()));
+    public void executeTestOKWriteIns() throws Exception {
+        VerificationResult verificationResult = checkOptionsMapping.verify(Paths.get(getClass().getResource("/CheckOptionsMappingTest/OK-WRITEINS").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
+
+    @Test
+    public void executeTestNOK() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("TODO");
+        checkOptionsMapping.verify(Paths.get(getClass().getResource("/CheckOptionsMappingTest/NOK").toURI()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFound() throws Exception {
+        exceptionRule.expect(FileNotFoundException.class);
+        exceptionRule.expectMessage("dataConfig_updated_.*\\.json");
+        checkOptionsMapping.verify(Paths.get(getClass().getResource("/CheckOptionsMappingTest/NOK-NOFILE").toURI()));
+    }
+
+    // TODO File not found error test evoting-decrypt_.*\.xml
+
+    @Test
+    public void executeTestNOKFileNotFound2() throws Exception {
+        exceptionRule.expect(FileNotFoundException.class);
+        exceptionRule.expectMessage("decompressedVotes\\.csv");
+        checkOptionsMapping.verify(Paths.get(getClass().getResource("/CheckOptionsMappingTest/NOK-NOFILE2").toURI()));
+    }
+
 }

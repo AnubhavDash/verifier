@@ -20,6 +20,7 @@ import org.apache.commons.codec.binary.Hex;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.UUID;
 
 public class TypeConverter {
 
@@ -73,5 +74,9 @@ public class TypeConverter {
 
     public static BigInteger integerToBigInteger(Integer i) {
         return i == null ? null : BigInteger.valueOf(i.longValue());
+    }
+
+    public static String UUIDToStringWithoutDash(UUID uuid) {
+        return uuid.toString().replace("-", "");
     }
 }

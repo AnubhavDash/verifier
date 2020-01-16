@@ -20,24 +20,25 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.file.Paths;
 
 public class CheckShuffleArgumentOnlineTest {
 
     @Test
-    public void executeTestOK() {
-        VerificationResult result = new CheckShuffleArgumentOnline().executeVerification(new File(getClass().getResource("/CheckShuffleArgumentOnlineTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult result = new CheckShuffleArgumentOnline().verify(Paths.get(getClass().getResource("/CheckShuffleArgumentOnlineTest/OK").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
-    public void executeTestNOK() {
-        VerificationResult result = new CheckShuffleArgumentOnline().executeVerification(new File(getClass().getResource("/CheckShuffleArgumentOnlineTest/NOK").getFile()));
+    public void executeTestNOK() throws Exception {
+        VerificationResult result = new CheckShuffleArgumentOnline().verify(Paths.get(getClass().getResource("/CheckShuffleArgumentOnlineTest/NOK").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 
     @Test
-    public void executeTestNOKnot3ControlComponents() {
-        VerificationResult result = new CheckShuffleArgumentOnline().executeVerification(new File(getClass().getResource("/CheckShuffleArgumentOnlineTest/NOK-CC").getFile()));
+    public void executeTestNOKnot3ControlComponents() throws Exception {
+        VerificationResult result = new CheckShuffleArgumentOnline().verify(Paths.get(getClass().getResource("/CheckShuffleArgumentOnlineTest/NOK-CC").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }

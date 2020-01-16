@@ -26,6 +26,7 @@ import lombok.Setter;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -37,8 +38,8 @@ public class HostMappingElement {
     private String hostname;
     private String cc;
 
-    public final static Map<String, String> loadHostMapping(File inputDirectory) throws IOException {
-        File mapping = PathHelper.getFile(inputDirectory.toPath().resolve(Block2VerificationSuite.PATH_SECURE_LOGS).toFile(), "mapping_cc_hosts.csv");
+    public final static Map<String, String> loadHostMapping(Path inputDirectoryPath) throws IOException {
+        File mapping = PathHelper.getFile(inputDirectoryPath.resolve(Block2VerificationSuite.PATH_SECURE_LOGS).toFile(), "mapping_cc_hosts.csv");
         Iterable<HostMappingElement> iterable = Deserializer.fromCsv(mapping.getParentFile(), mapping.getName(), ";", map);
         return StreamSupport.stream(iterable.spliterator(), false)
                 .skip(1)

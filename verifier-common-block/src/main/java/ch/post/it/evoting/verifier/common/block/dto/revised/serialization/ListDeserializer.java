@@ -1,0 +1,60 @@
+package ch.post.it.evoting.verifier.common.block.dto.revised.serialization;
+
+import ch.post.it.evoting.verifier.common.block.dto.revised.SignedItem;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.type.CollectionType;
+
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+public class ListDeserializer extends JsonDeserializer<List<?>> {
+    private final ObjectMapper mapper;
+
+    public ListDeserializer() {
+        mapper = new ObjectMapper();
+
+        SimpleModule typesModule = new SimpleModule();
+        typesModule.addDeserializer(UUID.class, new UuidDeserializer());
+        mapper.registerModule(typesModule);
+    }
+
+    @Override
+    public List<?> deserialize(JsonParser jsonParser,
+                               DeserializationContext deserializationContext) throws IOException {
+        boolean isStructure = jsonParser.currentToken().isStructStart();
+
+        if (!isStructure) {
+            return parseAsString(jsonParser);
+        } else {
+            // json structure
+            if ("signed".equals(jsonParser.getCurrentName())) {
+                CollectionType collectionType =
+                        mapper.getTypeFactory().constructCollectionType(List.class, SignedItem.class);
+                return mapper.readValue(jsonParser, collectionType);
+            }
+//            throw new IllegalArgumentException("The deserialization for this type is not supported (yet)");
+            return mapper.readValue(jsonParser, List.class);
+        }
+    }
+
+    private List<?> parseAsString(JsonParser jsonParser) throws IOException {
+        String value = jsonParser.getValueAsString();
+        if (value.matches("[0-9;]+")) {
+            // Semi-column separated list of BigIntegers.
+            String[] strings = value.split(";");
+            return Arrays.stream(strings).map(BigInteger::new).collect(Collectors.toList());
+        } else {
+            // escaped json in property
+            return mapper.readValue(value, List.class);
+        }
+    }
+}

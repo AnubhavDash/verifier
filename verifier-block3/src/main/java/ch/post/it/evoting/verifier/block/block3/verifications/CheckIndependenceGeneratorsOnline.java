@@ -20,7 +20,7 @@ import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 
-import java.io.File;
+import java.nio.file.Path;
 
 public class CheckIndependenceGeneratorsOnline extends AbstractVerification {
 
@@ -39,8 +39,9 @@ public class CheckIndependenceGeneratorsOnline extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult executeVerification(File inputDirectory) {
-        VerificationResult result = new VerificationResult(getVerificationDefinition());
+    public VerificationResult verify(Path inputDirectoryPath) {
+        VerificationResult result = new VerificationResult();
+
         try {
             result.setStatus(Status.NA);
         } catch (Exception e) {
@@ -48,6 +49,7 @@ public class CheckIndependenceGeneratorsOnline extends AbstractVerification {
             result.setStatus(Status.NOK);
             result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         }
+
         return result;
     }
 }

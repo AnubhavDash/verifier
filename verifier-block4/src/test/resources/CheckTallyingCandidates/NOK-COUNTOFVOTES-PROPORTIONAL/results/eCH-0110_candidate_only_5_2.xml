@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<eCH-0110:delivery xmlns:eCH-0110="http://www.ech.ch/xmlns/eCH-0110/3" xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008/3" xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3">
+    <eCH-0110:deliveryHeader>
+        <eCH-0058:senderId>http://www.post.ch</eCH-0058:senderId>
+        <eCH-0058:messageId>1539702452064</eCH-0058:messageId>
+        <eCH-0058:messageType>http://www.post.ch</eCH-0058:messageType>
+        <eCH-0058:sendingApplication>
+            <eCH-0058:manufacturer>SwissPost</eCH-0058:manufacturer>
+            <eCH-0058:product>OV</eCH-0058:product>
+            <eCH-0058:productVersion>1</eCH-0058:productVersion>
+        </eCH-0058:sendingApplication>
+        <eCH-0058:messageDate>2018-10-16T17:07:32.064+02:00</eCH-0058:messageDate>
+        <eCH-0058:action>1</eCH-0058:action>
+        <eCH-0058:testDeliveryFlag>false</eCH-0058:testDeliveryFlag>
+    </eCH-0110:deliveryHeader>
+    <eCH-0110:resultDelivery>
+        <eCH-0110:reportingBody>
+            <eCH-0110:reportingBodyIdentification>SwissPost-OV</eCH-0110:reportingBodyIdentification>
+            <eCH-0110:creationDateTime>2018-10-16T17:07:32.026+02:00</eCH-0110:creationDateTime>
+        </eCH-0110:reportingBody>
+        <eCH-0110:contestInformation>
+            <eCH-0155:contestIdentification>candidate_only_5_2</eCH-0155:contestIdentification>
+            <eCH-0155:contestDate>2019-01-01</eCH-0155:contestDate>
+            <eCH-0155:contestDescription>
+                <eCH-0155:contestDescriptionInfo>
+                    <eCH-0155:language>de</eCH-0155:language>
+                    <eCH-0155:contestDescription>Kantonale Wahlen und Abstimmungen</eCH-0155:contestDescription>
+                </eCH-0155:contestDescriptionInfo>
+                <eCH-0155:contestDescriptionInfo>
+                    <eCH-0155:language>fr</eCH-0155:language>
+                    <eCH-0155:contestDescription>Nationale Wahlen und Abstimmungen</eCH-0155:contestDescription>
+                </eCH-0155:contestDescriptionInfo>
+                <eCH-0155:contestDescriptionInfo>
+                    <eCH-0155:language>it</eCH-0155:language>
+                    <eCH-0155:contestDescription>Nationale Wahlen und Abstimmungen</eCH-0155:contestDescription>
+                </eCH-0155:contestDescriptionInfo>
+                <eCH-0155:contestDescriptionInfo>
+                    <eCH-0155:language>rm</eCH-0155:language>
+                    <eCH-0155:contestDescription>Nationale Wahlen und Abstimmungen</eCH-0155:contestDescription>
+                </eCH-0155:contestDescriptionInfo>
+            </eCH-0155:contestDescription>
+        </eCH-0110:contestInformation>
+        <eCH-0110:countingCircleResults>
+            <eCH-0110:countingCircle>
+                <eCH-0155:countingCircleId>FR-MU-2309</eCH-0155:countingCircleId>
+                <eCH-0155:countingCircleName>Wünnewil-Flamatt</eCH-0155:countingCircleName>
+            </eCH-0110:countingCircle>
+            <eCH-0110:votingCardsInformation>
+                <eCH-0110:countOfReceivedValidVotingCardsTotal>10</eCH-0110:countOfReceivedValidVotingCardsTotal>
+                <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
+            </eCH-0110:votingCardsInformation>
+            <eCH-0110:electionResults>
+                <eCH-0110:election>
+                    <eCH-0155:electionIdentification>majorz_wahl</eCH-0155:electionIdentification>
+                    <eCH-0155:domainOfInfluence>1B76E565-4DA8-11E6-89C7-00155D28151E</eCH-0155:domainOfInfluence>
+                    <eCH-0155:typeOfElection>2</eCH-0155:typeOfElection>
+                    <eCH-0155:electionDescription>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:electionDescriptionShort>Regierungsrat</eCH-0155:electionDescriptionShort>
+                            <eCH-0155:electionDescription>Regierungsratswahl</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:electionDescriptionShort>Conseil des Etats</eCH-0155:electionDescriptionShort>
+                            <eCH-0155:electionDescription>Election du Conseil des Etats</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:electionDescriptionShort>Conseil des Etats</eCH-0155:electionDescriptionShort>
+                            <eCH-0155:electionDescription>Election du Conseil des Etats</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:electionDescriptionShort>Ständerat</eCH-0155:electionDescriptionShort>
+                            <eCH-0155:electionDescription>Ständeratswahl</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                    </eCH-0155:electionDescription>
+                    <eCH-0155:numberOfMandates>5</eCH-0155:numberOfMandates>
+                </eCH-0110:election>
+                <eCH-0110:countOfVotersInformation>
+                    <eCH-0110:countOfVotersTotal>100</eCH-0110:countOfVotersTotal>
+                </eCH-0110:countOfVotersInformation>
+                <eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:total>10</eCH-0110:total>
+                </eCH-0110:countOfReceivedBallotsTotal>
+                <eCH-0110:countOfAccountedBallots>
+                    <eCH-0110:total>8</eCH-0110:total>
+                </eCH-0110:countOfAccountedBallots>
+                <eCH-0110:countOfUnaccountedBallots>
+                    <eCH-0110:total>2</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedBallots>
+                <eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:total>2</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedBlankBallots>
+                <eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedInvalidBallots>
+                <eCH-0110:proportionalElection>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>10BDBE6B-A5B6-11E6-ACC2-00155D28151E</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>01.01</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Schwaller</eCH-0110:familyName>
+                            <eCH-0110:firstName>Urs</eCH-0110:firstName>
+                            <eCH-0110:callName>Urs</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Schwaller Urs</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Schwaller Urs</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Schwaller Urs</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Schwaller Urs</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>5</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>896DA903-A5A9-11E6-ACC2-00155D28151E</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>02.01</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Berset</eCH-0110:familyName>
+                            <eCH-0110:firstName>Alain</eCH-0110:firstName>
+                            <eCH-0110:callName>Alain</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Berset Alain</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Berset Alain</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Berset Alain</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Berset Alain</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>3</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>E973F450-A5B6-11E6-ACC2-00155D28151E</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>03.01</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Vonlanthen</eCH-0110:familyName>
+                            <eCH-0110:firstName>Ruedi</eCH-0110:firstName>
+                            <eCH-0110:callName>Ruedi</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Vonlanthen Ruedi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Vonlanthen Ruedi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Vonlanthen Ruedi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Vonlanthen Ruedi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>7</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>F0713B3E-A5A8-11E6-ACC2-00155D28151E</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>05.01</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Rime</eCH-0110:familyName>
+                            <eCH-0110:firstName>Jean-François</eCH-0110:firstName>
+                            <eCH-0110:callName>Jean-François</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Rime Jean-François</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Rime Jean-François</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Rime Jean-François</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Rime Jean-François</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>4</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                </eCH-0110:proportionalElection>
+            </eCH-0110:electionResults>
+        </eCH-0110:countingCircleResults>
+    </eCH-0110:resultDelivery>
+</eCH-0110:delivery>

@@ -20,32 +20,33 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.file.Paths;
 
 public class CheckSigCommitmentParametersTest {
 
     @Test
-    public void executeTestOK() {
-        VerificationResult verificationResult = new CheckSigCommitmentParameters().executeVerification(new File(getClass().getResource("/CheckSigCommitmentParametersTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult verificationResult = new CheckSigCommitmentParameters().verify(Paths.get(getClass().getResource("/CheckSigCommitmentParametersTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOKJsonKo() {
-        VerificationResult verificationResult = new CheckSigCommitmentParameters().executeVerification(new File(getClass().getResource("/CheckSigCommitmentParametersTest/NOK/JSON-NOT-OK").getFile()));
+    public void executeTestNOKJsonKo() throws Exception {
+        VerificationResult verificationResult = new CheckSigCommitmentParameters().verify(Paths.get(getClass().getResource("/CheckSigCommitmentParametersTest/NOK/JSON-NOT-OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOKCertKo() {
-        VerificationResult verificationResult = new CheckSigCommitmentParameters().executeVerification(new File(getClass().getResource("/CheckSigCommitmentParametersTest/NOK/CERT-NOT-OK").getFile()));
+    public void executeTestNOKCertKo() throws Exception {
+        VerificationResult verificationResult = new CheckSigCommitmentParameters().verify(Paths.get(getClass().getResource("/CheckSigCommitmentParametersTest/NOK/CERT-NOT-OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
     @Test
-    public void executeTestNOKFileNotFound() {
-        VerificationResult verificationResult = new CheckSigCommitmentParameters().executeVerification(new File(getClass().getResource("/CheckSigCommitmentParametersTest/NOK-NOTFILE").getFile()));
+    public void executeTestNOKFileNotFound() throws Exception {
+        VerificationResult verificationResult = new CheckSigCommitmentParameters().verify(Paths.get(getClass().getResource("/CheckSigCommitmentParametersTest/NOK-NOTFILE").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }

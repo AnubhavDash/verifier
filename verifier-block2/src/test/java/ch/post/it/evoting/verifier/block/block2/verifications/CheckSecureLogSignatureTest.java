@@ -20,41 +20,51 @@ import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleCertifi
 import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogMetadata;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import org.bouncycastle.util.encoders.Base64;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class CheckSecureLogSignatureTest {
+    private CheckSecureLogSignature checkSecureLogSignature;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
+    @Before
+    public void setup() {
+        checkSecureLogSignature = new CheckSecureLogSignature();
+    }
 
     @Test
     @Ignore
-    public void executeTestOK() {
-        VerificationResult verificationResult = new CheckSecureLogSignature().executeVerification(new File(getClass().getResource("/CheckSecureLogSignatureTest/OK").getFile()));
+    public void executeTestOK() throws Exception {
+        VerificationResult verificationResult = new CheckSecureLogSignature().verify(Paths.get(getClass().getResource("/CheckSecureLogSignatureTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     @Ignore
-    public void executeTestNOK() {
-        VerificationResult verificationResult = new CheckSecureLogSignature().executeVerification(new File(getClass().getResource("/CheckSecureLogSignatureTest/NOK").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOK() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("Checkpoint entry and attributes of the entry, the signature does not verify");
+        VerificationResult verificationResult = new CheckSecureLogSignature().verify(Paths.get(getClass().getResource("/CheckSecureLogSignatureTest/NOK").toURI()));
     }
 
-
     @Test
+    // TODO Extract this test to another class, as it is not testing CheckSecureLogSignature code
     public void testSignatureAlgorithm() throws Exception {
-
-        File cert = new File(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_log_sign.pem").getFile());
-        File intermediate = new File(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_ca.pem").getFile());
-        File root = new File(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/platformRootCA.pem").getFile());
+        Path cert = Paths.get(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_log_sign.pem").toURI());
+        Path intermediate = Paths.get(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_ca.pem").toURI());
+        Path root = Paths.get(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/platformRootCA.pem").toURI());
 
         /*
         Original from SPLUNK
@@ -71,16 +81,17 @@ public class CheckSecureLogSignatureTest {
 
         String value = "2019-01-29 00:02:38,204|DEBUG|TIMER-LOG|New Secret Key generated. {*LSK::EZHSddXYfgf5bACUt4R9f1XuIU+bjwewPNrVGWq3crs=,ESK::g9PB+b3UVRxBv/d349PO2VdOVD4JJMGljtobS+CD2sAW/1fnKqOYqzjBJPB1ZE/nTrzxFUnmO+31yTHY3ORWNZsG7DcmtZt4RT4ckqvuEzx8TOb26mhZ+YJ8Lc5Ln+14tXZ5uZBpUFVXprw5rwZ48PNj8UaC9O4nw1Tmi0LGnI2bRr7bLLvEfKJACRitNLf5uVUTnvsJcf7iMU0mWJsApptBz2z9IxiA/+alX8jwk1RCIaFKTsxSEwpmim52aDjYZSEJgyo9wfdtmHofZdXnX7Aq3BEfl2S8iuEYFes6xKOAzxENEGoNfUeD5YJxNIj9IGUBwrck0Ys17i5pUiNAxheZwl9/HyE0B9/ApGcMhmC4tSU/EQ8R7cItnJ1llnwPdhG+647klQuZrjZq9C75ak/YtPbDY62k5WSHZThg/4k7xW3b3SS0mg==,PHMAC::LU9MozP14HFR7ggG7NSesx2Ztksa3PmPNiuR9qK9DF4=,LS::10000,TL::300000,TS::1548716558205,HMAC::XxzCeo2Zb2sgvZY8fUM/hHBGYkx4Oo8xdsUvT5O0cZA=*}\n";
 
-        boolean b = SignatureChecker.verifySignature(value.getBytes(StandardCharsets.UTF_8), Base64.decode(sg), Files.readAllBytes(cert.toPath()), new byte[][]{Files.readAllBytes(intermediate.toPath())}, Files.readAllBytes(root.toPath()));
+        boolean b = SignatureChecker.verifySignature(value.getBytes(StandardCharsets.UTF_8), Base64.decode(sg), Files.readAllBytes(cert), new byte[][]{Files.readAllBytes(intermediate)}, Files.readAllBytes(root));
 
         Assert.assertTrue(b);
     }
 
     @Test
+    // TODO Extract this test to another class, as it is not testing CheckSecureLogSignature code
     public void testSecureLogBundleSignature() throws Exception {
-        File cert = new File(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_log_sign.pem").getFile());
-        File intermediate = new File(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_ca.pem").getFile());
-        File root = new File(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/platformRootCA.pem").getFile());
+        Path cert = Paths.get(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_log_sign.pem").toURI());
+        Path intermediate = Paths.get(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_ca.pem").toURI());
+        Path root = Paths.get(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/platformRootCA.pem").toURI());
 
         SecureLogBundle bundle = new SecureLogBundle();
         CheckPointLogEntry checkpoint = new CheckPointLogEntry();
@@ -99,9 +110,9 @@ public class CheckSecureLogSignatureTest {
         checkpoint.setRaw("2019-01-29 00:02:38,204|DEBUG|TIMER-LOG|New Secret Key generated.\n");
         checkpoint.setMetadata(metadata);
 
-        certificates.setCertificate(Files.readAllBytes(cert.toPath()));
-        certificates.setIntermediate(Files.readAllBytes(intermediate.toPath()));
-        certificates.setRoot(Files.readAllBytes(root.toPath()));
+        certificates.setCertificate(Files.readAllBytes(cert));
+        certificates.setIntermediate(Files.readAllBytes(intermediate));
+        certificates.setRoot(Files.readAllBytes(root));
 
         bundle.setCertificates(certificates);
         bundle.setBeginCheckPoint(checkpoint);

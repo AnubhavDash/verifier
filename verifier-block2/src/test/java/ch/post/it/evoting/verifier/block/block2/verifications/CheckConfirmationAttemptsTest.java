@@ -16,35 +16,63 @@ package ch.post.it.evoting.verifier.block.block2.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import org.junit.*;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 
 public class CheckConfirmationAttemptsTest {
+    private CheckConfirmationAttempts checkConfirmationAttempts;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
+    @Before
+    public void setup() {
+        checkConfirmationAttempts = new CheckConfirmationAttempts();
+    }
 
     @Test
     /* remove ignore when we got secureLog files with correct pattern */
     @Ignore
-    public void executeTest() {
-        VerificationResult verificationResult = new CheckConfirmationAttempts().executeVerification(new File(getClass().getResource("/CheckConfirmationAttemptsTest/OK").getFile()));
+    public void executeTest() throws Exception {
+        VerificationResult verificationResult = checkConfirmationAttempts.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     @Ignore
-    public void executeTestNOK() {
-        VerificationResult verificationResult = new CheckConfirmationAttempts().executeVerification(new File(getClass().getResource("/CheckConfirmationAttemptsTest/NOK").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOK() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("TODO");
+        checkConfirmationAttempts.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/NOK").toURI()));
     }
 
     @Test
-    public void executeTestNOKnotFile() {
-        VerificationResult verificationResult = new CheckConfirmationAttempts().executeVerification(new File(getClass().getResource("/CheckConfirmationAttemptsTest/NOK-NOTFILE").getFile()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+    public void executeTestNOKnotFile() throws Exception {
+        exceptionRule.expect(IOException.class);
+        exceptionRule.expectMessage("voterInformation.*\\.csv");
+        checkConfirmationAttempts.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/NOK-NOTFILE").toURI()));
     }
+
+    @Test
+    public void executeTestNOKnotFile2() throws Exception {
+        exceptionRule.expect(IOException.class);
+        exceptionRule.expectMessage("mapping_cc_hosts.csv");
+        checkConfirmationAttempts.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/NOK-NOTFILE2").toURI()));
+    }
+
+    @Test
+    @Ignore
+    public void executeTestNOKnotFile3() throws Exception {
+        // TODO Check for secureLogs file
+        exceptionRule.expect(IOException.class);
+        exceptionRule.expectMessage("secureLogs");
+        checkConfirmationAttempts.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/NOK-NOTFILE3").toURI()));
+    }
+
 }

@@ -22,6 +22,7 @@ import lombok.Setter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Map;
@@ -34,19 +35,19 @@ public class SecureLogBundleCertificates {
     private byte[] intermediate;
     private byte[] root;
 
-    public static Map<String, SecureLogBundleCertificates> loadAllHostsBundleCertificates(File inputDirectory) {
+    public static Map<String, SecureLogBundleCertificates> loadAllHostsBundleCertificates(Path inputDirectoryPath) {
         try {
             // create host/CC mapping
-            Map<String, String> hostCcMapping = HostMappingElement.loadHostMapping(inputDirectory);
+            Map<String, String> hostCcMapping = HostMappingElement.loadHostMapping(inputDirectoryPath);
 
             // loading certificates
-            File[] certificates = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2VerificationSuite.PATH_CC_LOG_SIGN_CERTIFICATES).toFile(), ".*cc.*_log_sign.pem");
+            File[] certificates = PathHelper.getFiles(inputDirectoryPath.resolve(Block2VerificationSuite.PATH_CC_LOG_SIGN_CERTIFICATES).toFile(), ".*cc.*_log_sign.pem");
             Map<String, byte[]> ccCertificateMapping = loadCertificates(certificates);
 
-            File[] intermediates = PathHelper.getFiles(inputDirectory.toPath().resolve(Block2VerificationSuite.PATH_CC_CA_CERTIFICATES).toFile(), ".*cc.*_ca.pem");
+            File[] intermediates = PathHelper.getFiles(inputDirectoryPath.resolve(Block2VerificationSuite.PATH_CC_CA_CERTIFICATES).toFile(), ".*cc.*_ca.pem");
             Map<String, byte[]> ccIntermediateMapping = loadCertificates(intermediates);
 
-            byte[] root = Files.readAllBytes(PathHelper.getFile(inputDirectory.toPath().resolve(Block2VerificationSuite.PATH_CERTIFICATES).toFile(), "platformRootCA.pem").toPath());
+            byte[] root = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath.resolve(Block2VerificationSuite.PATH_CERTIFICATES).toFile(), "platformRootCA.pem").toPath());
 
             return hostCcMapping.entrySet().stream()
                     .map(entry -> {
