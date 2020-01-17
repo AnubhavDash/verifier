@@ -212,22 +212,4 @@ public class CheckPrimeNumberOptionsVO extends AbstractVerification {
         }
     }
 
-    class CheckPrimeNumberOptionsVOException extends RuntimeException {
-        String key;
-        String[] params;
-
-        CheckPrimeNumberOptionsVOException(String key, String... params) {
-            this.key = key;
-            this.params = params;
-        }
-
-        public String[] getParams() {
-            return params;
-        }
-
-        public String getKey() {
-            return key;
-        }
-    }
-
 }

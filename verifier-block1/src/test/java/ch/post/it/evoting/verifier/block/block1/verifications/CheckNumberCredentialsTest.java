@@ -26,20 +26,19 @@ import org.junit.rules.ExpectedException;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-public class CheckNumberCredentialsTest {
-    private CheckNumberCredentials checkNumberCredentials;
+public class CheckNumberCredentialsTest extends Block1VerificationAbstractTest {
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setup() {
-        checkNumberCredentials = new CheckNumberCredentials();
+        verification = new CheckNumberCredentials();
     }
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkNumberCredentials.verify(Paths.get(getClass().getResource("/CheckNumberCredentialsTest/OK").toURI()));
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckNumberCredentialsTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -48,20 +47,20 @@ public class CheckNumberCredentialsTest {
     public void executeTestNOK()  throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The number of credentials and the number of expected voters do not match");
-        checkNumberCredentials.verify(Paths.get(getClass().getResource("/CheckNumberCredentialsTest/NOK/NOK").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckNumberCredentialsTest/NOK/NOK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("configuration-anonymized.xml");
-        checkNumberCredentials.verify(Paths.get(getClass().getResource("/CheckNumberCredentialsTest/NOK/NOK-NOFILE").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckNumberCredentialsTest/NOK/NOK-NOFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound2() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("credentialData.csv");
-        checkNumberCredentials.verify(Paths.get(getClass().getResource("/CheckNumberCredentialsTest/NOK/NOK-NOFILE2").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckNumberCredentialsTest/NOK/NOK-NOFILE2").toURI()));
     }
 }

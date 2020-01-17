@@ -69,7 +69,7 @@ public abstract class AbstractVerification {
         return result;
     }
 
-    protected abstract VerificationResult verify(Path inputDirectoryPath) throws Exception;
+    public abstract VerificationResult verify(Path inputDirectoryPath) throws Exception;
 
     protected final VerificationFailureException buildVerificationFailureException(String message, String resourceBundleName,
                                                                                    String messageKey, String... details) {

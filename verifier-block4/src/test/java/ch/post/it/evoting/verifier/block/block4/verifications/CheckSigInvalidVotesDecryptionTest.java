@@ -28,20 +28,19 @@ import java.io.FileNotFoundException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-public class CheckSigInvalidVotesDecryptionTest {
-    private CheckSigInvalidVotesDecryption checkSigInvalidVotesDecryption;
+public class CheckSigInvalidVotesDecryptionTest extends Block4VerificationAbstractTest {
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setup() {
-        checkSigInvalidVotesDecryption = new CheckSigInvalidVotesDecryption();
+        verification = new CheckSigInvalidVotesDecryption();
     }
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkSigInvalidVotesDecryption.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/OK").toURI()));
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -51,7 +50,7 @@ public class CheckSigInvalidVotesDecryptionTest {
         // TODO Check if test is relevant, because executeTestNOKCertKo got the same error
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The signature verification of the siv_[EE_alias].csv report failed");
-        checkSigInvalidVotesDecryption.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK/CSV-NOT-OK").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK/CSV-NOT-OK").toURI()));
     }
 
     @Test
@@ -59,35 +58,35 @@ public class CheckSigInvalidVotesDecryptionTest {
         // TODO Check if test is relevant, because executeTestNOKCsvKo got the same error
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The signature verification of the siv_[EE_alias].csv report failed");
-        checkSigInvalidVotesDecryption.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK/CERT-NOT-OK").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK/CERT-NOT-OK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage(".*\\.pem");
-        checkSigInvalidVotesDecryption.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK-NOTFILE").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK-NOTFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound2() throws Exception {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage("tenant_.*\\.pem");
-        checkSigInvalidVotesDecryption.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK-NOTFILE2").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK-NOTFILE2").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound3() throws Exception {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage("siv_decryption_.*\\.csv");
-        checkSigInvalidVotesDecryption.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK-NOTFILE3").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK-NOTFILE3").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound4() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
         exceptionRule.expectMessage(".csv.metadata");
-        checkSigInvalidVotesDecryption.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK-NOTFILE4").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK-NOTFILE4").toURI()));
     }
 
 }

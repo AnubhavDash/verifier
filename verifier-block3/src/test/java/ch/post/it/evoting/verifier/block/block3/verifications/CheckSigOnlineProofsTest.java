@@ -18,6 +18,7 @@ import ch.post.it.evoting.verifier.block.block3.loader.online.OnlineMixingProofL
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -25,33 +26,38 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class CheckSigOnlineProofsTest {
+public class CheckSigOnlineProofsTest extends Block3VerificationAbstractTest {
+
+    @Before
+    public void setup() {
+        verification = new CheckSigOnlineProofs();
+    }
 
     @Test
     @Ignore
     public void executeTestOKWithVotes() throws Exception {
-        VerificationResult result = new CheckSigOnlineProofs().verify(Paths.get(getClass().getResource("/CheckSigOnlineProofsTest/OK/WITH-VOTES").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckSigOnlineProofsTest/OK/WITH-VOTES").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     @Ignore
     public void executeTestOKEmptyVotes() throws Exception {
-        VerificationResult result = new CheckSigOnlineProofs().verify(Paths.get(getClass().getResource("/CheckSigOnlineProofsTest/OK/EMPTY-VOTES").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckSigOnlineProofsTest/OK/EMPTY-VOTES").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     @Ignore
     public void executeTestNOK() throws Exception {
-        VerificationResult result = new CheckSigOnlineProofs().verify(Paths.get(getClass().getResource("/CheckSigOnlineProofsTest/NOK/NOK").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckSigOnlineProofsTest/NOK/NOK").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 
     @Test
     @Ignore
     public void executeTestNOKNoFile() throws Exception {
-        VerificationResult result = new CheckSigOnlineProofs().verify(Paths.get(getClass().getResource("/CheckSigOnlineProofsTest/NOK/NOK-NOFILE").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckSigOnlineProofsTest/NOK/NOK-NOFILE").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 

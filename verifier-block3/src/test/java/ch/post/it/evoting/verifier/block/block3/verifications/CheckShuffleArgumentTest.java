@@ -17,22 +17,28 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.nio.file.Paths;
 
-public class CheckShuffleArgumentTest {
+public class CheckShuffleArgumentTest extends Block3VerificationAbstractTest {
+
+    @Before
+    public void setup() {
+        verification = new CheckShuffleArgument();
+    }
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult result = new CheckShuffleArgument().verify(Paths.get(getClass().getResource("/CheckShuffleArgumentTest/OK").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckShuffleArgumentTest/OK").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestNOK() throws Exception {
-        VerificationResult result = new CheckShuffleArgument().verify(Paths.get(getClass().getResource("/CheckShuffleArgumentTest/NOK").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckShuffleArgumentTest/NOK").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }

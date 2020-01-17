@@ -18,7 +18,7 @@ import ch.post.it.evoting.verifier.common.*;
 import org.apache.log4j.Logger;
 import org.reflections.Reflections;
 
-import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
@@ -34,8 +34,8 @@ public abstract class VerificationSuite implements VerifierBlock {
         verifications = reflections.getSubTypesOf(AbstractVerification.class).parallelStream()
                 .map(c -> {
                     try {
-                        return (AbstractVerification) c.newInstance();
-                    } catch (InstantiationException | IllegalAccessException e) {
+                        return (AbstractVerification) c.getDeclaredConstructor().newInstance();
+                    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                         LOGGER.error(e.getMessage(), e);
                         throw new RuntimeException("Unable to instantiate the verifications", e);
                     }

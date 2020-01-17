@@ -26,20 +26,19 @@ import org.junit.rules.ExpectedException;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-public class IsQuadraticResidueVOTest {
-    private IsQuadraticResidueVO isQuadraticResidueVO;
+public class IsQuadraticResidueVOTest extends Block1VerificationAbstractTest {
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setup() {
-        isQuadraticResidueVO = new IsQuadraticResidueVO();
+        verification = new IsQuadraticResidueVO();
     }
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = isQuadraticResidueVO.verify(Paths.get(getClass().getResource("/IsQuadraticResidueVOTest/OK").toURI()));
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/IsQuadraticResidueVOTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -48,20 +47,20 @@ public class IsQuadraticResidueVOTest {
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("Euler criterion does not equal to 1");
-        isQuadraticResidueVO.verify(Paths.get(getClass().getResource("/IsQuadraticResidueVOTest/NOK/NOK").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/IsQuadraticResidueVOTest/NOK/NOK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("encryptionParameters\\.json");
-        isQuadraticResidueVO.verify(Paths.get(getClass().getResource("/IsQuadraticResidueVOTest/NOK/NOK-NOFILE").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/IsQuadraticResidueVOTest/NOK/NOK-NOFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound2() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("dataConfig_updated_.*\\.json");
-        isQuadraticResidueVO.verify(Paths.get(getClass().getResource("/IsQuadraticResidueVOTest/NOK/NOK-NOFILE2").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/IsQuadraticResidueVOTest/NOK/NOK-NOFILE2").toURI()));
     }
 }

@@ -24,21 +24,20 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-public class CheckVoteBallotBoxTest {
-    private CheckVoteBallotBox checkVoteBallotBox;
+public class CheckVoteBallotBoxTest extends Block2VerificationAbstractTest {
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setup() {
-        checkVoteBallotBox = new CheckVoteBallotBox();
+        verification = new CheckVoteBallotBox();
     }
 
     @Test
     @Ignore
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkVoteBallotBox.verify(Paths.get(getClass().getResource("/CheckVoteBallotBoxTest/OK").toURI()));
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckVoteBallotBoxTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -47,7 +46,7 @@ public class CheckVoteBallotBoxTest {
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("TODO");
-        checkVoteBallotBox.verify(Paths.get(getClass().getResource("/CheckVoteBallotBoxTest/NOK").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckVoteBallotBoxTest/NOK").toURI()));
     }
 
     // TODO Implement the following missing tests cases:
@@ -60,7 +59,7 @@ public class CheckVoteBallotBoxTest {
     public void executeTestNOKnotFile() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("voterInformation.*\\.csv");
-        checkVoteBallotBox.verify(Paths.get(getClass().getResource("/CheckVoteBallotBoxTest/NOK-NOTFILE").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckVoteBallotBoxTest/NOK-NOTFILE").toURI()));
     }
 
 }

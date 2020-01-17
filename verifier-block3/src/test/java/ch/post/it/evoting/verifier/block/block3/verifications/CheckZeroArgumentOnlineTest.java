@@ -17,22 +17,28 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.nio.file.Paths;
 
-public class CheckZeroArgumentOnlineTest {
+public class CheckZeroArgumentOnlineTest extends Block3VerificationAbstractTest {
+
+    @Before
+    public void setup() {
+        verification = new CheckZeroArgumentOnline();
+    }
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult result = new CheckZeroArgumentOnline().verify(Paths.get(getClass().getResource("/CheckZeroArgumentOnlineTest/OK").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckZeroArgumentOnlineTest/OK").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestNOK() throws Exception {
-        VerificationResult result = new CheckZeroArgumentOnline().verify(Paths.get(getClass().getResource("/CheckZeroArgumentOnlineTest/NOK").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckZeroArgumentOnlineTest/NOK").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }

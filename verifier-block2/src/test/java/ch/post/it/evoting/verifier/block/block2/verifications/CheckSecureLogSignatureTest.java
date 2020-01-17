@@ -32,15 +32,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class CheckSecureLogSignatureTest {
-    private CheckSecureLogSignature checkSecureLogSignature;
+public class CheckSecureLogSignatureTest extends Block2VerificationAbstractTest {
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setup() {
-        checkSecureLogSignature = new CheckSecureLogSignature();
+        verification = new CheckSecureLogSignature();
     }
 
     @Test

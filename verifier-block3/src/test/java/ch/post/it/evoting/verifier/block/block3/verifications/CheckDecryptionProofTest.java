@@ -17,28 +17,34 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.nio.file.Paths;
 
-public class CheckDecryptionProofTest {
+public class CheckDecryptionProofTest extends Block3VerificationAbstractTest {
+
+    @Before
+    public void setup() {
+        verification = new CheckDecryptionProof();
+    }
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult result = new CheckDecryptionProof().verify(Paths.get(getClass().getResource("/CheckDecryptionProofTest/OK").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofTest/OK").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestWithWriteInsOK() throws Exception {
-        VerificationResult result = new CheckDecryptionProof().verify(Paths.get(getClass().getResource("/CheckDecryptionProofTest/OK-WRITE-INS").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofTest/OK-WRITE-INS").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestOKFileNotFound() throws Exception {
-        VerificationResult result = new CheckDecryptionProof().verify(Paths.get(getClass().getResource("/CheckDecryptionProofTest/NOK-NOTFILE").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofTest/NOK-NOTFILE").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }

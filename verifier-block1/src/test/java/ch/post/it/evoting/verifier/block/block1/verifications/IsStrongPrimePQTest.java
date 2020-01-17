@@ -26,21 +26,19 @@ import org.junit.rules.ExpectedException;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-public class IsStrongPrimePQTest {
-    private IsStrongPrimePQ isStrongPrimePQ;
+public class IsStrongPrimePQTest extends Block1VerificationAbstractTest {
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setup() {
-        isStrongPrimePQ = new IsStrongPrimePQ();
+        verification = new IsStrongPrimePQ();
     }
-
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = isStrongPrimePQ.verify(Paths.get(getClass().getResource("/IsStrongPrimePQTest/OK").toURI()));
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/IsStrongPrimePQTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -49,13 +47,13 @@ public class IsStrongPrimePQTest {
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("p is not a strong prime");
-        isStrongPrimePQ.verify(Paths.get(getClass().getResource("/IsStrongPrimePQTest/NOK/NOK").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/IsStrongPrimePQTest/NOK/NOK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("encryptionParameters\\.json");
-        isStrongPrimePQ.verify(Paths.get(getClass().getResource("/IsStrongPrimePQTest/NOK/NOK-NOFILE").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/IsStrongPrimePQTest/NOK/NOK-NOFILE").toURI()));
     }
 }

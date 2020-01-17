@@ -26,20 +26,19 @@ import org.junit.rules.ExpectedException;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-public class CheckSigEch0045Test {
-    private CheckSigEch0045 checkSigEch0045;
+public class CheckSigEch0045Test extends Block1VerificationAbstractTest {
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setup() {
-        checkSigEch0045 = new CheckSigEch0045();
+        verification = new CheckSigEch0045();
     }
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkSigEch0045.verify(Paths.get(getClass().getResource("/CheckSigEch0045Test/OK").toURI()));
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckSigEch0045Test/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -49,7 +48,7 @@ public class CheckSigEch0045Test {
         // TODO Check if test is relevant, because executeTestNOKXmlKo got the same error
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The signature verification of the file failed");
-        checkSigEch0045.verify(Paths.get(getClass().getResource("/CheckSigEch0045Test/NOK/CERT-NOT-OK").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigEch0045Test/NOK/CERT-NOT-OK").toURI()));
     }
 
     @Test
@@ -57,27 +56,27 @@ public class CheckSigEch0045Test {
         // TODO Check if test is relevant, because executeTestNOKCertKo got the same error
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The signature verification of the file failed");
-        checkSigEch0045.verify(Paths.get(getClass().getResource("/CheckSigEch0045Test/NOK/XML-NOT-OK").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigEch0045Test/NOK/XML-NOT-OK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("integrationCA.pem");
-        checkSigEch0045.verify(Paths.get(getClass().getResource("/CheckSigEch0045Test/NOK/NOK-NOFILE").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigEch0045Test/NOK/NOK-NOFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound2() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage(".*ech0045v.*\\.xml");
-        checkSigEch0045.verify(Paths.get(getClass().getResource("/CheckSigEch0045Test/NOK/NOK-NOFILE2").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigEch0045Test/NOK/NOK-NOFILE2").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound3() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("ech0045v2_demo_bk.xml.p7");
-        checkSigEch0045.verify(Paths.get(getClass().getResource("/CheckSigEch0045Test/NOK/NOK-NOFILE3").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigEch0045Test/NOK/NOK-NOFILE3").toURI()));
     }
 }

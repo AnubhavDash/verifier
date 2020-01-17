@@ -28,20 +28,19 @@ import java.io.FileNotFoundException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-public class CheckSigBulletinParBulletinTest {
-    private CheckSigBulletinParBulletin checkSigBulletinParBulletin;
+public class CheckSigBulletinParBulletinTest extends Block4VerificationAbstractTest {
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setup() {
-        checkSigBulletinParBulletin = new CheckSigBulletinParBulletin();
+        verification = new CheckSigBulletinParBulletin();
     }
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkSigBulletinParBulletin.verify(Paths.get(getClass().getResource("/CheckSigBulletinParBulletinTest/OK").toURI()));
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckSigBulletinParBulletinTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -51,7 +50,7 @@ public class CheckSigBulletinParBulletinTest {
         // TODO Check if test is relevant, because executeTestNOKCertKo got the same error
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The signature verification of the bulletin par bulletin report failed");
-        checkSigBulletinParBulletin.verify(Paths.get(getClass().getResource("/CheckSigBulletinParBulletinTest/NOK/PDF-NOT-OK").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigBulletinParBulletinTest/NOK/PDF-NOT-OK").toURI()));
     }
 
     @Test
@@ -59,21 +58,21 @@ public class CheckSigBulletinParBulletinTest {
         // TODO Check if test is relevant, because executeTestNOKPdfKo got the same error
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The signature verification of the bulletin par bulletin report failed");
-        checkSigBulletinParBulletin.verify(Paths.get(getClass().getResource("/CheckSigBulletinParBulletinTest/NOK/CERT-NOT-OK").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigBulletinParBulletinTest/NOK/CERT-NOT-OK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage(".*ballot.*\\.pdf");
-        checkSigBulletinParBulletin.verify(Paths.get(getClass().getResource("/CheckSigBulletinParBulletinTest/NOK-NOTFILE").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigBulletinParBulletinTest/NOK-NOTFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound2() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
         exceptionRule.expectMessage("ballot.pdf.p7");
-        checkSigBulletinParBulletin.verify(Paths.get(getClass().getResource("/CheckSigBulletinParBulletinTest/NOK-NOTFILE2").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigBulletinParBulletinTest/NOK-NOTFILE2").toURI()));
     }
 
 }

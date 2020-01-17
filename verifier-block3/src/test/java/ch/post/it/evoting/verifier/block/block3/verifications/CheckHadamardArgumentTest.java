@@ -17,22 +17,28 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.nio.file.Paths;
 
-public class CheckHadamardArgumentTest {
+public class CheckHadamardArgumentTest extends Block3VerificationAbstractTest {
+
+    @Before
+    public void setup() {
+        verification = new CheckHadamardArgument();
+    }
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult result = new CheckHadamardArgument().verify(Paths.get(getClass().getResource("/CheckHadamardArgumentTest/OK").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckHadamardArgumentTest/OK").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestNOK() throws Exception {
-        VerificationResult result = new CheckHadamardArgument().verify(Paths.get(getClass().getResource("/CheckHadamardArgumentTest/NOK").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckHadamardArgumentTest/NOK").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }

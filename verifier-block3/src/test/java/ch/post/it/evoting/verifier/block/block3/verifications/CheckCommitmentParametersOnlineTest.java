@@ -17,21 +17,27 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.nio.file.Paths;
 
-public class CheckCommitmentParametersOnlineTest {
+public class CheckCommitmentParametersOnlineTest extends Block3VerificationAbstractTest {
+
+    @Before
+    public void setup() {
+        verification = new CheckCommitmentParametersOnline();
+    }
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult result = new CheckCommitmentParametersOnline().verify(Paths.get(getClass().getResource("/CheckCommitmentParametersOnlineTest/OK").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersOnlineTest/OK").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
     @Test
     public void executeTestNOK() throws Exception {
-        VerificationResult result = new CheckCommitmentParametersOnline().verify(Paths.get(getClass().getResource("/CheckCommitmentParametersOnlineTest/NOK").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersOnlineTest/NOK").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 

@@ -28,20 +28,19 @@ import java.io.FileNotFoundException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-public class CheckSigEch0110Test {
-    private CheckSigEch0110 checkSigEch0110;
+public class CheckSigEch0110Test extends Block4VerificationAbstractTest {
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setup() {
-        checkSigEch0110 = new CheckSigEch0110();
+        verification = new CheckSigEch0110();
     }
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkSigEch0110.verify(Paths.get(getClass().getResource("/CheckSigEch0110Test/OK").toURI()));
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckSigEch0110Test/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -51,7 +50,7 @@ public class CheckSigEch0110Test {
         // TODO Check if test is relevant, because executeTestNOKCertKo got the same error
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The signature verification of eCH-0110.xml failed");
-        checkSigEch0110.verify(Paths.get(getClass().getResource("/CheckSigEch0110Test/NOK/XML-NOT-OK").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigEch0110Test/NOK/XML-NOT-OK").toURI()));
     }
 
     @Test
@@ -59,28 +58,28 @@ public class CheckSigEch0110Test {
         // TODO Check if test is relevant, because executeTestNOKXmlKo got the same error
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The signature verification of eCH-0110.xml failed");
-        checkSigEch0110.verify(Paths.get(getClass().getResource("/CheckSigEch0110Test/NOK/CERT-NOT-OK").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigEch0110Test/NOK/CERT-NOT-OK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage("tenant_.*\\.pem");
-        checkSigEch0110.verify(Paths.get(getClass().getResource("/CheckSigEch0110Test/NOK-NOTFILE").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigEch0110Test/NOK-NOTFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound2() throws Exception {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage(".*eCH-0110.*\\.xml");
-        checkSigEch0110.verify(Paths.get(getClass().getResource("/CheckSigEch0110Test/NOK-NOTFILE2").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigEch0110Test/NOK-NOTFILE2").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound3() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
         exceptionRule.expectMessage(".xml.p7");
-        checkSigEch0110.verify(Paths.get(getClass().getResource("/CheckSigEch0110Test/NOK-NOTFILE3").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigEch0110Test/NOK-NOTFILE3").toURI()));
     }
 
 }

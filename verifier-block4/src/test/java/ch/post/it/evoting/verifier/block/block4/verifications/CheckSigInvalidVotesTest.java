@@ -28,20 +28,19 @@ import java.io.FileNotFoundException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-public class CheckSigInvalidVotesTest {
-    private CheckSigInvalidVotes checkSigInvalidVotes;
+public class CheckSigInvalidVotesTest extends Block4VerificationAbstractTest {
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setup() {
-        checkSigInvalidVotes = new CheckSigInvalidVotes();
+        verification = new CheckSigInvalidVotes();
     }
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkSigInvalidVotes.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesTest/OK").toURI()));
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -51,7 +50,7 @@ public class CheckSigInvalidVotesTest {
         // TODO Check if test is relevant, because executeTestNOKCertKo got the same error
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The signature verification of the siv_[EE_alias].csv report failed");
-        checkSigInvalidVotes.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesTest/NOK/CSV-NOT-OK").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesTest/NOK/CSV-NOT-OK").toURI()));
     }
 
     @Test
@@ -59,35 +58,35 @@ public class CheckSigInvalidVotesTest {
         // TODO Check if test is relevant, because executeTestNOKCsvKo got the same error
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The signature verification of the siv_[EE_alias].csv report failed");
-        checkSigInvalidVotes.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesTest/NOK/CERT-NOT-OK").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesTest/NOK/CERT-NOT-OK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage(".*\\.pem");
-        checkSigInvalidVotes.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesTest/NOK-NOTFILE").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesTest/NOK-NOTFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound2() throws Exception {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage("tenant_.*\\.pem");
-        checkSigInvalidVotes.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesTest/NOK-NOTFILE2").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesTest/NOK-NOTFILE2").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound3() throws Exception {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage("siv_(?!decryption).*\\.csv");
-        checkSigInvalidVotes.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesTest/NOK-NOTFILE3").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesTest/NOK-NOTFILE3").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound4() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
         exceptionRule.expectMessage(".csv.metadata");
-        checkSigInvalidVotes.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesTest/NOK-NOTFILE4").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesTest/NOK-NOTFILE4").toURI()));
     }
 
 }

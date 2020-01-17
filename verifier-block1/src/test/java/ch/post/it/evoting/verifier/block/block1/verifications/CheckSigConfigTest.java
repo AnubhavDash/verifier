@@ -26,20 +26,19 @@ import org.junit.rules.ExpectedException;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-public class CheckSigConfigTest {
-    private CheckSigConfig checkSigConfig;
+public class CheckSigConfigTest extends Block1VerificationAbstractTest {
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setup() {
-        checkSigConfig = new CheckSigConfig();
+        verification = new CheckSigConfig();
     }
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkSigConfig.verify(Paths.get(getClass().getResource("/CheckSigConfigTest/OK").toURI()));
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckSigConfigTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -49,7 +48,7 @@ public class CheckSigConfigTest {
         // TODO Check if test is relevant, because executeTestNOKXmlKo got the same error
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The signature verification of the file failed");
-        checkSigConfig.verify(Paths.get(getClass().getResource("/CheckSigConfigTest/NOK/CERT-NOT-OK").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigConfigTest/NOK/CERT-NOT-OK").toURI()));
     }
 
     @Test
@@ -57,27 +56,27 @@ public class CheckSigConfigTest {
         // TODO Check if test is relevant, because executeTestNOKCertKo got the same error
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The signature verification of the file failed");
-        checkSigConfig.verify(Paths.get(getClass().getResource("/CheckSigConfigTest/NOK/XML-NOT-OK").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigConfigTest/NOK/XML-NOT-OK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("integrationCA.pem");
-        checkSigConfig.verify(Paths.get(getClass().getResource("/CheckSigConfigTest/NOK/NOK-NOFILE").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigConfigTest/NOK/NOK-NOFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound2() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage(".*configuration-anonymized.*\\.xml");
-        checkSigConfig.verify(Paths.get(getClass().getResource("/CheckSigConfigTest/NOK/NOK-NOFILE2").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigConfigTest/NOK/NOK-NOFILE2").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound3() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("configuration-anonymized.xml.p7");
-        checkSigConfig.verify(Paths.get(getClass().getResource("/CheckSigConfigTest/NOK/NOK-NOFILE3").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigConfigTest/NOK/NOK-NOFILE3").toURI()));
     }
 }

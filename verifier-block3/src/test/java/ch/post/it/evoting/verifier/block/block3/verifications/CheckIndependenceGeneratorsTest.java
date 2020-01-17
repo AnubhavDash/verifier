@@ -17,25 +17,31 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
 import java.nio.file.Paths;
 
-public class CheckIndependenceGeneratorsTest {
+public class CheckIndependenceGeneratorsTest extends Block3VerificationAbstractTest {
+
+    @Before
+    public void setup() {
+        verification = new CheckIndependenceGenerators();
+    }
 
     @Ignore
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult result = new CheckIndependenceGenerators().verify(Paths.get(getClass().getResource("/CheckIndependenceGeneratorsTest/OK").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckIndependenceGeneratorsTest/OK").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Ignore
     @Test
     public void executeTestNOK() throws Exception {
-        VerificationResult result = new CheckIndependenceGenerators().verify(Paths.get(getClass().getResource("/CheckIndependenceGeneratorsTest/NOK").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckIndependenceGeneratorsTest/NOK").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 

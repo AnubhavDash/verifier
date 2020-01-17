@@ -17,28 +17,34 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.nio.file.Paths;
 
-public class CheckDecryptionFactorizationTest {
+public class CheckDecryptionFactorizationTest extends Block3VerificationAbstractTest {
+
+    @Before
+    public void setup() {
+        verification = new CheckDecryptionFactorization();
+    }
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult result = new CheckDecryptionFactorization().verify(Paths.get(getClass().getResource("/CheckDecryptionFactorizationTest/OK").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckDecryptionFactorizationTest/OK").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestWithWriteInsOK() throws Exception {
-        VerificationResult result = new CheckDecryptionFactorization().verify(Paths.get(getClass().getResource("/CheckDecryptionFactorizationTest/OK-WRITE-INS").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckDecryptionFactorizationTest/OK-WRITE-INS").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestNOK() throws Exception {
-        VerificationResult result = new CheckDecryptionFactorization().verify(Paths.get(getClass().getResource("/CheckDecryptionFactorizationTest/NOK").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckDecryptionFactorizationTest/NOK").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }
