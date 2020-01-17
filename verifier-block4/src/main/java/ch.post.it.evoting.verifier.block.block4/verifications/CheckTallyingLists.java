@@ -25,6 +25,7 @@ import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.CountMap;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import com.scytl.xmlns.decrypt._1.Results;
 import org.apache.log4j.Logger;
@@ -185,7 +186,8 @@ public class CheckTallyingLists extends AbstractVerification {
                                     BigInteger countOfAdditionalVotes = getCountOfAdditionalVotes(l);
                                     BigInteger emptyCount = getVoteCount(countOfEmptyValuesByListId, ccId, electionId
                                             , listId);
-                                    if (!countOfPartyVotes.equals(lcpCount) || !countOfAdditionalVotes.equals(emptyCount)) {
+                                    if (!MathHelper.areEqual(countOfPartyVotes, lcpCount)
+                                            || !MathHelper.areEqual(countOfAdditionalVotes, emptyCount)) {
                                         LOGGER.debug(String.format("count not equal : CC:%s electionId:%s list:%s " +
                                                 "decrypt:%s 110:%s", ccId, electionId, listId, lcpCount,
                                                 countOfPartyVotes));

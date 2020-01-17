@@ -23,6 +23,7 @@ import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import com.scytl.xmlns.decrypt._1.Results;
 import org.apache.commons.lang.StringUtils;
@@ -124,8 +125,8 @@ public class CheckTallyingAnswers extends AbstractVerification {
                         BigInteger nbUnaccountedBlanks = br.getCountOfUnaccountedBlankBallots().getTotal();
                         if (br.getStandardBallot() != null) {
                             String qId = br.getStandardBallot().getQuestionIdentification();
-                            if (!br.getStandardBallot().getCountOfAnswerYes().getTotal()
-                                    .equals(getDecryptCount(mapDecrypt, mapConfig, ccId, qId, "YES"))) {
+                            if (!MathHelper.areEqual(br.getStandardBallot().getCountOfAnswerYes().getTotal(),
+                                    getDecryptCount(mapDecrypt, mapConfig, ccId, qId, "YES"))) {
                                 throw buildVerificationFailureException(
                                         "Number of YES votes verification failed in standard ballot",
                                         Block4VerificationSuite.RESOURCE_BUNDLE_NAME,
@@ -134,8 +135,8 @@ public class CheckTallyingAnswers extends AbstractVerification {
                                         "YES"
                                 );
                             }
-                            if (!br.getStandardBallot().getCountOfAnswerNo().getTotal()
-                                    .equals(getDecryptCount(mapDecrypt, mapConfig, ccId, qId, "NO"))) {
+                            if (!MathHelper.areEqual(br.getStandardBallot().getCountOfAnswerNo().getTotal(),
+                                    getDecryptCount(mapDecrypt, mapConfig, ccId, qId, "NO"))) {
                                 throw buildVerificationFailureException(
                                         "Number of NO votes verification failed in standard ballot",
                                         Block4VerificationSuite.RESOURCE_BUNDLE_NAME,
@@ -144,8 +145,9 @@ public class CheckTallyingAnswers extends AbstractVerification {
                                         "NO"
                                 );
                             }
-                            if (!br.getStandardBallot().getCountOfAnswerEmpty().getTotal().add(nbUnaccountedBlanks)
-                                    .equals(getDecryptCount(mapDecrypt, mapConfig, ccId, qId, "EMPTY"))) {
+                            if (!MathHelper.areEqual(
+                                    br.getStandardBallot().getCountOfAnswerEmpty().getTotal().add(nbUnaccountedBlanks),
+                                    getDecryptCount(mapDecrypt, mapConfig, ccId, qId, "EMPTY"))) {
                                 throw buildVerificationFailureException(
                                         "Number of EMPTY votes verification failed in standard ballot",
                                         Block4VerificationSuite.RESOURCE_BUNDLE_NAME,
@@ -158,8 +160,8 @@ public class CheckTallyingAnswers extends AbstractVerification {
                         if (br.getVariantBallot() != null) {
                             br.getVariantBallot().getQuestionInformation().forEach(q -> {
                                 String qId = q.getQuestionIdentification();
-                                if (!q.getCountOfAnswerYes().getTotal()
-                                        .equals(getDecryptCount(mapDecrypt, mapConfig, ccId, qId, "YES"))) {
+                                if (!MathHelper.areEqual(q.getCountOfAnswerYes().getTotal(),
+                                        getDecryptCount(mapDecrypt, mapConfig, ccId, qId, "YES"))) {
                                     throw buildVerificationFailureException(
                                             "Number of YES votes verification failed in variant ballot",
                                             Block4VerificationSuite.RESOURCE_BUNDLE_NAME,
@@ -168,8 +170,8 @@ public class CheckTallyingAnswers extends AbstractVerification {
                                             "YES"
                                     );
                                 }
-                                if (!q.getCountOfAnswerNo().getTotal()
-                                        .equals(getDecryptCount(mapDecrypt, mapConfig, ccId, qId, "NO"))) {
+                                if (!MathHelper.areEqual(q.getCountOfAnswerNo().getTotal(),
+                                        getDecryptCount(mapDecrypt, mapConfig, ccId, qId, "NO"))) {
                                     throw buildVerificationFailureException(
                                             "Number of NO votes verification failed in variant ballot",
                                             Block4VerificationSuite.RESOURCE_BUNDLE_NAME,
@@ -178,8 +180,8 @@ public class CheckTallyingAnswers extends AbstractVerification {
                                             "NO"
                                     );
                                 }
-                                if (!q.getCountOfAnswerEmpty().getTotal().add(nbUnaccountedBlanks)
-                                        .equals(getDecryptCount(mapDecrypt, mapConfig, ccId, qId, "EMPTY"))) {
+                                if (!MathHelper.areEqual(q.getCountOfAnswerEmpty().getTotal().add(nbUnaccountedBlanks),
+                                        getDecryptCount(mapDecrypt, mapConfig, ccId, qId, "EMPTY"))) {
                                     throw buildVerificationFailureException(
                                             "Number of EMPTY votes verification failed in variant ballot",
                                             Block4VerificationSuite.RESOURCE_BUNDLE_NAME,

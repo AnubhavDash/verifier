@@ -16,13 +16,19 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.nio.file.Paths;
 
 public class CheckDecryptionFactorizationTest {
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
 
     @Test
     public void executeTestOK() throws Exception {
@@ -38,6 +44,9 @@ public class CheckDecryptionFactorizationTest {
 
     @Test
     public void executeTestNOK() throws Exception {
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("factorization not correct !");
+
         VerificationResult result = new CheckDecryptionFactorization().verify(Paths.get(getClass().getResource("/CheckDecryptionFactorizationTest/NOK").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }

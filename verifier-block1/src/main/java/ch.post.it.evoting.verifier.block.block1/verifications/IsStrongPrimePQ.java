@@ -19,6 +19,7 @@ import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionGroup;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 
 import java.math.BigInteger;
@@ -46,7 +47,7 @@ public class IsStrongPrimePQ extends AbstractVerification {
         Path path = inputDirectoryPath.resolve(Block1VerificationSuite.PATH_CRYPTO_SETUP);
         EncryptionGroup encryptionGroup = Deserializer.fromJson(path.toFile(), "encryptionParameters\\.json", EncryptionGroup.class);
 
-        if (!encryptionGroup.getP().equals((encryptionGroup.getQ().multiply(BigInteger.valueOf(2))).add(BigInteger.ONE))) {
+        if (!MathHelper.areEqual(encryptionGroup.getP(), (encryptionGroup.getQ().multiply(BigInteger.valueOf(2))).add(BigInteger.ONE))) {
             throw buildVerificationFailureException(
                     "p is not a strong prime",
                     Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
