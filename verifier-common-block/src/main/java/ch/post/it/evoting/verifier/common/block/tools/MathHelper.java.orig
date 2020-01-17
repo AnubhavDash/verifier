@@ -76,12 +76,7 @@ public class MathHelper {
         return acc;
     }
 
-    public static BigInteger commitmentComputation(BigInteger r, List<BigInteger> a_vec, BigInteger ck) {
-
-
-        return null;
-    }
-
+<<<<<<< HEAD
     /**
      * Tests for mathematical equality the two provided {@link BigInteger}s parameters. For testing, the two
      * provided parameters must be non-null, otherwise a {@link NullPointerException} will be thrown indicating the
@@ -93,5 +88,11 @@ public class MathHelper {
      */
     public static boolean areEqual(@NonNull BigInteger valueA, @NonNull BigInteger valueB) {
         return valueA.compareTo(valueB) == 0;
+=======
+    public static BigInteger commitmentComputation(BigInteger r, List<BigInteger> a_vec, BigInteger ck) {
+
+
+        return null;
+>>>>>>> 5fc7155bed6332e0a2eef82e2b0fed3da9ea7db9
     }
 }

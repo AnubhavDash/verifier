@@ -14,8 +14,6 @@
  */
 package ch.post.it.evoting.verifier.common.block.tools;
 
-import lombok.NonNull;
-
 import java.math.BigInteger;
 import java.util.List;
 
@@ -34,7 +32,7 @@ public class MathHelper {
     public static boolean isEulerCriterionValid(BigInteger vo, BigInteger p) {
         BigInteger exponent = (p.subtract(BigInteger.ONE)).divide(TWO);
         BigInteger ec = vo.modPow(exponent, p);
-        return MathHelper.areEqual(ec, BigInteger.ONE);
+        return ec.equals(BigInteger.ONE);
     }
 
 
@@ -80,18 +78,5 @@ public class MathHelper {
 
 
         return null;
-    }
-
-    /**
-     * Tests for mathematical equality the two provided {@link BigInteger}s parameters. For testing, the two
-     * provided parameters must be non-null, otherwise a {@link NullPointerException} will be thrown indicating the
-     * first parameter found to be null.
-     *
-     * @param valueA {@link NonNull} value to be tested
-     * @param valueB {@link NonNull} value to be tested
-     * @return true if parameter "valueA" is mathematically equal to parameter "valueB", false otherwise
-     */
-    public static boolean areEqual(@NonNull BigInteger valueA, @NonNull BigInteger valueB) {
-        return valueA.compareTo(valueB) == 0;
     }
 }

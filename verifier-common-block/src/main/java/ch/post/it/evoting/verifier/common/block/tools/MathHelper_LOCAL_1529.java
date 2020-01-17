@@ -17,7 +17,7 @@ package ch.post.it.evoting.verifier.common.block.tools;
 import lombok.NonNull;
 
 import java.math.BigInteger;
-import java.util.List;
+import java.util.Vector;
 
 public class MathHelper {
 
@@ -57,9 +57,9 @@ public class MathHelper {
      * @param b_vec a list of bases
      * @param e_vec a list of exponents
      * @param m the modulus
-     * @return the product of the modular exponentiation
+     * @return the product of the modular exponentiations
      */
-    public static BigInteger modExpProduct(List<BigInteger> b_vec, List<BigInteger> e_vec, BigInteger m) {
+    public static BigInteger modExpProduct(Vector<BigInteger> b_vec, Vector<BigInteger> e_vec, BigInteger m) {
 
         int dimension = b_vec.size();
         if (dimension != e_vec.size()) {
@@ -74,12 +74,6 @@ public class MathHelper {
         acc = acc.mod(m);
 
         return acc;
-    }
-
-    public static BigInteger commitmentComputation(BigInteger r, List<BigInteger> a_vec, BigInteger ck) {
-
-
-        return null;
     }
 
     /**
