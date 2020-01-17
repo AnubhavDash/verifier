@@ -78,8 +78,8 @@ public class MathHelper {
 
     /**
      * Tests for mathematical equality the two provided {@link BigInteger}s parameters. For testing, the two
-     * provided parameters must be non-null, otherwise a {@link NullPointerException} will be thrown indicating which
-     * parameter is null.
+     * provided parameters must be non-null, otherwise a {@link NullPointerException} will be thrown indicating the
+     * first parameter found to be null.
      *
      * @param valueA {@link NonNull} value to be tested
      * @param valueB {@link NonNull} value to be tested
