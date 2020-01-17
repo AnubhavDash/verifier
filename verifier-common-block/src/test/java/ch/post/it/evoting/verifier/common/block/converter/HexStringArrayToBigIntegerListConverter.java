@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Vector;
 
 /**
- * Converter from hexadecimal {@link String} array to {@link Vector} of {@link BigInteger}s.
+ * Converter from hexadecimal {@link String} array to {@link List} of {@link BigInteger}s.
  */
 public class HexStringArrayToBigIntegerListConverter extends StdConverter<String[], List<BigInteger>> {
 
