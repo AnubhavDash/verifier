@@ -80,7 +80,7 @@ public class MathHelperTest {
     }
 
     private void assertEquals(String id, BigInteger expected, BigInteger actual) {
-        Assert.assertEquals("Error in dataset for id : " + id, 0, expected.compareTo(actual));
+        Assert.assertTrue("Error in dataset for id : " + id, MathHelper.areEqual(expected, actual));
     }
 
 }
