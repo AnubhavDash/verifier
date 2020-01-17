@@ -128,45 +128,18 @@ public class SignatureChecker {
         return false;
     }
 
-    public static boolean verifySignature(byte[] source, byte[] signature, byte[] certificate, byte[][] intermediateCertificates,
-                                          byte[] rootCertificate) {
-        if (Security.getProvider("BC") == null) {
-            Security.addProvider(new BouncyCastleProvider());
-        }
-        try {
-            final X509Certificate sCert = loadCertificate(certificate);
-            final String algoName = "SHA256withRSAandMGF1";
-
-            Signature signatureAlgorithm = Signature.getInstance(algoName);
-            signatureAlgorithm.initVerify(sCert.getPublicKey());
-            signatureAlgorithm.update(source);
-
-            if (signatureAlgorithm.verify(signature)) {
-                if (rootCertificate != null) {
-                    //signature is valid, checking certificate chain validity
-                    List<X509Certificate> intermediates = loadCertificatesChain(intermediateCertificates, sCert);
-                    verifyCertificateChain(sCert, intermediates, loadCertificate(rootCertificate));
-                }
-                return true;
-            }
-        } catch (Exception e) {
-            LOGGER.warn("signature check failed", e);
-        }
-        return false;
-    }
-
     /**
      * Verify that the .sign signature of a file is correct.
      *
      * @param source                   The signed file.
-     * @param signatureBase64          The signature encoded in Base64.
+     * @param signature                The file signature.
      * @param signingCertificate       The certificate used to sign the file.
      * @param intermediateCertificates Intermediate certificates if any.
      * @param rootCertificate          The root certificate.
      * @return {@code true} if the provided {@code signature} is the correct signature for the {@code source} file.
      */
-    public static boolean verifySignSignature(byte[] source, byte[] signatureBase64, byte[] signingCertificate,
-                                              byte[][] intermediateCertificates, byte[] rootCertificate) {
+    public static boolean verifySignature(byte[] source, byte[] signature, byte[] signingCertificate,
+                                          byte[][] intermediateCertificates, byte[] rootCertificate) {
 
         // Init the BouncyCastle security provider if not done.
         if (Security.getProvider("BC") == null) {
@@ -176,22 +149,20 @@ public class SignatureChecker {
         try {
             final X509Certificate sCert = loadCertificate(signingCertificate);
 
-            // Decode the signature.
-            byte[] signature = Base64.getDecoder().decode(signatureBase64);
-
             Signature signatureAlgorithm = Signature.getInstance(SIGN_ALGO_NAME);
             signatureAlgorithm.initVerify(sCert.getPublicKey());
             signatureAlgorithm.update(source);
 
             // If signature is valid, check certificate chain validity.
             if (signatureAlgorithm.verify(signature)) {
-                List<X509Certificate> intermediates = loadCertificatesChain(intermediateCertificates, sCert);
-                verifyCertificateChain(sCert, intermediates, loadCertificate(rootCertificate));
-
+                if (rootCertificate != null) {
+                    List<X509Certificate> intermediates = loadCertificatesChain(intermediateCertificates, sCert);
+                    verifyCertificateChain(sCert, intermediates, loadCertificate(rootCertificate));
+                }
                 return true;
             }
         } catch (IOException | GeneralSecurityException e) {
-            LOGGER.error(".sign signature check failed.", e);
+            LOGGER.error("Signature check failed.", e);
         }
 
         return false;

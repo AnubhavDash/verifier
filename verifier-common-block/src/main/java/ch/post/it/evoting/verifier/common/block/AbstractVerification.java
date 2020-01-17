@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  * <p>
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -21,6 +21,7 @@ import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 
@@ -37,36 +38,64 @@ public abstract class AbstractVerification {
 
     public final VerificationResult executeVerification(Path inputDirectoryPath) {
         VerificationResult result = new VerificationResult();
+
         try {
             result = verify(inputDirectoryPath);
         }
-        // Business exception
+        // Wrapped business exception.
+        catch (VerificationFailureWrappedException e) {
+            if (e.getCause() instanceof VerificationFailureException) {
+                logVerificationFailure(result, (VerificationFailureException) e.getCause());
+            } else if (e.getCause() instanceof FileNotFoundException) {
+                logIOException(result, (FileNotFoundException) e.getCause());
+            } else if (e.getCause() instanceof NoSuchFileException) {
+                logIOException(result, (NoSuchFileException) e.getCause());
+            } else {
+                logUnexpectedException(result, (Exception) e.getCause());
+            }
+        }
+        // Business exception.
         catch (VerificationFailureException e) {
-            LOGGER.info(e.getMessage());
-            result.setStatus(Status.NOK);
-            result.setMessage(e.getFailureMessage());
+            logVerificationFailure(result, e);
         }
-        // File exception
+        // File exception.
         catch (FileNotFoundException | NoSuchFileException e) {
-            LOGGER.error("a FileNotFoundException error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(RESOURCE_BUNDLE_NAME, "common.error.file.not.found.message", e.getCause().getLocalizedMessage()));
+            logIOException(result, e);
         }
-        // Unexpected error
+        // Unexpected error.
         catch (Exception e) {
-            LOGGER.error("Unexpected error", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(RESOURCE_BUNDLE_NAME, "common.error.unexpected.message"));
+            logUnexpectedException(result, e);
         }
         return result;
     }
 
     protected abstract VerificationResult verify(Path inputDirectoryPath) throws Exception;
 
-    protected final VerificationFailureException buildVerificationFailureException(String message, String resourceBundleName, String messageKey, String... details) {
+    protected final VerificationFailureException buildVerificationFailureException(String message, String resourceBundleName,
+                                                                                   String messageKey, String... details) {
         return new VerificationFailureException(
                 message,
                 TranslationHelper.getFromResourceBundle(resourceBundleName, messageKey, details)
         );
     }
+
+    private void logUnexpectedException(VerificationResult result, Exception e) {
+        LOGGER.error("Unexpected error", e);
+        result.setStatus(Status.NOK);
+        result.setMessage(TranslationHelper.getFromResourceBundle(RESOURCE_BUNDLE_NAME, "common.error.unexpected.message"));
+    }
+
+    private void logIOException(VerificationResult result, IOException e) {
+        LOGGER.error("a FileNotFoundException error occurred", e);
+        result.setStatus(Status.NOK);
+        result.setMessage(TranslationHelper.getFromResourceBundle(RESOURCE_BUNDLE_NAME, "common.error.file.not.found.message",
+                e.getCause().getLocalizedMessage()));
+    }
+
+    private void logVerificationFailure(VerificationResult result, VerificationFailureException e) {
+        LOGGER.info(e.getMessage());
+        result.setStatus(Status.NOK);
+        result.setMessage(e.getFailureMessage());
+    }
+
 }

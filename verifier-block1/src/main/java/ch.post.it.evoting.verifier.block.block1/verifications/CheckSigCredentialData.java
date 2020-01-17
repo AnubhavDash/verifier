@@ -1,15 +1,30 @@
+/*
+ * This file is part of Verifier Swiss Post.
+ * <p>
+ * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * <p>
+ * Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
+ * If not, see <https://www.gnu.org/licenses/>.
+ */
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureConsumer;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Base64;
 import java.util.stream.Stream;
 
 public class CheckSigCredentialData extends AbstractVerification {
@@ -57,21 +72,20 @@ public class CheckSigCredentialData extends AbstractVerification {
         // Iterate over all directories and do the verification for credentialData in each.
         try (Stream<Path> stream = Files.walk(pathVotingCardSets, 1)) {
             stream.filter(p -> Files.isDirectory(p) && !p.equals(pathVotingCardSets))
-                    .forEach(d -> {
-                        try {
-                            byte[] signature = Files.readAllBytes(d.resolve(CREDENTIAL_DATA_CSV_SIGN));
-                            byte[] source = Files.readAllBytes(d.resolve(CREDENTIAL_DATA_CSV));
-                            if (!SignatureChecker.verifySignSignature(source, signature, signingCertificate, intermediateCertificates,
-                                    rootCertificate)) {
-                                throw buildVerificationFailureException(
-                                        "The signature verification of the file failed",
-                                        Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-                                        "verification78.nok.message",
-                                        d.getFileName().toString() + "/" + CREDENTIAL_DATA_CSV
-                                );
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                    .forEach((VerificationFailureConsumer<Path>) d -> {
+                        byte[] signatureBase64 = Files.readAllBytes(d.resolve(CREDENTIAL_DATA_CSV_SIGN));
+                        // Decode the signature.
+                        byte[] signature = Base64.getDecoder().decode(signatureBase64);
+                        byte[] source = Files.readAllBytes(d.resolve(CREDENTIAL_DATA_CSV));
+
+                        if (!SignatureChecker.verifySignature(source, signature, signingCertificate, intermediateCertificates,
+                                rootCertificate)) {
+                            throw buildVerificationFailureException(
+                                    "The signature verification of the file failed",
+                                    Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                                    "verification78.nok.message",
+                                    d.getFileName().toString() + "/" + CREDENTIAL_DATA_CSV
+                            );
                         }
                     });
         }
@@ -79,4 +93,5 @@ public class CheckSigCredentialData extends AbstractVerification {
         result.setStatus(Status.OK);
         return result;
     }
+
 }
