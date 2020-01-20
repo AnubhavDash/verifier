@@ -10,6 +10,9 @@ public abstract class Block3VerificationAbstractTest {
 
     @Test
     public void verificationDefinitionTestOK(){
+        // Check that @Before method is correctly implemented in each sub test class
+        Assert.assertNotNull(verification);
+
         VerificationDefinition verificationDefinition = verification.getVerificationDefinition();
         // Minimum required definition
         Assert.assertNotNull(verificationDefinition);

@@ -34,7 +34,7 @@ public abstract class VerificationSuite implements VerifierBlock {
         verifications = reflections.getSubTypesOf(AbstractVerification.class).parallelStream()
                 .map(c -> {
                     try {
-                        return (AbstractVerification) c.getDeclaredConstructor().newInstance();
+                        return c.getDeclaredConstructor().newInstance();
                     } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                         LOGGER.error(e.getMessage(), e);
                         throw new RuntimeException("Unable to instantiate the verifications", e);

@@ -48,7 +48,7 @@ public class ReportGeneratorTest {
             Block block = new Block();
             block.setTitle("Block " + i);
             block.setDescription("Description du Block " + i);
-            List tests = new ArrayList();
+            List<Test> tests = new ArrayList<>();
             for (int j = 1; j < 16; j++) {
                 Test test = new Test();
                 test.setTestIdLabel("N°");

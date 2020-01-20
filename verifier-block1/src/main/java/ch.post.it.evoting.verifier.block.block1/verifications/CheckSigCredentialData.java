@@ -49,7 +49,7 @@ public class CheckSigCredentialData extends AbstractVerification {
     }
 
     @Override
-    protected VerificationResult verify(Path inputDirectoryPath) throws Exception {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
         // Top level directories.
