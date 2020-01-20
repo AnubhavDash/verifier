@@ -195,6 +195,7 @@
         <projectVersion>${project.version}</projectVersion>
         <projectGroupId>${project.groupId}</projectGroupId>
         <projectArtifactId>${project.artifactId}</projectArtifactId>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.jacoco.plugin.version>0.7.6.201602180812</maven.jacoco.plugin.version>
     </properties>
 </project>
