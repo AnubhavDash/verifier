@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -209,24 +209,6 @@ public class CheckPrimeNumberOptionsVO extends AbstractVerification {
 
         public void setListCount(int listCount) {
             this.listCount = listCount;
-        }
-    }
-
-    class CheckPrimeNumberOptionsVOException extends RuntimeException {
-        String key;
-        String[] params;
-
-        CheckPrimeNumberOptionsVOException(String key, String... params) {
-            this.key = key;
-            this.params = params;
-        }
-
-        public String[] getParams() {
-            return params;
-        }
-
-        public String getKey() {
-            return key;
         }
     }
 

@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -26,20 +26,19 @@ import org.junit.rules.ExpectedException;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-public class CheckPrimeNumberOptionsVOTest {
-    private CheckPrimeNumberOptionsVO checkPrimeNumberOptionsVO;
+public class CheckPrimeNumberOptionsVOTest  extends Block1VerificationAbstractTest {
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setup() {
-        checkPrimeNumberOptionsVO = new CheckPrimeNumberOptionsVO();
+        verification = new CheckPrimeNumberOptionsVO();
     }
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkPrimeNumberOptionsVO.verify(Paths.get(getClass().getResource("/CheckPrimeNumberOptionsVOTest/OK").toURI()));
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckPrimeNumberOptionsVOTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -48,7 +47,7 @@ public class CheckPrimeNumberOptionsVOTest {
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("alias does not correspond to voteIdentification");
-        VerificationResult verificationResult = checkPrimeNumberOptionsVO.verify(Paths.get(getClass().getResource("/CheckPrimeNumberOptionsVOTest/NOK/NOK").toURI()));
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckPrimeNumberOptionsVOTest/NOK/NOK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
@@ -65,13 +64,13 @@ public class CheckPrimeNumberOptionsVOTest {
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("configuration-anonymized.xml");
-        checkPrimeNumberOptionsVO.verify(Paths.get(getClass().getResource("/CheckPrimeNumberOptionsVOTest/NOK/NOK-NOFILE").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckPrimeNumberOptionsVOTest/NOK/NOK-NOFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound2() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("dataConfig_updated_.*\\.json");
-        checkPrimeNumberOptionsVO.verify(Paths.get(getClass().getResource("/CheckPrimeNumberOptionsVOTest/NOK/NOK-NOFILE2").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckPrimeNumberOptionsVOTest/NOK/NOK-NOFILE2").toURI()));
     }
 }

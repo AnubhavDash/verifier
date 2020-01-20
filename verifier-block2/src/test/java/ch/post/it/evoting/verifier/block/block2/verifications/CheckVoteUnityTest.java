@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -24,21 +24,20 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-public class CheckVoteUnityTest {
-    private CheckVoteUnity checkVoteUnity;
+public class CheckVoteUnityTest extends Block2VerificationAbstractTest {
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setup() {
-        checkVoteUnity = new CheckVoteUnity();
+        verification = new CheckVoteUnity();
     }
 
     @Test
     @Ignore
     public void executeTest() throws Exception {
-        VerificationResult verificationResult = checkVoteUnity.verify(Paths.get(getClass().getResource("/CheckVoteUnityTest/OK").toURI()));
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckVoteUnityTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -48,7 +47,7 @@ public class CheckVoteUnityTest {
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("Voting Card Id contain multiple votes in the secure logs");
-        checkVoteUnity.verify(Paths.get(getClass().getResource("/CheckVoteUnityTest/NOK").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckVoteUnityTest/NOK").toURI()));
     }
 
     @Test
@@ -56,6 +55,6 @@ public class CheckVoteUnityTest {
     public void executeTestNOKnotFile() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("TODO");
-        checkVoteUnity.verify(Paths.get(getClass().getResource("/CheckVoteUnityTest/NOK-NOTFILE").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckVoteUnityTest/NOK-NOTFILE").toURI()));
     }
 }

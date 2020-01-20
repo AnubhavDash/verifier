@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -24,21 +24,20 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-public class CheckNumberVoteCastCodesTest {
-    private CheckNumberVoteCastCodes checkNumberVoteCastCodes;
+public class CheckNumberVoteCastCodesTest extends Block2VerificationAbstractTest {
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setup() {
-        checkNumberVoteCastCodes = new CheckNumberVoteCastCodes();
+        verification = new CheckNumberVoteCastCodes();
     }
 
     @Test
     @Ignore
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkNumberVoteCastCodes.verify(Paths.get(getClass().getResource("/CheckNumberVoteCastCodesTest/OK").toURI()));
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckNumberVoteCastCodesTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -48,7 +47,7 @@ public class CheckNumberVoteCastCodesTest {
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("TODO");
-        checkNumberVoteCastCodes.verify(Paths.get(getClass().getResource("/CheckNumberVoteCastCodesTest/NOK").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckNumberVoteCastCodesTest/NOK").toURI()));
     }
 
     // TODO Implement the following missing tests cases:
@@ -62,13 +61,13 @@ public class CheckNumberVoteCastCodesTest {
     public void executeTestNOKnotFile() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("voterInformation.*\\.csv");
-        checkNumberVoteCastCodes.verify(Paths.get(getClass().getResource("/CheckNumberVoteCastCodesTest/NOK-NOTFILE").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckNumberVoteCastCodesTest/NOK-NOTFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKnotFile2() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("mapping_cc_hosts.csv");
-        checkNumberVoteCastCodes.verify(Paths.get(getClass().getResource("/CheckNumberVoteCastCodesTest/NOK-NOTFILE2").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckNumberVoteCastCodesTest/NOK-NOTFILE2").toURI()));
     }
 }

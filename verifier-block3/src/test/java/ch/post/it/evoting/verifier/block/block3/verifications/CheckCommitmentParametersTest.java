@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -19,37 +19,43 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.nio.file.Paths;
 
-public class CheckCommitmentParametersTest {
+public class CheckCommitmentParametersTest extends Block3VerificationAbstractTest {
+
+    @Before
+    public void setup() {
+        verification = new CheckCommitmentParameters();
+    }
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = new CheckCommitmentParameters().verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/OK").toURI()));
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKpIsNotUnique() throws Exception {
-        VerificationResult verificationResult = new CheckCommitmentParameters().verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK/P-NOK").toURI()));
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK/P-NOK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKEulerCriterionKo() throws Exception {
-        VerificationResult verificationResult = new CheckCommitmentParameters().verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK/BIGINT-NOK").toURI()));
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK/BIGINT-NOK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
-        VerificationResult verificationResult = new CheckCommitmentParameters().verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK-NOTFILE").toURI()));
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK-NOTFILE").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.NOK, verificationResult.getStatus());
         Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification08.file.not.found.message"), verificationResult.getMessage());
