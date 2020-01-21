@@ -14,7 +14,10 @@
  */
 package ch.post.it.evoting.verifier.common.block.tools;
 
+import lombok.NonNull;
+
 import java.math.BigInteger;
+import java.util.List;
 
 public class MathHelper {
 
@@ -31,6 +34,62 @@ public class MathHelper {
     public static boolean isEulerCriterionValid(BigInteger vo, BigInteger p) {
         BigInteger exponent = (p.subtract(BigInteger.ONE)).divide(TWO);
         BigInteger ec = vo.modPow(exponent, p);
-        return ec.equals(BigInteger.ONE);
+        return MathHelper.areEqual(ec, BigInteger.ONE);
+    }
+
+
+    /**
+     * Modular Exponentiation
+     *
+     * @param b the base
+     * @param e the exponent
+     * @param m the modulus
+     * @return the modular exponentiation b exp(e) mod m
+     */
+    public static BigInteger modExp(BigInteger b, BigInteger e, BigInteger m) {
+        // Naive implementation before optimisation
+        return b.modPow(e, m);
+    }
+
+    /**
+     * Modular exponentiation product
+     *
+     * @param b_vec a list of bases
+     * @param e_vec a list of exponents
+     * @param m the modulus
+     * @return the product of the modular exponentiation
+     */
+    public static BigInteger modExpProduct(List<BigInteger> b_vec, List<BigInteger> e_vec, BigInteger m) {
+
+        int dimension = b_vec.size();
+        if (dimension != e_vec.size()) {
+            throw new IllegalArgumentException("Bases and exponents vectors must have the same dimension.");
+        }
+
+        // Naive implementation before optimisation
+        BigInteger acc = BigInteger.ONE;
+        for (int i = 0; i < dimension; i++) {
+            acc = acc.multiply(modExp(b_vec.get(i), e_vec.get(i), m));
+        }
+        acc = acc.mod(m);
+
+        return acc;
+    }
+
+    public static BigInteger computeCommitment(BigInteger r, List<BigInteger> a_vec, BigInteger ck) {
+        return null;
+    }
+
+    /**
+     * Tests for mathematical equality the two provided {@link BigInteger}s parameters. For testing, the two
+     * provided parameters must be non-null, otherwise a {@link NullPointerException} will be thrown indicating the
+     * first parameter found to be null.
+     *
+     * @param valueA {@link NonNull} value to be tested
+     * @param valueB {@link NonNull} value to be tested
+     * @return true if parameter "valueA" is mathematically equal to parameter "valueB", false otherwise
+     */
+    public static boolean areEqual(@NonNull BigInteger valueA, @NonNull BigInteger valueB) {
+        return valueA.compareTo(valueB) == 0;
     }
 }

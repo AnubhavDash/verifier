@@ -25,6 +25,7 @@ import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.CountMap;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import com.scytl.xmlns.decrypt._1.Results;
 import org.apache.commons.lang.StringUtils;
@@ -107,7 +108,7 @@ public class CheckTallyingCandidates extends AbstractVerification {
                         if (c.getCandidateInformation().isOfficialCandidateYesNo()) {
                             String cId = c.getCandidateInformation().getCandidateIdentification();
                             BigInteger decryptCount = getDecryptCount(mapConfig, mapDecrypt, ccId, cId);
-                            if (!c.getCountOfVotesTotal().equals(decryptCount)) {
+                            if (!MathHelper.areEqual(c.getCountOfVotesTotal(), decryptCount)) {
                                 throw buildVerificationFailureException(
                                         "The count of votes total for the candidate does not match in majoral election",
                                         Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.nok.message",
@@ -122,7 +123,7 @@ public class CheckTallyingCandidates extends AbstractVerification {
                         if (c.getCandidateInformation().isOfficialCandidateYesNo()) {
                             String cId = c.getCandidateInformation().getCandidateIdentification();
                             BigInteger decryptCount = getDecryptCount(mapConfig, mapDecrypt, ccId, cId);
-                            if (!c.getCountOfVotesTotal().equals(decryptCount)) {
+                            if (!MathHelper.areEqual(c.getCountOfVotesTotal(), decryptCount)) {
                                 throw buildVerificationFailureException(
                                         "The count of votes total for the candidate does not match in proportional election",
                                         Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.nok.message",

@@ -22,6 +22,7 @@ import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import reactor.core.publisher.Flux;
@@ -98,7 +99,7 @@ public class CheckDecryptionFactorization extends AbstractVerification {
 
             Boolean allMatch = Flux.fromIterable(decompVotesbigIntList)
                     .zipWith(Flux.fromIterable(voterWithProofbigIntList))
-                    .all(t -> t.getT1().equals(t.getT2()))
+                    .all(t -> MathHelper.areEqual(t.getT1(), t.getT2()))
                     .block();
 
             if (!allMatch) {

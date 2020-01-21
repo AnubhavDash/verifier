@@ -89,7 +89,7 @@ public class CheckGeneratorG extends AbstractVerification {
      * @return A smaller prime of the subgroup if any.
      */
     private Optional<BigInteger> findSmallerPrimeOfSubgroup(BigInteger g, BigInteger p) {
-        if (g.compareTo(BIG_INTEGER_TWO) == 0) {
+        if (MathHelper.areEqual(g, BIG_INTEGER_TWO)) {
             return Optional.empty();
         } else {
             // Check is there is a prime number less than g (except 2) that is also a quadratic residue.
