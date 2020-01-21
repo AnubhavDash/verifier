@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -17,28 +17,34 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.nio.file.Paths;
 
-public class CheckShuffleArgumentOnlineTest {
+public class CheckShuffleArgumentOnlineTest extends Block3VerificationAbstractTest {
+
+    @Before
+    public void setup() {
+        verification = new CheckShuffleArgumentOnline();
+    }
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult result = new CheckShuffleArgumentOnline().verify(Paths.get(getClass().getResource("/CheckShuffleArgumentOnlineTest/OK").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckShuffleArgumentOnlineTest/OK").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestNOK() throws Exception {
-        VerificationResult result = new CheckShuffleArgumentOnline().verify(Paths.get(getClass().getResource("/CheckShuffleArgumentOnlineTest/NOK").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckShuffleArgumentOnlineTest/NOK").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 
     @Test
     public void executeTestNOKnot3ControlComponents() throws Exception {
-        VerificationResult result = new CheckShuffleArgumentOnline().verify(Paths.get(getClass().getResource("/CheckShuffleArgumentOnlineTest/NOK-CC").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckShuffleArgumentOnlineTest/NOK-CC").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -26,20 +26,19 @@ import org.junit.rules.ExpectedException;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-public class IsPrimePTest {
-    private IsPrimeP isPrimeP;
+public class IsPrimePTest extends Block1VerificationAbstractTest {
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
-    public void setup() {
-        isPrimeP = new IsPrimeP();
+    public void setup(){
+        verification = new IsPrimeP();
     }
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = isPrimeP.verify(Paths.get(getClass().getResource("/IsPrimePTest/OK").toURI()));
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/IsPrimePTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -48,13 +47,13 @@ public class IsPrimePTest {
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("p is not prime");
-        isPrimeP.verify(Paths.get(getClass().getResource("/IsPrimePTest/NOK/NOK").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/IsPrimePTest/NOK/NOK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("encryptionParameters\\.json");
-        isPrimeP.verify(Paths.get(getClass().getResource("/IsPrimePTest/NOK/NOK-NOFILE").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/IsPrimePTest/NOK/NOK-NOFILE").toURI()));
     }
 }

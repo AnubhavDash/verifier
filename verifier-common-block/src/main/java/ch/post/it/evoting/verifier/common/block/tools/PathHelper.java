@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -16,6 +16,9 @@ package ch.post.it.evoting.verifier.common.block.tools;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -72,9 +75,37 @@ public class PathHelper {
     public static File getFile(File inputDirectory, String filenamePattern) throws FileNotFoundException {
         File[] file = getFiles(inputDirectory, filenamePattern);
         if (file.length > 1) {
-            throw new InvalidParameterException(String.format("more than one file found, filename is not specific enough. Dir:%s filenamePattern:%s ", inputDirectory, filenamePattern));
+            throw new InvalidParameterException(String.format("more than one file found, filename is not specific enough. Dir:%s " +
+                    "filenamePattern:%s ", inputDirectory, filenamePattern));
         } else {
             return file[0];
+        }
+    }
+
+    /**
+     * Search for a single file matching the {@code filenamePattern} and returns its {@link Path}. If none are multiple matching files
+     * are found, exception are thrown.
+     *
+     * @param startingPath    The path at which to start the search.
+     * @param maxDepth        The maximum depth to go in the path tree.
+     * @param filenamePattern The file pattern to search for.
+     * @return The {@link Path} of the file matching the given pattern.
+     * @throws IOException              If the {@code startingPath} is not found.
+     * @throws IllegalArgumentException If more than one file matching the pattern are found.
+     * @throws NoSuchFileException      If no file matching the pattern is found.
+     */
+    public static Path getPath(Path startingPath, int maxDepth, String filenamePattern) throws IOException {
+        final List<Path> paths = Files.find(startingPath, maxDepth,
+                (path, attributes) -> Files.isRegularFile(path) && path.getFileName().toString().matches(filenamePattern))
+                .collect(Collectors.toList());
+        if (paths.size() > 1) {
+            throw new InvalidParameterException(String.format("More than one file found, filename is not specific enough. Starting " +
+                    "path:%s filenamePattern:%s ", startingPath, filenamePattern));
+        } else if (paths.size() == 0) {
+            throw new NoSuchFileException(String.format("No file found with given pattern. Starting path:%s " +
+                    "filenamePattern:%s ", startingPath, filenamePattern));
+        } else {
+            return paths.get(0);
         }
     }
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -17,22 +17,28 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.nio.file.Paths;
 
-public class CheckHadamardArgumentOnlineTest {
+public class CheckHadamardArgumentOnlineTest extends Block3VerificationAbstractTest {
+
+    @Before
+    public void setup() {
+        verification = new CheckHadamardArgumentOnline();
+    }
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult result = new CheckHadamardArgumentOnline().verify(Paths.get(getClass().getResource("/CheckHadamardArgumentOnlineTest/OK").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckHadamardArgumentOnlineTest/OK").toURI()));
         Assert.assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
     public void executeTestNOK() throws Exception {
-        VerificationResult result = new CheckHadamardArgumentOnline().verify(Paths.get(getClass().getResource("/CheckHadamardArgumentOnlineTest/NOK").toURI()));
+        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckHadamardArgumentOnlineTest/NOK").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
     }
 }

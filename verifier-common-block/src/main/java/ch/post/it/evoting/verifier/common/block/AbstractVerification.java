@@ -1,14 +1,14 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
- * <p>
+ *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
  * the GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
- * <p>
+ *
  * Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * <p>
+ *
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
@@ -21,6 +21,7 @@ import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import org.apache.log4j.Logger;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 
@@ -37,36 +38,64 @@ public abstract class AbstractVerification {
 
     public final VerificationResult executeVerification(Path inputDirectoryPath) {
         VerificationResult result = new VerificationResult();
+
         try {
             result = verify(inputDirectoryPath);
         }
-        // Business exception
+        // Wrapped business exception.
+        catch (VerificationFailureWrappedException e) {
+            if (e.getCause() instanceof VerificationFailureException) {
+                logVerificationFailure(result, (VerificationFailureException) e.getCause());
+            } else if (e.getCause() instanceof FileNotFoundException) {
+                logIOException(result, (FileNotFoundException) e.getCause());
+            } else if (e.getCause() instanceof NoSuchFileException) {
+                logIOException(result, (NoSuchFileException) e.getCause());
+            } else {
+                logUnexpectedException(result, (Exception) e.getCause());
+            }
+        }
+        // Business exception.
         catch (VerificationFailureException e) {
-            LOGGER.info(e.getMessage());
-            result.setStatus(Status.NOK);
-            result.setMessage(e.getFailureMessage());
+            logVerificationFailure(result, e);
         }
-        // File exception
+        // File exception.
         catch (FileNotFoundException | NoSuchFileException e) {
-            LOGGER.error("a FileNotFoundException error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(RESOURCE_BUNDLE_NAME, "common.error.file.not.found.message", e.getCause().getLocalizedMessage()));
+            logIOException(result, e);
         }
-        // Unexpected error
+        // Unexpected error.
         catch (Exception e) {
-            LOGGER.error("Unexpected error", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(RESOURCE_BUNDLE_NAME, "common.error.unexpected.message"));
+            logUnexpectedException(result, e);
         }
         return result;
     }
 
-    protected abstract VerificationResult verify(Path inputDirectoryPath) throws Exception;
+    public abstract VerificationResult verify(Path inputDirectoryPath) throws Exception;
 
-    protected final VerificationFailureException buildVerificationFailureException(String message, String resourceBundleName, String messageKey, String... details) {
+    protected final VerificationFailureException buildVerificationFailureException(String message, String resourceBundleName,
+                                                                                   String messageKey, String... details) {
         return new VerificationFailureException(
                 message,
                 TranslationHelper.getFromResourceBundle(resourceBundleName, messageKey, details)
         );
     }
+
+    private void logUnexpectedException(VerificationResult result, Exception e) {
+        LOGGER.error("Unexpected error", e);
+        result.setStatus(Status.NOK);
+        result.setMessage(TranslationHelper.getFromResourceBundle(RESOURCE_BUNDLE_NAME, "common.error.unexpected.message"));
+    }
+
+    private void logIOException(VerificationResult result, IOException e) {
+        LOGGER.error("a FileNotFoundException error occurred", e);
+        result.setStatus(Status.NOK);
+        result.setMessage(TranslationHelper.getFromResourceBundle(RESOURCE_BUNDLE_NAME, "common.error.file.not.found.message",
+                e.getCause().getLocalizedMessage()));
+    }
+
+    private void logVerificationFailure(VerificationResult result, VerificationFailureException e) {
+        LOGGER.info(e.getMessage());
+        result.setStatus(Status.NOK);
+        result.setMessage(e.getFailureMessage());
+    }
+
 }

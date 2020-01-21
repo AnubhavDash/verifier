@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -26,20 +26,19 @@ import org.junit.rules.ExpectedException;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-public class CheckSizePTest {
-    private CheckSizeP checkSizeP;
+public class CheckSizePTest extends Block1VerificationAbstractTest {
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setup() {
-        checkSizeP = new CheckSizeP();
+        verification = new CheckSizeP();
     }
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkSizeP.verify(Paths.get(getClass().getResource("/CheckSizePTest/OK").toURI()));
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckSizePTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -48,13 +47,13 @@ public class CheckSizePTest {
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("p does not have the right size");
-        checkSizeP.verify(Paths.get(getClass().getResource("/CheckSizePTest/NOK/NOK").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSizePTest/NOK/NOK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("encryptionParameters\\.json");
-        checkSizeP.verify(Paths.get(getClass().getResource("/CheckSizePTest/NOK/NOK-NOFILE").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSizePTest/NOK/NOK-NOFILE").toURI()));
     }
 }

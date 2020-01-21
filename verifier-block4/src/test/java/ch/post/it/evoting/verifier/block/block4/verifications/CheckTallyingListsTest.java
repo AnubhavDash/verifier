@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -27,21 +27,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 
-public class CheckTallyingListsTest {
+public class CheckTallyingListsTest extends Block4VerificationAbstractTest {
 
-  @Rule
-  public ExpectedException exceptionRule = ExpectedException.none();
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
 
-  private CheckTallyingLists checkTallyingLists;
-
-  @Before
-  public void setup() {
-    checkTallyingLists = new CheckTallyingLists();
-  }
+    @Before
+    public void setup() {
+        verification = new CheckTallyingLists();
+    }
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkTallyingLists.
+        VerificationResult verificationResult = verification.
                 verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/OK").toURI()));
 
         Assert.assertNotNull(verificationResult);
@@ -54,7 +52,7 @@ public class CheckTallyingListsTest {
         exceptionRule.expectMessage(
                 "The occurrences for list are different for counting Circle in eCH-0110 and evoting-decrypt");
 
-        VerificationResult verificationResult = checkTallyingLists.
+        VerificationResult verificationResult = verification.
                 verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK").toURI()));
     }
 
@@ -63,7 +61,7 @@ public class CheckTallyingListsTest {
         exceptionRule.expect(IllegalArgumentException.class);
         exceptionRule.expectMessage("cannot find the decrypt data for given countingCircle");
 
-        VerificationResult verificationResult = checkTallyingLists.verify(Paths.get(
+        VerificationResult verificationResult = verification.verify(Paths.get(
                 getClass().getResource("/CheckTallyingListsTest/NOK-VOTECOUNT-COUNTINGCIRCLE").toURI()));
     }
 
@@ -72,7 +70,7 @@ public class CheckTallyingListsTest {
         exceptionRule.expect(IllegalArgumentException.class);
         exceptionRule.expectMessage("cannot find the decrypt data for given election");
 
-        VerificationResult verificationResult = checkTallyingLists.verify(
+        VerificationResult verificationResult = verification.verify(
                 Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-VOTECOUNT-ELECTION").toURI()));
     }
 
@@ -81,7 +79,7 @@ public class CheckTallyingListsTest {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage("configuration-anonymized.xml");
 
-        VerificationResult verificationResult = checkTallyingLists.
+        VerificationResult verificationResult = verification.
                 verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-CONFIG").toURI()));
     }
 
@@ -90,7 +88,7 @@ public class CheckTallyingListsTest {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage("evoting-decrypt_.*\\.xml");
 
-        VerificationResult verificationResult = checkTallyingLists.
+        VerificationResult verificationResult = verification.
                 verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-EVOTING").toURI()));
     }
 
@@ -99,7 +97,7 @@ public class CheckTallyingListsTest {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage("eCH-0110_.*\\.xml");
 
-        VerificationResult verificationResult = checkTallyingLists.
+        VerificationResult verificationResult = verification.
                 verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-eCH").toURI()));
     }
 }

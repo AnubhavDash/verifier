@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -27,21 +27,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 
-public class CheckTallyingCandidatesTest {
+public class CheckTallyingCandidatesTest extends Block4VerificationAbstractTest {
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
 
-    private CheckTallyingCandidates checkTallyingCandidates;
-
     @Before
     public void setup() {
-        checkTallyingCandidates = new CheckTallyingCandidates();
+        verification = new CheckTallyingCandidates();
     }
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = checkTallyingCandidates.
+        VerificationResult verificationResult = verification.
                 verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/OK").toURI()));
 
         Assert.assertNotNull(verificationResult);
@@ -54,7 +52,7 @@ public class CheckTallyingCandidatesTest {
         exceptionRule.expectMessage(
                 "The count of votes total for the candidate does not match in majoral election");
 
-        VerificationResult verificationResult = checkTallyingCandidates.verify(
+        VerificationResult verificationResult = verification.verify(
                 Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-COUNTOFVOTES-MAJORAL").toURI()));
     }
 
@@ -64,13 +62,13 @@ public class CheckTallyingCandidatesTest {
         exceptionRule.expectMessage(
                 "The count of votes total for the candidate does not match in proportional election");
 
-        VerificationResult verificationResult = checkTallyingCandidates.verify(Paths.get(
+        VerificationResult verificationResult = verification.verify(Paths.get(
                 getClass().getResource("/CheckTallyingCandidates/NOK-COUNTOFVOTES-PROPORTIONAL").toURI()));
     }
 
     @Test
     public void executeTestOKWriteIns() throws Exception {
-        VerificationResult verificationResult = checkTallyingCandidates.
+        VerificationResult verificationResult = verification.
                 verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/OK-WRITEINS").toURI()));
 
         Assert.assertNotNull(verificationResult);
@@ -83,7 +81,7 @@ public class CheckTallyingCandidatesTest {
         exceptionRule.expectMessage(
                 "The count for the candidate does not match in writeIns-containsKey majoral election");
 
-        VerificationResult verificationResult = checkTallyingCandidates.verify(Paths.get(
+        VerificationResult verificationResult = verification.verify(Paths.get(
                 getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-CONTAINSKEY-MAJORAL").toURI()));
     }
 
@@ -93,7 +91,7 @@ public class CheckTallyingCandidatesTest {
         exceptionRule.expectMessage(
                 "The count for the candidate does not match in writeIns-containsKey proportional election");
 
-        VerificationResult verificationResult = checkTallyingCandidates.verify(Paths.get(
+        VerificationResult verificationResult = verification.verify(Paths.get(
                 getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-CONTAINSKEY-PROPORTIONAL").toURI()));
     }
 
@@ -103,7 +101,7 @@ public class CheckTallyingCandidatesTest {
         exceptionRule.expectMessage(
                 "The count for the candidate does not match in writeIns-equals majoral election");
 
-        VerificationResult verificationResult = checkTallyingCandidates.verify(Paths.get(
+        VerificationResult verificationResult = verification.verify(Paths.get(
                 getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-EQUALS-MAJORAL").toURI()));
     }
 
@@ -113,7 +111,7 @@ public class CheckTallyingCandidatesTest {
         exceptionRule.expectMessage(
                 "The count for the candidate does not match in writeIns-equals proportional election");
 
-        VerificationResult verificationResult = checkTallyingCandidates.verify(Paths.get(
+        VerificationResult verificationResult = verification.verify(Paths.get(
                 getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-EQUALS-PROPORTIONAL").toURI()));
     }
 
@@ -122,7 +120,7 @@ public class CheckTallyingCandidatesTest {
         exceptionRule.expect(IllegalArgumentException.class);
         exceptionRule.expectMessage("cannot find the decrypt data for given countingCircle");
 
-        VerificationResult verificationResult = checkTallyingCandidates.
+        VerificationResult verificationResult = verification.
                 verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-DECRYPTCOUNT").toURI()));
     }
 
@@ -131,7 +129,7 @@ public class CheckTallyingCandidatesTest {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage("configuration-anonymized.xml");
 
-        VerificationResult verificationResult = checkTallyingCandidates.
+        VerificationResult verificationResult = verification.
                 verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-CONFIG").toURI()));
     }
 
@@ -140,7 +138,7 @@ public class CheckTallyingCandidatesTest {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage("evoting-decrypt_.*\\.xml");
 
-        VerificationResult verificationResult = checkTallyingCandidates.
+        VerificationResult verificationResult = verification.
                 verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-EVOTING").toURI()));
     }
 
@@ -149,7 +147,7 @@ public class CheckTallyingCandidatesTest {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage("eCH-0110_.*\\.xml");
 
-        VerificationResult verificationResult = checkTallyingCandidates.
+        VerificationResult verificationResult = verification.
                 verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-eCH").toURI()));
     }
 }

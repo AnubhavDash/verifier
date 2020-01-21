@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -52,7 +52,7 @@ public class MathHelper {
     }
 
     /**
-     * Modular exponentiations product
+     * Modular exponentiation product
      *
      * @param b_vec a list of bases
      * @param e_vec a list of exponents
@@ -76,9 +76,7 @@ public class MathHelper {
         return acc;
     }
 
-    public static BigInteger commitmentComputation(BigInteger r, List<BigInteger> a_vec, BigInteger ck) {
-
-
+    public static BigInteger computeCommitment(BigInteger r, List<BigInteger> a_vec, BigInteger ck) {
         return null;
     }
 

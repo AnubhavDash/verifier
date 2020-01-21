@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -40,6 +40,7 @@ import java.util.stream.Collectors;
 public class SignatureChecker {
 
     private static final Logger LOGGER = Logger.getLogger(SignatureChecker.class);
+    private static final String SIGN_ALGO_NAME = "SHA256withRSAandMGF1";
 
     private SignatureChecker() {
         //private ctor, use static
@@ -65,13 +66,14 @@ public class SignatureChecker {
                 if (signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(cert))) {
                     //signature is valid, checking certificate chain validity
                     X509Certificate root = loadCertificate(rootCert);
-                    List<X509Certificate> intermediates = new ArrayList<X509CertificateHolder>(store.getMatches(null)).stream().map(holder -> {
-                        try {
-                            return new JcaX509CertificateConverter().setProvider("BC").getCertificate(holder);
-                        } catch (CertificateException e) {
-                            throw new RuntimeException("Unable to convert the certificate", e);
-                        }
-                    }).collect(Collectors.toList());
+                    List<X509Certificate> intermediates =
+                            new ArrayList<X509CertificateHolder>(store.getMatches(null)).stream().map(holder -> {
+                                try {
+                                    return new JcaX509CertificateConverter().setProvider("BC").getCertificate(holder);
+                                } catch (CertificateException e) {
+                                    throw new RuntimeException("Unable to convert the certificate", e);
+                                }
+                            }).collect(Collectors.toList());
 
                     verifyCertificateChain(cert, intermediates, root);
 
@@ -126,6 +128,46 @@ public class SignatureChecker {
         return false;
     }
 
+    /**
+     * Verify that the .sign signature of a file is correct.
+     *
+     * @param source                   The signed file.
+     * @param signature                The file signature.
+     * @param signingCertificate       The certificate used to sign the file.
+     * @param intermediateCertificates Intermediate certificates if any.
+     * @param rootCertificate          The root certificate.
+     * @return {@code true} if the provided {@code signature} is the correct signature for the {@code source} file.
+     */
+    public static boolean verifySignature(byte[] source, byte[] signature, byte[] signingCertificate,
+                                          byte[][] intermediateCertificates, byte[] rootCertificate) {
+
+        // Init the BouncyCastle security provider if not done.
+        if (Security.getProvider("BC") == null) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
+
+        try {
+            final X509Certificate sCert = loadCertificate(signingCertificate);
+
+            Signature signatureAlgorithm = Signature.getInstance(SIGN_ALGO_NAME);
+            signatureAlgorithm.initVerify(sCert.getPublicKey());
+            signatureAlgorithm.update(source);
+
+            // If signature is valid, check certificate chain validity.
+            if (signatureAlgorithm.verify(signature)) {
+                if (rootCertificate != null) {
+                    List<X509Certificate> intermediates = loadCertificatesChain(intermediateCertificates, sCert);
+                    verifyCertificateChain(sCert, intermediates, loadCertificate(rootCertificate));
+                }
+                return true;
+            }
+        } catch (IOException | GeneralSecurityException e) {
+            LOGGER.error("Signature check failed.", e);
+        }
+
+        return false;
+    }
+
     private static X509Certificate loadCertificate(byte[] certificate) throws IOException, CertificateException {
         if (Security.getProvider("BC") == null) {
             Security.addProvider(new BouncyCastleProvider());
@@ -134,8 +176,8 @@ public class SignatureChecker {
         return new JcaX509CertificateConverter().setProvider("BC").getCertificate((X509CertificateHolder) parser.readObject());
     }
 
-
-    private static PKIXCertPathBuilderResult verifyCertificateChain(X509Certificate cert, List<X509Certificate> intermediateCerts, X509Certificate rootCA) throws GeneralSecurityException {
+    private static PKIXCertPathBuilderResult verifyCertificateChain(X509Certificate cert, List<X509Certificate> intermediateCerts,
+                                                                    X509Certificate rootCA) throws GeneralSecurityException {
         if (Security.getProvider("BC") == null) {
             Security.addProvider(new BouncyCastleProvider());
         }
@@ -159,36 +201,17 @@ public class SignatureChecker {
         return result;
     }
 
-    public static boolean verifySignature(byte[] source, byte[] signature, byte[] certificate, byte[][] intermediateCertificates, byte[] rootCertificate) {
-        if (Security.getProvider("BC") == null) {
-            Security.addProvider(new BouncyCastleProvider());
-        }
-        try {
-            final X509Certificate sCert = loadCertificate(certificate);
-            final String algoName = "SHA256withRSAandMGF1";
+    private static List<X509Certificate> loadCertificatesChain(byte[][] intermediateCertificates, X509Certificate sCert) {
+        List<X509Certificate> intermediates = intermediateCertificates != null ?
+                Arrays.stream(intermediateCertificates).map(bytes -> {
+                    try {
+                        return loadCertificate(bytes);
+                    } catch (CertificateException | IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).collect(Collectors.toList()) : new ArrayList<>(1);
+        intermediates.add(sCert);
 
-            Signature signatureAlgorithm = Signature.getInstance(algoName);
-            signatureAlgorithm.initVerify(sCert.getPublicKey());
-            signatureAlgorithm.update(source);
-
-            if (signatureAlgorithm.verify(signature)) {
-                if (rootCertificate !=null) {
-                    //signature is valid, checking certificate chain validity
-                    List<X509Certificate> intermediates = intermediateCertificates != null ? Arrays.stream(intermediateCertificates).map(bytes -> {
-                        try {
-                            return loadCertificate(bytes);
-                        } catch (CertificateException | IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }).collect(Collectors.toList()) : new LinkedList<>();
-                    intermediates.add(sCert);
-                    verifyCertificateChain(sCert, intermediates, loadCertificate(rootCertificate));
-                }
-                return true;
-            }
-        } catch (Exception e) {
-            LOGGER.warn("signature check failed", e);
-        }
-        return false;
+        return intermediates;
     }
 }
