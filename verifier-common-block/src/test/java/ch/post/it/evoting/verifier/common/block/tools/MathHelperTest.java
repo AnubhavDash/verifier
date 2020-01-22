@@ -1,8 +1,7 @@
 package ch.post.it.evoting.verifier.common.block.tools;
 
-import ch.post.it.evoting.verifier.common.block.dto.ModExpHexParameters;
+import ch.post.it.evoting.verifier.common.block.dto.ComputeCommitmentParameters;
 import ch.post.it.evoting.verifier.common.block.dto.ModExpParameters;
-import ch.post.it.evoting.verifier.common.block.dto.ModExpProductHexParameters;
 import ch.post.it.evoting.verifier.common.block.dto.ModExpProductParameters;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
@@ -22,28 +21,36 @@ public class MathHelperTest {
 
     @Test
     public void modExpWithSimpleValues() {
-        List<ModExpParameters> modExpParametersList = readValues("modExpSimpleValues.json", ModExpParameters[].class);
-        modExpParametersList.forEach(modExpParameters -> {
-            BigInteger output = MathHelper.modExp(modExpParameters.getB(), modExpParameters.getE(), modExpParameters.getM());
-
-            assertEquals(modExpParameters.getId(), output, modExpParameters.getOutput());
-        });
+        modExpTest("modExpSimpleValues.json");
     }
 
     @Test
     public void modExpWithRealSizeValues() {
-        List<ModExpHexParameters> modExpParametersList = readValues("modExpRealSizeValues.json", ModExpHexParameters[].class);
-        modExpParametersList.forEach(modExpHexParameters -> {
-            BigInteger output = MathHelper.modExp(modExpHexParameters.getB(), modExpHexParameters.getE(), modExpHexParameters.getM());
+        modExpTest("modExpRealSizeValues.json");
+    }
 
-            assertEquals(modExpHexParameters.getId(), output, modExpHexParameters.getOutput());
+    private void modExpTest(String jsonFileName) {
+        List<ModExpParameters> modExpParametersList = readValues(jsonFileName, ModExpParameters[].class);
+        modExpParametersList.forEach(modExpParameters -> {
+            BigInteger output = MathHelper.modExp(modExpParameters.getB(), modExpParameters.getE(), modExpParameters.getM());
+            assertEquals(modExpParameters.getId(), output, modExpParameters.getOutput());
         });
     }
 
+
     @Test
     public void modExpProductWithSimpleValues() {
+        modExpProductTest("modExpProductSimpleValues.json");
+    }
+
+    @Test
+    public void modExpProductWithRealSizeValues() {
+        modExpProductTest("modExpProductRealSizeValues.json");
+    }
+
+    private void modExpProductTest(String jsonFileName) {
         List<ModExpProductParameters> modExpProductParametersList =
-                readValues("modExpProductSimpleValues.json", ModExpProductParameters[].class);
+                readValues(jsonFileName, ModExpProductParameters[].class);
         modExpProductParametersList.forEach(modExpProductParameters -> {
             BigInteger output = MathHelper.modExpProduct(
                     modExpProductParameters.getB(), modExpProductParameters.getE(), modExpProductParameters.getM());
@@ -53,16 +60,30 @@ public class MathHelperTest {
     }
 
     @Test
-    public void modExpProductWithRealSizeValues() {
-        List<ModExpProductHexParameters> modExpProductHexParametersList =
-                readValues("modExpProductRealSizeValues.json", ModExpProductHexParameters[].class);
-        modExpProductHexParametersList.forEach(modExpProductHexParameters -> {
-            BigInteger output = MathHelper.modExpProduct(modExpProductHexParameters.getB(),
-                    modExpProductHexParameters.getE(), modExpProductHexParameters.getM());
+    public void computeCommitmentWithSimpleValues() {
+        computeCommitmentTest("computeCommitmentSimpleValues.json");
+    }
 
-            assertEquals(modExpProductHexParameters.getId(), output, modExpProductHexParameters.getOutput());
+    @Test
+    public void computeCommitmentWithRealSizeValues() {
+        computeCommitmentTest("computeCommitmentRealSizeValues.json");
+    }
+
+    private void computeCommitmentTest(String jsonFileName) {
+        List<ComputeCommitmentParameters> computeCommitmentParametersList =
+                readValues(jsonFileName, ComputeCommitmentParameters[].class);
+        computeCommitmentParametersList.forEach(computeCommitmentParameters -> {
+            BigInteger output = MathHelper.computeCommitment(
+                    computeCommitmentParameters.getEg(),
+                    computeCommitmentParameters.getR(),
+                    computeCommitmentParameters.getA(),
+                    computeCommitmentParameters.getCk()
+            );
+
+            assertEquals(computeCommitmentParameters.getId(), output, computeCommitmentParameters.getOutput());
         });
     }
+
 
     private <T> List<T> readValues(String jsonFileName, Class<T[]> clazz) {
         return Arrays.asList(readValue(jsonFileName, clazz));

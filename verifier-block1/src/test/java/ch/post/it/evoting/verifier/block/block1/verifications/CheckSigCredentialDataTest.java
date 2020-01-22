@@ -29,20 +29,19 @@ import java.nio.file.Paths;
 
 import static org.hamcrest.core.Is.isA;
 
-public class CheckSigCredentialDataTest {
-    private CheckSigCredentialData checkSigCredentialData;
+public class CheckSigCredentialDataTest extends Block1VerificationAbstractTest {
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setup() {
-        checkSigCredentialData = new CheckSigCredentialData();
+        verification = new CheckSigCredentialData();
     }
 
     @Test
     public void executeTestAllSignValid() throws Exception {
-        final VerificationResult verificationResult = checkSigCredentialData.verify(Paths.get(getClass().getResource(
+        final VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource(
                 "/CheckSigCredentialDataTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
@@ -52,7 +51,7 @@ public class CheckSigCredentialDataTest {
     public void executeTestOneSignInvalid() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The signature verification of the file failed");
-        checkSigCredentialData.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK").toURI()));
     }
 
     @Test
@@ -60,7 +59,7 @@ public class CheckSigCredentialDataTest {
         exceptionRule.expect(VerificationFailureWrappedException.class);
         exceptionRule.expectCause(isA(NoSuchFileException.class));
         exceptionRule.expectMessage("credentialData.csv");
-        checkSigCredentialData.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE").toURI()));
     }
 
     @Test
@@ -68,6 +67,6 @@ public class CheckSigCredentialDataTest {
         exceptionRule.expect(VerificationFailureWrappedException.class);
         exceptionRule.expectCause(isA(NoSuchFileException.class));
         exceptionRule.expectMessage("credentialData.csv.sign");
-        checkSigCredentialData.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE2").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE2").toURI()));
     }
 }

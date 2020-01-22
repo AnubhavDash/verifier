@@ -60,12 +60,12 @@ public class ReportMapperTest {
                 verification.setId("" + j);
                 verification.setName("le nom du test " + j);
                 verification.setCategory(Category.AUTHENTICITY);
-                HashMap<Language, String> desc = new HashMap();
+                HashMap<Language, String> desc = new HashMap<>();
                 desc.put(Language.FR, "description du test " + j + " in french");
                 desc.put(Language.DE, "description du test " + j + " in deutch");
                 verification.setDescription(desc);
                 verification.setStatus(Status.OK);
-                HashMap<Language, String> mess = new HashMap();
+                HashMap<Language, String> mess = new HashMap<>();
                 verification.setMessage(mess);
                 if (j == 3) {
                     verification.setStatus(Status.NOK);

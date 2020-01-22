@@ -56,10 +56,6 @@ public class TypeConverter {
         return new String(b, StandardCharsets.UTF_8);
     }
 
-    public static BigInteger stringToBigInteger(String s) {
-        return new BigInteger(s);
-    }
-
     public static String bigIntegerToB64String(BigInteger bigInt) {
         return Base64.getEncoder().encodeToString(bigInt.toByteArray());
     }
@@ -80,14 +76,13 @@ public class TypeConverter {
         return uuid.toString().replace("-", "");
     }
 
-    public static BigInteger hexaStringToBigInteger(String hex) {
-        int index = 0;
-        if (hex.startsWith("0x", index) || hex.startsWith("0X", index)) {
-            index += 2;
+    public static BigInteger stringToBigInteger(String s) {
+        // Check if string contains an hexadecimal value
+        if (s.startsWith("0x") || s.startsWith("0X")) {
+            // Explicit base 16 (hexadecimal) constructor
+            return new BigInteger(s.substring(2), 16);
         }
-        else if (hex.startsWith("#", index)) {
-            index ++;
-        }
-        return new BigInteger(hex.substring(index), 16);
+        // Explicit base 10 constructor
+        return new BigInteger(s, 10);
     }
 }

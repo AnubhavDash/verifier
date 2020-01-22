@@ -14,12 +14,14 @@
  */
 package ch.post.it.evoting.verifier.common.block.tools;
 
+import ch.post.it.evoting.verifier.common.block.dto.revised.CommitmentKey;
+import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionGroup;
 import lombok.NonNull;
 
 import java.math.BigInteger;
 import java.util.List;
 
-public class MathHelper {
+public final class MathHelper {
 
     private static final BigInteger TWO = new BigInteger("2");
 
@@ -27,9 +29,37 @@ public class MathHelper {
         //private constructor, use static
     }
 
-    public static boolean isPrime(BigInteger value) {
-        return value.isProbablePrime(Integer.MAX_VALUE);
+    /**
+     * Tests for mathematical equality the two provided {@link BigInteger}s parameters. For testing, the two
+     * provided parameters must be non-null, otherwise a {@link NullPointerException} will be thrown indicating the
+     * first parameter found to be null.
+     *
+     * @param valueA {@link NonNull} value to be tested
+     * @param valueB {@link NonNull} value to be tested
+     * @return true if parameter "valueA" is mathematically equal to parameter "valueB", false otherwise
+     */
+    public static boolean areEqual(@NonNull BigInteger valueA, @NonNull BigInteger valueB) {
+        return valueA.compareTo(valueB) == 0;
     }
+
+
+    /**
+     * Utility functions - 1.5 Commitment computation
+     * <p>
+     * Commitment computation of a list of {@link BigInteger} elements
+     *
+     * @param ec    encryption group context
+     * @param r     random exponent
+     * @param a_vec list of elements to be committed
+     * @param ck    commitment key
+     * @return
+     */
+    public static BigInteger computeCommitment(EncryptionGroup ec, BigInteger r, List<BigInteger> a_vec, CommitmentKey ck) {
+        BigInteger modeExpResult = modExp(ck.getH(), r, ec.getP());
+        BigInteger modeExpProductResult = modeExpResult.multiply(modExpProduct(ck.getG(), a_vec, ec.getP()));
+        return modeExpProductResult.mod(ec.getP());
+    }
+
 
     public static boolean isEulerCriterionValid(BigInteger vo, BigInteger p) {
         BigInteger exponent = (p.subtract(BigInteger.ONE)).divide(TWO);
@@ -39,24 +69,42 @@ public class MathHelper {
 
 
     /**
-     * Modular Exponentiation
+     * Utility to verify membership for Z_q
+     *
+     * @param x a number
+     * @param eg EncryptionGroup
+     * @return true if x &isin; Z_q, false otherwise
+     */
+    public boolean isInZ_q(BigInteger x, EncryptionGroup eg) {
+        return isGTE(x, BigInteger.ZERO) && isLT(x, eg.getQ());
+    }
+
+
+    public static boolean isPrime(BigInteger value) {
+        return value.isProbablePrime(Integer.MAX_VALUE);
+    }
+
+
+    /**
+     * Utility functions - 1.4.1 Modular Exponentiation
      *
      * @param b the base
      * @param e the exponent
      * @param m the modulus
-     * @return the modular exponentiation b exp(e) mod m
+     * @return the modular exponentiation, b exp(e) mod m
      */
     public static BigInteger modExp(BigInteger b, BigInteger e, BigInteger m) {
         // Naive implementation before optimisation
         return b.modPow(e, m);
     }
 
+
     /**
-     * Modular exponentiation product
+     * Utility functions - 1.4.2 Modular exponentiation product
      *
      * @param b_vec a list of bases
      * @param e_vec a list of exponents
-     * @param m the modulus
+     * @param m     the modulus
      * @return the product of the modular exponentiation
      */
     public static BigInteger modExpProduct(List<BigInteger> b_vec, List<BigInteger> e_vec, BigInteger m) {
@@ -76,20 +124,48 @@ public class MathHelper {
         return acc;
     }
 
-    public static BigInteger computeCommitment(BigInteger r, List<BigInteger> a_vec, BigInteger ck) {
-        return null;
+
+    /**
+     * Check if x is greater than or equal to n
+     *
+     * @param x a number
+     * @param n a number
+     * @return true if x is greater than or equal to n
+     */
+    private boolean isGTE(BigInteger x, BigInteger n) {
+        return x.compareTo(n) >= 0;
     }
 
     /**
-     * Tests for mathematical equality the two provided {@link BigInteger}s parameters. For testing, the two
-     * provided parameters must be non-null, otherwise a {@link NullPointerException} will be thrown indicating the
-     * first parameter found to be null.
+     * Check if x is greater than n
      *
-     * @param valueA {@link NonNull} value to be tested
-     * @param valueB {@link NonNull} value to be tested
-     * @return true if parameter "valueA" is mathematically equal to parameter "valueB", false otherwise
+     * @param x a number
+     * @param n a number
+     * @return true if x is greater than n
      */
-    public static boolean areEqual(@NonNull BigInteger valueA, @NonNull BigInteger valueB) {
-        return valueA.compareTo(valueB) == 0;
+    private boolean isGT(BigInteger x, BigInteger n) {
+        return x.compareTo(n) > 0;
+    }
+
+    /**
+     * Check if x is less than or equal to n
+     *
+     * @param x a number
+     * @param n a number
+     * @return true if x is less than or equal to n
+     */
+    private boolean isLTE(BigInteger x, BigInteger n) {
+        return x.compareTo(n) <= 0;
+    }
+
+    /**
+     * Check if x is less than n
+     *
+     * @param x a number
+     * @param n a number
+     * @return true if x is less than n
+     */
+    private boolean isLT(BigInteger x, BigInteger n) {
+        return x.compareTo(n) < 0;
     }
 }
