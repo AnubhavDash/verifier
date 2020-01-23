@@ -14,6 +14,7 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
+import ch.post.it.evoting.verifier.common.block.dto.converter.StringArrayToBigIntegerListConverter;
 import ch.post.it.evoting.verifier.common.block.dto.converter.StringToBigIntegerConverter;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,25 +22,21 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 
 import java.math.BigInteger;
+import java.util.List;
 
 @Getter
-public class EncryptionGroup {
+public class CommitmentKey {
 
     @JsonDeserialize(converter = StringToBigIntegerConverter.class)
-    public final BigInteger p;
+    public final BigInteger h;
 
-    @JsonDeserialize(converter = StringToBigIntegerConverter.class)
-    public final BigInteger q;
-
-    @JsonDeserialize(converter = StringToBigIntegerConverter.class)
-    public final BigInteger g;
+    @JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
+    public final List<BigInteger> g;
 
     @JsonCreator
-    public EncryptionGroup(@JsonProperty("p") BigInteger p,
-                           @JsonProperty("q") BigInteger q,
-                           @JsonProperty("g") BigInteger g) {
-        this.p = p;
-        this.q = q;
+    public CommitmentKey(@JsonProperty("h") BigInteger h,
+                         @JsonProperty("g") List<BigInteger> g) {
+        this.h = h;
         this.g = g;
     }
 }
