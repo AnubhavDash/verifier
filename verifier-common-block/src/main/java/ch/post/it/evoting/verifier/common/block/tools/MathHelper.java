@@ -126,6 +126,19 @@ public final class MathHelper {
 
 
     /**
+     * Utility functions - 1.4.3 Modular inverse
+     *
+     * @param b the base
+     * @param m the modulus
+     * @return the modular inverse, b (-1) mod m
+     */
+    public static BigInteger modInv(BigInteger b, BigInteger m) {
+        // Naive implementation before optimisation
+        return b.modInverse(m);
+    }
+
+
+    /**
      * Check if x is greater than or equal to n
      *
      * @param x a number
