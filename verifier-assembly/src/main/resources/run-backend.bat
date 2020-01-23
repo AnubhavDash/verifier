@@ -1,2 +1,2 @@
-.\java-11-openjdk-11.0.5.10-2.windows.ojdkbuild.x86_64\bin\java.exe -jar ./verifier-web.jar
+.\jdk-11.0.6+10\bin\java.exe -jar ./verifier-web.jar
 pause
