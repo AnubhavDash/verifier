@@ -21,9 +21,9 @@ import lombok.NonNull;
 import java.math.BigInteger;
 import java.util.List;
 
-public final class MathHelper {
+import static ch.post.it.evoting.verifier.common.block.tools.Requirements.*;
 
-    private static final BigInteger TWO = new BigInteger("2");
+public final class MathHelper {
 
     private MathHelper() {
         //private constructor, use static
@@ -44,46 +44,46 @@ public final class MathHelper {
 
 
     /**
-     * Utility functions - 1.5 Commitment computation
+     * Utility functions - 1.5 Commitment computation.
      * <p>
-     * Commitment computation of a list of {@link BigInteger} elements
+     * Commitment computation of a list of {@link BigInteger} elements.
      *
-     * @param encryptionGroup    encryption group context
-     * @param r     random exponent
-     * @param a_vec list of elements to be committed
-     * @param ck    commitment key
+     * @param encryptionGroup encryption group context
+     * @param r               random exponent
+     * @param a_vec           list of elements to be committed
+     * @param ck              commitment key
      * @return
      */
     public static BigInteger computeCommitment(EncryptionGroup encryptionGroup, BigInteger r, List<BigInteger> a_vec, CommitmentKey ck) {
         // Pre requirements
-        Requirement.requireIsInZ_q(r, encryptionGroup);
-        Requirement.requireVectorIsInZ_q(a_vec, encryptionGroup);
-        Requirement.requireIsMember(ck.getH(), encryptionGroup);
-        Requirement.requireVectorIsMember(ck.getG(), encryptionGroup);
+        requireIsInZ_q(r, encryptionGroup);
+        requireVectorIsInZ_q(a_vec, encryptionGroup);
+        requireIsMember(ck.getH(), encryptionGroup);
+        requireVectorIsMember(ck.getG_vec(), encryptionGroup);
 
         // Commitment computation
         BigInteger modeExpResult = modExp(ck.getH(), r, encryptionGroup.getP());
-        BigInteger modeExpProductResult = modeExpResult.multiply(modExpProduct(ck.getG(), a_vec, encryptionGroup.getP()));
+        BigInteger modeExpProductResult = modeExpResult.multiply(modExpProduct(ck.getG_vec(), a_vec, encryptionGroup.getP()));
         BigInteger result = modeExpProductResult.mod(encryptionGroup.getP());
 
         // Post requirement
-        Requirement.requireIsMember(result, encryptionGroup);
+        requireIsMember(result, encryptionGroup);
 
         return result;
     }
 
 
     public static boolean isEulerCriterionValid(BigInteger vo, BigInteger p) {
-        BigInteger exponent = (p.subtract(BigInteger.ONE)).divide(TWO);
+        BigInteger exponent = (p.subtract(BigInteger.ONE)).divide(BigInteger.TWO);
         BigInteger ec = vo.modPow(exponent, p);
         return MathHelper.areEqual(ec, BigInteger.ONE);
     }
 
 
     /**
-     * Utility to verify membership for Z_q
+     * Utility to verify membership for Z_q.
      *
-     * @param x a number
+     * @param x  a number
      * @param eg EncryptionGroup
      * @return true if x &isin; Z_q, false otherwise
      */
@@ -93,15 +93,14 @@ public final class MathHelper {
 
 
     /**
-     * Utility to verify membership for encryptionGroup
+     * Utility to verify membership for encryptionGroup.
      *
      * @param x               A number
      * @param encryptionGroup the associated encryption group
-     *
      * @return true if x &isin; encryptionGroup, false otherwise
      */
     public static boolean isMember(BigInteger x, EncryptionGroup encryptionGroup) {
-        return x.compareTo(BigInteger.ONE) >= 0 && x.compareTo(encryptionGroup.getP()) < 0
+        return isGTE(x, BigInteger.TWO) && isLT(x, encryptionGroup.getP())
                 && JacobiSymbol.computeJacobiSymbol(x, encryptionGroup.getP()) == 1;
     }
 
@@ -112,7 +111,7 @@ public final class MathHelper {
 
 
     /**
-     * Utility functions - 1.4.1 Modular Exponentiation
+     * Utility functions - 1.4.1 Modular Exponentiation.
      *
      * @param b the base
      * @param e the exponent
@@ -126,7 +125,7 @@ public final class MathHelper {
 
 
     /**
-     * Utility functions - 1.4.2 Modular exponentiation product
+     * Utility functions - 1.4.2 Modular exponentiation product.
      *
      * @param b_vec a list of bases
      * @param e_vec a list of exponents
@@ -134,7 +133,6 @@ public final class MathHelper {
      * @return the product of the modular exponentiation
      */
     public static BigInteger modExpProduct(List<BigInteger> b_vec, List<BigInteger> e_vec, BigInteger m) {
-
         int dimension = b_vec.size();
         if (dimension != e_vec.size()) {
             throw new IllegalArgumentException("Bases and exponents vectors must have the same dimension.");
@@ -165,7 +163,7 @@ public final class MathHelper {
 
 
     /**
-     * Check if x is greater than or equal to n
+     * Check if x is greater than or equal to n.
      *
      * @param x a number
      * @param n a number
@@ -175,8 +173,9 @@ public final class MathHelper {
         return x.compareTo(n) >= 0;
     }
 
+
     /**
-     * Check if x is greater than n
+     * Check if x is greater than n.
      *
      * @param x a number
      * @param n a number
@@ -186,8 +185,9 @@ public final class MathHelper {
         return x.compareTo(n) > 0;
     }
 
+
     /**
-     * Check if x is less than or equal to n
+     * Check if x is less than or equal to n.
      *
      * @param x a number
      * @param n a number
@@ -197,8 +197,9 @@ public final class MathHelper {
         return x.compareTo(n) <= 0;
     }
 
+
     /**
-     * Check if x is less than n
+     * Check if x is less than n.
      *
      * @param x a number
      * @param n a number

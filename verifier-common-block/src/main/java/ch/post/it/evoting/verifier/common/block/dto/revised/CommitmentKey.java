@@ -31,12 +31,12 @@ public class CommitmentKey {
     private final BigInteger h;
 
     @JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
-    private final List<BigInteger> g;
+    private final List<BigInteger> g_vec;
 
     @JsonCreator
     public CommitmentKey(@JsonProperty("h") BigInteger h,
-                         @JsonProperty("g") List<BigInteger> g) {
+                         @JsonProperty("g_vec") List<BigInteger> g_vec) {
         this.h = h;
-        this.g = g;
+        this.g_vec = g_vec;
     }
 }

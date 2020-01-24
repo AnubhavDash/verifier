@@ -5,9 +5,9 @@ import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionGroup;
 import java.math.BigInteger;
 import java.util.List;
 
-public final class Requirement {
+public final class Requirements {
 
-    private Requirement() {
+    private Requirements() {
     }
 
     public static void requireIsInZ_q(BigInteger x, EncryptionGroup encryptionGroup){
