@@ -28,10 +28,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -71,36 +71,7 @@ public class CheckConfirmedVotesBallotBox extends AbstractVerification {
 
                 // Create a map with two lists: one is the successful votes (confirmed == true) and the other the failed ones
                 // (confirmed == false).
-                Map<Boolean, List<String>> partitionedBallotBox = lines
-                        // Convert a line to an object containing votingCardId and confirmed boolean.
-                        .map(this::extractDbInfosFromLine)
-                        // Remove potential nulls coming from extraction.
-                        .filter(Objects::nonNull)
-                        // Collect into a temporary map which is used to find duplicates.
-                        .collect(Collectors.groupingBy(VotingEntry::getVotingCardId, Collectors.mapping(Function.identity(),
-                                Collectors.toList())))
-                        // Iterate the temporary map.
-                        .entrySet()
-                        .stream()
-                        // Mapping throws an exception if a duplicated votingCardId is found.
-                        .map(this::checkDuplicateVotingEntry)
-                        // Main collect.
-                        .collect(
-                                // Partition by confirmed or not.
-                                Collectors.partitioningBy(
-                                        VotingEntry::isConfirmed,
-                                        // Mapping to extract only the votingCardId.
-                                        Collectors.mapping(
-                                                VotingEntry::getVotingCardId,
-                                                // Perform a final sort. Can be replaced before main collect by
-                                                // .sorted((v1, v2) -> v1.getVotingCardId().compareToIgnoreCase(v2.getVotingCardId())).
-                                                Collectors.collectingAndThen(
-                                                        Collectors.toList(),
-                                                        l -> l.stream().sorted().collect(Collectors.toList())
-                                                )
-                                        )
-                                )
-                        );
+                Map<Boolean, List<String>> partitionedBallotBox = partitionDownloadedBallotBox(lines);
 
                 // Extract the votingCardId's.
                 List<String> votingCardSuccessList = extractVotingCardIds(successVotes);
@@ -128,31 +99,58 @@ public class CheckConfirmedVotesBallotBox extends AbstractVerification {
         return result;
     }
 
-    private VotingEntry checkDuplicateVotingEntry(Map.Entry<String, List<VotingEntry>> entry) {
-        if (entry.getValue().size() > 1) {
-            throw buildVerificationFailureException(
-                    "A voting card ID appears multiple times in the downloaded ballot box.",
-                    Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
-                    "verification08.duplicate.nok.message",
-                    entry.getValue().get(0).getVotingCardId()
-            );
-        } else {
-            return entry.getValue().get(0);
-        }
+    private Map<Boolean, List<String>> partitionDownloadedBallotBox(Stream<String> lines) {
+        return lines
+                .parallel()
+                // Convert a line to an object containing votingCardId and confirmed boolean.
+                .map(this::extractDbInfosFromLine)
+                // Remove potential nulls coming from extraction.
+                .filter(Objects::nonNull)
+                // Check for duplicates. Method distinctByKey throws in case of duplicates.
+                .filter(distinctByKey(VotingEntry::getVotingCardId))
+                // Sort according to votingCardId's.
+                .sorted(Comparator.comparing(VotingEntry::getVotingCardId))
+                // Main collect.
+                .collect(
+                        // Partition by confirmed or not.
+                        Collectors.partitioningBy(
+                                VotingEntry::isConfirmed,
+                                // Mapping to extract only the votingCardId.
+                                Collectors.mapping(
+                                        VotingEntry::getVotingCardId,
+                                        Collectors.toCollection(ArrayList::new)
+                                )
+                        )
+                );
+    }
+
+    // Adapted from: https://stackoverflow.com/questions/23699371/java-8-distinct-by-property/27872852#27872852
+    private Predicate<VotingEntry> distinctByKey(Function<VotingEntry, String> keyExtractor) {
+        Set<String> seen = ConcurrentHashMap.newKeySet();
+        return t -> {
+            if (!seen.add(keyExtractor.apply(t))) {
+                throw buildVerificationFailureException(
+                        "A voting card ID appears multiple times in the downloaded ballot box.",
+                        Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
+                        "verification08.duplicate.nok.message",
+                        keyExtractor.apply(t)
+                );
+            }
+            return true;
+        };
     }
 
     private List<String> extractVotingCardIds(File votes) throws IOException {
-
         return StreamSupport.stream(
                 Deserializer.fromCsv(votes.getParentFile(), votes.getName(), ";", array -> {
                     if (array == null || array.length <= 2) {
                         return null;
                     }
                     return array[0];
-                }).spliterator(), false)
+                }).spliterator(), true)
                 .filter(Objects::nonNull)
                 .sorted()
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     private VotingEntry extractDbInfosFromLine(String line) {
@@ -172,7 +170,7 @@ public class CheckConfirmedVotesBallotBox extends AbstractVerification {
     }
 
     @Getter
-    static class VotingEntry {
+    private static class VotingEntry {
         private String votingCardId;
         private boolean confirmed;
 
