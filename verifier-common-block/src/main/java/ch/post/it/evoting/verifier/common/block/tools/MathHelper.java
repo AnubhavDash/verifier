@@ -48,16 +48,28 @@ public final class MathHelper {
      * <p>
      * Commitment computation of a list of {@link BigInteger} elements
      *
-     * @param ec    encryption group context
+     * @param encryptionGroup    encryption group context
      * @param r     random exponent
      * @param a_vec list of elements to be committed
      * @param ck    commitment key
      * @return
      */
-    public static BigInteger computeCommitment(EncryptionGroup ec, BigInteger r, List<BigInteger> a_vec, CommitmentKey ck) {
-        BigInteger modeExpResult = modExp(ck.getH(), r, ec.getP());
-        BigInteger modeExpProductResult = modeExpResult.multiply(modExpProduct(ck.getG(), a_vec, ec.getP()));
-        return modeExpProductResult.mod(ec.getP());
+    public static BigInteger computeCommitment(EncryptionGroup encryptionGroup, BigInteger r, List<BigInteger> a_vec, CommitmentKey ck) {
+        // Pre requirements
+        Requirement.requireIsInZ_q(r, encryptionGroup);
+        Requirement.requireVectorIsInZ_q(a_vec, encryptionGroup);
+        Requirement.requireIsMember(ck.getH(), encryptionGroup);
+        Requirement.requireVectorIsMember(ck.getG(), encryptionGroup);
+
+        // Commitment computation
+        BigInteger modeExpResult = modExp(ck.getH(), r, encryptionGroup.getP());
+        BigInteger modeExpProductResult = modeExpResult.multiply(modExpProduct(ck.getG(), a_vec, encryptionGroup.getP()));
+        BigInteger result = modeExpProductResult.mod(encryptionGroup.getP());
+
+        // Post requirement
+        Requirement.requireIsMember(result, encryptionGroup);
+
+        return result;
     }
 
 
@@ -75,8 +87,22 @@ public final class MathHelper {
      * @param eg EncryptionGroup
      * @return true if x &isin; Z_q, false otherwise
      */
-    public boolean isInZ_q(BigInteger x, EncryptionGroup eg) {
+    public static boolean isInZ_q(BigInteger x, EncryptionGroup eg) {
         return isGTE(x, BigInteger.ZERO) && isLT(x, eg.getQ());
+    }
+
+
+    /**
+     * Utility to verify membership for encryptionGroup
+     *
+     * @param x               A number
+     * @param encryptionGroup the associated encryption group
+     *
+     * @return true if x &isin; encryptionGroup, false otherwise
+     */
+    public static boolean isMember(BigInteger x, EncryptionGroup encryptionGroup) {
+        return x.compareTo(BigInteger.ONE) >= 0 && x.compareTo(encryptionGroup.getP()) < 0
+                && JacobiSymbol.computeJacobiSymbol(x, encryptionGroup.getP()) == 1;
     }
 
 
@@ -145,7 +171,7 @@ public final class MathHelper {
      * @param n a number
      * @return true if x is greater than or equal to n
      */
-    private boolean isGTE(BigInteger x, BigInteger n) {
+    private static boolean isGTE(BigInteger x, BigInteger n) {
         return x.compareTo(n) >= 0;
     }
 
@@ -156,7 +182,7 @@ public final class MathHelper {
      * @param n a number
      * @return true if x is greater than n
      */
-    private boolean isGT(BigInteger x, BigInteger n) {
+    private static boolean isGT(BigInteger x, BigInteger n) {
         return x.compareTo(n) > 0;
     }
 
@@ -167,7 +193,7 @@ public final class MathHelper {
      * @param n a number
      * @return true if x is less than or equal to n
      */
-    private boolean isLTE(BigInteger x, BigInteger n) {
+    private static boolean isLTE(BigInteger x, BigInteger n) {
         return x.compareTo(n) <= 0;
     }
 
@@ -178,7 +204,7 @@ public final class MathHelper {
      * @param n a number
      * @return true if x is less than n
      */
-    private boolean isLT(BigInteger x, BigInteger n) {
+    private static boolean isLT(BigInteger x, BigInteger n) {
         return x.compareTo(n) < 0;
     }
 }
