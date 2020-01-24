@@ -42,7 +42,7 @@
                                     <goal>wget</goal>
                                 </goals>
                                 <configuration>
-                                    <url>https://github.com/ojdkbuild/ojdkbuild/releases/download/java-11-openjdk-11.0.5.10-2/java-11-openjdk-11.0.5.10-2.windows.ojdkbuild.x86_64.zip</url>
+                                    <url>https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.6%2B10/OpenJDK11U-jdk_x86-32_windows_hotspot_11.0.6_10.zip</url>
                                     <unpack>true</unpack>
                                     <outputDirectory>${project.build.directory}/jdk</outputDirectory>
                                 </configuration>
