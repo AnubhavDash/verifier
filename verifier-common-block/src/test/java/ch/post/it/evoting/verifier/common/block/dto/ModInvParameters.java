@@ -15,6 +15,7 @@ public class ModInvParameters {
 
     @JsonDeserialize(converter = StringToBigIntegerConverter.class)
     private BigInteger b;
+
     @JsonDeserialize(converter = StringToBigIntegerConverter.class)
     private BigInteger m;
 
