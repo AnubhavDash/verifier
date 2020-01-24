@@ -3,6 +3,7 @@ package ch.post.it.evoting.verifier.common.block.tools;
 import ch.post.it.evoting.verifier.common.block.dto.ComputeCommitmentParameters;
 import ch.post.it.evoting.verifier.common.block.dto.ModExpParameters;
 import ch.post.it.evoting.verifier.common.block.dto.ModExpProductParameters;
+import ch.post.it.evoting.verifier.common.block.dto.ModInvParameters;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
@@ -56,6 +57,24 @@ public class MathHelperTest {
                     modExpProductParameters.getB(), modExpProductParameters.getE(), modExpProductParameters.getM());
 
             assertEquals(modExpProductParameters.getId(), output, modExpProductParameters.getOutput());
+        });
+    }
+
+    @Test
+    public void modInvWithSimpleValues() {
+        modInvTest("modInvSimpleValues.json");
+    }
+
+    @Test
+    public void modInvWithRealSizeValues() {
+        modInvTest("modInvRealSizeValues.json");
+    }
+
+    private void modInvTest(String jsonFileName) {
+        List<ModInvParameters> modInvParametersList = readValues(jsonFileName, ModInvParameters[].class);
+        modInvParametersList.forEach(modInvParameters -> {
+            BigInteger output = MathHelper.modInv(modInvParameters.getB(), modInvParameters.getM());
+            assertEquals(modInvParameters.getId(), output, modInvParameters.getOutput());
         });
     }
 
