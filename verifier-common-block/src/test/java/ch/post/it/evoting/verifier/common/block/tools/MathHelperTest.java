@@ -1,9 +1,6 @@
 package ch.post.it.evoting.verifier.common.block.tools;
 
-import ch.post.it.evoting.verifier.common.block.dto.ComputeCommitmentParameters;
-import ch.post.it.evoting.verifier.common.block.dto.ModExpParameters;
-import ch.post.it.evoting.verifier.common.block.dto.ModExpProductParameters;
-import ch.post.it.evoting.verifier.common.block.dto.ModInvParameters;
+import ch.post.it.evoting.verifier.common.block.dto.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
@@ -103,6 +100,34 @@ public class MathHelperTest {
         });
     }
 
+    @Test
+    public void computePhiExponentiationSimpleValues() {
+        computePhiExponentiationTest("computePhiExponentiationSimpleValues.json");
+    }
+
+    @Test
+    public void computePhiExponentiationRealSizeValues() {
+        computePhiExponentiationTest("computePhiExponentiationRealSizeValues.json");
+    }
+
+    private void computePhiExponentiationTest(String jsonFileName) {
+        List<ComputePhiExponentiationParameters> computePhiExponentiationParameters = readValues(jsonFileName,
+                ComputePhiExponentiationParameters[].class);
+        computePhiExponentiationParameters.forEach(cpep -> {
+            List<BigInteger> output = MathHelper.computePhiExponentiation(
+                    cpep.getEg(),
+                    cpep.getG_vec(),
+                    cpep.getX()
+            );
+
+            assertEquals(cpep.getId(), cpep.getOutput_vec(), output);
+        });
+    }
+
+
+    // =====================================================================================================================================
+    // Utility methods.
+    // =====================================================================================================================================
 
     private <T> List<T> readValues(String jsonFileName, Class<T[]> clazz) {
         return Arrays.asList(readValue(jsonFileName, clazz));
@@ -121,6 +146,13 @@ public class MathHelperTest {
 
     private void assertEquals(String id, BigInteger expected, BigInteger actual) {
         Assert.assertTrue("Error in dataset for id : " + id, MathHelper.areEqual(expected, actual));
+    }
+
+    private void assertEquals(String id, List<BigInteger> expected_vec, List<BigInteger> actual_vec) {
+        int index = 0;
+        for (BigInteger expected : expected_vec) {
+            assertEquals(id, expected, actual_vec.get(index++));
+        }
     }
 
 }

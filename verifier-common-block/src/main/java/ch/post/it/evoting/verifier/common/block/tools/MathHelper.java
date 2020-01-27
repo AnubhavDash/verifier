@@ -19,6 +19,7 @@ import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionGroup;
 import lombok.NonNull;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import static ch.post.it.evoting.verifier.common.block.tools.Requirements.*;
@@ -81,11 +82,11 @@ public final class MathHelper {
 
 
     /**
-     * Utility to verify membership for Z_q.
+     * Utility to verify membership for Z<sub>q</sub>.
      *
      * @param x  a number
      * @param eg EncryptionGroup
-     * @return true if x &isin; Z_q, false otherwise
+     * @return true if x &isin; Z<sub>q</sub>, false otherwise
      */
     public static boolean isInZ_q(BigInteger x, EncryptionGroup eg) {
         return isGTE(x, BigInteger.ZERO) && isLT(x, eg.getQ());
@@ -97,7 +98,7 @@ public final class MathHelper {
      *
      * @param x               A number
      * @param encryptionGroup the associated encryption group
-     * @return true if x &isin; encryptionGroup, false otherwise
+     * @return true if <code>x &isin; encryptionGroup</code>, false otherwise
      */
     public static boolean isMember(BigInteger x, EncryptionGroup encryptionGroup) {
         return isGTE(x, BigInteger.TWO) && isLT(x, encryptionGroup.getP())
@@ -116,7 +117,7 @@ public final class MathHelper {
      * @param b the base
      * @param e the exponent
      * @param m the modulus
-     * @return the modular exponentiation, b exp(e) mod m
+     * @return the modular exponentiation, <code>b<sup>e</sup> mod m</code>
      */
     public static BigInteger modExp(BigInteger b, BigInteger e, BigInteger m) {
         // Naive implementation before optimisation
@@ -154,7 +155,7 @@ public final class MathHelper {
      *
      * @param b the base
      * @param m the modulus
-     * @return the modular inverse, b (-1) mod m
+     * @return the modular inverse, <code>b<sup>-1</sup> mod m</code>
      */
     public static BigInteger modInv(BigInteger b, BigInteger m) {
         // Naive implementation before optimisation
@@ -163,11 +164,38 @@ public final class MathHelper {
 
 
     /**
+     * Utility functions - 1.6.2 Exponentiation proof's phi function.
+     * <p>
+     * Proof of knowledge of a {@link BigInteger} element {@code x}.
+     *
+     * @param encryptionGroup The encryption group context <code>(p, q, g)</code>.
+     * @param g_vec           A vector of generators.
+     * @param x               The value for which we want a proof of knowledge.
+     * @return The phi exponentiation of {@code g_vec}
+     */
+    public static List<BigInteger> computePhiExponentiation(EncryptionGroup encryptionGroup, List<BigInteger> g_vec, BigInteger x) {
+        // Pre requirements.
+        requireIsInZ_q(x, encryptionGroup);
+        requireVectorIsMember(g_vec, encryptionGroup);
+
+        List<BigInteger> output_vec = new ArrayList<>(g_vec.size());
+        for (BigInteger g : g_vec) {
+            final BigInteger output = MathHelper.modExp(g, x, encryptionGroup.getP());
+            // Post requirements. Output also needs to be part of {G^n}_q.
+            requireIsMember(output, encryptionGroup);
+            output_vec.add(output);
+        }
+
+        return output_vec;
+    }
+
+
+    /**
      * Check if x is greater than or equal to n.
      *
      * @param x a number
      * @param n a number
-     * @return true if x is greater than or equal to n
+     * @return true if {@code x} is greater than or equal to {@code n}
      */
     private static boolean isGTE(BigInteger x, BigInteger n) {
         return x.compareTo(n) >= 0;
@@ -179,7 +207,7 @@ public final class MathHelper {
      *
      * @param x a number
      * @param n a number
-     * @return true if x is greater than n
+     * @return true if {@code x} is greater than {@code n}
      */
     private static boolean isGT(BigInteger x, BigInteger n) {
         return x.compareTo(n) > 0;
@@ -191,7 +219,7 @@ public final class MathHelper {
      *
      * @param x a number
      * @param n a number
-     * @return true if x is less than or equal to n
+     * @return true if {@code x} is less than or equal to {@code n}
      */
     private static boolean isLTE(BigInteger x, BigInteger n) {
         return x.compareTo(n) <= 0;
@@ -203,7 +231,7 @@ public final class MathHelper {
      *
      * @param x a number
      * @param n a number
-     * @return true if x is less than n
+     * @return true if {@code x} is less than {@code n}
      */
     private static boolean isLT(BigInteger x, BigInteger n) {
         return x.compareTo(n) < 0;
