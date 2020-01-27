@@ -69,8 +69,9 @@ public class CheckConfirmedVotesBallotBox extends AbstractVerification {
             // Stream over all lines of current ballot file.
             try (Stream<String> lines = Files.lines(downloadedBbFile.toPath())) {
 
-                // Create a map with two lists: one is the successful votes (confirmed == true) and the other the failed ones
-                // (confirmed == false).
+                // Create a map with two entries:
+                // true => list of confirmed votes
+                // false => list of unconfirmed votes
                 Map<Boolean, List<String>> partitionedBallotBox = partitionDownloadedBallotBox(lines);
 
                 // Extract the votingCardId's.

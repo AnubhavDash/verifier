@@ -37,59 +37,59 @@ public class CheckConfirmedVotesBallotBoxTest extends Block2VerificationAbstract
     }
 
     @Test
-    public void successfulVotesEqualConfirmedVotes() throws Exception {
+    public void confirmedVotesEqualSuccessfulVotes() throws Exception {
         VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource(
-                "/CheckConfirmedVotesBallotBoxTest/OK-SUCC").toURI()));
+                "/CheckConfirmedVotesBallotBoxTest/OK-CONF").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void successfulVotesNotEqualConfirmedVotes() throws Exception {
+    public void confirmedVotesNotEqualSuccessfulVotes() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The list of confirmed votes and the list of successful votes are not equal.");
-        verification.verify(Paths.get(getClass().getResource("/CheckConfirmedVotesBallotBoxTest/NOK-SUCC").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckConfirmedVotesBallotBoxTest/NOK-CONF").toURI()));
     }
 
     @Test
-    public void failedVotesEqualUnconfirmedVotes() throws Exception {
+    public void unconfirmedVotesEqualFailedVotes() throws Exception {
         final VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource(
-                "/CheckConfirmedVotesBallotBoxTest/OK-FAIL").toURI()));
+                "/CheckConfirmedVotesBallotBoxTest/OK-UNCONF").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void failedVotesNotEqualUnconfirmedVotes() throws Exception {
+    public void unconfirmedVotesNotEqualFailedVotes() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("The list of unconfirmed votes and the list of failed votes are not equal.");
-        verification.verify(Paths.get(getClass().getResource("/CheckConfirmedVotesBallotBoxTest/NOK-FAIL").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckConfirmedVotesBallotBoxTest/NOK-UNCONF").toURI()));
     }
 
     @Test
-    public void successfulFailedVotesEqualConfirmedUnconfirmedVotes() throws Exception {
+    public void confirmedUnconfirmedVotesEqualSuccessfulFailedVotes() throws Exception {
         VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource(
-                "/CheckConfirmedVotesBallotBoxTest/OK-SUCC-FAIL").toURI()));
+                "/CheckConfirmedVotesBallotBoxTest/OK-CONF-UNCONF").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void duplicatedConfUnconfVotes() throws Exception {
+    public void duplicatedConfirmedUnconfirmedVotes() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("A voting card ID appears multiple times in the downloaded ballot box.");
         verification.verify(Paths.get(getClass().getResource("/CheckConfirmedVotesBallotBoxTest/NOK-DUP-CONF-UNCONF").toURI()));
     }
 
     @Test
-    public void duplicatedConfVotes() throws Exception {
+    public void duplicatedConfirmedVotes() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("A voting card ID appears multiple times in the downloaded ballot box.");
         verification.verify(Paths.get(getClass().getResource("/CheckConfirmedVotesBallotBoxTest/NOK-DUP-CONF").toURI()));
     }
 
     @Test
-    public void duplicatedUnconfVotes() throws Exception {
+    public void duplicatedUnconfirmedVotes() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("A voting card ID appears multiple times in the downloaded ballot box.");
         verification.verify(Paths.get(getClass().getResource("/CheckConfirmedVotesBallotBoxTest/NOK-DUP-UNCONF").toURI()));
@@ -103,7 +103,7 @@ public class CheckConfirmedVotesBallotBoxTest extends Block2VerificationAbstract
     }
 
     @Test
-    public void executeTestNOKnotFile() throws Exception {
+    public void downloadedBallotBoxFileNotFound() throws Exception {
         exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage("downloadedBallotBox.*\\.csv");
         verification.verify(Paths.get(getClass().getResource("/CheckConfirmedVotesBallotBoxTest/NOK-NOTFILE").toURI()));
