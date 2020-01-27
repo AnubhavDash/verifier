@@ -54,7 +54,7 @@ public class MathHelperTest {
                 readValues(jsonFileName, ModExpProductParameters[].class);
         modExpProductParametersList.forEach(modExpProductParameters -> {
             BigInteger output = MathHelper.modExpProduct(
-                    modExpProductParameters.getB(), modExpProductParameters.getE(), modExpProductParameters.getM());
+                    modExpProductParameters.getB_vec(), modExpProductParameters.getE_vec(), modExpProductParameters.getM());
 
             assertEquals(modExpProductParameters.getId(), output, modExpProductParameters.getOutput());
         });
@@ -95,7 +95,7 @@ public class MathHelperTest {
             BigInteger output = MathHelper.computeCommitment(
                     computeCommitmentParameters.getEg(),
                     computeCommitmentParameters.getR(),
-                    computeCommitmentParameters.getA(),
+                    computeCommitmentParameters.getA_vec(),
                     computeCommitmentParameters.getCk()
             );
 

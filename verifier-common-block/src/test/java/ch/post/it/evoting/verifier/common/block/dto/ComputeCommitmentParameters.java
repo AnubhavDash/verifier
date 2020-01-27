@@ -24,7 +24,7 @@ public class ComputeCommitmentParameters {
     private BigInteger r;
 
     @JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
-    private List<BigInteger> a;
+    private List<BigInteger> a_vec;
 
     private CommitmentKey ck;
 
@@ -35,13 +35,13 @@ public class ComputeCommitmentParameters {
     public ComputeCommitmentParameters(@JsonProperty("id") String id,
                                        @JsonProperty("eg") EncryptionGroup eg,
                                        @JsonProperty("r") BigInteger r,
-                                       @JsonProperty("a") List<BigInteger> a,
+                                       @JsonProperty("a_vec") List<BigInteger> a_vec,
                                        @JsonProperty("ck") CommitmentKey ck,
                                        @JsonProperty("output") BigInteger output) {
         this.id = id;
         this.eg = eg;
         this.r = r;
-        this.a = a;
+        this.a_vec = a_vec;
         this.ck = ck;
         this.output = output;
     }

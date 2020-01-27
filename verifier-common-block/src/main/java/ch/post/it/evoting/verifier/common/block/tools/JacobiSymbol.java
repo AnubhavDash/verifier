@@ -4,7 +4,6 @@ import java.math.BigInteger;
 
 public final class JacobiSymbol {
 
-    private static final BigInteger TWO = BigInteger.valueOf(2L);
     private static final BigInteger THREE = BigInteger.valueOf(3L);
     private static final BigInteger FOUR = BigInteger.valueOf(4L);
     private static final BigInteger SEVEN = BigInteger.valueOf(7L);
@@ -34,9 +33,9 @@ public final class JacobiSymbol {
         // Step 4: define e and a_1 such that a = 2^e * a_1 where a_1 is odd
         int e = 0;
         BigInteger a_1 = a;
-        while (a_1.remainder(TWO).equals(BigInteger.ZERO)) {
+        while (a_1.remainder(BigInteger.TWO).equals(BigInteger.ZERO)) {
             e++;
-            a_1 = a_1.divide(TWO);
+            a_1 = a_1.divide(BigInteger.TWO);
         }
         // Step 5 : if e is even, then s = 1
         //          else if n mod 8 = 1 or n mod 8 = 7, then s = 1

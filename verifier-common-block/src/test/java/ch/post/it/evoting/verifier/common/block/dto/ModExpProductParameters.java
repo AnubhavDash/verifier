@@ -16,10 +16,10 @@ public class ModExpProductParameters {
     private String id;
 
     @JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
-    private List<BigInteger> b;
+    private List<BigInteger> b_vec;
 
     @JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
-    private List<BigInteger> e;
+    private List<BigInteger> e_vec;
 
     @JsonDeserialize(converter = StringToBigIntegerConverter.class)
     private BigInteger m;
@@ -29,13 +29,13 @@ public class ModExpProductParameters {
 
     @JsonCreator
     public ModExpProductParameters(@JsonProperty("id") String id,
-                            @JsonProperty("b") List<BigInteger> b,
-                            @JsonProperty("e") List<BigInteger> e,
+                            @JsonProperty("b_vec") List<BigInteger> b_vec,
+                            @JsonProperty("e_vec") List<BigInteger> e_vec,
                             @JsonProperty("m") BigInteger m,
                             @JsonProperty("output") BigInteger output) {
         this.id = id;
-        this.b = b;
-        this.e = e;
+        this.b_vec = b_vec;
+        this.e_vec = e_vec;
         this.m = m;
         this.output = output;
     }
