@@ -76,11 +76,11 @@ public final class MathHelper {
     /**
      * Utility functions - 1.6.1 Schnorr proof’s phi function.
      * <p>
-     * Proof of knowledge of {@link BigInteger} element.
+     * Proof of knowledge of a {@link BigInteger} element <code>x</code>.
      *
-     * @param encryptionGroup encryption group context
+     * @param encryptionGroup encryption group context <code>(p, q, g)</code>
      * @param x               the value for which we want a proof of knowledge
-     * @return
+     * @return <code>g<sup>x</sup> mod p</code>
      */
     public static BigInteger computePhiSchnorr(EncryptionGroup encryptionGroup, BigInteger x) {
         // Pre requirements
