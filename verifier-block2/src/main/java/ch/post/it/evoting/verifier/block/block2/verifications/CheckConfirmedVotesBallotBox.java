@@ -1,14 +1,14 @@
 /*
  * This file is part of Verifier Swiss Post.
- *
+ * <p>
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
  * the GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
- *
+ * <p>
  * Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
@@ -22,15 +22,16 @@ import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.DownloadedBallot;
+import lombok.Getter;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.AbstractMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -42,7 +43,8 @@ public class CheckConfirmedVotesBallotBox extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(2);
         def.setCategory(Category.CONSISTENCY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification08.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
+                "verification08.description"));
         def.setId(8);
         def.setName("checkConfirmedVotesBallotBox");
         def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
@@ -53,74 +55,42 @@ public class CheckConfirmedVotesBallotBox extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        List<File> downloadedBallotBoxFiles = PathHelper.getFiles(inputDirectoryPath.resolve(Block2VerificationSuite.PATH_BALLOTBOXES).toFile(),
-                "downloadedBallotBox.*\\.csv",
-                true);
+        List<File> downloadedBallotBoxFiles =
+                PathHelper.getFiles(inputDirectoryPath.resolve(Block2VerificationSuite.PATH_BALLOTBOXES).toFile(),
+                        "downloadedBallotBox.*\\.csv",
+                        true);
 
+        // Iterate over all ballotBox files.
         for (File downloadedBbFile : downloadedBallotBoxFiles) {
 
             File successVotes = downloadedBbFile.toPath().getParent().resolve("successfulVotes.csv").toFile();
             File failedVotes = downloadedBbFile.toPath().getParent().resolve("failedVotes.csv").toFile();
 
+            // Stream over all lines of current ballot file.
             try (Stream<String> lines = Files.lines(downloadedBbFile.toPath())) {
-                Map<String, Boolean> mapDownloadedBb = lines
-                        .map(line -> {
-                            try {
-                                return extractDbInfosFromLine(line);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        })
-                        .filter(entry -> entry.getKey() != null)
-                        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
-                List<String> votingCardSuccessList = StreamSupport.stream(
-                        Deserializer.fromCsv(successVotes.getParentFile(), successVotes.getName(), ";", array -> {
-                            if (array == null || array.length <= 2) {
-                                return null;
-                            }
-                            return array[0];
-                        }).spliterator(), false)
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toList());
+                // Create a map with two entries:
+                // true => list of confirmed votes
+                // false => list of unconfirmed votes
+                Map<Boolean, List<String>> partitionedBallotBox = partitionDownloadedBallotBox(lines);
 
-                List<String> votingCardFailedList = StreamSupport.stream(
-                        Deserializer.fromCsv(failedVotes.getParentFile(), failedVotes.getName(), ";", array -> {
-                            if (array == null || array.length <= 2) {
-                                return null;
-                            }
-                            return array[0];
-                        }).spliterator(), false)
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toList());
+                // Extract the votingCardId's.
+                List<String> votingCardSuccessList = extractVotingCardIds(successVotes);
+                List<String> votingCardFailedList = extractVotingCardIds(failedVotes);
 
-                //test size
-                if (mapDownloadedBb.size() != (votingCardSuccessList.size() + votingCardFailedList.size())) {
+                // Check that the lists are equals (containing exactly the same elements).
+                if (!partitionedBallotBox.get(true).equals(votingCardSuccessList)) {
                     throw buildVerificationFailureException(
-                            "There is a mismatch count between the list of successful or failed votes and the download ballot box",
+                            "The list of confirmed votes and the list of successful votes are not equal.",
                             Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
-                            "verification08.nok.message"
+                            "verification08.confirmed.nok.message"
                     );
                 }
-
-                //test existence in success or failed list
-                long count = mapDownloadedBb.entrySet()
-                        .stream()
-                        .map(e -> {
-                            if (e.getValue()) {
-                                return votingCardSuccessList.contains(e.getKey());
-                            } else {
-                                return votingCardFailedList.contains(e.getKey());
-                            }
-                        })
-                        .filter(val -> val == false)
-                        .count();
-
-                if (count > 0) {
+                if (!partitionedBallotBox.get(false).equals(votingCardFailedList)) {
                     throw buildVerificationFailureException(
-                            "There is a mismatch between the list of successful or failed votes and the download ballot box",
+                            "The list of unconfirmed votes and the list of failed votes are not equal.",
                             Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
-                            "verification08.nok.message"
+                            "verification08.unconfirmed.nok.message"
                     );
                 }
             }
@@ -130,15 +100,84 @@ public class CheckConfirmedVotesBallotBox extends AbstractVerification {
         return result;
     }
 
-    private static AbstractMap.SimpleEntry<String, Boolean> extractDbInfosFromLine(String line) throws IOException {
+    private Map<Boolean, List<String>> partitionDownloadedBallotBox(Stream<String> lines) {
+        return lines
+                .parallel()
+                // Convert a line to an object containing votingCardId and confirmed boolean.
+                .map(this::extractDbInfosFromLine)
+                // Remove potential nulls coming from extraction.
+                .filter(Objects::nonNull)
+                // Check for duplicates. Method distinctByKey throws in case of duplicates.
+                .filter(distinctByKey(VotingEntry::getVotingCardId))
+                // Sort according to votingCardId's.
+                .sorted(Comparator.comparing(VotingEntry::getVotingCardId))
+                // Main collect.
+                .collect(
+                        // Partition by confirmed or not.
+                        Collectors.partitioningBy(
+                                VotingEntry::isConfirmed,
+                                // Mapping to extract only the votingCardId.
+                                Collectors.mapping(
+                                        VotingEntry::getVotingCardId,
+                                        Collectors.toCollection(ArrayList::new)
+                                )
+                        )
+                );
+    }
+
+    // Adapted from: https://stackoverflow.com/questions/23699371/java-8-distinct-by-property/27872852#27872852
+    private Predicate<VotingEntry> distinctByKey(Function<VotingEntry, String> keyExtractor) {
+        Set<String> seen = ConcurrentHashMap.newKeySet();
+        return t -> {
+            if (!seen.add(keyExtractor.apply(t))) {
+                throw buildVerificationFailureException(
+                        "A voting card ID appears multiple times in the downloaded ballot box.",
+                        Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
+                        "verification08.duplicate.nok.message",
+                        keyExtractor.apply(t)
+                );
+            }
+            return true;
+        };
+    }
+
+    private List<String> extractVotingCardIds(File votes) throws IOException {
+        return StreamSupport.stream(
+                Deserializer.fromCsv(votes.getParentFile(), votes.getName(), ";", array -> {
+                    if (array == null || array.length <= 2) {
+                        return null;
+                    }
+                    return array[0];
+                }).spliterator(), true)
+                .filter(Objects::nonNull)
+                .sorted()
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    private VotingEntry extractDbInfosFromLine(String line) {
         if (!line.isEmpty() && line.contains("}}|")) {
             int endJsonObjectIndex = line.indexOf("}}|") + 2;
             String json = line.substring(0, endJsonObjectIndex);
             String voteCastCode = line.substring(endJsonObjectIndex + 1).split("\\|")[0];
-            DownloadedBallot db = Deserializer.fromJson(TypeConverter.stringToByte(json), DownloadedBallot.class);
-            return new AbstractMap.SimpleEntry<>(db.getVote().getVotingCardId(), !voteCastCode.isEmpty());
+            try {
+                DownloadedBallot db = Deserializer.fromJson(TypeConverter.stringToByte(json), DownloadedBallot.class);
+                return new VotingEntry(db.getVote().getVotingCardId(), !voteCastCode.isEmpty());
+            } catch (IOException e) {
+                throw new RuntimeException();
+            }
         } else {
-            return new AbstractMap.SimpleEntry<>(null, null);
+            return null;
+        }
+    }
+
+    @Getter
+    private static class VotingEntry {
+        private String votingCardId;
+        private boolean confirmed;
+
+        VotingEntry(String votingCardId, boolean confirmed) {
+            this.votingCardId = votingCardId;
+            this.confirmed = confirmed;
         }
     }
 }
