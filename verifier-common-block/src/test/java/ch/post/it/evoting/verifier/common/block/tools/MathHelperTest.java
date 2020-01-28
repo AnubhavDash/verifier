@@ -143,7 +143,31 @@ public class MathHelperTest {
                     cpep.getG_vec(),
                     cpep.getX()
             );
+            assertEquals(cpep.getId(), cpep.getOutput_vec(), output);
+        });
+    }
 
+    @Test
+    public void computePlaintextEqualityWithSimpleValues() {
+        computePlaintextEqualityTest("computePlaintextEqualitySimpleValues.json");
+    }
+
+    @Test
+    public void computePlaintextEqualityWithRealSizeValues() {
+        computePlaintextEqualityTest("computePlaintextEqualityRealSizeValues.json");
+    }
+
+    private void computePlaintextEqualityTest(String jsonFileName) {
+        final List<ComputePlaintextEqualityParameters> computePlaintextEqualityParameters =
+                readValues(jsonFileName, ComputePlaintextEqualityParameters[].class);
+        computePlaintextEqualityParameters.forEach(cpep -> {
+            final List<BigInteger> output = MathHelper.computePhiPlaintextEquality(
+                    cpep.getEg(),
+                    cpep.getH_vec(),
+                    cpep.getH_vec_bar(),
+                    cpep.getR(),
+                    cpep.getR_bar()
+            );
             assertEquals(cpep.getId(), cpep.getOutput_vec(), output);
         });
     }

@@ -214,6 +214,53 @@ public final class MathHelper {
 
 
     /**
+     * Utility functions - 1.6.3 Plain-Text Equality proof's phi function.
+     *
+     * @param encryptionGroup The encryption group context <code>(p, q, g)</code>.
+     * @param h_vec           The primary key vector.
+     * @param h_vec_bar       The secondary key vector.
+     * @param r               The first random number.
+     * @param r_bar           The second random number.
+     * @return The plain text equality proof.
+     */
+    public static List<BigInteger> computePhiPlaintextEquality(EncryptionGroup encryptionGroup, List<BigInteger> h_vec,
+                                                               List<BigInteger> h_vec_bar, BigInteger r, BigInteger r_bar) {
+        if (h_vec.size() != h_vec_bar.size()) {
+            throw new IllegalArgumentException("Primary and secondary key vectors must have the same dimension.");
+        }
+        BigInteger p = encryptionGroup.getP();
+        BigInteger g = encryptionGroup.getG();
+
+        // Pre requirements.
+        requireIsMember(g, encryptionGroup);
+        requireIsInZ_q(r, encryptionGroup);
+        requireIsInZ_q(r_bar, encryptionGroup);
+        requireVectorIsMember(h_vec, encryptionGroup);
+        requireVectorIsMember(h_vec_bar, encryptionGroup);
+
+        List<BigInteger> output_vec = new ArrayList<>(2 + h_vec.size());
+        final BigInteger r_exp = modExp(g, r, p);
+        requireIsMember(r_exp, encryptionGroup); // Post requirement.
+        output_vec.add(r_exp);
+
+        final BigInteger r_bar_exp = modExp(g, r_bar, p);
+        requireIsMember(r_bar_exp, encryptionGroup); // Post requirement.
+        output_vec.add(r_bar_exp);
+
+        for (int i = 0; i < h_vec.size(); i++) {
+            final BigInteger numerator = modExp(h_vec.get(i), r, p);
+            final BigInteger denominator = modExp(modInv(h_vec_bar.get(i), p), r_bar, p);
+
+            final BigInteger output_i = numerator.multiply(denominator).mod(p);
+            requireIsMember(output_i, encryptionGroup); // Post requirement.
+            output_vec.add(output_i);
+        }
+
+        return output_vec;
+    }
+
+
+    /**
      * Check if x is greater than or equal to n.
      *
      * @param x a number
