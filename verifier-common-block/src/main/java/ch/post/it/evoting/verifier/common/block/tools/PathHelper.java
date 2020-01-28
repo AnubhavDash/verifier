@@ -95,7 +95,7 @@ public class PathHelper {
      * @throws NoSuchFileException      If no file matching the pattern is found.
      */
     public static Path getPath(Path startingPath, int maxDepth, String filenamePattern) throws IOException {
-        final List<Path> paths = Files.find(startingPath, maxDepth,
+        List<Path> paths = Files.find(startingPath, maxDepth,
                 (path, attributes) -> Files.isRegularFile(path) && path.getFileName().toString().matches(filenamePattern))
                 .collect(Collectors.toList());
         if (paths.size() > 1) {
@@ -107,5 +107,26 @@ public class PathHelper {
         } else {
             return paths.get(0);
         }
+    }
+
+    /**
+     * Search for a list of {@link Path} matching the {@code filenamePattern}. If no files are found, an exception is thrown.
+     *
+     * @param startingPath    The path at which to start the search.
+     * @param maxDepth        The maximum depth to go in the path tree.
+     * @param filenamePattern The file pattern to search for.
+     * @return The list of {@link Path} of the files matching the given pattern.
+     * @throws IOException         If the {@code startingPath} is not found.
+     * @throws NoSuchFileException If no files matching the pattern are found.
+     */
+    public static List<Path> getPaths(Path startingPath, int maxDepth, String filenamePattern) throws IOException {
+        final List<Path> paths = Files.find(startingPath, maxDepth,
+                (path, attributes) -> Files.isRegularFile(path) && path.getFileName().toString().matches(filenamePattern))
+                .collect(Collectors.toList());
+        if (paths.isEmpty()) {
+            throw new NoSuchFileException(String.format("No files found with given pattern. Starting path:%s " +
+                    "filenamePattern:%s ", startingPath, filenamePattern));
+        }
+        return paths;
     }
 }
