@@ -74,6 +74,29 @@ public final class MathHelper {
     }
 
 
+    /**
+     * Utility functions - 1.6.1 Schnorr proof’s phi function.
+     * <p>
+     * Proof of knowledge of a {@link BigInteger} element <code>x</code>.
+     *
+     * @param encryptionGroup encryption group context <code>(p, q, g)</code>
+     * @param x               the value for which we want a proof of knowledge
+     * @return <code>g<sup>x</sup> mod p</code>
+     */
+    public static BigInteger computePhiSchnorr(EncryptionGroup encryptionGroup, BigInteger x) {
+        // Pre requirements
+        Requirements.requireIsInZ_q(x, encryptionGroup);
+
+        // Schnorr proof
+        BigInteger result = modExp(encryptionGroup.getG(), x, encryptionGroup.getP());
+
+        // Post requirements
+        Requirements.requireIsMember(result, encryptionGroup);
+
+        return result;
+    }
+
+
     public static boolean isEulerCriterionValid(BigInteger vo, BigInteger p) {
         BigInteger exponent = (p.subtract(BigInteger.ONE)).divide(BigInteger.TWO);
         BigInteger ec = vo.modPow(exponent, p);
@@ -151,7 +174,7 @@ public final class MathHelper {
 
 
     /**
-     * Utility functions - 1.4.3 Modular inverse
+     * Utility functions - 1.4.3 Modular inverse.
      *
      * @param b the base
      * @param m the modulus

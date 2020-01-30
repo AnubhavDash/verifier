@@ -31,7 +31,7 @@ public class MathHelperTest {
         List<ModExpParameters> modExpParametersList = readValues(jsonFileName, ModExpParameters[].class);
         modExpParametersList.forEach(modExpParameters -> {
             BigInteger output = MathHelper.modExp(modExpParameters.getB(), modExpParameters.getE(), modExpParameters.getM());
-            assertEquals(modExpParameters.getId(), output, modExpParameters.getOutput());
+            assertEquals(modExpParameters.getId(), modExpParameters.getOutput(), output);
         });
     }
 
@@ -53,7 +53,7 @@ public class MathHelperTest {
             BigInteger output = MathHelper.modExpProduct(
                     modExpProductParameters.getB_vec(), modExpProductParameters.getE_vec(), modExpProductParameters.getM());
 
-            assertEquals(modExpProductParameters.getId(), output, modExpProductParameters.getOutput());
+            assertEquals(modExpProductParameters.getId(), modExpProductParameters.getOutput(), output);
         });
     }
 
@@ -71,7 +71,7 @@ public class MathHelperTest {
         List<ModInvParameters> modInvParametersList = readValues(jsonFileName, ModInvParameters[].class);
         modInvParametersList.forEach(modInvParameters -> {
             BigInteger output = MathHelper.modInv(modInvParameters.getB(), modInvParameters.getM());
-            assertEquals(modInvParameters.getId(), output, modInvParameters.getOutput());
+            assertEquals(modInvParameters.getId(), modInvParameters.getOutput(), output);
         });
     }
 
@@ -96,7 +96,31 @@ public class MathHelperTest {
                     computeCommitmentParameters.getCk()
             );
 
-            assertEquals(computeCommitmentParameters.getId(), output, computeCommitmentParameters.getOutput());
+            assertEquals(computeCommitmentParameters.getId(), computeCommitmentParameters.getOutput(), output);
+        });
+    }
+
+
+    @Test
+    public void computePhiSchnorrWithSimpleValues() {
+        computePhiSchnorrTest("computePhiSchnorrSimpleValues.json");
+    }
+
+    @Test
+    public void computePhiSchnorrWithRealSizeValues() {
+        computePhiSchnorrTest("computePhiSchnorrRealSizeValues.json");
+    }
+
+    private void computePhiSchnorrTest(String jsonFileName) {
+        List<ComputePhiSchnorrParameters> computePhiSchnorrParametersList =
+                readValues(jsonFileName, ComputePhiSchnorrParameters[].class);
+        computePhiSchnorrParametersList.forEach(computePhiSchnorrParameters -> {
+            BigInteger output = MathHelper.computePhiSchnorr(
+                    computePhiSchnorrParameters.getEg(),
+                    computePhiSchnorrParameters.getX()
+            );
+
+            assertEquals(computePhiSchnorrParameters.getId(), computePhiSchnorrParameters.getOutput(), output);
         });
     }
 
