@@ -23,17 +23,17 @@ public final class JacobiSymbol {
         // Step 1: a = a mod n
         BigInteger a = initial_a.mod(n);
         // Step 2: if a = 1 or n = 1 return 1
-        if (a.equals(BigInteger.ONE) || n.equals(BigInteger.ONE)) {
+        if (MathHelper.areEqual(a, BigInteger.ONE) || MathHelper.areEqual(n, BigInteger.ONE)) {
             return 1;
         }
         // Step 3: if a = 0 return 0
-        if (a.equals(BigInteger.ZERO)) {
+        if (MathHelper.areEqual(a, BigInteger.ZERO)) {
             return 0;
         }
         // Step 4: define e and a_1 such that a = 2^e * a_1 where a_1 is odd
         int e = 0;
         BigInteger a_1 = a;
-        while (a_1.remainder(BigInteger.TWO).equals(BigInteger.ZERO)) {
+        while (MathHelper.areEqual(a_1.remainder(BigInteger.TWO), BigInteger.ZERO)) {
             e++;
             a_1 = a_1.divide(BigInteger.TWO);
         }
@@ -45,14 +45,14 @@ public final class JacobiSymbol {
             s = 1;
         } else {
             BigInteger n_mod_eight = n.mod(EIGHT);
-            if (n_mod_eight.equals(BigInteger.ONE) || n_mod_eight.equals(SEVEN)) {
+            if (MathHelper.areEqual(n_mod_eight, BigInteger.ONE) || MathHelper.areEqual(n_mod_eight, SEVEN)) {
                 s = 1;
             } else { // n_mod_eight.equals(THREE) || n_mod_eight.equals(FIVE)
                 s = -1;
             }
         }
         // Step 6: if n mod 4 = 3 and a_1 mod 4 = 3, then s = -s
-        if (n.mod(FOUR).equals(THREE) && a_1.mod(FOUR).equals(THREE)) {
+        if (MathHelper.areEqual(n.mod(FOUR), THREE) && MathHelper.areEqual(a_1.mod(FOUR), THREE)) {
             s = -s;
         }
         // Step 7: n_1 = n mod a_1

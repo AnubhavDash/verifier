@@ -124,7 +124,7 @@ public final class MathHelper {
      * @return true if <code>x &isin; encryptionGroup</code>, false otherwise
      */
     public static boolean isMember(BigInteger x, EncryptionGroup encryptionGroup) {
-        return isGTE(x, BigInteger.TWO) && isLT(x, encryptionGroup.getP())
+        return isGTE(x, BigInteger.ONE) && isLT(x, encryptionGroup.getP())
                 && JacobiSymbol.computeJacobiSymbol(x, encryptionGroup.getP()) == 1;
     }
 
