@@ -81,8 +81,11 @@ public class TypeConverter {
         if (s.startsWith("0x") || s.startsWith("0X")) {
             // Explicit base 16 (hexadecimal) constructor
             return new BigInteger(s.substring(2), 16);
+        } else if (s.matches("[0-9]+")) {
+            // Explicit base 10 constructor
+            return new BigInteger(s, 10);
+        } else {
+            return base64ToBigInteger(s);
         }
-        // Explicit base 10 constructor
-        return new BigInteger(s, 10);
     }
 }
