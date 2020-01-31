@@ -15,6 +15,11 @@
 package ch.post.it.evoting.verifier.common.block.tools;
 
 import ch.post.it.evoting.verifier.common.block.dto.revised.Metadata;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.bouncycastle.cert.X509CertificateHolder;
@@ -163,6 +168,47 @@ public class SignatureChecker {
             }
         } catch (IOException | GeneralSecurityException e) {
             LOGGER.error("Signature check failed.", e);
+        }
+
+        return false;
+    }
+
+    /**
+     * Verify that the .sign signature of a json file is correct. This method reconstruct a json tree from the information contained in
+     * the signature and compares the tree with the one of the signed file.
+     *
+     * @param sourceNode               The {@link JsonNode} representing the signed file.
+     * @param signatureNode            The {@link JsonNode} representing the signature of the file.
+     * @param signingCertificate       The certificate used to sign the file.
+     * @param intermediateCertificates Intermediate certificates if any.
+     * @param rootCertificate          The root certificate.
+     * @return {@code true} if the provided {@code signatureNode} is the correct signature for the {@code sourceNode} file.
+     */
+    public static boolean verifyJsonSignature(JsonNode sourceNode, JsonNode signatureNode, byte[] signingCertificate,
+                                              byte[][] intermediateCertificates, byte[] rootCertificate) {
+
+        try {
+            final X509Certificate sCert = loadCertificate(signingCertificate);
+
+            // Extract the json fields back from the signature.
+            final Jws<Claims> claimsJws = Jwts.parser().setSigningKey(sCert.getPublicKey()).parseClaimsJws(signatureNode.asText());
+            final LinkedHashMap recoveredSignedObject = (LinkedHashMap) claimsJws.getBody().get("objectToSign");
+
+            // Convert to strings node to make the comparison.
+            ObjectMapper mapper = new ObjectMapper();
+            final String recoveredString = mapper.writeValueAsString(recoveredSignedObject);
+            final String sourceString = mapper.writeValueAsString(sourceNode);
+
+            // If signature is valid, check certificate chain validity.
+            if (sourceString.equals(recoveredString)) {
+                if (rootCertificate != null) {
+                    List<X509Certificate> intermediates = loadCertificatesChain(intermediateCertificates, sCert);
+                    verifyCertificateChain(sCert, intermediates, loadCertificate(rootCertificate));
+                }
+                return true;
+            }
+        } catch (IOException | GeneralSecurityException e) {
+            LOGGER.error("JSON signature check failed.", e);
         }
 
         return false;
