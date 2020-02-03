@@ -30,6 +30,7 @@ public abstract class Block3VerificationAbstractTest {
         VerificationDefinition verificationDefinition = verification.getVerificationDefinition();
         // Minimum required definition
         Assert.assertNotNull(verificationDefinition);
+        Assert.assertEquals(3, verificationDefinition.getBlockId());
         Assert.assertNotNull(verificationDefinition.getCategory());
         Assert.assertNotNull(verificationDefinition.getName());
         Assert.assertNotNull(verificationDefinition.getDescription());
