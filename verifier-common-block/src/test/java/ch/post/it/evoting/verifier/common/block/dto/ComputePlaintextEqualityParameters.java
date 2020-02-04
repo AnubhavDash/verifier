@@ -34,21 +34,4 @@ public class ComputePlaintextEqualityParameters {
     @JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
     private List<BigInteger> output_vec;
 
-    @JsonCreator
-    public ComputePlaintextEqualityParameters(@JsonProperty("id") String id,
-                                              @JsonProperty("eg") EncryptionGroup eg,
-                                              @JsonProperty("h_vec") List<BigInteger> h_vec,
-                                              @JsonProperty("h_vec_bar") List<BigInteger> h_vec_bar,
-                                              @JsonProperty("r") BigInteger r,
-                                              @JsonProperty("r_bar") BigInteger r_bar,
-                                              @JsonProperty("output_vec") List<BigInteger> output_vec) {
-        this.id = id;
-        this.eg = eg;
-        this.h_vec = h_vec;
-        this.h_vec_bar = h_vec_bar;
-        this.r = r;
-        this.r_bar = r_bar;
-        this.output_vec = output_vec;
-    }
-
 }

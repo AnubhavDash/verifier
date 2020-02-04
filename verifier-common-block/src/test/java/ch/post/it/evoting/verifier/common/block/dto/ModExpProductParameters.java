@@ -27,17 +27,4 @@ public class ModExpProductParameters {
     @JsonDeserialize(converter = StringToBigIntegerConverter.class)
     private BigInteger output;
 
-    @JsonCreator
-    public ModExpProductParameters(@JsonProperty("id") String id,
-                            @JsonProperty("b_vec") List<BigInteger> b_vec,
-                            @JsonProperty("e_vec") List<BigInteger> e_vec,
-                            @JsonProperty("m") BigInteger m,
-                            @JsonProperty("output") BigInteger output) {
-        this.id = id;
-        this.b_vec = b_vec;
-        this.e_vec = e_vec;
-        this.m = m;
-        this.output = output;
-    }
-
 }

@@ -25,17 +25,4 @@ public class ModExpParameters {
     @JsonDeserialize(converter = StringToBigIntegerConverter.class)
     private BigInteger output;
 
-    @JsonCreator
-    public ModExpParameters(@JsonProperty("id") String id,
-                            @JsonProperty("b") BigInteger b,
-                            @JsonProperty("e") BigInteger e,
-                            @JsonProperty("m") BigInteger m,
-                            @JsonProperty("output") BigInteger output) {
-        this.id = id;
-        this.b = b;
-        this.e = e;
-        this.m = m;
-        this.output = output;
-    }
-
 }

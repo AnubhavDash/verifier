@@ -22,15 +22,4 @@ public class ModInvParameters {
     @JsonDeserialize(converter = StringToBigIntegerConverter.class)
     private BigInteger output;
 
-    @JsonCreator
-    public ModInvParameters(@JsonProperty("id") String id,
-                            @JsonProperty("b") BigInteger b,
-                            @JsonProperty("m") BigInteger m,
-                            @JsonProperty("output") BigInteger output) {
-        this.id = id;
-        this.b = b;
-        this.m = m;
-        this.output = output;
-    }
-
 }
