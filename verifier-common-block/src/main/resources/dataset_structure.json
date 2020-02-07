@@ -1,0 +1,210 @@
+[
+  {
+    "key": "BALLOT_BOXES_DIR",
+    "type": "DIRECTORY",
+    "name": "ballotboxes",
+    "content": [
+      {
+        "key": "BALLOT_BOX_ID_DIR",
+        "regex": "[0-9a-zA-Z]{32}",
+        "type": "DYNAMIC_DIRECTORY",
+        "content": [
+          {
+            "key": "BALLOT_BOX_OFFLINE_DIR",
+            "regex": "[0-9]+",
+            "type": "DYNAMIC_DIRECTORY",
+            "content": []
+          },
+          {
+            "key": "BALLOT_BOX_ONLINE_MIXING",
+            "type": "FILE",
+            "regex": ".*ccn_m.?\\.json"
+          },
+          {
+            "key": "DOWNLOADED_BALLOT_BOX",
+            "type": "FILE",
+            "name": "downloadedBallotBox.csv"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "CERTIFICATES_DIR",
+    "type": "DIRECTORY",
+    "name": "certificates",
+    "content": [
+      {
+        "key": "ADMIN_BOARD_DIR",
+        "type": "DIRECTORY",
+        "name": "adminboard",
+        "content": [
+          {
+            "key": "ADMIN_BOARD_CERT",
+            "type": "FILE",
+            "regex": ".*\\.pem"
+          }
+        ]
+      },
+      {
+        "key": "INTEGRATION_CA",
+        "type": "FILE",
+        "name": "integrationCA.pem"
+      },
+      {
+        "key": "PLATFORM_ROOT_CA",
+        "type": "FILE",
+        "name": "platformRootCA.pem"
+      },
+      {
+        "key": "TENANT_100",
+        "type": "FILE",
+        "name": "tenant_100.pem"
+      }
+    ]
+  },
+  {
+    "key": "CRYPTO_SETUP_DIR",
+    "type": "DIRECTORY",
+    "name": "crypto_setup",
+    "content": [
+      {
+        "key": "DECRYPTION_KEY",
+        "type": "FILE",
+        "name": "decryptionKey.json",
+        "relations": [
+          {
+            "type": "SIGN",
+            "name": "decryptionKey.json.sign"
+          }
+        ]
+      },
+      {
+        "key": "ELECTORAL_AUTHORITY",
+        "type": "FILE",
+        "name": "electoralAuthority.json",
+        "relations": [
+          {
+            "type": "SIGN",
+            "name": "electoralAuthority.json.sign"
+          },
+          {
+            "type": "METADATA",
+            "name": "blabla"
+          }
+        ]
+      },
+      {
+        "key": "ENCRYPTION_PARAMETERS",
+        "type": "FILE",
+        "name": "encryptionParameters.json",
+        "relations": [
+          {
+            "type": "P7",
+            "name": "encryptionParameters.json.p7"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "ELECTION_SETUP_DIR",
+    "type": "DIRECTORY",
+    "name": "election_setup",
+    "content": [
+      {
+        "key": "VERIFICATION_CARD_SET_DIR",
+        "type": "DIRECTORY",
+        "name": "verification_card_set",
+        "content": [
+          {
+            "key": "VERIFICATION_CARD_SET_ID_DIR",
+            "type": "DYNAMIC_DIRECTORY",
+            "regex": "[0-9a-zA-Z]{32}",
+            "content": [
+              {
+                "key": "CODES_MAPPING_TABLES_CONTEXT_DATA",
+                "type": "FILE",
+                "name": "codesMappingTablesContextData.csv",
+                "relations": [
+                  {
+                    "type": "SIGN"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "VOTING_CARD_SETS_DIR",
+        "type": "DIRECTORY",
+        "name": "voting_card_sets",
+        "content": [
+          {
+            "key": "VOTING_CARD_SETS_ID_DIR",
+            "type": "DYNAMIC_DIRECTORY",
+            "regex": "[0-9a-zA-Z]{32}",
+            "content": [
+              {
+                "key": "CREDENTIAL_DATA",
+                "type": "FILE",
+                "name": "credentialData.csv",
+                "relations": [
+                  {
+                    "type": "SIGN"
+                  }
+                ]
+              },
+              {
+                "key": "VOTER_INFORMATION",
+                "type": "FILE",
+                "name": "voterInformation",
+                "relations": [
+                  {
+                    "type": "SIGN"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "BALLOT_BOX",
+        "type": "FILE",
+        "name": "ballotBox.json",
+        "relations": [
+          {
+            "type": "SIGN"
+          }
+        ]
+      },
+      {
+        "key": "CONFIG_ANONYMIZED",
+        "type": "FILE",
+        "name": "configuration-anonymized.xml",
+        "relations": [
+          {
+            "type": "P7"
+          }
+        ]
+      },
+      {
+        "key": "DATA_CONFIG_UPDATED",
+        "type": "FILE",
+        "regex": "dataConfig_updated_.*\\.json",
+        "relations": [
+          {
+            "type": "METADATA"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "LOG",
+    "type": "FILE",
+    "name": "log.txt"
+  }
+]

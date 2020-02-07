@@ -23,7 +23,7 @@ import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.dto.revised.BallotBox;
 import ch.post.it.evoting.verifier.common.block.dto.revised.ElectionEvent;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 

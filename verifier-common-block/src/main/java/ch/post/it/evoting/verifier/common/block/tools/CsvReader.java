@@ -17,6 +17,7 @@ package ch.post.it.evoting.verifier.common.block.tools;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -30,6 +31,13 @@ public class CsvReader<T> {
     public CsvReader(String filename, Charset charset, boolean hasHeader, String separator, Function<String[], T> mapper) throws IOException {
         this.mapper = mapper;
         this.stream = Files.lines(Paths.get(filename), charset);
+        this.hasHeader = hasHeader;
+        this.separator = separator;
+    }
+
+    public CsvReader(Path filePath, Charset charset, boolean hasHeader, String separator, Function<String[], T> mapper) throws IOException {
+        this.mapper = mapper;
+        this.stream = Files.lines(filePath, charset);
         this.hasHeader = hasHeader;
         this.separator = separator;
     }

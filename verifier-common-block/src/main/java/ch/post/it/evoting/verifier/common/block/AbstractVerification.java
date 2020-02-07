@@ -17,8 +17,12 @@ package ch.post.it.evoting.verifier.common.block;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.config.SpringConfig;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -30,8 +34,13 @@ public abstract class AbstractVerification {
     private static final Logger LOGGER = Logger.getLogger(AbstractVerification.class);
     private static final String RESOURCE_BUNDLE_NAME = "common/resources";
 
+    protected PathService pathService;
+
+    // Force having a non-arg constructor.
     public AbstractVerification() {
-        //force having a non-arg constructor
+        // Init beans manually because the verifications are "new'ed".
+        ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+        pathService = context.getBean(PathService.class);
     }
 
     public abstract VerificationDefinition getVerificationDefinition();

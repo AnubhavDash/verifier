@@ -19,7 +19,7 @@ import ch.post.it.evoting.verifier.block.block3.loader.online.OnlineMixingProofL
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import com.scytl.products.ov.mixnet.commons.exceptions.VerifierException;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentParams;

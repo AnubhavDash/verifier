@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package ch.post.it.evoting.verifier.common.block.tools;
+package ch.post.it.evoting.verifier.common.block.tools.path;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -83,7 +83,7 @@ public class PathHelper {
     }
 
     /**
-     * Search for a single file matching the {@code filenamePattern} and returns its {@link Path}. If none are multiple matching files
+     * Search for a single file matching the {@code filenamePattern} and returns its {@link Path}. If none or multiple matching files
      * are found, exception are thrown.
      *
      * @param startingPath    The path at which to start the search.
@@ -102,7 +102,7 @@ public class PathHelper {
             throw new InvalidParameterException(String.format("More than one file found, filename is not specific enough. Starting " +
                     "path:%s filenamePattern:%s ", startingPath, filenamePattern));
         } else if (paths.size() == 0) {
-            throw new NoSuchFileException(String.format("No file found with given pattern. Starting path:%s " +
+            throw new NoSuchFileException(String.format("No file found with given pattern. Starting path: %s " +
                     "filenamePattern:%s ", startingPath, filenamePattern));
         } else {
             return paths.get(0);
@@ -129,4 +129,5 @@ public class PathHelper {
         }
         return paths;
     }
+
 }

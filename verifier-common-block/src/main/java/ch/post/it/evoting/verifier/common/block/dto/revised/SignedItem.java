@@ -22,14 +22,11 @@ import lombok.Getter;
 public class SignedItem {
     public final String field;
     public final String value;
-    public final String toto;
 
     @JsonCreator
     public SignedItem(@JsonProperty("field") String field,
-                      @JsonProperty("value") String value,
-                      @JsonProperty("toto") String toto) {
+                      @JsonProperty("value") String value) {
         this.field = field;
         this.value = value;
-        this.toto = toto;
     }
 }

@@ -5,6 +5,7 @@ import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.JsonMissingNodeException;
 import ch.post.it.evoting.verifier.common.block.tools.*;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 import ch.post.it.evoting.verifier.dto.DownloadedBallot;
 import ch.post.it.evoting.verifier.dto.Vote__1;
 import com.fasterxml.jackson.databind.JsonNode;

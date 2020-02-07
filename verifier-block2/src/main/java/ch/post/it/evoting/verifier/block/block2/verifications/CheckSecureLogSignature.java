@@ -22,7 +22,7 @@ import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import reactor.core.publisher.Flux;
 

@@ -23,6 +23,7 @@ import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.dto.revised.BallotBox;
 import ch.post.it.evoting.verifier.common.block.dto.revised.ElectionEvent;
 import ch.post.it.evoting.verifier.common.block.tools.*;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 
 import java.io.File;
 import java.nio.file.Files;

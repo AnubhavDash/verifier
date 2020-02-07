@@ -14,16 +14,24 @@
  */
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
+import ch.post.it.evoting.verifier.block.block1.config.Block1TestConfiguration;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@Configuration
+@ContextConfiguration(classes = {Block1TestConfiguration.class})
 public abstract class Block1VerificationAbstractTest {
     protected AbstractVerification verification;
 
     @Test
-    public void verificationDefinitionTestOK(){
+    public void verificationDefinitionTestOK() {
         // Check that @Before method is correctly implemented in each sub test class
         Assert.assertNotNull(verification);
 

@@ -22,7 +22,7 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallot;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;

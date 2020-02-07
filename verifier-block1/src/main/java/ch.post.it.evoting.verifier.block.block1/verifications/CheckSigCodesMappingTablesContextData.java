@@ -18,20 +18,17 @@ import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureConsumer;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathTreeKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Base64;
-import java.util.stream.Stream;
 
 public class CheckSigCodesMappingTablesContextData extends AbstractVerification {
-    private static final String CODES_MAPPING_TABLES_CONTEXT_DATA_CSV_SIGN = "codesMappingTablesContextData.csv.sign";
-    private static final String CODES_MAPPING_TABLES_CONTEXT_DATA_CSV = "codesMappingTablesContextData.csv";
-    private static final String PLATFORM_ROOT_CA_PEM = "platformRootCA.pem";
-    private static final String TENANT_100_PEM = "tenant_100.pem";
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -51,42 +48,42 @@ public class CheckSigCodesMappingTablesContextData extends AbstractVerification 
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        // Top level directories.
-        Path pathElection = inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP);
-        Path pathCertificates = inputDirectoryPath.resolve(Block1VerificationSuite.PATH_CERTIFICATES);
-
-        // Sub-level directories.
-        Path pathVerificationCardSet = pathElection.resolve(Block1VerificationSuite.PATH_VERIFICATION_CARD_SETS);
-        Path pathAdminboard = pathCertificates.resolve(Block1VerificationSuite.PATH_ADMINBOARD);
-
         // Get the certificate used for signing.
-        byte[] signingCertificate = Files.readAllBytes(PathHelper.getPath(pathAdminboard, 1, ".*\\.pem"));
+        final PathNode adminBoardCertPathNode = pathService.buildPathNode(PathTreeKey.ADMIN_BOARD_CERT, inputDirectoryPath);
+        byte[] signingCertificate = Files.readAllBytes(adminBoardCertPathNode.getPath());
 
         // Get the intermediate certificates.
-        byte[][] intermediateCertificates = new byte[][]{Files.readAllBytes(PathHelper.getPath(pathCertificates, 1, TENANT_100_PEM))};
+        final PathNode tenantPathNode = pathService.buildPathNode(PathTreeKey.TENANT_100, inputDirectoryPath);
+        byte[][] intermediateCertificates = new byte[][]{Files.readAllBytes(tenantPathNode.getPath())};
 
         // Get the root certificate.
-        byte[] rootCertificate = Files.readAllBytes(PathHelper.getPath(pathCertificates, 1, PLATFORM_ROOT_CA_PEM));
+        final PathNode platformRootPathNode = pathService.buildPathNode(PathTreeKey.PLATFORM_ROOT, inputDirectoryPath);
+        byte[] rootCertificate = Files.readAllBytes(platformRootPathNode.getPath());
 
-        // Iterate over all directories and do the verification for credentialData in each.
-        try (Stream<Path> stream = Files.walk(pathVerificationCardSet, 1)) {
-            stream.filter(p -> Files.isDirectory(p) && !p.equals(pathVerificationCardSet))
-                    .forEach((VerificationFailureConsumer<Path>) d -> {
-                        byte[] signatureBase64 = Files.readAllBytes(d.resolve(CODES_MAPPING_TABLES_CONTEXT_DATA_CSV_SIGN));
-                        // Decode the signature.
-                        byte[] signature = Base64.getDecoder().decode(signatureBase64);
-                        byte[] source = Files.readAllBytes(d.resolve(CODES_MAPPING_TABLES_CONTEXT_DATA_CSV));
-                        if (!SignatureChecker.verifySignature(source, signature, signingCertificate, intermediateCertificates,
-                                rootCertificate)) {
-                            throw buildVerificationFailureException(
-                                    "The signature verification of the file failed",
-                                    Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-                                    "verification77.nok.message",
-                                    d.getFileName().toString() + "/" + CODES_MAPPING_TABLES_CONTEXT_DATA_CSV
-                            );
-                        }
-                    });
-        }
+        // Get directory where files to check signature are located.
+        final PathNode verificationCardSetPathNode = pathService.buildPathNode(PathTreeKey.VERIFICATION_CARD_SET, inputDirectoryPath);
+
+        verificationCardSetPathNode.getSubDirectories().forEach((VerificationFailureConsumer<Path>) d -> {
+                    final PathNode pathNode = pathService.buildPathNode(PathTreeKey.CODES_MAPPING_TABLES_CONTEXT_DATA, d,
+                            inputDirectoryPath);
+
+                    // Get and decode the signature.
+                    byte[] signatureBase64 = Files.readAllBytes(pathNode.getRelation(RelationType.SIGN));
+                    byte[] signature = Base64.getDecoder().decode(signatureBase64);
+
+                    byte[] source = Files.readAllBytes(pathNode.getPath());
+
+                    if (!SignatureChecker.verifySignature(source, signature, signingCertificate, intermediateCertificates,
+                            rootCertificate)) {
+                        throw buildVerificationFailureException(
+                                "The signature verification of the file failed",
+                                Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                                "verification77.nok.message",
+                                d.getFileName().toString() + "/" + pathNode.getPath().getFileName()
+                        );
+                    }
+                }
+        );
 
         result.setStatus(Status.OK);
         return result;

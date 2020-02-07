@@ -18,9 +18,9 @@ import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionGroup;
-import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
-import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.*;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathTreeKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
 
 import java.math.BigInteger;
 import java.nio.file.Path;
@@ -36,7 +36,8 @@ public class CheckGeneratorG extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(1);
         def.setCategory(Category.INTEGRITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification10.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                "verification10.description"));
         def.setId(10);
         def.setName("checkGenerator(g)");
         def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
@@ -48,8 +49,8 @@ public class CheckGeneratorG extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        Path path = inputDirectoryPath.resolve(Block1VerificationSuite.PATH_CRYPTO_SETUP);
-        EncryptionGroup encryptionGroup = Deserializer.fromJson(path.toFile(), "encryptionParameters\\.json", EncryptionGroup.class);
+        final PathNode pathNode = pathService.buildPathNode(PathTreeKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
+        EncryptionGroup encryptionGroup = Deserializer.fromJson(pathNode.getPath(), EncryptionGroup.class);
 
         if (!MathHelper.isPrime(encryptionGroup.getG())) {
             throw buildVerificationFailureException(
@@ -102,4 +103,5 @@ public class CheckGeneratorG extends AbstractVerification {
                     .findAny();
         }
     }
+
 }
