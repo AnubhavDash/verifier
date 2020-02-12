@@ -19,7 +19,7 @@ import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionGroup;
 import ch.post.it.evoting.verifier.common.block.tools.*;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathTreeKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
 
 import java.math.BigInteger;
@@ -49,7 +49,7 @@ public class CheckGeneratorG extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        final PathNode pathNode = pathService.buildPathNode(PathTreeKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
+        final PathNode pathNode = pathService.buildPathNode(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
         EncryptionGroup encryptionGroup = Deserializer.fromJson(pathNode.getPath(), EncryptionGroup.class);
 
         if (!MathHelper.isPrime(encryptionGroup.getG())) {

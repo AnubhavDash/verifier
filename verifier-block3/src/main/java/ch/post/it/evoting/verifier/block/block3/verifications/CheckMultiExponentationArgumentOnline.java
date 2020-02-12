@@ -20,6 +20,8 @@ import ch.post.it.evoting.verifier.block.block3.scytl.TestType;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import org.apache.log4j.Logger;
 
 import java.nio.file.Path;
@@ -49,7 +51,8 @@ public class CheckMultiExponentationArgumentOnline extends AbstractVerification 
 
         try {
             processor.register(this);
-            processor.executeProcess(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
+            PathNode ballotBoxesPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOXES_DIR, inputDirectoryPath);
+            processor.executeProcess(ballotBoxesPathNode.getPath());
 
             AbstractMap.SimpleEntry<Status, String> status = processor.getStatus(TestType.MultiExponentiationProof);
             result.setStatus(status.getKey());

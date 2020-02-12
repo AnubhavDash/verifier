@@ -19,13 +19,12 @@ import ch.post.it.evoting.verifier.block.block3.loader.online.OnlineMixingProofL
 import ch.post.it.evoting.verifier.block.block3.scytl.loader.OnlineDataLoader;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import com.scytl.decrypt.DecryptVerifier;
 
-import java.io.File;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,30 +46,33 @@ public class CheckDecryptionProofOnline extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        File[] ballotBoxes = PathHelper.listDirectories(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
-        File[] ccMixingKeys = PathHelper.getFiles(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_CC_MIXING_KEYS).toFile(), "cc.*_mixing_.*key.*\\.json");
 
-        for (File ballotBox : ballotBoxes) {
-            final File[] onlineMixings = ballotBox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
-            if (onlineMixings.length != 3) {
+        PathNode ccMixingKeys = pathService.buildPathNode(StructureKey.CC_MIXING_KEYS, inputDirectoryPath);
+        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
+
+            // Online mixing
+            PathNode onlineMixingPathNode = pathService.buildFromDynamicPathNode(StructureKey.BALLOT_BOX_ONLINE_MIXING, ballotBoxIdDirectoryPath);
+            if (onlineMixingPathNode.getRegexPaths().size() != 3) {
                 throw buildVerificationFailureException(
-                        "the number of control components expected is 3 but actual is " + onlineMixings.length,
+                        "the number of control components expected is 3 but actual is " + onlineMixingPathNode.getRegexPaths().size(),
                         Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
                         "verification07.nok.message",
-                        ballotBox.getName()
+                        ballotBoxIdDirectoryPath.getFileName().toString()
                 );
             }
-            for (File onlineMixing : onlineMixings) {
-                //for this onlineMixing, so for this ccn , get the correct ccX_mixing_public_key.json file
-                File pkJsonFile = getPkJsonFile(onlineMixing.getName(), ccMixingKeys);
-                OnlineDataLoader onlineDataLoader = new OnlineMixingProofLoader(onlineMixing.toPath());
-                int verificationResultCode = DecryptVerifier.verifyOnline(pkJsonFile, onlineDataLoader);
+
+            for (Path onlineMixingPath : onlineMixingPathNode.getRegexPaths()) {
+                //for this onlineMixing, so for this ccn, get the correct ccX_mixing_public_key.json file
+                Path pkJsonFile = getPublicKeyPath(onlineMixingPath.getFileName().toString(), onlineMixingPathNode, ccMixingKeys);
+                OnlineDataLoader onlineDataLoader = new OnlineMixingProofLoader(onlineMixingPath);
+                int verificationResultCode = DecryptVerifier.verifyOnline(pkJsonFile.toFile(), onlineDataLoader);
                 if (verificationResultCode != 1 && verificationResultCode != -1) {
                     throw buildVerificationFailureException(
                             "The verification failed",
                             Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
                             "verification07.nok.message",
-                            ballotBox.getName()
+                            ballotBoxIdDirectoryPath.getFileName().toString()
                     );
                 }
             }
@@ -80,14 +82,17 @@ public class CheckDecryptionProofOnline extends AbstractVerification {
         return result;
     }
 
-    private File getPkJsonFile(String name, File[] ccMixingKeys) {
-        Pattern pattern = Pattern.compile(".*ccn_m(.?)\\.json");
-        Matcher matcher = pattern.matcher(name);
-        matcher.matches();
-        String id = matcher.group(1);
-        return Arrays.stream(ccMixingKeys)
-                .filter(file -> file.getName().contains(String.format("cc%s_mixing", id)))
+    private Path getPublicKeyPath(String name, PathNode online, PathNode ccMixingKeys) {
+        String onlineId = extractId(online.getQualifier(), name);
+        return ccMixingKeys.getRegexPaths().stream()
+                .filter(path -> onlineId.equals(extractId(ccMixingKeys.getQualifier(), path.getFileName().toString())))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("PublicKey file not found"));
+    }
+
+    private String extractId(String regex, String fileName) {
+        Matcher onlineMatcher = Pattern.compile(regex).matcher(fileName);
+        onlineMatcher.matches();
+        return onlineMatcher.group(1);
     }
 }

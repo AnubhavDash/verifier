@@ -21,7 +21,7 @@ import ch.post.it.evoting.verifier.common.block.VerificationFailureConsumer;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathTreeKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 
 import java.nio.file.Files;
@@ -49,23 +49,22 @@ public class CheckSigCodesMappingTablesContextData extends AbstractVerification 
         VerificationResult result = new VerificationResult();
 
         // Get the certificate used for signing.
-        final PathNode adminBoardCertPathNode = pathService.buildPathNode(PathTreeKey.ADMIN_BOARD_CERT, inputDirectoryPath);
+        final PathNode adminBoardCertPathNode = pathService.buildPathNode(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
         byte[] signingCertificate = Files.readAllBytes(adminBoardCertPathNode.getPath());
 
         // Get the intermediate certificates.
-        final PathNode tenantPathNode = pathService.buildPathNode(PathTreeKey.TENANT_100, inputDirectoryPath);
+        final PathNode tenantPathNode = pathService.buildPathNode(StructureKey.TENANT_100, inputDirectoryPath);
         byte[][] intermediateCertificates = new byte[][]{Files.readAllBytes(tenantPathNode.getPath())};
 
         // Get the root certificate.
-        final PathNode platformRootPathNode = pathService.buildPathNode(PathTreeKey.PLATFORM_ROOT, inputDirectoryPath);
+        final PathNode platformRootPathNode = pathService.buildPathNode(StructureKey.PLATFORM_ROOT_CA, inputDirectoryPath);
         byte[] rootCertificate = Files.readAllBytes(platformRootPathNode.getPath());
 
         // Get directory where files to check signature are located.
-        final PathNode verificationCardSetPathNode = pathService.buildPathNode(PathTreeKey.VERIFICATION_CARD_SET, inputDirectoryPath);
+        final PathNode verificationCardSetPathNode = pathService.buildPathNode(StructureKey.VERIFICATION_CARD_SET_DIR, inputDirectoryPath);
 
         verificationCardSetPathNode.getSubDirectories().forEach((VerificationFailureConsumer<Path>) d -> {
-                    final PathNode pathNode = pathService.buildPathNode(PathTreeKey.CODES_MAPPING_TABLES_CONTEXT_DATA, d,
-                            inputDirectoryPath);
+                    final PathNode pathNode = pathService.buildFromDynamicPathNode(StructureKey.CODES_MAPPING_TABLES_CONTEXT_DATA, d);
 
                     // Get and decode the signature.
                     byte[] signatureBase64 = Files.readAllBytes(pathNode.getRelation(RelationType.SIGN));

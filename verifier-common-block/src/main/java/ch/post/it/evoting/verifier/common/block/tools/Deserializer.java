@@ -105,6 +105,10 @@ public class Deserializer {
         return new CsvReader<>(filePath, StandardCharsets.UTF_8, false, ",", mapper).process();
     }
 
+    public static <T> Iterable<T> fromCsv(Path filePath, String separator, Function<String[], T> mapper) throws IOException {
+        return new CsvReader<>(filePath, StandardCharsets.UTF_8, false, separator, mapper).process();
+    }
+
     private static File getFile(File inputDirectory, String filenamePattern) throws FileNotFoundException {
         return PathHelper.getFile(inputDirectory, filenamePattern);
     }

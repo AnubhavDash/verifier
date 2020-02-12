@@ -13,12 +13,43 @@
             "key": "BALLOT_BOX_OFFLINE_DIR",
             "regex": "[0-9]+",
             "type": "DYNAMIC_DIRECTORY",
-            "content": []
+            "content": [
+              {
+                "key": "COMMITMENT_PARAMETERS",
+                "type": "FILE",
+                "regex": "commitmentParameters.*\\.json",
+                "relations": [{"type": "METADATA"}]
+              },
+              {
+                "key": "DECOMPRESSED_VOTES",
+                "type": "FILE",
+                "regex": "decompressedVotes\\.csv",
+                "relations": [{"type": "METADATA"}]
+              },
+              {
+                "key": "ENCRYPTED_BALLOTS",
+                "type": "FILE",
+                "name": "encryptedBallots.csv",
+                "relations": [{"type": "METADATA"}]
+              },
+              {
+                "key": "PROOFS",
+                "type": "FILE",
+                "name": "proofs.json",
+                "relations": [{"type": "METADATA"}]
+              },
+              {
+                "key": "REENCRYPTED_BALLOTS",
+                "type": "FILE",
+                "name": "reencryptedBallots.csv",
+                "relations": [{"type": "METADATA"}]
+              }
+            ]
           },
           {
             "key": "BALLOT_BOX_ONLINE_MIXING",
             "type": "FILE",
-            "regex": ".*ccn_m.?\\.json"
+            "regex": ".*ccn_m([0-9]+)\\.json"
           },
           {
             "key": "DOWNLOADED_BALLOT_BOX",
@@ -55,6 +86,18 @@
         "key": "PLATFORM_ROOT_CA",
         "type": "FILE",
         "name": "platformRootCA.pem"
+      },
+      {
+        "key": "CC_MIXING_KEYS_DIR",
+        "type": "DIRECTORY",
+        "name": "cc_mixing_keys",
+        "content": [
+          {
+            "key": "CC_MIXING_KEYS",
+            "type": "FILE",
+            "regex": "cc([0-9]+)_mixing_.*key.*\\.json"
+          }
+        ]
       },
       {
         "key": "TENANT_100",
@@ -199,6 +242,11 @@
             "type": "METADATA"
           }
         ]
+      },
+      {
+        "key": "ELECTION_INFORMATION_CONTENTS",
+        "type": "FILE",
+        "name": "electionInformationContents.json"
       }
     ]
   },

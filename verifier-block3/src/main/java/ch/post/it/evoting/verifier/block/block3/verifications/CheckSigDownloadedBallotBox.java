@@ -17,10 +17,10 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.dto.revised.BallotBox;
-import ch.post.it.evoting.verifier.common.block.dto.revised.ElectionEvent;
-import ch.post.it.evoting.verifier.common.block.tools.*;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -32,12 +32,9 @@ import java.util.List;
 
 public class CheckSigDownloadedBallotBox extends AbstractVerification {
 
-    static final String DOWNLOADED_BALLOT_BOX_CSV = "downloadedBallotBox.csv";
-    static final String BALLOT_BOX_JSON = "ballotBox.json";
-    static final String ELECTION_INFORMATION_CONTENTS_JSON = "electionInformationContents.json";
-    static final String BALLOT_BOX_CERT = "ballotBoxCert";
-    static final String SERVICES_CA = "servicesCA";
-    static final String ELECTION_ROOT_CA = "electionRootCA";
+    static final String BALLOT_BOX_CERT_NODE = "ballotBoxCert";
+    static final String SERVICES_CA_NODE = "servicesCA";
+    static final String ELECTION_ROOT_CA_NODE = "electionRootCA";
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -63,42 +60,39 @@ public class CheckSigDownloadedBallotBox extends AbstractVerification {
         ObjectMapper mapper = new ObjectMapper();
 
         // Get the certificate used for signing.
-        final JsonNode ballotBoxNode = mapper.readTree(Files.readAllBytes(PathHelper.getPath(pathElection, 1, BALLOT_BOX_JSON)));
-        final JsonNode ballotBoxCertNode = ballotBoxNode.path(BALLOT_BOX_CERT);
-        if (ballotBoxCertNode.isMissingNode()) {
-            throw new RuntimeException(String.format("%s certificate is missing!", BALLOT_BOX_CERT));
+        PathNode ballotBoxJsonPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX, inputDirectoryPath);
+        final JsonNode ballotBoxJsonNode = mapper.readTree(Files.readAllBytes(ballotBoxJsonPathNode.getPath()));
+        final JsonNode ballotBoxCertJsonNode = ballotBoxJsonNode.path(BALLOT_BOX_CERT_NODE);
+        if (ballotBoxCertJsonNode.isMissingNode()) {
+            throw new RuntimeException(String.format("%s certificate is missing!", BALLOT_BOX_CERT_NODE));
         }
-        final byte[] signingCertificate = ballotBoxCertNode.asText().getBytes(StandardCharsets.UTF_8);
+        final byte[] signingCertificate = ballotBoxCertJsonNode.asText().getBytes(StandardCharsets.UTF_8);
 
         // Get the intermediate certificates.
-        final JsonNode electionInfoNode = mapper.readTree(Files.readAllBytes(PathHelper.getPath(pathElection, 1,
-                ELECTION_INFORMATION_CONTENTS_JSON)));
-        final JsonNode servicesCANode = electionInfoNode.path(SERVICES_CA);
+        PathNode electionInfoPathNode = pathService.buildPathNode(StructureKey.ELECTION_INFORMATION_CONTENTS, inputDirectoryPath);
+        final JsonNode electionInfoJsonNode = mapper.readTree(Files.readAllBytes(electionInfoPathNode.getPath()));
+        final JsonNode servicesCANode = electionInfoJsonNode.path(SERVICES_CA_NODE);
         if (servicesCANode.isMissingNode()) {
-            throw new RuntimeException(String.format("%s certificate is missing!", SERVICES_CA));
+            throw new RuntimeException(String.format("%s certificate is missing!", SERVICES_CA_NODE));
         }
         final byte[][] intermediateCertificates = new byte[][]{servicesCANode.asText().getBytes(StandardCharsets.UTF_8)};
 
         // Get the root certificate.
-        final JsonNode electionRootCANode = electionInfoNode.path(ELECTION_ROOT_CA);
+        final JsonNode electionRootCANode = electionInfoJsonNode.path(ELECTION_ROOT_CA_NODE);
         if (electionRootCANode.isMissingNode()) {
-            throw new RuntimeException(String.format("%s certificate is missing!", ELECTION_ROOT_CA));
+            throw new RuntimeException(String.format("%s certificate is missing!", ELECTION_ROOT_CA_NODE));
         }
         final byte[] rootCertificate = electionRootCANode.asText().getBytes(StandardCharsets.UTF_8);
 
         // Deserialize the ballot boxes to iterate over the ballot box directory.
-        ElectionEvent electionEvent = Deserializer.fromJson(pathElection.toFile(), "dataConfig_updated_.*\\.json", ElectionEvent.class);
-        List<BallotBox> ballotBoxes = electionEvent.getBallotBoxes();
+        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
 
-        for (BallotBox ballotBox : ballotBoxes) {
-            String ballotBoxId = TypeConverter.UUIDToStringWithoutDash(ballotBox.getId());
-
-            // Find the ballot box file.
-            final Path ballotDirectoryPath = inputDirectoryPath.resolve(Block3VerificationSuite.PATH_BALLOTBOXES).resolve(ballotBoxId);
-            final Path filePath = PathHelper.getPath(ballotDirectoryPath, 1, DOWNLOADED_BALLOT_BOX_CSV);
+            // Get the downloaded ballot box file.
+            PathNode downloadedBallotBoxPathNode = pathService.buildFromDynamicPathNode(StructureKey.DOWNLOADED_BALLOT_BOX, ballotBoxIdDirectoryPath);
 
             // Extract and decode the signature.
-            final List<String> lines = Files.readAllLines(filePath);
+            final List<String> lines = Files.readAllLines(downloadedBallotBoxPathNode.getPath());
             byte[] signatureBase64 = lines.remove(lines.size() - 1).getBytes(StandardCharsets.UTF_8);
             byte[] signature = Base64.getDecoder().decode(signatureBase64);
 
@@ -111,9 +105,11 @@ public class CheckSigDownloadedBallotBox extends AbstractVerification {
                         "The signature verification of the file failed",
                         Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
                         "verification76.nok.message",
-                        ballotDirectoryPath.getFileName().toString() + "/" + filePath.getFileName().toString()
+                        ballotBoxIdDirectoryPath.getFileName().toString() + "/" + downloadedBallotBoxPathNode.getPath().getFileName().toString()
                 );
             }
+
+
         }
 
         result.setStatus(Status.OK);

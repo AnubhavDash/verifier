@@ -88,6 +88,10 @@ public abstract class AbstractVerification {
         );
     }
 
+    public PathService getPathService() {
+        return pathService;
+    }
+
     private void logUnexpectedException(VerificationResult result, Exception e) {
         LOGGER.error("Unexpected error", e);
         result.setStatus(Status.NOK);

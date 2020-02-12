@@ -17,6 +17,7 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -54,42 +55,42 @@ public class CheckSigDownloadedBallotBoxTest extends Block3VerificationAbstractT
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(CheckSigDownloadedBallotBox.DOWNLOADED_BALLOT_BOX_CSV);
+        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.DOWNLOADED_BALLOT_BOX).getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigDownloadedBallotBoxTest/NOK-NOFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKBallotFileNotFound() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(CheckSigDownloadedBallotBox.BALLOT_BOX_JSON);
+        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.BALLOT_BOX).getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigDownloadedBallotBoxTest/NOK-NOFILE2").toURI()));
     }
 
     @Test
     public void executeTestNOKElectionFileNotFound() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(CheckSigDownloadedBallotBox.ELECTION_INFORMATION_CONTENTS_JSON);
+        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.ELECTION_INFORMATION_CONTENTS).getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigDownloadedBallotBoxTest/NOK-NOFILE3").toURI()));
     }
 
     @Test
     public void executeTestNOKSignCertNotFound() throws Exception {
         exceptionRule.expect(RuntimeException.class);
-        exceptionRule.expectMessage(String.format("%s certificate is missing!", CheckSigDownloadedBallotBox.BALLOT_BOX_CERT));
+        exceptionRule.expectMessage(String.format("%s certificate is missing!", CheckSigDownloadedBallotBox.BALLOT_BOX_CERT_NODE));
         verification.verify(Paths.get(getClass().getResource("/CheckSigDownloadedBallotBoxTest/NOK-NOCERT").toURI()));
     }
 
     @Test
     public void executeTestNOKInterCertNotFound() throws Exception {
         exceptionRule.expect(RuntimeException.class);
-        exceptionRule.expectMessage(String.format("%s certificate is missing!", CheckSigDownloadedBallotBox.SERVICES_CA));
+        exceptionRule.expectMessage(String.format("%s certificate is missing!", CheckSigDownloadedBallotBox.SERVICES_CA_NODE));
         verification.verify(Paths.get(getClass().getResource("/CheckSigDownloadedBallotBoxTest/NOK-NOCERT2").toURI()));
     }
 
     @Test
     public void executeTestNOKRootNotFound() throws Exception {
         exceptionRule.expect(RuntimeException.class);
-        exceptionRule.expectMessage(String.format("%s certificate is missing!", CheckSigDownloadedBallotBox.ELECTION_ROOT_CA));
+        exceptionRule.expectMessage(String.format("%s certificate is missing!", CheckSigDownloadedBallotBox.ELECTION_ROOT_CA_NODE));
         verification.verify(Paths.get(getClass().getResource("/CheckSigDownloadedBallotBoxTest/NOK-NOCERT3").toURI()));
     }
 }

@@ -12,19 +12,19 @@ public class PathNode {
 
     private List<Path> paths;
     private Path firstPath;
-    private PathEntry pathEntry;
+    private StructureNode structureNode;
 
-    PathNode(List<Path> path, PathEntry pathEntry) {
+    PathNode(List<Path> path, StructureNode structureNode) {
         this.paths = path;
         this.firstPath = path.get(0);
-        this.pathEntry = pathEntry;
+        this.structureNode = structureNode;
     }
 
     public Path getPath() {
         return firstPath;
     }
 
-    public List<Path> getPaths() {
+    public List<Path> getRegexPaths() {
         return paths;
     }
 
@@ -32,9 +32,9 @@ public class PathNode {
         if (Files.isDirectory(firstPath)) {
             throw new IllegalArgumentException(String.format("PathNode is a directory: %s", firstPath.getFileName()));
         }
-        for (RelationType r : pathEntry.getRelations()) {
+        for (RelationType r : structureNode.getRelations()) {
             if (r.equals(relationType)) {
-                return firstPath.resolveSibling(pathEntry.getQualifier() + "." + r.toLowerCase());
+                return firstPath.resolveSibling(firstPath.getFileName() + "." + r.toLowerCase());
             }
         }
         throw new IllegalArgumentException(String.format("Asked relation does not exist: %s", relationType));
@@ -52,7 +52,7 @@ public class PathNode {
         if (paths.stream().anyMatch(Files::isDirectory)) {
             throw new IllegalArgumentException("PathNode is a directory.");
         }
-        for (RelationType r : pathEntry.getRelations()) {
+        for (RelationType r : structureNode.getRelations()) {
             if (r.equals(relationType)) {
                 final String relationPathString = paths.get(index).getFileName().toString() + "." + relationType.toLowerCase();
                 return paths.get(index).resolveSibling(relationPathString);
@@ -79,6 +79,10 @@ public class PathNode {
         } else {
             throw new IllegalArgumentException("The PathNode does not represent a directory.");
         }
+    }
+
+    public String getQualifier() {
+        return structureNode.getQualifier();
     }
 
 }

@@ -20,15 +20,12 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.dto.revised.BallotBox;
-import ch.post.it.evoting.verifier.common.block.dto.revised.ElectionEvent;
-import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.dto.DataConfigEE;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -53,30 +50,28 @@ public class CheckSigEncryptedBallots extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        Path path = inputDirectoryPath.resolve(Block3VerificationSuite.PATH_ELECTION_SETUP);
-        DataConfigEE dataConfigEE = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", DataConfigEE.class);
-        ElectionEvent electionEvent = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", ElectionEvent.class);
-        List<BallotBox> ballotBoxes = electionEvent.getBallotBoxes();
-        List<File> encBallotsFiles = new ArrayList<>();
-        for (BallotBox ballotBox : ballotBoxes) {
-            String ballotBoxId = ballotBox.getId().toString();
-            File[] encBallotsFolders = PathHelper.listDirectories(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_BALLOTBOXES).resolve(ballotBoxId));
-            for (File folder : encBallotsFolders) {
-                encBallotsFiles.add(PathHelper.getFile(folder, "encryptedBallots.*\\.csv"));
+        // Collect all the encrypted ballots
+        List<PathNode> encryptedBallotsPathNodes = new ArrayList<>();
+        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
+            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicPathNode(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
+            for (Path ballotBoxOfflineDirectoryPath : ballotBoxOfflineDirectoriesPathNode.getRegexPaths()) {
+                encryptedBallotsPathNodes.add(pathService.buildFromDynamicPathNode(StructureKey.ENCRYPTED_BALLOTS, ballotBoxOfflineDirectoryPath));
             }
-
         }
 
-        byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath
-                        .resolve(Block3VerificationSuite.PATH_CERTIFICATES)
-                        .resolve(Block3VerificationSuite.PATH_ADMINBOARD).toFile(),
-                ".*\\.pem").toPath());
+        // Get signed certificate
+        PathNode adminBoardCertPathNode = pathService.buildPathNode(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
+        byte[] signCertificate = Files.readAllBytes(adminBoardCertPathNode.getPath());
 
-        byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
+        // Get root certificate
+        PathNode rootCAPathNode = pathService.buildPathNode(StructureKey.TENANT_100, inputDirectoryPath);
+        byte[] rootCA = Files.readAllBytes(rootCAPathNode.getPath());
 
-        for (File encBallot : encBallotsFiles) {
-            byte[] content = Files.readAllBytes(encBallot.toPath());
-            byte[] signature = Files.readAllBytes(encBallot.toPath().getParent().resolve(encBallot.getName() + ".metadata"));
+        // Verify signature of each encrypted ballots
+        for (PathNode encryptedBallotsPathNode : encryptedBallotsPathNodes) {
+            byte[] content = Files.readAllBytes(encryptedBallotsPathNode.getPath());
+            byte[] signature = Files.readAllBytes(encryptedBallotsPathNode.getRelation(RelationType.METADATA));
 
             if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCA)) {
                 throw buildVerificationFailureException(

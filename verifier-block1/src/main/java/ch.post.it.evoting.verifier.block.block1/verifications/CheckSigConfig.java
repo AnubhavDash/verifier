@@ -51,7 +51,7 @@ public class CheckSigConfig extends AbstractVerification {
                         .toFile(),
                 ".*configuration-anonymized.*\\.xml");
 
-        byte[] content = Files.readAllBytes(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName()));
+        byte[] content = Files.readAllBytes(dataConfig.toPath());
         byte[] signature = Files.readAllBytes(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName() + ".p7"));
         if (!SignatureChecker.verifyPKCS7(content, signature, rootCertificate)) {
             throw buildVerificationFailureException(

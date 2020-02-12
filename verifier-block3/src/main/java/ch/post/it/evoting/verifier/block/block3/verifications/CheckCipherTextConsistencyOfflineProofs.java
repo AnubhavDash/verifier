@@ -22,16 +22,14 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallot;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;
 import reactor.core.publisher.Flux;
 
-import java.io.File;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 public class CheckCipherTextConsistencyOfflineProofs extends AbstractVerification {
@@ -52,41 +50,40 @@ public class CheckCipherTextConsistencyOfflineProofs extends AbstractVerificatio
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        File[] ballotboxes = PathHelper.listDirectories(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
+        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
 
-        for (File ballotbox : ballotboxes) {
-            boolean isEquivalent = false;
+            // Online mixing files
+            PathNode onlineMixingPathNode = pathService.buildFromDynamicPathNode(StructureKey.BALLOT_BOX_ONLINE_MIXING, ballotBoxIdDirectoryPath);
 
-            // Offline
-            OfflineEncryptedBallotsLoader offlineEncryptedBallotsLoader = new OfflineEncryptedBallotsLoader(ballotbox.toPath().resolve("0"), inputDirectoryPath);
+            // Offline encrypted ballots files
+            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicPathNode(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
+            for (Path ballotBoxDirectoryPath : ballotBoxOfflineDirectoriesPathNode.getRegexPaths()) {
+                OfflineEncryptedBallotsLoader offlineEncryptedBallotsLoader = new OfflineEncryptedBallotsLoader(ballotBoxDirectoryPath, inputDirectoryPath);
+                ElGamalEncryptedBallots offlineEncryptedBallots = offlineEncryptedBallotsLoader.getEncryptedBallots();
 
-            ElGamalEncryptedBallots offlineEncryptedBallots = offlineEncryptedBallotsLoader.getEncryptedBallots();
+                boolean isNotEquivalent = true;
+                for (Path onlineMixingPath : onlineMixingPathNode.getRegexPaths()) {
+                    OnlineMixingProofLoader onlineMixingProofLoader = new OnlineMixingProofLoader(onlineMixingPath);
+                    ElGamalEncryptedBallots onlineEncryptedBallots = onlineMixingProofLoader.getVotes();
 
-            final File[] onlineMixings = ballotbox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
-            Iterable<File> iterableFile = Arrays.asList(onlineMixings);
-            Iterator iteratorFile = iterableFile.iterator();
+                    // Business check
+                    if (isOfflineOnlineEncryptedBallotsEquals(offlineEncryptedBallots.getBallots(), onlineEncryptedBallots.getBallots())) {
+                        isNotEquivalent = false;
+                        break;
+                    }
+                }
 
-
-            while (iteratorFile.hasNext() && !isEquivalent) {
-                File online = (File) iteratorFile.next();
-
-                OnlineMixingProofLoader onlineMixingProofLoader = new OnlineMixingProofLoader(online.toPath());
-                ElGamalEncryptedBallots onlineEncryptedBallots = onlineMixingProofLoader.getVotes();
-
-                // Business check
-                if (isOfflineOnlineEncryptedBallotsEquals(offlineEncryptedBallots.getBallots(), onlineEncryptedBallots.getBallots())) {
-                    isEquivalent = true;
+                if (isNotEquivalent) {
+                    throw buildVerificationFailureException(
+                            "Same vote not exist",
+                            Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
+                            "verification11.nok.message"
+                    );
                 }
             }
-
-            if (!isEquivalent) {
-                throw buildVerificationFailureException(
-                        "Same vote not exist",
-                        Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
-                        "verification11.nok.message"
-                );
-            }
         }
+
 
         result.setStatus(Status.OK);
         return result;
