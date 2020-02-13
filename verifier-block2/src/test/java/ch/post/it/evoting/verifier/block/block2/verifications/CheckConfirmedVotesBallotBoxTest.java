@@ -17,6 +17,8 @@ package ch.post.it.evoting.verifier.block.block2.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -24,6 +26,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.io.FileNotFoundException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
 public class CheckConfirmedVotesBallotBoxTest extends Block2VerificationAbstractTest {
@@ -104,8 +107,9 @@ public class CheckConfirmedVotesBallotBoxTest extends Block2VerificationAbstract
 
     @Test
     public void downloadedBallotBoxFileNotFound() throws Exception {
-        exceptionRule.expect(FileNotFoundException.class);
-        exceptionRule.expectMessage("downloadedBallotBox.*\\.csv");
+        exceptionRule.expect(NoSuchFileException.class);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.DOWNLOADED_BALLOT_BOX);
+        exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckConfirmedVotesBallotBoxTest/NOK-NOTFILE").toURI()));
     }
 }

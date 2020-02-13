@@ -18,13 +18,13 @@ import ch.post.it.evoting.verifier.block.block2.Block2VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.dto.DownloadedBallot;
 import lombok.Getter;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -55,28 +55,29 @@ public class CheckConfirmedVotesBallotBox extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        List<File> downloadedBallotBoxFiles =
-                PathHelper.getFiles(inputDirectoryPath.resolve(Block2VerificationSuite.PATH_BALLOTBOXES).toFile(),
-                        "downloadedBallotBox.*\\.csv",
-                        true);
+        final PathNode downloadedBallotDirPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 
-        // Iterate over all ballotBox files.
-        for (File downloadedBbFile : downloadedBallotBoxFiles) {
+        // Iterate over all ballotBox id directories.
+        for (Path regexPathDirs : downloadedBallotDirPathNode.getRegexPaths()) {
 
-            File successVotes = downloadedBbFile.toPath().getParent().resolve("successfulVotes.csv").toFile();
-            File failedVotes = downloadedBbFile.toPath().getParent().resolve("failedVotes.csv").toFile();
+            // Retrieve the downloaded ballot box file.
+            final PathNode downloadedFilePathNode = pathService.buildFromDynamicPathNode(StructureKey.DOWNLOADED_BALLOT_BOX, regexPathDirs);
 
             // Stream over all lines of current ballot file.
-            try (Stream<String> lines = Files.lines(downloadedBbFile.toPath())) {
+            try (Stream<String> lines = Files.lines(downloadedFilePathNode.getPath())) {
 
                 // Create a map with two entries:
                 // true => list of confirmed votes
                 // false => list of unconfirmed votes
                 Map<Boolean, List<String>> partitionedBallotBox = partitionDownloadedBallotBox(lines);
 
+                // Retrieve success and failed votes files.
+                final PathNode successVotesPathNode = pathService.buildFromDynamicPathNode(StructureKey.SUCCESSFUL_VOTES, regexPathDirs);
+                final PathNode failedVotesPathNode = pathService.buildFromDynamicPathNode(StructureKey.FAILED_VOTES, regexPathDirs);
+
                 // Extract the votingCardId's.
-                List<String> votingCardSuccessList = extractVotingCardIds(successVotes);
-                List<String> votingCardFailedList = extractVotingCardIds(failedVotes);
+                List<String> votingCardSuccessList = extractVotingCardIds(successVotesPathNode.getPath());
+                List<String> votingCardFailedList = extractVotingCardIds(failedVotesPathNode.getPath());
 
                 // Check that the lists are equals (containing exactly the same elements).
                 if (!partitionedBallotBox.get(true).equals(votingCardSuccessList)) {
@@ -141,9 +142,9 @@ public class CheckConfirmedVotesBallotBox extends AbstractVerification {
         };
     }
 
-    private List<String> extractVotingCardIds(File votes) throws IOException {
+    private List<String> extractVotingCardIds(Path votes) throws IOException {
         return StreamSupport.stream(
-                Deserializer.fromCsv(votes.getParentFile(), votes.getName(), ";", array -> {
+                Deserializer.fromCsv(votes, ";", array -> {
                     if (array == null || array.length <= 2) {
                         return null;
                     }

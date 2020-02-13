@@ -22,9 +22,12 @@ import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.dto.revised.Ballot;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 import java.io.File;
@@ -47,7 +50,8 @@ public class CheckVoteBallotBox extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(2);
         def.setCategory(Category.CONSISTENCY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification05.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
+                "verification05.description"));
         def.setId(5);
         def.setName("checkVoteBallotBox");
         def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
@@ -69,7 +73,7 @@ public class CheckVoteBallotBox extends AbstractVerification {
                     matcher.matches();
                     return Tuples.of(matcher.group(1), matcher.group(2));
                 })
-                .collectMap(t -> t.getT1(), t -> t.getT2()).block();
+                .collectMap(Tuple2::getT1, Tuple2::getT2).block();
 
         // for all ballotbox
         // get downloadedBallotBox.csv --> votingCardId, encryptedOptions
@@ -77,12 +81,11 @@ public class CheckVoteBallotBox extends AbstractVerification {
         // check that mapDownloadedBallotBox[votingCardId] == mapSecuredLogs[votingCardId]
         Map<String, String> mapDownloadedBallotBoxs = new HashMap<>();
 
-        List<File> downloadedBallotBoxFiles = PathHelper.getFiles(inputDirectoryPath.resolve(Block2VerificationSuite.PATH_BALLOTBOXES).toFile(),
-                "downloadedBallotBox.*\\.csv",
-                true);
+        final PathNode ballotIdDirsPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        for (Path regexPath : ballotIdDirsPathNode.getRegexPaths()) {
+            final PathNode ballotBoxFilePathNode = pathService.buildFromDynamicPathNode(StructureKey.DOWNLOADED_BALLOT_BOX, regexPath);
 
-        for (File downloadedBbFile : downloadedBallotBoxFiles) {
-            try (Stream<String> lines = Files.lines(downloadedBbFile.toPath())) {
+            try (Stream<String> lines = Files.lines(ballotBoxFilePathNode.getPath())) {
                 Map<String, String> map = lines
                         .map(l -> {
                             try {

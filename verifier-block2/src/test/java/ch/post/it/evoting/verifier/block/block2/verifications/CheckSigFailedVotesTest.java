@@ -4,6 +4,8 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.JsonMissingNodeException;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -41,21 +43,24 @@ public class CheckSigFailedVotesTest extends Block2VerificationAbstractTest {
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(CheckSigFailedVotes.FAILED_VOTES_CSV);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.FAILED_VOTES);
+        exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigFailedVotesTest/NOK-NOFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKBallotFileNotFound() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(CheckSigFailedVotes.BALLOT_BOX_JSON);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.BALLOT_BOX);
+        exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigFailedVotesTest/NOK-NOFILE2").toURI()));
     }
 
     @Test
     public void executeTestNOKElectionFileNotFound() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(CheckSigFailedVotes.ELECTION_INFORMATION_CONTENTS_JSON);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ELECTION_INFORMATION_CONTENTS);
+        exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigFailedVotesTest/NOK-NOFILE3").toURI()));
     }
 

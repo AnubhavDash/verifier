@@ -22,11 +22,12 @@ import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import reactor.core.publisher.Flux;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.Optional;
@@ -38,7 +39,8 @@ public class CheckSecureLogSignature extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(2);
         def.setCategory(Category.AUTHENTICITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification02.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
+                "verification02.description"));
         def.setId(2);
         def.setName("checkSecureLogSignature");
         def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
@@ -46,22 +48,25 @@ public class CheckSecureLogSignature extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(Path inputDirectoryPath) {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        Map<String, SecureLogBundleCertificates> mapCertificates = SecureLogBundleCertificates.loadAllHostsBundleCertificates(inputDirectoryPath);
-        File[] hosts = PathHelper.listDirectories(inputDirectoryPath.resolve(Block2VerificationSuite.PATH_SECURE_LOGS));
+        Map<String, SecureLogBundleCertificates> mapCertificates =
+                SecureLogBundleCertificates.loadAllHostsBundleCertificates(inputDirectoryPath);
 
-        VerificationFailureException ex = Flux.fromArray(hosts)
+        final PathNode secureLogsPathNode = pathService.buildPathNode(StructureKey.SECURE_LOGS_DIR, inputDirectoryPath);
+
+        VerificationFailureException ex = Flux.fromIterable(secureLogsPathNode.getSubDirectories())
                 .onErrorStop()
-                .flatMap(hostDir -> Flux.fromArray(PathHelper.listDirectories(hostDir.toPath())))
+                .flatMap(hostDir -> Flux.fromArray(PathHelper.listDirectories(hostDir)))
                 .flatMap(instanceDir -> Flux.fromArray(PathHelper.listDirectories(instanceDir.toPath())))
                 .map(SecureLogEntry.loadLogDirectory)
                 .flatMap(flux -> SecureLogBundleCreator.from(flux, mapCertificates))
-                .switchIfEmpty(Flux.<SecureLogBundle>empty().doOnComplete(() -> {throw new RuntimeException("No secureLog bundle found");}))
-                .map(b -> Optional.ofNullable(b.validateSignature()
-                        ? null
-                        : buildVerificationFailureException(
+                .switchIfEmpty(Flux.<SecureLogBundle>empty().doOnComplete(() -> {
+                    throw new RuntimeException("No secureLog bundle found");
+                }))
+                .map(b -> Optional.ofNullable(b.validateSignature() ? null :
+                        buildVerificationFailureException(
                                 "Checkpoint entry and attributes of the entry, the signature does not verify",
                                 Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
                                 "verification02.nok.message",

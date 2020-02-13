@@ -75,6 +75,16 @@
             "key": "DOWNLOADED_BALLOT_BOX",
             "type": "FILE",
             "name": "downloadedBallotBox.csv"
+          },
+          {
+            "key": "FAILED_VOTES",
+            "type": "FILE",
+            "name": "failedVotes.csv"
+          },
+          {
+            "key": "SUCCESSFUL_VOTES",
+            "type": "FILE",
+            "name": "successfulVotes.csv"
           }
         ]
       }
@@ -295,6 +305,56 @@
             "type": "SIGN"
           }
         ]
+      }
+    ]
+  },
+  {
+    "key": "SECURE_LOGS_DIR",
+    "type": "DIRECTORY",
+    "name": "SecureLogs",
+    "content": [
+      {
+        "key": "SECURE_LOG_DIR",
+        "type": "DYNAMIC_DIRECTORY",
+        "regex": "h[0-9]{3}[0-9a-z]{2}",
+        "content": [
+          {
+            "key": "LOGS_DIR",
+            "type": "DIRECTORY",
+            "name": "logs",
+            "content": [
+              {
+                "key": "LOGS_CG_DIR",
+                "type": "DIRECTORY",
+                "name": "cg",
+                "content": [
+                  {
+                    "key": "CG_SECURE_LOG",
+                    "type": "FILE",
+                    "regex": "cg_secure-[0-9]{8}-[0-9]{6}-[0-9]+\\.log"
+                  }
+                ]
+              },
+              {
+                "key": "LOGS_CV_DIR",
+                "type": "DIRECTORY",
+                "name": "cv",
+                "content": [
+                  {
+                    "key": "CV_SECURE_LOG",
+                    "type": "FILE",
+                    "regex": "cv_secure-[0-9]{8}-[0-9]{6}-[0-9]+\\.log"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "MAPPING_CC_HOSTS",
+        "type": "FILE",
+        "name": "mapping_cc_hosts.csv"
       }
     ]
   },

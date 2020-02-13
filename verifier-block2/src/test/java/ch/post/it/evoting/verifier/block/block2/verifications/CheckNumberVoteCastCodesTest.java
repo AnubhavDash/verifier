@@ -17,10 +17,11 @@ package ch.post.it.evoting.verifier.block.block2.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
@@ -37,7 +38,8 @@ public class CheckNumberVoteCastCodesTest extends Block2VerificationAbstractTest
     @Test
     @Ignore
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckNumberVoteCastCodesTest/OK").toURI()));
+        VerificationResult verificationResult =
+                verification.verify(Paths.get(getClass().getResource("/CheckNumberVoteCastCodesTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -67,7 +69,8 @@ public class CheckNumberVoteCastCodesTest extends Block2VerificationAbstractTest
     @Test
     public void executeTestNOKnotFile2() throws Exception {
         exceptionRule.expect(IOException.class);
-        exceptionRule.expectMessage("mapping_cc_hosts.csv");
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.MAPPING_CC_HOSTS);
+        exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckNumberVoteCastCodesTest/NOK-NOTFILE2").toURI()));
     }
 }
