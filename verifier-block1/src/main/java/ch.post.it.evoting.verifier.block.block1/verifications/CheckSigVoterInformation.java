@@ -18,9 +18,12 @@ import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureConsumer;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,11 +31,6 @@ import java.util.Base64;
 import java.util.stream.Stream;
 
 public class CheckSigVoterInformation extends AbstractVerification {
-
-    private static final String VOTER_INFORMATION_CSV_SIGN = "voterInformation.csv.sign";
-    private static final String VOTER_INFORMATION_CSV = "voterInformation.csv";
-    private static final String PLATFORM_ROOT_CA_PEM = "platformRootCA.pem";
-    private static final String TENANT_100_PEM = "tenant_100.pem";
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -52,41 +50,38 @@ public class CheckSigVoterInformation extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        // Top level directories.
-        Path pathElection = inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP);
-        Path pathCertificates = inputDirectoryPath.resolve(Block1VerificationSuite.PATH_CERTIFICATES);
-
-        // Sub-level directories.
-        Path pathVotingCardSets = pathElection.resolve(Block1VerificationSuite.PATH_VOTING_CARD_SETS);
-        Path pathAdminboard = pathCertificates.resolve(Block1VerificationSuite.PATH_ADMINBOARD);
-
         // Get the certificate used for signing.
-        byte[] signingCertificate = Files.readAllBytes(PathHelper.getPath(pathAdminboard, 1, ".*\\.pem"));
+        final PathNode adminCertPathNode = pathService.buildPathNode(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
+        byte[] signCertificate = Files.readAllBytes(adminCertPathNode.getPath());
 
         // Get the intermediate certificates.
-        byte[][] intermediateCertificates = new byte[][]{Files.readAllBytes(PathHelper.getPath(pathCertificates, 1, TENANT_100_PEM))};
+        final PathNode tenantPathNode = pathService.buildPathNode(StructureKey.TENANT_100, inputDirectoryPath);
+        byte[][] intermediateCertificates = new byte[][]{Files.readAllBytes(tenantPathNode.getPath())};
 
         // Get the root certificate.
-        byte[] rootCertificate = Files.readAllBytes(PathHelper.getPath(pathCertificates, 1, PLATFORM_ROOT_CA_PEM));
+        final PathNode platformRootPathNode = pathService.buildPathNode(StructureKey.PLATFORM_ROOT_CA, inputDirectoryPath);
+        byte[] rootCertificate = Files.readAllBytes(platformRootPathNode.getPath());
 
-        // Iterate over all directories and do the verification for credentialData in each.
-        try (Stream<Path> stream = Files.walk(pathVotingCardSets, 1)) {
-            stream.filter(p -> Files.isDirectory(p) && !p.equals(pathVotingCardSets))
-                    .forEach((VerificationFailureConsumer<Path>) d -> {
-                        byte[] signatureBase64 = Files.readAllBytes(d.resolve(VOTER_INFORMATION_CSV_SIGN));
-                        // Decode the signature.
-                        byte[] signature = Base64.getDecoder().decode(signatureBase64);
-                        byte[] source = Files.readAllBytes(d.resolve(VOTER_INFORMATION_CSV));
-                        if (!SignatureChecker.verifySignature(source, signature, signingCertificate, intermediateCertificates,
-                                rootCertificate)) {
-                            throw buildVerificationFailureException(
-                                    "The signature verification of the file failed",
-                                    Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-                                    "verification79.nok.message",
-                                    d.getFileName().toString() + "/" + VOTER_INFORMATION_CSV
-                            );
-                        }
-                    });
+        final PathNode votingCardIdPathNode = pathService.buildPathNode(StructureKey.VOTING_CARD_SETS_ID_DIR, inputDirectoryPath);
+
+        // Iterate over all directories and do the verification for voterInformation in each.
+        for (Path regexPath : votingCardIdPathNode.getRegexPaths()) {
+            final PathNode voterInfoPathNode = pathService.buildFromDynamicPathNode(StructureKey.VOTER_INFORMATION, regexPath);
+
+            byte[] source = Files.readAllBytes(voterInfoPathNode.getPath());
+
+            // Get and decode the signature.
+            byte[] signatureBase64 = Files.readAllBytes(voterInfoPathNode.getRelation(RelationType.SIGN));
+            byte[] signature = Base64.getDecoder().decode(signatureBase64);
+
+            if (!SignatureChecker.verifySignature(source, signature, signCertificate, intermediateCertificates, rootCertificate)) {
+                throw buildVerificationFailureException(
+                        "The signature verification of the file failed",
+                        Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                        "verification79.nok.message",
+                        regexPath.toString()
+                );
+            }
         }
 
         result.setStatus(Status.OK);

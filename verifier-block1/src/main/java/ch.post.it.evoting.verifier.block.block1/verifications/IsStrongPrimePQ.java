@@ -21,6 +21,8 @@ import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionGroup;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 
 import java.math.BigInteger;
 import java.nio.file.Path;
@@ -32,7 +34,8 @@ public class IsStrongPrimePQ extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(1);
         def.setCategory(Category.INTEGRITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                "verification03.description"));
         def.setId(3);
         def.setName("isStrongPrime(p,q)");
         def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
@@ -44,8 +47,8 @@ public class IsStrongPrimePQ extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        Path path = inputDirectoryPath.resolve(Block1VerificationSuite.PATH_CRYPTO_SETUP);
-        EncryptionGroup encryptionGroup = Deserializer.fromJson(path.toFile(), "encryptionParameters\\.json", EncryptionGroup.class);
+        final PathNode encryptParams = pathService.buildPathNode(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
+        EncryptionGroup encryptionGroup = Deserializer.fromJson(encryptParams.getPath(), EncryptionGroup.class);
 
         if (!MathHelper.areEqual(encryptionGroup.getP(), (encryptionGroup.getQ().multiply(BigInteger.valueOf(2))).add(BigInteger.ONE))) {
             throw buildVerificationFailureException(

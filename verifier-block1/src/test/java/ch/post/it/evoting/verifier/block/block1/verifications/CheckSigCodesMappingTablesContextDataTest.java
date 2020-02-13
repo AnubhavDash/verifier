@@ -17,7 +17,9 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureWrappedException;
+import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -26,8 +28,6 @@ import org.junit.rules.ExpectedException;
 
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
-
-import static org.hamcrest.core.Is.isA;
 
 public class CheckSigCodesMappingTablesContextDataTest extends Block1VerificationAbstractTest {
 
@@ -55,18 +55,18 @@ public class CheckSigCodesMappingTablesContextDataTest extends Block1Verificatio
     }
 
     @Test
-    public void executeTestNOKCredentialFileNotFound() throws Exception {
-        exceptionRule.expect(VerificationFailureWrappedException.class);
-        exceptionRule.expectCause(isA(NoSuchFileException.class));
-        exceptionRule.expectMessage("codesMappingTablesContextData.csv");
+    public void executeTestNOKCodesMappingFileNotFound() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CODES_MAPPING_TABLES_CONTEXT_DATA);
+        exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigCodesMappingTablesContextDataTest/NOK-NOFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKSignFileNotFound() throws Exception {
-        exceptionRule.expect(VerificationFailureWrappedException.class);
-        exceptionRule.expectCause(isA(NoSuchFileException.class));
-        exceptionRule.expectMessage("codesMappingTablesContextData.csv.sign");
+        exceptionRule.expect(NoSuchFileException.class);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CODES_MAPPING_TABLES_CONTEXT_DATA);
+        exceptionRule.expectMessage(structureNode.getQualifier() + RelationType.SIGN.toFileExtension());
         verification.verify(Paths.get(getClass().getResource("/CheckSigCodesMappingTablesContextDataTest/NOK-NOFILE2").toURI()));
     }
 }

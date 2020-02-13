@@ -17,6 +17,8 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -38,7 +40,8 @@ public class IsMemberOfGroupPKEATest extends Block1VerificationAbstractTest {
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/IsMemberOfGroupPKEATest/OK").toURI()));
+        VerificationResult verificationResult =
+                verification.verify(Paths.get(getClass().getResource("/IsMemberOfGroupPKEATest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -60,7 +63,8 @@ public class IsMemberOfGroupPKEATest extends Block1VerificationAbstractTest {
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(IOException.class);
-        exceptionRule.expectMessage("electoralAuthority\\.json");
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ELECTORAL_AUTHORITY);
+        exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/IsMemberOfGroupPKEATest/NOK/NOK-NOFILE").toURI()));
     }
 

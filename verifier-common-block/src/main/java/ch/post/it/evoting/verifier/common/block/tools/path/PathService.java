@@ -42,7 +42,7 @@ public class PathService {
     /**
      * Obtain file or directory path from the specified {@link StructureKey}.
      *
-     * @param structureKey        The file or directory to obtain.
+     * @param structureKey       The file or directory to obtain.
      * @param inputDirectoryPath The root path where the dataset lies.
      * @return The path for the {@code datasetKey}.
      * @throws IOException If the path can not be obtained.
@@ -66,8 +66,8 @@ public class PathService {
     /**
      * Obtain file or directory path from the specified {@link StructureKey}.
      *
-     * @param structureKey        The file or directory to obtain.
-     * @param dynamicPath        The dynamic part of the path.
+     * @param structureKey The file or directory to obtain.
+     * @param dynamicPath  The dynamic part of the path.
      * @return The path for the {@code datasetKey}.
      * @throws IOException If the path can not be obtained.
      */
@@ -87,7 +87,6 @@ public class PathService {
     public StructureNode getStructureNode(StructureKey structureKey) {
         return structureMap.get(structureKey);
     }
-
 
     private List<Path> resolve(Path startingPath, StructureNode structureNode) throws IOException {
         List<Path> paths = Files.find(startingPath, 1,
@@ -117,9 +116,11 @@ public class PathService {
                 final JsonNode relationsNode = node.path("relations");
                 List<RelationType> relations = getRelations(relationsNode);
                 // Add PathNode to the map
-                structureMap.put(StructureKey.valueOf(node.path("key").asText()), new StructureNode(type, parentPath, currentName, dynamicAncestor, relations));
+                structureMap.put(StructureKey.valueOf(node.path("key").asText()), new StructureNode(type, parentPath, currentName,
+                        dynamicAncestor, relations));
             } else {
-                structureMap.put(StructureKey.valueOf(node.path("key").asText()), new StructureNode(type, parentPath, currentName, dynamicAncestor, null));
+                structureMap.put(StructureKey.valueOf(node.path("key").asText()), new StructureNode(type, parentPath, currentName,
+                        dynamicAncestor, null));
                 // Update dynamic value for child
                 if (PathType.DYNAMIC_DIRECTORY.equals(type)) {
                     dynamicAncestor = true;

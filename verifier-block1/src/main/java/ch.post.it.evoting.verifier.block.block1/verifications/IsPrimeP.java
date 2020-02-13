@@ -21,6 +21,8 @@ import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionGroup;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 
 import java.nio.file.Path;
 
@@ -31,7 +33,8 @@ public class IsPrimeP extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(1);
         def.setCategory(Category.INTEGRITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                "verification01.description"));
         def.setId(1);
         def.setName("isPrime(p)");
         def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
@@ -43,8 +46,8 @@ public class IsPrimeP extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        Path path = inputDirectoryPath.resolve(Block1VerificationSuite.PATH_CRYPTO_SETUP);
-        EncryptionGroup encryptionGroup = Deserializer.fromJson(path.toFile(), "encryptionParameters\\.json", EncryptionGroup.class);
+        final PathNode encryptParams = pathService.buildPathNode(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
+        EncryptionGroup encryptionGroup = Deserializer.fromJson(encryptParams.getPath(), EncryptionGroup.class);
 
         if (!MathHelper.isPrime(encryptionGroup.getP())) {
             throw buildVerificationFailureException(

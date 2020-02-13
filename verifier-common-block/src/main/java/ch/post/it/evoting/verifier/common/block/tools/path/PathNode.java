@@ -34,7 +34,7 @@ public class PathNode {
         }
         for (RelationType r : structureNode.getRelations()) {
             if (r.equals(relationType)) {
-                return firstPath.resolveSibling(firstPath.getFileName() + "." + r.toLowerCase());
+                return firstPath.resolveSibling(firstPath.getFileName().toString() + r.toFileExtension());
             }
         }
         throw new IllegalArgumentException(String.format("Asked relation does not exist: %s", relationType));
@@ -45,17 +45,17 @@ public class PathNode {
      * {@code index}.
      *
      * @param relationType The {@link RelationType} to get.
-     * @param index        The index of the path to get the relation.
+     * @param regexPath    The path to get the relation.
      * @return The relation for the path at specified index.
      */
-    public Path getRelation(RelationType relationType, int index) {
+    public Path getRelation(RelationType relationType, Path regexPath) {
         if (paths.stream().anyMatch(Files::isDirectory)) {
             throw new IllegalArgumentException("PathNode is a directory.");
         }
         for (RelationType r : structureNode.getRelations()) {
             if (r.equals(relationType)) {
-                final String relationPathString = paths.get(index).getFileName().toString() + "." + relationType.toLowerCase();
-                return paths.get(index).resolveSibling(relationPathString);
+                final String relationPathString = regexPath.getFileName().toString() + relationType.toFileExtension();
+                return regexPath.resolveSibling(relationPathString);
             }
         }
         throw new IllegalArgumentException(String.format("Asked relation does not exist: %s", relationType));

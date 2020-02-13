@@ -4,6 +4,9 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.JsonMissingNodeException;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 import io.jsonwebtoken.SignatureException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -42,14 +45,16 @@ public class CheckSigBallotBoxConfigurationTest extends Block1VerificationAbstra
     @Test
     public void executeTestNOKBallotFileNotFound() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(CheckSigBallotBoxConfiguration.BALLOT_BOX_JSON);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.BALLOT_BOX);
+        exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK-NOFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKSignFileNotFound() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(CheckSigBallotBoxConfiguration.BALLOT_BOX_JSON_SIGN);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.BALLOT_BOX);
+        exceptionRule.expectMessage(structureNode.getQualifier() + RelationType.SIGN.toFileExtension()); // TODO oka?
         verification.verify(Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK-NOFILE2").toURI()));
     }
 

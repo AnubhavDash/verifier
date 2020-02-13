@@ -17,11 +17,12 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -32,7 +33,8 @@ public class CheckSigConfig extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(1);
         def.setCategory(Category.AUTHENTICITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification73.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                "verification73.description"));
         def.setId(73);
         def.setName("checkSigConfig");
         def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
@@ -44,21 +46,22 @@ public class CheckSigConfig extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        byte[] rootCertificate = Files.readAllBytes(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_CERTIFICATES).resolve("integrationCA.pem"));
+        // Get the signing certificate.
+        final PathNode integrationPathNode = pathService.buildPathNode(StructureKey.INTEGRATION_CA, inputDirectoryPath);
+        byte[] rootCertificate = Files.readAllBytes(integrationPathNode.getPath());
 
-        File dataConfig = PathHelper.getFile(inputDirectoryPath
-                        .resolve(Block1VerificationSuite.PATH_ELECTION_SETUP)
-                        .toFile(),
-                ".*configuration-anonymized.*\\.xml");
+        // Get the file and its signature.
+        final PathNode configAnonymizedPathNode = pathService.buildPathNode(StructureKey.CONFIG_ANONYMIZED, inputDirectoryPath);
+        byte[] content = Files.readAllBytes(configAnonymizedPathNode.getPath());
+        byte[] signature = Files.readAllBytes(configAnonymizedPathNode.getRelation(RelationType.P7));
 
-        byte[] content = Files.readAllBytes(dataConfig.toPath());
-        byte[] signature = Files.readAllBytes(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName() + ".p7"));
+        // Check signature.
         if (!SignatureChecker.verifyPKCS7(content, signature, rootCertificate)) {
             throw buildVerificationFailureException(
                     "The signature verification of the file failed",
                     Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
                     "verification73.nok.message",
-                    dataConfig.getName()
+                    configAnonymizedPathNode.getPath().toString()
             );
         }
 

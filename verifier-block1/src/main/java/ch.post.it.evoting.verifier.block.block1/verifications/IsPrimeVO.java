@@ -23,6 +23,8 @@ import ch.post.it.evoting.verifier.common.block.dto.revised.VoteOption;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 
 import java.math.BigInteger;
 import java.nio.file.Path;
@@ -36,7 +38,8 @@ public class IsPrimeVO extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(1);
         def.setCategory(Category.INTEGRITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification05.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                "verification05.description"));
         def.setId(5);
         def.setName("isPrime([vo])");
         def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
@@ -48,8 +51,8 @@ public class IsPrimeVO extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        Path path = inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP);
-        ElectionEvent electionEvent = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", ElectionEvent.class);
+        final PathNode dataConfigPathNode = pathService.buildPathNode(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
+        ElectionEvent electionEvent = Deserializer.fromJson(dataConfigPathNode.getPath(), ElectionEvent.class);
 
         // Votations
         Collection<BigInteger> errors = electionEvent.getBallotBoxes().stream()

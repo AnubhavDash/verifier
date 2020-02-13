@@ -17,11 +17,12 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -32,7 +33,8 @@ public class CheckSigEch015X extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(1);
         def.setCategory(Category.AUTHENTICITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification72.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                "verification72.description"));
         def.setId(72);
         def.setName("checkSigEch015X");
         def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
@@ -44,19 +46,21 @@ public class CheckSigEch015X extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        byte[] rootCertificate = Files.readAllBytes(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_CERTIFICATES).resolve("integrationCA.pem"));
+        final PathNode integrationPathNode = pathService.buildPathNode(StructureKey.INTEGRATION_CA, inputDirectoryPath);
+        byte[] rootCertificate = Files.readAllBytes(integrationPathNode.getPath());
 
-        File[] echFiles = PathHelper.getFiles(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).toFile(), ".*ech015.*\\.xml");
+        final PathNode echo015XPathNode = pathService.buildPathNode(StructureKey.ECH015X, inputDirectoryPath);
 
-        for (File echFile : echFiles) {
-            byte[] content = Files.readAllBytes(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(echFile.getName()));
-            byte[] signature = Files.readAllBytes(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(echFile.getName() + ".p7"));
+        for (Path regexPath : echo015XPathNode.getRegexPaths()) {
+            byte[] content = Files.readAllBytes(regexPath);
+            byte[] signature = Files.readAllBytes(echo015XPathNode.getRelation(RelationType.P7, regexPath));
+
             if (!SignatureChecker.verifyPKCS7(content, signature, rootCertificate)) {
                 throw buildVerificationFailureException(
                         "The signature verification of the file failed",
                         Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
                         "verification72.nok.message",
-                        echFile.getName()
+                        regexPath.toString()
                 );
             }
         }

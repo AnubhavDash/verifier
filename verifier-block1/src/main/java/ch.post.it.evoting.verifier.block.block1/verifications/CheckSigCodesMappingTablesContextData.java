@@ -17,12 +17,11 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureConsumer;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -61,28 +60,27 @@ public class CheckSigCodesMappingTablesContextData extends AbstractVerification 
         byte[] rootCertificate = Files.readAllBytes(platformRootPathNode.getPath());
 
         // Get directory where files to check signature are located.
-        final PathNode verificationCardSetPathNode = pathService.buildPathNode(StructureKey.VERIFICATION_CARD_SET_DIR, inputDirectoryPath);
+        final PathNode verifCardSetIdPathNode = pathService.buildPathNode(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
 
-        verificationCardSetPathNode.getSubDirectories().forEach((VerificationFailureConsumer<Path>) d -> {
-                    final PathNode pathNode = pathService.buildFromDynamicPathNode(StructureKey.CODES_MAPPING_TABLES_CONTEXT_DATA, d);
+        for (Path regexPath : verifCardSetIdPathNode.getRegexPaths()) {
+            final PathNode pathNode = pathService.buildFromDynamicPathNode(StructureKey.CODES_MAPPING_TABLES_CONTEXT_DATA, regexPath);
 
-                    // Get and decode the signature.
-                    byte[] signatureBase64 = Files.readAllBytes(pathNode.getRelation(RelationType.SIGN));
-                    byte[] signature = Base64.getDecoder().decode(signatureBase64);
+            // Get and decode the signature.
+            byte[] signatureBase64 = Files.readAllBytes(pathNode.getRelation(RelationType.SIGN));
+            byte[] signature = Base64.getDecoder().decode(signatureBase64);
 
-                    byte[] source = Files.readAllBytes(pathNode.getPath());
+            byte[] source = Files.readAllBytes(pathNode.getPath());
 
-                    if (!SignatureChecker.verifySignature(source, signature, signingCertificate, intermediateCertificates,
-                            rootCertificate)) {
-                        throw buildVerificationFailureException(
-                                "The signature verification of the file failed",
-                                Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-                                "verification77.nok.message",
-                                d.getFileName().toString() + "/" + pathNode.getPath().getFileName()
-                        );
-                    }
-                }
-        );
+            if (!SignatureChecker.verifySignature(source, signature, signingCertificate, intermediateCertificates,
+                    rootCertificate)) {
+                throw buildVerificationFailureException(
+                        "The signature verification of the file failed",
+                        Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                        "verification77.nok.message",
+                        regexPath.toString()
+                );
+            }
+        }
 
         result.setStatus(Status.OK);
         return result;

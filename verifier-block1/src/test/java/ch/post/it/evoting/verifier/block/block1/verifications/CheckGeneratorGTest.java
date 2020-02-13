@@ -17,6 +17,8 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -67,6 +69,8 @@ public class CheckGeneratorGTest extends Block1VerificationAbstractTest {
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(IOException.class);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ENCRYPTION_PARAMETERS);
+        exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckGeneratorGTest/NOK/NOK-NOFILE").toURI()));
     }
 }

@@ -6,8 +6,8 @@ public enum RelationType {
     P7,
     METADATA;
 
-    public String toLowerCase() {
-        return name().toLowerCase();
+    public String toFileExtension() {
+        return "." + name().toLowerCase();
     }
 
 }
