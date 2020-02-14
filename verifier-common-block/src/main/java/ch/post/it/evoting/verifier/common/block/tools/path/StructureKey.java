@@ -55,6 +55,9 @@ public enum StructureKey {
     DOWNLOADED_BALLOT_BOX,
 
     CC_MIXING_KEYS_DIR,
-    CC_MIXING_KEYS
+    CC_MIXING_KEYS,
+
+    RESULTS_DIR,
+    BALLOT_RESULT
 
 }

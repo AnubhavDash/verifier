@@ -23,14 +23,6 @@
                 ]
               },
               {
-                "key": "DECOMPRESSED_VOTES",
-                "type": "FILE",
-                "name": "decompressedVotes\\.csv",
-                "relations": [
-                  "METADATA"
-                ]
-              },
-              {
                 "key": "ENCRYPTED_BALLOTS",
                 "type": "FILE",
                 "name": "encryptedBallots.csv",
@@ -60,6 +52,14 @@
             "key": "BALLOT_BOX_ONLINE_MIXING",
             "type": "FILE",
             "name": ".*ccn_m([0-9]+)\\.json"
+          },
+          {
+            "key": "DECOMPRESSED_VOTES",
+            "type": "FILE",
+            "name": "decompressedVotes.csv",
+            "relations": [
+              "METADATA"
+            ]
           },
           {
             "key": "DOWNLOADED_BALLOT_BOX",
@@ -319,6 +319,21 @@
         "key": "MAPPING_CC_HOSTS",
         "type": "FILE",
         "name": "mapping_cc_hosts.csv"
+      }
+    ]
+  },
+  {
+    "key": "RESULTS_DIR",
+    "type": "DIRECTORY",
+    "name": "results",
+    "content": [
+      {
+        "key": "BALLOT_RESULT",
+        "type": "FILE",
+        "name": "ballot.pdf",
+        "relations": [
+          "P7"
+        ]
       }
     ]
   },

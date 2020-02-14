@@ -17,6 +17,8 @@ package ch.post.it.evoting.verifier.block.block4.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -27,6 +29,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
+import java.sql.Struct;
 
 public class CheckSigDecompressedVotesTest extends Block4VerificationAbstractTest {
 
@@ -61,36 +64,39 @@ public class CheckSigDecompressedVotesTest extends Block4VerificationAbstractTes
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
-        exceptionRule.expect(FileNotFoundException.class);
-        exceptionRule.expectMessage("dataConfig_updated_.*\\.json");
+        exceptionRule.expect(NoSuchFileException.class);
+        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.BALLOT_BOXES_DIR).getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigDecompressedVotesTest/NOK-NOTFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound2() throws Exception {
-        exceptionRule.expect(FileNotFoundException.class);
-        exceptionRule.expectMessage("decompressedVotes.*\\.csv");
+        exceptionRule.expect(NoSuchFileException.class);
+        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.DECOMPRESSED_VOTES).getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigDecompressedVotesTest/NOK-NOTFILE2").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound3() throws Exception {
-        exceptionRule.expect(FileNotFoundException.class);
-        exceptionRule.expectMessage(".*\\.pem");
+        exceptionRule.expect(NoSuchFileException.class);
+        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.ADMIN_BOARD_CERT).getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigDecompressedVotesTest/NOK-NOTFILE3").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound4() throws Exception {
-        exceptionRule.expect(FileNotFoundException.class);
-        exceptionRule.expectMessage("tenant_.*\\.pem");
+        exceptionRule.expect(NoSuchFileException.class);
+        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.TENANT_100).getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigDecompressedVotesTest/NOK-NOTFILE4").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound5() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage("decompressedVotes.csv.metadata");
+        exceptionRule.expectMessage(
+                verification.getPathService().getStructureNode(StructureKey.DECOMPRESSED_VOTES).getQualifier()
+                        + RelationType.METADATA.toFileExtension()
+        );
         verification.verify(Paths.get(getClass().getResource("/CheckSigDecompressedVotesTest/NOK-NOTFILE5").toURI()));
     }
 
