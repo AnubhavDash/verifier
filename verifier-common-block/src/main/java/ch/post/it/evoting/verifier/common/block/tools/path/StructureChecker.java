@@ -15,6 +15,10 @@ class StructureChecker {
             final JsonNode type = node.path("type");
             checkNodeMissing(type, "type", type.asText());
 
+            // Check key presence.
+            final JsonNode key = node.path("key");
+            checkNodeMissing(key, "key", key.asText());
+
             // Check is the type is valid.
             final PathType pathType;
             try {
@@ -56,21 +60,26 @@ class StructureChecker {
 
     }
 
-    private static void checkNodeMissing(JsonNode node, String field, String type) {
-        if (node.isMissingNode()) {
-            throw new RuntimeException(String.format("Mandatory %s is missing in %s node.", field, type));
-        }
-    }
-
     private static void checkFileNodeIntegrity(JsonNode node) {
         final JsonNode key = node.path("key");
         final JsonNode name = node.path("name");
-        final JsonNode regex = node.path("regex");
+        final JsonNode relations = node.path("relations");
+        for (JsonNode relation : relations) {
+            try {
+                RelationType.valueOf(relation.asText());
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException(String.format("Type does not exist: %s", relation.asText()));
+            }
+        }
 
-        checkNodeMissing(key, "key", node.path("type").asText());
+        final String type = node.path("type").asText();
+        checkNodeMissing(key, "key", type);
+        checkNodeMissing(name, "name", type);
+    }
 
-        if (name.isMissingNode() && regex.isMissingNode()) {
-            throw new RuntimeException("Mandatory name or regex is missing in file node.");
+    private static void checkNodeMissing(JsonNode node, String field, String type) {
+        if (node.isMissingNode()) {
+            throw new RuntimeException(String.format("Mandatory %s is missing in %s node.", field, type));
         }
     }
 

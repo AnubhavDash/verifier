@@ -106,8 +106,8 @@ public class PathService {
      */
     private void addMapEntry(JsonNode currentNode, Path parentPath, boolean dynamicAncestor) {
         for (JsonNode node : currentNode) {
-            // Check whether the name is regular or a regex.
-            String currentName = node.path("name").isMissingNode() ? node.path("regex").asText() : node.path("name").asText();
+            // Get the name which can be a regex.
+            String currentName = node.path("name").asText();
 
             // Register current node as long as it is not a dynamic name folder.
             final PathType type = PathType.valueOf(node.path("type").asText());
@@ -138,7 +138,7 @@ public class PathService {
         List<RelationType> relations = new ArrayList<>();
         if (!relationsNode.isMissingNode()) {
             for (JsonNode relationNode : relationsNode) {
-                relations.add(RelationType.valueOf(relationNode.path("type").asText()));
+                relations.add(RelationType.valueOf(relationNode.asText()));
             }
         }
         return relations;

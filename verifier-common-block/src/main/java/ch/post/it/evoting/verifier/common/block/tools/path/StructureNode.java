@@ -1,6 +1,5 @@
 package ch.post.it.evoting.verifier.common.block.tools.path;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.nio.file.Path;

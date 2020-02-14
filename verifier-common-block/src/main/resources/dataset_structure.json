@@ -6,32 +6,28 @@
     "content": [
       {
         "key": "BALLOT_BOX_ID_DIR",
-        "regex": "[0-9a-zA-Z]{32}",
         "type": "DYNAMIC_DIRECTORY",
+        "name": "[0-9a-zA-Z]{32}",
         "content": [
           {
             "key": "BALLOT_BOX_OFFLINE_DIR",
-            "regex": "[0-9]+",
             "type": "DYNAMIC_DIRECTORY",
+            "name": "[0-9]+",
             "content": [
               {
                 "key": "COMMITMENT_PARAMETERS",
                 "type": "FILE",
-                "regex": "commitmentParameters.*\\.json",
+                "name": "commitmentParameters.*\\.json",
                 "relations": [
-                  {
-                    "type": "METADATA"
-                  }
+                  "METADATA"
                 ]
               },
               {
                 "key": "DECOMPRESSED_VOTES",
                 "type": "FILE",
-                "regex": "decompressedVotes\\.csv",
+                "name": "decompressedVotes\\.csv",
                 "relations": [
-                  {
-                    "type": "METADATA"
-                  }
+                  "METADATA"
                 ]
               },
               {
@@ -39,9 +35,7 @@
                 "type": "FILE",
                 "name": "encryptedBallots.csv",
                 "relations": [
-                  {
-                    "type": "METADATA"
-                  }
+                  "METADATA"
                 ]
               },
               {
@@ -49,9 +43,7 @@
                 "type": "FILE",
                 "name": "proofs.json",
                 "relations": [
-                  {
-                    "type": "METADATA"
-                  }
+                  "METADATA"
                 ]
               },
               {
@@ -59,9 +51,7 @@
                 "type": "FILE",
                 "name": "reencryptedBallots.csv",
                 "relations": [
-                  {
-                    "type": "METADATA"
-                  }
+                  "METADATA"
                 ]
               }
             ]
@@ -69,7 +59,7 @@
           {
             "key": "BALLOT_BOX_ONLINE_MIXING",
             "type": "FILE",
-            "regex": ".*ccn_m([0-9]+)\\.json"
+            "name": ".*ccn_m([0-9]+)\\.json"
           },
           {
             "key": "DOWNLOADED_BALLOT_BOX",
@@ -103,7 +93,7 @@
           {
             "key": "ADMIN_BOARD_CERT",
             "type": "FILE",
-            "regex": ".*\\.pem"
+            "name": ".*\\.pem"
           }
         ]
       },
@@ -125,7 +115,7 @@
           {
             "key": "CC_MIXING_KEYS",
             "type": "FILE",
-            "regex": "cc([0-9]+)_mixing_.*key.*\\.json"
+            "name": "cc([0-9]+)_mixing_.*key.*\\.json"
           }
         ]
       },
@@ -146,9 +136,7 @@
         "type": "FILE",
         "name": "decryptionKey.json",
         "relations": [
-          {
-            "type": "SIGN"
-          }
+          "SIGN"
         ]
       },
       {
@@ -156,9 +144,7 @@
         "type": "FILE",
         "name": "electoralAuthority.json",
         "relations": [
-          {
-            "type": "SIGN"
-          }
+          "SIGN"
         ]
       },
       {
@@ -166,9 +152,7 @@
         "type": "FILE",
         "name": "encryptionParameters.json",
         "relations": [
-          {
-            "type": "P7"
-          }
+          "P7"
         ]
       }
     ]
@@ -186,16 +170,14 @@
           {
             "key": "VERIFICATION_CARD_SET_ID_DIR",
             "type": "DYNAMIC_DIRECTORY",
-            "regex": "[0-9a-zA-Z]{32}",
+            "name": "[0-9a-zA-Z]{32}",
             "content": [
               {
                 "key": "CODES_MAPPING_TABLES_CONTEXT_DATA",
                 "type": "FILE",
                 "name": "codesMappingTablesContextData.csv",
                 "relations": [
-                  {
-                    "type": "SIGN"
-                  }
+                  "SIGN"
                 ]
               }
             ]
@@ -210,16 +192,14 @@
           {
             "key": "VOTING_CARD_SETS_ID_DIR",
             "type": "DYNAMIC_DIRECTORY",
-            "regex": "[0-9a-zA-Z]{32}",
+            "name": "[0-9a-zA-Z]{32}",
             "content": [
               {
                 "key": "CREDENTIAL_DATA",
                 "type": "FILE",
                 "name": "credentialData.csv",
                 "relations": [
-                  {
-                    "type": "SIGN"
-                  }
+                  "SIGN"
                 ]
               },
               {
@@ -227,9 +207,7 @@
                 "type": "FILE",
                 "name": "voterInformation.csv",
                 "relations": [
-                  {
-                    "type": "SIGN"
-                  }
+                  "SIGN"
                 ]
               }
             ]
@@ -239,11 +217,9 @@
       {
         "key": "AP_ELECTION_IMPORT",
         "type": "FILE",
-        "regex": "AP_election_import_.*\\.json",
+        "name": "AP_election_import_.*\\.json",
         "relations": [
-          {
-            "type": "P7"
-          }
+          "P7"
         ]
       },
       {
@@ -251,9 +227,7 @@
         "type": "FILE",
         "name": "ballotBox.json",
         "relations": [
-          {
-            "type": "SIGN"
-          }
+          "SIGN"
         ]
       },
       {
@@ -261,39 +235,31 @@
         "type": "FILE",
         "name": "configuration-anonymized.xml",
         "relations": [
-          {
-            "type": "P7"
-          }
+          "P7"
         ]
       },
       {
         "key": "DATA_CONFIG_UPDATED",
         "type": "FILE",
-        "regex": "dataConfig_updated_.*\\.json",
+        "name": "dataConfig_updated_.*\\.json",
         "relations": [
-          {
-            "type": "METADATA"
-          }
+          "METADATA"
         ]
       },
       {
         "key": "ECH0045",
         "type": "FILE",
-        "regex": ".*ech0045v.*\\.xml",
+        "name": ".*ech0045v.*\\.xml",
         "relations": [
-          {
-            "type": "P7"
-          }
+          "P7"
         ]
       },
       {
         "key": "ECH015X",
         "type": "FILE",
-        "regex": ".*ech015.*\\.xml",
+        "name": ".*ech015.*\\.xml",
         "relations": [
-          {
-            "type": "P7"
-          }
+          "P7"
         ]
       },
       {
@@ -301,9 +267,7 @@
         "type": "FILE",
         "name": "electionInformationContents.json",
         "relations": [
-          {
-            "type": "SIGN"
-          }
+          "SIGN"
         ]
       }
     ]
@@ -316,7 +280,7 @@
       {
         "key": "SECURE_LOG_DIR",
         "type": "DYNAMIC_DIRECTORY",
-        "regex": "h[0-9]{3}[0-9a-z]{2}",
+        "name": "h[0-9]{3}[0-9a-z]{2}",
         "content": [
           {
             "key": "LOGS_DIR",
@@ -331,7 +295,7 @@
                   {
                     "key": "CG_SECURE_LOG",
                     "type": "FILE",
-                    "regex": "cg_secure-[0-9]{8}-[0-9]{6}-[0-9]+\\.log"
+                    "name": "cg_secure-[0-9]{8}-[0-9]{6}-[0-9]+\\.log"
                   }
                 ]
               },
@@ -343,7 +307,7 @@
                   {
                     "key": "CV_SECURE_LOG",
                     "type": "FILE",
-                    "regex": "cv_secure-[0-9]{8}-[0-9]{6}-[0-9]+\\.log"
+                    "name": "cv_secure-[0-9]{8}-[0-9]{6}-[0-9]+\\.log"
                   }
                 ]
               }
