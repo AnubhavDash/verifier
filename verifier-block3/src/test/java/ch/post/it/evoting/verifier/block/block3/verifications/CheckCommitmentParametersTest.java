@@ -14,18 +14,23 @@
  */
 package ch.post.it.evoting.verifier.block.block3.verifications;
 
-import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
-import java.io.File;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
 public class CheckCommitmentParametersTest extends Block3VerificationAbstractTest {
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setup() {
@@ -34,30 +39,30 @@ public class CheckCommitmentParametersTest extends Block3VerificationAbstractTes
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/OK").toURI()));
+        VerificationResult verificationResult =
+                verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKpIsNotUnique() throws Exception {
-        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK/P-NOK").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+        exceptionRule.expect(RuntimeException.class);
+        exceptionRule.expectMessage("P parameter not unique");
+        verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK/P-NOK").toURI()));
     }
 
     @Test
     public void executeTestNOKEulerCriterionKo() throws Exception {
-        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK/BIGINT-NOK").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("Commitment parameters verification failed");
+        verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK/BIGINT-NOK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
-        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK-NOTFILE").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
-        Assert.assertEquals(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification08.file.not.found.message"), verificationResult.getMessage());
+        exceptionRule.expect(NoSuchFileException.class);
+        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.COMMITMENT_PARAMETERS).getQualifier());
+        verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK-NOTFILE").toURI()));
     }
 }

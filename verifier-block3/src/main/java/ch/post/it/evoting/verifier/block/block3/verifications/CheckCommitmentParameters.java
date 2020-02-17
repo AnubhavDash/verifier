@@ -96,7 +96,7 @@ public class CheckCommitmentParameters extends AbstractVerification {
                         throw new RuntimeException(e);
                     }
                 })
-                .map(s -> TypeConverter.stringToBigInteger(s))
+                .map(TypeConverter::stringToBigInteger)
                 .filter(bi -> !MathHelper.isEulerCriterionValid(bi, p)).collect(Collectors.toList());
 
         if (!errors.isEmpty()) {

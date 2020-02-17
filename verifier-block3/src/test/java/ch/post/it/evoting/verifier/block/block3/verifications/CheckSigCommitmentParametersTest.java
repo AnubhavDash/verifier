@@ -16,6 +16,7 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import org.junit.Assert;
 import org.junit.Before;
@@ -23,7 +24,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.File;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
@@ -39,24 +39,26 @@ public class CheckSigCommitmentParametersTest extends Block3VerificationAbstract
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckSigCommitmentParametersTest/OK").toURI()));
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckSigCommitmentParametersTest" +
+                "/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
     public void executeTestNOKJsonKo() throws Exception {
-        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckSigCommitmentParametersTest/NOK/JSON-NOT-OK").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("The signature verification failed");
+        verification.verify(Paths.get(getClass().getResource("/CheckSigCommitmentParametersTest/NOK/JSON-NOT-OK").toURI()));
     }
 
     @Test
     public void executeTestNOKCertKo() throws Exception {
-        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckSigCommitmentParametersTest/NOK/CERT-NOT-OK").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("The signature verification failed");
+        verification.verify(Paths.get(getClass().getResource("/CheckSigCommitmentParametersTest/NOK/CERT-NOT-OK").toURI()));
     }
+
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);

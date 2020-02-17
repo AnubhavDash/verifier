@@ -20,6 +20,7 @@ public enum StructureKey {
     LOGS_CV_DIR,
     CV_SECURE_LOG,
     MAPPING_CC_HOSTS,
+    SECURE_LOG,
 
     CERTIFICATES_DIR,
     ADMIN_BOARD_DIR,

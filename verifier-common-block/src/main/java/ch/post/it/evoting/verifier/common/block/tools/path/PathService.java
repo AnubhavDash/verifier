@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -89,10 +90,20 @@ public class PathService {
     }
 
     private List<Path> resolve(Path startingPath, StructureNode structureNode) throws IOException {
-        List<Path> paths = Files.find(startingPath, 1,
-                (path, attributes) -> path.getFileName().toString().matches(structureNode.getQualifier()))
+        List<Path> paths = Files.find(startingPath, 10,
+                (path, attributes) -> {
+                    // We want to match only the part after the starting path against the provided regex because the regex can be
+                    // specified as multi level path (folder in folder etc...).
+                    String currentPath = path.toString().replace(startingPath.toString(), "");
+
+                    // Add a $ to be sure the path ends with this regex.
+                    return Pattern.compile("\\\\" + structureNode.getQualifier() + "$").matcher(currentPath).matches();
+                })
+                // Remove starting path itself in case it matched by accident.
+                .filter(path -> !startingPath.equals(path))
                 .filter(path -> PathType.FILE.equals(structureNode.getType()) ? Files.isRegularFile(path) : Files.isDirectory(path))
                 .collect(Collectors.toList());
+
         if (paths.size() == 0) {
             throw new NoSuchFileException(String.format("No file or directory found with given name/pattern. Starting path: %s " +
                     "namePattern:%s ", startingPath, structureNode.getQualifier()));

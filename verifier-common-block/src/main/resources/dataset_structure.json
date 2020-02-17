@@ -17,7 +17,7 @@
               {
                 "key": "COMMITMENT_PARAMETERS",
                 "type": "FILE",
-                "name": "commitmentParameters.*\\.json",
+                "name": "commitmentParameters\\.json",
                 "relations": [
                   "METADATA"
                 ]
@@ -283,35 +283,9 @@
         "name": "h[0-9]{3}[0-9a-z]{2}",
         "content": [
           {
-            "key": "LOGS_DIR",
-            "type": "DIRECTORY",
-            "name": "logs",
-            "content": [
-              {
-                "key": "LOGS_CG_DIR",
-                "type": "DIRECTORY",
-                "name": "cg",
-                "content": [
-                  {
-                    "key": "CG_SECURE_LOG",
-                    "type": "FILE",
-                    "name": "cg_secure-[0-9]{8}-[0-9]{6}-[0-9]+\\.log"
-                  }
-                ]
-              },
-              {
-                "key": "LOGS_CV_DIR",
-                "type": "DIRECTORY",
-                "name": "cv",
-                "content": [
-                  {
-                    "key": "CV_SECURE_LOG",
-                    "type": "FILE",
-                    "name": "cv_secure-[0-9]{8}-[0-9]{6}-[0-9]+\\.log"
-                  }
-                ]
-              }
-            ]
+            "key": "SECURE_LOG",
+            "type": "FILE",
+            "name": "logs\\\\(?:cv|cg)\\\\(?:cv|cg)_secure-[0-9]{8}-[0-9]{6}-[0-9]+\\.log"
           }
         ]
       },
