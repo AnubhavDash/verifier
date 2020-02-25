@@ -45,7 +45,7 @@ public class CheckSizeP extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        final PathNode encryptParamsPathNode = pathService.buildPathNode(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
+        final PathNode encryptParamsPathNode = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
         EncryptionGroup encryptionGroup = Deserializer.fromJson(encryptParamsPathNode.getPath(), EncryptionGroup.class);
 
         if (encryptionGroup.getP().bitLength() < 2048) {

@@ -47,15 +47,15 @@ public class CheckSigDataConfig extends AbstractVerification {
         VerificationResult result = new VerificationResult();
 
         // Get the signing certificate.
-        final PathNode adminCertPathNode = pathService.buildPathNode(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
+        final PathNode adminCertPathNode = pathService.buildFromRootPath(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
         byte[] signCertificate = Files.readAllBytes(adminCertPathNode.getPath());
 
         // Get the root certificate.
-        final PathNode tenantPathNode = pathService.buildPathNode(StructureKey.TENANT_100, inputDirectoryPath);
+        final PathNode tenantPathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
         byte[] rootCA = Files.readAllBytes(tenantPathNode.getPath());
 
         // Verify signatures of all files. // TODO are there really multiple files?
-        final PathNode dataConfigPathNode = pathService.buildPathNode(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
+        final PathNode dataConfigPathNode = pathService.buildFromRootPath(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
         for (Path regexPath : dataConfigPathNode.getRegexPaths()) {
             byte[] content = Files.readAllBytes(regexPath);
             byte[] signature = Files.readAllBytes(dataConfigPathNode.getRelation(RelationType.METADATA, regexPath));

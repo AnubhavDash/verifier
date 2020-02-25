@@ -48,11 +48,11 @@ public class CheckSigBulletinParBulletin extends AbstractVerification {
         VerificationResult result = new VerificationResult();
 
         // Get root certificate
-        PathNode rootCertificatePathNode = pathService.buildPathNode(StructureKey.TENANT_100, inputDirectoryPath);
+        PathNode rootCertificatePathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
         byte[] rootCertificate = Files.readAllBytes(rootCertificatePathNode.getPath());
 
         // Get ballot result and its signature
-        PathNode ballotPdfPathNode = pathService.buildPathNode(StructureKey.BALLOT_RESULT, inputDirectoryPath);
+        PathNode ballotPdfPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_RESULT, inputDirectoryPath);
         byte[] content = Files.readAllBytes(ballotPdfPathNode.getPath());
         byte[] signature = Files.readAllBytes(ballotPdfPathNode.getRelation(RelationType.P7));
 

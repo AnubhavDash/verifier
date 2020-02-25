@@ -46,10 +46,10 @@ public class CheckSigEncryptionParams extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        final PathNode integrationPathNode = pathService.buildPathNode(StructureKey.INTEGRATION_CA, inputDirectoryPath);
+        final PathNode integrationPathNode = pathService.buildFromRootPath(StructureKey.INTEGRATION_CA, inputDirectoryPath);
         byte[] rootCertificate = Files.readAllBytes(integrationPathNode.getPath());
 
-        final PathNode encryptParamsPathNode = pathService.buildPathNode(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
+        final PathNode encryptParamsPathNode = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
 
         byte[] content = Files.readAllBytes(encryptParamsPathNode.getPath());
         byte[] signature = Files.readAllBytes(encryptParamsPathNode.getRelation(RelationType.P7));

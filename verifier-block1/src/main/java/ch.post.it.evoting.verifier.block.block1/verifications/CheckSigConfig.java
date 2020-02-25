@@ -47,11 +47,11 @@ public class CheckSigConfig extends AbstractVerification {
         VerificationResult result = new VerificationResult();
 
         // Get the signing certificate.
-        final PathNode integrationPathNode = pathService.buildPathNode(StructureKey.INTEGRATION_CA, inputDirectoryPath);
+        final PathNode integrationPathNode = pathService.buildFromRootPath(StructureKey.INTEGRATION_CA, inputDirectoryPath);
         byte[] rootCertificate = Files.readAllBytes(integrationPathNode.getPath());
 
         // Get the file and its signature.
-        final PathNode configAnonymizedPathNode = pathService.buildPathNode(StructureKey.CONFIG_ANONYMIZED, inputDirectoryPath);
+        final PathNode configAnonymizedPathNode = pathService.buildFromRootPath(StructureKey.CONFIG_ANONYMIZED, inputDirectoryPath);
         byte[] content = Files.readAllBytes(configAnonymizedPathNode.getPath());
         byte[] signature = Files.readAllBytes(configAnonymizedPathNode.getRelation(RelationType.P7));
 

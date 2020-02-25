@@ -54,7 +54,7 @@ public class CheckMultiExponentationArgument extends AbstractVerification {
 
         try {
             processor.register(this);
-            PathNode ballotBoxesPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOXES_DIR, inputDirectoryPath);
+            PathNode ballotBoxesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOXES_DIR, inputDirectoryPath);
             processor.executeProcess(ballotBoxesPathNode.getPath());
 
             AbstractMap.SimpleEntry<Status, String> status = processor.getStatus(TestType.MultiExponentiationProof);

@@ -55,13 +55,13 @@ public class CheckConfirmedVotesBallotBox extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        final PathNode downloadedBallotDirPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        final PathNode downloadedBallotDirPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 
         // Iterate over all ballotBox id directories.
         for (Path regexPathDirs : downloadedBallotDirPathNode.getRegexPaths()) {
 
             // Retrieve the downloaded ballot box file.
-            final PathNode downloadedFilePathNode = pathService.buildFromDynamicPathNode(StructureKey.DOWNLOADED_BALLOT_BOX, regexPathDirs);
+            final PathNode downloadedFilePathNode = pathService.buildFromDynamicAncestorPath(StructureKey.DOWNLOADED_BALLOT_BOX, regexPathDirs);
 
             // Stream over all lines of current ballot file.
             try (Stream<String> lines = Files.lines(downloadedFilePathNode.getPath())) {
@@ -72,8 +72,8 @@ public class CheckConfirmedVotesBallotBox extends AbstractVerification {
                 Map<Boolean, List<String>> partitionedBallotBox = partitionDownloadedBallotBox(lines);
 
                 // Retrieve success and failed votes files.
-                final PathNode successVotesPathNode = pathService.buildFromDynamicPathNode(StructureKey.SUCCESSFUL_VOTES, regexPathDirs);
-                final PathNode failedVotesPathNode = pathService.buildFromDynamicPathNode(StructureKey.FAILED_VOTES, regexPathDirs);
+                final PathNode successVotesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.SUCCESSFUL_VOTES, regexPathDirs);
+                final PathNode failedVotesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.FAILED_VOTES, regexPathDirs);
 
                 // Extract the votingCardId's.
                 List<String> votingCardSuccessList = extractVotingCardIds(successVotesPathNode.getPath());

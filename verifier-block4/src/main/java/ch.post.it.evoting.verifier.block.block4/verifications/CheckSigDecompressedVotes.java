@@ -48,21 +48,22 @@ public class CheckSigDecompressedVotes extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        // Collect all the encrypted ballots
-        List<PathNode> decompressedVotesPathNodes = new ArrayList<>();
-        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
-        for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
-            decompressedVotesPathNodes.add(pathService.buildFromDynamicPathNode(StructureKey.DECOMPRESSED_VOTES, ballotBoxIdDirectoryPath));
-        }
-
         // Get signed certificate
-        PathNode adminBoardCertPathNode = pathService.buildPathNode(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
+        PathNode adminBoardCertPathNode = pathService.buildFromRootPath(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
         byte[] signCertificate = Files.readAllBytes(adminBoardCertPathNode.getPath());
 
         // Get root certificate
-        PathNode rootCAPathNode = pathService.buildPathNode(StructureKey.TENANT_100, inputDirectoryPath);
+        PathNode rootCAPathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
         byte[] rootCA = Files.readAllBytes(rootCAPathNode.getPath());
 
+        // Collect all the decompressed votes
+        List<PathNode> decompressedVotesPathNodes = new ArrayList<>();
+        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
+            decompressedVotesPathNodes.add(pathService.buildFromDynamicAncestorPath(StructureKey.DECOMPRESSED_VOTES, ballotBoxIdDirectoryPath));
+        }
+
+        // Verify signature of each decompressed votes
         for (PathNode decompressedVotePathNode : decompressedVotesPathNodes) {
             byte[] content = Files.readAllBytes(decompressedVotePathNode.getPath());
             byte[] signature = Files.readAllBytes(decompressedVotePathNode.getRelation(RelationType.METADATA));

@@ -63,35 +63,35 @@ public class CheckSigDecompressedVotesTest extends Block4VerificationAbstractTes
     }
 
     @Test
-    public void executeTestNOKFileNotFound() throws Exception {
+    public void executeTestNOKFileNotFoundCertificate() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.BALLOT_BOXES_DIR).getQualifier());
+        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.ADMIN_BOARD_CERT).getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigDecompressedVotesTest/NOK-NOTFILE").toURI()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound2() throws Exception {
+    public void executeTestNOKFileNotFoundRootCertificate() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.DECOMPRESSED_VOTES).getQualifier());
+        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.TENANT_100).getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigDecompressedVotesTest/NOK-NOTFILE2").toURI()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound3() throws Exception {
+    public void executeTestNOKFileNotFoundBallotBoxIdDirectories() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.ADMIN_BOARD_CERT).getQualifier());
+        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.BALLOT_BOX_ID_DIR).getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigDecompressedVotesTest/NOK-NOTFILE3").toURI()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound4() throws Exception {
+    public void executeTestNOKFileNotFoundDecompressedVotes() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.TENANT_100).getQualifier());
+        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.DECOMPRESSED_VOTES).getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigDecompressedVotesTest/NOK-NOTFILE4").toURI()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound5() throws Exception {
+    public void executeTestNOKFileNotFoundDecompressedVotesMetadata() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
         exceptionRule.expectMessage(
                 verification.getPathService().getStructureNode(StructureKey.DECOMPRESSED_VOTES).getQualifier()

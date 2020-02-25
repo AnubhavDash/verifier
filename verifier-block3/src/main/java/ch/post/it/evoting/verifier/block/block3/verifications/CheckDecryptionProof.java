@@ -49,11 +49,11 @@ public class CheckDecryptionProof extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
         for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
 
             // Get "0" directory
-            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicPathNode(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
+            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
 
             OfflineDataLoader offlineDataLoader = new OfflineDataLoader();
             offlineDataLoader.setEncryptionParametersLoader(new OfflineEncryptionParametersLoader(inputDirectoryPath));

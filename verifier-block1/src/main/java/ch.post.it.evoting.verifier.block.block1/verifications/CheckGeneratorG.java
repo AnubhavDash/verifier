@@ -49,7 +49,7 @@ public class CheckGeneratorG extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        final PathNode pathNode = pathService.buildPathNode(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
+        final PathNode pathNode = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
         EncryptionGroup encryptionGroup = Deserializer.fromJson(pathNode.getPath(), EncryptionGroup.class);
 
         if (!MathHelper.isPrime(encryptionGroup.getG())) {

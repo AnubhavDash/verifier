@@ -60,7 +60,7 @@ public class CheckPrimeNumberOptionsVO extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        final PathNode configPathNode = pathService.buildPathNode(StructureKey.CONFIG_ANONYMIZED, inputDirectoryPath);
+        final PathNode configPathNode = pathService.buildFromRootPath(StructureKey.CONFIG_ANONYMIZED, inputDirectoryPath);
         Configuration configuration = Deserializer.fromXml(configPathNode.getPath(), Configuration.class);
 
         // Vote.
@@ -105,7 +105,7 @@ public class CheckPrimeNumberOptionsVO extends AbstractVerification {
                 }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
         // Check correspondences between config and dataConfig.
-        final PathNode dataConfigPathNode = pathService.buildPathNode(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
+        final PathNode dataConfigPathNode = pathService.buildFromRootPath(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
         ElectionEvent electionEvent = Deserializer.fromJson(dataConfigPathNode.getPath(), ElectionEvent.class);
 
         electionEvent.getBallotBoxes().stream()

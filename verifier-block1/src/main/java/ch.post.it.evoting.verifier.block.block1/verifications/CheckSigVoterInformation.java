@@ -17,10 +17,8 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureConsumer;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
@@ -28,7 +26,6 @@ import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Base64;
-import java.util.stream.Stream;
 
 public class CheckSigVoterInformation extends AbstractVerification {
 
@@ -51,22 +48,22 @@ public class CheckSigVoterInformation extends AbstractVerification {
         VerificationResult result = new VerificationResult();
 
         // Get the certificate used for signing.
-        final PathNode adminCertPathNode = pathService.buildPathNode(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
+        final PathNode adminCertPathNode = pathService.buildFromRootPath(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
         byte[] signCertificate = Files.readAllBytes(adminCertPathNode.getPath());
 
         // Get the intermediate certificates.
-        final PathNode tenantPathNode = pathService.buildPathNode(StructureKey.TENANT_100, inputDirectoryPath);
+        final PathNode tenantPathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
         byte[][] intermediateCertificates = new byte[][]{Files.readAllBytes(tenantPathNode.getPath())};
 
         // Get the root certificate.
-        final PathNode platformRootPathNode = pathService.buildPathNode(StructureKey.PLATFORM_ROOT_CA, inputDirectoryPath);
+        final PathNode platformRootPathNode = pathService.buildFromRootPath(StructureKey.PLATFORM_ROOT_CA, inputDirectoryPath);
         byte[] rootCertificate = Files.readAllBytes(platformRootPathNode.getPath());
 
-        final PathNode votingCardIdPathNode = pathService.buildPathNode(StructureKey.VOTING_CARD_SETS_ID_DIR, inputDirectoryPath);
+        final PathNode votingCardIdPathNode = pathService.buildFromRootPath(StructureKey.VOTING_CARD_SETS_ID_DIR, inputDirectoryPath);
 
         // Iterate over all directories and do the verification for voterInformation in each.
         for (Path regexPath : votingCardIdPathNode.getRegexPaths()) {
-            final PathNode voterInfoPathNode = pathService.buildFromDynamicPathNode(StructureKey.VOTER_INFORMATION, regexPath);
+            final PathNode voterInfoPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.VOTER_INFORMATION, regexPath);
 
             byte[] source = Files.readAllBytes(voterInfoPathNode.getPath());
 

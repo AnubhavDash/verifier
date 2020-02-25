@@ -47,15 +47,15 @@ public class CheckNumberCredentials extends AbstractVerification {
         VerificationResult result = new VerificationResult();
 
         // Number of voters.
-        final PathNode configPathNode = pathService.buildPathNode(StructureKey.CONFIG_ANONYMIZED, inputDirectoryPath);
+        final PathNode configPathNode = pathService.buildFromRootPath(StructureKey.CONFIG_ANONYMIZED, inputDirectoryPath);
         Configuration configuration = Deserializer.fromXml(configPathNode.getPath(), Configuration.class);
         int votersCount = configuration.getRegister().getVoter().size();
 
         // Number of lines.
         int linesCount = 0;
-        final PathNode votingCardIdPathNode = pathService.buildPathNode(StructureKey.VOTING_CARD_SETS_ID_DIR, inputDirectoryPath);
+        final PathNode votingCardIdPathNode = pathService.buildFromRootPath(StructureKey.VOTING_CARD_SETS_ID_DIR, inputDirectoryPath);
         for (Path path : votingCardIdPathNode.getRegexPaths()) {
-            final PathNode credDataPathNode = pathService.buildFromDynamicPathNode(StructureKey.CREDENTIAL_DATA, path);
+            final PathNode credDataPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.CREDENTIAL_DATA, path);
             Iterable<CredentialDataElement> iterable = Deserializer.fromCsv(credDataPathNode.getPath(),
                     Deserializer.toCredentialDataElement);
             for (CredentialDataElement ignored : iterable) {

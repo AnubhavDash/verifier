@@ -50,7 +50,7 @@ public class CheckVoteSignature extends AbstractVerification {
         ObjectMapper mapper = new ObjectMapper();
 
         // Build election node where certificates are.
-        final PathNode electionInfoPathNode = pathService.buildPathNode(StructureKey.ELECTION_INFORMATION_CONTENTS, inputDirectoryPath);
+        final PathNode electionInfoPathNode = pathService.buildFromRootPath(StructureKey.ELECTION_INFORMATION_CONTENTS, inputDirectoryPath);
         final JsonNode electionInfoNode = mapper.readTree(Files.readAllBytes(electionInfoPathNode.getPath()));
 
         // Get the intermediate certificates.
@@ -60,10 +60,10 @@ public class CheckVoteSignature extends AbstractVerification {
         final byte[] rootCertificate = extractRootCertificate(electionInfoNode);
 
         // Get all the ballot box id directories and iterate over them.
-        final PathNode ballotIdsPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        final PathNode ballotIdsPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
         for (Path regexPath : ballotIdsPathNode.getRegexPaths()) {
             // Get the downloadedBallotBox file path.
-            final PathNode downloadedBallotPathNode = pathService.buildFromDynamicPathNode(StructureKey.DOWNLOADED_BALLOT_BOX, regexPath);
+            final PathNode downloadedBallotPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.DOWNLOADED_BALLOT_BOX, regexPath);
 
             try (final Stream<String> lines = Files.lines(downloadedBallotPathNode.getPath())) {
                 lines.parallel()

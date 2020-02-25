@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -20,12 +21,27 @@ public class PathNode {
         this.structureNode = structureNode;
     }
 
+    /**
+     * Provide the first {@link Path} of the path node.
+     * @return The first path
+     */
     public Path getPath() {
         return firstPath;
     }
 
+    /**
+     * Provide a list of {@link Path} for path node build on regex name.
+     * @return The list of paths
+     */
     public List<Path> getRegexPaths() {
         return paths;
+    }
+
+    public Path getRegexPath(String value) {
+        return paths.stream()
+                .filter(path -> path.getFileName().toString().equals(value))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Asked directory / file does not exist: %s", value)));
     }
 
     public Path getRelation(RelationType relationType) {

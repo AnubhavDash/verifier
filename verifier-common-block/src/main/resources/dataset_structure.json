@@ -308,6 +308,54 @@
         "relations": [
           "P7"
         ]
+      },
+      {
+        "key": "ECH0110",
+        "type": "FILE",
+        "name": "eCH-0110_.*\\.xml",
+        "relations": [
+          "P7"
+        ]
+      },
+      {
+        "key": "EVOTING_DECRYPT_RESULT",
+        "type": "FILE",
+        "name": "evoting-decrypt.*\\.xml",
+        "relations": [
+          "P7"
+        ]
+      },
+      {
+        "key": "INVALID_VOTES_RESULT",
+        "type": "FILE",
+        "name": "siv_(?!decryption).*\\.csv",
+        "relations": [
+          "METADATA"
+        ]
+      },
+      {
+        "key": "INVALID_VOTES_DECRYPT_RESULT",
+        "type": "FILE",
+        "name": "siv_decryption_.*\\.csv",
+        "relations": [
+          "METADATA"
+        ]
+      },
+      {
+        "key": "REPORT_RESULT",
+        "type": "FILE",
+        "name": ".*report.*\\.pdf",
+        "relations": [
+          "P7"
+        ]
+      },
+      {
+        "key": "VALID_VOTES_RESULT",
+        "type": "FILE",
+        "name": "svv_.*\\.csv",
+        "relations": [
+          "METADATA"
+        ]
       }
     ]
   },

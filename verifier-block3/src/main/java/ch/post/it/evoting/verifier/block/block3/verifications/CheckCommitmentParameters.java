@@ -54,11 +54,11 @@ public class CheckCommitmentParameters extends AbstractVerification {
 
         // Get commitment parameters files
         List<Path> commitmentParametersPaths = new ArrayList<>();
-        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
         for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
-            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicPathNode(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
+            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
             for (Path ballotBoxOfflineDirectoryPath : ballotBoxOfflineDirectoriesPathNode.getRegexPaths()) {
-                PathNode commitmentParametersPathNode = pathService.buildFromDynamicPathNode(StructureKey.COMMITMENT_PARAMETERS, ballotBoxOfflineDirectoryPath);
+                PathNode commitmentParametersPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.COMMITMENT_PARAMETERS, ballotBoxOfflineDirectoryPath);
                 commitmentParametersPaths.add(commitmentParametersPathNode.getPath());
             }
         }

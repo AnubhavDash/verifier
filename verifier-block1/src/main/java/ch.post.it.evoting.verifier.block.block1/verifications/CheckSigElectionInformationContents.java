@@ -36,19 +36,19 @@ public class CheckSigElectionInformationContents extends AbstractVerification {
         VerificationResult result = new VerificationResult();
 
         // Get the certificate used for signing.
-        final PathNode adminCertPathNode = pathService.buildPathNode(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
+        final PathNode adminCertPathNode = pathService.buildFromRootPath(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
         byte[] signingCertificate = Files.readAllBytes(adminCertPathNode.getPath());
 
         // Get the intermediate certificates.
-        final PathNode tenantPathNode = pathService.buildPathNode(StructureKey.TENANT_100, inputDirectoryPath);
+        final PathNode tenantPathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
         byte[][] intermediateCertificates = new byte[][]{Files.readAllBytes(tenantPathNode.getPath())};
 
         // Get the root certificate.
-        final PathNode platformRootPathNode = pathService.buildPathNode(StructureKey.PLATFORM_ROOT_CA, inputDirectoryPath);
+        final PathNode platformRootPathNode = pathService.buildFromRootPath(StructureKey.PLATFORM_ROOT_CA, inputDirectoryPath);
         byte[] rootCertificate = Files.readAllBytes(platformRootPathNode.getPath());
 
         // Get the file path.
-        final PathNode electionInfoPathNode = pathService.buildPathNode(StructureKey.ELECTION_INFORMATION_CONTENTS, inputDirectoryPath);
+        final PathNode electionInfoPathNode = pathService.buildFromRootPath(StructureKey.ELECTION_INFORMATION_CONTENTS, inputDirectoryPath);
 
         // Convert files to json nodes.
         ObjectMapper mapper = new ObjectMapper();

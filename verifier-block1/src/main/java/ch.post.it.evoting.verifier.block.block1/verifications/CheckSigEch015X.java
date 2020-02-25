@@ -46,10 +46,10 @@ public class CheckSigEch015X extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        final PathNode integrationPathNode = pathService.buildPathNode(StructureKey.INTEGRATION_CA, inputDirectoryPath);
+        final PathNode integrationPathNode = pathService.buildFromRootPath(StructureKey.INTEGRATION_CA, inputDirectoryPath);
         byte[] rootCertificate = Files.readAllBytes(integrationPathNode.getPath());
 
-        final PathNode echo015XPathNode = pathService.buildPathNode(StructureKey.ECH015X, inputDirectoryPath);
+        final PathNode echo015XPathNode = pathService.buildFromRootPath(StructureKey.ECH015X, inputDirectoryPath);
 
         for (Path regexPath : echo015XPathNode.getRegexPaths()) {
             byte[] content = Files.readAllBytes(regexPath);

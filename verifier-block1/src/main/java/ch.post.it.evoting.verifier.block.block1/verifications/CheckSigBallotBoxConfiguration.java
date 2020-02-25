@@ -36,19 +36,19 @@ public class CheckSigBallotBoxConfiguration extends AbstractVerification {
         VerificationResult result = new VerificationResult();
 
         // Get the certificate used for signing.
-        final PathNode adminBoardCertpathNode = pathService.buildPathNode(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
+        final PathNode adminBoardCertpathNode = pathService.buildFromRootPath(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
         byte[] signingCertificate = Files.readAllBytes(adminBoardCertpathNode.getPath());
 
         // Get the intermediate certificates.
-        final PathNode tenantPathNode = pathService.buildPathNode(StructureKey.TENANT_100, inputDirectoryPath);
+        final PathNode tenantPathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
         byte[][] intermediateCertificates = new byte[][]{Files.readAllBytes(tenantPathNode.getPath())};
 
         // Get the root certificate.
-        final PathNode platformRootPathNode = pathService.buildPathNode(StructureKey.PLATFORM_ROOT_CA, inputDirectoryPath);
+        final PathNode platformRootPathNode = pathService.buildFromRootPath(StructureKey.PLATFORM_ROOT_CA, inputDirectoryPath);
         byte[] rootCertificate = Files.readAllBytes(platformRootPathNode.getPath());
 
         // Get the file..
-        final PathNode ballotBoxPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX, inputDirectoryPath);
+        final PathNode ballotBoxPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX, inputDirectoryPath);
 
         // Convert files to json nodes.
         ObjectMapper mapper = new ObjectMapper();

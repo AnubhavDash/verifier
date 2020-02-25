@@ -43,23 +43,23 @@ public class PathService {
     /**
      * Obtain file or directory path from the specified {@link StructureKey}.
      *
-     * @param structureKey       The file or directory to obtain.
-     * @param inputDirectoryPath The root path where the dataset lies.
+     * @param structureKey The file or directory to obtain.
+     * @param rootPath     The root path where the dataset lies.
      * @return The path for the {@code datasetKey}.
      * @throws IOException If the path can not be obtained.
      */
-    public PathNode buildPathNode(StructureKey structureKey, Path inputDirectoryPath) throws IOException {
+    public PathNode buildFromRootPath(StructureKey structureKey, Path rootPath) throws IOException {
         final StructureNode structureNode = getStructureNode(structureKey);
 
         // If the file/folder has a dynamic part in its path, the dynamic part has to be specified.
         if (structureNode.isDynamicAncestor()) {
             throw new RuntimeException(String.format("The file/directory %s is contained in a folder with a dynamic name. Please use " +
-                            "PathService.buildDynamicPathNode(FileTreeKey fileTreeKey, Path dynamicPath, Path inputDirectoryPath).",
+                            "PathService.buildFromDynamicAncestorPath(FileTreeKey fileTreeKey, Path dynamicPath, Path inputDirectoryPath).",
                     structureNode.getQualifier()));
         }
 
         // Combine input path with file/directory parent path.
-        final Path combined = inputDirectoryPath.resolve(structureNode.getParentPath());
+        final Path combined = rootPath.resolve(structureNode.getParentPath());
 
         return new PathNode(resolve(combined, structureNode), structureNode);
     }
@@ -72,48 +72,31 @@ public class PathService {
      * @return The path for the {@code datasetKey}.
      * @throws IOException If the path can not be obtained.
      */
-    public PathNode buildFromDynamicPathNode(StructureKey structureKey, Path dynamicPath) throws IOException {
+    public PathNode buildFromDynamicAncestorPath(StructureKey structureKey, Path dynamicPath) throws IOException {
         final StructureNode structureNode = getStructureNode(structureKey);
 
         // Check if asked key is really dynamic.
         if (!structureNode.isDynamicAncestor()) {
             throw new RuntimeException(String.format("The file/directory %s is not contained in a folder with a dynamic name. Please use " +
-                    "PathService.buildPathNode(FileTreeKey fileTreeKey, Path inputDirectoryPath).", structureNode.getQualifier()));
+                    "PathService.buildFromRootPath(FileTreeKey fileTreeKey, Path rootPath).", structureNode.getQualifier()));
         }
 
         // dynamicPath is already absolute
         return new PathNode(resolve(dynamicPath, structureNode), structureNode);
     }
 
+    /**
+     * Provide a {@link StructureNode} form the build structure map.
+     * @param structureKey The key of the map.
+     * @return the {@code structureNode}.
+     */
     public StructureNode getStructureNode(StructureKey structureKey) {
         return structureMap.get(structureKey);
     }
 
-    private List<Path> resolve(Path startingPath, StructureNode structureNode) throws IOException {
-        List<Path> paths = Files.find(startingPath, 10,
-                (path, attributes) -> {
-                    // We want to match only the part after the starting path against the provided regex because the regex can be
-                    // specified as multi level path (folder in folder etc...).
-                    String currentPath = path.toString().replace(startingPath.toString(), "");
-
-                    // Add a $ to be sure the path ends with this regex.
-                    return Pattern.compile("\\\\" + structureNode.getQualifier() + "$").matcher(currentPath).matches();
-                })
-                // Remove starting path itself in case it matched by accident.
-                .filter(path -> !startingPath.equals(path))
-                .filter(path -> PathType.FILE.equals(structureNode.getType()) ? Files.isRegularFile(path) : Files.isDirectory(path))
-                .collect(Collectors.toList());
-
-        if (paths.size() == 0) {
-            throw new NoSuchFileException(String.format("No file or directory found with given name/pattern. Starting path: %s " +
-                    "namePattern:%s ", startingPath, structureNode.getQualifier()));
-        } else {
-            return paths;
-        }
-    }
-
     /**
-     * All the checks for missing nodes, wrong structure, etc... is already done when calling this method.
+     * Recursive method that populate the internal structureMap from the dataset tree description.
+     * All the checks for missing nodes, wrong structure, etc... are already done when calling this method.
      */
     private void addMapEntry(JsonNode currentNode, Path parentPath, boolean dynamicAncestor) {
         for (JsonNode node : currentNode) {
@@ -145,6 +128,10 @@ public class PathService {
         }
     }
 
+
+    /**
+     * Provide the list of the {@link RelationType}.
+     */
     private List<RelationType> getRelations(JsonNode relationsNode) {
         List<RelationType> relations = new ArrayList<>();
         if (!relationsNode.isMissingNode()) {
@@ -153,6 +140,33 @@ public class PathService {
             }
         }
         return relations;
+    }
+
+    /**
+     * Provide a list of {@link Path} by resolving them from a starting path with regex rules
+     */
+    private List<Path> resolve(Path startingPath, StructureNode structureNode) throws IOException {
+        List<Path> paths = Files.find(startingPath,
+                10, // Arbitrary depth value, should be enough.
+                (path, attributes) -> {
+                    // We want to match only the part after the starting path against the provided regex because the regex can be
+                    // specified as multi level path (folder in folder etc...).
+                    String currentPath = path.toString().replace(startingPath.toString(), "");
+
+                    // Add a $ to be sure the path ends with this regex.
+                    return Pattern.compile("\\\\" + structureNode.getQualifier() + "$").matcher(currentPath).matches();
+                })
+                // Remove starting path itself in case it matched by accident.
+                .filter(path -> !startingPath.equals(path))
+                .filter(path -> PathType.FILE.equals(structureNode.getType()) ? Files.isRegularFile(path) : Files.isDirectory(path))
+                .collect(Collectors.toList());
+
+        if (paths.size() == 0) {
+            throw new NoSuchFileException(String.format("No file or directory found with given name/pattern. Starting path: %s " +
+                    "namePattern:%s ", startingPath, structureNode.getQualifier()));
+        } else {
+            return paths;
+        }
     }
 
 }

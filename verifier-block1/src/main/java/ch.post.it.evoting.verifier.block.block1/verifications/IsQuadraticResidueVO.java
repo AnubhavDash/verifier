@@ -52,11 +52,11 @@ public class IsQuadraticResidueVO extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        final PathNode encryptParams = pathService.buildPathNode(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
+        final PathNode encryptParams = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
         EncryptionGroup encryptionGroup = Deserializer.fromJson(encryptParams.getPath(), EncryptionGroup.class);
         BigInteger p = encryptionGroup.getP();
 
-        final PathNode dataConfigPathNode = pathService.buildPathNode(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
+        final PathNode dataConfigPathNode = pathService.buildFromRootPath(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
         ElectionEvent electionEvent = Deserializer.fromJson(dataConfigPathNode.getPath(), ElectionEvent.class);
 
         //votations

@@ -58,12 +58,12 @@ public class CheckSigFailedVotes extends AbstractVerification {
         ObjectMapper mapper = new ObjectMapper();
 
         // Get the certificate used for signing.
-        final PathNode ballotPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX, inputDirectoryPath);
+        final PathNode ballotPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX, inputDirectoryPath);
         final JsonNode ballotBoxNode = mapper.readTree(Files.readAllBytes(ballotPathNode.getPath()));
         final byte[] signingCertificate = extractSigningCertificate(ballotBoxNode);
 
         // Build election node where certificates are.
-        final PathNode electionInfoPathNode = pathService.buildPathNode(StructureKey.ELECTION_INFORMATION_CONTENTS, inputDirectoryPath);
+        final PathNode electionInfoPathNode = pathService.buildFromRootPath(StructureKey.ELECTION_INFORMATION_CONTENTS, inputDirectoryPath);
         final JsonNode electionInfoNode = mapper.readTree(Files.readAllBytes(electionInfoPathNode.getPath()));
 
         // Get the intermediate certificates.
@@ -73,9 +73,9 @@ public class CheckSigFailedVotes extends AbstractVerification {
         final byte[] rootCertificate = extractRootCertificate(electionInfoNode);
 
         // Get all the ballot box id directories and iterate over them. // TODO Need to validate folders against election event file.
-        final PathNode ballotIdsPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        final PathNode ballotIdsPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
         for (Path regexPath : ballotIdsPathNode.getRegexPaths()) {
-            final PathNode failedVotesPathNode = pathService.buildFromDynamicPathNode(StructureKey.FAILED_VOTES, regexPath);
+            final PathNode failedVotesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.FAILED_VOTES, regexPath);
 
             // Extract and decode the signature.
             final List<String> lines = Files.readAllLines(failedVotesPathNode.getPath());

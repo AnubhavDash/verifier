@@ -57,7 +57,7 @@ public class CheckSigSuccessfulVotes extends AbstractVerification {
         ObjectMapper mapper = new ObjectMapper();
 
         // Get the certificate used for signing.
-        final PathNode ballotPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX, inputDirectoryPath);
+        final PathNode ballotPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX, inputDirectoryPath);
         final JsonNode ballotBoxNode = mapper.readTree(Files.readAllBytes(ballotPathNode.getPath()));
         final JsonNode ballotBoxCertNode = ballotBoxNode.path(BALLOT_BOX_CERT);
         if (ballotBoxCertNode.isMissingNode()) {
@@ -66,7 +66,7 @@ public class CheckSigSuccessfulVotes extends AbstractVerification {
         final byte[] signingCertificate = ballotBoxCertNode.asText().getBytes(StandardCharsets.UTF_8);
 
         // Get the intermediate certificates.
-        final PathNode electionInfoPathNode = pathService.buildPathNode(StructureKey.ELECTION_INFORMATION_CONTENTS, inputDirectoryPath);
+        final PathNode electionInfoPathNode = pathService.buildFromRootPath(StructureKey.ELECTION_INFORMATION_CONTENTS, inputDirectoryPath);
         final JsonNode electionInfoNode = mapper.readTree(Files.readAllBytes(electionInfoPathNode.getPath()));
         final JsonNode servicesCANode = electionInfoNode.path(SERVICES_CA);
         if (servicesCANode.isMissingNode()) {
@@ -82,9 +82,9 @@ public class CheckSigSuccessfulVotes extends AbstractVerification {
         final byte[] rootCertificate = electionRootCANode.asText().getBytes(StandardCharsets.UTF_8);
 
         // Get all the ballot box id directories and iterate over them. // TODO Need to validate folders against election event file.
-        final PathNode ballotIdsPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        final PathNode ballotIdsPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
         for (Path regexPath : ballotIdsPathNode.getRegexPaths()) {
-            final PathNode successVotesPathNode = pathService.buildFromDynamicPathNode(StructureKey.SUCCESSFUL_VOTES, regexPath);
+            final PathNode successVotesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.SUCCESSFUL_VOTES, regexPath);
 
             // Extract and decode the signature.
             final List<String> lines = Files.readAllLines(successVotesPathNode.getPath());

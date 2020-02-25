@@ -51,11 +51,11 @@ public class CheckDecryptionFactorization extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
         for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
 
             // decompressedVotes
-            PathNode decompressedVotesPathNode = pathService.buildFromDynamicPathNode(StructureKey.DECOMPRESSED_VOTES, ballotBoxIdDirectoryPath);
+            PathNode decompressedVotesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.DECOMPRESSED_VOTES, ballotBoxIdDirectoryPath);
             List<BigInteger> decompVotesbigIntList = Flux.fromIterable(Deserializer.fromCsv(decompressedVotesPathNode.getPath(), ";", tab -> {
                 BigInteger bigInt = BigInteger.ONE;
                 for (int i = 0; i < tab.length; i++) {
@@ -78,7 +78,7 @@ public class CheckDecryptionFactorization extends AbstractVerification {
 
             // votes with proof
             // Get "0" directory, implicit use of getPath to get the first path from the PathNode
-            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicPathNode(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
+            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
             OfflineVoterWithProofLoader offlineVoterWithProofLoader = new OfflineVoterWithProofLoader(ballotBoxOfflineDirectoriesPathNode.getPath());
             List<BigInteger> voterWithProofbigIntList = offlineVoterWithProofLoader.getPlaintexts()
                     .stream()

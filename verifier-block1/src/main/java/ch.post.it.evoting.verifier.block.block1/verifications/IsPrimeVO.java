@@ -51,7 +51,7 @@ public class IsPrimeVO extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        final PathNode dataConfigPathNode = pathService.buildPathNode(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
+        final PathNode dataConfigPathNode = pathService.buildFromRootPath(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
         ElectionEvent electionEvent = Deserializer.fromJson(dataConfigPathNode.getPath(), ElectionEvent.class);
 
         // Votations

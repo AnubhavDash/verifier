@@ -60,7 +60,7 @@ public class CheckSigDownloadedBallotBox extends AbstractVerification {
         ObjectMapper mapper = new ObjectMapper();
 
         // Get the certificate used for signing.
-        PathNode ballotBoxJsonPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX, inputDirectoryPath);
+        PathNode ballotBoxJsonPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX, inputDirectoryPath);
         final JsonNode ballotBoxJsonNode = mapper.readTree(Files.readAllBytes(ballotBoxJsonPathNode.getPath()));
         final JsonNode ballotBoxCertJsonNode = ballotBoxJsonNode.path(BALLOT_BOX_CERT_NODE);
         if (ballotBoxCertJsonNode.isMissingNode()) {
@@ -69,7 +69,7 @@ public class CheckSigDownloadedBallotBox extends AbstractVerification {
         final byte[] signingCertificate = ballotBoxCertJsonNode.asText().getBytes(StandardCharsets.UTF_8);
 
         // Get the intermediate certificates.
-        PathNode electionInfoPathNode = pathService.buildPathNode(StructureKey.ELECTION_INFORMATION_CONTENTS, inputDirectoryPath);
+        PathNode electionInfoPathNode = pathService.buildFromRootPath(StructureKey.ELECTION_INFORMATION_CONTENTS, inputDirectoryPath);
         final JsonNode electionInfoJsonNode = mapper.readTree(Files.readAllBytes(electionInfoPathNode.getPath()));
         final JsonNode servicesCANode = electionInfoJsonNode.path(SERVICES_CA_NODE);
         if (servicesCANode.isMissingNode()) {
@@ -85,11 +85,11 @@ public class CheckSigDownloadedBallotBox extends AbstractVerification {
         final byte[] rootCertificate = electionRootCANode.asText().getBytes(StandardCharsets.UTF_8);
 
         // Deserialize the ballot boxes to iterate over the ballot box directory.
-        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
         for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
 
             // Get the downloaded ballot box file.
-            PathNode downloadedBallotBoxPathNode = pathService.buildFromDynamicPathNode(StructureKey.DOWNLOADED_BALLOT_BOX, ballotBoxIdDirectoryPath);
+            PathNode downloadedBallotBoxPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.DOWNLOADED_BALLOT_BOX, ballotBoxIdDirectoryPath);
 
             // Extract and decode the signature.
             final List<String> lines = Files.readAllLines(downloadedBallotBoxPathNode.getPath());

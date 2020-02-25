@@ -48,22 +48,22 @@ public class CheckSigCredentialData extends AbstractVerification {
         VerificationResult result = new VerificationResult();
 
         // Get the certificate used for signing.
-        final PathNode adminBoardCertPathNode = pathService.buildPathNode(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
+        final PathNode adminBoardCertPathNode = pathService.buildFromRootPath(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
         byte[] signingCertificate = Files.readAllBytes(adminBoardCertPathNode.getPath());
 
         // Get the intermediate certificates.
-        final PathNode tenantPathNode = pathService.buildPathNode(StructureKey.TENANT_100, inputDirectoryPath);
+        final PathNode tenantPathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
         byte[][] intermediateCertificates = new byte[][]{Files.readAllBytes(tenantPathNode.getPath())};
 
         // Get the root certificate.
-        final PathNode platformRootPathNode = pathService.buildPathNode(StructureKey.PLATFORM_ROOT_CA, inputDirectoryPath);
+        final PathNode platformRootPathNode = pathService.buildFromRootPath(StructureKey.PLATFORM_ROOT_CA, inputDirectoryPath);
         byte[] rootCertificate = Files.readAllBytes(platformRootPathNode.getPath());
 
-        final PathNode votingCardIdPathNode = pathService.buildPathNode(StructureKey.VOTING_CARD_SETS_ID_DIR, inputDirectoryPath);
+        final PathNode votingCardIdPathNode = pathService.buildFromRootPath(StructureKey.VOTING_CARD_SETS_ID_DIR, inputDirectoryPath);
 
         // Iterate over all directories and do the verification for credentialData in each.
         for (Path regexPath : votingCardIdPathNode.getRegexPaths()) {
-            final PathNode credentialDataPathNode = pathService.buildFromDynamicPathNode(StructureKey.CREDENTIAL_DATA, regexPath);
+            final PathNode credentialDataPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.CREDENTIAL_DATA, regexPath);
 
             // Get source.
             byte[] source = Files.readAllBytes(credentialDataPathNode.getPath());

@@ -47,12 +47,12 @@ public class CheckDecryptionProofOnline extends AbstractVerification {
         VerificationResult result = new VerificationResult();
 
 
-        PathNode ccMixingKeys = pathService.buildPathNode(StructureKey.CC_MIXING_KEYS, inputDirectoryPath);
-        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        PathNode ccMixingKeys = pathService.buildFromRootPath(StructureKey.CC_MIXING_KEYS, inputDirectoryPath);
+        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
         for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
 
             // Online mixing
-            PathNode onlineMixingPathNode = pathService.buildFromDynamicPathNode(StructureKey.BALLOT_BOX_ONLINE_MIXING, ballotBoxIdDirectoryPath);
+            PathNode onlineMixingPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_ONLINE_MIXING, ballotBoxIdDirectoryPath);
             if (onlineMixingPathNode.getRegexPaths().size() != 3) {
                 throw buildVerificationFailureException(
                         "the number of control components expected is 3 but actual is " + onlineMixingPathNode.getRegexPaths().size(),

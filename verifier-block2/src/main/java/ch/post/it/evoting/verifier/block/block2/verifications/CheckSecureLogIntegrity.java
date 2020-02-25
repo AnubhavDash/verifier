@@ -49,7 +49,7 @@ public class CheckSecureLogIntegrity extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        final PathNode secureLogsPathNode = pathService.buildPathNode(StructureKey.SECURE_LOG_DIR, inputDirectoryPath);
+        final PathNode secureLogsPathNode = pathService.buildFromRootPath(StructureKey.SECURE_LOG_DIR, inputDirectoryPath);
 
         VerificationFailureException ex = Flux.fromIterable(secureLogsPathNode.getSubDirectories())
                 .onErrorStop()

@@ -52,21 +52,21 @@ public class CheckSigCommitmentParameters extends AbstractVerification {
 
         // Get commitment parameters files
         List<PathNode> commitmentParametersPathNodes = new ArrayList<>();
-        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
         for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
-            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicPathNode(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
+            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
             for (Path ballotBoxOfflineDirectoryPath : ballotBoxOfflineDirectoriesPathNode.getRegexPaths()) {
-                PathNode commitmentParametersPathNode = pathService.buildFromDynamicPathNode(StructureKey.COMMITMENT_PARAMETERS, ballotBoxOfflineDirectoryPath);
+                PathNode commitmentParametersPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.COMMITMENT_PARAMETERS, ballotBoxOfflineDirectoryPath);
                 commitmentParametersPathNodes.add(commitmentParametersPathNode);
             }
         }
 
         // Get admin board certificate file
-        PathNode adminBoardCertPathNode = pathService.buildPathNode(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
+        PathNode adminBoardCertPathNode = pathService.buildFromRootPath(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
         byte[] signCertificate = Files.readAllBytes(adminBoardCertPathNode.getPath());
 
         // Get root certificate file
-        PathNode tenantPathNode = pathService.buildPathNode(StructureKey.TENANT_100, inputDirectoryPath);
+        PathNode tenantPathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
         byte[] rootCA = Files.readAllBytes(tenantPathNode.getPath());
 
         // Check signature for each commitment parameter file

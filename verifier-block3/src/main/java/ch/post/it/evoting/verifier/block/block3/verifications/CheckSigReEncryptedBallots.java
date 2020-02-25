@@ -52,20 +52,20 @@ public class CheckSigReEncryptedBallots extends AbstractVerification {
 
         // Collect all the reencrypted ballots
         List<PathNode> reencryptedBallotsPathNodes = new ArrayList<>();
-        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
         for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
-            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicPathNode(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
+            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
             for (Path ballotBoxOfflineDirectoryPath : ballotBoxOfflineDirectoriesPathNode.getRegexPaths()) {
-                reencryptedBallotsPathNodes.add(pathService.buildFromDynamicPathNode(StructureKey.REENCRYPTED_BALLOTS, ballotBoxOfflineDirectoryPath));
+                reencryptedBallotsPathNodes.add(pathService.buildFromDynamicAncestorPath(StructureKey.REENCRYPTED_BALLOTS, ballotBoxOfflineDirectoryPath));
             }
         }
 
         // Get signed certificate
-        PathNode adminBoardCertPathNode = pathService.buildPathNode(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
+        PathNode adminBoardCertPathNode = pathService.buildFromRootPath(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
         byte[] signCertificate = Files.readAllBytes(adminBoardCertPathNode.getPath());
 
         // Get root certificate
-        PathNode rootCAPathNode = pathService.buildPathNode(StructureKey.TENANT_100, inputDirectoryPath);
+        PathNode rootCAPathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
         byte[] rootCA = Files.readAllBytes(rootCAPathNode.getPath());
 
         // Verify signature for each reencrypted ballots

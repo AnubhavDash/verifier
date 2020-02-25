@@ -52,20 +52,20 @@ public class CheckSigEncryptedBallots extends AbstractVerification {
 
         // Collect all the encrypted ballots
         List<PathNode> encryptedBallotsPathNodes = new ArrayList<>();
-        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
         for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
-            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicPathNode(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
+            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
             for (Path ballotBoxOfflineDirectoryPath : ballotBoxOfflineDirectoriesPathNode.getRegexPaths()) {
-                encryptedBallotsPathNodes.add(pathService.buildFromDynamicPathNode(StructureKey.ENCRYPTED_BALLOTS, ballotBoxOfflineDirectoryPath));
+                encryptedBallotsPathNodes.add(pathService.buildFromDynamicAncestorPath(StructureKey.ENCRYPTED_BALLOTS, ballotBoxOfflineDirectoryPath));
             }
         }
 
         // Get signed certificate
-        PathNode adminBoardCertPathNode = pathService.buildPathNode(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
+        PathNode adminBoardCertPathNode = pathService.buildFromRootPath(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
         byte[] signCertificate = Files.readAllBytes(adminBoardCertPathNode.getPath());
 
         // Get root certificate
-        PathNode rootCAPathNode = pathService.buildPathNode(StructureKey.TENANT_100, inputDirectoryPath);
+        PathNode rootCAPathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
         byte[] rootCA = Files.readAllBytes(rootCAPathNode.getPath());
 
         // Verify signature of each encrypted ballots

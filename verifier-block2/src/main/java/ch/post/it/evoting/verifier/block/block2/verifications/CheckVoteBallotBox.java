@@ -24,19 +24,16 @@ import ch.post.it.evoting.verifier.common.block.dto.revised.Ballot;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.AbstractMap;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -81,9 +78,9 @@ public class CheckVoteBallotBox extends AbstractVerification {
         // check that mapDownloadedBallotBox[votingCardId] == mapSecuredLogs[votingCardId]
         Map<String, String> mapDownloadedBallotBoxs = new HashMap<>();
 
-        final PathNode ballotIdDirsPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        final PathNode ballotIdDirsPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
         for (Path regexPath : ballotIdDirsPathNode.getRegexPaths()) {
-            final PathNode ballotBoxFilePathNode = pathService.buildFromDynamicPathNode(StructureKey.DOWNLOADED_BALLOT_BOX, regexPath);
+            final PathNode ballotBoxFilePathNode = pathService.buildFromDynamicAncestorPath(StructureKey.DOWNLOADED_BALLOT_BOX, regexPath);
 
             try (Stream<String> lines = Files.lines(ballotBoxFilePathNode.getPath())) {
                 Map<String, String> map = lines

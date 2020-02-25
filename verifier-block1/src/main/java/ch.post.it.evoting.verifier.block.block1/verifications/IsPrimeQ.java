@@ -46,7 +46,7 @@ public class IsPrimeQ extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        final PathNode encryptParams = pathService.buildPathNode(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
+        final PathNode encryptParams = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
         EncryptionGroup encryptionGroup = Deserializer.fromJson(encryptParams.getPath(), EncryptionGroup.class);
 
         if (!MathHelper.isPrime(encryptionGroup.getQ())) {

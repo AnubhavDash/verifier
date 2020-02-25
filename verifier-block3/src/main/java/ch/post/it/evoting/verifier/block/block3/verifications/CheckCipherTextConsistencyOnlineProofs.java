@@ -56,12 +56,12 @@ public class CheckCipherTextConsistencyOnlineProofs extends AbstractVerification
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildPathNode(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 
         for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
 
             // Downloaded ballot
-            PathNode downloadedBallotBoxPathNode = pathService.buildFromDynamicPathNode(StructureKey.DOWNLOADED_BALLOT_BOX, ballotBoxIdDirectoryPath);
+            PathNode downloadedBallotBoxPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.DOWNLOADED_BALLOT_BOX, ballotBoxIdDirectoryPath);
             List<GammaPhis> offlineGammaPhisList;
             try (Stream<String> lines = Files.lines(downloadedBallotBoxPathNode.getPath())) {
                 offlineGammaPhisList = lines
@@ -77,7 +77,7 @@ public class CheckCipherTextConsistencyOnlineProofs extends AbstractVerification
             }
 
             // Online mixing
-            PathNode onlineMixingPathNode = pathService.buildFromDynamicPathNode(StructureKey.BALLOT_BOX_ONLINE_MIXING, ballotBoxIdDirectoryPath);
+            PathNode onlineMixingPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_ONLINE_MIXING, ballotBoxIdDirectoryPath);
             Map<String, Tuple2<List<GammaPhis>, List<GammaPhis>>> map = new HashMap<>();
             List<GammaPhis> onlinePreviousVotes;
             List<GammaPhis> onlineVotes;

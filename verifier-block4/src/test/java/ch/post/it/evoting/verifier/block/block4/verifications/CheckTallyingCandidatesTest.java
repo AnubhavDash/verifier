@@ -17,14 +17,14 @@ package ch.post.it.evoting.verifier.block.block4.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
 public class CheckTallyingCandidatesTest extends Block4VerificationAbstractTest {
@@ -39,9 +39,7 @@ public class CheckTallyingCandidatesTest extends Block4VerificationAbstractTest 
 
     @Test
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = verification.
-                verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/OK").toURI()));
-
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -49,28 +47,20 @@ public class CheckTallyingCandidatesTest extends Block4VerificationAbstractTest 
     @Test
     public void executeTestNOKMajoralCountOfVotesTotal() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage(
-                "The count of votes total for the candidate does not match in majoral election");
-
-        VerificationResult verificationResult = verification.verify(
-                Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-COUNTOFVOTES-MAJORAL").toURI()));
+        exceptionRule.expectMessage("The count of votes total for the candidate does not match in majoral election");
+        verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-COUNTOFVOTES-MAJORAL").toURI()));
     }
 
     @Test
     public void executeTestNOKProportionalCountOfVotesTotal() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage(
-                "The count of votes total for the candidate does not match in proportional election");
-
-        VerificationResult verificationResult = verification.verify(Paths.get(
-                getClass().getResource("/CheckTallyingCandidates/NOK-COUNTOFVOTES-PROPORTIONAL").toURI()));
+        exceptionRule.expectMessage("The count of votes total for the candidate does not match in proportional election");
+        verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-COUNTOFVOTES-PROPORTIONAL").toURI()));
     }
 
     @Test
     public void executeTestOKWriteIns() throws Exception {
-        VerificationResult verificationResult = verification.
-                verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/OK-WRITEINS").toURI()));
-
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/OK-WRITEINS").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -78,76 +68,56 @@ public class CheckTallyingCandidatesTest extends Block4VerificationAbstractTest 
     @Test
     public void executeTestNOKWriteInsContainsKeyMajoral() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage(
-                "The count for the candidate does not match in writeIns-containsKey majoral election");
-
-        VerificationResult verificationResult = verification.verify(Paths.get(
-                getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-CONTAINSKEY-MAJORAL").toURI()));
+        exceptionRule.expectMessage("The count for the candidate does not match in writeIns-containsKey majoral election");
+        verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-CONTAINSKEY-MAJORAL").toURI()));
     }
 
     @Test
     public void executeTestNOKWriteInsContainsKeyProportional() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage(
-                "The count for the candidate does not match in writeIns-containsKey proportional election");
-
-        VerificationResult verificationResult = verification.verify(Paths.get(
-                getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-CONTAINSKEY-PROPORTIONAL").toURI()));
+        exceptionRule.expectMessage("The count for the candidate does not match in writeIns-containsKey proportional election");
+        verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-CONTAINSKEY-PROPORTIONAL").toURI()));
     }
 
     @Test
     public void executeTestNOKWriteInsEqualsMajoral() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage(
-                "The count for the candidate does not match in writeIns-equals majoral election");
-
-        VerificationResult verificationResult = verification.verify(Paths.get(
-                getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-EQUALS-MAJORAL").toURI()));
+        exceptionRule.expectMessage("The count for the candidate does not match in writeIns-equals majoral election");
+        verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-EQUALS-MAJORAL").toURI()));
     }
 
     @Test
     public void executeTestNOKWriteInsEqualsProportional() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage(
-                "The count for the candidate does not match in writeIns-equals proportional election");
-
-        VerificationResult verificationResult = verification.verify(Paths.get(
-                getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-EQUALS-PROPORTIONAL").toURI()));
+        exceptionRule.expectMessage("The count for the candidate does not match in writeIns-equals proportional election");
+        verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-EQUALS-PROPORTIONAL").toURI()));
     }
 
     @Test
     public void executeTestNOKDecryptCount() throws Exception {
         exceptionRule.expect(IllegalArgumentException.class);
         exceptionRule.expectMessage("cannot find the decrypt data for given countingCircle");
-
-        VerificationResult verificationResult = verification.
-                verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-DECRYPTCOUNT").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-DECRYPTCOUNT").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFoundConfiguration() throws Exception {
-        exceptionRule.expect(FileNotFoundException.class);
-        exceptionRule.expectMessage("configuration-anonymized.xml");
-
-        VerificationResult verificationResult = verification.
-                verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-CONFIG").toURI()));
+        exceptionRule.expect(NoSuchFileException.class);
+        exceptionRule.expectMessage(matchesRegex(verification.getPathService().getStructureNode(StructureKey.CONFIG_ANONYMIZED).getQualifier()));
+        verification.verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-CONFIG").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFoundEvoting() throws Exception {
-        exceptionRule.expect(FileNotFoundException.class);
-        exceptionRule.expectMessage("evoting-decrypt_.*\\.xml");
-
-        VerificationResult verificationResult = verification.
-                verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-EVOTING").toURI()));
+        exceptionRule.expect(NoSuchFileException.class);
+        exceptionRule.expectMessage(matchesRegex(verification.getPathService().getStructureNode(StructureKey.EVOTING_DECRYPT_RESULT).getQualifier()));
+        verification.verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-EVOTING").toURI()));
     }
 
     @Test
-    public void executeTestNOKFileNotFoundECH() throws Exception {
-        exceptionRule.expect(FileNotFoundException.class);
-        exceptionRule.expectMessage("eCH-0110_.*\\.xml");
-
-        VerificationResult verificationResult = verification.
-                verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-eCH").toURI()));
+    public void executeTestNOKFileNotFoundECH0110() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
+        exceptionRule.expectMessage(matchesRegex(verification.getPathService().getStructureNode(StructureKey.ECH0110).getQualifier()));
+        verification.verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-eCH").toURI()));
     }
 }

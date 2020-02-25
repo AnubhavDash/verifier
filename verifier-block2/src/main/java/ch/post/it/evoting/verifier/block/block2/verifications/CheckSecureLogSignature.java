@@ -54,7 +54,7 @@ public class CheckSecureLogSignature extends AbstractVerification {
         Map<String, SecureLogBundleCertificates> mapCertificates =
                 SecureLogBundleCertificates.loadAllHostsBundleCertificates(inputDirectoryPath);
 
-        final PathNode secureLogsPathNode = pathService.buildPathNode(StructureKey.SECURE_LOGS_DIR, inputDirectoryPath);
+        final PathNode secureLogsPathNode = pathService.buildFromRootPath(StructureKey.SECURE_LOGS_DIR, inputDirectoryPath);
 
         VerificationFailureException ex = Flux.fromIterable(secureLogsPathNode.getSubDirectories())
                 .onErrorStop()
