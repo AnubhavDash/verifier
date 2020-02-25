@@ -115,15 +115,11 @@ public class PathService {
             } else {
                 structureMap.put(StructureKey.valueOf(node.path("key").asText()), new StructureNode(type, parentPath, currentName,
                         dynamicAncestor, null));
-                // Update dynamic value for child
-                if (PathType.DYNAMIC_DIRECTORY.equals(type)) {
-                    dynamicAncestor = true;
-                }
             }
 
             // If the current node is a folder or dynamic folder, recursively continue.
             if (!PathType.FILE.equals(type)) {
-                addMapEntry(node.path("content"), parentPath.resolve(currentName), dynamicAncestor);
+                addMapEntry(node.path("content"), parentPath.resolve(currentName), dynamicAncestor || PathType.DYNAMIC_DIRECTORY.equals(type));
             }
         }
     }

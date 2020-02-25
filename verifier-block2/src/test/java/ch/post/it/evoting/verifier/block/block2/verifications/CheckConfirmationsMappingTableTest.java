@@ -16,12 +16,15 @@ package ch.post.it.evoting.verifier.block.block2.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
 public class CheckConfirmationsMappingTableTest extends Block2VerificationAbstractTest {
@@ -175,5 +178,19 @@ public class CheckConfirmationsMappingTableTest extends Block2VerificationAbstra
 
         Assert.assertEquals("NB6NC6U6L4HUGTEG",
                 ((CheckConfirmationsMappingTable) verification).extractRequestId(PCCOMP_REAL));
+    }
+
+    @Test
+    public void mappingCcHostsFileNotFound() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
+        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.MAPPING_CC_HOSTS).getQualifier());
+        verification.verify(Paths.get(getClass().getResource("/CheckConfirmationsMappingTableTest/NOK-NOTFILE").toURI()));
+    }
+
+    @Test
+    public void secureLogsFileNotFound() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
+        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.SECURE_LOG).getQualifier());
+        verification.verify(Paths.get(getClass().getResource("/CheckConfirmationsMappingTableTest/NOK-NOTFILE2").toURI()));
     }
 }

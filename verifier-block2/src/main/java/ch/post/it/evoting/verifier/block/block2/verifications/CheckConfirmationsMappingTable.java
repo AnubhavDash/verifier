@@ -17,8 +17,9 @@ package ch.post.it.evoting.verifier.block.block2.verifications;
 import ch.post.it.evoting.verifier.block.block2.Block2VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
@@ -32,15 +33,12 @@ import java.util.stream.Collectors;
 
 public class CheckConfirmationsMappingTable extends AbstractVerification {
 
-    public static final Pattern PCCOMP_PARTIAL_CODE_SUCCESSFULLY_COMPUTED_PATTERN =
+    private static final Pattern PCCOMP_PARTIAL_CODE_SUCCESSFULLY_COMPUTED_PATTERN =
             Pattern.compile(".*\\|PCCOMP|.*\\|Partial code successfully computed\\|.*");
 
     private static final Pattern PCCOMP_ELEMENT_PATTERN = Pattern.compile("#pc_comp=\"\\[(.+?)]\"");
 
     private static final Pattern REQUEST_ID_ELEMENT_PATTERN = Pattern.compile("#request_id=\"(.+?)\"");
-
-    private static final String MAPPINGS_CC_HOSTS_FILENAME_PATTERN = "mapping_cc_hosts.csv";
-    private static final String SECURELOG_FILENAME_PATTERN = "(cv|cg)_secure-.*\\.log";
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -59,10 +57,8 @@ public class CheckConfirmationsMappingTable extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        Path pathSecureLogs = inputDirectoryPath.resolve(Block2VerificationSuite.PATH_SECURE_LOGS);
-
         // Build host to control component map.
-        Map<String, String> hostToControlComponentMap = buildHostToControlComponentMap(pathSecureLogs);
+        Map<String, String> hostToControlComponentMap = buildHostToControlComponentMap(inputDirectoryPath);
 
         // Process every single secure (host) log file and build a map of request id list for each control component.
         // While processing the files, two duplicates checks are done :
@@ -70,7 +66,7 @@ public class CheckConfirmationsMappingTable extends AbstractVerification {
         //  2. no duplicates exist in the overall of all hosts of a single control component.
         // In case of a duplicate, throw an error.
         Map<String, List<String>> controlComponentToRequestIdsListMap =
-                processSecureLogFiles(pathSecureLogs, hostToControlComponentMap);
+                processSecureLogFiles(inputDirectoryPath, hostToControlComponentMap);
 
         List<String> controlComponents = new ArrayList<>(controlComponentToRequestIdsListMap.keySet());
         String firstControlComponent = controlComponents.remove(0);
@@ -110,7 +106,7 @@ public class CheckConfirmationsMappingTable extends AbstractVerification {
         throw new RuntimeException("No #request_id found for line " + line);
     }
 
-    void controlComponentDuplicatesCheck(Map<String, List<String>> controlComponentToRequestIdsListMap) {
+    private void controlComponentDuplicatesCheck(Map<String, List<String>> controlComponentToRequestIdsListMap) {
         controlComponentToRequestIdsListMap.forEach((controlComponent, requestIdList) -> {
             Set<String> requestIdSet = new HashSet<>(requestIdList);
 
@@ -136,7 +132,7 @@ public class CheckConfirmationsMappingTable extends AbstractVerification {
         }
     }
 
-    private Map<String, List<String>> processSecureLogFiles(Path pathSecureLogs,
+    private Map<String, List<String>> processSecureLogFiles(Path inputDirectoryPath,
                                                             Map<String, String> hostToControlComponentMap) throws IOException {
 
         // Build control component to empty request id list map.
@@ -146,27 +142,34 @@ public class CheckConfirmationsMappingTable extends AbstractVerification {
                 .distinct()
                 .collect(Collectors.toMap(Function.identity(), controlComponent -> new ArrayList<>()));
 
-        for (Path path : PathHelper.getPaths(pathSecureLogs, 4, SECURELOG_FILENAME_PATTERN)) {
-            List<String> requestIdList =
-                    Files.lines(path)
-                            .parallel()
-                            .filter(this::logEntryMatchCriteria)
-                            .filter(this::hasExactlyOnePCCompElement)
-                            .map(this::extractRequestId)
-                            .collect(Collectors.toList());
+        PathNode secureLogsDirectories = pathService.buildFromRootPath(StructureKey.SECURE_LOG_DIR, inputDirectoryPath);
+        for (Path secureLogDirectory : secureLogsDirectories.getRegexPaths()) {
+            PathNode secureLogs = pathService.buildFromDynamicAncestorPath(StructureKey.SECURE_LOG, secureLogDirectory);
+            for (Path secureLog : secureLogs.getRegexPaths()) {
+                List<String> requestIdList =
+                        Files.lines(secureLog)
+                                .parallel()
+                                .filter(this::logEntryMatchCriteria)
+                                .filter(this::hasExactlyOnePCCompElement)
+                                .map(this::extractRequestId)
+                                .collect(Collectors.toList());
 
-            Set<String> requestIdSet = new HashSet<>(requestIdList);
+                Set<String> requestIdSet = new HashSet<>(requestIdList);
 
-            if (requestIdList.size() != requestIdSet.size()) {
-                throw new RuntimeException("Duplicate request_id found in file " + path.getFileName());
+                if (requestIdList.size() != requestIdSet.size()) {
+                    throw new RuntimeException("Duplicate request_id found in file " + secureLog.getFileName());
+                }
+
+                // Add computed request_id list to corresponding control component.
+                String hostName = secureLogDirectory.getFileName().toString();
+                String controlComponent = hostToControlComponentMap.get(hostName);
+
+                controlComponentToRequestIdsListMap.get(controlComponent).addAll(requestIdList);
             }
-
-            // Add computed request_id list to corresponding control component.
-            String hostName = path.getParent().getParent().getParent().getFileName().toString();
-            String controlComponent = hostToControlComponentMap.get(hostName);
-
-            controlComponentToRequestIdsListMap.get(controlComponent).addAll(requestIdList);
         }
+
+
+
 
         // For each control component, check if any duplicates exist after merging all its children's hosts data.
         controlComponentDuplicatesCheck(controlComponentToRequestIdsListMap);
@@ -186,8 +189,9 @@ public class CheckConfirmationsMappingTable extends AbstractVerification {
         }
     }
 
-    private Map<String, String> buildHostToControlComponentMap(Path pathSecureLogs) throws IOException {
-        return Files.lines(PathHelper.getPath(pathSecureLogs, 1, MAPPINGS_CC_HOSTS_FILENAME_PATTERN))
+    private Map<String, String> buildHostToControlComponentMap(Path inputDirectoryPath) throws IOException {
+        PathNode mappingCcHostsPathNode = pathService.buildFromRootPath(StructureKey.MAPPING_CC_HOSTS, inputDirectoryPath);
+        return Files.lines(mappingCcHostsPathNode.getPath())
                 .skip(1) // Skip header line
                 .parallel()
                 .filter(StringUtils::isNotBlank)

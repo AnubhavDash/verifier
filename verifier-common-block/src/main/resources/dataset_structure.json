@@ -275,7 +275,7 @@
   {
     "key": "SECURE_LOGS_DIR",
     "type": "DIRECTORY",
-    "name": "SecureLogs",
+    "name": "secureLogs",
     "content": [
       {
         "key": "SECURE_LOG_DIR",
@@ -285,7 +285,7 @@
           {
             "key": "SECURE_LOG",
             "type": "FILE",
-            "name": "logs\\\\(?:cv|cg)\\\\(?:cv|cg)_secure-[0-9]{8}-[0-9]{6}-[0-9]+\\.log"
+            "name": "(?:logs|logs_.+)\\\\(?:cv|cg)\\\\(?:cv|cg)_secure-[0-9]{8}-[0-9]{6}-[0-9]+\\.log"
           }
         ]
       },
