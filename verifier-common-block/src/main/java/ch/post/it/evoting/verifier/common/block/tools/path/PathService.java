@@ -118,7 +118,7 @@ public class PathService {
             }
 
             // If the current node is a folder or dynamic folder, recursively continue.
-            if (!PathType.FILE.equals(type)) {
+            if (PathType.DIRECTORY.equals(type) || PathType.DYNAMIC_DIRECTORY.equals(type)) {
                 addMapEntry(node.path("content"), parentPath.resolve(currentName), dynamicAncestor || PathType.DYNAMIC_DIRECTORY.equals(type));
             }
         }
