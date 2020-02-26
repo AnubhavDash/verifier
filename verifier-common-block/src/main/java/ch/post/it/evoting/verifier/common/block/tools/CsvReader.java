@@ -28,18 +28,15 @@ public class CsvReader<T> {
     private boolean hasHeader;
     private String separator;
 
-    public CsvReader(String filename, Charset charset, boolean hasHeader, String separator, Function<String[], T> mapper) throws IOException {
-        this.mapper = mapper;
-        this.stream = Files.lines(Paths.get(filename), charset);
-        this.hasHeader = hasHeader;
-        this.separator = separator;
-    }
-
     public CsvReader(Path filePath, Charset charset, boolean hasHeader, String separator, Function<String[], T> mapper) throws IOException {
         this.mapper = mapper;
         this.stream = Files.lines(filePath, charset);
         this.hasHeader = hasHeader;
         this.separator = separator;
+    }
+
+    public CsvReader(String filename, Charset charset, boolean hasHeader, String separator, Function<String[], T> mapper) throws IOException {
+        this(Paths.get(filename), charset, hasHeader,separator,mapper);
     }
 
     public Iterable<T> process() {

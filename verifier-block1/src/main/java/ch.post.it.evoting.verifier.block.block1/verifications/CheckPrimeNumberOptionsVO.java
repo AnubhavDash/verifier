@@ -208,7 +208,7 @@ public class CheckPrimeNumberOptionsVO extends AbstractVerification {
 
     @Getter
     @Setter
-    private static class ElectionDetail {
+    private class ElectionDetail {
         private int optionCount;
         private int listCount;
     }
