@@ -4,7 +4,12 @@ import ch.post.it.evoting.verifier.block.block2.Block2VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.JsonMissingNodeException;
-import ch.post.it.evoting.verifier.common.block.tools.*;
+import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.dto.DownloadedBallot;
 import ch.post.it.evoting.verifier.dto.Vote__1;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -15,17 +20,14 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Base64;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CheckVoteSignature extends AbstractVerification {
 
-    static final String ELECTION_INFORMATION_CONTENTS_JSON = "electionInformationContents.json";
     static final String CREDENTIALS_CA = "credentialsCA";
     static final String ELECTION_ROOT_CA = "electionRootCA";
-    static final String DOWNLOADED_BALLOT_BOX_CSV = "downloadedBallotBox.csv";
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -44,18 +46,12 @@ public class CheckVoteSignature extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        // Get the list of all downloadedBallotBox files paths.
-        final List<Path> downloadedBallotBoxPaths =
-                PathHelper.getPaths(inputDirectoryPath.resolve(Block2VerificationSuite.PATH_BALLOTBOXES), 2,
-                        DOWNLOADED_BALLOT_BOX_CSV);
-
-        // Top level directories.
-        final Path pathElection = inputDirectoryPath.resolve(Block2VerificationSuite.PATH_ELECTION_SETUP);
-
         // Mapper to parse json files containing the certificates.
-        final ObjectMapper mapper = new ObjectMapper();
-        final JsonNode electionInfoNode = mapper.readTree(Files.readAllBytes(PathHelper.getPath(pathElection, 1,
-                ELECTION_INFORMATION_CONTENTS_JSON)));
+        ObjectMapper mapper = new ObjectMapper();
+
+        // Build election node where certificates are.
+        final PathNode electionInfoPathNode = pathService.buildFromRootPath(StructureKey.ELECTION_INFORMATION_CONTENTS, inputDirectoryPath);
+        final JsonNode electionInfoNode = mapper.readTree(Files.readAllBytes(electionInfoPathNode.getPath()));
 
         // Get the intermediate certificates.
         final byte[][] intermediateCertificates = extractIntermediateCertificates(electionInfoNode);
@@ -63,9 +59,13 @@ public class CheckVoteSignature extends AbstractVerification {
         // Get the root certificate.
         final byte[] rootCertificate = extractRootCertificate(electionInfoNode);
 
-        // Iterate over all downloadedBallotBox files.
-        for (Path path : downloadedBallotBoxPaths) {
-            try (final Stream<String> lines = Files.lines(path)) {
+        // Get all the ballot box id directories and iterate over them.
+        final PathNode ballotIdsPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        for (Path regexPath : ballotIdsPathNode.getRegexPaths()) {
+            // Get the downloadedBallotBox file path.
+            final PathNode downloadedBallotPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.DOWNLOADED_BALLOT_BOX, regexPath);
+
+            try (final Stream<String> lines = Files.lines(downloadedBallotPathNode.getPath())) {
                 lines.parallel()
                         .map(this::deserializeDownloadedBallot)
                         // Remove empty lines, signature etc...

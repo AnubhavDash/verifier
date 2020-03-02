@@ -15,7 +15,7 @@
 package ch.post.it.evoting.verifier.block.block2.loader;
 
 import ch.post.it.evoting.verifier.block.block2.Block2VerificationSuite;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 import reactor.core.publisher.Flux;
 
 import java.io.File;

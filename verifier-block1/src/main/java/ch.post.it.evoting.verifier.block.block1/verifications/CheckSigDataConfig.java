@@ -17,11 +17,12 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -32,7 +33,8 @@ public class CheckSigDataConfig extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(1);
         def.setCategory(Category.AUTHENTICITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification74.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                "verification74.description"));
         def.setId(74);
         def.setName("checkSigDataConfig");
         def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
@@ -44,24 +46,26 @@ public class CheckSigDataConfig extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath
-                        .resolve(Block1VerificationSuite.PATH_CERTIFICATES)
-                        .resolve(Block1VerificationSuite.PATH_ADMINBOARD).toFile(),
-                ".*\\.pem").toPath());
+        // Get the signing certificate.
+        final PathNode adminCertPathNode = pathService.buildFromRootPath(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
+        byte[] signCertificate = Files.readAllBytes(adminCertPathNode.getPath());
 
-        byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
+        // Get the root certificate.
+        final PathNode tenantPathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
+        byte[] rootCA = Files.readAllBytes(tenantPathNode.getPath());
 
-        File[] dataConfigFiles = PathHelper.getFiles(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).toFile(), "dataConfig.*\\.json");
-
-        for (File dataConfig : dataConfigFiles) {
-            byte[] content = Files.readAllBytes(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName()));
-            byte[] signature = Files.readAllBytes(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(dataConfig.getName() + ".metadata"));
+        // Verify signatures of all files. // TODO are there really multiple files?
+        final PathNode dataConfigPathNode = pathService.buildFromRootPath(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
+        for (Path regexPath : dataConfigPathNode.getRegexPaths()) {
+            byte[] content = Files.readAllBytes(regexPath);
+            byte[] signature = Files.readAllBytes(dataConfigPathNode.getRelation(RelationType.METADATA, regexPath));
 
             if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCA)) {
                 throw buildVerificationFailureException(
                         "The signature verification of the file dataConfig_updated failed",
                         Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-                        "verification74.nok.message"
+                        "verification74.nok.message",
+                        regexPath.toString()
                 );
             }
         }

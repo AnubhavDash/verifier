@@ -41,7 +41,8 @@ public class CheckConfirmationAttempts extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(2);
         def.setCategory(Category.EVIDENCE);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification07.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
+                "verification07.description"));
         def.setId(7);
         def.setName("checkConfirmationAttempts");
         def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
@@ -68,18 +69,16 @@ public class CheckConfirmationAttempts extends AbstractVerification {
                     return Tuples.of(s1.getHost(), votingCardId);
                 })
                 .groupBy(s1 -> hostCcMapping.containsKey(s1.getT1()) ? hostCcMapping.get(s1.getT1()) : s1.getT1())
-                .flatMap(ccGroup -> {
-                    return ccGroup.map(Tuple2::getT2).reduce(Collections.synchronizedMap(new HashMap<String, Long>()), (m, votingCardId) -> {
-                        m.put(votingCardId, m.getOrDefault(votingCardId, 0L) + 1L);
-                        return m;
-                    }).map(m -> Tuples.of(ccGroup.key(), m));
-                })
+                .flatMap(ccGroup -> ccGroup.map(Tuple2::getT2).reduce(Collections.synchronizedMap(new HashMap<String, Long>()), (m, votingCardId) -> {
+                    m.put(votingCardId, m.getOrDefault(votingCardId, 0L) + 1L);
+                    return m;
+                }).map(m -> Tuples.of(ccGroup.key(), m)))
                 .collectMap(Tuple2::getT1, Tuple2::getT2).block();
 
         List<String> problematicVotingCardIds = nbVotingCardPerCC.values().stream()
                 .flatMap(m -> m.entrySet().stream())
                 .filter(e -> e.getValue() > 5)
-                .map(e -> e.getKey()).collect(Collectors.toList());
+                .map(Map.Entry::getKey).collect(Collectors.toList());
 
         if (!problematicVotingCardIds.isEmpty()) {
             throw buildVerificationFailureException(

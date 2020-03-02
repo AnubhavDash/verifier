@@ -16,14 +16,22 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
 public class CheckSigEncryptedBallotsTest extends Block3VerificationAbstractTest {
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setup() {
@@ -39,22 +47,22 @@ public class CheckSigEncryptedBallotsTest extends Block3VerificationAbstractTest
 
     @Test
     public void executeTestNOKCsvKo() throws Exception {
-        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckSigEncryptedBallotsTest/NOK/CSV-NOT-OK").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("the signature verification failed");
+        verification.verify(Paths.get(getClass().getResource("/CheckSigEncryptedBallotsTest/NOK/CSV-NOT-OK").toURI()));
     }
 
     @Test
     public void executeTestNOKCertKo() throws Exception {
-        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckSigEncryptedBallotsTest/NOK/CERT-NOT-OK").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("the signature verification failed");
+        verification.verify(Paths.get(getClass().getResource("/CheckSigEncryptedBallotsTest/NOK/CERT-NOT-OK").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
-        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckSigEncryptedBallotsTest/NOK-NOTFILE").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.NOK, verificationResult.getStatus());
+        exceptionRule.expect(NoSuchFileException.class);
+        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.BALLOT_BOX_ID_DIR).getQualifier());
+        verification.verify(Paths.get(getClass().getResource("/CheckSigEncryptedBallotsTest/NOK-NOTFILE").toURI()));
     }
 }

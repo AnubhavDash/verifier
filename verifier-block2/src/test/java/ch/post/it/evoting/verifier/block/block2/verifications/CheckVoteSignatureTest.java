@@ -4,6 +4,8 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.JsonMissingNodeException;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -40,14 +42,16 @@ public class CheckVoteSignatureTest extends Block2VerificationAbstractTest {
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(CheckVoteSignature.DOWNLOADED_BALLOT_BOX_CSV);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.DOWNLOADED_BALLOT_BOX);
+        exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckVoteSignatureTest/NOK-NOFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKElectionFileNotFound() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(CheckVoteSignature.ELECTION_INFORMATION_CONTENTS_JSON);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ELECTION_INFORMATION_CONTENTS);
+        exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckVoteSignatureTest/NOK-NOFILE2").toURI()));
     }
 

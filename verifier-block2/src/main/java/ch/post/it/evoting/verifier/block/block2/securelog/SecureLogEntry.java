@@ -15,7 +15,7 @@
 package ch.post.it.evoting.verifier.block.block2.securelog;
 
 import ch.post.it.evoting.verifier.block.block2.Block2VerificationSuite;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

@@ -24,11 +24,11 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import com.scytl.decrypt.DecryptVerifier;
 
-import java.io.File;
 import java.nio.file.Path;
 
 public class CheckDecryptionProof extends AbstractVerification {
@@ -49,13 +49,16 @@ public class CheckDecryptionProof extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        File[] ballotBoxes = PathHelper.listDirectories(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
-        for (File ballotBox : ballotBoxes) {
-            Path ballotboxPath = ballotBox.toPath().resolve("0");
+        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
+
+            // Get "0" directory
+            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
+
             OfflineDataLoader offlineDataLoader = new OfflineDataLoader();
             offlineDataLoader.setEncryptionParametersLoader(new OfflineEncryptionParametersLoader(inputDirectoryPath));
-            offlineDataLoader.setPublicKeyLoader(new OfflinePublicKeyLoader(ballotboxPath));
-            offlineDataLoader.setVoterWithProofLoader(new OfflineVoterWithProofLoader(ballotboxPath));
+            offlineDataLoader.setPublicKeyLoader(new OfflinePublicKeyLoader(ballotBoxOfflineDirectoriesPathNode.getPath()));
+            offlineDataLoader.setVoterWithProofLoader(new OfflineVoterWithProofLoader(ballotBoxOfflineDirectoriesPathNode.getPath()));
 
             int verificationResultCode = DecryptVerifier.verify(offlineDataLoader);
             if (verificationResultCode != 1 && verificationResultCode != -1) {
@@ -63,7 +66,7 @@ public class CheckDecryptionProof extends AbstractVerification {
                         "The verification failed",
                         Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
                         "verification07.nok.message",
-                        ballotBox.getName()
+                        ballotBoxIdDirectoryPath.getFileName().toString()
                 );
             }
         }

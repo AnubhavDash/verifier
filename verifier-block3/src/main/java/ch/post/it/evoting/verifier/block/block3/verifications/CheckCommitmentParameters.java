@@ -21,10 +21,9 @@ import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.*;
-import ch.post.it.evoting.verifier.dto.BallotBox;
-import ch.post.it.evoting.verifier.dto.DataConfigEE;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -53,27 +52,28 @@ public class CheckCommitmentParameters extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        Path path = inputDirectoryPath.resolve(Block3VerificationSuite.PATH_ELECTION_SETUP);
-        DataConfigEE dataConfigEE = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", DataConfigEE.class);
-        List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
-        List<File> commitmentParamFiles = new ArrayList<>();
-        for (BallotBox ballotBox : ballotBoxes) {
-            String ballotBoxId = ballotBox.getId();
-            File[] commitmentParamFolders = PathHelper.listDirectories(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_BALLOTBOXES).resolve(ballotBoxId));
-            for (File folder : commitmentParamFolders) {
-                commitmentParamFiles.add(PathHelper.getFile(folder, "commitmentParameters.*\\.json"));
+        // Get commitment parameters files
+        List<Path> commitmentParametersPaths = new ArrayList<>();
+        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
+            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
+            for (Path ballotBoxOfflineDirectoryPath : ballotBoxOfflineDirectoriesPathNode.getRegexPaths()) {
+                PathNode commitmentParametersPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.COMMITMENT_PARAMETERS, ballotBoxOfflineDirectoryPath);
+                commitmentParametersPaths.add(commitmentParametersPathNode.getPath());
             }
         }
 
-        if (commitmentParamFiles.isEmpty()) {
+        // No commitment parameters files found
+        if (commitmentParametersPaths.isEmpty()) {
             throw new FileNotFoundException("no commitmentParameters.json found");
         }
 
-        final BigInteger p = TypeConverter.stringToBigInteger(commitmentParamFiles.stream().flatMap(f -> {
+        // Extract p
+        final BigInteger p = TypeConverter.stringToBigInteger(commitmentParametersPaths.stream().flatMap(path -> {
             try {
-                Optional<String> optionalfirst = Files.lines(f.toPath()).findFirst();
-                if (optionalfirst.isPresent()) {
-                    return Stream.of(optionalfirst.get());
+                Optional<String> optionalFirst = Files.lines(path).findFirst();
+                if (optionalFirst.isPresent()) {
+                    return Stream.of(optionalFirst.get());
                 } else {
                     throw new RuntimeException("no first line in file");
                 }
@@ -87,15 +87,16 @@ public class CheckCommitmentParameters extends AbstractVerification {
             return s2;
         }));
 
-        List<BigInteger> errors = commitmentParamFiles.stream()
-                .flatMap(f -> {
+        // Check errors
+        final List<BigInteger> errors = commitmentParametersPaths.stream()
+                .flatMap(path -> {
                     try {
-                        return Files.lines(f.toPath()).skip(3);
+                        return Files.lines(path).skip(3);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
                 })
-                .map(s -> TypeConverter.stringToBigInteger(s))
+                .map(TypeConverter::stringToBigInteger)
                 .filter(bi -> !MathHelper.isEulerCriterionValid(bi, p)).collect(Collectors.toList());
 
         if (!errors.isEmpty()) {

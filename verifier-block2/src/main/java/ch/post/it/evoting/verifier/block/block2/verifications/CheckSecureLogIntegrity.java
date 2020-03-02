@@ -21,11 +21,12 @@ import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import reactor.core.publisher.Flux;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.Optional;
 
@@ -36,7 +37,8 @@ public class CheckSecureLogIntegrity extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(2);
         def.setCategory(Category.INTEGRITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01" +
+                ".description"));
         def.setId(1);
         def.setName("checkSecureLogIntegrity");
         def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
@@ -47,18 +49,19 @@ public class CheckSecureLogIntegrity extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        File[] hosts = PathHelper.listDirectories(inputDirectoryPath.resolve(Block2VerificationSuite.PATH_SECURE_LOGS));
+        final PathNode secureLogsPathNode = pathService.buildFromRootPath(StructureKey.SECURE_LOG_DIR, inputDirectoryPath);
 
-        VerificationFailureException ex = Flux.fromArray(hosts)
+        VerificationFailureException ex = Flux.fromIterable(secureLogsPathNode.getSubDirectories())
                 .onErrorStop()
-                .flatMap(hostDir -> Flux.fromArray(PathHelper.listDirectories(hostDir.toPath())))
+                .flatMap(hostDir -> Flux.fromArray(PathHelper.listDirectories(hostDir)))
                 .flatMap(instanceDir -> Flux.fromArray(PathHelper.listDirectories(instanceDir.toPath())))
                 .map(SecureLogEntry.loadLogDirectory)
                 .flatMap(SecureLogBundleCreator::from)
-                .switchIfEmpty(Flux.<SecureLogBundle>empty().doOnComplete(() -> {throw new RuntimeException("No secureLog bundle found");}))
-                .map(b -> Optional.ofNullable(b.validateIntegrity()
-                        ? null
-                        : buildVerificationFailureException(
+                .switchIfEmpty(Flux.<SecureLogBundle>empty().doOnComplete(() -> {
+                    throw new RuntimeException("No secureLog bundle found");
+                }))
+                .map(b -> Optional.ofNullable(b.validateIntegrity() ? null :
+                        buildVerificationFailureException(
                                 "Check secure log integrity failed",
                                 Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
                                 "verification01.nok.message",

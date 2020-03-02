@@ -17,14 +17,14 @@ package ch.post.it.evoting.verifier.block.block4.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
@@ -62,30 +62,30 @@ public class CheckSigInvalidVotesTest extends Block4VerificationAbstractTest {
     }
 
     @Test
-    public void executeTestNOKFileNotFound() throws Exception {
-        exceptionRule.expect(FileNotFoundException.class);
-        exceptionRule.expectMessage(".*\\.pem");
+    public void executeTestNOKFileNotFoundCertificate() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
+        exceptionRule.expectMessage(matchesRegex(verification.getPathService().getStructureNode(StructureKey.ADMIN_BOARD_CERT).getQualifier()));
         verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesTest/NOK-NOTFILE").toURI()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound2() throws Exception {
-        exceptionRule.expect(FileNotFoundException.class);
-        exceptionRule.expectMessage("tenant_.*\\.pem");
+    public void executeTestNOKFileNotFoundRootCertificate() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
+        exceptionRule.expectMessage(matchesRegex(verification.getPathService().getStructureNode(StructureKey.TENANT_100).getQualifier()));
         verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesTest/NOK-NOTFILE2").toURI()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound3() throws Exception {
-        exceptionRule.expect(FileNotFoundException.class);
-        exceptionRule.expectMessage("siv_(?!decryption).*\\.csv");
+    public void executeTestNOKFileNotFoundInvalidVotes() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
+        exceptionRule.expectMessage(matchesRegex(verification.getPathService().getStructureNode(StructureKey.INVALID_VOTES_RESULT).getQualifier()));
         verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesTest/NOK-NOTFILE3").toURI()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound4() throws Exception {
+    public void executeTestNOKFileNotFoundInvalidVotesMetadata() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(".csv.metadata");
+        exceptionRule.expectMessage(matchesRegex(verification.getPathService().getStructureNode(StructureKey.INVALID_VOTES_RESULT).getQualifier() + RelationType.METADATA.toFileExtension()));
         verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesTest/NOK-NOTFILE4").toURI()));
     }
 

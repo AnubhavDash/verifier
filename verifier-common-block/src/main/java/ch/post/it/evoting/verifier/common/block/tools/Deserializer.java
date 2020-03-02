@@ -17,6 +17,7 @@ package ch.post.it.evoting.verifier.common.block.tools;
 import ch.post.it.evoting.verifier.common.block.dto.CredentialDataElement;
 import ch.post.it.evoting.verifier.common.block.dto.revised.*;
 import ch.post.it.evoting.verifier.common.block.dto.revised.serialization.*;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.cert.X509Certificate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -72,13 +74,23 @@ public class Deserializer {
         return jsonMapper.readValue(getFile(inputDirectory, filenamePattern), targetClazz);
     }
 
+    public static <T> T fromJson(Path filePath, Class<T> targetClazz) throws IOException {
+        ObjectMapper jsonMapper = initObjectMapper();
+        return jsonMapper.readValue(Files.newInputStream(filePath), targetClazz);
+    }
+
     public static <T> T fromJson(byte[] content, Class<T> targetClazz) throws IOException {
         ObjectMapper jsonMapper = initObjectMapper();
         return jsonMapper.readValue(new String(content, StandardCharsets.UTF_8), targetClazz);
     }
 
     public static <T> T fromXml(File inputDirectory, String filenamePattern, Class<T> targetClazz) throws IOException, JAXBException {
-        return (T) JAXBContext.newInstance(targetClazz).createUnmarshaller().unmarshal(new FileInputStream(getFile(inputDirectory, filenamePattern)));
+        return (T) JAXBContext.newInstance(targetClazz).createUnmarshaller().unmarshal(new FileInputStream(getFile(inputDirectory,
+                filenamePattern)));
+    }
+
+    public static <T> T fromXml(Path filePath, Class<T> targetClazz) throws IOException, JAXBException {
+        return (T) JAXBContext.newInstance(targetClazz).createUnmarshaller().unmarshal(Files.newInputStream(filePath));
     }
 
     public static <T> Iterable<T> fromCsv(File inputDirectory, String filenamePattern, Function<String[], T> mapper) throws IOException {
@@ -87,6 +99,14 @@ public class Deserializer {
 
     public static <T> Iterable<T> fromCsv(File inputDirectory, String filenamePattern, String separator, Function<String[], T> mapper) throws IOException {
         return new CsvReader<>(getFile(inputDirectory, filenamePattern).toString(), StandardCharsets.UTF_8, false, separator, mapper).process();
+    }
+
+    public static <T> Iterable<T> fromCsv(Path filePath, Function<String[], T> mapper) throws IOException {
+        return new CsvReader<>(filePath, StandardCharsets.UTF_8, false, ",", mapper).process();
+    }
+
+    public static <T> Iterable<T> fromCsv(Path filePath, String separator, Function<String[], T> mapper) throws IOException {
+        return new CsvReader<>(filePath, StandardCharsets.UTF_8, false, separator, mapper).process();
     }
 
     private static File getFile(File inputDirectory, String filenamePattern) throws FileNotFoundException {

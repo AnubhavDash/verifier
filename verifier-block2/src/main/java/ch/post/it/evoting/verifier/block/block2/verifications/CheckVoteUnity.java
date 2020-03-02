@@ -75,7 +75,7 @@ public class CheckVoteUnity extends AbstractVerification {
         List<String> problematicVotingCardIds = nbVotingCardPerCC.values().stream()
                 .flatMap(m -> m.entrySet().stream())
                 .filter(e -> e.getValue() > 1)
-                .map(e -> e.getKey()).collect(Collectors.toList());
+                .map(Map.Entry::getKey).collect(Collectors.toList());
 
         if (!problematicVotingCardIds.isEmpty()) {
             throw buildVerificationFailureException(

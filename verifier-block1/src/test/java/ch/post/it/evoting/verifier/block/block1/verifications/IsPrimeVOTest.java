@@ -17,6 +17,8 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -32,7 +34,7 @@ public class IsPrimeVOTest extends Block1VerificationAbstractTest {
     public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
-    public void setup(){
+    public void setup() {
         verification = new IsPrimeVO();
     }
 
@@ -53,7 +55,8 @@ public class IsPrimeVOTest extends Block1VerificationAbstractTest {
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(IOException.class);
-        exceptionRule.expectMessage("dataConfig_updated_.*\\.json");
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.DATA_CONFIG_UPDATED);
+        exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/IsPrimeVOTest/NOK/NOK-NOFILE").toURI()));
     }
 }

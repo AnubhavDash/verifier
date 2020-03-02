@@ -23,11 +23,11 @@ import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import reactor.core.publisher.Flux;
 
-import java.io.File;
 import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.List;
@@ -51,10 +51,12 @@ public class CheckDecryptionFactorization extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        File[] ballotBoxes = PathHelper.listDirectories(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
-        for (File balloBox : ballotBoxes) {
+        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
+
             // decompressedVotes
-            List<BigInteger> decompVotesbigIntList = Flux.fromIterable(Deserializer.fromCsv(balloBox, "decompressedVotes\\.csv", ";", tab -> {
+            PathNode decompressedVotesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.DECOMPRESSED_VOTES, ballotBoxIdDirectoryPath);
+            List<BigInteger> decompVotesbigIntList = Flux.fromIterable(Deserializer.fromCsv(decompressedVotesPathNode.getPath(), ";", tab -> {
                 BigInteger bigInt = BigInteger.ONE;
                 for (int i = 0; i < tab.length; i++) {
                     // ignore write ins
@@ -73,8 +75,11 @@ public class CheckDecryptionFactorization extends AbstractVerification {
                 );
             }
 
+
             // votes with proof
-            OfflineVoterWithProofLoader offlineVoterWithProofLoader = new OfflineVoterWithProofLoader(balloBox.toPath().resolve("0"));
+            // Get "0" directory, implicit use of getPath to get the first path from the PathNode
+            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
+            OfflineVoterWithProofLoader offlineVoterWithProofLoader = new OfflineVoterWithProofLoader(ballotBoxOfflineDirectoriesPathNode.getPath());
             List<BigInteger> voterWithProofbigIntList = offlineVoterWithProofLoader.getPlaintexts()
                     .stream()
                     .map(plaintext -> plaintext.getValue(0).getValue())
@@ -85,7 +90,7 @@ public class CheckDecryptionFactorization extends AbstractVerification {
                         "error occurs while parsing data in voterWithProofbigIntList.csv",
                         Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
                         "verification12.nok.message",
-                        balloBox.getName());
+                        ballotBoxIdDirectoryPath.getFileName().toString());
             }
 
             // finally to the check
@@ -109,6 +114,7 @@ public class CheckDecryptionFactorization extends AbstractVerification {
                         "verification12.nok.message",
                         decompVotesbigIntList.toString());
             }
+
         }
 
         result.setStatus(Status.OK);

@@ -17,11 +17,12 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -32,7 +33,8 @@ public class CheckSigElectionImport extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(1);
         def.setCategory(Category.AUTHENTICITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification75.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                "verification75.description"));
         def.setId(75);
         def.setName("checkSigElectionImport");
         def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
@@ -44,20 +46,20 @@ public class CheckSigElectionImport extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        byte[] rootCertificate = Files.readAllBytes(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_CERTIFICATES).resolve("integrationCA.pem"));
+        final PathNode integrationPathNode = pathService.buildFromRootPath(StructureKey.INTEGRATION_CA, inputDirectoryPath);
+        byte[] rootCertificate = Files.readAllBytes(integrationPathNode.getPath());
 
-        File electionImport = PathHelper.getFile(inputDirectoryPath
-                        .resolve(Block1VerificationSuite.PATH_ELECTION_SETUP)
-                        .toFile(),
-                "AP_election_import_.*\\.json");
+        final PathNode apImportPathNode = pathService.buildFromRootPath(StructureKey.AP_ELECTION_IMPORT, inputDirectoryPath);
 
-        byte[] content = Files.readAllBytes(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(electionImport.getName()));
-        byte[] signature = Files.readAllBytes(inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP).resolve(electionImport.getName() + ".p7"));
+        byte[] content = Files.readAllBytes(apImportPathNode.getPath());
+        byte[] signature = Files.readAllBytes(apImportPathNode.getRelation(RelationType.P7));
+
         if (!SignatureChecker.verifyPKCS7(content, signature, rootCertificate)) {
             throw buildVerificationFailureException(
                     "The signature verification of the file failed",
                     Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-                    "verification75.nok.message"
+                    "verification75.nok.message",
+                    apImportPathNode.getPath().toString()
             );
         }
 

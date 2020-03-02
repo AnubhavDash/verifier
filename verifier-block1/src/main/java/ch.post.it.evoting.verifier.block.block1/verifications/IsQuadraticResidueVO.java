@@ -24,6 +24,8 @@ import ch.post.it.evoting.verifier.common.block.dto.revised.VoteOption;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 
 import java.math.BigInteger;
 import java.nio.file.Path;
@@ -37,7 +39,8 @@ public class IsQuadraticResidueVO extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(1);
         def.setCategory(Category.INTEGRITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification06.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                "verification06.description"));
         def.setId(6);
         def.setName("isQuadraticResidue([vo])");
         def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
@@ -48,12 +51,13 @@ public class IsQuadraticResidueVO extends AbstractVerification {
     @Override
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
-        Path path = inputDirectoryPath.resolve(Block1VerificationSuite.PATH_CRYPTO_SETUP);
-        EncryptionGroup encryptionGroup = Deserializer.fromJson(path.toFile(), "encryptionParameters\\.json", EncryptionGroup.class);
+
+        final PathNode encryptParams = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
+        EncryptionGroup encryptionGroup = Deserializer.fromJson(encryptParams.getPath(), EncryptionGroup.class);
         BigInteger p = encryptionGroup.getP();
 
-        path = inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP);
-        ElectionEvent electionEvent = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", ElectionEvent.class);
+        final PathNode dataConfigPathNode = pathService.buildFromRootPath(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
+        ElectionEvent electionEvent = Deserializer.fromJson(dataConfigPathNode.getPath(), ElectionEvent.class);
 
         //votations
         Collection<BigInteger> errors = electionEvent.getBallotBoxes().parallelStream()
@@ -109,6 +113,7 @@ public class IsQuadraticResidueVO extends AbstractVerification {
                     errors.toString()
             );
         }
+
         result.setStatus(Status.OK);
         return result;
     }

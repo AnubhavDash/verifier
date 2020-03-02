@@ -27,9 +27,10 @@ import ch.post.it.evoting.verifier.common.block.dto.revised.ElectionEvent;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import com.scytl.xmlns.decrypt._1.Results;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Path;
@@ -56,9 +57,17 @@ public class CheckOptionsMapping extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        Path path = inputDirectoryPath.resolve(Block4VerificationSuite.PATH_ELECTION_SETUP);
-        ElectionEvent electionEvent = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", ElectionEvent.class);
+        // Get data config
+        PathNode dataConfigPathNode = pathService.buildFromRootPath(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
+        ElectionEvent electionEvent = Deserializer.fromJson(dataConfigPathNode.getPath(), ElectionEvent.class);
         List<BallotBox> ballotBoxes = electionEvent.getBallotBoxes();
+
+        // Get ballotBoxId directories
+        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+
+        // Get eVoting decrypt result
+        PathNode eVotingDecryptResultPathNode = pathService.buildFromRootPath(StructureKey.EVOTING_DECRYPT_RESULT, inputDirectoryPath);
+        Results decryptResult = Deserializer.fromXml(eVotingDecryptResultPathNode.getPath(), Results.class);
 
         for (BallotBox ballotBox : ballotBoxes) {
             // Prepare ballot box ids
@@ -97,11 +106,10 @@ public class CheckOptionsMapping extends AbstractVerification {
                 );
 
                 // 2 Generate map<prime, count>, but before retrieve the ballotbox file
-                Map<String, Long> primesCountMap = getCorrectFileAndExtractPrimesCount(inputDirectoryPath, ballotBoxId);
+                Path ballotBoxIdDirectoryPath = ballotBoxIdDirectoriesPathNode.getRegexPath(ballotBoxId);
+                Map<String, Long> primesCountMap = getCorrectFileAndExtractPrimesCount(ballotBoxIdDirectoryPath);
 
                 // 3 Generate map<alias, count>
-                final Path resultsPath = inputDirectoryPath.resolve(Block4VerificationSuite.PATH_RESULTS);
-                Results decryptResult = Deserializer.fromXml(resultsPath.toFile(), "evoting-decrypt_.*\\.xml", Results.class);
                 Map<String, Long> aliasCountMap = decryptResult.getBallotsBox().stream()
                         .filter(bb -> ballotBoxAuthId.equals(bb.getBallotBoxIdentification()))
                         .flatMap(theBb -> theBb.getCountingCircle().stream())
@@ -188,10 +196,9 @@ public class CheckOptionsMapping extends AbstractVerification {
         return result;
     }
 
-    private Map<String, Long> getCorrectFileAndExtractPrimesCount(Path inputDirectoryPath, String ballotBoxId) throws IOException {
-        Path path = inputDirectoryPath.resolve(Block4VerificationSuite.PATH_BALLOTBOXES).resolve(ballotBoxId);
-        Iterable<List<String>> iterable = Deserializer.fromCsv(path.toFile(),
-                "decompressedVotes\\.csv", ";", Arrays::asList);
+    private Map<String, Long> getCorrectFileAndExtractPrimesCount(Path ballotBoxIdDirectoryPath) throws IOException {
+        final PathNode decompressedVotesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.DECOMPRESSED_VOTES, ballotBoxIdDirectoryPath);
+        Iterable<List<String>> iterable = Deserializer.fromCsv(decompressedVotesPathNode.getPath(), ";", Arrays::asList);
 
         return StreamSupport.stream(iterable.spliterator(), false)
                 .flatMap(Collection::stream)

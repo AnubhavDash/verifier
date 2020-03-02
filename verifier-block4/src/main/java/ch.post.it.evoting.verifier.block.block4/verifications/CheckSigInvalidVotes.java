@@ -20,11 +20,10 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.*;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -45,20 +44,23 @@ public class CheckSigInvalidVotes extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath
-                        .resolve(Block4VerificationSuite.PATH_CERTIFICATES)
-                        .resolve(Block4VerificationSuite.PATH_ADMINBOARD).toFile(),
-                ".*\\.pem").toPath());
+        // Get the certificate used for signing.
+        final PathNode adminCertPathNode = pathService.buildFromRootPath(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
+        byte[] signCertificate = Files.readAllBytes(adminCertPathNode.getPath());
 
-        byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath.resolve(Block4VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
+        // Get root certificate
+        PathNode rootCertificatePathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
+        byte[] rootCertificate = Files.readAllBytes(rootCertificatePathNode.getPath());
 
-        File[] sivFiles = PathHelper.getFiles(inputDirectoryPath.resolve(Block4VerificationSuite.PATH_RESULTS).toFile(), "siv_(?!decryption).*\\.csv");
+        // Get all invalid votes results
+        PathNode invalidVotesPathNode = pathService.buildFromRootPath(StructureKey.INVALID_VOTES_RESULT, inputDirectoryPath);
 
-        for (File siv : sivFiles) {
-            byte[] content = Files.readAllBytes(inputDirectoryPath.resolve(Block4VerificationSuite.PATH_RESULTS).resolve(siv.getName()));
-            byte[] signature = Files.readAllBytes(inputDirectoryPath.resolve(Block4VerificationSuite.PATH_RESULTS).resolve(siv.getName() + ".metadata"));
+        // Verify signature of each file
+        for (Path invalidVotesPath : invalidVotesPathNode.getRegexPaths()) {
+            byte[] content = Files.readAllBytes(invalidVotesPath);
+            byte[] signature = Files.readAllBytes(invalidVotesPathNode.getRelation(RelationType.METADATA, invalidVotesPath));
 
-            if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCA)) {
+            if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCertificate)) {
                 throw buildVerificationFailureException(
                         "The signature verification of the siv_[EE_alias].csv report failed",
                         Block4VerificationSuite.RESOURCE_BUNDLE_NAME,

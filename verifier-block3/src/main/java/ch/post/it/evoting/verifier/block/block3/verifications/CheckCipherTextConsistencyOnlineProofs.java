@@ -22,15 +22,15 @@ import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.dto.DownloadedBallot;
 import reactor.core.publisher.Flux;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -39,22 +39,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CheckCipherTextConsistencyOnlineProofs extends AbstractVerification {
-
-    static GammaPhis extractFromLine(String line) throws IOException {
-        int pipePosition = line.indexOf("}}|");
-        // Take only confirmed votes searching votes without |||
-        if (!line.isEmpty() && pipePosition != -1 && !line.substring(pipePosition + 2, pipePosition + 5).contains("|||")) {
-            line = line.substring(0, pipePosition + 2);
-            DownloadedBallot db = Deserializer.fromJson(TypeConverter.stringToByte(line), DownloadedBallot.class);
-            String encryptedOptions = db.getVote().getEncryptedOptions();
-            String gamma = encryptedOptions.substring(0, encryptedOptions.indexOf(";"));
-            List<String> phis = Arrays.asList(encryptedOptions.substring(encryptedOptions.indexOf(";") + 1).split(","));
-            GammaPhis gammaPhis = new GammaPhis(gamma, phis);
-            return gammaPhis;
-        } else {
-            return new GammaPhis(null, null);
-        }
-    }
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -72,14 +56,14 @@ public class CheckCipherTextConsistencyOnlineProofs extends AbstractVerification
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        File[] ballotboxes = PathHelper.listDirectories(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
-        boolean isEquivalent = false;
-        for (File ballotbox : ballotboxes) {
+        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 
-            // Offline
-            File downloadedBallotBoxFile = PathHelper.getFile(ballotbox.toPath().toFile(), "downloadedBallotBox.csv");
+        for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
+
+            // Downloaded ballot
+            PathNode downloadedBallotBoxPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.DOWNLOADED_BALLOT_BOX, ballotBoxIdDirectoryPath);
             List<GammaPhis> offlineGammaPhisList;
-            try (Stream<String> lines = Files.lines(downloadedBallotBoxFile.toPath())) {
+            try (Stream<String> lines = Files.lines(downloadedBallotBoxPathNode.getPath())) {
                 offlineGammaPhisList = lines
                         .map(l -> {
                             try {
@@ -92,17 +76,14 @@ public class CheckCipherTextConsistencyOnlineProofs extends AbstractVerification
                         .collect(Collectors.toList());
             }
 
-            final File[] onlineMixings = ballotbox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
-            Iterable<File> iterableFile = Arrays.asList(onlineMixings);
-            Iterator iteratorFile = iterableFile.iterator();
-            Map<String, Tuple2<List<GammaPhis>, List<GammaPhis>>> map = new HashMap();
+            // Online mixing
+            PathNode onlineMixingPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_ONLINE_MIXING, ballotBoxIdDirectoryPath);
+            Map<String, Tuple2<List<GammaPhis>, List<GammaPhis>>> map = new HashMap<>();
             List<GammaPhis> onlinePreviousVotes;
             List<GammaPhis> onlineVotes;
 
-            while (iteratorFile.hasNext() && !isEquivalent) {
-                File online = (File) iteratorFile.next();
-
-                OnlineMixingProofLoader onlineMixingProofLoader = new OnlineMixingProofLoader(online.toPath());
+            for (Path onlineMixingPath : onlineMixingPathNode.getRegexPaths()) {
+                OnlineMixingProofLoader onlineMixingProofLoader = new OnlineMixingProofLoader(onlineMixingPath);
 
                 onlinePreviousVotes = onlineMixingProofLoader.getEncryptedBallots().getBallots()
                         .stream()
@@ -119,7 +100,7 @@ public class CheckCipherTextConsistencyOnlineProofs extends AbstractVerification
 
                 Tuple2<List<GammaPhis>, List<GammaPhis>> tuple = Tuples.of(onlinePreviousVotes, onlineVotes);
 
-                map.put(online.getName(), tuple);
+                map.put(onlineMixingPath.getFileName().toString(), tuple);
             }
 
             // All data is loaded
@@ -153,6 +134,7 @@ public class CheckCipherTextConsistencyOnlineProofs extends AbstractVerification
                         "verification31.nok.message"
                 );
             }
+
         }
 
         result.setStatus(Status.OK);
@@ -163,11 +145,26 @@ public class CheckCipherTextConsistencyOnlineProofs extends AbstractVerification
         return downloadedList.size() == onlineList.size() && Flux.fromIterable(downloadedList).all(e -> onlineList.contains(e)).block();
     }
 
+    private GammaPhis extractFromLine(String line) throws IOException {
+        int pipePosition = line.indexOf("}}|");
+        // Take only confirmed votes searching votes without |||
+        if (!line.isEmpty() && pipePosition != -1 && !line.substring(pipePosition + 2, pipePosition + 5).contains("|||")) {
+            line = line.substring(0, pipePosition + 2);
+            DownloadedBallot db = Deserializer.fromJson(TypeConverter.stringToByte(line), DownloadedBallot.class);
+            String encryptedOptions = db.getVote().getEncryptedOptions();
+            String gamma = encryptedOptions.substring(0, encryptedOptions.indexOf(";"));
+            List<String> phis = Arrays.asList(encryptedOptions.substring(encryptedOptions.indexOf(";") + 1).split(","));
+            return new GammaPhis(gamma, phis);
+        } else {
+            return new GammaPhis(null, null);
+        }
+    }
+
     static class GammaPhis {
         private String gamma;
         private List<String> phis;
 
-        public GammaPhis(String gamma, List<String> phis) {
+        GammaPhis(String gamma, List<String> phis) {
             this.gamma = gamma;
             this.phis = phis;
         }

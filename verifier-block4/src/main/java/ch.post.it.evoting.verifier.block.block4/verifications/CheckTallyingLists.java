@@ -27,6 +27,8 @@ import ch.post.it.evoting.verifier.common.block.tools.CountMap;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import com.scytl.xmlns.decrypt._1.Results;
 import org.apache.log4j.Logger;
 
@@ -57,9 +59,8 @@ public class CheckTallyingLists extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        Path path = inputDirectoryPath.resolve(Block4VerificationSuite.PATH_ELECTION_SETUP);
-        Configuration configuration = Deserializer.fromXml(path.toFile(), "configuration-anonymized.xml",
-                Configuration.class);
+        PathNode configurationAnonymizedPathNode = pathService.buildFromRootPath(StructureKey.CONFIG_ANONYMIZED, inputDirectoryPath);
+        Configuration configuration = Deserializer.fromXml(configurationAnonymizedPathNode.getPath(), Configuration.class);
 
         Map<String, Boolean> mapListIsEmpty = configuration.getContest().getElectionInformation().stream()
                 .flatMap(ei -> ei.getList().stream())
@@ -82,8 +83,8 @@ public class CheckTallyingLists extends AbstractVerification {
 
 
         // 2, decrypt file => map<countingCircle, map<ElectionId, map<listId, count>>>
-        path = inputDirectoryPath.resolve(Block4VerificationSuite.PATH_RESULTS);
-        Results results = Deserializer.fromXml(path.toFile(), "evoting-decrypt_.*\\.xml", Results.class);
+        PathNode eVotingDecryptResultPathNode = pathService.buildFromRootPath(StructureKey.EVOTING_DECRYPT_RESULT, inputDirectoryPath);
+        Results results = Deserializer.fromXml(eVotingDecryptResultPathNode.getPath(), Results.class);
         Map<String, Map<String, Map<String, Long>>> countByListId = results.getBallotsBox().stream()
                 .flatMap(bb -> bb.getCountingCircle().stream())
                 .map(cc -> {
@@ -170,8 +171,8 @@ public class CheckTallyingLists extends AbstractVerification {
                             });
                         }));
 
-        path = inputDirectoryPath.resolve(Block4VerificationSuite.PATH_RESULTS);
-        Delivery ech110 = Deserializer.fromXml(path.toFile(), "eCH-0110_.*\\.xml", Delivery.class);
+        PathNode eCH0110PathNode = pathService.buildFromRootPath(StructureKey.ECH0110, inputDirectoryPath);
+        Delivery ech110 = Deserializer.fromXml(eCH0110PathNode.getPath(), Delivery.class);
         ech110.getResultDelivery().getCountingCircleResults().forEach(cc -> {
             String ccId = cc.getCountingCircle().getCountingCircleId();
             cc.getElectionResults().stream()

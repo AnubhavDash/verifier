@@ -21,6 +21,8 @@ import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.dto.ElectoralAuthority;
 import ch.post.it.evoting.verifier.dto.PublicKey;
 
@@ -37,7 +39,8 @@ public class IsMemberOfGroupPKEA extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(1);
         def.setCategory(Category.INTEGRITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification07.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                "verification07.description"));
         def.setId(7);
         def.setName("isMemberOfGroup(pk_ea)");
         def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
@@ -49,8 +52,9 @@ public class IsMemberOfGroupPKEA extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        Path path = inputDirectoryPath.resolve(Block1VerificationSuite.PATH_CRYPTO_SETUP);
-        ElectoralAuthority electoralAuthority = Deserializer.fromJson(path.toFile(), "electoralAuthority\\.json", ElectoralAuthority.class);
+        final PathNode electoralAuthPathNode = pathService.buildFromRootPath(StructureKey.ELECTORAL_AUTHORITY, inputDirectoryPath);
+        ElectoralAuthority electoralAuthority = Deserializer.fromJson(electoralAuthPathNode.getPath(), ElectoralAuthority.class);
+
         String publicKeyB64 = electoralAuthority.getPublicKey();
         byte[] decoded = TypeConverter.base64ToByte(publicKeyB64);
         String publicKey = TypeConverter.byteToString(decoded);
@@ -67,7 +71,7 @@ public class IsMemberOfGroupPKEA extends AbstractVerification {
             List<String> errors = elements.stream()
                     .map(element -> TypeConverter.byteToBigInteger(TypeConverter.base64ToByte(element)))
                     .filter(bigInteger -> !MathHelper.isEulerCriterionValid(bigInteger, p))
-                    .map(bi -> TypeConverter.bigIntegerToB64String(bi))
+                    .map(TypeConverter::bigIntegerToB64String)
                     .collect(Collectors.toList());
 
             if (!errors.isEmpty()) {

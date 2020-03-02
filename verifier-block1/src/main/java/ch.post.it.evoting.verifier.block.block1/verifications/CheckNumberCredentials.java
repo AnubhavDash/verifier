@@ -20,10 +20,10 @@ import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.dto.CredentialDataElement;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 
-import java.io.File;
 import java.nio.file.Path;
 
 public class CheckNumberCredentials extends AbstractVerification {
@@ -33,7 +33,8 @@ public class CheckNumberCredentials extends AbstractVerification {
         VerificationDefinition def = new VerificationDefinition();
         def.setBlockId(1);
         def.setCategory(Category.COMPLETENESS);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification31.description"));
+        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                "verification31.description"));
         def.setId(31);
         def.setName("checkNumberCredentials()");
         def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
@@ -44,17 +45,19 @@ public class CheckNumberCredentials extends AbstractVerification {
     @Override
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
-        // number of voters
-        Path path = inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP);
-        Configuration configuration = Deserializer.fromXml(path.toFile(), "configuration-anonymized.xml", Configuration.class);
+
+        // Number of voters.
+        final PathNode configPathNode = pathService.buildFromRootPath(StructureKey.CONFIG_ANONYMIZED, inputDirectoryPath);
+        Configuration configuration = Deserializer.fromXml(configPathNode.getPath(), Configuration.class);
         int votersCount = configuration.getRegister().getVoter().size();
 
-        // number of lines
-        Path votingCardSetsPath = path.resolve(Block1VerificationSuite.PATH_VOTING_CARD_SETS);
-
+        // Number of lines.
         int linesCount = 0;
-        for (File f : PathHelper.listDirectories(votingCardSetsPath)) {
-            Iterable<CredentialDataElement> iterable = Deserializer.fromCsv(f, "credentialData.csv", Deserializer.toCredentialDataElement);
+        final PathNode votingCardIdPathNode = pathService.buildFromRootPath(StructureKey.VOTING_CARD_SETS_ID_DIR, inputDirectoryPath);
+        for (Path path : votingCardIdPathNode.getRegexPaths()) {
+            final PathNode credDataPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.CREDENTIAL_DATA, path);
+            Iterable<CredentialDataElement> iterable = Deserializer.fromCsv(credDataPathNode.getPath(),
+                    Deserializer.toCredentialDataElement);
             for (CredentialDataElement ignored : iterable) {
                 linesCount++;
             }

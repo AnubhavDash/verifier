@@ -17,14 +17,14 @@ package ch.post.it.evoting.verifier.block.block4.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
@@ -62,17 +62,27 @@ public class CheckSigBulletinParBulletinTest extends Block4VerificationAbstractT
     }
 
     @Test
-    public void executeTestNOKFileNotFound() throws Exception {
-        exceptionRule.expect(FileNotFoundException.class);
-        exceptionRule.expectMessage(".*ballot.*\\.pdf");
+    public void executeTestNOKFileNotFoundCertificate() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
+        exceptionRule.expectMessage(matchesRegex(verification.getPathService().getStructureNode(StructureKey.TENANT_100).getQualifier()));
         verification.verify(Paths.get(getClass().getResource("/CheckSigBulletinParBulletinTest/NOK-NOTFILE").toURI()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound2() throws Exception {
+    public void executeTestNOKFileNotFoundBallotPDF() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage("ballot.pdf.p7");
+        exceptionRule.expectMessage(matchesRegex(verification.getPathService().getStructureNode(StructureKey.BALLOT_RESULT).getQualifier()));
         verification.verify(Paths.get(getClass().getResource("/CheckSigBulletinParBulletinTest/NOK-NOTFILE2").toURI()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFoundBallotMetadata() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
+        exceptionRule.expectMessage(matchesRegex(
+                verification.getPathService().getStructureNode(StructureKey.BALLOT_RESULT).getQualifier()
+                        + RelationType.P7.toFileExtension()
+        ));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigBulletinParBulletinTest/NOK-NOTFILE3").toURI()));
     }
 
 }

@@ -45,7 +45,8 @@ public class CheckSecureLogSignatureTest extends Block2VerificationAbstractTest 
     @Test
     @Ignore
     public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = new CheckSecureLogSignature().verify(Paths.get(getClass().getResource("/CheckSecureLogSignatureTest/OK").toURI()));
+        VerificationResult verificationResult = new CheckSecureLogSignature().verify(Paths.get(getClass().getResource(
+                "/CheckSecureLogSignatureTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -55,7 +56,8 @@ public class CheckSecureLogSignatureTest extends Block2VerificationAbstractTest 
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("Checkpoint entry and attributes of the entry, the signature does not verify");
-        VerificationResult verificationResult = new CheckSecureLogSignature().verify(Paths.get(getClass().getResource("/CheckSecureLogSignatureTest/NOK").toURI()));
+        VerificationResult verificationResult = new CheckSecureLogSignature().verify(Paths.get(getClass().getResource(
+                "/CheckSecureLogSignatureTest/NOK").toURI()));
     }
 
     @Test
@@ -67,20 +69,50 @@ public class CheckSecureLogSignatureTest extends Block2VerificationAbstractTest 
 
         /*
         Original from SPLUNK
-        {"preview":false,"offset":2204,"result":{"_raw":"2019-01-29 00:02:38,204|DEBUG|TIMER-LOG|New Secret Key generated. {*LSK::EZHSddXYfgf5bACUt4R9f1XuIU+bjwewPNrVGWq3crs=,ESK::g9PB+b3UVRxBv/d349PO2VdOVD4JJMGljtobS+CD2sAW/1fnKqOYqzjBJPB1ZE/nTrzxFUnmO+31yTHY3ORWNZsG7DcmtZt4RT4ckqvuEzx8TOb26mhZ+YJ8Lc5Ln+14tXZ5uZBpUFVXprw5rwZ48PNj8UaC9O4nw1Tmi0LGnI2bRr7bLLvEfKJACRitNLf5uVUTnvsJcf7iMU0mWJsApptBz2z9IxiA/+alX8jwk1RCIaFKTsxSEwpmim52aDjYZSEJgyo9wfdtmHofZdXnX7Aq3BEfl2S8iuEYFes6xKOAzxENEGoNfUeD5YJxNIj9IGUBwrck0Ys17i5pUiNAxheZwl9/HyE0B9/ApGcMhmC4tSU/EQ8R7cItnJ1llnwPdhG+647klQuZrjZq9C75ak/YtPbDY62k5WSHZThg/4k7xW3b3SS0mg==,PHMAC::LU9MozP14HFR7ggG7NSesx2Ztksa3PmPNiuR9qK9DF4=,LS::10000,TL::300000,TS::1548716558205,HMAC::XxzCeo2Zb2sgvZY8fUM/hHBGYkx4Oo8xdsUvT5O0cZA=,SG::pUFV4DWoimWtePDunO5VapLy0YtBkDFYF5f1UhXftYRxOx5ID7XmU/m2R12w0YNFY9+boelq9wSMC6ARbVkFMJ5I9Nud3gjIvIuT+LKZrHMoPkGiM9mWqiO0v19YpNz3HfD2GKLrg3ZS+L/NW2jRUSgywqPBFcAkcmu7TY5p9flVDBR2y6Bu33dpmzZ0g/ERbnDrBUH4UxqdPNw9noIdGKjbQjQZu5/CnybUR4sO2M4sXO4F1Ces0h7hUBw9n81WgOgXK78YNusR8inoviwq3v5kVMrwX/DsThgYdcJSiLCeJ03Yls6ssBI0fM2cZIeRbdBL3G1ANRrsPK1ZtPn6Hg==*}","_time":"2019-01-29T00:02:38.204+0100","arrivalcode":"6592061","cd":"68:6592061","host":"h002gb","index":"it_evoting_cc","linecount":"1","minute":"05290002","source":"/data/logs/cv/logs/cv_secure-20190125-113237-106.log","sourcetype":"post_evoting_securelogs","splunk_server":"hin01a.pnet.ch"}}
+        {"preview":false,"offset":2204,"result":{"_raw":"2019-01-29 00:02:38,204|DEBUG|TIMER-LOG|New Secret Key generated.
+        {*LSK::EZHSddXYfgf5bACUt4R9f1XuIU+bjwewPNrVGWq3crs=,
+        ESK::g9PB+b3UVRxBv/d349PO2VdOVD4JJMGljtobS+CD2sAW/1fnKqOYqzjBJPB1ZE/nTrzxFUnmO+31yTHY3ORWNZsG7DcmtZt4RT4ckqvuEzx8TOb26mhZ
+        +YJ8Lc5Ln+14tXZ5uZBpUFVXprw5rwZ48PNj8UaC9O4nw1Tmi0LGnI2bRr7bLLvEfKJACRitNLf5uVUTnvsJcf7iMU0mWJsApptBz2z9IxiA
+        /+alX8jwk1RCIaFKTsxSEwpmim52aDjYZSEJgyo9wfdtmHofZdXnX7Aq3BEfl2S8iuEYFes6xKOAzxENEGoNfUeD5YJxNIj9IGUBwrck0Ys17i5pUiNAxheZwl9
+        /HyE0B9/ApGcMhmC4tSU/EQ8R7cItnJ1llnwPdhG+647klQuZrjZq9C75ak/YtPbDY62k5WSHZThg/4k7xW3b3SS0mg==,
+        PHMAC::LU9MozP14HFR7ggG7NSesx2Ztksa3PmPNiuR9qK9DF4=,LS::10000,TL::300000,TS::1548716558205,
+        HMAC::XxzCeo2Zb2sgvZY8fUM/hHBGYkx4Oo8xdsUvT5O0cZA=,
+        SG::pUFV4DWoimWtePDunO5VapLy0YtBkDFYF5f1UhXftYRxOx5ID7XmU/m2R12w0YNFY9+boelq9wSMC6ARbVkFMJ5I9Nud3gjIvIuT
+        +LKZrHMoPkGiM9mWqiO0v19YpNz3HfD2GKLrg3ZS+L/NW2jRUSgywqPBFcAkcmu7TY5p9flVDBR2y6Bu33dpmzZ0g/ERbnDrBUH4UxqdPNw9noIdGKjbQjQZu5
+        /CnybUR4sO2M4sXO4F1Ces0h7hUBw9n81WgOgXK78YNusR8inoviwq3v5kVMrwX/DsThgYdcJSiLCeJ03Yls6ssBI0fM2cZIeRbdBL3G1ANRrsPK1ZtPn6Hg==*}",
+        "_time":"2019-01-29T00:02:38.204+0100","arrivalcode":"6592061","cd":"68:6592061","host":"h002gb","index":"it_evoting_cc",
+        "linecount":"1","minute":"05290002","source":"/data/logs/cv/logs/cv_secure-20190125-113237-106.log",
+        "sourcetype":"post_evoting_securelogs","splunk_server":"hin01a.pnet.ch"}}
 
         Original from FILE
-        2019-01-29 00:02:38,204|DEBUG|TIMER-LOG|New Secret Key generated. {*LSK::EZHSddXYfgf5bACUt4R9f1XuIU+bjwewPNrVGWq3crs=,ESK::g9PB+b3UVRxBv/d349PO2VdOVD4JJMGljtobS+CD2sAW/1fnKqOYqzjBJPB1ZE/nTrzxFUnmO+31yTHY3ORWNZsG7DcmtZt4RT4ckqvuEzx8TOb26mhZ+YJ8Lc5Ln+14tXZ5uZBpUFVXprw5rwZ48PNj8UaC9O4nw1Tmi0LGnI2bRr7bLLvEfKJACRitNLf5uVUTnvsJcf7iMU0mWJsApptBz2z9IxiA/+alX8jwk1RCIaFKTsxSEwpmim52aDjYZSEJgyo9wfdtmHofZdXnX7Aq3BEfl2S8iuEYFes6xKOAzxENEGoNfUeD5YJxNIj9IGUBwrck0Ys17i5pUiNAxheZwl9/HyE0B9/ApGcMhmC4tSU/EQ8R7cItnJ1llnwPdhG+647klQuZrjZq9C75ak/YtPbDY62k5WSHZThg/4k7xW3b3SS0mg==,PHMAC::LU9MozP14HFR7ggG7NSesx2Ztksa3PmPNiuR9qK9DF4=,LS::10000,TL::300000,TS::1548716558205,HMAC::XxzCeo2Zb2sgvZY8fUM/hHBGYkx4Oo8xdsUvT5O0cZA=*}
+        2019-01-29 00:02:38,204|DEBUG|TIMER-LOG|New Secret Key generated. {*LSK::EZHSddXYfgf5bACUt4R9f1XuIU+bjwewPNrVGWq3crs=,
+        ESK::g9PB+b3UVRxBv/d349PO2VdOVD4JJMGljtobS+CD2sAW/1fnKqOYqzjBJPB1ZE/nTrzxFUnmO+31yTHY3ORWNZsG7DcmtZt4RT4ckqvuEzx8TOb26mhZ
+        +YJ8Lc5Ln+14tXZ5uZBpUFVXprw5rwZ48PNj8UaC9O4nw1Tmi0LGnI2bRr7bLLvEfKJACRitNLf5uVUTnvsJcf7iMU0mWJsApptBz2z9IxiA
+        /+alX8jwk1RCIaFKTsxSEwpmim52aDjYZSEJgyo9wfdtmHofZdXnX7Aq3BEfl2S8iuEYFes6xKOAzxENEGoNfUeD5YJxNIj9IGUBwrck0Ys17i5pUiNAxheZwl9
+        /HyE0B9/ApGcMhmC4tSU/EQ8R7cItnJ1llnwPdhG+647klQuZrjZq9C75ak/YtPbDY62k5WSHZThg/4k7xW3b3SS0mg==,
+        PHMAC::LU9MozP14HFR7ggG7NSesx2Ztksa3PmPNiuR9qK9DF4=,LS::10000,TL::300000,TS::1548716558205,
+        HMAC::XxzCeo2Zb2sgvZY8fUM/hHBGYkx4Oo8xdsUvT5O0cZA=*}
 
-        SG::pUFV4DWoimWtePDunO5VapLy0YtBkDFYF5f1UhXftYRxOx5ID7XmU/m2R12w0YNFY9+boelq9wSMC6ARbVkFMJ5I9Nud3gjIvIuT+LKZrHMoPkGiM9mWqiO0v19YpNz3HfD2GKLrg3ZS+L/NW2jRUSgywqPBFcAkcmu7TY5p9flVDBR2y6Bu33dpmzZ0g/ERbnDrBUH4UxqdPNw9noIdGKjbQjQZu5/CnybUR4sO2M4sXO4F1Ces0h7hUBw9n81WgOgXK78YNusR8inoviwq3v5kVMrwX/DsThgYdcJSiLCeJ03Yls6ssBI0fM2cZIeRbdBL3G1ANRrsPK1ZtPn6Hg==
+        SG::pUFV4DWoimWtePDunO5VapLy0YtBkDFYF5f1UhXftYRxOx5ID7XmU/m2R12w0YNFY9+boelq9wSMC6ARbVkFMJ5I9Nud3gjIvIuT
+        +LKZrHMoPkGiM9mWqiO0v19YpNz3HfD2GKLrg3ZS+L/NW2jRUSgywqPBFcAkcmu7TY5p9flVDBR2y6Bu33dpmzZ0g/ERbnDrBUH4UxqdPNw9noIdGKjbQjQZu5
+        /CnybUR4sO2M4sXO4F1Ces0h7hUBw9n81WgOgXK78YNusR8inoviwq3v5kVMrwX/DsThgYdcJSiLCeJ03Yls6ssBI0fM2cZIeRbdBL3G1ANRrsPK1ZtPn6Hg==
     */
 
 
-        String sg = "pUFV4DWoimWtePDunO5VapLy0YtBkDFYF5f1UhXftYRxOx5ID7XmU/m2R12w0YNFY9+boelq9wSMC6ARbVkFMJ5I9Nud3gjIvIuT+LKZrHMoPkGiM9mWqiO0v19YpNz3HfD2GKLrg3ZS+L/NW2jRUSgywqPBFcAkcmu7TY5p9flVDBR2y6Bu33dpmzZ0g/ERbnDrBUH4UxqdPNw9noIdGKjbQjQZu5/CnybUR4sO2M4sXO4F1Ces0h7hUBw9n81WgOgXK78YNusR8inoviwq3v5kVMrwX/DsThgYdcJSiLCeJ03Yls6ssBI0fM2cZIeRbdBL3G1ANRrsPK1ZtPn6Hg==";
+        String sg = "pUFV4DWoimWtePDunO5VapLy0YtBkDFYF5f1UhXftYRxOx5ID7XmU/m2R12w0YNFY9+boelq9wSMC6ARbVkFMJ5I9Nud3gjIvIuT" +
+                "+LKZrHMoPkGiM9mWqiO0v19YpNz3HfD2GKLrg3ZS+L/NW2jRUSgywqPBFcAkcmu7TY5p9flVDBR2y6Bu33dpmzZ0g" +
+                "/ERbnDrBUH4UxqdPNw9noIdGKjbQjQZu5/CnybUR4sO2M4sXO4F1Ces0h7hUBw9n81WgOgXK78YNusR8inoviwq3v5kVMrwX" +
+                "/DsThgYdcJSiLCeJ03Yls6ssBI0fM2cZIeRbdBL3G1ANRrsPK1ZtPn6Hg==";
 
-        String value = "2019-01-29 00:02:38,204|DEBUG|TIMER-LOG|New Secret Key generated. {*LSK::EZHSddXYfgf5bACUt4R9f1XuIU+bjwewPNrVGWq3crs=,ESK::g9PB+b3UVRxBv/d349PO2VdOVD4JJMGljtobS+CD2sAW/1fnKqOYqzjBJPB1ZE/nTrzxFUnmO+31yTHY3ORWNZsG7DcmtZt4RT4ckqvuEzx8TOb26mhZ+YJ8Lc5Ln+14tXZ5uZBpUFVXprw5rwZ48PNj8UaC9O4nw1Tmi0LGnI2bRr7bLLvEfKJACRitNLf5uVUTnvsJcf7iMU0mWJsApptBz2z9IxiA/+alX8jwk1RCIaFKTsxSEwpmim52aDjYZSEJgyo9wfdtmHofZdXnX7Aq3BEfl2S8iuEYFes6xKOAzxENEGoNfUeD5YJxNIj9IGUBwrck0Ys17i5pUiNAxheZwl9/HyE0B9/ApGcMhmC4tSU/EQ8R7cItnJ1llnwPdhG+647klQuZrjZq9C75ak/YtPbDY62k5WSHZThg/4k7xW3b3SS0mg==,PHMAC::LU9MozP14HFR7ggG7NSesx2Ztksa3PmPNiuR9qK9DF4=,LS::10000,TL::300000,TS::1548716558205,HMAC::XxzCeo2Zb2sgvZY8fUM/hHBGYkx4Oo8xdsUvT5O0cZA=*}\n";
+        String value = "2019-01-29 00:02:38,204|DEBUG|TIMER-LOG|New Secret Key generated. " +
+                "{*LSK::EZHSddXYfgf5bACUt4R9f1XuIU+bjwewPNrVGWq3crs=," +
+                "ESK::g9PB+b3UVRxBv/d349PO2VdOVD4JJMGljtobS+CD2sAW/1fnKqOYqzjBJPB1ZE/nTrzxFUnmO" +
+                "+31yTHY3ORWNZsG7DcmtZt4RT4ckqvuEzx8TOb26mhZ+YJ8Lc5Ln" +
+                "+14tXZ5uZBpUFVXprw5rwZ48PNj8UaC9O4nw1Tmi0LGnI2bRr7bLLvEfKJACRitNLf5uVUTnvsJcf7iMU0mWJsApptBz2z9IxiA" +
+                "/+alX8jwk1RCIaFKTsxSEwpmim52aDjYZSEJgyo9wfdtmHofZdXnX7Aq3BEfl2S8iuEYFes6xKOAzxENEGoNfUeD5YJxNIj9IGUBwrck0Ys17i5pUiNAxheZwl9/HyE0B9/ApGcMhmC4tSU/EQ8R7cItnJ1llnwPdhG+647klQuZrjZq9C75ak/YtPbDY62k5WSHZThg/4k7xW3b3SS0mg==,PHMAC::LU9MozP14HFR7ggG7NSesx2Ztksa3PmPNiuR9qK9DF4=,LS::10000,TL::300000,TS::1548716558205,HMAC::XxzCeo2Zb2sgvZY8fUM/hHBGYkx4Oo8xdsUvT5O0cZA=*}\n";
 
-        boolean b = SignatureChecker.verifySignature(value.getBytes(StandardCharsets.UTF_8), Base64.decode(sg), Files.readAllBytes(cert), new byte[][]{Files.readAllBytes(intermediate)}, Files.readAllBytes(root));
+        boolean b = SignatureChecker.verifySignature(value.getBytes(StandardCharsets.UTF_8), Base64.decode(sg), Files.readAllBytes(cert),
+                new byte[][]{Files.readAllBytes(intermediate)}, Files.readAllBytes(root));
 
         Assert.assertTrue(b);
     }
@@ -98,13 +130,19 @@ public class CheckSecureLogSignatureTest extends Block2VerificationAbstractTest 
         SecureLogBundleCertificates certificates = new SecureLogBundleCertificates();
 
         metadata.setLsk("EZHSddXYfgf5bACUt4R9f1XuIU+bjwewPNrVGWq3crs=");
-        metadata.setEsk("g9PB+b3UVRxBv/d349PO2VdOVD4JJMGljtobS+CD2sAW/1fnKqOYqzjBJPB1ZE/nTrzxFUnmO+31yTHY3ORWNZsG7DcmtZt4RT4ckqvuEzx8TOb26mhZ+YJ8Lc5Ln+14tXZ5uZBpUFVXprw5rwZ48PNj8UaC9O4nw1Tmi0LGnI2bRr7bLLvEfKJACRitNLf5uVUTnvsJcf7iMU0mWJsApptBz2z9IxiA/+alX8jwk1RCIaFKTsxSEwpmim52aDjYZSEJgyo9wfdtmHofZdXnX7Aq3BEfl2S8iuEYFes6xKOAzxENEGoNfUeD5YJxNIj9IGUBwrck0Ys17i5pUiNAxheZwl9/HyE0B9/ApGcMhmC4tSU/EQ8R7cItnJ1llnwPdhG+647klQuZrjZq9C75ak/YtPbDY62k5WSHZThg/4k7xW3b3SS0mg==");
+        metadata.setEsk("g9PB+b3UVRxBv/d349PO2VdOVD4JJMGljtobS+CD2sAW/1fnKqOYqzjBJPB1ZE/nTrzxFUnmO" +
+                "+31yTHY3ORWNZsG7DcmtZt4RT4ckqvuEzx8TOb26mhZ+YJ8Lc5Ln" +
+                "+14tXZ5uZBpUFVXprw5rwZ48PNj8UaC9O4nw1Tmi0LGnI2bRr7bLLvEfKJACRitNLf5uVUTnvsJcf7iMU0mWJsApptBz2z9IxiA" +
+                "/+alX8jwk1RCIaFKTsxSEwpmim52aDjYZSEJgyo9wfdtmHofZdXnX7Aq3BEfl2S8iuEYFes6xKOAzxENEGoNfUeD5YJxNIj9IGUBwrck0Ys17i5pUiNAxheZwl9/HyE0B9/ApGcMhmC4tSU/EQ8R7cItnJ1llnwPdhG+647klQuZrjZq9C75ak/YtPbDY62k5WSHZThg/4k7xW3b3SS0mg==");
         metadata.setPhmac("LU9MozP14HFR7ggG7NSesx2Ztksa3PmPNiuR9qK9DF4=");
         metadata.setLs("10000");
         metadata.setTl("300000");
         metadata.setTs("1548716558205");
         metadata.setHmac("XxzCeo2Zb2sgvZY8fUM/hHBGYkx4Oo8xdsUvT5O0cZA=");
-        metadata.setSg("pUFV4DWoimWtePDunO5VapLy0YtBkDFYF5f1UhXftYRxOx5ID7XmU/m2R12w0YNFY9+boelq9wSMC6ARbVkFMJ5I9Nud3gjIvIuT+LKZrHMoPkGiM9mWqiO0v19YpNz3HfD2GKLrg3ZS+L/NW2jRUSgywqPBFcAkcmu7TY5p9flVDBR2y6Bu33dpmzZ0g/ERbnDrBUH4UxqdPNw9noIdGKjbQjQZu5/CnybUR4sO2M4sXO4F1Ces0h7hUBw9n81WgOgXK78YNusR8inoviwq3v5kVMrwX/DsThgYdcJSiLCeJ03Yls6ssBI0fM2cZIeRbdBL3G1ANRrsPK1ZtPn6Hg==");
+        metadata.setSg("pUFV4DWoimWtePDunO5VapLy0YtBkDFYF5f1UhXftYRxOx5ID7XmU/m2R12w0YNFY9+boelq9wSMC6ARbVkFMJ5I9Nud3gjIvIuT" +
+                "+LKZrHMoPkGiM9mWqiO0v19YpNz3HfD2GKLrg3ZS+L/NW2jRUSgywqPBFcAkcmu7TY5p9flVDBR2y6Bu33dpmzZ0g" +
+                "/ERbnDrBUH4UxqdPNw9noIdGKjbQjQZu5/CnybUR4sO2M4sXO4F1Ces0h7hUBw9n81WgOgXK78YNusR8inoviwq3v5kVMrwX" +
+                "/DsThgYdcJSiLCeJ03Yls6ssBI0fM2cZIeRbdBL3G1ANRrsPK1ZtPn6Hg==");
 
         checkpoint.setRaw("2019-01-29 00:02:38,204|DEBUG|TIMER-LOG|New Secret Key generated.\n");
         checkpoint.setMetadata(metadata);

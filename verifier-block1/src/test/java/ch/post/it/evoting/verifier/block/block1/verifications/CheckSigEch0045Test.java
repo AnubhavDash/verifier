@@ -17,6 +17,9 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -62,21 +65,24 @@ public class CheckSigEch0045Test extends Block1VerificationAbstractTest {
     @Test
     public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(IOException.class);
-        exceptionRule.expectMessage("integrationCA.pem");
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.INTEGRATION_CA);
+        exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigEch0045Test/NOK/NOK-NOFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound2() throws Exception {
         exceptionRule.expect(IOException.class);
-        exceptionRule.expectMessage(".*ech0045v.*\\.xml");
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ECH0045);
+        exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigEch0045Test/NOK/NOK-NOFILE2").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFound3() throws Exception {
         exceptionRule.expect(IOException.class);
-        exceptionRule.expectMessage("ech0045v2_demo_bk.xml.p7");
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ECH0045);
+        exceptionRule.expectMessage(matchesRegex(structureNode.getQualifier() + RelationType.P7.toFileExtension()));
         verification.verify(Paths.get(getClass().getResource("/CheckSigEch0045Test/NOK/NOK-NOFILE3").toURI()));
     }
 }

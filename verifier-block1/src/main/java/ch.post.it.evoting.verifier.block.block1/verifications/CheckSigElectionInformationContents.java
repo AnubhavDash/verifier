@@ -4,9 +4,11 @@ import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.JsonMissingNodeException;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -14,11 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class CheckSigElectionInformationContents extends AbstractVerification {
-
-    static final String PLATFORM_ROOT_CA_PEM = "platformRootCA.pem";
-    static final String TENANT_100_PEM = "tenant_100.pem";
-    static final String ELECTION_INFORMATION_CONTENTS_JSON = "electionInformationContents.json";
-    static final String ELECTION_INFORMATION_CONTENTS_JSON_SIGN = "electionInformationContents.json.sign";
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -38,30 +35,25 @@ public class CheckSigElectionInformationContents extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        // Top level directories.
-        Path pathElection = inputDirectoryPath.resolve(Block1VerificationSuite.PATH_ELECTION_SETUP);
-        Path pathCertificates = inputDirectoryPath.resolve(Block1VerificationSuite.PATH_CERTIFICATES);
-
-        // Sub-level directories.
-        Path pathAdminboard = pathCertificates.resolve(Block1VerificationSuite.PATH_ADMINBOARD);
-
         // Get the certificate used for signing.
-        byte[] signingCertificate = Files.readAllBytes(PathHelper.getPath(pathAdminboard, 1, ".*\\.pem"));
+        final PathNode adminCertPathNode = pathService.buildFromRootPath(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
+        byte[] signingCertificate = Files.readAllBytes(adminCertPathNode.getPath());
 
         // Get the intermediate certificates.
-        byte[][] intermediateCertificates = new byte[][]{Files.readAllBytes(PathHelper.getPath(pathCertificates, 1, TENANT_100_PEM))};
+        final PathNode tenantPathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
+        byte[][] intermediateCertificates = new byte[][]{Files.readAllBytes(tenantPathNode.getPath())};
 
         // Get the root certificate.
-        byte[] rootCertificate = Files.readAllBytes(PathHelper.getPath(pathCertificates, 1, PLATFORM_ROOT_CA_PEM));
+        final PathNode platformRootPathNode = pathService.buildFromRootPath(StructureKey.PLATFORM_ROOT_CA, inputDirectoryPath);
+        byte[] rootCertificate = Files.readAllBytes(platformRootPathNode.getPath());
 
-        // Get the file and its signature file.
-        final Path electionInformationContentsPath = PathHelper.getPath(pathElection, 1, ELECTION_INFORMATION_CONTENTS_JSON);
-        final Path electionInformationContentsSignPath = PathHelper.getPath(pathElection, 1, ELECTION_INFORMATION_CONTENTS_JSON_SIGN);
+        // Get the file path.
+        final PathNode electionInfoPathNode = pathService.buildFromRootPath(StructureKey.ELECTION_INFORMATION_CONTENTS, inputDirectoryPath);
 
         // Convert files to json nodes.
         ObjectMapper mapper = new ObjectMapper();
-        final JsonNode signatureNode = mapper.readTree(Files.readString(electionInformationContentsSignPath));
-        final JsonNode signedNode = mapper.readTree(Files.readString(electionInformationContentsPath));
+        final JsonNode signedNode = mapper.readTree(Files.readString(electionInfoPathNode.getPath()));
+        final JsonNode signatureNode = mapper.readTree(Files.readString(electionInfoPathNode.getRelation(RelationType.SIGN)));
 
         // Extract signature.
         final JsonNode signature = signatureNode.path("signature");
@@ -70,13 +62,12 @@ public class CheckSigElectionInformationContents extends AbstractVerification {
         }
 
         // Verify signature.
-        if (!SignatureChecker.verifyJsonSignature(signedNode, signature, signingCertificate, intermediateCertificates
-                , rootCertificate)) {
+        if (!SignatureChecker.verifyJsonSignature(signedNode, signature, signingCertificate, intermediateCertificates, rootCertificate)) {
             throw buildVerificationFailureException(
                     "The signature verification of the file failed",
                     Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
                     "verification81.nok.message",
-                    electionInformationContentsPath.getFileName().toString() + "/" + ELECTION_INFORMATION_CONTENTS_JSON
+                    electionInfoPathNode.getPath().toString()
             );
         }
 

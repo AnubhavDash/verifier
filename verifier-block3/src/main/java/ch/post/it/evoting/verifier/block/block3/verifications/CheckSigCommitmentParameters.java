@@ -20,14 +20,12 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.dto.BallotBox;
-import ch.post.it.evoting.verifier.dto.DataConfigEE;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -52,35 +50,36 @@ public class CheckSigCommitmentParameters extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        Path path = inputDirectoryPath.resolve(Block3VerificationSuite.PATH_ELECTION_SETUP);
-        DataConfigEE dataConfigEE = Deserializer.fromJson(path.toFile(), "dataConfig_updated_.*\\.json", DataConfigEE.class);
-        List<BallotBox> ballotBoxes = dataConfigEE.getElectionEvent().getBallotBoxes();
-        List<File> commitmentParamFiles = new ArrayList<>();
-        for (BallotBox ballotBox : ballotBoxes) {
-            String ballotBoxId = ballotBox.getId();
-            File[] commitmentParamFolders = PathHelper.listDirectories(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_BALLOTBOXES).resolve(ballotBoxId));
-            for (File folder : commitmentParamFolders) {
-                commitmentParamFiles.add(PathHelper.getFile(folder, "commitmentParameters.*\\.json"));
+        // Get commitment parameters files
+        List<PathNode> commitmentParametersPathNodes = new ArrayList<>();
+        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
+            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
+            for (Path ballotBoxOfflineDirectoryPath : ballotBoxOfflineDirectoriesPathNode.getRegexPaths()) {
+                PathNode commitmentParametersPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.COMMITMENT_PARAMETERS, ballotBoxOfflineDirectoryPath);
+                commitmentParametersPathNodes.add(commitmentParametersPathNode);
             }
         }
 
-        byte[] signCertificate = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath
-                        .resolve(Block3VerificationSuite.PATH_CERTIFICATES)
-                        .resolve(Block3VerificationSuite.PATH_ADMINBOARD).toFile(),
-                ".*\\.pem").toPath());
+        // Get admin board certificate file
+        PathNode adminBoardCertPathNode = pathService.buildFromRootPath(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
+        byte[] signCertificate = Files.readAllBytes(adminBoardCertPathNode.getPath());
 
-        byte[] rootCA = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_CERTIFICATES).toFile(), "tenant_.*\\.pem").toPath());
+        // Get root certificate file
+        PathNode tenantPathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
+        byte[] rootCA = Files.readAllBytes(tenantPathNode.getPath());
 
-        for (File commitmentParam : commitmentParamFiles) {
-            byte[] content = Files.readAllBytes(commitmentParam.toPath());
-            byte[] signature = Files.readAllBytes(commitmentParam.toPath().getParent().resolve(commitmentParam.getName() + ".metadata"));
+        // Check signature for each commitment parameter file
+        for (PathNode commitmentParametersPathNode : commitmentParametersPathNodes) {
+            byte[] content = Files.readAllBytes(commitmentParametersPathNode.getPath());
+            byte[] signature = Files.readAllBytes(commitmentParametersPathNode.getRelation(RelationType.METADATA));
 
             if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCA)) {
                 throw buildVerificationFailureException(
                         "The signature verification failed",
                         Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
                         "verification74.nok.message",
-                        commitmentParam.getName()
+                        commitmentParametersPathNode.getPath().getFileName().toString()
                 );
             }
         }

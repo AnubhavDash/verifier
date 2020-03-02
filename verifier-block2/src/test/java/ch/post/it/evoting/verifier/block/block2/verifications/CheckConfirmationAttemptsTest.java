@@ -17,10 +17,11 @@ package ch.post.it.evoting.verifier.block.block2.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
@@ -38,7 +39,8 @@ public class CheckConfirmationAttemptsTest extends Block2VerificationAbstractTes
     /* remove ignore when we got secureLog files with correct pattern */
     @Ignore
     public void executeTest() throws Exception {
-        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/OK").toURI()));
+        VerificationResult verificationResult =
+                verification.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
@@ -54,14 +56,15 @@ public class CheckConfirmationAttemptsTest extends Block2VerificationAbstractTes
     @Test
     public void executeTestNOKnotFile() throws Exception {
         exceptionRule.expect(IOException.class);
-        exceptionRule.expectMessage("voterInformation.*\\.csv");
+        exceptionRule.expectMessage("voterInformation.*\\.csv"); // TODO trop la mort à faire pour le moment.
         verification.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/NOK-NOTFILE").toURI()));
     }
 
     @Test
     public void executeTestNOKnotFile2() throws Exception {
         exceptionRule.expect(IOException.class);
-        exceptionRule.expectMessage("mapping_cc_hosts.csv");
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.MAPPING_CC_HOSTS);
+        exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/NOK-NOTFILE2").toURI()));
     }
 
@@ -70,7 +73,8 @@ public class CheckConfirmationAttemptsTest extends Block2VerificationAbstractTes
     public void executeTestNOKnotFile3() throws Exception {
         // TODO Check for secureLogs file
         exceptionRule.expect(IOException.class);
-        exceptionRule.expectMessage("secureLogs");
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.SECURE_LOGS_DIR);
+        exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/NOK-NOTFILE3").toURI()));
     }
 

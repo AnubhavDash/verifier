@@ -16,14 +16,22 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
-import java.io.File;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
 public class CheckDecryptionProofOnlineTest extends Block3VerificationAbstractTest {
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setup() {
@@ -38,14 +46,18 @@ public class CheckDecryptionProofOnlineTest extends Block3VerificationAbstractTe
 
     @Test
     public void executeTestNOK() throws Exception {
-        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofOnlineTest/NOK").toURI()));
-        Assert.assertEquals(Status.NOK, result.getStatus());
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("the number of control components expected is 3 but actual is 1");
+        verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofOnlineTest/NOK").toURI()));
     }
 
     @Test
     public void executeTestNOKNotFile() throws Exception {
-        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofOnlineTest/NOK-NOTFILE").toURI()));
-        Assert.assertEquals(Status.NOK, result.getStatus());
+        exceptionRule.expect(NoSuchFileException.class);
+        // Get the file name from structure node for the expected message
+        StructureNode ccMixingKeysStructureNode = verification.getPathService().getStructureNode(StructureKey.CC_MIXING_KEYS);
+        exceptionRule.expectMessage(ccMixingKeysStructureNode.getQualifier());
+        verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofOnlineTest/NOK-NOTFILE").toURI()));
     }
 
 }

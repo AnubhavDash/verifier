@@ -17,13 +17,14 @@ package ch.post.it.evoting.verifier.block.block4.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
@@ -62,23 +63,26 @@ public class CheckSigEch0110Test extends Block4VerificationAbstractTest {
     }
 
     @Test
-    public void executeTestNOKFileNotFound() throws Exception {
-        exceptionRule.expect(FileNotFoundException.class);
-        exceptionRule.expectMessage("tenant_.*\\.pem");
+    public void executeTestNOKFileNotFoundRootCertificate() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
+        exceptionRule.expectMessage(matchesRegex(verification.getPathService().getStructureNode(StructureKey.TENANT_100).getQualifier()));
         verification.verify(Paths.get(getClass().getResource("/CheckSigEch0110Test/NOK-NOTFILE").toURI()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound2() throws Exception {
-        exceptionRule.expect(FileNotFoundException.class);
-        exceptionRule.expectMessage(".*eCH-0110.*\\.xml");
+    public void executeTestNOKFileNotFoundECH0110() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
+        exceptionRule.expectMessage(matchesRegex(verification.getPathService().getStructureNode(StructureKey.ECH0110).getQualifier()));
         verification.verify(Paths.get(getClass().getResource("/CheckSigEch0110Test/NOK-NOTFILE2").toURI()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound3() throws Exception {
+    public void executeTestNOKFileNotFoundECH0110P7() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(".xml.p7");
+        exceptionRule.expectMessage(matchesRegex(
+                verification.getPathService().getStructureNode(StructureKey.ECH0110).getQualifier()
+                        + RelationType.P7.toFileExtension()
+        ));
         verification.verify(Paths.get(getClass().getResource("/CheckSigEch0110Test/NOK-NOTFILE3").toURI()));
     }
 

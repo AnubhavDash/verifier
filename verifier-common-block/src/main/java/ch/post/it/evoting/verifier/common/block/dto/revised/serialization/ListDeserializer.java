@@ -15,6 +15,7 @@
 package ch.post.it.evoting.verifier.common.block.dto.revised.serialization;
 
 import ch.post.it.evoting.verifier.common.block.dto.revised.SignedItem;
+import ch.post.it.evoting.verifier.dto.onlinemixing.Vote;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -55,6 +56,14 @@ public class ListDeserializer extends JsonDeserializer<List<?>> {
                         mapper.getTypeFactory().constructCollectionType(List.class, SignedItem.class);
                 return mapper.readValue(jsonParser, collectionType);
             }
+
+            // TODO Make a better implementation due to the conflict with DomainOfInfluence.Vote (revised also)
+            // OnlineMixing votes
+//            if ("votes".equals(jsonParser.getCurrentName())) {
+//                CollectionType collectionType =
+//                        mapper.getTypeFactory().constructCollectionType(List.class, Vote.class);
+//                return mapper.readValue(jsonParser, collectionType);
+//            }
 //            throw new IllegalArgumentException("The deserialization for this type is not supported (yet)");
             return mapper.readValue(jsonParser, List.class);
         }

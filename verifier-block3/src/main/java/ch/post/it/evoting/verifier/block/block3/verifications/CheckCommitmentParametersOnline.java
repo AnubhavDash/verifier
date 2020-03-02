@@ -19,12 +19,12 @@ import ch.post.it.evoting.verifier.block.block3.loader.online.OnlineMixingProofL
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import com.scytl.products.ov.mixnet.commons.exceptions.VerifierException;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentParams;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.nio.file.Path;
@@ -50,34 +50,35 @@ public class CheckCommitmentParametersOnline extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        File[] ballotBoxes = PathHelper.listDirectories(inputDirectoryPath.resolve(Block3VerificationSuite.PATH_BALLOTBOXES));
-        for (File ballotBox : ballotBoxes) {
-            final File[] onlineMixings = ballotBox.listFiles(((dir, name) -> name.matches(".*ccn_m.?\\.json")));
-            if (onlineMixings.length != 3) {
-                throw new VerifierException("the number of control components expected is 3 but actual is " + onlineMixings.length);
+        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
+
+            // Get Online mixing files
+            PathNode onlineMixingPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_ONLINE_MIXING, ballotBoxIdDirectoryPath);
+            if (onlineMixingPathNode.getRegexPaths().size() != 3) {
+                throw new VerifierException("the number of control components expected is 3 but actual is " + onlineMixingPathNode.getRegexPaths().size());
             }
-            if (onlineMixings.length == 0) {
+            if (onlineMixingPathNode.getRegexPaths().size() == 0) {
                 throw new FileNotFoundException("online mixing not found");
-            } else {
-                for (File file : onlineMixings) {
+            }
 
-                    OnlineMixingProofLoader loader = new OnlineMixingProofLoader(file.toPath());
-                    CommitmentParams commitmentParams = loader.getCommitmentParams();
-                    BigInteger p = loader.getZpGroup().getP();
+            for (Path onlineMixingPath : onlineMixingPathNode.getRegexPaths()) {
+                OnlineMixingProofLoader loader = new OnlineMixingProofLoader(onlineMixingPath);
+                CommitmentParams commitmentParams = loader.getCommitmentParams();
+                BigInteger p = loader.getZpGroup().getP();
 
-                    List<BigInteger> errors = Arrays.stream(commitmentParams.getG())
-                            .map(groupElement -> groupElement.getValue())
-                            .filter(bi -> !MathHelper.isEulerCriterionValid(bi, p)).collect(Collectors.toList());
+                List<BigInteger> errors = Arrays.stream(commitmentParams.getG())
+                        .map(groupElement -> groupElement.getValue())
+                        .filter(bi -> !MathHelper.isEulerCriterionValid(bi, p)).collect(Collectors.toList());
 
-                    if (!errors.isEmpty()) {
-                        throw buildVerificationFailureException(
-                                "Commitment parameters verification failed",
-                                Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
-                                "verification28.nok.message",
-                                errors.toString()
-                        );
+                if (!errors.isEmpty()) {
+                    throw buildVerificationFailureException(
+                            "Commitment parameters verification failed",
+                            Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
+                            "verification28.nok.message",
+                            errors.toString()
+                    );
 
-                    }
                 }
             }
         }

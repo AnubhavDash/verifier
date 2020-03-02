@@ -17,6 +17,8 @@ package ch.post.it.evoting.verifier.block.block2.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 
@@ -67,7 +69,8 @@ public class CheckNumberChoiceReturnCodesTest extends Block2VerificationAbstract
     @Test
     public void executeTestNOKnotFile2() throws Exception {
         exceptionRule.expect(IOException.class);
-        exceptionRule.expectMessage("mapping_cc_hosts.csv");
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.MAPPING_CC_HOSTS);
+        exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckNumberChoiceReturnCodesTest/NOK-NOTFILE2").toURI()));
     }
 
