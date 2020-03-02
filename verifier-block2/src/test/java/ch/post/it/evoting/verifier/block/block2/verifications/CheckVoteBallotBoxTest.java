@@ -17,11 +17,13 @@ package ch.post.it.evoting.verifier.block.block2.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 
 public class CheckVoteBallotBoxTest extends Block2VerificationAbstractTest {
@@ -35,7 +37,6 @@ public class CheckVoteBallotBoxTest extends Block2VerificationAbstractTest {
     }
 
     @Test
-    @Ignore
     public void executeTestOK() throws Exception {
         VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckVoteBallotBoxTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);
@@ -56,8 +57,8 @@ public class CheckVoteBallotBoxTest extends Block2VerificationAbstractTest {
     //  - Unknown votingCardId
 
     @Test
-    public void executeTestNOKnotFile() throws Exception {
-        exceptionRule.expect(IOException.class);
+    public void executeTestNOKFileNotFound() throws Exception {
+        exceptionRule.expect(FileNotFoundException.class);
         exceptionRule.expectMessage("voterInformation.*\\.csv");
         verification.verify(Paths.get(getClass().getResource("/CheckVoteBallotBoxTest/NOK-NOTFILE").toURI()));
     }

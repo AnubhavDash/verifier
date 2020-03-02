@@ -20,8 +20,7 @@ import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 
 public class CheckVoteUnityTest extends Block2VerificationAbstractTest {
@@ -51,10 +50,9 @@ public class CheckVoteUnityTest extends Block2VerificationAbstractTest {
     }
 
     @Test
-    @Ignore
-    public void executeTestNOKnotFile() throws Exception {
-        exceptionRule.expect(IOException.class);
-        exceptionRule.expectMessage("TODO");
+    public void executeTestNOKFileNotFound() throws Exception {
+        exceptionRule.expect(FileNotFoundException.class);
+        exceptionRule.expectMessage("voterInformation.*\\.csv");
         verification.verify(Paths.get(getClass().getResource("/CheckVoteUnityTest/NOK-NOTFILE").toURI()));
     }
 }

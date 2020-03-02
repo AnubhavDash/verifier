@@ -18,6 +18,8 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.HmacGenerator;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 import org.apache.commons.lang.StringUtils;
 import org.bouncycastle.util.encoders.Base64;
 import org.junit.*;
@@ -25,7 +27,6 @@ import org.junit.rules.ExpectedException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
@@ -54,6 +55,14 @@ public class CheckSecureLogIntegrityTest extends Block2VerificationAbstractTest 
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("Check secure log integrity failed");
         verification.verify(Paths.get(getClass().getResource("/CheckSecureLogIntegrityTest/NOK").toURI()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFoundSecureLogDir() throws Exception {
+        exceptionRule.expect(IOException.class);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.SECURE_LOG_DIR);
+        exceptionRule.expectMessage(structureNode.getQualifier());
+        verification.verify(Paths.get(getClass().getResource("/CheckSecureLogIntegrityTest/NOK-NOTFILE").toURI()));
     }
 
     @Test
