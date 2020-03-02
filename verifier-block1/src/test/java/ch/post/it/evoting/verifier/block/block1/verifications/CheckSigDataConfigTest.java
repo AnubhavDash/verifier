@@ -30,6 +30,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.regex.Pattern;
 
@@ -59,32 +60,32 @@ public class CheckSigDataConfigTest extends Block1VerificationAbstractTest {
     }
 
     @Test
-    public void executeTestNOKFileNotFound() throws Exception {
-        exceptionRule.expect(IOException.class);
+    public void executeTestNOKFileNotFoundCertificate() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ADMIN_BOARD_CERT);
         exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigDataConfigTest/NOK/NOK-NOFILE").toURI()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound2() throws Exception {
-        exceptionRule.expect(IOException.class);
+    public void executeTestNOKFileNotFoundRootCertificate() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.TENANT_100);
         exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigDataConfigTest/NOK/NOK-NOFILE2").toURI()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound3() throws Exception {
-        exceptionRule.expect(IOException.class);
+    public void executeTestNOKFileNotFoundDataConfig() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.DATA_CONFIG_UPDATED);
         exceptionRule.expectMessage(matchesRegex(structureNode.getQualifier()));
         verification.verify(Paths.get(getClass().getResource("/CheckSigDataConfigTest/NOK/NOK-NOFILE3").toURI()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound4() throws Exception {
-        exceptionRule.expect(IOException.class);
+    public void executeTestNOKFileNotFoundDataConfigMetadata() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.DATA_CONFIG_UPDATED);
         exceptionRule.expectMessage(matchesRegex(structureNode.getQualifier() + RelationType.METADATA.toFileExtension()));
         verification.verify(Paths.get(getClass().getResource("/CheckSigDataConfigTest/NOK/NOK-NOFILE4").toURI()));

@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
 public class CheckSigEncryptionParamsTest extends Block1VerificationAbstractTest {
@@ -64,24 +65,24 @@ public class CheckSigEncryptionParamsTest extends Block1VerificationAbstractTest
     }
 
     @Test
-    public void executeTestNOKFileNotFound() throws Exception {
-        exceptionRule.expect(IOException.class);
+    public void executeTestNOKFileNotFoundRootCertificate() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.INTEGRATION_CA);
         exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/NOK-NOFILE").toURI()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound2() throws Exception {
-        exceptionRule.expect(IOException.class);
+    public void executeTestNOKFileNotFoundEncryptionParameters() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ENCRYPTION_PARAMETERS);
         exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/NOK-NOFILE2").toURI()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound3() throws Exception {
-        exceptionRule.expect(IOException.class);
+    public void executeTestNOKFileNotFoundEncryptionParametersP7() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ENCRYPTION_PARAMETERS);
         exceptionRule.expectMessage(matchesRegex(structureNode.getQualifier() + RelationType.P7.toFileExtension()));
         verification.verify(Paths.get(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/NOK-NOFILE3").toURI()));
