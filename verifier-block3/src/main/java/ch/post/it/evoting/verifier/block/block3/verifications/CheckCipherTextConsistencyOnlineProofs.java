@@ -21,6 +21,7 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.block.dto.revised.Ballot;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
@@ -152,6 +153,7 @@ public class CheckCipherTextConsistencyOnlineProofs extends AbstractVerification
             line = line.substring(0, pipePosition + 2);
             DownloadedBallot db = Deserializer.fromJson(TypeConverter.stringToByte(line), DownloadedBallot.class);
             String encryptedOptions = db.getVote().getEncryptedOptions();
+            Ballot ballot = Deserializer.fromJson(TypeConverter.stringToByte(line), Ballot.class);
             String gamma = encryptedOptions.substring(0, encryptedOptions.indexOf(";"));
             List<String> phis = Arrays.asList(encryptedOptions.substring(encryptedOptions.indexOf(";") + 1).split(","));
             return new GammaPhis(gamma, phis);

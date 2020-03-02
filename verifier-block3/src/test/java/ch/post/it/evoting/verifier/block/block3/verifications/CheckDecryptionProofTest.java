@@ -18,12 +18,18 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 
 public class CheckDecryptionProofTest extends Block3VerificationAbstractTest {
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setup() {
@@ -43,8 +49,9 @@ public class CheckDecryptionProofTest extends Block3VerificationAbstractTest {
     }
 
     @Test
-    public void executeTestOKFileNotFound() throws Exception {
-        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofTest/NOK-NOTFILE").toURI()));
-        Assert.assertEquals(Status.NOK, result.getStatus());
+    public void executeTestKOFileNotFound() throws Exception {
+        exceptionRule.expect(FileNotFoundException.class);
+        exceptionRule.expectMessage("votesWithProof\\.csv");
+        verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofTest/NOK-NOTFILE").toURI()));
     }
 }

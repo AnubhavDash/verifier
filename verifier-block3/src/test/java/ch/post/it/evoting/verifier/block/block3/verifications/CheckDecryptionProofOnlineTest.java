@@ -52,7 +52,7 @@ public class CheckDecryptionProofOnlineTest extends Block3VerificationAbstractTe
     }
 
     @Test
-    public void executeTestNOKNotFile() throws Exception {
+    public void executeTestNOKFileNotFound() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
         // Get the file name from structure node for the expected message
         StructureNode ccMixingKeysStructureNode = verification.getPathService().getStructureNode(StructureKey.CC_MIXING_KEYS);

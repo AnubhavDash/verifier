@@ -53,9 +53,6 @@ public class CheckSigDownloadedBallotBox extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        // Top level directories.
-        Path pathElection = inputDirectoryPath.resolve(Block3VerificationSuite.PATH_ELECTION_SETUP);
-
         // Mapper to parse json files containing the certificates.
         ObjectMapper mapper = new ObjectMapper();
 
