@@ -39,7 +39,6 @@ public class CheckSigBulletinParBulletin extends AbstractVerification {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification75.description"));
         def.setId(75);
         def.setName("checkSigBulletinParBulletin");
-        def.setDeactivated(true); // This verification is excluded and not executed in the Verifier
         return def;
     }
 

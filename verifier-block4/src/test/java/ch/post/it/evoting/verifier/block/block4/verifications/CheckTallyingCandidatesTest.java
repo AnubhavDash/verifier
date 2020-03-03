@@ -104,20 +104,20 @@ public class CheckTallyingCandidatesTest extends Block4VerificationAbstractTest 
     public void executeTestNOKFileNotFoundConfiguration() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
         exceptionRule.expectMessage(matchesRegex(verification.getPathService().getStructureNode(StructureKey.CONFIG_ANONYMIZED).getQualifier()));
-        verification.verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-CONFIG").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-NOFILE-CONFIG").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFoundEvoting() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
         exceptionRule.expectMessage(matchesRegex(verification.getPathService().getStructureNode(StructureKey.EVOTING_DECRYPT_RESULT).getQualifier()));
-        verification.verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-EVOTING").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-NOFILE-EVOTING").toURI()));
     }
 
     @Test
     public void executeTestNOKFileNotFoundECH0110() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
         exceptionRule.expectMessage(matchesRegex(verification.getPathService().getStructureNode(StructureKey.ECH0110).getQualifier()));
-        verification.verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-eCH").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-NOFILE-eCH").toURI()));
     }
 }
