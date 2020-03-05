@@ -22,15 +22,17 @@ import lombok.Getter;
 import java.util.Base64;
 import java.util.List;
 
+@Getter
 public class Metadata {
-    public final String version;
-    public final List<SignedItem> signedItems;
-    public final String algorithm;
-    public final String base64Signature;
+
+    private final String version;
+    private final List<SignedItem> signedItems;
+    private final String algorithm;
+    private final String base64Signature;
 
     @JsonCreator
     public Metadata(@JsonProperty("version") String version,
-                    @JsonProperty("signed") List<SignedItem> signedItems,
+                    @JsonProperty("signed") SignedItem[] signedItems,
                     @JsonProperty("alg") String algorithm,
                     @JsonProperty("signature") String base64Signature) {
         this.version = version;

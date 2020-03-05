@@ -20,12 +20,14 @@ import lombok.Getter;
 
 @Getter
 public class Ballot {
-    public final CastVote vote;
-    public final Receipt receipt;
-    public final AuthenticationToken authenticationToken;
+
+    private final CastVote vote;
+    private final Receipt receipt;
+    private final AuthenticationToken authenticationToken;
 
     @JsonCreator
-    public Ballot(@JsonProperty("vote") CastVote vote, @JsonProperty("receipt") Receipt receipt,
+    public Ballot(@JsonProperty("vote") CastVote vote,
+                  @JsonProperty("receipt") Receipt receipt,
                   @JsonProperty("authenticationToken") AuthenticationToken authenticationToken) {
         this.vote = vote;
         this.receipt = receipt;

@@ -23,12 +23,13 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 public class PublicKeyDeserializer extends JsonDeserializer<PublicKey> {
     private final ObjectMapper mapper;
@@ -56,16 +57,19 @@ public class PublicKeyDeserializer extends JsonDeserializer<PublicKey> {
         } else {
             root = mapper.readTree(jsonParser);
         }
+
         JsonNode publicKeyNode = root.path("publicKey");
 
+        // Encryption group
         EncryptionGroup group = mapper.readValue(publicKeyNode.path("zpSubgroup").traverse(), EncryptionGroup.class);
-        JsonNode elements = publicKeyNode.path("elements");
-        if (elements.size() != 1) {
-            throw new InvalidFormatException(jsonParser, "wrong number of elements (expects 1)", elements.asText(),
-                                             BigInteger.class);
-        }
-        BigInteger key = new BigInteger( Base64.getDecoder().decode(elements.get(0).asText()));
 
-        return new PublicKey(group, key);
+        // Elements
+        JsonNode elements = publicKeyNode.path("elements");
+        List<BigInteger> keys = new ArrayList<>();
+        for (JsonNode element : elements) {
+            keys.add(new BigInteger( Base64.getDecoder().decode(element.asText())));
+        }
+
+        return new PublicKey(group, keys);
     }
 }

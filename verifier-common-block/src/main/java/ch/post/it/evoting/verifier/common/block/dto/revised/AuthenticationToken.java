@@ -23,10 +23,11 @@ import java.util.Base64;
 
 @Getter
 public class AuthenticationToken {
-    public final String id;
-    public final VoterInformation voterInformation;
-    public final LocalDateTime timestamp;
-    public final String base64Signature;
+
+    private final String id;
+    private final VoterInformation voterInformation;
+    private final LocalDateTime timestamp;
+    private final String base64Signature;
 
     @JsonCreator
     public AuthenticationToken(@JsonProperty("id") String id,

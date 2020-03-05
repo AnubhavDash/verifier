@@ -14,9 +14,9 @@
  */
 package ch.post.it.evoting.verifier.block.block3.loader.online.mapper;
 
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.CipherText;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.IniMEBasic;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
-import ch.post.it.evoting.verifier.dto.onlinemixing.CiphertextsE;
-import ch.post.it.evoting.verifier.dto.onlinemixing.IniMEBasic;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.MultiExponentiationBasicProofInitialMessage;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.MultiExponentiationReductionInitialMessage;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
@@ -45,7 +45,7 @@ public interface IniMEBasicMapper {
         return result;
     }
 
-    default Ciphertext map(CiphertextsE source, ZpGroupParams params) {
+    default Ciphertext map(CipherText source, ZpGroupParams params) {
         GroupElement gamma = new ZpElement(TypeConverter.stringToBigInteger(source.getGamma().split(";")[0]), params);
         List<GroupElement> phis = Arrays.stream(source.getPhis().split(",")).map(p -> {
             return new ZpElement(TypeConverter.stringToBigInteger(p.split(";")[0]), params);

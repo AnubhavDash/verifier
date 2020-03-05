@@ -16,14 +16,14 @@ package ch.post.it.evoting.verifier.block.block3.loader.online;
 
 import ch.post.it.evoting.verifier.block.block3.loader.online.mapper.SecondAnswerMapper;
 import ch.post.it.evoting.verifier.block.block3.scytl.loader.OnlineDataLoader;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.OnlineMixing;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.OnlineShuffleProof;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.CcMixingPublicKey;
 import ch.post.it.evoting.verifier.dto.OnlineDecryptionProof;
 import ch.post.it.evoting.verifier.dto.PublicKey;
 import ch.post.it.evoting.verifier.dto.ZkProof;
-import ch.post.it.evoting.verifier.dto.onlinemixing.OnlineMixing;
-import ch.post.it.evoting.verifier.dto.onlinemixing.OnlineShuffleProof;
 import com.scytl.decrypt.beans.DecryptionProof;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallot;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;

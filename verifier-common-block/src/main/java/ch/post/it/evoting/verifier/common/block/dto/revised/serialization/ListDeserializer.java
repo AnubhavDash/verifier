@@ -14,15 +14,11 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised.serialization;
 
-import ch.post.it.evoting.verifier.common.block.dto.revised.SignedItem;
-import ch.post.it.evoting.verifier.dto.onlinemixing.Vote;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.type.CollectionType;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -50,21 +46,6 @@ public class ListDeserializer extends JsonDeserializer<List<?>> {
         if (!isStructure) {
             return parseAsString(jsonParser);
         } else {
-            // json structure
-            if ("signed".equals(jsonParser.getCurrentName())) {
-                CollectionType collectionType =
-                        mapper.getTypeFactory().constructCollectionType(List.class, SignedItem.class);
-                return mapper.readValue(jsonParser, collectionType);
-            }
-
-            // TODO Make a better implementation due to the conflict with DomainOfInfluence.Vote (revised also)
-            // OnlineMixing votes
-//            if ("votes".equals(jsonParser.getCurrentName())) {
-//                CollectionType collectionType =
-//                        mapper.getTypeFactory().constructCollectionType(List.class, Vote.class);
-//                return mapper.readValue(jsonParser, collectionType);
-//            }
-//            throw new IllegalArgumentException("The deserialization for this type is not supported (yet)");
             return mapper.readValue(jsonParser, List.class);
         }
     }
@@ -80,4 +61,5 @@ public class ListDeserializer extends JsonDeserializer<List<?>> {
             return mapper.readValue(value, List.class);
         }
     }
+
 }

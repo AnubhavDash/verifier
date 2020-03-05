@@ -14,7 +14,7 @@
  */
 package ch.post.it.evoting.verifier.block.block3.loader.online.mapper;
 
-import ch.post.it.evoting.verifier.dto.onlinemixing.*;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.*;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.*;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
@@ -60,7 +60,7 @@ public interface SecondAnswerMapper {
         PublicCommitment cBM = PublicCommitmentMapper.INSTANCE.map(ini.getCommitmentPublicBM());
         PublicCommitment[] cD = PublicCommitmentMapper.INSTANCE.map(ini.getCommitmentPublicD());
         ZeroProofInitialMessage initial = new ZeroProofInitialMessage(cA0, cBM, cD);
-        ZeroProofAnswer answer = new ZeroProofAnswer(mapFromListExponentsA(ans.getExponentsA()), mapFromListExponentsB(ans.getExponentsB()), map(ans.getExponentR()), map(ans.getExponentS()), map(ans.getExponentT()));
+        ZeroProofAnswer answer = new ZeroProofAnswer(mapFromList(ans.getExponentsA()), mapFromList(ans.getExponentsB()), map(ans.getExponentR()), map(ans.getExponentS()), map(ans.getExponentT()));
         return new HadamardProductProofAnswer(initial, answer);
     }
 
@@ -72,66 +72,19 @@ public interface SecondAnswerMapper {
     }
 
     default SingleValueProductProofAnswer map(AnsSVA source) {
-        Exponent[] tildeA = mapFromListTildeA(source.getExponentsTildeA());
-        Exponent[] tildeB = mapFromListTildeB(source.getExponentsTildeB());
+        Exponent[] tildeA = mapFromList(source.getExponentsTildeA());
+        Exponent[] tildeB = mapFromList(source.getExponentsTildeB());
         Exponent tildeR = map(source.getExponentTildeR());
         Exponent tildeS = map(source.getExponentTildeS());
         return new SingleValueProductProofAnswer(tildeA, tildeB, tildeR, tildeS);
     }
 
-    default Exponent map(ExponentTildeR source) {
+    default Exponent map(ExponentValue source) {
         return new Exponent(source.getValue(), source.getQ());
     }
 
-    default Exponent map(ExponentTildeS source) {
-        return new Exponent(source.getValue(), source.getQ());
-    }
-
-    default Exponent map(ExponentT source) {
-        return new Exponent(source.getValue(), source.getQ());
-    }
-
-    default Exponent map(ExponentR source) {
-        return new Exponent(source.getValue(), source.getQ());
-    }
-
-    default Exponent map(ExponentS source) {
-        return new Exponent(source.getValue(), source.getQ());
-    }
-
-    default Exponent mapFromTildeA(ExponentsTildeA source) {
-        return new Exponent(source.getValue(), source.getQ());
-    }
-
-    default Exponent mapFromTildeB(ExponentsTildeB source) {
-        return new Exponent(source.getValue(), source.getQ());
-    }
-
-    default Exponent mapFromExponentsA(ExponentsA source) {
-        return new Exponent(source.getValue(), source.getQ());
-    }
-
-    default Exponent mapFromExponentsB(ExponentsB source) {
-        return new Exponent(source.getValue(), source.getQ());
-    }
-
-    default Exponent[] mapFromListTildeA(List<ExponentsTildeA> source) {
-        List<Exponent> collect = source.stream().map(this::mapFromTildeA).collect(Collectors.toList());
-        return collect.toArray(new Exponent[0]);
-    }
-
-    default Exponent[] mapFromListTildeB(List<ExponentsTildeB> source) {
-        List<Exponent> collect = source.stream().map(this::mapFromTildeB).collect(Collectors.toList());
-        return collect.toArray(new Exponent[0]);
-    }
-
-    default Exponent[] mapFromListExponentsA(List<ExponentsA> source) {
-        List<Exponent> collect = source.stream().map(this::mapFromExponentsA).collect(Collectors.toList());
-        return collect.toArray(new Exponent[0]);
-    }
-
-    default Exponent[] mapFromListExponentsB(List<ExponentsB> source) {
-        List<Exponent> collect = source.stream().map(this::mapFromExponentsB).collect(Collectors.toList());
+    default Exponent[] mapFromList(List<ExponentValue> source) {
+        List<Exponent> collect = source.stream().map(this::map).collect(Collectors.toList());
         return collect.toArray(new Exponent[0]);
     }
 

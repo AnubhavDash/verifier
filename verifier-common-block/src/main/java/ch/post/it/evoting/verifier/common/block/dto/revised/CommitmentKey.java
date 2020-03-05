@@ -29,7 +29,6 @@ public class CommitmentKey {
 
     @JsonDeserialize(converter = StringToBigIntegerConverter.class)
     private final BigInteger h;
-
     @JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
     private final List<BigInteger> g_vec;
 

@@ -26,13 +26,11 @@ import java.math.BigInteger;
 public class EncryptionGroup {
 
     @JsonDeserialize(converter = StringToBigIntegerConverter.class)
-    public final BigInteger p;
-
+    private final BigInteger p;
     @JsonDeserialize(converter = StringToBigIntegerConverter.class)
-    public final BigInteger q;
-
+    private final BigInteger q;
     @JsonDeserialize(converter = StringToBigIntegerConverter.class)
-    public final BigInteger g;
+    private final BigInteger g;
 
     @JsonCreator
     public EncryptionGroup(@JsonProperty("p") BigInteger p,

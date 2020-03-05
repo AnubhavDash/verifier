@@ -18,10 +18,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
-
+@Getter
 public class SignedItem {
-    public final String field;
-    public final String value;
+
+    private final String field;
+    private final String value;
 
     @JsonCreator
     public SignedItem(@JsonProperty("field") String field,

@@ -17,6 +17,7 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.block.dto.revised.PublicKey;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
@@ -24,9 +25,7 @@ import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.dto.ElectoralAuthority;
-import ch.post.it.evoting.verifier.dto.PublicKey;
 
-import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.List;
@@ -57,10 +56,10 @@ public class IsMemberOfGroupPKEA extends AbstractVerification {
 
         String publicKeyB64 = electoralAuthority.getPublicKey();
         byte[] decoded = TypeConverter.base64ToByte(publicKeyB64);
-        String publicKey = TypeConverter.byteToString(decoded);
+        PublicKey publicKey = Deserializer.fromJson(decoded, PublicKey.class);
 
-        BigInteger p = extractPFromPublicKey(publicKey);
-        List<String> elements = extractElementsFromPublicKey(publicKey);
+        BigInteger p = publicKey.getGroup().getP();
+        List<BigInteger> elements = publicKey.getKeys();
         if (elements.isEmpty()) {
             throw buildVerificationFailureException(
                     "No such Elements was found in the publicKey",
@@ -69,7 +68,6 @@ public class IsMemberOfGroupPKEA extends AbstractVerification {
             );
         } else {
             List<String> errors = elements.stream()
-                    .map(element -> TypeConverter.byteToBigInteger(TypeConverter.base64ToByte(element)))
                     .filter(bigInteger -> !MathHelper.isEulerCriterionValid(bigInteger, p))
                     .map(TypeConverter::bigIntegerToB64String)
                     .collect(Collectors.toList());
@@ -88,13 +86,4 @@ public class IsMemberOfGroupPKEA extends AbstractVerification {
         return result;
     }
 
-    private BigInteger extractPFromPublicKey(String publicKey) throws IOException {
-        PublicKey pk = Deserializer.fromJson(TypeConverter.stringToByte(publicKey), PublicKey.class);
-        return TypeConverter.base64ToBigInteger(pk.getPublicKey().getZpSubgroup().getP());
-    }
-
-    private List<String> extractElementsFromPublicKey(String publicKey) throws IOException {
-        PublicKey pk = Deserializer.fromJson(TypeConverter.stringToByte(publicKey), PublicKey.class);
-        return (pk.getPublicKey().getElements());
-    }
 }

@@ -62,10 +62,10 @@ public class JsonParserTest {
         InputStream inputStream = getResourceStream("schemas/json/downloadedBallot.json");
         Ballot ballot = mapper.readValue(inputStream, Ballot.class);
 
-        assertThat(ballot.vote.votingCardId,
+        assertThat(ballot.getVote().getVotingCardId(),
                    CoreMatchers.equalTo(UUID.fromString("da427fb5-4017-48e6-9cb0-67d5ae65e4b7")));
 
-        assertArrayEquals(ballot.vote.plainTextEqualityProof.getH(), DatatypeConverter.parseHexBinary(
+        assertArrayEquals(ballot.getVote().getPlainTextEqualityProof().getH(), DatatypeConverter.parseHexBinary(
                 "0096df8c993e9224883a95ac2bc031baa6f360928d0a6544452ca79b17a62248c5"));
     }
 
@@ -76,7 +76,7 @@ public class JsonParserTest {
 
         // Works, thanks to BigInteger's handling of a cache for small values, similar to string.
         // Two instances of BigInteger.valueOf(2) will always be object equal.
-        assertThat(publicKey.group.g, CoreMatchers.equalTo(BigInteger.valueOf(2)));
+        assertThat(publicKey.getGroup().getG(), CoreMatchers.equalTo(BigInteger.valueOf(2)));
     }
 
     @Test
@@ -84,7 +84,7 @@ public class JsonParserTest {
         InputStream inputStream = getResourceStream("schemas/json/encryptionParameters.json");
         EncryptionGroup encryptionGroup = mapper.readValue(inputStream, EncryptionGroup.class);
 
-        assertThat(encryptionGroup.g, CoreMatchers.equalTo(BigInteger.valueOf(2)));
+        assertThat(encryptionGroup.getG(), CoreMatchers.equalTo(BigInteger.valueOf(2)));
     }
 
     @Test
@@ -94,7 +94,7 @@ public class JsonParserTest {
         JsonNode zpSubgroup = root.path("zpSubgroup");
         EncryptionGroup encryptionGroup = mapper.readValue(zpSubgroup.traverse(), EncryptionGroup.class);
 
-        assertThat(encryptionGroup.g, CoreMatchers.equalTo(BigInteger.valueOf(2)));
+        assertThat(encryptionGroup.getG(), CoreMatchers.equalTo(BigInteger.valueOf(2)));
     }
 
     @Test
@@ -102,16 +102,16 @@ public class JsonParserTest {
         InputStream inputStream = getResourceStream("schemas/json/dataConfig_[EE].json");
         ElectionEvent electionEvent = mapper.readValue(inputStream, ElectionEvent.class);
 
-        assertThat(electionEvent.alias, CoreMatchers.equalTo("national_contest_04"));
+        assertThat(electionEvent.getAlias(), CoreMatchers.equalTo("national_contest_04"));
 
-        assertNotNull(electionEvent.ballotBoxes);
-        assertFalse(electionEvent.ballotBoxes.isEmpty());
-        BallotBox ballotBox = electionEvent.ballotBoxes.get(0);
-        assertNotNull(ballotBox.countingCircles);
-        assertFalse(ballotBox.countingCircles.isEmpty());
-        CountingCircle countingCircle = ballotBox.countingCircles.get(0);
-        assertNotNull(countingCircle.domainsOfInfluence);
-        assertFalse(countingCircle.domainsOfInfluence.isEmpty());
+        assertNotNull(electionEvent.getBallotBoxes());
+        assertFalse(electionEvent.getBallotBoxes().isEmpty());
+        BallotBox ballotBox = electionEvent.getBallotBoxes().get(0);
+        assertNotNull(ballotBox.getCountingCircles());
+        assertFalse(ballotBox.getCountingCircles().isEmpty());
+        CountingCircle countingCircle = ballotBox.getCountingCircles().get(0);
+        assertNotNull(countingCircle.getDomainsOfInfluence());
+        assertFalse(countingCircle.getDomainsOfInfluence().isEmpty());
     }
 
     @Test
@@ -120,16 +120,16 @@ public class JsonParserTest {
         Metadata metadata = mapper.readValue(inputStream, Metadata.class);
 
         assertNotNull(metadata);
-        assertEquals("toto", metadata.algorithm);
-        assertEquals("1.0", metadata.version);
-        assertNotNull(metadata.signedItems);
-        assertEquals(2, metadata.signedItems.size());
+        assertEquals("toto", metadata.getAlgorithm());
+        assertEquals("1.0", metadata.getVersion());
+        assertNotNull(metadata.getSignedItems());
+        assertEquals(2, metadata.getSignedItems().size());
         assertArrayEquals(DatatypeConverter.parseBase64Binary(
                 "GhcMhwBb1b1ngv9xvcWvXYHdgchaX5fF0tz5WIPBi2E0aYzZpqmFEylaAJ0XfvmSoqwc3fePMKdUKYXG2JY3tXM1LG70YT6azBFYG038jWaCXXz6NyUkYAz0Oz2vICck53ksyH9PY1zd2QzSwWz8L7bznBhTKgL5/UsuLqcCDvQXLYc82vxOUoIkP4HsreTMKdA5YnaoZjJg/2brDKdqcf2oWvahOI9QDu5+guHZhEOMK7cseQr/1dl3DmgjdaqoXQx5xjd2qemiu+70E6L+g2xk29X0VLiPDqLKF4a8KLB/VyJCkbYYm0VDIogl8mxB91imHo4q5FlC2g1Fjw6RIA=="),
                           metadata.getSignature());
 
         StringBuilder sb = new StringBuilder();
-        metadata.signedItems.stream().forEach(s -> sb.append(s.value));
+        metadata.getSignedItems().stream().forEach(s -> sb.append(s.getValue()));
     }
 
 

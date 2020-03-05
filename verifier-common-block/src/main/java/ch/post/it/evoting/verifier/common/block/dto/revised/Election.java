@@ -14,8 +14,10 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
+import ch.post.it.evoting.verifier.common.block.dto.converter.StringArrayToBigIntegerListConverter;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.collect.ImmutableList;
 import lombok.Getter;
 
@@ -25,23 +27,25 @@ import java.util.UUID;
 
 @Getter
 public class Election {
-    public final UUID id;
-    public final String alias;
-    public final int numberOfSeats;
-    public final List<CandidateList> lists;
-    public final List<Candidate> candidates;
-    public final List<BigInteger> writeIns;
+
+    private final UUID id;
+    private final String alias;
+    private final int numberOfSeats;
+    private final List<CandidateList> lists;
+    private final List<Candidate> candidates;
+    @JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
+    private final List<BigInteger> writeIns;
     // TODO: why are the following properties given as ints, shouldn't they be booleans?
-    public final int changedBallotsWithPartyAffiliation;
-    public final int changedBallotsWithoutPartyAffiliation;
-    public final int emptyVotesOfChangedBallotsWithoutPartyAffiliation;
+    private final int changedBallotsWithPartyAffiliation;
+    private final int changedBallotsWithoutPartyAffiliation;
+    private final int emptyVotesOfChangedBallotsWithoutPartyAffiliation;
 
     @JsonCreator
     public Election(@JsonProperty("id") UUID id,
                     @JsonProperty("alias") String alias,
                     @JsonProperty("numberOfSeats") int numberOfSeats,
-                    @JsonProperty("lists") List<CandidateList> lists,
-                    @JsonProperty("candidates") List<Candidate> candidates,
+                    @JsonProperty("lists") CandidateList[] lists,
+                    @JsonProperty("candidates") Candidate[] candidates,
                     @JsonProperty("writeIns") List<BigInteger> writeIns,
                     @JsonProperty("changedBallotsWithPartyAffiliation") int changedBallotsWithPartyAffiliation,
                     @JsonProperty("changedBallotsWithoutPartyAffiliation") int changedBallotsWithoutPartyAffiliation,

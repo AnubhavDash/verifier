@@ -15,10 +15,10 @@
 package ch.post.it.evoting.verifier.block.block3.loader.offline;
 
 import ch.post.it.evoting.verifier.block.block3.scytl.loader.VoterWithProofLoader;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.EncryptedBallot;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.OnlineDecryptionProof;
-import ch.post.it.evoting.verifier.dto.onlinemixing.EncryptedBallot;
 import com.scytl.decrypt.beans.DecryptionProof;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallot;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;

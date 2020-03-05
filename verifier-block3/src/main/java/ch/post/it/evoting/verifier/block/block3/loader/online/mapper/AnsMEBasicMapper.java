@@ -14,7 +14,9 @@
  */
 package ch.post.it.evoting.verifier.block.block3.loader.online.mapper;
 
-import ch.post.it.evoting.verifier.dto.onlinemixing.*;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.AnsMEBasic;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.ExponentValue;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.RandomnessTau;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.MultiExponentiationBasicProofAnswer;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Randomness;
 import com.scytl.products.ov.mixnet.commons.homomorphic.impl.GjosteenElGamalRandomness;
@@ -40,19 +42,7 @@ public interface AnsMEBasicMapper {
         return new MultiExponentiationBasicProofAnswer(a, r, b, s, tau);
     }
 
-    default Exponent map(ExponentsA__1 source){
-        return new Exponent(source.getValue(), source.getQ());
-    }
-
-    default Exponent map(ExponentR__1 source){
-        return new Exponent(source.getValue(), source.getQ());
-    }
-
-    default Exponent map(ExponentsB__1 source){
-        return new Exponent(source.getValue(), source.getQ());
-    }
-
-    default Exponent map(ExponentS__1 source){
+    default Exponent map(ExponentValue source){
         return new Exponent(source.getValue(), source.getQ());
     }
 

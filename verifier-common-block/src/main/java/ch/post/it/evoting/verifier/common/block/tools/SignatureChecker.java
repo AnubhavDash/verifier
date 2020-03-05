@@ -99,18 +99,18 @@ public class SignatureChecker {
             Metadata metadata = Deserializer.fromJson(metadataData, Metadata.class);
             final X509Certificate sCert = loadCertificate(signerCert);
 
-            if (!metadata.version.equals("1.0")) {
-                throw new UnsupportedOperationException("metadata version not supported : " + metadata.version);
+            if (!metadata.getVersion().equals("1.0")) {
+                throw new UnsupportedOperationException("metadata version not supported : " + metadata.getVersion());
             }
 
-            final String algoName = StringUtils.isNotEmpty(metadata.algorithm) ? metadata.algorithm : "SHA256withRSAandMGF1";
+            final String algoName = StringUtils.isNotEmpty(metadata.getAlgorithm()) ? metadata.getAlgorithm() : "SHA256withRSAandMGF1";
 
             //signature
             byte[] signature = metadata.getSignature();
 
             //take fields to be added to the content
             StringBuilder sb = new StringBuilder();
-            metadata.signedItems.stream().forEach(s -> sb.append(s.value));
+            metadata.getSignedItems().stream().forEach(s -> sb.append(s.getValue()));
             byte[] fields = sb.toString().getBytes(StandardCharsets.UTF_8);
 
             //concatenate sourceData & fields
