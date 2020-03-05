@@ -54,7 +54,7 @@ public class IsQuadraticResidueVOTest extends Block1VerificationAbstractTest {
     }
 
     @Test
-    public void executeTestNOKFileNotFound() throws Exception {
+    public void executeTestNOKFileNotFoundEncryptionParamaters() throws Exception {
         exceptionRule.expect(IOException.class);
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ENCRYPTION_PARAMETERS);
         exceptionRule.expectMessage(structureNode.getQualifier());
@@ -62,7 +62,7 @@ public class IsQuadraticResidueVOTest extends Block1VerificationAbstractTest {
     }
 
     @Test
-    public void executeTestNOKFileNotFound2() throws Exception {
+    public void executeTestNOKFileNotFoundDataConfig() throws Exception {
         exceptionRule.expect(IOException.class);
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.DATA_CONFIG_UPDATED);
         exceptionRule.expectMessage(structureNode.getQualifier());

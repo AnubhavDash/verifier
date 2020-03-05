@@ -16,14 +16,20 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.nio.file.Paths;
 
 public class CheckCommitmentParametersOnlineTest extends Block3VerificationAbstractTest {
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setup() {
@@ -37,8 +43,9 @@ public class CheckCommitmentParametersOnlineTest extends Block3VerificationAbstr
     }
     @Test
     public void executeTestNOK() throws Exception {
-        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersOnlineTest/NOK").toURI()));
-        Assert.assertEquals(Status.NOK, result.getStatus());
+        exceptionRule.expect(VerificationFailureException.class);
+        exceptionRule.expectMessage("Commitment parameters verification failed");
+        verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersOnlineTest/NOK").toURI()));
     }
 
 }

@@ -30,7 +30,6 @@ import java.util.AbstractMap;
 public class CheckShuffleArgumentOnline extends AbstractVerification {
 
     private static final Logger LOGGER = Logger.getLogger(CheckShuffleArgumentOnline.class);
-    private final BGOnlineVerificationProcessor processor = BGOnlineVerificationProcessor.getInstanceAndRegister(this);
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -46,21 +45,17 @@ public class CheckShuffleArgumentOnline extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(Path inputDirectoryPath) {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
+        final BGOnlineVerificationProcessor processor = BGOnlineVerificationProcessor.getInstanceAndRegister(this);
         try {
-            processor.register(this);
             PathNode ballotBoxesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOXES_DIR, inputDirectoryPath);
             processor.executeProcess(ballotBoxesPathNode.getPath());
 
             AbstractMap.SimpleEntry<Status, String> status = processor.getStatus(TestType.ShuffleProof);
             result.setStatus(status.getKey());
             result.setMessage(TranslationHelper.getSameMessageMultiLanguage(status.getValue()));
-        } catch (Exception e) {
-            LOGGER.error("Unexpected error", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         } finally {
             processor.unregister(this);
         }

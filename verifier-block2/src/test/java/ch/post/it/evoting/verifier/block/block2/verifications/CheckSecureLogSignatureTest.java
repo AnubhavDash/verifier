@@ -26,7 +26,6 @@ import org.bouncycastle.util.encoders.Base64;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 
-import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;

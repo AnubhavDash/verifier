@@ -33,7 +33,6 @@ import java.util.AbstractMap;
 public class CheckZeroArgument extends AbstractVerification {
 
     private static final Logger LOGGER = Logger.getLogger(CheckZeroArgument.class);
-    private final BGOfflineVerificationProcessor processor = BGOfflineVerificationProcessor.getInstanceAndRegister(this);
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -49,21 +48,17 @@ public class CheckZeroArgument extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(Path inputDirectoryPath) {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
+        final BGOfflineVerificationProcessor processor = BGOfflineVerificationProcessor.getInstanceAndRegister(this);
         try {
-            processor.register(this);
             PathNode ballotBoxesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOXES_DIR, inputDirectoryPath);
             processor.executeProcess(ballotBoxesPathNode.getPath());
 
             AbstractMap.SimpleEntry<Status, String> status = processor.getStatus(TestType.ZeroProof);
             result.setStatus(status.getKey());
             result.setMessage(TranslationHelper.getSameMessageMultiLanguage(status.getValue()));
-        } catch (Exception e) {
-            LOGGER.error("an unexpected error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         } finally {
             processor.unregister(this);
         }

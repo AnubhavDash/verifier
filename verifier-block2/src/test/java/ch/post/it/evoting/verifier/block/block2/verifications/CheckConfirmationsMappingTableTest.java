@@ -181,14 +181,14 @@ public class CheckConfirmationsMappingTableTest extends Block2VerificationAbstra
     }
 
     @Test
-    public void mappingCcHostsFileNotFound() throws Exception {
+    public void executeTestNOKFileNotFoundMappingCcHosts() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
         exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.MAPPING_CC_HOSTS).getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckConfirmationsMappingTableTest/NOK-NOTFILE").toURI()));
     }
 
     @Test
-    public void secureLogsFileNotFound() throws Exception {
+    public void executeTestNOKFileNotFoundSecureLogs() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
         exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.SECURE_LOG).getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckConfirmationsMappingTableTest/NOK-NOTFILE2").toURI()));

@@ -39,7 +39,6 @@ public class CheckSigPdfReport extends AbstractVerification {
         def.setDescription(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification74.description"));
         def.setId(74);
         def.setName("checkSigPdfReport");
-        def.setDeactivated(true);
         return def;
     }
 

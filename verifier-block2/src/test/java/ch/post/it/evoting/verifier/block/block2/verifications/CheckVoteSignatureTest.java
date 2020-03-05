@@ -40,7 +40,7 @@ public class CheckVoteSignatureTest extends Block2VerificationAbstractTest {
     }
 
     @Test
-    public void executeTestNOKFileNotFound() throws Exception {
+    public void executeTestNOKFileNotFoundDownloadedBallot() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.DOWNLOADED_BALLOT_BOX);
         exceptionRule.expectMessage(structureNode.getQualifier());
@@ -48,7 +48,7 @@ public class CheckVoteSignatureTest extends Block2VerificationAbstractTest {
     }
 
     @Test
-    public void executeTestNOKElectionFileNotFound() throws Exception {
+    public void executeTestNOKFileNotFoundElectionInfo() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ELECTION_INFORMATION_CONTENTS);
         exceptionRule.expectMessage(structureNode.getQualifier());

@@ -37,7 +37,6 @@ public class CheckConfirmationAttemptsTest extends Block2VerificationAbstractTes
 
     @Test
     /* remove ignore when we got secureLog files with correct pattern */
-    @Ignore
     public void executeTest() throws Exception {
         VerificationResult verificationResult =
                 verification.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/OK").toURI()));
@@ -46,7 +45,6 @@ public class CheckConfirmationAttemptsTest extends Block2VerificationAbstractTes
     }
 
     @Test
-    @Ignore
     public void executeTestNOK() throws Exception {
         exceptionRule.expect(VerificationFailureException.class);
         exceptionRule.expectMessage("TODO");
@@ -54,28 +52,18 @@ public class CheckConfirmationAttemptsTest extends Block2VerificationAbstractTes
     }
 
     @Test
-    public void executeTestNOKnotFile() throws Exception {
+    public void executeTestNOKFileNotFoundVoterInformation() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("voterInformation.*\\.csv"); // TODO trop la mort à faire pour le moment.
         verification.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/NOK-NOTFILE").toURI()));
     }
 
     @Test
-    public void executeTestNOKnotFile2() throws Exception {
+    public void executeTestNOKFileNotFoundMappingCcHosts() throws Exception {
         exceptionRule.expect(IOException.class);
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.MAPPING_CC_HOSTS);
         exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/NOK-NOTFILE2").toURI()));
-    }
-
-    @Test
-    @Ignore
-    public void executeTestNOKnotFile3() throws Exception {
-        // TODO Check for secureLogs file
-        exceptionRule.expect(IOException.class);
-        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.SECURE_LOGS_DIR);
-        exceptionRule.expectMessage(structureNode.getQualifier());
-        verification.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/NOK-NOTFILE3").toURI()));
     }
 
 }

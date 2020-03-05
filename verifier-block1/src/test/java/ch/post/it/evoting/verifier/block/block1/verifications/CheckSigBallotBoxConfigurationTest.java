@@ -43,19 +43,43 @@ public class CheckSigBallotBoxConfigurationTest extends Block1VerificationAbstra
     }
 
     @Test
-    public void executeTestNOKBallotFileNotFound() throws Exception {
+    public void executeTestNOKFileNotFoundCertificate() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
-        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.BALLOT_BOX);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ADMIN_BOARD_CERT);
         exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK-NOFILE").toURI()));
     }
 
     @Test
-    public void executeTestNOKSignFileNotFound() throws Exception {
+    public void executeTestNOKFileNotFoundIntermediateCertificate() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.TENANT_100);
+        exceptionRule.expectMessage(structureNode.getQualifier());
+        verification.verify(Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK-NOFILE2").toURI()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFoundRootCertificate() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.PLATFORM_ROOT_CA);
+        exceptionRule.expectMessage(structureNode.getQualifier());
+        verification.verify(Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK-NOFILE3").toURI()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFoundBallotBox() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.BALLOT_BOX);
-        exceptionRule.expectMessage(structureNode.getQualifier() + RelationType.SIGN.toFileExtension()); // TODO oka?
-        verification.verify(Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK-NOFILE2").toURI()));
+        exceptionRule.expectMessage(structureNode.getQualifier());
+        verification.verify(Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK-NOFILE4").toURI()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFoundBallotBoxSign() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.BALLOT_BOX);
+        exceptionRule.expectMessage(structureNode.getQualifier() + RelationType.SIGN.toFileExtension());
+        verification.verify(Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK-NOFILE5").toURI()));
     }
 
     @Test

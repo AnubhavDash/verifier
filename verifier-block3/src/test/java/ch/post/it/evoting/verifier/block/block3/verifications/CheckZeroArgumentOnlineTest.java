@@ -16,14 +16,22 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
 public class CheckZeroArgumentOnlineTest extends Block3VerificationAbstractTest {
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setup() {
@@ -40,5 +48,13 @@ public class CheckZeroArgumentOnlineTest extends Block3VerificationAbstractTest 
     public void executeTestNOK() throws Exception {
         VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckZeroArgumentOnlineTest/NOK").toURI()));
         Assert.assertEquals(Status.NOK, result.getStatus());
+    }
+
+    @Test
+    public void executeTestKOFileNotFound() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.BALLOT_BOXES_DIR);
+        exceptionRule.expectMessage(structureNode.getQualifier());
+        verification.verify(Paths.get(getClass().getResource("/CheckZeroArgumentOnlineTest/NOK-NOTFILE").toURI()));
     }
 }

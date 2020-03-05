@@ -55,18 +55,50 @@ public class CheckSigCredentialDataTest extends Block1VerificationAbstractTest {
     }
 
     @Test
-    public void executeTestNOKCredentialFileNotFound() throws Exception {
+    public void executeTestNOKFileNotFoundCertificate() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
-        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CREDENTIAL_DATA);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ADMIN_BOARD_CERT);
         exceptionRule.expectMessage(structureNode.getQualifier());
         verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE").toURI()));
     }
 
     @Test
-    public void executeTestNOKSignFileNotFound() throws Exception {
+    public void executeTestNOKFileNotFoundIntermediateCertificate() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.TENANT_100);
+        exceptionRule.expectMessage(structureNode.getQualifier());
+        verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE1").toURI()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFoundRootCertificate() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.PLATFORM_ROOT_CA);
+        exceptionRule.expectMessage(structureNode.getQualifier());
+        verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE2").toURI()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFoundVotingCardSetsIdDir() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.VOTING_CARD_SETS_ID_DIR);
+        exceptionRule.expectMessage(structureNode.getQualifier());
+        verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE3").toURI()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFoundCredential() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CREDENTIAL_DATA);
+        exceptionRule.expectMessage(structureNode.getQualifier());
+        verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE4").toURI()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFoundCredentialSign() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CREDENTIAL_DATA);
         exceptionRule.expectMessage(structureNode.getQualifier() + RelationType.SIGN.toFileExtension());
-        verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE2").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE5").toURI()));
     }
 }

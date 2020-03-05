@@ -27,13 +27,14 @@ import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.AbstractMap;
 
 public class CheckHadamardArgument extends AbstractVerification {
 
     private static final Logger LOGGER = Logger.getLogger(CheckHadamardArgument.class);
-    private final BGOfflineVerificationProcessor processor = BGOfflineVerificationProcessor.getInstanceAndRegister(this);
 
     @Override
     public VerificationDefinition getVerificationDefinition() {
@@ -49,21 +50,17 @@ public class CheckHadamardArgument extends AbstractVerification {
     }
 
     @Override
-    public VerificationResult verify(Path inputDirectoryPath) {
+    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
+        final BGOfflineVerificationProcessor processor = BGOfflineVerificationProcessor.getInstanceAndRegister(this);
         try {
-            processor.register(this);
             PathNode ballotBoxesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOXES_DIR, inputDirectoryPath);
             processor.executeProcess(ballotBoxesPathNode.getPath());
 
             AbstractMap.SimpleEntry<Status, String> status = processor.getStatus(TestType.HadamardProductProof);
             result.setStatus(status.getKey());
             result.setMessage(TranslationHelper.getSameMessageMultiLanguage(status.getValue()));
-        } catch (Exception e) {
-            LOGGER.error("an unexpected error occurred", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
         } finally {
             processor.unregister(this);
         }

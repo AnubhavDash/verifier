@@ -60,9 +60,23 @@ public class CheckCommitmentParametersTest extends Block3VerificationAbstractTes
     }
 
     @Test
-    public void executeTestNOKFileNotFound() throws Exception {
+    public void executeTestNOKFileNotFoundBallotBoxIdDir() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
+        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.BALLOT_BOX_ID_DIR).getQualifier());
+        verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK-NOTFILE").toURI()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFoundBallotBoxOfflineDir() throws Exception {
+        exceptionRule.expect(NoSuchFileException.class);
+        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.BALLOT_BOX_OFFLINE_DIR).getQualifier());
+        verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK-NOTFILE2").toURI()));
+    }
+
+    @Test
+    public void executeTestNOKFileNotFoundCommitmentParameters() throws Exception {
         exceptionRule.expect(NoSuchFileException.class);
         exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.COMMITMENT_PARAMETERS).getQualifier());
-        verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK-NOTFILE").toURI()));
+        verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK-NOTFILE3").toURI()));
     }
 }

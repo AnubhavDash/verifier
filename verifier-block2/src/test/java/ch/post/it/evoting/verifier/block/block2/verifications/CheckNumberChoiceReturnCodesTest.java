@@ -60,14 +60,14 @@ public class CheckNumberChoiceReturnCodesTest extends Block2VerificationAbstract
     //  - The number of log entries does not match with the number of voters
 
     @Test
-    public void executeTestNOKnotFile() throws Exception {
+    public void executeTestNOKFileNotFoundVoterInformation() throws Exception {
         exceptionRule.expect(IOException.class);
         exceptionRule.expectMessage("voterInformation.*\\.csv");
         verification.verify(Paths.get(getClass().getResource("/CheckNumberChoiceReturnCodesTest/NOK-NOTFILE").toURI()));
     }
 
     @Test
-    public void executeTestNOKnotFile2() throws Exception {
+    public void executeTestNOKFileNotFoundMappingCcHosts() throws Exception {
         exceptionRule.expect(IOException.class);
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.MAPPING_CC_HOSTS);
         exceptionRule.expectMessage(structureNode.getQualifier());
