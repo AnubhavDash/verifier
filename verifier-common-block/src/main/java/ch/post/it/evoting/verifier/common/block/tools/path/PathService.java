@@ -25,17 +25,16 @@ public class PathService {
     public PathService() {
         try {
             // TODO Allow to override file as main argument.
-            final Path path = Paths.get(getClass().getResource("/dataset_structure.json").toURI());
 
             ObjectMapper mapper = new ObjectMapper();
-            final JsonNode rootNode = mapper.readTree(Files.readAllBytes(path));
+            final JsonNode rootNode = mapper.readTree(getClass().getResource("/dataset_structure.json"));
 
             // TODO check business structure + keys
             StructureChecker.process(rootNode);
 
             addMapEntry(rootNode, Paths.get(""), false);
 
-        } catch (URISyntaxException | IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException("Impossible to find/read structure file.");
         }
     }
