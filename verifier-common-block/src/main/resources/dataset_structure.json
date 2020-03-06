@@ -285,7 +285,7 @@
           {
             "key": "SECURE_LOG",
             "type": "FILE",
-            "name": "(?:logs|logs_[0-9]+)\\\\(?:cv|cg)\\\\(?:cv|cg)_secure-[0-9]{8}-[0-9]{6}-[0-9]+\\.log"
+            "name": "(?:logs|logs_[0-9]+)/(?:cv|cg)/(?:cv|cg)_secure-[0-9]{8}-[0-9]{6}-[0-9]+\\.log"
           }
         ]
       },

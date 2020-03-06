@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
@@ -14,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -86,6 +86,7 @@ public class PathService {
 
     /**
      * Provide a {@link StructureNode} form the build structure map.
+     *
      * @param structureKey The key of the map.
      * @return the {@code structureNode}.
      */
@@ -118,7 +119,8 @@ public class PathService {
 
             // If the current node is a folder or dynamic folder, recursively continue.
             if (PathType.DIRECTORY.equals(type) || PathType.DYNAMIC_DIRECTORY.equals(type)) {
-                addMapEntry(node.path("content"), parentPath.resolve(currentName), dynamicAncestor || PathType.DYNAMIC_DIRECTORY.equals(type));
+                addMapEntry(node.path("content"), parentPath.resolve(currentName),
+                        dynamicAncestor || PathType.DYNAMIC_DIRECTORY.equals(type));
             }
         }
     }
@@ -138,9 +140,17 @@ public class PathService {
     }
 
     /**
-     * Provide a list of {@link Path} by resolving them from a starting path with regex rules
+     * Provide a list of {@link Path} by resolving them from a starting path.
      */
     private List<Path> resolve(Path startingPath, StructureNode structureNode) throws IOException {
+        // Get the escaped (to work in regex) file system separator.
+        final String quotedSeparator = Pattern.quote(startingPath.getFileSystem().getSeparator());
+        // It is assumed that in dataset_structure file the file separators are /. Now we need to replace them with file system separators
+        // which are escaped to work in the regex.
+        final String escapedSeparatorQualifier = structureNode.getQualifier().replaceAll("/", Matcher.quoteReplacement(quotedSeparator));
+        // Prepend with separator to ensure the path starts with it. Add a $ to be sure the path ends exactly with this regex.
+        final Pattern pattern = Pattern.compile(quotedSeparator + escapedSeparatorQualifier + "$");
+
         List<Path> paths = Files.find(startingPath,
                 10, // Arbitrary depth value, should be enough.
                 (path, attributes) -> {
@@ -148,8 +158,7 @@ public class PathService {
                     // specified as multi level path (folder in folder etc...).
                     String currentPath = path.toString().replace(startingPath.toString(), "");
 
-                    // Add a $ to be sure the path ends with this regex.
-                    return Pattern.compile("\\\\" + structureNode.getQualifier() + "$").matcher(currentPath).matches();
+                    return pattern.matcher(currentPath).matches();
                 })
                 // Remove starting path itself in case it matched by accident.
                 .filter(path -> !startingPath.equals(path))
