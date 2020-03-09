@@ -21,6 +21,8 @@ import lombok.NonNull;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.StringJoiner;
 
 import static ch.post.it.evoting.verifier.common.block.tools.Requirements.*;
 
@@ -28,6 +30,20 @@ public final class MathHelper {
 
     private MathHelper() {
         //private constructor, use static
+    }
+
+    /**
+     * Reverse and concatenate a list of strings. Only required temporarily to ensure compatibility with the non-compliant implementation.
+     *
+     * @param strings The list of strings to concatenate together.
+     * @return The concatenation in reverse order of {@code strings}.
+     */
+    public static String reverseAndJoin(List<String> strings) {
+        StringJoiner joiner = new StringJoiner("");
+        for (ListIterator<String> iter = strings.listIterator(strings.size()); iter.hasPrevious(); )
+            joiner.add(iter.previous());
+
+        return joiner.toString();
     }
 
     /**
