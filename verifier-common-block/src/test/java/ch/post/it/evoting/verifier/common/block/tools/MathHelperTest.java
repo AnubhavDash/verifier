@@ -172,6 +172,11 @@ public class MathHelperTest {
         });
     }
 
+    @Test
+    public void reverseAndJoinTest() {
+        Assert.assertEquals("CBA", MathHelper.reverseAndJoin(Arrays.asList("A", "B", "C")));
+    }
+
 
     // =====================================================================================================================================
     // Utility methods.
