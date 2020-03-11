@@ -15,7 +15,6 @@
 package ch.post.it.evoting.verifier.block.block3.loader.online.mapper;
 
 import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.Ciphertext;
-import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import com.scytl.products.ov.mixnet.commons.homomorphic.impl.GjosteenElGamalCiphertext;
 import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
@@ -23,7 +22,6 @@ import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroupParams;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,9 +31,9 @@ public interface CiphertextMapper {
     CiphertextMapper INSTANCE = Mappers.getMapper(CiphertextMapper.class);
 
     default com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext map(Ciphertext source, ZpGroupParams params) {
-        GroupElement gamma = new ZpElement(TypeConverter.stringToBigInteger(source.getGamma().split(";")[0]), params);
-        List<GroupElement> phis = Arrays.stream(source.getPhis().split(","))
-                .map(p -> new ZpElement(TypeConverter.stringToBigInteger(p.split(";")[0]), params))
+        GroupElement gamma = new ZpElement(source.getGamma(), params);
+        List<GroupElement> phis = source.getPhis().stream()
+                .map(p -> new ZpElement(p, params))
                 .collect(Collectors.toList());
 
         return new GjosteenElGamalCiphertext(gamma, phis);

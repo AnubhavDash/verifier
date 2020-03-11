@@ -14,6 +14,7 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.Ciphertext;
 import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.OnlineMixing;
 import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.ShuffleArgumentMessage;
 import ch.post.it.evoting.verifier.common.block.dto.revised.serialization.*;
@@ -56,6 +57,7 @@ public class JsonParserTest {
         typesModule.addDeserializer(PreImageProof.class, new PreImageProofDeserializer());
         typesModule.addDeserializer(PlaintextEqualityProof.class, new PlaintextEqualityProofDeserializer());
         typesModule.addDeserializer(ElectionEvent.class, new ElectionEventDeserializer());
+        typesModule.addDeserializer(Ciphertext.class, new CiphertextDeserializer());
         mapper.registerModule(typesModule);
     }
 
@@ -140,6 +142,8 @@ public class JsonParserTest {
         OnlineMixing onlineMixing = mapper.readValue(inputStream, OnlineMixing.class);
 
         assertThat(onlineMixing.getElectoralAuthorityId(), CoreMatchers.equalTo("e591efc853694bf880afebce631ab95e"));
+        assertEquals(10, onlineMixing.getVotes().size());
+        assertEquals(1, onlineMixing.getVotes().get(0).getPhis().size());
     }
 
     @Test
@@ -149,8 +153,9 @@ public class JsonParserTest {
 
         assertThat(shuffleArgumentMessage.getShuffleArgumentSecondAnswer().getMultiExponentiationArgumentAnswer().getRandomnessTau().getExponent().getValue(),
                 CoreMatchers.equalTo(new BigInteger("16370518994319586760319791526293535327576438646782139419846004180837103527129035954742043590609421369665944746587885814920851694546456891767644945459124422553763416586515339978014154452159687109161090635367600349264934924141746082060353483306855352192358732451955232000593777554431798981574529854314651092086488426390776811367125009551346089319315111509277347117467107914073639456805159094562593954195960531136052208019343392906816001017488051366518122404819967204601427304267380238263913892658950281593755894747339126531018026798982785331079065126375455293409065540731646939808640273393855256230820509217411510058759")));
+        assertEquals(2, shuffleArgumentMessage.getShuffleArgumentSecondAnswer().getMultiExponentiationArgumentInitMessage().getCiphertextsE().size());
+        assertEquals(3, shuffleArgumentMessage.getShuffleArgumentSecondAnswer().getMultiExponentiationArgumentInitMessage().getCiphertextsE().get(0).getPhis().size());
     }
-
 
     private InputStream getResourceStream(String resource) {
         return this.getClass().getClassLoader().getResourceAsStream(

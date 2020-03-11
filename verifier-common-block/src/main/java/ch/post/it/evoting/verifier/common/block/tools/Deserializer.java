@@ -16,6 +16,7 @@ package ch.post.it.evoting.verifier.common.block.tools;
 
 import ch.post.it.evoting.verifier.common.block.dto.CredentialDataElement;
 import ch.post.it.evoting.verifier.common.block.dto.revised.*;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.Ciphertext;
 import ch.post.it.evoting.verifier.common.block.dto.revised.serialization.*;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -61,6 +62,7 @@ public class Deserializer {
         typesModule.addDeserializer(PreImageProof.class, new PreImageProofDeserializer());
         typesModule.addDeserializer(PlaintextEqualityProof.class, new PlaintextEqualityProofDeserializer());
         typesModule.addDeserializer(ElectionEvent.class, new ElectionEventDeserializer());
+        typesModule.addDeserializer(Ciphertext.class, new CiphertextDeserializer());
         mapper.registerModule(typesModule);
         return mapper;
     }

@@ -1,9 +1,7 @@
 package ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing;
 
-import ch.post.it.evoting.verifier.common.block.dto.converter.StringArrayToBigIntegerListConverter;
 import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionGroup;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.collect.ImmutableList;
 import lombok.Getter;
 
@@ -15,32 +13,32 @@ public class OnlineMixing {
 
     private VoteEncryptionKey voteEncryptionKey;
     private VoteSetId voteSetId;
-    private List<MixedVote> votes;
+    private List<Ciphertext> votes;
     private String electoralAuthorityId;
     private EncryptionGroup encryptionGroup;
     private List<String> decryptionProofs;
-    private List<MixedVote> shuffledVotes;
+    private List<Ciphertext> shuffledVotes;
     private String shuffleProof;
 
     private List<BigInteger> commitmentParameters;
     private String timestamp;
     private Signature signature;
-    private List<MixedVote> previousVotes;
+    private List<Ciphertext> previousVotes;
     private VoteEncryptionKey previousVoteEncryptionKey;
 
 
     public OnlineMixing(@JsonProperty("voteEncryptionKey") VoteEncryptionKey voteEncryptionKey,
                         @JsonProperty("voteSetId") VoteSetId voteSetId,
-                        @JsonProperty("votes") MixedVote[] votes,
+                        @JsonProperty("votes") Ciphertext[] votes,
                         @JsonProperty("electoralAuthorityId") String electoralAuthorityId,
                         @JsonProperty("encryptionParameters") EncryptionGroup encryptionParameters,
                         @JsonProperty("decryptionProofs") List<String> decryptionProofs,
-                        @JsonProperty("shuffledVotes") MixedVote[] shuffledVotes,
+                        @JsonProperty("shuffledVotes") Ciphertext[] shuffledVotes,
                         @JsonProperty("shuffleProof") String shuffleProof,
                         @JsonProperty("commitmentParameters") List<BigInteger> commitmentParameters,
                         @JsonProperty("timestamp") String timestamp,
                         @JsonProperty("signature") Signature signature,
-                        @JsonProperty("previousVotes") MixedVote[] previousVotes,
+                        @JsonProperty("previousVotes") Ciphertext[] previousVotes,
                         @JsonProperty("previousVoteEncryptionKey") VoteEncryptionKey previousVoteEncryptionKey) {
         this.voteEncryptionKey = voteEncryptionKey;
         this.voteSetId = voteSetId;
