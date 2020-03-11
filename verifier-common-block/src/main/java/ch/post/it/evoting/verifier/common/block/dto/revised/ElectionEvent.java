@@ -24,14 +24,15 @@ import java.util.UUID;
 
 @Getter
 public class ElectionEvent {
-    public final UUID id;
-    public final String alias;
-    public final List<BallotBox> ballotBoxes;
+
+    private final UUID id;
+    private final String alias;
+    private final List<BallotBox> ballotBoxes;
 
     @JsonCreator
     public ElectionEvent(@JsonProperty("id") UUID id,
                          @JsonProperty("alias") String alias,
-                         @JsonProperty("ballotBoxes") List<BallotBox> ballotBoxes) {
+                         @JsonProperty("ballotBoxes") BallotBox[] ballotBoxes) {
         this.id = id;
         this.alias = alias;
         this.ballotBoxes = ImmutableList.copyOf(ballotBoxes);

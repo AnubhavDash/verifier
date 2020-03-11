@@ -14,8 +14,10 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
+import ch.post.it.evoting.verifier.common.block.dto.converter.StringToBigIntegerConverter;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 
 import java.math.BigInteger;
@@ -23,9 +25,11 @@ import java.util.UUID;
 
 @Getter
 public class VoteOption {
-    public final UUID id;
-    public final UUID alias;
-    public final BigInteger primeNumber;
+
+    private final UUID id;
+    private final UUID alias;
+    @JsonDeserialize(converter = StringToBigIntegerConverter.class)
+    private final BigInteger primeNumber;
 
     @JsonCreator
     public VoteOption(@JsonProperty("id") UUID id,

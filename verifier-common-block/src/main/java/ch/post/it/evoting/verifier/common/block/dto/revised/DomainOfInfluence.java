@@ -24,15 +24,15 @@ import java.util.UUID;
 
 @Getter
 public class DomainOfInfluence {
-    public final UUID id;
-    public final List<Vote> votes;
-    public final List<Election> elections;
 
+    private final UUID id;
+    private final List<Vote> votes;
+    private final List<Election> elections;
 
     @JsonCreator
     public DomainOfInfluence(@JsonProperty("id") UUID id,
-                             @JsonProperty("votes") List<Vote> votes,
-                             @JsonProperty("elections") List<Election> elections) {
+                             @JsonProperty("votes") Vote[] votes,
+                             @JsonProperty("elections") Election[] elections) {
         this.id = id;
         this.votes = ImmutableList.copyOf(votes);
         this.elections = ImmutableList.copyOf(elections);

@@ -17,16 +17,17 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.BallotBoxId;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.OnlineMixing;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
-import ch.post.it.evoting.verifier.dto.onlinemixing.BallotBoxId;
-import ch.post.it.evoting.verifier.dto.onlinemixing.OnlineMixing;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProof;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Randomness;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
 
+import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -130,18 +131,18 @@ public class CheckSigOnlineProofs extends AbstractVerification {
                     ballotBoxId.getId(),
                     onlineMixing.getVoteSetId().getIndex(),
                     onlineMixing.getVotes().stream()
-                            .map(vote -> vote.getGamma() + ";" + vote.getPhis().stream().map(String::valueOf).collect(Collectors.joining()))
+                            .map(vote -> vote.getGamma() + ";" + vote.getPhis().stream().map(BigInteger::toString).collect(Collectors.joining()))
                             .collect(Collectors.joining()),
                     voteEnc,
-                    onlineMixing.getCommitmentParameters().stream().collect(Collectors.joining()),
+                    onlineMixing.getCommitmentParameters().stream().map(BigInteger::toString).collect(Collectors.joining()),
                     onlineMixing.getDecryptionProofs().stream().collect(Collectors.joining()),
                     onlineMixing.getShuffledVotes().stream()
-                            .map(vote -> vote.getGamma() + ";" + vote.getPhis().stream().map(String::valueOf).collect(Collectors.joining()))
+                            .map(vote -> vote.getGamma() + ";" + vote.getPhis().stream().map(BigInteger::toString).collect(Collectors.joining()))
                             .collect(Collectors.joining()),
                     shuffleProof != null ? serialize(shuffleProof) : "",
                     onlineMixing.getTimestamp(),
                     onlineMixing.getPreviousVotes().stream()
-                            .map(vote -> vote.getGamma() + ";" + vote.getPhis().stream().map(String::valueOf).collect(Collectors.joining()))
+                            .map(vote -> vote.getGamma() + ";" + vote.getPhis().stream().map(BigInteger::toString).collect(Collectors.joining()))
                             .collect(Collectors.joining()),
                     prevVoteEnc);
         }

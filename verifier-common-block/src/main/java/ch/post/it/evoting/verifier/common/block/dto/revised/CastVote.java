@@ -26,39 +26,42 @@ import java.util.UUID;
 
 @Getter
 public class CastVote {
-    public final UUID electionEventId;
-    public final UUID ballotId;
-    public final UUID ballotBoxId;
-    public final UUID votingCardId;
-    public final List<BigInteger> encryptedOptions;
-    public final List<BigInteger> encryptedPartialChoiceCodes;
-    public final List<BigInteger> encryptedWriteIns;
-    public final List<UUID> correctnessIds;
-    public final PublicKey verificationCardPublicKey;
-    public final String verificationCardPKSignature;
-    public final String signature;
-    public final X509Certificate certificate;
-    public final UUID credentialId;
-    public final AuthenticationToken authenticationToken;
-    public final String authenticationTokenSignature;
-    public final PreImageProof schnorrProof;
-    public final List<BigInteger> cipherTextExponentiations;
-    public final PreImageProof exponentiationProof;
-    public final PlaintextEqualityProof plainTextEqualityProof;
-    public final UUID verificationCardId;
-    public final UUID verificationCardSetId;
 
+    private final UUID electionEventId;
+    private final UUID ballotId;
+    private final UUID ballotBoxId;
+    private final UUID votingCardId;
+    private final List<BigInteger> encryptedOptions;
+    private final List<BigInteger> encryptedPartialChoiceCodes;
+    private final List<BigInteger> encryptedWriteIns;
+    private final List<UUID> correctnessIds;
+    private final PublicKey verificationCardPublicKey;
+    private final String verificationCardPKSignature;
+    private final String signature;
+    private final X509Certificate certificate;
+    private final UUID credentialId;
+    private final AuthenticationToken authenticationToken;
+    private final String authenticationTokenSignature;
+    private final PreImageProof schnorrProof;
+    private final List<BigInteger> cipherTextExponentiations;
+    private final PreImageProof exponentiationProof;
+    private final PlaintextEqualityProof plainTextEqualityProof;
+    private final UUID verificationCardId;
+    private final UUID verificationCardSetId;
 
     @JsonCreator
-    public CastVote(@JsonProperty("electionEventId") UUID electionEventId, @JsonProperty("ballotId") UUID ballotId,
-                    @JsonProperty("ballotBoxId") UUID ballotBoxId, @JsonProperty("votingCardId") UUID votingCardId,
+    public CastVote(@JsonProperty("electionEventId") UUID electionEventId,
+                    @JsonProperty("ballotId") UUID ballotId,
+                    @JsonProperty("ballotBoxId") UUID ballotBoxId,
+                    @JsonProperty("votingCardId") UUID votingCardId,
                     @JsonProperty("encryptedOptions") List<BigInteger> encryptedOptions,
                     @JsonProperty("encryptedPartialChoiceCodes") List<BigInteger> encryptedPartialChoiceCodes,
                     @JsonProperty("encryptedWriteIns") List<BigInteger> encryptedWriteIns,
                     @JsonProperty("correctnessIds") List<UUID> correctnessIds,
                     @JsonProperty("verificationCardPublicKey") PublicKey verificationCardPublicKey,
                     @JsonProperty("verificationCardPKSignature") String verificationCardPKSignature,
-                    @JsonProperty("signature") String signature, @JsonProperty("certificate") X509Certificate certificate,
+                    @JsonProperty("signature") String signature,
+                    @JsonProperty("certificate") X509Certificate certificate,
                     @JsonProperty("credentialId") UUID credentialId,
                     @JsonProperty("authenticationToken") AuthenticationToken authenticationToken,
                     @JsonProperty("authenticationTokenSignature") String authenticationTokenSignature,

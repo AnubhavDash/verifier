@@ -23,12 +23,13 @@ import java.util.List;
 
 @Getter
 public class CountingCircle {
-    public final String id;
-    public final List<DomainOfInfluence> domainsOfInfluence;
+
+    private final String id;
+    private final List<DomainOfInfluence> domainsOfInfluence;
 
     @JsonCreator
     public CountingCircle(@JsonProperty("id") String id,
-                          @JsonProperty("domainOfInfluence") List<DomainOfInfluence> domainsOfInfluence) {
+                          @JsonProperty("domainOfInfluence") DomainOfInfluence[] domainsOfInfluence) {
         this.id = id;
         this.domainsOfInfluence = ImmutableList.copyOf(domainsOfInfluence);
     }

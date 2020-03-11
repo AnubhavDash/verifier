@@ -17,13 +17,17 @@ package ch.post.it.evoting.verifier.common.block.dto.revised;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
+@Getter
 public class Receipt {
-    public final String receipt;
-    public final String signature;
+
+    private final String receipt;
+    private final String signature;
 
     @JsonCreator
-    public Receipt(@JsonProperty("receipt") String receipt, @JsonProperty("signature") String signature) {
+    public Receipt(@JsonProperty("receipt") String receipt,
+                   @JsonProperty("signature") String signature) {
         this.receipt = receipt;
         this.signature = signature;
     }

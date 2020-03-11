@@ -22,18 +22,20 @@ import java.util.UUID;
 
 @Getter
 public class VoterInformation {
-    public final UUID electionEventId;
-    public final UUID votingCardId;
-    public final UUID ballotId;
-    public final UUID credentialId;
-    public final UUID verificationCardId;
-    public final UUID ballotBoxId;
-    public final UUID votingCardSetId;
-    public final UUID verificationCardSetId;
+
+    private final UUID electionEventId;
+    private final UUID votingCardId;
+    private final UUID ballotId;
+    private final UUID credentialId;
+    private final UUID verificationCardId;
+    private final UUID ballotBoxId;
+    private final UUID votingCardSetId;
+    private final UUID verificationCardSetId;
 
     @JsonCreator
     public VoterInformation(@JsonProperty("electionEventId") UUID electionEventId,
-                            @JsonProperty("votingCardId") UUID votingCardId, @JsonProperty("ballotId") UUID ballotId,
+                            @JsonProperty("votingCardId") UUID votingCardId,
+                            @JsonProperty("ballotId") UUID ballotId,
                             @JsonProperty("credentialId") UUID credentialId,
                             @JsonProperty("verificationCardId") UUID verificationCardId,
                             @JsonProperty("ballotBoxId") UUID ballotBoxId,

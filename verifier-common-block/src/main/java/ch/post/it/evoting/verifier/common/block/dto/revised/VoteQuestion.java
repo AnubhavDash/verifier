@@ -23,12 +23,13 @@ import java.util.List;
 
 @Getter
 public class VoteQuestion {
-    public final String alias;
-    public final List<VoteOption> options;
+
+    private final String alias;
+    private final List<VoteOption> options;
 
     @JsonCreator
     public VoteQuestion(@JsonProperty("alias") String alias,
-                        @JsonProperty("options") List<VoteOption> options) {
+                        @JsonProperty("options") VoteOption[] options) {
         this.alias = alias;
         this.options = ImmutableList.copyOf(options);
     }

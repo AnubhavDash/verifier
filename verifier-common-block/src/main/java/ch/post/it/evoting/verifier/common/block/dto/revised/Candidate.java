@@ -14,8 +14,10 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
+import ch.post.it.evoting.verifier.common.block.dto.converter.StringArrayToBigIntegerListConverter;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 
 import java.math.BigInteger;
@@ -24,9 +26,11 @@ import java.util.UUID;
 
 @Getter
 public class Candidate {
-    public final UUID alias;
-    public final List<BigInteger> primeNumbers;
-    public final boolean blank;
+
+    private final UUID alias;
+    @JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
+    private final List<BigInteger> primeNumbers;
+    private final boolean blank;
 
     @JsonCreator
     public Candidate(@JsonProperty("alias") UUID alias,

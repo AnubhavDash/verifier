@@ -14,8 +14,10 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
+import ch.post.it.evoting.verifier.common.block.dto.converter.StringToBigIntegerConverter;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.collect.ImmutableList;
 import lombok.Getter;
 
@@ -24,15 +26,17 @@ import java.util.List;
 
 @Getter
 public class CandidateList {
-    public final boolean isBlank;
-    public final BigInteger primeNumber;
-    public final List<CandidatePosition> candidatePositions;
-    public final String alias;
+
+    private final boolean isBlank;
+    @JsonDeserialize(converter = StringToBigIntegerConverter.class)
+    private final BigInteger primeNumber;
+    private final List<CandidatePosition> candidatePositions;
+    private final String alias;
 
     @JsonCreator
     public CandidateList(@JsonProperty("isBlank") boolean isBlank,
                          @JsonProperty("primeNumber") BigInteger primeNumber,
-                         @JsonProperty("candidatePositions") List<CandidatePosition> candidatePositions,
+                         @JsonProperty("candidatePositions") CandidatePosition[] candidatePositions,
                          @JsonProperty("alias") String alias) {
         this.isBlank = isBlank;
         this.primeNumber = primeNumber;

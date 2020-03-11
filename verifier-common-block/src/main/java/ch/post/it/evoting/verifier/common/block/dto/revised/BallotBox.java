@@ -24,13 +24,14 @@ import java.util.UUID;
 
 @Getter
 public class BallotBox {
-    public final UUID id;
-    public final String alias;
-    public final UUID authId;
-    public final UUID vcsId;
-    public final String vcsAlias;
-    public final int votingCardsGenerated;
-    public final List<CountingCircle> countingCircles;
+
+    private final UUID id;
+    private final String alias;
+    private final UUID authId;
+    private final UUID vcsId;
+    private final String vcsAlias;
+    private final int votingCardsGenerated;
+    private final List<CountingCircle> countingCircles;
 
     @JsonCreator
     public BallotBox(@JsonProperty("id") UUID id,
@@ -39,7 +40,7 @@ public class BallotBox {
                      @JsonProperty("vcsId") UUID vcsId,
                      @JsonProperty("vcsAlias") String vcsAlias,
                      @JsonProperty("votingCardsGenerated") int votingCardsGenerated,
-                     @JsonProperty("countingCircles") List<CountingCircle> countingCircles) {
+                     @JsonProperty("countingCircles") CountingCircle[] countingCircles) {
         this.id = id;
         this.alias = alias;
         this.authId = authId;
