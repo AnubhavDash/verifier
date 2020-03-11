@@ -72,18 +72,30 @@ public final class MathHelper {
      * @return
      */
     public static BigInteger computeCommitment(EncryptionGroup encryptionGroup, BigInteger r, List<BigInteger> a_vec, CommitmentKey ck) {
-        // Pre requirements
+        // Pre requirements.
         requireIsInZ_q(r, encryptionGroup);
         requireVectorIsInZ_q(a_vec, encryptionGroup);
         requireIsMember(ck.getH(), encryptionGroup);
         requireVectorIsMember(ck.getG_vec(), encryptionGroup);
+        if (a_vec.size() > ck.getG_vec().size()) {
+            throw new IllegalArgumentException("The list of elements vector dimension must be greater or equal than the commitment key " +
+                    "vector dimension!");
+        }
 
-        // Commitment computation
+        // If the list of elements to be committed is shorter than the commitment key, pad it with zeros.
+        List<BigInteger> padded = new ArrayList<>(a_vec);
+        if (a_vec.size() < ck.getG_vec().size()) {
+            for (int i = 0; i < ck.getG_vec().size() - a_vec.size(); i++) {
+                padded.add(BigInteger.ZERO);
+            }
+        }
+
+        // Commitment computation.
         BigInteger modeExpResult = modExp(ck.getH(), r, encryptionGroup.getP());
-        BigInteger modeExpProductResult = modeExpResult.multiply(modExpProduct(ck.getG_vec(), a_vec, encryptionGroup.getP()));
+        BigInteger modeExpProductResult = modeExpResult.multiply(modExpProduct(ck.getG_vec(), padded, encryptionGroup.getP()));
         BigInteger result = modeExpProductResult.mod(encryptionGroup.getP());
 
-        // Post requirement
+        // Post requirement.
         requireIsMember(result, encryptionGroup);
 
         return result;
