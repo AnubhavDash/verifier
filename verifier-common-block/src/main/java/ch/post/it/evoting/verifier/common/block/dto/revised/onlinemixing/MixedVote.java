@@ -10,6 +10,7 @@ import java.util.List;
 
 @Getter
 public class MixedVote {
+
     private BigInteger gamma;
     private List<BigInteger> phis;
 

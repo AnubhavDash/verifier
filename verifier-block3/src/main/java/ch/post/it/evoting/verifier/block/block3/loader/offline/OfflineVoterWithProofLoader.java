@@ -15,7 +15,7 @@
 package ch.post.it.evoting.verifier.block.block3.loader.offline;
 
 import ch.post.it.evoting.verifier.block.block3.scytl.loader.VoterWithProofLoader;
-import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.EncryptedBallot;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.GroupElement;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.OnlineDecryptionProof;
@@ -23,7 +23,6 @@ import com.scytl.decrypt.beans.DecryptionProof;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallot;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;
 import com.scytl.products.ov.mixnet.commons.homomorphic.impl.GjosteenElGamalPlaintext;
-import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroupParams;
@@ -67,7 +66,7 @@ public class OfflineVoterWithProofLoader implements VoterWithProofLoader {
         List<Tuple3<ElGamalEncryptedBallot, GjosteenElGamalPlaintext, DecryptionProof>> list = Flux.fromIterable(votesWithProofLines)
                 .map(votesWithProofLine -> {
                     ElGamalEncryptedBallot encryptedBallot = convertToEncryptedBallot(votesWithProofLine.getEncryptedBallot());
-                    GroupElement gamma = encryptedBallot.getGamma();
+                    com.scytl.products.ov.mixnet.commons.mathematical.GroupElement gamma = encryptedBallot.getGamma();
 
                     return Tuples.of(encryptedBallot,
                             convertToPlainText(votesWithProofLine.getPlainText(), gamma.getParams()),
@@ -81,7 +80,7 @@ public class OfflineVoterWithProofLoader implements VoterWithProofLoader {
         this.decryptionProofs = list.stream().map(t -> t.getT3()).collect(Collectors.toList());
     }
 
-    static DecryptionProof convertToProof(String proofString, GroupElement gamma) {
+    static DecryptionProof convertToProof(String proofString, com.scytl.products.ov.mixnet.commons.mathematical.GroupElement gamma) {
         try {
             OnlineDecryptionProof odp = Deserializer.fromJson(TypeConverter.stringToByte(proofString.substring(1, proofString.length() - 1).replace("\"\"", "\"")), OnlineDecryptionProof.class);
 
@@ -128,10 +127,10 @@ public class OfflineVoterWithProofLoader implements VoterWithProofLoader {
     }
 
     static ElGamalEncryptedBallot convertToEncryptedBallot(String ebsString) {
-        List<GroupElement> zpElements = new ArrayList<>();
+        List<com.scytl.products.ov.mixnet.commons.mathematical.GroupElement> zpElements = new ArrayList<>();
         try {
-            EncryptedBallot[] ebs = Deserializer.fromJson(TypeConverter.stringToByte(ebsString.substring(1, ebsString.length() - 1).replace("\"\"", "\"")), EncryptedBallot[].class);
-            for (EncryptedBallot eb : ebs) {
+            GroupElement[] ebs = Deserializer.fromJson(TypeConverter.stringToByte(ebsString.substring(1, ebsString.length() - 1).replace("\"\"", "\"")), GroupElement[].class);
+            for (GroupElement eb : ebs) {
                 zpElements.add(new ZpElement(eb.getValue(), eb.getP(), eb.getQ()));
             }
         } catch (IOException e) {

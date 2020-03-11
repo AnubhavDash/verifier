@@ -14,32 +14,31 @@
  */
 package ch.post.it.evoting.verifier.block.block3.loader.online.mapper;
 
-import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.EncryptedBallot;
-import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.EncryptedBallotWrapper;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.Ciphertext;
+import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
+import com.scytl.products.ov.mixnet.commons.homomorphic.impl.GjosteenElGamalCiphertext;
 import com.scytl.products.ov.mixnet.commons.mathematical.GroupElement;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
-import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
+import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroupParams;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Mapper
-public interface PublicCommitmentMapper {
+public interface CiphertextMapper {
 
-    PublicCommitmentMapper INSTANCE = Mappers.getMapper(PublicCommitmentMapper.class);
+    CiphertextMapper INSTANCE = Mappers.getMapper(CiphertextMapper.class);
 
-    default PublicCommitment map(EncryptedBallotWrapper source){
-        return new PublicCommitment(map(source.getElement()));
+    default com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext map(Ciphertext source, ZpGroupParams params) {
+        GroupElement gamma = new ZpElement(TypeConverter.stringToBigInteger(source.getGamma().split(";")[0]), params);
+        List<GroupElement> phis = Arrays.stream(source.getPhis().split(","))
+                .map(p -> new ZpElement(TypeConverter.stringToBigInteger(p.split(";")[0]), params))
+                .collect(Collectors.toList());
+
+        return new GjosteenElGamalCiphertext(gamma, phis);
     }
 
-    default GroupElement map(EncryptedBallot element){
-        return new ZpElement(element.getValue(), element.getP(), element.getQ());
-    }
-
-    default PublicCommitment[] map(List<EncryptedBallotWrapper> source){
-        List<PublicCommitment> collect = source.stream().map(cpd -> map(cpd)).collect(Collectors.toList());
-        return collect.toArray(new PublicCommitment[0]);
-    }
 }

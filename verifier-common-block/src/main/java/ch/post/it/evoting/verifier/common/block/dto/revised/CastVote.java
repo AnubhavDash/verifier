@@ -33,11 +33,8 @@ public class CastVote {
     private final UUID ballotId;
     private final UUID ballotBoxId;
     private final UUID votingCardId;
-    @JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
     private final List<BigInteger> encryptedOptions;
-    @JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
     private final List<BigInteger> encryptedPartialChoiceCodes;
-    @JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
     private final List<BigInteger> encryptedWriteIns;
     private final List<UUID> correctnessIds;
     private final PublicKey verificationCardPublicKey;

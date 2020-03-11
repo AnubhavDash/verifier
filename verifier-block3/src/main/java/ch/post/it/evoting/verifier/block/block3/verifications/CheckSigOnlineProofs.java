@@ -27,6 +27,7 @@ import com.scytl.products.ov.mixnet.commons.homomorphic.Randomness;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
 
+import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -130,18 +131,18 @@ public class CheckSigOnlineProofs extends AbstractVerification {
                     ballotBoxId.getId(),
                     onlineMixing.getVoteSetId().getIndex(),
                     onlineMixing.getVotes().stream()
-                            .map(vote -> vote.getGamma() + ";" + vote.getPhis().stream().map(String::valueOf).collect(Collectors.joining()))
+                            .map(vote -> vote.getGamma() + ";" + vote.getPhis().stream().map(BigInteger::toString).collect(Collectors.joining()))
                             .collect(Collectors.joining()),
                     voteEnc,
-                    onlineMixing.getCommitmentParameters().stream().collect(Collectors.joining()),
+                    onlineMixing.getCommitmentParameters().stream().map(BigInteger::toString).collect(Collectors.joining()),
                     onlineMixing.getDecryptionProofs().stream().collect(Collectors.joining()),
                     onlineMixing.getShuffledVotes().stream()
-                            .map(vote -> vote.getGamma() + ";" + vote.getPhis().stream().map(String::valueOf).collect(Collectors.joining()))
+                            .map(vote -> vote.getGamma() + ";" + vote.getPhis().stream().map(BigInteger::toString).collect(Collectors.joining()))
                             .collect(Collectors.joining()),
                     shuffleProof != null ? serialize(shuffleProof) : "",
                     onlineMixing.getTimestamp(),
                     onlineMixing.getPreviousVotes().stream()
-                            .map(vote -> vote.getGamma() + ";" + vote.getPhis().stream().map(String::valueOf).collect(Collectors.joining()))
+                            .map(vote -> vote.getGamma() + ";" + vote.getPhis().stream().map(BigInteger::toString).collect(Collectors.joining()))
                             .collect(Collectors.joining()),
                     prevVoteEnc);
         }

@@ -6,13 +6,13 @@ import lombok.Getter;
 import java.math.BigInteger;
 
 @Getter
-public class ExponentValue {
+public class Exponent {
 
     private BigInteger q;
     private BigInteger value;
 
-    public ExponentValue(@JsonProperty("q") BigInteger q,
-                         @JsonProperty("value") BigInteger value) {
+    public Exponent(@JsonProperty("q") BigInteger q,
+                    @JsonProperty("value") BigInteger value) {
         this.q = q;
         this.value = value;
     }

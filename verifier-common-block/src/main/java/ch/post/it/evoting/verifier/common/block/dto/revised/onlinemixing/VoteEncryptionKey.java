@@ -9,6 +9,7 @@ import java.util.List;
 
 @Getter
 public class VoteEncryptionKey {
+
     private EncryptionGroup zpSubgroup;
     private List<BigInteger> elements;
 

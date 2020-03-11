@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 @Getter
-public class EncryptedBallotWrapper {
-    private EncryptedBallot element;
+public class Commitment {
 
-    public EncryptedBallotWrapper(@JsonProperty("element") EncryptedBallot element) {
+    private GroupElement element;
+
+    public Commitment(@JsonProperty("element") GroupElement element) {
         this.element = element;
     }
 }

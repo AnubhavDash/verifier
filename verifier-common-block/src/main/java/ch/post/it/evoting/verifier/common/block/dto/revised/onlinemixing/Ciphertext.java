@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 @Getter
-public class CipherText {
+public class Ciphertext {
 
     private String gamma;
     private String phis;
 
-    public CipherText(@JsonProperty("gamma") String gamma,
+    public Ciphertext(@JsonProperty("gamma") String gamma,
                       @JsonProperty("phis") String phis) {
         this.gamma = gamma;
         this.phis = phis;

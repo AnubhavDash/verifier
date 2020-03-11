@@ -1,23 +1,28 @@
 package ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing;
 
+import ch.post.it.evoting.verifier.common.block.dto.converter.StringArrayToBigIntegerListConverter;
 import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionGroup;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.collect.ImmutableList;
 import lombok.Getter;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @Getter
 public class OnlineMixing {
+
     private VoteEncryptionKey voteEncryptionKey;
     private VoteSetId voteSetId;
     private List<MixedVote> votes;
     private String electoralAuthorityId;
-    private EncryptionGroup encryptionParameters;
+    private EncryptionGroup encryptionGroup;
     private List<String> decryptionProofs;
     private List<MixedVote> shuffledVotes;
     private String shuffleProof;
-    private List<String> commitmentParameters;
+
+    private List<BigInteger> commitmentParameters;
     private String timestamp;
     private Signature signature;
     private List<MixedVote> previousVotes;
@@ -32,7 +37,7 @@ public class OnlineMixing {
                         @JsonProperty("decryptionProofs") List<String> decryptionProofs,
                         @JsonProperty("shuffledVotes") MixedVote[] shuffledVotes,
                         @JsonProperty("shuffleProof") String shuffleProof,
-                        @JsonProperty("commitmentParameters") List<String> commitmentParameters,
+                        @JsonProperty("commitmentParameters") List<BigInteger> commitmentParameters,
                         @JsonProperty("timestamp") String timestamp,
                         @JsonProperty("signature") Signature signature,
                         @JsonProperty("previousVotes") MixedVote[] previousVotes,
@@ -41,7 +46,7 @@ public class OnlineMixing {
         this.voteSetId = voteSetId;
         this.votes = ImmutableList.copyOf(votes);
         this.electoralAuthorityId = electoralAuthorityId;
-        this.encryptionParameters = encryptionParameters;
+        this.encryptionGroup = encryptionParameters;
         this.decryptionProofs = decryptionProofs;
         this.shuffledVotes = ImmutableList.copyOf(shuffledVotes);
         this.shuffleProof = shuffleProof;

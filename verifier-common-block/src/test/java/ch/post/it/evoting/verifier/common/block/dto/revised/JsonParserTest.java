@@ -14,6 +14,8 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.OnlineMixing;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.ShuffleArgumentMessage;
 import ch.post.it.evoting.verifier.common.block.dto.revised.serialization.*;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -130,6 +132,23 @@ public class JsonParserTest {
 
         StringBuilder sb = new StringBuilder();
         metadata.getSignedItems().stream().forEach(s -> sb.append(s.getValue()));
+    }
+
+    @Test
+    public void deserializeOnlineMixing() throws IOException {
+        InputStream inputStream = getResourceStream("schemas/jsonWithBigInteger/OnlineMixing.json");
+        OnlineMixing onlineMixing = mapper.readValue(inputStream, OnlineMixing.class);
+
+        assertThat(onlineMixing.getElectoralAuthorityId(), CoreMatchers.equalTo("e591efc853694bf880afebce631ab95e"));
+    }
+
+    @Test
+    public void deserializeShuffleArgumentMessage() throws IOException {
+        InputStream inputStream = getResourceStream("schemas/jsonWithBigInteger/OnlineShuffleProof.json");
+        ShuffleArgumentMessage shuffleArgumentMessage = mapper.readValue(inputStream, ShuffleArgumentMessage.class);
+
+        assertThat(shuffleArgumentMessage.getShuffleArgumentSecondAnswer().getMultiExponentiationArgumentAnswer().getRandomnessTau().getExponent().getValue(),
+                CoreMatchers.equalTo(new BigInteger("16370518994319586760319791526293535327576438646782139419846004180837103527129035954742043590609421369665944746587885814920851694546456891767644945459124422553763416586515339978014154452159687109161090635367600349264934924141746082060353483306855352192358732451955232000593777554431798981574529854314651092086488426390776811367125009551346089319315111509277347117467107914073639456805159094562593954195960531136052208019343392906816001017488051366518122404819967204601427304267380238263913892658950281593755894747339126531018026798982785331079065126375455293409065540731646939808640273393855256230820509217411510058759")));
     }
 
 
