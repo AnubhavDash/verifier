@@ -16,13 +16,14 @@ package ch.post.it.evoting.verifier.common.block.tools;
 
 import ch.post.it.evoting.verifier.common.block.dto.revised.CommitmentKey;
 import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionGroup;
+import com.google.common.primitives.Bytes;
 import lombok.NonNull;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.StringJoiner;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.util.*;
 
 import static ch.post.it.evoting.verifier.common.block.tools.Requirements.*;
 
@@ -33,6 +34,46 @@ public final class MathHelper {
     }
 
     /**
+     * Utility functions - 1.2.2 Random Oracle Hash.
+     * <p>
+     * This primitive is used to map an input value <code>∈ [0, 1]<sup>𝑛</sup></code> to a random-looking value <code>∈ ℤ𝑞</code>. This
+     * is used by the proofs relying on the Fiat-Shamir heuristic to turn an interactive protocol into a non-interactive proof system.
+     *
+     * @param messageDigest A hash function.
+     * @param x             An input value in bytes.
+     * @param lowerBound    A lower bound <code>&isin; ℤ</code>, typically 0.
+     * @param upperBound    An upper bound <code>&isin; ℤ</code>, typically group order (q).
+     * @return A hash of the input value, {@code lowerBound <= output < upperBound}.
+     */
+    public static BigInteger randomOracleHash(MessageDigest messageDigest, byte[] x, BigInteger lowerBound, BigInteger upperBound) {
+        // Check bounds.
+        if (isGTE(lowerBound, upperBound)) {
+            throw new IllegalArgumentException("The lower bound must be lower than the upper bound!");
+        }
+
+        // Hash input. Output size is upperBound - lowerBound - 1.
+        byte[] digest = hashInput(messageDigest, x, lowerBound, upperBound);
+
+        // Convert digest to a BigInteger.
+        final BigInteger e = new BigInteger(1, digest);
+
+        // Set the k most significant bits of e to 0's.
+        int bitLenTmp = e.bitLength();
+        int k = 1;
+        while (k <= bitLenTmp - 1 && !e.testBit(k)) {
+            k++;
+        }
+        final BigInteger ePrime = setKLastMSBToZeros(e, k);
+
+        // Reverse the bits.
+        final BigInteger yPrime = reverseBits(ePrime);
+
+        return (yPrime.add(lowerBound).add(BigInteger.ONE)).mod(upperBound);
+    }
+
+    /**
+     * Utility functions - 1.2.3 Inverted string order concatenation.
+     * <p>
      * Reverse and concatenate a list of strings. Only required temporarily to ensure compatibility with the non-compliant implementation.
      *
      * @param strings The list of strings to concatenate together.
@@ -287,6 +328,9 @@ public final class MathHelper {
         return output_vec;
     }
 
+    // =====================================================================================================================================
+    // Utility methods.
+    // =====================================================================================================================================
 
     /**
      * Check if x is greater than or equal to n.
@@ -299,7 +343,6 @@ public final class MathHelper {
         return x.compareTo(n) >= 0;
     }
 
-
     /**
      * Check if x is greater than n.
      *
@@ -310,7 +353,6 @@ public final class MathHelper {
     private static boolean isGT(BigInteger x, BigInteger n) {
         return x.compareTo(n) > 0;
     }
-
 
     /**
      * Check if x is less than or equal to n.
@@ -323,7 +365,6 @@ public final class MathHelper {
         return x.compareTo(n) <= 0;
     }
 
-
     /**
      * Check if x is less than n.
      *
@@ -333,5 +374,72 @@ public final class MathHelper {
      */
     private static boolean isLT(BigInteger x, BigInteger n) {
         return x.compareTo(n) < 0;
+    }
+
+    private static byte[] hashInput(MessageDigest messageDigest, byte[] x, BigInteger lowerBound, BigInteger upperBound) {
+        // Output size in bytes.
+        final int s = messageDigest.getDigestLength();
+
+        final BigInteger c = upperBound.subtract(lowerBound).subtract(BigInteger.ONE);
+        final int t = c.bitLength();
+        // FIXME Implementation error 1.
+        // Warning: Error required for compatibility. On the line below, a number of bits is divided by a number of bytes.
+        final int n = StrictMath.floorDiv(t, s);
+        final int r = t % s;
+
+        // Hash input.
+        byte[] input = x;
+        final ByteBuffer byteBuffer = ByteBuffer.allocate(n * s);
+        for (int i = 0; i < n; i++) {
+            // FIXME Implementation error 2.
+            // Warning: as per the verifier specification, this diverges from the e-voting protocol, to ensure compatibility with the
+            // implementation. Only the last element is fed to the hash, instead of the concatenation of the hashes computed so far.
+            final byte[] digest = messageDigest.digest(input);
+            byteBuffer.put(digest);
+            input = digest;
+        }
+        byte[] e = byteBuffer.array();
+
+        // Completion if needed.
+        if (r > 0) {
+            // FIXME Implementation error 3.
+            // Warning: as per the verifier specification, this diverges from the e-voting protocol, to ensure compatibility with the
+            // implementation. Only the hash of the empty string is taken as input in the following step, instead of the concatenation of
+            // the hashes computed so far.
+            final byte[] hashOfEmpty = messageDigest.digest("".getBytes(StandardCharsets.UTF_8));
+            final byte[] digest = messageDigest.digest(hashOfEmpty);
+            final byte[] e_n = Arrays.copyOfRange(digest, 0, r);
+            e = Bytes.concat(e, e_n);
+        }
+
+        return e;
+    }
+
+    private static BigInteger setKLastMSBToZeros(BigInteger input, int k) {
+        final int bitLength = input.bitLength();
+        BigInteger output = input;
+
+        // The most significant bit in a BigInteger is the bit at the biggest index.
+        for (int i = 0; i < k; i++) {
+            output = output.clearBit(bitLength - 1 - i);
+        }
+
+        return output;
+    }
+
+    private static BigInteger reverseBits(BigInteger ePrime) {
+        // Store the length before because yPrime.bitLength would change in the for loop.
+        final int bitLength = ePrime.bitLength();
+        BigInteger yPrime = ePrime;
+
+        for (int i = 0; i < bitLength; i++) {
+            if (ePrime.testBit(i)) {
+                yPrime = yPrime.setBit(bitLength - 1 - i);
+            } else {
+                yPrime = yPrime.clearBit(bitLength - 1 - i);
+            }
+        }
+
+        return yPrime;
     }
 }

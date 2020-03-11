@@ -2,6 +2,7 @@ package ch.post.it.evoting.verifier.common.block.tools;
 
 import ch.post.it.evoting.verifier.common.block.dto.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -9,9 +10,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.security.Security;
 import java.util.Arrays;
 import java.util.List;
 
@@ -175,6 +179,22 @@ public class MathHelperTest {
     @Test
     public void reverseAndJoinTest() {
         Assert.assertEquals("CBA", MathHelper.reverseAndJoin(Arrays.asList("A", "B", "C")));
+    }
+
+    @Test
+    public void randomOracleHash() throws Exception {
+        if (Security.getProvider("BC") == null) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
+
+        final List<RandomOracleHashParameters> randomOracleHashParameters = readValues("randomOracleHashValues.json",
+                RandomOracleHashParameters[].class);
+        for (RandomOracleHashParameters rohp : randomOracleHashParameters) {
+            final BigInteger output = MathHelper.randomOracleHash(MessageDigest.getInstance("SHA-256", "BC"),
+                    rohp.getX().getBytes(StandardCharsets.UTF_8),
+                    BigInteger.ZERO, rohp.getQ());
+            Assert.assertEquals(rohp.getOutput(), output);
+        }
     }
 
 
