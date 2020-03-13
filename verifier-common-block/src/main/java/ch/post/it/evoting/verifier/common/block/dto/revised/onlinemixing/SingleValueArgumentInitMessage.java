@@ -7,14 +7,14 @@ import lombok.Getter;
 public class SingleValueArgumentInitMessage {
 
     private Commitment commitmentD;
-    private Commitment commitmentLowDelta;
-    private Commitment commitmentHighDelta;
+    private Commitment commitmentLowerDelta;
+    private Commitment commitmentUpperDelta;
 
     public SingleValueArgumentInitMessage(@JsonProperty("commitmentPublicD") Commitment commitmentPublicD,
                                           @JsonProperty("commitmentPublicLowDelta") Commitment commitmentPublicLowDelta,
                                           @JsonProperty("commitmentPublicHighDelta") Commitment commitmentPublicHighDelta) {
         this.commitmentD = commitmentPublicD;
-        this.commitmentLowDelta = commitmentPublicLowDelta;
-        this.commitmentHighDelta = commitmentPublicHighDelta;
+        this.commitmentLowerDelta = commitmentPublicLowDelta;
+        this.commitmentUpperDelta = commitmentPublicHighDelta;
     }
 }

@@ -31,4 +31,10 @@ public final class Requirements {
         x_vec.forEach(x -> requireIsMember(x, encryptionGroup));
     }
 
+    public static void requireVectorsSameDimension(List<BigInteger> a, List<BigInteger> b) {
+        if(a.size() != b.size()) {
+            throw new IllegalArgumentException("The vectors dimensions do not match.");
+        }
+    }
+
 }

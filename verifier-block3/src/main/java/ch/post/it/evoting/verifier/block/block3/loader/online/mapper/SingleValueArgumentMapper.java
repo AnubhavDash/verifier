@@ -29,8 +29,8 @@ public interface SingleValueArgumentMapper {
 
     default SingleValueProductProofInitialMessage mapInitMessage(SingleValueArgumentInitMessage source) {
         PublicCommitment cd = new PublicCommitment(GroupElementMapper.INSTANCE.map(source.getCommitmentD().getElement()));
-        PublicCommitment cLowDelta = new PublicCommitment(GroupElementMapper.INSTANCE.map(source.getCommitmentLowDelta().getElement()));
-        PublicCommitment cHighDelta = new PublicCommitment(GroupElementMapper.INSTANCE.map(source.getCommitmentHighDelta().getElement()));
+        PublicCommitment cLowDelta = new PublicCommitment(GroupElementMapper.INSTANCE.map(source.getCommitmentLowerDelta().getElement()));
+        PublicCommitment cHighDelta = new PublicCommitment(GroupElementMapper.INSTANCE.map(source.getCommitmentUpperDelta().getElement()));
         return new SingleValueProductProofInitialMessage(cd, cLowDelta, cHighDelta);
     }
 
