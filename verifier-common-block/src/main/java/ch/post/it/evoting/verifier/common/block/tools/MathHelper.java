@@ -122,10 +122,7 @@ public final class MathHelper {
         requireVectorIsInZ_q(a_vec, encryptionGroup);
         requireIsMember(ck.getH(), encryptionGroup);
         requireVectorIsMember(ck.getG_vec(), encryptionGroup);
-        if (a_vec.size() > ck.getG_vec().size()) {
-            throw new IllegalArgumentException("The list of elements vector dimension must be greater or equal than the commitment key " +
-                    "vector dimension!");
-        }
+        requireVectorDimensionLTE(a_vec, ck.getG_vec());
 
         // If the list of elements to be committed is shorter than the commitment key, pad it with zeros.
         List<BigInteger> padded = new ArrayList<>(a_vec);
@@ -230,12 +227,10 @@ public final class MathHelper {
      * @return the product of the modular exponentiation
      */
     public static BigInteger modExpProduct(List<BigInteger> b_vec, List<BigInteger> e_vec, BigInteger m) {
-        int dimension = b_vec.size();
-        if (dimension != e_vec.size()) {
-            throw new IllegalArgumentException("Bases and exponents vectors must have the same dimension.");
-        }
+        requireVectorDimensionEqual(b_vec, e_vec);
 
         // Naive implementation before optimisation
+        int dimension = b_vec.size();
         BigInteger acc = BigInteger.ONE;
         for (int i = 0; i < dimension; i++) {
             acc = acc.multiply(modExp(b_vec.get(i), e_vec.get(i), m));
@@ -298,13 +293,12 @@ public final class MathHelper {
      */
     public static List<BigInteger> computePhiPlaintextEquality(EncryptionGroup encryptionGroup, List<BigInteger> h_vec,
                                                                List<BigInteger> h_vec_bar, BigInteger r, BigInteger r_bar) {
-        if (h_vec.size() != h_vec_bar.size()) {
-            throw new IllegalArgumentException("Primary and secondary key vectors must have the same dimension.");
-        }
-        BigInteger p = encryptionGroup.getP();
-        BigInteger g = encryptionGroup.getG();
+
+        final BigInteger p = encryptionGroup.getP();
+        final BigInteger g = encryptionGroup.getG();
 
         // Pre requirements.
+        requireVectorDimensionEqual(h_vec, h_vec_bar);
         requireIsMember(g, encryptionGroup);
         requireIsInZ_q(r, encryptionGroup);
         requireIsInZ_q(r_bar, encryptionGroup);
@@ -363,7 +357,7 @@ public final class MathHelper {
         requireIsMember(c_d, encryptionGroup);
         requireIsMember(c_lowerDelta, encryptionGroup);
         requireIsMember(c_upperDelta, encryptionGroup);
-        requireVectorsSameDimension(a_tilde_vec, b_tilde_vec);
+        requireVectorDimensionEqual(a_tilde_vec, b_tilde_vec);
         requireVectorIsInZ_q(a_tilde_vec, encryptionGroup);
         requireVectorIsInZ_q(b_tilde_vec, encryptionGroup);
         requireIsInZ_q(r_tilde, encryptionGroup);
