@@ -16,13 +16,21 @@ package ch.post.it.evoting.verifier.common.block.tools;
 
 import ch.post.it.evoting.verifier.common.block.dto.revised.CommitmentKey;
 import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionGroup;
+import ch.post.it.evoting.verifier.common.block.dto.revised.algo.Argument;
+import ch.post.it.evoting.verifier.common.block.dto.revised.algo.SVPArgument;
+import ch.post.it.evoting.verifier.common.block.dto.revised.algo.SVPStatement;
+import ch.post.it.evoting.verifier.common.block.dto.revised.algo.Statement;
 import com.google.common.primitives.Bytes;
 import lombok.NonNull;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.Security;
 import java.util.*;
 
 import static ch.post.it.evoting.verifier.common.block.tools.Requirements.*;
@@ -58,11 +66,7 @@ public final class MathHelper {
         final BigInteger e = new BigInteger(1, digest);
 
         // Set the k most significant bits of e to 0's.
-        int bitLenTmp = e.bitLength();
-        int k = 1;
-        while (k <= bitLenTmp - 1 && !e.testBit(k)) {
-            k++;
-        }
+        int k = e.clearBit(0).getLowestSetBit();
         final BigInteger ePrime = setKLastMSBToZeros(e, k);
 
         // Reverse the bits.
@@ -328,6 +332,81 @@ public final class MathHelper {
         return output_vec;
     }
 
+    /**
+     * Arguments - 2.1 Single Value Product Argument Verification
+     *
+     * @return {@code true} if the statement verification was successful.
+     */
+    public static boolean verifySVPArgument(EncryptionGroup encryptionGroup, CommitmentKey ck, BigInteger pk, Statement statement,
+                                            Argument argument) {
+
+        // TODO that or change parameters type?
+        SVPStatement svpStatement = (SVPStatement) statement;
+        SVPArgument svpArgument = (SVPArgument) argument;
+
+        // Params extraction.
+        final BigInteger c_a = svpStatement.getC_a();
+        final BigInteger b = svpStatement.getB();
+        final BigInteger c_d = svpArgument.getC_d();
+        final BigInteger c_lowerDelta = svpArgument.getC_lowerDelta();
+        final BigInteger c_upperDelta = svpArgument.getC_upperDelta();
+        final List<BigInteger> a_tilde_vec = svpArgument.getA_tilde_vec();
+        final List<BigInteger> b_tilde_vec = svpArgument.getB_tilde_vec();
+        final BigInteger r_tilde = svpArgument.getR_tilde();
+        final BigInteger s_tilde = svpArgument.getS_tilde();
+        final BigInteger p = encryptionGroup.getP();
+        final BigInteger q = encryptionGroup.getQ();
+
+        // Pre requirements.
+        requireIsInZ_q(b, encryptionGroup);
+        requireIsMember(c_a, encryptionGroup);
+        requireIsMember(c_d, encryptionGroup);
+        requireIsMember(c_lowerDelta, encryptionGroup);
+        requireIsMember(c_upperDelta, encryptionGroup);
+        requireVectorsSameDimension(a_tilde_vec, b_tilde_vec);
+        requireVectorIsInZ_q(a_tilde_vec, encryptionGroup);
+        requireVectorIsInZ_q(b_tilde_vec, encryptionGroup);
+        requireIsInZ_q(r_tilde, encryptionGroup);
+        requireIsInZ_q(s_tilde, encryptionGroup);
+
+        // Build the string to be hashed by random oracle hash.
+        List<String> elements = new ArrayList<>();
+        elements.add(ToStringHelper.publicCommitmentToString(c_a, p, q));
+        elements.add(ToStringHelper.exponentToString(b, q));
+        elements.add(ToStringHelper.singleValueProductProofInitialMessageToString(c_d, c_lowerDelta, c_upperDelta, p, q));
+        elements.add(ToStringHelper.commitmentParamsToString(ck.getH(), ck.getG_vec(), p, q));
+        elements.add(ToStringHelper.zpGroupElementToString(pk, p, q));
+
+        // Compute random oracle hash.
+        MessageDigest messageDigest = getSHA256MessageDigest();
+        byte[] input = TypeConverter.stringToByte(reverseAndJoin(elements));
+        BigInteger x = randomOracleHash(messageDigest, input, BigInteger.ZERO, q);
+
+        if (!areEqual(modExp(c_a, x, p).multiply(c_d).mod(p), computeCommitment(encryptionGroup, r_tilde, a_tilde_vec, ck))) {
+            return false;
+        }
+
+        final int n = ck.getG_vec().size() - 1; // Index of last element.
+        final List<BigInteger> args_vec = new ArrayList<>();
+        for (int i = 0; i <= n - 1; i++) {
+            final BigInteger leftTerm = x.multiply(b_tilde_vec.get(i + 1)).mod(q);
+            final BigInteger rightTerm = b_tilde_vec.get(i).multiply(a_tilde_vec.get(i + 1)).mod(q);
+            args_vec.add(leftTerm.subtract(rightTerm).mod(q));
+        }
+
+        if (!areEqual(modExp(c_upperDelta, x, p).multiply(c_lowerDelta).mod(p),
+                computeCommitment(encryptionGroup, s_tilde, args_vec, ck))) {
+            return false;
+        }
+
+        if (!areEqual(b_tilde_vec.get(0), a_tilde_vec.get(0))) {
+            return false;
+        }
+
+        return areEqual(b_tilde_vec.get(n), x.multiply(b).mod(q));
+    }
+
+
     // =====================================================================================================================================
     // Utility methods.
     // =====================================================================================================================================
@@ -441,5 +520,20 @@ public final class MathHelper {
         }
 
         return yPrime;
+    }
+
+    private static MessageDigest getSHA256MessageDigest() {
+        // TODO use bouncyCastle?
+        if (Security.getProvider("BC") == null) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
+
+        MessageDigest messageDigest;
+        try {
+            messageDigest = MessageDigest.getInstance("SHA-256", "BC");
+        } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
+            throw new IllegalArgumentException("Failed to instantiate hashing algorithm for SHA-256 with BouncyCastle: " + e.getMessage());
+        }
+        return messageDigest;
     }
 }

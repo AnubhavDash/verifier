@@ -1,6 +1,7 @@
 package ch.post.it.evoting.verifier.common.block.tools;
 
 import ch.post.it.evoting.verifier.common.block.dto.*;
+import ch.post.it.evoting.verifier.common.block.dto.revised.algo.SVPStatement;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.Assert;
@@ -197,6 +198,19 @@ public class MathHelperTest {
         }
     }
 
+    @Test
+    public void verifySVPArgumentTest() {
+        final List<VerifySVPArgumentParameters> verifySVPArgumentParameters = readValues("svp-argument.json",
+                VerifySVPArgumentParameters[].class);
+
+        for (VerifySVPArgumentParameters svpap : verifySVPArgumentParameters) {
+            final boolean result = MathHelper.verifySVPArgument(svpap.getEg(), svpap.getCk(), svpap.getPk_mix(), svpap.getStatement(),
+                    svpap.getArgument());
+
+            Assert.assertTrue("Assertion failed for data id: " + svpap.getId(), result);
+        }
+    }
+
 
     // =====================================================================================================================================
     // Utility methods.
@@ -213,7 +227,7 @@ public class MathHelperTest {
             ObjectMapper jsonMapper = new ObjectMapper();
             return jsonMapper.readValue(is, clazz);
         } catch (IOException | URISyntaxException e) {
-            throw new RuntimeException("Read values failed for file " + jsonFileName);
+            throw new RuntimeException("Read values failed for file " + jsonFileName + ". " + e.getMessage());
         }
     }
 
