@@ -327,6 +327,36 @@ public final class MathHelper {
     }
 
     /**
+     * Utility functions - 1.7 Bilinear Map
+     *
+     * @param encryptionGroup The encryption group context <code>(p, q, g)</code>.
+     * @param a_vec           A vector of values in <code>Z<sub>q</sub></code>.
+     * @param b_vec           A second vector of values in <code>Z<sub>q</sub></code>.
+     * @param y               The value in <code>Z<sub>q</sub></code> that defines the bilinear map.
+     * @return A bilinear mapping. See Verifier - Block 3 document for more details.
+     */
+    public static BigInteger bilinearMapping(EncryptionGroup encryptionGroup, List<BigInteger> a_vec, List<BigInteger> b_vec,
+                                             BigInteger y) {
+
+        // Pre requirements.
+        requireVectorDimensionEqual(a_vec, b_vec);
+        requireVectorIsInZ_q(a_vec, encryptionGroup);
+        requireVectorIsInZ_q(b_vec, encryptionGroup);
+        requireIsInZ_q(y, encryptionGroup);
+
+        final BigInteger q = encryptionGroup.getQ();
+
+        BigInteger result = BigInteger.ZERO;
+        for (int i = 0; i < a_vec.size(); i++) {
+            final BigInteger modExp = modExp(y, BigInteger.valueOf(i + 1), q);
+            final BigInteger multiplication = a_vec.get(i).multiply(b_vec.get(i)).multiply(modExp);
+            result = result.add(multiplication).mod(q);
+        }
+
+        return result;
+    }
+
+    /**
      * Arguments - 2.1 Single Value Product Argument Verification
      *
      * @return {@code true} if the statement verification was successful.

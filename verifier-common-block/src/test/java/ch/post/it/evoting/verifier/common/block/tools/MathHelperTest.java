@@ -178,6 +178,15 @@ public class MathHelperTest {
     }
 
     @Test
+    public void bilinearMappingTest() {
+        final BilinearMappingParameters bilinearMappingParameters = readValue("bilinearMap.json", BilinearMappingParameters.class);
+        final BigInteger result = MathHelper.bilinearMapping(bilinearMappingParameters.getEg(), bilinearMappingParameters.getA_vec(),
+                bilinearMappingParameters.getB_vec(), bilinearMappingParameters.getY());
+
+        Assert.assertTrue(MathHelper.areEqual(result, bilinearMappingParameters.getOutput()));
+    }
+
+    @Test
     public void reverseAndJoinTest() {
         Assert.assertEquals("CBA", MathHelper.reverseAndJoin(Arrays.asList("A", "B", "C")));
     }
