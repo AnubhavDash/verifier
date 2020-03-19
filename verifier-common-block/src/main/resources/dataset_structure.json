@@ -154,6 +154,14 @@
         "relations": [
           "P7"
         ]
+      },
+      {
+        "key": "PRIMES",
+        "type": "FILE",
+        "name": "primes.csv",
+        "relations": [
+          "P7"
+        ]
       }
     ]
   },
