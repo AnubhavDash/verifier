@@ -42,6 +42,56 @@ public final class MathHelper {
     }
 
     /**
+     * Tests for mathematical equality the two provided {@link BigInteger}s parameters. For testing, the two
+     * provided parameters must be non-null, otherwise a {@link NullPointerException} will be thrown indicating the
+     * first parameter found to be null.
+     *
+     * @param valueA {@link NonNull} value to be tested
+     * @param valueB {@link NonNull} value to be tested
+     * @return true if parameter "valueA" is mathematically equal to parameter "valueB", false otherwise
+     */
+    public static boolean areEqual(@NonNull BigInteger valueA, @NonNull BigInteger valueB) {
+        return valueA.compareTo(valueB) == 0;
+    }
+
+
+    public static boolean isEulerCriterionValid(BigInteger vo, BigInteger p) {
+        BigInteger exponent = (p.subtract(BigInteger.ONE)).divide(BigInteger.TWO);
+        BigInteger ec = vo.modPow(exponent, p);
+        return MathHelper.areEqual(ec, BigInteger.ONE);
+    }
+
+
+    /**
+     * Utility to verify membership for Z<sub>q</sub>.
+     *
+     * @param x  a number
+     * @param eg EncryptionGroup
+     * @return true if x &isin; Z<sub>q</sub>, false otherwise
+     */
+    public static boolean isInZ_q(BigInteger x, EncryptionGroup eg) {
+        return isGTE(x, BigInteger.ZERO) && isLT(x, eg.getQ());
+    }
+
+
+    /**
+     * Utility to verify membership for encryptionGroup.
+     *
+     * @param x               A number
+     * @param encryptionGroup the associated encryption group
+     * @return true if <code>x &isin; encryptionGroup</code>, false otherwise
+     */
+    public static boolean isMember(BigInteger x, EncryptionGroup encryptionGroup) {
+        return isGTE(x, BigInteger.ONE) && isLT(x, encryptionGroup.getP())
+                && JacobiSymbol.computeJacobiSymbol(x, encryptionGroup.getP()) == 1;
+    }
+
+
+    public static boolean isPrime(BigInteger value) {
+        return value.isProbablePrime(Integer.MAX_VALUE);
+    }
+
+    /**
      * Utility functions - 1.2.2 Random Oracle Hash.
      * <p>
      * This primitive is used to map an input value <code>∈ [0, 1]<sup>𝑛</sup></code> to a random-looking value <code>∈ ℤ𝑞</code>. This
@@ -75,6 +125,7 @@ public final class MathHelper {
         return (yPrime.add(lowerBound).add(BigInteger.ONE)).mod(upperBound);
     }
 
+
     /**
      * Utility functions - 1.2.3 Inverted string order concatenation.
      * <p>
@@ -91,17 +142,79 @@ public final class MathHelper {
         return joiner.toString();
     }
 
+
     /**
-     * Tests for mathematical equality the two provided {@link BigInteger}s parameters. For testing, the two
-     * provided parameters must be non-null, otherwise a {@link NullPointerException} will be thrown indicating the
-     * first parameter found to be null.
+     * Utility functions - 1.4.1 Modular Exponentiation.
      *
-     * @param valueA {@link NonNull} value to be tested
-     * @param valueB {@link NonNull} value to be tested
-     * @return true if parameter "valueA" is mathematically equal to parameter "valueB", false otherwise
+     * @param b the base
+     * @param e the exponent
+     * @param m the modulus
+     * @return the modular exponentiation, <code>b<sup>e</sup> mod m</code>
      */
-    public static boolean areEqual(@NonNull BigInteger valueA, @NonNull BigInteger valueB) {
-        return valueA.compareTo(valueB) == 0;
+    public static BigInteger modExp(BigInteger b, BigInteger e, BigInteger m) {
+        // Naive implementation before optimisation
+        return b.modPow(e, m);
+    }
+
+
+    /**
+     * Utility functions - 1.4.2 Modular exponentiation product.
+     *
+     * @param b_vec a list of bases
+     * @param e_vec a list of exponents
+     * @param m     the modulus
+     * @return the product of the modular exponentiation
+     */
+    public static BigInteger modExpProduct(List<BigInteger> b_vec, List<BigInteger> e_vec, BigInteger m) {
+        requireVectorDimensionEqual(b_vec, e_vec);
+
+        // Naive implementation before optimisation
+        int dimension = b_vec.size();
+        BigInteger acc = BigInteger.ONE;
+        for (int i = 0; i < dimension; i++) {
+            acc = acc.multiply(modExp(b_vec.get(i), e_vec.get(i), m));
+        }
+        acc = acc.mod(m);
+
+        return acc;
+    }
+
+
+    /**
+     * Utility functions - 1.4.3 Modular inverse.
+     *
+     * @param b the base
+     * @param m the modulus
+     * @return the modular inverse, <code>b<sup>-1</sup> mod m</code>
+     */
+    public static BigInteger modInv(BigInteger b, BigInteger m) {
+        // Naive implementation before optimisation
+        return b.modInverse(m);
+    }
+
+
+    /**
+     * Utility functions - 1.4.4 Exponentiations product
+     *
+     * @param encryptionGroup The encryption group.
+     * @param a_vec           The base vector.
+     * @param x               The intermediate exponent.
+     * @return The product of the elements of {@code a_vec} raised to increasing powers of {@code x}.
+     */
+    public static BigInteger prodIncPow(EncryptionGroup encryptionGroup, List<BigInteger> a_vec, BigInteger x) {
+        // Pre requirements.
+        requireVectorIsMember(a_vec, encryptionGroup);
+        requireIsInZ_q(x, encryptionGroup);
+
+        final BigInteger p = encryptionGroup.getP();
+        final BigInteger q = encryptionGroup.getQ();
+
+        BigInteger result = BigInteger.ONE;
+        for (int i = 0; i < a_vec.size(); i++) {
+            result = result.multiply(modExp(a_vec.get(i), modExp(x, BigInteger.valueOf(i), q), p)).mod(p);
+        }
+
+        return result;
     }
 
 
@@ -164,93 +277,6 @@ public final class MathHelper {
         Requirements.requireIsMember(result, encryptionGroup);
 
         return result;
-    }
-
-
-    public static boolean isEulerCriterionValid(BigInteger vo, BigInteger p) {
-        BigInteger exponent = (p.subtract(BigInteger.ONE)).divide(BigInteger.TWO);
-        BigInteger ec = vo.modPow(exponent, p);
-        return MathHelper.areEqual(ec, BigInteger.ONE);
-    }
-
-
-    /**
-     * Utility to verify membership for Z<sub>q</sub>.
-     *
-     * @param x  a number
-     * @param eg EncryptionGroup
-     * @return true if x &isin; Z<sub>q</sub>, false otherwise
-     */
-    public static boolean isInZ_q(BigInteger x, EncryptionGroup eg) {
-        return isGTE(x, BigInteger.ZERO) && isLT(x, eg.getQ());
-    }
-
-
-    /**
-     * Utility to verify membership for encryptionGroup.
-     *
-     * @param x               A number
-     * @param encryptionGroup the associated encryption group
-     * @return true if <code>x &isin; encryptionGroup</code>, false otherwise
-     */
-    public static boolean isMember(BigInteger x, EncryptionGroup encryptionGroup) {
-        return isGTE(x, BigInteger.ONE) && isLT(x, encryptionGroup.getP())
-                && JacobiSymbol.computeJacobiSymbol(x, encryptionGroup.getP()) == 1;
-    }
-
-
-    public static boolean isPrime(BigInteger value) {
-        return value.isProbablePrime(Integer.MAX_VALUE);
-    }
-
-
-    /**
-     * Utility functions - 1.4.1 Modular Exponentiation.
-     *
-     * @param b the base
-     * @param e the exponent
-     * @param m the modulus
-     * @return the modular exponentiation, <code>b<sup>e</sup> mod m</code>
-     */
-    public static BigInteger modExp(BigInteger b, BigInteger e, BigInteger m) {
-        // Naive implementation before optimisation
-        return b.modPow(e, m);
-    }
-
-
-    /**
-     * Utility functions - 1.4.2 Modular exponentiation product.
-     *
-     * @param b_vec a list of bases
-     * @param e_vec a list of exponents
-     * @param m     the modulus
-     * @return the product of the modular exponentiation
-     */
-    public static BigInteger modExpProduct(List<BigInteger> b_vec, List<BigInteger> e_vec, BigInteger m) {
-        requireVectorDimensionEqual(b_vec, e_vec);
-
-        // Naive implementation before optimisation
-        int dimension = b_vec.size();
-        BigInteger acc = BigInteger.ONE;
-        for (int i = 0; i < dimension; i++) {
-            acc = acc.multiply(modExp(b_vec.get(i), e_vec.get(i), m));
-        }
-        acc = acc.mod(m);
-
-        return acc;
-    }
-
-
-    /**
-     * Utility functions - 1.4.3 Modular inverse.
-     *
-     * @param b the base
-     * @param m the modulus
-     * @return the modular inverse, <code>b<sup>-1</sup> mod m</code>
-     */
-    public static BigInteger modInv(BigInteger b, BigInteger m) {
-        // Naive implementation before optimisation
-        return b.modInverse(m);
     }
 
 
