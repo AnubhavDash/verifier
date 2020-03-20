@@ -81,6 +81,16 @@ public class MathHelperTest {
     }
 
     @Test
+    public void procIncPowTest() {
+        final ProdIncPowParameters prodIncPowParameters = readValue("prodIncPow.json", ProdIncPowParameters.class);
+
+        final BigInteger result = MathHelper.prodIncPow(prodIncPowParameters.getEncryptionGroup(), prodIncPowParameters.getA_vec(),
+                prodIncPowParameters.getX());
+
+        Assert.assertEquals(prodIncPowParameters.getOutput(), result);
+    }
+
+    @Test
     public void computeCommitmentWithSimpleValues() {
         computeCommitmentTest("computeCommitmentSimpleValues.json");
     }
