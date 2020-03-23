@@ -27,6 +27,7 @@ public enum StructureKey {
     ADMIN_BOARD_CERT,
     PLATFORM_ROOT_CA,
     INTEGRATION_CA,
+    ROOT_CA,
     TENANT_100,
 
     CRYPTO_SETUP_DIR,

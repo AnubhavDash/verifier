@@ -108,6 +108,11 @@
         "name": "platformRootCA.pem"
       },
       {
+        "key": "ROOT_CA",
+        "type": "FILE",
+        "name": "rootCA.crt"
+      },
+      {
         "key": "CC_MIXING_KEYS_DIR",
         "type": "DIRECTORY",
         "name": "cc_mixing_keys",
