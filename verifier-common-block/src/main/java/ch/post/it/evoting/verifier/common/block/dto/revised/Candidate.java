@@ -32,7 +32,6 @@ public class Candidate {
     private final List<BigInteger> primeNumbers;
     private final boolean blank;
 
-    @JsonCreator
     public Candidate(@JsonProperty("alias") UUID alias,
                      @JsonProperty("primeNumber") List<BigInteger> primeNumber,
                      @JsonProperty("blank") boolean blank) {

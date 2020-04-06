@@ -6,8 +6,8 @@ import lombok.Getter;
 @Getter
 public class HadamardProductArgumentAnswer {
 
-    private ZeroArgumentInitMessage zeroArgumentInitMessage;
-    private ZeroArgumentAnswer zeroArgumentAnswer;
+    private final ZeroArgumentInitMessage zeroArgumentInitMessage;
+    private final ZeroArgumentAnswer zeroArgumentAnswer;
 
     public HadamardProductArgumentAnswer(@JsonProperty("initial") ZeroArgumentInitMessage initial,
                                          @JsonProperty("answer") ZeroArgumentAnswer answer) {

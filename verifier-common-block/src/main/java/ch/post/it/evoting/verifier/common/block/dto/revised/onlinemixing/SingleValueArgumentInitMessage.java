@@ -6,9 +6,9 @@ import lombok.Getter;
 @Getter
 public class SingleValueArgumentInitMessage {
 
-    private Commitment commitmentD;
-    private Commitment commitmentLowerDelta;
-    private Commitment commitmentUpperDelta;
+    private final Commitment commitmentD;
+    private final Commitment commitmentLowerDelta;
+    private final Commitment commitmentUpperDelta;
 
     public SingleValueArgumentInitMessage(@JsonProperty("commitmentPublicD") Commitment commitmentPublicD,
                                           @JsonProperty("commitmentPublicLowDelta") Commitment commitmentPublicLowDelta,

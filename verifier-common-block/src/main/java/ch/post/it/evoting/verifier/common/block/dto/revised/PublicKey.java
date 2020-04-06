@@ -15,7 +15,6 @@
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
 import ch.post.it.evoting.verifier.common.block.dto.converter.StringArrayToBigIntegerListConverter;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
@@ -30,7 +29,6 @@ public class PublicKey {
     @JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
     private final List<BigInteger> keys;
 
-    @JsonCreator
     public PublicKey(@JsonProperty("group") EncryptionGroup group,
                      @JsonProperty("key") List<BigInteger> keys) {
         this.group = group;

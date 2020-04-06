@@ -9,11 +9,11 @@ import java.util.List;
 @Getter
 public class MultiExponentiationArgumentAnswer {
 
-    private List<Exponent> exponentsA;
-    private Exponent exponentR;
-    private Exponent exponentsB;
-    private Exponent exponentS;
-    private RandomnessTau randomnessTau;
+    private final List<Exponent> exponentsA;
+    private final Exponent exponentR;
+    private final Exponent exponentsB;
+    private final Exponent exponentS;
+    private final RandomnessTau randomnessTau;
 
     public MultiExponentiationArgumentAnswer(@JsonProperty("exponentsA") Exponent[] exponentsA,
                                              @JsonProperty("exponentR") Exponent exponentR,

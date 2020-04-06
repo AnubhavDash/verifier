@@ -9,10 +9,10 @@ import java.util.List;
 @Getter
 public class SingleValueArgumentAnswer {
 
-    private List<Exponent> exponentsTildeA;
-    private List<Exponent> exponentsTildeB;
-    private Exponent exponentTildeR;
-    private Exponent exponentTildeS;
+    private final List<Exponent> exponentsTildeA;
+    private final List<Exponent> exponentsTildeB;
+    private final Exponent exponentTildeR;
+    private final Exponent exponentTildeS;
 
     public SingleValueArgumentAnswer(@JsonProperty("exponentsTildeA") Exponent[] exponentsTildeA,
                                      @JsonProperty("exponentsTildeB") Exponent[] exponentsTildeB,

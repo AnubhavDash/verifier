@@ -9,9 +9,9 @@ import java.util.List;
 @Getter
 public class ShuffleArgumentMessage {
 
-    private List<Commitment> initialMessage;
-    private List<Commitment> firstAnswer;
-    private ShuffleArgumentSecondAnswer shuffleArgumentSecondAnswer;
+    private final List<Commitment> initialMessage;
+    private final List<Commitment> firstAnswer;
+    private final ShuffleArgumentSecondAnswer shuffleArgumentSecondAnswer;
 
     public ShuffleArgumentMessage(@JsonProperty("initialMessage") Commitment[] initialMessage,
                                   @JsonProperty("firstAnswer") Commitment[] firstAnswer,

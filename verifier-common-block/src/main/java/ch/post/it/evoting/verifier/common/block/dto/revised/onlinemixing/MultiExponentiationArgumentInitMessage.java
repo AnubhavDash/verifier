@@ -9,9 +9,9 @@ import java.util.List;
 @Getter
 public class MultiExponentiationArgumentInitMessage {
 
-    private Commitment commitmentA0;
-    private List<Commitment> commitmentsB;
-    private List<Ciphertext> ciphertextsE;
+    private final Commitment commitmentA0;
+    private final List<Commitment> commitmentsB;
+    private final List<Ciphertext> ciphertextsE;
 
     public MultiExponentiationArgumentInitMessage(@JsonProperty("commitmentPublicA0") Commitment commitmentPublicA0,
                                                   @JsonProperty("commitmentPublicB") Commitment[] commitmentPublicB,

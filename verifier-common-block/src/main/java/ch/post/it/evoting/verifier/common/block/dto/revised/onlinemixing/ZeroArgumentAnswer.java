@@ -9,11 +9,11 @@ import java.util.List;
 @Getter
 public class ZeroArgumentAnswer {
 
-    private List<Exponent> exponentsA;
-    private List<Exponent> exponentsB;
-    private Exponent exponentR;
-    private Exponent exponentS;
-    private Exponent exponentT;
+    private final List<Exponent> exponentsA;
+    private final List<Exponent> exponentsB;
+    private final Exponent exponentR;
+    private final Exponent exponentS;
+    private final Exponent exponentT;
 
     public ZeroArgumentAnswer(@JsonProperty("exponentsA") Exponent[] exponentsA,
                               @JsonProperty("exponentsB") Exponent[] exponentsB,

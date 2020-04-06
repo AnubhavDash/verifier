@@ -62,9 +62,9 @@ public class CiphertextDeserializer extends JsonDeserializer<Ciphertext> {
             }
         } else {
             String phisString = root.path("phis").asText();
-            if (phisString.indexOf(";") > 0) {
-                phis = Arrays.stream(phisString.split(";"))
-                        .map(TypeConverter::stringToBigInteger)
+            if (phisString.indexOf(",") > 0 || phisString.indexOf(";") > 0) {
+                phis = Arrays.stream(phisString.split(","))
+                        .map(p -> TypeConverter.stringToBigInteger(p.split(";")[0]))
                         .toArray(BigInteger[]::new);
             } else {
                 phis = new BigInteger[] {TypeConverter.stringToBigInteger(phisString)};

@@ -15,7 +15,6 @@
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
 import ch.post.it.evoting.verifier.common.block.dto.converter.StringArrayToBigIntegerListConverter;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.collect.ImmutableList;
@@ -36,7 +35,6 @@ public class CandidatePosition {
     private final int initialAccumulation;
     private final boolean isBlank;
 
-    @JsonCreator
     public CandidatePosition(@JsonProperty("alias") String alias,
                              @JsonProperty("candidateListId") UUID candidateListId,
                              @JsonProperty("primeNumber") List<BigInteger> primeNumber,

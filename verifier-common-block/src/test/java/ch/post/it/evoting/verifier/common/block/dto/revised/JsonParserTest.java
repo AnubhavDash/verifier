@@ -154,7 +154,7 @@ public class JsonParserTest {
         assertThat(shuffleArgumentMessage.getShuffleArgumentSecondAnswer().getMultiExponentiationArgumentAnswer().getRandomnessTau().getExponent().getValue(),
                 CoreMatchers.equalTo(new BigInteger("16370518994319586760319791526293535327576438646782139419846004180837103527129035954742043590609421369665944746587885814920851694546456891767644945459124422553763416586515339978014154452159687109161090635367600349264934924141746082060353483306855352192358732451955232000593777554431798981574529854314651092086488426390776811367125009551346089319315111509277347117467107914073639456805159094562593954195960531136052208019343392906816001017488051366518122404819967204601427304267380238263913892658950281593755894747339126531018026798982785331079065126375455293409065540731646939808640273393855256230820509217411510058759")));
         assertEquals(2, shuffleArgumentMessage.getShuffleArgumentSecondAnswer().getMultiExponentiationArgumentInitMessage().getCiphertextsE().size());
-        assertEquals(3, shuffleArgumentMessage.getShuffleArgumentSecondAnswer().getMultiExponentiationArgumentInitMessage().getCiphertextsE().get(0).getPhis().size());
+        assertEquals(1, shuffleArgumentMessage.getShuffleArgumentSecondAnswer().getMultiExponentiationArgumentInitMessage().getCiphertextsE().get(0).getPhis().size());
     }
 
     private InputStream getResourceStream(String resource) {

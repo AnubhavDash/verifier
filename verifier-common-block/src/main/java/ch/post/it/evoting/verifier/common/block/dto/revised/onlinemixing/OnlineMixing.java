@@ -1,7 +1,9 @@
 package ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing;
 
+import ch.post.it.evoting.verifier.common.block.dto.converter.StringArrayToBigIntegerListConverter;
 import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionGroup;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.collect.ImmutableList;
 import lombok.Getter;
 
@@ -11,20 +13,20 @@ import java.util.List;
 @Getter
 public class OnlineMixing {
 
-    private VoteEncryptionKey voteEncryptionKey;
-    private VoteSetId voteSetId;
-    private List<Ciphertext> votes;
-    private String electoralAuthorityId;
-    private EncryptionGroup encryptionGroup;
-    private List<String> decryptionProofs;
-    private List<Ciphertext> shuffledVotes;
-    private String shuffleProof;
-
-    private List<BigInteger> commitmentParameters;
-    private String timestamp;
-    private Signature signature;
-    private List<Ciphertext> previousVotes;
-    private VoteEncryptionKey previousVoteEncryptionKey;
+    private final VoteEncryptionKey voteEncryptionKey;
+    private final VoteSetId voteSetId;
+    private final List<Ciphertext> votes;
+    private final String electoralAuthorityId;
+    private final EncryptionGroup encryptionGroup;
+    private final List<String> decryptionProofs;
+    private final List<Ciphertext> shuffledVotes;
+    private final String shuffleProof;
+    @JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
+    private final List<BigInteger> commitmentParameters;
+    private final String timestamp;
+    private final Signature signature;
+    private final List<Ciphertext> previousVotes;
+    private final VoteEncryptionKey previousVoteEncryptionKey;
 
 
     public OnlineMixing(@JsonProperty("voteEncryptionKey") VoteEncryptionKey voteEncryptionKey,

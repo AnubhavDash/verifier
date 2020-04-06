@@ -8,8 +8,8 @@ import java.util.List;
 @Getter
 public class Signature {
 
-    private String signatureContents;
-    private List<String> certificateChain;
+    private final String signatureContents;
+    private final List<String> certificateChain;
 
     public Signature(@JsonProperty("signatureContents") String signatureContents,
                      @JsonProperty("certificateChain") List<String> certificateChain) {

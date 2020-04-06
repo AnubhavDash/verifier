@@ -14,9 +14,10 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
+import ch.post.it.evoting.verifier.common.block.dto.converter.StringArrayToBigIntegerListConverter;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 
 import java.math.BigInteger;
@@ -49,7 +50,6 @@ public class CastVote {
     private final UUID verificationCardId;
     private final UUID verificationCardSetId;
 
-    @JsonCreator
     public CastVote(@JsonProperty("electionEventId") UUID electionEventId,
                     @JsonProperty("ballotId") UUID ballotId,
                     @JsonProperty("ballotBoxId") UUID ballotBoxId,

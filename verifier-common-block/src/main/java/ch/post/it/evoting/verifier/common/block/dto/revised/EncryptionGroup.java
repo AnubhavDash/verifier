@@ -32,7 +32,6 @@ public class EncryptionGroup {
     @JsonDeserialize(converter = StringToBigIntegerConverter.class)
     private final BigInteger g;
 
-    @JsonCreator
     public EncryptionGroup(@JsonProperty("p") BigInteger p,
                            @JsonProperty("q") BigInteger q,
                            @JsonProperty("g") BigInteger g) {

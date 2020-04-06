@@ -6,16 +6,18 @@ import lombok.Getter;
 @Getter
 public class EncryptionParameters {
 
-    @JsonProperty("eg")
     private EncryptionGroup encryptionGroup;
-
-    @JsonProperty("seed")
     private String seed;
-
-    @JsonProperty("pCounter")
     private int pCounter;
-
-    @JsonProperty("qCounter")
     private int qCounter;
 
+    public EncryptionParameters(@JsonProperty("eg") EncryptionGroup encryptionGroup,
+                                @JsonProperty("seed") String seed,
+                                @JsonProperty("pCounter") int pCounter,
+                                @JsonProperty("qCounter") int qCounter) {
+        this.encryptionGroup = encryptionGroup;
+        this.seed = seed;
+        this.pCounter = pCounter;
+        this.qCounter = qCounter;
+    }
 }

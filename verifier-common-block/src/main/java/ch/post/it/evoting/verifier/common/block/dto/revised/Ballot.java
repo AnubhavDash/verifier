@@ -14,7 +14,6 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
@@ -25,7 +24,6 @@ public class Ballot {
     private final Receipt receipt;
     private final AuthenticationToken authenticationToken;
 
-    @JsonCreator
     public Ballot(@JsonProperty("vote") CastVote vote,
                   @JsonProperty("receipt") Receipt receipt,
                   @JsonProperty("authenticationToken") AuthenticationToken authenticationToken) {

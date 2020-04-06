@@ -15,7 +15,6 @@
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
@@ -25,7 +24,6 @@ public class Receipt {
     private final String receipt;
     private final String signature;
 
-    @JsonCreator
     public Receipt(@JsonProperty("receipt") String receipt,
                    @JsonProperty("signature") String signature) {
         this.receipt = receipt;

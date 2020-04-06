@@ -6,9 +6,9 @@ import lombok.Getter;
 @Getter
 public class BallotBoxId {
 
-    private String tenantId;
-    private String electionEventId;
-    private String id;
+    private final String tenantId;
+    private final String electionEventId;
+    private final String id;
 
     public BallotBoxId(@JsonProperty("tenantId") String tenantId,
                        @JsonProperty("electionEventId") String electionEventId,
