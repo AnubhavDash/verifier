@@ -18,6 +18,7 @@ import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionGroup;
+import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionParameters;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
@@ -48,7 +49,8 @@ public class IsStrongPrimePQ extends AbstractVerification {
         VerificationResult result = new VerificationResult();
 
         final PathNode encryptParams = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
-        EncryptionGroup encryptionGroup = Deserializer.fromJson(encryptParams.getPath(), EncryptionGroup.class);
+        EncryptionParameters encryptionParameters = Deserializer.fromJson(encryptParams.getPath(), EncryptionParameters.class);
+        EncryptionGroup encryptionGroup = encryptionParameters.getEncryptionGroup();
 
         if (!MathHelper.areEqual(encryptionGroup.getP(), (encryptionGroup.getQ().multiply(BigInteger.valueOf(2))).add(BigInteger.ONE))) {
             throw buildVerificationFailureException(
