@@ -230,6 +230,18 @@ public class MathHelperTest {
         }
     }
 
+    @Test
+    public void zeroArgumentTest() {
+        final VerifyZArgumentParameters zArgumentParameters = readValue("z-argument.json", VerifyZArgumentParameters.class);
+
+        final boolean result = MathHelper.verifyZArgument(zArgumentParameters.getEg(), zArgumentParameters.getCk(),
+                zArgumentParameters.getPk_mix(),
+                zArgumentParameters.getM(), zArgumentParameters.getN(), zArgumentParameters.getStatement(),
+                zArgumentParameters.getArgument());
+
+        Assert.assertTrue(result);
+    }
+
 
     // =====================================================================================================================================
     // Utility methods.

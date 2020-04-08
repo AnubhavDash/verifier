@@ -101,7 +101,7 @@ public final class ToStringHelper {
     public static String zeroProofInitialMessageToString(BigInteger c_a0, BigInteger c_bm, List<BigInteger> c_d_vec, BigInteger p,
                                                          BigInteger q) {
         final String vectorString = c_d_vec.stream().map(c_d -> publicCommitmentToString(c_d, p, q)).collect(Collectors.joining(", "));
-        return "[_cA0=" + publicCommitmentToString(c_a0, p, q) + ", _cBM=" + publicCommitmentToString(c_bm, p, q) + ", _cD=[" + vectorString + "]]";
+        return "ZeroProofInitialMessage [_cA0=" + publicCommitmentToString(c_a0, p, q) + ", _cBM=" + publicCommitmentToString(c_bm, p, q) + ", _cD=[" + vectorString + "]]";
     }
 
 }

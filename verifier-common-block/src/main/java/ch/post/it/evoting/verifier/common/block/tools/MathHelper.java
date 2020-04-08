@@ -16,10 +16,7 @@ package ch.post.it.evoting.verifier.common.block.tools;
 
 import ch.post.it.evoting.verifier.common.block.dto.revised.CommitmentKey;
 import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionGroup;
-import ch.post.it.evoting.verifier.common.block.dto.revised.algo.Argument;
-import ch.post.it.evoting.verifier.common.block.dto.revised.algo.SVPArgument;
-import ch.post.it.evoting.verifier.common.block.dto.revised.algo.SVPStatement;
-import ch.post.it.evoting.verifier.common.block.dto.revised.algo.Statement;
+import ch.post.it.evoting.verifier.common.block.dto.revised.algo.*;
 import com.google.common.primitives.Bytes;
 import lombok.NonNull;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -91,6 +88,7 @@ public final class MathHelper {
         return value.isProbablePrime(Integer.MAX_VALUE);
     }
 
+
     /**
      * Utility functions - 1.2.2 Random Oracle Hash.
      * <p>
@@ -136,8 +134,9 @@ public final class MathHelper {
      */
     public static String reverseAndJoin(List<String> strings) {
         StringJoiner joiner = new StringJoiner("");
-        for (ListIterator<String> iter = strings.listIterator(strings.size()); iter.hasPrevious(); )
+        for (ListIterator<String> iter = strings.listIterator(strings.size()); iter.hasPrevious(); ) {
             joiner.add(iter.previous());
+        }
 
         return joiner.toString();
     }
@@ -454,6 +453,91 @@ public final class MathHelper {
         }
 
         return areEqual(b_tilde_vec.get(n), x.multiply(b).mod(q));
+    }
+
+    /**
+     * Arguments - 2.2 Zero Argument Verification.
+     *
+     * @param encryptionGroup The encryption group.
+     * @param ck              The commitment key.
+     * @param pk              The public key.
+     * @param m               The number of rows.
+     * @param n               The number of columns.
+     * @param statement       The statement.
+     * @param argument        The argument.
+     * @return {@code true} if the statement verification was successful.
+     */
+    public static boolean verifyZArgument(EncryptionGroup encryptionGroup, CommitmentKey ck, BigInteger pk, int m, int n,
+                                          Statement statement, Argument argument) {
+
+        final ZeroStatement zeroStatement = (ZeroStatement) statement;
+        final ZeroArgument zeroArgument = (ZeroArgument) argument;
+        final BigInteger p = encryptionGroup.getP();
+        final BigInteger q = encryptionGroup.getQ();
+
+        // Pre requirements.
+        requireVectorIsMember(zeroStatement.getC_a_vec(), encryptionGroup);
+        requireVectorIsMember(zeroStatement.getC_b_vec(), encryptionGroup);
+        requireIsInZ_q(zeroStatement.getY(), encryptionGroup);
+        requireIsMember(zeroArgument.getC_a0(), encryptionGroup);
+        requireIsMember(zeroArgument.getC_bm(), encryptionGroup);
+        requireVectorIsMember(zeroArgument.getC_d_vec(), encryptionGroup);
+        requireVectorIsInZ_q(zeroArgument.getA_vec(), encryptionGroup);
+        requireVectorIsInZ_q(zeroArgument.getB_vec(), encryptionGroup);
+        requireIsInZ_q(zeroArgument.getR(), encryptionGroup);
+        requireIsInZ_q(zeroArgument.getS(), encryptionGroup);
+        requireIsInZ_q(zeroArgument.getT(), encryptionGroup);
+
+        // Get string representation of the different objects.
+        final List<String> elements = new ArrayList<>();
+        for (BigInteger c_ai : zeroStatement.getC_a_vec()) {
+            elements.add(ToStringHelper.publicCommitmentToString(c_ai, p, q));
+        }
+        for (BigInteger c_bi : zeroStatement.getC_b_vec()) {
+            elements.add(ToStringHelper.publicCommitmentToString(c_bi, p, q));
+        }
+        elements.add(ToStringHelper.zeroProofInitialMessageToString(zeroArgument.getC_a0(), zeroArgument.getC_bm(),
+                zeroArgument.getC_d_vec(), p, q));
+        elements.add(ToStringHelper.commitmentParamsToString(ck.getH(), ck.getG_vec(), p, q));
+        elements.add(ToStringHelper.zpGroupElementToString(pk, p, q));
+
+        // Compute random oracle hash.
+        final MessageDigest messageDigest = getSHA256MessageDigest();
+        final byte[] input = TypeConverter.stringToByte(reverseAndJoin(elements));
+        final BigInteger x = randomOracleHash(messageDigest, input, BigInteger.ZERO, q);
+
+        if (!areEqual(zeroArgument.getC_d_vec().get(m + 1), BigInteger.ONE)) {
+            return false;
+        }
+
+        // First verification.
+        final List<BigInteger> c_a0ToM_vec = new ArrayList<>(zeroStatement.getC_a_vec());
+        c_a0ToM_vec.add(0, zeroArgument.getC_a0());
+        final BigInteger commitmentR = computeCommitment(encryptionGroup, zeroArgument.getR(), zeroArgument.getA_vec(), ck);
+        if (!areEqual(prodIncPow(encryptionGroup, c_a0ToM_vec, x), commitmentR)) {
+            return false;
+        }
+
+        // Second verification.
+        final List<BigInteger> c_b0ToM_vec = new ArrayList<>(zeroStatement.getC_b_vec());
+        c_b0ToM_vec.add(zeroArgument.getC_bm());
+        // Reversing list.
+        final List<BigInteger> c_bMto0_vec = new ArrayList<>();
+        for (ListIterator<BigInteger> iter = c_b0ToM_vec.listIterator(c_b0ToM_vec.size()); iter.hasPrevious(); ) {
+            c_bMto0_vec.add(iter.previous());
+        }
+        final BigInteger commitmentS = computeCommitment(encryptionGroup, zeroArgument.getS(), zeroArgument.getB_vec(), ck);
+        if (!areEqual(prodIncPow(encryptionGroup, c_bMto0_vec, x), commitmentS)) {
+            return false;
+        }
+
+        // Third verification.
+        final BigInteger mapping = bilinearMapping(encryptionGroup, zeroArgument.getA_vec(), zeroArgument.getB_vec(), zeroStatement.getY());
+        final List<BigInteger> bilinearMapVector = new ArrayList<>();
+        bilinearMapVector.add(mapping);
+
+        final BigInteger commitmentT = computeCommitment(encryptionGroup, zeroArgument.getT(), bilinearMapVector, ck);
+        return areEqual(prodIncPow(encryptionGroup, zeroArgument.getC_d_vec(), x), commitmentT);
     }
 
 
