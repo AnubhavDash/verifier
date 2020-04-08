@@ -154,9 +154,7 @@ public class CheckCipherTextConsistencyOnlineProofs extends AbstractVerification
             line = line.substring(0, pipePosition + 2);
             Ballot ballot = Deserializer.fromJson(TypeConverter.stringToByte(line), Ballot.class);
             List<BigInteger> encryptedOptions = ballot.getVote().getEncryptedOptions();
-//            Ballot ballot = Deserializer.fromJson(TypeConverter.stringToByte(line), Ballot.class);
             String gamma = encryptedOptions.get(0).toString();
-//            List<String> phis = Arrays.asList(encryptedOptions.substring(encryptedOptions.indexOf(";") + 1).split(","));
             List<String> phis = Arrays.asList(encryptedOptions.get(1).toString());
             return new GammaPhis(gamma, phis);
         } else {
