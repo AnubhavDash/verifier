@@ -1,9 +1,11 @@
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
+import ch.post.it.evoting.verifier.common.SlowTestCategory;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import org.junit.*;
+import org.junit.experimental.categories.Category;
 import org.junit.rules.ExpectedException;
 
 import java.nio.file.Paths;
@@ -26,9 +28,8 @@ public class VerifyElGamalParametersPQTest extends Block1VerificationAbstractTes
         Assert.assertEquals(Status.OK, verificationResult.getStatus());
     }
 
-    // TODO create a maven profile or something similar to launch computation intensive tests.
-    @Ignore
     @Test
+    @Category(SlowTestCategory.class)
     public void executeTestOKIntensive() throws Exception {
         final VerificationResult verificationResult =
                 verification.verify(Paths.get(getClass().getResource("/VerifyElGamalParameterPQTest/OKI").toURI()));

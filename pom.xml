@@ -127,7 +127,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <excludedGroups>ch.post.it.evoting.verifier.common.SlowTestCategory</excludedGroups>
+                    <groups>${includedCategories}</groups>
+                    <excludedGroups>${excludedCategories}</excludedGroups>
                 </configuration>
             </plugin>
         </plugins>
@@ -136,17 +137,10 @@
     <profiles>
         <profile>
             <id>slowTests</id>
-            <build>
-                <plugins>
-                    <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <configuration>
-                        <groups>ch.post.it.evoting.verifier.common.SlowTestCategory</groups>
-                    </configuration>
-                </plugin>
-                </plugins>
-            </build>
+            <properties>
+                <includedCategories>ch.post.it.evoting.verifier.common.SlowTestCategory</includedCategories>
+                <excludedCategories/>
+            </properties>
         </profile>
         <profile>
             <id>licence</id>
@@ -242,5 +236,7 @@
         <projectArtifactId>${project.artifactId}</projectArtifactId>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.jacoco.plugin.version>0.8.5</maven.jacoco.plugin.version>
+        <includedCategories/>
+        <excludedCategories>ch.post.it.evoting.verifier.common.SlowTestCategory</excludedCategories>
     </properties>
 </project>
