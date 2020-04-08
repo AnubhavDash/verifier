@@ -15,7 +15,6 @@
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
 import ch.post.it.evoting.verifier.common.block.dto.converter.StringToBigIntegerConverter;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
@@ -31,7 +30,6 @@ public class VoteOption {
     @JsonDeserialize(converter = StringToBigIntegerConverter.class)
     private final BigInteger primeNumber;
 
-    @JsonCreator
     public VoteOption(@JsonProperty("id") UUID id,
                       @JsonProperty("alias") UUID alias,
                       @JsonProperty("primeNumber") BigInteger primeNumber) {

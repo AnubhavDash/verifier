@@ -14,7 +14,6 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableList;
 import lombok.Getter;
@@ -33,7 +32,6 @@ public class BallotBox {
     private final int votingCardsGenerated;
     private final List<CountingCircle> countingCircles;
 
-    @JsonCreator
     public BallotBox(@JsonProperty("id") UUID id,
                      @JsonProperty("alias") String alias,
                      @JsonProperty("authId") UUID authId,

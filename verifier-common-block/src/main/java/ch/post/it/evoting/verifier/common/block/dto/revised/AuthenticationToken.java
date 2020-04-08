@@ -14,7 +14,6 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
@@ -29,7 +28,6 @@ public class AuthenticationToken {
     private final LocalDateTime timestamp;
     private final String base64Signature;
 
-    @JsonCreator
     public AuthenticationToken(@JsonProperty("id") String id,
                                @JsonProperty("voterInformation") VoterInformation voterInformation,
                                @JsonProperty("timestamp") LocalDateTime timestamp,

@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class RandomnessTau {
 
-    private Exponent exponent;
+    private final Exponent exponent;
 
     public RandomnessTau(@JsonProperty("randomnessValue") Exponent randomnessValue) {
         this.exponent = randomnessValue;

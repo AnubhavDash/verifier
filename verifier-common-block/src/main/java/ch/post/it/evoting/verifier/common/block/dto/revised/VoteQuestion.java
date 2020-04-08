@@ -14,7 +14,6 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableList;
 import lombok.Getter;
@@ -27,7 +26,6 @@ public class VoteQuestion {
     private final String alias;
     private final List<VoteOption> options;
 
-    @JsonCreator
     public VoteQuestion(@JsonProperty("alias") String alias,
                         @JsonProperty("options") VoteOption[] options) {
         this.alias = alias;

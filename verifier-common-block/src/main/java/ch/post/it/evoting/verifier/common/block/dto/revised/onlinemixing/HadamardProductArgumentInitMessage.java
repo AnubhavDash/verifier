@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 public class HadamardProductArgumentInitMessage {
 
-    private List<Commitment> commitmentsB;
+    private final List<Commitment> commitmentsB;
 
     public HadamardProductArgumentInitMessage(@JsonProperty("commitmentPublicB") Commitment[] commitmentPublicB) {
         this.commitmentsB = ImmutableList.copyOf(commitmentPublicB);

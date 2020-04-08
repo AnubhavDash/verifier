@@ -15,7 +15,6 @@
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
 import ch.post.it.evoting.verifier.common.block.dto.converter.StringArrayToBigIntegerListConverter;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.collect.ImmutableList;
@@ -40,7 +39,6 @@ public class Election {
     private final int changedBallotsWithoutPartyAffiliation;
     private final int emptyVotesOfChangedBallotsWithoutPartyAffiliation;
 
-    @JsonCreator
     public Election(@JsonProperty("id") UUID id,
                     @JsonProperty("alias") String alias,
                     @JsonProperty("numberOfSeats") int numberOfSeats,

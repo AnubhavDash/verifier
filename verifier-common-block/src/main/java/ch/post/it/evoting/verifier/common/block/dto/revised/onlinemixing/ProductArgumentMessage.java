@@ -6,11 +6,11 @@ import lombok.Getter;
 @Getter
 public class ProductArgumentMessage {
 
-    private Commitment commitmentB;
-    private SingleValueArgumentInitMessage singleValueArgumentInitMessage;
-    private SingleValueArgumentAnswer singleValueArgumentAnswer;
-    private HadamardProductArgumentInitMessage hadamardProductArgumentInitMessage;
-    private HadamardProductArgumentAnswer hadamardProductArgumentAnswer;
+    private final Commitment commitmentB;
+    private final SingleValueArgumentInitMessage singleValueArgumentInitMessage;
+    private final SingleValueArgumentAnswer singleValueArgumentAnswer;
+    private final HadamardProductArgumentInitMessage hadamardProductArgumentInitMessage;
+    private final HadamardProductArgumentAnswer hadamardProductArgumentAnswer;
 
     public ProductArgumentMessage(@JsonProperty("commitmentPublicB") Commitment commitmentPublicB,
                                   @JsonProperty("iniSVA") SingleValueArgumentInitMessage iniSVA,

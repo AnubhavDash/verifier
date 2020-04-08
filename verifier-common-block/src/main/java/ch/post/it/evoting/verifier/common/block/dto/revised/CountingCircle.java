@@ -14,7 +14,6 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableList;
 import lombok.Getter;
@@ -27,7 +26,6 @@ public class CountingCircle {
     private final String id;
     private final List<DomainOfInfluence> domainsOfInfluence;
 
-    @JsonCreator
     public CountingCircle(@JsonProperty("id") String id,
                           @JsonProperty("domainOfInfluence") DomainOfInfluence[] domainsOfInfluence) {
         this.id = id;

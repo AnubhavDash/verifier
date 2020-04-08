@@ -1,6 +1,8 @@
 package ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing;
 
+import ch.post.it.evoting.verifier.common.block.dto.converter.StringToBigIntegerConverter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 
 import java.math.BigInteger;
@@ -8,8 +10,10 @@ import java.math.BigInteger;
 @Getter
 public class Exponent {
 
-    private BigInteger q;
-    private BigInteger value;
+    @JsonDeserialize(converter = StringToBigIntegerConverter.class)
+    private final BigInteger q;
+    @JsonDeserialize(converter = StringToBigIntegerConverter.class)
+    private final BigInteger value;
 
     public Exponent(@JsonProperty("q") BigInteger q,
                     @JsonProperty("value") BigInteger value) {

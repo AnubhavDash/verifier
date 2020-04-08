@@ -14,7 +14,6 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
@@ -24,7 +23,6 @@ public class SignedItem {
     private final String field;
     private final String value;
 
-    @JsonCreator
     public SignedItem(@JsonProperty("field") String field,
                       @JsonProperty("value") String value) {
         this.field = field;

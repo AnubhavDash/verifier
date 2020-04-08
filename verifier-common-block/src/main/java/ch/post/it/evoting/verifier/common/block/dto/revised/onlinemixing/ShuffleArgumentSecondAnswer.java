@@ -6,9 +6,9 @@ import lombok.Getter;
 @Getter
 public class ShuffleArgumentSecondAnswer {
 
-    private ProductArgumentMessage productArgumentMessage;
-    private MultiExponentiationArgumentInitMessage multiExponentiationArgumentInitMessage;
-    private MultiExponentiationArgumentAnswer multiExponentiationArgumentAnswer;
+    private final ProductArgumentMessage productArgumentMessage;
+    private final MultiExponentiationArgumentInitMessage multiExponentiationArgumentInitMessage;
+    private final MultiExponentiationArgumentAnswer multiExponentiationArgumentAnswer;
 
     public ShuffleArgumentSecondAnswer(@JsonProperty("msgPA") ProductArgumentMessage msgPA,
                                        @JsonProperty("iniMEBasic") MultiExponentiationArgumentInitMessage iniMEBasic,

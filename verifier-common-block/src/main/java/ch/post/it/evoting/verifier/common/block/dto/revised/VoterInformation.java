@@ -14,7 +14,6 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
@@ -32,7 +31,6 @@ public class VoterInformation {
     private final UUID votingCardSetId;
     private final UUID verificationCardSetId;
 
-    @JsonCreator
     public VoterInformation(@JsonProperty("electionEventId") UUID electionEventId,
                             @JsonProperty("votingCardId") UUID votingCardId,
                             @JsonProperty("ballotId") UUID ballotId,

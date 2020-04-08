@@ -33,6 +33,7 @@ import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -151,11 +152,10 @@ public class CheckCipherTextConsistencyOnlineProofs extends AbstractVerification
         // Take only confirmed votes searching votes without |||
         if (!line.isEmpty() && pipePosition != -1 && !line.substring(pipePosition + 2, pipePosition + 5).contains("|||")) {
             line = line.substring(0, pipePosition + 2);
-            DownloadedBallot db = Deserializer.fromJson(TypeConverter.stringToByte(line), DownloadedBallot.class);
-            String encryptedOptions = db.getVote().getEncryptedOptions();
             Ballot ballot = Deserializer.fromJson(TypeConverter.stringToByte(line), Ballot.class);
-            String gamma = encryptedOptions.substring(0, encryptedOptions.indexOf(";"));
-            List<String> phis = Arrays.asList(encryptedOptions.substring(encryptedOptions.indexOf(";") + 1).split(","));
+            List<BigInteger> encryptedOptions = ballot.getVote().getEncryptedOptions();
+            String gamma = encryptedOptions.get(0).toString();
+            List<String> phis = Arrays.asList(encryptedOptions.get(1).toString());
             return new GammaPhis(gamma, phis);
         } else {
             return new GammaPhis(null, null);

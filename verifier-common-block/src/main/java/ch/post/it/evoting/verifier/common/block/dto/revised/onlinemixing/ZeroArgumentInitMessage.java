@@ -9,9 +9,9 @@ import java.util.List;
 @Getter
 public class ZeroArgumentInitMessage {
 
-    private Commitment commitmentA0;
-    private Commitment commitmentBM;
-    private List<Commitment> commitmentD;
+    private final Commitment commitmentA0;
+    private final Commitment commitmentBM;
+    private final List<Commitment> commitmentD;
 
     public ZeroArgumentInitMessage(@JsonProperty("commitmentPublicA0") Commitment commitmentPublicA0,
                                    @JsonProperty("commitmentPublicBM") Commitment commitmentPublicBM,

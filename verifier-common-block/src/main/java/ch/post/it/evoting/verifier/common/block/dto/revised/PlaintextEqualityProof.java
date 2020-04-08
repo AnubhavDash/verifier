@@ -34,7 +34,6 @@ public class PlaintextEqualityProof {
     @JsonDeserialize(converter = StringToBigIntegerConverter.class)
     private final BigInteger c_1;
 
-    @JsonCreator
     public PlaintextEqualityProof(@JsonProperty("q") BigInteger q,
                                   @JsonProperty("h") String base64hash,
                                   @JsonProperty("c_0") BigInteger c_0,
