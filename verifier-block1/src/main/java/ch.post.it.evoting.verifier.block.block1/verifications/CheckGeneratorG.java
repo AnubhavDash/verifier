@@ -18,6 +18,7 @@ import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionGroup;
+import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionParameters;
 import ch.post.it.evoting.verifier.common.block.tools.*;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
@@ -49,8 +50,9 @@ public class CheckGeneratorG extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        final PathNode pathNode = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
-        EncryptionGroup encryptionGroup = Deserializer.fromJson(pathNode.getPath(), EncryptionGroup.class);
+        final PathNode encryptParamsPathNode = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
+        EncryptionParameters encryptionParameters = Deserializer.fromJson(encryptParamsPathNode.getPath(), EncryptionParameters.class);
+        EncryptionGroup encryptionGroup = encryptionParameters.getEncryptionGroup();
 
         if (!MathHelper.isPrime(encryptionGroup.getG())) {
             throw buildVerificationFailureException(

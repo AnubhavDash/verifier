@@ -42,6 +42,7 @@ public class CheckSigEncryptionParamsTest extends Block1VerificationAbstractTest
 
     @Test
     public void executeTestOK() throws Exception {
+        // TODO Generate a new test encryptionParameters.json.p7 file
         VerificationResult verificationResult =
                 verification.verify(Paths.get(getClass().getResource("/CheckSigEncryptionParamsTest/OK").toURI()));
         Assert.assertNotNull(verificationResult);

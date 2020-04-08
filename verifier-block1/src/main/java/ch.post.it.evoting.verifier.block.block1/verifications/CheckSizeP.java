@@ -18,6 +18,7 @@ import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionGroup;
+import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionParameters;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
@@ -46,7 +47,8 @@ public class CheckSizeP extends AbstractVerification {
         VerificationResult result = new VerificationResult();
 
         final PathNode encryptParamsPathNode = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
-        EncryptionGroup encryptionGroup = Deserializer.fromJson(encryptParamsPathNode.getPath(), EncryptionGroup.class);
+        EncryptionParameters encryptionParameters = Deserializer.fromJson(encryptParamsPathNode.getPath(), EncryptionParameters.class);
+        EncryptionGroup encryptionGroup = encryptionParameters.getEncryptionGroup();
 
         if (encryptionGroup.getP().bitLength() < 2048) {
             throw buildVerificationFailureException(
