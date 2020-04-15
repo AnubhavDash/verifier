@@ -27,10 +27,10 @@ public class VerifyElGamalParametersPQ extends AbstractVerification {
     static final int EXPECTED_P_BIT_LEN = 2048;
     static final int EXPECTED_Q_BIT_LEN = 2047;
     static final int MIN_SEED_BIT_LEN = 256;
-    
+
     // Security strength of the SHAKE digest. This can only be 128 or 256.
     private static final int DIGEST_SECURITY_BITS_STRENGTH = 128;
-    private static final String PREFIX_PRIME_Q = "prime q";
+    private static final byte[] PREFIX_PRIME_Q_BYTES = "prime q".getBytes(StandardCharsets.UTF_8);
     private static final int CERTAINTY_LEVEL = 112;
 
     @Override
@@ -66,39 +66,17 @@ public class VerifyElGamalParametersPQ extends AbstractVerification {
 
         // The seed is encoded in Base64.
         final byte[] seedDecodedBytes = Base64.getDecoder().decode(seed);
-        final int seedByteLength = seedDecodedBytes.length;
 
         // Validate input parameters.
         checkPQLengths(L, N);
-        checkSeedLength(seedByteLength * Byte.SIZE);
+        checkSeedLength(seedDecodedBytes.length * Byte.SIZE);
         checkQCounterValue(qCounter, L);
 
-        // Desired digest output bit length.
-        final int digestBitLength = N - 1;
-
-        // Compute needed byte length.
-        final int outputByteLength = (digestBitLength + Byte.SIZE - 1) / Byte.SIZE;
-
-        // Create byte array for prefix.
-        final byte[] prefix = PREFIX_PRIME_Q.getBytes(StandardCharsets.UTF_8);
-
         // Check if there is a smaller counter value that gives another valid pair p,q.
-        final OptionalInt optionalCounter = IntStream.range(0, qCounter)
-                .parallel()
-                .filter(givesValidValues(N, seedDecodedBytes, seedByteLength, digestBitLength, outputByteLength, prefix))
-                .findAny();
-
-        if (optionalCounter.isPresent()) {
-            throw buildVerificationFailureException(
-                    "A smaller counter value giving another pair of valid primes was found.",
-                    Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-                    "verification11.nok.counter.val.message",
-                    String.valueOf(optionalCounter.getAsInt())
-            );
-        }
+        checkSmallerCounter(qCounter, N, seedDecodedBytes);
 
         // No valid pair has been found for smaller value of qCounter, so the final value qCounter should give the expected pair p,q.
-        final BigInteger computedQ = computeQ(N, seedDecodedBytes, seedByteLength, digestBitLength, outputByteLength, prefix, qCounter);
+        final BigInteger computedQ = computeQ(N, seedDecodedBytes, qCounter);
 
         // Compute p from q and check if they match the values from the file.
         final BigInteger computedP = computedQ.multiply(BigInteger.TWO).add(BigInteger.ONE);
@@ -114,10 +92,25 @@ public class VerifyElGamalParametersPQ extends AbstractVerification {
         return result;
     }
 
-    private IntPredicate givesValidValues(int n, byte[] seedDecodedBytes, int seedByteLength, int digestBitLength,
-                                          int outputByteLength, byte[] prefix) {
+    private void checkSmallerCounter(int qCounter, int N, byte[] seedDecodedBytes) {
+        final OptionalInt optionalCounter = IntStream.range(0, qCounter)
+                .parallel()
+                .filter(givesValidValues(N, seedDecodedBytes))
+                .findAny();
+
+        if (optionalCounter.isPresent()) {
+            throw buildVerificationFailureException(
+                    "A smaller counter value giving another pair of valid primes was found.",
+                    Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                    "verification11.nok.counter.val.message",
+                    String.valueOf(optionalCounter.getAsInt())
+            );
+        }
+    }
+
+    private IntPredicate givesValidValues(int N, byte[] seedDecodedBytes) {
         return counter -> {
-            final BigInteger computedQ = computeQ(n, seedDecodedBytes, seedByteLength, digestBitLength, outputByteLength, prefix, counter);
+            final BigInteger computedQ = computeQ(N, seedDecodedBytes, counter);
 
             if (!computedQ.isProbablePrime(CERTAINTY_LEVEL)) {
                 return false;
@@ -129,11 +122,10 @@ public class VerifyElGamalParametersPQ extends AbstractVerification {
         };
     }
 
-    private BigInteger computeQ(int n, byte[] seedDecodedBytes, int seedByteLength, int digestBitLength, int outputByteLength, byte[] prefix,
-                                int counter) {
+    private BigInteger computeQ(int N, byte[] seedDecodedBytes, int counter) {
         // Byte array to digest.
-        final ByteBuffer byteBuffer = ByteBuffer.allocate(prefix.length + seedByteLength + Integer.BYTES);
-        byteBuffer.put(prefix);
+        final ByteBuffer byteBuffer = ByteBuffer.allocate(PREFIX_PRIME_Q_BYTES.length + seedDecodedBytes.length + Integer.BYTES);
+        byteBuffer.put(PREFIX_PRIME_Q_BYTES);
         byteBuffer.put(seedDecodedBytes);
         byteBuffer.putInt(counter);
         final byte[] in = byteBuffer.array();
@@ -141,6 +133,12 @@ public class VerifyElGamalParametersPQ extends AbstractVerification {
         // Update digest with the byte array to hash.
         final SHAKEDigest shakeDigest = new SHAKEDigest(DIGEST_SECURITY_BITS_STRENGTH);
         shakeDigest.update(in, 0, in.length);
+
+        // Desired digest output bit length.
+        final int digestBitLength = N - 1;
+
+        // Compute needed byte length.
+        final int outputByteLength = (digestBitLength + Byte.SIZE - 1) / Byte.SIZE;
 
         // Perform the hash.
         byte[] digest = new byte[outputByteLength];
@@ -152,7 +150,7 @@ public class VerifyElGamalParametersPQ extends AbstractVerification {
 
         // Calculate q.
         final BigInteger U = fromBitSet(bitSet);
-        final BigInteger power = BigInteger.TWO.pow(n - 1);
+        final BigInteger power = BigInteger.TWO.pow(N - 1);
 
         return power.add(U).add(BigInteger.ONE).subtract(U.mod(BigInteger.TWO));
     }
