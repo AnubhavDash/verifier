@@ -1,88 +1,97 @@
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
-import ch.post.it.evoting.verifier.common.SlowTestCategory;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.annotation.Slow;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
-import org.junit.*;
-import org.junit.experimental.categories.Category;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class VerifyElGamalParametersPQTest extends Block1VerificationAbstractTest {
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
-
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         verification = new VerifyElGamalParametersPQ();
     }
 
-    @Test
     public void executeTestOK() throws Exception {
         final VerificationResult verificationResult =
                 verification.verify(Paths.get(getClass().getResource("/VerifyElGamalParameterPQTest/OK").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.OK, verificationResult.getStatus());
+        assertNotNull(verificationResult);
+        assertEquals(Status.OK, verificationResult.getStatus());
     }
-
-    @Test
-    @Category(SlowTestCategory.class)
-    public void executeTestOKIntensive() throws Exception {
+    @Slow
+    void executeTestOKIntensive() throws Exception {
         final VerificationResult verificationResult =
                 verification.verify(Paths.get(getClass().getResource("/VerifyElGamalParameterPQTest/OKI").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.OK, verificationResult.getStatus());
+        assertNotNull(verificationResult);
+        assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOK_L() throws Exception {
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("p bit length is not equal to " + VerifyElGamalParametersPQ.EXPECTED_P_BIT_LEN + " bits.");
-        verification.verify(Paths.get(getClass().getResource("/VerifyElGamalParameterPQTest/NOK_L").toURI()));
+    void executeTestNOK_L() {
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/VerifyElGamalParameterPQTest/NOK_L").toURI()))
+        );
+        assertEquals("p bit length is not equal to " + VerifyElGamalParametersPQ.EXPECTED_P_BIT_LEN + " bits.", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOK_N() throws Exception {
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("q bit length is not equal to " + VerifyElGamalParametersPQ.EXPECTED_Q_BIT_LEN + " bits.");
-        verification.verify(Paths.get(getClass().getResource("/VerifyElGamalParameterPQTest/NOK_N").toURI()));
+    void executeTestNOK_N() {
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/VerifyElGamalParameterPQTest/NOK_N").toURI()))
+        );
+        assertEquals("q bit length is not equal to " + VerifyElGamalParametersPQ.EXPECTED_Q_BIT_LEN + " bits.", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOK_CounterValue() throws Exception {
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("The q counter is too large.");
-        verification.verify(Paths.get(getClass().getResource("/VerifyElGamalParameterPQTest/NOK_CounterValue").toURI()));
+    void executeTestNOK_CounterValue() {
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/VerifyElGamalParameterPQTest/NOK_CounterValue").toURI()))
+        );
+        assertEquals("The q counter is too large.", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOK_SeedLength() throws Exception {
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("The seed has not the required size (" + VerifyElGamalParametersPQ.MIN_SEED_BIT_LEN + " bits).");
-        verification.verify(Paths.get(getClass().getResource("/VerifyElGamalParameterPQTest/NOK_SeedLength").toURI()));
+    void executeTestNOK_SeedLength() {
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/VerifyElGamalParameterPQTest/NOK_SeedLength").toURI()))
+        );
+        assertEquals("The seed has not the required size (" + VerifyElGamalParametersPQ.MIN_SEED_BIT_LEN + " bits).", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOK_qCounter() throws Exception {
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("A smaller counter value giving another pair of valid primes was found.");
-        verification.verify(Paths.get(getClass().getResource("/VerifyElGamalParameterPQTest/NOK_qCounter").toURI()));
+    void executeTestNOK_qCounter() {
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/VerifyElGamalParameterPQTest/NOK_qCounter").toURI()))
+        );
+        assertEquals("A smaller counter value giving another pair of valid primes was found.", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOK_computedP() throws Exception {
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("The calculated values of (p,q) do not correspond to the provided values of (p,q).");
-        verification.verify(Paths.get(getClass().getResource("/VerifyElGamalParameterPQTest/NOK_computedP").toURI()));
+    void executeTestNOK_computedP() {
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/VerifyElGamalParameterPQTest/NOK_computedP").toURI()))
+        );
+        assertEquals("The calculated values of (p,q) do not correspond to the provided values of (p,q).", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOK_computedQ() throws Exception {
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("The calculated values of (p,q) do not correspond to the provided values of (p,q).");
-        verification.verify(Paths.get(getClass().getResource("/VerifyElGamalParameterPQTest/NOK_computedQ").toURI()));
+    void executeTestNOK_computedQ() {
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/VerifyElGamalParameterPQTest/NOK_computedQ").toURI()))
+        );
+        assertEquals("The calculated values of (p,q) do not correspond to the provided values of (p,q).", ex.getMessage());
     }
 }

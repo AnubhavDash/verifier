@@ -17,78 +17,81 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.helper.RegexHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
-import java.util.regex.Pattern;
 
-public class CheckSigDataConfigTest extends Block1VerificationAbstractTest {
+import static org.junit.jupiter.api.Assertions.*;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
+class CheckSigDataConfigTest extends Block1VerificationAbstractTest {
 
-    @Before
-    public void setup() {
+
+    @BeforeEach
+    void setup() {
         verification = new CheckSigDataConfig();
     }
 
     @Test
-    public void executeTestOK() throws Exception {
+    void executeTestOK() throws Exception {
         VerificationResult verificationResult =
                 verification.verify(Paths.get(getClass().getResource("/CheckSigDataConfigTest/OK").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.OK, verificationResult.getStatus());
+        assertNotNull(verificationResult);
+        assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOK() throws Exception {
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("The signature verification of the file dataConfig_updated failed");
-        verification.verify(Paths.get(getClass().getResource("/CheckSigDataConfigTest/NOK/NOK").toURI()));
+    void executeTestNOK() {
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigDataConfigTest/NOK/NOK").toURI()))
+        );
+        assertEquals("The signature verification of the file dataConfig_updated failed", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOKFileNotFoundCertificate() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
+    void executeTestNOKFileNotFoundCertificate() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigDataConfigTest/NOK/NOK-NOFILE").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ADMIN_BOARD_CERT);
-        exceptionRule.expectMessage(structureNode.getQualifier());
-        verification.verify(Paths.get(getClass().getResource("/CheckSigDataConfigTest/NOK/NOK-NOFILE").toURI()));
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
     }
 
     @Test
-    public void executeTestNOKFileNotFoundRootCertificate() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
+    void executeTestNOKFileNotFoundRootCertificate() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigDataConfigTest/NOK/NOK-NOFILE2").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.TENANT_100);
-        exceptionRule.expectMessage(structureNode.getQualifier());
-        verification.verify(Paths.get(getClass().getResource("/CheckSigDataConfigTest/NOK/NOK-NOFILE2").toURI()));
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
     }
 
     @Test
-    public void executeTestNOKFileNotFoundDataConfig() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
+    void executeTestNOKFileNotFoundDataConfig() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigDataConfigTest/NOK/NOK-NOFILE3").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.DATA_CONFIG_UPDATED);
-        exceptionRule.expectMessage(matchesRegex(structureNode.getQualifier()));
-        verification.verify(Paths.get(getClass().getResource("/CheckSigDataConfigTest/NOK/NOK-NOFILE3").toURI()));
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
     }
 
     @Test
-    public void executeTestNOKFileNotFoundDataConfigMetadata() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
+    void executeTestNOKFileNotFoundDataConfigMetadata() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigDataConfigTest/NOK/NOK-NOFILE4").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.DATA_CONFIG_UPDATED);
-        exceptionRule.expectMessage(matchesRegex(structureNode.getQualifier() + RelationType.METADATA.toFileExtension()));
-        verification.verify(Paths.get(getClass().getResource("/CheckSigDataConfigTest/NOK/NOK-NOFILE4").toURI()));
+        assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier() + RelationType.METADATA.toFileExtension()).matches(ex.getMessage()));
     }
 
 }

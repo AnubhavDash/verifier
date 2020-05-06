@@ -22,5 +22,13 @@
             <version>5.2.3.RELEASE</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>ch.post.it.evoting.verifier</groupId>
+            <artifactId>verifier-common-block</artifactId>
+            <version>${project.version}</version>
+            <classifier>tests</classifier>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

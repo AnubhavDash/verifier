@@ -2,14 +2,14 @@
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * the GNU General  License as published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
  * Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
+ * See the GNU General  License for more details.
  *
- * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
+ * You should have received a copy of the GNU General  License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
 package ch.post.it.evoting.verifier.block.block1.verifications;
@@ -19,44 +19,44 @@ import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-public class IsPrimeVOTest extends Block1VerificationAbstractTest {
+import static org.junit.jupiter.api.Assertions.*;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
+class IsPrimeVOTest extends Block1VerificationAbstractTest {
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         verification = new IsPrimeVO();
     }
 
     @Test
-    public void executeTestOK() throws Exception {
+    void executeTestOK() throws Exception {
         VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/IsPrimeVOTest/OK").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.OK, verificationResult.getStatus());
+        assertNotNull(verificationResult);
+        assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOK() throws Exception {
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("vo is not prime");
-        verification.verify(Paths.get(getClass().getResource("/IsPrimeVOTest/NOK/NOK").toURI()));
+    void executeTestNOK() {
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/IsPrimeVOTest/NOK/NOK").toURI()))
+        );
+        assertEquals("vo is not prime", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOKFileNotFound() throws Exception {
-        exceptionRule.expect(IOException.class);
+    void executeTestNOKFileNotFound() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/IsPrimeVOTest/NOK/NOK-NOFILE").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.DATA_CONFIG_UPDATED);
-        exceptionRule.expectMessage(structureNode.getQualifier());
-        verification.verify(Paths.get(getClass().getResource("/IsPrimeVOTest/NOK/NOK-NOFILE").toURI()));
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
     }
 }

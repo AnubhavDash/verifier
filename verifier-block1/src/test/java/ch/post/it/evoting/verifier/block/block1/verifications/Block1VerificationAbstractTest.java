@@ -21,15 +21,15 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.regex.Pattern;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @Configuration
 @ContextConfiguration(classes = {Block1TestConfiguration.class})
 public abstract class Block1VerificationAbstractTest {
@@ -37,7 +37,7 @@ public abstract class Block1VerificationAbstractTest {
 
     @Test
     public void verificationDefinitionTestOK() {
-        // Check that @Before method is correctly implemented in each sub test class
+        // Check that @BeforeEach method is correctly implemented in each sub test class
         Assert.assertNotNull(verification);
 
         VerificationDefinition verificationDefinition = verification.getVerificationDefinition();
@@ -51,18 +51,4 @@ public abstract class Block1VerificationAbstractTest {
         Assert.assertFalse("The verification must not be deactivated", verificationDefinition.isDeactivated());
     }
 
-    protected Matcher<String> matchesRegex(final String regex) {
-        return new TypeSafeMatcher<>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("a string matching ")
-                        .appendValue(regex);
-            }
-
-            @Override
-            protected boolean matchesSafely(final String item) {
-                return Pattern.compile(regex).matcher(item).find();
-            }
-        };
-    }
 }

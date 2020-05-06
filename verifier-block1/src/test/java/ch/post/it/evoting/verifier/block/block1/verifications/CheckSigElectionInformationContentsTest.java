@@ -4,97 +4,110 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.JsonMissingNodeException;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.helper.RegexHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 import io.jsonwebtoken.SignatureException;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-public class CheckSigElectionInformationContentsTest extends Block1VerificationAbstractTest {
+import static org.junit.jupiter.api.Assertions.*;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
+class CheckSigElectionInformationContentsTest extends Block1VerificationAbstractTest {
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         verification = new CheckSigElectionInformationContents();
     }
 
     @Test
-    public void executeTestSignValid() throws Exception {
+    void executeTestSignValid() throws Exception {
         final VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource(
                 "/CheckSigElectionInformationContentsTest/OK").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.OK, verificationResult.getStatus());
+        assertNotNull(verificationResult);
+        assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestSignInvalid() throws Exception {
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("The signature verification of the file failed");
-        verification.verify(Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK").toURI()));
+    void executeTestSignInvalid() {
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK").toURI()))
+        );
+        assertEquals("The signature verification of the file failed", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOKFileNotFoundCertificate() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
+    void executeTestNOKFileNotFoundCertificate() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK-NOFILE").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ADMIN_BOARD_CERT);
-        exceptionRule.expectMessage(structureNode.getQualifier());
-        verification.verify(Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK-NOFILE").toURI()));
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
     }
 
     @Test
-    public void executeTestNOKFileNotFoundIntermediateCertificate() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
+    void executeTestNOKFileNotFoundIntermediateCertificate() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK-NOFILE2").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.TENANT_100);
-        exceptionRule.expectMessage(structureNode.getQualifier());
-        verification.verify(Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK-NOFILE2").toURI()));
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
     }
 
     @Test
-    public void executeTestNOKFileNotFoundRootCertificate() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
+    void executeTestNOKFileNotFoundRootCertificate() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK-NOFILE3").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.PLATFORM_ROOT_CA);
-        exceptionRule.expectMessage(structureNode.getQualifier());
-        verification.verify(Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK-NOFILE3").toURI()));
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
     }
 
     @Test
-    public void executeTestNOKFileNotFoundElectionInfo() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
+    void executeTestNOKFileNotFoundElectionInfo() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK-NOFILE4").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ELECTION_INFORMATION_CONTENTS);
-        exceptionRule.expectMessage(structureNode.getQualifier());
-        verification.verify(Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK-NOFILE4").toURI()));
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
     }
 
     @Test
-    public void executeTestNOKFileNotFoundElectionInfoSign() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
+    void executeTestNOKFileNotFoundElectionInfoSign() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK-NOFILE5").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ELECTION_INFORMATION_CONTENTS);
-        exceptionRule.expectMessage(matchesRegex(structureNode.getQualifier() + RelationType.SIGN.toFileExtension()));
-        verification.verify(Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK-NOFILE5").toURI()));
+        assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier() + RelationType.SIGN.toFileExtension()).matches(ex.getMessage()));
     }
 
     @Test
-    public void executeTestNOKMissingJWT() throws Exception {
-        exceptionRule.expect(JsonMissingNodeException.class);
-        exceptionRule.expectMessage("The signature is missing from the file!");
-        verification.verify(Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK-NOJWT").toURI()));
+    void executeTestNOKMissingJWT() {
+        final JsonMissingNodeException ex = assertThrows(
+                JsonMissingNodeException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK-NOJWT").toURI()))
+        );
+        assertEquals("The signature is missing from the file!", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOKModifiedJWT() throws Exception {
-        exceptionRule.expect(SignatureException.class);
-        exceptionRule.expectMessage(
-                "JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted.");
-        verification.verify(Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK-JWT").toURI()));
+    void executeTestNOKModifiedJWT() {
+        final SignatureException ex = assertThrows(
+                SignatureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK-JWT").toURI()))
+        );
+        assertEquals("JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted" +
+                ".", ex.getMessage());
     }
 
 }

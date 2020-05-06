@@ -20,53 +20,56 @@ import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-public class CheckSigCodesMappingTablesContextDataTest extends Block1VerificationAbstractTest {
+import static org.junit.jupiter.api.Assertions.*;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
+class CheckSigCodesMappingTablesContextDataTest extends Block1VerificationAbstractTest {
 
-    @Before
-    public void setup() {
+
+    @BeforeEach
+    void setup() {
         verification = new CheckSigCodesMappingTablesContextData();
     }
 
     @Test
-    public void executeTestAllSignValid() throws Exception {
+    void executeTestAllSignValid() throws Exception {
         final VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource(
                 "/CheckSigCodesMappingTablesContextDataTest/OK").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.OK, verificationResult.getStatus());
+        assertNotNull(verificationResult);
+        assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestOneSignInvalid() throws Exception {
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("The signature verification of the file failed");
-        verification.verify(Paths.get(getClass().getResource("/CheckSigCodesMappingTablesContextDataTest/NOK").toURI()));
+    void executeTestOneSignInvalid() {
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigCodesMappingTablesContextDataTest/NOK").toURI()))
+        );
+        assertEquals("The signature verification of the file failed", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOKCodesMappingFileNotFound() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
+    void executeTestNOKCodesMappingFileNotFound() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigCodesMappingTablesContextDataTest/NOK-NOFILE").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CODES_MAPPING_TABLES_CONTEXT_DATA);
-        exceptionRule.expectMessage(structureNode.getQualifier());
-        verification.verify(Paths.get(getClass().getResource("/CheckSigCodesMappingTablesContextDataTest/NOK-NOFILE").toURI()));
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
     }
 
     @Test
-    public void executeTestNOKSignFileNotFound() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
+    void executeTestNOKSignFileNotFound() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigCodesMappingTablesContextDataTest/NOK-NOFILE2").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CODES_MAPPING_TABLES_CONTEXT_DATA);
-        exceptionRule.expectMessage(structureNode.getQualifier() + RelationType.SIGN.toFileExtension());
-        verification.verify(Paths.get(getClass().getResource("/CheckSigCodesMappingTablesContextDataTest/NOK-NOFILE2").toURI()));
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier() + RelationType.SIGN.toFileExtension()));
     }
 }
