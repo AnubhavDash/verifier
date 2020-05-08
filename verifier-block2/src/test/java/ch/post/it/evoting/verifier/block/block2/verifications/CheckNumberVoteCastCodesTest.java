@@ -19,37 +19,39 @@ import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
-import org.junit.*;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 
-public class CheckNumberVoteCastCodesTest extends Block2VerificationAbstractTest {
+import static org.junit.jupiter.api.Assertions.*;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
+class CheckNumberVoteCastCodesTest extends Block2VerificationAbstractTest {
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         verification = new CheckNumberVoteCastCodes();
     }
 
     @Test
-    @Ignore
-    public void executeTestOK() throws Exception {
+    @Disabled("Enable when we got secureLog files with correct pattern.")
+    void executeTestOK() throws Exception {
         VerificationResult verificationResult =
                 verification.verify(Paths.get(getClass().getResource("/CheckNumberVoteCastCodesTest/OK").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.OK, verificationResult.getStatus());
+        assertNotNull(verificationResult);
+        assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    @Ignore
-    public void executeTestNOK() throws Exception {
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("TODO");
-        verification.verify(Paths.get(getClass().getResource("/CheckNumberVoteCastCodesTest/NOK").toURI()));
+    @Disabled("Enable when we got secureLog files with correct pattern.")
+    void executeTestNOK() {
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckNumberVoteCastCodesTest/NOK").toURI()))
+        );
+        assertEquals("TODO", ex.getMessage());
     }
 
     // TODO Implement the following missing tests cases:
@@ -60,17 +62,21 @@ public class CheckNumberVoteCastCodesTest extends Block2VerificationAbstractTest
     //  - The number of log entries does not match with the number of voters
 
     @Test
-    public void executeTestNOKFileNotFoundVoterInformation() throws Exception {
-        exceptionRule.expect(IOException.class);
-        exceptionRule.expectMessage("voterInformation.*\\.csv");
-        verification.verify(Paths.get(getClass().getResource("/CheckNumberVoteCastCodesTest/NOK-NOTFILE").toURI()));
+    void executeTestNOKFileNotFoundVoterInformation() {
+        final FileNotFoundException ex = assertThrows(
+                FileNotFoundException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckNumberVoteCastCodesTest/NOK-NOTFILE").toURI()))
+        );
+        assertEquals("voterInformation.*\\.csv", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOKFileNotFoundMappingCcHosts() throws Exception {
-        exceptionRule.expect(IOException.class);
+    void executeTestNOKFileNotFoundMappingCcHosts() {
+        final FileNotFoundException ex = assertThrows(
+                FileNotFoundException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckNumberVoteCastCodesTest/NOK-NOTFILE2").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.MAPPING_CC_HOSTS);
-        exceptionRule.expectMessage(structureNode.getQualifier());
-        verification.verify(Paths.get(getClass().getResource("/CheckNumberVoteCastCodesTest/NOK-NOTFILE2").toURI()));
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
     }
 }

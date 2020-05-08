@@ -23,45 +23,46 @@ import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import org.bouncycastle.util.encoders.Base64;
-import org.junit.*;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class CheckSecureLogSignatureTest extends Block2VerificationAbstractTest {
+import static org.junit.jupiter.api.Assertions.*;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
+class CheckSecureLogSignatureTest extends Block2VerificationAbstractTest {
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         verification = new CheckSecureLogSignature();
     }
 
     @Test
-    @Ignore
-    public void executeTestOK() throws Exception {
+    @Disabled("Enable when we got secureLog files with correct pattern?")
+    void executeTestOK() throws Exception {
         VerificationResult verificationResult = new CheckSecureLogSignature().verify(Paths.get(getClass().getResource(
                 "/CheckSecureLogSignatureTest/OK").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.OK, verificationResult.getStatus());
+        assertNotNull(verificationResult);
+        assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    @Ignore
-    public void executeTestNOK() throws Exception {
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("Checkpoint entry and attributes of the entry, the signature does not verify");
-        VerificationResult verificationResult = new CheckSecureLogSignature().verify(Paths.get(getClass().getResource(
-                "/CheckSecureLogSignatureTest/NOK").toURI()));
+    @Disabled("Enable when we got secureLog files with correct pattern?")
+    void executeTestNOK() {
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSecureLogSignatureTest/NOK").toURI()))
+        );
+        assertEquals("Checkpoint entry and attributes of the entry, the signature does not verify", ex.getMessage());
     }
 
     @Test
-    // TODO Extract this test to another class, as it is not testing CheckSecureLogSignature code
-    public void testSignatureAlgorithm() throws Exception {
+        // TODO Extract this test to another class, as it is not testing CheckSecureLogSignature code
+    void testSignatureAlgorithm() throws Exception {
         Path cert = Paths.get(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_log_sign.pem").toURI());
         Path intermediate = Paths.get(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_ca.pem").toURI());
         Path root = Paths.get(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/platformRootCA.pem").toURI());
@@ -113,12 +114,12 @@ public class CheckSecureLogSignatureTest extends Block2VerificationAbstractTest 
         boolean b = SignatureChecker.verifySignature(value.getBytes(StandardCharsets.UTF_8), Base64.decode(sg), Files.readAllBytes(cert),
                 new byte[][]{Files.readAllBytes(intermediate)}, Files.readAllBytes(root));
 
-        Assert.assertTrue(b);
+        assertTrue(b);
     }
 
     @Test
-    // TODO Extract this test to another class, as it is not testing CheckSecureLogSignature code
-    public void testSecureLogBundleSignature() throws Exception {
+        // TODO Extract this test to another class, as it is not testing CheckSecureLogSignature code
+    void testSecureLogBundleSignature() throws Exception {
         Path cert = Paths.get(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_log_sign.pem").toURI());
         Path intermediate = Paths.get(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_ca.pem").toURI());
         Path root = Paths.get(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/platformRootCA.pem").toURI());

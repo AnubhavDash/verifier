@@ -31,7 +31,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CheckSigDataConfigTest extends Block1VerificationAbstractTest {
 
-
     @BeforeEach
     void setup() {
         verification = new CheckSigDataConfig();

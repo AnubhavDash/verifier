@@ -27,5 +27,13 @@
             <artifactId>reactor-core</artifactId>
             <version>3.2.1.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>ch.post.it.evoting.verifier</groupId>
+            <artifactId>verifier-common-block</artifactId>
+            <version>${project.version}</version>
+            <classifier>tests</classifier>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

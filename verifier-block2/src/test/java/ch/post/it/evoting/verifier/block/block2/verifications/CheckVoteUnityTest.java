@@ -17,42 +17,47 @@ package ch.post.it.evoting.verifier.block.block2.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
-import org.junit.*;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 
-public class CheckVoteUnityTest extends Block2VerificationAbstractTest {
+import static org.junit.jupiter.api.Assertions.*;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
+class CheckVoteUnityTest extends Block2VerificationAbstractTest {
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         verification = new CheckVoteUnity();
     }
 
     @Test
-    @Ignore
-    public void executeTest() throws Exception {
+    @Disabled("Enable when we got secureLog files with correct pattern.")
+    void executeTest() throws Exception {
         VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckVoteUnityTest/OK").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.OK, verificationResult.getStatus());
+        assertNotNull(verificationResult);
+        assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    @Ignore
-    public void executeTestNOK() throws Exception {
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("Voting Card Id contain multiple votes in the secure logs");
-        verification.verify(Paths.get(getClass().getResource("/CheckVoteUnityTest/NOK").toURI()));
+    @Disabled("Enable when we got secureLog files with correct pattern?")
+    void executeTestNOK() {
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckVoteUnityTest/NOK").toURI()))
+        );
+        assertEquals("Voting Card Id contain multiple votes in the secure logs", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOKFileNotFound() throws Exception {
-        exceptionRule.expect(FileNotFoundException.class);
-        exceptionRule.expectMessage("voterInformation.*\\.csv");
-        verification.verify(Paths.get(getClass().getResource("/CheckVoteUnityTest/NOK-NOTFILE").toURI()));
+    void executeTestNOKFileNotFound() {
+        final FileNotFoundException ex = assertThrows(
+                FileNotFoundException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckVoteUnityTest/NOK-NOTFILE").toURI()))
+        );
+        assertEquals("voterInformation.*\\.csv", ex.getMessage());
     }
+
 }
