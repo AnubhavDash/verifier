@@ -17,6 +17,7 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
 import ch.post.it.evoting.verifier.common.*;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.block.JsonMissingNodeException;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
@@ -61,7 +62,7 @@ public class CheckSigDownloadedBallotBox extends AbstractVerification {
         final JsonNode ballotBoxJsonNode = mapper.readTree(Files.readAllBytes(ballotBoxJsonPathNode.getPath()));
         final JsonNode ballotBoxCertJsonNode = ballotBoxJsonNode.path(BALLOT_BOX_CERT_NODE);
         if (ballotBoxCertJsonNode.isMissingNode()) {
-            throw new RuntimeException(String.format("%s certificate is missing!", BALLOT_BOX_CERT_NODE));
+            throw new JsonMissingNodeException(String.format("%s certificate is missing!", BALLOT_BOX_CERT_NODE));
         }
         final byte[] signingCertificate = ballotBoxCertJsonNode.asText().getBytes(StandardCharsets.UTF_8);
 
@@ -70,14 +71,14 @@ public class CheckSigDownloadedBallotBox extends AbstractVerification {
         final JsonNode electionInfoJsonNode = mapper.readTree(Files.readAllBytes(electionInfoPathNode.getPath()));
         final JsonNode servicesCANode = electionInfoJsonNode.path(SERVICES_CA_NODE);
         if (servicesCANode.isMissingNode()) {
-            throw new RuntimeException(String.format("%s certificate is missing!", SERVICES_CA_NODE));
+            throw new JsonMissingNodeException(String.format("%s certificate is missing!", SERVICES_CA_NODE));
         }
         final byte[][] intermediateCertificates = new byte[][]{servicesCANode.asText().getBytes(StandardCharsets.UTF_8)};
 
         // Get the root certificate.
         final JsonNode electionRootCANode = electionInfoJsonNode.path(ELECTION_ROOT_CA_NODE);
         if (electionRootCANode.isMissingNode()) {
-            throw new RuntimeException(String.format("%s certificate is missing!", ELECTION_ROOT_CA_NODE));
+            throw new JsonMissingNodeException(String.format("%s certificate is missing!", ELECTION_ROOT_CA_NODE));
         }
         final byte[] rootCertificate = electionRootCANode.asText().getBytes(StandardCharsets.UTF_8);
 

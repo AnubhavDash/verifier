@@ -16,33 +16,35 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.nio.file.Paths;
 
-public class CheckIndependenceGeneratorsOnlineTest extends Block3VerificationAbstractTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-    @Before
-    public void setup() {
+class CheckIndependenceGeneratorsOnlineTest extends Block3VerificationAbstractTest {
+
+    @BeforeEach
+    void setup() {
         verification = new CheckIndependenceGeneratorsOnline();
     }
 
-    @Ignore
     @Test
-    public void executeTestOK() throws Exception {
-        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckIndependenceGeneratorsOnlineTest/OK").toURI()));
-        Assert.assertEquals(Status.OK, result.getStatus());
+    @Disabled("FIXME")
+    void executeTestOK() throws Exception {
+        VerificationResult result =
+                verification.verify(Paths.get(getClass().getResource("/CheckIndependenceGeneratorsOnlineTest/OK").toURI()));
+        assertEquals(Status.OK, result.getStatus());
     }
 
-    @Ignore
     @Test
-    public void executeTestNOK() throws Exception {
-        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckIndependenceGeneratorsOnlineTest/NOK").toURI()));
-        Assert.assertEquals(Status.NOK, result.getStatus());
+    @Disabled("Fix this test by not using status NOK anymore and implementing meaningful asserts.")
+    void executeTestNOK() throws Exception {
+        VerificationResult result =
+                verification.verify(Paths.get(getClass().getResource("/CheckIndependenceGeneratorsOnlineTest/NOK").toURI()));
+        assertEquals(Status.NOK, result.getStatus());
     }
 
 }

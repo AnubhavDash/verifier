@@ -19,45 +19,44 @@ import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-public class CheckDecryptionProofOnlineTest extends Block3VerificationAbstractTest {
+import static org.junit.jupiter.api.Assertions.*;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
+class CheckDecryptionProofOnlineTest extends Block3VerificationAbstractTest {
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         verification = new CheckDecryptionProofOnline();
     }
 
     @Test
-    public void executeTestOK() throws Exception {
+    void executeTestOK() throws Exception {
         VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofOnlineTest/OK").toURI()));
-        Assert.assertEquals(Status.OK, result.getStatus());
+        assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
-    public void executeTestNOK() throws Exception {
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("the number of control components expected is 3 but actual is 1");
-        verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofOnlineTest/NOK").toURI()));
+    void executeTestNOK() {
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofOnlineTest/NOK").toURI()))
+        );
+        assertEquals("the number of control components expected is 3 but actual is 1", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOKFileNotFound() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
-        // Get the file name from structure node for the expected message
-        StructureNode ccMixingKeysStructureNode = verification.getPathService().getStructureNode(StructureKey.CC_MIXING_KEYS);
-        exceptionRule.expectMessage(ccMixingKeysStructureNode.getQualifier());
-        verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofOnlineTest/NOK-NOTFILE").toURI()));
+    void executeTestNOKFileNotFound() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofOnlineTest/NOK-NOTFILE").toURI()))
+        );
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CC_MIXING_KEYS);
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
     }
 
 }
