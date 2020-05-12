@@ -18,7 +18,6 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -26,8 +25,7 @@ import org.junit.jupiter.api.Test;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CheckSingleValueProductArgumentTest extends Block3VerificationAbstractTest {
 
@@ -40,7 +38,7 @@ class CheckSingleValueProductArgumentTest extends Block3VerificationAbstractTest
     void executeTestOK() throws Exception {
         VerificationResult result =
                 verification.verify(Paths.get(getClass().getResource("/CheckSingleValueProductArgumentTest/OK").toURI()));
-        Assert.assertEquals(Status.OK, result.getStatus());
+        assertEquals(Status.OK, result.getStatus());
     }
 
     @Test
@@ -48,7 +46,7 @@ class CheckSingleValueProductArgumentTest extends Block3VerificationAbstractTest
     void executeTestNOK() throws Exception {
         VerificationResult result =
                 verification.verify(Paths.get(getClass().getResource("/CheckSingleValueProductArgumentTest/NOK").toURI()));
-        Assert.assertEquals(Status.NOK, result.getStatus());
+        assertEquals(Status.NOK, result.getStatus());
     }
 
     @Test

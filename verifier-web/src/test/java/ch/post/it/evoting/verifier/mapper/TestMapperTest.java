@@ -19,18 +19,19 @@ import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.dto.Verification;
 import ch.post.it.evoting.verifier.report.model.Test;
-import org.junit.Assert;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class TestMapperTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class TestMapperTest {
 
     private Verification verificationDto;
 
-    @Before
-    public void init() {
+    @BeforeEach
+    void init() {
         verificationDto = new Verification();
         verificationDto.setBlockId(1);
         verificationDto.setVerificationId(1);
@@ -48,23 +49,23 @@ public class TestMapperTest {
         verificationDto.setMessage(message);
     }
 
-    @org.junit.Test
-    public void map() {
+    @org.junit.jupiter.api.Test
+    void map() {
         // map in french
         Test result = ReportMapper.INSTANCE.map(verificationDto, Language.FR);
-        Assert.assertEquals("id mapping failed", "1", result.getId());
-        Assert.assertEquals("name mapping failed", "is prime de p", result.getName());
-        Assert.assertEquals("description mapping failed", "desc in french", result.getDescription());
-        Assert.assertEquals("category mapping failed", "INTEGRITY", result.getCategory());
-        Assert.assertEquals("message mapping failed", "the test failed (french)", result.getMessage());
+        assertEquals("1", result.getId(), "id mapping failed");
+        assertEquals("is prime de p", result.getName(), "name mapping failed");
+        assertEquals("desc in french", result.getDescription(), "description mapping failed");
+        assertEquals("INTEGRITY", result.getCategory(), "category mapping failed");
+        assertEquals("the test failed (french)", result.getMessage(), "message mapping failed");
 
         // map in deutch
         result = ReportMapper.INSTANCE.map(verificationDto, Language.DE);
-        Assert.assertEquals("id mapping failed", "1", result.getId());
-        Assert.assertEquals("name mapping failed", "is prime de p", result.getName());
-        Assert.assertEquals("description mapping failed", "desc in deutch", result.getDescription());
-        Assert.assertEquals("category mapping failed", "INTEGRITY", result.getCategory());
-        Assert.assertEquals("message mapping failed", "the test failed (deutch)", result.getMessage());
+        assertEquals("1", result.getId(), "id mapping failed");
+        assertEquals("is prime de p", result.getName(), "name mapping failed");
+        assertEquals("desc in deutch", result.getDescription(), "description mapping failed");
+        assertEquals("INTEGRITY", result.getCategory(), "category mapping failed");
+        assertEquals("the test failed (deutch)", result.getMessage(), "message mapping failed");
 
     }
 }

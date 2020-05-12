@@ -1,11 +1,10 @@
 package ch.post.it.evoting.verifier.common.block.tools;
 
 import ch.post.it.evoting.verifier.common.block.dto.*;
-import ch.post.it.evoting.verifier.common.block.dto.revised.algo.SVPStatement;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,15 +19,17 @@ import java.security.Security;
 import java.util.Arrays;
 import java.util.List;
 
-public class MathHelperTest {
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class MathHelperTest {
 
     @Test
-    public void modExpWithSimpleValues() {
+    void modExpWithSimpleValues() {
         modExpTest("modExpSimpleValues.json");
     }
 
     @Test
-    public void modExpWithRealSizeValues() {
+    void modExpWithRealSizeValues() {
         modExpTest("modExpRealSizeValues.json");
     }
 
@@ -42,12 +43,12 @@ public class MathHelperTest {
 
 
     @Test
-    public void modExpProductWithSimpleValues() {
+    void modExpProductWithSimpleValues() {
         modExpProductTest("modExpProductSimpleValues.json");
     }
 
     @Test
-    public void modExpProductWithRealSizeValues() {
+    void modExpProductWithRealSizeValues() {
         modExpProductTest("modExpProductRealSizeValues.json");
     }
 
@@ -63,12 +64,12 @@ public class MathHelperTest {
     }
 
     @Test
-    public void modInvWithSimpleValues() {
+    void modInvWithSimpleValues() {
         modInvTest("modInvSimpleValues.json");
     }
 
     @Test
-    public void modInvWithRealSizeValues() {
+    void modInvWithRealSizeValues() {
         modInvTest("modInvRealSizeValues.json");
     }
 
@@ -81,22 +82,22 @@ public class MathHelperTest {
     }
 
     @Test
-    public void procIncPowTest() {
+    void procIncPowTest() {
         final ProdIncPowParameters prodIncPowParameters = readValue("prodIncPow.json", ProdIncPowParameters.class);
 
         final BigInteger result = MathHelper.prodIncPow(prodIncPowParameters.getEncryptionGroup(), prodIncPowParameters.getA_vec(),
                 prodIncPowParameters.getX());
 
-        Assert.assertEquals(prodIncPowParameters.getOutput(), result);
+        Assertions.assertEquals(prodIncPowParameters.getOutput(), result);
     }
 
     @Test
-    public void computeCommitmentWithSimpleValues() {
+    void computeCommitmentWithSimpleValues() {
         computeCommitmentTest("computeCommitmentSimpleValues.json");
     }
 
     @Test
-    public void computeCommitmentWithRealSizeValues() {
+    void computeCommitmentWithRealSizeValues() {
         computeCommitmentTest("computeCommitmentRealSizeValues.json");
     }
 
@@ -117,12 +118,12 @@ public class MathHelperTest {
 
 
     @Test
-    public void computePhiSchnorrWithSimpleValues() {
+    void computePhiSchnorrWithSimpleValues() {
         computePhiSchnorrTest("computePhiSchnorrSimpleValues.json");
     }
 
     @Test
-    public void computePhiSchnorrWithRealSizeValues() {
+    void computePhiSchnorrWithRealSizeValues() {
         computePhiSchnorrTest("computePhiSchnorrRealSizeValues.json");
     }
 
@@ -140,12 +141,12 @@ public class MathHelperTest {
     }
 
     @Test
-    public void computePhiExponentiationSimpleValues() {
+    void computePhiExponentiationSimpleValues() {
         computePhiExponentiationTest("computePhiExponentiationSimpleValues.json");
     }
 
     @Test
-    public void computePhiExponentiationRealSizeValues() {
+    void computePhiExponentiationRealSizeValues() {
         computePhiExponentiationTest("computePhiExponentiationRealSizeValues.json");
     }
 
@@ -163,12 +164,12 @@ public class MathHelperTest {
     }
 
     @Test
-    public void computePlaintextEqualityWithSimpleValues() {
+    void computePlaintextEqualityWithSimpleValues() {
         computePlaintextEqualityTest("computePlaintextEqualitySimpleValues.json");
     }
 
     @Test
-    public void computePlaintextEqualityWithRealSizeValues() {
+    void computePlaintextEqualityWithRealSizeValues() {
         computePlaintextEqualityTest("computePlaintextEqualityRealSizeValues.json");
     }
 
@@ -188,21 +189,21 @@ public class MathHelperTest {
     }
 
     @Test
-    public void bilinearMappingTest() {
+    void bilinearMappingTest() {
         final BilinearMappingParameters bilinearMappingParameters = readValue("bilinearMap.json", BilinearMappingParameters.class);
         final BigInteger result = MathHelper.bilinearMapping(bilinearMappingParameters.getEg(), bilinearMappingParameters.getA_vec(),
                 bilinearMappingParameters.getB_vec(), bilinearMappingParameters.getY());
 
-        Assert.assertTrue(MathHelper.areEqual(result, bilinearMappingParameters.getOutput()));
+        assertTrue(MathHelper.areEqual(result, bilinearMappingParameters.getOutput()));
     }
 
     @Test
-    public void reverseAndJoinTest() {
-        Assert.assertEquals("CBA", MathHelper.reverseAndJoin(Arrays.asList("A", "B", "C")));
+    void reverseAndJoinTest() {
+        Assertions.assertEquals("CBA", MathHelper.reverseAndJoin(Arrays.asList("A", "B", "C")));
     }
 
     @Test
-    public void randomOracleHash() throws Exception {
+    void randomOracleHash() throws Exception {
         if (Security.getProvider("BC") == null) {
             Security.addProvider(new BouncyCastleProvider());
         }
@@ -213,12 +214,12 @@ public class MathHelperTest {
             final BigInteger output = MathHelper.randomOracleHash(MessageDigest.getInstance("SHA-256", "BC"),
                     rohp.getX().getBytes(StandardCharsets.UTF_8),
                     BigInteger.ZERO, rohp.getQ());
-            Assert.assertEquals(rohp.getOutput(), output);
+            Assertions.assertEquals(rohp.getOutput(), output);
         }
     }
 
     @Test
-    public void verifySVPArgumentTest() {
+    void verifySVPArgumentTest() {
         final List<VerifySVPArgumentParameters> verifySVPArgumentParameters = readValues("svp-argument.json",
                 VerifySVPArgumentParameters[].class);
 
@@ -226,12 +227,12 @@ public class MathHelperTest {
             final boolean result = MathHelper.verifySVPArgument(svpap.getEg(), svpap.getCk(), svpap.getPk_mix(), svpap.getStatement(),
                     svpap.getArgument());
 
-            Assert.assertTrue("Assertion failed for data id: " + svpap.getId(), result);
+            assertTrue(result, "Assertion failed for data id: " + svpap.getId());
         }
     }
 
     @Test
-    public void zeroArgumentTest() {
+    void zeroArgumentTest() {
         final VerifyZArgumentParameters zArgumentParameters = readValue("z-argument.json", VerifyZArgumentParameters.class);
 
         final boolean result = MathHelper.verifyZArgument(zArgumentParameters.getEg(), zArgumentParameters.getCk(),
@@ -239,7 +240,7 @@ public class MathHelperTest {
                 zArgumentParameters.getM(), zArgumentParameters.getN(), zArgumentParameters.getStatement(),
                 zArgumentParameters.getArgument());
 
-        Assert.assertTrue(result);
+        assertTrue(result);
     }
 
 
@@ -263,7 +264,7 @@ public class MathHelperTest {
     }
 
     private void assertEquals(String id, BigInteger expected, BigInteger actual) {
-        Assert.assertTrue("Error in dataset for id : " + id, MathHelper.areEqual(expected, actual));
+        assertTrue(MathHelper.areEqual(expected, actual), "Error in dataset for id : " + id);
     }
 
     private void assertEquals(String id, List<BigInteger> expected_vec, List<BigInteger> actual_vec) {
