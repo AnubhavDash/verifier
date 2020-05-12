@@ -18,9 +18,7 @@ import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import org.junit.jupiter.api.Test;
 
-import static junit.framework.TestCase.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class Block3VerificationAbstractTest {
     protected AbstractVerification verification;
@@ -38,6 +36,6 @@ public abstract class Block3VerificationAbstractTest {
         assertNotNull(verificationDefinition.getName());
         assertNotNull(verificationDefinition.getDescription());
         // Check verification is not deactivated
-        assertFalse("The verification must not be deactivated", verificationDefinition.isDeactivated());
+        assertFalse(verificationDefinition.isDeactivated(), "The verification must not be deactivated");
     }
 }

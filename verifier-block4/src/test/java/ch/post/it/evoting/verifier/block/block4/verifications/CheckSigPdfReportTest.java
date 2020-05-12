@@ -17,72 +17,79 @@ package ch.post.it.evoting.verifier.block.block4.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.helper.RegexHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-public class CheckSigPdfReportTest extends Block4VerificationAbstractTest {
+import static org.junit.jupiter.api.Assertions.*;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
+class CheckSigPdfReportTest extends Block4VerificationAbstractTest {
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         verification = new CheckSigPdfReport();
     }
 
     @Test
-    public void executeTestOK() throws Exception {
+    void executeTestOK() throws Exception {
         VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckSigPdfReportTest/OK").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.OK, verificationResult.getStatus());
+        assertNotNull(verificationResult);
+        assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOKPdfKo() throws Exception {
+    void executeTestNOKPdfKo() {
         // TODO Check if test is relevant, because executeTestNOKCertKo got the same error
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("The signature verification of PDF Report failed");
-        verification.verify(Paths.get(getClass().getResource("/CheckSigPdfReportTest/NOK/PDF-NOT-OK").toURI()));
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigPdfReportTest/NOK/PDF-NOT-OK").toURI()))
+        );
+        assertEquals("The signature verification of PDF Report failed", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOKCertKo() throws Exception {
+    void executeTestNOKCertKo() {
         // TODO Check if test is relevant, because executeTestNOKPdfKo got the same error
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("The signature verification of PDF Report failed");
-        verification.verify(Paths.get(getClass().getResource("/CheckSigPdfReportTest/NOK/CERT-NOT-OK").toURI()));
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigPdfReportTest/NOK/CERT-NOT-OK").toURI()))
+        );
+        assertEquals("The signature verification of PDF Report failed", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOKFileNotFoundRootCertificate() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(matchesRegex(verification.getPathService().getStructureNode(StructureKey.TENANT_100).getQualifier()));
-        verification.verify(Paths.get(getClass().getResource("/CheckSigPdfReportTest/NOK-NOTFILE").toURI()));
+    void executeTestNOKFileNotFoundRootCertificate() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigPdfReportTest/NOK-NOTFILE").toURI()))
+        );
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.TENANT_100);
+        assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
     }
 
     @Test
-    public void executeTestNOKFileNotFoundReportResult() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(matchesRegex(verification.getPathService().getStructureNode(StructureKey.REPORT_RESULT).getQualifier()));
-        verification.verify(Paths.get(getClass().getResource("/CheckSigPdfReportTest/NOK-NOTFILE2").toURI()));
+    void executeTestNOKFileNotFoundReportResult() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigPdfReportTest/NOK-NOTFILE2").toURI()))
+        );
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.REPORT_RESULT);
+        assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
     }
 
     @Test
-    public void executeTestNOKFileNotFoundReportResultP7() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(matchesRegex(
-                verification.getPathService().getStructureNode(StructureKey.REPORT_RESULT).getQualifier()
-                        + RelationType.P7.toFileExtension()
-        ));
-        verification.verify(Paths.get(getClass().getResource("/CheckSigPdfReportTest/NOK-NOTFILE3").toURI()));
+    void executeTestNOKFileNotFoundReportResultP7() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigPdfReportTest/NOK-NOTFILE3").toURI()))
+        );
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.REPORT_RESULT);
+        assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier() + RelationType.P7.toFileExtension()).matches(ex.getMessage()));
     }
-
 }

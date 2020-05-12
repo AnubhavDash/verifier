@@ -17,72 +17,86 @@ package ch.post.it.evoting.verifier.block.block4.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.helper.RegexHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-public class CheckTallyingListsTest extends Block4VerificationAbstractTest {
+import static org.junit.jupiter.api.Assertions.*;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
+class CheckTallyingListsTest extends Block4VerificationAbstractTest {
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         verification = new CheckTallyingLists();
     }
 
     @Test
-    public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/OK").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.OK, verificationResult.getStatus());
+    void executeTestOK() throws Exception {
+        VerificationResult verificationResult =
+                verification.verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/OK").toURI()));
+        assertNotNull(verificationResult);
+        assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOK() throws Exception {
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("The occurrences for list are different for counting Circle in eCH-0110 and evoting-decrypt");
-        verification.verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK").toURI()));
+    void executeTestNOK() {
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK").toURI()))
+        );
+        assertEquals("The occurrences for list are different for counting Circle in eCH-0110 and evoting-decrypt", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOKVoteCountCountingCircle() throws Exception {
-        exceptionRule.expect(IllegalArgumentException.class);
-        exceptionRule.expectMessage("cannot find the decrypt data for given countingCircle");
-        verification.verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-VOTECOUNT-COUNTINGCIRCLE").toURI()));
+    void executeTestNOKVoteCountCountingCircle() {
+        final IllegalArgumentException ex = assertThrows(
+                IllegalArgumentException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-VOTECOUNT-COUNTINGCIRCLE").toURI()))
+        );
+        assertTrue(ex.getMessage().contains("cannot find the decrypt data for given countingCircle"));
     }
 
     @Test
-    public void executeTestNOKVoteCountElection() throws Exception {
-        exceptionRule.expect(IllegalArgumentException.class);
-        exceptionRule.expectMessage("cannot find the decrypt data for given election");
-        verification.verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-VOTECOUNT-ELECTION").toURI()));
+    void executeTestNOKVoteCountElection() {
+        final IllegalArgumentException ex = assertThrows(
+                IllegalArgumentException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-VOTECOUNT-ELECTION").toURI()))
+        );
+        assertEquals("cannot find the decrypt data for given election : WRONG-IDENTIFIER", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOKFileNotFoundConfiguration() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(matchesRegex(verification.getPathService().getStructureNode(StructureKey.CONFIG_ANONYMIZED).getQualifier()));
-        verification.verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-CONFIG").toURI()));
+    void executeTestNOKFileNotFoundConfiguration() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-CONFIG").toURI()))
+        );
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CONFIG_ANONYMIZED);
+        assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
     }
 
     @Test
-    public void executeTestNOKFileNotFoundEVoting() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(matchesRegex(verification.getPathService().getStructureNode(StructureKey.EVOTING_DECRYPT_RESULT).getQualifier()));
-        verification.verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-EVOTING").toURI()));
+    void executeTestNOKFileNotFoundEVoting() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-EVOTING").toURI()))
+        );
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.EVOTING_DECRYPT_RESULT);
+        assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
     }
 
     @Test
-    public void executeTestNOKFileNotFoundECH0110() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(matchesRegex(verification.getPathService().getStructureNode(StructureKey.ECH0110).getQualifier()));
-        verification.verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-eCH").toURI()));
+    void executeTestNOKFileNotFoundECH0110() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingListsTest/NOK-NOFILE-eCH").toURI()))
+        );
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ECH0110);
+        assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
     }
 }
