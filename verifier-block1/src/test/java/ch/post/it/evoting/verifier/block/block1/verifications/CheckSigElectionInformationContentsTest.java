@@ -4,7 +4,7 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.JsonMissingNodeException;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
-import ch.post.it.evoting.verifier.common.block.helper.RegexHelper;
+import ch.post.it.evoting.verifier.common.block.test.helper.RegexHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;

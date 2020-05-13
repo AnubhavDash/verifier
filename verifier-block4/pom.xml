@@ -18,10 +18,8 @@
         </dependency>
         <dependency>
             <groupId>ch.post.it.evoting.verifier</groupId>
-            <artifactId>verifier-common-block</artifactId>
+            <artifactId>verifier-common-block-test</artifactId>
             <version>${project.version}</version>
-            <classifier>tests</classifier>
-            <type>test-jar</type>
             <scope>test</scope>
         </dependency>
     </dependencies>

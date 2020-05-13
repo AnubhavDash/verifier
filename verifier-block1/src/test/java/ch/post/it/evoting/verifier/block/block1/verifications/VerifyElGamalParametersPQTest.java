@@ -2,7 +2,7 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.annotation.Slow;
+import ch.post.it.evoting.verifier.common.block.test.annotation.Slow;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

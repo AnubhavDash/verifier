@@ -1,4 +1,4 @@
-package ch.post.it.evoting.verifier.common.block.helper;
+package ch.post.it.evoting.verifier.common.block.test.helper;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;

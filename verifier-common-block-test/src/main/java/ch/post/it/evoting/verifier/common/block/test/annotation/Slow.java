@@ -1,4 +1,4 @@
-package ch.post.it.evoting.verifier.common.block.annotation;
+package ch.post.it.evoting.verifier.common.block.test.annotation;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
