@@ -64,6 +64,16 @@
                 <artifactId>jackson-dataformat-xml</artifactId>
                 <version>2.9.8</version>
             </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>5.6.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest-core</artifactId>
+                <version>2.2</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -213,7 +223,7 @@
     <modules>
         <module>verifier-common</module>
         <module>verifier-common-block</module>
-        <module>verifier-common-block-test</module>
+        <module>verifier-common-test</module>
         <module>verifier-block1</module>
         <module>verifier-block2</module>
         <module>verifier-block3</module>
@@ -229,19 +239,6 @@
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
         </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.6.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-core</artifactId>
-            <version>2.2</version>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 
     <properties>

@@ -14,25 +14,17 @@
  */
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
-import ch.post.it.evoting.verifier.block.block1.config.Block1TestConfiguration;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(SpringExtension.class)
-@Configuration
-@ContextConfiguration(classes = {Block1TestConfiguration.class})
 public abstract class Block1VerificationAbstractTest {
     protected AbstractVerification verification;
 
     @Test
-    public void verificationDefinitionTestOK() {
+    void verificationDefinitionTestOK() {
         // Check that @BeforeEach method is correctly implemented in each sub test class
         assertNotNull(verification);
 
