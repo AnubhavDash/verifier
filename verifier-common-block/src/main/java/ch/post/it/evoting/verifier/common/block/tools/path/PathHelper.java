@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// TODO Try in the long term to remove everything related to java.io.
 public class PathHelper {
     private PathHelper() {
         //private constructor, use static

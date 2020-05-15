@@ -17,73 +17,81 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.test.helper.RegexHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-public class CheckSigEch015XTest extends Block1VerificationAbstractTest {
+import static org.junit.jupiter.api.Assertions.*;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
+class CheckSigEch015XTest extends Block1VerificationAbstractTest {
 
-    @Before
-    public void setup() {
+
+    @BeforeEach
+    void setup() {
         verification = new CheckSigEch015X();
     }
 
     @Test
-    public void executeTestOK() throws Exception {
+    void executeTestOK() throws Exception {
         VerificationResult verificationResult =
                 new CheckSigEch015X().verify(Paths.get(getClass().getResource("/CheckSigEch015XTest/OK").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.OK, verificationResult.getStatus());
+        assertNotNull(verificationResult);
+        assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOKCertKo() throws Exception {
+    void executeTestNOKCertKo() {
         // TODO Check if test is relevant, because executeTestNOKXmlKo got the same error
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("The signature verification of the file failed");
-        verification.verify(Paths.get(getClass().getResource("/CheckSigEch015XTest/NOK/CERT-NOT-OK").toURI()));
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigEch015XTest/NOK/CERT-NOT-OK").toURI()))
+        );
+        assertEquals("The signature verification of the file failed", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOKXmlKo() throws Exception {
+    void executeTestNOKXmlKo() {
         // TODO Check if test is relevant, because executeTestNOKCertKo got the same error
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("The signature verification of the file failed");
-        verification.verify(Paths.get(getClass().getResource("/CheckSigEch015XTest/NOK/XML-NOT-OK").toURI()));
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigEch015XTest/NOK/XML-NOT-OK").toURI()))
+        );
+        assertEquals("The signature verification of the file failed", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOKFileNotFound() throws Exception {
-        exceptionRule.expect(IOException.class);
+    void executeTestNOKFileNotFound() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigEch015XTest/NOK/NOK-NOFILE").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.INTEGRATION_CA);
-        exceptionRule.expectMessage(structureNode.getQualifier());
-        verification.verify(Paths.get(getClass().getResource("/CheckSigEch015XTest/NOK/NOK-NOFILE").toURI()));
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound2() throws Exception {
-        exceptionRule.expect(IOException.class);
+    void executeTestNOKFileNotFound2() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigEch015XTest/NOK/NOK-NOFILE2").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ECH015X);
-        exceptionRule.expectMessage(structureNode.getQualifier());
-        verification.verify(Paths.get(getClass().getResource("/CheckSigEch015XTest/NOK/NOK-NOFILE2").toURI()));
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
     }
 
     @Test
-    public void executeTestNOKFileNotFound3() throws Exception {
-        exceptionRule.expect(IOException.class);
+    void executeTestNOKFileNotFound3() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigEch015XTest/NOK/NOK-NOFILE3").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ECH015X);
-        exceptionRule.expectMessage(matchesRegex(structureNode.getQualifier() + RelationType.P7.toFileExtension()));
-        verification.verify(Paths.get(getClass().getResource("/CheckSigEch015XTest/NOK/NOK-NOFILE3").toURI()));
+        assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier() + RelationType.P7.toFileExtension()).matches(ex.getMessage()));
     }
 }

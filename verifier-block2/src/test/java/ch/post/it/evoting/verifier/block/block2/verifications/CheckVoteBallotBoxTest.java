@@ -17,37 +17,39 @@ package ch.post.it.evoting.verifier.block.block2.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 
-public class CheckVoteBallotBoxTest extends Block2VerificationAbstractTest {
+import static org.junit.jupiter.api.Assertions.*;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
+class CheckVoteBallotBoxTest extends Block2VerificationAbstractTest {
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         verification = new CheckVoteBallotBox();
     }
 
     @Test
-    public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckVoteBallotBoxTest/OK").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.OK, verificationResult.getStatus());
+    @Disabled("Enable when we got secureLog files with correct pattern.")
+    void executeTestOK() throws Exception {
+        VerificationResult verificationResult =
+                verification.verify(Paths.get(getClass().getResource("/CheckVoteBallotBoxTest/OK").toURI()));
+        assertNotNull(verificationResult);
+        assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOK() throws Exception {
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("TODO");
-        verification.verify(Paths.get(getClass().getResource("/CheckVoteBallotBoxTest/NOK").toURI()));
+    @Disabled("Enable when we got secureLog files with correct pattern.")
+    void executeTestNOK() {
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckVoteBallotBoxTest/NOK").toURI()))
+        );
+        assertEquals("TODO", ex.getMessage());
     }
 
     // TODO Implement the following missing tests cases:
@@ -57,10 +59,12 @@ public class CheckVoteBallotBoxTest extends Block2VerificationAbstractTest {
     //  - Unknown votingCardId
 
     @Test
-    public void executeTestNOKFileNotFound() throws Exception {
-        exceptionRule.expect(FileNotFoundException.class);
-        exceptionRule.expectMessage("voterInformation.*\\.csv");
-        verification.verify(Paths.get(getClass().getResource("/CheckVoteBallotBoxTest/NOK-NOTFILE").toURI()));
+    void executeTestNOKFileNotFound() {
+        final FileNotFoundException ex = assertThrows(
+                FileNotFoundException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckVoteBallotBoxTest/NOK-NOTFILE").toURI()))
+        );
+        assertEquals("voterInformation.*\\.csv", ex.getMessage());
     }
 
 }

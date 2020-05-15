@@ -17,7 +17,7 @@ package ch.post.it.evoting.verifier.report;
 import ch.post.it.evoting.verifier.report.model.Block;
 import ch.post.it.evoting.verifier.report.model.Report;
 import ch.post.it.evoting.verifier.report.model.Test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,9 +26,7 @@ import java.util.List;
 
 public class ReportGeneratorTest {
 
-    private Report report;
-
-    @Before
+    @BeforeEach
     public void init() {
         // provide some data
         Report report = new Report();
@@ -72,6 +70,5 @@ public class ReportGeneratorTest {
             blocks.add(block);
         }
         report.setBlocksResults(blocks);
-        this.report = report;
     }
 }

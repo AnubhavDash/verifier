@@ -14,55 +14,29 @@
  */
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
-import ch.post.it.evoting.verifier.block.block1.config.Block1TestConfiguration;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.jupiter.api.Test;
 
-import java.util.regex.Pattern;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@Configuration
-@ContextConfiguration(classes = {Block1TestConfiguration.class})
 public abstract class Block1VerificationAbstractTest {
     protected AbstractVerification verification;
 
     @Test
-    public void verificationDefinitionTestOK() {
-        // Check that @Before method is correctly implemented in each sub test class
-        Assert.assertNotNull(verification);
+    void verificationDefinitionTestOK() {
+        // Check that @BeforeEach method is correctly implemented in each sub test class
+        assertNotNull(verification);
 
         VerificationDefinition verificationDefinition = verification.getVerificationDefinition();
         // Minimum required definition
-        Assert.assertNotNull(verificationDefinition);
-        Assert.assertEquals(1, verificationDefinition.getBlockId());
-        Assert.assertNotNull(verificationDefinition.getCategory());
-        Assert.assertNotNull(verificationDefinition.getName());
-        Assert.assertNotNull(verificationDefinition.getDescription());
+        assertNotNull(verificationDefinition);
+        assertEquals(1, verificationDefinition.getBlockId());
+        assertNotNull(verificationDefinition.getCategory());
+        assertNotNull(verificationDefinition.getName());
+        assertNotNull(verificationDefinition.getDescription());
         // Check verification is not deactivated
-        Assert.assertFalse("The verification must not be deactivated", verificationDefinition.isDeactivated());
+        assertFalse(verificationDefinition.isDeactivated(), "The verification must not be deactivated");
     }
 
-    protected Matcher<String> matchesRegex(final String regex) {
-        return new TypeSafeMatcher<>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("a string matching ")
-                        .appendValue(regex);
-            }
-
-            @Override
-            protected boolean matchesSafely(final String item) {
-                return Pattern.compile(regex).matcher(item).find();
-            }
-        };
-    }
 }

@@ -22,62 +22,69 @@ import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 import org.apache.commons.lang.StringUtils;
 import org.bouncycastle.util.encoders.Base64;
-import org.junit.*;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-public class CheckSecureLogIntegrityTest extends Block2VerificationAbstractTest {
+import static org.junit.jupiter.api.Assertions.*;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
+class CheckSecureLogIntegrityTest extends Block2VerificationAbstractTest {
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         verification = new CheckSecureLogIntegrity();
     }
 
     @Test
-    @Ignore
-    public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckSecureLogIntegrityTest/OK").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.OK, verificationResult.getStatus());
+    @Disabled("Enable when we got secureLog files with correct pattern?")
+    void executeTestOK() throws Exception {
+        VerificationResult verificationResult =
+                verification.verify(Paths.get(getClass().getResource("/CheckSecureLogIntegrityTest/OK").toURI()));
+        assertNotNull(verificationResult);
+        assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    @Ignore
-    public void executeTestNOK() throws Exception {
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("Check secure log integrity failed");
-        verification.verify(Paths.get(getClass().getResource("/CheckSecureLogIntegrityTest/NOK").toURI()));
+    @Disabled("Enable when we got secureLog files with correct pattern?")
+    void executeTestNOK() {
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSecureLogIntegrityTest/NOK").toURI()))
+        );
+        assertEquals("Check secure log integrity failed", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOKFileNotFoundSecureLogDir() throws Exception {
-        exceptionRule.expect(IOException.class);
+    void executeTestNOKFileNotFoundSecureLogDir() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSecureLogIntegrityTest/NOK-NOTFILE").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.SECURE_LOG_DIR);
-        exceptionRule.expectMessage(structureNode.getQualifier());
-        verification.verify(Paths.get(getClass().getResource("/CheckSecureLogIntegrityTest/NOK-NOTFILE").toURI()));
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
     }
 
     @Test
-    // TODO Extract this test to another class, as it is not testing CheckSecureLogIntegrity code
-    public void generateHmacCheckpoint() {
+        // TODO Extract this test to another class, as it is not testing CheckSecureLogIntegrity code
+    void generateHmacCheckpoint() {
         final String endLsk = "U9LwEJ1oDitWij/tX8SJ44FqDGrFFhJXXr+Nakj509w=";
         final String hmac = "cxEQsXjOFU09oL8gGvDMSC0TzYDwtGrJdfL27iOzNnQ=";
         final String phmac = "qwQjgCt3g7+6MPQen2pB4weT1e/FgBvl2iRn/LOJ3IU=";
         final String lsk = "Jd10KtoV11/a3XgJwIAU71K0PCjDBTDEa+/M7GtYcWg=";
-        final String esk = "XFikMrFPxOG+NleCjE7MYZ4XrWgWELyjx8VJJnd/ErnTh/hUk++E0NIFG/PAzYj5HmauQNZbkxXxSvoGZ1DM5U/eCI0paNPzIn5S6W7IgUTT6/ll7vk2j9ZsU1qGrhRMcOZd3Uo+b78OMP58iX7fyofhfJpvhs5M2PbAPfculfLoNQq9OynVIrIDplGX8rF3FOeZ9kXJUnMQK9qrKhHEPer5PXqOb47kqdnVHfDu7cDbDzZc34YDFd7pCWbVhC8GPhfZ/CNUot9A1Wghu1ECg6VHvRSK9q31dk4dNziEBp7yz8M/B6E8HvYcRidHYxOq4Qe9tlB61KwLwLClInX0tiI25dXOV53ux2TS387la2O5MlfFpGV2je3d98UI6E5mSXNO7tlxfRoRDbNebai+HMZr2fuuZ4bztVNkRKhrJmA5CXNwESrv+Q==";
+        final String esk = "XFikMrFPxOG+NleCjE7MYZ4XrWgWELyjx8VJJnd/ErnTh/hUk++E0NIFG/PAzYj5HmauQNZbkxXxSvoGZ1DM5U/eCI0paNPzIn5S6W7IgUTT6" +
+                "/ll7vk2j9ZsU1qGrhRMcOZd3Uo" +
+                "+b78OMP58iX7fyofhfJpvhs5M2PbAPfculfLoNQq9OynVIrIDplGX8rF3FOeZ9kXJUnMQK9qrKhHEPer5PXqOb47kqdnVHfDu7cDbDzZc34YDFd7pCWbVhC8GPhfZ/CNUot9A1Wghu1ECg6VHvRSK9q31dk4dNziEBp7yz8M/B6E8HvYcRidHYxOq4Qe9tlB61KwLwLClInX0tiI25dXOV53ux2TS387la2O5MlfFpGV2je3d98UI6E5mSXNO7tlxfRoRDbNebai+HMZr2fuuZ4bztVNkRKhrJmA5CXNwESrv+Q==";
         final String raw = "2018-10-25 14:25:17,956|DEBUG|TIMER-LOG|New Secret Key generated.\n";
         final String ls = "10000";
         final String tl = "300000";
         final String ts = "1540470317956";
-        final String line = "{\"preview\":true,\"offset\":0,\"result\":{\"_raw\":\"2018-10-25 14:25:17,956|DEBUG|TIMER-LOG|New Secret Key generated. {*SG::LzlqCoyZBBJJAuMr/8YQV/5yAwCqURk6c5uBYhh2qehYyrGq8fG77vdhXc+StnX1NOvnfzmtHLcH5tYPW3w8bcFTHDeIU7nWd9ootsLwpPqHnRULZ97kqPc6i9s+hlmqivHRvs6X2QmhEoTDmuVtTMpbCu1q5svH315QWpLOXHB4g4gd6z4fS1Qs+K+HacIE/MitpNOcugSRBBfgwMK7yC0QbXUZ/hiCfOoXBI5RjaFMVxoFA0Rp1VysDtAkWrawby3P2e4ahmWkmD7P6BCrzhqh+TmaER1IJT+mr8ShUaidaZRFUQYAdyt5vNcrTPYJqxXNm0hGlPsr63pfaKoJkA==,LSK::Jd10KtoV11/a3XgJwIAU71K0PCjDBTDEa+/M7GtYcWg=,ESK::XFikMrFPxOG+NleCjE7MYZ4XrWgWELyjx8VJJnd/ErnTh/hUk++E0NIFG/PAzYj5HmauQNZbkxXxSvoGZ1DM5U/eCI0paNPzIn5S6W7IgUTT6/ll7vk2j9ZsU1qGrhRMcOZd3Uo+b78OMP58iX7fyofhfJpvhs5M2PbAPfculfLoNQq9OynVIrIDplGX8rF3FOeZ9kXJUnMQK9qrKhHEPer5PXqOb47kqdnVHfDu7cDbDzZc34YDFd7pCWbVhC8GPhfZ/CNUot9A1Wghu1ECg6VHvRSK9q31dk4dNziEBp7yz8M/B6E8HvYcRidHYxOq4Qe9tlB61KwLwLClInX0tiI25dXOV53ux2TS387la2O5MlfFpGV2je3d98UI6E5mSXNO7tlxfRoRDbNebai+HMZr2fuuZ4bztVNkRKhrJmA5CXNwESrv+Q==,PHMAC::qwQjgCt3g7+6MPQen2pB4weT1e/FgBvl2iRn/LOJ3IU=,LS::10000,TL::300000,TS::1540470317956,HMAC::cxEQsXjOFU09oL8gGvDMSC0TzYDwtGrJdfL27iOzNnQ=*}\",\"_time\":\"2018-10-25T14:25:17.956+0200\",\"host\":\"h002gn\",\"index\":\"it_evoting_cc\",\"linecount\":\"1\",\"source\":\"D:\\\\logs_3\\\\cv\\\\logs\\\\cv_secure-20181023-154513-8.log\",\"sourcetype\":\"post_evoting_securelogs\",\"splunk_server\":\"hin02a.pnet.ch\"}}";
 
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         try (DataOutputStream stream = new DataOutputStream(bytes)) {
@@ -89,28 +96,30 @@ public class CheckSecureLogIntegrityTest extends Block2VerificationAbstractTest 
             stream.writeLong(Long.parseLong(ts));
             stream.write(raw.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
-            Assert.fail(e.getMessage());
+            fail(e.getMessage());
         }
 
         String calculatedHmac = Base64.toBase64String(HmacGenerator.hash(bytes.toByteArray(), Base64.decode(endLsk)));
 
-        Assert.assertEquals(hmac, calculatedHmac);
+        assertEquals(hmac, calculatedHmac);
     }
 
     @Test
-    // TODO Extract this test to another class, as it is not testing CheckSecureLogIntegrity code
-    public void generateHmacRegularLog() {
+        // TODO Extract this test to another class, as it is not testing CheckSecureLogIntegrity code
+    void generateHmacRegularLog() {
         final String endLsk = "MD+KuCAgFCcbqETTqDeI79Fr9P3TMq2lpGfuahpZGp8=";
         final String hmac = "gtGMUiyEZlA/MeVMJAMbSmUj3DYjOkxWm7N+4i9kiZc=";
         final String phmac = "K2d+ArwhI/x6lSzFqpSc4f3AyxSLDK3109J/oMrEh7Y=";
         final String lsk = "";
         final String esk = "";
-        final String raw = "2018-10-25 14:29:44,113|DEBUG|pool-1-thread-57|Log File Name: /data/logs/cg/./logs/cg_secure-20181025-142944-25.log\n";
+        final String raw = "2018-10-25 14:29:44,113|DEBUG|pool-1-thread-57|Log File Name: /data/logs/cg/" +
+                "./logs/cg_secure-20181025-142944-25.log\n";
         final String ls = "";
         final String tl = "";
         final String ts = "1540470584113";
 
-        //2018-10-25 14:29:44,113|DEBUG|pool-1-thread-57|Log File Name: /data/logs/cg/./logs/cg_secure-20181025-142944-25.log {*TS::1540470584113,HMAC::gtGMUiyEZlA/MeVMJAMbSmUj3DYjOkxWm7N+4i9kiZc=*}"}}
+        //2018-10-25 14:29:44,113|DEBUG|pool-1-thread-57|Log File Name: /data/logs/cg/./logs/cg_secure-20181025-142944-25.log
+        // {*TS::1540470584113,HMAC::gtGMUiyEZlA/MeVMJAMbSmUj3DYjOkxWm7N+4i9kiZc=*}"}}
 
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         try (DataOutputStream stream = new DataOutputStream(bytes)) {
@@ -122,11 +131,11 @@ public class CheckSecureLogIntegrityTest extends Block2VerificationAbstractTest 
             stream.writeLong(Long.parseLong(ts));
             stream.write(raw.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
-            Assert.fail(e.getMessage());
+            fail(e.getMessage());
         }
 
         String calculatedHmac = Base64.toBase64String(HmacGenerator.hash(bytes.toByteArray(), Base64.decode(endLsk)));
 
-        Assert.assertEquals(hmac, calculatedHmac);
+        assertEquals(hmac, calculatedHmac);
     }
 }

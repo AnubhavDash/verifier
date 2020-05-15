@@ -64,6 +64,16 @@
                 <artifactId>jackson-dataformat-xml</artifactId>
                 <version>2.9.8</version>
             </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>5.6.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest-core</artifactId>
+                <version>2.2</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -127,8 +137,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <groups>${includedCategories}</groups>
-                    <excludedGroups>${excludedCategories}</excludedGroups>
+                    <groups>${includedTags}</groups>
+                    <excludedGroups>${excludedTags}</excludedGroups>
                 </configuration>
             </plugin>
         </plugins>
@@ -138,8 +148,15 @@
         <profile>
             <id>slowTests</id>
             <properties>
-                <includedCategories>ch.post.it.evoting.verifier.common.SlowTestCategory</includedCategories>
-                <excludedCategories/>
+                <includedTags>Slow</includedTags>
+                <excludedTags/>
+            </properties>
+        </profile>
+        <profile>
+            <id>allTests</id>
+            <properties>
+                <includedTags/>
+                <excludedTags/>
             </properties>
         </profile>
         <profile>
@@ -206,6 +223,7 @@
     <modules>
         <module>verifier-common</module>
         <module>verifier-common-block</module>
+        <module>verifier-common-test</module>
         <module>verifier-block1</module>
         <module>verifier-block2</module>
         <module>verifier-block3</module>
@@ -221,12 +239,6 @@
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <properties>
@@ -236,7 +248,7 @@
         <projectArtifactId>${project.artifactId}</projectArtifactId>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.jacoco.plugin.version>0.8.5</maven.jacoco.plugin.version>
-        <includedCategories/>
-        <excludedCategories>ch.post.it.evoting.verifier.common.SlowTestCategory</excludedCategories>
+        <includedTags/>
+        <excludedTags>Slow</excludedTags>
     </properties>
 </project>

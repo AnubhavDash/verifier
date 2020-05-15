@@ -17,79 +17,90 @@ package ch.post.it.evoting.verifier.block.block4.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.test.helper.RegexHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-public class CheckSigInvalidVotesDecryptionTest extends Block4VerificationAbstractTest {
+import static org.junit.jupiter.api.Assertions.*;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
+class CheckSigInvalidVotesDecryptionTest extends Block4VerificationAbstractTest {
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         verification = new CheckSigInvalidVotesDecryption();
     }
 
     @Test
-    public void executeTestOK() throws Exception {
-        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/OK").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.OK, verificationResult.getStatus());
+    void executeTestOK() throws Exception {
+        VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest" +
+                "/OK").toURI()));
+        assertNotNull(verificationResult);
+        assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestNOKCsvKo() throws Exception {
+    void executeTestNOKCsvKo() {
         // TODO Check if test is relevant, because executeTestNOKCertKo got the same error
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("The signature verification of the siv_[EE_alias].csv report failed");
-        verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK/CSV-NOT-OK").toURI()));
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK/CSV-NOT-OK").toURI()))
+        );
+        assertEquals("The signature verification of the siv_[EE_alias].csv report failed", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOKCertKo() throws Exception {
+    void executeTestNOKCertKo() {
         // TODO Check if test is relevant, because executeTestNOKCsvKo got the same error
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("The signature verification of the siv_[EE_alias].csv report failed");
-        verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK/CERT-NOT-OK").toURI()));
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK/CERT-NOT-OK").toURI()))
+        );
+        assertEquals("The signature verification of the siv_[EE_alias].csv report failed", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOKFileNotFoundCertificate() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(matchesRegex(verification.getPathService().getStructureNode(StructureKey.ADMIN_BOARD_CERT).getQualifier()));
-        verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK-NOTFILE").toURI()));
+    void executeTestNOKFileNotFoundCertificate() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK-NOTFILE").toURI()))
+        );
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ADMIN_BOARD_CERT);
+        assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
     }
 
     @Test
-    public void executeTestNOKFileNotFoundRootCertificate() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(matchesRegex(verification.getPathService().getStructureNode(StructureKey.TENANT_100).getQualifier()));
-        verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK-NOTFILE2").toURI()));
+    void executeTestNOKFileNotFoundRootCertificate() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK-NOTFILE2").toURI()))
+        );
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.TENANT_100);
+        assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
     }
 
     @Test
-    public void executeTestNOKFileNotFoundInvalidVotesDecrypt() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(matchesRegex(verification.getPathService().getStructureNode(StructureKey.INVALID_VOTES_DECRYPT_RESULT).getQualifier()));
-        verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK-NOTFILE3").toURI()));
+    void executeTestNOKFileNotFoundInvalidVotesDecrypt() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK-NOTFILE3").toURI()))
+        );
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.INVALID_VOTES_DECRYPT_RESULT);
+        assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
     }
 
     @Test
-    public void executeTestNOKFileNotFoundInvalidVotesDecryptMetadata() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(matchesRegex(
-                verification.getPathService().getStructureNode(StructureKey.INVALID_VOTES_DECRYPT_RESULT).getQualifier()
-                        + RelationType.METADATA.toFileExtension()
-        ));
-        verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK-NOTFILE4").toURI()));
+    void executeTestNOKFileNotFoundInvalidVotesDecryptMetadata() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigInvalidVotesDecryptionTest/NOK-NOTFILE4").toURI()))
+        );
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.INVALID_VOTES_DECRYPT_RESULT);
+        assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier() + RelationType.METADATA.toFileExtension()).matches(ex.getMessage()));
     }
-
 }

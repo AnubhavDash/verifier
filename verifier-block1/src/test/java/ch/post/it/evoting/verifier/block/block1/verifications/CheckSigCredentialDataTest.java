@@ -20,85 +20,96 @@ import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-public class CheckSigCredentialDataTest extends Block1VerificationAbstractTest {
+import static org.junit.jupiter.api.Assertions.*;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
+class CheckSigCredentialDataTest extends Block1VerificationAbstractTest {
 
-    @Before
-    public void setup() {
+
+    @BeforeEach
+    void setup() {
         verification = new CheckSigCredentialData();
     }
 
     @Test
-    public void executeTestAllSignValid() throws Exception {
+    void executeTestAllSignValid() throws Exception {
         final VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource(
                 "/CheckSigCredentialDataTest/OK").toURI()));
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.OK, verificationResult.getStatus());
+        assertNotNull(verificationResult);
+        assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeTestOneSignInvalid() throws Exception {
-        exceptionRule.expect(VerificationFailureException.class);
-        exceptionRule.expectMessage("The signature verification of the file failed");
-        verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK").toURI()));
+    void executeTestOneSignInvalid() {
+        final VerificationFailureException ex = assertThrows(
+                VerificationFailureException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK").toURI()))
+        );
+        assertEquals("The signature verification of the file failed", ex.getMessage());
     }
 
     @Test
-    public void executeTestNOKFileNotFoundCertificate() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
+    void executeTestNOKFileNotFoundCertificate() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ADMIN_BOARD_CERT);
-        exceptionRule.expectMessage(structureNode.getQualifier());
-        verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE").toURI()));
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
     }
 
     @Test
-    public void executeTestNOKFileNotFoundIntermediateCertificate() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
+    void executeTestNOKFileNotFoundIntermediateCertificate() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE1").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.TENANT_100);
-        exceptionRule.expectMessage(structureNode.getQualifier());
-        verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE1").toURI()));
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
     }
 
     @Test
-    public void executeTestNOKFileNotFoundRootCertificate() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
+    void executeTestNOKFileNotFoundRootCertificate() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE2").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.PLATFORM_ROOT_CA);
-        exceptionRule.expectMessage(structureNode.getQualifier());
-        verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE2").toURI()));
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
     }
 
     @Test
-    public void executeTestNOKFileNotFoundVotingCardSetsIdDir() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
+    void executeTestNOKFileNotFoundVotingCardSetsIdDir() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE3").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.VOTING_CARD_SETS_ID_DIR);
-        exceptionRule.expectMessage(structureNode.getQualifier());
-        verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE3").toURI()));
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
     }
 
     @Test
-    public void executeTestNOKFileNotFoundCredential() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
+    void executeTestNOKFileNotFoundCredential() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE4").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CREDENTIAL_DATA);
-        exceptionRule.expectMessage(structureNode.getQualifier());
-        verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE4").toURI()));
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
     }
 
     @Test
-    public void executeTestNOKFileNotFoundCredentialSign() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
+    void executeTestNOKFileNotFoundCredentialSign() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE5").toURI()))
+        );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CREDENTIAL_DATA);
-        exceptionRule.expectMessage(structureNode.getQualifier() + RelationType.SIGN.toFileExtension());
-        verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE5").toURI()));
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier() + RelationType.SIGN.toFileExtension()));
     }
 }

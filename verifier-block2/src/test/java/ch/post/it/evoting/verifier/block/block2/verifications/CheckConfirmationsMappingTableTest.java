@@ -18,22 +18,21 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-public class CheckConfirmationsMappingTableTest extends Block2VerificationAbstractTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class CheckConfirmationsMappingTableTest extends Block2VerificationAbstractTest {
 
     private final static String DERIVCCEKCOMP = "2020-01-09 16:07:35,462|INFO|pool-1-thread-7|601629|serverIP" +
             "|clientIP" +
             "|tenantID|OV|CCGEN||DERIVCCEKCOMP|-|5bb55675da694bd39b82562211fe4e26|000|-|-|Voter choice code " +
             "generation private key successfully derived|#ccx_id=\"c1_it\" #request_id=\"NB6NC6U6L4HUGTEG\" " +
-            "#vcc_gen_publickey=\"uBRTUTzHeJH5O3tqp2YIx40cyMY2zwzJ3PcQJZjbZDU=\"  {*TS::1578582455462," +
+            "#vcc_gen_key=\"uBRTUTzHeJH5O3tqp2YIx40cyMY2zwzJ3PcQJZjbZDU=\"  {*TS::1578582455462," +
             "HMAC::KjKjxhWqQM74NntvhFb+MBysYPJFa3KyFxyi9h0hW5Y=*}";
 
     private final static String PCCOMP_REAL = "2020-01-09 16:07:35,523|INFO|pool-1-thread-7|601629|serverIP|clientIP" +
@@ -119,78 +118,75 @@ public class CheckConfirmationsMappingTableTest extends Block2VerificationAbstra
             " computed|#ccx_id=\"ccn_cn\" #request_id=\"U7IHLKO5PZFXUYKL\" " +
             "#pc_comp=\"[exponentiatedConfirmationMessage]\" #pc=\"[BigInteger]\"";
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         verification = new CheckConfirmationsMappingTable();
     }
 
     @Test
-    public void executeTest() throws Exception {
+    void executeTest() throws Exception {
         VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource(
                 "/CheckConfirmationsMappingTableTest/OK").toURI()));
 
-        Assert.assertNotNull(verificationResult);
-        Assert.assertEquals(Status.OK, verificationResult.getStatus());
+        assertNotNull(verificationResult);
+        assertEquals(Status.OK, verificationResult.getStatus());
     }
 
     @Test
-    public void executeNOKDuplicatesInFileTest() throws Exception {
-        exceptionRule.expect(RuntimeException.class);
-        exceptionRule.expectMessage("Duplicate request_id found in file");
-
-        verification.verify(Paths.get(getClass().getResource(
-                "/CheckConfirmationsMappingTableTest/NOK_Duplicates_In_File").toURI()));
+    void executeNOKDuplicatesInFileTest() {
+        final RuntimeException ex = assertThrows(
+                RuntimeException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckConfirmationsMappingTableTest/NOK_Duplicates_In_File").toURI()))
+        );
+        assertTrue(ex.getMessage().contains("Duplicate request_id found in file"));
     }
 
     @Test
-    public void executeNOKDuplicatesForControlComponentTest() throws Exception {
-        exceptionRule.expect(RuntimeException.class);
-        exceptionRule.expectMessage("Duplicate request_id found for control component");
-
-        verification.verify(Paths.get(getClass().getResource(
-                "/CheckConfirmationsMappingTableTest/NOK_Duplicates_For_Control_Component").toURI()));
+    void executeNOKDuplicatesForControlComponentTest() {
+        final RuntimeException ex = assertThrows(
+                RuntimeException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckConfirmationsMappingTableTest" +
+                        "/NOK_Duplicates_For_Control_Component").toURI()))
+        );
+        assertTrue(ex.getMessage().contains("Duplicate request_id found for control component"));
     }
 
     @Test
-    public void logEntryMatchCriteriaTest() {
-
-        Assert.assertFalse(((CheckConfirmationsMappingTable) verification).logEntryMatchCriteria(DERIVCCEKCOMP));
-
-        Assert.assertTrue(((CheckConfirmationsMappingTable) verification).logEntryMatchCriteria(PCCOMP_REAL));
+    void logEntryMatchCriteriaTest() {
+        assertFalse(((CheckConfirmationsMappingTable) verification).logEntryMatchCriteria(DERIVCCEKCOMP));
+        assertTrue(((CheckConfirmationsMappingTable) verification).logEntryMatchCriteria(PCCOMP_REAL));
     }
 
     @Test
-    public void hasExactlyOnePCCompElementTest() {
-
-        Assert.assertTrue(((CheckConfirmationsMappingTable) verification).hasExactlyOnePCCompElement(PCCOMP_SIMPLE));
-
-        Assert.assertFalse(((CheckConfirmationsMappingTable) verification).hasExactlyOnePCCompElement(PCCOMP_REAL));
+    void hasExactlyOnePCCompElementTest() {
+        assertTrue(((CheckConfirmationsMappingTable) verification).hasExactlyOnePCCompElement(PCCOMP_SIMPLE));
+        assertFalse(((CheckConfirmationsMappingTable) verification).hasExactlyOnePCCompElement(PCCOMP_REAL));
     }
 
     @Test
-    public void extractRequestIdTest() {
-
-        Assert.assertEquals("U7IHLKO5PZFXUYKL",
-                ((CheckConfirmationsMappingTable) verification).extractRequestId(PCCOMP_SIMPLE));
-
-        Assert.assertEquals("NB6NC6U6L4HUGTEG",
-                ((CheckConfirmationsMappingTable) verification).extractRequestId(PCCOMP_REAL));
+    void extractRequestIdTest() {
+        assertEquals("U7IHLKO5PZFXUYKL", ((CheckConfirmationsMappingTable) verification).extractRequestId(PCCOMP_SIMPLE));
+        assertEquals("NB6NC6U6L4HUGTEG", ((CheckConfirmationsMappingTable) verification).extractRequestId(PCCOMP_REAL));
     }
 
     @Test
-    public void executeTestNOKFileNotFoundMappingCcHosts() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.MAPPING_CC_HOSTS).getQualifier());
-        verification.verify(Paths.get(getClass().getResource("/CheckConfirmationsMappingTableTest/NOK-NOTFILE").toURI()));
+    void executeTestNOKFileNotFoundMappingCcHosts() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckConfirmationsMappingTableTest/NOK-NOTFILE").toURI()))
+        );
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.MAPPING_CC_HOSTS);
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
     }
 
     @Test
-    public void executeTestNOKFileNotFoundSecureLogs() throws Exception {
-        exceptionRule.expect(NoSuchFileException.class);
-        exceptionRule.expectMessage(verification.getPathService().getStructureNode(StructureKey.SECURE_LOG).getQualifier());
-        verification.verify(Paths.get(getClass().getResource("/CheckConfirmationsMappingTableTest/NOK-NOTFILE2").toURI()));
+    void executeTestNOKFileNotFoundSecureLogs() {
+        final NoSuchFileException ex = assertThrows(
+                NoSuchFileException.class,
+                () -> verification.verify(Paths.get(getClass().getResource("/CheckConfirmationsMappingTableTest/NOK-NOTFILE2").toURI()))
+        );
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.SECURE_LOG);
+        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
     }
 }

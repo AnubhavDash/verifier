@@ -20,9 +20,9 @@ import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.dto.Verification;
 import ch.post.it.evoting.verifier.report.model.Block;
 import ch.post.it.evoting.verifier.report.model.Report;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,13 +30,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class ReportMapperTest {
+class ReportMapperTest {
 
     private Report metadata;
     private List<Verification> testsList;
 
-    @Before
-    public void init() {
+    @BeforeEach
+    void init() {
         //generate some info
         Report infos = new Report();
         infos.setTitle("Verifikationsbericht");
@@ -81,11 +81,11 @@ public class ReportMapperTest {
     }
 
     @Test
-    public void map() {
+    void map() {
         //map in French
         Report report = ReportMapper.INSTANCE.map(this.metadata, this.testsList, Language.FR);
         List<Block> blocksResults = report.getBlocksResults();
-        Assert.assertEquals("problem with number of blocks in the report", 3, blocksResults.size());
+        Assertions.assertEquals(3, blocksResults.size(), "problem with number of blocks in the report");
     }
 
 
