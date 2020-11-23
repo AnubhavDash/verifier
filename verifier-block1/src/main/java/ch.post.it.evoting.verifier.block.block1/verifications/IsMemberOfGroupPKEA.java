@@ -51,7 +51,7 @@ public class IsMemberOfGroupPKEA extends AbstractVerification {
     public VerificationResult verify(Path inputDirectoryPath) throws Exception {
         VerificationResult result = new VerificationResult();
 
-        final PathNode electoralAuthPathNode = pathService.buildFromRootPath(StructureKey.ELECTORAL_AUTHORITY, inputDirectoryPath);
+        final PathNode electoralAuthPathNode = pathService.buildFromRootPath(StructureKey.ELECTORAL_PUBLIC_KEY, inputDirectoryPath);
         ElectoralAuthority electoralAuthority = Deserializer.fromJson(electoralAuthPathNode.getPath(), ElectoralAuthority.class);
 
         String publicKeyB64 = electoralAuthority.getPublicKey();

@@ -66,7 +66,7 @@ class IsMemberOfGroupPKEATest extends Block1VerificationAbstractTest {
                 NoSuchFileException.class,
                 () -> verification.verify(Paths.get(getClass().getResource("/IsMemberOfGroupPKEATest/NOK/NOK-NOFILE").toURI()))
         );
-        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ELECTORAL_AUTHORITY);
+        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ELECTORAL_PUBLIC_KEY);
         assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
     }
 

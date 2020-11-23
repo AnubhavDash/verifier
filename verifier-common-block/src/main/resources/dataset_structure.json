@@ -137,17 +137,17 @@
     "name": "crypto_setup",
     "content": [
       {
-        "key": "DECRYPTION_KEY",
+        "key": "ELECTORAL_AUTHORITY_PUBLIC_KEY",
         "type": "FILE",
-        "name": "decryptionKey.json",
+        "name": "electoralAuthorityPublicKey.json",
         "relations": [
           "SIGN"
         ]
       },
       {
-        "key": "ELECTORAL_AUTHORITY",
+        "key": "ELECTORAL_PUBLIC_KEY",
         "type": "FILE",
-        "name": "electoralAuthority.json",
+        "name": "electionPublicKey.json",
         "relations": [
           "SIGN"
         ]
@@ -270,7 +270,7 @@
       {
         "key": "ECH015X",
         "type": "FILE",
-        "name": ".*ech015.*\\.xml",
+        "name": ".*eCH015.*\\.xml",
         "relations": [
           "P7"
         ]
