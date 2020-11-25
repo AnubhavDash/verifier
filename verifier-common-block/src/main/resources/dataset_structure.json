@@ -270,7 +270,7 @@
       {
         "key": "ECH015X",
         "type": "FILE",
-        "name": ".*eCH015.*\\.xml",
+        "name": ".*[eE][cC][hH][-]?015[79].*\\.xml",
         "relations": [
           "P7"
         ]
