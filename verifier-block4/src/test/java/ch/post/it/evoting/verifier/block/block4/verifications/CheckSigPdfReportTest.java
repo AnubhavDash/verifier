@@ -22,6 +22,7 @@ import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.NoSuchFileException;
@@ -37,6 +38,7 @@ class CheckSigPdfReportTest extends Block4VerificationAbstractTest {
     }
 
     @Test
+    @Disabled("report.pdf and report.pdf.p7 are missing in the new dataset")
     void executeTestOK() throws Exception {
         VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckSigPdfReportTest/OK").toURI()));
         assertNotNull(verificationResult);

@@ -49,11 +49,11 @@ public class CheckSigEch015X extends AbstractVerification {
         final PathNode integrationPathNode = pathService.buildFromRootPath(StructureKey.INTEGRATION_CA, inputDirectoryPath);
         byte[] rootCertificate = Files.readAllBytes(integrationPathNode.getPath());
 
-        final PathNode echo015XPathNode = pathService.buildFromRootPath(StructureKey.ECH015X, inputDirectoryPath);
+        final PathNode eCH015XPathNode = pathService.buildFromRootPath(StructureKey.ECH015X, inputDirectoryPath);
 
-        for (Path regexPath : echo015XPathNode.getRegexPaths()) {
+        for (Path regexPath : eCH015XPathNode.getRegexPaths()) {
             byte[] content = Files.readAllBytes(regexPath);
-            byte[] signature = Files.readAllBytes(echo015XPathNode.getRelation(RelationType.P7, regexPath));
+            byte[] signature = Files.readAllBytes(eCH015XPathNode.getRelation(RelationType.P7, regexPath));
 
             if (!SignatureChecker.verifyPKCS7(content, signature, rootCertificate)) {
                 throw buildVerificationFailureException(

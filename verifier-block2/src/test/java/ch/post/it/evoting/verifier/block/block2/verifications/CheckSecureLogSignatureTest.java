@@ -61,7 +61,7 @@ class CheckSecureLogSignatureTest extends Block2VerificationAbstractTest {
     }
 
     @Test
-        // TODO Extract this test to another class, as it is not testing CheckSecureLogSignature code
+    @Disabled("Extract and enable if we still need to check the secure logs")
     void testSignatureAlgorithm() throws Exception {
         Path cert = Paths.get(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_log_sign.pem").toURI());
         Path intermediate = Paths.get(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_ca.pem").toURI());
@@ -118,7 +118,7 @@ class CheckSecureLogSignatureTest extends Block2VerificationAbstractTest {
     }
 
     @Test
-        // TODO Extract this test to another class, as it is not testing CheckSecureLogSignature code
+    @Disabled("Extract and enable if we still need to check the secure logs")
     void testSecureLogBundleSignature() throws Exception {
         Path cert = Paths.get(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_log_sign.pem").toURI());
         Path intermediate = Paths.get(getClass().getResource("/CheckSecureLogSignatureTest/testSignature/cc1_ca.pem").toURI());
