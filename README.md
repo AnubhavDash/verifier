@@ -4,9 +4,9 @@ Build information
 The following guide provide step by step informations to build the Verifier Swiss Post on a Windows machine.  
 
 1. Ensure you have Maven and Node installed. We tested with following versions:
-    - AdoptOpenJDK: 11.0.6+10
-    - Maven: 3.3.1
-    - Node: v10.15.3-x64
+    - AdoptOpenJDK: 11.0.9.1+1
+    - Maven: 3.6.3
+    - Node: v14.15.1
     
 2. First go to the <i>verifier-block3-scytl</i> library (repository evoting-verifier-block3-scytl) and build it using Maven
     - <code>mvn clean install</code>
