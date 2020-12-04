@@ -14,8 +14,8 @@
 
 	<properties>
 		<jasperreports-plugin.version>2.0</jasperreports-plugin.version>
-		<spring-boot-dependencies.version>2.1.2.RELEASE</spring-boot-dependencies.version>
-		<spring-boot-maven-plugin.version>2.1.2.RELEASE</spring-boot-maven-plugin.version>
+		<spring-boot-dependencies.version>2.3.0.RELEASE</spring-boot-dependencies.version>
+		<spring-boot-maven-plugin.version>2.3.0.RELEASE</spring-boot-maven-plugin.version>
 	</properties>
 
 	<dependencyManagement>
@@ -35,6 +35,10 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>ch.post.it.evoting.verifier</groupId>
 			<artifactId>verifier-block1</artifactId>
 		</dependency>
@@ -42,10 +46,10 @@
 			<groupId>ch.post.it.evoting.verifier</groupId>
 			<artifactId>verifier-block2</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>ch.post.it.evoting.verifier</groupId>
-			<artifactId>verifier-block3</artifactId>
-		</dependency>
+		<!--		<dependency>-->
+		<!--			<groupId>ch.post.it.evoting.verifier</groupId>-->
+		<!--			<artifactId>verifier-block3</artifactId>-->
+		<!--		</dependency>-->
 		<dependency>
 			<groupId>ch.post.it.evoting.verifier</groupId>
 			<artifactId>verifier-block4</artifactId>
