@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -14,29 +14,30 @@
  */
 package ch.post.it.evoting.verifier.spring;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-
 @Component
 public class VerifierAuthenticationEntryPoint extends BasicAuthenticationEntryPoint {
-    @Override
-    public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-        httpServletResponse.addHeader("WWW-Authenticate", "Basic realm=" + getRealmName());
-        httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        PrintWriter writer = httpServletResponse.getWriter();
-        writer.println("ACCESS DENIED. You must be authenticated to access the resource");
-    }
+	@Override
+	public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e)
+			throws IOException {
+		httpServletResponse.addHeader("WWW-Authenticate", "Basic realm=" + getRealmName());
+		httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		PrintWriter writer = httpServletResponse.getWriter();
+		writer.println("ACCESS DENIED. You must be authenticated to access the resource");
+	}
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        setRealmName("Verifier");
-        super.afterPropertiesSet();
-    }
+	@Override
+	public void afterPropertiesSet() {
+		setRealmName("Verifier");
+		super.afterPropertiesSet();
+	}
 }

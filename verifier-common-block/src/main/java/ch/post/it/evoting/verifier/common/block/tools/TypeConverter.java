@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -20,6 +20,7 @@ import org.apache.commons.codec.binary.Hex;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.UUID;
 
 public class TypeConverter {
 
@@ -55,10 +56,6 @@ public class TypeConverter {
         return new String(b, StandardCharsets.UTF_8);
     }
 
-    public static BigInteger stringToBigInteger(String s) {
-        return new BigInteger(s);
-    }
-
     public static String bigIntegerToB64String(BigInteger bigInt) {
         return Base64.getEncoder().encodeToString(bigInt.toByteArray());
     }
@@ -73,5 +70,22 @@ public class TypeConverter {
 
     public static BigInteger integerToBigInteger(Integer i) {
         return i == null ? null : BigInteger.valueOf(i.longValue());
+    }
+
+    public static String UUIDToStringWithoutDash(UUID uuid) {
+        return uuid.toString().replace("-", "");
+    }
+
+    public static BigInteger stringToBigInteger(String s) {
+        // Check if string contains an hexadecimal value
+        if (s.startsWith("0x") || s.startsWith("0X")) {
+            // Explicit base 16 (hexadecimal) constructor
+            return new BigInteger(s.substring(2), 16);
+        } else if (s.matches("[0-9]+")) {
+            // Explicit base 10 constructor
+            return new BigInteger(s, 10);
+        } else {
+            return base64ToBigInteger(s);
+        }
     }
 }

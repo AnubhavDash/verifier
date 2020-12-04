@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -15,7 +15,7 @@
 package ch.post.it.evoting.verifier.block.block3.loader.offline;
 
 import ch.post.it.evoting.verifier.block.block3.scytl.loader.ShuffleProofLoader;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProof;
 import com.scytl.products.ov.mixnet.commons.io.JSONProofsReader;
 

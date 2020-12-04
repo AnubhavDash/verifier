@@ -1,0 +1,2696 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<eCH-0110:delivery xmlns:eCH-0110="http://www.ech.ch/xmlns/eCH-0110/3" xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008/3" xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3">
+    <eCH-0110:deliveryHeader>
+        <eCH-0058:senderId>http://www.post.ch</eCH-0058:senderId>
+        <eCH-0058:messageId>1604577111202</eCH-0058:messageId>
+        <eCH-0058:messageType>http://www.post.ch</eCH-0058:messageType>
+        <eCH-0058:sendingApplication>
+            <eCH-0058:manufacturer>SwissPost</eCH-0058:manufacturer>
+            <eCH-0058:product>OV</eCH-0058:product>
+            <eCH-0058:productVersion>1</eCH-0058:productVersion>
+        </eCH-0058:sendingApplication>
+        <eCH-0058:messageDate>2020-11-05T12:51:51.202+01:00</eCH-0058:messageDate>
+        <eCH-0058:action>1</eCH-0058:action>
+        <eCH-0058:testDeliveryFlag>false</eCH-0058:testDeliveryFlag>
+    </eCH-0110:deliveryHeader>
+    <eCH-0110:resultDelivery>
+        <eCH-0110:reportingBody>
+            <eCH-0110:reportingBodyIdentification>SwissPost-OV</eCH-0110:reportingBodyIdentification>
+            <eCH-0110:creationDateTime>2020-11-05T12:51:51.163+01:00</eCH-0110:creationDateTime>
+        </eCH-0110:reportingBody>
+        <eCH-0110:contestInformation>
+            <eCH-0155:contestIdentification>Post_E2E_DEV</eCH-0155:contestIdentification>
+            <eCH-0155:contestDate>2015-10-18</eCH-0155:contestDate>
+            <eCH-0155:contestDescription>
+                <eCH-0155:contestDescriptionInfo>
+                    <eCH-0155:language>de</eCH-0155:language>
+                    <eCH-0155:contestDescription>Post_E2E_DEV</eCH-0155:contestDescription>
+                </eCH-0155:contestDescriptionInfo>
+                <eCH-0155:contestDescriptionInfo>
+                    <eCH-0155:language>fr</eCH-0155:language>
+                    <eCH-0155:contestDescription>Post_E2E_DEV (fr)</eCH-0155:contestDescription>
+                </eCH-0155:contestDescriptionInfo>
+                <eCH-0155:contestDescriptionInfo>
+                    <eCH-0155:language>it</eCH-0155:language>
+                    <eCH-0155:contestDescription>Post_E2E_DEV (it)</eCH-0155:contestDescription>
+                </eCH-0155:contestDescriptionInfo>
+                <eCH-0155:contestDescriptionInfo>
+                    <eCH-0155:language>rm</eCH-0155:language>
+                    <eCH-0155:contestDescription>Post_E2E_DEV (rm)</eCH-0155:contestDescription>
+                </eCH-0155:contestDescriptionInfo>
+            </eCH-0155:contestDescription>
+        </eCH-0110:contestInformation>
+        <eCH-0110:countingCircleResults>
+            <eCH-0110:countingCircle>
+                <eCH-0155:countingCircleId>SG-MU-10003</eCH-0155:countingCircleId>
+                <eCH-0155:countingCircleName>Kontrollurne_ICH</eCH-0155:countingCircleName>
+            </eCH-0110:countingCircle>
+            <eCH-0110:votingCardsInformation>
+                <eCH-0110:countOfReceivedValidVotingCardsTotal>2</eCH-0110:countOfReceivedValidVotingCardsTotal>
+                <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
+            </eCH-0110:votingCardsInformation>
+            <eCH-0110:voteResults>
+                <eCH-0110:vote>
+                    <eCH-0155:voteIdentification>1038046106-1</eCH-0155:voteIdentification>
+                    <eCH-0155:domainOfInfluence>doid-ch1-mu</eCH-0155:domainOfInfluence>
+                    <eCH-0155:voteDescription>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:voteDescription>Bund</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:voteDescription>Bund</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:voteDescription>Bund</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:voteDescription>Bund</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                    </eCH-0155:voteDescription>
+                </eCH-0110:vote>
+                <eCH-0110:countOfVotersInformation>
+                    <eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
+                </eCH-0110:countOfVotersInformation>
+                <eCH-0110:ballotResult>
+                    <eCH-0110:ballotIdentification>1045844777</eCH-0110:ballotIdentification>
+                    <eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
+                    <eCH-0110:ballotDescription>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank!»</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank!»</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank!»</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank!»</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                    </eCH-0110:ballotDescription>
+                    <eCH-0110:countOfReceivedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:countOfAccountedBallotsTotal>
+                        <eCH-0110:total>1</eCH-0110:total>
+                    </eCH-0110:countOfAccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBallotsTotal>
+                        <eCH-0110:total>1</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBlankBallots>
+                        <eCH-0110:total>1</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:countOfUnaccountedInvalidBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:standardBallot>
+                        <eCH-0110:questionIdentification>1045844777-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
+                        <eCH-0110:answerType>
+                            <eCH-0155:answerType>2</eCH-0155:answerType>
+                        </eCH-0110:answerType>
+                        <eCH-0110:question>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>de</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie die Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank! (Vollgeld-Initiative)» annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>fr</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie die Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank! (Vollgeld-Initiative)» annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>it</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie die Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank! (Vollgeld-Initiative)» annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>rm</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie die Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank! (Vollgeld-Initiative)» annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                        </eCH-0110:question>
+                        <eCH-0110:countOfAnswerYes>
+                            <eCH-0110:total>1</eCH-0110:total>
+                        </eCH-0110:countOfAnswerYes>
+                        <eCH-0110:countOfAnswerNo>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerNo>
+                        <eCH-0110:countOfAnswerInvalid>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerInvalid>
+                        <eCH-0110:countOfAnswerEmpty>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerEmpty>
+                    </eCH-0110:standardBallot>
+                </eCH-0110:ballotResult>
+                <eCH-0110:ballotResult>
+                    <eCH-0110:ballotIdentification>1045844779</eCH-0110:ballotIdentification>
+                    <eCH-0110:ballotPosition>2</eCH-0110:ballotPosition>
+                    <eCH-0110:ballotDescription>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Bundesgesetz über Geldspiele (Geldspielgesetz, BGS)</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Bundesgesetz über Geldspiele (Geldspielgesetz, BGS)</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Bundesgesetz über Geldspiele (Geldspielgesetz, BGS)</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Bundesgesetz über Geldspiele (Geldspielgesetz, BGS)</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                    </eCH-0110:ballotDescription>
+                    <eCH-0110:countOfReceivedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:countOfAccountedBallotsTotal>
+                        <eCH-0110:total>1</eCH-0110:total>
+                    </eCH-0110:countOfAccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBallotsTotal>
+                        <eCH-0110:total>1</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBlankBallots>
+                        <eCH-0110:total>1</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:countOfUnaccountedInvalidBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:standardBallot>
+                        <eCH-0110:questionIdentification>1045844779-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
+                        <eCH-0110:answerType>
+                            <eCH-0155:answerType>2</eCH-0155:answerType>
+                        </eCH-0110:answerType>
+                        <eCH-0110:question>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>de</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie das Bundesgesetz vom 29. September 2017 über Geldspiele (Geldspielgesetz, BGS) annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>fr</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie das Bundesgesetz vom 29. September 2017 über Geldspiele (Geldspielgesetz, BGS) annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>it</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie das Bundesgesetz vom 29. September 2017 über Geldspiele (Geldspielgesetz, BGS) annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>rm</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie das Bundesgesetz vom 29. September 2017 über Geldspiele (Geldspielgesetz, BGS) annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                        </eCH-0110:question>
+                        <eCH-0110:countOfAnswerYes>
+                            <eCH-0110:total>1</eCH-0110:total>
+                        </eCH-0110:countOfAnswerYes>
+                        <eCH-0110:countOfAnswerNo>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerNo>
+                        <eCH-0110:countOfAnswerInvalid>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerInvalid>
+                        <eCH-0110:countOfAnswerEmpty>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerEmpty>
+                    </eCH-0110:standardBallot>
+                </eCH-0110:ballotResult>
+            </eCH-0110:voteResults>
+            <eCH-0110:voteResults>
+                <eCH-0110:vote>
+                    <eCH-0155:voteIdentification>1038046106-2</eCH-0155:voteIdentification>
+                    <eCH-0155:domainOfInfluence>doid-ct1-mu</eCH-0155:domainOfInfluence>
+                    <eCH-0155:voteDescription>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:voteDescription>Kanton St. Gallen</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:voteDescription>Kanton St. Gallen</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:voteDescription>Kanton St. Gallen</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:voteDescription>Kanton St. Gallen</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                    </eCH-0155:voteDescription>
+                </eCH-0110:vote>
+                <eCH-0110:countOfVotersInformation>
+                    <eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
+                </eCH-0110:countOfVotersInformation>
+                <eCH-0110:ballotResult>
+                    <eCH-0110:ballotIdentification>1045844957</eCH-0110:ballotIdentification>
+                    <eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
+                    <eCH-0110:ballotDescription>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                    </eCH-0110:ballotDescription>
+                    <eCH-0110:countOfReceivedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:countOfAccountedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfAccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBallotsTotal>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBlankBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:countOfUnaccountedInvalidBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:standardBallot>
+                        <eCH-0110:questionIdentification>1045844957-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
+                        <eCH-0110:answerType>
+                            <eCH-0155:answerType>2</eCH-0155:answerType>
+                        </eCH-0110:answerType>
+                        <eCH-0110:question>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>de</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>fr</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>it</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>rm</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                        </eCH-0110:question>
+                        <eCH-0110:countOfAnswerYes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerYes>
+                        <eCH-0110:countOfAnswerNo>
+                            <eCH-0110:total>2</eCH-0110:total>
+                        </eCH-0110:countOfAnswerNo>
+                        <eCH-0110:countOfAnswerInvalid>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerInvalid>
+                        <eCH-0110:countOfAnswerEmpty>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerEmpty>
+                    </eCH-0110:standardBallot>
+                </eCH-0110:ballotResult>
+                <eCH-0110:ballotResult>
+                    <eCH-0110:ballotIdentification>1045844956</eCH-0110:ballotIdentification>
+                    <eCH-0110:ballotPosition>2</eCH-0110:ballotPosition>
+                    <eCH-0110:ballotDescription>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>VI. Nachtrag zum Gesetz über die Universität St.Gallen</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>VI. Nachtrag zum Gesetz über die Universität St.Gallen</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>VI. Nachtrag zum Gesetz über die Universität St.Gallen</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>VI. Nachtrag zum Gesetz über die Universität St.Gallen</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                    </eCH-0110:ballotDescription>
+                    <eCH-0110:countOfReceivedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:countOfAccountedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfAccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBallotsTotal>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBlankBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:countOfUnaccountedInvalidBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:standardBallot>
+                        <eCH-0110:questionIdentification>1045844956-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
+                        <eCH-0110:answerType>
+                            <eCH-0155:answerType>2</eCH-0155:answerType>
+                        </eCH-0110:answerType>
+                        <eCH-0110:question>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>de</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem VI. Nachtrag zum Gesetz über die Universität St.Gallen (Ausbildung von Arztinnen und Ärzten in St.Gallen – Joint Medical Master) zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>fr</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem VI. Nachtrag zum Gesetz über die Universität St.Gallen (Ausbildung von Arztinnen und Ärzten in St.Gallen – Joint Medical Master) zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>it</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem VI. Nachtrag zum Gesetz über die Universität St.Gallen (Ausbildung von Arztinnen und Ärzten in St.Gallen – Joint Medical Master) zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>rm</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem VI. Nachtrag zum Gesetz über die Universität St.Gallen (Ausbildung von Arztinnen und Ärzten in St.Gallen – Joint Medical Master) zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                        </eCH-0110:question>
+                        <eCH-0110:countOfAnswerYes>
+                            <eCH-0110:total>1</eCH-0110:total>
+                        </eCH-0110:countOfAnswerYes>
+                        <eCH-0110:countOfAnswerNo>
+                            <eCH-0110:total>1</eCH-0110:total>
+                        </eCH-0110:countOfAnswerNo>
+                        <eCH-0110:countOfAnswerInvalid>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerInvalid>
+                        <eCH-0110:countOfAnswerEmpty>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerEmpty>
+                    </eCH-0110:standardBallot>
+                </eCH-0110:ballotResult>
+            </eCH-0110:voteResults>
+            <eCH-0110:electionResults>
+                <eCH-0110:election>
+                    <eCH-0155:electionIdentification>1-2</eCH-0155:electionIdentification>
+                    <eCH-0155:domainOfInfluence>doid-ct1-mu</eCH-0155:domainOfInfluence>
+                    <eCH-0155:typeOfElection>2</eCH-0155:typeOfElection>
+                    <eCH-0155:electionDescription>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:electionDescription>Ständeratswahl</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:electionDescription>Ständeratswahl (fr)</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:electionDescription>Ständeratswahl (it)</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:electionDescription>Ständeratswahl (rm)</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                    </eCH-0155:electionDescription>
+                    <eCH-0155:numberOfMandates>2</eCH-0155:numberOfMandates>
+                </eCH-0110:election>
+                <eCH-0110:countOfVotersInformation>
+                    <eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
+                </eCH-0110:countOfVotersInformation>
+                <eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:total>2</eCH-0110:total>
+                </eCH-0110:countOfReceivedBallotsTotal>
+                <eCH-0110:countOfAccountedBallots>
+                    <eCH-0110:total>2</eCH-0110:total>
+                </eCH-0110:countOfAccountedBallots>
+                <eCH-0110:countOfUnaccountedBallots>
+                    <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedBallots>
+                <eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedBlankBallots>
+                <eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedInvalidBallots>
+                <eCH-0110:majoralElection>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-1</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>1</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Keller-Sutter</eCH-0110:familyName>
+                            <eCH-0110:firstName>Karin</eCH-0110:firstName>
+                            <eCH-0110:callName>Karin</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.12.1963, Ständerätin, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.12.1963, Ständerätin, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.12.1963, Ständerätin, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.12.1963, Ständerätin, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-2</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>2</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Rechsteiner</eCH-0110:familyName>
+                            <eCH-0110:firstName>Paul</eCH-0110:firstName>
+                            <eCH-0110:callName>Paul</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>26.08.1952, Ständerat, St.Gallen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>26.08.1952, Ständerat, St.Gallen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>26.08.1952, Ständerat, St.Gallen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>26.08.1952, Ständerat, St.Gallen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-3</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>3</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Ammann</eCH-0110:familyName>
+                            <eCH-0110:firstName>Richard</eCH-0110:firstName>
+                            <eCH-0110:callName>Richard</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>30.01.1959, Kantonsrat, Sekundarlehrer, Abtwil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>30.01.1959, Kantonsrat, Sekundarlehrer, Abtwil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>30.01.1959, Kantonsrat, Sekundarlehrer, Abtwil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>30.01.1959, Kantonsrat, Sekundarlehrer, Abtwil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-4</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>4</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Ammann</eCH-0110:familyName>
+                            <eCH-0110:firstName>Thomas</eCH-0110:firstName>
+                            <eCH-0110:callName>Thomas</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>13.07.1964, Gemeindepräsident, Rüthi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>13.07.1964, Gemeindepräsident, Rüthi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>13.07.1964, Gemeindepräsident, Rüthi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>13.07.1964, Gemeindepräsident, Rüthi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-5</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>5</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Gilli</eCH-0110:familyName>
+                            <eCH-0110:firstName>Yvonne</eCH-0110:firstName>
+                            <eCH-0110:callName>Yvonne</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>07.03.1957, Dr.med., Fachärztin für Allgemeine Innere Medizin FMH, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>07.03.1957, Dr.med., Fachärztin für Allgemeine Innere Medizin FMH, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>07.03.1957, Dr.med., Fachärztin für Allgemeine Innere Medizin FMH, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>07.03.1957, Dr.med., Fachärztin für Allgemeine Innere Medizin FMH, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-6</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>6</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Graf</eCH-0110:familyName>
+                            <eCH-0110:firstName>Andreas</eCH-0110:firstName>
+                            <eCH-0110:callName>Andreas</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.01.1963, Unternehmer, Steinach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.01.1963, Unternehmer, Steinach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.01.1963, Unternehmer, Steinach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.01.1963, Unternehmer, Steinach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-7</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Kessler</eCH-0110:familyName>
+                            <eCH-0110:firstName>Margrit</eCH-0110:firstName>
+                            <eCH-0110:callName>Margrit</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>25.12.1948, Präsidentin SPO-Patientenschutz, Altstätten</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>25.12.1948, Präsidentin SPO-Patientenschutz, Altstätten</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>25.12.1948, Präsidentin SPO-Patientenschutz, Altstätten</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>25.12.1948, Präsidentin SPO-Patientenschutz, Altstätten</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-8</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>8</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Müller</eCH-0110:familyName>
+                            <eCH-0110:firstName>Thomas</eCH-0110:firstName>
+                            <eCH-0110:callName>Thomas</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>01.12.1952, lic.iur., Stadtpräsident, Rechtsanwalt, Rorschach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>01.12.1952, lic.iur., Stadtpräsident, Rechtsanwalt, Rorschach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>01.12.1952, lic.iur., Stadtpräsident, Rechtsanwalt, Rorschach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>01.12.1952, lic.iur., Stadtpräsident, Rechtsanwalt, Rorschach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-9</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>9</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Oppliger</eCH-0110:familyName>
+                            <eCH-0110:firstName>Hans</eCH-0110:firstName>
+                            <eCH-0110:callName>Hans</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>11.01.1957, Dipl.Ing.Agr. ETH, Projektberater, Frümsen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>11.01.1957, Dipl.Ing.Agr. ETH, Projektberater, Frümsen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>11.01.1957, Dipl.Ing.Agr. ETH, Projektberater, Frümsen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>11.01.1957, Dipl.Ing.Agr. ETH, Projektberater, Frümsen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                </eCH-0110:majoralElection>
+            </eCH-0110:electionResults>
+        </eCH-0110:countingCircleResults>
+        <eCH-0110:countingCircleResults>
+            <eCH-0110:countingCircle>
+                <eCH-0155:countingCircleId>SG-MU-10011</eCH-0155:countingCircleId>
+                <eCH-0155:countingCircleName>Supportstimmen_Res_ICH</eCH-0155:countingCircleName>
+            </eCH-0110:countingCircle>
+            <eCH-0110:votingCardsInformation>
+                <eCH-0110:countOfReceivedValidVotingCardsTotal>2</eCH-0110:countOfReceivedValidVotingCardsTotal>
+                <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
+            </eCH-0110:votingCardsInformation>
+            <eCH-0110:voteResults>
+                <eCH-0110:vote>
+                    <eCH-0155:voteIdentification>1038046106-1</eCH-0155:voteIdentification>
+                    <eCH-0155:domainOfInfluence>doid-ch1-mu</eCH-0155:domainOfInfluence>
+                    <eCH-0155:voteDescription>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:voteDescription>Bund</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:voteDescription>Bund</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:voteDescription>Bund</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:voteDescription>Bund</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                    </eCH-0155:voteDescription>
+                </eCH-0110:vote>
+                <eCH-0110:countOfVotersInformation>
+                    <eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
+                </eCH-0110:countOfVotersInformation>
+                <eCH-0110:ballotResult>
+                    <eCH-0110:ballotIdentification>1045844777</eCH-0110:ballotIdentification>
+                    <eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
+                    <eCH-0110:ballotDescription>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank!»</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank!»</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank!»</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank!»</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                    </eCH-0110:ballotDescription>
+                    <eCH-0110:countOfReceivedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:countOfAccountedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfAccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBallotsTotal>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBlankBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:countOfUnaccountedInvalidBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:standardBallot>
+                        <eCH-0110:questionIdentification>1045844777-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
+                        <eCH-0110:answerType>
+                            <eCH-0155:answerType>2</eCH-0155:answerType>
+                        </eCH-0110:answerType>
+                        <eCH-0110:question>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>de</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie die Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank! (Vollgeld-Initiative)» annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>fr</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie die Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank! (Vollgeld-Initiative)» annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>it</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie die Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank! (Vollgeld-Initiative)» annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>rm</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie die Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank! (Vollgeld-Initiative)» annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                        </eCH-0110:question>
+                        <eCH-0110:countOfAnswerYes>
+                            <eCH-0110:total>1</eCH-0110:total>
+                        </eCH-0110:countOfAnswerYes>
+                        <eCH-0110:countOfAnswerNo>
+                            <eCH-0110:total>1</eCH-0110:total>
+                        </eCH-0110:countOfAnswerNo>
+                        <eCH-0110:countOfAnswerInvalid>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerInvalid>
+                        <eCH-0110:countOfAnswerEmpty>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerEmpty>
+                    </eCH-0110:standardBallot>
+                </eCH-0110:ballotResult>
+                <eCH-0110:ballotResult>
+                    <eCH-0110:ballotIdentification>1045844779</eCH-0110:ballotIdentification>
+                    <eCH-0110:ballotPosition>2</eCH-0110:ballotPosition>
+                    <eCH-0110:ballotDescription>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Bundesgesetz über Geldspiele (Geldspielgesetz, BGS)</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Bundesgesetz über Geldspiele (Geldspielgesetz, BGS)</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Bundesgesetz über Geldspiele (Geldspielgesetz, BGS)</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Bundesgesetz über Geldspiele (Geldspielgesetz, BGS)</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                    </eCH-0110:ballotDescription>
+                    <eCH-0110:countOfReceivedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:countOfAccountedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfAccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBallotsTotal>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBlankBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:countOfUnaccountedInvalidBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:standardBallot>
+                        <eCH-0110:questionIdentification>1045844779-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
+                        <eCH-0110:answerType>
+                            <eCH-0155:answerType>2</eCH-0155:answerType>
+                        </eCH-0110:answerType>
+                        <eCH-0110:question>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>de</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie das Bundesgesetz vom 29. September 2017 über Geldspiele (Geldspielgesetz, BGS) annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>fr</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie das Bundesgesetz vom 29. September 2017 über Geldspiele (Geldspielgesetz, BGS) annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>it</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie das Bundesgesetz vom 29. September 2017 über Geldspiele (Geldspielgesetz, BGS) annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>rm</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie das Bundesgesetz vom 29. September 2017 über Geldspiele (Geldspielgesetz, BGS) annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                        </eCH-0110:question>
+                        <eCH-0110:countOfAnswerYes>
+                            <eCH-0110:total>1</eCH-0110:total>
+                        </eCH-0110:countOfAnswerYes>
+                        <eCH-0110:countOfAnswerNo>
+                            <eCH-0110:total>1</eCH-0110:total>
+                        </eCH-0110:countOfAnswerNo>
+                        <eCH-0110:countOfAnswerInvalid>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerInvalid>
+                        <eCH-0110:countOfAnswerEmpty>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerEmpty>
+                    </eCH-0110:standardBallot>
+                </eCH-0110:ballotResult>
+            </eCH-0110:voteResults>
+            <eCH-0110:voteResults>
+                <eCH-0110:vote>
+                    <eCH-0155:voteIdentification>1038046106-2</eCH-0155:voteIdentification>
+                    <eCH-0155:domainOfInfluence>doid-ct1-mu</eCH-0155:domainOfInfluence>
+                    <eCH-0155:voteDescription>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:voteDescription>Kanton St. Gallen</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:voteDescription>Kanton St. Gallen</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:voteDescription>Kanton St. Gallen</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:voteDescription>Kanton St. Gallen</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                    </eCH-0155:voteDescription>
+                </eCH-0110:vote>
+                <eCH-0110:countOfVotersInformation>
+                    <eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
+                </eCH-0110:countOfVotersInformation>
+                <eCH-0110:ballotResult>
+                    <eCH-0110:ballotIdentification>1045844957</eCH-0110:ballotIdentification>
+                    <eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
+                    <eCH-0110:ballotDescription>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                    </eCH-0110:ballotDescription>
+                    <eCH-0110:countOfReceivedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:countOfAccountedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfAccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBallotsTotal>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBlankBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:countOfUnaccountedInvalidBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:standardBallot>
+                        <eCH-0110:questionIdentification>1045844957-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
+                        <eCH-0110:answerType>
+                            <eCH-0155:answerType>2</eCH-0155:answerType>
+                        </eCH-0110:answerType>
+                        <eCH-0110:question>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>de</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>fr</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>it</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>rm</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                        </eCH-0110:question>
+                        <eCH-0110:countOfAnswerYes>
+                            <eCH-0110:total>2</eCH-0110:total>
+                        </eCH-0110:countOfAnswerYes>
+                        <eCH-0110:countOfAnswerNo>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerNo>
+                        <eCH-0110:countOfAnswerInvalid>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerInvalid>
+                        <eCH-0110:countOfAnswerEmpty>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerEmpty>
+                    </eCH-0110:standardBallot>
+                </eCH-0110:ballotResult>
+                <eCH-0110:ballotResult>
+                    <eCH-0110:ballotIdentification>1045844956</eCH-0110:ballotIdentification>
+                    <eCH-0110:ballotPosition>2</eCH-0110:ballotPosition>
+                    <eCH-0110:ballotDescription>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>VI. Nachtrag zum Gesetz über die Universität St.Gallen</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>VI. Nachtrag zum Gesetz über die Universität St.Gallen</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>VI. Nachtrag zum Gesetz über die Universität St.Gallen</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>VI. Nachtrag zum Gesetz über die Universität St.Gallen</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                    </eCH-0110:ballotDescription>
+                    <eCH-0110:countOfReceivedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:countOfAccountedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfAccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBallotsTotal>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBlankBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:countOfUnaccountedInvalidBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:standardBallot>
+                        <eCH-0110:questionIdentification>1045844956-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
+                        <eCH-0110:answerType>
+                            <eCH-0155:answerType>2</eCH-0155:answerType>
+                        </eCH-0110:answerType>
+                        <eCH-0110:question>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>de</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem VI. Nachtrag zum Gesetz über die Universität St.Gallen (Ausbildung von Arztinnen und Ärzten in St.Gallen – Joint Medical Master) zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>fr</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem VI. Nachtrag zum Gesetz über die Universität St.Gallen (Ausbildung von Arztinnen und Ärzten in St.Gallen – Joint Medical Master) zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>it</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem VI. Nachtrag zum Gesetz über die Universität St.Gallen (Ausbildung von Arztinnen und Ärzten in St.Gallen – Joint Medical Master) zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>rm</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem VI. Nachtrag zum Gesetz über die Universität St.Gallen (Ausbildung von Arztinnen und Ärzten in St.Gallen – Joint Medical Master) zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                        </eCH-0110:question>
+                        <eCH-0110:countOfAnswerYes>
+                            <eCH-0110:total>2</eCH-0110:total>
+                        </eCH-0110:countOfAnswerYes>
+                        <eCH-0110:countOfAnswerNo>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerNo>
+                        <eCH-0110:countOfAnswerInvalid>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerInvalid>
+                        <eCH-0110:countOfAnswerEmpty>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerEmpty>
+                    </eCH-0110:standardBallot>
+                </eCH-0110:ballotResult>
+            </eCH-0110:voteResults>
+            <eCH-0110:electionResults>
+                <eCH-0110:election>
+                    <eCH-0155:electionIdentification>1-2</eCH-0155:electionIdentification>
+                    <eCH-0155:domainOfInfluence>doid-ct1-mu</eCH-0155:domainOfInfluence>
+                    <eCH-0155:typeOfElection>2</eCH-0155:typeOfElection>
+                    <eCH-0155:electionDescription>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:electionDescription>Ständeratswahl</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:electionDescription>Ständeratswahl (fr)</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:electionDescription>Ständeratswahl (it)</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:electionDescription>Ständeratswahl (rm)</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                    </eCH-0155:electionDescription>
+                    <eCH-0155:numberOfMandates>2</eCH-0155:numberOfMandates>
+                </eCH-0110:election>
+                <eCH-0110:countOfVotersInformation>
+                    <eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
+                </eCH-0110:countOfVotersInformation>
+                <eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:total>2</eCH-0110:total>
+                </eCH-0110:countOfReceivedBallotsTotal>
+                <eCH-0110:countOfAccountedBallots>
+                    <eCH-0110:total>2</eCH-0110:total>
+                </eCH-0110:countOfAccountedBallots>
+                <eCH-0110:countOfUnaccountedBallots>
+                    <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedBallots>
+                <eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedBlankBallots>
+                <eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedInvalidBallots>
+                <eCH-0110:majoralElection>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-1</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>1</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Keller-Sutter</eCH-0110:familyName>
+                            <eCH-0110:firstName>Karin</eCH-0110:firstName>
+                            <eCH-0110:callName>Karin</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.12.1963, Ständerätin, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.12.1963, Ständerätin, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.12.1963, Ständerätin, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.12.1963, Ständerätin, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-2</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>2</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Rechsteiner</eCH-0110:familyName>
+                            <eCH-0110:firstName>Paul</eCH-0110:firstName>
+                            <eCH-0110:callName>Paul</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>26.08.1952, Ständerat, St.Gallen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>26.08.1952, Ständerat, St.Gallen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>26.08.1952, Ständerat, St.Gallen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>26.08.1952, Ständerat, St.Gallen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-3</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>3</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Ammann</eCH-0110:familyName>
+                            <eCH-0110:firstName>Richard</eCH-0110:firstName>
+                            <eCH-0110:callName>Richard</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>30.01.1959, Kantonsrat, Sekundarlehrer, Abtwil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>30.01.1959, Kantonsrat, Sekundarlehrer, Abtwil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>30.01.1959, Kantonsrat, Sekundarlehrer, Abtwil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>30.01.1959, Kantonsrat, Sekundarlehrer, Abtwil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-4</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>4</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Ammann</eCH-0110:familyName>
+                            <eCH-0110:firstName>Thomas</eCH-0110:firstName>
+                            <eCH-0110:callName>Thomas</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>13.07.1964, Gemeindepräsident, Rüthi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>13.07.1964, Gemeindepräsident, Rüthi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>13.07.1964, Gemeindepräsident, Rüthi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>13.07.1964, Gemeindepräsident, Rüthi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-5</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>5</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Gilli</eCH-0110:familyName>
+                            <eCH-0110:firstName>Yvonne</eCH-0110:firstName>
+                            <eCH-0110:callName>Yvonne</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>07.03.1957, Dr.med., Fachärztin für Allgemeine Innere Medizin FMH, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>07.03.1957, Dr.med., Fachärztin für Allgemeine Innere Medizin FMH, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>07.03.1957, Dr.med., Fachärztin für Allgemeine Innere Medizin FMH, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>07.03.1957, Dr.med., Fachärztin für Allgemeine Innere Medizin FMH, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-6</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>6</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Graf</eCH-0110:familyName>
+                            <eCH-0110:firstName>Andreas</eCH-0110:firstName>
+                            <eCH-0110:callName>Andreas</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.01.1963, Unternehmer, Steinach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.01.1963, Unternehmer, Steinach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.01.1963, Unternehmer, Steinach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.01.1963, Unternehmer, Steinach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-7</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Kessler</eCH-0110:familyName>
+                            <eCH-0110:firstName>Margrit</eCH-0110:firstName>
+                            <eCH-0110:callName>Margrit</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>25.12.1948, Präsidentin SPO-Patientenschutz, Altstätten</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>25.12.1948, Präsidentin SPO-Patientenschutz, Altstätten</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>25.12.1948, Präsidentin SPO-Patientenschutz, Altstätten</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>25.12.1948, Präsidentin SPO-Patientenschutz, Altstätten</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-8</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>8</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Müller</eCH-0110:familyName>
+                            <eCH-0110:firstName>Thomas</eCH-0110:firstName>
+                            <eCH-0110:callName>Thomas</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>01.12.1952, lic.iur., Stadtpräsident, Rechtsanwalt, Rorschach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>01.12.1952, lic.iur., Stadtpräsident, Rechtsanwalt, Rorschach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>01.12.1952, lic.iur., Stadtpräsident, Rechtsanwalt, Rorschach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>01.12.1952, lic.iur., Stadtpräsident, Rechtsanwalt, Rorschach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-9</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>9</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Oppliger</eCH-0110:familyName>
+                            <eCH-0110:firstName>Hans</eCH-0110:firstName>
+                            <eCH-0110:callName>Hans</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>11.01.1957, Dipl.Ing.Agr. ETH, Projektberater, Frümsen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>11.01.1957, Dipl.Ing.Agr. ETH, Projektberater, Frümsen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>11.01.1957, Dipl.Ing.Agr. ETH, Projektberater, Frümsen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>11.01.1957, Dipl.Ing.Agr. ETH, Projektberater, Frümsen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                </eCH-0110:majoralElection>
+            </eCH-0110:electionResults>
+        </eCH-0110:countingCircleResults>
+        <eCH-0110:countingCircleResults>
+            <eCH-0110:countingCircle>
+                <eCH-0155:countingCircleId>SG-MU-10001</eCH-0155:countingCircleId>
+                <eCH-0155:countingCircleName>Testurne_ICH</eCH-0155:countingCircleName>
+            </eCH-0110:countingCircle>
+            <eCH-0110:votingCardsInformation>
+                <eCH-0110:countOfReceivedValidVotingCardsTotal>2</eCH-0110:countOfReceivedValidVotingCardsTotal>
+                <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
+            </eCH-0110:votingCardsInformation>
+            <eCH-0110:voteResults>
+                <eCH-0110:vote>
+                    <eCH-0155:voteIdentification>1038046106-1</eCH-0155:voteIdentification>
+                    <eCH-0155:domainOfInfluence>doid-ch1-mu</eCH-0155:domainOfInfluence>
+                    <eCH-0155:voteDescription>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:voteDescription>Bund</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:voteDescription>Bund</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:voteDescription>Bund</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:voteDescription>Bund</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                    </eCH-0155:voteDescription>
+                </eCH-0110:vote>
+                <eCH-0110:countOfVotersInformation>
+                    <eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
+                </eCH-0110:countOfVotersInformation>
+                <eCH-0110:ballotResult>
+                    <eCH-0110:ballotIdentification>1045844777</eCH-0110:ballotIdentification>
+                    <eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
+                    <eCH-0110:ballotDescription>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank!»</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank!»</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank!»</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank!»</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                    </eCH-0110:ballotDescription>
+                    <eCH-0110:countOfReceivedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:countOfAccountedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfAccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBallotsTotal>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBlankBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:countOfUnaccountedInvalidBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:standardBallot>
+                        <eCH-0110:questionIdentification>1045844777-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
+                        <eCH-0110:answerType>
+                            <eCH-0155:answerType>2</eCH-0155:answerType>
+                        </eCH-0110:answerType>
+                        <eCH-0110:question>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>de</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie die Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank! (Vollgeld-Initiative)» annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>fr</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie die Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank! (Vollgeld-Initiative)» annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>it</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie die Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank! (Vollgeld-Initiative)» annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>rm</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie die Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank! (Vollgeld-Initiative)» annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                        </eCH-0110:question>
+                        <eCH-0110:countOfAnswerYes>
+                            <eCH-0110:total>2</eCH-0110:total>
+                        </eCH-0110:countOfAnswerYes>
+                        <eCH-0110:countOfAnswerNo>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerNo>
+                        <eCH-0110:countOfAnswerInvalid>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerInvalid>
+                        <eCH-0110:countOfAnswerEmpty>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerEmpty>
+                    </eCH-0110:standardBallot>
+                </eCH-0110:ballotResult>
+                <eCH-0110:ballotResult>
+                    <eCH-0110:ballotIdentification>1045844779</eCH-0110:ballotIdentification>
+                    <eCH-0110:ballotPosition>2</eCH-0110:ballotPosition>
+                    <eCH-0110:ballotDescription>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Bundesgesetz über Geldspiele (Geldspielgesetz, BGS)</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Bundesgesetz über Geldspiele (Geldspielgesetz, BGS)</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Bundesgesetz über Geldspiele (Geldspielgesetz, BGS)</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Bundesgesetz über Geldspiele (Geldspielgesetz, BGS)</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                    </eCH-0110:ballotDescription>
+                    <eCH-0110:countOfReceivedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:countOfAccountedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfAccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBallotsTotal>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBlankBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:countOfUnaccountedInvalidBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:standardBallot>
+                        <eCH-0110:questionIdentification>1045844779-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
+                        <eCH-0110:answerType>
+                            <eCH-0155:answerType>2</eCH-0155:answerType>
+                        </eCH-0110:answerType>
+                        <eCH-0110:question>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>de</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie das Bundesgesetz vom 29. September 2017 über Geldspiele (Geldspielgesetz, BGS) annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>fr</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie das Bundesgesetz vom 29. September 2017 über Geldspiele (Geldspielgesetz, BGS) annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>it</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie das Bundesgesetz vom 29. September 2017 über Geldspiele (Geldspielgesetz, BGS) annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>rm</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie das Bundesgesetz vom 29. September 2017 über Geldspiele (Geldspielgesetz, BGS) annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                        </eCH-0110:question>
+                        <eCH-0110:countOfAnswerYes>
+                            <eCH-0110:total>1</eCH-0110:total>
+                        </eCH-0110:countOfAnswerYes>
+                        <eCH-0110:countOfAnswerNo>
+                            <eCH-0110:total>1</eCH-0110:total>
+                        </eCH-0110:countOfAnswerNo>
+                        <eCH-0110:countOfAnswerInvalid>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerInvalid>
+                        <eCH-0110:countOfAnswerEmpty>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerEmpty>
+                    </eCH-0110:standardBallot>
+                </eCH-0110:ballotResult>
+            </eCH-0110:voteResults>
+            <eCH-0110:voteResults>
+                <eCH-0110:vote>
+                    <eCH-0155:voteIdentification>1038046106-2</eCH-0155:voteIdentification>
+                    <eCH-0155:domainOfInfluence>doid-ct1-mu</eCH-0155:domainOfInfluence>
+                    <eCH-0155:voteDescription>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:voteDescription>Kanton St. Gallen</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:voteDescription>Kanton St. Gallen</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:voteDescription>Kanton St. Gallen</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:voteDescription>Kanton St. Gallen</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                    </eCH-0155:voteDescription>
+                </eCH-0110:vote>
+                <eCH-0110:countOfVotersInformation>
+                    <eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
+                </eCH-0110:countOfVotersInformation>
+                <eCH-0110:ballotResult>
+                    <eCH-0110:ballotIdentification>1045844957</eCH-0110:ballotIdentification>
+                    <eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
+                    <eCH-0110:ballotDescription>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                    </eCH-0110:ballotDescription>
+                    <eCH-0110:countOfReceivedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:countOfAccountedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfAccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBallotsTotal>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBlankBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:countOfUnaccountedInvalidBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:standardBallot>
+                        <eCH-0110:questionIdentification>1045844957-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
+                        <eCH-0110:answerType>
+                            <eCH-0155:answerType>2</eCH-0155:answerType>
+                        </eCH-0110:answerType>
+                        <eCH-0110:question>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>de</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>fr</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>it</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>rm</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                        </eCH-0110:question>
+                        <eCH-0110:countOfAnswerYes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerYes>
+                        <eCH-0110:countOfAnswerNo>
+                            <eCH-0110:total>2</eCH-0110:total>
+                        </eCH-0110:countOfAnswerNo>
+                        <eCH-0110:countOfAnswerInvalid>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerInvalid>
+                        <eCH-0110:countOfAnswerEmpty>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerEmpty>
+                    </eCH-0110:standardBallot>
+                </eCH-0110:ballotResult>
+                <eCH-0110:ballotResult>
+                    <eCH-0110:ballotIdentification>1045844956</eCH-0110:ballotIdentification>
+                    <eCH-0110:ballotPosition>2</eCH-0110:ballotPosition>
+                    <eCH-0110:ballotDescription>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>VI. Nachtrag zum Gesetz über die Universität St.Gallen</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>VI. Nachtrag zum Gesetz über die Universität St.Gallen</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>VI. Nachtrag zum Gesetz über die Universität St.Gallen</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>VI. Nachtrag zum Gesetz über die Universität St.Gallen</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                    </eCH-0110:ballotDescription>
+                    <eCH-0110:countOfReceivedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:countOfAccountedBallotsTotal>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfAccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBallotsTotal>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBlankBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:countOfUnaccountedInvalidBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:standardBallot>
+                        <eCH-0110:questionIdentification>1045844956-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
+                        <eCH-0110:answerType>
+                            <eCH-0155:answerType>2</eCH-0155:answerType>
+                        </eCH-0110:answerType>
+                        <eCH-0110:question>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>de</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem VI. Nachtrag zum Gesetz über die Universität St.Gallen (Ausbildung von Arztinnen und Ärzten in St.Gallen – Joint Medical Master) zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>fr</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem VI. Nachtrag zum Gesetz über die Universität St.Gallen (Ausbildung von Arztinnen und Ärzten in St.Gallen – Joint Medical Master) zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>it</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem VI. Nachtrag zum Gesetz über die Universität St.Gallen (Ausbildung von Arztinnen und Ärzten in St.Gallen – Joint Medical Master) zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>rm</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem VI. Nachtrag zum Gesetz über die Universität St.Gallen (Ausbildung von Arztinnen und Ärzten in St.Gallen – Joint Medical Master) zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                        </eCH-0110:question>
+                        <eCH-0110:countOfAnswerYes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerYes>
+                        <eCH-0110:countOfAnswerNo>
+                            <eCH-0110:total>2</eCH-0110:total>
+                        </eCH-0110:countOfAnswerNo>
+                        <eCH-0110:countOfAnswerInvalid>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerInvalid>
+                        <eCH-0110:countOfAnswerEmpty>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerEmpty>
+                    </eCH-0110:standardBallot>
+                </eCH-0110:ballotResult>
+            </eCH-0110:voteResults>
+            <eCH-0110:electionResults>
+                <eCH-0110:election>
+                    <eCH-0155:electionIdentification>1-2</eCH-0155:electionIdentification>
+                    <eCH-0155:domainOfInfluence>doid-ct1-mu</eCH-0155:domainOfInfluence>
+                    <eCH-0155:typeOfElection>2</eCH-0155:typeOfElection>
+                    <eCH-0155:electionDescription>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:electionDescription>Ständeratswahl</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:electionDescription>Ständeratswahl (fr)</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:electionDescription>Ständeratswahl (it)</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:electionDescription>Ständeratswahl (rm)</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                    </eCH-0155:electionDescription>
+                    <eCH-0155:numberOfMandates>2</eCH-0155:numberOfMandates>
+                </eCH-0110:election>
+                <eCH-0110:countOfVotersInformation>
+                    <eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
+                </eCH-0110:countOfVotersInformation>
+                <eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:total>2</eCH-0110:total>
+                </eCH-0110:countOfReceivedBallotsTotal>
+                <eCH-0110:countOfAccountedBallots>
+                    <eCH-0110:total>2</eCH-0110:total>
+                </eCH-0110:countOfAccountedBallots>
+                <eCH-0110:countOfUnaccountedBallots>
+                    <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedBallots>
+                <eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedBlankBallots>
+                <eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedInvalidBallots>
+                <eCH-0110:majoralElection>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-1</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>1</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Keller-Sutter</eCH-0110:familyName>
+                            <eCH-0110:firstName>Karin</eCH-0110:firstName>
+                            <eCH-0110:callName>Karin</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.12.1963, Ständerätin, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.12.1963, Ständerätin, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.12.1963, Ständerätin, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.12.1963, Ständerätin, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-2</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>2</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Rechsteiner</eCH-0110:familyName>
+                            <eCH-0110:firstName>Paul</eCH-0110:firstName>
+                            <eCH-0110:callName>Paul</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>26.08.1952, Ständerat, St.Gallen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>26.08.1952, Ständerat, St.Gallen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>26.08.1952, Ständerat, St.Gallen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>26.08.1952, Ständerat, St.Gallen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-3</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>3</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Ammann</eCH-0110:familyName>
+                            <eCH-0110:firstName>Richard</eCH-0110:firstName>
+                            <eCH-0110:callName>Richard</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>30.01.1959, Kantonsrat, Sekundarlehrer, Abtwil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>30.01.1959, Kantonsrat, Sekundarlehrer, Abtwil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>30.01.1959, Kantonsrat, Sekundarlehrer, Abtwil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>30.01.1959, Kantonsrat, Sekundarlehrer, Abtwil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-4</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>4</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Ammann</eCH-0110:familyName>
+                            <eCH-0110:firstName>Thomas</eCH-0110:firstName>
+                            <eCH-0110:callName>Thomas</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>13.07.1964, Gemeindepräsident, Rüthi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>13.07.1964, Gemeindepräsident, Rüthi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>13.07.1964, Gemeindepräsident, Rüthi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>13.07.1964, Gemeindepräsident, Rüthi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-5</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>5</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Gilli</eCH-0110:familyName>
+                            <eCH-0110:firstName>Yvonne</eCH-0110:firstName>
+                            <eCH-0110:callName>Yvonne</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>07.03.1957, Dr.med., Fachärztin für Allgemeine Innere Medizin FMH, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>07.03.1957, Dr.med., Fachärztin für Allgemeine Innere Medizin FMH, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>07.03.1957, Dr.med., Fachärztin für Allgemeine Innere Medizin FMH, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>07.03.1957, Dr.med., Fachärztin für Allgemeine Innere Medizin FMH, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-6</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>6</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Graf</eCH-0110:familyName>
+                            <eCH-0110:firstName>Andreas</eCH-0110:firstName>
+                            <eCH-0110:callName>Andreas</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.01.1963, Unternehmer, Steinach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.01.1963, Unternehmer, Steinach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.01.1963, Unternehmer, Steinach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.01.1963, Unternehmer, Steinach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-7</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Kessler</eCH-0110:familyName>
+                            <eCH-0110:firstName>Margrit</eCH-0110:firstName>
+                            <eCH-0110:callName>Margrit</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>25.12.1948, Präsidentin SPO-Patientenschutz, Altstätten</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>25.12.1948, Präsidentin SPO-Patientenschutz, Altstätten</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>25.12.1948, Präsidentin SPO-Patientenschutz, Altstätten</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>25.12.1948, Präsidentin SPO-Patientenschutz, Altstätten</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-8</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>8</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Müller</eCH-0110:familyName>
+                            <eCH-0110:firstName>Thomas</eCH-0110:firstName>
+                            <eCH-0110:callName>Thomas</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>01.12.1952, lic.iur., Stadtpräsident, Rechtsanwalt, Rorschach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>01.12.1952, lic.iur., Stadtpräsident, Rechtsanwalt, Rorschach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>01.12.1952, lic.iur., Stadtpräsident, Rechtsanwalt, Rorschach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>01.12.1952, lic.iur., Stadtpräsident, Rechtsanwalt, Rorschach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-9</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>9</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Oppliger</eCH-0110:familyName>
+                            <eCH-0110:firstName>Hans</eCH-0110:firstName>
+                            <eCH-0110:callName>Hans</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>11.01.1957, Dipl.Ing.Agr. ETH, Projektberater, Frümsen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>11.01.1957, Dipl.Ing.Agr. ETH, Projektberater, Frümsen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>11.01.1957, Dipl.Ing.Agr. ETH, Projektberater, Frümsen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>11.01.1957, Dipl.Ing.Agr. ETH, Projektberater, Frümsen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                </eCH-0110:majoralElection>
+            </eCH-0110:electionResults>
+        </eCH-0110:countingCircleResults>
+        <eCH-0110:countingCircleResults>
+            <eCH-0110:countingCircle>
+                <eCH-0155:countingCircleId>SG-MU-10009</eCH-0155:countingCircleId>
+                <eCH-0155:countingCircleName>Supportstimmen_Post_ICH</eCH-0155:countingCircleName>
+            </eCH-0110:countingCircle>
+            <eCH-0110:votingCardsInformation>
+                <eCH-0110:countOfReceivedValidVotingCardsTotal>1</eCH-0110:countOfReceivedValidVotingCardsTotal>
+                <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
+            </eCH-0110:votingCardsInformation>
+            <eCH-0110:voteResults>
+                <eCH-0110:vote>
+                    <eCH-0155:voteIdentification>1038046106-1</eCH-0155:voteIdentification>
+                    <eCH-0155:domainOfInfluence>doid-ch1-mu</eCH-0155:domainOfInfluence>
+                    <eCH-0155:voteDescription>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:voteDescription>Bund</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:voteDescription>Bund</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:voteDescription>Bund</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:voteDescription>Bund</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                    </eCH-0155:voteDescription>
+                </eCH-0110:vote>
+                <eCH-0110:countOfVotersInformation>
+                    <eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
+                </eCH-0110:countOfVotersInformation>
+                <eCH-0110:ballotResult>
+                    <eCH-0110:ballotIdentification>1045844777</eCH-0110:ballotIdentification>
+                    <eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
+                    <eCH-0110:ballotDescription>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank!»</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank!»</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank!»</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank!»</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                    </eCH-0110:ballotDescription>
+                    <eCH-0110:countOfReceivedBallotsTotal>
+                        <eCH-0110:total>1</eCH-0110:total>
+                    </eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:countOfAccountedBallotsTotal>
+                        <eCH-0110:total>1</eCH-0110:total>
+                    </eCH-0110:countOfAccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBallotsTotal>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBlankBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:countOfUnaccountedInvalidBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:standardBallot>
+                        <eCH-0110:questionIdentification>1045844777-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
+                        <eCH-0110:answerType>
+                            <eCH-0155:answerType>2</eCH-0155:answerType>
+                        </eCH-0110:answerType>
+                        <eCH-0110:question>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>de</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie die Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank! (Vollgeld-Initiative)» annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>fr</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie die Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank! (Vollgeld-Initiative)» annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>it</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie die Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank! (Vollgeld-Initiative)» annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>rm</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie die Volksinitiative «Für krisensicheres Geld: Geldschöpfung allein durch die Nationalbank! (Vollgeld-Initiative)» annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                        </eCH-0110:question>
+                        <eCH-0110:countOfAnswerYes>
+                            <eCH-0110:total>1</eCH-0110:total>
+                        </eCH-0110:countOfAnswerYes>
+                        <eCH-0110:countOfAnswerNo>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerNo>
+                        <eCH-0110:countOfAnswerInvalid>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerInvalid>
+                        <eCH-0110:countOfAnswerEmpty>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerEmpty>
+                    </eCH-0110:standardBallot>
+                </eCH-0110:ballotResult>
+                <eCH-0110:ballotResult>
+                    <eCH-0110:ballotIdentification>1045844779</eCH-0110:ballotIdentification>
+                    <eCH-0110:ballotPosition>2</eCH-0110:ballotPosition>
+                    <eCH-0110:ballotDescription>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Bundesgesetz über Geldspiele (Geldspielgesetz, BGS)</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Bundesgesetz über Geldspiele (Geldspielgesetz, BGS)</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Bundesgesetz über Geldspiele (Geldspielgesetz, BGS)</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Bundesgesetz über Geldspiele (Geldspielgesetz, BGS)</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                    </eCH-0110:ballotDescription>
+                    <eCH-0110:countOfReceivedBallotsTotal>
+                        <eCH-0110:total>1</eCH-0110:total>
+                    </eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:countOfAccountedBallotsTotal>
+                        <eCH-0110:total>1</eCH-0110:total>
+                    </eCH-0110:countOfAccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBallotsTotal>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBlankBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:countOfUnaccountedInvalidBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:standardBallot>
+                        <eCH-0110:questionIdentification>1045844779-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
+                        <eCH-0110:answerType>
+                            <eCH-0155:answerType>2</eCH-0155:answerType>
+                        </eCH-0110:answerType>
+                        <eCH-0110:question>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>de</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie das Bundesgesetz vom 29. September 2017 über Geldspiele (Geldspielgesetz, BGS) annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>fr</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie das Bundesgesetz vom 29. September 2017 über Geldspiele (Geldspielgesetz, BGS) annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>it</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie das Bundesgesetz vom 29. September 2017 über Geldspiele (Geldspielgesetz, BGS) annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>rm</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie das Bundesgesetz vom 29. September 2017 über Geldspiele (Geldspielgesetz, BGS) annehmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                        </eCH-0110:question>
+                        <eCH-0110:countOfAnswerYes>
+                            <eCH-0110:total>1</eCH-0110:total>
+                        </eCH-0110:countOfAnswerYes>
+                        <eCH-0110:countOfAnswerNo>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerNo>
+                        <eCH-0110:countOfAnswerInvalid>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerInvalid>
+                        <eCH-0110:countOfAnswerEmpty>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerEmpty>
+                    </eCH-0110:standardBallot>
+                </eCH-0110:ballotResult>
+            </eCH-0110:voteResults>
+            <eCH-0110:voteResults>
+                <eCH-0110:vote>
+                    <eCH-0155:voteIdentification>1038046106-2</eCH-0155:voteIdentification>
+                    <eCH-0155:domainOfInfluence>doid-ct1-mu</eCH-0155:domainOfInfluence>
+                    <eCH-0155:voteDescription>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:voteDescription>Kanton St. Gallen</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:voteDescription>Kanton St. Gallen</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:voteDescription>Kanton St. Gallen</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:voteDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:voteDescription>Kanton St. Gallen</eCH-0155:voteDescription>
+                        </eCH-0155:voteDescriptionInfo>
+                    </eCH-0155:voteDescription>
+                </eCH-0110:vote>
+                <eCH-0110:countOfVotersInformation>
+                    <eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
+                </eCH-0110:countOfVotersInformation>
+                <eCH-0110:ballotResult>
+                    <eCH-0110:ballotIdentification>1045844957</eCH-0110:ballotIdentification>
+                    <eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
+                    <eCH-0110:ballotDescription>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                    </eCH-0110:ballotDescription>
+                    <eCH-0110:countOfReceivedBallotsTotal>
+                        <eCH-0110:total>1</eCH-0110:total>
+                    </eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:countOfAccountedBallotsTotal>
+                        <eCH-0110:total>1</eCH-0110:total>
+                    </eCH-0110:countOfAccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBallotsTotal>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBlankBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:countOfUnaccountedInvalidBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:standardBallot>
+                        <eCH-0110:questionIdentification>1045844957-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
+                        <eCH-0110:answerType>
+                            <eCH-0155:answerType>2</eCH-0155:answerType>
+                        </eCH-0110:answerType>
+                        <eCH-0110:question>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>de</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>fr</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>it</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>rm</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem Kantonsratsbeschluss über eine Einmaleinlage in die St.Galler Pensionskasse zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                        </eCH-0110:question>
+                        <eCH-0110:countOfAnswerYes>
+                            <eCH-0110:total>1</eCH-0110:total>
+                        </eCH-0110:countOfAnswerYes>
+                        <eCH-0110:countOfAnswerNo>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerNo>
+                        <eCH-0110:countOfAnswerInvalid>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerInvalid>
+                        <eCH-0110:countOfAnswerEmpty>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerEmpty>
+                    </eCH-0110:standardBallot>
+                </eCH-0110:ballotResult>
+                <eCH-0110:ballotResult>
+                    <eCH-0110:ballotIdentification>1045844956</eCH-0110:ballotIdentification>
+                    <eCH-0110:ballotPosition>2</eCH-0110:ballotPosition>
+                    <eCH-0110:ballotDescription>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>VI. Nachtrag zum Gesetz über die Universität St.Gallen</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>VI. Nachtrag zum Gesetz über die Universität St.Gallen</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>VI. Nachtrag zum Gesetz über die Universität St.Gallen</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                        <eCH-0155:ballotDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:ballotDescriptionLong>VI. Nachtrag zum Gesetz über die Universität St.Gallen</eCH-0155:ballotDescriptionLong>
+                        </eCH-0155:ballotDescriptionInfo>
+                    </eCH-0110:ballotDescription>
+                    <eCH-0110:countOfReceivedBallotsTotal>
+                        <eCH-0110:total>1</eCH-0110:total>
+                    </eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:countOfAccountedBallotsTotal>
+                        <eCH-0110:total>1</eCH-0110:total>
+                    </eCH-0110:countOfAccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBallotsTotal>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBallotsTotal>
+                    <eCH-0110:countOfUnaccountedBlankBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:countOfUnaccountedInvalidBallots>
+                        <eCH-0110:total>0</eCH-0110:total>
+                    </eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:standardBallot>
+                        <eCH-0110:questionIdentification>1045844956-EVotingAbstimmungsfrage</eCH-0110:questionIdentification>
+                        <eCH-0110:answerType>
+                            <eCH-0155:answerType>2</eCH-0155:answerType>
+                        </eCH-0110:answerType>
+                        <eCH-0110:question>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>de</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem VI. Nachtrag zum Gesetz über die Universität St.Gallen (Ausbildung von Arztinnen und Ärzten in St.Gallen – Joint Medical Master) zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>fr</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem VI. Nachtrag zum Gesetz über die Universität St.Gallen (Ausbildung von Arztinnen und Ärzten in St.Gallen – Joint Medical Master) zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>it</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem VI. Nachtrag zum Gesetz über die Universität St.Gallen (Ausbildung von Arztinnen und Ärzten in St.Gallen – Joint Medical Master) zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:ballotQuestionInfo>
+                                <eCH-0155:language>rm</eCH-0155:language>
+                                <eCH-0155:ballotQuestion>Wollen Sie dem VI. Nachtrag zum Gesetz über die Universität St.Gallen (Ausbildung von Arztinnen und Ärzten in St.Gallen – Joint Medical Master) zustimmen?</eCH-0155:ballotQuestion>
+                            </eCH-0155:ballotQuestionInfo>
+                        </eCH-0110:question>
+                        <eCH-0110:countOfAnswerYes>
+                            <eCH-0110:total>1</eCH-0110:total>
+                        </eCH-0110:countOfAnswerYes>
+                        <eCH-0110:countOfAnswerNo>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerNo>
+                        <eCH-0110:countOfAnswerInvalid>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerInvalid>
+                        <eCH-0110:countOfAnswerEmpty>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAnswerEmpty>
+                    </eCH-0110:standardBallot>
+                </eCH-0110:ballotResult>
+            </eCH-0110:voteResults>
+            <eCH-0110:electionResults>
+                <eCH-0110:election>
+                    <eCH-0155:electionIdentification>1-2</eCH-0155:electionIdentification>
+                    <eCH-0155:domainOfInfluence>doid-ct1-mu</eCH-0155:domainOfInfluence>
+                    <eCH-0155:typeOfElection>2</eCH-0155:typeOfElection>
+                    <eCH-0155:electionDescription>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:electionDescription>Ständeratswahl</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:electionDescription>Ständeratswahl (fr)</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:electionDescription>Ständeratswahl (it)</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:electionDescription>Ständeratswahl (rm)</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                    </eCH-0155:electionDescription>
+                    <eCH-0155:numberOfMandates>2</eCH-0155:numberOfMandates>
+                </eCH-0110:election>
+                <eCH-0110:countOfVotersInformation>
+                    <eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
+                </eCH-0110:countOfVotersInformation>
+                <eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:total>1</eCH-0110:total>
+                </eCH-0110:countOfReceivedBallotsTotal>
+                <eCH-0110:countOfAccountedBallots>
+                    <eCH-0110:total>1</eCH-0110:total>
+                </eCH-0110:countOfAccountedBallots>
+                <eCH-0110:countOfUnaccountedBallots>
+                    <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedBallots>
+                <eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedBlankBallots>
+                <eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedInvalidBallots>
+                <eCH-0110:majoralElection>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-1</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>1</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Keller-Sutter</eCH-0110:familyName>
+                            <eCH-0110:firstName>Karin</eCH-0110:firstName>
+                            <eCH-0110:callName>Karin</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.12.1963, Ständerätin, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.12.1963, Ständerätin, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.12.1963, Ständerätin, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.12.1963, Ständerätin, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-2</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>2</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Rechsteiner</eCH-0110:familyName>
+                            <eCH-0110:firstName>Paul</eCH-0110:firstName>
+                            <eCH-0110:callName>Paul</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>26.08.1952, Ständerat, St.Gallen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>26.08.1952, Ständerat, St.Gallen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>26.08.1952, Ständerat, St.Gallen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>26.08.1952, Ständerat, St.Gallen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-3</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>3</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Ammann</eCH-0110:familyName>
+                            <eCH-0110:firstName>Richard</eCH-0110:firstName>
+                            <eCH-0110:callName>Richard</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>30.01.1959, Kantonsrat, Sekundarlehrer, Abtwil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>30.01.1959, Kantonsrat, Sekundarlehrer, Abtwil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>30.01.1959, Kantonsrat, Sekundarlehrer, Abtwil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>30.01.1959, Kantonsrat, Sekundarlehrer, Abtwil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-4</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>4</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Ammann</eCH-0110:familyName>
+                            <eCH-0110:firstName>Thomas</eCH-0110:firstName>
+                            <eCH-0110:callName>Thomas</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>13.07.1964, Gemeindepräsident, Rüthi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>13.07.1964, Gemeindepräsident, Rüthi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>13.07.1964, Gemeindepräsident, Rüthi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>13.07.1964, Gemeindepräsident, Rüthi</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-5</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>5</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Gilli</eCH-0110:familyName>
+                            <eCH-0110:firstName>Yvonne</eCH-0110:firstName>
+                            <eCH-0110:callName>Yvonne</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>07.03.1957, Dr.med., Fachärztin für Allgemeine Innere Medizin FMH, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>07.03.1957, Dr.med., Fachärztin für Allgemeine Innere Medizin FMH, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>07.03.1957, Dr.med., Fachärztin für Allgemeine Innere Medizin FMH, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>07.03.1957, Dr.med., Fachärztin für Allgemeine Innere Medizin FMH, Wil</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-6</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>6</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Graf</eCH-0110:familyName>
+                            <eCH-0110:firstName>Andreas</eCH-0110:firstName>
+                            <eCH-0110:callName>Andreas</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.01.1963, Unternehmer, Steinach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.01.1963, Unternehmer, Steinach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.01.1963, Unternehmer, Steinach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>22.01.1963, Unternehmer, Steinach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-7</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Kessler</eCH-0110:familyName>
+                            <eCH-0110:firstName>Margrit</eCH-0110:firstName>
+                            <eCH-0110:callName>Margrit</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>25.12.1948, Präsidentin SPO-Patientenschutz, Altstätten</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>25.12.1948, Präsidentin SPO-Patientenschutz, Altstätten</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>25.12.1948, Präsidentin SPO-Patientenschutz, Altstätten</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>25.12.1948, Präsidentin SPO-Patientenschutz, Altstätten</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-8</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>8</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Müller</eCH-0110:familyName>
+                            <eCH-0110:firstName>Thomas</eCH-0110:firstName>
+                            <eCH-0110:callName>Thomas</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>01.12.1952, lic.iur., Stadtpräsident, Rechtsanwalt, Rorschach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>01.12.1952, lic.iur., Stadtpräsident, Rechtsanwalt, Rorschach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>01.12.1952, lic.iur., Stadtpräsident, Rechtsanwalt, Rorschach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>01.12.1952, lic.iur., Stadtpräsident, Rechtsanwalt, Rorschach</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>1-9</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>9</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Oppliger</eCH-0110:familyName>
+                            <eCH-0110:firstName>Hans</eCH-0110:firstName>
+                            <eCH-0110:callName>Hans</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>11.01.1957, Dipl.Ing.Agr. ETH, Projektberater, Frümsen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>11.01.1957, Dipl.Ing.Agr. ETH, Projektberater, Frümsen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>11.01.1957, Dipl.Ing.Agr. ETH, Projektberater, Frümsen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>11.01.1957, Dipl.Ing.Agr. ETH, Projektberater, Frümsen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                </eCH-0110:majoralElection>
+            </eCH-0110:electionResults>
+        </eCH-0110:countingCircleResults>
+    </eCH-0110:resultDelivery>
+</eCH-0110:delivery>

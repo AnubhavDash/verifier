@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -15,12 +15,12 @@
 package ch.post.it.evoting.verifier.common;
 
 import java.io.File;
-import java.util.List;
+import java.nio.file.Path;
 import java.util.Set;
 import java.util.stream.Stream;
 
 public interface VerifierBlock {
-    Stream<TestDefinition> getTests();
+    Stream<VerificationDefinition> getVerifications();
 
-    Stream<TestResult> process(File inputDirectory, Set<TestTrait> options);
+    Stream<VerificationResult> process(Path inputDirectoryPath, Set<VerificationTrait> options);
 }

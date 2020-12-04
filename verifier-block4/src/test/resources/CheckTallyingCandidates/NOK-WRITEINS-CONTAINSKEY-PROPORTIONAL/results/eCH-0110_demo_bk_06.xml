@@ -1,0 +1,2244 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<eCH-0110:delivery xmlns:eCH-0110="http://www.ech.ch/xmlns/eCH-0110/3" xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008/3" xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3">
+    <eCH-0110:deliveryHeader>
+        <eCH-0058:senderId>http://www.post.ch</eCH-0058:senderId>
+        <eCH-0058:messageId>1537448545858</eCH-0058:messageId>
+        <eCH-0058:messageType>http://www.post.ch</eCH-0058:messageType>
+        <eCH-0058:sendingApplication>
+            <eCH-0058:manufacturer>SwissPost</eCH-0058:manufacturer>
+            <eCH-0058:product>OV</eCH-0058:product>
+            <eCH-0058:productVersion>1</eCH-0058:productVersion>
+        </eCH-0058:sendingApplication>
+        <eCH-0058:messageDate>2018-09-20T15:02:25.858+02:00</eCH-0058:messageDate>
+        <eCH-0058:action>1</eCH-0058:action>
+        <eCH-0058:testDeliveryFlag>false</eCH-0058:testDeliveryFlag>
+    </eCH-0110:deliveryHeader>
+    <eCH-0110:resultDelivery>
+        <eCH-0110:reportingBody>
+            <eCH-0110:reportingBodyIdentification>SwissPost-OV</eCH-0110:reportingBodyIdentification>
+            <eCH-0110:creationDateTime>2018-09-20T15:02:25.806+02:00</eCH-0110:creationDateTime>
+        </eCH-0110:reportingBody>
+        <eCH-0110:contestInformation>
+            <eCH-0155:contestIdentification>demo_bk_06</eCH-0155:contestIdentification>
+            <eCH-0155:contestDate>2015-10-20</eCH-0155:contestDate>
+            <eCH-0155:contestDescription>
+                <eCH-0155:contestDescriptionInfo>
+                    <eCH-0155:language>de</eCH-0155:language>
+                    <eCH-0155:contestDescription>Demo BK Nationale Wahlen Freiburg</eCH-0155:contestDescription>
+                </eCH-0155:contestDescriptionInfo>
+                <eCH-0155:contestDescriptionInfo>
+                    <eCH-0155:language>fr</eCH-0155:language>
+                    <eCH-0155:contestDescription>Démo ChF élections nationales Fribourg</eCH-0155:contestDescription>
+                </eCH-0155:contestDescriptionInfo>
+                <eCH-0155:contestDescriptionInfo>
+                    <eCH-0155:language>it</eCH-0155:language>
+                    <eCH-0155:contestDescription>Démo ChF élections nationales Fribourg</eCH-0155:contestDescription>
+                </eCH-0155:contestDescriptionInfo>
+                <eCH-0155:contestDescriptionInfo>
+                    <eCH-0155:language>rm</eCH-0155:language>
+                    <eCH-0155:contestDescription>Demo BK Nationale Wahlen Freiburg</eCH-0155:contestDescription>
+                </eCH-0155:contestDescriptionInfo>
+            </eCH-0155:contestDescription>
+        </eCH-0110:contestInformation>
+        <eCH-0110:countingCircleResults>
+            <eCH-0110:countingCircle>
+                <eCH-0155:countingCircleId>FR-MU-2309</eCH-0155:countingCircleId>
+                <eCH-0155:countingCircleName>Wünnewil-Flamatt</eCH-0155:countingCircleName>
+            </eCH-0110:countingCircle>
+            <eCH-0110:votingCardsInformation>
+                <eCH-0110:countOfReceivedValidVotingCardsTotal>7</eCH-0110:countOfReceivedValidVotingCardsTotal>
+                <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
+            </eCH-0110:votingCardsInformation>
+            <eCH-0110:electionResults>
+                <eCH-0110:election>
+                    <eCH-0155:electionIdentification>Eidgenoessische_Wahlen</eCH-0155:electionIdentification>
+                    <eCH-0155:domainOfInfluence>1B76E565-4DA8-11E6-89C7-00155D28151E</eCH-0155:domainOfInfluence>
+                    <eCH-0155:typeOfElection>1</eCH-0155:typeOfElection>
+                    <eCH-0155:electionDescription>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:electionDescriptionShort>Nationalrat</eCH-0155:electionDescriptionShort>
+                            <eCH-0155:electionDescription>Nationalratswahl</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:electionDescriptionShort>Conseil national</eCH-0155:electionDescriptionShort>
+                            <eCH-0155:electionDescription>Election du Conseil national</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:electionDescriptionShort>Demo Consiglio nationale</eCH-0155:electionDescriptionShort>
+                            <eCH-0155:electionDescription>Election du Conseil national</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:electionDescriptionShort>Demo Cussegl natiunal</eCH-0155:electionDescriptionShort>
+                            <eCH-0155:electionDescription>Nationalratswahl</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                    </eCH-0155:electionDescription>
+                    <eCH-0155:numberOfMandates>7</eCH-0155:numberOfMandates>
+                </eCH-0110:election>
+                <eCH-0110:countOfVotersInformation>
+                    <eCH-0110:countOfVotersTotal>99</eCH-0110:countOfVotersTotal>
+                </eCH-0110:countOfVotersInformation>
+                <eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:total>7</eCH-0110:total>
+                </eCH-0110:countOfReceivedBallotsTotal>
+                <eCH-0110:countOfAccountedBallots>
+                    <eCH-0110:total>6</eCH-0110:total>
+                </eCH-0110:countOfAccountedBallots>
+                <eCH-0110:countOfUnaccountedBallots>
+                    <eCH-0110:total>1</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedBallots>
+                <eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:total>1</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedBlankBallots>
+                <eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedInvalidBallots>
+                <eCH-0110:proportionalElection>
+                    <eCH-0110:countOfChangedBallotsWithPartyAffiliation>
+                        <eCH-0110:total>3</eCH-0110:total>
+                    </eCH-0110:countOfChangedBallotsWithPartyAffiliation>
+                    <eCH-0110:countOfChangedBallotsWithoutPartyAffiliation>
+                        <eCH-0110:total>2</eCH-0110:total>
+                    </eCH-0110:countOfChangedBallotsWithoutPartyAffiliation>
+                    <eCH-0110:countOfEmptyVotesOfChangedBallotsWithoutPartyAffiliation>
+                        <eCH-0110:total>7</eCH-0110:total>
+                    </eCH-0110:countOfEmptyVotesOfChangedBallotsWithoutPartyAffiliation>
+                    <eCH-0110:list>
+                        <eCH-0110:listInformation>
+                            <eCH-0110:listIdentification>L1</eCH-0110:listIdentification>
+                            <eCH-0110:listIndentureNumber>1</eCH-0110:listIndentureNumber>
+                            <eCH-0110:listDescription>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 1 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Christlichdemokratische Volkspartei des Kantons Freiburg (CVP)</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 1 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Parti démocrate-chrétien fribourgeois (PDC)</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 1 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Parti démocrate-chrétien fribourgeois (PDC)</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 1 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Christlichdemokratische Volkspartei des Kantons Freiburg (CVP)</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                            </eCH-0110:listDescription>
+                        </eCH-0110:listInformation>
+                        <eCH-0110:countOfChangedBallots>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfChangedBallots>
+                        <eCH-0110:countOfCandidateVotes>
+                            <eCH-0110:total>6</eCH-0110:total>
+                        </eCH-0110:countOfCandidateVotes>
+                        <eCH-0110:countOfAdditionalVotes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAdditionalVotes>
+                        <eCH-0110:countOfPartyVotes>
+                            <eCH-0110:total>6</eCH-0110:total>
+                        </eCH-0110:countOfPartyVotes>
+                    </eCH-0110:list>
+                    <eCH-0110:list>
+                        <eCH-0110:listInformation>
+                            <eCH-0110:listIdentification>L2</eCH-0110:listIdentification>
+                            <eCH-0110:listIndentureNumber>2</eCH-0110:listIndentureNumber>
+                            <eCH-0110:listDescription>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 2 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Sozialdemokratische Partei</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 2 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Parti socialiste fribourgeois</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 2 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Parti socialiste fribourgeois</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 2 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Sozialdemokratische Partei</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                            </eCH-0110:listDescription>
+                        </eCH-0110:listInformation>
+                        <eCH-0110:countOfChangedBallots>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfChangedBallots>
+                        <eCH-0110:countOfCandidateVotes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfCandidateVotes>
+                        <eCH-0110:countOfAdditionalVotes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAdditionalVotes>
+                        <eCH-0110:countOfPartyVotes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfPartyVotes>
+                    </eCH-0110:list>
+                    <eCH-0110:list>
+                        <eCH-0110:listInformation>
+                            <eCH-0110:listIdentification>L3</eCH-0110:listIdentification>
+                            <eCH-0110:listIndentureNumber>3</eCH-0110:listIndentureNumber>
+                            <eCH-0110:listDescription>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 3 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Freisinnig-Demokratische Partei (FDP)</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 3 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Parti libéral-radical fribourgeois (PLR)</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 3 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Parti libéral-radical fribourgeois (PLR)</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 3 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Freisinnig-Demokratische Partei (FDP)</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                            </eCH-0110:listDescription>
+                        </eCH-0110:listInformation>
+                        <eCH-0110:countOfChangedBallots>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfChangedBallots>
+                        <eCH-0110:countOfCandidateVotes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfCandidateVotes>
+                        <eCH-0110:countOfAdditionalVotes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAdditionalVotes>
+                        <eCH-0110:countOfPartyVotes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfPartyVotes>
+                    </eCH-0110:list>
+                    <eCH-0110:list>
+                        <eCH-0110:listInformation>
+                            <eCH-0110:listIdentification>L5</eCH-0110:listIdentification>
+                            <eCH-0110:listIndentureNumber>5</eCH-0110:listIndentureNumber>
+                            <eCH-0110:listDescription>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 5 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Schweizerische Volkspartei</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 5 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Union Démocratique du Centre</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 5 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Union Démocratique du Centre</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 5 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Schweizerische Volkspartei</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                            </eCH-0110:listDescription>
+                        </eCH-0110:listInformation>
+                        <eCH-0110:countOfChangedBallots>
+                            <eCH-0110:total>1</eCH-0110:total>
+                        </eCH-0110:countOfChangedBallots>
+                        <eCH-0110:countOfCandidateVotes>
+                            <eCH-0110:total>9</eCH-0110:total>
+                        </eCH-0110:countOfCandidateVotes>
+                        <eCH-0110:countOfAdditionalVotes>
+                            <eCH-0110:total>5</eCH-0110:total>
+                        </eCH-0110:countOfAdditionalVotes>
+                        <eCH-0110:countOfPartyVotes>
+                            <eCH-0110:total>14</eCH-0110:total>
+                        </eCH-0110:countOfPartyVotes>
+                    </eCH-0110:list>
+                    <eCH-0110:list>
+                        <eCH-0110:listInformation>
+                            <eCH-0110:listIdentification>L6</eCH-0110:listIdentification>
+                            <eCH-0110:listIndentureNumber>6</eCH-0110:listIndentureNumber>
+                            <eCH-0110:listDescription>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 6 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Grünliberale (GL)</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 6 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Vert'libéraux (VL)</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 6 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Vert'libéraux (VL)</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 6 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Grünliberale (GL)</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                            </eCH-0110:listDescription>
+                        </eCH-0110:listInformation>
+                        <eCH-0110:countOfChangedBallots>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfChangedBallots>
+                        <eCH-0110:countOfCandidateVotes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfCandidateVotes>
+                        <eCH-0110:countOfAdditionalVotes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAdditionalVotes>
+                        <eCH-0110:countOfPartyVotes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfPartyVotes>
+                    </eCH-0110:list>
+                    <eCH-0110:list>
+                        <eCH-0110:listInformation>
+                            <eCH-0110:listIdentification>L18</eCH-0110:listIdentification>
+                            <eCH-0110:listIndentureNumber>18</eCH-0110:listIndentureNumber>
+                            <eCH-0110:listDescription>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 18 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Unternehmer und Junge Grünliberale</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 18 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Entrepreneurs et jeunes vert’libéraux</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 18 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Entrepreneurs et jeunes vert’libéraux</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 18 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Unternehmer und Junge Grünliberale</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                            </eCH-0110:listDescription>
+                        </eCH-0110:listInformation>
+                        <eCH-0110:countOfChangedBallots>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfChangedBallots>
+                        <eCH-0110:countOfCandidateVotes>
+                            <eCH-0110:total>2</eCH-0110:total>
+                        </eCH-0110:countOfCandidateVotes>
+                        <eCH-0110:countOfAdditionalVotes>
+                            <eCH-0110:total>0</eCH-0110:total>
+                        </eCH-0110:countOfAdditionalVotes>
+                        <eCH-0110:countOfPartyVotes>
+                            <eCH-0110:total>2</eCH-0110:total>
+                        </eCH-0110:countOfPartyVotes>
+                    </eCH-0110:list>
+                    <eCH-0110:list>
+                        <eCH-0110:listInformation>
+                            <eCH-0110:listIdentification>L20</eCH-0110:listIdentification>
+                            <eCH-0110:listIndentureNumber>20</eCH-0110:listIndentureNumber>
+                            <eCH-0110:listDescription>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 20 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>JUSO Freiburg</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 20 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Jeunesse socialiste fribourgeoise (JSF)</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 20 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>Jeunesse socialiste fribourgeoise (JSF)</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                                <eCH-0155:listDescriptionInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:listDescriptionShort>Liste Nr. 20 :</eCH-0155:listDescriptionShort>
+                                    <eCH-0155:listDescription>JUSO Freiburg</eCH-0155:listDescription>
+                                </eCH-0155:listDescriptionInfo>
+                            </eCH-0110:listDescription>
+                        </eCH-0110:listInformation>
+                        <eCH-0110:countOfChangedBallots>
+                            <eCH-0110:total>2</eCH-0110:total>
+                        </eCH-0110:countOfChangedBallots>
+                        <eCH-0110:countOfCandidateVotes>
+                            <eCH-0110:total>7</eCH-0110:total>
+                        </eCH-0110:countOfCandidateVotes>
+                        <eCH-0110:countOfAdditionalVotes>
+                            <eCH-0110:total>6</eCH-0110:total>
+                        </eCH-0110:countOfAdditionalVotes>
+                        <eCH-0110:countOfPartyVotes>
+                            <eCH-0110:total>13</eCH-0110:total>
+                        </eCH-0110:countOfPartyVotes>
+                    </eCH-0110:list>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7101</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>01.01</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>de Buman</eCH-0110:familyName>
+                            <eCH-0110:firstName>Dominique</eCH-0110:firstName>
+                            <eCH-0110:callName>Dominique</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Jurist, Nationalrat, Freiburg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>juriste, conseiller national, Fribourg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>juriste, conseiller national, Fribourg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Jurist, Nationalrat, Freiburg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>L20</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>List99</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7102</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7104</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Bulliard-Marbach</eCH-0110:familyName>
+                            <eCH-0110:firstName>Christine</eCH-0110:firstName>
+                            <eCH-0110:callName>Christine</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Leiterin eines Landwirtschaftsbetriebs, Nationalrätin, Gemeindepräsidentin, Ueberstorf</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>responsable d'une exploitation agricole, conseillère nationale, syndique, Ueberstorf</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>responsable d'une exploitation agricole, conseillère nationale, syndique, Ueberstorf</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Leiterin eines Landwirtschaftsbetriebs, Nationalrätin, Gemeindepräsidentin, Ueberstorf</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7103</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7105</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Collomb</eCH-0110:familyName>
+                            <eCH-0110:firstName>Eric</eCH-0110:firstName>
+                            <eCH-0110:callName>Eric</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Geschäftsführer, Grossrat, Lully</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>directeur d'entreprise, député, Lully</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>directeur d'entreprise, député, Lully</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Geschäftsführer, Grossrat, Lully</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>List99</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>2</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7104</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7106</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Aebischer</eCH-0110:familyName>
+                            <eCH-0110:firstName>Susanne</eCH-0110:firstName>
+                            <eCH-0110:callName>Susanne</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Organisationsberaterin, Coach BSO und Erwachsenenbildnerin, Grossrätin, Kerzers</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>conseillère en organisation, coach BSO et formatrice d'adultes, députée, Kerzers</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>conseillère en organisation, coach BSO et formatrice d'adultes, députée, Kerzers</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Organisationsberaterin, Coach BSO und Erwachsenenbildnerin, Grossrätin, Kerzers</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7105</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7109</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Butty</eCH-0110:familyName>
+                            <eCH-0110:firstName>Dominique</eCH-0110:firstName>
+                            <eCH-0110:callName>Dominique</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Dr. med. der Veterinärmedizin, Grossrat, Romont</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>dr. med. vétérinaire, député, Romont</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>dr. med. vétérinaire, député, Romont</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Dr. med. der Veterinärmedizin, Grossrat, Romont</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>List99</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>2</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7106</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7110</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Doutaz</eCH-0110:familyName>
+                            <eCH-0110:firstName>Jean-Pierre</eCH-0110:firstName>
+                            <eCH-0110:callName>Jean-Pierre</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Unternehmer, Grossrat, Ammann von Gruyères, Epagny</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>chef d'entreprise, député, syndic de Gruyères, Epagny</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>chef d'entreprise, député, syndic de Gruyères, Epagny</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Unternehmer, Grossrat, Ammann von Gruyères, Epagny</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7107</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7111</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Ducotterd</eCH-0110:familyName>
+                            <eCH-0110:firstName>Christian</eCH-0110:firstName>
+                            <eCH-0110:callName>Christian</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Meisterlandwirt, Grossrat, Ammann, Grolley</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>maître agriculteur, député, syndic, Grolley</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>maître agriculteur, député, syndic, Grolley</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Meisterlandwirt, Grossrat, Ammann, Grolley</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7111</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7114</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Steiert</eCH-0110:familyName>
+                            <eCH-0110:firstName>Jean-François</eCH-0110:firstName>
+                            <eCH-0110:callName>Jean-François</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Nationalrat, Delegierter für interkantonale Angelegenheiten, Freiburg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>conseiller national, délégué aux affaires intercantonales, Fribourg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>conseiller national, délégué aux affaires intercantonales, Fribourg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Nationalrat, Delegierter für interkantonale Angelegenheiten, Freiburg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7112</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7115</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Piller Carrard</eCH-0110:familyName>
+                            <eCH-0110:firstName>Valérie</eCH-0110:firstName>
+                            <eCH-0110:callName>Valérie</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Nationalrätin, Kaufmännische Angestellte, Cheyres</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>conséillère nationale, employée de commerce, Cheyres</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>conséillère nationale, employée de commerce, Cheyres</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Nationalrätin, Kaufmännische Angestellte, Cheyres</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7113</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7116</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Schneider Schüttel</eCH-0110:familyName>
+                            <eCH-0110:firstName>Ursula</eCH-0110:firstName>
+                            <eCH-0110:callName>Ursula</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Nationalrätin, Anwältin, Murten</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>conseillère nationale, avocate, Morat</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>conseillère nationale, avocate, Morat</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Nationalrätin, Anwältin, Murten</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7114</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7117</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Bonny</eCH-0110:familyName>
+                            <eCH-0110:firstName>David</eCH-0110:firstName>
+                            <eCH-0110:callName>David</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Präsident des Grossen Rates, Stellvertreter der Direktion (GYB), Prez-vers-Noréaz</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>président du Grand Conseil, adj. de direction (GYB), Prez-vers-Noréaz</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>président du Grand Conseil, adj. de direction (GYB), Prez-vers-Noréaz</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Präsident des Grossen Rates, Stellvertreter der Direktion (GYB), Prez-vers-Noréaz</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7115</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7118</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Emonet</eCH-0110:familyName>
+                            <eCH-0110:firstName>Gaétan</eCH-0110:firstName>
+                            <eCH-0110:callName>Gaétan</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Grossrat, Lehrer, Remaufens</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>député, enseignant, Remaufens</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>député, enseignant, Remaufens</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Grossrat, Lehrer, Remaufens</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7116</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7119</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Krattinger-Jutzet</eCH-0110:familyName>
+                            <eCH-0110:firstName>Ursula</eCH-0110:firstName>
+                            <eCH-0110:callName>Ursula</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Grossrätin, Lehrerin, Düdingen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>députée, enseignante, Guin</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>députée, enseignante, Guin</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Grossrätin, Lehrerin, Düdingen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7117</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7120</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Mauron</eCH-0110:familyName>
+                            <eCH-0110:firstName>Pierre</eCH-0110:firstName>
+                            <eCH-0110:callName>Pierre</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Grossrat, Anwalt, Riaz</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>député, avocat, Riaz</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>député, avocat, Riaz</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Grossrat, Anwalt, Riaz</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7121</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7121</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Bourgeois</eCH-0110:familyName>
+                            <eCH-0110:firstName>Jacques</eCH-0110:firstName>
+                            <eCH-0110:callName>Jacques</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Nationalrat, Dipl. Ingenieur Agronom HTL, Avry-sur-Matran</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>conseiller national, ingénieur agronome HES, Avry-sur-Matran</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>conseiller national, ingénieur agronome HES, Avry-sur-Matran</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Nationalrat, Dipl. Ingenieur Agronom HTL, Avry-sur-Matran</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7122</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7122</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Glauser</eCH-0110:familyName>
+                            <eCH-0110:firstName>Fritz</eCH-0110:firstName>
+                            <eCH-0110:callName>Fritz</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Grossrat, Meisterlandwirt, Châtonnaye</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>député, maître agriculteur, Châtonnaye</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>député, maître agriculteur, Châtonnaye</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Grossrat, Meisterlandwirt, Châtonnaye</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7123</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7123</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Gobet</eCH-0110:familyName>
+                            <eCH-0110:firstName>Nadine</eCH-0110:firstName>
+                            <eCH-0110:callName>Nadine</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Grossrätin, Vizedirektorin FPE-CIGA, Bulle</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>députée, dir.-adj. FPE-CIGA, Bulle</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>députée, dir.-adj. FPE-CIGA, Bulle</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Grossrätin, Vizedirektorin FPE-CIGA, Bulle</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7124</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7124</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Ith</eCH-0110:familyName>
+                            <eCH-0110:firstName>Markus</eCH-0110:firstName>
+                            <eCH-0110:callName>Markus</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Grossrat, Betriebsökonom FH, Murten</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>député, économiste d’entreprise HEG, Morat</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>député, économiste d’entreprise HEG, Morat</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Grossrat, Betriebsökonom FH, Murten</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7125</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Kuehnlin</eCH-0110:familyName>
+                            <eCH-0110:firstName>Pascal</eCH-0110:firstName>
+                            <eCH-0110:callName>Pascal</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Unternehmensleiter, Marly</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>chef d’entreprise, Marly</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>chef d’entreprise, Marly</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Unternehmensleiter, Marly</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7126</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Losey</eCH-0110:familyName>
+                            <eCH-0110:firstName>Michel</eCH-0110:firstName>
+                            <eCH-0110:callName>Michel</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Grossrat, Meisterlandwirt, Sévaz</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>député, maître agriculteur, Sévaz</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>député, maître agriculteur, Sévaz</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Grossrat, Meisterlandwirt, Sévaz</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7127</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Udry</eCH-0110:familyName>
+                            <eCH-0110:firstName>Christian</eCH-0110:firstName>
+                            <eCH-0110:callName>Christian</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Vizeammann, Finanzinspektor, St. Silvester</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>vice-syndic, inspecteur des finances, St. Silvester</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>vice-syndic, inspecteur des finances, St. Silvester</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Vizeammann, Finanzinspektor, St. Silvester</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7131</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Rime</eCH-0110:familyName>
+                            <eCH-0110:firstName>Jean-François</eCH-0110:firstName>
+                            <eCH-0110:callName>Jean-François</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Unternehmer, Nationalrat, Bulle</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>industriel, conseiller national, Bulle</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>industriel, conseiller national, Bulle</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Unternehmer, Nationalrat, Bulle</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>L5</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7132</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Chardonnens</eCH-0110:familyName>
+                            <eCH-0110:firstName>Jean-Daniel</eCH-0110:firstName>
+                            <eCH-0110:callName>Jean-Daniel</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Direktor, Verwaltungsrat, Fétigny</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>directeur, administrateur, Fétigny</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>directeur, administrateur, Fétigny</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Direktor, Verwaltungsrat, Fétigny</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>L5</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7133</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Mesot</eCH-0110:familyName>
+                            <eCH-0110:firstName>Roland</eCH-0110:firstName>
+                            <eCH-0110:callName>Roland</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Unternehmensleiter, Grossrat, Châtel-St-Denis</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>chef d’entreprise, député, Châtel-St-Denis</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>chef d’entreprise, député, Châtel-St-Denis</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Unternehmensleiter, Grossrat, Châtel-St-Denis</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>L5</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7134</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Page</eCH-0110:familyName>
+                            <eCH-0110:firstName>Pierre-André</eCH-0110:firstName>
+                            <eCH-0110:callName>Pierre-André</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Landwirt EFZ, Grossrat, Châtonnaye</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>maître agriculteur, député, Châtonnaye</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>maître agriculteur, député, Châtonnaye</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Landwirt EFZ, Grossrat, Châtonnaye</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>L5</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7135</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Schläfli</eCH-0110:familyName>
+                            <eCH-0110:firstName>Ruedi</eCH-0110:firstName>
+                            <eCH-0110:callName>Ruedi</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Landwirt, Grossrat, Posieux</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>agriculteur, député, Posieux</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>agriculteur, député, Posieux</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Landwirt, Grossrat, Posieux</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>L5</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7136</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Thalmann-Bolz</eCH-0110:familyName>
+                            <eCH-0110:firstName>Katharina</eCH-0110:firstName>
+                            <eCH-0110:callName>Katharina</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Primarlehrerin, Grossrätin, Murten</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>enseignante primaire, députée, Morat</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>enseignante primaire, députée, Morat</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Primarlehrerin, Grossrätin, Murten</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>L5</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7137</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Waeber</eCH-0110:familyName>
+                            <eCH-0110:firstName>Emanuel</eCH-0110:firstName>
+                            <eCH-0110:callName>Emanuel</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Betriebsökonom, Grossrat, St. Antoni</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>économiste d’entreprise, député</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>économiste d’entreprise, député</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Betriebsökonom, Grossrat, St. Antoni</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>L5</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7141</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Schmid</eCH-0110:familyName>
+                            <eCH-0110:firstName>Ralph</eCH-0110:firstName>
+                            <eCH-0110:callName>Ralph</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Klinikdirektor, Professor, Grossrat, Lugnorre</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>directeur de clinique, professeur, député, Lugnorre</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>directeur de clinique, professeur, député, Lugnorre</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Klinikdirektor, Professor, Grossrat, Lugnorre</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7143</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Etter</eCH-0110:familyName>
+                            <eCH-0110:firstName>Fabienne</eCH-0110:firstName>
+                            <eCH-0110:callName>Fabienne</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Kfm. Angestellte, MAS in Ausbildungsmanagement, Freiburg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>employée de commerce, Master en gestion de formation, Fribourg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>employée de commerce, Master en gestion de formation, Fribourg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Kfm. Angestellte, MAS in Ausbildungsmanagement, Freiburg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7144</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Reck</eCH-0110:familyName>
+                            <eCH-0110:firstName>Markus</eCH-0110:firstName>
+                            <eCH-0110:callName>Markus</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Ökonom, Freiburg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>économiste, Fribourg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>économiste, Fribourg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Ökonom, Freiburg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7145</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Bernhard</eCH-0110:familyName>
+                            <eCH-0110:firstName>Irene</eCH-0110:firstName>
+                            <eCH-0110:callName>Irene</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Baujuristin, Villars-sur-Glâne</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>juriste du droit de constructions, Villars-sur-Glâne</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>juriste du droit de constructions, Villars-sur-Glâne</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Baujuristin, Villars-sur-Glâne</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7146</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Wismer</eCH-0110:familyName>
+                            <eCH-0110:firstName>Daniel</eCH-0110:firstName>
+                            <eCH-0110:callName>Daniel</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Informatiker, Freiburg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>informaticien, Fribourg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>informaticien, Fribourg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Informatiker, Freiburg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7147</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Späth</eCH-0110:familyName>
+                            <eCH-0110:firstName>Bertrand</eCH-0110:firstName>
+                            <eCH-0110:callName>Bertrand</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Ökonom, Marly</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>économiste, Marly</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>économiste, Marly</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Ökonom, Marly</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7151</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>von Mühlenen</eCH-0110:familyName>
+                            <eCH-0110:firstName>Walo</eCH-0110:firstName>
+                            <eCH-0110:callName>Walo</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Betriebswirtschafter, Käse-Affineur, Villars-sur-Glâne</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>entrepreneur, affineur de fromages, Villars-sur-Glâne</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>entrepreneur, affineur de fromages, Villars-sur-Glâne</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Betriebswirtschafter, Käse-Affineur, Villars-sur-Glâne</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7153</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Savary</eCH-0110:familyName>
+                            <eCH-0110:firstName>Daniel</eCH-0110:firstName>
+                            <eCH-0110:callName>Daniel</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Architekt HTL, Verwalter, Avry-devant-Pont</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>architecte ETS, administrateur, Avry-devant-Pont</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>architecte ETS, administrateur, Avry-devant-Pont</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Architekt HTL, Verwalter, Avry-devant-Pont</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>L20</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>2</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7155</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Grandjean</eCH-0110:familyName>
+                            <eCH-0110:firstName>Anaïs</eCH-0110:firstName>
+                            <eCH-0110:callName>Anaïs</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Master-Studentin in Kommunikation, La Tour-de-Trême</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>étudiante de master en communication, La Tour-de-Trême</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>étudiante de master en communication, La Tour-de-Trême</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Master-Studentin in Kommunikation, La Tour-de-Trême</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7156</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Grandjean</eCH-0110:familyName>
+                            <eCH-0110:firstName>Loris</eCH-0110:firstName>
+                            <eCH-0110:callName>Loris</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Student in Psychologie und Politikwissenschaften, Bulle</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>étudiant en psychologie et sciences politiques, Bulle</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>étudiant en psychologie et sciences politiques, Bulle</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Student in Psychologie und Politikwissenschaften, Bulle</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7157</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Ruffieux</eCH-0110:familyName>
+                            <eCH-0110:firstName>Kurt</eCH-0110:firstName>
+                            <eCH-0110:callName>Kurt</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Elektro-Ing. HTL, Arconciel</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>Ing. ETS électricien, Arconciel</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>Ing. ETS électricien, Arconciel</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Elektro-Ing. HTL, Arconciel</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7161</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Kubski</eCH-0110:familyName>
+                            <eCH-0110:firstName>Grégoire</eCH-0110:firstName>
+                            <eCH-0110:callName>Grégoire</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Student in Rechtswissenschaft, Spezialist beim der Staatssekretariat für Migration, Morlon</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>étudiant en droit, spécialiste au Secrétariat d'Etat aux migrations, Morlon</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>étudiant en droit, spécialiste au Secrétariat d'Etat aux migrations, Morlon</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Student in Rechtswissenschaft, Spezialist beim der Staatssekretariat für Migration, Morlon</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>L20</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7162</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Piller</eCH-0110:familyName>
+                            <eCH-0110:firstName>Elsa</eCH-0110:firstName>
+                            <eCH-0110:callName>Elsa</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>kaufmännische Lernende, Rueyres-Saint-Laurent</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>apprentie employée de commerce, Rueyres-Saint-Laurent</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>apprentie employée de commerce, Rueyres-Saint-Laurent</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>kaufmännische Lernende, Rueyres-Saint-Laurent</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>L20</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7163</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Zurich</eCH-0110:familyName>
+                            <eCH-0110:firstName>Simon</eCH-0110:firstName>
+                            <eCH-0110:callName>Simon</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Parlamentarischer Mitarbeiter, Patientenberater, Freiburg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>collaborateur parlementaire, conseiller aux patients, Fribourg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>collaborateur parlementaire, conseiller aux patients, Fribourg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Parlamentarischer Mitarbeiter, Patientenberater, Freiburg</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>L20</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>List99</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>2</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>3</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7164</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>de Jesus Correia</eCH-0110:familyName>
+                            <eCH-0110:firstName>Mélanie</eCH-0110:firstName>
+                            <eCH-0110:callName>Mélanie</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Studentin, Lully</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>étudiante, Lully</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>étudiante, Lully</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Studentin, Lully</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>L20</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7165</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Fasel</eCH-0110:familyName>
+                            <eCH-0110:firstName>Noah</eCH-0110:firstName>
+                            <eCH-0110:callName>Noah</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Gymnasiast, St. Ursen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>collégien, St. Ursen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>collégien, St. Ursen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Gymnasiast, St. Ursen</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>L20</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7166</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Stirnimann</eCH-0110:familyName>
+                            <eCH-0110:firstName>Michelle</eCH-0110:firstName>
+                            <eCH-0110:callName>Michelle</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Studentin in Geografie, Kerzers</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>étudiante en géographie, Kerzers</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>étudiante en géographie, Kerzers</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Studentin in Geografie, Kerzers</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>CAND-7167</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>7125</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Loup</eCH-0110:familyName>
+                            <eCH-0110:firstName>Matthieu</eCH-0110:firstName>
+                            <eCH-0110:callName>Matthieu</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Student in Rechtswissenschaft, Vize-Präsident ASLOCA FR, Marly</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>étudiant en droit, vice-président ASLOCA FR, Marly</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>étudiant en droit, vice-président ASLOCA FR, Marly</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Student in Rechtswissenschaft, Vize-Präsident ASLOCA FR, Marly</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                </eCH-0110:proportionalElection>
+            </eCH-0110:electionResults>
+            <eCH-0110:electionResults>
+                <eCH-0110:election>
+                    <eCH-0155:electionIdentification>majorz_wahl</eCH-0155:electionIdentification>
+                    <eCH-0155:domainOfInfluence>1B76E565-4DA8-11E6-89C7-00155D28151E</eCH-0155:domainOfInfluence>
+                    <eCH-0155:typeOfElection>2</eCH-0155:typeOfElection>
+                    <eCH-0155:electionDescription>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:electionDescriptionShort>Ständerat</eCH-0155:electionDescriptionShort>
+                            <eCH-0155:electionDescription>Ständeratswahl</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:electionDescriptionShort>Conseil des Etats</eCH-0155:electionDescriptionShort>
+                            <eCH-0155:electionDescription>Election du Conseil des Etats</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:electionDescriptionShort>Conseil des Etats</eCH-0155:electionDescriptionShort>
+                            <eCH-0155:electionDescription>Election du Conseil des Etats</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                        <eCH-0155:electionDescriptionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:electionDescriptionShort>Ständerat</eCH-0155:electionDescriptionShort>
+                            <eCH-0155:electionDescription>Ständeratswahl</eCH-0155:electionDescription>
+                        </eCH-0155:electionDescriptionInfo>
+                    </eCH-0155:electionDescription>
+                    <eCH-0155:numberOfMandates>2</eCH-0155:numberOfMandates>
+                </eCH-0110:election>
+                <eCH-0110:countOfVotersInformation>
+                    <eCH-0110:countOfVotersTotal>99</eCH-0110:countOfVotersTotal>
+                </eCH-0110:countOfVotersInformation>
+                <eCH-0110:countOfReceivedBallotsTotal>
+                    <eCH-0110:total>7</eCH-0110:total>
+                </eCH-0110:countOfReceivedBallotsTotal>
+                <eCH-0110:countOfAccountedBallots>
+                    <eCH-0110:total>6</eCH-0110:total>
+                </eCH-0110:countOfAccountedBallots>
+                <eCH-0110:countOfUnaccountedBallots>
+                    <eCH-0110:total>1</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedBallots>
+                <eCH-0110:countOfUnaccountedBlankBallots>
+                    <eCH-0110:total>1</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedBlankBallots>
+                <eCH-0110:countOfUnaccountedInvalidBallots>
+                    <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfUnaccountedInvalidBallots>
+                <eCH-0110:proportionalElection>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>10BDBE6B-A5B6-11E6-ACC2-00155D28151E</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>3</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Vonlanthen</eCH-0110:familyName>
+                            <eCH-0110:firstName>Beat</eCH-0110:firstName>
+                            <eCH-0110:callName>Beat</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Staatsrat, Volkswirtschaftsdirektor, St. Antoni</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>conseiller d’Etat, directeur de l’économie et de l’emploi, St. Antoni</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>conseiller d’Etat, directeur de l’économie et de l’emploi, St. Antoni</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Staatsrat, Volkswirtschaftsdirektor, St. Antoni</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>16123755-A5A8-11E6-ACC2-00155D28151F</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>896DA903-A5A9-11E6-ACC2-00155D28151E</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>2</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Levrat</eCH-0110:familyName>
+                            <eCH-0110:firstName>Christian</eCH-0110:firstName>
+                            <eCH-0110:callName>Christian</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Ständerat, Präsident der Sozialdemokratischen Partei der Schweiz, Vuadens</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>conseiller aux Etats, président du Parti socialiste suisse, Vuadens</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>conseiller aux Etats, président du Parti socialiste suisse, Vuadens</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Ständerat, Präsident der Sozialdemokratischen Partei der Schweiz, Vuadens</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>5F712CDA-A5A8-11E6-ACC2-00155D28151E</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>E973F450-A5B6-11E6-ACC2-00155D28151E</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>4</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Rime</eCH-0110:familyName>
+                            <eCH-0110:firstName>Jean-François</eCH-0110:firstName>
+                            <eCH-0110:callName>Jean-François</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Unternehmer, Nationalrat, Bulle</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>industriel, conseiller national, Bulle</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>industriel, conseiller national, Bulle</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Unternehmer, Nationalrat, Bulle</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>F0713B3E-A5A8-11E6-ACC2-00155D28151E</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>1</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Schmid</eCH-0110:familyName>
+                            <eCH-0110:firstName>Ralph</eCH-0110:firstName>
+                            <eCH-0110:callName>Ralph</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Klinikdirektor, Professor, Grossrat, Lugnorre</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>directeur de clinique, professeur, député, Lugnorre</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>directeur de clinique, professeur, député, Lugnorre</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Klinikdirektor, Professor, Grossrat, Lugnorre</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>16123755-A5A8-11E6-ACC2-00155D28151E</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>16123755-A5A8-11E6-ACC2-00155D28151F</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>3</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>F0713B3E-A5A8-11E6-ACC2-00155D28151F</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>1</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Bourgeois</eCH-0110:familyName>
+                            <eCH-0110:firstName>Jacques</eCH-0110:firstName>
+                            <eCH-0110:callName>Jacques</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Nationalrat, Dipl. Ingenieur Agronom HTL, Avry-sur-Matran</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>conseiller national, ingénieur agronome HES, Avry-sur-Matran</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>conseiller national, ingénieur agronome HES, Avry-sur-Matran</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Nationalrat, Dipl. Ingenieur Agronom HTL, Avry-sur-Matran</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>F0713B3E-A5A8-11E6-ACC2-00155D28151G</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>1</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Castioni</eCH-0110:familyName>
+                            <eCH-0110:firstName>Patrick</eCH-0110:firstName>
+                            <eCH-0110:callName>Patrick</eCH-0110:callName>
+                            <eCH-0110:candidateText>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>de</eCH-0155:language>
+                                    <eCH-0155:candidateText>Student an der rechtswissenschaflichen Fakultät, Cheyres</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>fr</eCH-0155:language>
+                                    <eCH-0155:candidateText>étudiant à la faculté de droit, Cheyres</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>it</eCH-0155:language>
+                                    <eCH-0155:candidateText>étudiant à la faculté de droit, Cheyres</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                                <eCH-0155:candidateTextInfo>
+                                    <eCH-0155:language>rm</eCH-0155:language>
+                                    <eCH-0155:candidateText>Student an der rechtswissenschaflichen Fakultät, Cheyres</eCH-0155:candidateText>
+                                </eCH-0155:candidateTextInfo>
+                            </eCH-0110:candidateText>
+                            <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>SP-EV-00000001</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Fasel</eCH-0110:familyName>
+                            <eCH-0110:callName>Noah</eCH-0110:callName>
+                            <eCH-0110:officialCandidateYesNo>false</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>List99_sr</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>SP-EV-00000002</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Fasel</eCH-0110:familyName>
+                            <eCH-0110:callName>Noah</eCH-0110:callName>
+                            <eCH-0110:officialCandidateYesNo>false</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>List99_sr</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>SP-EV-00000003</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Baumann</eCH-0110:familyName>
+                            <eCH-0110:callName>Frank</eCH-0110:callName>
+                            <eCH-0110:officialCandidateYesNo>false</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>List99_sr</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>SP-EV-00000004</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Muster</eCH-0110:familyName>
+                            <eCH-0110:callName>Hans</eCH-0110:callName>
+                            <eCH-0110:officialCandidateYesNo>false</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>List99_sr</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                    <eCH-0110:candidate>
+                        <eCH-0110:candidateInformation>
+                            <eCH-0110:candidateIdentification>SP-EV-00000005</eCH-0110:candidateIdentification>
+                            <eCH-0110:candidateReference>N/A</eCH-0110:candidateReference>
+                            <eCH-0110:familyName>Immanuel</eCH-0110:familyName>
+                            <eCH-0110:callName>Kant</eCH-0110:callName>
+                            <eCH-0110:officialCandidateYesNo>false</eCH-0110:officialCandidateYesNo>
+                        </eCH-0110:candidateInformation>
+                        <eCH-0110:listResults>
+                            <eCH-0110:listIdentification>5F712CDA-A5A8-11E6-ACC2-00155D28151E</eCH-0110:listIdentification>
+                            <eCH-0110:countOfvotesFromUnchangedBallots>
+                                <eCH-0110:total>0</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromUnchangedBallots>
+                            <eCH-0110:countOfvotesFromChangedBallots>
+                                <eCH-0110:total>1</eCH-0110:total>
+                            </eCH-0110:countOfvotesFromChangedBallots>
+                        </eCH-0110:listResults>
+                        <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+                    </eCH-0110:candidate>
+                </eCH-0110:proportionalElection>
+            </eCH-0110:electionResults>
+        </eCH-0110:countingCircleResults>
+    </eCH-0110:resultDelivery>
+</eCH-0110:delivery>

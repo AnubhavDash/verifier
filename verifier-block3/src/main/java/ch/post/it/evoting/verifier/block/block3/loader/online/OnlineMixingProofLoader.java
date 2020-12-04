@@ -1,29 +1,29 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
- * <p>
+ *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
  * the GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
- * <p>
+ *
  * Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * <p>
+ *
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
 package ch.post.it.evoting.verifier.block.block3.loader.online;
 
-import ch.post.it.evoting.verifier.block.block3.loader.online.mapper.SecondAnswerMapper;
+import ch.post.it.evoting.verifier.block.block3.loader.online.mapper.ShuffleArgumentSecondAnswerMapper;
 import ch.post.it.evoting.verifier.block.block3.scytl.loader.OnlineDataLoader;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.OnlineMixing;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.ShuffleArgumentMessage;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.dto.CcMixingPublicKey;
 import ch.post.it.evoting.verifier.dto.OnlineDecryptionProof;
 import ch.post.it.evoting.verifier.dto.PublicKey;
 import ch.post.it.evoting.verifier.dto.ZkProof;
-import ch.post.it.evoting.verifier.dto.onlinemixing.OnlineMixing;
-import ch.post.it.evoting.verifier.dto.onlinemixing.OnlineShuffleProof;
 import com.scytl.decrypt.beans.DecryptionProof;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallot;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;
@@ -82,10 +82,10 @@ public class OnlineMixingProofLoader implements OnlineDataLoader {
 
     @Override
     public ZpGroup getZpGroup() {
-        BigInteger p = onlineMixing.getEncryptionParameters().getP();
-        BigInteger q = onlineMixing.getEncryptionParameters().getQ();
+        BigInteger p = onlineMixing.getEncryptionGroup().getP();
+        BigInteger q = onlineMixing.getEncryptionGroup().getQ();
         ZpGroupParams zpGroupParams = new ZpGroupParams(p, q);
-        return new ZpGroup(zpGroupParams, new ZpElement(onlineMixing.getEncryptionParameters().getG(), zpGroupParams));
+        return new ZpGroup(zpGroupParams, new ZpElement(onlineMixing.getEncryptionGroup().getG(), zpGroupParams));
     }
 
     @Override
@@ -161,10 +161,10 @@ public class OnlineMixingProofLoader implements OnlineDataLoader {
     public ShuffleProof getShuffleProof() throws IOException {
         ShuffleProof result = null;
         if (StringUtils.isNotBlank(onlineMixing.getShuffleProof())) {
-            OnlineShuffleProof onlineShuffleProof = Deserializer.fromJson(onlineMixing.getShuffleProof().getBytes(), OnlineShuffleProof.class);
-            List<PublicCommitment> initialMessages = onlineShuffleProof.getInitialMessage().stream().map(im -> new PublicCommitment(new ZpElement(im.getElement().getValue(), im.getElement().getP(), im.getElement().getQ()))).collect(Collectors.toList());
-            List<PublicCommitment> firstAnswers = onlineShuffleProof.getFirstAnswer().stream().map(fa -> new PublicCommitment(new ZpElement(fa.getElement().getValue(), fa.getElement().getP(), fa.getElement().getQ()))).collect(Collectors.toList());
-            ShuffleProofSecondAnswer secondAnswer = SecondAnswerMapper.INSTANCE.map(onlineShuffleProof.getSecondAnswer());
+            ShuffleArgumentMessage shuffleArgumentMessage = Deserializer.fromJson(onlineMixing.getShuffleProof().getBytes(), ShuffleArgumentMessage.class);
+            List<PublicCommitment> initialMessages = shuffleArgumentMessage.getInitialMessage().stream().map(im -> new PublicCommitment(new ZpElement(im.getElement().getValue(), im.getElement().getP(), im.getElement().getQ()))).collect(Collectors.toList());
+            List<PublicCommitment> firstAnswers = shuffleArgumentMessage.getFirstAnswer().stream().map(fa -> new PublicCommitment(new ZpElement(fa.getElement().getValue(), fa.getElement().getP(), fa.getElement().getQ()))).collect(Collectors.toList());
+            ShuffleProofSecondAnswer secondAnswer = ShuffleArgumentSecondAnswerMapper.INSTANCE.map(shuffleArgumentMessage.getShuffleArgumentSecondAnswer());
             result = new ShuffleProof(initialMessages.toArray(new PublicCommitment[]{}), firstAnswers.toArray(new PublicCommitment[]{}), secondAnswer);
         }
         return result;
@@ -240,13 +240,13 @@ public class OnlineMixingProofLoader implements OnlineDataLoader {
     @Override
     public CommitmentParams getCommitmentParams(ZpGroup zpGroup, int numberOfVoters) throws IOException {
         CommitmentParams result = null;
-        List<String> commitmentParameters = onlineMixing.getCommitmentParameters();
+        List<BigInteger> commitmentParameters = onlineMixing.getCommitmentParameters();
         //[0] p, [1] q, [2] g, [3] h, [4] n G
         if (commitmentParameters.size() >= 5) {
             GroupElement h = new ZpElement(commitmentParameters.get(3), zpGroup.getParams());
             GroupElement[] g = commitmentParameters.stream()
                     .skip(4)
-                    .map(str -> new ZpElement(TypeConverter.stringToBigInteger(str), zpGroup.getParams()))
+                    .map(value -> new ZpElement(value, zpGroup.getParams()))
                     .collect(Collectors.toList()).toArray(new GroupElement[]{});
             result = new CommitmentParams(zpGroup, h, g);
         }

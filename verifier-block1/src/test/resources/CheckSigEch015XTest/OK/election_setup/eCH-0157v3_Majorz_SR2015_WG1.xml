@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLSpy v2019 rel. 3 sp1 (x64) (http://www.altova.com) by Post CH AG (Post CH AG) -->
+<eCH-0157:delivery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.ech.ch/xmlns/eCH-0157/3 http://www.ech.ch/xmlns/eCH-0157/3/eCH-0157-3-0.xsd" xmlns:eCH-0157="http://www.ech.ch/xmlns/eCH-0157/3">
+	<eCH-0157:deliveryHeader xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5">
+		<eCH-0058:senderId>charon-test</eCH-0058:senderId>
+		<eCH-0058:messageId>b2971899-f26c-447e-bb50-1cae88a2e247</eCH-0058:messageId>
+		<eCH-0058:messageType>1710182</eCH-0058:messageType>
+		<eCH-0058:sendingApplication>
+			<eCH-0058:manufacturer>VRSG AG</eCH-0058:manufacturer>
+			<eCH-0058:product>EAI.Business.Cerberus</eCH-0058:product>
+			<eCH-0058:productVersion>1.0.6991.2</eCH-0058:productVersion>
+		</eCH-0058:sendingApplication>
+		<eCH-0058:messageDate>2019-02-21T15:42:50.508+01:00</eCH-0058:messageDate>
+		<eCH-0058:action>1</eCH-0058:action>
+		<eCH-0058:testDeliveryFlag>false</eCH-0058:testDeliveryFlag>
+		<eCH-0058:responseExpected>false</eCH-0058:responseExpected>
+		<eCH-0058:businessCaseClosed>false</eCH-0058:businessCaseClosed>
+	</eCH-0157:deliveryHeader>
+	<eCH-0157:initialDelivery>
+		<eCH-0157:contest xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3">
+			<eCH-0155:contestIdentification>Post_E2E_DEV</eCH-0155:contestIdentification>
+			<eCH-0155:contestDate>2015-10-18</eCH-0155:contestDate>
+			<eCH-0155:contestDescription>
+				<eCH-0155:contestDescriptionInfo>
+					<eCH-0155:language>de</eCH-0155:language>
+					<eCH-0155:contestDescription>Post_E2E_DEV</eCH-0155:contestDescription>
+				</eCH-0155:contestDescriptionInfo>
+				<eCH-0155:contestDescriptionInfo>
+					<eCH-0155:language>fr</eCH-0155:language>
+					<eCH-0155:contestDescription>Post_E2E_DEV (fr)</eCH-0155:contestDescription>
+				</eCH-0155:contestDescriptionInfo>
+				<eCH-0155:contestDescriptionInfo>
+					<eCH-0155:language>it</eCH-0155:language>
+					<eCH-0155:contestDescription>Post_E2E_DEV (it)</eCH-0155:contestDescription>
+				</eCH-0155:contestDescriptionInfo>
+				<eCH-0155:contestDescriptionInfo>
+					<eCH-0155:language>rm</eCH-0155:language>
+					<eCH-0155:contestDescription>Post_E2E_DEV (rm)</eCH-0155:contestDescription>
+				</eCH-0155:contestDescriptionInfo>
+			</eCH-0155:contestDescription>
+		</eCH-0157:contest>
+		<eCH-0157:electionInformation>
+			<eCH-0157:election xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3">
+				<eCH-0155:electionIdentification>1-2</eCH-0155:electionIdentification>
+				<eCH-0155:domainOfInfluence>doid-ct1-mu</eCH-0155:domainOfInfluence>
+				<eCH-0155:typeOfElection>2</eCH-0155:typeOfElection>
+				<eCH-0155:electionDescription>
+					<eCH-0155:electionDescriptionInfo>
+						<eCH-0155:language>de</eCH-0155:language>
+						<eCH-0155:electionDescription>Ständeratswahl</eCH-0155:electionDescription>
+					</eCH-0155:electionDescriptionInfo>
+					<eCH-0155:electionDescriptionInfo>
+						<eCH-0155:language>fr</eCH-0155:language>
+						<eCH-0155:electionDescription>Ständeratswahl (fr)</eCH-0155:electionDescription>
+					</eCH-0155:electionDescriptionInfo>
+					<eCH-0155:electionDescriptionInfo>
+						<eCH-0155:language>it</eCH-0155:language>
+						<eCH-0155:electionDescription>Ständeratswahl (it)</eCH-0155:electionDescription>
+					</eCH-0155:electionDescriptionInfo>
+					<eCH-0155:electionDescriptionInfo>
+						<eCH-0155:language>rm</eCH-0155:language>
+						<eCH-0155:electionDescription>Ständeratswahl (rm)</eCH-0155:electionDescription>
+					</eCH-0155:electionDescriptionInfo>
+				</eCH-0155:electionDescription>
+				<eCH-0155:numberOfMandates>2</eCH-0155:numberOfMandates>
+			</eCH-0157:election>
+			<eCH-0157:candidate xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3">
+				<eCH-0155:candidateIdentification>1-1</eCH-0155:candidateIdentification>
+				<eCH-0155:familyName>Keller-Sutter</eCH-0155:familyName>
+				<eCH-0155:firstName>Karin</eCH-0155:firstName>
+				<eCH-0155:callName>Karin</eCH-0155:callName>
+				<eCH-0155:candidateText>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>de</eCH-0155:language>
+						<eCH-0155:candidateText>22.12.1963, Ständerätin, Wil</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>fr</eCH-0155:language>
+						<eCH-0155:candidateText>22.12.1963, Ständerätin, Wil</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>it</eCH-0155:language>
+						<eCH-0155:candidateText>22.12.1963, Ständerätin, Wil</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>rm</eCH-0155:language>
+						<eCH-0155:candidateText>22.12.1963, Ständerätin, Wil</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+				</eCH-0155:candidateText>
+				<eCH-0155:dateOfBirth>1963-12-22</eCH-0155:dateOfBirth>
+				<eCH-0155:sex>2</eCH-0155:sex>
+				<eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+					<eCH-0010:street>Von-Thurnstrasse 6</eCH-0010:street>
+					<eCH-0010:town>Wil</eCH-0010:town>
+					<eCH-0010:country>
+						<eCH-0010:countryId>8100</eCH-0010:countryId>
+						<eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+						<eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+					</eCH-0010:country>
+				</eCH-0155:dwellingAddress>
+				<eCH-0155:swiss/>
+				<eCH-0155:mrMrs>1</eCH-0155:mrMrs>
+				<eCH-0155:incumbentYesNo>true</eCH-0155:incumbentYesNo>
+				<eCH-0155:candidateReference>1</eCH-0155:candidateReference>
+			</eCH-0157:candidate>
+			<eCH-0157:candidate xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3">
+				<eCH-0155:candidateIdentification>1-2</eCH-0155:candidateIdentification>
+				<eCH-0155:familyName>Rechsteiner</eCH-0155:familyName>
+				<eCH-0155:firstName>Paul</eCH-0155:firstName>
+				<eCH-0155:callName>Paul</eCH-0155:callName>
+				<eCH-0155:candidateText>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>de</eCH-0155:language>
+						<eCH-0155:candidateText>26.08.1952, Ständerat, St.Gallen</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>fr</eCH-0155:language>
+						<eCH-0155:candidateText>26.08.1952, Ständerat, St.Gallen</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>it</eCH-0155:language>
+						<eCH-0155:candidateText>26.08.1952, Ständerat, St.Gallen</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>rm</eCH-0155:language>
+						<eCH-0155:candidateText>26.08.1952, Ständerat, St.Gallen</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+				</eCH-0155:candidateText>
+				<eCH-0155:dateOfBirth>1952-08-26</eCH-0155:dateOfBirth>
+				<eCH-0155:sex>1</eCH-0155:sex>
+				<eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+					<eCH-0010:street>Davidstrasse 45</eCH-0010:street>
+					<eCH-0010:town>St.Gallen</eCH-0010:town>
+					<eCH-0010:country>
+						<eCH-0010:countryId>8100</eCH-0010:countryId>
+						<eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+						<eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+					</eCH-0010:country>
+				</eCH-0155:dwellingAddress>
+				<eCH-0155:swiss/>
+				<eCH-0155:mrMrs>2</eCH-0155:mrMrs>
+				<eCH-0155:incumbentYesNo>true</eCH-0155:incumbentYesNo>
+				<eCH-0155:candidateReference>2</eCH-0155:candidateReference>
+			</eCH-0157:candidate>
+			<eCH-0157:candidate xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3">
+				<eCH-0155:candidateIdentification>1-3</eCH-0155:candidateIdentification>
+				<eCH-0155:familyName>Ammann</eCH-0155:familyName>
+				<eCH-0155:firstName>Richard</eCH-0155:firstName>
+				<eCH-0155:callName>Richard</eCH-0155:callName>
+				<eCH-0155:candidateText>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>de</eCH-0155:language>
+						<eCH-0155:candidateText>30.01.1959, Kantonsrat, Sekundarlehrer, Abtwil</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>fr</eCH-0155:language>
+						<eCH-0155:candidateText>30.01.1959, Kantonsrat, Sekundarlehrer, Abtwil</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>it</eCH-0155:language>
+						<eCH-0155:candidateText>30.01.1959, Kantonsrat, Sekundarlehrer, Abtwil</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>rm</eCH-0155:language>
+						<eCH-0155:candidateText>30.01.1959, Kantonsrat, Sekundarlehrer, Abtwil</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+				</eCH-0155:candidateText>
+				<eCH-0155:dateOfBirth>1959-01-30</eCH-0155:dateOfBirth>
+				<eCH-0155:sex>1</eCH-0155:sex>
+				<eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+					<eCH-0010:street>Sonnenbüelstrasse 4</eCH-0010:street>
+					<eCH-0010:town>Abtwil</eCH-0010:town>
+					<eCH-0010:country>
+						<eCH-0010:countryId>8100</eCH-0010:countryId>
+						<eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+						<eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+					</eCH-0010:country>
+				</eCH-0155:dwellingAddress>
+				<eCH-0155:swiss/>
+				<eCH-0155:mrMrs>2</eCH-0155:mrMrs>
+				<eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+				<eCH-0155:candidateReference>3</eCH-0155:candidateReference>
+			</eCH-0157:candidate>
+			<eCH-0157:candidate xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3">
+				<eCH-0155:candidateIdentification>1-4</eCH-0155:candidateIdentification>
+				<eCH-0155:familyName>Ammann</eCH-0155:familyName>
+				<eCH-0155:firstName>Thomas</eCH-0155:firstName>
+				<eCH-0155:callName>Thomas</eCH-0155:callName>
+				<eCH-0155:candidateText>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>de</eCH-0155:language>
+						<eCH-0155:candidateText>13.07.1964, Gemeindepräsident, Rüthi</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>fr</eCH-0155:language>
+						<eCH-0155:candidateText>13.07.1964, Gemeindepräsident, Rüthi</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>it</eCH-0155:language>
+						<eCH-0155:candidateText>13.07.1964, Gemeindepräsident, Rüthi</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>rm</eCH-0155:language>
+						<eCH-0155:candidateText>13.07.1964, Gemeindepräsident, Rüthi</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+				</eCH-0155:candidateText>
+				<eCH-0155:dateOfBirth>1964-07-13</eCH-0155:dateOfBirth>
+				<eCH-0155:sex>1</eCH-0155:sex>
+				<eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+					<eCH-0010:street>Buchholzstrasse 3</eCH-0010:street>
+					<eCH-0010:town>Rüthi</eCH-0010:town>
+					<eCH-0010:country>
+						<eCH-0010:countryId>8100</eCH-0010:countryId>
+						<eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+						<eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+					</eCH-0010:country>
+				</eCH-0155:dwellingAddress>
+				<eCH-0155:swiss/>
+				<eCH-0155:mrMrs>2</eCH-0155:mrMrs>
+				<eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+				<eCH-0155:candidateReference>4</eCH-0155:candidateReference>
+			</eCH-0157:candidate>
+			<eCH-0157:candidate xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3">
+				<eCH-0155:candidateIdentification>1-5</eCH-0155:candidateIdentification>
+				<eCH-0155:familyName>Gilli</eCH-0155:familyName>
+				<eCH-0155:firstName>Yvonne</eCH-0155:firstName>
+				<eCH-0155:callName>Yvonne</eCH-0155:callName>
+				<eCH-0155:candidateText>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>de</eCH-0155:language>
+						<eCH-0155:candidateText>07.03.1957, Dr.med., Fachärztin für Allgemeine Innere Medizin FMH, Wil</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>fr</eCH-0155:language>
+						<eCH-0155:candidateText>07.03.1957, Dr.med., Fachärztin für Allgemeine Innere Medizin FMH, Wil</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>it</eCH-0155:language>
+						<eCH-0155:candidateText>07.03.1957, Dr.med., Fachärztin für Allgemeine Innere Medizin FMH, Wil</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>rm</eCH-0155:language>
+						<eCH-0155:candidateText>07.03.1957, Dr.med., Fachärztin für Allgemeine Innere Medizin FMH, Wil</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+				</eCH-0155:candidateText>
+				<eCH-0155:dateOfBirth>1957-03-07</eCH-0155:dateOfBirth>
+				<eCH-0155:sex>2</eCH-0155:sex>
+				<eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+					<eCH-0010:street>Weierhofgasse 16</eCH-0010:street>
+					<eCH-0010:town>Wil</eCH-0010:town>
+					<eCH-0010:country>
+						<eCH-0010:countryId>8100</eCH-0010:countryId>
+						<eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+						<eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+					</eCH-0010:country>
+				</eCH-0155:dwellingAddress>
+				<eCH-0155:swiss/>
+				<eCH-0155:mrMrs>1</eCH-0155:mrMrs>
+				<eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+				<eCH-0155:candidateReference>5</eCH-0155:candidateReference>
+			</eCH-0157:candidate>
+			<eCH-0157:candidate xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3">
+				<eCH-0155:candidateIdentification>1-6</eCH-0155:candidateIdentification>
+				<eCH-0155:familyName>Graf</eCH-0155:familyName>
+				<eCH-0155:firstName>Andreas</eCH-0155:firstName>
+				<eCH-0155:callName>Andreas</eCH-0155:callName>
+				<eCH-0155:candidateText>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>de</eCH-0155:language>
+						<eCH-0155:candidateText>22.01.1963, Unternehmer, Steinach</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>fr</eCH-0155:language>
+						<eCH-0155:candidateText>22.01.1963, Unternehmer, Steinach</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>it</eCH-0155:language>
+						<eCH-0155:candidateText>22.01.1963, Unternehmer, Steinach</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>rm</eCH-0155:language>
+						<eCH-0155:candidateText>22.01.1963, Unternehmer, Steinach</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+				</eCH-0155:candidateText>
+				<eCH-0155:dateOfBirth>1963-01-22</eCH-0155:dateOfBirth>
+				<eCH-0155:sex>1</eCH-0155:sex>
+				<eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+					<eCH-0010:street>Steinacherwiesen 512</eCH-0010:street>
+					<eCH-0010:town>Steinach</eCH-0010:town>
+					<eCH-0010:country>
+						<eCH-0010:countryId>8100</eCH-0010:countryId>
+						<eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+						<eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+					</eCH-0010:country>
+				</eCH-0155:dwellingAddress>
+				<eCH-0155:swiss/>
+				<eCH-0155:mrMrs>2</eCH-0155:mrMrs>
+				<eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+				<eCH-0155:candidateReference>6</eCH-0155:candidateReference>
+			</eCH-0157:candidate>
+			<eCH-0157:candidate xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3">
+				<eCH-0155:candidateIdentification>1-7</eCH-0155:candidateIdentification>
+				<eCH-0155:familyName>Kessler</eCH-0155:familyName>
+				<eCH-0155:firstName>Margrit</eCH-0155:firstName>
+				<eCH-0155:callName>Margrit</eCH-0155:callName>
+				<eCH-0155:candidateText>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>de</eCH-0155:language>
+						<eCH-0155:candidateText>25.12.1948, Präsidentin SPO-Patientenschutz, Altstätten</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>fr</eCH-0155:language>
+						<eCH-0155:candidateText>25.12.1948, Präsidentin SPO-Patientenschutz, Altstätten</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>it</eCH-0155:language>
+						<eCH-0155:candidateText>25.12.1948, Präsidentin SPO-Patientenschutz, Altstätten</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>rm</eCH-0155:language>
+						<eCH-0155:candidateText>25.12.1948, Präsidentin SPO-Patientenschutz, Altstätten</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+				</eCH-0155:candidateText>
+				<eCH-0155:dateOfBirth>1948-12-25</eCH-0155:dateOfBirth>
+				<eCH-0155:sex>2</eCH-0155:sex>
+				<eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+					<eCH-0010:street>Parkstrasse 14</eCH-0010:street>
+					<eCH-0010:town>Altstätten</eCH-0010:town>
+					<eCH-0010:country>
+						<eCH-0010:countryId>8100</eCH-0010:countryId>
+						<eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+						<eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+					</eCH-0010:country>
+				</eCH-0155:dwellingAddress>
+				<eCH-0155:swiss/>
+				<eCH-0155:mrMrs>1</eCH-0155:mrMrs>
+				<eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+				<eCH-0155:candidateReference>7</eCH-0155:candidateReference>
+			</eCH-0157:candidate>
+			<eCH-0157:candidate xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3">
+				<eCH-0155:candidateIdentification>1-8</eCH-0155:candidateIdentification>
+				<eCH-0155:familyName>Müller</eCH-0155:familyName>
+				<eCH-0155:firstName>Thomas</eCH-0155:firstName>
+				<eCH-0155:callName>Thomas</eCH-0155:callName>
+				<eCH-0155:candidateText>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>de</eCH-0155:language>
+						<eCH-0155:candidateText>01.12.1952, lic.iur., Stadtpräsident, Rechtsanwalt, Rorschach</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>fr</eCH-0155:language>
+						<eCH-0155:candidateText>01.12.1952, lic.iur., Stadtpräsident, Rechtsanwalt, Rorschach</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>it</eCH-0155:language>
+						<eCH-0155:candidateText>01.12.1952, lic.iur., Stadtpräsident, Rechtsanwalt, Rorschach</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>rm</eCH-0155:language>
+						<eCH-0155:candidateText>01.12.1952, lic.iur., Stadtpräsident, Rechtsanwalt, Rorschach</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+				</eCH-0155:candidateText>
+				<eCH-0155:dateOfBirth>1952-12-01</eCH-0155:dateOfBirth>
+				<eCH-0155:sex>1</eCH-0155:sex>
+				<eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+					<eCH-0010:street>Promenadenstrasse 93</eCH-0010:street>
+					<eCH-0010:town>Rorschach</eCH-0010:town>
+					<eCH-0010:country>
+						<eCH-0010:countryId>8100</eCH-0010:countryId>
+						<eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+						<eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+					</eCH-0010:country>
+				</eCH-0155:dwellingAddress>
+				<eCH-0155:swiss/>
+				<eCH-0155:mrMrs>2</eCH-0155:mrMrs>
+				<eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+				<eCH-0155:candidateReference>8</eCH-0155:candidateReference>
+			</eCH-0157:candidate>
+			<eCH-0157:candidate xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3">
+				<eCH-0155:candidateIdentification>1-9</eCH-0155:candidateIdentification>
+				<eCH-0155:familyName>Oppliger</eCH-0155:familyName>
+				<eCH-0155:firstName>Hans</eCH-0155:firstName>
+				<eCH-0155:callName>Hans</eCH-0155:callName>
+				<eCH-0155:candidateText>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>de</eCH-0155:language>
+						<eCH-0155:candidateText>11.01.1957, Dipl.Ing.Agr. ETH, Projektberater, Frümsen</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>fr</eCH-0155:language>
+						<eCH-0155:candidateText>11.01.1957, Dipl.Ing.Agr. ETH, Projektberater, Frümsen</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>it</eCH-0155:language>
+						<eCH-0155:candidateText>11.01.1957, Dipl.Ing.Agr. ETH, Projektberater, Frümsen</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+					<eCH-0155:candidateTextInfo>
+						<eCH-0155:language>rm</eCH-0155:language>
+						<eCH-0155:candidateText>11.01.1957, Dipl.Ing.Agr. ETH, Projektberater, Frümsen</eCH-0155:candidateText>
+					</eCH-0155:candidateTextInfo>
+				</eCH-0155:candidateText>
+				<eCH-0155:dateOfBirth>1957-01-11</eCH-0155:dateOfBirth>
+				<eCH-0155:sex>1</eCH-0155:sex>
+				<eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+					<eCH-0010:street>Spengelgass 12</eCH-0010:street>
+					<eCH-0010:town>Frümsen</eCH-0010:town>
+					<eCH-0010:country>
+						<eCH-0010:countryId>8100</eCH-0010:countryId>
+						<eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+						<eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+					</eCH-0010:country>
+				</eCH-0155:dwellingAddress>
+				<eCH-0155:swiss/>
+				<eCH-0155:mrMrs>2</eCH-0155:mrMrs>
+				<eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+				<eCH-0155:candidateReference>9</eCH-0155:candidateReference>
+			</eCH-0157:candidate>
+		</eCH-0157:electionInformation>
+	</eCH-0157:initialDelivery>
+</eCH-0157:delivery>

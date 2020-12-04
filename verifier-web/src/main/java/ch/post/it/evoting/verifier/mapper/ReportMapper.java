@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -16,7 +16,7 @@ package ch.post.it.evoting.verifier.mapper;
 
 import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.dto.Test;
+import ch.post.it.evoting.verifier.dto.Verification;
 import ch.post.it.evoting.verifier.report.ReportGenerator;
 import ch.post.it.evoting.verifier.report.model.Block;
 import ch.post.it.evoting.verifier.report.model.Report;
@@ -34,7 +34,7 @@ public interface ReportMapper {
 
     ReportMapper INSTANCE = Mappers.getMapper(ReportMapper.class);
 
-    default Report map(Report result, List<ch.post.it.evoting.verifier.dto.Test> testsList, Language lang) {
+    default Report map(Report result, List<Verification> testsList, Language lang) {
         List<Block> blockList = testsList.stream()
                 .map(t -> t.getBlockId())
                 .distinct()
@@ -45,7 +45,7 @@ public interface ReportMapper {
                     block.setDescription((TranslationHelper.getFromResourceBundle(ReportGenerator.MESSAGE_BUNDLE_NAME, "report.block"+ id +".description", lang.getLocale())));
                     block.setTests(testsList.stream()
                             .filter(t -> t.getBlockId() == id)
-                            .sorted(Comparator.comparingInt(Test::getTestId))
+                            .sorted(Comparator.comparingInt(Verification::getVerificationId))
                             .map(t -> map(t, lang))
                             .collect(Collectors.toList()));
                     return block;
@@ -62,17 +62,17 @@ public interface ReportMapper {
             @Mapping(target = "testDescriptionLabel", expression = "java( getLabel(\"description\", lang) )"),
             @Mapping(target = "testStatusLabel", expression = "java( getLabel(\"status\", lang) )"),
             @Mapping(target = "testMessageLabel", expression = "java( getLabel(\"message\", lang) )"),
-            @Mapping(target = "id", source = "test.testId"),
-            @Mapping(target = "category", source = "test.category"),
-            @Mapping(target = "description", expression = "java( test.getDescription().get(lang) )"),
-            @Mapping(target = "status", source = "test.status"),
-            @Mapping(target = "message", expression = "java( getMessage(test, lang) )")
+            @Mapping(target = "id", source = "verification.verificationId"),
+            @Mapping(target = "category", source = "verification.category"),
+            @Mapping(target = "description", expression = "java( verification.getDescription().get(lang) )"),
+            @Mapping(target = "status", source = "verification.status"),
+            @Mapping(target = "message", expression = "java( getMessage(verification, lang) )")
     })
-    ch.post.it.evoting.verifier.report.model.Test map(ch.post.it.evoting.verifier.dto.Test test, Language lang);
+    ch.post.it.evoting.verifier.report.model.Test map(Verification verification, Language lang);
 
-    default String getMessage(ch.post.it.evoting.verifier.dto.Test t, Language l) {
-        if (t.getMessage() != null) {
-            return t.getMessage().get(l);
+    default String getMessage(Verification v, Language l) {
+        if (v.getMessage() != null) {
+            return v.getMessage().get(l);
         } else {
             return "";
         }

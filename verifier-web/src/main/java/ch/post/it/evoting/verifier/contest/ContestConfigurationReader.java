@@ -1,14 +1,14 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
- * <p>
+ *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
  * the GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
- * <p>
+ *
  * Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * <p>
+ *
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
@@ -22,6 +22,8 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXBException;
+import javax.xml.stream.XMLStreamException;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -41,7 +43,7 @@ public class ContestConfigurationReader {
             return Deserializer.fromXml(Paths.get(inputDirectory).resolve(ELECTION_SETUP_PATH).toFile(), "configuration-anonymized.xml", Configuration.class);
         } catch (FileNotFoundException e) {
             LOGGER.error("Unable to locate the configuration-anonymized file based on given configuration directory");
-        } catch (IOException | JAXBException e) {
+        } catch (IOException | JAXBException | XMLStreamException e) {
             LOGGER.error(String.format("unable to get the contest name in file %s/configuration-anonymized.xml", inputDirectory), e);
             throw new RuntimeException(e);
         }

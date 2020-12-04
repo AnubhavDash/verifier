@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -17,6 +17,7 @@ package ch.post.it.evoting.verifier.common.block.tools;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -27,11 +28,15 @@ public class CsvReader<T> {
     private boolean hasHeader;
     private String separator;
 
-    public CsvReader(String filename, Charset charset, boolean hasHeader, String separator, Function<String[], T> mapper) throws IOException {
+    public CsvReader(Path filePath, Charset charset, boolean hasHeader, String separator, Function<String[], T> mapper) throws IOException {
         this.mapper = mapper;
-        this.stream = Files.lines(Paths.get(filename), charset);
+        this.stream = Files.lines(filePath, charset);
         this.hasHeader = hasHeader;
         this.separator = separator;
+    }
+
+    public CsvReader(String filename, Charset charset, boolean hasHeader, String separator, Function<String[], T> mapper) throws IOException {
+        this(Paths.get(filename), charset, hasHeader,separator,mapper);
     }
 
     public Iterable<T> process() {

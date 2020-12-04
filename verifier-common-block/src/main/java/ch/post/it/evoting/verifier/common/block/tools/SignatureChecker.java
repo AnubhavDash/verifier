@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -14,7 +14,12 @@
  */
 package ch.post.it.evoting.verifier.common.block.tools;
 
-import ch.post.it.evoting.verifier.dto.Metadata;
+import ch.post.it.evoting.verifier.common.block.dto.revised.Metadata;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.bouncycastle.cert.X509CertificateHolder;
@@ -40,6 +45,7 @@ import java.util.stream.Collectors;
 public class SignatureChecker {
 
     private static final Logger LOGGER = Logger.getLogger(SignatureChecker.class);
+    private static final String SIGN_ALGO_NAME = "SHA256withRSAandMGF1";
 
     private SignatureChecker() {
         //private ctor, use static
@@ -65,13 +71,14 @@ public class SignatureChecker {
                 if (signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(cert))) {
                     //signature is valid, checking certificate chain validity
                     X509Certificate root = loadCertificate(rootCert);
-                    List<X509Certificate> intermediates = new ArrayList<X509CertificateHolder>(store.getMatches(null)).stream().map(holder -> {
-                        try {
-                            return new JcaX509CertificateConverter().setProvider("BC").getCertificate(holder);
-                        } catch (CertificateException e) {
-                            throw new RuntimeException("Unable to convert the certificate", e);
-                        }
-                    }).collect(Collectors.toList());
+                    List<X509Certificate> intermediates =
+                            new ArrayList<X509CertificateHolder>(store.getMatches(null)).stream().map(holder -> {
+                                try {
+                                    return new JcaX509CertificateConverter().setProvider("BC").getCertificate(holder);
+                                } catch (CertificateException e) {
+                                    throw new RuntimeException("Unable to convert the certificate", e);
+                                }
+                            }).collect(Collectors.toList());
 
                     verifyCertificateChain(cert, intermediates, root);
 
@@ -79,7 +86,7 @@ public class SignatureChecker {
                 }
             }
         } catch (Exception e) {
-            LOGGER.info("Error during signature check", e);
+            LOGGER.warn("Error during signature check", e);
         }
         return false;
     }
@@ -96,14 +103,14 @@ public class SignatureChecker {
                 throw new UnsupportedOperationException("metadata version not supported : " + metadata.getVersion());
             }
 
-            final String algoName = StringUtils.isNotEmpty(metadata.getAlg()) ? metadata.getAlg() : "SHA256withRSAandMGF1";
+            final String algoName = StringUtils.isNotEmpty(metadata.getAlgorithm()) ? metadata.getAlgorithm() : "SHA256withRSAandMGF1";
 
             //signature
-            byte[] signature = TypeConverter.base64ToByte(metadata.getSignature());
+            byte[] signature = metadata.getSignature();
 
             //take fields to be added to the content
             StringBuilder sb = new StringBuilder();
-            metadata.getSigned().stream().forEach(s -> sb.append(s.getValue()));
+            metadata.getSignedItems().stream().forEach(s -> sb.append(s.getValue()));
             byte[] fields = sb.toString().getBytes(StandardCharsets.UTF_8);
 
             //concatenate sourceData & fields
@@ -121,8 +128,89 @@ public class SignatureChecker {
                 return true;
             }
         } catch (Exception e) {
-            LOGGER.info("signature check failed", e);
+            LOGGER.warn("signature check failed", e);
         }
+        return false;
+    }
+
+    /**
+     * Verify that the .sign signature of a file is correct.
+     *
+     * @param source                   The signed file.
+     * @param signature                The file signature.
+     * @param signingCertificate       The certificate used to sign the file.
+     * @param intermediateCertificates Intermediate certificates if any.
+     * @param rootCertificate          The root certificate.
+     * @return {@code true} if the provided {@code signature} is the correct signature for the {@code source} file.
+     */
+    public static boolean verifySignature(byte[] source, byte[] signature, byte[] signingCertificate,
+                                          byte[][] intermediateCertificates, byte[] rootCertificate) {
+
+        // Init the BouncyCastle security provider if not done.
+        if (Security.getProvider("BC") == null) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
+
+        try {
+            final X509Certificate sCert = loadCertificate(signingCertificate);
+
+            Signature signatureAlgorithm = Signature.getInstance(SIGN_ALGO_NAME);
+            signatureAlgorithm.initVerify(sCert.getPublicKey());
+            signatureAlgorithm.update(source);
+
+            // If signature is valid, check certificate chain validity.
+            if (signatureAlgorithm.verify(signature)) {
+                if (rootCertificate != null) {
+                    List<X509Certificate> intermediates = loadCertificatesChain(intermediateCertificates, sCert);
+                    verifyCertificateChain(sCert, intermediates, loadCertificate(rootCertificate));
+                }
+                return true;
+            }
+        } catch (IOException | GeneralSecurityException e) {
+            LOGGER.error("Signature check failed.", e);
+        }
+
+        return false;
+    }
+
+    /**
+     * Verify that the .sign signature of a json file is correct. This method reconstruct a json tree from the information contained in
+     * the signature and compares the tree with the one of the signed file.
+     *
+     * @param sourceNode               The {@link JsonNode} representing the signed file.
+     * @param signatureNode            The {@link JsonNode} representing the signature of the file.
+     * @param signingCertificate       The certificate used to sign the file.
+     * @param intermediateCertificates Intermediate certificates if any.
+     * @param rootCertificate          The root certificate.
+     * @return {@code true} if the provided {@code signatureNode} is the correct signature for the {@code sourceNode} file.
+     */
+    public static boolean verifyJsonSignature(JsonNode sourceNode, JsonNode signatureNode, byte[] signingCertificate,
+                                              byte[][] intermediateCertificates, byte[] rootCertificate) {
+
+        try {
+            final X509Certificate sCert = loadCertificate(signingCertificate);
+
+            // Extract the json fields back from the signature.
+            final Jws<Claims> claimsJws = Jwts.parser().setSigningKey(sCert.getPublicKey()).parseClaimsJws(signatureNode.asText());
+            final LinkedHashMap recoveredSignedObject = (LinkedHashMap) claimsJws.getBody().get("objectToSign");
+
+            // Convert to strings node to make the comparison.
+            ObjectMapper mapper = new ObjectMapper();
+            final String recoveredString = mapper.writeValueAsString(recoveredSignedObject);
+            final String sourceString = mapper.writeValueAsString(sourceNode);
+
+            // If signature is valid, check certificate chain validity.
+            if (sourceString.equals(recoveredString)) {
+                if (rootCertificate != null) {
+                    List<X509Certificate> intermediates = loadCertificatesChain(intermediateCertificates, sCert);
+                    verifyCertificateChain(sCert, intermediates, loadCertificate(rootCertificate));
+                }
+                return true;
+            }
+        } catch (IOException | GeneralSecurityException e) {
+            LOGGER.error("JSON signature check failed.", e);
+        }
+
         return false;
     }
 
@@ -134,8 +222,8 @@ public class SignatureChecker {
         return new JcaX509CertificateConverter().setProvider("BC").getCertificate((X509CertificateHolder) parser.readObject());
     }
 
-
-    private static PKIXCertPathBuilderResult verifyCertificateChain(X509Certificate cert, List<X509Certificate> intermediateCerts, X509Certificate rootCA) throws GeneralSecurityException {
+    private static PKIXCertPathBuilderResult verifyCertificateChain(X509Certificate cert, List<X509Certificate> intermediateCerts,
+                                                                    X509Certificate rootCA) throws GeneralSecurityException {
         if (Security.getProvider("BC") == null) {
             Security.addProvider(new BouncyCastleProvider());
         }
@@ -159,36 +247,17 @@ public class SignatureChecker {
         return result;
     }
 
-    public static boolean verifySignature(byte[] source, byte[] signature, byte[] certificate, byte[][] intermediateCertificates, byte[] rootCertificate) {
-        if (Security.getProvider("BC") == null) {
-            Security.addProvider(new BouncyCastleProvider());
-        }
-        try {
-            final X509Certificate sCert = loadCertificate(certificate);
-            final String algoName = "SHA256withRSAandMGF1";
+    private static List<X509Certificate> loadCertificatesChain(byte[][] intermediateCertificates, X509Certificate sCert) {
+        List<X509Certificate> intermediates = intermediateCertificates != null ?
+                Arrays.stream(intermediateCertificates).map(bytes -> {
+                    try {
+                        return loadCertificate(bytes);
+                    } catch (CertificateException | IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).collect(Collectors.toList()) : new ArrayList<>(1);
+        intermediates.add(sCert);
 
-            Signature signatureAlgorithm = Signature.getInstance(algoName);
-            signatureAlgorithm.initVerify(sCert.getPublicKey());
-            signatureAlgorithm.update(source);
-
-            if (signatureAlgorithm.verify(signature)) {
-                if (rootCertificate !=null) {
-                    //signature is valid, checking certificate chain validity
-                    List<X509Certificate> intermediates = intermediateCertificates != null ? Arrays.stream(intermediateCertificates).map(bytes -> {
-                        try {
-                            return loadCertificate(bytes);
-                        } catch (CertificateException | IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }).collect(Collectors.toList()) : new LinkedList<>();
-                    intermediates.add(sCert);
-                    verifyCertificateChain(sCert, intermediates, loadCertificate(rootCertificate));
-                }
-                return true;
-            }
-        } catch (Exception e) {
-            LOGGER.info("signature check failed", e);
-        }
-        return false;
+        return intermediates;
     }
 }

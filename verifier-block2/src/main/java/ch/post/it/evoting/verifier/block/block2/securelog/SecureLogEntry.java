@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -14,8 +14,8 @@
  */
 package ch.post.it.evoting.verifier.block.block2.securelog;
 
-import ch.post.it.evoting.verifier.block.block2.Block2TestSuite;
-import ch.post.it.evoting.verifier.common.block.tools.PathHelper;
+import ch.post.it.evoting.verifier.block.block2.Block2VerificationSuite;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Map;
@@ -93,7 +94,7 @@ public abstract class SecureLogEntry {
     }
 
 
-    public static Function<File, Flux<SecureLogEntry>> loadLogDirectory = logDir -> {
+    public final static Function<File, Flux<SecureLogEntry>> loadLogDirectory = logDir -> {
         try {
             return Flux.fromArray(PathHelper.getFiles(logDir, ".*\\.log"))
                     .sort(Comparator.comparing(File::getName))
@@ -103,11 +104,13 @@ public abstract class SecureLogEntry {
         }
     };
 
-    public static Flux<RegularLogEntry> loadRegularLogs(File inputDirectory, Pattern pattern) {
-        return Flux.fromArray(PathHelper.listDirectories(inputDirectory.toPath().resolve(Block2TestSuite.PATH_SECURE_LOGS)))
+    public static Flux<RegularLogEntry> loadRegularLogs(Path inputDirectoryPath, Pattern pattern) {
+        return Flux.fromArray(PathHelper.listDirectories(inputDirectoryPath.resolve(Block2VerificationSuite.PATH_SECURE_LOGS)))
+                .onErrorStop()
                 .flatMap(hostDir -> Flux.fromArray(PathHelper.listDirectories(hostDir.toPath())))
                 .flatMap(instanceDir -> Flux.fromArray(PathHelper.listDirectories(instanceDir.toPath())))
                 .flatMap(SecureLogEntry.loadLogDirectory)
+                .switchIfEmpty(Flux.<SecureLogEntry>empty().doOnComplete(() -> {throw new RuntimeException("No secureLog found");}))
                 .filter(s1 -> s1 instanceof RegularLogEntry)
                 .cast(RegularLogEntry.class)
                 .filter(s1 -> pattern.matcher(s1.getRaw()).find());

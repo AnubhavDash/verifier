@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -14,8 +14,8 @@
  */
 package ch.post.it.evoting.verifier.processor;
 
-import ch.post.it.evoting.verifier.dto.Test;
+import ch.post.it.evoting.verifier.dto.Verification;
 
 public interface ProcessListener {
-    void testProcessed(Test test);
+    void testProcessed(Verification verification);
 }
