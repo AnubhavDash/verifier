@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>verifier</artifactId>
 		<groupId>ch.post.it.evoting.verifier</groupId>
-		<version>1.0.1.5</version>
+		<version>1.0.2.1-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>verifier-assembly</artifactId>
