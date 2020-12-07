@@ -14,7 +14,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<adoptopenjdk.url>https://artifactory.tools.pnet.ch/artifactory/files-local/adoptopenjdk/OpenJDK11U-jdk_x64_windows_hotspot_11.0.9.1_1.zip
+		<adoptopenjdk.url>https://artifactory.tools.pnet.ch/artifactory/files-local/net/adoptopenjdk/OpenJDK11U-jdk_x64_windows_hotspot_11.0.9.1_1.zip
 		</adoptopenjdk.url>
 		<adoptopenjdk.sha256>fea633dc37f007cb6b1e1af1874da63ad3d5e31817e583048287c67010dce5c8</adoptopenjdk.sha256>
 		<download-maven-plugin.version>1.6.0</download-maven-plugin.version>
