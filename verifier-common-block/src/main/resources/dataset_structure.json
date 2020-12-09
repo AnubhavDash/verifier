@@ -2,7 +2,7 @@
   {
     "key": "BALLOT_BOXES_DIR",
     "type": "DIRECTORY",
-    "name": "ballotboxes",
+    "name": "ballot_boxes",
     "content": [
       {
         "key": "BALLOT_BOX_ID_DIR",
@@ -49,6 +49,14 @@
             ]
           },
           {
+            "key": "BALLOT_BOX",
+            "type": "FILE",
+            "name": "ballotBox.json",
+            "relations": [
+              "SIGN"
+            ]
+          },
+          {
             "key": "BALLOT_BOX_ONLINE_MIXING",
             "type": "FILE",
             "name": ".*ccn_m([0-9]+)\\.json"
@@ -88,7 +96,7 @@
       {
         "key": "ADMIN_BOARD_DIR",
         "type": "DIRECTORY",
-        "name": "adminboard",
+        "name": "admin_board",
         "content": [
           {
             "key": "ADMIN_BOARD_CERT",
@@ -178,7 +186,7 @@
       {
         "key": "VERIFICATION_CARD_SET_DIR",
         "type": "DIRECTORY",
-        "name": "verification_card_set",
+        "name": "verification_card_sets",
         "content": [
           {
             "key": "VERIFICATION_CARD_SET_ID_DIR",
@@ -188,7 +196,7 @@
               {
                 "key": "CODES_MAPPING_TABLES_CONTEXT_DATA",
                 "type": "FILE",
-                "name": "codesMappingTablesContextData.csv",
+                "name": "codesMappingTablesContextData(\\.[0-9]+)?\\.csv",
                 "relations": [
                   "SIGN"
                 ]
@@ -210,7 +218,7 @@
               {
                 "key": "CREDENTIAL_DATA",
                 "type": "FILE",
-                "name": "credentialData.csv",
+                "name": "credentialData(\\.[0-9]+)?\\.csv",
                 "relations": [
                   "SIGN"
                 ]
@@ -218,7 +226,7 @@
               {
                 "key": "VOTER_INFORMATION",
                 "type": "FILE",
-                "name": "voterInformation.csv",
+                "name": "voterInformation(\\.[0-9]+)?\\.csv",
                 "relations": [
                   "SIGN"
                 ]
@@ -233,14 +241,6 @@
         "name": "AP_election_import_.*\\.json",
         "relations": [
           "P7"
-        ]
-      },
-      {
-        "key": "BALLOT_BOX",
-        "type": "FILE",
-        "name": "ballotBox.json",
-        "relations": [
-          "SIGN"
         ]
       },
       {
@@ -288,12 +288,12 @@
   {
     "key": "SECURE_LOGS_DIR",
     "type": "DIRECTORY",
-    "name": "secureLogs",
+    "name": "secure_logs",
     "content": [
       {
         "key": "SECURE_LOG_DIR",
         "type": "DYNAMIC_DIRECTORY",
-        "name": "h[0-9]{3}[0-9a-z]{2}",
+        "name": "[A-Za-z0-9]+",
         "content": [
           {
             "key": "SECURE_LOG",

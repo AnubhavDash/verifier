@@ -17,6 +17,7 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.test.helper.RegexHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
@@ -110,6 +111,6 @@ class CheckSigCredentialDataTest extends Block1VerificationAbstractTest {
                 () -> verification.verify(Paths.get(getClass().getResource("/CheckSigCredentialDataTest/NOK-NOFILE5").toURI()))
         );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CREDENTIAL_DATA);
-        assertTrue(ex.getMessage().contains(structureNode.getQualifier() + RelationType.SIGN.toFileExtension()));
+        assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier() + RelationType.SIGN.toFileExtension()).matches(ex.getMessage()));
     }
 }

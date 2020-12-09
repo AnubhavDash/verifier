@@ -47,29 +47,33 @@ public class CheckSigBallotBoxConfiguration extends AbstractVerification {
         final PathNode platformRootPathNode = pathService.buildFromRootPath(StructureKey.PLATFORM_ROOT_CA, inputDirectoryPath);
         byte[] rootCertificate = Files.readAllBytes(platformRootPathNode.getPath());
 
-        // Get the file..
-        final PathNode ballotBoxPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX, inputDirectoryPath);
+        // Get all the ballot box id directories and iterate over them.
+        final PathNode ballotIdsPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+        for (Path ballotBoxIdDirectoryPath : ballotIdsPathNode.getRegexPaths()) {
+            // Get ballotBox.
+            final PathNode ballotBoxPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX, ballotBoxIdDirectoryPath);
 
-        // Convert files to json nodes.
-        ObjectMapper mapper = new ObjectMapper();
-        final JsonNode signedNode = mapper.readTree(Files.readString(ballotBoxPathNode.getPath()));
-        final JsonNode signatureNode = mapper.readTree(Files.readString(ballotBoxPathNode.getRelation(RelationType.SIGN)));
+            // Convert file to json nodes.
+            ObjectMapper mapper = new ObjectMapper();
+            final JsonNode signedNode = mapper.readTree(Files.readString(ballotBoxPathNode.getPath()));
+            final JsonNode signatureNode = mapper.readTree(Files.readString(ballotBoxPathNode.getRelation(RelationType.SIGN)));
 
-        // Extract signature.
-        final JsonNode signature = signatureNode.path("signature");
-        if (signature.isMissingNode()) {
-            throw new JsonMissingNodeException("The signature is missing from the file!");
-        }
+            // Extract signature.
+            final JsonNode signature = signatureNode.path("signature");
+            if (signature.isMissingNode()) {
+                throw new JsonMissingNodeException("The signature is missing from the file!");
+            }
 
-        // Verify signature.
-        if (!SignatureChecker.verifyJsonSignature(signedNode, signature, signingCertificate, intermediateCertificates
-                , rootCertificate)) {
-            throw buildVerificationFailureException(
-                    "The signature verification of the file failed",
-                    Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-                    "verification80.nok.message",
-                    ballotBoxPathNode.getPath().toString()
-            );
+            // Verify signature.
+            if (!SignatureChecker.verifyJsonSignature(signedNode, signature, signingCertificate, intermediateCertificates
+                    , rootCertificate)) {
+                throw buildVerificationFailureException(
+                        "The signature verification of the file failed",
+                        Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+                        "verification80.nok.message",
+                        ballotBoxPathNode.getPath().toString()
+                );
+            }
         }
 
         result.setStatus(Status.OK);

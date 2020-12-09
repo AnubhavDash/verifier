@@ -57,11 +57,6 @@ public class CheckSigFailedVotes extends AbstractVerification {
         // Mapper to parse json files containing the certificates.
         ObjectMapper mapper = new ObjectMapper();
 
-        // Get the certificate used for signing.
-        final PathNode ballotPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX, inputDirectoryPath);
-        final JsonNode ballotBoxNode = mapper.readTree(Files.readAllBytes(ballotPathNode.getPath()));
-        final byte[] signingCertificate = extractSigningCertificate(ballotBoxNode);
-
         // Build election node where certificates are.
         final PathNode electionInfoPathNode = pathService.buildFromRootPath(StructureKey.ELECTION_INFORMATION_CONTENTS, inputDirectoryPath);
         final JsonNode electionInfoNode = mapper.readTree(Files.readAllBytes(electionInfoPathNode.getPath()));
@@ -72,10 +67,16 @@ public class CheckSigFailedVotes extends AbstractVerification {
         // Get the root certificate.
         final byte[] rootCertificate = extractRootCertificate(electionInfoNode);
 
-        // Get all the ballot box id directories and iterate over them. // TODO Need to validate folders against election event file.
+        // Get all the ballot box id directories and iterate over them.
         final PathNode ballotIdsPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
-        for (Path regexPath : ballotIdsPathNode.getRegexPaths()) {
-            final PathNode failedVotesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.FAILED_VOTES, regexPath);
+        for (Path ballotBoxIdDirectoryPath : ballotIdsPathNode.getRegexPaths()) {
+
+            // Get the certificate used for signing.
+            final PathNode ballotPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX, ballotBoxIdDirectoryPath);
+            final JsonNode ballotBoxNode = mapper.readTree(Files.readAllBytes(ballotPathNode.getPath()));
+            final byte[] signingCertificate = extractSigningCertificate(ballotBoxNode);
+
+            final PathNode failedVotesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.FAILED_VOTES, ballotBoxIdDirectoryPath);
 
             // Extract and decode the signature.
             final List<String> lines = Files.readAllLines(failedVotesPathNode.getPath());
@@ -91,7 +92,7 @@ public class CheckSigFailedVotes extends AbstractVerification {
                         "The signature verification of the file failed",
                         Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
                         "verification72.nok.message",
-                        regexPath.toString()
+                        ballotBoxIdDirectoryPath.toString()
                 );
             }
         }

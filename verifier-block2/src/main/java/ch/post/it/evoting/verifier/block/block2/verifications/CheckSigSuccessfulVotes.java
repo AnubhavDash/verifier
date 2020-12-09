@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -57,15 +58,6 @@ public class CheckSigSuccessfulVotes extends AbstractVerification {
         // Mapper to parse json files containing the certificates.
         ObjectMapper mapper = new ObjectMapper();
 
-        // Get the certificate used for signing.
-        final PathNode ballotPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX, inputDirectoryPath);
-        final JsonNode ballotBoxNode = mapper.readTree(Files.readAllBytes(ballotPathNode.getPath()));
-        final JsonNode ballotBoxCertNode = ballotBoxNode.path(BALLOT_BOX_CERT);
-        if (ballotBoxCertNode.isMissingNode()) {
-            throw new JsonMissingNodeException(String.format("%s certificate is missing!", BALLOT_BOX_CERT));
-        }
-        final byte[] signingCertificate = ballotBoxCertNode.asText().getBytes(StandardCharsets.UTF_8);
-
         // Get the intermediate certificates.
         final PathNode electionInfoPathNode = pathService.buildFromRootPath(StructureKey.ELECTION_INFORMATION_CONTENTS, inputDirectoryPath);
         final JsonNode electionInfoNode = mapper.readTree(Files.readAllBytes(electionInfoPathNode.getPath()));
@@ -82,10 +74,21 @@ public class CheckSigSuccessfulVotes extends AbstractVerification {
         }
         final byte[] rootCertificate = electionRootCANode.asText().getBytes(StandardCharsets.UTF_8);
 
-        // Get all the ballot box id directories and iterate over them. // TODO Need to validate folders against election event file.
+        // Get all the ballot box id directories and iterate over them.
         final PathNode ballotIdsPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
-        for (Path regexPath : ballotIdsPathNode.getRegexPaths()) {
-            final PathNode successVotesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.SUCCESSFUL_VOTES, regexPath);
+        for (Path ballotBoxIdDirectoryPath : ballotIdsPathNode.getRegexPaths()) {
+
+            // Get the certificate used for signing.
+            final PathNode ballotPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX, ballotBoxIdDirectoryPath);
+            final JsonNode ballotBoxNode = mapper.readTree(Files.readAllBytes(ballotPathNode.getPath()));
+            final JsonNode ballotBoxCertNode = ballotBoxNode.path(BALLOT_BOX_CERT);
+            if (ballotBoxCertNode.isMissingNode()) {
+                throw new JsonMissingNodeException(String.format("%s certificate is missing!", BALLOT_BOX_CERT));
+            }
+            final byte[] signingCertificate = ballotBoxCertNode.asText().getBytes(StandardCharsets.UTF_8);
+
+
+            final PathNode successVotesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.SUCCESSFUL_VOTES, ballotBoxIdDirectoryPath);
 
             // Extract and decode the signature.
             final List<String> lines = Files.readAllLines(successVotesPathNode.getPath());
@@ -101,7 +104,7 @@ public class CheckSigSuccessfulVotes extends AbstractVerification {
                         "The signature verification of the file failed",
                         Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
                         "verification71.nok.message",
-                        regexPath.toString()
+                        ballotBoxIdDirectoryPath.toString()
                 );
             }
         }

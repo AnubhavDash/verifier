@@ -44,7 +44,7 @@ public class SecureLogBundleCertificates {
             File[] certificates = PathHelper.getFiles(inputDirectoryPath.resolve(Block2VerificationSuite.PATH_CC_LOG_SIGN_CERTIFICATES).toFile(), ".*cc.*_log_sign.pem");
             Map<String, byte[]> ccCertificateMapping = loadCertificates(certificates);
 
-            File[] intermediates = PathHelper.getFiles(inputDirectoryPath.resolve(Block2VerificationSuite.PATH_CC_CA_CERTIFICATES).toFile(), ".*cc.*_ca.pem");
+            File[] intermediates = PathHelper.getFiles(inputDirectoryPath.resolve(Block2VerificationSuite.PATH_CC_CA_CERTIFICATES).toFile(), ".*cc.*_CA.pem");
             Map<String, byte[]> ccIntermediateMapping = loadCertificates(intermediates);
 
             byte[] root = Files.readAllBytes(PathHelper.getFile(inputDirectoryPath.resolve(Block2VerificationSuite.PATH_CERTIFICATES).toFile(), "platformRootCA.pem").toPath());

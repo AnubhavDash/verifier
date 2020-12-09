@@ -17,6 +17,7 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.test.helper.RegexHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
@@ -70,6 +71,6 @@ class CheckSigCodesMappingTablesContextDataTest extends Block1VerificationAbstra
                 () -> verification.verify(Paths.get(getClass().getResource("/CheckSigCodesMappingTablesContextDataTest/NOK-NOFILE2").toURI()))
         );
         final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CODES_MAPPING_TABLES_CONTEXT_DATA);
-        assertTrue(ex.getMessage().contains(structureNode.getQualifier() + RelationType.SIGN.toFileExtension()));
+        assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier() + RelationType.SIGN.toFileExtension()).matches(ex.getMessage()));
     }
 }
