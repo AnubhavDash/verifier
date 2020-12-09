@@ -13,11 +13,11 @@
 	<artifactId>verifier-common-block</artifactId>
 
 	<properties>
-		<jaxb2-basics.version>0.11.1</jaxb2-basics.version>
+		<jaxb2-basics.version>0.12.0</jaxb2-basics.version>
 		<jaxb2-fluent-api.version>3.0</jaxb2-fluent-api.version>
-		<jsonschema2pojo-maven-plugin.version>1.0.0-alpha4</jsonschema2pojo-maven-plugin.version>
+		<jsonschema2pojo-maven-plugin.version>1.0.2</jsonschema2pojo-maven-plugin.version>
 		<maven-jaxb2-plugin.version>0.14.0</maven-jaxb2-plugin.version>
-		<spring-context.version>5.2.3.RELEASE</spring-context.version>
+		<spring-context.version>5.2.11.RELEASE</spring-context.version>
 	</properties>
 
 	<dependencyManagement>
@@ -62,8 +62,8 @@
 			<artifactId>jackson-dataformat-xml</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.bouncycastle</groupId>

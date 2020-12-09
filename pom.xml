@@ -15,7 +15,7 @@
 		<module>verifier-common-test</module>
 		<module>verifier-block1</module>
 		<module>verifier-block2</module>
-<!--		<module>verifier-block3</module>-->
+		<!--		<module>verifier-block3</module>-->
 		<module>verifier-block4</module>
 		<module>verifier-web-client</module>
 		<module>verifier-web</module>
@@ -52,38 +52,38 @@
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 
 		<activation.version>1.1.1</activation.version>
-		<bouncycastle.version>1.60</bouncycastle.version>
-		<commons-codec.version>1.11</commons-codec.version>
-		<commons-lang.version>2.4</commons-lang.version>
+		<bouncycastle.version>1.67</bouncycastle.version>
+		<commons-codec.version>1.15</commons-codec.version>
+		<commons-lang3.version>3.11</commons-lang3.version>
 		<excludedTags>Slow</excludedTags>
-		<guava.version>25.0-jre</guava.version>
+		<guava.version>30.0-jre</guava.version>
 		<hamcrest-core.version>2.2</hamcrest-core.version>
 		<includedTags/>
-		<itext.version>2.1.7</itext.version>
-		<jackson.version>2.9.8</jackson.version>
-		<jasperreports.version>6.7.0</jasperreports.version>
-		<jasperreports-fonts.version>6.0.0</jasperreports-fonts.version>
-		<javax-jaxb.version>2.2.8</javax-jaxb.version>
+		<itext.version>5.5.13.2</itext.version>
+		<jackson.version>2.12.0</jackson.version>
+		<jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
+		<jasperreports.version>6.16.0</jasperreports.version>
+		<jaxb-api.version>2.3.1</jaxb-api.version>
 		<jcsv.version>1.4.0</jcsv.version>
 		<jjwt.version>0.9.1</jjwt.version>
-		<junit-jupiter.version>5.6.2</junit-jupiter.version>
-		<license-maven-plugin.version>3.0</license-maven-plugin.version>
+		<junit-jupiter.version>5.7.0</junit-jupiter.version>
+		<license-maven-plugin.version>4.0.rc2</license-maven-plugin.version>
 		<log4j.version>1.2.17</log4j.version>
-		<lombok.version>1.18.10</lombok.version>
-		<mapstruct.version>1.2.0.Final</mapstruct.version>
-		<maven.jacoco.plugin.version>0.8.5</maven.jacoco.plugin.version>
-		<maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
-		<maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
-		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
-		<maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
+		<lombok.version>1.18.16</lombok.version>
+		<mapstruct.version>1.4.1.Final</mapstruct.version>
+		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+		<maven-deploy-plugin.version>3.0.0-M1</maven-deploy-plugin.version>
+		<maven-release-plugin.version>3.0.0-M1</maven-release-plugin.version>
+		<maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<projectArtifactId>${project.artifactId}</projectArtifactId>
 		<projectGroupId>${project.groupId}</projectGroupId>
 		<projectVersion>${project.version}</projectVersion>
-		<reactor-core.version>3.2.1.RELEASE</reactor-core.version>
-		<reflections.version>0.9.11</reflections.version>
+		<reactor-core.version>3.4.1</reactor-core.version>
+		<reflections.version>0.9.12</reflections.version>
 		<rootProject>verifier</rootProject>
-		<sun-jaxb.version>2.2.11</sun-jaxb.version>
+		<sun-jaxb-core.version>2.3.0.1</sun-jaxb-core.version>
+		<sun-jaxb-impl.version>2.3.3</sun-jaxb-impl.version>
 		<verifier-block3-scytl.version>1.1.0.0</verifier-block3-scytl.version>
 	</properties>
 
@@ -167,8 +167,8 @@
 
 			<!-- com.lowagie -->
 			<dependency>
-				<groupId>com.lowagie</groupId>
-				<artifactId>itext</artifactId>
+				<groupId>com.itextpdf</groupId>
+				<artifactId>itextpdf</artifactId>
 				<version>${itext.version}</version>
 			</dependency>
 
@@ -176,12 +176,12 @@
 			<dependency>
 				<groupId>com.sun.xml.bind</groupId>
 				<artifactId>jaxb-core</artifactId>
-				<version>${sun-jaxb.version}</version>
+				<version>${sun-jaxb-core.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.sun.xml.bind</groupId>
 				<artifactId>jaxb-impl</artifactId>
-				<version>${sun-jaxb.version}</version>
+				<version>${sun-jaxb-impl.version}</version>
 			</dependency>
 
 			<!-- commons-* -->
@@ -191,9 +191,9 @@
 				<version>${commons-codec.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>commons-lang</groupId>
-				<artifactId>commons-lang</artifactId>
-				<version>${commons-lang.version}</version>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${commons-lang3.version}</version>
 			</dependency>
 
 			<!-- javax -->
@@ -205,7 +205,7 @@
 			<dependency>
 				<groupId>javax.xml.bind</groupId>
 				<artifactId>jaxb-api</artifactId>
-				<version>${javax-jaxb.version}</version>
+				<version>${jaxb-api.version}</version>
 			</dependency>
 
 			<!-- junit -->
@@ -238,7 +238,7 @@
 			<dependency>
 				<groupId>net.sf.jasperreports</groupId>
 				<artifactId>jasperreports-fonts</artifactId>
-				<version>${jasperreports-fonts.version}</version>
+				<version>${jasperreports.version}</version>
 			</dependency>
 
 			<!-- log4j -->
@@ -277,7 +277,7 @@
 			<!-- org.mapstruct -->
 			<dependency>
 				<groupId>org.mapstruct</groupId>
-				<artifactId>mapstruct-jdk8</artifactId>
+				<artifactId>mapstruct</artifactId>
 				<version>${mapstruct.version}</version>
 			</dependency>
 			<dependency>
@@ -292,8 +292,6 @@
 				<artifactId>reflections</artifactId>
 				<version>${reflections.version}</version>
 			</dependency>
-
-
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
@@ -309,7 +307,7 @@
 				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>${maven.jacoco.plugin.version}</version>
+					<version>${jacoco-maven-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -322,7 +320,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${maven.jacoco.plugin.version}</version>
+				<version>${jacoco-maven-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>prepare-unit-test-agent</id>

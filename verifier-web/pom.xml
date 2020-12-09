@@ -14,8 +14,8 @@
 
 	<properties>
 		<jasperreports-plugin.version>2.0</jasperreports-plugin.version>
-		<spring-boot-dependencies.version>2.3.0.RELEASE</spring-boot-dependencies.version>
-		<spring-boot-maven-plugin.version>2.3.0.RELEASE</spring-boot-maven-plugin.version>
+		<spring-boot-dependencies.version>2.3.5.RELEASE</spring-boot-dependencies.version>
+		<spring-boot-maven-plugin.version>2.3.5.RELEASE</spring-boot-maven-plugin.version>
 	</properties>
 
 	<dependencyManagement>
@@ -74,7 +74,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.mapstruct</groupId>
-			<artifactId>mapstruct-jdk8</artifactId>
+			<artifactId>mapstruct</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.mapstruct</groupId>
@@ -92,8 +92,8 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>com.lowagie</groupId>
-			<artifactId>itext</artifactId>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itextpdf</artifactId>
 			<exclusions>
 				<exclusion>
 					<groupId>bouncycastle</groupId>
@@ -112,7 +112,6 @@
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports-fonts</artifactId>
-			<version>${jasperreports-fonts.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.projectreactor</groupId>

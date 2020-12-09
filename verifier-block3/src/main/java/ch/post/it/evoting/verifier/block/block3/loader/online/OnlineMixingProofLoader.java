@@ -24,6 +24,7 @@ import ch.post.it.evoting.verifier.dto.CcMixingPublicKey;
 import ch.post.it.evoting.verifier.dto.OnlineDecryptionProof;
 import ch.post.it.evoting.verifier.dto.PublicKey;
 import ch.post.it.evoting.verifier.dto.ZkProof;
+
 import com.scytl.decrypt.beans.DecryptionProof;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallot;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;
@@ -38,8 +39,10 @@ import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroup;
 import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroupParams;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentParams;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
+
 import org.apache.commons.codec.DecoderException;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import reactor.core.publisher.Flux;
 
 import java.io.File;
@@ -55,211 +58,222 @@ import java.util.stream.Collectors;
 
 public class OnlineMixingProofLoader implements OnlineDataLoader {
 
-    private final OnlineMixing onlineMixing;
+	private final OnlineMixing onlineMixing;
 
-    public OnlineMixingProofLoader(Path path) throws IOException {
-        this.onlineMixing = load(path);
-    }
+	public OnlineMixingProofLoader(Path path) throws IOException {
+		this.onlineMixing = load(path);
+	}
 
-    protected OnlineMixing load(Path path) throws IOException {
-        return Deserializer.fromJson(path.toFile().getParentFile(), path.toFile().getName(), OnlineMixing.class);
-    }
+	protected OnlineMixing load(Path path) throws IOException {
+		return Deserializer.fromJson(path.toFile().getParentFile(), path.toFile().getName(), OnlineMixing.class);
+	}
 
-    public OnlineMixing getOnlineMixing() {
-        return onlineMixing;
-    }
+	public OnlineMixing getOnlineMixing() {
+		return onlineMixing;
+	}
 
-    @Override
-    public ElGamalEncryptedBallots getEncryptedBallots() {
-        ZpGroup zpGroup = this.getZpGroup();
-        return new ElGamalEncryptedBallots(onlineMixing.getPreviousVotes()
-                .stream()
-                .map(vote -> new ElGamalEncryptedBallot(
-                        new ZpElement(vote.getGamma(), zpGroup.getParams()),
-                        vote.getPhis().stream().map(p -> new ZpElement(p, zpGroup.getParams())).collect(Collectors.toList())))
-                .collect(Collectors.toList()));
-    }
+	@Override
+	public ElGamalEncryptedBallots getEncryptedBallots() {
+		ZpGroup zpGroup = this.getZpGroup();
+		return new ElGamalEncryptedBallots(onlineMixing.getPreviousVotes()
+				.stream()
+				.map(vote -> new ElGamalEncryptedBallot(
+						new ZpElement(vote.getGamma(), zpGroup.getParams()),
+						vote.getPhis().stream().map(p -> new ZpElement(p, zpGroup.getParams())).collect(Collectors.toList())))
+				.collect(Collectors.toList()));
+	}
 
-    @Override
-    public ZpGroup getZpGroup() {
-        BigInteger p = onlineMixing.getEncryptionGroup().getP();
-        BigInteger q = onlineMixing.getEncryptionGroup().getQ();
-        ZpGroupParams zpGroupParams = new ZpGroupParams(p, q);
-        return new ZpGroup(zpGroupParams, new ZpElement(onlineMixing.getEncryptionGroup().getG(), zpGroupParams));
-    }
+	@Override
+	public ZpGroup getZpGroup() {
+		BigInteger p = onlineMixing.getEncryptionGroup().getP();
+		BigInteger q = onlineMixing.getEncryptionGroup().getQ();
+		ZpGroupParams zpGroupParams = new ZpGroupParams(p, q);
+		return new ZpGroup(zpGroupParams, new ZpElement(onlineMixing.getEncryptionGroup().getG(), zpGroupParams));
+	}
 
-    @Override
-    public ElGamalPublicKey getPublicKey() {
-        ZpGroupParams params = new ZpGroupParams(onlineMixing.getPreviousVoteEncryptionKey().getZpSubgroup().getP(), onlineMixing.getPreviousVoteEncryptionKey().getZpSubgroup().getQ());
-        ZpGroup zpGroup = new ZpGroup(params, new ZpElement(onlineMixing.getPreviousVoteEncryptionKey().getZpSubgroup().getG(), params));
-        List<GroupElement> pubKeys = onlineMixing.getPreviousVoteEncryptionKey().getElements().stream().map(bigInt -> new ZpElement(bigInt, params)).collect(Collectors.toList());
-        return new ElGamalPublicKey(pubKeys, zpGroup);
-    }
+	@Override
+	public ElGamalPublicKey getPublicKey() {
+		ZpGroupParams params = new ZpGroupParams(onlineMixing.getPreviousVoteEncryptionKey().getZpSubgroup().getP(),
+				onlineMixing.getPreviousVoteEncryptionKey().getZpSubgroup().getQ());
+		ZpGroup zpGroup = new ZpGroup(params, new ZpElement(onlineMixing.getPreviousVoteEncryptionKey().getZpSubgroup().getG(), params));
+		List<GroupElement> pubKeys = onlineMixing.getPreviousVoteEncryptionKey().getElements().stream().map(bigInt -> new ZpElement(bigInt, params))
+				.collect(Collectors.toList());
+		return new ElGamalPublicKey(pubKeys, zpGroup);
+	}
 
-    public ElGamalPublicKey getDecryptionPublicKey(File pkJsonFile, int nbKeys) throws IOException {
-        try {
-            ZpGroupParams params = new ZpGroupParams(onlineMixing.getVoteEncryptionKey().getZpSubgroup().getP(), onlineMixing.getVoteEncryptionKey().getZpSubgroup().getQ());
-            ZpGroup zpGroup = new ZpGroup(params, new ZpElement(onlineMixing.getVoteEncryptionKey().getZpSubgroup().getG(), params));
-            List<GroupElement> pubKeys = new ArrayList<>();
+	public ElGamalPublicKey getDecryptionPublicKey(File pkJsonFile, int nbKeys) throws IOException {
+		try {
+			ZpGroupParams params = new ZpGroupParams(onlineMixing.getVoteEncryptionKey().getZpSubgroup().getP(),
+					onlineMixing.getVoteEncryptionKey().getZpSubgroup().getQ());
+			ZpGroup zpGroup = new ZpGroup(params, new ZpElement(onlineMixing.getVoteEncryptionKey().getZpSubgroup().getG(), params));
+			List<GroupElement> pubKeys = new ArrayList<>();
 
-            //retrieve in the file the pkey regarding the eeid
-            String electionEventId = onlineMixing.getVoteSetId().getBallotBoxId().getElectionEventId();
+			//retrieve in the file the pkey regarding the eeid
+			String electionEventId = onlineMixing.getVoteSetId().getBallotBoxId().getElectionEventId();
 
-            CcMixingPublicKey[] ccMixingPublicKey = Deserializer.fromJson(pkJsonFile.getParentFile(), pkJsonFile.getName(), CcMixingPublicKey[].class);
+			CcMixingPublicKey[] ccMixingPublicKey = Deserializer
+					.fromJson(pkJsonFile.getParentFile(), pkJsonFile.getName(), CcMixingPublicKey[].class);
 
-            String pKeyStr = Arrays.stream(ccMixingPublicKey)
-                    .filter(e -> electionEventId.equals(e.getElectionEventId()))
-                    .map(e -> e.getPublicKey())
-                    .findFirst()
-                    .orElseThrow(() -> new RuntimeException("Unable to retrieve the publicKey"));
+			String pKeyStr = Arrays.stream(ccMixingPublicKey)
+					.filter(e -> electionEventId.equals(e.getElectionEventId()))
+					.map(e -> e.getPublicKey())
+					.findFirst()
+					.orElseThrow(() -> new RuntimeException("Unable to retrieve the publicKey"));
 
-            byte[] decodedPkey = TypeConverter.hexaStringToByte(pKeyStr);
-            PublicKey publicKey = Deserializer.fromJson(decodedPkey, PublicKey.class);
+			byte[] decodedPkey = TypeConverter.hexaStringToByte(pKeyStr);
+			PublicKey publicKey = Deserializer.fromJson(decodedPkey, PublicKey.class);
 
+			List<BigInteger> elements = publicKey.getPublicKey().getElements().stream().map(TypeConverter::base64ToBigInteger)
+					.collect(Collectors.toList());
+			if (elements.isEmpty()) {
+				throw new IllegalArgumentException("No elements found in publicKey");
+			}
+			// In case the final key has only 1 element: Multiply all “elements” from CCN mixing public key modulo p
+			// In case that the key has more than 1 element (n elements), the first n-1 elements of the CCN mixing public key can be used directly. For the last mixing public key elements, multiply the remaining elements together
 
-            List<BigInteger> elements = publicKey.getPublicKey().getElements().stream().map(TypeConverter::base64ToBigInteger).collect(Collectors.toList());
-            if (elements.isEmpty()) {
-                throw new IllegalArgumentException("No elements found in publicKey");
-            }
-            // In case the final key has only 1 element: Multiply all “elements” from CCN mixing public key modulo p
-            // In case that the key has more than 1 element (n elements), the first n-1 elements of the CCN mixing public key can be used directly. For the last mixing public key elements, multiply the remaining elements together
+			for (int i = 0; i < nbKeys - 1; i++) {
+				pubKeys.add(new ZpElement(elements.get(i), params));
+			}
+			pubKeys.add(new ZpElement(multiplyElements(elements.subList(nbKeys - 1, elements.size()), params.getP()), params));
 
-            for (int i = 0; i < nbKeys - 1; i++) {
-                pubKeys.add(new ZpElement(elements.get(i), params));
-            }
-            pubKeys.add(new ZpElement(multiplyElements(elements.subList(nbKeys - 1, elements.size()), params.getP()), params));
+			return new ElGamalPublicKey(pubKeys, zpGroup);
+		} catch (DecoderException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-            return new ElGamalPublicKey(pubKeys, zpGroup);
-        } catch (DecoderException e) {
-            throw new RuntimeException(e);
-        }
-    }
+	private BigInteger multiplyElements(List<BigInteger> elements, BigInteger p) {
+		if (elements != null && !elements.isEmpty() && p != null) {
+			AtomicReference<BigInteger> result = new AtomicReference<>(BigInteger.ONE);
+			elements.forEach(elem -> result.set(result.get().multiply(elem).mod(p)));
+			return result.get();
+		} else {
+			throw new IllegalArgumentException("Invalid input parameters");
+		}
 
-    private BigInteger multiplyElements(List<BigInteger> elements, BigInteger p) {
-        if (elements != null && !elements.isEmpty() && p != null) {
-            AtomicReference<BigInteger> result = new AtomicReference<>(BigInteger.ONE);
-            elements.forEach(elem -> result.set(result.get().multiply(elem).mod(p)));
-            return result.get();
-        } else {
-            throw new IllegalArgumentException("Invalid input parameters");
-        }
+	}
 
-    }
+	@Override
+	public ElGamalEncryptedBallots getReEncryptedBallots() {
+		ZpGroup zpGroup = this.getZpGroup();
+		return new ElGamalEncryptedBallots(onlineMixing.getShuffledVotes()
+				.stream()
+				.map(pv -> new ElGamalEncryptedBallot(
+						new ZpElement(pv.getGamma(), zpGroup.getParams()),
+						pv.getPhis().stream().map(p -> new ZpElement(p, zpGroup.getParams())).collect(Collectors.toList())))
+				.collect(Collectors.toList()));
+	}
 
-    @Override
-    public ElGamalEncryptedBallots getReEncryptedBallots() {
-        ZpGroup zpGroup = this.getZpGroup();
-        return new ElGamalEncryptedBallots(onlineMixing.getShuffledVotes()
-                .stream()
-                .map(pv -> new ElGamalEncryptedBallot(
-                        new ZpElement(pv.getGamma(), zpGroup.getParams()),
-                        pv.getPhis().stream().map(p -> new ZpElement(p, zpGroup.getParams())).collect(Collectors.toList())))
-                .collect(Collectors.toList()));
-    }
+	@Override
+	public ShuffleProof getShuffleProof() throws IOException {
+		ShuffleProof result = null;
+		if (StringUtils.isNotBlank(onlineMixing.getShuffleProof())) {
+			ShuffleArgumentMessage shuffleArgumentMessage = Deserializer
+					.fromJson(onlineMixing.getShuffleProof().getBytes(), ShuffleArgumentMessage.class);
+			List<PublicCommitment> initialMessages = shuffleArgumentMessage.getInitialMessage().stream()
+					.map(im -> new PublicCommitment(new ZpElement(im.getElement().getValue(), im.getElement().getP(), im.getElement().getQ())))
+					.collect(Collectors.toList());
+			List<PublicCommitment> firstAnswers = shuffleArgumentMessage.getFirstAnswer().stream()
+					.map(fa -> new PublicCommitment(new ZpElement(fa.getElement().getValue(), fa.getElement().getP(), fa.getElement().getQ())))
+					.collect(Collectors.toList());
+			ShuffleProofSecondAnswer secondAnswer = ShuffleArgumentSecondAnswerMapper.INSTANCE
+					.map(shuffleArgumentMessage.getShuffleArgumentSecondAnswer());
+			result = new ShuffleProof(initialMessages.toArray(new PublicCommitment[] {}), firstAnswers.toArray(new PublicCommitment[] {}),
+					secondAnswer);
+		}
+		return result;
+	}
 
-    @Override
-    public ShuffleProof getShuffleProof() throws IOException {
-        ShuffleProof result = null;
-        if (StringUtils.isNotBlank(onlineMixing.getShuffleProof())) {
-            ShuffleArgumentMessage shuffleArgumentMessage = Deserializer.fromJson(onlineMixing.getShuffleProof().getBytes(), ShuffleArgumentMessage.class);
-            List<PublicCommitment> initialMessages = shuffleArgumentMessage.getInitialMessage().stream().map(im -> new PublicCommitment(new ZpElement(im.getElement().getValue(), im.getElement().getP(), im.getElement().getQ()))).collect(Collectors.toList());
-            List<PublicCommitment> firstAnswers = shuffleArgumentMessage.getFirstAnswer().stream().map(fa -> new PublicCommitment(new ZpElement(fa.getElement().getValue(), fa.getElement().getP(), fa.getElement().getQ()))).collect(Collectors.toList());
-            ShuffleProofSecondAnswer secondAnswer = ShuffleArgumentSecondAnswerMapper.INSTANCE.map(shuffleArgumentMessage.getShuffleArgumentSecondAnswer());
-            result = new ShuffleProof(initialMessages.toArray(new PublicCommitment[]{}), firstAnswers.toArray(new PublicCommitment[]{}), secondAnswer);
-        }
-        return result;
-    }
+	@Override
+	public List<GjosteenElGamalPlaintext> getPlaintexts() {
+		ZpGroup zpGroup = this.getZpGroup();
+		List<GjosteenElGamalPlaintext> gjosteenElGamalPlaintexts = onlineMixing.getVotes()
+				.stream()
+				.map(vote -> {
+					return new GjosteenElGamalPlaintext(
+							vote.getPhis()
+									.stream()
+									.map(phis -> new ZpElement(phis, zpGroup.getParams()))
+									.collect(Collectors.toList()).toArray(new GroupElement[] {}));
+				})
+				.collect(Collectors.toList());
 
-    @Override
-    public List<GjosteenElGamalPlaintext> getPlaintexts() {
-        ZpGroup zpGroup = this.getZpGroup();
-        List<GjosteenElGamalPlaintext> gjosteenElGamalPlaintexts = onlineMixing.getVotes()
-                .stream()
-                .map(vote -> {
-                    return new GjosteenElGamalPlaintext(
-                            vote.getPhis()
-                                    .stream()
-                                    .map(phis -> new ZpElement(phis, zpGroup.getParams()))
-                                    .collect(Collectors.toList()).toArray(new GroupElement[]{}));
-                })
-                .collect(Collectors.toList());
+		return gjosteenElGamalPlaintexts;
+	}
 
-        return gjosteenElGamalPlaintexts;
-    }
+	public ElGamalEncryptedBallots getVotes() {
+		ZpGroup zpGroup = this.getZpGroup();
+		return new ElGamalEncryptedBallots(onlineMixing.getVotes()
+				.stream()
+				.map(pv -> new ElGamalEncryptedBallot(
+						new ZpElement(pv.getGamma(), zpGroup.getParams()),
+						pv.getPhis().stream().map(p -> new ZpElement(p, zpGroup.getParams())).collect(Collectors.toList())))
+				.collect(Collectors.toList()));
+	}
 
-    public ElGamalEncryptedBallots getVotes() {
-        ZpGroup zpGroup = this.getZpGroup();
-        return new ElGamalEncryptedBallots(onlineMixing.getVotes()
-                .stream()
-                .map(pv -> new ElGamalEncryptedBallot(
-                        new ZpElement(pv.getGamma(), zpGroup.getParams()),
-                        pv.getPhis().stream().map(p -> new ZpElement(p, zpGroup.getParams())).collect(Collectors.toList())))
-                .collect(Collectors.toList()));
-    }
+	@Override
+	public DecryptionProof[] getProofs() {
+		Flux<BigInteger> gammas = Flux.fromStream(this.onlineMixing.getShuffledVotes().stream().map(sv -> sv.getGamma()));
 
-    @Override
-    public DecryptionProof[] getProofs() {
-        Flux<BigInteger> gammas = Flux.fromStream(this.onlineMixing.getShuffledVotes().stream().map(sv -> sv.getGamma()));
+		DecryptionProof[] decryptionProofs =
+				Flux.fromStream(onlineMixing.getDecryptionProofs().stream())
+						.zipWith(gammas)
+						.map(tuple -> createDecryptionProofFromString(tuple.getT1(), tuple.getT2()))
+						.collectList()
+						.block()
+						.toArray(new DecryptionProof[] {});
 
-        DecryptionProof[] decryptionProofs =
-                Flux.fromStream(onlineMixing.getDecryptionProofs().stream())
-                        .zipWith(gammas)
-                        .map(tuple -> createDecryptionProofFromString(tuple.getT1(), tuple.getT2()))
-                        .collectList()
-                        .block()
-                        .toArray(new DecryptionProof[]{});
+		return decryptionProofs;
+	}
 
-        return decryptionProofs;
-    }
+	private DecryptionProof createDecryptionProofFromString(String str, BigInteger gammaOfCiphertext) {
+		Exponent challenge = null;
+		Exponent[] response = new Exponent[] {};
+		try {
+			OnlineDecryptionProof onlineDecryptionProof = Deserializer.fromJson(str.getBytes(StandardCharsets.UTF_8), OnlineDecryptionProof.class);
+			ZkProof zkProof = onlineDecryptionProof.getZkProof();
+			String q = zkProof.getQ();
+			String hash = zkProof.getHash();
+			List<String> values = zkProof.getValues();
 
-    private DecryptionProof createDecryptionProofFromString(String str, BigInteger gammaOfCiphertext) {
-        Exponent challenge = null;
-        Exponent[] response = new Exponent[]{};
-        try {
-            OnlineDecryptionProof onlineDecryptionProof = Deserializer.fromJson(str.getBytes(StandardCharsets.UTF_8), OnlineDecryptionProof.class);
-            ZkProof zkProof = onlineDecryptionProof.getZkProof();
-            String q = zkProof.getQ();
-            String hash = zkProof.getHash();
-            List<String> values = zkProof.getValues();
+			BigInteger exponentMod = TypeConverter.base64ToBigInteger(q);
+			challenge = new Exponent(TypeConverter.base64ToBigInteger(hash), exponentMod);
+			response = values.stream()
+					.map(value -> new Exponent(TypeConverter.base64ToBigInteger(value), exponentMod))
+					.collect(Collectors.toList())
+					.toArray(new Exponent[] {});
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		DecryptionProof decryptionProof = new DecryptionProof(challenge, response);
+		decryptionProof.setGammaOfCiphertext(gammaOfCiphertext);
 
-            BigInteger exponentMod = TypeConverter.base64ToBigInteger(q);
-            challenge = new Exponent(TypeConverter.base64ToBigInteger(hash), exponentMod);
-            response = values.stream()
-                    .map(value -> new Exponent(TypeConverter.base64ToBigInteger(value), exponentMod))
-                    .collect(Collectors.toList())
-                    .toArray(new Exponent[]{});
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        DecryptionProof decryptionProof = new DecryptionProof(challenge, response);
-        decryptionProof.setGammaOfCiphertext(gammaOfCiphertext);
+		return decryptionProof;
+	}
 
-        return decryptionProof;
-    }
+	@Override
+	public CommitmentParams getCommitmentParams(ZpGroup zpGroup, int numberOfVoters) throws IOException {
+		CommitmentParams result = null;
+		List<BigInteger> commitmentParameters = onlineMixing.getCommitmentParameters();
+		//[0] p, [1] q, [2] g, [3] h, [4] n G
+		if (commitmentParameters.size() >= 5) {
+			GroupElement h = new ZpElement(commitmentParameters.get(3), zpGroup.getParams());
+			GroupElement[] g = commitmentParameters.stream()
+					.skip(4)
+					.map(value -> new ZpElement(value, zpGroup.getParams()))
+					.collect(Collectors.toList()).toArray(new GroupElement[] {});
+			result = new CommitmentParams(zpGroup, h, g);
+		}
+		return result;
+	}
 
-    @Override
-    public CommitmentParams getCommitmentParams(ZpGroup zpGroup, int numberOfVoters) throws IOException {
-        CommitmentParams result = null;
-        List<BigInteger> commitmentParameters = onlineMixing.getCommitmentParameters();
-        //[0] p, [1] q, [2] g, [3] h, [4] n G
-        if (commitmentParameters.size() >= 5) {
-            GroupElement h = new ZpElement(commitmentParameters.get(3), zpGroup.getParams());
-            GroupElement[] g = commitmentParameters.stream()
-                    .skip(4)
-                    .map(value -> new ZpElement(value, zpGroup.getParams()))
-                    .collect(Collectors.toList()).toArray(new GroupElement[]{});
-            result = new CommitmentParams(zpGroup, h, g);
-        }
-        return result;
-    }
-
-    public CommitmentParams getCommitmentParams() throws IOException {
-        final int N = getEncryptedBallots().getBallots().size();
-        int n = N;
-        if (N != 0 && N != 1) {
-            final int m = getShuffleProof().getInitialMessage().length;
-            n = N / m;
-        }
-        return getCommitmentParams(getZpGroup(), n);
-    }
+	public CommitmentParams getCommitmentParams() throws IOException {
+		final int N = getEncryptedBallots().getBallots().size();
+		int n = N;
+		if (N != 0 && N != 1) {
+			final int m = getShuffleProof().getInitialMessage().length;
+			n = N / m;
+		}
+		return getCommitmentParams(getZpGroup(), n);
+	}
 }

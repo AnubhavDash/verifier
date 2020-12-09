@@ -10,7 +10,7 @@ import java.util.OptionalInt;
 import java.util.function.IntPredicate;
 import java.util.stream.IntStream;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.bouncycastle.crypto.digests.SHAKEDigest;
 
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
