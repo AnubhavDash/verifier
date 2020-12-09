@@ -14,10 +14,16 @@
  */
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
+import java.math.BigInteger;
+import java.nio.file.Path;
+
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
-import ch.post.it.evoting.verifier.common.*;
+import ch.post.it.evoting.verifier.common.Category;
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationDefinition;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.VerificationTrait;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionGroup;
 import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionParameters;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
@@ -25,42 +31,38 @@ import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 
-import java.math.BigInteger;
-import java.nio.file.Path;
-
 public class IsStrongPrimePQ extends AbstractVerification {
 
-    @Override
-    public VerificationDefinition getVerificationDefinition() {
-        VerificationDefinition def = new VerificationDefinition();
-        def.setBlockId(1);
-        def.setCategory(Category.INTEGRITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-                "verification03.description"));
-        def.setId(3);
-        def.setName("isStrongPrime(p,q)");
-        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
-        def.addVerificationTrait(VerificationTrait.BLOCK_1);
-        return def;
-    }
+	@Override
+	public VerificationDefinition getVerificationDefinition() {
+		VerificationDefinition def = new VerificationDefinition();
+		def.setBlockId(1);
+		def.setCategory(Category.INTEGRITY);
+		def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+				"verification03.description"));
+		def.setId(3);
+		def.setName("isStrongPrime(p,q)");
+		def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+		def.addVerificationTrait(VerificationTrait.BLOCK_1);
+		return def;
+	}
 
-    @Override
-    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-        VerificationResult result = new VerificationResult();
+	@Override
+	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
+		VerificationResult result = new VerificationResult();
 
-        final PathNode encryptParams = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
-        EncryptionParameters encryptionParameters = Deserializer.fromJson(encryptParams.getPath(), EncryptionParameters.class);
-        EncryptionGroup encryptionGroup = encryptionParameters.getEncryptionGroup();
+		final PathNode encryptParams = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
+		EncryptionParameters encryptionParameters = Deserializer.fromJson(encryptParams.getPath(), EncryptionParameters.class);
 
-        if (!MathHelper.areEqual(encryptionGroup.getP(), (encryptionGroup.getQ().multiply(BigInteger.valueOf(2))).add(BigInteger.ONE))) {
-            throw buildVerificationFailureException(
-                    "p is not a strong prime",
-                    Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-                    "verification03.nok.message"
-            );
-        }
+		if (!MathHelper.areEqual(encryptionParameters.getP(), (encryptionParameters.getQ().multiply(BigInteger.TWO)).add(BigInteger.ONE))) {
+			throw buildVerificationFailureException(
+					"p is not a strong prime",
+					Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+					"verification03.nok.message"
+			);
+		}
 
-        result.setStatus(Status.OK);
-        return result;
-    }
+		result.setStatus(Status.OK);
+		return result;
+	}
 }

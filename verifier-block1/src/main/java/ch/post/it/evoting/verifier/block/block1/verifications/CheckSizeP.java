@@ -14,51 +14,55 @@
  */
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
+import java.nio.file.Path;
+
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
-import ch.post.it.evoting.verifier.common.*;
+import ch.post.it.evoting.verifier.common.Category;
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationDefinition;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.VerificationTrait;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionGroup;
 import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionParameters;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 
-import java.nio.file.Path;
-
 public class CheckSizeP extends AbstractVerification {
 
-    @Override
-    public VerificationDefinition getVerificationDefinition() {
-        VerificationDefinition def = new VerificationDefinition();
-        def.setBlockId(1);
-        def.setCategory(Category.INTEGRITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-                "verification04.description"));
-        def.setId(4);
-        def.setName("checkSize(p)");
-        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
-        def.addVerificationTrait(VerificationTrait.BLOCK_1);
-        return def;
-    }
+	public static final int ENCRYPTION_PARAMETERS_P_BITLENGTH = 2048;
 
-    @Override
-    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-        VerificationResult result = new VerificationResult();
+	@Override
+	public VerificationDefinition getVerificationDefinition() {
+		VerificationDefinition def = new VerificationDefinition();
+		def.setBlockId(1);
+		def.setCategory(Category.INTEGRITY);
+		def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+				"verification04.description"));
+		def.setId(4);
+		def.setName("checkSize(p)");
+		def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+		def.addVerificationTrait(VerificationTrait.BLOCK_1);
+		return def;
+	}
 
-        final PathNode encryptParamsPathNode = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
-        EncryptionParameters encryptionParameters = Deserializer.fromJson(encryptParamsPathNode.getPath(), EncryptionParameters.class);
-        EncryptionGroup encryptionGroup = encryptionParameters.getEncryptionGroup();
+	@Override
+	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
+		VerificationResult result = new VerificationResult();
 
-        if (encryptionGroup.getP().bitLength() < 2048) {
-            throw buildVerificationFailureException(
-                    "p does not have the right size",
-                    Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-                    "verification04.nok.message"
-            );
-        }
+		final PathNode encryptParamsPathNode = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
+		EncryptionParameters encryptionParameters = Deserializer.fromJson(encryptParamsPathNode.getPath(), EncryptionParameters.class);
 
-        result.setStatus(Status.OK);
-        return result;
-    }
+		if (encryptionParameters.getP().bitLength() < ENCRYPTION_PARAMETERS_P_BITLENGTH) {
+			throw buildVerificationFailureException(
+					"p does not have the right size",
+					Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+					"verification04.nok.message"
+			);
+		}
+
+		result.setStatus(Status.OK);
+		return result;
+	}
 }
