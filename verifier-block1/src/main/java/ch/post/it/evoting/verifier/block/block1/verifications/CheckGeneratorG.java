@@ -14,96 +14,98 @@
  */
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
-import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
-import ch.post.it.evoting.verifier.common.*;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionGroup;
-import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionParameters;
-import ch.post.it.evoting.verifier.common.block.tools.*;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
-
 import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.stream.LongStream;
 
+import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
+import ch.post.it.evoting.verifier.common.Category;
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationDefinition;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.VerificationTrait;
+import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionParameters;
+import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+
 public class CheckGeneratorG extends AbstractVerification {
 
-    private static final BigInteger BIG_INTEGER_TWO = new BigInteger("2");
+	@Override
+	public VerificationDefinition getVerificationDefinition() {
+		VerificationDefinition def = new VerificationDefinition();
+		def.setBlockId(1);
+		def.setCategory(Category.INTEGRITY);
+		def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+				"verification10.description"));
+		def.setId(10);
+		def.setName("checkGenerator(g)");
+		def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+		def.addVerificationTrait(VerificationTrait.BLOCK_1);
+		return def;
+	}
 
-    @Override
-    public VerificationDefinition getVerificationDefinition() {
-        VerificationDefinition def = new VerificationDefinition();
-        def.setBlockId(1);
-        def.setCategory(Category.INTEGRITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-                "verification10.description"));
-        def.setId(10);
-        def.setName("checkGenerator(g)");
-        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
-        def.addVerificationTrait(VerificationTrait.BLOCK_1);
-        return def;
-    }
+	@Override
+	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
+		VerificationResult result = new VerificationResult();
 
-    @Override
-    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-        VerificationResult result = new VerificationResult();
+		final PathNode encryptParamsPathNode = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
+		EncryptionParameters encryptionParameters = Deserializer.fromJson(encryptParamsPathNode.getPath(), EncryptionParameters.class);
 
-        final PathNode encryptParamsPathNode = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
-        EncryptionParameters encryptionParameters = Deserializer.fromJson(encryptParamsPathNode.getPath(), EncryptionParameters.class);
-        EncryptionGroup encryptionGroup = encryptionParameters.getEncryptionGroup();
+		if (!MathHelper.isPrime(encryptionParameters.getG())) {
+			throw buildVerificationFailureException(
+					"The generator g is not prime",
+					Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+					"verification10.nok.message",
+					encryptionParameters.getG().toString()
+			);
+		}
 
-        if (!MathHelper.isPrime(encryptionGroup.getG())) {
-            throw buildVerificationFailureException(
-                    "The generator g is not prime",
-                    Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-                    "verification10.nok.message",
-                    encryptionGroup.getG().toString()
-            );
-        }
+		if (!MathHelper.isEulerCriterionValid(encryptionParameters.getG(), encryptionParameters.getP())) {
+			throw buildVerificationFailureException(
+					"g is not part of the subgroup q",
+					Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+					"verification10.euler.nok.message",
+					encryptionParameters.getG().toString()
+			);
+		}
 
-        if (!MathHelper.isEulerCriterionValid(encryptionGroup.getG(), encryptionGroup.getP())) {
-            throw buildVerificationFailureException(
-                    "g is not part of the subgroup q",
-                    Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-                    "verification10.euler.nok.message",
-                    encryptionGroup.getG().toString()
-            );
-        }
+		findSmallerPrimeOfSubgroup(encryptionParameters.getG(), encryptionParameters.getP()).ifPresent(s -> {
+			throw buildVerificationFailureException(
+					"g must be the smallest prime number in the subgroup (p, q)",
+					Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+					"verification10.smallest.nok.message",
+					s.toString(), encryptionParameters.getG().toString()
+			);
+		});
 
-        findSmallerPrimeOfSubgroup(encryptionGroup.getG(), encryptionGroup.getP()).ifPresent(s -> {
-            throw buildVerificationFailureException(
-                    "g must be the smallest prime number in the subgroup (p, q)",
-                    Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-                    "verification10.smallest.nok.message",
-                    s.toString(), encryptionGroup.getG().toString()
-            );
-        });
+		result.setStatus(Status.OK);
+		return result;
+	}
 
-        result.setStatus(Status.OK);
-        return result;
-    }
-
-    /**
-     * Check if there is a smaller prime in the subgroup. The parameter g has to be prime and be part of the subgroup. These checks are
-     * NOT done in this method.
-     *
-     * @return A smaller prime of the subgroup if any.
-     */
-    private Optional<BigInteger> findSmallerPrimeOfSubgroup(BigInteger g, BigInteger p) {
-        if (MathHelper.areEqual(g, BIG_INTEGER_TWO)) {
-            return Optional.empty();
-        } else {
-            // Check is there is a prime number less than g (except 2) that is also a quadratic residue.
-            // Be aware that if g is greater than Long.MAX_VALUE, a ArithmeticException is thrown.
-            return LongStream.range(2, g.longValueExact())
-                    .parallel()
-                    .mapToObj(BigInteger::valueOf)
-                    .filter(MathHelper::isPrime)
-                    .filter(prime -> MathHelper.isEulerCriterionValid(prime, p))
-                    .findAny();
-        }
-    }
+	/**
+	 * Check if there is a smaller prime in the subgroup. The parameter g has to be prime and be part of the subgroup. These checks are NOT done in
+	 * this method.
+	 *
+	 * @return A smaller prime of the subgroup if any.
+	 */
+	private static Optional<BigInteger> findSmallerPrimeOfSubgroup(BigInteger g, BigInteger p) {
+		if (MathHelper.areEqual(g, BigInteger.TWO)) {
+			return Optional.empty();
+		} else {
+			// Check is there is a prime number less than g (except 2) that is also a quadratic residue.
+			// Be aware that if g is greater than Long.MAX_VALUE, a ArithmeticException is thrown.
+			return LongStream.range(2, g.longValueExact())
+					.parallel()
+					.mapToObj(BigInteger::valueOf)
+					.filter(MathHelper::isPrime)
+					.filter(prime -> MathHelper.isEulerCriterionValid(prime, p))
+					.findAny();
+		}
+	}
 
 }

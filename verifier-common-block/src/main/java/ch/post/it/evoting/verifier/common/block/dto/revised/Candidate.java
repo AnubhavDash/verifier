@@ -27,12 +27,12 @@ import java.util.UUID;
 @Getter
 public class Candidate {
 
-    private final UUID alias;
+    private final String alias;
     @JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
     private final List<BigInteger> primeNumbers;
     private final boolean blank;
 
-    public Candidate(@JsonProperty("alias") UUID alias,
+    public Candidate(@JsonProperty("alias") String alias,
                      @JsonProperty("primeNumber") List<BigInteger> primeNumber,
                      @JsonProperty("blank") boolean blank) {
         this.alias = alias;

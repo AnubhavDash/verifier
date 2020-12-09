@@ -24,11 +24,11 @@ import java.util.UUID;
 @Getter
 public class DomainOfInfluence {
 
-    private final UUID id;
+    private final String id;
     private final List<Vote> votes;
     private final List<Election> elections;
 
-    public DomainOfInfluence(@JsonProperty("id") UUID id,
+    public DomainOfInfluence(@JsonProperty("id") String id,
                              @JsonProperty("votes") Vote[] votes,
                              @JsonProperty("elections") Election[] elections) {
         this.id = id;
