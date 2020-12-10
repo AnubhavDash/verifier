@@ -42,7 +42,6 @@ class CheckSecureLogSignatureTest extends Block2VerificationAbstractTest {
     }
 
     @Test
-    @Disabled("Enable when we got secureLog files with correct pattern?")
     void executeTestOK() throws Exception {
         VerificationResult verificationResult = new CheckSecureLogSignature().verify(Paths.get(getClass().getResource(
                 "/CheckSecureLogSignatureTest/OK").toURI()));
