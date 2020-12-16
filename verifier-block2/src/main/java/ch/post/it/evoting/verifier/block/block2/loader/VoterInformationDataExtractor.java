@@ -30,7 +30,12 @@ public class VoterInformationDataExtractor {
     }
 
     public static VoterInformationStruct getInfo(Path inputDirectoryPath) throws IOException {
-        List<File> voterInformationFiles = PathHelper.getFiles(inputDirectoryPath.resolve(Block2VerificationSuite.PATH_ELECTION_SETUP).resolve(Block2VerificationSuite.PATH_VOTING_CARD_SETS).toFile(),
+        List<File> voterInformationFiles = PathHelper
+                .getFiles(
+                        inputDirectoryPath
+                                .resolve(Block2VerificationSuite.PATH_ELECTION_SETUP)
+                                .resolve(Block2VerificationSuite.PATH_VOTING_CARD_SETS)
+                                .toFile(),
                 "voterInformation.*\\.csv",
                 true);
 

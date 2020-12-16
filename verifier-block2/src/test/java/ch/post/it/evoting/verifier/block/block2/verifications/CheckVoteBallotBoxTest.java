@@ -34,7 +34,6 @@ class CheckVoteBallotBoxTest extends Block2VerificationAbstractTest {
     }
 
     @Test
-    @Disabled("Enable when we got secureLog files with correct pattern.")
     void executeTestOK() throws Exception {
         VerificationResult verificationResult =
                 verification.verify(Paths.get(getClass().getResource("/CheckVoteBallotBoxTest/OK").toURI()));
@@ -42,19 +41,9 @@ class CheckVoteBallotBoxTest extends Block2VerificationAbstractTest {
         assertEquals(Status.OK, verificationResult.getStatus());
     }
 
-    @Test
-    @Disabled("Enable when we got secureLog files with correct pattern.")
-    void executeTestNOK() {
-        final VerificationFailureException ex = assertThrows(
-                VerificationFailureException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckVoteBallotBoxTest/NOK").toURI()))
-        );
-        assertEquals("TODO", ex.getMessage());
-    }
-
     // TODO Implement the following missing tests cases:
     //  - Duplicate votingCardId in downloadedBallotBox files
-    //  - The number of encrypted votes in the secure logs and downloadboxes are not equal
+    //  - The number of encrypted votes in the secure logs and downloaded boxes are not equal
     //  - EncryptedOptions is not the same in DownloadedBallotBox and SecureLogs
     //  - Unknown votingCardId
 
