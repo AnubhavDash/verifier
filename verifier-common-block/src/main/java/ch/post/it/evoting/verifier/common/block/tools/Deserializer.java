@@ -59,7 +59,15 @@ import ch.post.it.evoting.verifier.common.block.dto.revised.serialization.UuidDe
 import ch.post.it.evoting.verifier.common.block.dto.revised.serialization.X509Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
 
-public class Deserializer {
+public final class Deserializer {
+
+	public static final Function<String[], CredentialDataElement> toCredentialDataElement = array -> {
+		if (array == null || array.length != 2) {
+			throw new IllegalArgumentException("Wrong array input format");
+		}
+
+		return new CredentialDataElement(array[0], array[1]);
+	};
 
 	private Deserializer() {
 		//private constructor, use static
@@ -68,7 +76,6 @@ public class Deserializer {
 	public static ObjectMapper initObjectMapper() {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		//        mapper.enable(DeserializationFeature.FAIL_ON_NULL_CREATOR_PROPERTIES);
 
 		SimpleModule typesModule = new SimpleModule();
 		typesModule.addDeserializer(BigInteger.class, new Base64BigIntegerDeserializer());
@@ -131,25 +138,19 @@ public class Deserializer {
 		return new CsvReader<>(getFile(inputDirectory, filenamePattern).toString(), StandardCharsets.UTF_8, false, separator, mapper).process();
 	}
 
-	public static <T> Iterable<T> fromCsv(Path filePath, Function<String[], T> mapper) throws IOException {
+	public static <T> Iterable<T> fromCsv(Path filePath, Function<String[], T> mapper) {
 		return new CsvReader<>(filePath, StandardCharsets.UTF_8, false, ",", mapper).process();
 	}
 
-	public static <T> Iterable<T> fromCsv(Path filePath, String separator, Function<String[], T> mapper) throws IOException {
+	public static <T> Iterable<T> fromCsv(final List<Path> filePaths, final Function<String[], T> mapper) {
+		return new CsvReader<>(filePaths, StandardCharsets.UTF_8, false, ",", mapper).process();
+	}
+
+	public static <T> Iterable<T> fromCsv(Path filePath, String separator, Function<String[], T> mapper) {
 		return new CsvReader<>(filePath, StandardCharsets.UTF_8, false, separator, mapper).process();
 	}
 
 	private static File getFile(File inputDirectory, String filenamePattern) throws FileNotFoundException {
 		return PathHelper.getFile(inputDirectory, filenamePattern);
 	}
-
-	public final static Function<String[], CredentialDataElement> toCredentialDataElement = array -> {
-		if (array == null || array.length != 2) {
-			throw new IllegalArgumentException("Wrong array input format");
-		}
-		CredentialDataElement cde = new CredentialDataElement();
-		cde.setValue1(array[0]);
-		cde.setValue2(array[1]);
-		return cde;
-	};
 }

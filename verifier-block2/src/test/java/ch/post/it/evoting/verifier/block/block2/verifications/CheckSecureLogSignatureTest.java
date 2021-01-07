@@ -14,25 +14,29 @@
  */
 package ch.post.it.evoting.verifier.block.block2.verifications;
 
-import ch.post.it.evoting.verifier.block.block2.securelog.CheckPointLogEntry;
-import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundle;
-import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleCertificates;
-import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogMetadata;
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
-import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
-import org.bouncycastle.util.encoders.Base64;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.bouncycastle.util.encoders.Base64;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import ch.post.it.evoting.verifier.block.block2.securelog.CheckPointLogEntry;
+import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundle;
+import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogBundleCertificates;
+import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogMetadata;
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.exceptions.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 
 class CheckSecureLogSignatureTest extends Block2VerificationAbstractTest {
 

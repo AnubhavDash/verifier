@@ -35,7 +35,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.exceptions.VerificationFailureException;
 import ch.post.it.evoting.verifier.common.block.tools.HmacGenerator;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;

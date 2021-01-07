@@ -109,7 +109,7 @@ public class VerifyVotingOptions extends AbstractVerification {
 		}
 	}
 
-	private static List<BigInteger> extractPrimes(PathNode primesPathNode) throws java.io.IOException {
+	private static List<BigInteger> extractPrimes(PathNode primesPathNode) {
 		final Iterable<List<String>> iterable = Deserializer.fromCsv(primesPathNode.getPath(), "\n", Arrays::asList);
 		return StreamSupport.stream(iterable.spliterator(), false)
 				.flatMap(Collection::stream)

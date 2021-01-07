@@ -14,84 +14,87 @@
  */
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
-import ch.post.it.evoting.verifier.common.block.test.helper.RegexHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.exceptions.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.test.helper.RegexHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 
 class CheckSigElectionImportTest extends Block1VerificationAbstractTest {
 
+	@BeforeEach
+	void setup() {
+		verification = new CheckSigElectionImport();
+	}
 
-    @BeforeEach
-    void setup() {
-        verification = new CheckSigElectionImport();
-    }
+	@Test
+	void executeTestOK() throws Exception {
+		VerificationResult verificationResult =
+				verification.verify(Paths.get(getClass().getResource("/CheckSigElectionImportTest/OK").toURI()));
+		assertNotNull(verificationResult);
+		assertEquals(Status.OK, verificationResult.getStatus());
+	}
 
-    @Test
-    void executeTestOK() throws Exception {
-        VerificationResult verificationResult =
-                verification.verify(Paths.get(getClass().getResource("/CheckSigElectionImportTest/OK").toURI()));
-        assertNotNull(verificationResult);
-        assertEquals(Status.OK, verificationResult.getStatus());
-    }
+	@Test
+	void executeTestNOKCertKo() {
+		// TODO Check if test is relevant, because executeTestNOKJsonKo got the same error
+		final VerificationFailureException ex = assertThrows(
+				VerificationFailureException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigElectionImportTest/NOK/CERT-NOT-OK").toURI()))
+		);
+		assertEquals("The signature verification of the file failed", ex.getMessage());
+	}
 
-    @Test
-    void executeTestNOKCertKo() {
-        // TODO Check if test is relevant, because executeTestNOKJsonKo got the same error
-        final VerificationFailureException ex = assertThrows(
-                VerificationFailureException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigElectionImportTest/NOK/CERT-NOT-OK").toURI()))
-        );
-        assertEquals("The signature verification of the file failed", ex.getMessage());
-    }
+	@Test
+	void executeTestNOKJsonKo() {
+		// TODO Check if test is relevant, because executeTestNOKCertKo got the same error
+		final VerificationFailureException ex = assertThrows(
+				VerificationFailureException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigElectionImportTest/NOK/JSON-NOT-OK").toURI()))
+		);
+		assertEquals("The signature verification of the file failed", ex.getMessage());
+	}
 
-    @Test
-    void executeTestNOKJsonKo() {
-        // TODO Check if test is relevant, because executeTestNOKCertKo got the same error
-        final VerificationFailureException ex = assertThrows(
-                VerificationFailureException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigElectionImportTest/NOK/JSON-NOT-OK").toURI()))
-        );
-        assertEquals("The signature verification of the file failed", ex.getMessage());
-    }
+	@Test
+	void executeTestNOKFileNotFoundRootCertificate() {
+		final NoSuchFileException ex = assertThrows(
+				NoSuchFileException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigElectionImportTest/NOK/NOK-NOFILE").toURI()))
+		);
+		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.INTEGRATION_CA);
+		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	}
 
-    @Test
-    void executeTestNOKFileNotFoundRootCertificate() {
-        final NoSuchFileException ex = assertThrows(
-                NoSuchFileException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigElectionImportTest/NOK/NOK-NOFILE").toURI()))
-        );
-        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.INTEGRATION_CA);
-        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
-    }
+	@Test
+	void executeTestNOKFileNotFoundApElectionImport() {
+		final NoSuchFileException ex = assertThrows(
+				NoSuchFileException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigElectionImportTest/NOK/NOK-NOFILE2").toURI()))
+		);
+		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.AP_ELECTION_IMPORT);
+		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	}
 
-    @Test
-    void executeTestNOKFileNotFoundApElectionImport() {
-        final NoSuchFileException ex = assertThrows(
-                NoSuchFileException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigElectionImportTest/NOK/NOK-NOFILE2").toURI()))
-        );
-        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.AP_ELECTION_IMPORT);
-        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
-    }
-
-    @Test
-    void executeTestNOKFileNotFoundApElectionImportP7() {
-        final NoSuchFileException ex = assertThrows(
-                NoSuchFileException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigElectionImportTest/NOK/NOK-NOFILE3").toURI()))
-        );
-        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.AP_ELECTION_IMPORT);
-        assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier() + RelationType.P7.toFileExtension()).matches(ex.getMessage()));
-    }
+	@Test
+	void executeTestNOKFileNotFoundApElectionImportP7() {
+		final NoSuchFileException ex = assertThrows(
+				NoSuchFileException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigElectionImportTest/NOK/NOK-NOFILE3").toURI()))
+		);
+		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.AP_ELECTION_IMPORT);
+		assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier() + RelationType.P7.toFileExtension()).matches(ex.getMessage()));
+	}
 }
