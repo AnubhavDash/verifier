@@ -20,18 +20,18 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Test {
-    private String testIdLabel;
-    private String testNameLabel;
-    private String testCategoryLabel;
-    private String testDescriptionLabel;
-    private String testStatusLabel;
-    private String testMessageLabel;
+	private String testIdLabel;
+	private String testNameLabel;
+	private String testCategoryLabel;
+	private String testDescriptionLabel;
+	private String testStatusLabel;
+	private String testMessageLabel;
 
-    private String id;
-    private String name;
-    private String category;
-    private String description;
-    private String status;
-    private String message;
+	private String id;
+	private String name;
+	private String category;
+	private String description;
+	private String status;
+	private String message;
 
 }

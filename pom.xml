@@ -15,7 +15,7 @@
 		<module>verifier-common-test</module>
 		<module>verifier-block1</module>
 		<module>verifier-block2</module>
-		<!--		<module>verifier-block3</module>-->
+		<module>verifier-block3</module>
 		<module>verifier-block4</module>
 		<module>verifier-web-client</module>
 		<module>verifier-web</module>
@@ -64,6 +64,7 @@
 		<jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
 		<jasperreports.version>6.16.0</jasperreports.version>
 		<jaxb-api.version>2.3.1</jaxb-api.version>
+		<jakarta.annotation-api.version>1.3.5</jakarta.annotation-api.version>
 		<jcsv.version>1.4.0</jcsv.version>
 		<jjwt.version>0.9.1</jjwt.version>
 		<junit-jupiter.version>5.7.0</junit-jupiter.version>
@@ -85,6 +86,8 @@
 		<sun-jaxb-core.version>2.3.0.1</sun-jaxb-core.version>
 		<sun-jaxb-impl.version>2.3.3</sun-jaxb-impl.version>
 		<verifier-block3-scytl.version>1.1.0.0</verifier-block3-scytl.version>
+		<spring-context.version>5.3.2</spring-context.version>
+		<spring-test.version>5.3.2</spring-test.version>
 	</properties>
 
 	<dependencyManagement>
@@ -292,6 +295,27 @@
 				<artifactId>reflections</artifactId>
 				<version>${reflections.version}</version>
 			</dependency>
+
+			<!-- jakarta.annotation -->
+			<dependency>
+				<groupId>jakarta.annotation</groupId>
+				<artifactId>jakarta.annotation-api</artifactId>
+				<version>${jakarta.annotation-api.version}</version>
+			</dependency>
+
+			<!-- org.springframework -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring-context.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+				<version>${spring-test.version}</version>
+				<scope>test</scope>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>

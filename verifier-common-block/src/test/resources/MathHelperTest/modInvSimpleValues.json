@@ -1,20 +1,20 @@
 [
   {
-    "id": "simple-values-1",
-    "b": "2",
-    "m": "5",
-    "output": "3"
+	"id": "simple-values-1",
+	"b": "2",
+	"m": "5",
+	"output": "3"
   },
   {
-    "id": "simple-values-2",
-    "b": "3",
-    "m": "11",
-    "output": "4"
+	"id": "simple-values-2",
+	"b": "3",
+	"m": "11",
+	"output": "4"
   },
   {
-    "id": "simple-values-3",
-    "b": "5",
-    "m": "11",
-    "output": "9"
+	"id": "simple-values-3",
+	"b": "5",
+	"m": "11",
+	"output": "9"
   }
 ]

@@ -17,5 +17,5 @@ package ch.post.it.evoting.verifier.processor;
 import ch.post.it.evoting.verifier.dto.Verification;
 
 public interface ProcessListener {
-    void testProcessed(Verification verification);
+	void verificationProcessed(Verification verification);
 }

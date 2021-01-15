@@ -14,37 +14,36 @@
  */
 package ch.post.it.evoting.verifier.block.block3.verifications;
 
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationResult;
 
 class CheckIndependenceGeneratorsOnlineTest extends Block3VerificationAbstractTest {
 
-    @BeforeEach
-    void setup() {
-        verification = new CheckIndependenceGeneratorsOnline();
-    }
+	public CheckIndependenceGeneratorsOnlineTest() {
+		super(CheckIndependenceGeneratorsOnline.class);
+	}
 
-    @Test
-    @Disabled("FIXME")
-    void executeTestOK() throws Exception {
-        VerificationResult result =
-                verification.verify(Paths.get(getClass().getResource("/CheckIndependenceGeneratorsOnlineTest/OK").toURI()));
-        assertEquals(Status.OK, result.getStatus());
-    }
+	@Test
+	@Disabled("FIXME")
+	void executeTestOK() throws Exception {
+		VerificationResult result =
+				verification.verify(Paths.get(getClass().getResource("/CheckIndependenceGeneratorsOnlineTest/OK").toURI()));
+		assertEquals(Status.OK, result.getStatus());
+	}
 
-    @Test
-    @Disabled("Fix this test by not using status NOK anymore and implementing meaningful asserts.")
-    void executeTestNOK() throws Exception {
-        VerificationResult result =
-                verification.verify(Paths.get(getClass().getResource("/CheckIndependenceGeneratorsOnlineTest/NOK").toURI()));
-        assertEquals(Status.NOK, result.getStatus());
-    }
+	@Test
+	@Disabled("Fix this test by not using status NOK anymore and implementing meaningful asserts.")
+	void executeTestNOK() throws Exception {
+		VerificationResult result =
+				verification.verify(Paths.get(getClass().getResource("/CheckIndependenceGeneratorsOnlineTest/NOK").toURI()));
+		assertEquals(Status.NOK, result.getStatus());
+	}
 
 }

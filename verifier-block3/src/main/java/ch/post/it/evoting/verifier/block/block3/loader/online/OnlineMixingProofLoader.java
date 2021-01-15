@@ -14,16 +14,19 @@
  */
 package ch.post.it.evoting.verifier.block.block3.loader.online;
 
-import ch.post.it.evoting.verifier.block.block3.loader.online.mapper.ShuffleArgumentSecondAnswerMapper;
-import ch.post.it.evoting.verifier.block.block3.scytl.loader.OnlineDataLoader;
-import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.OnlineMixing;
-import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.ShuffleArgumentMessage;
-import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
-import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
-import ch.post.it.evoting.verifier.dto.CcMixingPublicKey;
-import ch.post.it.evoting.verifier.dto.OnlineDecryptionProof;
-import ch.post.it.evoting.verifier.dto.PublicKey;
-import ch.post.it.evoting.verifier.dto.ZkProof;
+import java.io.File;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.lang3.StringUtils;
 
 import com.scytl.decrypt.beans.DecryptionProof;
 import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallot;
@@ -40,21 +43,18 @@ import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpGroupParams;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.CommitmentParams;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
 
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.lang3.StringUtils;
+import ch.post.it.evoting.verifier.block.block3.loader.online.mapper.ShuffleArgumentSecondAnswerMapper;
+import ch.post.it.evoting.verifier.block.block3.scytl.loader.OnlineDataLoader;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.OnlineMixing;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.ShuffleArgumentMessage;
+import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
+import ch.post.it.evoting.verifier.dto.CcMixingPublicKey;
+import ch.post.it.evoting.verifier.dto.OnlineDecryptionProof;
+import ch.post.it.evoting.verifier.dto.PublicKey;
+import ch.post.it.evoting.verifier.dto.ZkProof;
 
 import reactor.core.publisher.Flux;
-
-import java.io.File;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 public class OnlineMixingProofLoader implements OnlineDataLoader {
 

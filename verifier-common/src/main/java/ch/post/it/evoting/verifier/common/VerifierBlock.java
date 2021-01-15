@@ -14,13 +14,12 @@
  */
 package ch.post.it.evoting.verifier.common;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.Set;
 import java.util.stream.Stream;
 
 public interface VerifierBlock {
-    Stream<VerificationDefinition> getVerifications();
+	Stream<VerificationDefinition> getVerifications();
 
-    Stream<VerificationResult> process(Path inputDirectoryPath, Set<VerificationTrait> options);
+	Stream<VerificationResult> process(Path inputDirectoryPath, Set<VerificationTrait> options);
 }

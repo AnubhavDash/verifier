@@ -14,24 +14,29 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
-import ch.post.it.evoting.verifier.common.block.dto.converter.StringArrayToBigIntegerListConverter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.Getter;
-
 import java.math.BigInteger;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import ch.post.it.evoting.verifier.common.block.dto.converter.StringArrayToBigIntegerListConverter;
+
+import lombok.Getter;
 
 @Getter
 public class PublicKey {
 
-    private final EncryptionGroup group;
-    @JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
-    private final List<BigInteger> keys;
+	private final EncryptionGroup group;
+	@JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
+	private final List<BigInteger> keys;
 
-    public PublicKey(@JsonProperty("group") EncryptionGroup group,
-                     @JsonProperty("key") List<BigInteger> keys) {
-        this.group = group;
-        this.keys = keys;
-    }
+	public PublicKey(
+			@JsonProperty("group")
+					EncryptionGroup group,
+			@JsonProperty("key")
+					List<BigInteger> keys) {
+		this.group = group;
+		this.keys = keys;
+	}
 }

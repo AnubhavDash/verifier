@@ -14,23 +14,26 @@
  */
 package ch.post.it.evoting.verifier.block.block4;
 
-import ch.post.it.evoting.verifier.common.block.VerificationSuite;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.springframework.stereotype.Component;
+
+import ch.post.it.evoting.verifier.common.block.VerificationSuite;
+
+@Component
 public class Block4VerificationSuite extends VerificationSuite {
 
-    public static final String RESOURCE_BUNDLE_NAME = "block4/resources";
+	public static final String RESOURCE_BUNDLE_NAME = "block4/resources";
 
-    public static final Path PATH_CERTIFICATES = Paths.get("certificates/");
-    public static final Path PATH_ADMINBOARD = Paths.get("adminboard/");
-    public static final Path PATH_ELECTION_SETUP = Paths.get("election_setup/");
-    public static final Path PATH_BALLOTBOXES = Paths.get("ballotboxes/");
-    public static final Path PATH_RESULTS = Paths.get("results/");
+	public static final Path PATH_CERTIFICATES = Paths.get("certificates/");
+	public static final Path PATH_ADMINBOARD = Paths.get("adminboard/");
+	public static final Path PATH_ELECTION_SETUP = Paths.get("election_setup/");
+	public static final Path PATH_BALLOTBOXES = Paths.get("ballotboxes/");
+	public static final Path PATH_RESULTS = Paths.get("results/");
 
-    public Block4VerificationSuite() {
-        super(Block4VerificationSuite.class.getPackage().getName() + ".verifications");
-    }
+	public Block4VerificationSuite() {
+		super(Block4VerificationSuite.class.getPackage().getName() + ".verifications");
+	}
 
 }

@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.verifier.common.Status;
@@ -33,44 +32,36 @@ import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 
 class CheckNumberCredentialsTest extends Block1VerificationAbstractTest {
 
-	@BeforeEach
-	void setup() {
-		verification = new CheckNumberCredentials();
+	public CheckNumberCredentialsTest() {
+		super(CheckNumberCredentials.class);
 	}
 
 	@Test
 	void executeTestOK() throws Exception {
-		VerificationResult verificationResult =
-				verification.verify(Paths.get(getClass().getResource("/CheckNumberCredentialsTest/OK").toURI()));
+		VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckNumberCredentialsTest/OK").toURI()));
 		assertNotNull(verificationResult);
 		assertEquals(Status.OK, verificationResult.getStatus());
 	}
 
 	@Test
 	void executeTestNOK() {
-		final VerificationFailureException ex = assertThrows(
-				VerificationFailureException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckNumberCredentialsTest/NOK/NOK").toURI()))
-		);
+		final VerificationFailureException ex = assertThrows(VerificationFailureException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckNumberCredentialsTest/NOK/NOK").toURI())));
 		assertEquals("The number of credentials and the number of expected voters do not match", ex.getMessage());
 	}
 
 	@Test
 	void executeTestNOKFileNotFound() {
-		final IOException ex = assertThrows(
-				IOException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckNumberCredentialsTest/NOK/NOK-NOFILE").toURI()))
-		);
+		final IOException ex = assertThrows(IOException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckNumberCredentialsTest/NOK/NOK-NOFILE").toURI())));
 		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CONFIG_ANONYMIZED);
 		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
 	}
 
 	@Test
 	void executeTestNOKFileNotFound2() {
-		final IOException ex = assertThrows(
-				IOException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckNumberCredentialsTest/NOK/NOK-NOFILE2").toURI()))
-		);
+		final IOException ex = assertThrows(IOException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckNumberCredentialsTest/NOK/NOK-NOFILE2").toURI())));
 		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CREDENTIAL_DATA);
 		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
 	}

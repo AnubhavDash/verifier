@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.file.Paths;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.verifier.common.Status;
@@ -15,9 +14,8 @@ import ch.post.it.evoting.verifier.common.block.exceptions.VerificationFailureEx
 
 class VerifyVotingOptionsTest extends Block1VerificationAbstractTest {
 
-	@BeforeEach
-	void setup() {
-		verification = new VerifyVotingOptions();
+	public VerifyVotingOptionsTest() {
+		super(VerifyVotingOptions.class);
 	}
 
 	@Test

@@ -14,37 +14,43 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
-import ch.post.it.evoting.verifier.common.block.dto.converter.StringToBigIntegerConverter;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.Getter;
-
 import java.math.BigInteger;
 import java.util.Base64;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import ch.post.it.evoting.verifier.common.block.dto.converter.StringToBigIntegerConverter;
+
+import lombok.Getter;
 
 @Getter
 public class PlaintextEqualityProof {
 
-    @JsonDeserialize(converter = StringToBigIntegerConverter.class)
-    private final BigInteger q; // Does it really have to be repeated?
-    private final String base64hash;
-    @JsonDeserialize(converter = StringToBigIntegerConverter.class)
-    private final BigInteger c_0;
-    @JsonDeserialize(converter = StringToBigIntegerConverter.class)
-    private final BigInteger c_1;
+	@JsonDeserialize(converter = StringToBigIntegerConverter.class)
+	private final BigInteger q; // Does it really have to be repeated?
+	private final String base64hash;
+	@JsonDeserialize(converter = StringToBigIntegerConverter.class)
+	private final BigInteger c_0;
+	@JsonDeserialize(converter = StringToBigIntegerConverter.class)
+	private final BigInteger c_1;
 
-    public PlaintextEqualityProof(@JsonProperty("q") BigInteger q,
-                                  @JsonProperty("h") String base64hash,
-                                  @JsonProperty("c_0") BigInteger c_0,
-                                  @JsonProperty("c_1") BigInteger c_1) {
-        this.q = q;
-        this.base64hash = base64hash;
-        this.c_0 = c_0;
-        this.c_1 = c_1;
-    }
+	public PlaintextEqualityProof(
+			@JsonProperty("q")
+					BigInteger q,
+			@JsonProperty("h")
+					String base64hash,
+			@JsonProperty("c_0")
+					BigInteger c_0,
+			@JsonProperty("c_1")
+					BigInteger c_1) {
+		this.q = q;
+		this.base64hash = base64hash;
+		this.c_0 = c_0;
+		this.c_1 = c_1;
+	}
 
-    public byte[] getH() {
-        return Base64.getDecoder().decode(base64hash);
-    }
+	public byte[] getH() {
+		return Base64.getDecoder().decode(base64hash);
+	}
 }

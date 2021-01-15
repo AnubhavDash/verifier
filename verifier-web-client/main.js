@@ -19,9 +19,9 @@ const path = require('path');
 const dateFormat = require('dateformat');
 const config = require('./config');
 
+// Logger config
 const logDir = 'logs';
-let now = new Date();
-let suffix = dateFormat(now, "yyyy-mm-dd-HHMMss");
+let suffix = dateFormat(new Date(), "yyyy-mm-dd-HHMMss");
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir);
 }
@@ -37,7 +37,7 @@ const logger = createLogger({
 });
 
 
-let win;
+// Backend server process
 let serverProcess;
 let platform = process.platform;
 
@@ -72,6 +72,7 @@ console.log('Server PID: ' + serverProcess.pid);
 logger.log('info', 'Server PID: ' + serverProcess.pid);
 
 
+let win;
 const prepareWindow = function () {
 
   // Create the browser window.
@@ -138,12 +139,13 @@ const startUp = function (counter) {
     prepareWindow();
   });
 
-  requestPromise.get(config.serverConnectionCheckUrl()).then(function (response) {
-    console.log('Server started!');
-    logger.log('info', 'Server started!');
-    win.loadURL(`file://${__dirname}/dist/index.html`);
-    win.maximize();
-    win.show();
+  requestPromise.get(config.serverConnectionCheckUrl()).then(
+    function (response) {
+      console.log('Server started!');
+      logger.log('info', 'Server started!');
+      win.loadURL(`file://${__dirname}/dist/index.html`);
+      win.maximize();
+      win.show();
   }, function (response) {
     console.log('Waiting for the server start... (' + counter + '/20)');
     logger.log('info', 'Waiting for the server start...');

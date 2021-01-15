@@ -14,49 +14,50 @@
  */
 package ch.post.it.evoting.verifier.block.block3.verifications;
 
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.exceptions.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 
 class CheckDecryptionProofOnlineTest extends Block3VerificationAbstractTest {
 
-    @BeforeEach
-    void setup() {
-        verification = new CheckDecryptionProofOnline();
-    }
+	public CheckDecryptionProofOnlineTest() {
+		super(CheckDecryptionProofOnline.class);
+	}
 
-    @Test
-    void executeTestOK() throws Exception {
-        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofOnlineTest/OK").toURI()));
-        assertEquals(Status.OK, result.getStatus());
-    }
+	@Test
+	void executeTestOK() throws Exception {
+		VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofOnlineTest/OK").toURI()));
+		assertEquals(Status.OK, result.getStatus());
+	}
 
-    @Test
-    void executeTestNOK() {
-        final VerificationFailureException ex = assertThrows(
-                VerificationFailureException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofOnlineTest/NOK").toURI()))
-        );
-        assertEquals("the number of control components expected is 3 but actual is 1", ex.getMessage());
-    }
+	@Test
+	void executeTestNOK() {
+		final VerificationFailureException ex = assertThrows(
+				VerificationFailureException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofOnlineTest/NOK").toURI()))
+		);
+		assertEquals("the number of control components expected is 3 but actual is 1", ex.getMessage());
+	}
 
-    @Test
-    void executeTestNOKFileNotFound() {
-        final NoSuchFileException ex = assertThrows(
-                NoSuchFileException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofOnlineTest/NOK-NOTFILE").toURI()))
-        );
-        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CC_MIXING_KEYS);
-        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
-    }
+	@Test
+	void executeTestNOKFileNotFound() {
+		final NoSuchFileException ex = assertThrows(
+				NoSuchFileException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofOnlineTest/NOK-NOTFILE").toURI()))
+		);
+		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CC_MIXING_KEYS);
+		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	}
 
 }

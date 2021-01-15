@@ -14,6 +14,22 @@
  */
 package ch.post.it.evoting.verifier.block.block4.verifications;
 
+import java.io.IOException;
+import java.math.BigInteger;
+import java.nio.file.Path;
+import java.util.AbstractMap;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import com.scytl.xmlns.decrypt._1.Results;
+
 import ch.post.it.evoting.verifier.block.block4.Block4VerificationSuite;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
@@ -29,180 +45,173 @@ import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import com.scytl.xmlns.decrypt._1.Results;
-
-import java.io.IOException;
-import java.math.BigInteger;
-import java.nio.file.Path;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 public class CheckOptionsMapping extends AbstractVerification {
 
-    @Override
-    public VerificationDefinition getVerificationDefinition() {
-        VerificationDefinition def = new VerificationDefinition();
-        def.setBlockId(4);
-        def.setCategory(Category.CONSISTENCY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.description"));
-        def.setId(1);
-        def.setName("checkOptionsMapping");
-        return def;
-    }
+	@Override
+	public VerificationDefinition getVerificationDefinition() {
+		VerificationDefinition def = new VerificationDefinition();
+		def.setBlockId(4);
+		def.setCategory(Category.CONSISTENCY);
+		def.setDescription(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.description"));
+		def.setId(1);
+		def.setName("checkOptionsMapping");
+		return def;
+	}
 
-    @Override
-    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-        VerificationResult result = new VerificationResult();
+	@Override
+	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
+		VerificationResult result = new VerificationResult();
 
-        // Get data config
-        PathNode dataConfigPathNode = pathService.buildFromRootPath(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
-        ElectionEvent electionEvent = Deserializer.fromJson(dataConfigPathNode.getPath(), ElectionEvent.class);
-        List<BallotBox> ballotBoxes = electionEvent.getBallotBoxes();
+		// Get data config
+		PathNode dataConfigPathNode = pathService.buildFromRootPath(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
+		ElectionEvent electionEvent = Deserializer.fromJson(dataConfigPathNode.getPath(), ElectionEvent.class);
+		List<BallotBox> ballotBoxes = electionEvent.getBallotBoxes();
 
-        // Get ballotBoxId directories
-        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+		// Get ballotBoxId directories
+		PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 
-        // Get eVoting decrypt result
-        PathNode eVotingDecryptResultPathNode = pathService.buildFromRootPath(StructureKey.EVOTING_DECRYPT_RESULT, inputDirectoryPath);
-        Results decryptResult = Deserializer.fromXml(eVotingDecryptResultPathNode.getPath(), Results.class);
+		// Get eVoting decrypt result
+		PathNode eVotingDecryptResultPathNode = pathService.buildFromRootPath(StructureKey.EVOTING_DECRYPT_RESULT, inputDirectoryPath);
+		Results decryptResult = Deserializer.fromXml(eVotingDecryptResultPathNode.getPath(), Results.class);
 
-        for (BallotBox ballotBox : ballotBoxes) {
-            // Prepare ballot box ids
-            String ballotBoxId = TypeConverter.UUIDToStringWithoutDash(ballotBox.getId());
-            String ballotBoxAuthId = TypeConverter.UUIDToStringWithoutDash(ballotBox.getAuthId());
+		for (BallotBox ballotBox : ballotBoxes) {
+			// Prepare ballot box ids
+			String ballotBoxId = TypeConverter.UUIDToStringWithoutDash(ballotBox.getId());
+			String ballotBoxAuthId = TypeConverter.UUIDToStringWithoutDash(ballotBox.getAuthId());
 
-            for (CountingCircle countingCircle : ballotBox.getCountingCircles()) {
+			for (CountingCircle countingCircle : ballotBox.getCountingCircles()) {
 
-                String countingCircleId = countingCircle.getId();
-                // 1 Generate map<prime, alias>
-                // Votations
-                Map<BigInteger, String> primeAliasMap = countingCircle.getDomainsOfInfluence().stream()
-                        .flatMap(doi -> doi.getVotes().stream())
-                        .flatMap(v -> v.getQuestions().stream())
-                        .flatMap(q -> q.getOptions().stream().map(option -> new AbstractMap.SimpleEntry<>(option.getPrimeNumber(), option.getAlias().toString())))
-                        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
-                // Lists
-                primeAliasMap.putAll(countingCircle.getDomainsOfInfluence().stream()
-                        .flatMap(doi -> doi.getElections().stream())
-                        .flatMap(e -> e.getLists().stream())
-                        .collect(Collectors.toMap(CandidateList::getPrimeNumber, CandidateList::getAlias))
-                );
-                // Candidates
-                primeAliasMap.putAll(countingCircle.getDomainsOfInfluence().stream()
-                        .flatMap(doi -> doi.getElections().stream())
-                        .flatMap(e -> e.getLists().stream())
-                        .flatMap(l -> l.getCandidatePositions().stream())
-                        .flatMap(cp -> cp.getPrimeNumbers().stream().map(prime -> new AbstractMap.SimpleEntry<>(prime, cp.getCandidateListId().toString())))
-                        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue))
-                );
-                primeAliasMap.putAll(countingCircle.getDomainsOfInfluence().stream()
-                        .flatMap(doi -> doi.getElections().stream())
-                        .flatMap(e -> e.getCandidates().stream())
-                        .flatMap(c -> c.getPrimeNumbers().stream().map(prime -> new AbstractMap.SimpleEntry<>(prime, c.getAlias().toString())))
-                        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue))
-                );
+				String countingCircleId = countingCircle.getId();
+				// 1 Generate map<prime, alias>
+				// Votations
+				Map<BigInteger, String> primeAliasMap = countingCircle.getDomainsOfInfluence().stream()
+						.flatMap(doi -> doi.getVotes().stream())
+						.flatMap(v -> v.getQuestions().stream())
+						.flatMap(q -> q.getOptions().stream()
+								.map(option -> new AbstractMap.SimpleEntry<>(option.getPrimeNumber(), option.getAlias().toString())))
+						.collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+				// Lists
+				primeAliasMap.putAll(countingCircle.getDomainsOfInfluence().stream()
+						.flatMap(doi -> doi.getElections().stream())
+						.flatMap(e -> e.getLists().stream())
+						.collect(Collectors.toMap(CandidateList::getPrimeNumber, CandidateList::getAlias))
+				);
+				// Candidates
+				primeAliasMap.putAll(countingCircle.getDomainsOfInfluence().stream()
+						.flatMap(doi -> doi.getElections().stream())
+						.flatMap(e -> e.getLists().stream())
+						.flatMap(l -> l.getCandidatePositions().stream())
+						.flatMap(cp -> cp.getPrimeNumbers().stream()
+								.map(prime -> new AbstractMap.SimpleEntry<>(prime, cp.getCandidateListId().toString())))
+						.collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue))
+				);
+				primeAliasMap.putAll(countingCircle.getDomainsOfInfluence().stream()
+						.flatMap(doi -> doi.getElections().stream())
+						.flatMap(e -> e.getCandidates().stream())
+						.flatMap(c -> c.getPrimeNumbers().stream().map(prime -> new AbstractMap.SimpleEntry<>(prime, c.getAlias())))
+						.collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue))
+				);
 
-                // 2 Generate map<prime, count>, but before retrieve the ballotbox file
-                Path ballotBoxIdDirectoryPath = ballotBoxIdDirectoriesPathNode.getRegexPath(ballotBoxId);
-                Map<String, Long> primesCountMap = getCorrectFileAndExtractPrimesCount(ballotBoxIdDirectoryPath);
+				// 2 Generate map<prime, count>, but before retrieve the ballotbox file
+				Path ballotBoxIdDirectoryPath = ballotBoxIdDirectoriesPathNode.getRegexPath(ballotBoxId);
+				Map<String, Long> primesCountMap = getCorrectFileAndExtractPrimesCount(ballotBoxIdDirectoryPath);
 
-                // 3 Generate map<alias, count>
-                Map<String, Long> aliasCountMap = decryptResult.getBallotsBox().stream()
-                        .filter(bb -> ballotBoxAuthId.equals(bb.getBallotBoxIdentification()))
-                        .flatMap(theBb -> theBb.getCountingCircle().stream())
-                        .filter(cc -> countingCircleId.equals(cc.getCountingCircleIdentification()))
-                        .flatMap(theCc -> theCc.getDomainOfInfluence().stream())
-                        .flatMap(doi -> doi.getVote().stream())
-                        .flatMap(v -> v.getBallot().stream())
-                        .flatMap(b -> b.getChosenAnswerIdentification().stream())
-                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+				// 3 Generate map<alias, count>
+				Map<String, Long> aliasCountMap = decryptResult.getBallotsBox().stream()
+						.filter(bb -> ballotBoxAuthId.equals(bb.getBallotBoxIdentification()))
+						.flatMap(theBb -> theBb.getCountingCircle().stream())
+						.filter(cc -> countingCircleId.equals(cc.getCountingCircleIdentification()))
+						.flatMap(theCc -> theCc.getDomainOfInfluence().stream())
+						.flatMap(doi -> doi.getVote().stream())
+						.flatMap(v -> v.getBallot().stream())
+						.flatMap(b -> b.getChosenAnswerIdentification().stream())
+						.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
-                aliasCountMap.putAll(decryptResult.getBallotsBox().stream()
-                        .filter(bb -> {
-                            return ballotBoxAuthId.equals(bb.getBallotBoxIdentification());
-                        })
-                        .flatMap(theBb -> theBb.getCountingCircle().stream())
-                        .filter(cc -> {
-                            return countingCircleId.equals(cc.getCountingCircleIdentification());
-                        })
-                        .flatMap(theCc -> {
-                            return theCc.getDomainOfInfluence().stream();
-                        })
-                        .flatMap(doi -> doi.getElection().stream())
-                        .flatMap(e -> e.getBallot().stream())
-                        .flatMap(b -> {
-                            List<Stream<String>> coll = new LinkedList<>();
-                            if (b.getChosenCandidateListIdentification() != null) {
-                                coll.add(b.getChosenCandidateListIdentification().stream());
-                            }
-                            if (b.getChosenCandidateIdentification() != null) {
-                                coll.add(b.getChosenCandidateIdentification().stream());
-                            }
-                            if (b.getChosenWriteInsCandidateValue() != null) {
-                                coll.add(b.getChosenWriteInsCandidateValue().stream().map(s -> "#" + s));
-                            }
-                            if (b.getChosenListIdentification() != null) {
-                                coll.add(Stream.of(b.getChosenListIdentification()));
-                            }
-                            return coll.stream().flatMap(Function.identity());
-                        })
-                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting())));
+				aliasCountMap.putAll(decryptResult.getBallotsBox().stream()
+						.filter(bb -> {
+							return ballotBoxAuthId.equals(bb.getBallotBoxIdentification());
+						})
+						.flatMap(theBb -> theBb.getCountingCircle().stream())
+						.filter(cc -> {
+							return countingCircleId.equals(cc.getCountingCircleIdentification());
+						})
+						.flatMap(theCc -> {
+							return theCc.getDomainOfInfluence().stream();
+						})
+						.flatMap(doi -> doi.getElection().stream())
+						.flatMap(e -> e.getBallot().stream())
+						.flatMap(b -> {
+							List<Stream<String>> coll = new LinkedList<>();
+							if (b.getChosenCandidateListIdentification() != null) {
+								coll.add(b.getChosenCandidateListIdentification().stream());
+							}
+							if (b.getChosenCandidateIdentification() != null) {
+								coll.add(b.getChosenCandidateIdentification().stream());
+							}
+							if (b.getChosenWriteInsCandidateValue() != null) {
+								coll.add(b.getChosenWriteInsCandidateValue().stream().map(s -> "#" + s));
+							}
+							if (b.getChosenListIdentification() != null) {
+								coll.add(Stream.of(b.getChosenListIdentification()));
+							}
+							return coll.stream().flatMap(Function.identity());
+						})
+						.collect(Collectors.groupingBy(Function.identity(), Collectors.counting())));
 
-                // Finally do the check
-                // TODO If no aliasCountMap, throw a business error ?
-                aliasCountMap.forEach((alias, aliasCount) -> {
-                    if (alias.startsWith("#")) {
-                        Long nb = primesCountMap.entrySet().stream()
-                                .filter(e -> e.getKey().endsWith(alias))
-                                .mapToLong(e -> {
-                                    Long aLong = e.getValue();
-                                    return aLong != null ? aLong : 0L;
-                                })
-                                .sum();
-                        if (!nb.equals(aliasCount)) {
-                            throw buildVerificationFailureException(
-                                    "The occurrences for an option are different in decryptedBallots.csv and evoting-decrypt.csv",
-                                    Block4VerificationSuite.RESOURCE_BUNDLE_NAME,
-                                    "verification01.nok.message",
-                                    alias
-                            );
-                        }
-                    } else {
-                        Long nb = primeAliasMap.entrySet().stream()
-                                .filter(e -> e.getValue().equals(alias))
-                                .map(Map.Entry::getKey)
-                                .mapToLong(p -> {
-                                    Long aLong = primesCountMap.get(p.toString());
-                                    return aLong != null ? aLong : 0L;
-                                })
-                                .sum();
-                        if (!nb.equals(aliasCount)) {
-                            throw buildVerificationFailureException(
-                                    "The occurrences for an option are different in decryptedBallots.csv and evoting-decrypt.csv",
-                                    Block4VerificationSuite.RESOURCE_BUNDLE_NAME,
-                                    "verification01.nok.message",
-                                    alias
-                            );
-                        }
-                    }
-                });
-            }
-        }
+				// Finally do the check
+				// TODO If no aliasCountMap, throw a business error ?
+				aliasCountMap.forEach((alias, aliasCount) -> {
+					if (alias.startsWith("#")) {
+						Long nb = primesCountMap.entrySet().stream()
+								.filter(e -> e.getKey().endsWith(alias))
+								.mapToLong(e -> {
+									Long aLong = e.getValue();
+									return aLong != null ? aLong : 0L;
+								})
+								.sum();
+						if (!nb.equals(aliasCount)) {
+							throw buildVerificationFailureException(
+									"The occurrences for an option are different in decryptedBallots.csv and evoting-decrypt.csv",
+									Block4VerificationSuite.RESOURCE_BUNDLE_NAME,
+									"verification01.nok.message",
+									alias
+							);
+						}
+					} else {
+						Long nb = primeAliasMap.entrySet().stream()
+								.filter(e -> e.getValue().equals(alias))
+								.map(Map.Entry::getKey)
+								.mapToLong(p -> {
+									Long aLong = primesCountMap.get(p.toString());
+									return aLong != null ? aLong : 0L;
+								})
+								.sum();
+						if (!nb.equals(aliasCount)) {
+							throw buildVerificationFailureException(
+									"The occurrences for an option are different in decryptedBallots.csv and evoting-decrypt.csv",
+									Block4VerificationSuite.RESOURCE_BUNDLE_NAME,
+									"verification01.nok.message",
+									alias
+							);
+						}
+					}
+				});
+			}
+		}
 
-        result.setStatus(Status.OK);
-        return result;
-    }
+		result.setStatus(Status.OK);
+		return result;
+	}
 
-    private Map<String, Long> getCorrectFileAndExtractPrimesCount(Path ballotBoxIdDirectoryPath) throws IOException {
-        final PathNode decompressedVotesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.DECOMPRESSED_VOTES, ballotBoxIdDirectoryPath);
-        Iterable<List<String>> iterable = Deserializer.fromCsv(decompressedVotesPathNode.getPath(), ";", Arrays::asList);
+	private Map<String, Long> getCorrectFileAndExtractPrimesCount(Path ballotBoxIdDirectoryPath) throws IOException {
+		final PathNode decompressedVotesPathNode = pathService
+				.buildFromDynamicAncestorPath(StructureKey.DECOMPRESSED_VOTES, ballotBoxIdDirectoryPath);
+		Iterable<List<String>> iterable = Deserializer.fromCsv(decompressedVotesPathNode.getPath(), ";", Arrays::asList);
 
-        return StreamSupport.stream(iterable.spliterator(), false)
-                .flatMap(Collection::stream)
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-    }
+		return StreamSupport.stream(iterable.spliterator(), false)
+				.flatMap(Collection::stream)
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+	}
 
 }

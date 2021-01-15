@@ -14,43 +14,42 @@
  */
 package ch.post.it.evoting.verifier.block.block3.verifications;
 
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
+
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationResult;
 
 class CheckDecryptionProofTest extends Block3VerificationAbstractTest {
 
-    @BeforeEach
-    void setup() {
-        verification = new CheckDecryptionProof();
-    }
+	public CheckDecryptionProofTest() {
+		super(CheckDecryptionProof.class);
+	}
 
-    @Test
-    void executeTestOK() throws Exception {
-        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofTest/OK").toURI()));
-        assertEquals(Status.OK, result.getStatus());
-    }
+	@Test
+	void executeTestOK() throws Exception {
+		VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofTest/OK").toURI()));
+		assertEquals(Status.OK, result.getStatus());
+	}
 
-    @Test
-    void executeTestWithWriteInsOK() throws Exception {
-        VerificationResult result =
-                verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofTest/OK-WRITE-INS").toURI()));
-        assertEquals(Status.OK, result.getStatus());
-    }
+	@Test
+	void executeTestWithWriteInsOK() throws Exception {
+		VerificationResult result =
+				verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofTest/OK-WRITE-INS").toURI()));
+		assertEquals(Status.OK, result.getStatus());
+	}
 
-    @Test
-    void executeTestKOFileNotFound() {
-        final FileNotFoundException ex = assertThrows(
-                FileNotFoundException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofTest/NOK-NOTFILE").toURI()))
-        );
-        assertEquals("votesWithProof\\.csv", ex.getMessage());
-    }
+	@Test
+	void executeTestKOFileNotFound() {
+		final FileNotFoundException ex = assertThrows(
+				FileNotFoundException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckDecryptionProofTest/NOK-NOTFILE").toURI()))
+		);
+		assertEquals("votesWithProof\\.csv", ex.getMessage());
+	}
 }

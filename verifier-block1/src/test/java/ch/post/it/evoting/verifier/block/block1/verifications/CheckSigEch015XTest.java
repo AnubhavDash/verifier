@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.verifier.common.Status;
@@ -35,15 +34,14 @@ import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 
 class CheckSigEch015XTest extends Block1VerificationAbstractTest {
 
-	@BeforeEach
-	void setup() {
-		verification = new CheckSigEch015X();
+	public CheckSigEch015XTest() {
+		super(CheckSigEch015X.class);
 	}
 
 	@Test
 	void executeTestOK() throws Exception {
 		VerificationResult verificationResult =
-				new CheckSigEch015X().verify(Paths.get(getClass().getResource("/CheckSigEch015XTest/OK").toURI()));
+				verification.verify(Paths.get(getClass().getResource("/CheckSigEch015XTest/OK").toURI()));
 		assertNotNull(verificationResult);
 		assertEquals(Status.OK, verificationResult.getStatus());
 	}

@@ -14,6 +14,11 @@
  */
 package ch.post.it.evoting.verifier.block.block3.verifications;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
@@ -26,63 +31,61 @@ import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-
 public class CheckSigReEncryptedBallots extends AbstractVerification {
 
-    @Override
-    public VerificationDefinition getVerificationDefinition() {
+	@Override
+	public VerificationDefinition getVerificationDefinition() {
 
-        VerificationDefinition verificationDefinition = new VerificationDefinition();
-        verificationDefinition.setBlockId(3);
-        verificationDefinition.setCategory(Category.AUTHENTICITY);
-        verificationDefinition.setId(72);
-        verificationDefinition.setName("checkSigReEncryptedBallots");
-        verificationDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification72.description"));
+		VerificationDefinition verificationDefinition = new VerificationDefinition();
+		verificationDefinition.setBlockId(3);
+		verificationDefinition.setCategory(Category.AUTHENTICITY);
+		verificationDefinition.setId(72);
+		verificationDefinition.setName("checkSigReEncryptedBallots");
+		verificationDefinition
+				.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification72.description"));
 
-        return verificationDefinition;
-    }
+		return verificationDefinition;
+	}
 
-    @Override
-    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-        VerificationResult result = new VerificationResult();
+	@Override
+	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
+		VerificationResult result = new VerificationResult();
 
-        // Collect all the reencrypted ballots
-        List<PathNode> reencryptedBallotsPathNodes = new ArrayList<>();
-        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
-        for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
-            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
-            for (Path ballotBoxOfflineDirectoryPath : ballotBoxOfflineDirectoriesPathNode.getRegexPaths()) {
-                reencryptedBallotsPathNodes.add(pathService.buildFromDynamicAncestorPath(StructureKey.REENCRYPTED_BALLOTS, ballotBoxOfflineDirectoryPath));
-            }
-        }
+		// Collect all the reencrypted ballots
+		List<PathNode> reencryptedBallotsPathNodes = new ArrayList<>();
+		PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+		for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
+			PathNode ballotBoxOfflineDirectoriesPathNode = pathService
+					.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
+			for (Path ballotBoxOfflineDirectoryPath : ballotBoxOfflineDirectoriesPathNode.getRegexPaths()) {
+				reencryptedBallotsPathNodes
+						.add(pathService.buildFromDynamicAncestorPath(StructureKey.REENCRYPTED_BALLOTS, ballotBoxOfflineDirectoryPath));
+			}
+		}
 
-        // Get signed certificate
-        PathNode adminBoardCertPathNode = pathService.buildFromRootPath(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
-        byte[] signCertificate = Files.readAllBytes(adminBoardCertPathNode.getPath());
+		// Get signed certificate
+		PathNode adminBoardCertPathNode = pathService.buildFromRootPath(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
+		byte[] signCertificate = Files.readAllBytes(adminBoardCertPathNode.getPath());
 
-        // Get root certificate
-        PathNode rootCAPathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
-        byte[] rootCA = Files.readAllBytes(rootCAPathNode.getPath());
+		// Get root certificate
+		PathNode rootCAPathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
+		byte[] rootCA = Files.readAllBytes(rootCAPathNode.getPath());
 
-        // Verify signature for each reencrypted ballots
-        for (PathNode reencryptedBallotsPathNode : reencryptedBallotsPathNodes) {
-            byte[] content = Files.readAllBytes(reencryptedBallotsPathNode.getPath());
-            byte[] signature = Files.readAllBytes(reencryptedBallotsPathNode.getRelation(RelationType.METADATA));
+		// Verify signature for each reencrypted ballots
+		for (PathNode reencryptedBallotsPathNode : reencryptedBallotsPathNodes) {
+			byte[] content = Files.readAllBytes(reencryptedBallotsPathNode.getPath());
+			byte[] signature = Files.readAllBytes(reencryptedBallotsPathNode.getRelation(RelationType.METADATA));
 
-            if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCA)) {
-                throw buildVerificationFailureException(
-                        "The signature verification of the evoting-decrypt.xml failed",
-                        Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
-                        "verification72.nok.message"
-                );
-            }
-        }
+			if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCA)) {
+				throw buildVerificationFailureException(
+						"The signature verification of the evoting-decrypt.xml failed",
+						Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
+						"verification72.nok.message"
+				);
+			}
+		}
 
-        result.setStatus(Status.OK);
-        return result;
-    }
+		result.setStatus(Status.OK);
+		return result;
+	}
 }

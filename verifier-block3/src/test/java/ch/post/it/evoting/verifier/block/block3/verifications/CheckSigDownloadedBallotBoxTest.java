@@ -14,98 +14,100 @@
  */
 package ch.post.it.evoting.verifier.block.block3.verifications;
 
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.JsonMissingNodeException;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.exceptions.JsonMissingNodeException;
+import ch.post.it.evoting.verifier.common.block.exceptions.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 
 class CheckSigDownloadedBallotBoxTest extends Block3VerificationAbstractTest {
 
-    @BeforeEach
-    void setup() {
-        verification = new CheckSigDownloadedBallotBox();
-    }
+	public CheckSigDownloadedBallotBoxTest() {
+		super(CheckSigDownloadedBallotBox.class);
+	}
 
-    @Test
-    void executeTestOK() throws Exception {
-        VerificationResult verificationResult =
-                verification.verify(Paths.get(getClass().getResource("/CheckSigDownloadedBallotBoxTest/OK").toURI()));
-        assertNotNull(verificationResult);
-        assertEquals(Status.OK, verificationResult.getStatus());
-    }
+	@Test
+	void executeTestOK() throws Exception {
+		VerificationResult verificationResult =
+				verification.verify(Paths.get(getClass().getResource("/CheckSigDownloadedBallotBoxTest/OK").toURI()));
+		assertNotNull(verificationResult);
+		assertEquals(Status.OK, verificationResult.getStatus());
+	}
 
-    @Test
-    void executeTestNOKInvalidSignature() {
-        final VerificationFailureException ex = assertThrows(
-                VerificationFailureException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigDownloadedBallotBoxTest/NOK").toURI()))
-        );
-        assertEquals("The signature verification of the file failed", ex.getMessage());
-    }
+	@Test
+	void executeTestNOKInvalidSignature() {
+		final VerificationFailureException ex = assertThrows(
+				VerificationFailureException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigDownloadedBallotBoxTest/NOK").toURI()))
+		);
+		assertEquals("The signature verification of the file failed", ex.getMessage());
+	}
 
-    @Test
-    void executeTestNOKFileNotFound() {
-        final NoSuchFileException ex = assertThrows(
-                NoSuchFileException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigDownloadedBallotBoxTest/NOK-NOFILE").toURI()))
-        );
-        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.DOWNLOADED_BALLOT_BOX);
-        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
-    }
+	@Test
+	void executeTestNOKFileNotFound() {
+		final NoSuchFileException ex = assertThrows(
+				NoSuchFileException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigDownloadedBallotBoxTest/NOK-NOFILE").toURI()))
+		);
+		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.DOWNLOADED_BALLOT_BOX);
+		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	}
 
-    @Test
-    void executeTestNOKBallotFileNotFound() {
-        final NoSuchFileException ex = assertThrows(
-                NoSuchFileException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigDownloadedBallotBoxTest/NOK-NOFILE2").toURI()))
-        );
-        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.BALLOT_BOX);
-        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
-    }
+	@Test
+	void executeTestNOKBallotFileNotFound() {
+		final NoSuchFileException ex = assertThrows(
+				NoSuchFileException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigDownloadedBallotBoxTest/NOK-NOFILE2").toURI()))
+		);
+		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.BALLOT_BOX);
+		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	}
 
-    @Test
-    void executeTestNOKElectionFileNotFound() {
-        final NoSuchFileException ex = assertThrows(
-                NoSuchFileException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigDownloadedBallotBoxTest/NOK-NOFILE3").toURI()))
-        );
-        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ELECTION_INFORMATION_CONTENTS);
-        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
-    }
+	@Test
+	void executeTestNOKElectionFileNotFound() {
+		final NoSuchFileException ex = assertThrows(
+				NoSuchFileException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigDownloadedBallotBoxTest/NOK-NOFILE3").toURI()))
+		);
+		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ELECTION_INFORMATION_CONTENTS);
+		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	}
 
-    @Test
-    void executeTestNOKSignCertNotFound() {
-        final JsonMissingNodeException ex = assertThrows(
-                JsonMissingNodeException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigDownloadedBallotBoxTest/NOK-NOCERT").toURI()))
-        );
-        assertEquals(String.format("%s certificate is missing!", CheckSigDownloadedBallotBox.BALLOT_BOX_CERT_NODE), ex.getMessage());
-    }
+	@Test
+	void executeTestNOKSignCertNotFound() {
+		final JsonMissingNodeException ex = assertThrows(
+				JsonMissingNodeException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigDownloadedBallotBoxTest/NOK-NOCERT").toURI()))
+		);
+		assertEquals(String.format("%s certificate is missing!", CheckSigDownloadedBallotBox.BALLOT_BOX_CERT_NODE), ex.getMessage());
+	}
 
-    @Test
-    void executeTestNOKInterCertNotFound() {
-        final JsonMissingNodeException ex = assertThrows(
-                JsonMissingNodeException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigDownloadedBallotBoxTest/NOK-NOCERT2").toURI()))
-        );
-        assertEquals(String.format("%s certificate is missing!", CheckSigDownloadedBallotBox.SERVICES_CA_NODE), ex.getMessage());
-    }
+	@Test
+	void executeTestNOKInterCertNotFound() {
+		final JsonMissingNodeException ex = assertThrows(
+				JsonMissingNodeException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigDownloadedBallotBoxTest/NOK-NOCERT2").toURI()))
+		);
+		assertEquals(String.format("%s certificate is missing!", CheckSigDownloadedBallotBox.SERVICES_CA_NODE), ex.getMessage());
+	}
 
-    @Test
-    void executeTestNOKRootNotFound() {
-        final JsonMissingNodeException ex = assertThrows(
-                JsonMissingNodeException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckSigDownloadedBallotBoxTest/NOK-NOCERT3").toURI()))
-        );
-        assertEquals(String.format("%s certificate is missing!", CheckSigDownloadedBallotBox.ELECTION_ROOT_CA_NODE), ex.getMessage());
-    }
+	@Test
+	void executeTestNOKRootNotFound() {
+		final JsonMissingNodeException ex = assertThrows(
+				JsonMissingNodeException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigDownloadedBallotBoxTest/NOK-NOCERT3").toURI()))
+		);
+		assertEquals(String.format("%s certificate is missing!", CheckSigDownloadedBallotBox.ELECTION_ROOT_CA_NODE), ex.getMessage());
+	}
 }

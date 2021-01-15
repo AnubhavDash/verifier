@@ -1,19 +1,22 @@
 html,
 body {
-  height: 95%;
+
 }
 
-
-button {
-  background-color: #eee !important;
+body {
+  background: #f9f9f9;
+  /*background: #ffffff;*/
+  /*background: -webkit-linear-gradient(to right, #74ebd5, #ACB6E5);*/
+  /*background: linear-gradient(to right, #74ebd5, #ACB6E5);*/
+  /*min-height: 100vh;*/
 }
 
-button:hover {
-  background-color: grey !important;
-  color: white;
+h1.display-1 {
+  text-transform: uppercase;
+  font-size: 2rem;
 }
 
-#buttonDiv {
-  text-align: center;
+h2.display-2 {
+  text-transform: uppercase;
+  font-size: 1.5rem;
 }
-

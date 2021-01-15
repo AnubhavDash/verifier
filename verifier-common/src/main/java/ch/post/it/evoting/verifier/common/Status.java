@@ -15,5 +15,9 @@
 package ch.post.it.evoting.verifier.common;
 
 public enum Status {
-    OK, NOK, NA
+	OK,
+	NOK,
+	NA,
+	FILE_ERROR,
+	UNEXPECTED_ERROR
 }

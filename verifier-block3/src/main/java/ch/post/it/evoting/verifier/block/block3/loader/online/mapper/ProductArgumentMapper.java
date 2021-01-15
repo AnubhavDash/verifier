@@ -14,24 +14,31 @@
  */
 package ch.post.it.evoting.verifier.block.block3.loader.online.mapper;
 
-import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.ProductArgumentMessage;
-import com.scytl.products.ov.mixnet.commons.beans.proofs.*;
-import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+
+import com.scytl.products.ov.mixnet.commons.beans.proofs.HadamardProductProofAnswer;
+import com.scytl.products.ov.mixnet.commons.beans.proofs.HadamardProductProofInitialMessage;
+import com.scytl.products.ov.mixnet.commons.beans.proofs.ProductProofMessage;
+import com.scytl.products.ov.mixnet.commons.beans.proofs.SingleValueProductProofAnswer;
+import com.scytl.products.ov.mixnet.commons.beans.proofs.SingleValueProductProofInitialMessage;
+import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
+
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.ProductArgumentMessage;
 
 @Mapper
 public interface ProductArgumentMapper {
 
-    ProductArgumentMapper INSTANCE = Mappers.getMapper(ProductArgumentMapper.class);
+	ProductArgumentMapper INSTANCE = Mappers.getMapper(ProductArgumentMapper.class);
 
-    default ProductProofMessage map(ProductArgumentMessage source) {
-        PublicCommitment cb = new PublicCommitment(GroupElementMapper.INSTANCE.map(source.getCommitmentB().getElement()));
-        SingleValueProductProofInitialMessage iniSVA = SingleValueArgumentMapper.INSTANCE.mapInitMessage(source.getSingleValueArgumentInitMessage());
-        SingleValueProductProofAnswer ansVa = SingleValueArgumentMapper.INSTANCE.mapAnswer(source.getSingleValueArgumentAnswer());
-        HadamardProductProofInitialMessage iniHpa = HadamardProductArgumentMapper.INSTANCE.mapInitMessage(source.getHadamardProductArgumentInitMessage());
-        HadamardProductProofAnswer ansHpa = HadamardProductArgumentMapper.INSTANCE.mapAnswer(source.getHadamardProductArgumentAnswer());
-        return new ProductProofMessage(cb, iniSVA, ansVa, iniHpa, ansHpa);
-    }
+	default ProductProofMessage map(ProductArgumentMessage source) {
+		PublicCommitment cb = new PublicCommitment(GroupElementMapper.INSTANCE.map(source.getCommitmentB().getElement()));
+		SingleValueProductProofInitialMessage iniSVA = SingleValueArgumentMapper.INSTANCE.mapInitMessage(source.getSingleValueArgumentInitMessage());
+		SingleValueProductProofAnswer ansVa = SingleValueArgumentMapper.INSTANCE.mapAnswer(source.getSingleValueArgumentAnswer());
+		HadamardProductProofInitialMessage iniHpa = HadamardProductArgumentMapper.INSTANCE
+				.mapInitMessage(source.getHadamardProductArgumentInitMessage());
+		HadamardProductProofAnswer ansHpa = HadamardProductArgumentMapper.INSTANCE.mapAnswer(source.getHadamardProductArgumentAnswer());
+		return new ProductProofMessage(cb, iniSVA, ansVa, iniHpa, ansHpa);
+	}
 
 }

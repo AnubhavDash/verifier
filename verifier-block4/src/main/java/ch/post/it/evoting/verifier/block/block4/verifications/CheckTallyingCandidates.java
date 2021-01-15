@@ -254,7 +254,7 @@ public class CheckTallyingCandidates extends AbstractVerification {
 		long count = 0;
 
 		//candidateListId
-		if (mapConfig.values().contains(cId)) {
+		if (mapConfig.containsValue(cId)) {
 			count += mapConfig.entrySet().stream()
 					.filter(e -> e.getValue().equals(cId))
 					.mapToLong(e -> Optional.ofNullable(countByCC.get(e.getKey())).orElse(0L))

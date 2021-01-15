@@ -1,10 +1,6 @@
 package ch.post.it.evoting.verifier.common.block.tools;
 
-import ch.post.it.evoting.verifier.common.block.dto.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,259 +15,273 @@ import java.security.Security;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import ch.post.it.evoting.verifier.common.block.dto.BilinearMappingParameters;
+import ch.post.it.evoting.verifier.common.block.dto.ComputeCommitmentParameters;
+import ch.post.it.evoting.verifier.common.block.dto.ComputePhiExponentiationParameters;
+import ch.post.it.evoting.verifier.common.block.dto.ComputePhiSchnorrParameters;
+import ch.post.it.evoting.verifier.common.block.dto.ComputePlaintextEqualityParameters;
+import ch.post.it.evoting.verifier.common.block.dto.ModExpParameters;
+import ch.post.it.evoting.verifier.common.block.dto.ModExpProductParameters;
+import ch.post.it.evoting.verifier.common.block.dto.ModInvParameters;
+import ch.post.it.evoting.verifier.common.block.dto.ProdIncPowParameters;
+import ch.post.it.evoting.verifier.common.block.dto.RandomOracleHashParameters;
+import ch.post.it.evoting.verifier.common.block.dto.VerifySVPArgumentParameters;
+import ch.post.it.evoting.verifier.common.block.dto.VerifyZArgumentParameters;
 
 class MathHelperTest {
 
-    @Test
-    void modExpWithSimpleValues() {
-        modExpTest("modExpSimpleValues.json");
-    }
+	@Test
+	void modExpWithSimpleValues() {
+		modExpTest("modExpSimpleValues.json");
+	}
 
-    @Test
-    void modExpWithRealSizeValues() {
-        modExpTest("modExpRealSizeValues.json");
-    }
+	@Test
+	void modExpWithRealSizeValues() {
+		modExpTest("modExpRealSizeValues.json");
+	}
 
-    private void modExpTest(String jsonFileName) {
-        List<ModExpParameters> modExpParametersList = readValues(jsonFileName, ModExpParameters[].class);
-        modExpParametersList.forEach(modExpParameters -> {
-            BigInteger output = MathHelper.modExp(modExpParameters.getB(), modExpParameters.getE(), modExpParameters.getM());
-            assertEquals(modExpParameters.getId(), modExpParameters.getOutput(), output);
-        });
-    }
+	private void modExpTest(String jsonFileName) {
+		List<ModExpParameters> modExpParametersList = readValues(jsonFileName, ModExpParameters[].class);
+		modExpParametersList.forEach(modExpParameters -> {
+			BigInteger output = MathHelper.modExp(modExpParameters.getB(), modExpParameters.getE(), modExpParameters.getM());
+			assertEquals(modExpParameters.getId(), modExpParameters.getOutput(), output);
+		});
+	}
 
+	@Test
+	void modExpProductWithSimpleValues() {
+		modExpProductTest("modExpProductSimpleValues.json");
+	}
 
-    @Test
-    void modExpProductWithSimpleValues() {
-        modExpProductTest("modExpProductSimpleValues.json");
-    }
+	@Test
+	void modExpProductWithRealSizeValues() {
+		modExpProductTest("modExpProductRealSizeValues.json");
+	}
 
-    @Test
-    void modExpProductWithRealSizeValues() {
-        modExpProductTest("modExpProductRealSizeValues.json");
-    }
+	private void modExpProductTest(String jsonFileName) {
+		List<ModExpProductParameters> modExpProductParametersList =
+				readValues(jsonFileName, ModExpProductParameters[].class);
+		modExpProductParametersList.forEach(modExpProductParameters -> {
+			BigInteger output = MathHelper.modExpProduct(
+					modExpProductParameters.getB_vec(), modExpProductParameters.getE_vec(), modExpProductParameters.getM());
 
-    private void modExpProductTest(String jsonFileName) {
-        List<ModExpProductParameters> modExpProductParametersList =
-                readValues(jsonFileName, ModExpProductParameters[].class);
-        modExpProductParametersList.forEach(modExpProductParameters -> {
-            BigInteger output = MathHelper.modExpProduct(
-                    modExpProductParameters.getB_vec(), modExpProductParameters.getE_vec(), modExpProductParameters.getM());
+			assertEquals(modExpProductParameters.getId(), modExpProductParameters.getOutput(), output);
+		});
+	}
 
-            assertEquals(modExpProductParameters.getId(), modExpProductParameters.getOutput(), output);
-        });
-    }
+	@Test
+	void modInvWithSimpleValues() {
+		modInvTest("modInvSimpleValues.json");
+	}
 
-    @Test
-    void modInvWithSimpleValues() {
-        modInvTest("modInvSimpleValues.json");
-    }
+	@Test
+	void modInvWithRealSizeValues() {
+		modInvTest("modInvRealSizeValues.json");
+	}
 
-    @Test
-    void modInvWithRealSizeValues() {
-        modInvTest("modInvRealSizeValues.json");
-    }
+	private void modInvTest(String jsonFileName) {
+		List<ModInvParameters> modInvParametersList = readValues(jsonFileName, ModInvParameters[].class);
+		modInvParametersList.forEach(modInvParameters -> {
+			BigInteger output = MathHelper.modInv(modInvParameters.getB(), modInvParameters.getM());
+			assertEquals(modInvParameters.getId(), modInvParameters.getOutput(), output);
+		});
+	}
 
-    private void modInvTest(String jsonFileName) {
-        List<ModInvParameters> modInvParametersList = readValues(jsonFileName, ModInvParameters[].class);
-        modInvParametersList.forEach(modInvParameters -> {
-            BigInteger output = MathHelper.modInv(modInvParameters.getB(), modInvParameters.getM());
-            assertEquals(modInvParameters.getId(), modInvParameters.getOutput(), output);
-        });
-    }
+	@Test
+	void procIncPowTest() {
+		final ProdIncPowParameters prodIncPowParameters = readValue("prodIncPow.json", ProdIncPowParameters.class);
 
-    @Test
-    void procIncPowTest() {
-        final ProdIncPowParameters prodIncPowParameters = readValue("prodIncPow.json", ProdIncPowParameters.class);
+		final BigInteger result = MathHelper.prodIncPow(prodIncPowParameters.getEncryptionGroup(), prodIncPowParameters.getA_vec(),
+				prodIncPowParameters.getX());
 
-        final BigInteger result = MathHelper.prodIncPow(prodIncPowParameters.getEncryptionGroup(), prodIncPowParameters.getA_vec(),
-                prodIncPowParameters.getX());
+		Assertions.assertEquals(prodIncPowParameters.getOutput(), result);
+	}
 
-        Assertions.assertEquals(prodIncPowParameters.getOutput(), result);
-    }
+	@Test
+	void computeCommitmentWithSimpleValues() {
+		computeCommitmentTest("computeCommitmentSimpleValues.json");
+	}
 
-    @Test
-    void computeCommitmentWithSimpleValues() {
-        computeCommitmentTest("computeCommitmentSimpleValues.json");
-    }
+	@Test
+	void computeCommitmentWithRealSizeValues() {
+		computeCommitmentTest("computeCommitmentRealSizeValues.json");
+	}
 
-    @Test
-    void computeCommitmentWithRealSizeValues() {
-        computeCommitmentTest("computeCommitmentRealSizeValues.json");
-    }
+	private void computeCommitmentTest(String jsonFileName) {
+		List<ComputeCommitmentParameters> computeCommitmentParametersList =
+				readValues(jsonFileName, ComputeCommitmentParameters[].class);
+		computeCommitmentParametersList.forEach(computeCommitmentParameters -> {
+			BigInteger output = MathHelper.computeCommitment(
+					computeCommitmentParameters.getEg(),
+					computeCommitmentParameters.getR(),
+					computeCommitmentParameters.getA_vec(),
+					computeCommitmentParameters.getCk()
+			);
 
-    private void computeCommitmentTest(String jsonFileName) {
-        List<ComputeCommitmentParameters> computeCommitmentParametersList =
-                readValues(jsonFileName, ComputeCommitmentParameters[].class);
-        computeCommitmentParametersList.forEach(computeCommitmentParameters -> {
-            BigInteger output = MathHelper.computeCommitment(
-                    computeCommitmentParameters.getEg(),
-                    computeCommitmentParameters.getR(),
-                    computeCommitmentParameters.getA_vec(),
-                    computeCommitmentParameters.getCk()
-            );
+			assertEquals(computeCommitmentParameters.getId(), computeCommitmentParameters.getOutput(), output);
+		});
+	}
 
-            assertEquals(computeCommitmentParameters.getId(), computeCommitmentParameters.getOutput(), output);
-        });
-    }
+	@Test
+	void computePhiSchnorrWithSimpleValues() {
+		computePhiSchnorrTest("computePhiSchnorrSimpleValues.json");
+	}
 
+	@Test
+	void computePhiSchnorrWithRealSizeValues() {
+		computePhiSchnorrTest("computePhiSchnorrRealSizeValues.json");
+	}
 
-    @Test
-    void computePhiSchnorrWithSimpleValues() {
-        computePhiSchnorrTest("computePhiSchnorrSimpleValues.json");
-    }
+	private void computePhiSchnorrTest(String jsonFileName) {
+		List<ComputePhiSchnorrParameters> computePhiSchnorrParametersList =
+				readValues(jsonFileName, ComputePhiSchnorrParameters[].class);
+		computePhiSchnorrParametersList.forEach(computePhiSchnorrParameters -> {
+			BigInteger output = MathHelper.computePhiSchnorr(
+					computePhiSchnorrParameters.getEg(),
+					computePhiSchnorrParameters.getX()
+			);
 
-    @Test
-    void computePhiSchnorrWithRealSizeValues() {
-        computePhiSchnorrTest("computePhiSchnorrRealSizeValues.json");
-    }
+			assertEquals(computePhiSchnorrParameters.getId(), computePhiSchnorrParameters.getOutput(), output);
+		});
+	}
 
-    private void computePhiSchnorrTest(String jsonFileName) {
-        List<ComputePhiSchnorrParameters> computePhiSchnorrParametersList =
-                readValues(jsonFileName, ComputePhiSchnorrParameters[].class);
-        computePhiSchnorrParametersList.forEach(computePhiSchnorrParameters -> {
-            BigInteger output = MathHelper.computePhiSchnorr(
-                    computePhiSchnorrParameters.getEg(),
-                    computePhiSchnorrParameters.getX()
-            );
+	@Test
+	void computePhiExponentiationSimpleValues() {
+		computePhiExponentiationTest("computePhiExponentiationSimpleValues.json");
+	}
 
-            assertEquals(computePhiSchnorrParameters.getId(), computePhiSchnorrParameters.getOutput(), output);
-        });
-    }
+	@Test
+	void computePhiExponentiationRealSizeValues() {
+		computePhiExponentiationTest("computePhiExponentiationRealSizeValues.json");
+	}
 
-    @Test
-    void computePhiExponentiationSimpleValues() {
-        computePhiExponentiationTest("computePhiExponentiationSimpleValues.json");
-    }
+	private void computePhiExponentiationTest(String jsonFileName) {
+		List<ComputePhiExponentiationParameters> computePhiExponentiationParameters = readValues(jsonFileName,
+				ComputePhiExponentiationParameters[].class);
+		computePhiExponentiationParameters.forEach(cpep -> {
+			List<BigInteger> output = MathHelper.computePhiExponentiation(
+					cpep.getEg(),
+					cpep.getG_vec(),
+					cpep.getX()
+			);
+			assertEquals(cpep.getId(), cpep.getOutput_vec(), output);
+		});
+	}
 
-    @Test
-    void computePhiExponentiationRealSizeValues() {
-        computePhiExponentiationTest("computePhiExponentiationRealSizeValues.json");
-    }
+	@Test
+	void computePlaintextEqualityWithSimpleValues() {
+		computePlaintextEqualityTest("computePlaintextEqualitySimpleValues.json");
+	}
 
-    private void computePhiExponentiationTest(String jsonFileName) {
-        List<ComputePhiExponentiationParameters> computePhiExponentiationParameters = readValues(jsonFileName,
-                ComputePhiExponentiationParameters[].class);
-        computePhiExponentiationParameters.forEach(cpep -> {
-            List<BigInteger> output = MathHelper.computePhiExponentiation(
-                    cpep.getEg(),
-                    cpep.getG_vec(),
-                    cpep.getX()
-            );
-            assertEquals(cpep.getId(), cpep.getOutput_vec(), output);
-        });
-    }
+	@Test
+	void computePlaintextEqualityWithRealSizeValues() {
+		computePlaintextEqualityTest("computePlaintextEqualityRealSizeValues.json");
+	}
 
-    @Test
-    void computePlaintextEqualityWithSimpleValues() {
-        computePlaintextEqualityTest("computePlaintextEqualitySimpleValues.json");
-    }
+	private void computePlaintextEqualityTest(String jsonFileName) {
+		final List<ComputePlaintextEqualityParameters> computePlaintextEqualityParameters =
+				readValues(jsonFileName, ComputePlaintextEqualityParameters[].class);
+		computePlaintextEqualityParameters.forEach(cpep -> {
+			final List<BigInteger> output = MathHelper.computePhiPlaintextEquality(
+					cpep.getEg(),
+					cpep.getH_vec(),
+					cpep.getH_vec_bar(),
+					cpep.getR(),
+					cpep.getR_bar()
+			);
+			assertEquals(cpep.getId(), cpep.getOutput_vec(), output);
+		});
+	}
 
-    @Test
-    void computePlaintextEqualityWithRealSizeValues() {
-        computePlaintextEqualityTest("computePlaintextEqualityRealSizeValues.json");
-    }
+	@Test
+	void bilinearMappingTest() {
+		final BilinearMappingParameters bilinearMappingParameters = readValue("bilinearMap.json", BilinearMappingParameters.class);
+		final BigInteger result = MathHelper.bilinearMapping(bilinearMappingParameters.getEg(), bilinearMappingParameters.getA_vec(),
+				bilinearMappingParameters.getB_vec(), bilinearMappingParameters.getY());
 
-    private void computePlaintextEqualityTest(String jsonFileName) {
-        final List<ComputePlaintextEqualityParameters> computePlaintextEqualityParameters =
-                readValues(jsonFileName, ComputePlaintextEqualityParameters[].class);
-        computePlaintextEqualityParameters.forEach(cpep -> {
-            final List<BigInteger> output = MathHelper.computePhiPlaintextEquality(
-                    cpep.getEg(),
-                    cpep.getH_vec(),
-                    cpep.getH_vec_bar(),
-                    cpep.getR(),
-                    cpep.getR_bar()
-            );
-            assertEquals(cpep.getId(), cpep.getOutput_vec(), output);
-        });
-    }
+		assertTrue(MathHelper.areEqual(result, bilinearMappingParameters.getOutput()));
+	}
 
-    @Test
-    void bilinearMappingTest() {
-        final BilinearMappingParameters bilinearMappingParameters = readValue("bilinearMap.json", BilinearMappingParameters.class);
-        final BigInteger result = MathHelper.bilinearMapping(bilinearMappingParameters.getEg(), bilinearMappingParameters.getA_vec(),
-                bilinearMappingParameters.getB_vec(), bilinearMappingParameters.getY());
+	@Test
+	void reverseAndJoinTest() {
+		Assertions.assertEquals("CBA", MathHelper.reverseAndJoin(Arrays.asList("A", "B", "C")));
+	}
 
-        assertTrue(MathHelper.areEqual(result, bilinearMappingParameters.getOutput()));
-    }
+	@Test
+	void randomOracleHash() throws Exception {
+		if (Security.getProvider("BC") == null) {
+			Security.addProvider(new BouncyCastleProvider());
+		}
 
-    @Test
-    void reverseAndJoinTest() {
-        Assertions.assertEquals("CBA", MathHelper.reverseAndJoin(Arrays.asList("A", "B", "C")));
-    }
+		final List<RandomOracleHashParameters> randomOracleHashParameters = readValues("randomOracleHashValues.json",
+				RandomOracleHashParameters[].class);
+		for (RandomOracleHashParameters rohp : randomOracleHashParameters) {
+			final BigInteger output = MathHelper.randomOracleHash(MessageDigest.getInstance("SHA-256", "BC"),
+					rohp.getX().getBytes(StandardCharsets.UTF_8),
+					BigInteger.ZERO, rohp.getQ());
+			Assertions.assertEquals(rohp.getOutput(), output);
+		}
+	}
 
-    @Test
-    void randomOracleHash() throws Exception {
-        if (Security.getProvider("BC") == null) {
-            Security.addProvider(new BouncyCastleProvider());
-        }
+	@Test
+	void verifySVPArgumentTest() {
+		final List<VerifySVPArgumentParameters> verifySVPArgumentParameters = readValues("svp-argument.json",
+				VerifySVPArgumentParameters[].class);
 
-        final List<RandomOracleHashParameters> randomOracleHashParameters = readValues("randomOracleHashValues.json",
-                RandomOracleHashParameters[].class);
-        for (RandomOracleHashParameters rohp : randomOracleHashParameters) {
-            final BigInteger output = MathHelper.randomOracleHash(MessageDigest.getInstance("SHA-256", "BC"),
-                    rohp.getX().getBytes(StandardCharsets.UTF_8),
-                    BigInteger.ZERO, rohp.getQ());
-            Assertions.assertEquals(rohp.getOutput(), output);
-        }
-    }
+		for (VerifySVPArgumentParameters svpap : verifySVPArgumentParameters) {
+			final boolean result = MathHelper.verifySVPArgument(svpap.getEg(), svpap.getCk(), svpap.getPk_mix(), svpap.getStatement(),
+					svpap.getArgument());
 
-    @Test
-    void verifySVPArgumentTest() {
-        final List<VerifySVPArgumentParameters> verifySVPArgumentParameters = readValues("svp-argument.json",
-                VerifySVPArgumentParameters[].class);
+			assertTrue(result, "Assertion failed for data id: " + svpap.getId());
+		}
+	}
 
-        for (VerifySVPArgumentParameters svpap : verifySVPArgumentParameters) {
-            final boolean result = MathHelper.verifySVPArgument(svpap.getEg(), svpap.getCk(), svpap.getPk_mix(), svpap.getStatement(),
-                    svpap.getArgument());
+	@Test
+	void zeroArgumentTest() {
+		final VerifyZArgumentParameters zArgumentParameters = readValue("z-argument.json", VerifyZArgumentParameters.class);
 
-            assertTrue(result, "Assertion failed for data id: " + svpap.getId());
-        }
-    }
+		final boolean result = MathHelper.verifyZArgument(zArgumentParameters.getEg(), zArgumentParameters.getCk(),
+				zArgumentParameters.getPk_mix(),
+				zArgumentParameters.getM(), zArgumentParameters.getN(), zArgumentParameters.getStatement(),
+				zArgumentParameters.getArgument());
 
-    @Test
-    void zeroArgumentTest() {
-        final VerifyZArgumentParameters zArgumentParameters = readValue("z-argument.json", VerifyZArgumentParameters.class);
+		assertTrue(result);
+	}
 
-        final boolean result = MathHelper.verifyZArgument(zArgumentParameters.getEg(), zArgumentParameters.getCk(),
-                zArgumentParameters.getPk_mix(),
-                zArgumentParameters.getM(), zArgumentParameters.getN(), zArgumentParameters.getStatement(),
-                zArgumentParameters.getArgument());
+	// =====================================================================================================================================
+	// Utility methods.
+	// =====================================================================================================================================
 
-        assertTrue(result);
-    }
+	private <T> List<T> readValues(String jsonFileName, Class<T[]> clazz) {
+		return Arrays.asList(readValue(jsonFileName, clazz));
+	}
 
+	private <T> T readValue(String jsonFileName, Class<T> clazz) {
+		try {
+			Path jsonPath = Paths.get(getClass().getResource("/MathHelperTest/" + jsonFileName).toURI());
+			InputStream is = Files.newInputStream(jsonPath);
+			ObjectMapper jsonMapper = new ObjectMapper();
+			return jsonMapper.readValue(is, clazz);
+		} catch (IOException | URISyntaxException e) {
+			throw new RuntimeException("Read values failed for file " + jsonFileName + ". " + e.getMessage());
+		}
+	}
 
-    // =====================================================================================================================================
-    // Utility methods.
-    // =====================================================================================================================================
+	private void assertEquals(String id, BigInteger expected, BigInteger actual) {
+		assertTrue(MathHelper.areEqual(expected, actual), "Error in dataset for id : " + id);
+	}
 
-    private <T> List<T> readValues(String jsonFileName, Class<T[]> clazz) {
-        return Arrays.asList(readValue(jsonFileName, clazz));
-    }
-
-    private <T> T readValue(String jsonFileName, Class<T> clazz) {
-        try {
-            Path jsonPath = Paths.get(getClass().getResource("/MathHelperTest/" + jsonFileName).toURI());
-            InputStream is = Files.newInputStream(jsonPath);
-            ObjectMapper jsonMapper = new ObjectMapper();
-            return jsonMapper.readValue(is, clazz);
-        } catch (IOException | URISyntaxException e) {
-            throw new RuntimeException("Read values failed for file " + jsonFileName + ". " + e.getMessage());
-        }
-    }
-
-    private void assertEquals(String id, BigInteger expected, BigInteger actual) {
-        assertTrue(MathHelper.areEqual(expected, actual), "Error in dataset for id : " + id);
-    }
-
-    private void assertEquals(String id, List<BigInteger> expected_vec, List<BigInteger> actual_vec) {
-        int index = 0;
-        for (BigInteger expected : expected_vec) {
-            assertEquals(id, expected, actual_vec.get(index++));
-        }
-    }
+	private void assertEquals(String id, List<BigInteger> expected_vec, List<BigInteger> actual_vec) {
+		int index = 0;
+		for (BigInteger expected : expected_vec) {
+			assertEquals(id, expected, actual_vec.get(index++));
+		}
+	}
 
 }

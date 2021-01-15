@@ -14,31 +14,38 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
-import ch.post.it.evoting.verifier.common.block.dto.converter.StringToBigIntegerConverter;
+import java.math.BigInteger;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.collect.ImmutableList;
-import lombok.Getter;
 
-import java.math.BigInteger;
-import java.util.List;
+import ch.post.it.evoting.verifier.common.block.dto.converter.StringToBigIntegerConverter;
+
+import lombok.Getter;
 
 @Getter
 public class CandidateList {
 
-    private final boolean isBlank;
-    @JsonDeserialize(converter = StringToBigIntegerConverter.class)
-    private final BigInteger primeNumber;
-    private final List<CandidatePosition> candidatePositions;
-    private final String alias;
+	private final boolean isBlank;
+	@JsonDeserialize(converter = StringToBigIntegerConverter.class)
+	private final BigInteger primeNumber;
+	private final List<CandidatePosition> candidatePositions;
+	private final String alias;
 
-    public CandidateList(@JsonProperty("isBlank") boolean isBlank,
-                         @JsonProperty("primeNumber") BigInteger primeNumber,
-                         @JsonProperty("candidatePositions") CandidatePosition[] candidatePositions,
-                         @JsonProperty("alias") String alias) {
-        this.isBlank = isBlank;
-        this.primeNumber = primeNumber;
-        this.candidatePositions = ImmutableList.copyOf(candidatePositions);
-        this.alias = alias;
-    }
+	public CandidateList(
+			@JsonProperty("isBlank")
+					boolean isBlank,
+			@JsonProperty("primeNumber")
+					BigInteger primeNumber,
+			@JsonProperty("candidatePositions")
+					CandidatePosition[] candidatePositions,
+			@JsonProperty("alias")
+					String alias) {
+		this.isBlank = isBlank;
+		this.primeNumber = primeNumber;
+		this.candidatePositions = ImmutableList.copyOf(candidatePositions);
+		this.alias = alias;
+	}
 }

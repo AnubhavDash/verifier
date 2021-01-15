@@ -14,52 +14,57 @@
  */
 package ch.post.it.evoting.verifier.block.block3.verifications;
 
+import java.nio.file.Path;
+import java.util.AbstractMap;
+
+import org.apache.log4j.Logger;
+
 import ch.post.it.evoting.verifier.block.block3.BGOnlineVerificationProcessor;
 import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
 import ch.post.it.evoting.verifier.block.block3.scytl.TestType;
-import ch.post.it.evoting.verifier.common.*;
+import ch.post.it.evoting.verifier.common.Category;
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationDefinition;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.VerificationTrait;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import org.apache.log4j.Logger;
-
-import java.nio.file.Path;
-import java.util.AbstractMap;
 
 public class CheckSingleValueProductArgumentOnline extends AbstractVerification {
 
-    private static final Logger LOGGER = Logger.getLogger(CheckSingleValueProductArgumentOnline.class);
+	private static final Logger LOGGER = Logger.getLogger(CheckSingleValueProductArgumentOnline.class);
 
-    @Override
-    public VerificationDefinition getVerificationDefinition() {
+	@Override
+	public VerificationDefinition getVerificationDefinition() {
 
-        VerificationDefinition def = new VerificationDefinition();
-        def.setBlockId(3);
-        def.setCategory(Category.COMPLETENESS);
-        def.setId(25);
-        def.setName("checkSingleValueProductArgumentOnline");
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification25.description"));
-        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
-        return def;
-    }
+		VerificationDefinition def = new VerificationDefinition();
+		def.setBlockId(3);
+		def.setCategory(Category.COMPLETENESS);
+		def.setId(25);
+		def.setName("checkSingleValueProductArgumentOnline");
+		def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification25.description"));
+		def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+		return def;
+	}
 
-    @Override
-    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-        VerificationResult result = new VerificationResult();
+	@Override
+	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
+		VerificationResult result = new VerificationResult();
 
-        final BGOnlineVerificationProcessor processor = BGOnlineVerificationProcessor.getInstanceAndRegister(this);
-        try {
-            PathNode ballotBoxesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOXES_DIR, inputDirectoryPath);
-            processor.executeProcess(ballotBoxesPathNode.getPath());
+		final BGOnlineVerificationProcessor processor = BGOnlineVerificationProcessor.getInstanceAndRegister(this);
+		try {
+			PathNode ballotBoxesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOXES_DIR, inputDirectoryPath);
+			processor.executeProcess(ballotBoxesPathNode.getPath());
 
-            AbstractMap.SimpleEntry<Status, String> status = processor.getStatus(TestType.SingleValueProductProof);
-            result.setStatus(status.getKey());
-            result.setMessage(TranslationHelper.getSameMessageMultiLanguage(status.getValue()));
-        } finally {
-            processor.unregister(this);
-        }
+			AbstractMap.SimpleEntry<Status, String> status = processor.getStatus(TestType.SingleValueProductProof);
+			result.setStatus(status.getKey());
+			result.setMessage(TranslationHelper.getSameMessageMultiLanguage(status.getValue()));
+		} finally {
+			processor.unregister(this);
+		}
 
-        return result;
-    }
+		return result;
+	}
 }

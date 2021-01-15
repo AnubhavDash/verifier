@@ -14,27 +14,32 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
-import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
+
 import lombok.Getter;
 
 @Getter
 public class Receipt {
 
-    private final String receipt;
-    private final String signature;
+	private final String receipt;
+	private final String signature;
 
-    public Receipt(@JsonProperty("receipt") String receipt,
-                   @JsonProperty("signature") String signature) {
-        this.receipt = receipt;
-        this.signature = signature;
-    }
+	public Receipt(
+			@JsonProperty("receipt")
+					String receipt,
+			@JsonProperty("signature")
+					String signature) {
+		this.receipt = receipt;
+		this.signature = signature;
+	}
 
-    public byte[] getReceipt() {
-        return TypeConverter.base64ToByte(receipt);
-    }
+	public byte[] getReceipt() {
+		return TypeConverter.base64ToByte(receipt);
+	}
 
-    public byte[] getSignature() {
-        return TypeConverter.base64ToByte(signature);
-    }
+	public byte[] getSignature() {
+		return TypeConverter.base64ToByte(signature);
+	}
 }

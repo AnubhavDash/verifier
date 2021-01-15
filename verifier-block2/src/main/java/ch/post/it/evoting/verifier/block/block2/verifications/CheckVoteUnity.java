@@ -14,79 +14,87 @@
  */
 package ch.post.it.evoting.verifier.block.block2.verifications;
 
-import ch.post.it.evoting.verifier.block.block2.Block2VerificationSuite;
-import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationDataExtractor;
-import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationStruct;
-import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
-import ch.post.it.evoting.verifier.common.*;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.block.block2.securelog.HostMappingElement;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuples;
-
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import ch.post.it.evoting.verifier.block.block2.Block2VerificationSuite;
+import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationDataExtractor;
+import ch.post.it.evoting.verifier.block.block2.loader.VoterInformationStruct;
+import ch.post.it.evoting.verifier.block.block2.securelog.HostMappingElement;
+import ch.post.it.evoting.verifier.block.block2.securelog.SecureLogEntry;
+import ch.post.it.evoting.verifier.common.Category;
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationDefinition;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.VerificationTrait;
+import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
+
 public class CheckVoteUnity extends AbstractVerification {
 
-    @Override
-    public VerificationDefinition getVerificationDefinition() {
-        VerificationDefinition def = new VerificationDefinition();
-        def.setBlockId(2);
-        def.setCategory(Category.EVIDENCE);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification06.description"));
-        def.setId(6);
-        def.setName("checkVoteUnity");
-        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
-        return def;
-    }
+	@Override
+	public VerificationDefinition getVerificationDefinition() {
+		VerificationDefinition def = new VerificationDefinition();
+		def.setBlockId(2);
+		def.setCategory(Category.EVIDENCE);
+		def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification06.description"));
+		def.setId(6);
+		def.setName("checkVoteUnity");
+		def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+		return def;
+	}
 
-    @Override
-    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-        VerificationResult result = new VerificationResult();
+	@Override
+	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
+		VerificationResult result = new VerificationResult();
 
-        VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectoryPath);
+		VoterInformationStruct voterInformation = VoterInformationDataExtractor.getInfo(inputDirectoryPath);
 
-        // create host/CC mapping
-        Map<String, String> hostCcMapping = HostMappingElement.loadHostMapping(inputDirectoryPath);
+		// create host/CC mapping
+		Map<String, String> hostCcMapping = HostMappingElement.loadHostMapping(inputDirectoryPath);
 
-        final Pattern patternVotingCardId = Pattern.compile(".*\\|000\\|(.*)\\|.*\\|.*\\|#encryptedOptions=\".*\" #ccx_id=.*\n");
-        final Pattern pattern = Pattern.compile("\\|VOTVAL\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|");
-        Map<String, Map<String, Long>> nbVotingCardPerCC = SecureLogEntry.loadRegularLogs(inputDirectoryPath, pattern)
-                .map(s1 -> {
-                    Matcher matcher = patternVotingCardId.matcher(s1.getRaw());
-                    matcher.matches();
-                    String votingCardId = matcher.group(1);
-                    return Tuples.of(s1.getHost(), votingCardId);
-                })
-                .groupBy(s1 -> hostCcMapping.containsKey(s1.getT1()) ? hostCcMapping.get(s1.getT1()) : s1.getT1())
-                .flatMap(ccGroup -> {
-                    return ccGroup.map(Tuple2::getT2).reduce(Collections.synchronizedMap(new HashMap<String, Long>()), (m, votingCardId) -> {
-                        m.put(votingCardId, m.getOrDefault(votingCardId, 0L) + 1L);
-                        return m;
-                    }).map(m -> Tuples.of(ccGroup.key(), m));
-                })
-                .collectMap(Tuple2::getT1, Tuple2::getT2).block();
+		final Pattern patternVotingCardId = Pattern.compile(".*\\|000\\|(.*)\\|.*\\|.*\\|#encryptedOptions=\".*\" #ccx_id=.*\n");
+		final Pattern pattern = Pattern.compile("\\|VOTVAL\\|-\\|.*\\|" + voterInformation.getEeid() + "\\|");
+		Map<String, Map<String, Long>> nbVotingCardPerCC = SecureLogEntry.loadRegularLogs(inputDirectoryPath, pattern)
+				.map(s1 -> {
+					Matcher matcher = patternVotingCardId.matcher(s1.getRaw());
+					matcher.matches();
+					String votingCardId = matcher.group(1);
+					return Tuples.of(s1.getHost(), votingCardId);
+				})
+				.groupBy(s1 -> hostCcMapping.containsKey(s1.getT1()) ? hostCcMapping.get(s1.getT1()) : s1.getT1())
+				.flatMap(ccGroup -> {
+					return ccGroup.map(Tuple2::getT2).reduce(Collections.synchronizedMap(new HashMap<String, Long>()), (m, votingCardId) -> {
+						m.put(votingCardId, m.getOrDefault(votingCardId, 0L) + 1L);
+						return m;
+					}).map(m -> Tuples.of(ccGroup.key(), m));
+				})
+				.collectMap(Tuple2::getT1, Tuple2::getT2).block();
 
-        List<String> problematicVotingCardIds = nbVotingCardPerCC.values().stream()
-                .flatMap(m -> m.entrySet().stream())
-                .filter(e -> e.getValue() > 1)
-                .map(Map.Entry::getKey).collect(Collectors.toList());
+		List<String> problematicVotingCardIds = nbVotingCardPerCC.values().stream()
+				.flatMap(m -> m.entrySet().stream())
+				.filter(e -> e.getValue() > 1)
+				.map(Map.Entry::getKey).collect(Collectors.toList());
 
-        if (!problematicVotingCardIds.isEmpty()) {
-            throw buildVerificationFailureException(
-                    "Voting Card Id contain multiple votes in the secure logs",
-                    Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
-                    "verification06.nok.message",
-                    problematicVotingCardIds.toArray(new String[]{})
-            );
-        }
+		if (!problematicVotingCardIds.isEmpty()) {
+			throw buildVerificationFailureException(
+					"Voting Card Id contain multiple votes in the secure logs",
+					Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
+					"verification06.nok.message",
+					problematicVotingCardIds.toArray(new String[] {})
+			);
+		}
 
-        result.setStatus(Status.OK);
-        return result;
-    }
+		result.setStatus(Status.OK);
+		return result;
+	}
 }

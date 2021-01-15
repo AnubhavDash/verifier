@@ -14,43 +14,42 @@
  */
 package ch.post.it.evoting.verifier.block.block3.verifications;
 
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.nio.file.Paths;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.nio.file.Paths;
+
+import org.junit.jupiter.api.Test;
+
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.exceptions.VerificationFailureException;
+
 class CheckDecryptionFactorizationTest extends Block3VerificationAbstractTest {
 
-    @BeforeEach
-    void setup() {
-        verification = new CheckDecryptionFactorization();
-    }
+	public CheckDecryptionFactorizationTest() {
+		super(CheckDecryptionFactorization.class);
+	}
 
-    @Test
-    void executeTestOK() throws Exception {
-        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckDecryptionFactorizationTest/OK").toURI()));
-        assertEquals(Status.OK, result.getStatus());
-    }
+	@Test
+	void executeTestOK() throws Exception {
+		VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckDecryptionFactorizationTest/OK").toURI()));
+		assertEquals(Status.OK, result.getStatus());
+	}
 
-    @Test
-    void executeTestWithWriteInsOK() throws Exception {
-        VerificationResult result =
-                verification.verify(Paths.get(getClass().getResource("/CheckDecryptionFactorizationTest/OK-WRITE-INS").toURI()));
-        assertEquals(Status.OK, result.getStatus());
-    }
+	@Test
+	void executeTestWithWriteInsOK() throws Exception {
+		VerificationResult result =
+				verification.verify(Paths.get(getClass().getResource("/CheckDecryptionFactorizationTest/OK-WRITE-INS").toURI()));
+		assertEquals(Status.OK, result.getStatus());
+	}
 
-    @Test
-    void executeTestNOK() {
-        final VerificationFailureException ex = assertThrows(
-                VerificationFailureException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckDecryptionFactorizationTest/NOK").toURI()))
-        );
-        assertEquals("factorization not correct !", ex.getMessage());
-    }
+	@Test
+	void executeTestNOK() {
+		final VerificationFailureException ex = assertThrows(
+				VerificationFailureException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckDecryptionFactorizationTest/NOK").toURI()))
+		);
+		assertEquals("factorization not correct !", ex.getMessage());
+	}
 }

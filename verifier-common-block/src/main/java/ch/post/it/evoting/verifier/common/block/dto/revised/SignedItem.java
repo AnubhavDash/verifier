@@ -15,17 +15,21 @@
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Getter;
 
 @Getter
 public class SignedItem {
 
-    private final String field;
-    private final String value;
+	private final String field;
+	private final String value;
 
-    public SignedItem(@JsonProperty("field") String field,
-                      @JsonProperty("value") String value) {
-        this.field = field;
-        this.value = value;
-    }
+	public SignedItem(
+			@JsonProperty("field")
+					String field,
+			@JsonProperty("value")
+					String value) {
+		this.field = field;
+		this.value = value;
+	}
 }

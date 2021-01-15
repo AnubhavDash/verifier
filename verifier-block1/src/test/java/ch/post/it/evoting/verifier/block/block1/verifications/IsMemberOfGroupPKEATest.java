@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.verifier.common.Status;
@@ -33,9 +32,8 @@ import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 
 class IsMemberOfGroupPKEATest extends Block1VerificationAbstractTest {
 
-	@BeforeEach
-	void setup() {
-		verification = new IsMemberOfGroupPKEA();
+	public IsMemberOfGroupPKEATest() {
+		super(IsMemberOfGroupPKEA.class);
 	}
 
 	@Test

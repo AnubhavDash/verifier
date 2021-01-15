@@ -14,35 +14,35 @@
  */
 package ch.post.it.evoting.verifier.report.model;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
 public class Report {
 
-    private String title;
-    private String headerTitleLabel;
-    private String headerTitle;
-    private String reportDateLabel;
-    private String reportDate;
-    private String reportTimeLabel;
-    private String reportTime;
-    private String commentLabel;
-    private String signaturetLabel;
-    private String placeDatetLabel;
-    private String lastNameLabel;
-    private String firstNameLabel;
-    private String footerTitleLabel;
-    private String footerTitle;
-    private String footerDateLabel;
-    private String footerDate;
+	private String title;
+	private String headerTitleLabel;
+	private String headerTitle;
+	private String reportDateLabel;
+	private String reportDate;
+	private String reportTimeLabel;
+	private String reportTime;
+	private String commentLabel;
+	private String signaturetLabel;
+	private String placeDatetLabel;
+	private String lastNameLabel;
+	private String firstNameLabel;
+	private String footerTitleLabel;
+	private String footerTitle;
+	private String footerDateLabel;
+	private String footerDate;
 
-    private List<Block> blocksResults;
+	private List<Block> blocksResults;
 
-    public Report() {
-    }
+	public Report() {
+	}
 
 }

@@ -14,9 +14,12 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised.serialization;
 
-import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionGroup;
-import ch.post.it.evoting.verifier.common.block.dto.revised.PublicKey;
-import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -25,51 +28,49 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
+import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionGroup;
+import ch.post.it.evoting.verifier.common.block.dto.revised.PublicKey;
+import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 
 public class PublicKeyDeserializer extends JsonDeserializer<PublicKey> {
-    private final ObjectMapper mapper;
+	private final ObjectMapper mapper;
 
-    public PublicKeyDeserializer() {
-        mapper = new ObjectMapper();
+	public PublicKeyDeserializer() {
+		mapper = new ObjectMapper();
 
-        SimpleModule typesModule = new SimpleModule();
-        typesModule.addDeserializer(BigInteger.class, new Base64BigIntegerDeserializer());
-        mapper.registerModule(typesModule);
-    }
+		SimpleModule typesModule = new SimpleModule();
+		typesModule.addDeserializer(BigInteger.class, new Base64BigIntegerDeserializer());
+		mapper.registerModule(typesModule);
+	}
 
-    @Override
-    public PublicKey deserialize(JsonParser jsonParser,
-                                 DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
-        boolean isStructure = jsonParser.currentToken().isStructStart();
+	@Override
+	public PublicKey deserialize(JsonParser jsonParser,
+			DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+		boolean isStructure = jsonParser.currentToken().isStructStart();
 
-        JsonNode root;
-        if (!isStructure) {
-            String value = jsonParser.readValueAs(String.class);
+		JsonNode root;
+		if (!isStructure) {
+			String value = jsonParser.readValueAs(String.class);
 
-            byte[] bytes = TypeConverter.base64ToByte(value);
+			byte[] bytes = TypeConverter.base64ToByte(value);
 
-            root = mapper.readTree(bytes);
-        } else {
-            root = mapper.readTree(jsonParser);
-        }
+			root = mapper.readTree(bytes);
+		} else {
+			root = mapper.readTree(jsonParser);
+		}
 
-        JsonNode publicKeyNode = root.path("publicKey");
+		JsonNode publicKeyNode = root.path("publicKey");
 
-        // Encryption group
-        EncryptionGroup group = mapper.readValue(publicKeyNode.path("zpSubgroup").traverse(), EncryptionGroup.class);
+		// Encryption group
+		EncryptionGroup group = mapper.readValue(publicKeyNode.path("zpSubgroup").traverse(), EncryptionGroup.class);
 
-        // Elements
-        JsonNode elements = publicKeyNode.path("elements");
-        List<BigInteger> keys = new ArrayList<>();
-        for (JsonNode element : elements) {
-            keys.add(new BigInteger( Base64.getDecoder().decode(element.asText())));
-        }
+		// Elements
+		JsonNode elements = publicKeyNode.path("elements");
+		List<BigInteger> keys = new ArrayList<>();
+		for (JsonNode element : elements) {
+			keys.add(new BigInteger(Base64.getDecoder().decode(element.asText())));
+		}
 
-        return new PublicKey(group, keys);
-    }
+		return new PublicKey(group, keys);
+	}
 }

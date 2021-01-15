@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.verifier.common.Status;
@@ -24,9 +23,8 @@ import io.jsonwebtoken.SignatureException;
 
 class CheckSigElectionInformationContentsTest extends Block1VerificationAbstractTest {
 
-	@BeforeEach
-	void setup() {
-		verification = new CheckSigElectionInformationContents();
+	public CheckSigElectionInformationContentsTest() {
+		super(CheckSigElectionInformationContents.class);
 	}
 
 	@Test

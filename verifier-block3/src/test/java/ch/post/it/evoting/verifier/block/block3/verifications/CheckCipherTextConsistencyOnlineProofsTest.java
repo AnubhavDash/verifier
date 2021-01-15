@@ -14,38 +14,37 @@
  */
 package ch.post.it.evoting.verifier.block.block3.verifications;
 
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.nio.file.Paths;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.nio.file.Paths;
+
+import org.junit.jupiter.api.Test;
+
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.exceptions.VerificationFailureException;
+
 class CheckCipherTextConsistencyOnlineProofsTest extends Block3VerificationAbstractTest {
 
-    @BeforeEach
-    void setup() {
-        verification = new CheckCipherTextConsistencyOnlineProofs();
-    }
+	public CheckCipherTextConsistencyOnlineProofsTest() {
+		super(CheckCipherTextConsistencyOnlineProofs.class);
+	}
 
-    @Test
-    void executeTestOK() throws Exception {
-        VerificationResult result =
-                verification.verify(Paths.get(getClass().getResource("/CheckCipherTextConsistencyOnlineProofsTest/OK").toURI()));
-        assertEquals(Status.OK, result.getStatus());
-    }
+	@Test
+	void executeTestOK() throws Exception {
+		VerificationResult result =
+				verification.verify(Paths.get(getClass().getResource("/CheckCipherTextConsistencyOnlineProofsTest/OK").toURI()));
+		assertEquals(Status.OK, result.getStatus());
+	}
 
-    @Test
-    void executeTestNOK() {
-        final VerificationFailureException ex = assertThrows(
-                VerificationFailureException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckCipherTextConsistencyOnlineProofsTest/NOK").toURI()))
-        );
-        assertEquals("Same vote not exist (vote non confirmé)", ex.getMessage());
-    }
+	@Test
+	void executeTestNOK() {
+		final VerificationFailureException ex = assertThrows(
+				VerificationFailureException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckCipherTextConsistencyOnlineProofsTest/NOK").toURI()))
+		);
+		assertEquals("Same vote not exist (vote non confirmé)", ex.getMessage());
+	}
 
 }

@@ -15,5 +15,7 @@
 package ch.post.it.evoting.verifier.dto;
 
 public enum LifecycleStatus {
-    NOT_STARTED, RUNNING, COMPLETED
+	NOT_STARTED,
+	RUNNING,
+	COMPLETED
 }

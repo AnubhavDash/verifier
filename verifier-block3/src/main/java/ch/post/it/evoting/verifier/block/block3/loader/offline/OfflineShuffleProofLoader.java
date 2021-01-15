@@ -14,26 +14,27 @@
  */
 package ch.post.it.evoting.verifier.block.block3.loader.offline;
 
-import ch.post.it.evoting.verifier.block.block3.scytl.loader.ShuffleProofLoader;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
-import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProof;
-import com.scytl.products.ov.mixnet.commons.io.JSONProofsReader;
-
 import java.io.IOException;
 import java.nio.file.Path;
 
+import com.scytl.products.ov.mixnet.commons.beans.proofs.ShuffleProof;
+import com.scytl.products.ov.mixnet.commons.io.JSONProofsReader;
+
+import ch.post.it.evoting.verifier.block.block3.scytl.loader.ShuffleProofLoader;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
+
 public class OfflineShuffleProofLoader implements ShuffleProofLoader {
 
-    private final Path path;
-    private final JSONProofsReader jsonProofsReader;
+	private final Path path;
+	private final JSONProofsReader jsonProofsReader;
 
-    public OfflineShuffleProofLoader(Path path) {
-        this.path = path;
-        this.jsonProofsReader = new JSONProofsReader();
-    }
+	public OfflineShuffleProofLoader(Path path) {
+		this.path = path;
+		this.jsonProofsReader = new JSONProofsReader();
+	}
 
-    @Override
-    public ShuffleProof getShuffleProof() throws IOException {
-        return jsonProofsReader.read(PathHelper.getFile(path.toFile(), "proofs\\.json").toPath());
-    }
+	@Override
+	public ShuffleProof getShuffleProof() throws IOException {
+		return jsonProofsReader.read(PathHelper.getFile(path.toFile(), "proofs\\.json").toPath());
+	}
 }

@@ -20,7 +20,7 @@ package ch.post.it.evoting.verifier.common.block.exceptions;
  * @see VerificationFailureException
  */
 public class VerificationFailureWrappedException extends RuntimeException {
-    public VerificationFailureWrappedException(Exception root) {
-        super(root);
-    }
+	public VerificationFailureWrappedException(Exception root) {
+		super(root);
+	}
 }

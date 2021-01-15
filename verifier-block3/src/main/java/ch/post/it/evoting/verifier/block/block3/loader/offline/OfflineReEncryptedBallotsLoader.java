@@ -14,22 +14,23 @@
  */
 package ch.post.it.evoting.verifier.block.block3.loader.offline;
 
-import ch.post.it.evoting.verifier.block.block3.scytl.loader.ReEncryptedBallotsLoader;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
-import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;
-
 import java.io.IOException;
 import java.nio.file.Path;
 
+import com.scytl.products.ov.mixnet.commons.ballots.ElGamalEncryptedBallots;
+
+import ch.post.it.evoting.verifier.block.block3.scytl.loader.ReEncryptedBallotsLoader;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathHelper;
+
 public class OfflineReEncryptedBallotsLoader extends AbstractOfflineBallotLoader implements ReEncryptedBallotsLoader {
 
-    public OfflineReEncryptedBallotsLoader(Path path, Path rootPath) throws IOException {
-        super(path, rootPath);
-    }
+	public OfflineReEncryptedBallotsLoader(Path path, Path rootPath) throws IOException {
+		super(path, rootPath);
+	}
 
-    @Override
-    public ElGamalEncryptedBallots getReEncryptedBallots() throws IOException {
-        Path fullPath = PathHelper.getFile(this.path.toFile(), "reencryptedBallots.csv").toPath();
-        return get(fullPath);
-    }
+	@Override
+	public ElGamalEncryptedBallots getReEncryptedBallots() throws IOException {
+		Path fullPath = PathHelper.getFile(this.path.toFile(), "reencryptedBallots.csv").toPath();
+		return get(fullPath);
+	}
 }

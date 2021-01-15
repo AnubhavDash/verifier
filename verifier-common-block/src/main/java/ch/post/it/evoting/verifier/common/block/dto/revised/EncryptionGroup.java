@@ -14,29 +14,34 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
-import ch.post.it.evoting.verifier.common.block.dto.converter.StringToBigIntegerConverter;
-import com.fasterxml.jackson.annotation.JsonCreator;
+import java.math.BigInteger;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.Getter;
 
-import java.math.BigInteger;
+import ch.post.it.evoting.verifier.common.block.dto.converter.StringToBigIntegerConverter;
+
+import lombok.Getter;
 
 @Getter
 public class EncryptionGroup {
 
-    @JsonDeserialize(converter = StringToBigIntegerConverter.class)
-    private final BigInteger p;
-    @JsonDeserialize(converter = StringToBigIntegerConverter.class)
-    private final BigInteger q;
-    @JsonDeserialize(converter = StringToBigIntegerConverter.class)
-    private final BigInteger g;
+	@JsonDeserialize(converter = StringToBigIntegerConverter.class)
+	private final BigInteger p;
+	@JsonDeserialize(converter = StringToBigIntegerConverter.class)
+	private final BigInteger q;
+	@JsonDeserialize(converter = StringToBigIntegerConverter.class)
+	private final BigInteger g;
 
-    public EncryptionGroup(@JsonProperty("p") BigInteger p,
-                           @JsonProperty("q") BigInteger q,
-                           @JsonProperty("g") BigInteger g) {
-        this.p = p;
-        this.q = q;
-        this.g = g;
-    }
+	public EncryptionGroup(
+			@JsonProperty("p")
+					BigInteger p,
+			@JsonProperty("q")
+					BigInteger q,
+			@JsonProperty("g")
+					BigInteger g) {
+		this.p = p;
+		this.q = q;
+		this.g = g;
+	}
 }

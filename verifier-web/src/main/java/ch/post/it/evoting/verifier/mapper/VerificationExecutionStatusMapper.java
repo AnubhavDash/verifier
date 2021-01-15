@@ -14,36 +14,39 @@
  */
 package ch.post.it.evoting.verifier.mapper;
 
-import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.dto.Verification;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
+import ch.post.it.evoting.verifier.common.VerificationDefinition;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.dto.Verification;
+
 @Mapper
 public interface VerificationExecutionStatusMapper {
-    VerificationExecutionStatusMapper INSTANCE = Mappers.getMapper(VerificationExecutionStatusMapper.class);
+	VerificationExecutionStatusMapper INSTANCE = Mappers.getMapper(VerificationExecutionStatusMapper.class);
 
-    @Mappings({
-            @Mapping(target = "id", expression = "java( verificationDefinition.computeUniqueKey() )"),
-            @Mapping(target = "verificationId", source = "id"),
-            @Mapping(target = "status", ignore = true),
-            @Mapping(target = "message", ignore = true),
-    })
-    Verification map(VerificationDefinition verificationDefinition);
+	@Mappings({
+			@Mapping(target = "id", expression = "java( verificationDefinition.computeUniqueKey() )"),
+			@Mapping(target = "verificationId", source = "id"),
+			@Mapping(target = "status", ignore = true),
+			@Mapping(target = "message", ignore = true),
+	})
+	Verification map(VerificationDefinition verificationDefinition);
 
-    @Mappings({
-            @Mapping(target = "status", source = "status"),
-            @Mapping(target = "message", source = "message"),
-            @Mapping(target = "id", ignore = true),
-            @Mapping(target = "verificationId", ignore = true),
-            @Mapping(target = "blockId", ignore = true),
-            @Mapping(target = "name", ignore = true),
-            @Mapping(target = "category", ignore = true),
-            @Mapping(target = "description", ignore = true),
-    })
-    void update(@MappingTarget Verification verificationExecutionStatus, VerificationResult verificationResult);
+	@Mappings({
+			@Mapping(target = "status", source = "status"),
+			@Mapping(target = "message", source = "message"),
+			@Mapping(target = "id", ignore = true),
+			@Mapping(target = "verificationId", ignore = true),
+			@Mapping(target = "blockId", ignore = true),
+			@Mapping(target = "name", ignore = true),
+			@Mapping(target = "category", ignore = true),
+			@Mapping(target = "description", ignore = true),
+	})
+	void update(
+			@MappingTarget
+					Verification verificationExecutionStatus, VerificationResult verificationResult);
 }

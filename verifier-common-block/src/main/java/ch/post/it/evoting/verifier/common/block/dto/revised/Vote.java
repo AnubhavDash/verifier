@@ -14,25 +14,30 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.collect.ImmutableList;
-import lombok.Getter;
-
 import java.util.List;
 import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.collect.ImmutableList;
+
+import lombok.Getter;
 
 @Getter
 public class Vote {
 
-    private final UUID id;
-    private final String alias;
-    private final List<VoteQuestion> questions;
+	private final UUID id;
+	private final String alias;
+	private final List<VoteQuestion> questions;
 
-    public Vote(@JsonProperty("id") UUID id,
-                @JsonProperty("alias") String alias,
-                @JsonProperty("questions") VoteQuestion[] questions) {
-        this.id = id;
-        this.alias = alias;
-        this.questions = ImmutableList.copyOf(questions);
-    }
+	public Vote(
+			@JsonProperty("id")
+					UUID id,
+			@JsonProperty("alias")
+					String alias,
+			@JsonProperty("questions")
+					VoteQuestion[] questions) {
+		this.id = id;
+		this.alias = alias;
+		this.questions = ImmutableList.copyOf(questions);
+	}
 }

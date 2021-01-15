@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.verifier.common.Status;
@@ -29,32 +28,31 @@ import ch.post.it.evoting.verifier.common.VerificationResult;
 
 class CheckVoteBallotBoxTest extends Block2VerificationAbstractTest {
 
-    @BeforeEach
-    void setup() {
-        verification = new CheckVoteBallotBox();
-    }
+	public CheckVoteBallotBoxTest() {
+		super(CheckVoteBallotBox.class);
+	}
 
-    @Test
-    void executeTestOK() throws Exception {
-        VerificationResult verificationResult =
-                verification.verify(Paths.get(getClass().getResource("/CheckVoteBallotBoxTest/OK").toURI()));
-        assertNotNull(verificationResult);
-        assertEquals(Status.OK, verificationResult.getStatus());
-    }
+	@Test
+	void executeTestOK() throws Exception {
+		VerificationResult verificationResult =
+				verification.verify(Paths.get(getClass().getResource("/CheckVoteBallotBoxTest/OK").toURI()));
+		assertNotNull(verificationResult);
+		assertEquals(Status.OK, verificationResult.getStatus());
+	}
 
-    // TODO Implement the following missing tests cases:
-    //  - Duplicate votingCardId in downloadedBallotBox files
-    //  - The number of encrypted votes in the secure logs and downloaded boxes are not equal
-    //  - EncryptedOptions is not the same in DownloadedBallotBox and SecureLogs
-    //  - Unknown votingCardId
+	// TODO Implement the following missing tests cases:
+	//  - Duplicate votingCardId in downloadedBallotBox files
+	//  - The number of encrypted votes in the secure logs and downloaded boxes are not equal
+	//  - EncryptedOptions is not the same in DownloadedBallotBox and SecureLogs
+	//  - Unknown votingCardId
 
-    @Test
-    void executeTestNOKFileNotFound() {
-        final FileNotFoundException ex = assertThrows(
-                FileNotFoundException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckVoteBallotBoxTest/NOK-NOTFILE").toURI()))
-        );
-        assertEquals("voterInformation.*\\.csv", ex.getMessage());
-    }
+	@Test
+	void executeTestNOKFileNotFound() {
+		final FileNotFoundException ex = assertThrows(
+				FileNotFoundException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckVoteBallotBoxTest/NOK-NOTFILE").toURI()))
+		);
+		assertEquals("voterInformation.*\\.csv", ex.getMessage());
+	}
 
 }

@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -35,65 +34,64 @@ import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 
 class CheckTallyingAnswersTest extends Block4VerificationAbstractTest {
 
-    @BeforeEach
-    void setup() {
-        verification = new CheckTallyingAnswers();
-    }
+	public CheckTallyingAnswersTest() {
+		super(CheckTallyingAnswers.class);
+	}
 
-    @Test
-    void executeTestOK() throws Exception {
-        // TODO The eCH0110 must contains vote results to be valid
-        VerificationResult verificationResult =
-                verification.verify(Paths.get(getClass().getResource("/CheckTallyingAnswersTest/OK").toURI()));
-        assertNotNull(verificationResult);
-        assertEquals(Status.OK, verificationResult.getStatus());
-    }
+	@Test
+	void executeTestOK() throws Exception {
+		// TODO The eCH0110 must contains vote results to be valid
+		VerificationResult verificationResult =
+				verification.verify(Paths.get(getClass().getResource("/CheckTallyingAnswersTest/OK").toURI()));
+		assertNotNull(verificationResult);
+		assertEquals(Status.OK, verificationResult.getStatus());
+	}
 
-    @Test
-    @Disabled("FIXME")
-    void executeTestNOK() {
-        final VerificationFailureException ex = assertThrows(
-                VerificationFailureException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingAnswersTest/NOK").toURI()))
-        );
-        assertEquals("Business Failure", ex.getMessage());
-    }
+	@Test
+	@Disabled("FIXME")
+	void executeTestNOK() {
+		final VerificationFailureException ex = assertThrows(
+				VerificationFailureException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingAnswersTest/NOK").toURI()))
+		);
+		assertEquals("Business Failure", ex.getMessage());
+	}
 
-    // TODO The following NOK tests must be implemented:
-    //  - Number of YES votes verification failed in standard ballot
-    //  - Number of NO votes verification failed in standard ballot
-    //  - Number of EMPTY votes verification failed in standard ballot
-    //  - Number of YES votes verification failed in variant ballot
-    //  - Number of NO votes verification failed in variant ballot
-    //  - Number of EMPTY votes verification failed in variant ballot
+	// TODO The following NOK tests must be implemented:
+	//  - Number of YES votes verification failed in standard ballot
+	//  - Number of NO votes verification failed in standard ballot
+	//  - Number of EMPTY votes verification failed in standard ballot
+	//  - Number of YES votes verification failed in variant ballot
+	//  - Number of NO votes verification failed in variant ballot
+	//  - Number of EMPTY votes verification failed in variant ballot
 
-    @Test
-    void executeTestNOKFileNotFoundConfiguration() {
-        final NoSuchFileException ex = assertThrows(
-                NoSuchFileException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingAnswersTest/NOK-NOFILE-CONFIG").toURI()))
-        );
-        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CONFIG_ANONYMIZED);
-        assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
-    }
+	@Test
+	void executeTestNOKFileNotFoundConfiguration() {
+		final NoSuchFileException ex = assertThrows(
+				NoSuchFileException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingAnswersTest/NOK-NOFILE-CONFIG").toURI()))
+		);
+		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CONFIG_ANONYMIZED);
+		assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
+	}
 
-    @Test
-    void executeTestNOKFileNotFoundEVotingDecryptResult() {
-        final NoSuchFileException ex = assertThrows(
-                NoSuchFileException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingAnswersTest/NOK-NOFILE-EVOTING").toURI()))
-        );
-        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.EVOTING_DECRYPT_RESULT);
-        assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
-    }
+	@Test
+	void executeTestNOKFileNotFoundEVotingDecryptResult() {
+		final NoSuchFileException ex = assertThrows(
+				NoSuchFileException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingAnswersTest/NOK-NOFILE-EVOTING").toURI()))
+		);
+		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.EVOTING_DECRYPT_RESULT);
+		assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
+	}
 
-    @Test
-    void executeTestNOKFileNotFoundECH0110() {
-        final NoSuchFileException ex = assertThrows(
-                NoSuchFileException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingAnswersTest/NOK-NOFILE-eCH").toURI()))
-        );
-        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ECH0110);
-        assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
-    }
+	@Test
+	void executeTestNOKFileNotFoundECH0110() {
+		final NoSuchFileException ex = assertThrows(
+				NoSuchFileException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingAnswersTest/NOK-NOFILE-eCH").toURI()))
+		);
+		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ECH0110);
+		assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
+	}
 }

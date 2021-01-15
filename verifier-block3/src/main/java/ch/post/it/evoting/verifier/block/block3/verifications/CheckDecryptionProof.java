@@ -14,6 +14,10 @@
  */
 package ch.post.it.evoting.verifier.block.block3.verifications;
 
+import java.nio.file.Path;
+
+import com.scytl.decrypt.DecryptVerifier;
+
 import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
 import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflineEncryptionParametersLoader;
 import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflinePublicKeyLoader;
@@ -27,51 +31,50 @@ import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import com.scytl.decrypt.DecryptVerifier;
-
-import java.nio.file.Path;
 
 public class CheckDecryptionProof extends AbstractVerification {
 
-    @Override
-    public VerificationDefinition getVerificationDefinition() {
-        VerificationDefinition verificationDefinition = new VerificationDefinition();
-        verificationDefinition.setBlockId(3);
-        verificationDefinition.setCategory(Category.COMPLETENESS);
-        verificationDefinition.setId(7);
-        verificationDefinition.setName("checkDecryptionProof");
-        verificationDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification07.description"));
+	@Override
+	public VerificationDefinition getVerificationDefinition() {
+		VerificationDefinition verificationDefinition = new VerificationDefinition();
+		verificationDefinition.setBlockId(3);
+		verificationDefinition.setCategory(Category.COMPLETENESS);
+		verificationDefinition.setId(7);
+		verificationDefinition.setName("checkDecryptionProof");
+		verificationDefinition
+				.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification07.description"));
 
-        return verificationDefinition;
-    }
+		return verificationDefinition;
+	}
 
-    @Override
-    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-        VerificationResult result = new VerificationResult();
+	@Override
+	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
+		VerificationResult result = new VerificationResult();
 
-        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
-        for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
+		PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+		for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
 
-            // Get "0" directory
-            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
+			// Get "0" directory
+			PathNode ballotBoxOfflineDirectoriesPathNode = pathService
+					.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
 
-            OfflineDataLoader offlineDataLoader = new OfflineDataLoader();
-            offlineDataLoader.setEncryptionParametersLoader(new OfflineEncryptionParametersLoader(inputDirectoryPath));
-            offlineDataLoader.setPublicKeyLoader(new OfflinePublicKeyLoader(ballotBoxOfflineDirectoriesPathNode.getPath()));
-            offlineDataLoader.setVoterWithProofLoader(new OfflineVoterWithProofLoader(ballotBoxOfflineDirectoriesPathNode.getPath()));
+			OfflineDataLoader offlineDataLoader = new OfflineDataLoader();
+			offlineDataLoader.setEncryptionParametersLoader(new OfflineEncryptionParametersLoader(inputDirectoryPath));
+			offlineDataLoader.setPublicKeyLoader(new OfflinePublicKeyLoader(ballotBoxOfflineDirectoriesPathNode.getPath()));
+			offlineDataLoader.setVoterWithProofLoader(new OfflineVoterWithProofLoader(ballotBoxOfflineDirectoriesPathNode.getPath()));
 
-            int verificationResultCode = DecryptVerifier.verify(offlineDataLoader);
-            if (verificationResultCode != 1 && verificationResultCode != -1) {
-                throw buildVerificationFailureException(
-                        "The verification failed",
-                        Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
-                        "verification07.nok.message",
-                        ballotBoxIdDirectoryPath.getFileName().toString()
-                );
-            }
-        }
+			int verificationResultCode = DecryptVerifier.verify(offlineDataLoader);
+			if (verificationResultCode != 1 && verificationResultCode != -1) {
+				throw buildVerificationFailureException(
+						"The verification failed",
+						Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
+						"verification07.nok.message",
+						ballotBoxIdDirectoryPath.getFileName().toString()
+				);
+			}
+		}
 
-        result.setStatus(Status.OK);
-        return result;
-    }
+		result.setStatus(Status.OK);
+		return result;
+	}
 }

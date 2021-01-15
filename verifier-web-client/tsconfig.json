@@ -17,6 +17,9 @@
       "dom"
     ],
     "module": "es2015",
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "paths": {
+      "tslib" : ["node_modules/tslib/tslib.d.ts"]
+    }
   }
 }

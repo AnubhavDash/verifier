@@ -14,21 +14,25 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableList;
-import lombok.Getter;
 
-import java.util.List;
+import lombok.Getter;
 
 @Getter
 public class CountingCircle {
 
-    private final String id;
-    private final List<DomainOfInfluence> domainsOfInfluence;
+	private final String id;
+	private final List<DomainOfInfluence> domainsOfInfluence;
 
-    public CountingCircle(@JsonProperty("id") String id,
-                          @JsonProperty("domainOfInfluence") DomainOfInfluence[] domainsOfInfluence) {
-        this.id = id;
-        this.domainsOfInfluence = ImmutableList.copyOf(domainsOfInfluence);
-    }
+	public CountingCircle(
+			@JsonProperty("id")
+					String id,
+			@JsonProperty("domainOfInfluence")
+					DomainOfInfluence[] domainsOfInfluence) {
+		this.id = id;
+		this.domainsOfInfluence = ImmutableList.copyOf(domainsOfInfluence);
+	}
 }

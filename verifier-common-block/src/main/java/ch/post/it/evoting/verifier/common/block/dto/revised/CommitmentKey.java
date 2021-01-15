@@ -14,27 +14,31 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
-import ch.post.it.evoting.verifier.common.block.dto.converter.StringArrayToBigIntegerListConverter;
-import ch.post.it.evoting.verifier.common.block.dto.converter.StringToBigIntegerConverter;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.Getter;
-
 import java.math.BigInteger;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import ch.post.it.evoting.verifier.common.block.dto.converter.StringArrayToBigIntegerListConverter;
+import ch.post.it.evoting.verifier.common.block.dto.converter.StringToBigIntegerConverter;
+
+import lombok.Getter;
 
 @Getter
 public class CommitmentKey {
 
-    @JsonDeserialize(converter = StringToBigIntegerConverter.class)
-    private final BigInteger h;
-    @JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
-    private final List<BigInteger> g_vec;
+	@JsonDeserialize(converter = StringToBigIntegerConverter.class)
+	private final BigInteger h;
+	@JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
+	private final List<BigInteger> g_vec;
 
-    public CommitmentKey(@JsonProperty("h") BigInteger h,
-                         @JsonProperty("g_vec") List<BigInteger> g_vec) {
-        this.h = h;
-        this.g_vec = g_vec;
-    }
+	public CommitmentKey(
+			@JsonProperty("h")
+					BigInteger h,
+			@JsonProperty("g_vec")
+					List<BigInteger> g_vec) {
+		this.h = h;
+		this.g_vec = g_vec;
+	}
 }

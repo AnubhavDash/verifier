@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.verifier.common.Status;
@@ -33,9 +32,8 @@ import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 
 class CheckGeneratorGTest extends Block1VerificationAbstractTest {
 
-	@BeforeEach
-	void setup() {
-		verification = new CheckGeneratorG();
+	public CheckGeneratorGTest() {
+		super(CheckGeneratorG.class);
 	}
 
 	@Test
@@ -47,37 +45,29 @@ class CheckGeneratorGTest extends Block1VerificationAbstractTest {
 
 	@Test
 	void executeTestNOKPrimality() {
-		final VerificationFailureException ex = assertThrows(
-				VerificationFailureException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckGeneratorGTest/NOK/NOK").toURI()))
-		);
+		final VerificationFailureException ex = assertThrows(VerificationFailureException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckGeneratorGTest/NOK/NOK").toURI())));
 		assertEquals("The generator g is not prime", ex.getMessage());
 	}
 
 	@Test
 	void executeTestNOKEulerCriterion() {
-		final VerificationFailureException ex = assertThrows(
-				VerificationFailureException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckGeneratorGTest/NOK/NOK-EULER").toURI()))
-		);
+		final VerificationFailureException ex = assertThrows(VerificationFailureException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckGeneratorGTest/NOK/NOK-EULER").toURI())));
 		assertEquals("g is not part of the subgroup q", ex.getMessage());
 	}
 
 	@Test
 	void executeTestNOKSubgroupSmallest() {
-		final VerificationFailureException ex = assertThrows(
-				VerificationFailureException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckGeneratorGTest/NOK/NOK-SMALLEST").toURI()))
-		);
+		final VerificationFailureException ex = assertThrows(VerificationFailureException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckGeneratorGTest/NOK/NOK-SMALLEST").toURI())));
 		assertEquals("g must be the smallest prime number in the subgroup (p, q)", ex.getMessage());
 	}
 
 	@Test
 	void executeTestNOKFileNotFound() {
-		final IOException ex = assertThrows(
-				IOException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckGeneratorGTest/NOK/NOK-NOFILE").toURI()))
-		);
+		final IOException ex = assertThrows(IOException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckGeneratorGTest/NOK/NOK-NOFILE").toURI())));
 		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ENCRYPTION_PARAMETERS);
 		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
 	}

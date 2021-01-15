@@ -12,7 +12,6 @@
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-import {Component, OnInit} from '@angular/core';
 import {ProcessorService} from '../../services/processor.service';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
@@ -20,6 +19,9 @@ import {VerificationDefinition} from '../../models/VerificationDefinition.interf
 import {Configuration} from '../../models/Configuration.interface';
 import {environment} from '../../../../environments/environment';
 import {VerificationTrait} from '../../models/verification-trait.enum';
+import {Component, OnInit} from '@angular/core';
+import * as html2pdf from '../../../../assets/html2pdf/html2pdf.bundle.min.js';
+
 
 @Component({
   templateUrl: 'report-overview.component.html',
@@ -29,10 +31,40 @@ import {VerificationTrait} from '../../models/verification-trait.enum';
 export class ReportOverviewComponent implements OnInit {
 
   inputDirectory: string;
-  private stompClient;
   verifications = {};
-  buttonDisabled = false;
+  verificationsSize = 0;
+  verificationStatusFilter = '';
+  toggleMessage = false;
+  startDisabled = false;
+  processStarted = false;
   verificationTrait = VerificationTrait;
+
+  verificationFilter = {
+    ALL: {
+      value: '',
+      active: true
+    },
+    OK: {
+      value: 'OK',
+      active: false
+    },
+    NOK: {
+      value: 'NOK',
+      active: false
+    },
+    ERROR: {
+      value: 'FILE_ERROR|UNEXPECTED_ERROR',
+      active: false
+    },
+    NA: {
+      value: 'NA',
+      active: false
+    }
+  };
+
+  private stompClient;
+
+
 
   constructor(private processorService: ProcessorService) {
   }
@@ -54,34 +86,42 @@ export class ReportOverviewComponent implements OnInit {
     this.initTable();
     this.initializeWebSocketConnection();
     this.processorService.getConfigurationInputDirectory().subscribe(value => {
-      console.log(value);
       this.inputDirectory = value.inputDirectory;
     });
   }
 
   initTable() {
     this.processorService.getVerificationStatus().subscribe(value => {
-        for (let i = 0; i < value.length; i++) {
-          console.log(JSON.stringify(value[i]));
-          this.verifications[value[i].id] = ReportOverviewComponent.convert(value[i]);
-        }
+      this.verificationsSize = value.length;
+      const verifications = {};
+      for (let i = 0; i < value.length; i++) {
+        verifications[value[i].id] = ReportOverviewComponent.convert(value[i]);
       }
-    );
+      this.verifications = verifications;
+      this.startDisabled = this.isProcessComplete();
+    });
   }
 
   startProcess(runOptions?: string): void {
     const configuration = new Configuration();
     configuration.inputDirectory = this.inputDirectory;
     this.processorService.setConfigurationInputDirectory(configuration).subscribe(() => {
-      this.buttonDisabled = true;
+      this.processStarted = true;
+      this.startDisabled = true;
       this.processorService.processVerifications(runOptions).subscribe();
     });
   }
 
+  isProcessComplete() {
+    return this.statusCounterAll() === this.verificationsSize;
+  }
+
   resetProcess(): void {
     this.processorService.resetVerifications().subscribe(value => {
+      this.filterVerificationsAll();
       this.initTable();
-      this.buttonDisabled = false;
+      this.processStarted = false;
+      this.startDisabled = false;
     });
   }
 
@@ -92,8 +132,10 @@ export class ReportOverviewComponent implements OnInit {
     this.stompClient.connect({authorization: environment.authorizationHeaderValue}, function (frame) {
       that.stompClient.subscribe('/pushUpdate', (message) => {
         if (message.body) {
+          const verificationsCopy = (JSON.parse(JSON.stringify(that.verifications)));
           const result = JSON.parse(message.body);
-          that.verifications[result.id] = ReportOverviewComponent.convert(result);
+          verificationsCopy[result.id] = ReportOverviewComponent.convert(result);
+          that.verifications = verificationsCopy;
         }
       });
     });
@@ -117,6 +159,97 @@ export class ReportOverviewComponent implements OnInit {
 
   isError (status) {
     return status === 'UNEXPECTED_ERROR' || status === 'FILE_ERROR';
+  }
+
+  filterVerificationsAll() {
+    this.verificationStatusFilter = this.verificationFilter.ALL.value;
+    this.setActiveFilter('ALL');
+  }
+
+  filterVerificationsOK() {
+    this.verificationStatusFilter = this.verificationFilter.OK.value;
+    this.setActiveFilter('OK');
+  }
+
+  filterVerificationsNOK() {
+    this.verificationStatusFilter = this.verificationFilter.NOK.value;
+    this.setActiveFilter('NOK');
+  }
+
+  filterVerificationsERROR() {
+    this.verificationStatusFilter = this.verificationFilter.ERROR.value;
+    this.setActiveFilter('ERROR');
+  }
+
+  filterVerificationsNA() {
+    this.verificationStatusFilter = this.verificationFilter.NA.value;
+    this.setActiveFilter('NA');
+  }
+
+  statusCounterAll() {
+    return this.statusCounterOK() + this.statusCounterNOK() + this.statusCounterNA() + this.statusCounterERROR();
+  }
+
+  statusCounterOK() {
+    return this.statusCounter(this.verificationFilter.OK.value);
+  }
+
+  statusCounterNOK() {
+    return this.statusCounter(this.verificationFilter.NOK.value);
+  }
+
+  statusCounterNA() {
+    return this.statusCounter(this.verificationFilter.NA.value);
+  }
+
+  statusCounterERROR() {
+    return this.statusCounter(this.verificationFilter.ERROR.value);
+  }
+
+  // PDF Export
+  exportToPDF() {
+    const options = {
+      margin:       5,
+      filename:     'verifier.pdf',
+      pagebreak: { mode: ['avoid-all'] },
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 4 },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
+    };
+
+    const element = document.getElementById('verifications-results');
+    html2pdf()
+      .set(options)
+      .from(element)
+      .save();
+  }
+
+  // Status counter
+  private statusCounter(statusValue: string) {
+    const filtered = Object.keys(this.verifications)
+      .filter(key => {
+        if (statusValue.indexOf('|') > -1) {
+          const filters = statusValue.split('|');
+          return this.verifications[key].status === filters[0] || this.verifications[key].status === filters[1];
+        } else {
+          return this.verifications[key].status === statusValue;
+        }
+      })
+      .reduce((obj, key) => {
+        return {
+          ...obj,
+          [key]: this.verifications[key]
+        };
+      }, {});
+    return Object.keys(filtered).length;
+  }
+
+  // Filters
+  private setActiveFilter(keyToActivate: string) {
+    const keys = Object.keys(this.verificationFilter);
+    keys.forEach((key, index) => {
+      this.verificationFilter[key].active = key === keyToActivate;
+    });
   }
 
 }

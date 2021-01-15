@@ -12,12 +12,13 @@
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
 import {ReportOverviewComponent} from './containers/report-overview/report-overview.component';
 import {ProcessorService} from './services/processor.service';
 import {VerifierCommonModule} from '../verifier-common-module';
 import {ReportPdfComponent} from './containers/report-pdf/report-pdf.component';
+import {StatusFilterPipe} from './pipes/statusFilter.pipe';
+import {RouterModule, Routes} from '@angular/router';
+import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 
@@ -33,6 +34,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
+    StatusFilterPipe,
     ReportOverviewComponent,
     ReportPdfComponent,
   ],
@@ -45,5 +47,6 @@ const routes: Routes = [
   exports: [],
   providers: [ProcessorService]
 })
+
 export class ReportModule {
 }

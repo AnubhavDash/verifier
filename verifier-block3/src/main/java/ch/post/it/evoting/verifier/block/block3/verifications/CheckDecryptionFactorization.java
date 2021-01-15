@@ -14,6 +14,11 @@
  */
 package ch.post.it.evoting.verifier.block.block3.verifications;
 
+import java.math.BigInteger;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
 import ch.post.it.evoting.verifier.block.block3.loader.offline.OfflineVoterWithProofLoader;
 import ch.post.it.evoting.verifier.common.Category;
@@ -26,98 +31,95 @@ import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import reactor.core.publisher.Flux;
 
-import java.math.BigInteger;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.stream.Collectors;
+import reactor.core.publisher.Flux;
 
 public class CheckDecryptionFactorization extends AbstractVerification {
 
-    @Override
-    public VerificationDefinition getVerificationDefinition() {
-        VerificationDefinition verificationDefinition = new VerificationDefinition();
-        verificationDefinition.setBlockId(3);
-        verificationDefinition.setCategory(Category.CONSISTENCY);
-        verificationDefinition.setId(12);
-        verificationDefinition.setName("checkDecryptionFactorization");
-        verificationDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification12.description"));
+	@Override
+	public VerificationDefinition getVerificationDefinition() {
+		VerificationDefinition verificationDefinition = new VerificationDefinition();
+		verificationDefinition.setBlockId(3);
+		verificationDefinition.setCategory(Category.CONSISTENCY);
+		verificationDefinition.setId(12);
+		verificationDefinition.setName("checkDecryptionFactorization");
+		verificationDefinition
+				.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification12.description"));
 
-        return verificationDefinition;
-    }
+		return verificationDefinition;
+	}
 
-    @Override
-    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-        VerificationResult result = new VerificationResult();
+	@Override
+	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
+		VerificationResult result = new VerificationResult();
 
-        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
-        for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
+		PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+		for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
 
-            // decompressedVotes
-            PathNode decompressedVotesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.DECOMPRESSED_VOTES, ballotBoxIdDirectoryPath);
-            List<BigInteger> decompVotesbigIntList = Flux.fromIterable(Deserializer.fromCsv(decompressedVotesPathNode.getPath(), ";", tab -> {
-                BigInteger bigInt = BigInteger.ONE;
-                for (int i = 0; i < tab.length; i++) {
-                    // ignore write ins
-                    if (!tab[i].contains("#")) {
-                        bigInt = bigInt.multiply(new BigInteger(tab[i]));
-                    }
-                }
-                return bigInt;
-            })).collectList().block();
+			// decompressedVotes
+			PathNode decompressedVotesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.DECOMPRESSED_VOTES, ballotBoxIdDirectoryPath);
+			List<BigInteger> decompVotesbigIntList = Flux.fromIterable(Deserializer.fromCsv(decompressedVotesPathNode.getPath(), ";", tab -> {
+				BigInteger bigInt = BigInteger.ONE;
+				for (int i = 0; i < tab.length; i++) {
+					// ignore write ins
+					if (!tab[i].contains("#")) {
+						bigInt = bigInt.multiply(new BigInteger(tab[i]));
+					}
+				}
+				return bigInt;
+			})).collectList().block();
 
-            if (decompVotesbigIntList == null) {
-                throw buildVerificationFailureException(
-                        "error occurs while parsing data in decompressedVotes.csv",
-                        Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
-                        "verification12.nok.message"
-                );
-            }
+			if (decompVotesbigIntList == null) {
+				throw buildVerificationFailureException(
+						"error occurs while parsing data in decompressedVotes.csv",
+						Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
+						"verification12.nok.message"
+				);
+			}
 
+			// votes with proof
+			// Get "0" directory, implicit use of getPath to get the first path from the PathNode
+			PathNode ballotBoxOfflineDirectoriesPathNode = pathService
+					.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
+			OfflineVoterWithProofLoader offlineVoterWithProofLoader = new OfflineVoterWithProofLoader(ballotBoxOfflineDirectoriesPathNode.getPath());
+			List<BigInteger> voterWithProofbigIntList = offlineVoterWithProofLoader.getPlaintexts()
+					.stream()
+					.map(plaintext -> plaintext.getValue(0).getValue())
+					.collect(Collectors.toList());
 
-            // votes with proof
-            // Get "0" directory, implicit use of getPath to get the first path from the PathNode
-            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
-            OfflineVoterWithProofLoader offlineVoterWithProofLoader = new OfflineVoterWithProofLoader(ballotBoxOfflineDirectoriesPathNode.getPath());
-            List<BigInteger> voterWithProofbigIntList = offlineVoterWithProofLoader.getPlaintexts()
-                    .stream()
-                    .map(plaintext -> plaintext.getValue(0).getValue())
-                    .collect(Collectors.toList());
+			if (voterWithProofbigIntList == null) {
+				throw buildVerificationFailureException(
+						"error occurs while parsing data in voterWithProofbigIntList.csv",
+						Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
+						"verification12.nok.message",
+						ballotBoxIdDirectoryPath.getFileName().toString());
+			}
 
-            if (voterWithProofbigIntList == null) {
-                throw buildVerificationFailureException(
-                        "error occurs while parsing data in voterWithProofbigIntList.csv",
-                        Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
-                        "verification12.nok.message",
-                        ballotBoxIdDirectoryPath.getFileName().toString());
-            }
+			// finally to the check
+			if (decompVotesbigIntList.size() != voterWithProofbigIntList.size()) {
+				throw buildVerificationFailureException(
+						"factorization not correct !",
+						Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
+						"verification12.nok.message",
+						decompVotesbigIntList.toString());
+			}
 
-            // finally to the check
-            if (decompVotesbigIntList.size() != voterWithProofbigIntList.size()) {
-                throw buildVerificationFailureException(
-                        "factorization not correct !",
-                        Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
-                        "verification12.nok.message",
-                        decompVotesbigIntList.toString());
-            }
+			Boolean allMatch = Flux.fromIterable(decompVotesbigIntList)
+					.zipWith(Flux.fromIterable(voterWithProofbigIntList))
+					.all(t -> MathHelper.areEqual(t.getT1(), t.getT2()))
+					.block();
 
-            Boolean allMatch = Flux.fromIterable(decompVotesbigIntList)
-                    .zipWith(Flux.fromIterable(voterWithProofbigIntList))
-                    .all(t -> MathHelper.areEqual(t.getT1(), t.getT2()))
-                    .block();
+			if (!allMatch) {
+				throw buildVerificationFailureException(
+						"factorization not correct !",
+						Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
+						"verification12.nok.message",
+						decompVotesbigIntList.toString());
+			}
 
-            if (!allMatch) {
-                throw buildVerificationFailureException(
-                        "factorization not correct !",
-                        Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
-                        "verification12.nok.message",
-                        decompVotesbigIntList.toString());
-            }
+		}
 
-        }
-
-        result.setStatus(Status.OK);
-        return result;
-    }
+		result.setStatus(Status.OK);
+		return result;
+	}
 }

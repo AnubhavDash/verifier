@@ -14,16 +14,6 @@
  */
 package ch.post.it.evoting.verifier.block.block3.verifications;
 
-import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
-import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.tools.*;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -35,80 +25,94 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
+import ch.post.it.evoting.verifier.common.Category;
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationDefinition;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+
 public class CheckCommitmentParameters extends AbstractVerification {
 
-    @Override
-    public VerificationDefinition getVerificationDefinition() {
-        VerificationDefinition def = new VerificationDefinition();
-        def.setBlockId(3);
-        def.setCategory(Category.INTEGRITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification08.description"));
-        def.setId(8);
-        def.setName("checkCommitmentParameters(cp)");
-        return def;
-    }
+	@Override
+	public VerificationDefinition getVerificationDefinition() {
+		VerificationDefinition def = new VerificationDefinition();
+		def.setBlockId(3);
+		def.setCategory(Category.INTEGRITY);
+		def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification08.description"));
+		def.setId(8);
+		def.setName("checkCommitmentParameters(cp)");
+		return def;
+	}
 
-    @Override
-    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-        VerificationResult result = new VerificationResult();
+	@Override
+	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
+		VerificationResult result = new VerificationResult();
 
-        // Get commitment parameters files
-        List<Path> commitmentParametersPaths = new ArrayList<>();
-        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
-        for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
-            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
-            for (Path ballotBoxOfflineDirectoryPath : ballotBoxOfflineDirectoriesPathNode.getRegexPaths()) {
-                PathNode commitmentParametersPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.COMMITMENT_PARAMETERS, ballotBoxOfflineDirectoryPath);
-                commitmentParametersPaths.add(commitmentParametersPathNode.getPath());
-            }
-        }
+		// Get commitment parameters files
+		List<Path> commitmentParametersPaths = new ArrayList<>();
+		PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+		for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
+			PathNode ballotBoxOfflineDirectoriesPathNode = pathService
+					.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
+			for (Path ballotBoxOfflineDirectoryPath : ballotBoxOfflineDirectoriesPathNode.getRegexPaths()) {
+				PathNode commitmentParametersPathNode = pathService
+						.buildFromDynamicAncestorPath(StructureKey.COMMITMENT_PARAMETERS, ballotBoxOfflineDirectoryPath);
+				commitmentParametersPaths.add(commitmentParametersPathNode.getPath());
+			}
+		}
 
-        // No commitment parameters files found
-        if (commitmentParametersPaths.isEmpty()) {
-            throw new FileNotFoundException("no commitmentParameters.json found");
-        }
+		// No commitment parameters files found
+		if (commitmentParametersPaths.isEmpty()) {
+			throw new FileNotFoundException("no commitmentParameters.json found");
+		}
 
-        // Extract p
-        final BigInteger p = TypeConverter.stringToBigInteger(commitmentParametersPaths.stream().flatMap(path -> {
-            try {
-                Optional<String> optionalFirst = Files.lines(path).findFirst();
-                if (optionalFirst.isPresent()) {
-                    return Stream.of(optionalFirst.get());
-                } else {
-                    throw new RuntimeException("no first line in file");
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }).reduce(null, (s1, s2) -> {
-            if (s1 != null && !s1.equals(s2)) {
-                throw new RuntimeException("P parameter not unique");
-            }
-            return s2;
-        }));
+		// Extract p
+		final BigInteger p = TypeConverter.stringToBigInteger(commitmentParametersPaths.stream().flatMap(path -> {
+			try {
+				Optional<String> optionalFirst = Files.lines(path).findFirst();
+				if (optionalFirst.isPresent()) {
+					return Stream.of(optionalFirst.get());
+				} else {
+					throw new RuntimeException("no first line in file");
+				}
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}).reduce(null, (s1, s2) -> {
+			if (s1 != null && !s1.equals(s2)) {
+				throw new RuntimeException("P parameter not unique");
+			}
+			return s2;
+		}));
 
-        // Check errors
-        final List<BigInteger> errors = commitmentParametersPaths.stream()
-                .flatMap(path -> {
-                    try {
-                        return Files.lines(path).skip(3);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .map(TypeConverter::stringToBigInteger)
-                .filter(bi -> !MathHelper.isEulerCriterionValid(bi, p)).collect(Collectors.toList());
+		// Check errors
+		final List<BigInteger> errors = commitmentParametersPaths.stream()
+				.flatMap(path -> {
+					try {
+						return Files.lines(path).skip(3);
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+				})
+				.map(TypeConverter::stringToBigInteger)
+				.filter(bi -> !MathHelper.isEulerCriterionValid(bi, p)).collect(Collectors.toList());
 
-        if (!errors.isEmpty()) {
-            throw buildVerificationFailureException(
-                    "Commitment parameters verification failed",
-                    Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
-                    "verification08.nok.message",
-                    errors.toString()
-            );
-        }
+		if (!errors.isEmpty()) {
+			throw buildVerificationFailureException(
+					"Commitment parameters verification failed",
+					Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
+					"verification08.nok.message",
+					errors.toString()
+			);
+		}
 
-        result.setStatus(Status.OK);
-        return result;
-    }
+		result.setStatus(Status.OK);
+		return result;
+	}
 }

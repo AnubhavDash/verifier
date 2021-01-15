@@ -34,7 +34,7 @@ public class SecureLogBundle {
 
 	private CheckPointLogEntry beginCheckPoint;
 	private CheckPointLogEntry endCheckPoint;
-	private List<RegularLogEntry> regularLogEntries = new ArrayList<>();
+	private final List<RegularLogEntry> regularLogEntries = new ArrayList<>();
 	private SecureLogBundleCertificates certificates;
 
 	public void setCertificates(SecureLogBundleCertificates certificates) {

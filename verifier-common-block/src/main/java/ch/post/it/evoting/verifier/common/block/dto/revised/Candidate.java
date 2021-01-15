@@ -14,29 +14,33 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
-import ch.post.it.evoting.verifier.common.block.dto.converter.StringArrayToBigIntegerListConverter;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.Getter;
-
 import java.math.BigInteger;
 import java.util.List;
-import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import ch.post.it.evoting.verifier.common.block.dto.converter.StringArrayToBigIntegerListConverter;
+
+import lombok.Getter;
 
 @Getter
 public class Candidate {
 
-    private final String alias;
-    @JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
-    private final List<BigInteger> primeNumbers;
-    private final boolean blank;
+	private final String alias;
+	@JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
+	private final List<BigInteger> primeNumbers;
+	private final boolean blank;
 
-    public Candidate(@JsonProperty("alias") String alias,
-                     @JsonProperty("primeNumber") List<BigInteger> primeNumber,
-                     @JsonProperty("blank") boolean blank) {
-        this.alias = alias;
-        this.primeNumbers = primeNumber;
-        this.blank = blank;
-    }
+	public Candidate(
+			@JsonProperty("alias")
+					String alias,
+			@JsonProperty("primeNumber")
+					List<BigInteger> primeNumber,
+			@JsonProperty("blank")
+					boolean blank) {
+		this.alias = alias;
+		this.primeNumbers = primeNumber;
+		this.blank = blank;
+	}
 }

@@ -14,18 +14,20 @@
  */
 package ch.post.it.evoting.verifier.block.block3.loader.online.mapper;
 
-import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.GroupElement;
-import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+
+import com.scytl.products.ov.mixnet.commons.mathematical.impl.ZpElement;
+
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.GroupElement;
 
 @Mapper
 public interface GroupElementMapper {
 
-    GroupElementMapper INSTANCE = Mappers.getMapper(GroupElementMapper.class);
+	GroupElementMapper INSTANCE = Mappers.getMapper(GroupElementMapper.class);
 
-    default com.scytl.products.ov.mixnet.commons.mathematical.GroupElement map(GroupElement element){
-        return new ZpElement(element.getValue(), element.getP(), element.getQ());
-    }
+	default com.scytl.products.ov.mixnet.commons.mathematical.GroupElement map(GroupElement element) {
+		return new ZpElement(element.getValue(), element.getP(), element.getQ());
+	}
 
 }

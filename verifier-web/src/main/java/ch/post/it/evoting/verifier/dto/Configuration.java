@@ -20,5 +20,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Configuration {
-    private String inputDirectory;
+	private String inputDirectory;
 }

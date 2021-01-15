@@ -14,6 +14,11 @@
  */
 package ch.post.it.evoting.verifier.block.block3.verifications;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
@@ -26,63 +31,60 @@ import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-
 public class CheckSigProofs extends AbstractVerification {
 
-    @Override
-    public VerificationDefinition getVerificationDefinition() {
+	@Override
+	public VerificationDefinition getVerificationDefinition() {
 
-        VerificationDefinition verificationDefinition = new VerificationDefinition();
-        verificationDefinition.setBlockId(3);
-        verificationDefinition.setCategory(Category.AUTHENTICITY);
-        verificationDefinition.setId(71);
-        verificationDefinition.setName("checkSigProofs");
-        verificationDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification71.description"));
+		VerificationDefinition verificationDefinition = new VerificationDefinition();
+		verificationDefinition.setBlockId(3);
+		verificationDefinition.setCategory(Category.AUTHENTICITY);
+		verificationDefinition.setId(71);
+		verificationDefinition.setName("checkSigProofs");
+		verificationDefinition
+				.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification71.description"));
 
-        return verificationDefinition;
-    }
+		return verificationDefinition;
+	}
 
-    @Override
-    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-        VerificationResult result = new VerificationResult();
+	@Override
+	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
+		VerificationResult result = new VerificationResult();
 
-        // Collect all the proofs
-        List<PathNode> proofsPathNodes = new ArrayList<>();
-        PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
-        for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
-            PathNode ballotBoxOfflineDirectoriesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
-            for (Path ballotBoxOfflineDirectoryPath : ballotBoxOfflineDirectoriesPathNode.getRegexPaths()) {
-                proofsPathNodes.add(pathService.buildFromDynamicAncestorPath(StructureKey.PROOFS, ballotBoxOfflineDirectoryPath));
-            }
-        }
+		// Collect all the proofs
+		List<PathNode> proofsPathNodes = new ArrayList<>();
+		PathNode ballotBoxIdDirectoriesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+		for (Path ballotBoxIdDirectoryPath : ballotBoxIdDirectoriesPathNode.getRegexPaths()) {
+			PathNode ballotBoxOfflineDirectoriesPathNode = pathService
+					.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_OFFLINE_DIR, ballotBoxIdDirectoryPath);
+			for (Path ballotBoxOfflineDirectoryPath : ballotBoxOfflineDirectoriesPathNode.getRegexPaths()) {
+				proofsPathNodes.add(pathService.buildFromDynamicAncestorPath(StructureKey.PROOFS, ballotBoxOfflineDirectoryPath));
+			}
+		}
 
-        // Get signed certificate
-        PathNode adminBoardCertPathNode = pathService.buildFromRootPath(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
-        byte[] signCertificate = Files.readAllBytes(adminBoardCertPathNode.getPath());
+		// Get signed certificate
+		PathNode adminBoardCertPathNode = pathService.buildFromRootPath(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
+		byte[] signCertificate = Files.readAllBytes(adminBoardCertPathNode.getPath());
 
-        // Get root certificate
-        PathNode rootCAPathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
-        byte[] rootCA = Files.readAllBytes(rootCAPathNode.getPath());
+		// Get root certificate
+		PathNode rootCAPathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
+		byte[] rootCA = Files.readAllBytes(rootCAPathNode.getPath());
 
-        // Verify signature of each proofs
-        for (PathNode proofsPathNode : proofsPathNodes) {
-            byte[] content = Files.readAllBytes(proofsPathNode.getPath());
-            byte[] signature = Files.readAllBytes(proofsPathNode.getRelation(RelationType.METADATA));
+		// Verify signature of each proofs
+		for (PathNode proofsPathNode : proofsPathNodes) {
+			byte[] content = Files.readAllBytes(proofsPathNode.getPath());
+			byte[] signature = Files.readAllBytes(proofsPathNode.getRelation(RelationType.METADATA));
 
-            if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCA)) {
-                throw buildVerificationFailureException(
-                        "The signature verification of the proofs.json failed",
-                        Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
-                        "verification71.nok.message"
-                );
-            }
-        }
+			if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCA)) {
+				throw buildVerificationFailureException(
+						"The signature verification of the proofs.json failed",
+						Block3VerificationSuite.RESOURCE_BUNDLE_NAME,
+						"verification71.nok.message"
+				);
+			}
+		}
 
-        result.setStatus(Status.OK);
-        return result;
-    }
+		result.setStatus(Status.OK);
+		return result;
+	}
 }

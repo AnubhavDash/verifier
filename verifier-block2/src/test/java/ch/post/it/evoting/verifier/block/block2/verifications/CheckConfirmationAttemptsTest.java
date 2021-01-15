@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -34,47 +33,46 @@ import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 
 class CheckConfirmationAttemptsTest extends Block2VerificationAbstractTest {
 
-    @BeforeEach
-    void setup() {
-        verification = new CheckConfirmationAttempts();
-    }
+	public CheckConfirmationAttemptsTest() {
+		super(CheckConfirmationAttempts.class);
+	}
 
-    @Test
-    @Disabled("Enable when we got secureLog files with correct pattern.")
-    void executeTest() throws Exception {
-        VerificationResult verificationResult =
-                verification.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/OK").toURI()));
-        assertNotNull(verificationResult);
-        assertEquals(Status.OK, verificationResult.getStatus());
-    }
+	@Test
+	@Disabled("Enable when we got secureLog files with correct pattern.")
+	void executeTest() throws Exception {
+		VerificationResult verificationResult =
+				verification.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/OK").toURI()));
+		assertNotNull(verificationResult);
+		assertEquals(Status.OK, verificationResult.getStatus());
+	}
 
-    @Test
-    @Disabled("Enable when we got secureLog files with correct pattern.")
-    void executeTestNOK() {
-        final VerificationFailureException ex = assertThrows(
-                VerificationFailureException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/NOK").toURI()))
-        );
-        assertEquals("TODO", ex.getMessage());
-    }
+	@Test
+	@Disabled("Enable when we got secureLog files with correct pattern.")
+	void executeTestNOK() {
+		final VerificationFailureException ex = assertThrows(
+				VerificationFailureException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/NOK").toURI()))
+		);
+		assertEquals("TODO", ex.getMessage());
+	}
 
-    @Test
-    void executeTestNOKFileNotFoundVoterInformation() {
-        final FileNotFoundException ex = assertThrows(
-                FileNotFoundException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/NOK-NOTFILE").toURI()))
-        );
-        assertEquals("voterInformation.*\\.csv", ex.getMessage());
-    }
+	@Test
+	void executeTestNOKFileNotFoundVoterInformation() {
+		final FileNotFoundException ex = assertThrows(
+				FileNotFoundException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/NOK-NOTFILE").toURI()))
+		);
+		assertEquals("voterInformation.*\\.csv", ex.getMessage());
+	}
 
-    @Test
-    void executeTestNOKFileNotFoundMappingCcHosts() {
-        final FileNotFoundException ex = assertThrows(
-                FileNotFoundException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/NOK-NOTFILE2").toURI()))
-        );
-        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.MAPPING_CC_HOSTS);
-        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
-    }
+	@Test
+	void executeTestNOKFileNotFoundMappingCcHosts() {
+		final FileNotFoundException ex = assertThrows(
+				FileNotFoundException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckConfirmationAttemptsTest/NOK-NOTFILE2").toURI()))
+		);
+		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.MAPPING_CC_HOSTS);
+		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	}
 
 }

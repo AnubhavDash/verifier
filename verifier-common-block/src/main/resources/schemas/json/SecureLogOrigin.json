@@ -3,16 +3,16 @@
   "offset": 31986,
   "lastrow": true,
   "result": {
-    "_raw": "",
-    "_time": "",
-    "arrivalcode": "",
-    "cd": "",
-    "host": "",
-    "index": "",
-    "linecount": "",
-    "minute": "",
-    "source": "",
-    "sourcetype": "",
-    "splunk_server": ""
+	"_raw": "",
+	"_time": "",
+	"arrivalcode": "",
+	"cd": "",
+	"host": "",
+	"index": "",
+	"linecount": "",
+	"minute": "",
+	"source": "",
+	"sourcetype": "",
+	"splunk_server": ""
   }
 }

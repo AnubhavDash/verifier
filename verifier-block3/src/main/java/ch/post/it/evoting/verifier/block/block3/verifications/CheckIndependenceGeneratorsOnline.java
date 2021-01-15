@@ -14,42 +14,47 @@
  */
 package ch.post.it.evoting.verifier.block.block3.verifications;
 
-import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
-import ch.post.it.evoting.verifier.common.*;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import java.nio.file.Path;
+
 import org.apache.log4j.Logger;
 
-import java.nio.file.Path;
+import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
+import ch.post.it.evoting.verifier.common.Category;
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationDefinition;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.VerificationTrait;
+import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 
 public class CheckIndependenceGeneratorsOnline extends AbstractVerification {
 
-    private static final Logger LOGGER = Logger.getLogger(CheckIndependenceGeneratorsOnline.class);
+	private static final Logger LOGGER = Logger.getLogger(CheckIndependenceGeneratorsOnline.class);
 
-    @Override
-    public VerificationDefinition getVerificationDefinition() {
-        VerificationDefinition def = new VerificationDefinition();
-        def.setBlockId(3);
-        def.setCategory(Category.EVIDENCE);
-        def.setId(29);
-        def.setName("checkIndependenceGeneratorsOnline");
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification29.description"));
-        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
-        return def;
-    }
+	@Override
+	public VerificationDefinition getVerificationDefinition() {
+		VerificationDefinition def = new VerificationDefinition();
+		def.setBlockId(3);
+		def.setCategory(Category.EVIDENCE);
+		def.setId(29);
+		def.setName("checkIndependenceGeneratorsOnline");
+		def.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification29.description"));
+		def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+		return def;
+	}
 
-    @Override
-    public VerificationResult verify(Path inputDirectoryPath) {
-        VerificationResult result = new VerificationResult();
+	@Override
+	public VerificationResult verify(Path inputDirectoryPath) {
+		VerificationResult result = new VerificationResult();
 
-        try {
-            result.setStatus(Status.NA);
-        } catch (Exception e) {
-            LOGGER.error("Unexpected error", e);
-            result.setStatus(Status.NOK);
-            result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
-        }
+		try {
+			result.setStatus(Status.NA);
+		} catch (Exception e) {
+			LOGGER.error("Unexpected error", e);
+			result.setStatus(Status.NOK);
+			result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "error.generic.message"));
+		}
 
-        return result;
-    }
+		return result;
+	}
 }

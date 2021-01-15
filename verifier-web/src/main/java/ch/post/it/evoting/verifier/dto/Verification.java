@@ -14,25 +14,26 @@
  */
 package ch.post.it.evoting.verifier.dto;
 
+import java.util.Map;
+
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.Status;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.Map;
 
 @Getter
 @Setter
 @ToString
 public class Verification {
-    private String id;
-    private int verificationId;
-    private int blockId;
-    private String name;
-    private Category category;
-    private Map<Language, String> description;
-    private Status status;
-    private Map<Language, String> message;
+	private String id;
+	private int verificationId;
+	private int blockId;
+	private String name;
+	private Category category;
+	private Map<Language, String> description;
+	private Status status;
+	private Map<Language, String> message;
 }

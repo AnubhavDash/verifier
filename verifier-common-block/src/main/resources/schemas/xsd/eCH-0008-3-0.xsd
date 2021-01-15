@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-		   xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008/3"
-		   targetNamespace="http://www.ech.ch/xmlns/eCH-0008/3"
-		   elementFormDefault="qualified"
-		   attributeFormDefault="unqualified" version="3.0">
+					 xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008/3"
+					 targetNamespace="http://www.ech.ch/xmlns/eCH-0008/3"
+					 elementFormDefault="qualified"
+					 attributeFormDefault="unqualified" version="3.0">
 	<xs:annotation>
 		<xs:documentation xml:lang="de">Ausgabedatum: 09.09.2011</xs:documentation>
 	</xs:annotation>

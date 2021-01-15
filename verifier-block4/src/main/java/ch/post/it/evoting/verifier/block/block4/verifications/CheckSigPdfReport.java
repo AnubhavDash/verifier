@@ -14,6 +14,9 @@
  */
 package ch.post.it.evoting.verifier.block.block4.verifications;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import ch.post.it.evoting.verifier.block.block4.Block4VerificationSuite;
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Status;
@@ -26,45 +29,42 @@ import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-
 public class CheckSigPdfReport extends AbstractVerification {
 
-    @Override
-    public VerificationDefinition getVerificationDefinition() {
-        VerificationDefinition def = new VerificationDefinition();
-        def.setBlockId(4);
-        def.setCategory(Category.AUTHENTICITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification74.description"));
-        def.setId(74);
-        def.setName("checkSigPdfReport");
-        return def;
-    }
+	@Override
+	public VerificationDefinition getVerificationDefinition() {
+		VerificationDefinition def = new VerificationDefinition();
+		def.setBlockId(4);
+		def.setCategory(Category.AUTHENTICITY);
+		def.setDescription(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification74.description"));
+		def.setId(74);
+		def.setName("checkSigPdfReport");
+		return def;
+	}
 
-    @Override
-    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-        VerificationResult result = new VerificationResult();
+	@Override
+	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
+		VerificationResult result = new VerificationResult();
 
-        // Get root certificate
-        PathNode rootCertificatePathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
-        byte[] rootCertificate = Files.readAllBytes(rootCertificatePathNode.getPath());
+		// Get root certificate
+		PathNode rootCertificatePathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
+		byte[] rootCertificate = Files.readAllBytes(rootCertificatePathNode.getPath());
 
-        // Get report result and its signature
-        PathNode reportPdfPathNode = pathService.buildFromRootPath(StructureKey.REPORT_RESULT, inputDirectoryPath);
-        byte[] content = Files.readAllBytes(reportPdfPathNode.getPath());
-        byte[] signature = Files.readAllBytes(reportPdfPathNode.getRelation(RelationType.P7));
+		// Get report result and its signature
+		PathNode reportPdfPathNode = pathService.buildFromRootPath(StructureKey.REPORT_RESULT, inputDirectoryPath);
+		byte[] content = Files.readAllBytes(reportPdfPathNode.getPath());
+		byte[] signature = Files.readAllBytes(reportPdfPathNode.getRelation(RelationType.P7));
 
-        // Verify signature of the report result
-        if (!SignatureChecker.verifyPKCS7(content, signature, rootCertificate)) {
-            throw buildVerificationFailureException(
-                    "The signature verification of PDF Report failed",
-                    Block4VerificationSuite.RESOURCE_BUNDLE_NAME,
-                    "verification74.nok.message"
-            );
-        }
+		// Verify signature of the report result
+		if (!SignatureChecker.verifyPKCS7(content, signature, rootCertificate)) {
+			throw buildVerificationFailureException(
+					"The signature verification of PDF Report failed",
+					Block4VerificationSuite.RESOURCE_BUNDLE_NAME,
+					"verification74.nok.message"
+			);
+		}
 
-        result.setStatus(Status.OK);
-        return result;
-    }
+		result.setStatus(Status.OK);
+		return result;
+	}
 }

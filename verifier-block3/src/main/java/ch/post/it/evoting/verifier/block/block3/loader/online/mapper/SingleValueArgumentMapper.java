@@ -14,32 +14,34 @@
  */
 package ch.post.it.evoting.verifier.block.block3.loader.online.mapper;
 
-import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.SingleValueArgumentAnswer;
-import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.SingleValueArgumentInitMessage;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+
 import com.scytl.products.ov.mixnet.commons.beans.proofs.SingleValueProductProofAnswer;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.SingleValueProductProofInitialMessage;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.SingleValueArgumentAnswer;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.SingleValueArgumentInitMessage;
 
 @Mapper
 public interface SingleValueArgumentMapper {
 
-    SingleValueArgumentMapper INSTANCE = Mappers.getMapper(SingleValueArgumentMapper.class);
+	SingleValueArgumentMapper INSTANCE = Mappers.getMapper(SingleValueArgumentMapper.class);
 
-    default SingleValueProductProofInitialMessage mapInitMessage(SingleValueArgumentInitMessage source) {
-        PublicCommitment cd = new PublicCommitment(GroupElementMapper.INSTANCE.map(source.getCommitmentD().getElement()));
-        PublicCommitment cLowDelta = new PublicCommitment(GroupElementMapper.INSTANCE.map(source.getCommitmentLowerDelta().getElement()));
-        PublicCommitment cHighDelta = new PublicCommitment(GroupElementMapper.INSTANCE.map(source.getCommitmentUpperDelta().getElement()));
-        return new SingleValueProductProofInitialMessage(cd, cLowDelta, cHighDelta);
-    }
+	default SingleValueProductProofInitialMessage mapInitMessage(SingleValueArgumentInitMessage source) {
+		PublicCommitment cd = new PublicCommitment(GroupElementMapper.INSTANCE.map(source.getCommitmentD().getElement()));
+		PublicCommitment cLowDelta = new PublicCommitment(GroupElementMapper.INSTANCE.map(source.getCommitmentLowerDelta().getElement()));
+		PublicCommitment cHighDelta = new PublicCommitment(GroupElementMapper.INSTANCE.map(source.getCommitmentUpperDelta().getElement()));
+		return new SingleValueProductProofInitialMessage(cd, cLowDelta, cHighDelta);
+	}
 
-    default SingleValueProductProofAnswer mapAnswer(SingleValueArgumentAnswer source) {
-        com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent[] tildeA = ExponentMapper.INSTANCE.mapFromList(source.getExponentsTildeA());
-        com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent[] tildeB = ExponentMapper.INSTANCE.mapFromList(source.getExponentsTildeB());
-        com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent tildeR = ExponentMapper.INSTANCE.map(source.getExponentTildeR());
-        com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent tildeS = ExponentMapper.INSTANCE.map(source.getExponentTildeS());
-        return new SingleValueProductProofAnswer(tildeA, tildeB, tildeR, tildeS);
-    }
+	default SingleValueProductProofAnswer mapAnswer(SingleValueArgumentAnswer source) {
+		com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent[] tildeA = ExponentMapper.INSTANCE.mapFromList(source.getExponentsTildeA());
+		com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent[] tildeB = ExponentMapper.INSTANCE.mapFromList(source.getExponentsTildeB());
+		com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent tildeR = ExponentMapper.INSTANCE.map(source.getExponentTildeR());
+		com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent tildeS = ExponentMapper.INSTANCE.map(source.getExponentTildeS());
+		return new SingleValueProductProofAnswer(tildeA, tildeB, tildeR, tildeS);
+	}
 
 }

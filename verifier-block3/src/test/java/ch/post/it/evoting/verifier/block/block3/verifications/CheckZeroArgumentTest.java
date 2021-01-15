@@ -14,46 +14,47 @@
  */
 package ch.post.it.evoting.verifier.block.block3.verifications;
 
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 
 class CheckZeroArgumentTest extends Block3VerificationAbstractTest {
 
-    @BeforeEach
-    void setup() {
-        verification = new CheckZeroArgument();
-    }
+	public CheckZeroArgumentTest() {
+		super(CheckZeroArgument.class);
+	}
 
-    @Test
-    void executeTestOK() throws Exception {
-        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckZeroArgumentTest/OK").toURI()));
-        assertEquals(Status.OK, result.getStatus());
-    }
+	@Test
+	void executeTestOK() throws Exception {
+		VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckZeroArgumentTest/OK").toURI()));
+		assertEquals(Status.OK, result.getStatus());
+	}
 
-    @Test
-    @Disabled("Fix this test by not using status NOK anymore and implementing meaningful asserts.")
-    void executeTestNOK() throws Exception {
-        VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckZeroArgumentTest/NOK").toURI()));
-        assertEquals(Status.NOK, result.getStatus());
-    }
+	@Test
+	@Disabled("Fix this test by not using status NOK anymore and implementing meaningful asserts.")
+	void executeTestNOK() throws Exception {
+		VerificationResult result = verification.verify(Paths.get(getClass().getResource("/CheckZeroArgumentTest/NOK").toURI()));
+		assertEquals(Status.NOK, result.getStatus());
+	}
 
-    @Test
-    void executeTestKOFileNotFound() throws Exception {
-        final NoSuchFileException ex = assertThrows(
-                NoSuchFileException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckZeroArgumentTest/NOK-NOTFILE").toURI()))
-        );
-        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.BALLOT_BOXES_DIR);
-        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
-    }
+	@Test
+	void executeTestKOFileNotFound() throws Exception {
+		final NoSuchFileException ex = assertThrows(
+				NoSuchFileException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckZeroArgumentTest/NOK-NOTFILE").toURI()))
+		);
+		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.BALLOT_BOXES_DIR);
+		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	}
 }

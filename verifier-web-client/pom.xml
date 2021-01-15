@@ -17,6 +17,7 @@
     <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
     <node.build.compile.phase>compile</node.build.compile.phase>
     <node.build.generate-resources.phase>generate-resources</node.build.generate-resources.phase>
+    <npm.executable>npm</npm.executable>
     <sonar.sources>src</sonar.sources>
   </properties>
 
@@ -30,30 +31,6 @@
   </build>
 
   <profiles>
-    <profile>
-      <id>platform-windows</id>
-      <activation>
-        <os>
-          <family>windows</family>
-        </os>
-      </activation>
-      <properties>
-        <npm.executable>${basedir}/bin/_npm.cmd</npm.executable>
-      </properties>
-    </profile>
-
-    <profile>
-      <id>platform-unix</id>
-      <activation>
-        <os>
-          <family>unix</family>
-        </os>
-      </activation>
-      <properties>
-        <npm.executable>npm</npm.executable>
-      </properties>
-    </profile>
-
     <profile>
       <id>electron-package</id>
       <build>
@@ -97,8 +74,7 @@
             <configuration>
               <environmentVariables>
                 <!-- The following parameters create an NPM sandbox for CI -->
-                <NPM_CONFIG_PREFIX>${basedir}/npm</NPM_CONFIG_PREFIX>
-                <NPM_CONFIG_CACHE>${NPM_CONFIG_PREFIX}/cache</NPM_CONFIG_CACHE>
+                <NPM_CONFIG_CACHE>${basedir}/npm/cache</NPM_CONFIG_CACHE>
                 <NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>
               </environmentVariables>
             </configuration>
@@ -169,8 +145,7 @@
             <configuration>
               <environmentVariables>
                 <!-- The following parameters create an NPM sandbox for CI -->
-                <NPM_CONFIG_PREFIX>${basedir}/npm</NPM_CONFIG_PREFIX>
-                <NPM_CONFIG_CACHE>${NPM_CONFIG_PREFIX}/cache</NPM_CONFIG_CACHE>
+                <NPM_CONFIG_CACHE>${basedir}/npm/cache</NPM_CONFIG_CACHE>
                 <NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>
               </environmentVariables>
             </configuration>

@@ -14,25 +14,26 @@
  */
 package ch.post.it.evoting.verifier.block.block3.loader.online.mapper;
 
-import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.Exponent;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.Exponent;
 
 @Mapper
 public interface ExponentMapper {
 
-    ExponentMapper INSTANCE = Mappers.getMapper(ExponentMapper.class);
+	ExponentMapper INSTANCE = Mappers.getMapper(ExponentMapper.class);
 
-    default com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent map(Exponent source){
-        return new com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent(source.getValue(), source.getQ());
-    }
+	default com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent map(Exponent source) {
+		return new com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent(source.getValue(), source.getQ());
+	}
 
-    default com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent[] mapFromList(List<Exponent> source) {
-        List<com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent> collect = source.stream().map(this::map).collect(Collectors.toList());
-        return collect.toArray(new com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent[0]);
-    }
+	default com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent[] mapFromList(List<Exponent> source) {
+		List<com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent> collect = source.stream().map(this::map).collect(Collectors.toList());
+		return collect.toArray(new com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent[0]);
+	}
 
 }

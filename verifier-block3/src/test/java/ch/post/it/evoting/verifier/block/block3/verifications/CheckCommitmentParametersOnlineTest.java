@@ -14,40 +14,39 @@
  */
 package ch.post.it.evoting.verifier.block.block3.verifications;
 
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
-import java.nio.file.Paths;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.nio.file.Paths;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.exceptions.VerificationFailureException;
+
 class CheckCommitmentParametersOnlineTest extends Block3VerificationAbstractTest {
 
-    @BeforeEach
-    void setup() {
-        verification = new CheckCommitmentParametersOnline();
-    }
+	public CheckCommitmentParametersOnlineTest() {
+		super(CheckCommitmentParametersOnline.class);
+	}
 
-    @Test
-    void executeTestOK() throws Exception {
-        VerificationResult result =
-                verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersOnlineTest/OK").toURI()));
-        assertEquals(Status.OK, result.getStatus());
-    }
+	@Test
+	void executeTestOK() throws Exception {
+		VerificationResult result =
+				verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersOnlineTest/OK").toURI()));
+		assertEquals(Status.OK, result.getStatus());
+	}
 
-    @Test
-    @Disabled("FIXME")
-    void executeTestNOK() {
-        final VerificationFailureException ex = assertThrows(
-                VerificationFailureException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersOnlineTest/NOK").toURI()))
-        );
-        assertEquals("Commitment parameters verification failed", ex.getMessage());
-    }
+	@Test
+	@Disabled("FIXME")
+	void executeTestNOK() {
+		final VerificationFailureException ex = assertThrows(
+				VerificationFailureException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersOnlineTest/NOK").toURI()))
+		);
+		assertEquals("Commitment parameters verification failed", ex.getMessage());
+	}
 
 }

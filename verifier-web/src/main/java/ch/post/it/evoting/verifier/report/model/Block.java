@@ -14,17 +14,17 @@
  */
 package ch.post.it.evoting.verifier.report.model;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
 public class Block {
 
-    private String title;
-    private String description;
-    private List<Test> tests;
+	private String title;
+	private String description;
+	private List<Test> tests;
 
 }

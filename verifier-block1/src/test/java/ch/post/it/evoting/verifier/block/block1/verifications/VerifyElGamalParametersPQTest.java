@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.file.Paths;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.verifier.common.Status;
@@ -16,9 +15,8 @@ import ch.post.it.evoting.verifier.common.block.test.annotation.Slow;
 
 public class VerifyElGamalParametersPQTest extends Block1VerificationAbstractTest {
 
-	@BeforeEach
-	void setup() {
-		verification = new VerifyElGamalParametersPQ();
+	public VerifyElGamalParametersPQTest() {
+		super(VerifyElGamalParametersPQ.class);
 	}
 
 	public void executeTestOK() throws Exception {

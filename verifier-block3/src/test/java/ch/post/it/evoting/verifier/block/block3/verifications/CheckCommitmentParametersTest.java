@@ -14,79 +14,81 @@
  */
 package ch.post.it.evoting.verifier.block.block3.verifications;
 
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.VerificationFailureException;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.block.exceptions.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 
 class CheckCommitmentParametersTest extends Block3VerificationAbstractTest {
 
-    @BeforeEach
-    void setup() {
-        verification = new CheckCommitmentParameters();
-    }
+	public CheckCommitmentParametersTest() {
+		super(CheckCommitmentParameters.class);
+	}
 
-    @Test
-    void executeTestOK() throws Exception {
-        VerificationResult verificationResult =
-                verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/OK").toURI()));
-        assertNotNull(verificationResult);
-        assertEquals(Status.OK, verificationResult.getStatus());
-    }
+	@Test
+	void executeTestOK() throws Exception {
+		VerificationResult verificationResult =
+				verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/OK").toURI()));
+		assertNotNull(verificationResult);
+		assertEquals(Status.OK, verificationResult.getStatus());
+	}
 
-    @Test
-    void executeTestNOKpIsNotUnique() {
-        final RuntimeException ex = assertThrows(
-                RuntimeException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK/P-NOK").toURI()))
-        );
-        assertEquals("P parameter not unique", ex.getMessage());
-    }
+	@Test
+	void executeTestNOKpIsNotUnique() {
+		final RuntimeException ex = assertThrows(
+				RuntimeException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK/P-NOK").toURI()))
+		);
+		assertEquals("P parameter not unique", ex.getMessage());
+	}
 
-    @Test
-    void executeTestNOKEulerCriterionKo() {
-        final VerificationFailureException ex = assertThrows(
-                VerificationFailureException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK/BIGINT-NOK").toURI()))
-        );
-        assertEquals("Commitment parameters verification failed", ex.getMessage());
-    }
+	@Test
+	void executeTestNOKEulerCriterionKo() {
+		final VerificationFailureException ex = assertThrows(
+				VerificationFailureException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK/BIGINT-NOK").toURI()))
+		);
+		assertEquals("Commitment parameters verification failed", ex.getMessage());
+	}
 
-    @Test
-    void executeTestNOKFileNotFoundBallotBoxIdDir() {
-        final NoSuchFileException ex = assertThrows(
-                NoSuchFileException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK-NOTFILE").toURI()))
-        );
-        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.BALLOT_BOX_ID_DIR);
-        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
-    }
+	@Test
+	void executeTestNOKFileNotFoundBallotBoxIdDir() {
+		final NoSuchFileException ex = assertThrows(
+				NoSuchFileException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK-NOTFILE").toURI()))
+		);
+		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.BALLOT_BOX_ID_DIR);
+		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	}
 
-    @Test
-    void executeTestNOKFileNotFoundBallotBoxOfflineDir() {
-        final NoSuchFileException ex = assertThrows(
-                NoSuchFileException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK-NOTFILE2").toURI()))
-        );
-        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.BALLOT_BOX_OFFLINE_DIR);
-        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
-    }
+	@Test
+	void executeTestNOKFileNotFoundBallotBoxOfflineDir() {
+		final NoSuchFileException ex = assertThrows(
+				NoSuchFileException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK-NOTFILE2").toURI()))
+		);
+		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.BALLOT_BOX_OFFLINE_DIR);
+		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	}
 
-    @Test
-    void executeTestNOKFileNotFoundCommitmentParameters() {
-        final NoSuchFileException ex = assertThrows(
-                NoSuchFileException.class,
-                () -> verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK-NOTFILE3").toURI()))
-        );
-        final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.COMMITMENT_PARAMETERS);
-        assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
-    }
+	@Test
+	void executeTestNOKFileNotFoundCommitmentParameters() {
+		final NoSuchFileException ex = assertThrows(
+				NoSuchFileException.class,
+				() -> verification.verify(Paths.get(getClass().getResource("/CheckCommitmentParametersTest/NOK-NOTFILE3").toURI()))
+		);
+		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.COMMITMENT_PARAMETERS);
+		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	}
 }

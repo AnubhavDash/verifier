@@ -222,8 +222,8 @@ public class CheckTallyingAnswers extends AbstractVerification {
 	}
 
 	private class Test02Exception extends RuntimeException {
-		private String questionId;
-		private String answerType;
+		private final String questionId;
+		private final String answerType;
 
 		Test02Exception(String questionIdentification, String answerType) {
 			this.questionId = questionIdentification;

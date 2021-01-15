@@ -14,36 +14,44 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
-import ch.post.it.evoting.verifier.common.block.dto.converter.StringArrayToBigIntegerListConverter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.google.common.collect.ImmutableList;
-import lombok.Getter;
-
 import java.math.BigInteger;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.google.common.collect.ImmutableList;
+
+import ch.post.it.evoting.verifier.common.block.dto.converter.StringArrayToBigIntegerListConverter;
+
+import lombok.Getter;
+
 @Getter
 public class CandidatePosition {
 
-    private final String alias;
-    // TODO: why to candidate positions hold candidate list ids ?
-    private final UUID candidateListId;
-    @JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
-    private final List<BigInteger> primeNumbers;
-    private final int initialAccumulation;
-    private final boolean isBlank;
+	private final String alias;
+	// TODO: why to candidate positions hold candidate list ids ?
+	private final UUID candidateListId;
+	@JsonDeserialize(converter = StringArrayToBigIntegerListConverter.class)
+	private final List<BigInteger> primeNumbers;
+	private final int initialAccumulation;
+	private final boolean isBlank;
 
-    public CandidatePosition(@JsonProperty("alias") String alias,
-                             @JsonProperty("candidateListId") UUID candidateListId,
-                             @JsonProperty("primeNumber") List<BigInteger> primeNumber,
-                             @JsonProperty("initialAccumulation") int initialAccumulation,
-                             @JsonProperty("isBlank") boolean isBlank) {
-        this.alias = alias;
-        this.candidateListId = candidateListId;
-        this.primeNumbers = ImmutableList.copyOf(primeNumber);
-        this.initialAccumulation = initialAccumulation;
-        this.isBlank = isBlank;
-    }
+	public CandidatePosition(
+			@JsonProperty("alias")
+					String alias,
+			@JsonProperty("candidateListId")
+					UUID candidateListId,
+			@JsonProperty("primeNumber")
+					List<BigInteger> primeNumber,
+			@JsonProperty("initialAccumulation")
+					int initialAccumulation,
+			@JsonProperty("isBlank")
+					boolean isBlank) {
+		this.alias = alias;
+		this.candidateListId = candidateListId;
+		this.primeNumbers = ImmutableList.copyOf(primeNumber);
+		this.initialAccumulation = initialAccumulation;
+		this.isBlank = isBlank;
+	}
 }

@@ -14,6 +14,11 @@
  */
 package ch.post.it.evoting.verifier.block.block3.verifications;
 
+import java.nio.file.Path;
+import java.util.AbstractMap;
+
+import org.apache.log4j.Logger;
+
 import ch.post.it.evoting.verifier.block.block3.BGOfflineVerificationProcessor;
 import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
 import ch.post.it.evoting.verifier.block.block3.scytl.TestType;
@@ -25,46 +30,41 @@ import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import org.apache.log4j.Logger;
-
-import java.io.IOException;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.util.AbstractMap;
 
 public class CheckHadamardArgument extends AbstractVerification {
 
-    private static final Logger LOGGER = Logger.getLogger(CheckHadamardArgument.class);
+	private static final Logger LOGGER = Logger.getLogger(CheckHadamardArgument.class);
 
-    @Override
-    public VerificationDefinition getVerificationDefinition() {
+	@Override
+	public VerificationDefinition getVerificationDefinition() {
 
-        VerificationDefinition verificationDefinition = new VerificationDefinition();
-        verificationDefinition.setBlockId(3);
-        verificationDefinition.setCategory(Category.COMPLETENESS);
-        verificationDefinition.setId(3);
-        verificationDefinition.setName("checkHadamardArgument");
-        verificationDefinition.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.description"));
+		VerificationDefinition verificationDefinition = new VerificationDefinition();
+		verificationDefinition.setBlockId(3);
+		verificationDefinition.setCategory(Category.COMPLETENESS);
+		verificationDefinition.setId(3);
+		verificationDefinition.setName("checkHadamardArgument");
+		verificationDefinition
+				.setDescription(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.description"));
 
-        return verificationDefinition;
-    }
+		return verificationDefinition;
+	}
 
-    @Override
-    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-        VerificationResult result = new VerificationResult();
+	@Override
+	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
+		VerificationResult result = new VerificationResult();
 
-        final BGOfflineVerificationProcessor processor = BGOfflineVerificationProcessor.getInstanceAndRegister(this);
-        try {
-            PathNode ballotBoxesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOXES_DIR, inputDirectoryPath);
-            processor.executeProcess(ballotBoxesPathNode.getPath());
+		final BGOfflineVerificationProcessor processor = BGOfflineVerificationProcessor.getInstanceAndRegister(this);
+		try {
+			PathNode ballotBoxesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOXES_DIR, inputDirectoryPath);
+			processor.executeProcess(ballotBoxesPathNode.getPath());
 
-            AbstractMap.SimpleEntry<Status, String> status = processor.getStatus(TestType.HadamardProductProof);
-            result.setStatus(status.getKey());
-            result.setMessage(TranslationHelper.getSameMessageMultiLanguage(status.getValue()));
-        } finally {
-            processor.unregister(this);
-        }
+			AbstractMap.SimpleEntry<Status, String> status = processor.getStatus(TestType.HadamardProductProof);
+			result.setStatus(status.getKey());
+			result.setMessage(TranslationHelper.getSameMessageMultiLanguage(status.getValue()));
+		} finally {
+			processor.unregister(this);
+		}
 
-        return result;
-    }
+		return result;
+	}
 }

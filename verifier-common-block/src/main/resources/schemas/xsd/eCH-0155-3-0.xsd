@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3"
-		   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-		   xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4"
-		   xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6"
-		   xmlns:eCH-0006="http://www.ech.ch/xmlns/eCH-0006/2"
-		   xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008/3"
-		   xmlns:eCH-0007="http://www.ech.ch/xmlns/eCH-0007/6"
-		   targetNamespace="http://www.ech.ch/xmlns/eCH-0155/3"
-		   elementFormDefault="qualified" attributeFormDefault="unqualified" version="3.0">
+					 xmlns:xs="http://www.w3.org/2001/XMLSchema"
+					 xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4"
+					 xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6"
+					 xmlns:eCH-0006="http://www.ech.ch/xmlns/eCH-0006/2"
+					 xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008/3"
+					 xmlns:eCH-0007="http://www.ech.ch/xmlns/eCH-0007/6"
+					 targetNamespace="http://www.ech.ch/xmlns/eCH-0155/3"
+					 elementFormDefault="qualified" attributeFormDefault="unqualified" version="3.0">
 	<xs:annotation>
 		<xs:documentation>Ausgabedatum:10.04.2015</xs:documentation>
 	</xs:annotation>

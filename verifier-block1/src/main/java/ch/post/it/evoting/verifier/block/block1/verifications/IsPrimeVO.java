@@ -14,8 +14,17 @@
  */
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
+import java.math.BigInteger;
+import java.nio.file.Path;
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
-import ch.post.it.evoting.verifier.common.*;
+import ch.post.it.evoting.verifier.common.Category;
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationDefinition;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.VerificationTrait;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.dto.revised.CandidateList;
 import ch.post.it.evoting.verifier.common.block.dto.revised.ElectionEvent;
@@ -26,89 +35,84 @@ import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 
-import java.math.BigInteger;
-import java.nio.file.Path;
-import java.util.Collection;
-import java.util.stream.Collectors;
-
 public class IsPrimeVO extends AbstractVerification {
 
-    @Override
-    public VerificationDefinition getVerificationDefinition() {
-        VerificationDefinition def = new VerificationDefinition();
-        def.setBlockId(1);
-        def.setCategory(Category.INTEGRITY);
-        def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-                "verification05.description"));
-        def.setId(5);
-        def.setName("isPrime([vo])");
-        def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
-        def.addVerificationTrait(VerificationTrait.BLOCK_1);
-        return def;
-    }
+	@Override
+	public VerificationDefinition getVerificationDefinition() {
+		VerificationDefinition def = new VerificationDefinition();
+		def.setBlockId(1);
+		def.setCategory(Category.INTEGRITY);
+		def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+				"verification05.description"));
+		def.setId(5);
+		def.setName("isPrime([vo])");
+		def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+		def.addVerificationTrait(VerificationTrait.BLOCK_1);
+		return def;
+	}
 
-    @Override
-    public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-        VerificationResult result = new VerificationResult();
+	@Override
+	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
+		VerificationResult result = new VerificationResult();
 
-        final PathNode dataConfigPathNode = pathService.buildFromRootPath(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
-        ElectionEvent electionEvent = Deserializer.fromJson(dataConfigPathNode.getPath(), ElectionEvent.class);
+		final PathNode dataConfigPathNode = pathService.buildFromRootPath(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
+		ElectionEvent electionEvent = Deserializer.fromJson(dataConfigPathNode.getPath(), ElectionEvent.class);
 
-        // Votations
-        Collection<BigInteger> errors = electionEvent.getBallotBoxes().stream()
-                .flatMap(bb -> bb.getCountingCircles().stream())
-                .flatMap(cc -> cc.getDomainsOfInfluence().stream())
-                .flatMap(doi -> doi.getVotes().stream())
-                .flatMap(v -> v.getQuestions().stream())
-                .flatMap(q -> q.getOptions().stream())
-                .filter(o -> !MathHelper.isPrime(o.getPrimeNumber()))
-                .map(VoteOption::getPrimeNumber)
-                .collect(Collectors.toList());
+		// Votations
+		Collection<BigInteger> errors = electionEvent.getBallotBoxes().stream()
+				.flatMap(bb -> bb.getCountingCircles().stream())
+				.flatMap(cc -> cc.getDomainsOfInfluence().stream())
+				.flatMap(doi -> doi.getVotes().stream())
+				.flatMap(v -> v.getQuestions().stream())
+				.flatMap(q -> q.getOptions().stream())
+				.filter(o -> !MathHelper.isPrime(o.getPrimeNumber()))
+				.map(VoteOption::getPrimeNumber)
+				.collect(Collectors.toList());
 
-        // Candidate lists
-        errors.addAll(
-                electionEvent.getBallotBoxes().stream()
-                        .flatMap(bb -> bb.getCountingCircles().stream())
-                        .flatMap(cc -> cc.getDomainsOfInfluence().stream())
-                        .flatMap(doi -> doi.getElections().stream())
-                        .flatMap(e -> e.getLists().stream())
-                        .filter(l -> !MathHelper.isPrime(l.getPrimeNumber()))
-                        .map(CandidateList::getPrimeNumber)
-                        .collect(Collectors.toList()));
+		// Candidate lists
+		errors.addAll(
+				electionEvent.getBallotBoxes().stream()
+						.flatMap(bb -> bb.getCountingCircles().stream())
+						.flatMap(cc -> cc.getDomainsOfInfluence().stream())
+						.flatMap(doi -> doi.getElections().stream())
+						.flatMap(e -> e.getLists().stream())
+						.filter(l -> !MathHelper.isPrime(l.getPrimeNumber()))
+						.map(CandidateList::getPrimeNumber)
+						.collect(Collectors.toList()));
 
-        // Candidates
-        errors.addAll(
-                electionEvent.getBallotBoxes().stream()
-                        .flatMap(bb -> bb.getCountingCircles().stream())
-                        .flatMap(cc -> cc.getDomainsOfInfluence().stream())
-                        .flatMap(doi -> doi.getElections().stream())
-                        .flatMap(e -> e.getLists().stream())
-                        .flatMap(l -> l.getCandidatePositions().stream())
-                        .flatMap(cp -> cp.getPrimeNumbers().stream())
-                        .filter(v -> !MathHelper.isPrime(v))
-                        .collect(Collectors.toList()));
+		// Candidates
+		errors.addAll(
+				electionEvent.getBallotBoxes().stream()
+						.flatMap(bb -> bb.getCountingCircles().stream())
+						.flatMap(cc -> cc.getDomainsOfInfluence().stream())
+						.flatMap(doi -> doi.getElections().stream())
+						.flatMap(e -> e.getLists().stream())
+						.flatMap(l -> l.getCandidatePositions().stream())
+						.flatMap(cp -> cp.getPrimeNumbers().stream())
+						.filter(v -> !MathHelper.isPrime(v))
+						.collect(Collectors.toList()));
 
-        // Candidates without lists
-        errors.addAll(
-                electionEvent.getBallotBoxes().stream()
-                        .flatMap(bb -> bb.getCountingCircles().stream())
-                        .flatMap(cc -> cc.getDomainsOfInfluence().stream())
-                        .flatMap(doi -> doi.getElections().stream())
-                        .flatMap(e -> e.getCandidates().stream())
-                        .flatMap(c -> c.getPrimeNumbers().stream())
-                        .filter(p -> !MathHelper.isPrime(p))
-                        .collect(Collectors.toList()));
+		// Candidates without lists
+		errors.addAll(
+				electionEvent.getBallotBoxes().stream()
+						.flatMap(bb -> bb.getCountingCircles().stream())
+						.flatMap(cc -> cc.getDomainsOfInfluence().stream())
+						.flatMap(doi -> doi.getElections().stream())
+						.flatMap(e -> e.getCandidates().stream())
+						.flatMap(c -> c.getPrimeNumbers().stream())
+						.filter(p -> !MathHelper.isPrime(p))
+						.collect(Collectors.toList()));
 
-        if (!errors.isEmpty()) {
-            throw buildVerificationFailureException(
-                    "vo is not prime",
-                    Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-                    "verification05.nok.message",
-                    errors.toString()
-            );
-        }
+		if (!errors.isEmpty()) {
+			throw buildVerificationFailureException(
+					"vo is not prime",
+					Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+					"verification05.nok.message",
+					errors.toString()
+			);
+		}
 
-        result.setStatus(Status.OK);
-        return result;
-    }
+		result.setStatus(Status.OK);
+		return result;
+	}
 }

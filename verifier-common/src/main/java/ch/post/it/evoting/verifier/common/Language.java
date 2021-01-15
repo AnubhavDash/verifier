@@ -18,15 +18,16 @@ import java.util.Locale;
 
 public enum Language {
 
-    DE(Locale.GERMAN), FR(Locale.FRENCH);
+	DE(Locale.GERMAN),
+	FR(Locale.FRENCH);
 
-    private Locale locale;
+	private Locale locale;
 
-    Language(Locale locale) {
-        this.locale = locale;
-    }
+	Language(Locale locale) {
+		this.locale = locale;
+	}
 
-    public Locale getLocale() {
-        return locale;
-    }
+	public Locale getLocale() {
+		return locale;
+	}
 }

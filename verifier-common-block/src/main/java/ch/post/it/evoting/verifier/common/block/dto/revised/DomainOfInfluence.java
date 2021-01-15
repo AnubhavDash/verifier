@@ -14,25 +14,29 @@
  */
 package ch.post.it.evoting.verifier.common.block.dto.revised;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableList;
-import lombok.Getter;
 
-import java.util.List;
-import java.util.UUID;
+import lombok.Getter;
 
 @Getter
 public class DomainOfInfluence {
 
-    private final String id;
-    private final List<Vote> votes;
-    private final List<Election> elections;
+	private final String id;
+	private final List<Vote> votes;
+	private final List<Election> elections;
 
-    public DomainOfInfluence(@JsonProperty("id") String id,
-                             @JsonProperty("votes") Vote[] votes,
-                             @JsonProperty("elections") Election[] elections) {
-        this.id = id;
-        this.votes = ImmutableList.copyOf(votes);
-        this.elections = ImmutableList.copyOf(elections);
-    }
+	public DomainOfInfluence(
+			@JsonProperty("id")
+					String id,
+			@JsonProperty("votes")
+					Vote[] votes,
+			@JsonProperty("elections")
+					Election[] elections) {
+		this.id = id;
+		this.votes = ImmutableList.copyOf(votes);
+		this.elections = ImmutableList.copyOf(elections);
+	}
 }

@@ -29,7 +29,6 @@ import java.nio.file.Paths;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.util.encoders.Base64;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -42,9 +41,8 @@ import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
 
 class CheckSecureLogIntegrityTest extends Block2VerificationAbstractTest {
 
-	@BeforeEach
-	void setup() {
-		verification = new CheckSecureLogIntegrity();
+	public CheckSecureLogIntegrityTest() {
+		super(CheckSecureLogIntegrity.class);
 	}
 
 	@Test
@@ -96,12 +94,12 @@ class CheckSecureLogIntegrityTest extends Block2VerificationAbstractTest {
 			stream.write(Base64.decode(phmac));
 			stream.write(Base64.decode(lsk));
 			stream.write(Base64.decode(esk));
-            if (StringUtils.isNotEmpty(ls)) {
-                stream.writeInt(Integer.parseInt(ls));
-            }
-            if (StringUtils.isNotEmpty(tl)) {
-                stream.writeLong(Long.parseLong(tl));
-            }
+			if (StringUtils.isNotEmpty(ls)) {
+				stream.writeInt(Integer.parseInt(ls));
+			}
+			if (StringUtils.isNotEmpty(tl)) {
+				stream.writeLong(Long.parseLong(tl));
+			}
 			stream.writeLong(Long.parseLong(ts));
 			stream.write(raw.getBytes(StandardCharsets.UTF_8));
 		} catch (IOException e) {
@@ -135,12 +133,12 @@ class CheckSecureLogIntegrityTest extends Block2VerificationAbstractTest {
 			stream.write(Base64.decode(phmac));
 			stream.write(Base64.decode(lsk));
 			stream.write(Base64.decode(esk));
-            if (StringUtils.isNotEmpty(ls)) {
-                stream.writeInt(Integer.parseInt(ls));
-            }
-            if (StringUtils.isNotEmpty(tl)) {
-                stream.writeLong(Long.parseLong(tl));
-            }
+			if (StringUtils.isNotEmpty(ls)) {
+				stream.writeInt(Integer.parseInt(ls));
+			}
+			if (StringUtils.isNotEmpty(tl)) {
+				stream.writeLong(Long.parseLong(tl));
+			}
 			stream.writeLong(Long.parseLong(ts));
 			stream.write(raw.getBytes(StandardCharsets.UTF_8));
 		} catch (IOException e) {

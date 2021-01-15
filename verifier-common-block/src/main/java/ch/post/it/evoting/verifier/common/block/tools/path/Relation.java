@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 class Relation {
 
-    private RelationType type;
-    private String name;
+	private RelationType type;
+	private String name;
 
 }

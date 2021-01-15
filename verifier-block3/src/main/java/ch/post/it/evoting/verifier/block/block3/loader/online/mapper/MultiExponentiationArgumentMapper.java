@@ -14,52 +14,55 @@
  */
 package ch.post.it.evoting.verifier.block.block3.loader.online.mapper;
 
-import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.MultiExponentiationArgumentAnswer;
-import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.MultiExponentiationArgumentInitMessage;
-import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.RandomnessTau;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+
 import com.scytl.products.ov.mixnet.commons.beans.proofs.MultiExponentiationBasicProofAnswer;
 import com.scytl.products.ov.mixnet.commons.beans.proofs.MultiExponentiationBasicProofInitialMessage;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Ciphertext;
 import com.scytl.products.ov.mixnet.commons.homomorphic.Randomness;
 import com.scytl.products.ov.mixnet.commons.homomorphic.impl.GjosteenElGamalRandomness;
 import com.scytl.products.ov.mixnet.commons.proofs.bg.commitments.PublicCommitment;
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.MultiExponentiationArgumentAnswer;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.MultiExponentiationArgumentInitMessage;
+import ch.post.it.evoting.verifier.common.block.dto.revised.onlinemixing.RandomnessTau;
 
 @Mapper
 public interface MultiExponentiationArgumentMapper {
 
-    MultiExponentiationArgumentMapper INSTANCE = Mappers.getMapper(MultiExponentiationArgumentMapper.class);
+	MultiExponentiationArgumentMapper INSTANCE = Mappers.getMapper(MultiExponentiationArgumentMapper.class);
 
-    default MultiExponentiationBasicProofInitialMessage mapInitMessage(MultiExponentiationArgumentInitMessage source) {
-        PublicCommitment cA0 = CommitmentMapper.INSTANCE.map(source.getCommitmentA0());
-        List<PublicCommitment> cB = source.getCommitmentsB().stream()
-                .map(CommitmentMapper.INSTANCE::map)
-                .collect(Collectors.toList());
-        List<Ciphertext> ciphertexts = source.getCiphertextsE().stream()
-                .map(c -> CiphertextMapper.INSTANCE.map(c, cA0.getElement().getParams()))
-                .collect(Collectors.toList());
+	default MultiExponentiationBasicProofInitialMessage mapInitMessage(MultiExponentiationArgumentInitMessage source) {
+		PublicCommitment cA0 = CommitmentMapper.INSTANCE.map(source.getCommitmentA0());
+		List<PublicCommitment> cB = source.getCommitmentsB().stream()
+				.map(CommitmentMapper.INSTANCE::map)
+				.collect(Collectors.toList());
+		List<Ciphertext> ciphertexts = source.getCiphertextsE().stream()
+				.map(c -> CiphertextMapper.INSTANCE.map(c, cA0.getElement().getParams()))
+				.collect(Collectors.toList());
 
-        return new MultiExponentiationBasicProofInitialMessage(cA0, cB.toArray(new PublicCommitment[]{}), ciphertexts.toArray(new Ciphertext[]{}));
-    }
+		return new MultiExponentiationBasicProofInitialMessage(cA0, cB.toArray(new PublicCommitment[] {}), ciphertexts.toArray(new Ciphertext[] {}));
+	}
 
-    default MultiExponentiationBasicProofAnswer mapAnswer(MultiExponentiationArgumentAnswer source){
-        List<com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent> collect = source.getExponentsA().stream()
-                .map(ExponentMapper.INSTANCE::map)
-                .collect(Collectors.toList());
-        com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent[] a = collect.toArray(new com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent[collect.size()]);
-        com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent r = ExponentMapper.INSTANCE.map(source.getExponentR());
-        com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent b = ExponentMapper.INSTANCE.map(source.getExponentsB());
-        com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent s = ExponentMapper.INSTANCE.map(source.getExponentS());
-        Randomness tau = mapRandomness(source.getRandomnessTau());
-        return new MultiExponentiationBasicProofAnswer(a, r, b, s, tau);
-    }
+	default MultiExponentiationBasicProofAnswer mapAnswer(MultiExponentiationArgumentAnswer source) {
+		List<com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent> collect = source.getExponentsA().stream()
+				.map(ExponentMapper.INSTANCE::map)
+				.collect(Collectors.toList());
+		com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent[] a = collect
+				.toArray(new com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent[collect.size()]);
+		com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent r = ExponentMapper.INSTANCE.map(source.getExponentR());
+		com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent b = ExponentMapper.INSTANCE.map(source.getExponentsB());
+		com.scytl.products.ov.mixnet.commons.mathematical.impl.Exponent s = ExponentMapper.INSTANCE.map(source.getExponentS());
+		Randomness tau = mapRandomness(source.getRandomnessTau());
+		return new MultiExponentiationBasicProofAnswer(a, r, b, s, tau);
+	}
 
-    default Randomness mapRandomness(RandomnessTau source){
-        return new GjosteenElGamalRandomness(source.getExponent().getValue(), source.getExponent().getQ());
-    }
+	default Randomness mapRandomness(RandomnessTau source) {
+		return new GjosteenElGamalRandomness(source.getExponent().getValue(), source.getExponent().getQ());
+	}
 
 }

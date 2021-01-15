@@ -1,22 +1,22 @@
 [
   {
-    "id": "simple-values-1",
-    "eg": {
-      "p": 11,
-      "q": 5,
-      "g": 4
-    },
-    "x": "2",
-    "output": "5"
+	"id": "simple-values-1",
+	"eg": {
+	  "p": 11,
+	  "q": 5,
+	  "g": 4
+	},
+	"x": "2",
+	"output": "5"
   },
   {
-    "id": "simple-values-2",
-    "eg": {
-      "p": 11,
-      "q": 5,
-      "g": 5
-    },
-    "x": "3",
-    "output": "4"
+	"id": "simple-values-2",
+	"eg": {
+	  "p": 11,
+	  "q": 5,
+	  "g": 5
+	},
+	"x": "3",
+	"output": "4"
   }
 ]

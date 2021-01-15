@@ -77,9 +77,9 @@ public class CheckSecureLogIntegrity extends AbstractVerification {
 				.map(Optional::get)
 				.blockFirst();
 
-        if (ex != null) {
-            throw ex;
-        }
+		if (ex != null) {
+			throw ex;
+		}
 
 		result.setStatus(Status.OK);
 		return result;
