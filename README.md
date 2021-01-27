@@ -4,7 +4,7 @@ Build information
 The following guide provide step by step informations to build the Verifier Swiss Post on a Windows machine.  
 
 1. Ensure you have Maven and Node installed. We tested with following versions:
-    - AdoptOpenJDK: 11.0.9.1+1
+    - AdoptOpenJDK: 11.0.10+9
     - Maven: 3.6.3
     - Node: v14.15.1
     
