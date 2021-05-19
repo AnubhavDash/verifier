@@ -12,19 +12,26 @@
  * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package ch.post.it.evoting.verifier.block.block3;
+package ch.post.it.evoting.verifier.block.block3.verifications;
 
-import org.springframework.stereotype.Component;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import ch.post.it.evoting.verifier.common.block.VerificationSuite;
+import java.nio.file.Paths;
 
-@Component
-public class Block3VerificationSuite extends VerificationSuite {
+import org.junit.jupiter.api.Test;
 
-	public static final String RESOURCE_BUNDLE_NAME = "block3/resources";
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationResult;
 
-	public Block3VerificationSuite() {
-		super(Block3VerificationSuite.class.getPackage().getName() + ".verifications");
+class DummyVerificationTest extends Block3VerificationAbstractTest {
+
+	public DummyVerificationTest() {
+		super(DummyVerification.class);
 	}
 
+	@Test
+	void executeTestOK() throws Exception {
+		VerificationResult result = verification.verify(Paths.get("dummy"));
+		assertEquals(Status.OK, result.getStatus());
+	}
 }
