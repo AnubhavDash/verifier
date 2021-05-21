@@ -27,10 +27,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>ch.post.it.evoting.verifier</groupId>
-			<artifactId>verifier-block3-scytl</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.googlecode.jcsv</groupId>
 			<artifactId>jcsv</artifactId>
 		</dependency>

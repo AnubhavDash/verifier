@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.verifier.common.Status;
@@ -26,6 +27,7 @@ class CheckSigBallotBoxConfigurationTest extends Block1VerificationAbstractTest 
 	}
 
 	@Test
+	@Disabled("Certificate in dataset has expired, temporary deactivation until a new dataset is provided")
 	void executeTestSignValid() throws Exception {
 		final VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource(
 				"/CheckSigBallotBoxConfigurationTest/OK").toURI()));
