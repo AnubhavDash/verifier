@@ -6,7 +6,7 @@
 
 	<groupId>ch.post.it.evoting.verifier</groupId>
 	<artifactId>verifier</artifactId>
-	<version>1.0.2.2-SNAPSHOT</version>
+	<version>0.7.0.0</version>
 	<packaging>pom</packaging>
 
 	<modules>
