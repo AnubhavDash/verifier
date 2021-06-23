@@ -1,40 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <artifactId>verifier</artifactId>
     <groupId>ch.post.it.evoting.verifier</groupId>
-    <version>1.0.1.4</version>
+    <version>1.0.2.2-SNAPSHOT</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
 
   <artifactId>verifier-web-client</artifactId>
 
-  <profiles>
-    <profile>
-      <id>platform-windows</id>
-      <activation>
-        <os>
-          <family>windows</family>
-        </os>
-      </activation>
-      <properties>
-        <npm.executable>${basedir}/bin/_npm.cmd</npm.executable>
-      </properties>
-    </profile>
+  <properties>
+    <destDir>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}</destDir>
+    <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
+    <node.build.compile.phase>compile</node.build.compile.phase>
+    <node.build.generate-resources.phase>generate-resources</node.build.generate-resources.phase>
+    <npm.executable>npm</npm.executable>
+    <sonar.sources>src</sonar.sources>
+  </properties>
 
-    <profile>
-      <id>platform-unix</id>
-      <activation>
-        <os>
-          <family>unix</family>
-        </os>
-      </activation>
-      <properties>
-        <npm.executable>npm</npm.executable>
-      </properties>
-    </profile>
+  <build>
+    <resources>
+      <resource>
+        <directory>${project.basedir}/dist</directory>
+        <targetPath>${destDir}</targetPath>
+      </resource>
+    </resources>
+  </build>
+
+  <profiles>
     <profile>
       <id>electron-package</id>
       <build>
@@ -42,6 +38,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
+            <version>${exec-maven-plugin.version}</version>
             <executions>
               <execution>
                 <id>Step 1: npm install</id>
@@ -74,12 +71,10 @@
                 </configuration>
               </execution>
             </executions>
-
             <configuration>
               <environmentVariables>
                 <!-- The following parameters create an NPM sandbox for CI -->
-                <NPM_CONFIG_PREFIX>${basedir}/npm</NPM_CONFIG_PREFIX>
-                <NPM_CONFIG_CACHE>${NPM_CONFIG_PREFIX}/cache</NPM_CONFIG_CACHE>
+                <NPM_CONFIG_CACHE>${basedir}/npm/cache</NPM_CONFIG_CACHE>
                 <NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>
               </environmentVariables>
             </configuration>
@@ -107,6 +102,7 @@
         </plugins>
       </build>
     </profile>
+
     <profile>
       <id>webjar-package</id>
       <build>
@@ -146,12 +142,10 @@
                 </configuration>
               </execution>
             </executions>
-
             <configuration>
               <environmentVariables>
                 <!-- The following parameters create an NPM sandbox for CI -->
-                <NPM_CONFIG_PREFIX>${basedir}/npm</NPM_CONFIG_PREFIX>
-                <NPM_CONFIG_CACHE>${NPM_CONFIG_PREFIX}/cache</NPM_CONFIG_CACHE>
+                <NPM_CONFIG_CACHE>${basedir}/npm/cache</NPM_CONFIG_CACHE>
                 <NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>
               </environmentVariables>
             </configuration>
@@ -159,6 +153,7 @@
         </plugins>
       </build>
     </profile>
+
     <profile>
       <id>full-clean</id>
       <build>
@@ -191,21 +186,5 @@
       </build>
     </profile>
   </profiles>
-
-  <build>
-    <resources>
-      <resource>
-        <directory>${project.basedir}/dist</directory>
-        <targetPath>${destDir}</targetPath>
-      </resource>
-    </resources>
-  </build>
-
-  <properties>
-    <destDir>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}</destDir>
-    <node.build.compile.phase>compile</node.build.compile.phase>
-    <node.build.generate-resources.phase>generate-resources</node.build.generate-resources.phase>
-  </properties>
-
 
 </project>

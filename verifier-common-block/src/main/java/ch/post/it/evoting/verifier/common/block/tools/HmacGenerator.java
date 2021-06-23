@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -19,18 +19,18 @@ import org.bouncycastle.crypto.macs.HMac;
 import org.bouncycastle.crypto.params.KeyParameter;
 
 public class HmacGenerator {
-    private HmacGenerator() {
-        //private ctor, use static methods
-    }
+	private HmacGenerator() {
+		//private ctor, use static methods
+	}
 
-    public static byte[] hash(byte[] text, byte[] key) {
-        HMac hmac = new HMac(new SHA256Digest());
+	public static byte[] hash(byte[] text, byte[] key) {
+		HMac hmac = new HMac(new SHA256Digest());
 
-        hmac.init(new KeyParameter(key));
-        byte[] result = new byte[hmac.getMacSize()];
-        hmac.update(text, 0, text.length);
-        hmac.doFinal(result, 0);
+		hmac.init(new KeyParameter(key));
+		byte[] result = new byte[hmac.getMacSize()];
+		hmac.update(text, 0, text.length);
+		hmac.doFinal(result, 0);
 
-        return result;
-    }
+		return result;
+	}
 }

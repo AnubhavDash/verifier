@@ -1,0 +1,75 @@
+/*
+ * This file is part of Verifier Swiss Post.
+ *
+ * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
+ * If not, see <https://www.gnu.org/licenses/>.
+ */
+package ch.post.it.evoting.verifier.block.block1.verifications;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
+import ch.post.it.evoting.verifier.common.Category;
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationDefinition;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.VerificationTrait;
+import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+
+public class CheckSigConfig extends AbstractVerification {
+
+	@Override
+	public VerificationDefinition getVerificationDefinition() {
+		VerificationDefinition def = new VerificationDefinition();
+		def.setBlockId(1);
+		def.setCategory(Category.AUTHENTICITY);
+		def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+				"verification73.description"));
+		def.setId(73);
+		def.setName("checkSigConfig");
+		def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+		def.addVerificationTrait(VerificationTrait.BLOCK_1);
+		return def;
+	}
+
+	@Override
+	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
+		VerificationResult result = new VerificationResult();
+
+		// Get the signing certificate.
+		final PathNode integrationPathNode = pathService.buildFromRootPath(StructureKey.INTEGRATION_CA, inputDirectoryPath);
+		byte[] rootCertificate = Files.readAllBytes(integrationPathNode.getPath());
+
+		// Get the file and its signature.
+		final PathNode configAnonymizedPathNode = pathService.buildFromRootPath(StructureKey.CONFIG_ANONYMIZED, inputDirectoryPath);
+		byte[] content = Files.readAllBytes(configAnonymizedPathNode.getPath());
+		byte[] signature = Files.readAllBytes(configAnonymizedPathNode.getRelation(RelationType.P7));
+
+		// Check signature.
+		if (!SignatureChecker.verifyPKCS7(content, signature, rootCertificate)) {
+			throw buildVerificationFailureException(
+					"The signature verification of the file failed",
+					Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+					"verification73.nok.message",
+					configAnonymizedPathNode.getPath().toString()
+			);
+		}
+
+		result.setStatus(Status.OK);
+		return result;
+	}
+}

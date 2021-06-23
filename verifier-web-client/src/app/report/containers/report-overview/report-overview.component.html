@@ -14,45 +14,137 @@
     If not, see <https://www.gnu.org/licenses/>.
 
 -->
-<div>
-  <div id="buttonDiv">
-    <h2>Test definitions</h2>
-    <div>
-      <b>Input directory :</b>
-      <input type="text" name="inputDirectory" [(ngModel)]="inputDirectory" style="width:30%">
-      <div>
-        <button type="button" (click)="startProcess('PreDecryption')" [disabled]="buttonDisabled" class="btn">Start
-          pre-decryption
-        </button>
-        <button (click)="startProcess()" [disabled]="buttonDisabled" class="btn">Start all</button>
-        <button (click)="update()" class="btn">Update</button>
-        <button (click)="resetProcess()" class="btn">Reset</button>
-        |
-        <button routerLink="/report/pdf" class="btn">PDF</button>
+<div class="container-fluid">
+  <div class="row m-1">
+    <div class="col-12 p-1 m-1 text-center">
+      <h1 class="display-1">Swiss Post Verifier</h1>
+    </div>
+  </div>
+  <div class="row m-1 mb-3" data-html2canvas-ignore>
+    <div class="col-8 pl-0 pr-2">
+      <div class="h-100 p-3 bg-white rounded shadow">
+        <div class="input-group mb-2">
+          <div class="input-group-prepend">
+            <span class="input-group-text bg-outline-secondary">Input directory</span>
+          </div>
+          <input [(ngModel)]="inputDirectory" class="form-control" type="text">
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <button (click)="startProcess(verificationTrait.BLOCK_1)" [disabled]="startDisabled" class="btn btn-secondary mr-1" type="button">
+              <i aria-hidden="true" class="bi-caret-right-fill"></i> Start block 1
+            </button>
+            <button (click)="startProcess(verificationTrait.PRE_DECRYPTION)" [disabled]="startDisabled" class="btn btn-secondary mr-1" type="button">
+              <i aria-hidden="true" class="bi-caret-right-fill"></i> Start pre-decryption
+            </button>
+            <button (click)="startProcess()" [disabled]="startDisabled" class="btn btn-primary mr-4" type="button">
+              <i aria-hidden="true" class="bi-caret-right-fill"></i> Start all
+            </button>
+            <span *ngIf="processStarted && !isProcessComplete()">
+              <div class="spinner-border spinner-border-sm text-primary" role="status">
+                <span class="sr-only">Running...</span>
+              </div>
+              Running...
+            </span>
+            <span *ngIf="processStarted && isProcessComplete()">
+              <i aria-hidden="true" class="bi-info-circle text-success"></i> Completed
+            </span>
+          </div>
+          <div class="col-4 text-right">
+            <button (click)="update()" class="btn btn-light mr-1" type="button">
+              <i aria-hidden="true" class="bi-box-arrow-in-down"></i> Update
+            </button>
+            <button (click)="resetProcess()" class="btn btn-light mr-4" type="button">
+              <i aria-hidden="true" class="bi-arrow-counterclockwise"></i> Reset
+            </button>
+            <button (click)="exportToPDF()" class="btn btn-light mr-1">
+              <i aria-hidden="true" class="bi-file-earmark-text"></i> toPDF</button>
+          </div>
+        </div>
       </div>
     </div>
-    <p></p>
+    <div class="col-4 pl-2 pr-0">
+      <div class="h-100 p-3 bg-white rounded shadow">
+        <h2 class="display-2 mb-3">Filters:</h2>
+        <div></div>
+        <button (click)="filterVerificationsAll()" [class.active]="verificationFilter.ALL.active" class="btn btn-outline-primary mr-1 mt-1" type="button">
+          All verifications <span class="badge badge-light">{{verificationsSize}}</span>
+        </button>
+        <button (click)="filterVerificationsOK()" [class.active]="verificationFilter.OK.active" class="btn btn-outline-success mr-1 mt-1" type="button">
+          OK <span class="badge badge-light">{{statusCounterOK()}}</span>
+        </button>
+        <button (click)="filterVerificationsNOK()" [class.active]="verificationFilter.NOK.active" class="btn btn-outline-danger mr-1 mt-1" type="button">
+          NOK <span class="badge badge-light">{{statusCounterNOK()}}</span>
+        </button>
+        <button (click)="filterVerificationsERROR()" [class.active]="verificationFilter.ERROR.active" class="btn btn-outline-warning mr-1 mt-1" type="button">
+          ERROR <span class="badge badge-light">{{statusCounterERROR()}}</span>
+        </button>
+        <button (click)="filterVerificationsNA()" [class.active]="verificationFilter.NA.active" class="btn btn-outline-secondary mt-1" type="button">
+          NA <span class="badge badge-light">{{statusCounterNA()}}</span>
+        </button>
+      </div>
+    </div>
   </div>
-  <table border="1" class="table table-bordered table-hover">
-    <tr>
-      <th>Block</th>
-      <th>Id</th>
-      <th>Name</th>
-      <th>Category</th>
-      <th>Description</th>
-      <th>Status</th>
-      <!--th>Message</th-->
-    </tr>
-    <tr *ngFor="let key of keys" [ngStyle]="{'background-color':tests[key].color}">
-      <td>{{tests[key].blockId}}</td>
-      <td>{{tests[key].testId}}</td>
-      <td>{{tests[key].name}}</td>
-      <td>{{tests[key].category}}</td>
-      <td>{{tests[key].description}}</td>
-      <td>
-        <div title="{{tests[key].message}}">{{tests[key].status}}</div>
-      </td>
-      <!--td></td-->
-    </tr>
-  </table>
+
+  <div class="row m-1" id="verifications-results">
+    <div class="col-12 p-3 mb-3 bg-white rounded shadow">
+      <div class="row">
+        <div class="col-6">
+          <h2 class="display-2 mb-3">Verifications results</h2>
+        </div>
+        <div class="col-6 text-right">
+          <div class="custom-control custom-switch" data-html2canvas-ignore>
+            <input [(ngModel)]="toggleMessage" class="custom-control-input" id="toggleMessageSwitch" type="checkbox">
+            <label class="custom-control-label" for="toggleMessageSwitch">Toggle messages</label>
+          </div>
+        </div>
+      </div>
+      <table aria-label="Verification definitions list" class="table table-hover mb-0" role="table">
+        <thead>
+          <tr>
+            <th class="text-center" scope="col">Block</th>
+            <th class="text-center" scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Category</th>
+            <th scope="col">Description</th>
+            <th class="text-center" scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let verification of verifications | statusFilter: verificationStatusFilter | keyvalue">
+            <tr [class.alert-danger]="isNotOK(verification.value.status)"
+                [class.alert-dark]="isNA(verification.value.status)"
+                [class.alert-warning]="isError(verification.value.status)">
+              <td class="text-center">{{verification.value.blockId}}</td>
+              <td class="text-center">{{verification.value.verificationId}}</td>
+              <td>{{verification.value.name}}</td>
+              <td>{{verification.value.category}}</td>
+              <td>{{verification.value.description | localize}}</td>
+              <td class="text-center h3">
+                <div *ngIf="isOK(verification.value.status)" class="text-success" role="status">
+                    <i aria-hidden="true" class="bi-check-circle"></i> <span class="sr-only">{{verification.value.status}}</span>
+                </div>
+                <div *ngIf="isNotOK(verification.value.status)" role="status" title="{{verification.value.message | localize}}">
+                  <i aria-hidden="true" class="bi-x-circle"></i> <span class="sr-only">{{verification.value.status}}</span>
+                </div>
+                <div *ngIf="isError(verification.value.status)" role="status" title="{{verification.value.message | localize}}">
+                  <i aria-hidden="true" class="bi-exclamation-circle"></i> <span class="sr-only">{{verification.value.status}}</span>
+                </div>
+                <div *ngIf="isNA(verification.value.status)" role="status">
+                  <i aria-hidden="true" class="bi-dash-circle"></i> <span class="sr-only">{{verification.value.status}}</span>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="toggleMessage && (isNotOK(verification.value.status) || isError(verification.value.status))"
+                [class.text-danger]="isNotOK(verification.value.status)"
+                [class.text-warning]="isError(verification.value.status)">
+              <td colspan="6">
+                {{verification.value.message | localize}}
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+</div>
 </div>

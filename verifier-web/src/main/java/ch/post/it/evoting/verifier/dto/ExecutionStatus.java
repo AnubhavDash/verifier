@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -24,9 +24,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class ExecutionStatus {
-    private LifecycleStatus status;
-    private int testActual;
-    private int testCount;
+	private LifecycleStatus status;
+	private int testActual;
+	private int testCount;
 }
 
 

@@ -1,0 +1,68 @@
+/*
+ * This file is part of Verifier Swiss Post.
+ *
+ * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
+ * If not, see <https://www.gnu.org/licenses/>.
+ */
+package ch.post.it.evoting.verifier.block.block1.verifications;
+
+import java.math.BigInteger;
+import java.nio.file.Path;
+
+import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
+import ch.post.it.evoting.verifier.common.Category;
+import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationDefinition;
+import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.verifier.common.VerificationTrait;
+import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionParameters;
+import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+
+public class IsStrongPrimePQ extends AbstractVerification {
+
+	@Override
+	public VerificationDefinition getVerificationDefinition() {
+		VerificationDefinition def = new VerificationDefinition();
+		def.setBlockId(1);
+		def.setCategory(Category.INTEGRITY);
+		def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+				"verification03.description"));
+		def.setId(3);
+		def.setName("isStrongPrime(p,q)");
+		def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+		def.addVerificationTrait(VerificationTrait.BLOCK_1);
+		return def;
+	}
+
+	@Override
+	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
+		VerificationResult result = new VerificationResult();
+
+		final PathNode encryptParams = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
+		EncryptionParameters encryptionParameters = Deserializer.fromJson(encryptParams.getPath(), EncryptionParameters.class);
+
+		if (!MathHelper.areEqual(encryptionParameters.getP(), (encryptionParameters.getQ().multiply(BigInteger.TWO)).add(BigInteger.ONE))) {
+			throw buildVerificationFailureException(
+					"p is not a strong prime",
+					Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+					"verification03.nok.message"
+			);
+		}
+
+		result.setStatus(Status.OK);
+		return result;
+	}
+}

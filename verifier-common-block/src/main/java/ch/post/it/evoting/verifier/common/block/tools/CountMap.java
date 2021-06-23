@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -17,8 +17,8 @@ package ch.post.it.evoting.verifier.common.block.tools;
 import java.util.HashMap;
 
 public class CountMap<T> extends HashMap<T, Long> {
-    public void increment(T key) {
-        this.putIfAbsent(key, 0L);
-        this.compute(key, (k, oldValue) -> oldValue + 1);
-    }
+	public void increment(T key) {
+		this.putIfAbsent(key, 0L);
+		this.compute(key, (k, oldValue) -> oldValue + 1);
+	}
 }

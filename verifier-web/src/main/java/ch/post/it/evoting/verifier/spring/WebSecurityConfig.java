@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -24,29 +24,28 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
-
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private AuthenticationEntryPoint authEntryPoint;
+	@Autowired
+	private AuthenticationEntryPoint authEntryPoint;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.headers().frameOptions().sameOrigin();
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.headers().frameOptions().sameOrigin();
 
-        http.sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		http.sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/socket/**").permitAll();
+		http.csrf().disable()
+				.authorizeRequests()
+				.antMatchers("/socket/**").permitAll();
 
-        http.authorizeRequests().antMatchers("**").permitAll();
-    }
+		http.authorizeRequests().antMatchers("**").permitAll();
+	}
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -15,5 +15,7 @@
 package ch.post.it.evoting.verifier.dto;
 
 public enum LifecycleStatus {
-    NOT_STARTED, RUNNING, COMPLETED
+	NOT_STARTED,
+	RUNNING,
+	COMPLETED
 }

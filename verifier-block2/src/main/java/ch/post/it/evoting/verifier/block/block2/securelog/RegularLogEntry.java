@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -13,9 +13,6 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 package ch.post.it.evoting.verifier.block.block2.securelog;
-
-import lombok.Getter;
-import lombok.Setter;
 
 public class RegularLogEntry extends SecureLogEntry {
 }

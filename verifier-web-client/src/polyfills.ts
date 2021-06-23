@@ -1,18 +1,17 @@
-///
-/// This file is part of Verifier Swiss Post.
-///
-/// Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
-/// the GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
-/// or (at your option) any later version.
-///
-/// Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
-/// the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-/// See the GNU General Public License for more details.
-///
-/// You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
-/// If not, see <https://www.gnu.org/licenses/>.
-///
-
+/*
+ * This file is part of Verifier Swiss Post.
+ *
+ * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
+ * If not, see <https://www.gnu.org/licenses/>.
+ */
 /**
  * This file includes polyfills needed by Angular and is loaded before the app.
  * You can add your own extra polyfills to this file.
@@ -34,20 +33,20 @@
  */
 
 /** IE9, IE10 and IE11 requires all of the following polyfills. **/
-import 'core-js/es6/symbol';
-import 'core-js/es6/object';
-import 'core-js/es6/function';
-import 'core-js/es6/parse-int';
-import 'core-js/es6/parse-float';
-import 'core-js/es6/number';
-import 'core-js/es6/math';
-import 'core-js/es6/string';
-import 'core-js/es6/date';
-import 'core-js/es6/array';
-import 'core-js/es6/regexp';
-import 'core-js/es6/map';
-import 'core-js/es6/weak-map';
-import 'core-js/es6/set';
+import 'core-js/features/symbol';
+import 'core-js/features/object';
+import 'core-js/features/function';
+import 'core-js/features/parse-int';
+import 'core-js/features/parse-float';
+import 'core-js/features/number';
+import 'core-js/features/math';
+import 'core-js/features/string';
+import 'core-js/features/date';
+import 'core-js/features/array';
+import 'core-js/features/regexp';
+import 'core-js/features/map';
+import 'core-js/features/weak-map';
+import 'core-js/features/set';
 
 
 /**

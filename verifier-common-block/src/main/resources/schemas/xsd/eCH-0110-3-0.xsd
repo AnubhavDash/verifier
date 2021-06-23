@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2012 rel. 2 sp1 (http://www.altova.com) by Martin Stingelin (Stingelin Informatik GmbH) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eCH-0110="http://www.ech.ch/xmlns/eCH-0110/3" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4" targetNamespace="http://www.ech.ch/xmlns/eCH-0110/3" elementFormDefault="qualified" attributeFormDefault="unqualified" version="3.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eCH-0110="http://www.ech.ch/xmlns/eCH-0110/3"
+					 xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3"
+					 xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4" targetNamespace="http://www.ech.ch/xmlns/eCH-0110/3" elementFormDefault="qualified"
+					 attributeFormDefault="unqualified" version="3.0">
 	<xs:annotation>
 		<xs:documentation>Ausgabedatum: 10.04.2015</xs:documentation>
 	</xs:annotation>

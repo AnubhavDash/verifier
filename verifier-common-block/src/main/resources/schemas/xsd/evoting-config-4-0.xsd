@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2012 sp1 (http://www.altova.com) by Die Schweizerische Post (Die Schweizerische Post) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:config="http://www.evoting.ch/xmlns/config/4" targetNamespace="http://www.evoting.ch/xmlns/config/4" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:config="http://www.evoting.ch/xmlns/config/4"
+					 targetNamespace="http://www.evoting.ch/xmlns/config/4" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.0">
 	<xs:simpleType name="languageType">
 		<xs:restriction base="xs:string">
 			<xs:length value="2"/>

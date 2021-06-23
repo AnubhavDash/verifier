@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -15,5 +15,9 @@
 package ch.post.it.evoting.verifier.common;
 
 public enum Category {
-    COMPLETENESS, INTEGRITY, CONSISTENCY, EVIDENCE, AUTHENTICITY
+	COMPLETENESS,
+	INTEGRITY,
+	CONSISTENCY,
+	EVIDENCE,
+	AUTHENTICITY
 }

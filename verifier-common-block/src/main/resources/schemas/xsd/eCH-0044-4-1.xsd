@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-		   xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4"
-		   targetNamespace="http://www.ech.ch/xmlns/eCH-0044/4"
-		   elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.1">
+					 xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4"
+					 targetNamespace="http://www.ech.ch/xmlns/eCH-0044/4"
+					 elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.1">
 	<xs:annotation>
 		<xs:documentation xml:lang="de">Ausgabedatum: 21.01.2014</xs:documentation>
 	</xs:annotation>

@@ -1,10 +1,4 @@
-table {
-  width: 99%;
-  margin: auto;
-}
 
-button {
-  margin-top: 15px !important;
-  margin-left: 5px !important;
-  margin-right: 5px !important;
+.border-left.border-10 {
+  border-width: 10px;
 }

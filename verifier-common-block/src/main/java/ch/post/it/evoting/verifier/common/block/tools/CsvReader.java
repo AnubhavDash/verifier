@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -17,29 +17,49 @@ package ch.post.it.evoting.verifier.common.block.tools;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import ch.post.it.evoting.verifier.common.block.exceptions.CsvReaderException;
+
 public class CsvReader<T> {
-    private Function<String[], T> mapper;
-    private Stream<String> stream;
-    private boolean hasHeader;
-    private String separator;
+	private final Function<String[], T> mapper;
+	private final Stream<String> stream;
+	private final boolean hasHeader;
+	private final String separator;
 
-    public CsvReader(String filename, Charset charset, boolean hasHeader, String separator, Function<String[], T> mapper) throws IOException {
-        this.mapper = mapper;
-        this.stream = Files.lines(Paths.get(filename), charset);
-        this.hasHeader = hasHeader;
-        this.separator = separator;
-    }
+	public CsvReader(String filename, Charset charset, boolean hasHeader, String separator, Function<String[], T> mapper) {
+		this(Paths.get(filename), charset, hasHeader, separator, mapper);
+	}
 
-    public Iterable<T> process() {
-        return () -> {
-            //skip the first line (header)
-            //split with 'separator' character
-            //map to object with given Function
-            return stream.skip(hasHeader ? 1 : 0).map(l -> l.split(separator)).map(mapper).iterator();
-        };
-    }
+	public CsvReader(Path filePath, Charset charset, boolean hasHeader, String separator, Function<String[], T> mapper) {
+		this(Collections.singletonList(filePath), charset, hasHeader, separator, mapper);
+	}
+
+	public CsvReader(List<Path> filePaths, Charset charset, boolean hasHeader, String separator, Function<String[], T> mapper) {
+		this.mapper = mapper;
+		this.hasHeader = hasHeader;
+		this.separator = separator;
+
+		this.stream = filePaths.stream().flatMap(p -> {
+			try {
+				return Files.lines(p, charset);
+			} catch (IOException e) {
+				throw new CsvReaderException(e);
+			}
+		});
+	}
+
+	public Iterable<T> process() {
+		return () ->
+				//skip the first line (header)
+				//split with 'separator' character
+				//map to object with given Function
+				stream.skip(hasHeader ? 1 : 0).map(l -> l.split(separator)).map(mapper).iterator();
+
+	}
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -22,12 +22,12 @@ import lombok.ToString;
 @Setter
 @ToString
 public class SecureLogMetadata {
-    private String sg;
-    private String lsk;
-    private String esk;
-    private String hmac;
-    private String phmac;
-    private String ls;
-    private String tl;
-    private String ts;
+	private String sg;
+	private String lsk;
+	private String esk;
+	private String hmac;
+	private String phmac;
+	private String ls;
+	private String tl;
+	private String ts;
 }

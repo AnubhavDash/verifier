@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -20,5 +20,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Configuration {
-    private String inputDirectory;
+	private String inputDirectory;
 }

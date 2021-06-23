@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Verifier Swiss Post.
  *
  * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
@@ -20,12 +20,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SecureLogBundleValidationException extends Exception {
-    private String host;
-    private String source;
+	private String host;
+	private String source;
 
-    public SecureLogBundleValidationException(String message, String host, String source) {
-        super(message);
-        this.host = host;
-        this.source = source;
-    }
+	public SecureLogBundleValidationException(String message, String host, String source) {
+		super(message);
+		this.host = host;
+		this.source = source;
+	}
 }
