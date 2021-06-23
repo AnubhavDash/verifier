@@ -119,15 +119,15 @@
               <td class="text-center">{{verification.value.verificationId}}</td>
               <td>{{verification.value.name}}</td>
               <td>{{verification.value.category}}</td>
-              <td>{{verification.value.description}}</td>
+              <td>{{verification.value.description | localize}}</td>
               <td class="text-center h3">
                 <div *ngIf="isOK(verification.value.status)" class="text-success" role="status">
                     <i aria-hidden="true" class="bi-check-circle"></i> <span class="sr-only">{{verification.value.status}}</span>
                 </div>
-                <div *ngIf="isNotOK(verification.value.status)" role="status" title="{{verification.value.message}}">
+                <div *ngIf="isNotOK(verification.value.status)" role="status" title="{{verification.value.message | localize}}">
                   <i aria-hidden="true" class="bi-x-circle"></i> <span class="sr-only">{{verification.value.status}}</span>
                 </div>
-                <div *ngIf="isError(verification.value.status)" role="status" title="{{verification.value.message}}">
+                <div *ngIf="isError(verification.value.status)" role="status" title="{{verification.value.message | localize}}">
                   <i aria-hidden="true" class="bi-exclamation-circle"></i> <span class="sr-only">{{verification.value.status}}</span>
                 </div>
                 <div *ngIf="isNA(verification.value.status)" role="status">
@@ -139,7 +139,7 @@
                 [class.text-danger]="isNotOK(verification.value.status)"
                 [class.text-warning]="isError(verification.value.status)">
               <td colspan="6">
-                {{verification.value.message}}
+                {{verification.value.message | localize}}
               </td>
             </tr>
           </ng-container>

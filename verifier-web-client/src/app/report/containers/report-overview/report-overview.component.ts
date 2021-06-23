@@ -64,8 +64,6 @@ export class ReportOverviewComponent implements OnInit {
 
   private stompClient;
 
-
-
   constructor(private processorService: ProcessorService) {
   }
 
@@ -77,8 +75,8 @@ export class ReportOverviewComponent implements OnInit {
     result.name = input.name;
     result.category = input.category;
     result.status = input.status;
-    result.description = input.description ? input.description[navigator.language.toUpperCase().substr(0, 2)] : null;
-    result.message = input.message ? input.message[navigator.language.toUpperCase().substr(0, 2)] : null;
+    result.description = input.description;
+    result.message = input.message;
     return result;
   }
 
@@ -91,11 +89,11 @@ export class ReportOverviewComponent implements OnInit {
   }
 
   initTable() {
-    this.processorService.getVerificationStatus().subscribe(value => {
-      this.verificationsSize = value.length;
+    this.processorService.getVerificationStatus().subscribe(results => {
+      this.verificationsSize = results.length;
       const verifications = {};
-      for (let i = 0; i < value.length; i++) {
-        verifications[value[i].id] = ReportOverviewComponent.convert(value[i]);
+      for (const verification of results) {
+        verifications[verification.id] = ReportOverviewComponent.convert(verification);
       }
       this.verifications = verifications;
       this.startDisabled = this.isProcessComplete();
@@ -145,19 +143,19 @@ export class ReportOverviewComponent implements OnInit {
     this.initTable();
   }
 
-  isOK (status) {
+  isOK(status) {
     return status === 'OK';
   }
 
-  isNotOK (status) {
+  isNotOK(status) {
     return status === 'NOK';
   }
 
-  isNA (status) {
+  isNA(status) {
     return status === 'NA';
   }
 
-  isError (status) {
+  isError(status) {
     return status === 'UNEXPECTED_ERROR' || status === 'FILE_ERROR';
   }
 
@@ -209,12 +207,12 @@ export class ReportOverviewComponent implements OnInit {
   // PDF Export
   exportToPDF() {
     const options = {
-      margin:       5,
-      filename:     'verifier.pdf',
-      pagebreak: { mode: ['avoid-all'] },
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 4 },
-      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
+      margin: 5,
+      filename: 'verifier.pdf',
+      pagebreak: {mode: ['avoid-all']},
+      image: {type: 'jpeg', quality: 0.98},
+      html2canvas: {scale: 4},
+      jsPDF: {unit: 'mm', format: 'a4', orientation: 'landscape'}
     };
 
     const element = document.getElementById('verifications-results');
