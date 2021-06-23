@@ -21,7 +21,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
-import {LocalizePipe} from "./pipes/localize.pipe";
+import {LocalizePipe} from './pipes/localize.pipe';
 
 const routes: Routes = [
   {

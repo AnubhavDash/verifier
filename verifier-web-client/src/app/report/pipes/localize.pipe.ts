@@ -21,6 +21,6 @@ export class LocalizePipe implements PipeTransform {
   }
 
   transform(value: object) {
-    return value && value[this.language] ? value[this.language] : "";
+    return value && value[this.language] ? value[this.language] : '';
   }
 }
