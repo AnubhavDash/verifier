@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<results xmlns="http://www.scytl.com/xmlns/decrypt/1">
+<results xmlns="http://www.evoting.ch/xmlns/decrypt/1">
     <contestIdentification>demo_bk_06</contestIdentification>
     <castBallots>7</castBallots>
     <ballotsBox>

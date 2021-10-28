@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Post CH Ltd
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package ch.post.it.evoting.verifier.common.block.tools.path;
 
 import java.io.IOException;
@@ -21,16 +36,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class PathService {
 
-	private Map<StructureKey, StructureNode> structureMap = new HashMap<>();
+	private final Map<StructureKey, StructureNode> structureMap = new HashMap<>();
 
 	public PathService() {
 		try {
-			// TODO Allow to override file as main argument.
 
 			ObjectMapper mapper = new ObjectMapper();
 			final JsonNode rootNode = mapper.readTree(getClass().getResource("/dataset_structure.json"));
 
-			// TODO check business structure + keys
 			StructureChecker.process(rootNode);
 
 			addMapEntry(rootNode, Paths.get(""), false);
@@ -141,6 +154,9 @@ public class PathService {
 
 	/**
 	 * Provide a list of {@link Path} by resolving them from a starting path.
+	 *
+	 * @throws IOException if an I/O error is thrown when accessing the starting file
+	 * @throws NoSuchFileException if no file or directory match the name or pattern
 	 */
 	private List<Path> resolve(Path startingPath, StructureNode structureNode) throws IOException {
 		// Get the escaped (to work in regex) file system separator.
@@ -165,7 +181,7 @@ public class PathService {
 				.filter(path -> PathType.FILE.equals(structureNode.getType()) ? Files.isRegularFile(path) : Files.isDirectory(path))
 				.collect(Collectors.toList());
 
-		if (paths.size() == 0) {
+		if (paths.isEmpty()) {
 			throw new NoSuchFileException(String.format("No file or directory found with given name/pattern. Starting path: %s " +
 					"namePattern:%s ", startingPath, structureNode.getQualifier()));
 		} else {

@@ -1,16 +1,17 @@
 /*
- * This file is part of Verifier Swiss Post.
+ * Copyright 2021 Post CH Ltd
  *
- * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
- * If not, see <https://www.gnu.org/licenses/>.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package ch.post.it.evoting.verifier.block.block2.verifications;
 
@@ -45,23 +46,6 @@ class CheckNumberChoiceReturnCodesTest extends Block2VerificationAbstractTest {
 		assertNotNull(verificationResult);
 		assertEquals(Status.OK, verificationResult.getStatus());
 	}
-
-	@Test
-	@Disabled("Enable when we got secureLog files with correct pattern.")
-	void executeTestNOK() {
-		final VerificationFailureException ex = assertThrows(
-				VerificationFailureException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckNumberChoiceReturnCodesTest/NOK").toURI()))
-		);
-		assertEquals("TODO", ex.getMessage());
-	}
-
-	// TODO Implement the following missing tests cases:
-	//  - No values found while counting log foreach control component
-	//  - Number of component control is not 4
-	//  - No GENPCC log found for the defined electionEventId
-	//  - Count of log for partial choice code generation is not the same for each control component
-	//  - The number of log entries does not match with the number of voters
 
 	@Test
 	void executeTestNOKFileNotFoundVoterInformation() {

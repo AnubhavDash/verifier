@@ -9,6 +9,7 @@
 # dependencies
 /node_modules
 /npm/cache/
+/app/node_modules
 
 # IDEs and editors
 /.idea

@@ -1,16 +1,17 @@
 /*
- * This file is part of Verifier Swiss Post.
+ * Copyright 2021 Post CH Ltd
  *
- * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
- * If not, see <https://www.gnu.org/licenses/>.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package ch.post.it.evoting.verifier.common.block.tools.path;
 
@@ -26,10 +27,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// TODO Try in the long term to remove everything related to java.io.
-public class PathHelper {
+public final class PathHelper {
 	private PathHelper() {
-		//private constructor, use static
+		// private constructor, use static
 	}
 
 	public static File[] listDirectories(Path path) {
@@ -51,7 +51,7 @@ public class PathHelper {
 
 	public static List<File> getFiles(File inputDirectory, String filenamePattern, boolean recursive) throws FileNotFoundException {
 		List<File> result = getFilesInternal(inputDirectory, filenamePattern, recursive);
-		if (result.size() == 0) {
+		if (result.isEmpty()) {
 			throw new FileNotFoundException(filenamePattern);
 		}
 		return result;
@@ -102,7 +102,7 @@ public class PathHelper {
 		if (paths.size() > 1) {
 			throw new InvalidParameterException(String.format("More than one file found, filename is not specific enough. Starting " +
 					"path:%s filenamePattern:%s ", startingPath, filenamePattern));
-		} else if (paths.size() == 0) {
+		} else if (paths.isEmpty()) {
 			throw new NoSuchFileException(String.format("No file found with given pattern. Starting path: %s " +
 					"filenamePattern:%s ", startingPath, filenamePattern));
 		} else {

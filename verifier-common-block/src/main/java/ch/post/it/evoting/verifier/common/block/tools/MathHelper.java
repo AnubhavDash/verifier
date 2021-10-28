@@ -1,16 +1,17 @@
 /*
- * This file is part of Verifier Swiss Post.
+ * Copyright 2021 Post CH Ltd
  *
- * Verifier Swiss Post is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Verifier Swiss Post is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU General Public License along with Verifier Swiss Post.
- * If not, see <https://www.gnu.org/licenses/>.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package ch.post.it.evoting.verifier.common.block.tools;
 
@@ -406,7 +407,6 @@ public final class MathHelper {
 	public static boolean verifySVPArgument(EncryptionGroup encryptionGroup, CommitmentKey ck, BigInteger pk, Statement statement,
 			Argument argument) {
 
-		// TODO that or change parameters type?
 		SVPStatement svpStatement = (SVPStatement) statement;
 		SVPArgument svpArgument = (SVPArgument) argument;
 
@@ -611,8 +611,6 @@ public final class MathHelper {
 
 		final BigInteger c = upperBound.subtract(lowerBound).subtract(BigInteger.ONE);
 		final int t = c.bitLength();
-		// FIXME Implementation error 1.
-		// Warning: Error required for compatibility. On the line below, a number of bits is divided by a number of bytes.
 		final int n = StrictMath.floorDiv(t, s);
 		final int r = t % s;
 
@@ -620,9 +618,6 @@ public final class MathHelper {
 		byte[] input = x;
 		final ByteBuffer byteBuffer = ByteBuffer.allocate(n * s);
 		for (int i = 0; i < n; i++) {
-			// FIXME Implementation error 2.
-			// Warning: as per the verifier specification, this diverges from the e-voting protocol, to ensure compatibility with the
-			// implementation. Only the last element is fed to the hash, instead of the concatenation of the hashes computed so far.
 			final byte[] digest = messageDigest.digest(input);
 			byteBuffer.put(digest);
 			input = digest;
@@ -631,10 +626,6 @@ public final class MathHelper {
 
 		// Completion if needed.
 		if (r > 0) {
-			// FIXME Implementation error 3.
-			// Warning: as per the verifier specification, this diverges from the e-voting protocol, to ensure compatibility with the
-			// implementation. Only the hash of the empty string is taken as input in the following step, instead of the concatenation of
-			// the hashes computed so far.
 			final byte[] hashOfEmpty = messageDigest.digest("".getBytes(StandardCharsets.UTF_8));
 			final byte[] digest = messageDigest.digest(hashOfEmpty);
 			final byte[] e_n = Arrays.copyOfRange(digest, 0, r);
@@ -673,7 +664,6 @@ public final class MathHelper {
 	}
 
 	private static MessageDigest getSHA256MessageDigest() {
-		// TODO use bouncyCastle?
 		if (Security.getProvider("BC") == null) {
 			Security.addProvider(new BouncyCastleProvider());
 		}

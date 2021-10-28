@@ -6,7 +6,7 @@
 
 	<groupId>ch.post.it.evoting.verifier</groupId>
 	<artifactId>verifier</artifactId>
-	<version>0.7.0.0</version>
+	<version>0.8.0.0</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -28,20 +28,10 @@
 		<url>https://gitit.post.ch/scm/EVOTINGECOSYSTEM/verifier.git</url>
 		<tag>HEAD</tag>
 	</scm>
-	<distributionManagement>
-		<repository>
-			<id>artifactory-releases</id>
-			<name>artifactory.pnet.ch-releases</name>
-			<url>http://artifactory.pnet.ch/artifactory/libs-release-local</url>
-		</repository>
-		<snapshotRepository>
-			<id>artifactory-snapshots</id>
-			<name>artifactory.pnet.ch-snapshots</name>
-			<url>http://artifactory.pnet.ch/artifactory/libs-snapshot-local</url>
-		</snapshotRepository>
-	</distributionManagement>
 
 	<properties>
+		<project.build.outputTimestamp>2021-04-28T00:00:00Z</project.build.outputTimestamp>
+
 		<!-- sonar -->
 		<sonar.scm.disabled>true</sonar.scm.disabled>
 		<sonar.host.url>https://sonar.tools.pnet.ch</sonar.host.url>
@@ -52,9 +42,11 @@
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 
 		<activation.version>1.1.1</activation.version>
-		<bouncycastle.version>1.67</bouncycastle.version>
+		<bouncycastle.version>1.69</bouncycastle.version>
 		<commons-codec.version>1.15</commons-codec.version>
 		<commons-lang3.version>3.11</commons-lang3.version>
+		<crypto-primitives-version>0.12.0.0</crypto-primitives-version>
+		<crypto-primitives-domain.version>0.12.0.0</crypto-primitives-domain.version>
 		<excludedTags>Slow</excludedTags>
 		<guava.version>30.0-jre</guava.version>
 		<hamcrest-core.version>2.2</hamcrest-core.version>
@@ -76,6 +68,7 @@
 		<maven-deploy-plugin.version>3.0.0-M1</maven-deploy-plugin.version>
 		<maven-release-plugin.version>3.0.0-M1</maven-release-plugin.version>
 		<maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+		<mockito.core.version>3.12.4</mockito.core.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<projectArtifactId>${project.artifactId}</projectArtifactId>
 		<projectGroupId>${project.groupId}</projectGroupId>
@@ -85,9 +78,10 @@
 		<rootProject>verifier</rootProject>
 		<sun-jaxb-core.version>2.3.0.1</sun-jaxb-core.version>
 		<sun-jaxb-impl.version>2.3.3</sun-jaxb-impl.version>
-		<verifier-block3-scytl.version>1.1.0.0</verifier-block3-scytl.version>
-		<spring-context.version>5.3.2</spring-context.version>
-		<spring-test.version>5.3.2</spring-test.version>
+		<spring.version>5.3.9</spring.version>
+		<maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
+		<maven-source-plugin.version>3.2.0</maven-source-plugin.version>
+		<maven-assembly-plugin.version>3.2.0</maven-assembly-plugin.version>
 	</properties>
 
 	<dependencyManagement>
@@ -107,11 +101,6 @@
 				<groupId>ch.post.it.evoting.verifier</groupId>
 				<artifactId>verifier-block3</artifactId>
 				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>ch.post.it.evoting.verifier</groupId>
-				<artifactId>verifier-block3-scytl</artifactId>
-				<version>${verifier-block3-scytl.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>ch.post.it.evoting.verifier</groupId>
@@ -199,6 +188,35 @@
 				<version>${commons-lang3.version}</version>
 			</dependency>
 
+			<!-- crypto-primitives -->
+			<dependency>
+				<groupId>ch.post.it.evoting.cryptoprimitives</groupId>
+				<artifactId>crypto-primitives</artifactId>
+				<version>${crypto-primitives-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.post.it.evoting.cryptoprimitives</groupId>
+				<artifactId>crypto-primitives</artifactId>
+				<version>${crypto-primitives-version}</version>
+				<classifier>tests</classifier>
+				<type>test-jar</type>
+			</dependency>
+
+			<!-- crypto-primitives-domain -->
+			<dependency>
+				<groupId>ch.post.it.evoting.cryptoprimitives.domain</groupId>
+				<artifactId>crypto-primitives-domain</artifactId>
+				<version>${crypto-primitives-domain.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.post.it.evoting.cryptoprimitives.domain</groupId>
+				<artifactId>crypto-primitives-domain</artifactId>
+				<version>${crypto-primitives-domain.version}</version>
+				<classifier>tests</classifier>
+				<type>test-jar</type>
+				<scope>test</scope>
+			</dependency>
+
 			<!-- javax -->
 			<dependency>
 				<groupId>javax.activation</groupId>
@@ -216,6 +234,13 @@
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter</artifactId>
 				<version>${junit-jupiter.version}</version>
+			</dependency>
+
+			<!-- mockito -->
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>${mockito.core.version}</version>
 			</dependency>
 
 			<!-- io.jsonwebtoken -->
@@ -307,12 +332,12 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
-				<version>${spring-context.version}</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-test</artifactId>
-				<version>${spring-test.version}</version>
+				<version>${spring.version}</version>
 				<scope>test</scope>
 			</dependency>
 
@@ -337,6 +362,21 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>${maven-surefire-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>${maven-jar-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>${maven-source-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>${maven-assembly-plugin.version}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -393,6 +433,20 @@
 	</build>
 
 	<profiles>
+		<profile>
+			<id>property-default-value</id>
+			<activation>
+				<property>
+					<name>!property-inject</name>
+				</property>
+			</activation>
+			<properties>
+				<adoptopenjdk.url>
+					https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.11%2B9/OpenJDK11U-jre_x64_windows_hotspot_11.0.11_9.zip
+				</adoptopenjdk.url>
+				<adoptopenjdk.sha256>a7377fb0807fa619de49eec02ad7e2110c257649341f5ccffbaafa43cc8cbcc8</adoptopenjdk.sha256>
+			</properties>
+		</profile>
 		<profile>
 			<id>slowTests</id>
 			<properties>

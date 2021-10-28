@@ -1,0 +1,26 @@
+{
+  "asar": false,
+  "buildVersion": "1",
+  "directories": {
+    "output": "target/electron"
+  },
+  "files": [
+    "**/*",
+    "!**/*.ts",
+    "!*.map",
+    "!package.json",
+    "!package-lock.json"
+  ],
+  "extraResources": [
+    {
+      "from": "dist",
+      "to": "app",
+      "filter": [
+        "**/*"
+      ]
+    }
+  ],
+  "win": {
+    "target": [{"target": "dir", "arch": ["x64"]}]
+  }
+}

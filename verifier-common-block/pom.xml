@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>verifier</artifactId>
 		<groupId>ch.post.it.evoting.verifier</groupId>
-		<version>0.7.0.0</version>
+		<version>0.8.0.0</version>
 	</parent>
 
 	<artifactId>verifier-common-block</artifactId>
@@ -17,7 +17,6 @@
 		<jaxb2-fluent-api.version>3.0</jaxb2-fluent-api.version>
 		<jsonschema2pojo-maven-plugin.version>1.0.2</jsonschema2pojo-maven-plugin.version>
 		<maven-jaxb2-plugin.version>0.14.0</maven-jaxb2-plugin.version>
-		<spring-context.version>5.2.11.RELEASE</spring-context.version>
 	</properties>
 
 	<dependencies>
@@ -105,6 +104,14 @@
 			<artifactId>verifier-common-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>ch.post.it.evoting.cryptoprimitives</groupId>
+			<artifactId>crypto-primitives</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.post.it.evoting.cryptoprimitives.domain</groupId>
+			<artifactId>crypto-primitives-domain</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -142,6 +149,7 @@
 					</execution>
 				</executions>
 				<configuration>
+					<episode>false</episode>
 					<schemaDirectory>src/main/resources/schemas/xsd/</schemaDirectory>
 					<schemaExcludes>
 						<exclude>bindingschema_2_0.xsd</exclude>

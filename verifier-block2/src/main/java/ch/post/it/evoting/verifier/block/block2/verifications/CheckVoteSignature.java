@@ -1,6 +1,20 @@
+/*
+ * Copyright 2021 Post CH Ltd
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package ch.post.it.evoting.verifier.block.block2.verifications;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,13 +34,11 @@ import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.VerificationTrait;
 import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.exceptions.JsonMissingNodeException;
-import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.common.block.serialization.DownloadedBallotSerialization;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import ch.post.it.evoting.verifier.dto.DownloadedBallot;
 import ch.post.it.evoting.verifier.dto.Vote__1;
 
 public class CheckVoteSignature extends AbstractVerification {
@@ -72,7 +84,7 @@ public class CheckVoteSignature extends AbstractVerification {
 
 			try (final Stream<String> lines = Files.lines(downloadedBallotPathNode.getPath())) {
 				lines.parallel()
-						.map(this::deserializeDownloadedBallot)
+						.map(DownloadedBallotSerialization::deserializeDownloadedBallot)
 						// Remove empty lines, signature etc...
 						.filter(Objects::nonNull)
 						.forEach(ballot -> {
@@ -131,20 +143,6 @@ public class CheckVoteSignature extends AbstractVerification {
 		).filter(s -> Objects.nonNull(s) && !s.isEmpty()).collect(Collectors.joining());
 
 		return concatenatedInfo.getBytes(StandardCharsets.UTF_8);
-	}
-
-	private DownloadedBallot deserializeDownloadedBallot(String line) {
-		if (!line.isEmpty() && line.contains("}}|")) {
-			int endJsonObjectIndex = line.indexOf("}}|") + 2;
-			String json = line.substring(0, endJsonObjectIndex);
-			try {
-				return Deserializer.fromJson(TypeConverter.stringToByte(json), DownloadedBallot.class);
-			} catch (IOException e) {
-				throw new RuntimeException();
-			}
-		} else {
-			return null;
-		}
 	}
 
 }

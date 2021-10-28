@@ -7,14 +7,15 @@
   <parent>
     <artifactId>verifier</artifactId>
     <groupId>ch.post.it.evoting.verifier</groupId>
-    <version>0.7.0.0</version>
+    <version>0.8.0.0</version>
   </parent>
 
   <artifactId>verifier-web-client</artifactId>
+  <packaging>pom</packaging>
 
   <properties>
-    <destDir>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}</destDir>
     <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
+    <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
     <node.build.compile.phase>compile</node.build.compile.phase>
     <node.build.generate-resources.phase>generate-resources</node.build.generate-resources.phase>
     <npm.executable>npm</npm.executable>
@@ -22,169 +23,93 @@
   </properties>
 
   <build>
-    <resources>
-      <resource>
-        <directory>${project.basedir}/dist</directory>
-        <targetPath>${destDir}</targetPath>
-      </resource>
-    </resources>
-  </build>
-
-  <profiles>
-    <profile>
-      <id>electron-package</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>${exec-maven-plugin.version}</version>
-            <executions>
-              <execution>
-                <id>Step 1: npm install</id>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <phase>${node.build.generate-resources.phase}</phase>
-                <configuration>
-                  <executable>${npm.executable}</executable>
-                  <workingDirectory>${basedir}</workingDirectory>
-                  <arguments>
-                    <argument>--no-color</argument>
-                    <argument>install</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-              <execution>
-                <id>Step 2: npm run electron-package</id>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <phase>package</phase>
-                <configuration>
-                  <executable>${npm.executable}</executable>
-                  <workingDirectory>${basedir}</workingDirectory>
-                  <arguments>
-                    <argument>run</argument>
-                    <argument>electron-package</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-            </executions>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>${maven-clean-plugin.version}</version>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>node_modules</directory>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+            <fileset>
+              <directory>dist</directory>
+            </fileset>
+            <fileset>
+              <directory>npm</directory>
+            </fileset>
+            <fileset>
+              <directory>app/node_modules</directory>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>${exec-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>Step 1: npm ci</id>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <phase>${node.build.generate-resources.phase}</phase>
             <configuration>
-              <environmentVariables>
-                <!-- The following parameters create an NPM sandbox for CI -->
-                <NPM_CONFIG_CACHE>${basedir}/npm/cache</NPM_CONFIG_CACHE>
-                <NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>
-              </environmentVariables>
+              <executable>${npm.executable}</executable>
+              <workingDirectory>${basedir}</workingDirectory>
+              <arguments>
+                <argument>--no-color</argument>
+                <argument>ci</argument>
+              </arguments>
             </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>web-client-assembly</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>single</goal>
-                </goals>
-              </execution>
-            </executions>
+          </execution>
+          <execution>
+            <id>Step 2: npm run build</id>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <phase>${node.build.generate-resources.phase}</phase>
             <configuration>
-              <appendAssemblyId>false</appendAssemblyId>
-              <finalName>${project.artifactId}</finalName>
+              <executable>${npm.executable}</executable>
+              <workingDirectory>${basedir}</workingDirectory>
+              <arguments>
+                <argument>run</argument>
+                <argument>build</argument>
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <environmentVariables>
+            <!-- The following parameters create an NPM sandbox for CI -->
+            <NPM_CONFIG_CACHE>${basedir}/npm/cache</NPM_CONFIG_CACHE>
+            <NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>
+          </environmentVariables>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>electron-package</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
               <descriptors>
-                <descriptor>${project.basedir}/web-client-assembly.xml</descriptor>
+                <descriptor>assembly.xml</descriptor>
               </descriptors>
+              <appendAssemblyId>false</appendAssemblyId>
             </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>webjar-package</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>Step 1: npm install</id>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <phase>${node.build.generate-resources.phase}</phase>
-                <configuration>
-                  <executable>${npm.executable}</executable>
-                  <workingDirectory>${basedir}</workingDirectory>
-                  <arguments>
-                    <argument>--no-color</argument>
-                    <argument>install</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-              <execution>
-                <id>Step 2: npm run build</id>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <phase>${node.build.generate-resources.phase}</phase>
-                <configuration>
-                  <executable>${npm.executable}</executable>
-                  <workingDirectory>${basedir}</workingDirectory>
-                  <arguments>
-                    <argument>run</argument>
-                    <argument>build</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-            </executions>
-            <configuration>
-              <environmentVariables>
-                <!-- The following parameters create an NPM sandbox for CI -->
-                <NPM_CONFIG_CACHE>${basedir}/npm/cache</NPM_CONFIG_CACHE>
-                <NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>
-              </environmentVariables>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>full-clean</id>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-clean-plugin</artifactId>
-            <version>3.0.0</version>
-            <configuration>
-              <filesets>
-                <fileset>
-                  <directory>dist</directory>
-                </fileset>
-                <fileset>
-                  <directory>npm</directory>
-                </fileset>
-                <fileset>
-                  <directory>node_modules</directory>
-                </fileset>
-              </filesets>
-            </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>clean</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
