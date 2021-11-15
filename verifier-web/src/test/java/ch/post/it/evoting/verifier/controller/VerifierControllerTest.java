@@ -20,18 +20,14 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import java.util.HashSet;
 import java.util.Locale;
-import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
+import org.springframework.context.ApplicationEventPublisher;
 
 import ch.post.it.evoting.verifier.common.Language;
-import ch.post.it.evoting.verifier.common.VerificationTrait;
 import ch.post.it.evoting.verifier.dto.Configuration;
-import ch.post.it.evoting.verifier.processor.AlreadyStartedException;
 import ch.post.it.evoting.verifier.processor.VerifierProcessor;
 
 class VerifierControllerTest {
@@ -42,26 +38,12 @@ class VerifierControllerTest {
 	@BeforeEach
 	void setup() {
 		processorMock = mock(VerifierProcessor.class);
-		controller = new VerifierController(processorMock);
+		controller = new VerifierController(processorMock, mock(ApplicationEventPublisher.class));
 	}
 
 	@Test
 	void ping_returnsTrue() {
 		assertTrue(controller.ping());
-	}
-
-	@Test
-	void tests_process_callsProcessWithTraits() throws AlreadyStartedException {
-		controller.process(VerificationTrait.PRE_DECRYPTION.toString());
-		Set<VerificationTrait> arguments = new HashSet<>();
-		arguments.add(VerificationTrait.PRE_DECRYPTION);
-		verify(processorMock).processVerifications(arguments);
-	}
-
-	@Test
-	void tests_process_callsProcessWithoutTraits() throws AlreadyStartedException {
-		controller.process(null);
-		verify(processorMock).processVerifications(ArgumentMatchers.isNull());
 	}
 
 	@Test
@@ -79,7 +61,7 @@ class VerifierControllerTest {
 	@Test
 	void tests_get_callsGetTestStatus() {
 		controller.getTestStatus();
-		verify(processorMock, atLeast(1)).getVerificationStatus();
+		verify(processorMock, atLeast(1)).getVerifications();
 	}
 
 	@Test

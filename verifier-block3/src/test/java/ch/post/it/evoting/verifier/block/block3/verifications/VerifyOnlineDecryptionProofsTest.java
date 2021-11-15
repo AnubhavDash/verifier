@@ -16,57 +16,69 @@
 package ch.post.it.evoting.verifier.block.block3.verifications;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
+import com.google.common.base.Throwables;
+
+import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
+import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofService;
+import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
 import ch.post.it.evoting.verifier.common.block.exceptions.MissingFileException;
+import ch.post.it.evoting.verifier.common.block.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.event.Block3Event;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
 
-class VerifyOnlineDecryptionProofsTest extends Block3VerificationAbstractTest {
+class VerifyOnlineDecryptionProofsTest extends Block3VerificationTest {
 
-	public VerifyOnlineDecryptionProofsTest() {
-		super(VerifyOnlineDecryptionProofs.class);
+	@BeforeAll
+	static void setUpAll() {
+		verification = new VerifyOnlineDecryptionProofs(pathService, applicationEventPublisherMock, new ZeroKnowledgeProofService(),
+				new ElectionDataExtractionService(pathService, DomainObjectMapper.getNewInstance()));
 	}
 
 	@Test
 	void executeTestOK() throws Exception {
-		VerificationResult verificationResult =
-				verification.verify(Paths.get(Objects.requireNonNull(getClass().getResource("/VerifyOnlineDecryptionProofsTest/OK")).toURI()));
-		assertNotNull(verificationResult);
-		assertEquals(Status.OK, verificationResult.getStatus());
+		final String inputDirectory = Paths.get(getClass().getResource("/VerifyOnlineDecryptionProofsTest/OK").toURI()).toString();
+		final var event = new Block3Event(this, inputDirectory);
+
+		final VerificationResultEvent resultEvent = verification.verify(event);
+		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
 	void executeTestNOK() throws Exception {
-		VerificationResult verificationResult =
-				verification.verify(Paths.get(Objects.requireNonNull(getClass().getResource("/VerifyOnlineDecryptionProofsTest/NOK")).toURI()));
-		assertNotNull(verificationResult);
-		assertEquals(Status.NOK, verificationResult.getStatus());
-		assertEquals(TranslationHelper.getFromResourceBundle("block3/resources", "verification02.failure"), verificationResult.getMessage());
+		final String inputDirectory = Paths.get(getClass().getResource("/VerifyOnlineDecryptionProofsTest/NOK").toURI()).toString();
+		final var event = new Block3Event(this, inputDirectory);
+
+		final VerificationResultEvent resultEvent = verification.verify(event);
+		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
+				TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification02.failure"));
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
 	void executeTestNOKFileNotFound() throws URISyntaxException {
-		final Path path = Paths
-				.get(Objects.requireNonNull(getClass().getResource("/VerifyOnlineDecryptionProofsTest/NOK_missingFiles")).toURI());
-		MissingFileException exception = assertThrows(MissingFileException.class, () -> verification.verify(path));
-		assertEquals("Missing shufflePayload file(s)", exception.getMessage());
+		final String inputDirectory = Paths.get(getClass().getResource("/VerifyOnlineDecryptionProofsTest/NOK_missingFiles").toURI()).toString();
+		final var event = new Block3Event(this, inputDirectory);
+
+		final var exception = assertThrows(MissingFileException.class, () -> verification.verify(event));
+		assertEquals("Missing shufflePayload file(s)", Throwables.getRootCause(exception).getMessage());
 	}
 
 	@Test
 	void executeTestNOKCorruptedFile() throws URISyntaxException {
-		final Path path = Paths
-				.get(Objects.requireNonNull(getClass().getResource("/VerifyOnlineDecryptionProofsTest/NOK_corruptedFile")).toURI());
-		assertThrows(UncheckedIOException.class, () -> verification.verify(path));
+		final String inputDirectory = Paths.get(getClass().getResource("/VerifyOnlineDecryptionProofsTest/NOK_corruptedFile").toURI()).toString();
+		final var event = new Block3Event(this, inputDirectory);
+
+		assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 	}
 }

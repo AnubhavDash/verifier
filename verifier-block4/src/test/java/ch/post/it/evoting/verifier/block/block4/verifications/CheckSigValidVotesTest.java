@@ -16,92 +16,106 @@
 package ch.post.it.evoting.verifier.block.block4.verifications;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.nio.file.NoSuchFileException;
+import java.io.UncheckedIOException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.exceptions.VerificationFailureException;
+import com.google.common.base.Throwables;
+
+import ch.post.it.evoting.verifier.block.block4.Block4VerificationSuite;
 import ch.post.it.evoting.verifier.common.block.test.helper.RegexHelper;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
+import ch.post.it.evoting.verifier.common.event.Block4Event;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
 
-class CheckSigValidVotesTest extends Block4VerificationAbstractTest {
+class CheckSigValidVotesTest extends Block4VerificationTest {
 
-	public CheckSigValidVotesTest() {
-		super(CheckSigValidVotes.class);
+	@BeforeAll
+	static void setUpAll() {
+		verification = new CheckSigValidVotes(pathService, certificateLoader, applicationEventPublisherMock);
 	}
 
 	@Test
 	void executeTestOK() throws Exception {
-		VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckSigValidVotesTest" +
-				"/OK").toURI()));
-		assertNotNull(verificationResult);
-		assertEquals(Status.OK, verificationResult.getStatus());
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigValidVotesTest/OK").toURI()).toString();
+		final VerificationResultEvent resultEvent = verification.verify(new Block4Event(this, inputDirectory));
+
+		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
-	void executeTestNOKCsvKo() {
-		final VerificationFailureException ex = assertThrows(
-				VerificationFailureException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigValidVotesTest/NOK/CSV-NOT-OK").toURI()))
-		);
-		assertEquals("The signature verification of the svv_[EE_alias].csv report failed", ex.getMessage());
+	void executeTestNOKCsvKo() throws URISyntaxException {
+		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckSigValidVotesTest/NOK/CSV-NOT-OK").toURI());
+		final String inputDirectory = inputDirectoryPath.toString();
+		final var event = new Block4Event(this, inputDirectory);
+		final VerificationResultEvent resultEvent = verification.verify(event);
+
+		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
+				TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification77.nok.message"));
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
-	void executeTestNOKCertKo() {
-		final VerificationFailureException ex = assertThrows(
-				VerificationFailureException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigValidVotesTest/NOK/CERT-NOT-OK").toURI()))
-		);
-		assertEquals("The signature verification of the svv_[EE_alias].csv report failed", ex.getMessage());
+	void executeTestNOKCertKo() throws URISyntaxException {
+		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckSigValidVotesTest/NOK/CERT-NOT-OK").toURI());
+		final String inputDirectory = inputDirectoryPath.toString();
+		final var event = new Block4Event(this, inputDirectory);
+		final VerificationResultEvent resultEvent = verification.verify(event);
+
+		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
+				TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification77.nok.message"));
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
-	void executeTestNOKFileNotFoundCertificate() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigValidVotesTest/NOK-NOTFILE").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ADMIN_BOARD_CERT);
-		assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
+	void executeTestNOKFileNotFoundCertificate() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigValidVotesTest/NOK-NOTFILE").toURI()).toString();
+		final var event = new Block4Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.ADMIN_BOARD_CERT);
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(structureNode.getQualifier()));
 	}
 
 	@Test
-	void executeTestNOKFileNotFoundRootCertificate() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigValidVotesTest/NOK-NOTFILE2").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.TENANT_100);
-		assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
+	void executeTestNOKFileNotFoundRootCertificate() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigValidVotesTest/NOK-NOTFILE2").toURI()).toString();
+		final var event = new Block4Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.TENANT_100);
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(structureNode.getQualifier()));
 	}
 
 	@Test
-	void executeTestNOKFileNotFoundValidVotesResult() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigValidVotesTest/NOK-NOTFILE3").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.VALID_VOTES_RESULT);
-		assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
+	void executeTestNOKFileNotFoundValidVotesResult() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigValidVotesTest/NOK-NOTFILE3").toURI()).toString();
+		final var event = new Block4Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.VALID_VOTES_RESULT);
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(structureNode.getQualifier()));
 	}
 
 	@Test
-	void executeTestNOKFileNotFoundValidVotesResultMetadata() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigValidVotesTest/NOK-NOTFILE4").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.VALID_VOTES_RESULT);
-		assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier() + RelationType.METADATA.toFileExtension()).matches(ex.getMessage()));
+	void executeTestNOKFileNotFoundValidVotesResultMetadata() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigValidVotesTest/NOK-NOTFILE4").toURI()).toString();
+		final var event = new Block4Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.VALID_VOTES_RESULT);
+		assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier() + RelationType.METADATA.toFileExtension())
+				.matches(Throwables.getRootCause(exception).getMessage()));
 	}
 }

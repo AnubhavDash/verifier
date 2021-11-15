@@ -27,8 +27,8 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
 	@Override
 	public LocalDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-		long timestamp = jsonParser.getValueAsLong();
-		Instant instant = Instant.ofEpochMilli(timestamp);
+		var timestamp = jsonParser.getValueAsLong();
+		var instant = Instant.ofEpochMilli(timestamp);
 		return LocalDateTime.ofInstant(instant, ZoneId.of("Europe/Zurich"));
 	}
 }

@@ -15,62 +15,81 @@
  */
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.math.BigInteger;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
+
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
+import ch.post.it.evoting.verifier.common.AbstractVerification;
 import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.VerificationTrait;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.dto.revised.PublicKey;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.common.event.VerifierEvent;
 import ch.post.it.evoting.verifier.dto.ElectoralAuthority;
 
+@Component
 public class IsMemberOfGroupPKEA extends AbstractVerification {
 
-	@Override
-	public VerificationDefinition getVerificationDefinition() {
-		VerificationDefinition def = new VerificationDefinition();
-		def.setBlockId(1);
-		def.setCategory(Category.INTEGRITY);
-		def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-				"verification07.description"));
-		def.setId(7);
-		def.setName("isMemberOfGroup(pk_ea)");
-		def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
-		def.addVerificationTrait(VerificationTrait.BLOCK_1);
-		return def;
+	private final PathService pathService;
+
+	public IsMemberOfGroupPKEA(final PathService pathService, final ApplicationEventPublisher applicationEventPublisher) {
+		super(applicationEventPublisher);
+		this.pathService = pathService;
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-		VerificationResult result = new VerificationResult();
+	public VerificationDefinition getVerificationDefinition() {
+		final var definition = new VerificationDefinition();
+		definition.setBlockId(1);
+		definition.setCategory(Category.INTEGRITY);
+		definition.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+				"verification07.description"));
+		definition.setId(7);
+		definition.setName("isMemberOfGroup(pk_ea)");
+		definition.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+		definition.addVerificationTrait(VerificationTrait.BLOCK_1);
+		return definition;
+	}
 
-		final PathNode electoralAuthPathNode = pathService.buildFromRootPath(StructureKey.ELECTORAL_PUBLIC_KEY, inputDirectoryPath);
-		ElectoralAuthority electoralAuthority = Deserializer.fromJson(electoralAuthPathNode.getPath(), ElectoralAuthority.class);
+	@Override
+	public VerificationResultEvent verify(final VerifierEvent event) {
+		final var inputDirectoryPath = event.getInputDirectoryPath();
 
-		String publicKeyB64 = electoralAuthority.getPublicKey();
-		byte[] decoded = TypeConverter.base64ToByte(publicKeyB64);
-		PublicKey publicKey = Deserializer.fromJson(decoded, PublicKey.class);
+		final var electoralAuthPathNode = pathService.buildFromRootPath(StructureKey.ELECTORAL_PUBLIC_KEY, inputDirectoryPath);
+		final ElectoralAuthority electoralAuthority;
+		try {
+			electoralAuthority = Deserializer.fromJson(electoralAuthPathNode.getPath(), ElectoralAuthority.class);
+		} catch (IOException e) {
+			throw new UncheckedIOException("Failed to deserialize electoral authority.", e);
+		}
 
-		BigInteger p = publicKey.getGroup().getP();
-		List<BigInteger> elements = publicKey.getKeys();
+		final String publicKeyB64 = electoralAuthority.getPublicKey();
+		final byte[] decoded = TypeConverter.base64ToByte(publicKeyB64);
+		final PublicKey publicKey;
+		try {
+			publicKey = Deserializer.fromJson(decoded, PublicKey.class);
+		} catch (IOException e) {
+			throw new UncheckedIOException("Failed to deserialize electoral public key.", e);
+		}
+
+		final BigInteger p = publicKey.getGroup().getP();
+		final List<BigInteger> elements = publicKey.getKeys();
 		if (elements.isEmpty()) {
-			throw buildVerificationFailureException(
-					"No such Elements was found in the publicKey",
-					Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-					"verification07.nok.message.no.elements"
-			);
+			return VerificationResultEvent.failure(this, getVerificationDefinition(),
+					TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification07.nok.message.no.elements"));
 		} else {
 			List<String> errors = elements.stream()
 					.filter(bigInteger -> !MathHelper.isEulerCriterionValid(bigInteger, p))
@@ -78,17 +97,13 @@ public class IsMemberOfGroupPKEA extends AbstractVerification {
 					.collect(Collectors.toList());
 
 			if (!errors.isEmpty()) {
-				throw buildVerificationFailureException(
-						"Euler criterion does not equal to 1",
-						Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-						"verification07.nok.message",
-						errors.toString()
-				);
+				return VerificationResultEvent.failure(this, getVerificationDefinition(),
+						TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification07.nok.message",
+								errors.toString()));
 			}
 		}
 
-		result.setStatus(Status.OK);
-		return result;
+		return VerificationResultEvent.success(this, getVerificationDefinition());
 	}
 
 }

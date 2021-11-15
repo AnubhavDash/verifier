@@ -18,16 +18,10 @@ package ch.post.it.evoting.verifier.block.block2;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.springframework.stereotype.Component;
-
-import ch.post.it.evoting.verifier.common.block.VerificationSuite;
-
-@Component
-public class Block2VerificationSuite extends VerificationSuite {
+public class Block2VerificationSuite {
 
 	public static final String RESOURCE_BUNDLE_NAME = "block2/resources";
 
-	public static final Path PATH_BALLOTBOXES = Paths.get("ballot_boxes/");
 	public static final Path PATH_ELECTION_SETUP = Paths.get("election_setup/");
 	public static final Path PATH_CERTIFICATES = Paths.get("certificates/");
 	public static final Path PATH_CC_LOG_SIGN_CERTIFICATES = Paths.get("certificates/log_sign_keys");
@@ -35,8 +29,8 @@ public class Block2VerificationSuite extends VerificationSuite {
 	public static final Path PATH_VOTING_CARD_SETS = Paths.get("voting_card_sets/");
 	public static final Path PATH_SECURE_LOGS = Paths.get("secure_logs/");
 
-	public Block2VerificationSuite() {
-		super(Block2VerificationSuite.class.getPackage().getName() + ".verifications");
+	private Block2VerificationSuite() {
+		// Intentionally left blank.
 	}
 
 }

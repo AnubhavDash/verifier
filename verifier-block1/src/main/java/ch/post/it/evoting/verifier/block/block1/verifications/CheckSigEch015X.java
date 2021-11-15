@@ -15,62 +15,79 @@
  */
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
+
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
+import ch.post.it.evoting.verifier.common.AbstractVerification;
 import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.VerificationTrait;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.block.tools.CertificateLoader;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.common.event.VerifierEvent;
 
+@Component
 public class CheckSigEch015X extends AbstractVerification {
 
-	@Override
-	public VerificationDefinition getVerificationDefinition() {
-		VerificationDefinition def = new VerificationDefinition();
-		def.setBlockId(1);
-		def.setCategory(Category.AUTHENTICITY);
-		def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-				"verification72.description"));
-		def.setId(72);
-		def.setName("checkSigEch015X");
-		def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
-		def.addVerificationTrait(VerificationTrait.BLOCK_1);
-		return def;
+	private final PathService pathService;
+	private final CertificateLoader certificateLoader;
+
+	public CheckSigEch015X(final PathService pathService, final CertificateLoader certificateLoader,
+			final ApplicationEventPublisher applicationEventPublisher) {
+		super(applicationEventPublisher);
+		this.pathService = pathService;
+		this.certificateLoader = certificateLoader;
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-		VerificationResult result = new VerificationResult();
+	public VerificationDefinition getVerificationDefinition() {
+		final var definition = new VerificationDefinition();
+		definition.setBlockId(1);
+		definition.setCategory(Category.AUTHENTICITY);
+		definition.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+				"verification72.description"));
+		definition.setId(72);
+		definition.setName("checkSigEch015X");
+		definition.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+		definition.addVerificationTrait(VerificationTrait.BLOCK_1);
+		return definition;
+	}
 
-		final PathNode integrationPathNode = pathService.buildFromRootPath(StructureKey.INTEGRATION_CA, inputDirectoryPath);
-		byte[] rootCertificate = Files.readAllBytes(integrationPathNode.getPath());
+	@Override
+	public VerificationResultEvent verify(final VerifierEvent event) {
+		final var inputDirectoryPath = event.getInputDirectoryPath();
 
-		final PathNode eCH015XPathNode = pathService.buildFromRootPath(StructureKey.ECH015X, inputDirectoryPath);
+		final byte[] rootCertificate = certificateLoader.loadBytes(StructureKey.INTEGRATION_CA, inputDirectoryPath);
 
+		final var eCH015XPathNode = pathService.buildFromRootPath(StructureKey.ECH015X, inputDirectoryPath);
 		for (Path regexPath : eCH015XPathNode.getRegexPaths()) {
-			byte[] content = Files.readAllBytes(regexPath);
-			byte[] signature = Files.readAllBytes(eCH015XPathNode.getRelation(RelationType.P7, regexPath));
+			final byte[] content;
+			final byte[] signature;
+			try {
+				content = Files.readAllBytes(regexPath);
+				signature = Files.readAllBytes(eCH015XPathNode.getRelation(RelationType.P7, regexPath));
+			} catch (IOException e) {
+				throw new UncheckedIOException("Failed to read ech015x or its signature file.", e);
+			}
 
 			if (!SignatureChecker.verifyPKCS7(content, signature, rootCertificate)) {
-				throw buildVerificationFailureException(
-						"The signature verification of the file failed",
-						Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-						"verification72.nok.message",
-						regexPath.toString()
-				);
+				return VerificationResultEvent.failure(this, getVerificationDefinition(),
+						TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification72.nok.message",
+								regexPath.toString()));
 			}
 		}
 
-		result.setStatus(Status.OK);
-		return result;
+		return VerificationResultEvent.success(this, getVerificationDefinition());
 	}
 }

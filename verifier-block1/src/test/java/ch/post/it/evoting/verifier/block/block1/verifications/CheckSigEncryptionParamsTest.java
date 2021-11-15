@@ -16,84 +16,100 @@
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.nio.file.NoSuchFileException;
+import java.io.UncheckedIOException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.exceptions.VerificationFailureException;
+import com.google.common.base.Throwables;
+
+import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.block.test.helper.RegexHelper;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
+import ch.post.it.evoting.verifier.common.event.Block1Event;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
 
-class CheckSigEncryptionParamsTest extends Block1VerificationAbstractTest {
+class CheckSigEncryptionParamsTest extends Block1VerificationTest {
 
-	public CheckSigEncryptionParamsTest() {
-		super(CheckSigEncryptionParams.class);
+	@BeforeAll
+	static void setUpAll() {
+		verification = new CheckSigEncryptionParams(pathService, certificateLoader, applicationEventPublisherMock);
 	}
 
 	@Test
-	@Disabled("Certificate in dataset has expired, temporary deactivation until a new dataset is provided")
 	void executeTestOK() throws Exception {
-		VerificationResult verificationResult =
-				verification.verify(Paths.get(getClass().getResource("/CheckSigEncryptionParamsTest/OK").toURI()));
-		assertNotNull(verificationResult);
-		assertEquals(Status.OK, verificationResult.getStatus());
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigEncryptionParamsTest/OK").toURI()).toString();
+		final VerificationResultEvent resultEvent = verification.verify(new Block1Event(this, inputDirectory));
+
+		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
-	void executeTestNOKCertKo() {
-		final VerificationFailureException ex = assertThrows(
-				VerificationFailureException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/CERT-NOT-OK").toURI()))
-		);
-		assertEquals("The signature verification of the file encryptionParameters.json failed", ex.getMessage());
+	void executeTestNOKCertKo() throws URISyntaxException {
+		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/CERT-NOT-OK").toURI());
+		final String inputDirectory = inputDirectoryPath.toString();
+		final var event = new Block1Event(this, inputDirectory);
+		final VerificationResultEvent resultEvent = verification.verify(event);
+
+		final var encParamsNode = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
+		final var fileName = encParamsNode.getRegexPaths().get(0).toString();
+		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
+				TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification76.nok.message", fileName));
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
-	void executeTestNOKJsonKo() {
-		final VerificationFailureException ex = assertThrows(
-				VerificationFailureException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/JSON-NOT-OK").toURI()))
-		);
-		assertEquals("The signature verification of the file encryptionParameters.json failed", ex.getMessage());
+	void executeTestNOKJsonKo() throws URISyntaxException {
+		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/JSON-NOT-OK").toURI());
+		final String inputDirectory = inputDirectoryPath.toString();
+		final var event = new Block1Event(this, inputDirectory);
+		final VerificationResultEvent resultEvent = verification.verify(event);
+
+		final var encParamsNode = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
+		final var fileName = encParamsNode.getRegexPaths().get(0).toString();
+		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
+				TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification76.nok.message", fileName));
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
-	void executeTestNOKFileNotFoundRootCertificate() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/NOK-NOFILE").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.INTEGRATION_CA);
-		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	void executeTestNOKFileNotFoundRootCertificate() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/NOK-NOFILE").toURI()).toString();
+		final var event = new Block1Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.INTEGRATION);
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(structureNode.getQualifier()));
 	}
 
 	@Test
-	void executeTestNOKFileNotFoundEncryptionParameters() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/NOK-NOFILE2").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ENCRYPTION_PARAMETERS);
-		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	void executeTestNOKFileNotFoundEncryptionParameters() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/NOK-NOFILE2").toURI()).toString();
+		final var event = new Block1Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.ENCRYPTION_PARAMETERS);
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(structureNode.getQualifier()));
 	}
 
 	@Test
-	void executeTestNOKFileNotFoundEncryptionParametersP7() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/NOK-NOFILE3").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ENCRYPTION_PARAMETERS);
-		assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier() + RelationType.P7.toFileExtension()).matches(ex.getMessage()));
+	void executeTestNOKFileNotFoundEncryptionParametersSign() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigEncryptionParamsTest/NOK/NOK-NOFILE3").toURI()).toString();
+		final var event = new Block1Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.ENCRYPTION_PARAMETERS);
+		assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier() + RelationType.SIGN.toFileExtension())
+				.matches(Throwables.getRootCause(exception).getMessage()));
 	}
 }

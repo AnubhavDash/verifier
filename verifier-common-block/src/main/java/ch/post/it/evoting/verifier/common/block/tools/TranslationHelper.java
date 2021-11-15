@@ -18,7 +18,7 @@ package ch.post.it.evoting.verifier.common.block.tools;
 import java.text.MessageFormat;
 import java.util.AbstractMap;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -35,13 +35,13 @@ public class TranslationHelper {
 	}
 
 	public static Map<Language, String> getFromResourceBundle(String resourceBundleName, String key) {
-		HashMap<Language, String> result = new HashMap<>();
+		Map<Language, String> result = new EnumMap<>(Language.class);
 		Arrays.stream(Language.values()).forEach(lang -> result.put(lang, getFromResourceBundle(resourceBundleName, key, lang.getLocale())));
 		return result;
 	}
 
 	public static Map<Language, String> getFromResourceBundle(String resourceBundleName, String key, String... args) {
-		HashMap<Language, String> result = new HashMap<>();
+		Map<Language, String> result = new EnumMap<>(Language.class);
 		Arrays.stream(Language.values())
 				.forEach(lang -> {
 					formatter.applyPattern(getFromResourceBundle(resourceBundleName, key, lang.getLocale()));
@@ -55,7 +55,7 @@ public class TranslationHelper {
 	}
 
 	public static String getFromResourceBundle(String resourceBundleName, String key, Locale locale, String... args) {
-		return formatter.format(ResourceBundle.getBundle(resourceBundleName, locale).getString(key), (Object[]) args);
+		return MessageFormat.format(ResourceBundle.getBundle(resourceBundleName, locale).getString(key), (Object[]) args);
 	}
 
 	public static Map<Language, String> getSameMessageMultiLanguage(String message) {

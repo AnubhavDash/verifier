@@ -16,10 +16,12 @@
 package ch.post.it.evoting.verifier.dto;
 
 import java.util.Map;
+import java.util.Set;
 
 import ch.post.it.evoting.verifier.common.Category;
 import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.common.Status;
+import ch.post.it.evoting.verifier.common.VerificationTrait;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -37,4 +39,5 @@ public class Verification {
 	private Map<Language, String> description;
 	private Status status;
 	private Map<Language, String> message;
+	private Set<VerificationTrait> verificationTraits;
 }

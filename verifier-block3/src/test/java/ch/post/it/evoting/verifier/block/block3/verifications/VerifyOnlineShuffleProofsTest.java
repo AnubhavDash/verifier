@@ -16,71 +16,80 @@
 package ch.post.it.evoting.verifier.block.block3.verifications;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.mixnet.MixnetService;
+import com.google.common.base.Throwables;
+
 import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
+import ch.post.it.evoting.cryptoprimitives.mixnet.MixnetService;
+import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
 import ch.post.it.evoting.verifier.common.block.exceptions.MissingFileException;
 import ch.post.it.evoting.verifier.common.block.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
+import ch.post.it.evoting.verifier.common.event.Block1Event;
+import ch.post.it.evoting.verifier.common.event.Block2Event;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
 
-class VerifyOnlineShuffleProofsTest extends Block3VerificationAbstractTest {
+class VerifyOnlineShuffleProofsTest extends Block3VerificationTest {
 
 	private static final ElectionDataExtractionService EXTRACTION_SERVICE = new ElectionDataExtractionService(new PathService(),
 			DomainObjectMapper.getNewInstance());
 	private static final MixnetService MIXNET_SERVICE = new MixnetService();
-	private static final VerifyOnlineShuffleProofs VERIFY = new VerifyOnlineShuffleProofs(MIXNET_SERVICE, EXTRACTION_SERVICE);
 
-	public VerifyOnlineShuffleProofsTest() {
-		super(VerifyOnlineShuffleProofs.class);
+	@BeforeAll
+	static void setUpAll() {
+		verification = new VerifyOnlineShuffleProofs(MIXNET_SERVICE, pathService, EXTRACTION_SERVICE, applicationEventPublisherMock);
 	}
 
 	@Test
 	void verifyOnlineShuffleProofsBallotBoxWithNullArgument() {
-		assertThrows(NullPointerException.class, () -> VERIFY.verifyOnlineShuffleProofsBallotBox(null));
+		assertThrows(NullPointerException.class, () -> ((VerifyOnlineShuffleProofs)verification).verifyOnlineShuffleProofsBallotBox(null));
 	}
 
 	@Test
 	void executeTestOK() throws Exception {
-		VerificationResult verificationResult =
-				verification.verify(Paths.get(Objects.requireNonNull(getClass().getResource("/VerifyOnlineShuffleProofsTest/OK")).toURI()));
-		assertNotNull(verificationResult);
-		assertEquals(Status.OK, verificationResult.getStatus());
+		final String inputDirectory = Paths.get(getClass().getResource("/VerifyOnlineShuffleProofsTest/OK").toURI()).toString();
+		final VerificationResultEvent resultEvent = verification.verify(new Block2Event(this, inputDirectory));
+
+		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
 	void executeTestNOK() throws Exception {
-		VerificationResult verificationResult =
-				verification.verify(Paths.get(Objects.requireNonNull(getClass().getResource("/VerifyOnlineShuffleProofsTest/NOK")).toURI()));
-		assertNotNull(verificationResult);
-		assertEquals(Status.NOK, verificationResult.getStatus());
-		assertEquals(TranslationHelper.getFromResourceBundle("block3/resources", "verification01.nok.message"), verificationResult.getMessage());
+		final Path inputDirectoryPath = Paths.get(getClass().getResource("/VerifyOnlineShuffleProofsTest/NOK").toURI());
+		final String inputDirectory = inputDirectoryPath.toString();
+		final var event = new Block1Event(this, inputDirectory);
+		final VerificationResultEvent resultEvent = verification.verify(event);
+
+		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
+				TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.nok.message"));
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
 	void executeTestNOKFileNotFound() throws URISyntaxException {
-		final Path path = Paths
-				.get(Objects.requireNonNull(getClass().getResource("/VerifyOnlineShuffleProofsTest/NOK_missingFiles")).toURI());
-		MissingFileException exception = assertThrows(MissingFileException.class, () -> verification.verify(path));
-		assertEquals("Missing shufflePayload file(s)", exception.getMessage());
+		final String inputDirectory = Paths.get(getClass().getResource("/VerifyOnlineShuffleProofsTest/NOK_missingFiles").toURI()).toString();
+		final var event = new Block2Event(this, inputDirectory);
+
+		final var exception = assertThrows(MissingFileException.class, () -> verification.verify(event));
+		assertEquals("Missing shufflePayload file(s)", Throwables.getRootCause(exception).getMessage());
 	}
 
 	@Test
 	void executeTestNOKCorruptedFile() throws URISyntaxException {
-		final Path path = Paths
-				.get(Objects.requireNonNull(getClass().getResource("/VerifyOnlineShuffleProofsTest/NOK_corruptedFile")).toURI());
-		assertThrows(UncheckedIOException.class, () -> verification.verify(path));
+		final String inputDirectory = Paths.get(getClass().getResource("/VerifyOnlineShuffleProofsTest/NOK_corruptedFile").toURI()).toString();
+		final var event = new Block2Event(this, inputDirectory);
+
+		assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 	}
 }

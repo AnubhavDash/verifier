@@ -15,121 +15,149 @@
  */
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.math.BigInteger;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.LongStream;
-import java.util.stream.StreamSupport;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Streams;
+
+import ch.post.it.evoting.cryptoprimitives.domain.VotingOptionsConstants;
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
+import ch.post.it.evoting.verifier.common.AbstractVerification;
 import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.VerificationTrait;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionParameters;
-import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
-import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
+import ch.post.it.evoting.verifier.common.block.dto.revised.DomainOfInfluence;
+import ch.post.it.evoting.verifier.common.block.dto.revised.VoteOption;
+import ch.post.it.evoting.verifier.common.block.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.common.event.VerifierEvent;
 
+@Component
 public class VerifyVotingOptions extends AbstractVerification {
+
+	private final ElectionDataExtractionService extractionService;
+
+	public VerifyVotingOptions(final ElectionDataExtractionService extractionService,
+			final ApplicationEventPublisher applicationEventPublisher) {
+		super(applicationEventPublisher);
+		this.extractionService = extractionService;
+	}
+
 	@Override
 	public VerificationDefinition getVerificationDefinition() {
-		VerificationDefinition def = new VerificationDefinition();
-		def.setBlockId(1);
-		def.setCategory(Category.INTEGRITY);
-		def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-				"verification12.description"));
-		def.setId(12);
-		def.setName("verifyVotingOptions");
-		def.addVerificationTrait(VerificationTrait.BLOCK_1);
-		return def;
+		final var definition = new VerificationDefinition();
+		definition.setBlockId(1);
+		definition.setCategory(Category.INTEGRITY);
+		definition.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+				"verification03.description"));
+		definition.setId(3);
+		definition.setName("verifyVotingOptions");
+		definition.addVerificationTrait(VerificationTrait.BLOCK_1);
+		return definition;
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-		final VerificationResult result = new VerificationResult();
+	public VerificationResultEvent verify(final VerifierEvent event) {
+		final var inputDirectoryPath = event.getInputDirectoryPath();
 
 		// Get the encryption parameters.
-		final PathNode epPathNode = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
-		final EncryptionParameters encryptionParameters = Deserializer.fromJson(epPathNode.getPath(), EncryptionParameters.class);
-		final BigInteger g = encryptionParameters.getG();
+		final BigInteger p = extractionService.getEncryptionParameters(inputDirectoryPath).getP();
 
 		// Get the primes from the file.
-		final PathNode primesPathNode = pathService.buildFromRootPath(StructureKey.PRIMES, inputDirectoryPath);
-		final List<BigInteger> primes = extractPrimes(primesPathNode);
+		final ImmutableList<BigInteger> smallPrimeGroupMembers = extractionService.getPrimes(inputDirectoryPath);
 
-		// Generator must not be part of primes.
-		checkGNotInPrimes(g, primes);
+		final ImmutableList<BigInteger> encodedVotingOptions = extractEncodedVotingOptions(inputDirectoryPath);
 
-		// Check for duplicates.
-		checkNoDuplicates(primes);
-
-		// Check that the primes from the files are the smallest primes of the subgroup, excluding g.
-		checkPrimesSmallestOfSubgroup(primes, encryptionParameters);
-
-		result.setStatus(Status.OK);
-		return result;
-	}
-
-	private void checkPrimesSmallestOfSubgroup(List<BigInteger> primes, EncryptionParameters encryptionParameters) {
-		// Because g is the smallest prime in the subgroup, start just after it.
-		long startInclusive = encryptionParameters.getG().longValueExact() + 1;
-		long endExclusive = primes.get(primes.size() - 1).longValueExact();
-
-		final boolean allContained = LongStream.range(startInclusive, endExclusive)
-				.parallel()
-				.mapToObj(BigInteger::valueOf)
-				.filter(MathHelper::isPrime)
-				.filter(prime -> MathHelper.isMember(prime, encryptionParameters))
-				.allMatch(primes::contains);
-
-		if (!allContained) {
-			throw buildVerificationFailureException(
-					"There is a prime number of the subgroup not present in the primes list.",
-					Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-					"verification12.nok.smallest.message"
-			);
+		if (verifyVotingOptions(p, smallPrimeGroupMembers, encodedVotingOptions)) {
+			return VerificationResultEvent.success(this, getVerificationDefinition());
+		} else {
+			return VerificationResultEvent.failure(this, getVerificationDefinition(),
+					TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification03.nok.message"));
 		}
+
 	}
 
-	private void checkNoDuplicates(List<BigInteger> primes) {
-		final Set<BigInteger> primesSet = new HashSet<>(primes);
-		if (primesSet.size() != primes.size()) {
-			throw buildVerificationFailureException(
-					"The primes list contains duplicates.",
-					Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-					"verification12.nok.duplicates.message"
-			);
-		}
+	private ImmutableList<BigInteger> extractEncodedVotingOptions(final Path inputDirectoryPath) {
+		final var electionEvent = extractionService.getElectionEvent(inputDirectoryPath);
+		Function<DomainOfInfluence, Stream<BigInteger>> questionOptionsPrimes = domainOfInfluence -> domainOfInfluence.getVotes()
+				.stream()
+				.flatMap(vote -> vote.getQuestions().stream())
+				.flatMap(voteQuestion -> voteQuestion.getOptions().stream())
+				.map(VoteOption::getPrimeNumber);
+
+		Function<DomainOfInfluence, Stream<BigInteger>> candidateOptionsPrimes = domainOfInfluence -> domainOfInfluence.getElections()
+				.stream()
+				.flatMap(election -> election.getCandidates().stream())
+				.flatMap(candidate -> candidate.getPrimeNumbers().stream());
+
+		Function<DomainOfInfluence, Stream<BigInteger>> writeInsPrimes = domainOfInfluence -> domainOfInfluence.getElections()
+				.stream()
+				.flatMap(election -> election.getWriteIns().stream());
+
+		return electionEvent.getBallotBoxes()
+				.stream()
+				.flatMap(bb -> bb.getCountingCircles().stream())
+				.flatMap(countingCircle -> countingCircle.getDomainsOfInfluence().stream())
+				.flatMap(domainOfInfluence -> Streams.concat(
+						questionOptionsPrimes.apply(domainOfInfluence),
+						candidateOptionsPrimes.apply(domainOfInfluence),
+						writeInsPrimes.apply(domainOfInfluence))
+				).distinct()
+				.sorted(BigInteger::compareTo)
+				.collect(ImmutableList.toImmutableList());
 	}
 
-	private void checkGNotInPrimes(BigInteger g, List<BigInteger> primes) {
-		if (primes.contains(g)) {
-			throw buildVerificationFailureException(
-					"The primes list contains the generator g.",
-					Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-					"verification12.nok.g.message",
-					g.toString()
-			);
-		}
-	}
+	/**
+	 * Verifies the correctness of the voting options.
+	 * <p>
+	 * The voting options must correspond to the smallest prime group members and the product of the &phi; biggest voting options must be smaller than
+	 * p.
+	 * </p>
+	 *
+	 * @param smallPrimeGroupMembers <b>p</b>, a list of the &omega; smallest prime group members strictly greater than 3.
+	 * @param encodedVotingOptions   <b>p</b>Tilde, a list of the voting options encoded as primes.
+	 * @return true if the verification is successful, false otherwise
+	 */
+	@SuppressWarnings("java:S117")
+	@VisibleForTesting
+	boolean verifyVotingOptions(final BigInteger groupModulus, final ImmutableList<BigInteger> smallPrimeGroupMembers,
+			final ImmutableList<BigInteger> encodedVotingOptions) {
+		checkNotNull(groupModulus);
+		checkNotNull(smallPrimeGroupMembers);
+		checkNotNull(encodedVotingOptions);
 
-	private static List<BigInteger> extractPrimes(PathNode primesPathNode) {
-		final Iterable<List<String>> iterable = Deserializer.fromCsv(primesPathNode.getPath(), "\n", Arrays::asList);
-		return StreamSupport.stream(iterable.spliterator(), false)
-				.flatMap(Collection::stream)
-				.map(TypeConverter::stringToBigInteger)
-				.sorted()
-				.collect(Collectors.toList());
+		final long omega = VotingOptionsConstants.MAXIMUM_NUMBER_OF_VOTING_OPTIONS;
+		final long phi = VotingOptionsConstants.MAXIMUM_NUMBER_OF_SELECTABLE_VOTING_OPTIONS;
+
+		final BigInteger p = groupModulus;
+		final ImmutableList<BigInteger> p_vector = smallPrimeGroupMembers;
+		final ImmutableList<BigInteger> p_tilde = encodedVotingOptions;
+		final int n = p_tilde.size();
+
+		checkArgument(p_vector.size() == omega, String.format("The list of smallest prime group members must contain %d elements", omega));
+
+		checkArgument(phi <= omega, "The supported number of selections must not be greater than the supported number of voting options");
+		checkArgument(0 < n, "The number of voting options must be strictly greater than 0");
+		checkArgument(n <= omega, "The number of voting options must not be greater than the supported number of voting options");
+
+		// Operation.
+		final Set<BigInteger> p_prime = Set.copyOf(p_vector.subList(0, n));
+		final Set<BigInteger> p_tilde_prime = Set.copyOf(p_tilde);
+		final boolean verifA = p_prime.equals(p_tilde_prime);
+		final boolean verifB = p_vector.stream().skip(omega - phi).reduce(BigInteger.ONE, BigInteger::multiply).compareTo(p) < 0;
+
+		return verifA && verifB;
 	}
 }

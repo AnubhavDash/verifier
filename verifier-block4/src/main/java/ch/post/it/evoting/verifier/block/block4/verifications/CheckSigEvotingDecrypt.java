@@ -15,58 +15,78 @@
  */
 package ch.post.it.evoting.verifier.block.block4.verifications;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
+
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.verifier.block.block4.Block4VerificationSuite;
+import ch.post.it.evoting.verifier.common.AbstractVerification;
 import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.VerificationTrait;
+import ch.post.it.evoting.verifier.common.block.tools.CertificateLoader;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.common.event.VerifierEvent;
 
+@Component
 public class CheckSigEvotingDecrypt extends AbstractVerification {
 
-	@Override
-	public VerificationDefinition getVerificationDefinition() {
-		VerificationDefinition def = new VerificationDefinition();
-		def.setBlockId(4);
-		def.setCategory(Category.AUTHENTICITY);
-		def.setDescription(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification72.description"));
-		def.setId(72);
-		def.setName("checkSigEvotingDecrypt");
-		return def;
+	private final PathService pathService;
+	private final CertificateLoader certificateLoader;
+
+	public CheckSigEvotingDecrypt(final PathService pathService, final CertificateLoader certificateLoader,
+			final ApplicationEventPublisher applicationEventPublisher) {
+		super(applicationEventPublisher);
+		this.pathService = pathService;
+		this.certificateLoader = certificateLoader;
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-		VerificationResult result = new VerificationResult();
+	public VerificationDefinition getVerificationDefinition() {
+		final var definition = new VerificationDefinition();
+		definition.setBlockId(4);
+		definition.setCategory(Category.AUTHENTICITY);
+		definition.setDescription(
+				TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification72.description"));
+		definition.setId(72);
+		definition.setName("checkSigEvotingDecrypt");
+		definition.addVerificationTrait(VerificationTrait.BLOCK_4);
+		return definition;
+	}
+
+	@Override
+	public VerificationResultEvent verify(final VerifierEvent event) {
+		final var inputDirectoryPath = event.getInputDirectoryPath();
 
 		// Get root certificate
-		PathNode rootCertificatePathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
-		byte[] rootCertificate = Files.readAllBytes(rootCertificatePathNode.getPath());
+		final byte[] rootCertificate = certificateLoader.loadBytes(StructureKey.TENANT_100, inputDirectoryPath);
 
 		// Get eVoting decrypt result and its signature
-		PathNode eVotingDecryptXmlPathNode = pathService.buildFromRootPath(StructureKey.EVOTING_DECRYPT_RESULT, inputDirectoryPath);
-		byte[] content = Files.readAllBytes(eVotingDecryptXmlPathNode.getPath());
-		byte[] signature = Files.readAllBytes(eVotingDecryptXmlPathNode.getRelation(RelationType.P7));
+		final var eVotingDecryptXmlPathNode = pathService.buildFromRootPath(StructureKey.EVOTING_DECRYPT_RESULT, inputDirectoryPath);
+		final byte[] content;
+		final byte[] signature;
+		try {
+			content = Files.readAllBytes(eVotingDecryptXmlPathNode.getPath());
+			signature = Files.readAllBytes(eVotingDecryptXmlPathNode.getRelation(RelationType.P7));
+		} catch (IOException e) {
+			throw new UncheckedIOException("Failed to deserialize evoting decrypt result or its signature file.", e);
+		}
 
 		// Verify signature of the eVoting decrypt result
 		if (!SignatureChecker.verifyPKCS7(content, signature, rootCertificate)) {
-			throw buildVerificationFailureException(
-					"The signature verification of the evoting-decrypt.xml failed",
-					Block4VerificationSuite.RESOURCE_BUNDLE_NAME,
-					"verification72.nok.message"
-			);
+			return VerificationResultEvent.failure(this, getVerificationDefinition(),
+					TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification72.nok.message"));
 		}
 
-		result.setStatus(Status.OK);
-		return result;
+		return VerificationResultEvent.success(this, getVerificationDefinition());
 	}
 
 }

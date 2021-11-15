@@ -16,63 +16,79 @@
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.nio.file.NoSuchFileException;
+import java.io.UncheckedIOException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.exceptions.VerificationFailureException;
+import com.google.common.base.Throwables;
+
+import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.block.test.helper.RegexHelper;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
+import ch.post.it.evoting.verifier.common.event.Block1Event;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
 
-class CheckSigCodesMappingTablesContextDataTest extends Block1VerificationAbstractTest {
+class CheckSigCodesMappingTablesContextDataTest extends Block1VerificationTest {
 
-	public CheckSigCodesMappingTablesContextDataTest() {
-		super(CheckSigCodesMappingTablesContextData.class);
+	@BeforeAll
+	static void setUpAll() {
+		verification = new CheckSigCodesMappingTablesContextData(pathService, certificateLoader, applicationEventPublisherMock);
 	}
 
 	@Test
 	void executeTestAllSignValid() throws Exception {
-		final VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource(
-				"/CheckSigCodesMappingTablesContextDataTest/OK").toURI()));
-		assertNotNull(verificationResult);
-		assertEquals(Status.OK, verificationResult.getStatus());
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigCodesMappingTablesContextDataTest/OK").toURI()).toString();
+		final VerificationResultEvent resultEvent = verification.verify(new Block1Event(this, inputDirectory));
+
+		final VerificationResultEvent expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
+		assertEquals(expectedResultEvent, resultEvent);
+
 	}
 
 	@Test
-	void executeTestOneSignInvalid() {
-		final VerificationFailureException ex = assertThrows(
-				VerificationFailureException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigCodesMappingTablesContextDataTest/NOK").toURI()))
-		);
-		assertEquals("The signature verification of the file failed", ex.getMessage());
+	void executeTestOneSignInvalid() throws URISyntaxException {
+		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckSigCodesMappingTablesContextDataTest/NOK").toURI());
+		final String inputDirectory = inputDirectoryPath.toString();
+		final VerificationResultEvent resultEvent = verification.verify(new Block1Event(this, inputDirectory));
+
+		final var verifCardSetIdPathNode = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
+		final PathNode pathNode = pathService.buildFromDynamicAncestorPath(StructureKey.CODES_MAPPING_TABLES_CONTEXT_DATA,
+				verifCardSetIdPathNode.getRegexPaths().get(0));
+		final VerificationResultEvent expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
+				TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification77.nok.message",
+						pathNode.getPath().toString()));
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
-	void executeTestNOKCodesMappingFileNotFound() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigCodesMappingTablesContextDataTest/NOK-NOFILE").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CODES_MAPPING_TABLES_CONTEXT_DATA);
-		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	void executeTestNOKCodesMappingFileNotFound() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigCodesMappingTablesContextDataTest/NOK-NOFILE").toURI()).toString();
+		final var event = new Block1Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.CODES_MAPPING_TABLES_CONTEXT_DATA);
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(structureNode.getQualifier()));
 	}
 
 	@Test
-	void executeTestNOKSignFileNotFound() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigCodesMappingTablesContextDataTest/NOK-NOFILE2").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CODES_MAPPING_TABLES_CONTEXT_DATA);
-		assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier() + RelationType.SIGN.toFileExtension()).matches(ex.getMessage()));
+	void executeTestNOKSignFileNotFound() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigCodesMappingTablesContextDataTest/NOK-NOFILE2").toURI()).toString();
+		final var event = new Block1Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.CODES_MAPPING_TABLES_CONTEXT_DATA);
+		assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier() + RelationType.SIGN.toFileExtension())
+				.matches(Throwables.getRootCause(exception).getMessage()));
 	}
 }

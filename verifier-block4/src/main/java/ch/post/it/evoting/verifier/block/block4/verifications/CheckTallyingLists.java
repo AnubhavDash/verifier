@@ -15,88 +15,114 @@
  */
 package ch.post.it.evoting.verifier.block.block4.verifications;
 
+import java.io.IOException;
 import java.math.BigInteger;
-import java.nio.file.Path;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-import org.apache.log4j.Logger;
+import javax.xml.bind.JAXBException;
+import javax.xml.stream.XMLStreamException;
 
-import ch.evoting.xmlns.decrypt._1.Results;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
 
 import ch.ech.xmlns.ech_0110._3.Delivery;
 import ch.ech.xmlns.ech_0110._3.ListResultsType;
 import ch.evoting.xmlns.config._4.Configuration;
+import ch.evoting.xmlns.decrypt._1.Results;
 import ch.post.it.evoting.verifier.block.block4.Block4VerificationSuite;
+import ch.post.it.evoting.verifier.common.AbstractVerification;
 import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.VerificationTrait;
+import ch.post.it.evoting.verifier.common.block.exceptions.VerificationPreconditionException;
 import ch.post.it.evoting.verifier.common.block.tools.CountMap;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.common.event.VerifierEvent;
 
+@Component
 public class CheckTallyingLists extends AbstractVerification {
 
-	private static final Logger LOGGER = Logger.getLogger(CheckTallyingLists.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CheckTallyingLists.class);
+
+	private final PathService pathService;
+
+	public CheckTallyingLists(final PathService pathService, final ApplicationEventPublisher applicationEventPublisher) {
+		super(applicationEventPublisher);
+		this.pathService = pathService;
+	}
 
 	@Override
 	public VerificationDefinition getVerificationDefinition() {
-		VerificationDefinition definition = new VerificationDefinition();
+		final var definition = new VerificationDefinition();
 		definition.setBlockId(4);
 		definition.setId(4);
 		definition.setCategory(Category.COMPLETENESS);
 		definition
 				.setDescription(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification04.description"));
 		definition.setName("checkTallyingLists");
+		definition.addVerificationTrait(VerificationTrait.BLOCK_4);
 		return definition;
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-		VerificationResult result = new VerificationResult();
+	public VerificationResultEvent verify(final VerifierEvent event) {
+		final var inputDirectoryPath = event.getInputDirectoryPath();
 
-		PathNode configurationAnonymizedPathNode = pathService.buildFromRootPath(StructureKey.CONFIG_ANONYMIZED, inputDirectoryPath);
-		Configuration configuration = Deserializer.fromXml(configurationAnonymizedPathNode.getPath(), Configuration.class);
+		final var configurationAnonymizedPathNode = pathService.buildFromRootPath(StructureKey.CONFIG_ANONYMIZED, inputDirectoryPath);
+		final Configuration configuration;
+		try {
+			configuration = Deserializer.fromXml(configurationAnonymizedPathNode.getPath(), Configuration.class);
+		} catch (IOException | JAXBException | XMLStreamException e) {
+			throw new VerificationPreconditionException("Failed to deserialize config anonymized.", e);
+		}
 
-		Map<String, Boolean> mapListIsEmpty = configuration.getContest().getElectionInformation().stream()
+		final Map<String, Boolean> mapListIsEmpty = configuration.getContest().getElectionInformation().stream()
 				.flatMap(ei -> ei.getList().stream())
 				.map(l -> new AbstractMap.SimpleEntry<>(l.getListIdentification(), l.isListEmpty()))
 				.collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
-		Map<String, String> mapLcIdListId = configuration.getContest().getElectionInformation().stream()
+		final Map<String, String> mapLcIdListId = configuration.getContest().getElectionInformation().stream()
 				.flatMap(ei -> ei.getList().stream())
 				.map(l -> {
-					String listIden = l.getListIdentification();
-					Map<String, String> map = l.getCandidatePosition().stream()
+					final String listIden = l.getListIdentification();
+					return l.getCandidatePosition().stream()
 							.map(cp -> new AbstractMap.SimpleEntry<>(cp.getCandidateListIdentification(), listIden))
 							.collect(Collectors.toMap(
 									AbstractMap.SimpleEntry::getKey,
 									AbstractMap.SimpleEntry::getValue,
 									(listId1, listId2) -> listId1));
-					return map;
 				}).flatMap(map -> map.entrySet().stream())
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
 		// 2, decrypt file => map<countingCircle, map<ElectionId, map<listId, count>>>
-		PathNode eVotingDecryptResultPathNode = pathService.buildFromRootPath(StructureKey.EVOTING_DECRYPT_RESULT, inputDirectoryPath);
-		Results results = Deserializer.fromXml(eVotingDecryptResultPathNode.getPath(), Results.class);
+		final var eVotingDecryptResultPathNode = pathService.buildFromRootPath(StructureKey.EVOTING_DECRYPT_RESULT, inputDirectoryPath);
+		final Results results;
+		try {
+			results = Deserializer.fromXml(eVotingDecryptResultPathNode.getPath(), Results.class);
+		} catch (IOException | JAXBException | XMLStreamException e) {
+			throw new VerificationPreconditionException("Failed to deserialize evoting decrypt result.", e);
+		}
 		Map<String, Map<String, Map<String, Long>>> countByListId = results.getBallotsBox().stream()
 				.flatMap(bb -> bb.getCountingCircle().stream())
 				.map(cc -> {
-					String ccId = cc.getCountingCircleIdentification();
-					Map<String, Map<String, Long>> electionCount =
+					final String ccId = cc.getCountingCircleIdentification();
+					final Map<String, Map<String, Long>> electionCount =
 							cc.getDomainOfInfluence().stream().flatMap(doi -> doi.getElection().stream())
 									.map(e -> {
-										String electionId = e.getElectionIdentification();
-										CountMap<String> listIdCountMap = new CountMap<>();
+										final String electionId = e.getElectionIdentification();
+										final CountMap<String> listIdCountMap = new CountMap<>();
 										e.getBallot().forEach(ballot -> {
 											if (ballot.getChosenListIdentification() == null) {
 												//candidate only election, nothing to do
@@ -104,7 +130,7 @@ public class CheckTallyingLists extends AbstractVerification {
 												// empty list
 												if (mapListIsEmpty.get(ballot.getChosenListIdentification())) {
 													ballot.getChosenCandidateListIdentification().forEach(lcId -> {
-														String candidateListId = mapLcIdListId.get(lcId);
+														final String candidateListId = mapLcIdListId.get(lcId);
 														if (!mapListIsEmpty.get(candidateListId)) {
 															listIdCountMap.increment(candidateListId);
 														}
@@ -112,7 +138,7 @@ public class CheckTallyingLists extends AbstractVerification {
 												} else {
 													// normal list
 													ballot.getChosenCandidateListIdentification().forEach(lcId -> {
-														String candidateListId = mapLcIdListId.get(lcId);
+														final String candidateListId = mapLcIdListId.get(lcId);
 														if (!mapListIsEmpty.get(candidateListId)) {
 															//real candidate.
 															listIdCountMap.increment(candidateListId);
@@ -126,7 +152,7 @@ public class CheckTallyingLists extends AbstractVerification {
 										});
 										return new AbstractMap.SimpleEntry<>(electionId, listIdCountMap);
 									}).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey,
-									AbstractMap.SimpleEntry::getValue));
+											AbstractMap.SimpleEntry::getValue));
 					return new AbstractMap.SimpleEntry<>(ccId, electionCount);
 				})
 				.collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue,
@@ -139,12 +165,12 @@ public class CheckTallyingLists extends AbstractVerification {
 		Map<String, Map<String, Map<String, Long>>> countOfEmptyValuesByListId = results.getBallotsBox().stream()
 				.flatMap(bb -> bb.getCountingCircle().stream())
 				.map(cc -> {
-					String ccId = cc.getCountingCircleIdentification();
-					Map<String, Map<String, Long>> electionCount =
+					final String ccId = cc.getCountingCircleIdentification();
+					final Map<String, Map<String, Long>> electionCount =
 							cc.getDomainOfInfluence().stream().flatMap(doi -> doi.getElection().stream())
 									.map(e -> {
-										String electionId = e.getElectionIdentification();
-										CountMap<String> listIdCountMap = new CountMap<>();
+										final String electionId = e.getElectionIdentification();
+										final CountMap<String> listIdCountMap = new CountMap<>();
 										e.getBallot().forEach(ballot -> {
 											if (ballot.getChosenListIdentification() == null) {
 												//candidate only election, nothing to do
@@ -152,8 +178,8 @@ public class CheckTallyingLists extends AbstractVerification {
 												if (!mapListIsEmpty.get(ballot.getChosenListIdentification())) {
 													//normal list
 													ballot.getChosenCandidateListIdentification().forEach(lcId -> {
-														String choosenList = ballot.getChosenListIdentification();
-														String candidateListId = mapLcIdListId.get(lcId);
+														final String choosenList = ballot.getChosenListIdentification();
+														final String candidateListId = mapLcIdListId.get(lcId);
 														if (mapListIsEmpty.get(candidateListId)) {
 															//empty candidate
 															listIdCountMap.increment(choosenList);
@@ -164,7 +190,7 @@ public class CheckTallyingLists extends AbstractVerification {
 										});
 										return new AbstractMap.SimpleEntry<>(electionId, listIdCountMap);
 									}).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey,
-									AbstractMap.SimpleEntry::getValue));
+											AbstractMap.SimpleEntry::getValue));
 					return new AbstractMap.SimpleEntry<>(ccId, electionCount);
 				})
 				.collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue,
@@ -174,39 +200,48 @@ public class CheckTallyingLists extends AbstractVerification {
 							});
 						}));
 
-		PathNode eCH0110PathNode = pathService.buildFromRootPath(StructureKey.ECH0110, inputDirectoryPath);
-		Delivery ech110 = Deserializer.fromXml(eCH0110PathNode.getPath(), Delivery.class);
+		final var eCH0110PathNode = pathService.buildFromRootPath(StructureKey.ECH0110, inputDirectoryPath);
+		final Delivery ech110;
+		try {
+			ech110 = Deserializer.fromXml(eCH0110PathNode.getPath(), Delivery.class);
+		} catch (IOException | JAXBException | XMLStreamException e) {
+			throw new VerificationPreconditionException("Failed to deserialize ech0110.", e);
+		}
+
+		final Map<String, String> failedOccurrences = new ConcurrentHashMap<>();
 		ech110.getResultDelivery().getCountingCircleResults().forEach(cc -> {
-			String ccId = cc.getCountingCircle().getCountingCircleId();
+			final String ccId = cc.getCountingCircle().getCountingCircleId();
 			cc.getElectionResults().stream()
 					.filter(er -> er.getProportionalElection() != null)
 					.forEach(er -> {
-						String electionId = er.getElection().getElectionIdentification();
+						final String electionId = er.getElection().getElectionIdentification();
 						er.getProportionalElection().getList()
 								.forEach(l -> {
-									String listId = l.getListInformation().getListIdentification();
-									BigInteger countOfPartyVotes = getCountOfPartyVotes(l);
-									BigInteger lcpCount = getVoteCount(countByListId, ccId, electionId, listId);
-									BigInteger countOfAdditionalVotes = getCountOfAdditionalVotes(l);
-									BigInteger emptyCount = getVoteCount(countOfEmptyValuesByListId, ccId, electionId
+									final String listId = l.getListInformation().getListIdentification();
+									final BigInteger countOfPartyVotes = getCountOfPartyVotes(l);
+									final BigInteger lcpCount = getVoteCount(countByListId, ccId, electionId, listId);
+									final BigInteger countOfAdditionalVotes = getCountOfAdditionalVotes(l);
+									final BigInteger emptyCount = getVoteCount(countOfEmptyValuesByListId, ccId, electionId
 											, listId);
 									if (!MathHelper.areEqual(countOfPartyVotes, lcpCount)
 											|| !MathHelper.areEqual(countOfAdditionalVotes, emptyCount)) {
-										LOGGER.debug(String.format("count not equal : CC:%s electionId:%s list:%s " +
-														"decrypt:%s 110:%s", ccId, electionId, listId, lcpCount,
-												countOfPartyVotes));
-										throw buildVerificationFailureException(
-												"The occurrences for list are different for counting Circle in " +
-														"eCH-0110 and evoting-decrypt",
-												Block4VerificationSuite.RESOURCE_BUNDLE_NAME,
-												"verification04.nok.message", listId, ccId);
+										LOGGER.debug("count not equal : CC:{} electionId:{} list:{} decrypt:{} 110:{}", ccId, electionId, listId,
+												lcpCount, countOfPartyVotes);
+										failedOccurrences.put(ccId, listId);
 									}
 								});
 					});
 		});
+		if (!failedOccurrences.isEmpty()) {
+			final Map.Entry<String, String> entry = failedOccurrences.entrySet().iterator().next();
+			final String ccId = entry.getKey();
+			final String listId = entry.getValue();
+			return VerificationResultEvent.failure(this, getVerificationDefinition(),
+					TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification04.nok.message", listId,
+							ccId));
+		}
 
-		result.setStatus(Status.OK);
-		return result;
+		return VerificationResultEvent.success(this, getVerificationDefinition());
 	}
 
 	private <K, V> Map<K, V> concatMap(Map<K, V> map1, Map<K, V> map2, BiFunction<V, V, V> mergeFunction) {

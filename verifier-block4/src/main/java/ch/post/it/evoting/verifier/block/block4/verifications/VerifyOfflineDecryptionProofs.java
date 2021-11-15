@@ -18,7 +18,6 @@ package ch.post.it.evoting.verifier.block.block4.verifications;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -27,10 +26,14 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
 
 import ch.post.it.evoting.cryptoprimitives.GroupVector;
+import ch.post.it.evoting.cryptoprimitives.domain.mixnet.MixnetFinalPayload;
+import ch.post.it.evoting.cryptoprimitives.domain.mixnet.MixnetShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
@@ -40,48 +43,53 @@ import ch.post.it.evoting.cryptoprimitives.mixnet.VerifiableShuffle;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.DecryptionProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.VerifiableDecryptions;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.MixnetFinalPayload;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.MixnetShufflePayload;
 import ch.post.it.evoting.verifier.block.block4.Block4VerificationSuite;
+import ch.post.it.evoting.verifier.common.AbstractVerification;
 import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.VerificationTrait;
 import ch.post.it.evoting.verifier.common.block.dto.revised.BallotBox;
 import ch.post.it.evoting.verifier.common.block.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.common.event.VerifierEvent;
 
+@Component
 public class VerifyOfflineDecryptionProofs extends AbstractVerification {
 
-	private final ElectionDataExtractionService extractionService;
+	private final PathService pathService;
 	private final ZeroKnowledgeProof zeroKnowledgeProof;
+	private final ElectionDataExtractionService extractionService;
 
 	@Autowired
-	VerifyOfflineDecryptionProofs(final ElectionDataExtractionService extractionService, final ZeroKnowledgeProof zeroKnowledgeProof) {
-		this.extractionService = extractionService;
+	VerifyOfflineDecryptionProofs(final PathService pathService, final ZeroKnowledgeProof zeroKnowledgeProof,
+			final ElectionDataExtractionService extractionService, final ApplicationEventPublisher applicationEventPublisher) {
+		super(applicationEventPublisher);
+		this.pathService = pathService;
 		this.zeroKnowledgeProof = zeroKnowledgeProof;
+		this.extractionService = extractionService;
 	}
 
 	@Override
 	public VerificationDefinition getVerificationDefinition() {
-		var verificationDefinition = new VerificationDefinition();
-		verificationDefinition.setBlockId(4);
-		verificationDefinition.setCategory(Category.EVIDENCE);
-		verificationDefinition.setId(12);
-		verificationDefinition.setName("verifyOfflineDecryptionProofsBlock4");
-		verificationDefinition.setDescription(TranslationHelper
-				.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification12.description"));
+		final var definition = new VerificationDefinition();
+		definition.setBlockId(4);
+		definition.setCategory(Category.EVIDENCE);
+		definition.setId(12);
+		definition.setName("verifyOfflineDecryptionProofsBlock4");
+		definition.setDescription(
+				TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification12.description"));
+		definition.addVerificationTrait(VerificationTrait.BLOCK_4);
 
-		return verificationDefinition;
+		return definition;
 	}
 
 	@Override
-	@SuppressWarnings("java:S117")
-	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-		final var result = new VerificationResult();
+	public VerificationResultEvent verify(final VerifierEvent event) {
+		final var inputDirectoryPath = event.getInputDirectoryPath();
 
 		final boolean bbDecryptVerif = deserializeVerificationInput(inputDirectoryPath)
 				.parallel()
@@ -89,21 +97,19 @@ public class VerifyOfflineDecryptionProofs extends AbstractVerification {
 				.allMatch(this::verifyOfflineDecryptionProofsBallotBox);
 
 		if (bbDecryptVerif) {
-			result.setStatus(Status.OK);
+			return VerificationResultEvent.success(this, getVerificationDefinition());
 		} else {
-			result.setStatus(Status.NOK);
-			result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification12.failure"));
+			return VerificationResultEvent.failure(this, getVerificationDefinition(),
+					TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification12.failure"));
 		}
-		return result;
 	}
 
 	/**
 	 * Gets all inputs for the verification from the relevant files.
 	 *
 	 * @param inputDirectoryPath the root directory of files
-	 * @throws IOException if there iss a problem while deserializing from file
 	 */
-	private Stream<VerifyOfflineDecryptionProofInput> deserializeVerificationInput(Path inputDirectoryPath) throws IOException {
+	private Stream<VerifyOfflineDecryptionProofInput> deserializeVerificationInput(final Path inputDirectoryPath) {
 		final var electionEvent = extractionService.getElectionEvent(inputDirectoryPath);
 		final var electionEventId = TypeConverter.UUIDToStringWithoutDash(electionEvent.getId());
 		final List<BallotBox> ballotBoxList = electionEvent.getBallotBoxes();
@@ -142,7 +148,7 @@ public class VerifyOfflineDecryptionProofs extends AbstractVerification {
 				.getDecryptedVotes().stream()
 				.map(m -> ElGamalMultiRecipientCiphertext.getCiphertext(m, ZqElement.create(0, decryptionProofs.getGroup()), electionPublicKeys))
 				.collect(GroupVector.toGroupVector());
-		final int ALLOWED_WRITE_INS_PLUS_ONE = 1;
+		final var ALLOWED_WRITE_INS_PLUS_ONE = 1;
 
 		return new VerifyOfflineDecryptionProofInput(electionEventId, ballotBoxId, ALLOWED_WRITE_INS_PLUS_ONE,
 				encryptedVotes, electionPublicKeys, decryptedVotes, decryptionProofs);

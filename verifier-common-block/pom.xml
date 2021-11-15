@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>verifier</artifactId>
 		<groupId>ch.post.it.evoting.verifier</groupId>
-		<version>0.8.0.0</version>
+		<version>0.8.1.0</version>
 	</parent>
 
 	<artifactId>verifier-common-block</artifactId>
@@ -15,7 +15,7 @@
 	<properties>
 		<jaxb2-basics.version>0.12.0</jaxb2-basics.version>
 		<jaxb2-fluent-api.version>3.0</jaxb2-fluent-api.version>
-		<jsonschema2pojo-maven-plugin.version>1.0.2</jsonschema2pojo-maven-plugin.version>
+		<jsonschema2pojo-maven-plugin.version>1.1.1</jsonschema2pojo-maven-plugin.version>
 		<maven-jaxb2-plugin.version>0.14.0</maven-jaxb2-plugin.version>
 	</properties>
 
@@ -24,16 +24,10 @@
 			<groupId>ch.post.it.evoting.verifier</groupId>
 			<artifactId>verifier-common</artifactId>
 		</dependency>
+
 		<dependency>
-			<groupId>org.reflections</groupId>
-			<artifactId>reflections</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>com.google.guava</groupId>
-					<artifactId>guava</artifactId>
-				</exclusion>
-			</exclusions>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -78,10 +72,6 @@
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
 			<artifactId>jaxb-impl</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.activation</groupId>
-			<artifactId>activation</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>commons-codec</groupId>

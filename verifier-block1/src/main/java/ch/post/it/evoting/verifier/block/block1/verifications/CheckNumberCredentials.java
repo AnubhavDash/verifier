@@ -15,69 +15,86 @@
  */
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
+import java.io.IOException;
 import java.nio.file.Path;
+
+import javax.xml.bind.JAXBException;
+import javax.xml.stream.XMLStreamException;
+
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
 
 import ch.evoting.xmlns.config._4.Configuration;
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
+import ch.post.it.evoting.verifier.common.AbstractVerification;
 import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.VerificationTrait;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.dto.CredentialDataElement;
+import ch.post.it.evoting.verifier.common.block.exceptions.VerificationPreconditionException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.common.event.VerifierEvent;
 
+@Component
 public class CheckNumberCredentials extends AbstractVerification {
 
-	@Override
-	public VerificationDefinition getVerificationDefinition() {
-		VerificationDefinition def = new VerificationDefinition();
-		def.setBlockId(1);
-		def.setCategory(Category.COMPLETENESS);
-		def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-				"verification31.description"));
-		def.setId(31);
-		def.setName("checkNumberCredentials()");
-		def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
-		def.addVerificationTrait(VerificationTrait.BLOCK_1);
-		return def;
+	private final PathService pathService;
+
+	public CheckNumberCredentials(final PathService pathService, final ApplicationEventPublisher applicationEventPublisher) {
+		super(applicationEventPublisher);
+		this.pathService = pathService;
 	}
 
 	@Override
-	public VerificationResult verify(final Path inputDirectoryPath) throws Exception {
-		final VerificationResult result = new VerificationResult();
+	public VerificationDefinition getVerificationDefinition() {
+		final var definition = new VerificationDefinition();
+		definition.setBlockId(1);
+		definition.setCategory(Category.COMPLETENESS);
+		definition.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+				"verification31.description"));
+		definition.setId(31);
+		definition.setName("checkNumberCredentials()");
+		definition.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+		definition.addVerificationTrait(VerificationTrait.BLOCK_1);
+		return definition;
+	}
+
+	@Override
+	public VerificationResultEvent verify(final VerifierEvent event) {
+		final var inputDirectoryPath = event.getInputDirectoryPath();
 
 		// Number of voters.
-		final PathNode configPathNode = pathService.buildFromRootPath(StructureKey.CONFIG_ANONYMIZED, inputDirectoryPath);
-		final Configuration configuration = Deserializer.fromXml(configPathNode.getPath(), Configuration.class);
+		final var configPathNode = pathService.buildFromRootPath(StructureKey.CONFIG_ANONYMIZED, inputDirectoryPath);
+		final Configuration configuration;
+		try {
+			configuration = Deserializer.fromXml(configPathNode.getPath(), Configuration.class);
+		} catch (IOException | JAXBException | XMLStreamException e) {
+			throw new VerificationPreconditionException("Failed to deserialize anonymized configuration.", e);
+		}
 		final int votersCount = configuration.getRegister().getVoter().size();
 
 		// Number of lines.
-		int linesCount = 0;
-		final PathNode votingCardIdPathNode = pathService.buildFromRootPath(StructureKey.VOTING_CARD_SETS_ID_DIR, inputDirectoryPath);
+		long linesCount = 0;
+		final var votingCardIdPathNode = pathService.buildFromRootPath(StructureKey.VOTING_CARD_SETS_ID_DIR, inputDirectoryPath);
 		for (final Path path : votingCardIdPathNode.getRegexPaths()) {
-			final PathNode credDataPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.CREDENTIAL_DATA, path);
-			final Iterable<CredentialDataElement> iterable = Deserializer
-					.fromCsv(credDataPathNode.getRegexPaths(), Deserializer.toCredentialDataElement);
+			final var credDataPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.CREDENTIAL_DATA, path);
+			final Iterable<CredentialDataElement> iterable = Deserializer.fromCsv(credDataPathNode.getRegexPaths(),
+					Deserializer.toCredentialDataElement);
 			for (final CredentialDataElement ignored : iterable) {
 				linesCount++;
 			}
 		}
 
 		if (votersCount == linesCount) {
-			result.setStatus(Status.OK);
+			return VerificationResultEvent.success(this, getVerificationDefinition());
 		} else {
-			throw buildVerificationFailureException(
-					"The number of credentials and the number of expected voters do not match",
-					Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-					"verification31.nok.message",
-					String.valueOf(linesCount), String.valueOf(votersCount)
-			);
+			return VerificationResultEvent.failure(this, getVerificationDefinition(),
+					TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification31.nok.message",
+							String.valueOf(linesCount), String.valueOf(votersCount)));
 		}
-		return result;
 	}
 }

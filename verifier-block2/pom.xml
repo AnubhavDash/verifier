@@ -7,12 +7,13 @@
 	<parent>
 		<artifactId>verifier</artifactId>
 		<groupId>ch.post.it.evoting.verifier</groupId>
-		<version>0.8.0.0</version>
+		<version>0.8.1.0</version>
 	</parent>
 
 	<artifactId>verifier-block2</artifactId>
 
 	<dependencies>
+		<!-- Internal dependencies -->
 		<dependency>
 			<groupId>ch.post.it.evoting.verifier</groupId>
 			<artifactId>verifier-common-block</artifactId>
@@ -22,10 +23,10 @@
 			<artifactId>verifier-common-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<scope>provided</scope>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.projectreactor</groupId>
@@ -34,6 +35,15 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.post.it.evoting.cryptoprimitives.domain</groupId>
+			<artifactId>crypto-primitives-domain</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

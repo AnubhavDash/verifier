@@ -15,57 +15,78 @@
  */
 package ch.post.it.evoting.verifier.block.block2.verifications;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Base64;
 import java.util.List;
 
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.post.it.evoting.verifier.block.block2.Block2VerificationSuite;
+import ch.post.it.evoting.verifier.common.AbstractVerification;
 import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.VerificationTrait;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.exceptions.JsonMissingNodeException;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.common.event.VerifierEvent;
 
+@Component
 public class CheckSigFailedVotes extends AbstractVerification {
 
 	static final String BALLOT_BOX_CERT = "ballotBoxCert";
 	static final String SERVICES_CA = "servicesCA";
 	static final String ELECTION_ROOT_CA = "electionRootCA";
 
-	@Override
-	public VerificationDefinition getVerificationDefinition() {
-		VerificationDefinition def = new VerificationDefinition();
-		def.setBlockId(2);
-		def.setCategory(Category.AUTHENTICITY);
-		def.setId(72);
-		def.setName("checkSigFailedVotes");
-		def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
-				"verification72.description"));
-		def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
-		return def;
+	private static final String MISSING_CERTIFICATE = "%s certificate is missing!";
+
+	private final PathService pathService;
+
+	public CheckSigFailedVotes(final PathService pathService, final ApplicationEventPublisher applicationEventPublisher) {
+		super(applicationEventPublisher);
+		this.pathService = pathService;
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-		VerificationResult result = new VerificationResult();
+	public VerificationDefinition getVerificationDefinition() {
+		final var definition = new VerificationDefinition();
+		definition.setBlockId(2);
+		definition.setCategory(Category.AUTHENTICITY);
+		definition.setId(72);
+		definition.setName("checkSigFailedVotes");
+		definition.setDescription(
+				TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification72.description"));
+		definition.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+		definition.addVerificationTrait(VerificationTrait.BLOCK_2);
+		return definition;
+	}
+
+	@Override
+	public VerificationResultEvent verify(final VerifierEvent event) {
+		final var inputDirectoryPath = event.getInputDirectoryPath();
 
 		// Mapper to parse json files containing the certificates.
-		ObjectMapper mapper = new ObjectMapper();
+		final var mapper = new ObjectMapper();
 
 		// Build election node where certificates are.
-		final PathNode electionInfoPathNode = pathService.buildFromRootPath(StructureKey.ELECTION_INFORMATION_CONTENTS, inputDirectoryPath);
-		final JsonNode electionInfoNode = mapper.readTree(Files.readAllBytes(electionInfoPathNode.getPath()));
+		final var electionInfoPathNode = pathService.buildFromRootPath(StructureKey.ELECTION_INFORMATION_CONTENTS, inputDirectoryPath);
+		final JsonNode electionInfoNode;
+		try {
+			electionInfoNode = mapper.readTree(Files.readAllBytes(electionInfoPathNode.getPath()));
+		} catch (IOException e) {
+			throw new UncheckedIOException("Failed to read election information contents.", e);
+		}
 
 		// Get the intermediate certificates.
 		final byte[][] intermediateCertificates = extractIntermediateCertificates(electionInfoNode);
@@ -74,43 +95,49 @@ public class CheckSigFailedVotes extends AbstractVerification {
 		final byte[] rootCertificate = extractRootCertificate(electionInfoNode);
 
 		// Get all the ballot box id directories and iterate over them.
-		final PathNode ballotIdsPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+		final var ballotIdsPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 		for (Path ballotBoxIdDirectoryPath : ballotIdsPathNode.getRegexPaths()) {
 
 			// Get the certificate used for signing.
-			final PathNode ballotPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX, ballotBoxIdDirectoryPath);
-			final JsonNode ballotBoxNode = mapper.readTree(Files.readAllBytes(ballotPathNode.getPath()));
+			final var ballotPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX, ballotBoxIdDirectoryPath);
+			final JsonNode ballotBoxNode;
+			try {
+				ballotBoxNode = mapper.readTree(Files.readAllBytes(ballotPathNode.getPath()));
+			} catch (IOException e) {
+				throw new UncheckedIOException("Failed to read ballot box.", e);
+			}
 			final byte[] signingCertificate = extractSigningCertificate(ballotBoxNode);
 
-			final PathNode failedVotesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.FAILED_VOTES, ballotBoxIdDirectoryPath);
+			final var failedVotesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.FAILED_VOTES, ballotBoxIdDirectoryPath);
 
 			// Extract and decode the signature.
-			final List<String> lines = Files.readAllLines(failedVotesPathNode.getPath());
+			final List<String> lines;
+			try {
+				lines = Files.readAllLines(failedVotesPathNode.getPath());
+			} catch (IOException e) {
+				throw new UncheckedIOException("Failed to read failed votes.", e);
+			}
 			byte[] signatureBase64 = lines.remove(lines.size() - 1).getBytes(StandardCharsets.UTF_8);
 			byte[] signature = Base64.getDecoder().decode(signatureBase64);
 
 			// Convert back the content without the signature.
-			final String sourceString = String.join("\n", lines);
+			final var sourceString = String.join("\n", lines);
 			final byte[] source = sourceString.getBytes(StandardCharsets.UTF_8);
 
 			if (!SignatureChecker.verifySignature(source, signature, signingCertificate, intermediateCertificates, rootCertificate)) {
-				throw buildVerificationFailureException(
-						"The signature verification of the file failed",
-						Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
-						"verification72.nok.message",
-						ballotBoxIdDirectoryPath.toString()
-				);
+				return VerificationResultEvent.failure(this, getVerificationDefinition(),
+						TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification72.nok.message",
+								failedVotesPathNode.getPath().toString()));
 			}
 		}
 
-		result.setStatus(Status.OK);
-		return result;
+		return VerificationResultEvent.success(this, getVerificationDefinition());
 	}
 
 	private byte[] extractSigningCertificate(JsonNode ballotBoxNode) {
 		final JsonNode ballotBoxCertNode = ballotBoxNode.path(BALLOT_BOX_CERT);
 		if (ballotBoxCertNode.isMissingNode()) {
-			throw new JsonMissingNodeException(String.format("%s certificate is missing!", BALLOT_BOX_CERT));
+			throw new JsonMissingNodeException(String.format(MISSING_CERTIFICATE, BALLOT_BOX_CERT));
 		}
 		return ballotBoxCertNode.asText().getBytes(StandardCharsets.UTF_8);
 	}
@@ -118,7 +145,7 @@ public class CheckSigFailedVotes extends AbstractVerification {
 	private byte[][] extractIntermediateCertificates(JsonNode electionInfoNode) {
 		final JsonNode servicesCANode = electionInfoNode.path(SERVICES_CA);
 		if (servicesCANode.isMissingNode()) {
-			throw new JsonMissingNodeException(String.format("%s certificate is missing!", SERVICES_CA));
+			throw new JsonMissingNodeException(String.format(MISSING_CERTIFICATE, SERVICES_CA));
 		}
 		return new byte[][] { servicesCANode.asText().getBytes(StandardCharsets.UTF_8) };
 	}
@@ -126,7 +153,7 @@ public class CheckSigFailedVotes extends AbstractVerification {
 	private byte[] extractRootCertificate(JsonNode electionInfoNode) {
 		final JsonNode electionRootCANode = electionInfoNode.path(ELECTION_ROOT_CA);
 		if (electionRootCANode.isMissingNode()) {
-			throw new JsonMissingNodeException(String.format("%s certificate is missing!", ELECTION_ROOT_CA));
+			throw new JsonMissingNodeException(String.format(MISSING_CERTIFICATE, ELECTION_ROOT_CA));
 		}
 		return electionRootCANode.asText().getBytes(StandardCharsets.UTF_8);
 	}

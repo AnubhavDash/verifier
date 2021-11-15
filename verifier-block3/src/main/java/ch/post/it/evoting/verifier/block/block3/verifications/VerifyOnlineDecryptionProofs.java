@@ -18,7 +18,6 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.math.BigInteger;
@@ -31,10 +30,12 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.GroupMatrix;
 import ch.post.it.evoting.cryptoprimitives.GroupVector;
+import ch.post.it.evoting.cryptoprimitives.domain.mixnet.MixnetShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqElement;
@@ -43,71 +44,82 @@ import ch.post.it.evoting.cryptoprimitives.math.ZqGroup;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.DecryptionProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.VerifiableDecryptions;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
-import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofService;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.MixnetShufflePayload;
 import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
+import ch.post.it.evoting.verifier.common.AbstractVerification;
 import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.VerificationTrait;
 import ch.post.it.evoting.verifier.common.block.dto.revised.BallotBox;
-import ch.post.it.evoting.verifier.common.block.exceptions.MissingFileException;
 import ch.post.it.evoting.verifier.common.block.serialization.DownloadedBallotSerialization;
 import ch.post.it.evoting.verifier.common.block.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.common.event.VerifierEvent;
 import ch.post.it.evoting.verifier.dto.DownloadedBallot;
 
-@SuppressWarnings("java:S117")
+@Component
 public class VerifyOnlineDecryptionProofs extends AbstractVerification {
 
-	@Autowired
-	ElectionDataExtractionService deserializer;
+	private final PathService pathService;
+	private final ZeroKnowledgeProof zeroKnowledgeProof;
+	private final ElectionDataExtractionService deserializer;
 
-	@Autowired
-	private final ZeroKnowledgeProof zeroKnowledgeProof = new ZeroKnowledgeProofService();
+	public VerifyOnlineDecryptionProofs(final PathService pathService, final ApplicationEventPublisher applicationEventPublisher,
+			final ZeroKnowledgeProof zeroKnowledgeProof, final ElectionDataExtractionService deserializer) {
+
+		super(applicationEventPublisher);
+		this.pathService = pathService;
+		this.zeroKnowledgeProof = zeroKnowledgeProof;
+		this.deserializer = deserializer;
+	}
+
+	public static VerificationDefinition getVerificationDefinition2() {
+		return null;
+	}
 
 	@Override
 	public VerificationDefinition getVerificationDefinition() {
-		var verificationDefinition = new VerificationDefinition();
+		final var verificationDefinition = new VerificationDefinition();
 		verificationDefinition.setBlockId(3);
 		verificationDefinition.setCategory(Category.EVIDENCE);
 		verificationDefinition.setId(2);
 		verificationDefinition.setName("onlineDecryptionProofsVerificationBlock3");
 		verificationDefinition.setDescription(TranslationHelper
 				.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification02.description"));
+		verificationDefinition.addVerificationTrait(VerificationTrait.BLOCK_3);
 
 		return verificationDefinition;
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-		final var result = new VerificationResult();
+	public VerificationResultEvent verify(final VerifierEvent event) {
+		final var inputDirectoryPath = event.getInputDirectoryPath();
 
-		final boolean bbDecryptVerif = deserializeVerificationInput(inputDirectoryPath)
+		final Stream<VerifyOnlineDecryptionProofInput> verificationInputs = deserializeVerificationInput(inputDirectoryPath);
+
+		final boolean bbDecryptVerif = verificationInputs
 				.parallel()
 				.filter(input -> !input.isEmpty)
 				.allMatch(this::verifyOnlineDecryptionProofsBallotBox);
 
 		if (bbDecryptVerif) {
-			result.setStatus(Status.OK);
+			return VerificationResultEvent.success(this, getVerificationDefinition());
 		} else {
-			result.setStatus(Status.NOK);
-			result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification02.failure"));
+			return VerificationResultEvent.failure(this, getVerificationDefinition(),
+					TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification02.failure"));
 		}
-		return result;
 	}
 
 	/**
 	 * Gets all inputs for the verification from the relevant files.
 	 *
 	 * @param inputDirectoryPath the root directory of files
-	 * @throws IOException if there's a problem while deserializing from file
 	 */
-	private Stream<VerifyOnlineDecryptionProofInput> deserializeVerificationInput(Path inputDirectoryPath) throws IOException {
+	@SuppressWarnings("java:S117")
+	private Stream<VerifyOnlineDecryptionProofInput> deserializeVerificationInput(final Path inputDirectoryPath) {
 		final var electionEvent = deserializer.getElectionEvent(inputDirectoryPath);
 		final var electionEventId = TypeConverter.UUIDToStringWithoutDash(electionEvent.getId());
 		final List<BallotBox> ballotBoxList = electionEvent.getBallotBoxes();
@@ -123,9 +135,6 @@ public class VerifyOnlineDecryptionProofs extends AbstractVerification {
 						return new VerifyOnlineDecryptionProofInput();
 					} else {
 						final List<MixnetShufflePayload> shufflePayloads = deserializer.getMixnetShufflePayloads(ballotBoxDirectoryPath);
-						if (shufflePayloads.size() < 3) {
-							throw new MissingFileException("Missing shufflePayload file(s)");
-						}
 						shufflePayloads.sort(Comparator.comparingInt(MixnetShufflePayload::getNodeId));
 
 						final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> initialEncryptedVotes = deserializeEncryptedVotes(
@@ -166,13 +175,10 @@ public class VerifyOnlineDecryptionProofs extends AbstractVerification {
 	 * @return a vector of ciphertexts
 	 * @throws UncheckedIOException if the downloaded ballot box could not be read correctly
 	 */
-	private GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> deserializeEncryptedVotes(final Path ballotBoxDirectoryPath, final GqGroup gqGroup) {
-		final PathNode downloadedBallotBoxPathNode;
-		try {
-			downloadedBallotBoxPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.DOWNLOADED_BALLOT_BOX, ballotBoxDirectoryPath);
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
-		}
+	private GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> deserializeEncryptedVotes(final Path ballotBoxDirectoryPath,
+			final GqGroup gqGroup) {
+		final var downloadedBallotBoxPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.DOWNLOADED_BALLOT_BOX,
+				ballotBoxDirectoryPath);
 		try (Stream<DownloadedBallot> downloadedBallotStream = DownloadedBallotSerialization
 				.deserializeDownloadedBallotBox(downloadedBallotBoxPathNode.getPath())) {
 			final Stream<String> encryptedVotingOptions = downloadedBallotStream
@@ -199,7 +205,7 @@ public class VerifyOnlineDecryptionProofs extends AbstractVerification {
 			GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> initialEncryptedVotes) {
 		List<GroupVector<ElGamalMultiRecipientCiphertext, GqGroup>> encryptedVotes = new LinkedList<>();
 
-		for (int i = 0; i < shufflePayloads.size(); i++) {
+		for (var i = 0; i < shufflePayloads.size(); i++) {
 			final var verifiableShuffle = shufflePayloads.get(i).getVerifiableShuffle();
 			if (verifiableShuffle != null) { // Case N > 1
 				encryptedVotes.add(verifiableShuffle.getShuffledCiphertexts());

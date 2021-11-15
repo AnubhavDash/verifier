@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -36,16 +35,16 @@ public class ElectionEventDeserializer extends JsonDeserializer<ElectionEvent> {
 	public ElectionEventDeserializer() {
 		mapper = new ObjectMapper();
 
-		SimpleModule typesModule = new SimpleModule();
-		typesModule.addDeserializer(UUID.class, new UuidDeserializer());
-		typesModule.addDeserializer(BigInteger.class, new Base64BigIntegerDeserializer());
-		typesModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer());
-		mapper.registerModule(typesModule);
+		var simpleModule = new SimpleModule();
+		simpleModule.addDeserializer(UUID.class, new UuidDeserializer());
+		simpleModule.addDeserializer(BigInteger.class, new Base64BigIntegerDeserializer());
+		simpleModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer());
+		mapper.registerModule(simpleModule);
 	}
 
 	@Override
 	public ElectionEvent deserialize(JsonParser jsonParser,
-			DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+			DeserializationContext deserializationContext) throws IOException {
 		JsonNode root = mapper.readTree(jsonParser);
 
 		return mapper.readValue(root.path("electionEvent").traverse(), ElectionEvent.class);

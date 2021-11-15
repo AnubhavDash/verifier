@@ -15,59 +15,81 @@
  */
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.math.BigInteger;
-import java.nio.file.Path;
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.xml.bind.JAXBException;
+import javax.xml.stream.XMLStreamException;
+
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
+
 import ch.evoting.xmlns.config._4.Configuration;
 import ch.evoting.xmlns.config._4.ListType;
 import ch.evoting.xmlns.config._4.StandardAnswerType;
 import ch.evoting.xmlns.config._4.TiebreakAnswerType;
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
+import ch.post.it.evoting.verifier.common.AbstractVerification;
 import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.VerificationTrait;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.dto.revised.CandidateList;
 import ch.post.it.evoting.verifier.common.block.dto.revised.DomainOfInfluence;
 import ch.post.it.evoting.verifier.common.block.dto.revised.ElectionEvent;
 import ch.post.it.evoting.verifier.common.block.dto.revised.VoteOption;
+import ch.post.it.evoting.verifier.common.block.exceptions.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.exceptions.VerificationPreconditionException;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.common.event.VerifierEvent;
 
 import lombok.Getter;
 import lombok.Setter;
 
+@Component
 public class CheckPrimeNumberOptionsVO extends AbstractVerification {
 
-	@Override
-	public VerificationDefinition getVerificationDefinition() {
-		VerificationDefinition def = new VerificationDefinition();
-		def.setBlockId(1);
-		def.setCategory(Category.INTEGRITY);
-		def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-				"verification09.description"));
-		def.setId(9);
-		def.setName("checkPrimeNumberOptions([vo])");
-		def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
-		def.addVerificationTrait(VerificationTrait.BLOCK_1);
-		return def;
+	private final PathService pathService;
+
+	public CheckPrimeNumberOptionsVO(final PathService pathService, final ApplicationEventPublisher applicationEventPublisher) {
+		super(applicationEventPublisher);
+		this.pathService = pathService;
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-		VerificationResult result = new VerificationResult();
+	public VerificationDefinition getVerificationDefinition() {
+		final var definition = new VerificationDefinition();
+		definition.setBlockId(1);
+		definition.setCategory(Category.INTEGRITY);
+		definition.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+				"verification09.description"));
+		definition.setId(9);
+		definition.setName("checkPrimeNumberOptions([vo])");
+		definition.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+		definition.addVerificationTrait(VerificationTrait.BLOCK_1);
+		return definition;
+	}
 
-		final PathNode configPathNode = pathService.buildFromRootPath(StructureKey.CONFIG_ANONYMIZED, inputDirectoryPath);
-		Configuration configuration = Deserializer.fromXml(configPathNode.getPath(), Configuration.class);
+	@Override
+	public VerificationResultEvent verify(final VerifierEvent event) {
+		final var inputDirectoryPath = event.getInputDirectoryPath();
+
+		final var configPathNode = pathService.buildFromRootPath(StructureKey.CONFIG_ANONYMIZED, inputDirectoryPath);
+		final Configuration configuration;
+		try {
+			configuration = Deserializer.fromXml(configPathNode.getPath(), Configuration.class);
+		} catch (IOException | JAXBException | XMLStreamException e) {
+			throw new VerificationPreconditionException("Failed to deserialize anonymized config.", e);
+		}
 
 		// Vote.
 		Map<String, Long> voteAnswersCount = configuration.getContest().getVoteInformation().stream()
@@ -93,7 +115,7 @@ public class CheckPrimeNumberOptionsVO extends AbstractVerification {
 		// Election.
 		Map<String, ElectionDetail> electionOptionCount = configuration.getContest().getElectionInformation().stream()
 				.map(ei -> {
-					ElectionDetail electionDetail = new ElectionDetail();
+					var electionDetail = new ElectionDetail();
 
 					int candidateCount = ei.getCandidate().size();
 					BigInteger numberOfMandates = ei.getElection().getNumberOfMandates();
@@ -102,7 +124,7 @@ public class CheckPrimeNumberOptionsVO extends AbstractVerification {
 
 					BigInteger optionCount =
 							(candidateAccumulation.multiply(BigInteger.valueOf(candidateCount)))
-									.add(numberOfMandates.multiply(BigInteger.valueOf(1 + (writeInsAllowed ? 1 : 0))));
+									.add(numberOfMandates.multiply(BigInteger.valueOf(1L + (writeInsAllowed ? 1L : 0L))));
 					electionDetail.setOptionCount(optionCount.intValue());
 
 					boolean candidateOnlyElection = ei.getList().stream().allMatch(ListType::isListEmpty) && ei.getList().size() == 1;
@@ -112,8 +134,13 @@ public class CheckPrimeNumberOptionsVO extends AbstractVerification {
 				}).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
 		// Check correspondences between config and dataConfig.
-		final PathNode dataConfigPathNode = pathService.buildFromRootPath(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
-		ElectionEvent electionEvent = Deserializer.fromJson(dataConfigPathNode.getPath(), ElectionEvent.class);
+		final var dataConfigPathNode = pathService.buildFromRootPath(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
+		final ElectionEvent electionEvent;
+		try {
+			electionEvent = Deserializer.fromJson(dataConfigPathNode.getPath(), ElectionEvent.class);
+		} catch (IOException e) {
+			throw new UncheckedIOException("Failed to deserialize data config updated.", e);
+		}
 
 		electionEvent.getBallotBoxes().stream()
 				.flatMap(bb -> bb.getCountingCircles().stream())
@@ -122,11 +149,12 @@ public class CheckPrimeNumberOptionsVO extends AbstractVerification {
 					doi.getVotes().forEach(v -> {
 						String voteIdentification = v.getAlias();
 						if (!voteAnswersCount.containsKey(voteIdentification)) {
-							throw buildVerificationFailureException(
+							throw new VerificationFailureException(
 									"alias does not correspond to voteIdentification",
-									Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-									"verification09.nok.message.alias.vote.nok",
-									voteIdentification
+									TranslationHelper.getFromResourceBundle(
+											Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+											"verification09.nok.message.alias.vote.nok",
+											voteIdentification)
 							);
 						}
 
@@ -136,19 +164,21 @@ public class CheckPrimeNumberOptionsVO extends AbstractVerification {
 						long optionsDistinctCount =
 								v.getQuestions().stream().flatMap(q -> q.getOptions().stream()).map(VoteOption::getPrimeNumber).distinct().count();
 						if (options.size() != optionsDistinctCount) {
-							throw buildVerificationFailureException(
+							throw new VerificationFailureException(
 									"the prime number fields are not mutually distinct",
-									Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-									"verification09.nok.message.prime.number.mutually.distinct.nok",
-									getDuplicates(options).toString()
+									TranslationHelper.getFromResourceBundle(
+											Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+											"verification09.nok.message.prime.number.mutually.distinct.nok",
+											getDuplicates(options).toString())
 							);
 						}
 
 						if (options.size() != voteAnswersCount.get(voteIdentification)) {
-							throw buildVerificationFailureException(
+							throw new VerificationFailureException(
 									"The number of prime numbers does not correspond to the number of answerElements",
-									Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-									"verification09.nok.message.number.of.prime.number.and.answer.nok"
+									TranslationHelper.getFromResourceBundle(
+											Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+											"verification09.nok.message.number.of.prime.number.and.answer.nok")
 							);
 						}
 					});
@@ -156,29 +186,32 @@ public class CheckPrimeNumberOptionsVO extends AbstractVerification {
 					doi.getElections().forEach(e -> {
 						String electionIdentification = e.getAlias();
 						if (!electionOptionCount.containsKey(electionIdentification)) {
-							throw buildVerificationFailureException(
+							throw new VerificationFailureException(
 									"alias does not correspond to electionIdentification",
-									Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-									"verification09.nok.message.alias.election.nok",
-									electionIdentification
+									TranslationHelper.getFromResourceBundle(
+											Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+											"verification09.nok.message.alias.election.nok",
+											electionIdentification)
 							);
 						}
 
 						List<BigInteger> listCount = e.getLists().stream().map(CandidateList::getPrimeNumber).collect(Collectors.toList());
 						long listDistinctCount = e.getLists().stream().map(CandidateList::getPrimeNumber).distinct().count();
 						if (listCount.size() != listDistinctCount) {
-							throw buildVerificationFailureException(
+							throw new VerificationFailureException(
 									"The prime numbers are repeated",
-									Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-									"verification09.nok.message",
-									getDuplicates(listCount).toString()
+									TranslationHelper.getFromResourceBundle(
+											Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+											"verification09.nok.message",
+											getDuplicates(listCount).toString())
 							);
 						}
 						if (listCount.size() != electionOptionCount.get(electionIdentification).getListCount()) {
-							throw buildVerificationFailureException(
+							throw new VerificationFailureException(
 									"The number of distinct prime numbers does not correspond to the number of list elements",
-									Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-									"verification09.nok.message.number.of.distinct.prime.number.and.lists.nok"
+									TranslationHelper.getFromResourceBundle(
+											Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+											"verification09.nok.message.number.of.distinct.prime.number.and.lists.nok")
 							);
 						}
 						long optionDistinctCount = e.getLists().stream()
@@ -190,20 +223,20 @@ public class CheckPrimeNumberOptionsVO extends AbstractVerification {
 
 						if ((optionDistinctCount + writeInsCount + optionCandidateOnlyCount) != electionOptionCount.get(electionIdentification)
 								.getOptionCount()) {
-							throw buildVerificationFailureException(
+							throw new VerificationFailureException(
 									"The number of candidate prime numbers does not correspond to the expected number of voting options " +
 											"for candidates",
-									Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-									"verification09.nok.message.number.of.candidate.prime.number.and.vo.nok",
-									String.valueOf((optionDistinctCount + writeInsCount + optionCandidateOnlyCount)),
-									String.valueOf(electionOptionCount.get(electionIdentification).getOptionCount())
+									TranslationHelper.getFromResourceBundle(
+											Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+											"verification09.nok.message.number.of.candidate.prime.number.and.vo.nok",
+											String.valueOf((optionDistinctCount + writeInsCount + optionCandidateOnlyCount)),
+											String.valueOf(electionOptionCount.get(electionIdentification).getOptionCount()))
 							);
 						}
 					});
 				});
 
-		result.setStatus(Status.OK);
-		return result;
+		return VerificationResultEvent.success(this, getVerificationDefinition());
 	}
 
 	private <T> List<T> getDuplicates(List<T> entries) {
@@ -217,7 +250,7 @@ public class CheckPrimeNumberOptionsVO extends AbstractVerification {
 
 	@Getter
 	@Setter
-	private class ElectionDetail {
+	private static class ElectionDetail {
 		private int optionCount;
 		private int listCount;
 	}

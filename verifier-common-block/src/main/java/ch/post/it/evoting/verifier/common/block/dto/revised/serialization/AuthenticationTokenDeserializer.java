@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -37,20 +36,20 @@ public class AuthenticationTokenDeserializer extends JsonDeserializer<Authentica
 		mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
-		SimpleModule typesModule = new SimpleModule();
-		typesModule.addDeserializer(UUID.class, new UuidDeserializer());
-		typesModule.addDeserializer(BigInteger.class, new Base64BigIntegerDeserializer());
-		typesModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer());
-		mapper.registerModule(typesModule);
+		var simpleModule = new SimpleModule();
+		simpleModule.addDeserializer(UUID.class, new UuidDeserializer());
+		simpleModule.addDeserializer(BigInteger.class, new Base64BigIntegerDeserializer());
+		simpleModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer());
+		mapper.registerModule(simpleModule);
 	}
 
 	@Override
 	public AuthenticationToken deserialize(JsonParser jsonParser,
-			DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+			DeserializationContext deserializationContext) throws IOException {
 		if (jsonParser.currentToken().isStructStart()) {
 			return mapper.readValue(jsonParser, AuthenticationToken.class);
 		} else {
-			String value = jsonParser.getValueAsString();
+			var value = jsonParser.getValueAsString();
 			return mapper.readValue(value, AuthenticationToken.class);
 		}
 	}

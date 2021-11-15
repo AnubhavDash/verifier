@@ -16,62 +16,66 @@
 package ch.post.it.evoting.verifier.block.block4.verifications;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.nio.file.NoSuchFileException;
+import java.io.UncheckedIOException;
+import java.net.URISyntaxException;
 import java.nio.file.Paths;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.test.helper.RegexHelper;
+import com.google.common.base.Throwables;
+
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
+import ch.post.it.evoting.verifier.common.event.Block4Event;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
 
-class CheckTallyingAnswersTest extends Block4VerificationAbstractTest {
+class CheckTallyingAnswersTest extends Block4VerificationTest {
 
-	public CheckTallyingAnswersTest() {
-		super(CheckTallyingAnswers.class);
+	@BeforeAll
+	static void setUpAll() {
+		verification = new CheckTallyingAnswers(pathService, applicationEventPublisherMock);
 	}
 
 	@Test
 	void executeTestOK() throws Exception {
-		VerificationResult verificationResult =
-				verification.verify(Paths.get(getClass().getResource("/CheckTallyingAnswersTest/OK").toURI()));
-		assertNotNull(verificationResult);
-		assertEquals(Status.OK, verificationResult.getStatus());
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckTallyingAnswersTest/OK").toURI()).toString();
+		final VerificationResultEvent resultEvent = verification.verify(new Block4Event(this, inputDirectory));
+
+		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
-	void executeTestNOKFileNotFoundConfiguration() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingAnswersTest/NOK-NOFILE-CONFIG").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CONFIG_ANONYMIZED);
-		assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
+	void executeTestNOKFileNotFoundConfiguration() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckTallyingAnswersTest/NOK-NOFILE-CONFIG").toURI()).toString();
+		final var event = new Block4Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.CONFIG_ANONYMIZED);
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(structureNode.getQualifier()));
 	}
 
 	@Test
-	void executeTestNOKFileNotFoundEVotingDecryptResult() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingAnswersTest/NOK-NOFILE-EVOTING").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.EVOTING_DECRYPT_RESULT);
-		assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
+	void executeTestNOKFileNotFoundEVotingDecryptResult() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckTallyingAnswersTest/NOK-NOFILE-EVOTING").toURI()).toString();
+		final var event = new Block4Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.EVOTING_DECRYPT_RESULT);
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(structureNode.getQualifier()));
 	}
 
 	@Test
-	void executeTestNOKFileNotFoundECH0110() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingAnswersTest/NOK-NOFILE-eCH").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ECH0110);
-		assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
+	void executeTestNOKFileNotFoundECH0110() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckTallyingAnswersTest/NOK-NOFILE-eCH").toURI()).toString();
+		final var event = new Block4Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.ECH0110);
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(structureNode.getQualifier()));
 	}
 }

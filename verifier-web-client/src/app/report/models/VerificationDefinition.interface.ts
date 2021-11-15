@@ -22,4 +22,5 @@ export class VerificationDefinition {
   description: string;
   status: string;
   message: string;
+  traits: string[];
 }

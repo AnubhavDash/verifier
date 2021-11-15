@@ -1,0 +1,1000 @@
+{
+  "electionEvents" : [ {
+    "alias" : "Post_20211014_TT02",
+    "title" : "Post_20211014_TT02",
+    "description" : "Post_20211014_TT02",
+    "dateFrom" : "2021-10-14 15:00",
+    "dateTo" : "2021-12-31 18:00",
+    "gracePeriod" : 900,
+    "timeZone" : "+02:00",
+    "ballots" : [ {
+      "entityId" : "ballot_1",
+      "alias" : "ballot_1",
+      "title" : "ballot_1000000000-2_1000000000-1",
+      "description" : "ballot_1000000000-2_1000000000-1",
+      "contests" : [ {
+        "entityId" : "contest_1000000000-2"
+      }, {
+        "entityId" : "contest_1000000000-1"
+      } ]
+    }, {
+      "entityId" : "ballot_2",
+      "alias" : "ballot_2",
+      "title" : "ballot_1000000000-2",
+      "description" : "ballot_1000000000-2",
+      "contests" : [ {
+        "entityId" : "contest_1000000000-2"
+      } ]
+    }, {
+      "entityId" : "ballot_3",
+      "alias" : "ballot_3",
+      "title" : "ballot_1000000000-2_1000000000-1",
+      "description" : "ballot_1000000000-2_1000000000-1",
+      "contests" : [ {
+        "entityId" : "contest_1000000000-2"
+      }, {
+        "entityId" : "contest_1000000000-1"
+      } ]
+    }, {
+      "entityId" : "ballot_4",
+      "alias" : "ballot_4",
+      "title" : "ballot_1000000000-2",
+      "description" : "ballot_1000000000-2",
+      "contests" : [ {
+        "entityId" : "contest_1000000000-2"
+      } ]
+    } ],
+    "contests" : [ {
+      "entityId" : "contest_1000000000-2",
+      "title" : "Proposition (de)",
+      "alias" : "1000000000-2",
+      "description" : "Proposition (de)",
+      "explanationText" : "",
+      "template" : "options",
+      "fullBlank" : "false",
+      "extraDataTypes" : {
+        "questionType" : [ {
+          "name" : "text",
+          "key" : "text"
+        } ],
+        "answerType" : [ {
+          "name" : "text",
+          "key" : "text"
+        } ]
+      },
+      "attributes" : [ {
+        "alias" : "1000000000-EVotingProposition",
+        "extraDataType" : "questionType",
+        "extraDataValues" : [ {
+          "text" : "Do you want to accept the proposition concerning Test? (de)"
+        } ],
+        "children" : [ {
+          "alias" : "57a30570-1722-3a7e-a8f9-7dd643d7f339",
+          "extraDataType" : "answerType",
+          "extraDataValues" : [ {
+            "text" : "Ja"
+          } ]
+        }, {
+          "alias" : "b9c57a40-a555-35e1-972c-a1a6b7e03381",
+          "extraDataType" : "answerType",
+          "extraDataValues" : [ {
+            "text" : "Nein"
+          } ]
+        } ]
+      } ],
+      "questions" : [ {
+        "alias" : "1000000000-EVotingProposition",
+        "max" : "1",
+        "min" : "0",
+        "writeIn" : "false",
+        "choices" : [ "57a30570-1722-3a7e-a8f9-7dd643d7f339", "b9c57a40-a555-35e1-972c-a1a6b7e03381" ],
+        "fusions" : [ ],
+        "accumulation" : "1",
+        "blankText" : "Leer"
+      } ]
+    }, {
+      "entityId" : "contest_1000000000-1",
+      "title" : "Election (de)",
+      "alias" : "1000000000-1",
+      "description" : "Election (de)",
+      "explanationText" : "",
+      "template" : "listsAndCandidates",
+      "fullBlank" : "true",
+      "extraDataTypes" : {
+        "listType" : [ {
+          "name" : "Liste Beschreibung",
+          "key" : "attribute1"
+        } ],
+        "candidateType" : [ {
+          "name" : "Candidate text",
+          "key" : "attribute1"
+        }, {
+          "name" : "Candidat Text",
+          "key" : "attribute2"
+        }, {
+          "name" : "Incumbent",
+          "key" : "attribute3"
+        } ]
+      },
+      "attributes" : [ {
+        "alias" : "list_for_1-1",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "1 Muster Karin"
+        } ],
+        "children" : [ {
+          "alias" : "1-1",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "1 Muster Karin"
+          }, {
+            "text" : "01.01.1970, Test, Bern (de)"
+          }, {
+            "text" : "Bisher"
+          } ]
+        } ]
+      }, {
+        "alias" : "list_for_1-2",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "2 Muster Paul"
+        } ],
+        "children" : [ {
+          "alias" : "1-2",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "2 Muster Paul"
+          }, {
+            "text" : "01.01.1970, Test, Bern (de)"
+          }, {
+            "text" : ""
+          } ]
+        } ]
+      }, {
+        "alias" : "list_for_1-3",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "3 Muster Lukas"
+        } ],
+        "children" : [ {
+          "alias" : "1-3",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "3 Muster Lukas"
+          }, {
+            "text" : "01.01.1970, Test, Bern (de)"
+          }, {
+            "text" : ""
+          } ]
+        } ]
+      }, {
+        "alias" : "list_for_1-4",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "4 Muster Peter"
+        } ],
+        "children" : [ {
+          "alias" : "1-4",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "4 Muster Peter"
+          }, {
+            "text" : "01.01.1970, Test, Bern (de)"
+          }, {
+            "text" : ""
+          } ]
+        } ]
+      }, {
+        "alias" : "list_for_1-5",
+        "extraDataType" : "listType",
+        "extraDataValues" : [ {
+          "text" : "5 Muster Oliver"
+        } ],
+        "children" : [ {
+          "alias" : "1-5",
+          "extraDataType" : "candidateType",
+          "extraDataValues" : [ {
+            "text" : "5 Muster Oliver"
+          }, {
+            "text" : "01.01.1970, Test, Bern (de)"
+          }, {
+            "text" : ""
+          } ]
+        } ]
+      } ],
+      "questions" : [ {
+        "alias" : "candidates",
+        "max" : "1",
+        "min" : "1",
+        "writeIn" : "false",
+        "choices" : [ "1-1", "1-2", "1-3", "1-4", "1-5" ],
+        "fusions" : [ ],
+        "accumulation" : "1",
+        "blankText" : "Kein Name ausgewählt"
+      } ]
+    } ],
+    "ballotBoxes" : [ {
+      "entityId" : "9997c020-cc5c-33b4-b7ff-0696c2d36092",
+      "alias" : "BE-CH-1|BE-MU-10001 + BE-CT-1|BE-MU-10001",
+      "title" : "TestBallotBox_ICH",
+      "description" : "TestBallotBox_ICHBE-CH-1|BE-MU-10001 + BE-CT-1|BE-MU-10001",
+      "dateFrom" : "2021-10-14 15:00",
+      "dateTo" : "2021-12-31 18:00",
+      "gracePeriod" : 900,
+      "timeZone" : "+02:00",
+      "ballot" : {
+        "entityId" : "ballot_1"
+      },
+      "electoralAuthority" : {
+        "entityId" : "Post_20211014_TT02"
+      },
+      "test" : true
+    }, {
+      "entityId" : "22708823-38b8-3618-8a9e-d4e8caa876ee",
+      "alias" : "BE-CH-1|BE-MU-10002",
+      "title" : "TestBallotBox_ACH",
+      "description" : "TestBallotBox_ACHBE-CH-1|BE-MU-10002",
+      "dateFrom" : "2021-10-14 15:00",
+      "dateTo" : "2021-12-31 18:00",
+      "gracePeriod" : 900,
+      "timeZone" : "+02:00",
+      "ballot" : {
+        "entityId" : "ballot_2"
+      },
+      "electoralAuthority" : {
+        "entityId" : "Post_20211014_TT02"
+      },
+      "test" : true
+    }, {
+      "entityId" : "a1c5cfff-4ad0-3019-a54b-868131a02e9d",
+      "alias" : "BE-CH-1|BE-MU-10003 + BE-CT-1|BE-MU-10003",
+      "title" : "TestBallotBox2_ICH",
+      "description" : "TestBallotBox2_ICHBE-CH-1|BE-MU-10003 + BE-CT-1|BE-MU-10003",
+      "dateFrom" : "2021-10-14 15:00",
+      "dateTo" : "2021-12-31 18:00",
+      "gracePeriod" : 900,
+      "timeZone" : "+02:00",
+      "ballot" : {
+        "entityId" : "ballot_3"
+      },
+      "electoralAuthority" : {
+        "entityId" : "Post_20211014_TT02"
+      },
+      "test" : true
+    }, {
+      "entityId" : "a19095e2-de2e-3c7c-82be-7a42b6724be8",
+      "alias" : "BE-CH-1|BE-MU-10004",
+      "title" : "TestBallotBox2_ACH",
+      "description" : "TestBallotBox2_ACHBE-CH-1|BE-MU-10004",
+      "dateFrom" : "2021-10-14 15:00",
+      "dateTo" : "2021-12-31 18:00",
+      "gracePeriod" : 900,
+      "timeZone" : "+02:00",
+      "ballot" : {
+        "entityId" : "ballot_4"
+      },
+      "electoralAuthority" : {
+        "entityId" : "Post_20211014_TT02"
+      },
+      "test" : true
+    } ],
+    "votingCardSets" : [ {
+      "entityId" : "vcs_TestBallotBox_ICH",
+      "alias" : "vcs_BE-CH-1|BE-MU-10001 + BE-CT-1|BE-MU-10001",
+      "title" : "vcs_TestBallotBox_ICH",
+      "description" : "vcs_TestBallotBox_ICHBE-CH-1|BE-MU-10001 + BE-CT-1|BE-MU-10001",
+      "numberOfVotingCardsToGenerate" : 10,
+      "ballotBox" : {
+        "entityId" : "9997c020-cc5c-33b4-b7ff-0696c2d36092"
+      }
+    }, {
+      "entityId" : "vcs_TestBallotBox_ACH",
+      "alias" : "vcs_BE-CH-1|BE-MU-10002",
+      "title" : "vcs_TestBallotBox_ACH",
+      "description" : "vcs_TestBallotBox_ACHBE-CH-1|BE-MU-10002",
+      "numberOfVotingCardsToGenerate" : 10,
+      "ballotBox" : {
+        "entityId" : "22708823-38b8-3618-8a9e-d4e8caa876ee"
+      }
+    }, {
+      "entityId" : "vcs_TestBallotBox2_ICH",
+      "alias" : "vcs_BE-CH-1|BE-MU-10003 + BE-CT-1|BE-MU-10003",
+      "title" : "vcs_TestBallotBox2_ICH",
+      "description" : "vcs_TestBallotBox2_ICHBE-CH-1|BE-MU-10003 + BE-CT-1|BE-MU-10003",
+      "numberOfVotingCardsToGenerate" : 10,
+      "ballotBox" : {
+        "entityId" : "a1c5cfff-4ad0-3019-a54b-868131a02e9d"
+      }
+    }, {
+      "entityId" : "vcs_TestBallotBox2_ACH",
+      "alias" : "vcs_BE-CH-1|BE-MU-10004",
+      "title" : "vcs_TestBallotBox2_ACH",
+      "description" : "vcs_TestBallotBox2_ACHBE-CH-1|BE-MU-10004",
+      "numberOfVotingCardsToGenerate" : 10,
+      "ballotBox" : {
+        "entityId" : "a19095e2-de2e-3c7c-82be-7a42b6724be8"
+      }
+    } ],
+    "electoralAuthorities" : [ {
+      "entityId" : "Post_20211014_TT02",
+      "alias" : "Post_20211014_TT02",
+      "title" : "Post_20211014_TT02",
+      "description" : "Post_20211014_TT02",
+      "minimumThreshold" : "1",
+      "electoralBoard" : [ "EA1", "EA2" ]
+    } ],
+    "translations" : [ {
+      "entityId" : "contest_1000000000-2",
+      "locale" : "de-CH",
+      "texts" : {
+        "title" : "Proposition (de)",
+        "description" : "Proposition (de)",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "questionType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ],
+          "answerType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "1000000000-EVotingProposition",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "Do you want to accept the proposition concerning Test? (de)"
+          } ],
+          "children" : [ {
+            "alias" : "57a30570-1722-3a7e-a8f9-7dd643d7f339",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Ja"
+            } ]
+          }, {
+            "alias" : "b9c57a40-a555-35e1-972c-a1a6b7e03381",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Nein"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "1000000000-EVotingProposition",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Leer"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_1000000000-1",
+      "locale" : "de-CH",
+      "texts" : {
+        "title" : "Election (de)",
+        "description" : "Election (de)",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Liste Beschreibung",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidat Text",
+            "key" : "attribute2"
+          }, {
+            "name" : "Incumbent",
+            "key" : "attribute3"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "list_for_1-1",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 Muster Karin"
+          } ],
+          "children" : [ {
+            "alias" : "1-1",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "1 Muster Karin"
+            }, {
+              "text" : "01.01.1970, Test, Bern (de)"
+            }, {
+              "text" : "Bisher"
+            } ]
+          } ]
+        }, {
+          "alias" : "list_for_1-2",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "2 Muster Paul"
+          } ],
+          "children" : [ {
+            "alias" : "1-2",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "2 Muster Paul"
+            }, {
+              "text" : "01.01.1970, Test, Bern (de)"
+            }, {
+              "text" : ""
+            } ]
+          } ]
+        }, {
+          "alias" : "list_for_1-3",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "3 Muster Lukas"
+          } ],
+          "children" : [ {
+            "alias" : "1-3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "3 Muster Lukas"
+            }, {
+              "text" : "01.01.1970, Test, Bern (de)"
+            }, {
+              "text" : ""
+            } ]
+          } ]
+        }, {
+          "alias" : "list_for_1-4",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "4 Muster Peter"
+          } ],
+          "children" : [ {
+            "alias" : "1-4",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "4 Muster Peter"
+            }, {
+              "text" : "01.01.1970, Test, Bern (de)"
+            }, {
+              "text" : ""
+            } ]
+          } ]
+        }, {
+          "alias" : "list_for_1-5",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "5 Muster Oliver"
+          } ],
+          "children" : [ {
+            "alias" : "1-5",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "5 Muster Oliver"
+            }, {
+              "text" : "01.01.1970, Test, Bern (de)"
+            }, {
+              "text" : ""
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Kein Name ausgewählt"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_1000000000-2",
+      "locale" : "fr-CH",
+      "texts" : {
+        "title" : "Proposition (fr)",
+        "description" : "Proposition (fr)",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "questionType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ],
+          "answerType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "1000000000-EVotingProposition",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "Do you want to accept the proposition concerning Test? (fr)"
+          } ],
+          "children" : [ {
+            "alias" : "57a30570-1722-3a7e-a8f9-7dd643d7f339",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Oui"
+            } ]
+          }, {
+            "alias" : "b9c57a40-a555-35e1-972c-a1a6b7e03381",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Non"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "1000000000-EVotingProposition",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Blanc"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_1000000000-1",
+      "locale" : "fr-CH",
+      "texts" : {
+        "title" : "Election (fr)",
+        "description" : "Election (fr)",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Liste description",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Text",
+            "key" : "attribute2"
+          }, {
+            "name" : "Incumbent",
+            "key" : "attribute3"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "list_for_1-1",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 Muster Karin"
+          } ],
+          "children" : [ {
+            "alias" : "1-1",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "1 Muster Karin"
+            }, {
+              "text" : "01.01.1970, Test, Bern (fr)"
+            }, {
+              "text" : "sortant/e"
+            } ]
+          } ]
+        }, {
+          "alias" : "list_for_1-2",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "2 Muster Paul"
+          } ],
+          "children" : [ {
+            "alias" : "1-2",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "2 Muster Paul"
+            }, {
+              "text" : "01.01.1970, Test, Bern (fr)"
+            }, {
+              "text" : ""
+            } ]
+          } ]
+        }, {
+          "alias" : "list_for_1-3",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "3 Muster Lukas"
+          } ],
+          "children" : [ {
+            "alias" : "1-3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "3 Muster Lukas"
+            }, {
+              "text" : "01.01.1970, Test, Bern (fr)"
+            }, {
+              "text" : ""
+            } ]
+          } ]
+        }, {
+          "alias" : "list_for_1-4",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "4 Muster Peter"
+          } ],
+          "children" : [ {
+            "alias" : "1-4",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "4 Muster Peter"
+            }, {
+              "text" : "01.01.1970, Test, Bern (fr)"
+            }, {
+              "text" : ""
+            } ]
+          } ]
+        }, {
+          "alias" : "list_for_1-5",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "5 Muster Oliver"
+          } ],
+          "children" : [ {
+            "alias" : "1-5",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "5 Muster Oliver"
+            }, {
+              "text" : "01.01.1970, Test, Bern (fr)"
+            }, {
+              "text" : ""
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Aucun nom sélectionné"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_1000000000-2",
+      "locale" : "rm-CH",
+      "texts" : {
+        "title" : "Proposition (rm)",
+        "description" : "Proposition (rm)",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "questionType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ],
+          "answerType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "1000000000-EVotingProposition",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "Do you want to accept the proposition concerning Test? (rm)"
+          } ],
+          "children" : [ {
+            "alias" : "57a30570-1722-3a7e-a8f9-7dd643d7f339",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Gea"
+            } ]
+          }, {
+            "alias" : "b9c57a40-a555-35e1-972c-a1a6b7e03381",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Na"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "1000000000-EVotingProposition",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Vid"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_1000000000-1",
+      "locale" : "rm-CH",
+      "texts" : {
+        "title" : "Election (rm)",
+        "description" : "Election (rm)",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Liste description",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Text",
+            "key" : "attribute2"
+          }, {
+            "name" : "Incumbent",
+            "key" : "attribute3"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "list_for_1-1",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 Muster Karin"
+          } ],
+          "children" : [ {
+            "alias" : "1-1",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "1 Muster Karin"
+            }, {
+              "text" : "01.01.1970, Test, Bern (rm)"
+            }, {
+              "text" : "uscant"
+            } ]
+          } ]
+        }, {
+          "alias" : "list_for_1-2",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "2 Muster Paul"
+          } ],
+          "children" : [ {
+            "alias" : "1-2",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "2 Muster Paul"
+            }, {
+              "text" : "01.01.1970, Test, Bern (rm)"
+            }, {
+              "text" : ""
+            } ]
+          } ]
+        }, {
+          "alias" : "list_for_1-3",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "3 Muster Lukas"
+          } ],
+          "children" : [ {
+            "alias" : "1-3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "3 Muster Lukas"
+            }, {
+              "text" : "01.01.1970, Test, Bern (rm)"
+            }, {
+              "text" : ""
+            } ]
+          } ]
+        }, {
+          "alias" : "list_for_1-4",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "4 Muster Peter"
+          } ],
+          "children" : [ {
+            "alias" : "1-4",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "4 Muster Peter"
+            }, {
+              "text" : "01.01.1970, Test, Bern (rm)"
+            }, {
+              "text" : ""
+            } ]
+          } ]
+        }, {
+          "alias" : "list_for_1-5",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "5 Muster Oliver"
+          } ],
+          "children" : [ {
+            "alias" : "1-5",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "5 Muster Oliver"
+            }, {
+              "text" : "01.01.1970, Test, Bern (rm)"
+            }, {
+              "text" : ""
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Nagin num selecziunà"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_1000000000-2",
+      "locale" : "it-CH",
+      "texts" : {
+        "title" : "Proposition (it)",
+        "description" : "Proposition (it)",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "questionType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ],
+          "answerType" : [ {
+            "name" : "text",
+            "key" : "text"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "1000000000-EVotingProposition",
+          "extraDataType" : "questionType",
+          "extraDataValues" : [ {
+            "text" : "Do you want to accept the proposition concerning Test? (it)"
+          } ],
+          "children" : [ {
+            "alias" : "57a30570-1722-3a7e-a8f9-7dd643d7f339",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "Si"
+            } ]
+          }, {
+            "alias" : "b9c57a40-a555-35e1-972c-a1a6b7e03381",
+            "extraDataType" : "answerType",
+            "extraDataValues" : [ {
+              "text" : "No"
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "1000000000-EVotingProposition",
+          "max" : "1",
+          "min" : "0",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Bianco"
+        } ]
+      }
+    }, {
+      "entityId" : "contest_1000000000-1",
+      "locale" : "it-CH",
+      "texts" : {
+        "title" : "Election (it)",
+        "description" : "Election (it)",
+        "explanationText" : "",
+        "extraDataTypes" : {
+          "listType" : [ {
+            "name" : "Descrizione di Lista",
+            "key" : "attribute1"
+          } ],
+          "candidateType" : [ {
+            "name" : "Candidate text",
+            "key" : "attribute1"
+          }, {
+            "name" : "Candidate Text",
+            "key" : "attribute2"
+          }, {
+            "name" : "Incumbent",
+            "key" : "attribute3"
+          } ]
+        },
+        "attributes" : [ {
+          "alias" : "list_for_1-1",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "1 Muster Karin"
+          } ],
+          "children" : [ {
+            "alias" : "1-1",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "1 Muster Karin"
+            }, {
+              "text" : "01.01.1970, Test, Bern (it)"
+            }, {
+              "text" : "uscente"
+            } ]
+          } ]
+        }, {
+          "alias" : "list_for_1-2",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "2 Muster Paul"
+          } ],
+          "children" : [ {
+            "alias" : "1-2",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "2 Muster Paul"
+            }, {
+              "text" : "01.01.1970, Test, Bern (it)"
+            }, {
+              "text" : ""
+            } ]
+          } ]
+        }, {
+          "alias" : "list_for_1-3",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "3 Muster Lukas"
+          } ],
+          "children" : [ {
+            "alias" : "1-3",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "3 Muster Lukas"
+            }, {
+              "text" : "01.01.1970, Test, Bern (it)"
+            }, {
+              "text" : ""
+            } ]
+          } ]
+        }, {
+          "alias" : "list_for_1-4",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "4 Muster Peter"
+          } ],
+          "children" : [ {
+            "alias" : "1-4",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "4 Muster Peter"
+            }, {
+              "text" : "01.01.1970, Test, Bern (it)"
+            }, {
+              "text" : ""
+            } ]
+          } ]
+        }, {
+          "alias" : "list_for_1-5",
+          "extraDataType" : "listType",
+          "extraDataValues" : [ {
+            "text" : "5 Muster Oliver"
+          } ],
+          "children" : [ {
+            "alias" : "1-5",
+            "extraDataType" : "candidateType",
+            "extraDataValues" : [ {
+              "text" : "5 Muster Oliver"
+            }, {
+              "text" : "01.01.1970, Test, Bern (it)"
+            }, {
+              "text" : ""
+            } ]
+          } ]
+        } ],
+        "questions" : [ {
+          "alias" : "candidates",
+          "max" : "1",
+          "min" : "1",
+          "writeIn" : "false",
+          "choices" : [ ],
+          "fusions" : [ ],
+          "accumulation" : "1",
+          "blankText" : "Nessun nominativo selezionato"
+        } ]
+      }
+    } ]
+  } ]
+}

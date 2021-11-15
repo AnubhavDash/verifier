@@ -15,18 +15,20 @@
  */
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.math.BigInteger;
-import java.nio.file.Path;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
+
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
+import ch.post.it.evoting.verifier.common.AbstractVerification;
 import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.VerificationTrait;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.dto.revised.CandidateList;
 import ch.post.it.evoting.verifier.common.block.dto.revised.ElectionEvent;
 import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionParameters;
@@ -34,35 +36,55 @@ import ch.post.it.evoting.verifier.common.block.dto.revised.VoteOption;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.MathHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.common.event.VerifierEvent;
 
+@Component
 public class IsQuadraticResidueVO extends AbstractVerification {
 
-	@Override
-	public VerificationDefinition getVerificationDefinition() {
-		VerificationDefinition def = new VerificationDefinition();
-		def.setBlockId(1);
-		def.setCategory(Category.INTEGRITY);
-		def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-				"verification06.description"));
-		def.setId(6);
-		def.setName("isQuadraticResidue([vo])");
-		def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
-		def.addVerificationTrait(VerificationTrait.BLOCK_1);
-		return def;
+	private final PathService pathService;
+
+	public IsQuadraticResidueVO(final PathService pathService, final ApplicationEventPublisher applicationEventPublisher) {
+		super(applicationEventPublisher);
+		this.pathService = pathService;
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-		VerificationResult result = new VerificationResult();
+	public VerificationDefinition getVerificationDefinition() {
+		final var definition = new VerificationDefinition();
+		definition.setBlockId(1);
+		definition.setCategory(Category.INTEGRITY);
+		definition.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+				"verification06.description"));
+		definition.setId(6);
+		definition.setName("isQuadraticResidue([vo])");
+		definition.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+		definition.addVerificationTrait(VerificationTrait.BLOCK_1);
+		return definition;
+	}
 
-		final PathNode encryptParams = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
-		EncryptionParameters encryptionParameters = Deserializer.fromJson(encryptParams.getPath(), EncryptionParameters.class);
+	@Override
+	public VerificationResultEvent verify(final VerifierEvent event) {
+		final var inputDirectoryPath = event.getInputDirectoryPath();
+
+		final var encryptParams = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
+		final EncryptionParameters encryptionParameters;
+		try {
+			encryptionParameters = Deserializer.fromJson(encryptParams.getPath(), EncryptionParameters.class);
+		} catch (IOException e) {
+			throw new UncheckedIOException("Failed to deserialize encryption parameters.", e);
+		}
 		BigInteger p = encryptionParameters.getP();
 
-		final PathNode dataConfigPathNode = pathService.buildFromRootPath(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
-		ElectionEvent electionEvent = Deserializer.fromJson(dataConfigPathNode.getPath(), ElectionEvent.class);
+		final var dataConfigPathNode = pathService.buildFromRootPath(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
+		final ElectionEvent electionEvent;
+		try {
+			electionEvent = Deserializer.fromJson(dataConfigPathNode.getPath(), ElectionEvent.class);
+		} catch (IOException e) {
+			throw new UncheckedIOException("Failed to deserialize data config updated.", e);
+		}
 
 		//votations
 		Collection<BigInteger> errors = electionEvent.getBallotBoxes().parallelStream()
@@ -110,15 +132,11 @@ public class IsQuadraticResidueVO extends AbstractVerification {
 						.collect(Collectors.toList()));
 
 		if (!errors.isEmpty()) {
-			throw buildVerificationFailureException(
-					"Euler criterion does not equal to 1",
-					Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-					"verification06.nok.message",
-					errors.toString()
-			);
+			return VerificationResultEvent.failure(this, getVerificationDefinition(),
+					TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification06.nok.message",
+							errors.toString()));
 		}
 
-		result.setStatus(Status.OK);
-		return result;
+		return VerificationResultEvent.success(this, getVerificationDefinition());
 	}
 }

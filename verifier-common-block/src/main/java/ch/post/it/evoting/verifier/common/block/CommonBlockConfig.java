@@ -17,10 +17,12 @@ package ch.post.it.evoting.verifier.common.block;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
+import ch.post.it.evoting.cryptoprimitives.hashing.HashService;
 import ch.post.it.evoting.cryptoprimitives.mixnet.Mixnet;
 import ch.post.it.evoting.cryptoprimitives.mixnet.MixnetService;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
@@ -40,7 +42,14 @@ public class CommonBlockConfig {
 	}
 
 	@Bean
+	@Primary
 	public ObjectMapper getObjectMapper() {
 		return DomainObjectMapper.getNewInstance();
 	}
+
+	@Bean
+	public HashService getHashService() {
+		return HashService.getInstance();
+	}
+
 }

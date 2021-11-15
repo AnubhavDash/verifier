@@ -17,7 +17,6 @@ package ch.post.it.evoting.verifier.block.block4.verifications;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -30,7 +29,6 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -40,7 +38,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import com.google.common.base.Throwables;
+
 import ch.post.it.evoting.cryptoprimitives.GroupVector;
+import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
@@ -48,20 +49,23 @@ import ch.post.it.evoting.cryptoprimitives.mixnet.MixnetService;
 import ch.post.it.evoting.cryptoprimitives.mixnet.ShuffleArgument;
 import ch.post.it.evoting.cryptoprimitives.mixnet.VerifiableShuffle;
 import ch.post.it.evoting.cryptoprimitives.test.tools.generator.ElGamalGenerator;
-import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
+import ch.post.it.evoting.verifier.block.block4.Block4VerificationSuite;
 import ch.post.it.evoting.verifier.block.block4.verifications.VerifyOfflineShuffleProof.VerifyOfflineShuffleProofInput;
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.block.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
+import ch.post.it.evoting.verifier.common.event.Block4Event;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
 
-class VerifyOfflineShuffleProofTest extends Block4VerificationAbstractTest {
+class VerifyOfflineShuffleProofTest extends Block4VerificationTest {
 
 	private static final ElectionDataExtractionService EXTRACTION_SERVICE = new ElectionDataExtractionService(new PathService(),
 			DomainObjectMapper.getNewInstance());
 	private static final MixnetService MIXNET_SERVICE = new MixnetService();
-	private static final VerifyOfflineShuffleProof VERIFY = new VerifyOfflineShuffleProof(EXTRACTION_SERVICE, MIXNET_SERVICE);
+	private static final VerifyOfflineShuffleProof VERIFY = new VerifyOfflineShuffleProof(pathService, EXTRACTION_SERVICE, MIXNET_SERVICE,
+			applicationEventPublisherMock);
 	private static final SecureRandom RANDOM = new SecureRandom();
 
 	private static final GqGroup gqGroup = new GqGroup(new BigInteger(
@@ -78,8 +82,6 @@ class VerifyOfflineShuffleProofTest extends Block4VerificationAbstractTest {
 			"1CB7C6D53960F1ABA5254DD328022F899DA8A86C809CA0CFC474A4BF183D9A79F75289DA2ACC9FF38CB57BD80EC3F24B647033B6524684FF4062732ED1F79467CA02B7A35F615388CCF9DD638A0916D7B90E83F8C3562B8A6DEC66A98847FCD8159682539A9FB8C1ACA7F07209645681123B2AC89DBACA18D1B4D245D44E31E68AF03226DAC36472DAF1E170CFFA0095A06A8427B428FDB03EBB40D241B5AEA9F491CB0AAB1B175464351F22D5D5004747AA483E97770C495B05F227CE46F28317495DFD0D7C789ECCB597BB5B2F357811303697D4B8475F1100C173E50A009811F07F4B0E16C4876D871EEB2C588874C4C422F7DDC79EDD3B276F3BF5E36D9",
 			16));
 
-	private static String electionEventId;
-	private static String ballotBoxId;
 	private static ElGamalGenerator elGamalGenerator;
 	private static ElGamalGenerator otherElGamalGenerator;
 
@@ -90,14 +92,13 @@ class VerifyOfflineShuffleProofTest extends Block4VerificationAbstractTest {
 	private GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> shuffledVotes;
 	private ShuffleArgument shuffleProof;
 
-	public VerifyOfflineShuffleProofTest() {
-		super(VerifyOfflineShuffleProof.class);
+	@BeforeAll
+	static void setUpAll() {
+		verification = new VerifyOfflineShuffleProof(pathService, EXTRACTION_SERVICE, MIXNET_SERVICE, applicationEventPublisherMock);
 	}
 
 	@BeforeAll
 	static void setupAll() {
-		electionEventId = "dd4063884c144446a6dfb63c42eb9e86";
-		ballotBoxId = "1ec5fabe10bb49b0a16f5aa7fbe632fc";
 		elGamalGenerator = new ElGamalGenerator(gqGroup);
 		otherElGamalGenerator = new ElGamalGenerator(otherGqGroup);
 	}
@@ -248,33 +249,40 @@ class VerifyOfflineShuffleProofTest extends Block4VerificationAbstractTest {
 
 	@Test
 	void executeTestOK() throws Exception {
-		VerificationResult verificationResult =
-				verification.verify(Paths.get(Objects.requireNonNull(getClass().getResource("/VerifyOfflineShuffleProofTest/OK")).toURI()));
-		assertNotNull(verificationResult);
-		assertEquals(Status.OK, verificationResult.getStatus());
+		final String inputDirectory = Paths.get(getClass().getResource("/VerifyOfflineShuffleProofTest/OK").toURI()).toString();
+		final VerificationResultEvent resultEvent = verification.verify(new Block4Event(this, inputDirectory));
+
+		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
 	void executeTestNOK() throws Exception {
-		VerificationResult verificationResult =
-				verification.verify(Paths.get(Objects.requireNonNull(getClass().getResource("/VerifyOfflineShuffleProofTest/NOK")).toURI()));
-		assertNotNull(verificationResult);
-		assertEquals(Status.NOK, verificationResult.getStatus());
-		assertEquals(TranslationHelper.getFromResourceBundle("block4/resources", "verification11.nok.message"), verificationResult.getMessage());
+		final Path inputDirectoryPath = Paths.get(getClass().getResource("/VerifyOfflineShuffleProofTest/NOK").toURI());
+		final String inputDirectory = inputDirectoryPath.toString();
+		final var event = new Block4Event(this, inputDirectory);
+		final VerificationResultEvent resultEvent = verification.verify(event);
+
+		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
+				TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification11.nok.message"));
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
 	void executeTestNOKFileNotFound() throws URISyntaxException {
-		final Path path = Paths
-				.get(Objects.requireNonNull(getClass().getResource("/VerifyOfflineShuffleProofTest/NOK_missingFiles")).toURI());
-		assertThrows(UncheckedIOException.class, () -> verification.verify(path));
+		final String inputDirectory = Paths.get(getClass().getResource("/VerifyOfflineShuffleProofTest/NOK_missingFiles").toURI()).toString();
+		final var event = new Block4Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.BALLOT_BOX_OFFLINE_MIXING);
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(structureNode.getQualifier()));
 	}
 
 	@Test
 	void executeTestNOKCorruptedFile() throws URISyntaxException {
-		final Path path = Paths
-				.get(Objects.requireNonNull(getClass().getResource("/VerifyOfflineShuffleProofTest/NOK_corruptedFile")).toURI());
-		UncheckedIOException exception = assertThrows(UncheckedIOException.class, () -> verification.verify(path));
-		assertNotNull(exception);
+		final String inputDirectory = Paths.get(getClass().getResource("/VerifyOfflineShuffleProofTest/NOK_corruptedFile").toURI()).toString();
+		final var event = new Block4Event(this, inputDirectory);
+
+		assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 	}
 }

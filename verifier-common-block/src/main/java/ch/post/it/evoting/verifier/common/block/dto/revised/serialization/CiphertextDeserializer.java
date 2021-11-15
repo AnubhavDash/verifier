@@ -36,9 +36,9 @@ public class CiphertextDeserializer extends JsonDeserializer<Ciphertext> {
 	public CiphertextDeserializer() {
 		mapper = new ObjectMapper();
 
-		SimpleModule typesModule = new SimpleModule();
-		typesModule.addDeserializer(BigInteger.class, new Base64BigIntegerDeserializer());
-		mapper.registerModule(typesModule);
+		var simpleModule = new SimpleModule();
+		simpleModule.addDeserializer(BigInteger.class, new Base64BigIntegerDeserializer());
+		mapper.registerModule(simpleModule);
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class CiphertextDeserializer extends JsonDeserializer<Ciphertext> {
 
 		JsonNode root = mapper.readTree(jsonParser);
 
-		String gammaString = root.path("gamma").asText();
+		var gammaString = root.path("gamma").asText();
 		BigInteger gamma;
 		if (gammaString.indexOf(";") > 0) {
 			gamma = TypeConverter.stringToBigInteger(gammaString.split(";")[0]);
@@ -57,13 +57,13 @@ public class CiphertextDeserializer extends JsonDeserializer<Ciphertext> {
 
 		BigInteger[] phis;
 		if (root.path("phis").isArray()) {
-			ArrayNode arrayNode = (ArrayNode) root.path("phis");
+			var arrayNode = (ArrayNode) root.path("phis");
 			phis = new BigInteger[arrayNode.size()];
-			for (int i = 0; i < arrayNode.size(); i++) {
+			for (var i = 0; i < arrayNode.size(); i++) {
 				phis[i] = TypeConverter.stringToBigInteger(arrayNode.get(i).asText());
 			}
 		} else {
-			String phisString = root.path("phis").asText();
+			var phisString = root.path("phis").asText();
 			if (phisString.indexOf(",") > 0 || phisString.indexOf(";") > 0) {
 				phis = Arrays.stream(phisString.split(","))
 						.map(p -> TypeConverter.stringToBigInteger(p.split(";")[0]))

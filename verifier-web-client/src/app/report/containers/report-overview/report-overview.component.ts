@@ -78,6 +78,7 @@ export class ReportOverviewComponent implements OnInit {
     result.status = input.status;
     result.description = input.description;
     result.message = input.message;
+    result.traits = input.verificationTraits;
     return result;
   }
 
@@ -90,7 +91,7 @@ export class ReportOverviewComponent implements OnInit {
   }
 
   initTable() {
-    this.processorService.getVerificationStatus().subscribe(results => {
+    this.processorService.getVerifications().subscribe(results => {
       this.verificationsSize = results.length;
       const verifications = {};
       for (const verification of results) {
@@ -107,7 +108,28 @@ export class ReportOverviewComponent implements OnInit {
     this.processorService.setConfigurationInputDirectory(configuration).subscribe(() => {
       this.processStarted = true;
       this.startDisabled = true;
-      this.processorService.processVerifications(runOptions).subscribe();
+      if (runOptions === undefined) {
+        const allTraits = [this.verificationTrait.BLOCK_1, this.verificationTrait.BLOCK_2, this.verificationTrait.BLOCK_3,
+          this.verificationTrait.BLOCK_4];
+        runOptions = allTraits.join(',');
+      }
+      this.processorService.processVerifications(runOptions).subscribe(() => {
+        this.updateNAStatus(runOptions);
+      });
+    });
+  }
+
+  updateNAStatus(runOptions: string) {
+    Object.keys(this.verifications).forEach(key => {
+      let notFound = true;
+      this.verifications[key].traits.forEach(trait => {
+        if (runOptions.indexOf(trait) >= 0) {
+          notFound = false;
+        }
+      });
+      if (notFound) {
+        this.verifications[key].status = this.verificationFilter.NA.value;
+      }
     });
   }
 
@@ -138,10 +160,6 @@ export class ReportOverviewComponent implements OnInit {
         }
       });
     });
-  }
-
-  update() {
-    this.initTable();
   }
 
   isOK(status) {

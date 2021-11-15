@@ -34,9 +34,9 @@ public class ListDeserializer extends JsonDeserializer<List<?>> {
 	public ListDeserializer() {
 		mapper = new ObjectMapper();
 
-		SimpleModule typesModule = new SimpleModule();
-		typesModule.addDeserializer(UUID.class, new UuidDeserializer());
-		mapper.registerModule(typesModule);
+		var simpleModule = new SimpleModule();
+		simpleModule.addDeserializer(UUID.class, new UuidDeserializer());
+		mapper.registerModule(simpleModule);
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class ListDeserializer extends JsonDeserializer<List<?>> {
 	}
 
 	private List<?> parseAsString(JsonParser jsonParser) throws IOException {
-		String value = jsonParser.getValueAsString();
+		var value = jsonParser.getValueAsString();
 		if (value.matches("[0-9;]+")) {
 			// Semi-column separated list of BigIntegers.
 			String[] strings = value.split(";");

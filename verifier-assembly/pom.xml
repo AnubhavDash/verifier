@@ -7,14 +7,14 @@
 	<parent>
 		<artifactId>verifier</artifactId>
 		<groupId>ch.post.it.evoting.verifier</groupId>
-		<version>0.8.0.0</version>
+		<version>0.8.1.0</version>
 	</parent>
 
 	<artifactId>verifier-assembly</artifactId>
 	<packaging>pom</packaging>
 
 	<properties>
-		<download-maven-plugin.version>1.6.0</download-maven-plugin.version>
+		<download-maven-plugin.version>1.6.7</download-maven-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -42,10 +42,10 @@
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>${adoptopenjdk.url}</url>
+							<url>${openjdk.url}</url>
 							<unpack>true</unpack>
 							<outputDirectory>${project.build.directory}/jdk</outputDirectory>
-							<sha256>${adoptopenjdk.sha256}</sha256>
+							<sha256>${openjdk.sha256}</sha256>
 						</configuration>
 					</execution>
 				</executions>

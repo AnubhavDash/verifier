@@ -32,15 +32,12 @@ export class ProcessorService {
 
   }
 
-  getVerificationStatus(): Observable<any> {
+  getVerifications(): Observable<any> {
     return this.http.get<any>(environment.appUrl + '/api/verifications', this.httpOptions);
   }
 
   processVerifications(runOptions?: string): Observable<Object> {
-    let runParams = '';
-    if (runOptions !== undefined) {
-      runParams = `?runOptions=${runOptions}`;
-    }
+    const runParams = `?runOptions=${runOptions}`;
     return this.http.post(environment.appUrl + '/api/verifications' + runParams, null, this.httpOptions);
   }
 

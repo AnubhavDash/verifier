@@ -24,7 +24,8 @@ import java.util.Optional;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import ch.evoting.xmlns.config._4.Configuration;
@@ -35,7 +36,7 @@ import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 @Component
 public class ContestConfigurationReader {
 
-	private static final Logger LOGGER = Logger.getLogger(ContestConfigurationReader.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ContestConfigurationReader.class);
 
 	private static final String ELECTION_SETUP_PATH = "election_setup";
 
@@ -46,28 +47,28 @@ public class ContestConfigurationReader {
 		} catch (FileNotFoundException e) {
 			LOGGER.error("Unable to locate the configuration-anonymized file based on given configuration directory");
 		} catch (IOException | JAXBException | XMLStreamException e) {
-			LOGGER.error(String.format("unable to get the contest name in file %s/configuration-anonymized.xml", inputDirectory), e);
-			throw new RuntimeException(e);
+			throw new IllegalArgumentException(
+					String.format("unable to get the contest name in file %s/configuration-anonymized.xml", inputDirectory), e);
 		}
 		return null;
 	}
 
 	public String getContestName(String inputDirectory, Language language) {
-		Configuration configuration = loadConfiguration(inputDirectory);
+		var configuration = loadConfiguration(inputDirectory);
 		if (configuration != null) {
 			Optional<ContestDescriptionInformationType.ContestDescriptionInfo> optDesc = configuration.getContest().getContestDescription()
 					.getContestDescriptionInfo().stream().filter(o -> o.getLanguage().value().equalsIgnoreCase(language.toString())).findFirst();
 			if (optDesc.isPresent()) {
 				return optDesc.get().getContestDescription();
 			} else {
-				LOGGER.warn(String.format("language %s not found for contestDescription", language));
+				LOGGER.warn("language {} not found for contestDescription", language);
 			}
 		}
 		return "";
 	}
 
 	public Date getContestDate(String inputDirectory) {
-		Configuration configuration = loadConfiguration(inputDirectory);
+		var configuration = loadConfiguration(inputDirectory);
 		if (configuration != null) {
 			return configuration.getContest().getContestDate().toGregorianCalendar().getTime();
 		}

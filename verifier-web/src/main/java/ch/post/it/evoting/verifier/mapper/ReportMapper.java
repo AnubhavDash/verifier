@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 import ch.post.it.evoting.verifier.common.Language;
@@ -38,11 +37,11 @@ public interface ReportMapper {
 
 	default Report map(Report result, List<Verification> testsList, Language lang) {
 		List<Block> blockList = testsList.stream()
-				.map(t -> t.getBlockId())
+				.map(Verification::getBlockId)
 				.distinct()
 				.sorted()
 				.map(id -> {
-					Block block = new Block();
+					var block = new Block();
 					block.setTitle(
 							(TranslationHelper.getFromResourceBundle(ReportGenerator.MESSAGE_BUNDLE_NAME, "report.block.title", lang.getLocale()))
 									+ id);
@@ -60,19 +59,17 @@ public interface ReportMapper {
 		return result;
 	}
 
-	@Mappings({
-			@Mapping(target = "testIdLabel", expression = "java( getLabel(\"id\", lang) )"),
-			@Mapping(target = "testNameLabel", expression = "java( getLabel(\"name\", lang) )"),
-			@Mapping(target = "testCategoryLabel", expression = "java( getLabel(\"category\", lang) )"),
-			@Mapping(target = "testDescriptionLabel", expression = "java( getLabel(\"description\", lang) )"),
-			@Mapping(target = "testStatusLabel", expression = "java( getLabel(\"status\", lang) )"),
-			@Mapping(target = "testMessageLabel", expression = "java( getLabel(\"message\", lang) )"),
-			@Mapping(target = "id", source = "verification.verificationId"),
-			@Mapping(target = "category", source = "verification.category"),
-			@Mapping(target = "description", expression = "java( verification.getDescription().get(lang) )"),
-			@Mapping(target = "status", source = "verification.status"),
-			@Mapping(target = "message", expression = "java( getMessage(verification, lang) )")
-	})
+	@Mapping(target = "testIdLabel", expression = "java( getLabel(\"id\", lang) )")
+	@Mapping(target = "testNameLabel", expression = "java( getLabel(\"name\", lang) )")
+	@Mapping(target = "testCategoryLabel", expression = "java( getLabel(\"category\", lang) )")
+	@Mapping(target = "testDescriptionLabel", expression = "java( getLabel(\"description\", lang) )")
+	@Mapping(target = "testStatusLabel", expression = "java( getLabel(\"status\", lang) )")
+	@Mapping(target = "testMessageLabel", expression = "java( getLabel(\"message\", lang) )")
+	@Mapping(target = "id", source = "verification.verificationId")
+	@Mapping(target = "category", source = "verification.category")
+	@Mapping(target = "description", expression = "java( verification.getDescription().get(lang) )")
+	@Mapping(target = "status", source = "verification.status")
+	@Mapping(target = "message", expression = "java( getMessage(verification, lang) )")
 	ch.post.it.evoting.verifier.report.model.Test map(Verification verification, Language lang);
 
 	default String getMessage(Verification v, Language l) {

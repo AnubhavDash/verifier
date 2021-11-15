@@ -20,15 +20,14 @@ import java.math.BigInteger;
 import java.util.Base64;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 
 public class Base64BigIntegerDeserializer extends JsonDeserializer<BigInteger> {
 	@Override
 	public BigInteger deserialize(JsonParser jsonParser,
-			DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
-		String value = jsonParser.getValueAsString();
+			DeserializationContext deserializationContext) throws IOException {
+		var value = jsonParser.getValueAsString();
 
 		if (isBase64Encoded(value)) {
 			byte[] bytes = Base64.getDecoder().decode(value);

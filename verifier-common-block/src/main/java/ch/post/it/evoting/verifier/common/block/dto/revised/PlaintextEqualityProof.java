@@ -26,6 +26,7 @@ import ch.post.it.evoting.verifier.common.block.dto.converter.StringToBigInteger
 import lombok.Getter;
 
 @Getter
+@SuppressWarnings({ "java:S116", "java:S117" })
 public class PlaintextEqualityProof {
 
 	@JsonDeserialize(converter = StringToBigIntegerConverter.class)

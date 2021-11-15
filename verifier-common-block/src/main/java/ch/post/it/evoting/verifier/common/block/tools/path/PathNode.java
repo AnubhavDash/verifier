@@ -25,9 +25,9 @@ import java.util.stream.Stream;
 
 public class PathNode {
 
-	private List<Path> paths;
-	private Path firstPath;
-	private StructureNode structureNode;
+	private final List<Path> paths;
+	private final Path firstPath;
+	private final StructureNode structureNode;
 
 	PathNode(List<Path> path, StructureNode structureNode) {
 		this.paths = path;
@@ -86,7 +86,7 @@ public class PathNode {
 		}
 		for (RelationType r : structureNode.getRelations()) {
 			if (r.equals(relationType)) {
-				final String relationPathString = regexPath.getFileName().toString() + relationType.toFileExtension();
+				final var relationPathString = regexPath.getFileName().toString() + relationType.toFileExtension();
 				return regexPath.resolveSibling(relationPathString);
 			}
 		}

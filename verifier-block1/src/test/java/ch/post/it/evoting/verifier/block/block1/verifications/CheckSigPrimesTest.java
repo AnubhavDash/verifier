@@ -16,38 +16,47 @@
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.exceptions.VerificationFailureException;
+import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.event.Block1Event;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
 
-class CheckSigPrimesTest extends Block1VerificationAbstractTest {
+class CheckSigPrimesTest extends Block1VerificationTest {
 
-	public CheckSigPrimesTest() {
-		super(CheckSigPrimes.class);
+	@BeforeAll
+	static void setUpAll() {
+		verification = new CheckSigPrimes(pathService, certificateLoader, applicationEventPublisherMock);
 	}
 
 	@Test
-	@Disabled("Certificate in dataset has expired, temporary deactivation until a new dataset is provided")
 	void executeTestOK() throws Exception {
-		VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckSigPrimesTest/OK").toURI()));
-		assertNotNull(verificationResult);
-		assertEquals(Status.OK, verificationResult.getStatus());
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigPrimesTest/OK").toURI()).toString();
+		final VerificationResultEvent resultEvent = verification.verify(new Block1Event(this, inputDirectory));
+
+		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
-	void executeTestNOKCertKo() {
-		final VerificationFailureException ex = assertThrows(
-				VerificationFailureException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigPrimesTest/NOK").toURI()))
-		);
-		assertEquals("The signature verification of the file failed.", ex.getMessage());
+	void executeTestNOKCertKo() throws URISyntaxException {
+		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckSigPrimesTest/NOK").toURI());
+		final String inputDirectory = inputDirectoryPath.toString();
+		final var event = new Block1Event(this, inputDirectory);
+		final VerificationResultEvent resultEvent = verification.verify(event);
+
+		final var primesNode = pathService.buildFromRootPath(StructureKey.PRIMES, inputDirectoryPath);
+		final var fileName = primesNode.getRegexPaths().get(0).toString();
+		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
+				TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification82.nok.message", fileName));
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 }

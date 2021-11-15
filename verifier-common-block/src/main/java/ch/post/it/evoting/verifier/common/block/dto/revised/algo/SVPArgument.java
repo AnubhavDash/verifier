@@ -31,6 +31,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@SuppressWarnings("java:S116")
 public class SVPArgument implements Argument {
 
 	@JsonDeserialize(converter = StringToBigIntegerConverter.class)

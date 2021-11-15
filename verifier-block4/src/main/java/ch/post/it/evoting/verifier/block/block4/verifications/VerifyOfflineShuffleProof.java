@@ -18,64 +18,71 @@ package ch.post.it.evoting.verifier.block.block4.verifications;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
 
 import ch.post.it.evoting.cryptoprimitives.GroupVector;
+import ch.post.it.evoting.cryptoprimitives.domain.mixnet.MixnetShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.mixnet.Mixnet;
 import ch.post.it.evoting.cryptoprimitives.mixnet.ShuffleArgument;
-import ch.post.it.evoting.cryptoprimitives.mixnet.VerifiableShuffle;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.MixnetShufflePayload;
 import ch.post.it.evoting.verifier.block.block4.Block4VerificationSuite;
+import ch.post.it.evoting.verifier.common.AbstractVerification;
 import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.VerificationTrait;
 import ch.post.it.evoting.verifier.common.block.dto.revised.BallotBox;
 import ch.post.it.evoting.verifier.common.block.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.common.event.VerifierEvent;
 
+@Component
 public class VerifyOfflineShuffleProof extends AbstractVerification {
 
+	private final PathService pathService;
 	private final ElectionDataExtractionService extractionService;
 	private final Mixnet mixnet;
 
 	@Autowired
-	public VerifyOfflineShuffleProof(final ElectionDataExtractionService extractionService, final Mixnet mixnet) {
+	public VerifyOfflineShuffleProof(final PathService pathService, final ElectionDataExtractionService extractionService, final Mixnet mixnet,
+			final ApplicationEventPublisher applicationEventPublisher) {
+		super(applicationEventPublisher);
+		this.pathService = pathService;
 		this.extractionService = extractionService;
 		this.mixnet = mixnet;
 	}
 
 	@Override
 	public VerificationDefinition getVerificationDefinition() {
-		var verificationDefinition = new VerificationDefinition();
-		verificationDefinition.setBlockId(4);
-		verificationDefinition.setCategory(Category.EVIDENCE);
-		verificationDefinition.setId(11);
-		verificationDefinition.setName("verifyOfflineShuffleProofBlock4");
-		verificationDefinition.setDescription(TranslationHelper
-				.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification11.description"));
+		final var definition = new VerificationDefinition();
+		definition.setBlockId(4);
+		definition.setCategory(Category.EVIDENCE);
+		definition.setId(11);
+		definition.setName("verifyOfflineShuffleProofBlock4");
+		definition.setDescription(
+				TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification11.description"));
+		definition.addVerificationTrait(VerificationTrait.BLOCK_4);
 
-		return verificationDefinition;
+		return definition;
 	}
 
 	@Override
-	@SuppressWarnings("java:S117")
-	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-		VerificationResult result = new VerificationResult();
+	public VerificationResultEvent verify(final VerifierEvent event) {
+		final var inputDirectoryPath = event.getInputDirectoryPath();
 
 		final boolean bbDecryptVerif = deserializeVerificationInput(inputDirectoryPath)
 				.parallel()
@@ -83,21 +90,19 @@ public class VerifyOfflineShuffleProof extends AbstractVerification {
 				.allMatch(this::verifyOfflineShuffleProofBallotBox);
 
 		if (bbDecryptVerif) {
-			result.setStatus(Status.OK);
+			return VerificationResultEvent.success(this, getVerificationDefinition());
 		} else {
-			result.setStatus(Status.NOK);
-			result.setMessage(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification11.nok.message"));
+			return VerificationResultEvent.failure(this, getVerificationDefinition(),
+					TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification11.nok.message"));
 		}
-		return result;
 	}
 
 	/**
 	 * Get all inputs for the verification from the relevant files.
 	 *
 	 * @param inputDirectoryPath the root directory of files
-	 * @throws IOException if there is a problem while deserializing from file
 	 */
-	private Stream<VerifyOfflineShuffleProofInput> deserializeVerificationInput(Path inputDirectoryPath) throws IOException {
+	private Stream<VerifyOfflineShuffleProofInput> deserializeVerificationInput(Path inputDirectoryPath) {
 		final var electionEvent = extractionService.getElectionEvent(inputDirectoryPath);
 		final List<BallotBox> ballotBoxList = electionEvent.getBallotBoxes();
 		final var ballotIdsPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
@@ -106,7 +111,7 @@ public class VerifyOfflineShuffleProof extends AbstractVerification {
 				.map(bb -> {
 					final var ballotBoxId = TypeConverter.UUIDToStringWithoutDash(bb.getId());
 					final var ballotBoxDirectoryPath = ballotIdsPathNode.getRegexPath(ballotBoxId);
-					final int minNumberOfVotesForShuffle = 2;
+					final var minNumberOfVotesForShuffle = 2;
 
 					if (extractionService.getNumberOfVotes(ballotBoxDirectoryPath) < minNumberOfVotesForShuffle) {
 						return new VerifyOfflineShuffleProofInput();
@@ -117,14 +122,14 @@ public class VerifyOfflineShuffleProof extends AbstractVerification {
 						final MixnetShufflePayload lastShufflePayload = shufflePayloads.get(shufflePayloads.size() - 1);
 
 						// Currently, we do not support write-ins, therefore, we set this value to 1.
-						final int allowedWriteInsPlusOne = 1;
+						final var allowedWriteInsPlusOne = 1;
 						final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> partiallyDecryptedVotes = lastShufflePayload.getVerifiableDecryptions()
 								.getCiphertexts();
 						final ElGamalMultiRecipientPublicKey electoralBoardPublicKey = lastShufflePayload.getRemainingElectionPublicKey();
 						// Since we have checked that we have at least two votes, this should never throw
-						final VerifiableShuffle verifiableShuffle = finalPayload.getVerifiableShuffle().orElseThrow();
+						final var verifiableShuffle = finalPayload.getVerifiableShuffle().orElseThrow();
 						final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> shuffledVotes = verifiableShuffle.getShuffledCiphertexts();
-						final ShuffleArgument shuffleProof = verifiableShuffle.getShuffleArgument();
+						final var shuffleProof = verifiableShuffle.getShuffleArgument();
 
 						return new VerifyOfflineShuffleProofInput(allowedWriteInsPlusOne, partiallyDecryptedVotes, electoralBoardPublicKey,
 								shuffledVotes, shuffleProof);

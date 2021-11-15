@@ -28,6 +28,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@SuppressWarnings("java:S116")
 public class SVPStatement implements Statement {
 
 	@JsonDeserialize(converter = StringToBigIntegerConverter.class)

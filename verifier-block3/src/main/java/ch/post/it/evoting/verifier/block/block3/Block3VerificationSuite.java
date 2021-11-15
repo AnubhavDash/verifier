@@ -15,17 +15,12 @@
  */
 package ch.post.it.evoting.verifier.block.block3;
 
-import org.springframework.stereotype.Component;
-
-import ch.post.it.evoting.verifier.common.block.VerificationSuite;
-
-@Component
-public class Block3VerificationSuite extends VerificationSuite {
+public class Block3VerificationSuite {
 
 	public static final String RESOURCE_BUNDLE_NAME = "block3/resources";
 
-	public Block3VerificationSuite() {
-		super(Block3VerificationSuite.class.getPackage().getName() + ".verifications");
+	private Block3VerificationSuite() {
+		// Intentionally left blank.
 	}
 
 }

@@ -21,10 +21,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.verifier.common.Language;
@@ -36,30 +34,28 @@ import ch.post.it.evoting.verifier.report.model.Report;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Component
 public class ReportGenerator {
 
 	public static final String MESSAGE_BUNDLE_NAME = "message";
-	private static final Logger LOGGER = Logger.getLogger(ReportGenerator.class);
 
-	public byte[] generate(String contestName, Date contestDate, List<Verification> verifications, Language language) {
+	public byte[] generate(final String contestName, final Date contestDate, final List<Verification> verifications, final Language language) {
 		try {
-			Locale locale = language.getLocale();
+			final var locale = language.getLocale();
 
-			final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy");
-			final SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
+			final var dateFormatter = new SimpleDateFormat("dd.MM.yyyy");
+			final var timeFormatter = new SimpleDateFormat("HH:mm:ss");
 
-			Report report = new Report();
+			final var report = new Report();
 			report.setTitle((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.head.title", locale)));
 			report.setHeaderTitleLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.header.title", locale)));
 
 			report.setHeaderTitle(String.format("%s %s", contestName, contestDate != null ? dateFormatter.format(contestDate) : ""));
 			report.setReportDateLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.header.date", locale)));
 			report.setReportTimeLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.header.time", locale)));
-			Date now = new Date();
+			final var now = new Date();
 			report.setReportDate(dateFormatter.format(now));
 			report.setReportTime(timeFormatter.format(now));
 			report.setCommentLabel((TranslationHelper.getFromResourceBundle(MESSAGE_BUNDLE_NAME, "report.lastpage.comment", locale)));
@@ -73,20 +69,19 @@ public class ReportGenerator {
 			report.setFooterDate(dateFormatter.format(now) + " / " + timeFormatter.format(now));
 
 			//map to a Report Object
-			Report content = ReportMapper.INSTANCE.map(report, verifications, language);
+			final Report content = ReportMapper.INSTANCE.map(report, verifications, language);
 
-			Map<String, Object> parameters = new HashMap<>();
+			final Map<String, Object> parameters = new HashMap<>();
 
-			JRBeanCollectionDataSource jrDataSource = new JRBeanCollectionDataSource(Collections.singletonList(content));
+			final var jrDataSource = new JRBeanCollectionDataSource(Collections.singletonList(content));
 
-			InputStream jasper = this.getClass().getClassLoader().getResourceAsStream("jasper/Vreport.jasper");
+			final InputStream jasper = this.getClass().getClassLoader().getResourceAsStream("jasper/Vreport.jasper");
 
-			JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parameters, jrDataSource);
+			final var jasperPrint = JasperFillManager.fillReport(jasper, parameters, jrDataSource);
 
 			return JasperExportManager.exportReportToPdf(jasperPrint);
 		} catch (JRException e) {
-			LOGGER.error("unable to generate the PDF report", e);
-			throw new RuntimeException(e);
+			throw new IllegalArgumentException("unable to generate the PDF report", e);
 		}
 	}
 

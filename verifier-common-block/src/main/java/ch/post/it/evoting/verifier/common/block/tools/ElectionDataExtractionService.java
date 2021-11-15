@@ -15,25 +15,33 @@
  */
 package ch.post.it.evoting.verifier.common.block.tools;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.math.BigInteger;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
 
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.MixnetFinalPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.MixnetInitialPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.MixnetShufflePayload;
+import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ChoiceCodeGenerationDTO;
+import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ReturnCodeGenerationRequestPayload;
+import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ReturnCodeGenerationResponsePayload;
+import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.verifier.common.block.dto.revised.ElectionEvent;
+import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionParameters;
 import ch.post.it.evoting.verifier.common.block.exceptions.MalformedFileException;
 import ch.post.it.evoting.verifier.common.block.exceptions.MissingFileException;
 import ch.post.it.evoting.verifier.common.block.exceptions.UnexpectedFileException;
@@ -44,10 +52,9 @@ import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 @Service
 public class ElectionDataExtractionService {
 
-	private PathService pathService;
-	private ObjectMapper objectMapper;
+	private final PathService pathService;
+	private final ObjectMapper objectMapper;
 
-	@Autowired
 	public ElectionDataExtractionService(final PathService pathService, final ObjectMapper objectMapper) {
 		this.pathService = pathService;
 		this.objectMapper = objectMapper;
@@ -57,19 +64,41 @@ public class ElectionDataExtractionService {
 	 * Gets the election event.
 	 *
 	 * @param inputDirectoryPath the root directory containing project files.
-	 * @return the election event found in the project files, at the expected location if it existst.
-	 * @throws FileNotFoundException if the file can't be found at the expected location
-	 * @throws IOException,          if the file cannot be deserialized to an ElectionEvent.
+	 * @return the election event found in the project files, at the expected location if it exists.
+	 * @throws UncheckedIOException if the file cannot be deserialized to an ElectionEvent.
 	 */
-	public ElectionEvent getElectionEvent(Path inputDirectoryPath) throws IOException {
-		final PathNode dataConfigPathNode;
+	public ElectionEvent getElectionEvent(Path inputDirectoryPath) {
+		final var dataConfigPathNode = pathService.buildFromRootPath(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
 		try {
-			dataConfigPathNode = pathService.buildFromRootPath(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
+			return Deserializer.fromJson(dataConfigPathNode.getPath(), ElectionEvent.class);
 		} catch (IOException e) {
-			throw new UncheckedIOException(String.format("Could not find dataConfig_updated in %s", inputDirectoryPath), e);
+			throw new UncheckedIOException("Failed to deserialize election event.", e);
 		}
+	}
 
-		return ch.post.it.evoting.verifier.common.block.tools.Deserializer.fromJson(dataConfigPathNode.getPath(), ElectionEvent.class);
+	public GqGroup getEncryptionParameters(final Path inputDirectoryPath) {
+		final var encryptionParametersPathNode = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
+		final EncryptionParameters encryptionParameters;
+		try {
+			encryptionParameters = Deserializer.fromJson(encryptionParametersPathNode.getPath(), EncryptionParameters.class);
+		} catch (IOException e) {
+			throw new UncheckedIOException("Failed to deserialize encryption parameters.", e);
+		}
+		final BigInteger p = encryptionParameters.getP();
+		final BigInteger q = encryptionParameters.getQ();
+		final BigInteger g = encryptionParameters.getG();
+
+		return new GqGroup(p, q, g);
+	}
+
+	public ImmutableList<BigInteger> getPrimes(final Path inputDirectoryPath) {
+		final PathNode primesPathNode;
+		primesPathNode = pathService.buildFromRootPath(StructureKey.PRIMES, inputDirectoryPath);
+		try (Stream<BigInteger> iterable = Files.lines(primesPathNode.getPath()).map(BigInteger::new)) {
+			return iterable.collect(ImmutableList.toImmutableList());
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
 	}
 
 	/**
@@ -77,16 +106,11 @@ public class ElectionDataExtractionService {
 	 * the case of an empty ballot box).
 	 *
 	 * @param ballotBoxDirectoryPath the path of a ballot box containing a MixnetFinalPayload
-	 * @throws FileNotFoundException if the file can't be found at the expected location
-	 * @throws IOException           if the file can't be deserialized
+	 * @throws UncheckedIOException if the mixnet final payload could not be read from the file
 	 */
 	public MixnetFinalPayload getMixnetFinalPayload(final Path ballotBoxDirectoryPath) {
-		final PathNode mixnetFinalPayloadPathNode;
-		try {
-			mixnetFinalPayloadPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_OFFLINE_MIXING, ballotBoxDirectoryPath);
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
-		}
+		final var mixnetFinalPayloadPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_OFFLINE_MIXING,
+				ballotBoxDirectoryPath);
 
 		try {
 			return objectMapper.readValue(mixnetFinalPayloadPathNode.getPath().toFile(), MixnetFinalPayload.class);
@@ -104,14 +128,11 @@ public class ElectionDataExtractionService {
 	 * @throws MissingFileException    if one or more mixnet shuffle payload files are missing
 	 * @throws UnexpectedFileException if too many mixnet shuffle payload files are present
 	 * @throws MalformedFileException  if the node Ids in the mixnet shuffle payload files are incorrect
+	 * @throws UncheckedIOException    if the mixnet shuffle payload could not be read from the file
 	 */
 	public List<MixnetShufflePayload> getMixnetShufflePayloads(final Path ballotBoxDirectoryPath) {
-		final PathNode mixnetShufflePayloadPathNode;
-		try {
-			mixnetShufflePayloadPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_ONLINE_MIXING, ballotBoxDirectoryPath);
-		} catch (IOException e) {
-			throw new UncheckedIOException("Could not find mixnetShufflePayload files", e);
-		}
+		final var mixnetShufflePayloadPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_ONLINE_MIXING,
+				ballotBoxDirectoryPath);
 
 		List<MixnetShufflePayload> payloads = new ArrayList<>();
 		for (Path mixnetShufflePayloadPath : mixnetShufflePayloadPathNode.getRegexPaths()) {
@@ -150,12 +171,7 @@ public class ElectionDataExtractionService {
 	 * @throws UncheckedIOException if the mixnet initial payload could not be read from the file
 	 */
 	public MixnetInitialPayload getMixnetInitialPayload(final Path ballotBoxDirectoryPath) {
-		final PathNode mixnetInitialPayloadPathNode;
-		try {
-			mixnetInitialPayloadPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_INITIAL, ballotBoxDirectoryPath);
-		} catch (IOException e) {
-			throw new UncheckedIOException("Could not find mixnetInitialPayload file", e);
-		}
+		final var mixnetInitialPayloadPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX_INITIAL, ballotBoxDirectoryPath);
 
 		try {
 			return objectMapper.readValue(mixnetInitialPayloadPathNode.getPath().toFile(), MixnetInitialPayload.class);
@@ -172,18 +188,45 @@ public class ElectionDataExtractionService {
 	 */
 	@SuppressWarnings("java:S1481")
 	public int getNumberOfVotes(final Path ballotBoxDirectoryPath) {
-		final PathNode decompressedVotesPathNode;
-		try {
-			decompressedVotesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.DECOMPRESSED_VOTES, ballotBoxDirectoryPath);
-		} catch (IOException e) {
-			throw new UncheckedIOException("Could not find decompressed votes file", e);
-		}
+		final var decompressedVotesPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.DECOMPRESSED_VOTES, ballotBoxDirectoryPath);
 		Iterable<List<String>> iterable = ch.post.it.evoting.verifier.common.block.tools.Deserializer
 				.fromCsv(decompressedVotesPathNode.getPath(), "\n", Arrays::asList);
-		int count = 0;
+		var count = 0;
 		for (List<String> ignored : iterable) {
 			count++;
 		}
 		return count;
+	}
+
+	public ReturnCodeGenerationRequestPayload deserializeReturnCodeGenerationRequestPayload(final Path votingCardSetIDPath) {
+		final PathNode nodePath;
+		try {
+			nodePath = pathService.buildFromDynamicAncestorPath(StructureKey.RETURN_CODE_GENERATION_REQUEST_PAYLOAD, votingCardSetIDPath);
+
+			return objectMapper.readValue(nodePath.getPath().toFile(), ReturnCodeGenerationRequestPayload.class);
+		} catch (IOException e) {
+			throw new UncheckedIOException("Failed to deserialize control component request payload for votingCardSetIDPath : " + votingCardSetIDPath,
+					e);
+		}
+	}
+
+	public List<ReturnCodeGenerationResponsePayload> deserializeControlComponentContributions(final Path votingCardSetIDPath) {
+		final PathNode nodePath;
+		try {
+			nodePath = pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_CONTRIBUTION, votingCardSetIDPath);
+
+			final List<ChoiceCodeGenerationDTO<ReturnCodeGenerationResponsePayload>> choiceCodeGenerationDTOS = objectMapper.readValue(
+					nodePath.getPath().toFile(), new TypeReference<>() {
+					});
+
+			return choiceCodeGenerationDTOS
+					.stream()
+					.map(ChoiceCodeGenerationDTO::getPayload)
+					.collect(Collectors.toList());
+
+		} catch (IOException e) {
+			throw new UncheckedIOException("Failed to deserialize control component contribution for votingCardSetIDPath : " + votingCardSetIDPath,
+					e);
+		}
 	}
 }

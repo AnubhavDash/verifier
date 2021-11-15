@@ -16,116 +16,129 @@
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.nio.file.NoSuchFileException;
+import java.io.UncheckedIOException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
+import com.google.common.base.Throwables;
+
+import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.common.block.exceptions.JsonMissingNodeException;
-import ch.post.it.evoting.verifier.common.block.exceptions.VerificationFailureException;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
+import ch.post.it.evoting.verifier.common.event.Block1Event;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
 
 import io.jsonwebtoken.SignatureException;
 
-class CheckSigBallotBoxConfigurationTest extends Block1VerificationAbstractTest {
+class CheckSigBallotBoxConfigurationTest extends Block1VerificationTest {
 
-	public CheckSigBallotBoxConfigurationTest() {
-		super(CheckSigBallotBoxConfiguration.class);
+	@BeforeAll
+	static void setUpAll() {
+		verification = new CheckSigBallotBoxConfiguration(pathService, certificateLoader, applicationEventPublisherMock);
 	}
 
 	@Test
-	@Disabled("Certificate in dataset has expired, temporary deactivation until a new dataset is provided")
 	void executeTestSignValid() throws Exception {
-		final VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource(
-				"/CheckSigBallotBoxConfigurationTest/OK").toURI()));
-		assertNotNull(verificationResult);
-		assertEquals(Status.OK, verificationResult.getStatus());
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/OK").toURI()).toString();
+		final VerificationResultEvent resultEvent = verification.verify(new Block1Event(this, inputDirectory));
+
+		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
-	void executeTestSignInvalid() {
-		final VerificationFailureException ex = assertThrows(
-				VerificationFailureException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK").toURI()))
-		);
-		assertEquals("The signature verification of the file failed", ex.getMessage());
+	void executeTestSignInvalid() throws URISyntaxException {
+		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK").toURI());
+		final String inputDirectory = inputDirectoryPath.toString();
+		final var event = new Block1Event(this, inputDirectory);
+
+		final VerificationResultEvent resultEvent = verification.verify(event);
+		final PathNode ballotIdsPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+		final String fileName = pathService.buildFromDynamicAncestorPath(StructureKey.BALLOT_BOX, ballotIdsPathNode.getRegexPaths().get(0)).getPath()
+				.toString();
+		final VerificationResultEvent expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
+				TranslationHelper.getFromResourceBundle(
+						Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification80.nok.message", fileName));
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
-	void executeTestNOKFileNotFoundCertificate() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK-NOFILE").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ADMIN_BOARD_CERT);
-		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	void executeTestNOKFileNotFoundCertificate() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK-NOFILE").toURI()).toString();
+		final var event = new Block1Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.ADMIN_BOARD_CERT);
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(structureNode.getQualifier()));
 	}
 
 	@Test
-	void executeTestNOKFileNotFoundIntermediateCertificate() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK-NOFILE2").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.TENANT_100);
-		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	void executeTestNOKFileNotFoundIntermediateCertificate() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK-NOFILE2").toURI()).toString();
+		final var event = new Block1Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.TENANT_100);
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(structureNode.getQualifier()));
 	}
 
 	@Test
-	void executeTestNOKFileNotFoundRootCertificate() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK-NOFILE3").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.PLATFORM_ROOT_CA);
-		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	void executeTestNOKFileNotFoundRootCertificate() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK-NOFILE3").toURI()).toString();
+		final var event = new Block1Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.PLATFORM_ROOT_CA);
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(structureNode.getQualifier()));
 	}
 
 	@Test
-	void executeTestNOKFileNotFoundBallotBox() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK-NOFILE4").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.BALLOT_BOX);
-		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	void executeTestNOKFileNotFoundBallotBox() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK-NOFILE4").toURI()).toString();
+		final var event = new Block1Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.BALLOT_BOX);
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(structureNode.getQualifier()));
 	}
 
 	@Test
-	void executeTestNOKFileNotFoundBallotBoxSign() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK-NOFILE5").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.BALLOT_BOX);
-		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	void executeTestNOKFileNotFoundBallotBoxSign() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK-NOFILE5").toURI()).toString();
+		final var event = new Block1Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.BALLOT_BOX);
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(structureNode.getQualifier()));
 	}
 
 	@Test
-	void executeTestNOKMissingJWT() {
-		final JsonMissingNodeException ex = assertThrows(
-				JsonMissingNodeException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK-NOJWT").toURI()))
-		);
-		assertEquals("The signature is missing from the file!", ex.getMessage());
+	void executeTestNOKMissingJWT() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK-NOJWT").toURI()).toString();
+		final var event = new Block1Event(this, inputDirectory);
+
+		final var exception = assertThrows(JsonMissingNodeException.class, () -> verification.verify(event));
+		assertEquals("The signature is missing from the file!", Throwables.getRootCause(exception).getMessage());
 	}
 
 	@Test
-	void executeTestNOKModifiedJWT() {
-		final SignatureException ex = assertThrows(
-				SignatureException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK-JWT").toURI()))
-		);
+	void executeTestNOKModifiedJWT() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigBallotBoxConfigurationTest/NOK-JWT").toURI()).toString();
+		final var event = new Block1Event(this, inputDirectory);
+
+		final var exception = assertThrows(SignatureException.class, () -> verification.verify(event));
 		assertEquals("JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted" +
-				".", ex.getMessage());
+				".", Throwables.getRootCause(exception).getMessage());
 	}
 
 }

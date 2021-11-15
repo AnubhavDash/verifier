@@ -19,6 +19,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 class StructureChecker {
 
+	private static final String CONTENT = "content";
+
 	private StructureChecker() {
 		// private constructor, use static
 	}
@@ -42,7 +44,7 @@ class StructureChecker {
 			try {
 				pathType = PathType.valueOf(type.asText());
 			} catch (IllegalArgumentException e) {
-				throw new RuntimeException(String.format("Type does not exist: %s", type.asText()));
+				throw new IllegalArgumentException(String.format("Type does not exist: %s", type.asText()));
 			}
 
 			switch (pathType) {
@@ -51,30 +53,30 @@ class StructureChecker {
 				break;
 			case DIRECTORY:
 				checkFolderIntegrity(node);
-				verifyNodeIntegrity(node.path("content"));
+				verifyNodeIntegrity(node.path(CONTENT));
 				break;
 			case DYNAMIC_DIRECTORY:
 				checkFolderLoopIntegrity(node);
-				verifyNodeIntegrity(node.path("content"));
+				verifyNodeIntegrity(node.path(CONTENT));
 				break;
 			}
 		}
 	}
 
 	private static void checkFolderLoopIntegrity(JsonNode node) {
-		final JsonNode content = node.path("content");
-		checkNodeMissing(content, "content", node.path("type").asText());
+		final JsonNode content = node.path(CONTENT);
+		checkNodeMissing(content, CONTENT, node.path("type").asText());
 	}
 
 	private static void checkFolderIntegrity(JsonNode node) {
 		final JsonNode key = node.path("key");
 		final JsonNode name = node.path("name");
-		final JsonNode content = node.path("content");
+		final JsonNode content = node.path(CONTENT);
 
 		final String type = node.path("type").asText();
 		checkNodeMissing(key, "key", type);
 		checkNodeMissing(name, "name", type);
-		checkNodeMissing(content, "content", type);
+		checkNodeMissing(content, CONTENT, type);
 
 	}
 
@@ -86,7 +88,7 @@ class StructureChecker {
 			try {
 				RelationType.valueOf(relation.asText());
 			} catch (IllegalArgumentException e) {
-				throw new RuntimeException(String.format("Type does not exist: %s", relation.asText()));
+				throw new IllegalArgumentException(String.format("Type does not exist: %s", relation.asText()));
 			}
 		}
 
@@ -97,7 +99,7 @@ class StructureChecker {
 
 	private static void checkNodeMissing(JsonNode node, String field, String type) {
 		if (node.isMissingNode()) {
-			throw new RuntimeException(String.format("Mandatory %s is missing in %s node.", field, type));
+			throw new IllegalArgumentException(String.format("Mandatory %s is missing in %s node.", field, type));
 		}
 	}
 

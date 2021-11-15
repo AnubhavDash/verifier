@@ -34,7 +34,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -75,22 +74,22 @@ public final class Deserializer {
 	}
 
 	public static ObjectMapper initObjectMapper() {
-		ObjectMapper mapper = new ObjectMapper();
+		var mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
-		SimpleModule typesModule = new SimpleModule();
-		typesModule.addDeserializer(BigInteger.class, new Base64BigIntegerDeserializer());
-		typesModule.addDeserializer(UUID.class, new UuidDeserializer());
-		typesModule.addDeserializer(List.class, new ListDeserializer());
-		typesModule.addDeserializer(PublicKey.class, new PublicKeyDeserializer());
-		typesModule.addDeserializer(X509Certificate.class, new X509Deserializer());
-		typesModule.addDeserializer(AuthenticationToken.class, new AuthenticationTokenDeserializer());
-		typesModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer());
-		typesModule.addDeserializer(PreImageProof.class, new PreImageProofDeserializer());
-		typesModule.addDeserializer(PlaintextEqualityProof.class, new PlaintextEqualityProofDeserializer());
-		typesModule.addDeserializer(ElectionEvent.class, new ElectionEventDeserializer());
-		typesModule.addDeserializer(Ciphertext.class, new CiphertextDeserializer());
-		mapper.registerModule(typesModule);
+		var simpleModule = new SimpleModule();
+		simpleModule.addDeserializer(BigInteger.class, new Base64BigIntegerDeserializer());
+		simpleModule.addDeserializer(UUID.class, new UuidDeserializer());
+		simpleModule.addDeserializer(List.class, new ListDeserializer());
+		simpleModule.addDeserializer(PublicKey.class, new PublicKeyDeserializer());
+		simpleModule.addDeserializer(X509Certificate.class, new X509Deserializer());
+		simpleModule.addDeserializer(AuthenticationToken.class, new AuthenticationTokenDeserializer());
+		simpleModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer());
+		simpleModule.addDeserializer(PreImageProof.class, new PreImageProofDeserializer());
+		simpleModule.addDeserializer(PlaintextEqualityProof.class, new PlaintextEqualityProofDeserializer());
+		simpleModule.addDeserializer(ElectionEvent.class, new ElectionEventDeserializer());
+		simpleModule.addDeserializer(Ciphertext.class, new CiphertextDeserializer());
+		mapper.registerModule(simpleModule);
 		return mapper;
 	}
 
@@ -99,34 +98,34 @@ public final class Deserializer {
 	}
 
 	public static <T> T fromJson(File inputDirectory, String filenamePattern, Class<T> targetClazz) throws IOException {
-		ObjectMapper jsonMapper = initObjectMapper();
+		var jsonMapper = initObjectMapper();
 		return jsonMapper.readValue(getFile(inputDirectory, filenamePattern), targetClazz);
 	}
 
 	public static <T> T fromJson(Path filePath, Class<T> targetClazz) throws IOException {
-		ObjectMapper jsonMapper = initObjectMapper();
+		var jsonMapper = initObjectMapper();
 		return jsonMapper.readValue(Files.newInputStream(filePath), targetClazz);
 	}
 
 	public static <T> T fromJson(byte[] content, Class<T> targetClazz) throws IOException {
-		ObjectMapper jsonMapper = initObjectMapper();
+		var jsonMapper = initObjectMapper();
 		return jsonMapper.readValue(new String(content, StandardCharsets.UTF_8), targetClazz);
 	}
 
 	public static <T> T fromXml(File inputDirectory, String filenamePattern, Class<T> targetClazz)
 			throws IOException, JAXBException, XMLStreamException {
-		XMLInputFactory factory = XMLInputFactory.newFactory();
+		var factory = XMLInputFactory.newFactory();
 		factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
 		factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
-		XMLStreamReader reader = factory.createXMLStreamReader(new FileInputStream(getFile(inputDirectory, filenamePattern)));
+		var reader = factory.createXMLStreamReader(new FileInputStream(getFile(inputDirectory, filenamePattern)));
 		return (T) JAXBContext.newInstance(targetClazz).createUnmarshaller().unmarshal(reader);
 	}
 
 	public static <T> T fromXml(Path filePath, Class<T> targetClazz) throws IOException, JAXBException, XMLStreamException {
-		XMLInputFactory factory = XMLInputFactory.newFactory();
+		var factory = XMLInputFactory.newFactory();
 		factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
 		factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
-		XMLStreamReader reader = factory.createXMLStreamReader(Files.newInputStream(filePath));
+		var reader = factory.createXMLStreamReader(Files.newInputStream(filePath));
 		return (T) JAXBContext.newInstance(targetClazz).createUnmarshaller().unmarshal(reader);
 	}
 

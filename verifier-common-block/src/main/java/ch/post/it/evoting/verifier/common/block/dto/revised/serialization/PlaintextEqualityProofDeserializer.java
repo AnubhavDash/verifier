@@ -27,15 +27,16 @@ import ch.post.it.evoting.verifier.common.block.dto.revised.PlaintextEqualityPro
 public class PlaintextEqualityProofDeserializer extends ProofDeserializer<PlaintextEqualityProof> {
 
 	@Override
+	@SuppressWarnings("java:S117")
 	protected PlaintextEqualityProof instantiateProof(BigInteger q, String hash, JsonNode values,
 			JsonParser jsonParser) throws InvalidFormatException {
-		Base64.Decoder decoder = Base64.getDecoder();
+		var decoder = Base64.getDecoder();
 		if (values.size() != 2) {
 			throw new InvalidFormatException(jsonParser, "wrong number of values (expects 1)", values.asText(),
 					BigInteger.class);
 		}
-		BigInteger c_0 = new BigInteger(decoder.decode(values.get(0).asText()));
-		BigInteger c_1 = new BigInteger(decoder.decode(values.get(1).asText()));
+		var c_0 = new BigInteger(decoder.decode(values.get(0).asText()));
+		var c_1 = new BigInteger(decoder.decode(values.get(1).asText()));
 		return new PlaintextEqualityProof(q, hash, c_0, c_1);
 	}
 }

@@ -16,101 +16,86 @@
 package ch.post.it.evoting.verifier.block.block2.verifications;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.nio.file.NoSuchFileException;
+import java.io.UncheckedIOException;
+import java.net.URISyntaxException;
 import java.nio.file.Paths;
+import java.util.stream.Stream;
 
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.exceptions.JsonMissingNodeException;
-import ch.post.it.evoting.verifier.common.block.exceptions.VerificationFailureException;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
+import com.google.common.base.Throwables;
 
-class CheckSigSuccessfulVotesTest extends Block2VerificationAbstractTest {
+import ch.post.it.evoting.verifier.block.block2.Block2VerificationSuite;
+import ch.post.it.evoting.verifier.common.block.exceptions.VerificationPreconditionException;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.event.PreDecryptionEvent;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
 
-	public CheckSigSuccessfulVotesTest() {
-		super(CheckSigSuccessfulVotes.class);
+class CheckSigSuccessfulVotesTest extends Block2VerificationTest {
+
+	@BeforeAll
+	static void setUpAll() {
+		verification = new CheckSigSuccessfulVotes(pathService, applicationEventPublisherMock);
 	}
 
 	@Test
-	@Disabled("Certificate in dataset has expired, temporary deactivation until a new dataset is provided")
 	void executeTestOK() throws Exception {
-		VerificationResult verificationResult =
-				verification.verify(Paths.get(getClass().getResource("/CheckSigSuccessfulVotesTest/OK").toURI()));
-		assertNotNull(verificationResult);
-		assertEquals(Status.OK, verificationResult.getStatus());
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigSuccessfulVotesTest/OK").toURI()).toString();
+		final VerificationResultEvent resultEvent = verification.verify(new PreDecryptionEvent(this, inputDirectory));
+
+		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
-	void executeTestNOKInvalidSignature() {
-		final VerificationFailureException ex = assertThrows(
-				VerificationFailureException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigSuccessfulVotesTest/NOK").toURI()))
-		);
-		assertEquals("The signature verification of the file failed", ex.getMessage());
+	void executeTestNOKInvalidSignature() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigSuccessfulVotesTest/NOK").toURI()).toString();
+		final var event = new PreDecryptionEvent(this, inputDirectory);
+		final VerificationResultEvent resultEvent = verification.verify(event);
+
+		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
+				TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification71.nok.message"));
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
-	@Test
-	void executeTestNOKFileNotFound() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigSuccessfulVotesTest/NOK-NOFILE").toURI()))
+	private static Stream<Arguments> nokArgumentProvider() throws URISyntaxException {
+		return Stream.of(
+				Arguments.of(getInputDirectory("/CheckSigSuccessfulVotesTest/NOK-NOFILE"), UncheckedIOException.class, "successfulVotes.csv"),
+				Arguments.of(getInputDirectory("/CheckSigSuccessfulVotesTest/NOK-NOFILE2"), UncheckedIOException.class, "ballotBox.json"),
+				Arguments.of(getInputDirectory("/CheckSigSuccessfulVotesTest/NOK-NOFILE3"), UncheckedIOException.class,
+						"[eE]lectionInformationContents.json"),
+				Arguments.of(getInputDirectory("/CheckSigSuccessfulVotesTest/NOK-NOCERT"), VerificationPreconditionException.class,
+						formatMessage(CheckSigSuccessfulVotes.BALLOT_BOX_CERT)),
+				Arguments.of(getInputDirectory("/CheckSigSuccessfulVotesTest/NOK-NOCERT2"), VerificationPreconditionException.class,
+						formatMessage(CheckSigSuccessfulVotes.SERVICES_CA)),
+				Arguments.of(getInputDirectory("/CheckSigSuccessfulVotesTest/NOK-NOCERT3"), VerificationPreconditionException.class,
+						formatMessage(CheckSigSuccessfulVotes.ELECTION_ROOT_CA))
 		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.SUCCESSFUL_VOTES);
-		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
 	}
 
-	@Test
-	void executeTestNOKBallotFileNotFound() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigSuccessfulVotesTest/NOK-NOFILE2").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.BALLOT_BOX);
-		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	private static String getInputDirectory(final String directory) throws URISyntaxException {
+		return Paths.get(CheckSigSuccessfulVotesTest.class.getResource(directory).toURI()).toString();
 	}
 
-	@Test
-	void executeTestNOKElectionFileNotFound() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigSuccessfulVotesTest/NOK-NOFILE3").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ELECTION_INFORMATION_CONTENTS);
-		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	private static String formatMessage(final String ballotBoxCert) {
+		return String.format("%s certificate is missing!", ballotBoxCert);
 	}
 
-	@Test
-	void executeTestNOKSignCertNotFound() {
-		final JsonMissingNodeException ex = assertThrows(
-				JsonMissingNodeException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigSuccessfulVotesTest/NOK-NOCERT").toURI()))
-		);
-		assertEquals(String.format("%s certificate is missing!", CheckSigSuccessfulVotes.BALLOT_BOX_CERT), ex.getMessage());
-	}
+	@ParameterizedTest(name = "{2}")
+	@MethodSource("nokArgumentProvider")
+	void executeTestNOKFileNotFound(final String inputDirectory, final Class<RuntimeException> expectedException,
+			final String expectedExceptionMessage) {
 
-	@Test
-	void executeTestNOKInterCertNotFound() {
-		final JsonMissingNodeException ex = assertThrows(
-				JsonMissingNodeException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigSuccessfulVotesTest/NOK-NOCERT2").toURI()))
-		);
-		assertEquals(String.format("%s certificate is missing!", CheckSigSuccessfulVotes.SERVICES_CA), ex.getMessage());
-	}
+		final var event = new PreDecryptionEvent(this, inputDirectory);
 
-	@Test
-	void executeTestNOKRootNotFound() {
-		final JsonMissingNodeException ex = assertThrows(
-				JsonMissingNodeException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigSuccessfulVotesTest/NOK-NOCERT3").toURI()))
-		);
-		assertEquals(String.format("%s certificate is missing!", CheckSigSuccessfulVotes.ELECTION_ROOT_CA), ex.getMessage());
+		final var exception = assertThrows(expectedException, () -> verification.verify(event));
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(expectedExceptionMessage));
 	}
 }

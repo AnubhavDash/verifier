@@ -16,135 +16,146 @@
 package ch.post.it.evoting.verifier.block.block4.verifications;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.nio.file.NoSuchFileException;
+import java.io.UncheckedIOException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.google.common.base.Throwables;
+
 import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.exceptions.VerificationFailureException;
-import ch.post.it.evoting.verifier.common.block.test.helper.RegexHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
+import ch.post.it.evoting.verifier.common.event.Block4Event;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
 
-class CheckTallyingCandidatesTest extends Block4VerificationAbstractTest {
+class CheckTallyingCandidatesTest extends Block4VerificationTest {
 
-	public CheckTallyingCandidatesTest() {
-		super(CheckTallyingCandidates.class);
+	@BeforeAll
+	static void setUpAll() {
+		verification = new CheckTallyingCandidates(pathService, applicationEventPublisherMock);
 	}
 
 	@Test
 	void executeTestOK() throws Exception {
-		VerificationResult verificationResult =
-				verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/OK").toURI()));
-		assertNotNull(verificationResult);
-		assertEquals(Status.OK, verificationResult.getStatus());
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckTallyingCandidates/OK").toURI()).toString();
+		final VerificationResultEvent resultEvent = verification.verify(new Block4Event(this, inputDirectory));
+
+		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
-	void executeTestNOKMajoralCountOfVotesTotal() {
-		final VerificationFailureException ex = assertThrows(
-				VerificationFailureException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-COUNTOFVOTES-MAJORAL").toURI()))
-		);
-		assertEquals("The count of votes total for the candidate does not match in majoral election", ex.getMessage());
+	void executeTestNOKMajoralCountOfVotesTotal() throws URISyntaxException {
+		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-COUNTOFVOTES-MAJORAL").toURI());
+		final String inputDirectory = inputDirectoryPath.toString();
+		final var event = new Block4Event(this, inputDirectory);
+		final VerificationResultEvent resultEvent = verification.verify(event);
+
+		assertEquals(Status.NOK, resultEvent.getStatus());
 	}
 
 	@Test
-	void executeTestNOKProportionalCountOfVotesTotal() {
-		final VerificationFailureException ex = assertThrows(
-				VerificationFailureException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-COUNTOFVOTES-PROPORTIONAL").toURI()))
-		);
-		assertEquals("The count of votes total for the candidate does not match in proportional election", ex.getMessage());
+	void executeTestNOKProportionalCountOfVotesTotal() throws URISyntaxException {
+		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-COUNTOFVOTES-PROPORTIONAL").toURI());
+		final String inputDirectory = inputDirectoryPath.toString();
+		final var event = new Block4Event(this, inputDirectory);
+		final VerificationResultEvent resultEvent = verification.verify(event);
+
+		assertEquals(Status.NOK, resultEvent.getStatus());
 	}
 
 	@Test
 	void executeTestOKWriteIns() throws Exception {
-		VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/OK" +
-				"-WRITEINS").toURI()));
-		assertNotNull(verificationResult);
-		assertEquals(Status.OK, verificationResult.getStatus());
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckTallyingCandidates/OK-WRITEINS").toURI()).toString();
+		final VerificationResultEvent resultEvent = verification.verify(new Block4Event(this, inputDirectory));
+
+		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
-	void executeTestNOKWriteInsContainsKeyMajoral() {
-		final VerificationFailureException ex = assertThrows(
-				VerificationFailureException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-CONTAINSKEY-MAJORAL").toURI()))
-		);
-		assertEquals("The count for the candidate does not match in writeIns-containsKey majoral election", ex.getMessage());
+	void executeTestNOKWriteInsContainsKeyMajoral() throws URISyntaxException {
+		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-CONTAINSKEY-MAJORAL").toURI());
+		final String inputDirectory = inputDirectoryPath.toString();
+		final var event = new Block4Event(this, inputDirectory);
+		final VerificationResultEvent resultEvent = verification.verify(event);
+
+		assertEquals(Status.NOK, resultEvent.getStatus());
 	}
 
 	@Test
-	void executeTestNOKWriteInsContainsKeyProportional() {
-		final VerificationFailureException ex = assertThrows(
-				VerificationFailureException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-CONTAINSKEY" +
-						"-PROPORTIONAL").toURI()))
-		);
-		assertEquals("The count for the candidate does not match in writeIns-containsKey proportional election", ex.getMessage());
+	void executeTestNOKWriteInsContainsKeyProportional() throws URISyntaxException {
+		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-CONTAINSKEY-PROPORTIONAL").toURI());
+		final String inputDirectory = inputDirectoryPath.toString();
+		final var event = new Block4Event(this, inputDirectory);
+		final VerificationResultEvent resultEvent = verification.verify(event);
+
+		assertEquals(Status.NOK, resultEvent.getStatus());
 	}
 
 	@Test
-	void executeTestNOKWriteInsEqualsMajoral() {
-		final VerificationFailureException ex = assertThrows(
-				VerificationFailureException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-EQUALS-MAJORAL").toURI()))
-		);
-		assertEquals("The count for the candidate does not match in writeIns-equals majoral election", ex.getMessage());
+	void executeTestNOKWriteInsEqualsMajoral() throws URISyntaxException {
+		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-EQUALS-MAJORAL").toURI());
+		final String inputDirectory = inputDirectoryPath.toString();
+		final var event = new Block4Event(this, inputDirectory);
+		final VerificationResultEvent resultEvent = verification.verify(event);
+
+		assertEquals(Status.NOK, resultEvent.getStatus());
 	}
 
 	@Test
-	void executeTestNOKWriteInsEqualsProportional() {
-		final VerificationFailureException ex = assertThrows(
-				VerificationFailureException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-EQUALS-PROPORTIONAL").toURI()))
-		);
-		assertEquals("The count for the candidate does not match in writeIns-equals proportional election", ex.getMessage());
+	void executeTestNOKWriteInsEqualsProportional() throws URISyntaxException {
+		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-EQUALS-PROPORTIONAL").toURI());
+		final String inputDirectory = inputDirectoryPath.toString();
+		final var event = new Block4Event(this, inputDirectory);
+		final VerificationResultEvent resultEvent = verification.verify(event);
+
+		assertEquals(Status.NOK, resultEvent.getStatus());
 	}
 
 	@Test
-	void executeTestNOKDecryptCount() {
-		final IllegalArgumentException ex = assertThrows(
-				IllegalArgumentException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-DECRYPTCOUNT").toURI()))
-		);
-		assertTrue(ex.getMessage().contains("cannot find the decrypt data for given countingCircle"));
+	void executeTestNOKDecryptCount() throws URISyntaxException {
+		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-DECRYPTCOUNT").toURI());
+		final String inputDirectory = inputDirectoryPath.toString();
+		final var event = new Block4Event(this, inputDirectory);
+
+		assertThrows(IllegalArgumentException.class, () -> verification.verify(event));
 	}
 
 	@Test
-	void executeTestNOKFileNotFoundConfiguration() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-NOFILE-CONFIG").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CONFIG_ANONYMIZED);
-		assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
+	void executeTestNOKFileNotFoundConfiguration() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-NOFILE-CONFIG").toURI()).toString();
+		final var event = new Block4Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.CONFIG_ANONYMIZED);
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(structureNode.getQualifier()));
 	}
 
 	@Test
-	void executeTestNOKFileNotFoundEvoting() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-NOFILE-EVOTING").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.EVOTING_DECRYPT_RESULT);
-		assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
+	void executeTestNOKFileNotFoundEvoting() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-NOFILE-EVOTING").toURI()).toString();
+		final var event = new Block4Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.EVOTING_DECRYPT_RESULT);
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(structureNode.getQualifier()));
 	}
 
 	@Test
-	void executeTestNOKFileNotFoundECH0110() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-NOFILE-eCH").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.ECH0110);
-		assertTrue(RegexHelper.regexMatcher(structureNode.getQualifier()).matches(ex.getMessage()));
+	void executeTestNOKFileNotFoundECH0110() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-NOFILE-eCH").toURI()).toString();
+		final var event = new Block4Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.ECH0110);
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(structureNode.getQualifier()));
 	}
 }

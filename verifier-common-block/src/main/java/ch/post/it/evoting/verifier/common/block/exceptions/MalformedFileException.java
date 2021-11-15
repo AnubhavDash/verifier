@@ -23,4 +23,8 @@ public class MalformedFileException extends RuntimeException{
 	public MalformedFileException(final String message) {
 		super(message);
 	}
+
+	public MalformedFileException(final String message, final Throwable cause) {
+		super(message, cause);
+	}
 }

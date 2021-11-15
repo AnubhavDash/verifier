@@ -29,12 +29,12 @@ public class PreImageProofDeserializer extends ProofDeserializer<PreImageProof> 
 	@Override
 	protected PreImageProof instantiateProof(BigInteger q, String hash, JsonNode values,
 			JsonParser jsonParser) throws InvalidFormatException {
-		Base64.Decoder decoder = Base64.getDecoder();
+		var decoder = Base64.getDecoder();
 		if (values.size() != 1) {
 			throw new InvalidFormatException(jsonParser, "wrong number of values (expects 1)", values.asText(),
 					BigInteger.class);
 		}
-		BigInteger z = new BigInteger(decoder.decode(values.get(0).asText()));
+		var z = new BigInteger(decoder.decode(values.get(0).asText()));
 		return new PreImageProof(q, hash, z);
 	}
 }

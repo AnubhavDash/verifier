@@ -22,7 +22,6 @@ import java.util.Base64;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -39,14 +38,14 @@ public class PublicKeyDeserializer extends JsonDeserializer<PublicKey> {
 	public PublicKeyDeserializer() {
 		mapper = new ObjectMapper();
 
-		SimpleModule typesModule = new SimpleModule();
-		typesModule.addDeserializer(BigInteger.class, new Base64BigIntegerDeserializer());
-		mapper.registerModule(typesModule);
+		var simpleModule = new SimpleModule();
+		simpleModule.addDeserializer(BigInteger.class, new Base64BigIntegerDeserializer());
+		mapper.registerModule(simpleModule);
 	}
 
 	@Override
 	public PublicKey deserialize(JsonParser jsonParser,
-			DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+			DeserializationContext deserializationContext) throws IOException {
 		boolean isStructure = jsonParser.currentToken().isStructStart();
 
 		JsonNode root;

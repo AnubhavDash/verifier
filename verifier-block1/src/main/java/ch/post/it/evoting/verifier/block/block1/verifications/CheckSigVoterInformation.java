@@ -16,81 +16,94 @@
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Base64;
 
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
+
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
+import ch.post.it.evoting.verifier.common.AbstractVerification;
 import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.VerificationTrait;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.block.tools.CertificateLoader;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.common.event.VerifierEvent;
 
+@Component
 public class CheckSigVoterInformation extends AbstractVerification {
 
-	@Override
-	public VerificationDefinition getVerificationDefinition() {
-		VerificationDefinition def = new VerificationDefinition();
-		def.setBlockId(1);
-		def.setCategory(Category.AUTHENTICITY);
-		def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-				"verification79.description"));
-		def.setId(79);
-		def.setName("checkSigVoterInformation");
-		def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
-		def.addVerificationTrait(VerificationTrait.BLOCK_1);
-		return def;
+	private final PathService pathService;
+	private final CertificateLoader certificateLoader;
+
+	public CheckSigVoterInformation(final PathService pathService, final CertificateLoader certificateLoader,
+			final ApplicationEventPublisher applicationEventPublisher) {
+		super(applicationEventPublisher);
+		this.pathService = pathService;
+		this.certificateLoader = certificateLoader;
 	}
 
 	@Override
-	public VerificationResult verify(final Path inputDirectoryPath) throws IOException {
-		VerificationResult result = new VerificationResult();
+	public VerificationDefinition getVerificationDefinition() {
+		final var definition = new VerificationDefinition();
+		definition.setBlockId(1);
+		definition.setCategory(Category.AUTHENTICITY);
+		definition.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+				"verification79.description"));
+		definition.setId(79);
+		definition.setName("checkSigVoterInformation");
+		definition.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+		definition.addVerificationTrait(VerificationTrait.BLOCK_1);
+		return definition;
+	}
+
+	@Override
+	public VerificationResultEvent verify(final VerifierEvent event) {
+		final var inputDirectoryPath = event.getInputDirectoryPath();
 
 		// Get the certificate used for signing.
-		final PathNode adminCertPathNode = pathService.buildFromRootPath(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
-		final byte[] signCertificate = Files.readAllBytes(adminCertPathNode.getPath());
+		final byte[] signingCertificate = certificateLoader.loadBytes(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
 
 		// Get the intermediate certificates.
-		final PathNode tenantPathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
-		final byte[][] intermediateCertificates = new byte[][] { Files.readAllBytes(tenantPathNode.getPath()) };
+		final var intermediateCertificates = new byte[][] { certificateLoader.loadBytes(StructureKey.TENANT_100, inputDirectoryPath) };
 
 		// Get the root certificate.
-		final PathNode platformRootPathNode = pathService.buildFromRootPath(StructureKey.PLATFORM_ROOT_CA, inputDirectoryPath);
-		final byte[] rootCertificate = Files.readAllBytes(platformRootPathNode.getPath());
+		final byte[] rootCertificate = certificateLoader.loadBytes(StructureKey.PLATFORM_ROOT_CA, inputDirectoryPath);
 
-		final PathNode votingCardIdPathNode = pathService.buildFromRootPath(StructureKey.VOTING_CARD_SETS_ID_DIR, inputDirectoryPath);
+		final var votingCardIdPathNode = pathService.buildFromRootPath(StructureKey.VOTING_CARD_SETS_ID_DIR, inputDirectoryPath);
 
 		// Iterate over all directories and do the verification for each voterInformation.
 		for (final Path regexPath : votingCardIdPathNode.getRegexPaths()) {
-			final PathNode voterInfoPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.VOTER_INFORMATION, regexPath);
+			final var voterInfoPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.VOTER_INFORMATION, regexPath);
 
 			for (final Path voterInfoPath : voterInfoPathNode.getRegexPaths()) {
-				final byte[] source = Files.readAllBytes(voterInfoPath);
-
-				// Get and decode the signature.
-				final byte[] signatureBase64 = Files.readAllBytes(voterInfoPathNode.getRelation(RelationType.SIGN, voterInfoPath));
+				final byte[] source;
+				final byte[] signatureBase64;
+				try {
+					source = Files.readAllBytes(voterInfoPath);
+					signatureBase64 = Files.readAllBytes(voterInfoPathNode.getRelation(RelationType.SIGN, voterInfoPath));
+				} catch (IOException e) {
+					throw new UncheckedIOException("Failed to read voter information or its signature file.", e);
+				}
 				final byte[] signature = Base64.getDecoder().decode(signatureBase64);
 
-				if (!SignatureChecker.verifySignature(source, signature, signCertificate, intermediateCertificates, rootCertificate)) {
-					throw buildVerificationFailureException(
-							"The signature verification of the file failed",
-							Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-							"verification79.nok.message",
-							regexPath.toString()
-					);
+				if (!SignatureChecker.verifySignature(source, signature, signingCertificate, intermediateCertificates, rootCertificate)) {
+					return VerificationResultEvent.failure(this, getVerificationDefinition(),
+							TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification79.nok.message",
+									regexPath.toString()));
 				}
 			}
 		}
 
-		result.setStatus(Status.OK);
-		return result;
+		return VerificationResultEvent.success(this, getVerificationDefinition());
 	}
 
 }

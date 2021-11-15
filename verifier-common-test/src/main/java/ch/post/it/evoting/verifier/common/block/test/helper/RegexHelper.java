@@ -22,6 +22,11 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 public class RegexHelper {
+
+	private RegexHelper() {
+		// Intentionally left blank.
+	}
+
 	public static Matcher<String> regexMatcher(final String regex) {
 		return new TypeSafeMatcher<>() {
 			@Override

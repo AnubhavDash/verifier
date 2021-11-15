@@ -15,67 +15,85 @@
  */
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
+
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
+import ch.post.it.evoting.verifier.common.AbstractVerification;
 import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.VerificationTrait;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.block.tools.CertificateLoader;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.common.event.VerifierEvent;
 
+@Component
 public class CheckSigDataConfig extends AbstractVerification {
 
-	@Override
-	public VerificationDefinition getVerificationDefinition() {
-		VerificationDefinition def = new VerificationDefinition();
-		def.setBlockId(1);
-		def.setCategory(Category.AUTHENTICITY);
-		def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-				"verification74.description"));
-		def.setId(74);
-		def.setName("checkSigDataConfig");
-		def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
-		def.addVerificationTrait(VerificationTrait.BLOCK_1);
-		return def;
+	private final PathService pathService;
+	private final CertificateLoader certificateLoader;
+
+	public CheckSigDataConfig(final PathService pathService, final CertificateLoader certificateLoader,
+			final ApplicationEventPublisher applicationEventPublisher) {
+		super(applicationEventPublisher);
+		this.pathService = pathService;
+		this.certificateLoader = certificateLoader;
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-		VerificationResult result = new VerificationResult();
+	public VerificationDefinition getVerificationDefinition() {
+		final var definition = new VerificationDefinition();
+		definition.setBlockId(1);
+		definition.setCategory(Category.AUTHENTICITY);
+		definition.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+				"verification74.description"));
+		definition.setId(74);
+		definition.setName("checkSigDataConfig");
+		definition.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+		definition.addVerificationTrait(VerificationTrait.BLOCK_1);
+		return definition;
+	}
+
+	@Override
+	public VerificationResultEvent verify(final VerifierEvent event) {
+		final var inputDirectoryPath = event.getInputDirectoryPath();
 
 		// Get the signing certificate.
-		final PathNode adminCertPathNode = pathService.buildFromRootPath(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
-		byte[] signCertificate = Files.readAllBytes(adminCertPathNode.getPath());
+		final byte[] signCertificate = certificateLoader.loadBytes(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
 
 		// Get the root certificate.
-		final PathNode tenantPathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
-		byte[] rootCA = Files.readAllBytes(tenantPathNode.getPath());
+		final byte[] rootCA = certificateLoader.loadBytes(StructureKey.TENANT_100, inputDirectoryPath);
 
 		// Verify signatures.
-		final PathNode dataConfigPathNode = pathService.buildFromRootPath(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
+		final var dataConfigPathNode = pathService.buildFromRootPath(StructureKey.DATA_CONFIG_UPDATED, inputDirectoryPath);
 		for (Path regexPath : dataConfigPathNode.getRegexPaths()) {
-			byte[] content = Files.readAllBytes(regexPath);
-			byte[] signature = Files.readAllBytes(dataConfigPathNode.getRelation(RelationType.METADATA, regexPath));
+			final byte[] content;
+			final byte[] signature;
+			try {
+				content = Files.readAllBytes(regexPath);
+				signature = Files.readAllBytes(dataConfigPathNode.getRelation(RelationType.METADATA, regexPath));
+			} catch (IOException e) {
+				throw new UncheckedIOException("Failed to read data config updated or its signature file.", e);
+			}
 
 			if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCA)) {
-				throw buildVerificationFailureException(
-						"The signature verification of the file dataConfig_updated failed",
-						Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-						"verification74.nok.message",
-						regexPath.toString()
-				);
+				return VerificationResultEvent.failure(this, getVerificationDefinition(),
+						TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+								"verification74.nok.message",
+								regexPath.toString()));
 			}
 		}
 
-		result.setStatus(Status.OK);
-		return result;
+		return VerificationResultEvent.success(this, getVerificationDefinition());
 	}
 }

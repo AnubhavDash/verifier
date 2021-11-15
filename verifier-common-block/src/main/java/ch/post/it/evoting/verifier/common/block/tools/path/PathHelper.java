@@ -26,8 +26,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class PathHelper {
+
+	private static final String FILENAME_PATTERN_FORMAT = "filenamePattern:%s ";
+
 	private PathHelper() {
 		// private constructor, use static
 	}
@@ -77,7 +81,7 @@ public final class PathHelper {
 		File[] file = getFiles(inputDirectory, filenamePattern);
 		if (file.length > 1) {
 			throw new InvalidParameterException(String.format("more than one file found, filename is not specific enough. Dir:%s " +
-					"filenamePattern:%s ", inputDirectory, filenamePattern));
+					FILENAME_PATTERN_FORMAT, inputDirectory, filenamePattern));
 		} else {
 			return file[0];
 		}
@@ -96,17 +100,19 @@ public final class PathHelper {
 	 * @throws NoSuchFileException      If no file matching the pattern is found.
 	 */
 	public static Path getPath(Path startingPath, int maxDepth, String filenamePattern) throws IOException {
-		List<Path> paths = Files.find(startingPath, maxDepth,
-				(path, attributes) -> Files.isRegularFile(path) && path.getFileName().toString().matches(filenamePattern))
-				.collect(Collectors.toList());
-		if (paths.size() > 1) {
-			throw new InvalidParameterException(String.format("More than one file found, filename is not specific enough. Starting " +
-					"path:%s filenamePattern:%s ", startingPath, filenamePattern));
-		} else if (paths.isEmpty()) {
-			throw new NoSuchFileException(String.format("No file found with given pattern. Starting path: %s " +
-					"filenamePattern:%s ", startingPath, filenamePattern));
-		} else {
-			return paths.get(0);
+		try (final Stream<Path> pathStream = Files.find(startingPath, maxDepth,
+				(path, attributes) -> Files.isRegularFile(path) && path.getFileName().toString().matches(filenamePattern))) {
+
+			final List<Path> paths = pathStream.collect(Collectors.toList());
+			if (paths.size() > 1) {
+				throw new InvalidParameterException(String.format("More than one file found, filename is not specific enough. Starting " +
+						"path:%s filenamePattern:%s ", startingPath, filenamePattern));
+			} else if (paths.isEmpty()) {
+				throw new NoSuchFileException(String.format("No file found with given pattern. Starting path: %s " +
+						FILENAME_PATTERN_FORMAT, startingPath, filenamePattern));
+			} else {
+				return paths.get(0);
+			}
 		}
 	}
 
@@ -121,14 +127,16 @@ public final class PathHelper {
 	 * @throws NoSuchFileException If no files matching the pattern are found.
 	 */
 	public static List<Path> getPaths(Path startingPath, int maxDepth, String filenamePattern) throws IOException {
-		final List<Path> paths = Files.find(startingPath, maxDepth,
-				(path, attributes) -> Files.isRegularFile(path) && path.getFileName().toString().matches(filenamePattern))
-				.collect(Collectors.toList());
-		if (paths.isEmpty()) {
-			throw new NoSuchFileException(String.format("No files found with given pattern. Starting path:%s " +
-					"filenamePattern:%s ", startingPath, filenamePattern));
+		try (final Stream<Path> pathStream = Files.find(startingPath, maxDepth,
+				(path, attributes) -> Files.isRegularFile(path) && path.getFileName().toString().matches(filenamePattern))) {
+
+			final List<Path> paths = pathStream.collect(Collectors.toList());
+			if (paths.isEmpty()) {
+				throw new NoSuchFileException(String.format("No files found with given pattern. Starting path:%s " +
+						FILENAME_PATTERN_FORMAT, startingPath, filenamePattern));
+			}
+			return paths;
 		}
-		return paths;
 	}
 
 }

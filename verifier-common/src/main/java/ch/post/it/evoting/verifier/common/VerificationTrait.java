@@ -15,16 +15,33 @@
  */
 package ch.post.it.evoting.verifier.common;
 
+import ch.post.it.evoting.verifier.common.event.Block1Event;
+import ch.post.it.evoting.verifier.common.event.Block2Event;
+import ch.post.it.evoting.verifier.common.event.Block3Event;
+import ch.post.it.evoting.verifier.common.event.Block4Event;
+import ch.post.it.evoting.verifier.common.event.PreDecryptionEvent;
+import ch.post.it.evoting.verifier.common.event.VerifierEvent;
+
 /**
  * Used to group tests for execution
  */
 public enum VerificationTrait {
 
-	PRE_DECRYPTION,
-	BLOCK_1,
-	BLOCK_2,
-	BLOCK_3,
-	BLOCK_4;
+	PRE_DECRYPTION(PreDecryptionEvent.class),
+	BLOCK_1(Block1Event.class),
+	BLOCK_2(Block2Event.class),
+	BLOCK_3(Block3Event.class),
+	BLOCK_4(Block4Event.class);
+
+	private final Class<? extends VerifierEvent> eventClass;
+
+	VerificationTrait(final Class<? extends VerifierEvent> eventClass) {
+		this.eventClass = eventClass;
+	}
+
+	public Class<? extends VerifierEvent> getEventClass() {
+		return eventClass;
+	}
 
 	public static VerificationTrait fromValue(String value) throws IllegalArgumentException {
 		return VerificationTrait.valueOf(value);

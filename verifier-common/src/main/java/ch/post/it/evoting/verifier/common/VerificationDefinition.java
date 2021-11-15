@@ -17,15 +17,17 @@ package ch.post.it.evoting.verifier.common;
 
 import java.util.EnumSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class VerificationDefinition {
+
+	private final Set<VerificationTrait> verificationTraits = EnumSet.noneOf(VerificationTrait.class);
+
 	private int id;
 	private int blockId;
 	private String name;
 	private Category category;
-	private boolean deactivated;
-	private EnumSet<VerificationTrait> verificationTraits = EnumSet.noneOf(VerificationTrait.class);
 	private Map<Language, String> description;
 
 	public int getId() {
@@ -60,31 +62,11 @@ public class VerificationDefinition {
 		this.category = category;
 	}
 
-	public boolean isDeactivated() {
-		return deactivated;
-	}
-
-	public void setDeactivated(boolean deactivated) {
-		this.deactivated = deactivated;
-	}
-
-	public boolean containsVerificationTrait(VerificationTrait trait) {
-		return this.verificationTraits.contains(trait);
-	}
-
-	public boolean containsAnyVerificationTrait(Set<VerificationTrait> traits) {
-		return !this.verificationTraits.isEmpty() && this.verificationTraits.stream().anyMatch(t -> traits.contains(t));
-	}
-
 	public void addVerificationTrait(VerificationTrait trait) {
 		this.verificationTraits.add(trait);
 	}
 
-	public void removeVerificationTrait(VerificationTrait trait) {
-		this.verificationTraits.remove(trait);
-	}
-
-	public EnumSet<VerificationTrait> getVerificationTraits() {
+	public Set<VerificationTrait> getVerificationTraits() {
 		return this.verificationTraits;
 	}
 
@@ -98,5 +80,24 @@ public class VerificationDefinition {
 
 	public String computeUniqueKey() {
 		return String.format("%02d-%02d", this.getBlockId(), this.getId());
+	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		final VerificationDefinition that = (VerificationDefinition) o;
+		return id == that.id && blockId == that.blockId && Objects.equals(name, that.name)
+				&& category == that.category && Objects.equals(verificationTraits, that.verificationTraits) && Objects.equals(
+				description, that.description);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, blockId, name, category, verificationTraits, description);
 	}
 }

@@ -15,60 +15,80 @@
  */
 package ch.post.it.evoting.verifier.block.block2.verifications;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Base64;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.post.it.evoting.verifier.block.block2.Block2VerificationSuite;
+import ch.post.it.evoting.verifier.common.AbstractVerification;
 import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.VerificationTrait;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.exceptions.JsonMissingNodeException;
 import ch.post.it.evoting.verifier.common.block.serialization.DownloadedBallotSerialization;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.common.event.VerifierEvent;
 import ch.post.it.evoting.verifier.dto.Vote__1;
 
+@Component
 public class CheckVoteSignature extends AbstractVerification {
 
 	static final String CREDENTIALS_CA = "credentialsCA";
 	static final String ELECTION_ROOT_CA = "electionRootCA";
 
-	@Override
-	public VerificationDefinition getVerificationDefinition() {
-		VerificationDefinition def = new VerificationDefinition();
-		def.setBlockId(2);
-		def.setCategory(Category.AUTHENTICITY);
-		def.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
-				"verification73.description"));
-		def.setId(73);
-		def.setName("checkVoteSignature");
-		def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
-		return def;
+	private final PathService pathService;
+
+	public CheckVoteSignature(final PathService pathService, final ApplicationEventPublisher applicationEventPublisher) {
+		super(applicationEventPublisher);
+		this.pathService = pathService;
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-		VerificationResult result = new VerificationResult();
+	public VerificationDefinition getVerificationDefinition() {
+		final var definition = new VerificationDefinition();
+		definition.setBlockId(2);
+		definition.setCategory(Category.AUTHENTICITY);
+		definition.setDescription(TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
+				"verification73.description"));
+		definition.setId(73);
+		definition.setName("checkVoteSignature");
+		definition.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+		definition.addVerificationTrait(VerificationTrait.BLOCK_2);
+		return definition;
+	}
+
+	@Override
+	public VerificationResultEvent verify(final VerifierEvent event) {
+		final var inputDirectoryPath = event.getInputDirectoryPath();
 
 		// Mapper to parse json files containing the certificates.
-		ObjectMapper mapper = new ObjectMapper();
+		final var mapper = new ObjectMapper();
 
 		// Build election node where certificates are.
-		final PathNode electionInfoPathNode = pathService.buildFromRootPath(StructureKey.ELECTION_INFORMATION_CONTENTS, inputDirectoryPath);
-		final JsonNode electionInfoNode = mapper.readTree(Files.readAllBytes(electionInfoPathNode.getPath()));
+		final var electionInfoPathNode = pathService.buildFromRootPath(StructureKey.ELECTION_INFORMATION_CONTENTS, inputDirectoryPath);
+		final JsonNode electionInfoNode;
+		try {
+			electionInfoNode = mapper.readTree(Files.readAllBytes(electionInfoPathNode.getPath()));
+		} catch (IOException e) {
+			throw new UncheckedIOException("Failed to read election information contents.", e);
+		}
 
 		// Get the intermediate certificates.
 		final byte[][] intermediateCertificates = extractIntermediateCertificates(electionInfoNode);
@@ -77,41 +97,41 @@ public class CheckVoteSignature extends AbstractVerification {
 		final byte[] rootCertificate = extractRootCertificate(electionInfoNode);
 
 		// Get all the ballot box id directories and iterate over them.
-		final PathNode ballotIdsPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+		final var ballotIdsPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 		for (Path regexPath : ballotIdsPathNode.getRegexPaths()) {
 			// Get the downloadedBallotBox file path.
-			final PathNode downloadedBallotPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.DOWNLOADED_BALLOT_BOX, regexPath);
+			final var downloadedBallotPathNode = pathService.buildFromDynamicAncestorPath(StructureKey.DOWNLOADED_BALLOT_BOX, regexPath);
 
 			try (final Stream<String> lines = Files.lines(downloadedBallotPathNode.getPath())) {
-				lines.parallel()
+				final List<Boolean> invalidSignatures = lines.parallel()
 						.map(DownloadedBallotSerialization::deserializeDownloadedBallot)
 						// Remove empty lines, signature etc...
 						.filter(Objects::nonNull)
-						.forEach(ballot -> {
+						.map(ballot -> {
 							// Extract information and its signature.
-							final byte[] signature =
-									Base64.getDecoder().decode(ballot.getVote().getSignature().getBytes(StandardCharsets.UTF_8));
+							final byte[] signature = Base64.getDecoder().decode(ballot.getVote().getSignature().getBytes(StandardCharsets.UTF_8));
 							final byte[] signedInformation = buildSignedInformation(ballot.getVote());
 
 							// Extract the certificate used to sign.
 							final byte[] signingCertificate = ballot.getVote().getCertificate().getBytes(StandardCharsets.UTF_8);
 
 							// Check signature.
-							if (!SignatureChecker.verifySignature(signedInformation, signature, signingCertificate,
-									intermediateCertificates, rootCertificate)) {
-								throw buildVerificationFailureException(
-										"The signature verification of the vote failed",
-										Block2VerificationSuite.RESOURCE_BUNDLE_NAME,
-										"verification73.nok.message",
-										ballot.getVote().getVotingCardId()
-								);
-							}
-						});
+							return SignatureChecker.verifySignature(signedInformation, signature, signingCertificate, intermediateCertificates,
+									rootCertificate);
+						})
+						.filter(b -> !b) // Keep only invalid signatures.
+						.collect(Collectors.toList());
+
+				if (!invalidSignatures.isEmpty()) {
+					return VerificationResultEvent.failure(this, getVerificationDefinition(),
+							TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification73.nok.message"));
+				}
+			} catch (IOException e) {
+				throw new UncheckedIOException("Failed to read downloaded ballot.", e);
 			}
 		}
 
-		result.setStatus(Status.OK);
-		return result;
+		return VerificationResultEvent.success(this, getVerificationDefinition());
 	}
 
 	private byte[][] extractIntermediateCertificates(JsonNode electionInfoNode) {

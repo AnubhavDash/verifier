@@ -17,6 +17,7 @@ package ch.post.it.evoting.verifier.block.block2.loader;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -41,12 +42,12 @@ public class VoterInformationDataExtractor {
 						"voterInformation.*\\.csv",
 						true);
 
-		VoterInformationStruct voterInformation = Flux.fromStream(voterInformationFiles.stream())
+		return Flux.fromStream(voterInformationFiles.stream())
 				.flatMap(f -> {
 					try {
 						return Flux.fromStream(Files.lines(f.toPath())).map(s -> s.split(",")[4]);
 					} catch (IOException e) {
-						throw new RuntimeException("An error occurs while parsing the voterInformation.csv files", e.getCause());
+						throw new UncheckedIOException("An error occurs while parsing the voterInformation.csv files", e);
 					}
 				})
 				.reduce(new VoterInformationStruct(), (struct, eeid) -> {
@@ -55,8 +56,6 @@ public class VoterInformationDataExtractor {
 					return struct;
 				})
 				.block();
-
-		return voterInformation;
 	}
 
 }

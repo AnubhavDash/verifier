@@ -18,25 +18,37 @@ package ch.post.it.evoting.verifier.block.block1.verifications;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.math.BigInteger;
-import java.nio.file.Path;
+
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalService;
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
+import ch.post.it.evoting.verifier.common.AbstractVerification;
 import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.VerificationTrait;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
 import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionParameters;
 import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.common.event.VerifierEvent;
 
+@Component
 public class VerifyEncryptionParameters extends AbstractVerification {
 
+	private final PathService pathService;
 	private final ElGamalService elGamalService = new ElGamalService();
+
+	protected VerifyEncryptionParameters(final PathService pathService, final ApplicationEventPublisher applicationEventPublisher) {
+		super(applicationEventPublisher);
+		this.pathService = pathService;
+	}
 
 	@Override
 	public VerificationDefinition getVerificationDefinition() {
@@ -53,12 +65,16 @@ public class VerifyEncryptionParameters extends AbstractVerification {
 	}
 
 	@Override
-	public VerificationResult verify(final Path inputDirectoryPath) throws Exception {
-		final var result = new VerificationResult();
-
+	public VerificationResultEvent verify(final VerifierEvent verifierEvent) {
 		// Deserialize file.
+		final var inputDirectoryPath = verifierEvent.getInputDirectoryPath();
 		final var pathNode = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
-		final var encryptionParameters = Deserializer.fromJson(pathNode.getPath(), EncryptionParameters.class);
+		final EncryptionParameters encryptionParameters;
+		try {
+			encryptionParameters = Deserializer.fromJson(pathNode.getPath(), EncryptionParameters.class);
+		} catch (IOException e) {
+			throw new UncheckedIOException("Failed to deserialize the encryption parameters file.", e);
+		}
 
 		// Extract parameters.
 		final BigInteger p = encryptionParameters.getP();
@@ -66,16 +82,15 @@ public class VerifyEncryptionParameters extends AbstractVerification {
 		final BigInteger g = encryptionParameters.getG();
 		final String seed = encryptionParameters.getSeed();
 
+		final VerificationResultEvent verificationResultEvent;
 		if (!verifyEncryptionParameters(p, q, g, seed)) {
-			throw buildVerificationFailureException(
-					"The provided encryption parameters do not match the computed ones.",
-					Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-					"verification01.nok.message"
-			);
+			verificationResultEvent = VerificationResultEvent.failure(this, getVerificationDefinition(),
+					TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.nok.message"));
+		} else {
+			verificationResultEvent = VerificationResultEvent.success(this, getVerificationDefinition());
 		}
 
-		result.setStatus(Status.OK);
-		return result;
+		return verificationResultEvent;
 	}
 
 	/**

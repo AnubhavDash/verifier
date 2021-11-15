@@ -44,8 +44,8 @@ public class X509Deserializer extends JsonDeserializer<X509Certificate> {
 	@Override
 	public X509Certificate deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
 		if (factory != null) {
-			String value = jsonParser.getValueAsString();
-			ByteArrayInputStream inputStream = new ByteArrayInputStream(value.getBytes(StandardCharsets.UTF_8));
+			var value = jsonParser.getValueAsString();
+			var inputStream = new ByteArrayInputStream(value.getBytes(StandardCharsets.UTF_8));
 			try {
 				return (X509Certificate) factory.generateCertificate(inputStream);
 			} catch (CertificateException e) {

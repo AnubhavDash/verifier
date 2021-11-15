@@ -15,65 +15,85 @@
  */
 package ch.post.it.evoting.verifier.block.block4.verifications;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
+
 import ch.post.it.evoting.verifier.block.block4.Block4VerificationSuite;
+import ch.post.it.evoting.verifier.common.AbstractVerification;
 import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.VerificationTrait;
+import ch.post.it.evoting.verifier.common.block.tools.CertificateLoader;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.common.event.VerifierEvent;
 
+@Component
 public class CheckSigValidVotes extends AbstractVerification {
 
-	@Override
-	public VerificationDefinition getVerificationDefinition() {
-		VerificationDefinition def = new VerificationDefinition();
-		def.setBlockId(4);
-		def.setCategory(Category.AUTHENTICITY);
-		def.setDescription(TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification77.description"));
-		def.setId(77);
-		def.setName("checkSigValidVotes");
-		return def;
+	private final PathService pathService;
+	private final CertificateLoader certificateLoader;
+
+	public CheckSigValidVotes(final PathService pathService, final CertificateLoader certificateLoader,
+			final ApplicationEventPublisher applicationEventPublisher) {
+		super(applicationEventPublisher);
+		this.pathService = pathService;
+		this.certificateLoader = certificateLoader;
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-		VerificationResult result = new VerificationResult();
+	public VerificationDefinition getVerificationDefinition() {
+		final var definition = new VerificationDefinition();
+		definition.setBlockId(4);
+		definition.setCategory(Category.AUTHENTICITY);
+		definition.setDescription(
+				TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification77.description"));
+		definition.setId(77);
+		definition.setName("checkSigValidVotes");
+		definition.addVerificationTrait(VerificationTrait.BLOCK_4);
+		return definition;
+	}
+
+	@Override
+	public VerificationResultEvent verify(final VerifierEvent event) {
+		final var inputDirectoryPath = event.getInputDirectoryPath();
 
 		// Get the certificate used for signing.
-		final PathNode adminCertPathNode = pathService.buildFromRootPath(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
-		byte[] signCertificate = Files.readAllBytes(adminCertPathNode.getPath());
+		final byte[] signingCertificate = certificateLoader.loadBytes(StructureKey.ADMIN_BOARD_CERT, inputDirectoryPath);
 
-		// Get root certificate
-		PathNode rootCertificatePathNode = pathService.buildFromRootPath(StructureKey.TENANT_100, inputDirectoryPath);
-		byte[] rootCertificate = Files.readAllBytes(rootCertificatePathNode.getPath());
+		// Get root certificate.
+		final byte[] rootCertificate = certificateLoader.loadBytes(StructureKey.TENANT_100, inputDirectoryPath);
 
-		// Get all invalid votes results
-		PathNode validVotesPathNode = pathService.buildFromRootPath(StructureKey.VALID_VOTES_RESULT, inputDirectoryPath);
+		// Get all valid votes results.
+		final var validVotesPathNode = pathService.buildFromRootPath(StructureKey.VALID_VOTES_RESULT, inputDirectoryPath);
 
 		// Verify signature of each file
-		for (Path validVotesPath : validVotesPathNode.getRegexPaths()) {
-			byte[] content = Files.readAllBytes(validVotesPath);
-			byte[] signature = Files.readAllBytes(validVotesPathNode.getRelation(RelationType.METADATA, validVotesPath));
+		for (final Path validVotesPath : validVotesPathNode.getRegexPaths()) {
+			final byte[] content;
+			final byte[] signature;
+			try {
+				content = Files.readAllBytes(validVotesPath);
+				signature = Files.readAllBytes(validVotesPathNode.getRelation(RelationType.METADATA));
+			} catch (IOException e) {
+				throw new UncheckedIOException("Failed to read valid vote results or its metadata file.", e);
+			}
 
-			if (!SignatureChecker.verifyMetadata(content, signature, signCertificate, rootCertificate)) {
-				throw buildVerificationFailureException(
-						"The signature verification of the svv_[EE_alias].csv report failed",
-						Block4VerificationSuite.RESOURCE_BUNDLE_NAME,
-						"verification77.nok.message"
-				);
+			if (!SignatureChecker.verifyMetadata(content, signature, signingCertificate, rootCertificate)) {
+				return VerificationResultEvent.failure(this, getVerificationDefinition(),
+						TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification77.nok.message"));
 			}
 		}
 
-		result.setStatus(Status.OK);
-		return result;
+		return VerificationResultEvent.success(this, getVerificationDefinition());
 	}
 
 }

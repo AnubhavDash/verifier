@@ -17,15 +17,12 @@ package ch.post.it.evoting.verifier.block.block4.verifications;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.math.BigInteger;
 import java.net.URISyntaxException;
@@ -34,7 +31,6 @@ import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -44,7 +40,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import com.google.common.base.Throwables;
+
 import ch.post.it.evoting.cryptoprimitives.GroupVector;
+import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientKeyPair;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
@@ -55,20 +54,23 @@ import ch.post.it.evoting.cryptoprimitives.test.tools.generator.ElGamalGenerator
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.DecryptionProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.VerifiableDecryptions;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofService;
-import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
+import ch.post.it.evoting.verifier.block.block4.Block4VerificationSuite;
 import ch.post.it.evoting.verifier.block.block4.verifications.VerifyOfflineDecryptionProofs.VerifyOfflineDecryptionProofInput;
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.exceptions.VerificationFailureWrappedException;
 import ch.post.it.evoting.verifier.common.block.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
+import ch.post.it.evoting.verifier.common.event.Block4Event;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
 
-class VerifyOfflineDecryptionProofsTest extends Block4VerificationAbstractTest {
+class VerifyOfflineDecryptionProofsTest extends Block4VerificationTest {
 
-	private static final ElectionDataExtractionService EXTRACTION_SERVICE = new ElectionDataExtractionService(new PathService(), DomainObjectMapper.getNewInstance());
+	private static final ElectionDataExtractionService EXTRACTION_SERVICE = new ElectionDataExtractionService(new PathService(),
+			DomainObjectMapper.getNewInstance());
 	private static final ZeroKnowledgeProofService ZKP_SERVICE = new ZeroKnowledgeProofService();
-	private static final VerifyOfflineDecryptionProofs VERIFY = new VerifyOfflineDecryptionProofs(EXTRACTION_SERVICE, ZKP_SERVICE);
+	private static final VerifyOfflineDecryptionProofs VERIFY = new VerifyOfflineDecryptionProofs(pathService, ZKP_SERVICE, EXTRACTION_SERVICE,
+			applicationEventPublisherMock);
 	private static final SecureRandom random = new SecureRandom();
 	private static final GqGroup gqGroup = new GqGroup(new BigInteger(
 			"22588801568735561413035633152679913053449200833478689904902877673687016391844561133376032309307885537704777240609087377993341380751697605235541131273868440070920362148431866829787784445019147999379498503693247429579480289226602748397335327890884464685051682703709742724121783217827040722415360103179289160056581759372475845985438977307323570530753362027145384124771826114651710264766437273044759690955051982839684910462609395741692689616014805965573558015387956017183286848440036954926101719205598449898400180082053755864070690174202432196678045052744337832802051787273056312757384654145455745603262082348042780103679"),
@@ -97,8 +99,9 @@ class VerifyOfflineDecryptionProofsTest extends Block4VerificationAbstractTest {
 	private GroupVector<DecryptionProof, ZqGroup> decryptionProofs;
 	private int numberOfVotes;
 
-	public VerifyOfflineDecryptionProofsTest() {
-		super(VerifyOfflineDecryptionProofs.class);
+	@BeforeAll
+	static void setUpAll() {
+		verification = new VerifyOfflineDecryptionProofs(pathService, ZKP_SERVICE, EXTRACTION_SERVICE, applicationEventPublisherMock);
 	}
 
 	@BeforeAll
@@ -128,7 +131,8 @@ class VerifyOfflineDecryptionProofsTest extends Block4VerificationAbstractTest {
 		int numberOfVotes = random.nextInt(10) + 1;
 		int numberAllowedWriteInsPlusOne = random.nextInt(3) + 1;
 
-		GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> encryptedVotes = elGamalGenerator.genRandomCiphertextVector(numberOfVotes, numberAllowedWriteInsPlusOne);
+		GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> encryptedVotes = elGamalGenerator.genRandomCiphertextVector(numberOfVotes,
+				numberAllowedWriteInsPlusOne);
 		final ElGamalMultiRecipientKeyPair keyPair = ElGamalMultiRecipientKeyPair.genKeyPair(gqGroup,
 				numberAllowedWriteInsPlusOne, new RandomService());
 		ElGamalMultiRecipientPublicKey electoralBoardPublicKey = keyPair.getPublicKey();
@@ -354,32 +358,40 @@ class VerifyOfflineDecryptionProofsTest extends Block4VerificationAbstractTest {
 
 	@Test
 	void executeTestOK() throws Exception {
-		VerificationResult verificationResult =
-				verification.verify(Paths.get(Objects.requireNonNull(getClass().getResource("/VerifyOfflineDecryptionProofsTest/OK")).toURI()));
-		assertNotNull(verificationResult);
-		assertEquals(Status.OK, verificationResult.getStatus());
+		final String inputDirectory = Paths.get(getClass().getResource("/VerifyOfflineDecryptionProofsTest/OK").toURI()).toString();
+		final VerificationResultEvent resultEvent = verification.verify(new Block4Event(this, inputDirectory));
+
+		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
 	void executeTestNOK() throws Exception {
-		VerificationResult verificationResult =
-				verification.verify(Paths.get(Objects.requireNonNull(getClass().getResource("/VerifyOfflineDecryptionProofsTest/NOK")).toURI()));
-		assertNotNull(verificationResult);
-		assertEquals(Status.NOK, verificationResult.getStatus());
-		assertEquals(TranslationHelper.getFromResourceBundle("block4/resources", "verification12.failure"), verificationResult.getMessage());
+		final Path inputDirectoryPath = Paths.get(getClass().getResource("/VerifyOfflineDecryptionProofsTest/NOK").toURI());
+		final String inputDirectory = inputDirectoryPath.toString();
+		final var event = new Block4Event(this, inputDirectory);
+		final VerificationResultEvent resultEvent = verification.verify(event);
+
+		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
+				TranslationHelper.getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification12.failure"));
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
 	void executeTestNOKFileNotFound() throws URISyntaxException {
-		final Path path = Paths
-				.get(Objects.requireNonNull(getClass().getResource("/VerifyOfflineDecryptionProofsTest/NOK_missingFiles")).toURI());
-		UncheckedIOException exception = assertThrows(UncheckedIOException.class, () -> verification.verify(path));
+		final String inputDirectory = Paths.get(getClass().getResource("/VerifyOfflineDecryptionProofsTest/NOK_missingFiles").toURI()).toString();
+		final var event = new Block4Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.BALLOT_BOX_OFFLINE_MIXING);
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(structureNode.getQualifier()));
 	}
 
 	@Test
 	void executeTestNOKCorruptedFile() throws URISyntaxException {
-		final Path path = Paths
-				.get(Objects.requireNonNull(getClass().getResource("/VerifyOfflineDecryptionProofsTest/NOK_corruptedFile")).toURI());
-		UncheckedIOException exception = assertThrows(UncheckedIOException.class, () -> verification.verify(path));
+		final String inputDirectory = Paths.get(getClass().getResource("/VerifyOfflineDecryptionProofsTest/NOK_corruptedFile").toURI()).toString();
+		final var event = new Block4Event(this, inputDirectory);
+
+		assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 	}
 }

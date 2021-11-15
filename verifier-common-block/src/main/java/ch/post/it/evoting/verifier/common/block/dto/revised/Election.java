@@ -65,9 +65,9 @@ public class Election {
 		this.id = id;
 		this.alias = alias;
 		this.numberOfSeats = numberOfSeats;
-		this.lists = lists != null ? ImmutableList.copyOf(lists) : ImmutableList.of();
-		this.candidates = candidates != null ? ImmutableList.copyOf(candidates) : ImmutableList.of();
-		this.writeIns = writeIns != null ? ImmutableList.copyOf(writeIns) : ImmutableList.of();
+		this.lists = lists != null ? ImmutableList.copyOf(lists) : List.of();
+		this.candidates = candidates != null ? ImmutableList.copyOf(candidates) : List.of();
+		this.writeIns = writeIns != null ? ImmutableList.copyOf(writeIns) : List.of();
 		this.changedBallotsWithPartyAffiliation = changedBallotsWithPartyAffiliation;
 		this.changedBallotsWithoutPartyAffiliation = changedBallotsWithoutPartyAffiliation;
 		this.emptyVotesOfChangedBallotsWithoutPartyAffiliation = emptyVotesOfChangedBallotsWithoutPartyAffiliation;

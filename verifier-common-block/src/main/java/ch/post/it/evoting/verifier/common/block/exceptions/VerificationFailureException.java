@@ -23,9 +23,10 @@ import ch.post.it.evoting.verifier.common.Language;
  * An exception containing two messages: One that is internal and one that is public and provides translation functionalities.
  */
 public class VerificationFailureException extends RuntimeException {
-	private Map<Language, String> failureMessage;
 
-	public VerificationFailureException(String message, Map<Language, String> failureMessage) {
+	private final Map<Language, String> failureMessage;
+
+	public VerificationFailureException(final String message, final Map<Language, String> failureMessage) {
 		super(message);
 		this.failureMessage = failureMessage;
 	}

@@ -20,7 +20,6 @@ import java.math.BigInteger;
 import java.util.Base64;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -30,20 +29,20 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 public abstract class ProofDeserializer<T> extends JsonDeserializer<T> {
 	private final ObjectMapper mapper;
 
-	public ProofDeserializer() {
+	protected ProofDeserializer() {
 		mapper = new ObjectMapper();
 	}
 
 	@Override
 	public T deserialize(JsonParser jsonParser,
-			DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
-		String value = jsonParser.getValueAsString();
+			DeserializationContext deserializationContext) throws IOException {
+		var value = jsonParser.getValueAsString();
 		JsonNode root = mapper.readTree(value);
 
 		JsonNode zkProof = root.path("zkProof");
 
-		Base64.Decoder decoder = Base64.getDecoder();
-		BigInteger q = new BigInteger(decoder.decode(zkProof.path("q").asText()));
+		var decoder = Base64.getDecoder();
+		var q = new BigInteger(decoder.decode(zkProof.path("q").asText()));
 		String hash = zkProof.path("hash").asText();
 		JsonNode values = zkProof.path("values");
 

@@ -1,6 +1,6 @@
 # Verifier of the Swiss Post Voting System
 
-The Swiss Post Voting System requires a verification software—the *verifier*—to verify the cryptographic evidence. The specification and development of the verifier goes hand in hand with the Swiss Post Voting System, and the verifier challenges and extensively tests a protocol run. The Swiss Post Voting System consists of three phase, and each phase has at least one verification algorithm.
+The Swiss Post Voting System requires a verification software—the *verifier*—to verify the cryptographic evidence. The [specification](Verifier_Specification.pdf) and development of the verifier goes hand in hand with the Swiss Post Voting System, and the verifier challenges and extensively tests a protocol run. The Swiss Post Voting System consists of three phases, and each one has at least one verification algorithm.
 
 | Block                          | Phase         | Algorithm          |
 |--------------------------------|---------------|--------------------|
@@ -9,33 +9,91 @@ The Swiss Post Voting System requires a verification software—the *verifier*�
 | Mixing decryption verification | Tally         | VerifyOnlineTally  |
 | Result verification            | Tally         | VerifyOfflineTally |
 
+Similar to the [e-voting solution](https://gitlab.com/swisspost-evoting/e-voting/e-voting) and
+the [crypto-primitives library](https://gitlab.com/swisspost-evoting/crypto-primitives/crypto-primitives), the verifier source code follows a
+[precise and unambiguous pseudo-code verifier specification](Verifier_Specification.pdf) to bridge the representational gap between mathematics and code.
+
+The verifier's execution must fulfill the following conditions:
+
+* The verifier is operated by the electoral commission under the responsibility of the cantons, **not** by Swiss Post.
+* The verifier instance is **offline**. The verifier receives data only via secure USB transfer.
+* The machine running the verifier is hardened and has no other purpose than running the
+  verifier software.
+
+In general, the verifier heeds web application security best practices when appropriate.
+However, we do not enforce authentication between the application's frontend and backend parts, and we omit HTTP security headers.
+Please note that while the verifier uses web technologies for the user interface, the verifier backend accepts only local traffic.
+If the adversary controls the verifier instance, he could access the internal file system, and sniffing the local HTTP traffic would be pointless.
+To prevent an attacker from controlling a verifier instance, we implement the operational safeguards described above.
+
+## Under which license is this code available?
+
+The verifier is released under Apache 2.0.
+
+## Code Quality
+
+We strive for excellent code quality to minimize the risk of bugs and vulnerabilities. We rely on the following tools for code analysis.
+
+| Tool        | Focus                 |
+|-------------|-----------------------|
+| [SonarQube](https://www.sonarqube.org/)  | Code quality and code security      |
+| [JFrog X-Ray](https://jfrog.com/xray/) | Common vulnerabilities and exposures (CVE) analysis, Open-source software (OSS) license compliance | |
+
+### SonarQube Analysis
+
+We parametrize SonarQube with the built-in Sonar way quality profile. The SonarQube analysis of the verifier code reveals 0 bugs, 0 vulnerabilities, 0 security hotspots, and 263 code smells.
+
+![SonarQube](SonarQube_Verifier.jpg)
+
+The verifier contains 90 code smells in the code. [Code smells](https://docs.sonarqube.org/latest/user-guide/concepts/) are
+maintainability-related issues that might increase the likelihood of errors in future code changes but do not directly impact the code's security and
+robustness. An example would be a method that contains too many if/else statements, therefore has a high cognitive complexity, hence is difficult to
+maintain. We plan to fix code smells continuously in future versions of the verifier.
+
+Moreover, the verifier's code base incurs some code duplication since every verification class uses a specific template defining the verification IDs and category.
+
+### JFrog X-Ray Analysis
+
+At the time of writing (November 2021), the published source code does not contain any declared dependencies with known vulnerabilities.
+
 ## Known Issues
 
-The current version of the verifier has the following known issues:
+The current version of the verifier source code has the following known issues:
 
-* Consistency checks in Block 1, 2, 3 and 4 are missing.
-* Authenticity checks in Block 1, 2, 3 and 4 are missing.
-* Block 1: the CheckSigEncryptionParams test has yet to be adapted to the new signature format.
-* Block 2: the SecureLogs are not yet verified.
-* Block 2: the voting phase exponentiation proofs (partial Choice Return Codes (pCC) and confirmation key (CK)) are not yet verified
-* Block 2: the extractability of the pCC and CK in the Return Codes Mapping table are not yet verified.
-* Block 2: the mixnet initial payload is not yet verified.
-* Block 4: the verification of the eCH-files is not yet specified in pseudo-code.
+* Elections with lists are not supported.
+* Block 1, 2, 3, and 4 only partially implement the consistency checks.
+* Block 1, 2, 3, and 4 only partially implement the authenticity checks.
+* Block 2: the SecureLogs verification algorithms are implemented but not invoked.
+* Block 2: the voting phase exponentiation proofs (partial Choice Return Codes (pCC) and confirmation key (CK)) are not verified.
+* Block 2: the extractability of the pCC and CK in the Return Codes Mapping table are not verified.
+* Block 2: the mixnet initial payload is not verified.
 
+## Future Work
 
+We plan for the following improvements to the verifier:
+
+* Block 4: specify the verification of eCH-files in pseudo-code.
+* Reduce the number of code smells in the source code.
+* Reduce code duplication in the source code.
 
 ## Build information
 
-The following guide provide step by step informations to build the Verifier Swiss Post on a Windows machine.  
+The following instructions provide step-by-step information to build the Verifier of the Swiss Post Voting System on a Windows machine.
 
 1. Ensure you have Maven and Node installed. We tested with following versions:
-    - OpenJDK Runtime Environment Temurin-11.0.12+7 (build 11.0.12+7)
-    - Apache Maven 3.8.3 (ff8e977a158738155dc465c6a97ffaf31982d739)
-    - Node: v14.17.0
+    * OpenJDK Runtime Environment Temurin-11.0.13+8 (build 11.0.13+8)
+    * Apache Maven 3.8.3 (ff8e977a158738155dc465c6a97ffaf31982d739)
+    * Node: v14.17.0
 
 2. Build using Maven
-    - <code>mvn clean install</code>
+    * `mvn clean install`
 
 3. The generated artifact is generated in verifier-assembly\target\verifier-assembly-\<VERSION>.zip
 
-4. Unzip the generated artifact and then launch verifier.exe
+## Run
+
+1. Unzip the generated artifact and then launch verifier.exe.
+
+2. Copy the path of the dataset into the input directory field - you can find a test dataset in the ./dataset subfolder.
+
+3. Click "Start-all" to run all verifications.

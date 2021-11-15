@@ -15,60 +15,78 @@
  */
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
+
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
+import ch.post.it.evoting.verifier.common.AbstractVerification;
 import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.VerificationTrait;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.block.tools.CertificateLoader;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.common.event.VerifierEvent;
 
+@Component
 public class CheckSigPrimes extends AbstractVerification {
-	@Override
-	public VerificationDefinition getVerificationDefinition() {
-		VerificationDefinition def = new VerificationDefinition();
-		def.setBlockId(1);
-		def.setCategory(Category.INTEGRITY);
-		def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-				"verification82.description"));
-		def.setId(82);
-		def.setName("checkSigPrimes");
-		def.addVerificationTrait(VerificationTrait.BLOCK_1);
-		return def;
+
+	private final PathService pathService;
+	private final CertificateLoader certificateLoader;
+
+	public CheckSigPrimes(final PathService pathService, final CertificateLoader certificateLoader,
+			final ApplicationEventPublisher applicationEventPublisher) {
+		super(applicationEventPublisher);
+		this.pathService = pathService;
+		this.certificateLoader = certificateLoader;
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-		VerificationResult result = new VerificationResult();
+	public VerificationDefinition getVerificationDefinition() {
+		final var definition = new VerificationDefinition();
+		definition.setBlockId(1);
+		definition.setCategory(Category.INTEGRITY);
+		definition.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+				"verification82.description"));
+		definition.setId(82);
+		definition.setName("checkSigPrimes");
+		definition.addVerificationTrait(VerificationTrait.BLOCK_1);
+		return definition;
+	}
+
+	@Override
+	public VerificationResultEvent verify(final VerifierEvent event) {
+		final var inputDirectoryPath = event.getInputDirectoryPath();
 
 		// Get the file paths.
-		final PathNode primesPathNode = pathService.buildFromRootPath(StructureKey.PRIMES, inputDirectoryPath);
-		final Path sigPath = primesPathNode.getRelation(RelationType.P7);
-		final PathNode rootCertificatePathNode = pathService.buildFromRootPath(StructureKey.INTEGRATION_CA, inputDirectoryPath);
+		final byte[] rootCertificate = certificateLoader.loadBytes(StructureKey.INTEGRATION_CA, inputDirectoryPath);
 
-		byte[] source = Files.readAllBytes(primesPathNode.getPath());
-		byte[] signature = Files.readAllBytes(sigPath);
-		byte[] rootCertificate = Files.readAllBytes(rootCertificatePathNode.getPath());
+		final var primesPathNode = pathService.buildFromRootPath(StructureKey.PRIMES, inputDirectoryPath);
+		final var sigPath = primesPathNode.getRelation(RelationType.P7);
+		final byte[] source;
+		final byte[] signature;
+		try {
+			source = Files.readAllBytes(primesPathNode.getPath());
+			signature = Files.readAllBytes(sigPath);
+		} catch (IOException e) {
+			throw new UncheckedIOException("Failed to read primes or its signature file.", e);
+		}
 
 		// Verify signature.
 		if (!SignatureChecker.verifyPKCS7(source, signature, rootCertificate)) {
-			throw buildVerificationFailureException(
-					"The signature verification of the file failed.",
-					Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-					"verification82.nok.message",
-					primesPathNode.toString()
-			);
+			return VerificationResultEvent.failure(this, getVerificationDefinition(),
+					TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification82.nok.message",
+							primesPathNode.getPath().toString()));
 		}
 
-		result.setStatus(Status.OK);
-		return result;
+		return VerificationResultEvent.success(this, getVerificationDefinition());
 	}
 }

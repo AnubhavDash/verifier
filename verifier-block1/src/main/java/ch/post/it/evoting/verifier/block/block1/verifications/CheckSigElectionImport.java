@@ -15,60 +15,76 @@
  */
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
+
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
+import ch.post.it.evoting.verifier.common.AbstractVerification;
 import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationResult;
 import ch.post.it.evoting.verifier.common.VerificationTrait;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.block.tools.CertificateLoader;
 import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.common.event.VerifierEvent;
 
+@Component
 public class CheckSigElectionImport extends AbstractVerification {
 
-	@Override
-	public VerificationDefinition getVerificationDefinition() {
-		VerificationDefinition def = new VerificationDefinition();
-		def.setBlockId(1);
-		def.setCategory(Category.AUTHENTICITY);
-		def.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-				"verification75.description"));
-		def.setId(75);
-		def.setName("checkSigElectionImport");
-		def.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
-		def.addVerificationTrait(VerificationTrait.BLOCK_1);
-		return def;
+	private final PathService pathService;
+	private final CertificateLoader certificateLoader;
+
+	public CheckSigElectionImport(final PathService pathService, final CertificateLoader certificateLoader,
+			final ApplicationEventPublisher applicationEventPublisher) {
+		super(applicationEventPublisher);
+		this.pathService = pathService;
+		this.certificateLoader = certificateLoader;
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-		VerificationResult result = new VerificationResult();
+	public VerificationDefinition getVerificationDefinition() {
+		final var definition = new VerificationDefinition();
+		definition.setBlockId(1);
+		definition.setCategory(Category.AUTHENTICITY);
+		definition.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
+				"verification75.description"));
+		definition.setId(75);
+		definition.setName("checkSigElectionImport");
+		definition.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
+		definition.addVerificationTrait(VerificationTrait.BLOCK_1);
+		return definition;
+	}
 
-		final PathNode integrationPathNode = pathService.buildFromRootPath(StructureKey.INTEGRATION_CA, inputDirectoryPath);
-		byte[] rootCertificate = Files.readAllBytes(integrationPathNode.getPath());
+	@Override
+	public VerificationResultEvent verify(final VerifierEvent event) {
+		final var inputDirectoryPath = event.getInputDirectoryPath();
 
-		final PathNode apImportPathNode = pathService.buildFromRootPath(StructureKey.AP_ELECTION_IMPORT, inputDirectoryPath);
+		final byte[] rootCertificate = certificateLoader.loadBytes(StructureKey.INTEGRATION_CA, inputDirectoryPath);
 
-		byte[] content = Files.readAllBytes(apImportPathNode.getPath());
-		byte[] signature = Files.readAllBytes(apImportPathNode.getRelation(RelationType.P7));
-
-		if (!SignatureChecker.verifyPKCS7(content, signature, rootCertificate)) {
-			throw buildVerificationFailureException(
-					"The signature verification of the file failed",
-					Block1VerificationSuite.RESOURCE_BUNDLE_NAME,
-					"verification75.nok.message",
-					apImportPathNode.getPath().toString()
-			);
+		final var apImportPathNode = pathService.buildFromRootPath(StructureKey.AP_ELECTION_IMPORT, inputDirectoryPath);
+		final byte[] content;
+		final byte[] signature;
+		try {
+			content = Files.readAllBytes(apImportPathNode.getPath());
+			signature = Files.readAllBytes(apImportPathNode.getRelation(RelationType.P7));
+		} catch (IOException e) {
+			throw new UncheckedIOException("Failed to read ech0045 or its signature file.", e);
 		}
 
-		result.setStatus(Status.OK);
-		return result;
+		if (!SignatureChecker.verifyPKCS7(content, signature, rootCertificate)) {
+			return VerificationResultEvent.failure(this, getVerificationDefinition(),
+					TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification75.nok.message",
+							apImportPathNode.getPath().toString()));
+		}
+
+		return VerificationResultEvent.success(this, getVerificationDefinition());
 	}
 }

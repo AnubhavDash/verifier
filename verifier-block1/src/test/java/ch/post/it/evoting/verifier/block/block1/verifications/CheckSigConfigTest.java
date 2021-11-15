@@ -16,82 +16,97 @@
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.nio.file.NoSuchFileException;
+import java.io.UncheckedIOException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.exceptions.VerificationFailureException;
+import com.google.common.base.Throwables;
+
+import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
+import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
+import ch.post.it.evoting.verifier.common.event.Block1Event;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
 
-class CheckSigConfigTest extends Block1VerificationAbstractTest {
+class CheckSigConfigTest extends Block1VerificationTest {
 
-	public CheckSigConfigTest() {
-		super(CheckSigConfig.class);
+	@BeforeAll
+	static void setUpAll() {
+		verification = new CheckSigConfig(pathService, certificateLoader, applicationEventPublisherMock);
 	}
 
 	@Test
-	@Disabled("Certificate in dataset has expired, temporary deactivation until a new dataset is provided")
 	void executeTestOK() throws Exception {
-		VerificationResult verificationResult = verification.verify(Paths.get(getClass().getResource("/CheckSigConfigTest/OK").toURI()));
-		assertNotNull(verificationResult);
-		assertEquals(Status.OK, verificationResult.getStatus());
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigConfigTest/OK").toURI()).toString();
+		final VerificationResultEvent resultEvent = verification.verify(new Block1Event(this, inputDirectory));
+
+		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
-	void executeTestNOKCertKo() {
-		final VerificationFailureException ex = assertThrows(
-				VerificationFailureException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigConfigTest/NOK/CERT-NOT-OK").toURI()))
-		);
-		assertEquals("The signature verification of the file failed", ex.getMessage());
+	void executeTestNOKCertKo() throws URISyntaxException {
+		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckSigConfigTest/NOK/CERT-NOT-OK").toURI());
+		final String inputDirectory = inputDirectoryPath.toString();
+		final var event = new Block1Event(this, inputDirectory);
+		final VerificationResultEvent resultEvent = verification.verify(event);
+
+		final String fileName = pathService.buildFromRootPath(StructureKey.CONFIG_ANONYMIZED, inputDirectoryPath).getPath().toString();
+		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
+				TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification73.nok.message", fileName));
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
-	void executeTestNOKXmlKo() {
-		final VerificationFailureException ex = assertThrows(
-				VerificationFailureException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigConfigTest/NOK/XML-NOT-OK").toURI()))
-		);
-		assertEquals("The signature verification of the file failed", ex.getMessage());
+	void executeTestNOKXmlKo() throws URISyntaxException {
+		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckSigConfigTest/NOK/XML-NOT-OK").toURI());
+		final String inputDirectory = inputDirectoryPath.toString();
+		final var event = new Block1Event(this, inputDirectory);
+		final VerificationResultEvent resultEvent = verification.verify(event);
+
+		final String fileName = pathService.buildFromRootPath(StructureKey.CONFIG_ANONYMIZED, inputDirectoryPath).getPath().toString();
+		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
+				TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification73.nok.message", fileName));
+		assertEquals(expectedResultEvent, resultEvent);
 	}
 
 	@Test
-	void executeTestNOKFileNotFound() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigConfigTest/NOK/NOK-NOFILE").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.INTEGRATION_CA);
-		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	void executeTestNOKFileNotFound() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigConfigTest/NOK/NOK-NOFILE").toURI()).toString();
+		final var event = new Block1Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.INTEGRATION_CA);
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(structureNode.getQualifier()));
 	}
 
 	@Test
-	void executeTestNOKFileNotFound2() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigConfigTest/NOK/NOK-NOFILE2").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CONFIG_ANONYMIZED);
-		assertTrue(ex.getMessage().contains(structureNode.getQualifier()));
+	void executeTestNOKFileNotFound2() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigConfigTest/NOK/NOK-NOFILE2").toURI()).toString();
+		final var event = new Block1Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.CONFIG_ANONYMIZED);
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(structureNode.getQualifier()));
 	}
 
 	@Test
-	void executeTestNOKFileNotFound3() {
-		final NoSuchFileException ex = assertThrows(
-				NoSuchFileException.class,
-				() -> verification.verify(Paths.get(getClass().getResource("/CheckSigConfigTest/NOK/NOK-NOFILE3").toURI()))
-		);
-		final StructureNode structureNode = verification.getPathService().getStructureNode(StructureKey.CONFIG_ANONYMIZED);
-		assertTrue(ex.getMessage().contains(structureNode.getQualifier() + RelationType.P7.toFileExtension()));
+	void executeTestNOKFileNotFound3() throws URISyntaxException {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigConfigTest/NOK/NOK-NOFILE3").toURI()).toString();
+		final var event = new Block1Event(this, inputDirectory);
+
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		final StructureNode structureNode = pathService.getStructureNode(StructureKey.CONFIG_ANONYMIZED);
+		assertTrue(Throwables.getRootCause(exception).getMessage().contains(structureNode.getQualifier() + RelationType.P7.toFileExtension()));
 	}
 }

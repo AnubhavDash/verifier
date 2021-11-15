@@ -18,7 +18,6 @@ package ch.post.it.evoting.verifier.block.block3.verifications;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.List;
@@ -26,77 +25,83 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
 
 import ch.post.it.evoting.cryptoprimitives.GroupMatrix;
 import ch.post.it.evoting.cryptoprimitives.GroupVector;
+import ch.post.it.evoting.cryptoprimitives.domain.mixnet.MixnetInitialPayload;
+import ch.post.it.evoting.cryptoprimitives.domain.mixnet.MixnetPayload;
+import ch.post.it.evoting.cryptoprimitives.domain.mixnet.MixnetShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.mixnet.Mixnet;
 import ch.post.it.evoting.cryptoprimitives.mixnet.ShuffleArgument;
 import ch.post.it.evoting.cryptoprimitives.mixnet.VerifiableShuffle;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.MixnetInitialPayload;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.MixnetPayload;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.MixnetShufflePayload;
 import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
+import ch.post.it.evoting.verifier.common.AbstractVerification;
 import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Status;
 import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationResult;
-import ch.post.it.evoting.verifier.common.block.AbstractVerification;
+import ch.post.it.evoting.verifier.common.VerificationTrait;
 import ch.post.it.evoting.verifier.common.block.dto.revised.BallotBox;
-import ch.post.it.evoting.verifier.common.block.dto.revised.ElectionEvent;
 import ch.post.it.evoting.verifier.common.block.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
+import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
 import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.common.event.VerifierEvent;
 
-@SuppressWarnings("java:S117")
+@Component
 public class VerifyOnlineShuffleProofs extends AbstractVerification {
 
 	// Currently, we do not support write-ins, we set this value to 1.
 	private static final int NUMBER_WRITE_INS_PLUS_ONE = 1;
 	private static final int MIN_NUMBER_OF_VOTES_FOR_SHUFFLE = 2;
+
 	private final Mixnet mixnet;
+	private final PathService pathService;
 	private final ElectionDataExtractionService deserializer;
 
-	@Autowired
-	public VerifyOnlineShuffleProofs(final Mixnet mixnet, final ElectionDataExtractionService deserializer) {
+	public VerifyOnlineShuffleProofs(final Mixnet mixnet, final PathService pathService, final ElectionDataExtractionService deserializer,
+			final ApplicationEventPublisher applicationEventPublisher) {
+		super(applicationEventPublisher);
 		this.mixnet = mixnet;
+		this.pathService = pathService;
 		this.deserializer = deserializer;
 	}
 
 	@Override
 	public VerificationDefinition getVerificationDefinition() {
-		var verificationDefinition = new VerificationDefinition();
-		verificationDefinition.setBlockId(3);
-		verificationDefinition.setCategory(Category.EVIDENCE);
-		verificationDefinition.setId(1);
-		verificationDefinition.setName("verifyOnlineShuffleProofs");
-		verificationDefinition.setDescription(TranslationHelper
+		final var definition = new VerificationDefinition();
+		definition.setBlockId(3);
+		definition.setCategory(Category.EVIDENCE);
+		definition.setId(1);
+		definition.setName("verifyOnlineShuffleProofs");
+		definition.setDescription(TranslationHelper
 				.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.description"));
+		definition.addVerificationTrait(VerificationTrait.BLOCK_3);
 
-		return verificationDefinition;
+		return definition;
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) throws Exception {
-		final var result = new VerificationResult();
+	public VerificationResultEvent verify(final VerifierEvent event) {
+		final var inputDirectoryPath = event.getInputDirectoryPath();
 
 		final boolean bbDecryptVerif = getVerificationInputs(inputDirectoryPath)
 				.map(input -> input.numberOfVotes >= MIN_NUMBER_OF_VOTES_FOR_SHUFFLE ? verifyOnlineShuffleProofsBallotBox(input) : true)
 				.reduce(Boolean.TRUE, Boolean::logicalAnd);
 
 		if (bbDecryptVerif) {
-			result.setStatus(Status.OK);
+			return VerificationResultEvent.success(this, getVerificationDefinition());
 		} else {
-			result.setStatus(Status.NOK);
-			result.setMessage(TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.nok.message"));
+			return VerificationResultEvent.failure(this, getVerificationDefinition(),
+					TranslationHelper.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.nok.message"));
 		}
-		return result;
 	}
 
 	/**
@@ -104,16 +109,15 @@ public class VerifyOnlineShuffleProofs extends AbstractVerification {
 	 *
 	 * @param inputDirectoryPath the root directory of files
 	 * @return a Stream of verification input, one per ballot box
-	 * @throws IOException if there is a problem while deserializing from file
 	 */
-	private Stream<VerifyOnlineShuffleProofInput> getVerificationInputs(Path inputDirectoryPath) throws IOException {
-		final ElectionEvent electionEvent = deserializer.getElectionEvent(inputDirectoryPath);
+	private Stream<VerifyOnlineShuffleProofInput> getVerificationInputs(final Path inputDirectoryPath) {
+		final var electionEvent = deserializer.getElectionEvent(inputDirectoryPath);
 		final var electionEventId = TypeConverter.UUIDToStringWithoutDash(electionEvent.getId());
 		final List<BallotBox> ballotBoxList = electionEvent.getBallotBoxes();
 		final var ballotIdsPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 
 		return ballotBoxList.stream()
-				.map( bb -> {
+				.map(bb -> {
 					final var ballotBoxId = TypeConverter.UUIDToStringWithoutDash(bb.getId());
 					final var ballotBoxDirectoryPath = ballotIdsPathNode.getRegexPath(ballotBoxId);
 					final int numberOfVotes = deserializer.getNumberOfVotes(ballotBoxDirectoryPath);
@@ -121,7 +125,7 @@ public class VerifyOnlineShuffleProofs extends AbstractVerification {
 					if (numberOfVotes < MIN_NUMBER_OF_VOTES_FOR_SHUFFLE) {
 						return new VerifyOnlineShuffleProofInput(numberOfVotes);
 					} else {
-						final MixnetInitialPayload initialPayload = deserializer.getMixnetInitialPayload(ballotBoxDirectoryPath);
+						final var initialPayload = deserializer.getMixnetInitialPayload(ballotBoxDirectoryPath);
 						final List<MixnetShufflePayload> shufflePayloads = deserializer.getMixnetShufflePayloads(ballotBoxDirectoryPath);
 
 						return new VerifyOnlineShuffleProofInput(ballotBoxId, electionEventId, shufflePayloads, initialPayload, numberOfVotes);
@@ -220,7 +224,7 @@ public class VerifyOnlineShuffleProofs extends AbstractVerification {
 		final int numberOfVotes;
 
 		// Construct an empty input object with the given number of votes
-		VerifyOnlineShuffleProofInput(final int	numberOfVotes) {
+		VerifyOnlineShuffleProofInput(final int numberOfVotes) {
 			this.bb = null;
 			this.ee = null;
 			this.partiallyDecryptedVotes = null;
@@ -237,7 +241,7 @@ public class VerifyOnlineShuffleProofs extends AbstractVerification {
 				final MixnetInitialPayload initialPayload, final int numberOfVotes) {
 			shufflePayloads.sort(Comparator.comparingInt(MixnetShufflePayload::getNodeId));
 
-			this.bb	= ballotBoxId;
+			this.bb = ballotBoxId;
 			this.ee = electionEventId;
 			this.partiallyDecryptedVotes = Stream.concat(
 							Stream.of(initialPayload),

@@ -36,14 +36,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cms.CMSProcessable;
@@ -54,7 +52,8 @@ import org.bouncycastle.cms.SignerInformationStore;
 import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoVerifierBuilder;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMParser;
-import org.bouncycastle.util.Store;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -67,7 +66,7 @@ import io.jsonwebtoken.Jwts;
 
 public class SignatureChecker {
 
-	private static final Logger LOGGER = Logger.getLogger(SignatureChecker.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SignatureChecker.class);
 	private static final String SIGN_ALGO_NAME = "SHA256withRSAandMGF1";
 
 	private SignatureChecker() {
@@ -80,14 +79,12 @@ public class SignatureChecker {
 				Security.addProvider(new BouncyCastleProvider());
 			}
 			CMSProcessable signedContent = new CMSProcessableByteArray(sourceData);
-			CMSSignedData cms = new CMSSignedData(signedContent, signatureData);
+			var cms = new CMSSignedData(signedContent, signatureData);
 
-			Store store = cms.getCertificates();
+			var store = cms.getCertificates();
 			SignerInformationStore signers = cms.getSignerInfos();
-			Iterator signersIt = signers.getSigners().iterator();
-			while (signersIt.hasNext()) {
-				SignerInformation signer = (SignerInformation) signersIt.next();
-				Iterator certIt = store.getMatches(signer.getSID()).iterator();
+			for (final SignerInformation signer : signers.getSigners()) {
+				var certIt = store.getMatches(signer.getSID()).iterator();
 				X509CertificateHolder certHolder = (X509CertificateHolder) certIt.next();
 				X509Certificate cert = new JcaX509CertificateConverter().setProvider("BC").getCertificate(certHolder);
 
@@ -95,11 +92,11 @@ public class SignatureChecker {
 					//signature is valid, checking certificate chain validity
 					X509Certificate root = loadCertificate(rootCert);
 					List<X509Certificate> intermediates =
-							new ArrayList<X509CertificateHolder>(store.getMatches(null)).stream().map(holder -> {
+							new ArrayList<>(store.getMatches(null)).stream().map(holder -> {
 								try {
 									return new JcaX509CertificateConverter().setProvider("BC").getCertificate(holder);
 								} catch (CertificateException e) {
-									throw new RuntimeException("Unable to convert the certificate", e);
+									throw new IllegalArgumentException("Unable to convert the certificate", e);
 								}
 							}).collect(Collectors.toList());
 
@@ -119,29 +116,29 @@ public class SignatureChecker {
 			Security.addProvider(new BouncyCastleProvider());
 		}
 		try {
-			Metadata metadata = Deserializer.fromJson(metadataData, Metadata.class);
+			var metadata = Deserializer.fromJson(metadataData, Metadata.class);
 			final X509Certificate sCert = loadCertificate(signerCert);
 
 			if (!metadata.getVersion().equals("1.0")) {
 				throw new UnsupportedOperationException("metadata version not supported : " + metadata.getVersion());
 			}
 
-			final String algoName = StringUtils.isNotEmpty(metadata.getAlgorithm()) ? metadata.getAlgorithm() : "SHA256withRSAandMGF1";
+			final String algoName = StringUtils.isNotEmpty(metadata.getAlgorithm()) ? metadata.getAlgorithm() : SIGN_ALGO_NAME;
 
 			//signature
 			byte[] signature = metadata.getSignature();
 
 			//take fields to be added to the content
-			StringBuilder sb = new StringBuilder();
-			metadata.getSignedItems().stream().forEach(s -> sb.append(s.getValue()));
+			var sb = new StringBuilder();
+			metadata.getSignedItems().forEach(s -> sb.append(s.getValue()));
 			byte[] fields = sb.toString().getBytes(StandardCharsets.UTF_8);
 
 			//concatenate sourceData & fields
-			byte[] source = new byte[sourceData.length + fields.length];
+			var source = new byte[sourceData.length + fields.length];
 			System.arraycopy(sourceData, 0, source, 0, sourceData.length);
 			System.arraycopy(fields, 0, source, sourceData.length, fields.length);
 
-			Signature signatureAlgorithm = Signature.getInstance(algoName);
+			var signatureAlgorithm = Signature.getInstance(algoName);
 			signatureAlgorithm.initVerify(sCert.getPublicKey());
 			signatureAlgorithm.update(source);
 
@@ -177,7 +174,7 @@ public class SignatureChecker {
 		try {
 			final X509Certificate sCert = loadCertificate(signingCertificate);
 
-			Signature signatureAlgorithm = Signature.getInstance(SIGN_ALGO_NAME);
+			var signatureAlgorithm = Signature.getInstance(SIGN_ALGO_NAME);
 			signatureAlgorithm.initVerify(sCert.getPublicKey());
 			signatureAlgorithm.update(source);
 
@@ -218,9 +215,9 @@ public class SignatureChecker {
 			final LinkedHashMap recoveredSignedObject = (LinkedHashMap) claimsJws.getBody().get("objectToSign");
 
 			// Convert to strings node to make the comparison.
-			ObjectMapper mapper = new ObjectMapper();
-			final String recoveredString = mapper.writeValueAsString(recoveredSignedObject);
-			final String sourceString = mapper.writeValueAsString(sourceNode);
+			final var mapper = new ObjectMapper();
+			final var recoveredString = mapper.writeValueAsString(recoveredSignedObject);
+			final var sourceString = mapper.writeValueAsString(sourceNode);
 
 			// If signature is valid, check certificate chain validity.
 			if (sourceString.equals(recoveredString)) {
@@ -241,7 +238,7 @@ public class SignatureChecker {
 		if (Security.getProvider("BC") == null) {
 			Security.addProvider(new BouncyCastleProvider());
 		}
-		PEMParser parser = new PEMParser(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(certificate))));
+		var parser = new PEMParser(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(certificate))));
 		return new JcaX509CertificateConverter().setProvider("BC").getCertificate((X509CertificateHolder) parser.readObject());
 	}
 
@@ -253,10 +250,10 @@ public class SignatureChecker {
 		Set<TrustAnchor> trustAnchors = new HashSet<>();
 		trustAnchors.add(new TrustAnchor(rootCA, null));
 
-		X509CertSelector selector = new X509CertSelector();
+		var selector = new X509CertSelector();
 		selector.setCertificate(cert);
 
-		PKIXBuilderParameters params = new PKIXBuilderParameters(trustAnchors, selector);
+		var params = new PKIXBuilderParameters(trustAnchors, selector);
 
 		//disable CLR check because we are not online
 		params.setRevocationEnabled(false);
@@ -264,10 +261,9 @@ public class SignatureChecker {
 		params.addCertStore(CertStore.getInstance("Collection",
 				new CollectionCertStoreParameters(intermediateCerts), "BC"));
 
-		CertPathBuilder builder = CertPathBuilder.getInstance("PKIX", "BC");
+		var builder = CertPathBuilder.getInstance("PKIX", "BC");
 
-		PKIXCertPathBuilderResult result = (PKIXCertPathBuilderResult) builder.build(params);
-		return result;
+		return (PKIXCertPathBuilderResult) builder.build(params);
 	}
 
 	private static List<X509Certificate> loadCertificatesChain(byte[][] intermediateCertificates, X509Certificate sCert) {
@@ -276,7 +272,7 @@ public class SignatureChecker {
 					try {
 						return loadCertificate(bytes);
 					} catch (CertificateException | IOException e) {
-						throw new RuntimeException(e);
+						throw new IllegalArgumentException(e);
 					}
 				}).collect(Collectors.toList()) : new ArrayList<>(1);
 		intermediates.add(sCert);
