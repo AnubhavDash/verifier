@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,10 @@ package ch.post.it.evoting.verifier.dto;
 import java.util.Map;
 import java.util.Set;
 
-import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.Language;
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.VerificationTrait;
+import ch.post.it.evoting.verifier.plugin.contract.Category;
+import ch.post.it.evoting.verifier.plugin.contract.Language;
+import ch.post.it.evoting.verifier.plugin.contract.Status;
+import ch.post.it.evoting.verifier.plugin.contract.VerificationTrait;
 
 import lombok.Getter;
 import lombok.Setter;

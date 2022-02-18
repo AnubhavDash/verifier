@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,17 @@
 
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -37,14 +41,14 @@ import ch.post.it.evoting.cryptoprimitives.math.GqElement;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ExponentiationProof;
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
-import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.block.exceptions.VerificationPreconditionException;
-import ch.post.it.evoting.verifier.common.block.tools.ElectionDataExtractionService;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.core.internal.exceptions.VerificationPreconditionException;
+import ch.post.it.evoting.verifier.core.internal.tools.ElectionDataExtractionService;
+import ch.post.it.evoting.verifier.core.internal.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.core.internal.tools.path.PathNode;
+import ch.post.it.evoting.verifier.core.internal.tools.path.PathService;
+import ch.post.it.evoting.verifier.core.internal.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.plugin.contract.VerificationDefinition;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerificationResultEvent;
 
 /**
  * Both the partial choice code and confirmation key exponentiation proofs are very similar but require different inputs. Hence, the parameterized
@@ -105,20 +109,30 @@ public class ExponentiationProofsVerificationService<T extends ExponentiationPro
 				.parallel()
 				.map(votingCardSetIDPath
 						-> {
-					var returnCodeGenerationRequestPayload = extractionService.deserializeReturnCodeGenerationRequestPayload(votingCardSetIDPath);
-					var controlComponentContributions = extractionService.deserializeControlComponentContributions(votingCardSetIDPath);
 
-					final var context = getVerificationContext(returnCodeGenerationRequestPayload);
+					List<ReturnCodeGenerationRequestPayload> allReturnCodeGenerationRequestPayloads = extractionService.deserializeReturnCodeGenerationRequestPayload(
+							votingCardSetIDPath);
+					List<List<ReturnCodeGenerationResponsePayload>> allControlComponentContributions = extractionService.deserializeControlComponentContributions(
+							votingCardSetIDPath);
 
-					if (!checkAllVerificationCardSetsContainAtLeastOneVerificationCard(controlComponentContributions)) {
-						throw new VerificationPreconditionException(
-								String.format("The verification cards set %s should contain at least one verification card.",
-										returnCodeGenerationRequestPayload.getVerificationCardSetId()));
-					}
+					Stream<ReturnCodeExponentiationRequestResponseChunk> returnCodeExponentiationRequestResponseChunks   = assembleRequestResponseChunks(allReturnCodeGenerationRequestPayloads,allControlComponentContributions);
 
-					return verifyEncryptedExponentiationProofVerificationCardSet.test(context,
-							massageData.apply(returnCodeGenerationRequestPayload, controlComponentContributions));
+					return returnCodeExponentiationRequestResponseChunks.parallel().map(
+							chunk -> {
+								var returnCodeGenerationRequestPayload = chunk.returnCodeGenerationRequestPayload();
+								var controlComponentContributions = chunk.controlComponentContributions();
+								final var context = getVerificationContext(returnCodeGenerationRequestPayload);
 
+								if (!checkAllVerificationCardSetsContainAtLeastOneVerificationCard(controlComponentContributions)) {
+									throw new VerificationPreconditionException(
+											String.format("The verification cards set %s should contain at least one verification card.",
+													returnCodeGenerationRequestPayload.getVerificationCardSetId()));
+								}
+
+								return verifyEncryptedExponentiationProofVerificationCardSet.test(context,
+										massageData.apply(returnCodeGenerationRequestPayload, controlComponentContributions));
+							}
+					).reduce(Boolean::logicalAnd).orElse(Boolean.FALSE);
 				}).reduce(Boolean::logicalAnd).orElse(Boolean.FALSE);
 
 		if (Boolean.TRUE.equals(result)) {
@@ -158,7 +172,7 @@ public class ExponentiationProofsVerificationService<T extends ExponentiationPro
 			ElGamalMultiRecipientCiphertext elGamalMultiRecipientCiphertext) {
 		List<GqElement> gqElements = new ArrayList<>();
 		gqElements.add(generator);
-		gqElements.addAll(elGamalMultiRecipientCiphertext.stream().collect(Collectors.toList()));
+		gqElements.addAll(elGamalMultiRecipientCiphertext.stream().toList());
 		return GroupVector.from(gqElements);
 	}
 
@@ -166,24 +180,7 @@ public class ExponentiationProofsVerificationService<T extends ExponentiationPro
 	 * Maps to context from the specification
 	 */
 	@SuppressWarnings({ "java:S117", "java:S100" })
-	static class VerificationContext {
-
-		private final String ee;
-		private final GqElement generator;
-
-		public VerificationContext(String ee, GqElement generator) {
-			this.ee = checkNotNull(ee);
-			this.generator = checkNotNull(generator);
-		}
-
-		public String get_ee() {
-			return ee;
-		}
-
-		public GqElement getGenerator() {
-			return generator;
-		}
-	}
+	static record  VerificationContext(String ee, GqElement generator){}
 
 	/**
 	 * Maps to input from the specification
@@ -191,4 +188,34 @@ public class ExponentiationProofsVerificationService<T extends ExponentiationPro
 	public interface VerificationInput {
 
 	}
+
+	public Stream<ReturnCodeExponentiationRequestResponseChunk> assembleRequestResponseChunks(
+			List<ReturnCodeGenerationRequestPayload> returnCodeGenerationRequestPayload,
+			List<List<ReturnCodeGenerationResponsePayload>> controlComponentContributions)  {
+
+		Map<Integer, List<ReturnCodeGenerationResponsePayload>> chunkIdToControlComponentContributions = controlComponentContributions.stream()
+				.filter(chunk -> chunk.stream().findFirst().isPresent())
+				.collect(Collectors.toMap(chunk -> chunk.stream().findFirst().get().getChunkId(), Function.identity()));
+
+		Set<Integer> controlComponentContributionsChunkIDs = chunkIdToControlComponentContributions.keySet();
+		List<Integer> returnCodeGenerationRequestChunkIDs = returnCodeGenerationRequestPayload.stream()
+				.map(ReturnCodeGenerationRequestPayload::getChunkId)
+				.toList();
+
+		Set<Integer> uniqueReturnCodeGenerationRequestChunkIDs = new HashSet<>(returnCodeGenerationRequestChunkIDs);
+
+		checkState(uniqueReturnCodeGenerationRequestChunkIDs.size() == returnCodeGenerationRequestChunkIDs.size(), "ReturnCodeGenerationRequest chunks not unique");
+
+		checkState(controlComponentContributionsChunkIDs.equals(uniqueReturnCodeGenerationRequestChunkIDs),
+				"Mismatch between the returnCodeGenerationRequest and controlComponentContribution chunks IDs. ReturnCodeGenerationRequest chunks IDs:  %s ,ControlComponentContribution chunks IDs : %s",
+				returnCodeGenerationRequestChunkIDs, controlComponentContributionsChunkIDs);
+
+		return returnCodeGenerationRequestPayload.stream()
+				.map(request -> new ReturnCodeExponentiationRequestResponseChunk(request, chunkIdToControlComponentContributions.get(request.getChunkId())));
+
+	}
+
+
+	static record ReturnCodeExponentiationRequestResponseChunk(ReturnCodeGenerationRequestPayload returnCodeGenerationRequestPayload,
+															   List<ReturnCodeGenerationResponsePayload> controlComponentContributions ) {}
 }

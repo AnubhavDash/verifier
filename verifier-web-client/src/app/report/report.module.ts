@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 import {ReportOverviewComponent} from './containers/report-overview/report-overview.component';
 import {ProcessorService} from './services/processor.service';
 import {VerifierCommonModule} from '../verifier-common-module';
-import {ReportPdfComponent} from './containers/report-pdf/report-pdf.component';
 import {StatusFilterPipe} from './pipes/statusFilter.pipe';
 import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
@@ -28,8 +27,7 @@ const routes: Routes = [
   {
     path: 'report',
     children: [
-      {path: '', component: ReportOverviewComponent},
-      {path: 'pdf', component: ReportPdfComponent},
+      {path: '', component: ReportOverviewComponent}
     ]
   }
 ];
@@ -38,8 +36,7 @@ const routes: Routes = [
   declarations: [
     StatusFilterPipe,
     LocalizePipe,
-    ReportOverviewComponent,
-    ReportPdfComponent,
+    ReportOverviewComponent
   ],
   imports: [
     BrowserModule,

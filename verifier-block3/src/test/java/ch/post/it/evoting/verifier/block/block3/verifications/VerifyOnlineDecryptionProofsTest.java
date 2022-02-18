@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,11 +30,11 @@ import com.google.common.base.Throwables;
 import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofService;
 import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
-import ch.post.it.evoting.verifier.common.block.exceptions.MissingFileException;
-import ch.post.it.evoting.verifier.common.block.tools.ElectionDataExtractionService;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.event.Block3Event;
-import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.core.internal.exceptions.MissingFileException;
+import ch.post.it.evoting.verifier.core.internal.tools.ElectionDataExtractionService;
+import ch.post.it.evoting.verifier.core.internal.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.plugin.contract.event.PreDecryptionEvent;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerificationResultEvent;
 
 class VerifyOnlineDecryptionProofsTest extends Block3VerificationTest {
 
@@ -47,7 +47,7 @@ class VerifyOnlineDecryptionProofsTest extends Block3VerificationTest {
 	@Test
 	void executeTestOK() throws Exception {
 		final String inputDirectory = Paths.get(getClass().getResource("/VerifyOnlineDecryptionProofsTest/OK").toURI()).toString();
-		final var event = new Block3Event(this, inputDirectory);
+		final var event = new PreDecryptionEvent(this, inputDirectory);
 
 		final VerificationResultEvent resultEvent = verification.verify(event);
 		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
@@ -57,7 +57,7 @@ class VerifyOnlineDecryptionProofsTest extends Block3VerificationTest {
 	@Test
 	void executeTestNOK() throws Exception {
 		final String inputDirectory = Paths.get(getClass().getResource("/VerifyOnlineDecryptionProofsTest/NOK").toURI()).toString();
-		final var event = new Block3Event(this, inputDirectory);
+		final var event = new PreDecryptionEvent(this, inputDirectory);
 
 		final VerificationResultEvent resultEvent = verification.verify(event);
 		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
@@ -68,7 +68,7 @@ class VerifyOnlineDecryptionProofsTest extends Block3VerificationTest {
 	@Test
 	void executeTestNOKFileNotFound() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/VerifyOnlineDecryptionProofsTest/NOK_missingFiles").toURI()).toString();
-		final var event = new Block3Event(this, inputDirectory);
+		final var event = new PreDecryptionEvent(this, inputDirectory);
 
 		final var exception = assertThrows(MissingFileException.class, () -> verification.verify(event));
 		assertEquals("Missing shufflePayload file(s)", Throwables.getRootCause(exception).getMessage());
@@ -77,7 +77,7 @@ class VerifyOnlineDecryptionProofsTest extends Block3VerificationTest {
 	@Test
 	void executeTestNOKCorruptedFile() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/VerifyOnlineDecryptionProofsTest/NOK_corruptedFile").toURI()).toString();
-		final var event = new Block3Event(this, inputDirectory);
+		final var event = new PreDecryptionEvent(this, inputDirectory);
 
 		assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 	}

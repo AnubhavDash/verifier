@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,10 +29,10 @@ import org.junit.jupiter.api.Test;
 import com.google.common.base.Throwables;
 
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import ch.post.it.evoting.verifier.common.event.Block1Event;
-import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.core.internal.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.core.internal.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.plugin.contract.event.ConfigurationEvent;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerificationResultEvent;
 
 class CheckNumberCredentialsTest extends Block1VerificationTest {
 
@@ -44,7 +44,7 @@ class CheckNumberCredentialsTest extends Block1VerificationTest {
 	@Test
 	void executeTestOK() throws Exception {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckNumberCredentialsTest/OK").toURI()).toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 
 		final VerificationResultEvent resultEvent = verification.verify(event);
 		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
@@ -54,7 +54,7 @@ class CheckNumberCredentialsTest extends Block1VerificationTest {
 	@Test
 	void executeTestNOK() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckNumberCredentialsTest/NOK/NOK").toURI()).toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 		final VerificationResultEvent resultEvent = verification.verify(event);
 
 		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
@@ -65,7 +65,7 @@ class CheckNumberCredentialsTest extends Block1VerificationTest {
 	@Test
 	void executeTestNOKFileNotFound() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckNumberCredentialsTest/NOK/NOK-NOFILE").toURI()).toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 
 		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 		final String fileQualifier = pathService.getStructureNode(StructureKey.CONFIG_ANONYMIZED).getQualifier();
@@ -75,7 +75,7 @@ class CheckNumberCredentialsTest extends Block1VerificationTest {
 	@Test
 	void executeTestNOKFileNotFound2() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckNumberCredentialsTest/NOK/NOK-NOFILE2").toURI()).toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 
 		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 		final String fileQualifier = pathService.getStructureNode(StructureKey.CREDENTIAL_DATA).getQualifier();

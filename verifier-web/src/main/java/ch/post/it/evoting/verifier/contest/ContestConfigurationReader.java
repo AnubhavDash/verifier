@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,8 @@ import org.springframework.stereotype.Component;
 
 import ch.evoting.xmlns.config._4.Configuration;
 import ch.evoting.xmlns.config._4.ContestDescriptionInformationType;
-import ch.post.it.evoting.verifier.common.Language;
-import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
+import ch.post.it.evoting.verifier.plugin.contract.Language;
+import ch.post.it.evoting.verifier.core.internal.tools.Deserializer;
 
 @Component
 public class ContestConfigurationReader {

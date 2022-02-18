@@ -1,0 +1,209 @@
+{
+  "electionEvent" : {
+    "id" : "53f590057a5e488085626e2476a7a4fb",
+    "alias" : "Post_20211014_TT02",
+    "ballotBoxes" : [ {
+      "id" : "fa390705d5724b7b8a7377506775aa20",
+      "alias" : "BE-CH-1|BE-MU-10001 + BE-CT-1|BE-MU-10001",
+      "authId" : "9997c020-cc5c-33b4-b7ff-0696c2d36092",
+      "vcsId" : "a59e8eb08f7840d99030b4dcbd9e00a9",
+      "vcsAlias" : "vcs_BE-CH-1|BE-MU-10001 + BE-CT-1|BE-MU-10001",
+      "votingCardsGenerated" : 10,
+      "countingCircles" : [ {
+        "id" : "BE-MU-10001",
+        "domainOfInfluence" : [ {
+          "id" : "doid-ch1-mu",
+          "votes" : [ {
+            "id" : "c058d660266f42959bbea4b72049fd5c",
+            "alias" : "1000000000-2",
+            "questions" : [ {
+              "alias" : "1000000000-EVotingProposition",
+              "options" : [ {
+                "id" : "ab39c281b6934133967d04766fb0c6f3",
+                "alias" : "57a30570-1722-3a7e-a8f9-7dd643d7f339",
+                "primeNumber" : 5
+              }, {
+                "id" : "8ae0988c1c6644f9b4529deb999028e8",
+                "alias" : "b9c57a40-a555-35e1-972c-a1a6b7e03381",
+                "primeNumber" : 7
+              }, {
+                "id" : "1578f4ea34484b6692ae5572a42c411f",
+                "alias" : "8814c2b6-8c73-38e8-99e6-830bffdf32c6",
+                "primeNumber" : 13
+              } ]
+            } ]
+          } ],
+          "elections" : [ ]
+        }, {
+          "id" : "doid-ct1-mu",
+          "votes" : [ ],
+          "elections" : [ {
+            "id" : "56bb7301278a4d4f993328293e260fac",
+            "alias" : "1000000000-1",
+            "numberOfSeats" : 1,
+            "candidates" : [ {
+              "alias" : "1-1",
+              "primeNumber" : [ 23 ],
+              "blank" : false
+            }, {
+              "alias" : "1-2",
+              "primeNumber" : [ 29 ],
+              "blank" : false
+            }, {
+              "alias" : "1-3",
+              "primeNumber" : [ 31 ],
+              "blank" : false
+            }, {
+              "alias" : "1-4",
+              "primeNumber" : [ 47 ],
+              "blank" : false
+            }, {
+              "alias" : "1-5",
+              "primeNumber" : [ 43 ],
+              "blank" : false
+            }, {
+              "alias" : "ae3a5d49-b15d-3e88-8bdd-cbf965497a8c",
+              "primeNumber" : [ 53 ],
+              "blank" : true
+            } ]
+          } ]
+        } ]
+      } ]
+    }, {
+      "id" : "62f502b20167479ca7abcc392960e092",
+      "alias" : "BE-CH-1|BE-MU-10002",
+      "authId" : "22708823-38b8-3618-8a9e-d4e8caa876ee",
+      "vcsId" : "0e3d5f395e254c71b703afd4e2b9c087",
+      "vcsAlias" : "vcs_BE-CH-1|BE-MU-10002",
+      "votingCardsGenerated" : 10,
+      "countingCircles" : [ {
+        "id" : "BE-MU-10002",
+        "domainOfInfluence" : [ {
+          "id" : "doid-ch1-mu",
+          "votes" : [ {
+            "id" : "c058d660266f42959bbea4b72049fd5c",
+            "alias" : "1000000000-2",
+            "questions" : [ {
+              "alias" : "1000000000-EVotingProposition",
+              "options" : [ {
+                "id" : "ab39c281b6934133967d04766fb0c6f3",
+                "alias" : "57a30570-1722-3a7e-a8f9-7dd643d7f339",
+                "primeNumber" : 5
+              }, {
+                "id" : "8ae0988c1c6644f9b4529deb999028e8",
+                "alias" : "b9c57a40-a555-35e1-972c-a1a6b7e03381",
+                "primeNumber" : 7
+              }, {
+                "id" : "1578f4ea34484b6692ae5572a42c411f",
+                "alias" : "8814c2b6-8c73-38e8-99e6-830bffdf32c6",
+                "primeNumber" : 13
+              } ]
+            } ]
+          } ],
+          "elections" : [ ]
+        } ]
+      } ]
+    }, {
+      "id" : "210990cb2a5342dc83fa0aa374ca3df7",
+      "alias" : "BE-CH-1|BE-MU-10003 + BE-CT-1|BE-MU-10003",
+      "authId" : "a1c5cfff-4ad0-3019-a54b-868131a02e9d",
+      "vcsId" : "6d8750880e6048639ed1985306e0f579",
+      "vcsAlias" : "vcs_BE-CH-1|BE-MU-10003 + BE-CT-1|BE-MU-10003",
+      "votingCardsGenerated" : 10,
+      "countingCircles" : [ {
+        "id" : "BE-MU-10003",
+        "domainOfInfluence" : [ {
+          "id" : "doid-ch1-mu",
+          "votes" : [ {
+            "id" : "c058d660266f42959bbea4b72049fd5c",
+            "alias" : "1000000000-2",
+            "questions" : [ {
+              "alias" : "1000000000-EVotingProposition",
+              "options" : [ {
+                "id" : "ab39c281b6934133967d04766fb0c6f3",
+                "alias" : "57a30570-1722-3a7e-a8f9-7dd643d7f339",
+                "primeNumber" : 5
+              }, {
+                "id" : "8ae0988c1c6644f9b4529deb999028e8",
+                "alias" : "b9c57a40-a555-35e1-972c-a1a6b7e03381",
+                "primeNumber" : 7
+              }, {
+                "id" : "1578f4ea34484b6692ae5572a42c411f",
+                "alias" : "8814c2b6-8c73-38e8-99e6-830bffdf32c6",
+                "primeNumber" : 13
+              } ]
+            } ]
+          } ],
+          "elections" : [ ]
+        }, {
+          "id" : "doid-ct1-mu",
+          "votes" : [ ],
+          "elections" : [ {
+            "id" : "56bb7301278a4d4f993328293e260fac",
+            "alias" : "1000000000-1",
+            "numberOfSeats" : 1,
+            "candidates" : [ {
+              "alias" : "1-1",
+              "primeNumber" : [ 23 ],
+              "blank" : false
+            }, {
+              "alias" : "1-2",
+              "primeNumber" : [ 29 ],
+              "blank" : false
+            }, {
+              "alias" : "1-3",
+              "primeNumber" : [ 31 ],
+              "blank" : false
+            }, {
+              "alias" : "1-4",
+              "primeNumber" : [ 47 ],
+              "blank" : false
+            }, {
+              "alias" : "1-5",
+              "primeNumber" : [ 43 ],
+              "blank" : false
+            }, {
+              "alias" : "ae3a5d49-b15d-3e88-8bdd-cbf965497a8c",
+              "primeNumber" : [ 53 ],
+              "blank" : true
+            } ]
+          } ]
+        } ]
+      } ]
+    }, {
+      "id" : "9a4db5802fb5412cab5444514aeb76b3",
+      "alias" : "BE-CH-1|BE-MU-10004",
+      "authId" : "a19095e2-de2e-3c7c-82be-7a42b6724be8",
+      "vcsId" : "9fcdc3dd29f84ad5bacf01f373eee572",
+      "vcsAlias" : "vcs_BE-CH-1|BE-MU-10004",
+      "votingCardsGenerated" : 10,
+      "countingCircles" : [ {
+        "id" : "BE-MU-10004",
+        "domainOfInfluence" : [ {
+          "id" : "doid-ch1-mu",
+          "votes" : [ {
+            "id" : "c058d660266f42959bbea4b72049fd5c",
+            "alias" : "1000000000-2",
+            "questions" : [ {
+              "alias" : "1000000000-EVotingProposition",
+              "options" : [ {
+                "id" : "ab39c281b6934133967d04766fb0c6f3",
+                "alias" : "57a30570-1722-3a7e-a8f9-7dd643d7f339",
+                "primeNumber" : 5
+              }, {
+                "id" : "8ae0988c1c6644f9b4529deb999028e8",
+                "alias" : "b9c57a40-a555-35e1-972c-a1a6b7e03381",
+                "primeNumber" : 7
+              }, {
+                "id" : "1578f4ea34484b6692ae5572a42c411f",
+                "alias" : "8814c2b6-8c73-38e8-99e6-830bffdf32c6",
+                "primeNumber" : 13
+              } ]
+            } ]
+          } ],
+          "elections" : [ ]
+        } ]
+      } ]
+    } ]
+  }
+}

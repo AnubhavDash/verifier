@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,12 +30,12 @@ import org.junit.jupiter.api.Test;
 import com.google.common.base.Throwables;
 
 import ch.post.it.evoting.verifier.block.block4.Block4VerificationSuite;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
-import ch.post.it.evoting.verifier.common.event.Block1Event;
-import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.core.internal.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.core.internal.tools.path.RelationType;
+import ch.post.it.evoting.verifier.core.internal.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.core.internal.tools.path.StructureNode;
+import ch.post.it.evoting.verifier.plugin.contract.event.ConfigurationEvent;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerificationResultEvent;
 
 class CheckSigDecompressedVotesTest extends Block4VerificationTest {
 
@@ -47,7 +47,7 @@ class CheckSigDecompressedVotesTest extends Block4VerificationTest {
 	@Test
 	void executeTestOK() throws Exception {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigDecompressedVotesTest/OK").toURI()).toString();
-		final VerificationResultEvent resultEvent = verification.verify(new Block1Event(this, inputDirectory));
+		final VerificationResultEvent resultEvent = verification.verify(new ConfigurationEvent(this, inputDirectory));
 
 		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
 		assertEquals(expectedResultEvent, resultEvent);
@@ -57,7 +57,7 @@ class CheckSigDecompressedVotesTest extends Block4VerificationTest {
 	void executeTestNOKXmlKo() throws URISyntaxException {
 		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckSigDecompressedVotesTest/NOK/CSV-NOT-OK").toURI());
 		final String inputDirectory = inputDirectoryPath.toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 		final VerificationResultEvent resultEvent = verification.verify(event);
 
 		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
@@ -69,7 +69,7 @@ class CheckSigDecompressedVotesTest extends Block4VerificationTest {
 	void executeTestNOKCertKo() throws URISyntaxException {
 		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckSigDecompressedVotesTest/NOK/CERT-NOT-OK").toURI());
 		final String inputDirectory = inputDirectoryPath.toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 		final VerificationResultEvent resultEvent = verification.verify(event);
 
 		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
@@ -80,7 +80,7 @@ class CheckSigDecompressedVotesTest extends Block4VerificationTest {
 	@Test
 	void executeTestNOKFileNotFoundCertificate() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigDecompressedVotesTest/NOK-NOTFILE").toURI()).toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 
 		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 		final StructureNode structureNode = pathService.getStructureNode(StructureKey.ADMIN_BOARD_CERT);
@@ -90,7 +90,7 @@ class CheckSigDecompressedVotesTest extends Block4VerificationTest {
 	@Test
 	void executeTestNOKFileNotFoundRootCertificate() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigDecompressedVotesTest/NOK-NOTFILE2").toURI()).toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 
 		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 		final StructureNode structureNode = pathService.getStructureNode(StructureKey.TENANT_100);
@@ -100,7 +100,7 @@ class CheckSigDecompressedVotesTest extends Block4VerificationTest {
 	@Test
 	void executeTestNOKFileNotFoundBallotBoxIdDirectories() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigDecompressedVotesTest/NOK-NOTFILE3").toURI()).toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 
 		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 		final StructureNode structureNode = pathService.getStructureNode(StructureKey.BALLOT_BOX_ID_DIR);
@@ -110,7 +110,7 @@ class CheckSigDecompressedVotesTest extends Block4VerificationTest {
 	@Test
 	void executeTestNOKFileNotFoundDecompressedVotes() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigDecompressedVotesTest/NOK-NOTFILE4").toURI()).toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 
 		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 		final StructureNode structureNode = pathService.getStructureNode(StructureKey.DECOMPRESSED_VOTES);
@@ -120,7 +120,7 @@ class CheckSigDecompressedVotesTest extends Block4VerificationTest {
 	@Test
 	void executeTestNOKFileNotFoundDecompressedVotesMetadata() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigDecompressedVotesTest/NOK-NOTFILE5").toURI()).toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 
 		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 		final StructureNode structureNode = pathService.getStructureNode(StructureKey.DECOMPRESSED_VOTES);

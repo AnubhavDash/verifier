@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,11 +29,11 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.base.Throwables;
 
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
-import ch.post.it.evoting.verifier.common.event.Block4Event;
-import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.plugin.contract.Status;
+import ch.post.it.evoting.verifier.core.internal.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.core.internal.tools.path.StructureNode;
+import ch.post.it.evoting.verifier.plugin.contract.event.FinalDecryptionEvent;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerificationResultEvent;
 
 class CheckTallyingCandidatesTest extends Block4VerificationTest {
 
@@ -45,7 +45,7 @@ class CheckTallyingCandidatesTest extends Block4VerificationTest {
 	@Test
 	void executeTestOK() throws Exception {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckTallyingCandidates/OK").toURI()).toString();
-		final VerificationResultEvent resultEvent = verification.verify(new Block4Event(this, inputDirectory));
+		final VerificationResultEvent resultEvent = verification.verify(new FinalDecryptionEvent(this, inputDirectory));
 
 		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
 		assertEquals(expectedResultEvent, resultEvent);
@@ -55,7 +55,7 @@ class CheckTallyingCandidatesTest extends Block4VerificationTest {
 	void executeTestNOKMajoralCountOfVotesTotal() throws URISyntaxException {
 		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-COUNTOFVOTES-MAJORAL").toURI());
 		final String inputDirectory = inputDirectoryPath.toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 		final VerificationResultEvent resultEvent = verification.verify(event);
 
 		assertEquals(Status.NOK, resultEvent.getStatus());
@@ -65,7 +65,7 @@ class CheckTallyingCandidatesTest extends Block4VerificationTest {
 	void executeTestNOKProportionalCountOfVotesTotal() throws URISyntaxException {
 		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-COUNTOFVOTES-PROPORTIONAL").toURI());
 		final String inputDirectory = inputDirectoryPath.toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 		final VerificationResultEvent resultEvent = verification.verify(event);
 
 		assertEquals(Status.NOK, resultEvent.getStatus());
@@ -74,7 +74,7 @@ class CheckTallyingCandidatesTest extends Block4VerificationTest {
 	@Test
 	void executeTestOKWriteIns() throws Exception {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckTallyingCandidates/OK-WRITEINS").toURI()).toString();
-		final VerificationResultEvent resultEvent = verification.verify(new Block4Event(this, inputDirectory));
+		final VerificationResultEvent resultEvent = verification.verify(new FinalDecryptionEvent(this, inputDirectory));
 
 		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
 		assertEquals(expectedResultEvent, resultEvent);
@@ -84,7 +84,7 @@ class CheckTallyingCandidatesTest extends Block4VerificationTest {
 	void executeTestNOKWriteInsContainsKeyMajoral() throws URISyntaxException {
 		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-CONTAINSKEY-MAJORAL").toURI());
 		final String inputDirectory = inputDirectoryPath.toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 		final VerificationResultEvent resultEvent = verification.verify(event);
 
 		assertEquals(Status.NOK, resultEvent.getStatus());
@@ -94,7 +94,7 @@ class CheckTallyingCandidatesTest extends Block4VerificationTest {
 	void executeTestNOKWriteInsContainsKeyProportional() throws URISyntaxException {
 		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-CONTAINSKEY-PROPORTIONAL").toURI());
 		final String inputDirectory = inputDirectoryPath.toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 		final VerificationResultEvent resultEvent = verification.verify(event);
 
 		assertEquals(Status.NOK, resultEvent.getStatus());
@@ -104,7 +104,7 @@ class CheckTallyingCandidatesTest extends Block4VerificationTest {
 	void executeTestNOKWriteInsEqualsMajoral() throws URISyntaxException {
 		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-EQUALS-MAJORAL").toURI());
 		final String inputDirectory = inputDirectoryPath.toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 		final VerificationResultEvent resultEvent = verification.verify(event);
 
 		assertEquals(Status.NOK, resultEvent.getStatus());
@@ -114,7 +114,7 @@ class CheckTallyingCandidatesTest extends Block4VerificationTest {
 	void executeTestNOKWriteInsEqualsProportional() throws URISyntaxException {
 		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-WRITEINS-EQUALS-PROPORTIONAL").toURI());
 		final String inputDirectory = inputDirectoryPath.toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 		final VerificationResultEvent resultEvent = verification.verify(event);
 
 		assertEquals(Status.NOK, resultEvent.getStatus());
@@ -124,7 +124,7 @@ class CheckTallyingCandidatesTest extends Block4VerificationTest {
 	void executeTestNOKDecryptCount() throws URISyntaxException {
 		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-DECRYPTCOUNT").toURI());
 		final String inputDirectory = inputDirectoryPath.toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 
 		assertThrows(IllegalArgumentException.class, () -> verification.verify(event));
 	}
@@ -132,7 +132,7 @@ class CheckTallyingCandidatesTest extends Block4VerificationTest {
 	@Test
 	void executeTestNOKFileNotFoundConfiguration() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-NOFILE-CONFIG").toURI()).toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 
 		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 		final StructureNode structureNode = pathService.getStructureNode(StructureKey.CONFIG_ANONYMIZED);
@@ -142,7 +142,7 @@ class CheckTallyingCandidatesTest extends Block4VerificationTest {
 	@Test
 	void executeTestNOKFileNotFoundEvoting() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-NOFILE-EVOTING").toURI()).toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 
 		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 		final StructureNode structureNode = pathService.getStructureNode(StructureKey.EVOTING_DECRYPT_RESULT);
@@ -152,7 +152,7 @@ class CheckTallyingCandidatesTest extends Block4VerificationTest {
 	@Test
 	void executeTestNOKFileNotFoundECH0110() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckTallyingCandidates/NOK-NOFILE-eCH").toURI()).toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 
 		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 		final StructureNode structureNode = pathService.getStructureNode(StructureKey.ECH0110);

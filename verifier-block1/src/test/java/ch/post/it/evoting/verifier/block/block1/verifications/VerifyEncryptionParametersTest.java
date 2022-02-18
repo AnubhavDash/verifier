@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.event.Block1Event;
-import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.core.internal.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.plugin.contract.event.ConfigurationEvent;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerificationResultEvent;
 
 class VerifyEncryptionParametersTest extends Block1VerificationTest {
 
@@ -39,7 +39,7 @@ class VerifyEncryptionParametersTest extends Block1VerificationTest {
 	@Test
 	void executeTestOK() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/VerifyEncryptionParametersTest/OK").toURI()).toString();
-		final VerificationResultEvent resultEvent = verification.verify(new Block1Event(this, inputDirectory));
+		final VerificationResultEvent resultEvent = verification.verify(new ConfigurationEvent(this, inputDirectory));
 
 		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
 		assertEquals(expectedResultEvent, resultEvent);
@@ -48,7 +48,7 @@ class VerifyEncryptionParametersTest extends Block1VerificationTest {
 	@Test
 	void executeTestNOK_P() throws Exception {
 		final String inputDirectory = Paths.get(getClass().getResource("/VerifyEncryptionParametersTest/NOK_P").toURI()).toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 
 		final var exception = assertThrows(IllegalArgumentException.class, () -> verification.verify(event));
 		assertEquals("p must be equal to 2 * q + 1.", exception.getMessage());
@@ -57,7 +57,7 @@ class VerifyEncryptionParametersTest extends Block1VerificationTest {
 	@Test
 	void executeTestNOK_Q() throws Exception {
 		final String inputDirectory = Paths.get(getClass().getResource("/VerifyEncryptionParametersTest/NOK_Q").toURI()).toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 
 		final var exception = assertThrows(IllegalArgumentException.class, () -> verification.verify(event));
 		assertEquals("p must be equal to 2 * q + 1.", exception.getMessage());
@@ -66,7 +66,7 @@ class VerifyEncryptionParametersTest extends Block1VerificationTest {
 	@Test
 	void executeTestNOK_G() throws Exception {
 		final String inputDirectory = Paths.get(getClass().getResource("/VerifyEncryptionParametersTest/NOK_G").toURI()).toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 		final VerificationResultEvent resultEvent = verification.verify(event);
 
 		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
@@ -77,7 +77,7 @@ class VerifyEncryptionParametersTest extends Block1VerificationTest {
 	@Test
 	void executeTestNOK() throws Exception {
 		final String inputDirectory = Paths.get(getClass().getResource("/VerifyEncryptionParametersTest/NOK").toURI()).toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 		final VerificationResultEvent resultEvent = verification.verify(event);
 
 		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),

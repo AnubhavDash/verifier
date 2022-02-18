@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 package ch.post.it.evoting.verifier.block.block4.verifications;
 
-import static ch.post.it.evoting.verifier.common.block.tools.TranslationHelper.getFromResourceBundle;
+import static ch.post.it.evoting.verifier.core.internal.tools.TranslationHelper.getFromResourceBundle;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -42,21 +42,21 @@ import org.springframework.stereotype.Component;
 
 import ch.evoting.xmlns.decrypt._1.Results;
 import ch.post.it.evoting.verifier.block.block4.Block4VerificationSuite;
-import ch.post.it.evoting.verifier.common.AbstractVerification;
-import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationTrait;
-import ch.post.it.evoting.verifier.common.block.dto.revised.BallotBox;
-import ch.post.it.evoting.verifier.common.block.dto.revised.CandidateList;
-import ch.post.it.evoting.verifier.common.block.dto.revised.CountingCircle;
-import ch.post.it.evoting.verifier.common.block.dto.revised.ElectionEvent;
-import ch.post.it.evoting.verifier.common.block.exceptions.VerificationPreconditionException;
-import ch.post.it.evoting.verifier.common.block.tools.Deserializer;
-import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
-import ch.post.it.evoting.verifier.common.event.VerifierEvent;
+import ch.post.it.evoting.verifier.plugin.contract.AbstractVerification;
+import ch.post.it.evoting.verifier.plugin.contract.Category;
+import ch.post.it.evoting.verifier.plugin.contract.VerificationDefinition;
+import ch.post.it.evoting.verifier.plugin.contract.VerificationTrait;
+import ch.post.it.evoting.verifier.core.internal.dto.revised.BallotBox;
+import ch.post.it.evoting.verifier.core.internal.dto.revised.CandidateList;
+import ch.post.it.evoting.verifier.core.internal.dto.revised.CountingCircle;
+import ch.post.it.evoting.verifier.core.internal.dto.revised.ElectionEvent;
+import ch.post.it.evoting.verifier.core.internal.exceptions.VerificationPreconditionException;
+import ch.post.it.evoting.verifier.core.internal.tools.Deserializer;
+import ch.post.it.evoting.verifier.core.internal.tools.TypeConverter;
+import ch.post.it.evoting.verifier.core.internal.tools.path.PathService;
+import ch.post.it.evoting.verifier.core.internal.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerifierEvent;
 
 @Component
 public class CheckOptionsMapping extends AbstractVerification {
@@ -77,7 +77,7 @@ public class CheckOptionsMapping extends AbstractVerification {
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(getFromResourceBundle(Block4VerificationSuite.RESOURCE_BUNDLE_NAME, "verification01.description"));
 		definition.setId(1);
-		definition.addVerificationTrait(VerificationTrait.BLOCK_4);
+		definition.addVerificationTrait(VerificationTrait.FINAL_DECRYPTION);
 		definition.setName("checkOptionsMapping");
 		return definition;
 	}

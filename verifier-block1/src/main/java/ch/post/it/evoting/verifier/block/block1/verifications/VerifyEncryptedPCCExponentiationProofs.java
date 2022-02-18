@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,14 +41,14 @@ import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProo
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
 import ch.post.it.evoting.verifier.block.block1.verifications.ExponentiationProofsVerificationService.VerificationContext;
 import ch.post.it.evoting.verifier.block.block1.verifications.ExponentiationProofsVerificationService.VerificationInput;
-import ch.post.it.evoting.verifier.common.AbstractVerification;
-import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationTrait;
-import ch.post.it.evoting.verifier.common.block.exceptions.VerificationPreconditionException;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
-import ch.post.it.evoting.verifier.common.event.VerifierEvent;
+import ch.post.it.evoting.verifier.core.internal.exceptions.VerificationPreconditionException;
+import ch.post.it.evoting.verifier.core.internal.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.plugin.contract.AbstractVerification;
+import ch.post.it.evoting.verifier.plugin.contract.Category;
+import ch.post.it.evoting.verifier.plugin.contract.VerificationDefinition;
+import ch.post.it.evoting.verifier.plugin.contract.VerificationTrait;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerifierEvent;
 
 @Service
 public class VerifyEncryptedPCCExponentiationProofs extends AbstractVerification {
@@ -75,8 +75,7 @@ public class VerifyEncryptedPCCExponentiationProofs extends AbstractVerification
 				TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification21.description"));
 		definition.setId(21);
 		definition.setName("verifyEncryptedPCCExponentiationProofs");
-		definition.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
-		definition.addVerificationTrait(VerificationTrait.BLOCK_1);
+		definition.addVerificationTrait(VerificationTrait.CONFIGURATION);
 		return definition;
 	}
 
@@ -110,10 +109,10 @@ public class VerifyEncryptedPCCExponentiationProofs extends AbstractVerification
 
 		LOGGER.info("Processing verificationCardId : {} for control component : {}", input.vc_id, input.j);
 
-		GroupVector<GqElement, GqGroup> g = exponentiationBases(context.getGenerator(), input.c_pCC_id);
+		GroupVector<GqElement, GqGroup> g = exponentiationBases(context.generator(), input.c_pCC_id);
 		GroupVector<GqElement, GqGroup> y = exponentiationBases(input.K_j_id, input.c_expPCC_j_id);
 
-		List<String> i_aux = List.of(context.get_ee(), input.vc_id, "GenEncLongCodeShares", String.valueOf(input.j));
+		List<String> i_aux = List.of(context.ee(), input.vc_id, "GenEncLongCodeShares", String.valueOf(input.j));
 
 		boolean result = zeroKnowledgeProof.verifyExponentiation(g, y, input.pi_expPCC_j_id, i_aux);
 

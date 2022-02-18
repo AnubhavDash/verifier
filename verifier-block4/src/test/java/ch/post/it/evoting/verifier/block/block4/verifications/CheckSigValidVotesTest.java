@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,13 +30,13 @@ import org.junit.jupiter.api.Test;
 import com.google.common.base.Throwables;
 
 import ch.post.it.evoting.verifier.block.block4.Block4VerificationSuite;
-import ch.post.it.evoting.verifier.common.block.test.helper.RegexHelper;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
-import ch.post.it.evoting.verifier.common.event.Block4Event;
-import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.core.internal.tools.RegexHelper;
+import ch.post.it.evoting.verifier.core.internal.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.core.internal.tools.path.RelationType;
+import ch.post.it.evoting.verifier.core.internal.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.core.internal.tools.path.StructureNode;
+import ch.post.it.evoting.verifier.plugin.contract.event.FinalDecryptionEvent;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerificationResultEvent;
 
 class CheckSigValidVotesTest extends Block4VerificationTest {
 
@@ -48,7 +48,7 @@ class CheckSigValidVotesTest extends Block4VerificationTest {
 	@Test
 	void executeTestOK() throws Exception {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigValidVotesTest/OK").toURI()).toString();
-		final VerificationResultEvent resultEvent = verification.verify(new Block4Event(this, inputDirectory));
+		final VerificationResultEvent resultEvent = verification.verify(new FinalDecryptionEvent(this, inputDirectory));
 
 		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
 		assertEquals(expectedResultEvent, resultEvent);
@@ -58,7 +58,7 @@ class CheckSigValidVotesTest extends Block4VerificationTest {
 	void executeTestNOKCsvKo() throws URISyntaxException {
 		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckSigValidVotesTest/NOK/CSV-NOT-OK").toURI());
 		final String inputDirectory = inputDirectoryPath.toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 		final VerificationResultEvent resultEvent = verification.verify(event);
 
 		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
@@ -70,7 +70,7 @@ class CheckSigValidVotesTest extends Block4VerificationTest {
 	void executeTestNOKCertKo() throws URISyntaxException {
 		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckSigValidVotesTest/NOK/CERT-NOT-OK").toURI());
 		final String inputDirectory = inputDirectoryPath.toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 		final VerificationResultEvent resultEvent = verification.verify(event);
 
 		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
@@ -81,7 +81,7 @@ class CheckSigValidVotesTest extends Block4VerificationTest {
 	@Test
 	void executeTestNOKFileNotFoundCertificate() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigValidVotesTest/NOK-NOTFILE").toURI()).toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 
 		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 		final StructureNode structureNode = pathService.getStructureNode(StructureKey.ADMIN_BOARD_CERT);
@@ -91,7 +91,7 @@ class CheckSigValidVotesTest extends Block4VerificationTest {
 	@Test
 	void executeTestNOKFileNotFoundRootCertificate() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigValidVotesTest/NOK-NOTFILE2").toURI()).toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 
 		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 		final StructureNode structureNode = pathService.getStructureNode(StructureKey.TENANT_100);
@@ -101,7 +101,7 @@ class CheckSigValidVotesTest extends Block4VerificationTest {
 	@Test
 	void executeTestNOKFileNotFoundValidVotesResult() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigValidVotesTest/NOK-NOTFILE3").toURI()).toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 
 		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 		final StructureNode structureNode = pathService.getStructureNode(StructureKey.VALID_VOTES_RESULT);
@@ -111,7 +111,7 @@ class CheckSigValidVotesTest extends Block4VerificationTest {
 	@Test
 	void executeTestNOKFileNotFoundValidVotesResultMetadata() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigValidVotesTest/NOK-NOTFILE4").toURI()).toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 
 		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 		final StructureNode structureNode = pathService.getStructureNode(StructureKey.VALID_VOTES_RESULT);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,13 +56,13 @@ import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.VerifiableDecrypt
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofService;
 import ch.post.it.evoting.verifier.block.block4.Block4VerificationSuite;
 import ch.post.it.evoting.verifier.block.block4.verifications.VerifyOfflineDecryptionProofs.VerifyOfflineDecryptionProofInput;
-import ch.post.it.evoting.verifier.common.block.tools.ElectionDataExtractionService;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
-import ch.post.it.evoting.verifier.common.event.Block4Event;
-import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.core.internal.tools.ElectionDataExtractionService;
+import ch.post.it.evoting.verifier.core.internal.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.core.internal.tools.path.PathService;
+import ch.post.it.evoting.verifier.core.internal.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.core.internal.tools.path.StructureNode;
+import ch.post.it.evoting.verifier.plugin.contract.event.FinalDecryptionEvent;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerificationResultEvent;
 
 class VerifyOfflineDecryptionProofsTest extends Block4VerificationTest {
 
@@ -359,7 +359,7 @@ class VerifyOfflineDecryptionProofsTest extends Block4VerificationTest {
 	@Test
 	void executeTestOK() throws Exception {
 		final String inputDirectory = Paths.get(getClass().getResource("/VerifyOfflineDecryptionProofsTest/OK").toURI()).toString();
-		final VerificationResultEvent resultEvent = verification.verify(new Block4Event(this, inputDirectory));
+		final VerificationResultEvent resultEvent = verification.verify(new FinalDecryptionEvent(this, inputDirectory));
 
 		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
 		assertEquals(expectedResultEvent, resultEvent);
@@ -369,7 +369,7 @@ class VerifyOfflineDecryptionProofsTest extends Block4VerificationTest {
 	void executeTestNOK() throws Exception {
 		final Path inputDirectoryPath = Paths.get(getClass().getResource("/VerifyOfflineDecryptionProofsTest/NOK").toURI());
 		final String inputDirectory = inputDirectoryPath.toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 		final VerificationResultEvent resultEvent = verification.verify(event);
 
 		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
@@ -380,7 +380,7 @@ class VerifyOfflineDecryptionProofsTest extends Block4VerificationTest {
 	@Test
 	void executeTestNOKFileNotFound() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/VerifyOfflineDecryptionProofsTest/NOK_missingFiles").toURI()).toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 
 		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 		final StructureNode structureNode = pathService.getStructureNode(StructureKey.BALLOT_BOX_OFFLINE_MIXING);
@@ -390,7 +390,7 @@ class VerifyOfflineDecryptionProofsTest extends Block4VerificationTest {
 	@Test
 	void executeTestNOKCorruptedFile() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/VerifyOfflineDecryptionProofsTest/NOK_corruptedFile").toURI()).toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 
 		assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 	}

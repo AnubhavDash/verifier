@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -109,8 +109,8 @@ export class ReportOverviewComponent implements OnInit {
       this.processStarted = true;
       this.startDisabled = true;
       if (runOptions === undefined) {
-        const allTraits = [this.verificationTrait.BLOCK_1, this.verificationTrait.BLOCK_2, this.verificationTrait.BLOCK_3,
-          this.verificationTrait.BLOCK_4];
+        const allTraits = [this.verificationTrait.CONFIGURATION, this.verificationTrait.PRE_DECRYPTION,
+          this.verificationTrait.FINAL_DECRYPTION];
         runOptions = allTraits.join(',');
       }
       this.processorService.processVerifications(runOptions).subscribe(() => {

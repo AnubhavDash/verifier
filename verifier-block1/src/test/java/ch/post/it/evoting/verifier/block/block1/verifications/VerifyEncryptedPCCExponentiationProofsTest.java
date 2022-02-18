@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,11 +32,11 @@ import ch.post.it.evoting.cryptoprimitives.SecurityLevel;
 import ch.post.it.evoting.cryptoprimitives.SecurityLevelConfig;
 import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofService;
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.block.exceptions.VerificationPreconditionException;
-import ch.post.it.evoting.verifier.common.block.tools.ElectionDataExtractionService;
-import ch.post.it.evoting.verifier.common.event.Block1Event;
-import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.plugin.contract.Status;
+import ch.post.it.evoting.verifier.core.internal.exceptions.VerificationPreconditionException;
+import ch.post.it.evoting.verifier.core.internal.tools.ElectionDataExtractionService;
+import ch.post.it.evoting.verifier.plugin.contract.event.ConfigurationEvent;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerificationResultEvent;
 
 class VerifyEncryptedPCCExponentiationProofsTest extends Block1VerificationTest {
 
@@ -50,11 +50,24 @@ class VerifyEncryptedPCCExponentiationProofsTest extends Block1VerificationTest 
 	}
 
 	@Test
+	void verifyChunking() throws Exception {
+		try (MockedStatic<SecurityLevelConfig> securityLevelConfigMockedStatic = Mockito.mockStatic(SecurityLevelConfig.class)) {
+			securityLevelConfigMockedStatic.when(SecurityLevelConfig::getSystemSecurityLevel).thenReturn(SecurityLevel.DEFAULT);
+			final var inputDirectory = Paths.get(getClass().getResource("/VerifyEncryptedPCCExponentiationProofs/chunking-ok/").toURI()).toString();
+			final var event = new ConfigurationEvent(this, inputDirectory);
+
+			final VerificationResultEvent resultEvent = verification.verify(event);
+
+			assertEquals(Status.OK, resultEvent.getStatus());
+		}
+	}
+
+	@Test
 	void verifyOneVerificationCard() throws Exception {
 		try (MockedStatic<SecurityLevelConfig> securityLevelConfigMockedStatic = Mockito.mockStatic(SecurityLevelConfig.class)) {
 			securityLevelConfigMockedStatic.when(SecurityLevelConfig::getSystemSecurityLevel).thenReturn(SecurityLevel.DEFAULT);
 			final var inputDirectory = Paths.get(getClass().getResource("/VerifyEncryptedPCCExponentiationProofs/ok/").toURI()).toString();
-			final var event = new Block1Event(this, inputDirectory);
+			final var event = new ConfigurationEvent(this, inputDirectory);
 
 			final VerificationResultEvent resultEvent = verification.verify(event);
 
@@ -72,7 +85,7 @@ class VerifyEncryptedPCCExponentiationProofsTest extends Block1VerificationTest 
 		try (MockedStatic<SecurityLevelConfig> securityLevelConfigMockedStatic = Mockito.mockStatic(SecurityLevelConfig.class)) {
 			securityLevelConfigMockedStatic.when(SecurityLevelConfig::getSystemSecurityLevel).thenReturn(SecurityLevel.DEFAULT);
 			final var inputDirectory = Paths.get(getClass().getResource(url).toURI()).toString();
-			final var event = new Block1Event(this, inputDirectory);
+			final var event = new ConfigurationEvent(this, inputDirectory);
 
 			final VerificationResultEvent resultEvent = verification.verify(event);
 
@@ -85,7 +98,7 @@ class VerifyEncryptedPCCExponentiationProofsTest extends Block1VerificationTest 
 		try (MockedStatic<SecurityLevelConfig> securityLevelConfigMockedStatic = Mockito.mockStatic(SecurityLevelConfig.class)) {
 			securityLevelConfigMockedStatic.when(SecurityLevelConfig::getSystemSecurityLevel).thenReturn(SecurityLevel.DEFAULT);
 			final var inputDirectory = Paths.get(getClass().getResource("/VerifyEncryptedPCCExponentiationProofs/empty/").toURI()).toString();
-			final var event = new Block1Event(this, inputDirectory);
+			final var event = new ConfigurationEvent(this, inputDirectory);
 
 			assertThrows(VerificationPreconditionException.class, () -> verification.verify(event));
 		}
@@ -96,7 +109,7 @@ class VerifyEncryptedPCCExponentiationProofsTest extends Block1VerificationTest 
 		try (MockedStatic<SecurityLevelConfig> securityLevelConfigMockedStatic = Mockito.mockStatic(SecurityLevelConfig.class)) {
 			securityLevelConfigMockedStatic.when(SecurityLevelConfig::getSystemSecurityLevel).thenReturn(SecurityLevel.DEFAULT);
 			final var inputDirectory = Paths.get(getClass().getResource("/VerifyEncryptedPCCExponentiationProofs/full/").toURI()).toString();
-			final var event = new Block1Event(this, inputDirectory);
+			final var event = new ConfigurationEvent(this, inputDirectory);
 
 			final VerificationResultEvent resultEvent = verification.verify(event);
 

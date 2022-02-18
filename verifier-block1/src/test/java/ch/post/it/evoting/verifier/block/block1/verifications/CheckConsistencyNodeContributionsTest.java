@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,9 @@
 package ch.post.it.evoting.verifier.block.block1.verifications;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.io.UncheckedIOException;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
@@ -28,10 +30,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
-import ch.post.it.evoting.verifier.common.block.tools.ElectionDataExtractionService;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.event.Block1Event;
-import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.core.internal.tools.ElectionDataExtractionService;
+import ch.post.it.evoting.verifier.core.internal.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.plugin.contract.event.ConfigurationEvent;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerificationResultEvent;
 
 class CheckConsistencyNodeContributionsTest extends Block1VerificationTest {
 
@@ -45,7 +47,7 @@ class CheckConsistencyNodeContributionsTest extends Block1VerificationTest {
 	@Test
 	void executeTestOK() throws Exception {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckConsistencyNodeContributionsTest/OK").toURI()).toString();
-		final VerificationResultEvent resultEvent = verification.verify(new Block1Event(this, inputDirectory));
+		final VerificationResultEvent resultEvent = verification.verify(new ConfigurationEvent(this, inputDirectory));
 
 		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
 		assertEquals(expectedResultEvent, resultEvent);
@@ -56,7 +58,7 @@ class CheckConsistencyNodeContributionsTest extends Block1VerificationTest {
 	void executeTestNOK(String inputDirectoryPath) throws Exception {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckConsistencyNodeContributionsTest/NOK_" + inputDirectoryPath).toURI())
 				.toString();
-		final VerificationResultEvent resultEvent = verification.verify(new Block1Event(this, inputDirectory));
+		final VerificationResultEvent resultEvent = verification.verify(new ConfigurationEvent(this, inputDirectory));
 
 		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
 				TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification41.nok.message"));
@@ -70,5 +72,13 @@ class CheckConsistencyNodeContributionsTest extends Block1VerificationTest {
 				Arguments.of("encryptionGroup"),
 				Arguments.of("verificationCardIds")
 		);
+	}
+
+	@Test
+	void executeTestNok_unreadableNodeContributions() throws Exception {
+		final String inputDirectory = Paths.get(getClass().getResource("/CheckConsistencyNodeContributionsTest/NOK_unreadableNodeContributions").toURI()).toString();
+		final var event = new ConfigurationEvent(this, inputDirectory);
+		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
+		assertEquals("Failed to deserialize the node contributions chunk file.", exception.getMessage());
 	}
 }

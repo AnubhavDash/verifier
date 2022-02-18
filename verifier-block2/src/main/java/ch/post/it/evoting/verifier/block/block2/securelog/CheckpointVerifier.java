@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,8 +32,8 @@ import org.bouncycastle.crypto.params.KeyParameter;
 import org.springframework.stereotype.Service;
 
 import ch.post.it.evoting.cryptoprimitives.ConversionService;
-import ch.post.it.evoting.verifier.common.block.exceptions.VerificationException;
-import ch.post.it.evoting.verifier.common.block.exceptions.VerificationPreconditionException;
+import ch.post.it.evoting.verifier.core.internal.exceptions.VerificationException;
+import ch.post.it.evoting.verifier.core.internal.exceptions.VerificationPreconditionException;
 
 @Service
 public class CheckpointVerifier {

@@ -1,22 +1,13 @@
-html,
 body {
-
-}
-
-body {
-  background: #f9f9f9;
-  /*background: #ffffff;*/
-  /*background: -webkit-linear-gradient(to right, #74ebd5, #ACB6E5);*/
-  /*background: linear-gradient(to right, #74ebd5, #ACB6E5);*/
-  /*min-height: 100vh;*/
+    background: #f9f9f9;
 }
 
 h1.display-1 {
-  text-transform: uppercase;
-  font-size: 2rem;
+    text-transform: uppercase;
+    font-size: 2rem;
 }
 
 h2.display-2 {
-  text-transform: uppercase;
-  font-size: 1.5rem;
+    text-transform: uppercase;
+    font-size: 1.5rem;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,11 +40,11 @@ import com.google.common.collect.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.domain.VotingOptionsConstants;
 import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
-import ch.post.it.evoting.verifier.common.Status;
-import ch.post.it.evoting.verifier.common.block.tools.ElectionDataExtractionService;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.event.Block1Event;
-import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.plugin.contract.Status;
+import ch.post.it.evoting.verifier.core.internal.tools.ElectionDataExtractionService;
+import ch.post.it.evoting.verifier.core.internal.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.plugin.contract.event.ConfigurationEvent;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerificationResultEvent;
 
 class VerifyVotingOptionsTest extends Block1VerificationTest {
 
@@ -57,7 +57,7 @@ class VerifyVotingOptionsTest extends Block1VerificationTest {
 	@Test
 	void executeTestOK() throws Exception {
 		final String inputDirectory = Paths.get(getClass().getResource("/VerifyVotingOptionsTest/OK").toURI()).toString();
-		final VerificationResultEvent resultEvent = verification.verify(new Block1Event(this, inputDirectory));
+		final VerificationResultEvent resultEvent = verification.verify(new ConfigurationEvent(this, inputDirectory));
 
 		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
 		assertEquals(expectedResultEvent, resultEvent);
@@ -76,7 +76,7 @@ class VerifyVotingOptionsTest extends Block1VerificationTest {
 	@MethodSource("getResourcePaths")
 	void executeTestNOK(final String resourcePath) throws Exception {
 		final String inputDirectory = Paths.get(Objects.requireNonNull(getClass().getResource(resourcePath)).toURI()).toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 		final VerificationResultEvent resultEvent = verification.verify(event);
 
 		assertNotNull(resultEvent);

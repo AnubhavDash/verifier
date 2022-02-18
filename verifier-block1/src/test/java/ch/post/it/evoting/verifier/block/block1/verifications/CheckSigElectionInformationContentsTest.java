@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,14 +30,14 @@ import org.junit.jupiter.api.Test;
 import com.google.common.base.Throwables;
 
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
-import ch.post.it.evoting.verifier.common.block.exceptions.JsonMissingNodeException;
-import ch.post.it.evoting.verifier.common.block.test.helper.RegexHelper;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.RelationType;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
-import ch.post.it.evoting.verifier.common.event.Block1Event;
-import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.core.internal.exceptions.JsonMissingNodeException;
+import ch.post.it.evoting.verifier.core.internal.tools.RegexHelper;
+import ch.post.it.evoting.verifier.core.internal.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.core.internal.tools.path.RelationType;
+import ch.post.it.evoting.verifier.core.internal.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.core.internal.tools.path.StructureNode;
+import ch.post.it.evoting.verifier.plugin.contract.event.ConfigurationEvent;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerificationResultEvent;
 
 import io.jsonwebtoken.SignatureException;
 
@@ -51,7 +51,7 @@ class CheckSigElectionInformationContentsTest extends Block1VerificationTest {
 	@Test
 	void executeTestSignValid() throws Exception {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/OK").toURI()).toString();
-		final VerificationResultEvent resultEvent = verification.verify(new Block1Event(this, inputDirectory));
+		final VerificationResultEvent resultEvent = verification.verify(new ConfigurationEvent(this, inputDirectory));
 
 		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
 		assertEquals(expectedResultEvent, resultEvent);
@@ -61,7 +61,7 @@ class CheckSigElectionInformationContentsTest extends Block1VerificationTest {
 	void executeTestSignInvalid() throws URISyntaxException {
 		final Path inputDirectoryPath = Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK").toURI());
 		final String inputDirectory = inputDirectoryPath.toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 		final VerificationResultEvent resultEvent = verification.verify(event);
 
 		final var electionInfoPathNode = pathService.buildFromRootPath(StructureKey.ELECTION_INFORMATION_CONTENTS, inputDirectoryPath);
@@ -74,7 +74,7 @@ class CheckSigElectionInformationContentsTest extends Block1VerificationTest {
 	@Test
 	void executeTestNOKFileNotFoundCertificate() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK-NOFILE").toURI()).toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 
 		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 		final StructureNode structureNode = pathService.getStructureNode(StructureKey.ADMIN_BOARD_CERT);
@@ -84,7 +84,7 @@ class CheckSigElectionInformationContentsTest extends Block1VerificationTest {
 	@Test
 	void executeTestNOKFileNotFoundIntermediateCertificate() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK-NOFILE2").toURI()).toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 
 		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 		final StructureNode structureNode = pathService.getStructureNode(StructureKey.TENANT_100);
@@ -94,7 +94,7 @@ class CheckSigElectionInformationContentsTest extends Block1VerificationTest {
 	@Test
 	void executeTestNOKFileNotFoundRootCertificate() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK-NOFILE3").toURI()).toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 
 		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 		final StructureNode structureNode = pathService.getStructureNode(StructureKey.PLATFORM_ROOT_CA);
@@ -104,7 +104,7 @@ class CheckSigElectionInformationContentsTest extends Block1VerificationTest {
 	@Test
 	void executeTestNOKFileNotFoundElectionInfo() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK-NOFILE4").toURI()).toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 
 		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 		final StructureNode structureNode = pathService.getStructureNode(StructureKey.ELECTION_INFORMATION_CONTENTS);
@@ -114,7 +114,7 @@ class CheckSigElectionInformationContentsTest extends Block1VerificationTest {
 	@Test
 	void executeTestNOKFileNotFoundElectionInfoSign() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK-NOFILE5").toURI()).toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 
 		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 		final StructureNode structureNode = pathService.getStructureNode(StructureKey.ELECTION_INFORMATION_CONTENTS);
@@ -125,7 +125,7 @@ class CheckSigElectionInformationContentsTest extends Block1VerificationTest {
 	@Test
 	void executeTestNOKMissingJWT() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK-NOJWT").toURI()).toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 
 		final var exception = assertThrows(JsonMissingNodeException.class, () -> verification.verify(event));
 		assertEquals("The signature is missing from the file!", Throwables.getRootCause(exception).getMessage());
@@ -134,7 +134,7 @@ class CheckSigElectionInformationContentsTest extends Block1VerificationTest {
 	@Test
 	void executeTestNOKModifiedJWT() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckSigElectionInformationContentsTest/NOK-JWT").toURI()).toString();
-		final var event = new Block1Event(this, inputDirectory);
+		final var event = new ConfigurationEvent(this, inputDirectory);
 
 		final var exception = assertThrows(SignatureException.class, () -> verification.verify(event));
 		assertEquals("JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted" +

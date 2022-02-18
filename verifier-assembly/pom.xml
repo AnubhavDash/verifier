@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>verifier</artifactId>
 		<groupId>ch.post.it.evoting.verifier</groupId>
-		<version>0.8.1.0</version>
+		<version>0.9.0.0</version>
 	</parent>
 
 	<artifactId>verifier-assembly</artifactId>
@@ -36,16 +36,16 @@
 				<version>${download-maven-plugin.version}</version>
 				<executions>
 					<execution>
-						<id>install-openjdk</id>
+						<id>download-openjdk-win64</id>
 						<phase>generate-resources</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>${openjdk.url}</url>
-							<unpack>true</unpack>
+							<url>${openjdk.win64.url}</url>
 							<outputDirectory>${project.build.directory}/jdk</outputDirectory>
-							<sha256>${openjdk.sha256}</sha256>
+							<unpack>true</unpack>
+							<sha256>${openjdk.win64.sha256}</sha256>
 						</configuration>
 					</execution>
 				</executions>

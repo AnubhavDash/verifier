@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,10 +29,10 @@ import com.google.common.base.Throwables;
 
 import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
-import ch.post.it.evoting.verifier.common.block.tools.ElectionDataExtractionService;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.event.Block1Event;
-import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.core.internal.tools.ElectionDataExtractionService;
+import ch.post.it.evoting.verifier.core.internal.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.plugin.contract.event.ConfigurationEvent;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerificationResultEvent;
 
 class VerifySmallPrimeGroupMembersTest extends Block1VerificationTest {
 
@@ -46,7 +46,7 @@ class VerifySmallPrimeGroupMembersTest extends Block1VerificationTest {
 	@Test
 	void executeTestOk() throws Exception {
 		final var inputDirectory = Paths.get(getClass().getResource("/VerifySmallPrimeGroupMembersTest/OK").toURI()).toString();
-		VerificationResultEvent resultEvent = verification.verify(new Block1Event(this, inputDirectory));
+		VerificationResultEvent resultEvent = verification.verify(new ConfigurationEvent(this, inputDirectory));
 
 		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
 		assertEquals(expectedResultEvent, resultEvent);
@@ -56,7 +56,7 @@ class VerifySmallPrimeGroupMembersTest extends Block1VerificationTest {
 	void executeTestNokWrongPrimes() throws Exception {
 		final String inputDirectory = Paths.get(getClass().getResource("/VerifySmallPrimeGroupMembersTest/NOK_WrongPrimes").toURI()).toString();
 		VerificationResultEvent resultEvent =
-				verification.verify(new Block1Event(this, inputDirectory));
+				verification.verify(new ConfigurationEvent(this, inputDirectory));
 
 		final VerificationResultEvent expectedResult = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
 				TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification02.nok.message"));
@@ -67,7 +67,7 @@ class VerifySmallPrimeGroupMembersTest extends Block1VerificationTest {
 	void executeTestNokTooManyPrimes() throws Exception {
 		final var inputDirectory = Paths.get(
 				Objects.requireNonNull(getClass().getResource("/VerifySmallPrimeGroupMembersTest/NOK_TooManyPrimes")).toURI()).toString();
-		final var block1Event = new Block1Event(this, inputDirectory);
+		final var block1Event = new ConfigurationEvent(this, inputDirectory);
 		final var exception = assertThrows(
 				IllegalArgumentException.class, () -> verification.verify(block1Event));
 		assertEquals(String.format("The list of small prime group members must contain %d elements", MAXIMUM_NUMBER_OF_VOTING_OPTIONS),
@@ -78,7 +78,7 @@ class VerifySmallPrimeGroupMembersTest extends Block1VerificationTest {
 	void executeTestNokOrder() throws Exception {
 		final var inputDirectory = Paths.get(Objects.requireNonNull(getClass().getResource("/VerifySmallPrimeGroupMembersTest/NOK_Order")).toURI())
 				.toString();
-		final var block1Event = new Block1Event(this, inputDirectory);
+		final var block1Event = new ConfigurationEvent(this, inputDirectory);
 		final var exception = assertThrows(IllegalArgumentException.class, () -> verification.verify(block1Event));
 		assertEquals("The list of small prime group members must be sorted in ascending order",
 				Throwables.getRootCause(exception).getMessage());

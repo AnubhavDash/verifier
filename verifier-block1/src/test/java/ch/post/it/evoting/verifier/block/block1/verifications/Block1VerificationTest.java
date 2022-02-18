@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,9 +26,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationEventPublisher;
 
-import ch.post.it.evoting.verifier.common.AbstractVerification;
-import ch.post.it.evoting.verifier.common.block.tools.CertificateLoader;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
+import ch.post.it.evoting.verifier.plugin.contract.AbstractVerification;
+import ch.post.it.evoting.verifier.core.internal.tools.CertificateLoader;
+import ch.post.it.evoting.verifier.core.internal.tools.path.PathService;
 
 public abstract class Block1VerificationTest {
 

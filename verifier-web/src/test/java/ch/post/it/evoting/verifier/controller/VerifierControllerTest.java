@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,10 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import java.util.Locale;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationEventPublisher;
 
-import ch.post.it.evoting.verifier.common.Language;
 import ch.post.it.evoting.verifier.dto.Configuration;
 import ch.post.it.evoting.verifier.processor.VerifierProcessor;
 
@@ -44,18 +41,6 @@ class VerifierControllerTest {
 	@Test
 	void ping_returnsTrue() {
 		assertTrue(controller.ping());
-	}
-
-	@Test
-	void pdf_usesGerman() {
-		controller.generatePdf(Locale.GERMAN);
-		verify(processorMock).generatePdf(Language.DE);
-	}
-
-	@Test
-	void pdf_usesFrench() {
-		controller.generatePdf(Locale.FRENCH);
-		verify(processorMock).generatePdf(Language.FR);
 	}
 
 	@Test

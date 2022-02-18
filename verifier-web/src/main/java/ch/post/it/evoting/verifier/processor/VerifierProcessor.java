@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,38 +26,29 @@ import javax.validation.constraints.NotNull;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.verifier.common.AbstractVerification;
-import ch.post.it.evoting.verifier.common.Language;
-import ch.post.it.evoting.verifier.contest.ContestConfigurationReader;
 import ch.post.it.evoting.verifier.dto.Configuration;
 import ch.post.it.evoting.verifier.dto.Verification;
 import ch.post.it.evoting.verifier.mapper.VerificationMapper;
-import ch.post.it.evoting.verifier.report.ReportGenerator;
+import ch.post.it.evoting.verifier.plugin.contract.AbstractVerification;
 
 @Component
 public class VerifierProcessor {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(VerifierProcessor.class);
 
-	private final ReportGenerator reportGenerator;
-	private final ContestConfigurationReader contestConfigurationReader;
 	private final ApplicationContext applicationContext;
 
-	@Value("${inputDirectory:}")
 	private String configurationInputDirectory;
-
 	private List<Verification> verifications;
 
-	@Autowired
-	public VerifierProcessor(final ReportGenerator reportGenerator, final ContestConfigurationReader contestConfigurationReader,
-			final ApplicationContext applicationContext) {
-		this.reportGenerator = reportGenerator;
-		this.contestConfigurationReader = contestConfigurationReader;
+	public VerifierProcessor(final ApplicationContext applicationContext,
+			@Value("${inputDirectory:}")
+			final String configurationInputDirectory) {
+		this.configurationInputDirectory = configurationInputDirectory;
 		this.applicationContext = applicationContext;
 	}
 
@@ -91,13 +82,6 @@ public class VerifierProcessor {
 
 	public void resetExecution() {
 		init();
-	}
-
-	public byte[] generatePdf(Language language) {
-		final String contestName = contestConfigurationReader.getContestName(this.getConfiguration().getInputDirectory(), language);
-		final var contestDate = contestConfigurationReader.getContestDate(this.getConfiguration().getInputDirectory());
-
-		return reportGenerator.generate(contestName, contestDate, this.getVerifications(), language);
 	}
 
 	public Configuration getConfiguration() {

@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>verifier</artifactId>
 		<groupId>ch.post.it.evoting.verifier</groupId>
-		<version>0.8.1.0</version>
+		<version>0.9.0.0</version>
 	</parent>
 
 	<artifactId>verifier-block3</artifactId>
@@ -17,6 +17,16 @@
 	</properties>
 
 	<dependencies>
+		<!-- Internal dependencies -->
+		<dependency>
+			<groupId>ch.post.it.evoting.verifier</groupId>
+			<artifactId>verifier-plugin-contract</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.post.it.evoting.verifier</groupId>
+			<artifactId>verifier-core-internal</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>ch.post.it.evoting.cryptoprimitives</groupId>
 			<artifactId>crypto-primitives</artifactId>
@@ -24,15 +34,6 @@
 		<dependency>
 			<groupId>ch.post.it.evoting.cryptoprimitives.domain</groupId>
 			<artifactId>crypto-primitives-domain</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>ch.post.it.evoting.verifier</groupId>
-			<artifactId>verifier-common-block</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>ch.post.it.evoting.verifier</groupId>
-			<artifactId>verifier-common-test</artifactId>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>

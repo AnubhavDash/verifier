@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,17 +36,17 @@ import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ChoiceCodeGenerati
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ReturnCodeGenerationResponsePayload;
 import ch.post.it.evoting.cryptoprimitives.hashing.HashService;
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
-import ch.post.it.evoting.verifier.common.AbstractVerification;
-import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationTrait;
-import ch.post.it.evoting.verifier.common.block.tools.CertificateLoader;
-import ch.post.it.evoting.verifier.common.block.tools.SignatureService;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
-import ch.post.it.evoting.verifier.common.event.VerifierEvent;
+import ch.post.it.evoting.verifier.plugin.contract.AbstractVerification;
+import ch.post.it.evoting.verifier.plugin.contract.Category;
+import ch.post.it.evoting.verifier.plugin.contract.VerificationDefinition;
+import ch.post.it.evoting.verifier.plugin.contract.VerificationTrait;
+import ch.post.it.evoting.verifier.core.internal.tools.CertificateLoader;
+import ch.post.it.evoting.verifier.core.internal.tools.SignatureService;
+import ch.post.it.evoting.verifier.core.internal.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.core.internal.tools.path.PathService;
+import ch.post.it.evoting.verifier.core.internal.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerifierEvent;
 
 @Component
 public class CheckSigNodeContributions extends AbstractVerification {
@@ -77,8 +77,7 @@ public class CheckSigNodeContributions extends AbstractVerification {
 				.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification61.description"));
 		definition.setId(61);
 		definition.setName("checkSigNodeContributions");
-		definition.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
-		definition.addVerificationTrait(VerificationTrait.BLOCK_1);
+		definition.addVerificationTrait(VerificationTrait.CONFIGURATION);
 		return definition;
 	}
 
@@ -108,7 +107,7 @@ public class CheckSigNodeContributions extends AbstractVerification {
 	private Stream<NodeContributionsChunk> getVerificationInputs(final Path inputDirectoryPath) {
 		// Root and node certificates
 		final X509Certificate rootCertificate = certificateLoader.loadCertificate(StructureKey.PLATFORM_ROOT_CA, inputDirectoryPath);
-		final var nodeCertificatesPathNode = pathService.buildFromRootPath(StructureKey.CC_CA, inputDirectoryPath);
+		final var nodeCertificatesPathNode = pathService.buildFromRootPath(StructureKey.CCN_C_CA, inputDirectoryPath);
 		final var nodeCertificates = new NodeCertificates(nodeCertificatesPathNode.getRegexPaths(), rootCertificate);
 
 		// Iterate over all verification card set ids directories
@@ -187,7 +186,7 @@ public class CheckSigNodeContributions extends AbstractVerification {
 			// Certificates chain
 			this.signingCertificate = payload.getSignature().getCertificateChain()[0];
 			final List<Path> filteredCertificates = nodeCertificates.nodeCertificatesPaths.stream()
-					.filter(ccPath -> ccPath.getFileName().toString().equals("cc" + payload.getNodeId() + "_CA.pem"))
+					.filter(ccPath -> ccPath.getFileName().toString().equals("ccn_C" + payload.getNodeId() + "_CA.pem"))
 					.collect(Collectors.toList());
 			this.intermediateCertificates = Collections.singletonList(certificateLoader.loadCertificate(filteredCertificates.get(0)));
 			this.rootCertificate = nodeCertificates.rootCertificate;

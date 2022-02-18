@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,18 +36,18 @@ import ch.post.it.evoting.cryptoprimitives.domain.mixnet.MixnetShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
-import ch.post.it.evoting.verifier.common.AbstractVerification;
-import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationTrait;
-import ch.post.it.evoting.verifier.common.block.dto.revised.BallotBox;
-import ch.post.it.evoting.verifier.common.block.tools.ElectionDataExtractionService;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
-import ch.post.it.evoting.verifier.common.event.VerifierEvent;
+import ch.post.it.evoting.verifier.plugin.contract.AbstractVerification;
+import ch.post.it.evoting.verifier.plugin.contract.Category;
+import ch.post.it.evoting.verifier.plugin.contract.VerificationDefinition;
+import ch.post.it.evoting.verifier.plugin.contract.VerificationTrait;
+import ch.post.it.evoting.verifier.core.internal.dto.revised.BallotBox;
+import ch.post.it.evoting.verifier.core.internal.tools.ElectionDataExtractionService;
+import ch.post.it.evoting.verifier.core.internal.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.core.internal.tools.TypeConverter;
+import ch.post.it.evoting.verifier.core.internal.tools.path.PathService;
+import ch.post.it.evoting.verifier.core.internal.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerifierEvent;
 
 @Component
 public class CheckConsistencyOnlineProofs extends AbstractVerification {
@@ -74,7 +74,7 @@ public class CheckConsistencyOnlineProofs extends AbstractVerification {
 		verificationDefinition.setName("checkConsistencyOnlineProofs");
 		verificationDefinition.setDescription(TranslationHelper
 				.getFromResourceBundle(Block3VerificationSuite.RESOURCE_BUNDLE_NAME, "verification41.description"));
-		verificationDefinition.addVerificationTrait(VerificationTrait.BLOCK_3);
+		verificationDefinition.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
 
 		return verificationDefinition;
 	}
@@ -85,13 +85,11 @@ public class CheckConsistencyOnlineProofs extends AbstractVerification {
 
 		final List<CheckConsistencyOnlineProofsInput> inputs = deserializeInputs(inputDirectoryPath);
 		final boolean areEncryptionGroupsOk = inputs.stream()
-				.filter(payloads -> !payloads.empty)
 				.map(this::checkEncryptionGroup)
-				.reduce(Boolean.TRUE, Boolean::logicalAnd); // stream will be empty if no one voted electronically
+				.reduce(Boolean::logicalAnd).orElse(Boolean.TRUE); // Default is TRUE because stream will be empty if no one voted electronically
 		final boolean areRemainingPublicKeysOk = inputs.stream()
-				.filter(payloads -> !payloads.empty)
 				.map(this::checkRemainingElectionPublicKeys)
-				.reduce(Boolean.TRUE, Boolean::logicalAnd); // stream will be empty if no one voted electronically
+				.reduce(Boolean::logicalAnd).orElse(Boolean.TRUE); // Default is TRUE because stream will be empty if no one voted electronically
 
 		if (!areEncryptionGroupsOk) {
 			return VerificationResultEvent.failure(this, getVerificationDefinition(),
@@ -113,18 +111,15 @@ public class CheckConsistencyOnlineProofs extends AbstractVerification {
 		final var ballotIdsPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 
 		return ballotBoxList.stream()
-				.map(bb -> {
-					final var ballotBoxId = TypeConverter.UUIDToStringWithoutDash(bb.getId());
-					final var ballotBoxDirectoryPath = ballotIdsPathNode.getRegexPath(ballotBoxId);
-					if (extractionService.getNumberOfVotes(ballotBoxDirectoryPath) == 0) {
-						return new CheckConsistencyOnlineProofsInput();
-					} else {
+				.map(ballotBox -> TypeConverter.UUIDToStringWithoutDash(ballotBox.getId()))
+				.map(ballotIdsPathNode::getRegexPath)
+				.filter(ballotBoxDirectoryPath -> extractionService.getNumberOfVotes(ballotBoxDirectoryPath) > 0)
+				.map(ballotBoxDirectoryPath -> {
 						final var initialPayload = extractionService.getMixnetInitialPayload(ballotBoxDirectoryPath);
 						final List<MixnetShufflePayload> shufflePayloads = extractionService.getMixnetShufflePayloads(ballotBoxDirectoryPath);
 						shufflePayloads.sort(Comparator.comparingInt(MixnetShufflePayload::getNodeId));
 
 						return new CheckConsistencyOnlineProofsInput(encryptionGroup, initialPayload, ImmutableList.copyOf(shufflePayloads));
-					}
 				}).collect(Collectors.toList());
 	}
 
@@ -168,10 +163,13 @@ public class CheckConsistencyOnlineProofs extends AbstractVerification {
 	@VisibleForTesting
 	boolean checkRemainingElectionPublicKeys(final CheckConsistencyOnlineProofsInput input) {
 		checkNotNull(input);
-		checkArgument(!input.empty);
 
 		final MixnetInitialPayload initialPayload = input.mixnetInitialPayload;
 		final ImmutableList<MixnetShufflePayload> shufflePayloads = input.mixnetShufflePayloads;
+
+		checkNotNull(initialPayload);
+		checkNotNull(shufflePayloads);
+
 		checkArgument(shufflePayloads.size() == SHUFFLE_PAYLOADS_PER_BALLOT_BOX, SHUFFLE_PAYLOAD_PER_BALLOT_BOX_MESSAGE);
 
 		checkArgument(
@@ -220,23 +218,15 @@ public class CheckConsistencyOnlineProofs extends AbstractVerification {
 		final GqGroup encryptionGroup;
 		final MixnetInitialPayload mixnetInitialPayload;
 		final ImmutableList<MixnetShufflePayload> mixnetShufflePayloads;
-		final boolean empty;
 
 		CheckConsistencyOnlineProofsInput(final GqGroup encryptionGroup, final MixnetInitialPayload mixnetInitialPayload,
 				final ImmutableList<MixnetShufflePayload> mixnetShufflePayloads) {
+			checkNotNull(encryptionGroup);
 			checkNotNull(mixnetInitialPayload);
 			checkNotNull(mixnetShufflePayloads);
 			this.encryptionGroup = encryptionGroup;
 			this.mixnetInitialPayload = mixnetInitialPayload;
 			this.mixnetShufflePayloads = mixnetShufflePayloads;
-			this.empty = false;
-		}
-
-		CheckConsistencyOnlineProofsInput() {
-			this.encryptionGroup = null;
-			this.mixnetInitialPayload = null;
-			this.mixnetShufflePayloads = null;
-			this.empty = true;
 		}
 	}
 }

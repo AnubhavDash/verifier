@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,18 +30,18 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.post.it.evoting.verifier.block.block2.Block2VerificationSuite;
-import ch.post.it.evoting.verifier.common.AbstractVerification;
-import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationTrait;
-import ch.post.it.evoting.verifier.common.block.exceptions.VerificationPreconditionException;
-import ch.post.it.evoting.verifier.common.block.tools.SignatureChecker;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathNode;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
-import ch.post.it.evoting.verifier.common.event.VerifierEvent;
+import ch.post.it.evoting.verifier.plugin.contract.AbstractVerification;
+import ch.post.it.evoting.verifier.plugin.contract.Category;
+import ch.post.it.evoting.verifier.plugin.contract.VerificationDefinition;
+import ch.post.it.evoting.verifier.plugin.contract.VerificationTrait;
+import ch.post.it.evoting.verifier.core.internal.exceptions.VerificationPreconditionException;
+import ch.post.it.evoting.verifier.core.internal.tools.SignatureChecker;
+import ch.post.it.evoting.verifier.core.internal.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.core.internal.tools.path.PathNode;
+import ch.post.it.evoting.verifier.core.internal.tools.path.PathService;
+import ch.post.it.evoting.verifier.core.internal.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerifierEvent;
 
 @Component
 public class CheckSigSuccessfulVotes extends AbstractVerification {
@@ -69,7 +69,6 @@ public class CheckSigSuccessfulVotes extends AbstractVerification {
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(Block2VerificationSuite.RESOURCE_BUNDLE_NAME, "verification71.description"));
 		definition.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
-		definition.addVerificationTrait(VerificationTrait.BLOCK_2);
 		return definition;
 	}
 

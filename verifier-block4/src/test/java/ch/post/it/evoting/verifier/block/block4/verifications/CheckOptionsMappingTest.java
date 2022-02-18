@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,11 +28,11 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.base.Throwables;
 
-import ch.post.it.evoting.verifier.common.block.test.helper.RegexHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureNode;
-import ch.post.it.evoting.verifier.common.event.Block4Event;
-import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.core.internal.tools.RegexHelper;
+import ch.post.it.evoting.verifier.core.internal.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.core.internal.tools.path.StructureNode;
+import ch.post.it.evoting.verifier.plugin.contract.event.FinalDecryptionEvent;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerificationResultEvent;
 
 class CheckOptionsMappingTest extends Block4VerificationTest {
 
@@ -44,7 +44,7 @@ class CheckOptionsMappingTest extends Block4VerificationTest {
 	@Test
 	void executeTestOK() throws Exception {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckOptionsMappingTest/OK").toURI()).toString();
-		final VerificationResultEvent resultEvent = verification.verify(new Block4Event(this, inputDirectory));
+		final VerificationResultEvent resultEvent = verification.verify(new FinalDecryptionEvent(this, inputDirectory));
 
 		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
 		assertEquals(expectedResultEvent, resultEvent);
@@ -53,7 +53,7 @@ class CheckOptionsMappingTest extends Block4VerificationTest {
 	@Test
 	void executeTestOKWriteIns() throws Exception {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckOptionsMappingTest/OK-WRITEINS").toURI()).toString();
-		final VerificationResultEvent resultEvent = verification.verify(new Block4Event(this, inputDirectory));
+		final VerificationResultEvent resultEvent = verification.verify(new FinalDecryptionEvent(this, inputDirectory));
 
 		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
 		assertEquals(expectedResultEvent, resultEvent);
@@ -62,7 +62,7 @@ class CheckOptionsMappingTest extends Block4VerificationTest {
 	@Test
 	void executeTestNOKFileNotFoundDataConfig() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckOptionsMappingTest/NOK-NOFILE").toURI()).toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 
 		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 		final StructureNode structureNode = pathService.getStructureNode(StructureKey.DATA_CONFIG_UPDATED);
@@ -72,7 +72,7 @@ class CheckOptionsMappingTest extends Block4VerificationTest {
 	@Test
 	void executeTestNOKFileNotFoundBallotBoxIdDirectories() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckOptionsMappingTest/NOK-NOFILE2").toURI()).toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 
 		assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 	}
@@ -80,7 +80,7 @@ class CheckOptionsMappingTest extends Block4VerificationTest {
 	@Test
 	void executeTestNOKFileNotFoundEVotingDecryptResult() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckOptionsMappingTest/NOK-NOFILE3").toURI()).toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 
 		assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 	}
@@ -88,7 +88,7 @@ class CheckOptionsMappingTest extends Block4VerificationTest {
 	@Test
 	void executeTestNOKFileNotFoundDecompressedVotes() throws URISyntaxException {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckOptionsMappingTest/NOK-NOFILE4").toURI()).toString();
-		final var event = new Block4Event(this, inputDirectory);
+		final var event = new FinalDecryptionEvent(this, inputDirectory);
 
 		final var exception = assertThrows(UncheckedIOException.class, () -> verification.verify(event));
 		final StructureNode structureNode = pathService.getStructureNode(StructureKey.DECOMPRESSED_VOTES);

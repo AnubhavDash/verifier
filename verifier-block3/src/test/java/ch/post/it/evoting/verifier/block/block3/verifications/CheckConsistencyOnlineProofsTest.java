@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,12 +49,11 @@ import ch.post.it.evoting.cryptoprimitives.math.GqElement;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.verifier.block.block3.Block3VerificationSuite;
 import ch.post.it.evoting.verifier.block.block3.verifications.CheckConsistencyOnlineProofs.CheckConsistencyOnlineProofsInput;
-import ch.post.it.evoting.verifier.common.block.exceptions.MissingFileException;
-import ch.post.it.evoting.verifier.common.block.tools.ElectionDataExtractionService;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
-import ch.post.it.evoting.verifier.common.event.Block3Event;
-import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.core.internal.exceptions.MissingFileException;
+import ch.post.it.evoting.verifier.core.internal.tools.ElectionDataExtractionService;
+import ch.post.it.evoting.verifier.core.internal.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.plugin.contract.event.PreDecryptionEvent;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerificationResultEvent;
 
 class CheckConsistencyOnlineProofsTest extends Block3VerificationTest {
 
@@ -64,14 +63,14 @@ class CheckConsistencyOnlineProofsTest extends Block3VerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		extractionService = new ElectionDataExtractionService(new PathService(), DomainObjectMapper.getNewInstance());
+		extractionService = new ElectionDataExtractionService(pathService, DomainObjectMapper.getNewInstance());
 		verification = new CheckConsistencyOnlineProofs(pathService, extractionService, applicationEventPublisherMock);
 	}
 
 	@Test
 	void testVerifyOk() throws Exception {
 		final String inputDirectory = Paths.get(getClass().getResource("/CheckConsistencyOnlineProofsTest/OK").toURI()).toString();
-		final VerificationResultEvent resultEvent = verification.verify(new Block3Event(this, inputDirectory));
+		final VerificationResultEvent resultEvent = verification.verify(new PreDecryptionEvent(this, inputDirectory));
 
 		final var expectedResultEvent = VerificationResultEvent.success(this, verification.getVerificationDefinition());
 		assertEquals(expectedResultEvent, resultEvent);
@@ -91,7 +90,7 @@ class CheckConsistencyOnlineProofsTest extends Block3VerificationTest {
 	@ParameterizedTest
 	@MethodSource("getBadInputTests")
 	void testVerifyNok(final String inputDirectory, final String messageIdentifier) throws Exception {
-		final var event = new Block3Event(this, Paths.get(getClass().getResource(inputDirectory).toURI()).toString());
+		final var event = new PreDecryptionEvent(this, Paths.get(getClass().getResource(inputDirectory).toURI()).toString());
 		final VerificationResultEvent resultEvent = verification.verify(event);
 
 		final var expectedResultEvent = VerificationResultEvent.failure(this, verification.getVerificationDefinition(),
@@ -103,7 +102,7 @@ class CheckConsistencyOnlineProofsTest extends Block3VerificationTest {
 	void testMissingMixnetShufflePayloads() throws URISyntaxException {
 		final var inputDirectory = Paths.get(
 				Objects.requireNonNull(getClass().getResource("/CheckConsistencyOnlineProofsTest/NOK_missingPayloads")).toURI()).toString();
-		final var event = new Block3Event(this, inputDirectory);
+		final var event = new PreDecryptionEvent(this, inputDirectory);
 		final MissingFileException exception = assertThrows(MissingFileException.class, () -> verification.verify(event));
 		assertEquals("Missing shufflePayload file(s)", exception.getMessage());
 	}
@@ -274,13 +273,6 @@ class CheckConsistencyOnlineProofsTest extends Block3VerificationTest {
 		void testWithNullArgument() {
 			assertThrows(NullPointerException.class,
 					() -> ((CheckConsistencyOnlineProofs) verification).checkRemainingElectionPublicKeys(null));
-		}
-
-		@Test
-		void testWithEmptyArgument() {
-			final var emptyInput = new CheckConsistencyOnlineProofsInput();
-			assertThrows(IllegalArgumentException.class,
-					() -> ((CheckConsistencyOnlineProofs) verification).checkRemainingElectionPublicKeys(emptyInput));
 		}
 
 		@Test

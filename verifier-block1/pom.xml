@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>verifier</artifactId>
 		<groupId>ch.post.it.evoting.verifier</groupId>
-		<version>0.8.1.0</version>
+		<version>0.9.0.0</version>
 	</parent>
 
 	<artifactId>verifier-block1</artifactId>
@@ -16,16 +16,11 @@
 		<!-- Internal dependencies -->
 		<dependency>
 			<groupId>ch.post.it.evoting.verifier</groupId>
-			<artifactId>verifier-common-block</artifactId>
+			<artifactId>verifier-plugin-contract</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>ch.post.it.evoting.verifier</groupId>
-			<artifactId>verifier-common</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>ch.post.it.evoting.verifier</groupId>
-			<artifactId>verifier-common-test</artifactId>
-			<scope>test</scope>
+			<artifactId>verifier-core-internal</artifactId>
 		</dependency>
 
 		<!-- org.springframework.boot -->

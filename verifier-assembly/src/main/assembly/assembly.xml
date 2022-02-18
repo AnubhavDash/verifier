@@ -29,14 +29,16 @@
 
 	<fileSets>
 		<fileSet>
-			<directory>${basedir}/src/main/resources</directory>
-			<outputDirectory>./resources</outputDirectory>
-			<filtered>false</filtered>
-		</fileSet>
-		<fileSet>
 			<directory>${project.build.directory}/jdk</directory>
 			<outputDirectory>./resources</outputDirectory>
 			<filtered>false</filtered>
 		</fileSet>
 	</fileSets>
+	<files>
+		<file>
+			<source>${project.basedir}/src/main/resources/run-backend.bat</source>
+			<outputDirectory>./resources</outputDirectory>
+			<filtered>true</filtered>
+		</file>
+	</files>
 </assembly>

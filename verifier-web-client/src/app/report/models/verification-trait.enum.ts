@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 export enum VerificationTrait {
+  CONFIGURATION = 'CONFIGURATION',
   PRE_DECRYPTION = 'PRE_DECRYPTION',
-  BLOCK_1 = 'BLOCK_1',
-  BLOCK_2 = 'BLOCK_2',
-  BLOCK_3 = 'BLOCK_3',
-  BLOCK_4 = 'BLOCK_4'
+  FINAL_DECRYPTION = 'FINAL_DECRYPTION'
 }

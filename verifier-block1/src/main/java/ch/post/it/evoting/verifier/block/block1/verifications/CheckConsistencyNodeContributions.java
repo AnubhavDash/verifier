@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Post CH Ltd
+ * Copyright 2022 Post CH Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,18 +34,17 @@ import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ReturnCodeGenerati
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ReturnCodeGenerationResponsePayload;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.verifier.block.block1.Block1VerificationSuite;
-import ch.post.it.evoting.verifier.common.AbstractVerification;
-import ch.post.it.evoting.verifier.common.Category;
-import ch.post.it.evoting.verifier.common.VerificationDefinition;
-import ch.post.it.evoting.verifier.common.VerificationTrait;
-import ch.post.it.evoting.verifier.common.block.dto.revised.EncryptionParameters;
-import ch.post.it.evoting.verifier.common.block.tools.ElectionDataExtractionService;
-import ch.post.it.evoting.verifier.common.block.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.common.block.tools.TypeConverter;
-import ch.post.it.evoting.verifier.common.block.tools.path.PathService;
-import ch.post.it.evoting.verifier.common.block.tools.path.StructureKey;
-import ch.post.it.evoting.verifier.common.event.VerificationResultEvent;
-import ch.post.it.evoting.verifier.common.event.VerifierEvent;
+import ch.post.it.evoting.verifier.plugin.contract.AbstractVerification;
+import ch.post.it.evoting.verifier.plugin.contract.Category;
+import ch.post.it.evoting.verifier.plugin.contract.VerificationDefinition;
+import ch.post.it.evoting.verifier.plugin.contract.VerificationTrait;
+import ch.post.it.evoting.verifier.core.internal.tools.ElectionDataExtractionService;
+import ch.post.it.evoting.verifier.core.internal.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.core.internal.tools.TypeConverter;
+import ch.post.it.evoting.verifier.core.internal.tools.path.PathService;
+import ch.post.it.evoting.verifier.core.internal.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerificationResultEvent;
+import ch.post.it.evoting.verifier.plugin.contract.event.VerifierEvent;
 
 @Component
 public class CheckConsistencyNodeContributions extends AbstractVerification {
@@ -71,8 +70,7 @@ public class CheckConsistencyNodeContributions extends AbstractVerification {
 				.setDescription(TranslationHelper.getFromResourceBundle(Block1VerificationSuite.RESOURCE_BUNDLE_NAME, "verification41.description"));
 		definition.setId(41);
 		definition.setName("checkConsistencyNodeContributions");
-		definition.addVerificationTrait(VerificationTrait.PRE_DECRYPTION);
-		definition.addVerificationTrait(VerificationTrait.BLOCK_1);
+		definition.addVerificationTrait(VerificationTrait.CONFIGURATION);
 		return definition;
 	}
 
@@ -102,7 +100,7 @@ public class CheckConsistencyNodeContributions extends AbstractVerification {
 	private Stream<NodeContributionsChunk> getVerificationInputs(final Path inputDirectoryPath) {
 		final var electionEvent = deserializer.getElectionEvent(inputDirectoryPath);
 		final var electionEventId = TypeConverter.UUIDToStringWithoutDash(electionEvent.getId());
-		final GqGroup encryptionParameters = extractEncryptionParameters(inputDirectoryPath);
+		final GqGroup encryptionParameters = deserializer.getEncryptionParameters(inputDirectoryPath);
 
 		// Iterate over all verification card set ids directories
 		final var verificationCardSetsIdPathNode = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
@@ -145,7 +143,8 @@ public class CheckConsistencyNodeContributions extends AbstractVerification {
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 
-		final boolean areChunkIdsConsistent = Validations.allEqual(nodeContributionsChunk.nodeOutputs.stream().map(ChoiceCodeGenerationDTO::getPayload),
+		final boolean areChunkIdsConsistent = Validations.allEqual(
+				nodeContributionsChunk.nodeOutputs.stream().map(ChoiceCodeGenerationDTO::getPayload),
 				ReturnCodeGenerationResponsePayload::getChunkId);
 
 		final boolean areVerificationCardSetIdsDistinct = nodeContributionsChunk.nodeOutputs.stream()
@@ -157,18 +156,6 @@ public class CheckConsistencyNodeContributions extends AbstractVerification {
 				.distinct().limit(2).count() <= 1;
 
 		return contextEquals && areChunkIdsConsistent && areVerificationCardSetIdsDistinct;
-	}
-
-	// Extract encryption parameters from the dataset and a GqGroup
-	private GqGroup extractEncryptionParameters(Path inputDirectoryPath) {
-		final var encryptParams = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
-		final EncryptionParameters encryptionParameters;
-		try {
-			encryptionParameters = objectMapper.readValue(encryptParams.getPath().toFile(), EncryptionParameters.class);
-		} catch (IOException e) {
-			throw new UncheckedIOException("Failed to deserialize encryption parameters.", e);
-		}
-		return new GqGroup(encryptionParameters.getP(), encryptionParameters.getQ(), encryptionParameters.getG());
 	}
 
 	// Data class containing the values from the dataset and the node contribution outputs for one chunk
