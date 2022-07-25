@@ -1,6 +1,6 @@
 # Verifier of the Swiss Post Voting System
 
-The Swiss Post Voting System requires a verification software—the *verifier*—to verify the cryptographic evidence. The [specification](Verifier_Specification.pdf) and development of the verifier goes hand in hand with the Swiss Post Voting System, and the verifier challenges and extensively tests a protocol run. The Swiss Post Voting System consists of three phases, and each one has at least one verification algorithm.
+The Swiss Post Voting System requires a verification software—the *verifier*—to verify the cryptographic evidence. The [specification](https://gitlab.com/swisspost-evoting/e-voting/e-voting-documentation/-/blob/master/System/Verifier_Specification.pdf) and development of the verifier goes hand in hand with the Swiss Post Voting System, and the verifier challenges and extensively tests a protocol run. 🛑 **IMPORTANT: The current source code of this repository is not aligned with the last version of the specification (v1.0). The new version of the verifier source code will be available in August 2022**. The Swiss Post Voting System consists of three phases, and each one has at least one verification algorithm.
 
 | Block                          | Phase         | Algorithm          |
 |--------------------------------|---------------|--------------------|
@@ -11,7 +11,7 @@ The Swiss Post Voting System requires a verification software—the *verifier*�
 
 Similar to the [e-voting solution](https://gitlab.com/swisspost-evoting/e-voting/e-voting) and
 the [crypto-primitives library](https://gitlab.com/swisspost-evoting/crypto-primitives/crypto-primitives), the verifier source code follows a
-[precise and unambiguous pseudo-code verifier specification](Verifier_Specification.pdf) to bridge the representational gap between mathematics and code.
+[precise and unambiguous pseudo-code verifier specification](https://gitlab.com/swisspost-evoting/e-voting/e-voting-documentation/-/blob/master/System/Verifier_Specification.pdf) to bridge the representational gap between mathematics and code.
 
 The verifier's execution must fulfill the following conditions:
 
