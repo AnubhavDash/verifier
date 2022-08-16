@@ -1,38 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-				 xmlns="http://maven.apache.org/POM/4.0.0"
-				 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ch.post.it.evoting.verifier</groupId>
 	<artifactId>verifier</artifactId>
-	<version>0.9.0.1</version>
+	<version>0.9.1.0</version>
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>verifier-plugin-contract</module>
-		<module>verifier-core-internal</module>
-		<module>verifier-block1</module>
-		<module>verifier-block2</module>
-		<module>verifier-block3</module>
-		<module>verifier-block4</module>
-		<module>verifier-web-client</module>
-		<module>verifier-web</module>
+		<module>verifier-protocol</module>
+		<module>verifier-backend</module>
+		<module>verifier-frontend</module>
 		<module>verifier-assembly</module>
 	</modules>
 
 	<properties>
-		<project.build.outputTimestamp>2022-07-25T13:35:25+02:00</project.build.outputTimestamp>
+		<maven-enforcer-plugin.requiredJavaVersion>[17.0.3]</maven-enforcer-plugin.requiredJavaVersion>
+		<maven-enforcer-plugin.requiredMavenVersion>[3.8.6]</maven-enforcer-plugin.requiredMavenVersion>
+		<project.build.outputTimestamp>2022-08-16T14:31:12+02:00</project.build.outputTimestamp>
 
-		<bouncycastle.version>1.70</bouncycastle.version>
+		<bouncycastle.version>1.71</bouncycastle.version>
 		<commons-codec.version>1.15</commons-codec.version>
 		<commons-lang3.version>3.12.0</commons-lang3.version>
-		<crypto-primitives-version>0.12.0.0</crypto-primitives-version>
-		<crypto-primitives-domain.version>0.12.0.1</crypto-primitives-domain.version>
+		<crypto-primitives-version>0.15.2.3</crypto-primitives-version>
+		<crypto-primitives-domain.version>0.15.2.5</crypto-primitives-domain.version>
 		<guava.version>31.0.1-jre</guava.version>
 		<hamcrest-core.version>2.2</hamcrest-core.version>
 		<itext.version>5.5.13.2</itext.version>
-		<jackson.version>2.13.1</jackson.version>
+		<jackson.version>2.13.3</jackson.version>
 		<jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
 		<jaxb-api.version>2.3.1</jaxb-api.version>
 		<jaxb-api.version>2.4.0-b180830.0359</jaxb-api.version>
@@ -45,6 +40,7 @@
 		<maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
 		<maven-compiler-plugin.version>3.10.0</maven-compiler-plugin.version>
 		<maven-deploy-plugin.version>3.0.0-M2</maven-deploy-plugin.version>
+		<maven-enforcer-plugin.version>3.0.0</maven-enforcer-plugin.version>
 		<maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
 		<maven-release-plugin.version>3.0.0-M5</maven-release-plugin.version>
 		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
@@ -58,8 +54,10 @@
 		<slf4j.version>1.7.36</slf4j.version>
 		<sun-jaxb-core.version>3.0.2</sun-jaxb-core.version>
 		<sun-jaxb-impl.version>2.3.6</sun-jaxb-impl.version>
-		<spring-boot.version>2.6.3</spring-boot.version>
-		<spring.version>5.3.15</spring.version>
+		<spring-boot.version>2.7.2</spring-boot.version>
+		<spring.version>5.3.22</spring.version>
+		<system-stubs-core.version>2.0.1</system-stubs-core.version>
+		<zip4j.version>2.10.0</zip4j.version>
 
 		<!-- sonar -->
 		<sonar.scm.disabled>true</sonar.scm.disabled>
@@ -75,42 +73,22 @@
 			<!-- internal dependencies -->
 			<dependency>
 				<groupId>ch.post.it.evoting.verifier</groupId>
-				<artifactId>verifier-plugin-contract</artifactId>
+				<artifactId>verifier-backend</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>ch.post.it.evoting.verifier</groupId>
-				<artifactId>verifier-core-internal</artifactId>
+				<artifactId>verifier-protocol</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>ch.post.it.evoting.verifier</groupId>
-				<artifactId>verifier-block1</artifactId>
+				<artifactId>verifier-verification</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>ch.post.it.evoting.verifier</groupId>
-				<artifactId>verifier-block2</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>ch.post.it.evoting.verifier</groupId>
-				<artifactId>verifier-block3</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>ch.post.it.evoting.verifier</groupId>
-				<artifactId>verifier-block4</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>ch.post.it.evoting.verifier</groupId>
-				<artifactId>verifier-web</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>ch.post.it.evoting.verifier</groupId>
-				<artifactId>verifier-web-client</artifactId>
+				<artifactId>verifier-frontend</artifactId>
 				<version>${project.version}</version>
 				<type>zip</type>
 			</dependency>
@@ -210,6 +188,18 @@
 				<version>${mockito.version}</version>
 			</dependency>
 
+			<!-- system stubs -->
+			<dependency>
+				<groupId>uk.org.webcompere</groupId>
+				<artifactId>system-stubs-core</artifactId>
+				<version>${system-stubs-core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>uk.org.webcompere</groupId>
+				<artifactId>system-stubs-jupiter</artifactId>
+				<version>${system-stubs-core.version}</version>
+			</dependency>
+
 			<!-- io.jsonwebtoken -->
 			<dependency>
 				<groupId>io.jsonwebtoken</groupId>
@@ -222,6 +212,13 @@
 				<groupId>io.projectreactor</groupId>
 				<artifactId>reactor-core</artifactId>
 				<version>${reactor-core.version}</version>
+			</dependency>
+
+			<!-- net.lingala.zip4j -->
+			<dependency>
+				<groupId>net.lingala.zip4j</groupId>
+				<artifactId>zip4j</artifactId>
+				<version>${zip4j.version}</version>
 			</dependency>
 
 			<!-- logging -->
@@ -241,12 +238,12 @@
 			<!-- org.bouncycastle -->
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
-				<artifactId>bcprov-jdk15on</artifactId>
+				<artifactId>bcprov-jdk18on</artifactId>
 				<version>${bouncycastle.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
-				<artifactId>bcmail-jdk15on</artifactId>
+				<artifactId>bcmail-jdk18on</artifactId>
 				<version>${bouncycastle.version}</version>
 			</dependency>
 
@@ -334,6 +331,11 @@
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-enforcer-plugin</artifactId>
+					<version>${maven-enforcer-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>${maven-surefire-plugin.version}</version>
 					<configuration>
@@ -411,10 +413,12 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
 				<version>${maven-deploy-plugin.version}</version>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
 				<version>${maven-release-plugin.version}</version>
 				<inherited>true</inherited>
@@ -425,6 +429,29 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>enforce</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<banDuplicatePomDependencyVersions/>
+								<requireJavaVersion>
+									<version>${maven-enforcer-plugin.requiredJavaVersion}</version>
+								</requireJavaVersion>
+								<requireMavenVersion>
+									<version>${maven-enforcer-plugin.requiredMavenVersion}</version>
+								</requireMavenVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -440,11 +467,11 @@
 			<properties>
 
 				<!-- OpenJDK -->
-				<openjdk.version>jdk-17.0.1+12</openjdk.version>
-				<openjdk.win64.url>
-					https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jdk_x64_windows_hotspot_17.0.1_12.zip
-				</openjdk.win64.url>
-				<openjdk.win64.sha256>e5419773052ac6479ff211d5945f8625e0cdb036e69c0f71affaf02d5dc9aa0b</openjdk.win64.sha256>
+				<openjdk-jre.version>jdk-17.0.3+7-jre</openjdk-jre.version>
+				<openjdk-jre.win64.url>
+					https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.3%2B7/OpenJDK17U-jre_x64_windows_hotspot_17.0.3_7.zip
+				</openjdk-jre.win64.url>
+				<openjdk-jre.win64.sha256>d77745fdb57b51116f7b8fabd7d251067edbe3c94ea18fa224f64d9584b41a97</openjdk-jre.win64.sha256>
 
 			</properties>
 		</profile>

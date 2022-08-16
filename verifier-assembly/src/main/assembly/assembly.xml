@@ -9,36 +9,42 @@
 	<includeBaseDirectory>false</includeBaseDirectory>
 
 	<dependencySets>
+		<!-- Verifier frontend archive -->
+		<!-- Electron executable & Angular UI -->
 		<dependencySet>
-			<outputDirectory/>
 			<includes>
-				<include>${project.groupId}:${rootProject}-web-client</include>
+				<include>${project.groupId}:${rootProject}-frontend</include>
 			</includes>
+			<outputDirectory/>
 			<unpack>true</unpack>
 			<useProjectArtifact>false</useProjectArtifact>
 		</dependencySet>
+		<!-- Verifier backend archive -->
+		<!-- jar executable -->
 		<dependencySet>
-			<outputDirectory>./resources</outputDirectory>
 			<includes>
-				<include>${project.groupId}:${rootProject}-web</include>
+				<include>${project.groupId}:${rootProject}-backend</include>
 			</includes>
+			<outputDirectory>./resources</outputDirectory>
 			<outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
 			<useProjectArtifact>false</useProjectArtifact>
 		</dependencySet>
 	</dependencySets>
-
+	<!-- JRE & bat executable -->
 	<fileSets>
 		<fileSet>
-			<directory>${project.build.directory}/jdk</directory>
+			<directory>${project.build.directory}/jre</directory>
 			<outputDirectory>./resources</outputDirectory>
-			<filtered>false</filtered>
 		</fileSet>
-	</fileSets>
-	<files>
-		<file>
-			<source>${project.basedir}/src/main/resources/run-backend.bat</source>
+		<fileSet>
+			<directory>${project.basedir}/src/main/resources</directory>
 			<outputDirectory>./resources</outputDirectory>
 			<filtered>true</filtered>
-		</file>
-	</files>
+			<includes>
+				<include>run-backend.bat</include>
+				<include>application.properties</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+
 </assembly>

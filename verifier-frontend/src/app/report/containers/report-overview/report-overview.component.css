@@ -1,0 +1,29 @@
+
+.border-left.border-10 {
+  border-width: 10px;
+}
+
+.block-name {
+  text-transform: capitalize;
+}
+
+
+.error-view-details {
+  display: none;
+}
+
+.error-hide-details {
+  display: inline;
+}
+
+.collapsed > .error-view-details {
+  display: inline;
+}
+
+.collapsed > .error-hide-details {
+  display: none;
+}
+
+.upload-button {
+  text-align: left;
+}

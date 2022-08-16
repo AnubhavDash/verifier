@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-				 xmlns="http://maven.apache.org/POM/4.0.0"
-				 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
 		<artifactId>verifier</artifactId>
 		<groupId>ch.post.it.evoting.verifier</groupId>
-		<version>0.9.0.1</version>
+		<version>0.9.1.0</version>
 	</parent>
 
 	<artifactId>verifier-assembly</artifactId>
@@ -20,14 +18,16 @@
 	<dependencies>
 		<dependency>
 			<groupId>ch.post.it.evoting.verifier</groupId>
-			<artifactId>verifier-web-client</artifactId>
-			<type>zip</type>
+			<artifactId>verifier-backend</artifactId>
+			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>ch.post.it.evoting.verifier</groupId>
-			<artifactId>verifier-web</artifactId>
+			<artifactId>verifier-frontend</artifactId>
+			<type>zip</type>
 		</dependency>
 	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -36,16 +36,16 @@
 				<version>${download-maven-plugin.version}</version>
 				<executions>
 					<execution>
-						<id>download-openjdk-win64</id>
-						<phase>generate-resources</phase>
+						<id>download-openjdk-jre-win64</id>
+						<phase>initialize</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>${openjdk.win64.url}</url>
-							<outputDirectory>${project.build.directory}/jdk</outputDirectory>
+							<url>${openjdk-jre.win64.url}</url>
+							<outputDirectory>${project.build.directory}/jre</outputDirectory>
 							<unpack>true</unpack>
-							<sha256>${openjdk.win64.sha256}</sha256>
+							<sha256>${openjdk-jre.win64.sha256}</sha256>
 						</configuration>
 					</execution>
 				</executions>
