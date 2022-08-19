@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const {app, BrowserWindow, session, Menu, dialog} = require('electron')
+const {app, BrowserWindow, Menu, dialog} = require('electron');
 const {createLogger, format, transports} = require('winston');
 const fs = require('fs');
 const path = require('path');
@@ -22,11 +22,11 @@ const config = require('./config');
 
 // Logger config
 const logDir = 'logs';
-let suffix = dateFormat(new Date(), "yyyy-mm-dd-HHMMss");
+const suffix = dateFormat(new Date(), 'yyyy-mm-dd-HHMMss');
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir);
 }
-const filename = path.join(logDir, 'verifier_' + suffix + '.log');
+const filename = path.join(logDir, `verifier_${suffix}.log`);
 const logger = createLogger({
   format: format.combine(
     format.timestamp({
@@ -40,7 +40,7 @@ const logger = createLogger({
 
 // Backend server process
 let serverProcess;
-let platform = process.platform;
+const platform = process.platform;
 
 if (platform === 'win32') {
   console.log(app.getAppPath());
@@ -52,7 +52,6 @@ if (platform === 'win32') {
         cwd: app.getAppPath() + '/../'
       });
 } else {
-  // serverProcess = require('child_process').spawn(app.getAppPath() + '/run-backend');
   console.error('Non windows OS is currently not implemented');
   logger.log('error', 'Non windows OS is currently not implemented');
 }
@@ -85,6 +84,7 @@ const prepareWindow = function () {
       plugins: true
     }
   });
+  win.webContents.on('did-finish-load', () => win.setTitle(`Swiss Post Verifier (${app.getVersion()})`));
   const menu = Menu.buildFromTemplate([
     {
       label: 'File',
@@ -103,15 +103,10 @@ const prepareWindow = function () {
     }
   ]);
   Menu.setApplicationMenu(menu);
-  // win.setMenu(null);
-
-
-  //// uncomment below to open the DevTools.
-  // win.webContents.openDevTools()
 
   // Event when the window is closed.
   win.on('closed', function () {
-    win = null
+    win = null;
     app.quit();
   });
 
@@ -135,20 +130,20 @@ const prepareWindow = function () {
 const startUp = function (counter) {
   const requestPromise = require('minimal-request-promise');
 
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
   app.on('ready', function () {
     prepareWindow();
   });
 
   requestPromise.get(config.serverConnectionCheckUrl()).then(
-    function (response) {
+    function () {
       console.log('Server started!');
       logger.log('info', 'Server started!');
       win.loadURL(`file://${__dirname}/index.html`);
       win.maximize();
       win.show();
-  }, function (response) {
-    console.log('Waiting for the server start... (' + counter + '/20)');
+  }, function () {
+    console.log(`Waiting for the server start... (${counter}/20)`);
     logger.log('info', 'Waiting for the server start...');
     if (counter < 20) {
       setTimeout(function () {
@@ -156,13 +151,13 @@ const startUp = function (counter) {
       }, 800);
     } else {
       dialog.showMessageBox(win, {
-        type: "error",
-        message: "Unable to connect to server. Application will stop"
-      }).then(resp => {
+        type: 'error',
+        message: 'Unable to connect to server. Application will stop'
+      }).then(() => {
         app.exit(0);
-      }).catch(err => {
+      }).catch(() => {
         app.exit(-1);
-      })
+      });
     }
   });
 };
