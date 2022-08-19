@@ -1,8 +1,19 @@
 #!groovy
 /*
- * (c) Copyright 2022 Swiss Post Ltd.
-*
-*/
+ * Copyright 2022 Post CH Ltd
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 /***************************************************************/
 /****************** JENKINS-VERIFIER LIB ****************/
 /***************************************************************/
@@ -69,6 +80,7 @@ public performRelease(projectName, gitUrl, branchName, autoMerge, mavenGoals, ma
 		def npmReleaseVersion = substring("\\d+\\.\\d+\\.\\d+", releaseVersion) + "-" + releaseVersion.substring(releaseVersion.lastIndexOf(".") + 1, releaseVersion.length())
 
 		sh "cd verifier-frontend && npm version ${npmReleaseVersion} --no-git-tag-version --allow-same-version"
+		sh "cd verifier-frontend/app && npm version ${npmReleaseVersion} --no-git-tag-version --allow-same-version"
 	}
 
 	// run release build
@@ -196,6 +208,9 @@ def resetPomVersion(projectName, workspace, gitUrl, branchName, releaseVersion, 
 	//Update package.json version
 	commonBuildPipeline.LOGGER('service version', "set new service version ${newSnapshotVersion} in package.json!")
 	def npmNewSnapshotVersion = substring("\\d+\\.\\d+\\.\\d+", newSnapshotVersion) + "-" + newSnapshotVersion.substring(newSnapshotVersion.lastIndexOf(".") + 1, newSnapshotVersion.length())
+
+	sh "cd verifier-frontend && npm version ${npmNewSnapshotVersion} --no-git-tag-version --allow-same-version"
+	sh "cd verifier-frontend/app && npm version ${npmNewSnapshotVersion} --no-git-tag-version --allow-same-version"
 
 	sh 'sed -i "s/<project.build.outputTimestamp>\\(.*\\)<\\/project.build.outputTimestamp>/<project.build.outputTimestamp>$(date +\'%Y-%m-%dT%H:%M:%S+02:00\')<\\/project.build.outputTimestamp>/g" pom.xml'
 	sh 'sed -i "/\\"resolved\\":/d" **/package-lock.json'

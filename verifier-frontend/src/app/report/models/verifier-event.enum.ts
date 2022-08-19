@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 export enum VerifierEvent {
-  CONFIGURATION = 'CONFIGURATION',
-  DECRYPTION = 'DECRYPTION'
+  PRE_SETUP = 'PRE_SETUP',
+  SETUP = 'SETUP',
+  PRE_TALLY = 'PRE_TALLY',
+  TALLY = 'TALLY'
 }

@@ -15,13 +15,8 @@
  */
 package ch.post.it.evoting.verifier.backend.domain;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = EncryptionGroupParametersPayloadDeserializer.class)
 public record EncryptionGroupParametersPayload(EncryptionGroupParameters gqGroup) {
-	public EncryptionGroupParametersPayload {
-		checkNotNull(gqGroup);
-	}
 }

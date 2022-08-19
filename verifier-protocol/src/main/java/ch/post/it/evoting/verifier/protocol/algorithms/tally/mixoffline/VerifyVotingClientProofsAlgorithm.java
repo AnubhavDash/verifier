@@ -86,6 +86,7 @@ public class VerifyVotingClientProofsAlgorithm {
 		// N_E >= N_C >= 1 is ensured by the input builder.
 		// psi <= phi is ensured by the input builder.
 		// 0 < delta_hat <= delta <= phi is ensured by the input builder.
+		// Disinctness of all verification card IDS ensured by the input builder.
 
 		final List<Boolean> verifExp = new ArrayList<>();
 		final List<Boolean> verifEqEnc = new ArrayList<>();

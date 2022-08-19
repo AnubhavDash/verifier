@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -176,20 +177,23 @@ public class EncryptionGroupParametersExtractionService {
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the extraction fails.
 	 */
-	public EncryptionGroupParameters getFromTallyComponentShufflePayload(final Path inputDirectoryPath) {
+	public Stream<EncryptionGroupParameters> getFromTallyComponentShufflePayloads(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
 		final PathNode pathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
-		final PathNode tallyComponentShufflePayloadPath = pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_SHUFFLE,
-				pathNode.getPath());
 
-		try {
-			return objectMapper.readValue(tallyComponentShufflePayloadPath.getPath().toFile(), EncryptionGroupParametersPayload.class).gqGroup();
-		} catch (final IOException e) {
-			throw new UncheckedIOException(
-					String.format("Failed to deserialize the encryption group parameters from the tally component shuffle payload. [path: %s]",
-							tallyComponentShufflePayloadPath), e);
-		}
+		return pathNode.getRegexPaths().stream()
+				.map(ballotBoxPayloadPath -> pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_SHUFFLE, ballotBoxPayloadPath))
+				.map(tallyComponentShufflePayloadPath -> {
+					try {
+						return objectMapper.readValue(tallyComponentShufflePayloadPath.getPath().toFile(),
+								EncryptionGroupParametersPayload.class).gqGroup();
+					} catch (IOException e) {
+						throw new UncheckedIOException(String.format(
+								"Failed to deserialize the encryption group parameters from the tally component shuffle payload. [path: %s]",
+								tallyComponentShufflePayloadPath), e);
+					}
+				});
 	}
 
 	/**
@@ -199,20 +203,26 @@ public class EncryptionGroupParametersExtractionService {
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the extraction fails.
 	 */
-	public EncryptionGroupParameters getFromTallyComponentVotesPayload(final Path inputDirectoryPath) {
+	public Stream<EncryptionGroupParameters> getFromTallyComponentVotesPayloads(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
 		final PathNode pathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
-		final PathNode tallyComponentVotesPayloadPath = pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_VOTES,
-				pathNode.getPath());
 
-		try {
-			return objectMapper.readValue(tallyComponentVotesPayloadPath.getPath().toFile(), EncryptionGroupParametersPayload.class).gqGroup();
-		} catch (final IOException e) {
-			throw new UncheckedIOException(
-					String.format("Failed to deserialize the encryption group parameters from the tally component votes payload. [path: %s]",
-							tallyComponentVotesPayloadPath), e);
-		}
+		return pathNode.getRegexPaths().stream()
+				.map(ballotBoxPayloadPath -> pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_VOTES, ballotBoxPayloadPath))
+				.map(tallyComponentVotesPayloadPath -> {
+					try {
+						return objectMapper.readValue(tallyComponentVotesPayloadPath.getPath().toFile(), EncryptionGroupParametersPayload.class)
+								.gqGroup();
+					} catch (final IOException e) {
+						throw new UncheckedIOException(String.format(
+								"Failed to deserialize the encryption group parameters from the tally component votes payload. [path: %s]",
+								tallyComponentVotesPayloadPath), e);
+					}
+				})
+				// use only TallyComponentVotesPayload that have votes
+				.filter(Objects::nonNull);
+
 	}
 
 	/**

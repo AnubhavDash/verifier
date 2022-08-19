@@ -15,12 +15,22 @@
  */
 package ch.post.it.evoting.verifier.backend.dto;
 
+import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.validateUUID;
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public record DatasetConfiguration(String filename, String hash) {
+import java.util.Map;
+
+public record DatasetConfiguration(String filename, String hash, String electionEventId, int numberOfAuthorizedVoters, int numberOfTestVoters,
+								   Map<String, String> aliasesToFingerprints) {
 
 	public DatasetConfiguration {
-		checkNotNull(filename, "filename must be not null");
-		checkNotNull(hash, "hash must be not null");
+		checkNotNull(filename);
+		checkNotNull(hash);
+		validateUUID(electionEventId);
+		checkArgument(numberOfAuthorizedVoters >= 0, "The number of authorized voters must be positive.");
+		checkArgument(numberOfTestVoters >= 0, "The number of test voters must be positive.");
+		checkNotNull(aliasesToFingerprints);
+		checkArgument(!aliasesToFingerprints.isEmpty(), "The aliases to fingerprints map must not be empty.");
 	}
 }
