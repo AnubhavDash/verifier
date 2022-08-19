@@ -5,15 +5,15 @@
   <parent>
     <artifactId>verifier</artifactId>
     <groupId>ch.post.it.evoting.verifier</groupId>
-    <version>0.9.1.0</version>
+    <version>0.9.1.1-SNAPSHOT</version>
   </parent>
 
   <artifactId>verifier-frontend</artifactId>
   <packaging>pom</packaging>
 
   <properties>
-    <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
-    <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
+    <exec-maven-plugin.version>3.1.0</exec-maven-plugin.version>
+    <maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
     <sonar.sources>src</sonar.sources>
   </properties>
 

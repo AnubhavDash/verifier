@@ -21,6 +21,7 @@ import {environment} from '../../../../environments/environment';
 import {VerifierEvent} from '../../models/verifier-event.enum';
 import {Component, OnInit} from '@angular/core';
 import * as html2pdf from 'html2pdf.js';
+import packageJson from '../../../../../package.json';
 
 
 @Component({
@@ -37,11 +38,17 @@ export class ReportOverviewComponent implements OnInit {
   printMode = false;
   startDisabled = true;
   processStarted = false;
+  eventStarted = '';
   verifierEvent = VerifierEvent;
   currentDate: string;
   isExportingToPDF = false;
   filename = '';
   hash = '';
+  electionEventId = '';
+  numberOfAuthorizedVoters = 0;
+  numberOfTestVoters = 0;
+  fingerprints: Map<string, string> = new Map();
+  appVersion = '';
 
   verificationFilter = {
     ALL: {
@@ -66,9 +73,19 @@ export class ReportOverviewComponent implements OnInit {
     }
   };
 
+  fingerprintsNames = {
+    control_component_1: 'Control Component 1',
+    control_component_2: 'Control Component 2',
+    control_component_3: 'Control Component 3',
+    control_component_4: 'Control Component 4',
+    sdm_config: 'Setup Component',
+    sdm_tally: 'Tally Control Component'
+  };
+
   private stompClient;
 
   constructor(private processorService: ProcessorService) {
+    this.appVersion = packageJson.version;
     this.currentDate = this.getCurrentDate();
     setInterval(() => {
       this.currentDate = this.getCurrentDate();
@@ -106,24 +123,30 @@ export class ReportOverviewComponent implements OnInit {
     });
   }
 
-  startProcess(runOptions?: string): void {
+  startProcess(runOption: string): void {
     this.processStarted = true;
     this.startDisabled = true;
-    if (runOptions === undefined) {
-      const allEvents = [this.verifierEvent.CONFIGURATION, this.verifierEvent.DECRYPTION];
-      runOptions = allEvents.join(',');
-    }
-    this.processorService.processVerifications(runOptions).subscribe(() => {
-      console.log('processVerifications ', runOptions);
-      this.updateNAStatus(runOptions);
+    this.eventStarted = runOption;
+    this.processorService.processVerifications(runOption).subscribe(() => {
+      console.log('processVerifications ', runOption);
+      this.updateNAStatus(runOption);
     });
+  }
+
+  startSecondaryProcess(runOption: string): void {
+    if (this.isProcessComplete() && this.statusCounterNOK() === 0 && this.statusCounterERROR() === 0) {
+      this.processStarted = false;
+      this.startDisabled = false;
+      this.resetStatus();
+      this.startProcess(runOption);
+    }
   }
 
   updateNAStatus(runOptions: string) {
     Object.keys(this.verifications).forEach(key => {
       let notFound = true;
       this.verifications[key].events.forEach(event => {
-        if (runOptions.indexOf(event) >= 0) {
+        if (event.indexOf(runOptions) >= 0) {
           notFound = false;
         }
       });
@@ -143,6 +166,7 @@ export class ReportOverviewComponent implements OnInit {
       this.initTable();
       this.processStarted = false;
       this.startDisabled = false;
+      this.eventStarted = '';
     });
   }
 
@@ -157,6 +181,14 @@ export class ReportOverviewComponent implements OnInit {
           const result = JSON.parse(message.body);
           verificationsCopy[result.id] = ReportOverviewComponent.convert(result);
           that.verifications = verificationsCopy;
+          that.activateResultVerificationFilters();
+
+          if (that.eventStarted === that.verifierEvent.PRE_SETUP) {
+            that.startSecondaryProcess(that.verifierEvent.SETUP);
+          }
+          if (that.eventStarted === that.verifierEvent.PRE_TALLY) {
+            that.startSecondaryProcess(that.verifierEvent.TALLY);
+          }
         }
       });
     });
@@ -181,7 +213,7 @@ export class ReportOverviewComponent implements OnInit {
   filterVerificationsAll() {
     this.verificationStatusFilter = this.verificationFilter['ALL'].value;
     const allFilters = Object.keys(this.verificationFilter);
-    allFilters.forEach((key, index) => {
+    allFilters.forEach((key) => {
       this.verificationFilter[key].active = key === 'ALL';
     });
   }
@@ -229,7 +261,7 @@ export class ReportOverviewComponent implements OnInit {
     const options = {
       margin: [5, 0],
       filename: `${pdfFileName}.pdf`,
-      pagebreak: {avoid: ['.html2pdf-no-break']},
+      pagebreak: {before: ['.html2pdf-break-page'], avoid: ['.html2pdf-no-break']},
       image: {type: 'jpeg', quality: 0.98},
       html2canvas: {scale: 4},
       jsPDF: {unit: 'mm', format: 'a4', orientation: 'landscape'}
@@ -257,12 +289,20 @@ export class ReportOverviewComponent implements OnInit {
     if (file) {
       this.filename = '';
       this.hash = '';
+      this.electionEventId = '';
+      this.numberOfAuthorizedVoters = 0;
+      this.numberOfTestVoters = 0;
+      this.fingerprints = new Map();
 
       this.processorService.uploadDataset(file).subscribe(() => {
         this.startDisabled = false;
         this.processorService.getDatasetConfiguration().subscribe(configuration => {
           this.filename = configuration.filename;
           this.hash = configuration.hash;
+          this.electionEventId = configuration.electionEventId;
+          this.numberOfAuthorizedVoters = configuration.numberOfAuthorizedVoters;
+          this.numberOfTestVoters = configuration.numberOfTestVoters;
+          this.fingerprints = configuration.aliasesToFingerprints;
         });
       });
     }
@@ -280,10 +320,14 @@ export class ReportOverviewComponent implements OnInit {
         }
       })
       .reduce((obj, key) => ({
-          ...obj,
-          [key]: this.verifications[key]
-        }), {});
+        ...obj,
+        [key]: this.verifications[key]
+      }), {});
     return Object.keys(filtered).length;
+  }
+
+  private resetStatus() {
+    Object.keys(this.verifications).forEach(key => this.verifications[key].status = null);
   }
 
   // Filters
@@ -294,9 +338,24 @@ export class ReportOverviewComponent implements OnInit {
       this.verificationStatusFilter = this.verificationStatusFilter.replace(`${filter.value}|`, '');
       this.verificationFilter['ALL'].active = this.verificationStatusFilter === '';
     } else {
+      this.activateVerificationFilter(key);
+    }
+  }
+
+  private activateVerificationFilter(key: string) {
+    const filter = this.verificationFilter[key];
+    if (!filter.active) {
       this.verificationFilter['ALL'].active = false;
       filter.active = true;
       this.verificationStatusFilter += `${filter.value}|`;
+    }
+  }
+
+  private activateResultVerificationFilters() {
+    if (this.processStarted && this.isProcessComplete()) {
+      this.activateVerificationFilter('OK');
+      this.activateVerificationFilter('NOK');
+      this.activateVerificationFilter('ERROR');
     }
   }
 
@@ -317,10 +376,11 @@ export class ReportOverviewComponent implements OnInit {
     const year = dateToFormat.getFullYear();
 
     if (isFileFormat) {
-      return `${year}${month}${date} -${hours}${minutes}`;
+      return `${year}${month}${date}-${hours}${minutes}`;
     } else {
-      return `${date} /${month}/${year} ${hours}:${minutes}`;
+      return `${date}.${month}.${year} ${hours}:${minutes}`;
     }
   }
+
 }
 

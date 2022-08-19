@@ -16,4 +16,8 @@
 export class DatasetConfiguration {
   filename: string;
   hash: string;
+  electionEventId: string;
+  numberOfAuthorizedVoters: number;
+  numberOfTestVoters: number;
+  aliasesToFingerprints: Map<string, string>;
 }

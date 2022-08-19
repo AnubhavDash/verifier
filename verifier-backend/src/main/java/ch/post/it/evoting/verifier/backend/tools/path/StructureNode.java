@@ -22,11 +22,11 @@ import lombok.Getter;
 
 @Getter
 public class StructureNode {
-	private PathType type;
-	private Path parentPath;
-	private String qualifier;
-	private boolean dynamicAncestor;
-	private List<RelationType> relations;
+	private final PathType type;
+	private final Path parentPath;
+	private final String qualifier;
+	private final boolean dynamicAncestor;
+	private final List<RelationType> relations;
 
 	StructureNode(PathType type, Path parentPath, String qualifier, boolean dynamicAncestor, List<RelationType> relations) {
 		this.type = type;

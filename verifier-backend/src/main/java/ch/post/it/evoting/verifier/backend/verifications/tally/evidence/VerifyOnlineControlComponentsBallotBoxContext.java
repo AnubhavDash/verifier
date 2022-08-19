@@ -1,0 +1,94 @@
+/*
+ * Copyright 2022 Post CH Ltd
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
+
+import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.validateUUID;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.function.Predicate.not;
+
+import com.google.common.collect.MoreCollectors;
+
+import ch.post.it.evoting.cryptoprimitives.domain.election.ControlComponentPublicKeys;
+import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
+import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
+import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
+import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
+import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
+
+public class VerifyOnlineControlComponentsBallotBoxContext {
+
+	private final String electionEventId;
+	private final String ballotBoxId;
+	private final int numberOfSelectableVotingOptions;
+	private final ElectionEventContext electionEventContext;
+
+	public VerifyOnlineControlComponentsBallotBoxContext(final String electionEventId, final String ballotBoxId,
+			final int numberOfSelectableVotingOptions,
+			final ElectionEventContext electionEventContext) {
+		this.electionEventId = validateUUID(electionEventId);
+		this.ballotBoxId = validateUUID(ballotBoxId);
+		checkArgument(numberOfSelectableVotingOptions > 0);
+		this.numberOfSelectableVotingOptions = numberOfSelectableVotingOptions;
+		this.electionEventContext = checkNotNull(electionEventContext);
+
+		checkArgument(this.electionEventId.equals(this.electionEventContext.electionEventId()));
+	}
+
+	public String getElectionEventId() {
+		return electionEventId;
+	}
+
+	public String getBallotBoxId() {
+		return ballotBoxId;
+	}
+
+	public int getNumberOfSelectableVotingOptions() {
+		return numberOfSelectableVotingOptions;
+	}
+
+	public ElGamalMultiRecipientPublicKey getElectionPublicKey() {
+		return electionEventContext.electionPublicKey();
+	}
+
+	public GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> getCcmElectionPublicKeys() {
+		return electionEventContext.combinedControlComponentPublicKeys().stream()
+				.map(ControlComponentPublicKeys::ccmElectionPublicKey)
+				.collect(GroupVector.toGroupVector());
+	}
+
+	public ElGamalMultiRecipientPublicKey getElectoralBoardPublicKey() {
+		return electionEventContext.electoralBoardPublicKey();
+	}
+
+	public ElGamalMultiRecipientPublicKey getChoiceReturnCodesEncryptionPublicKey() {
+		return electionEventContext.choiceReturnCodesEncryptionPublicKey();
+	}
+
+	public int getNumberOfAlloweWriteInsPlusOne() {
+		return electionEventContext.verificationCardSetContexts().stream()
+				.filter(verificationCardSetContext -> verificationCardSetContext.ballotBoxId().equals(ballotBoxId))
+				.collect(MoreCollectors.onlyElement())
+				.numberOfWriteInFields() + 1;
+	}
+
+	public int getNumberOfEligibleVoters() {
+		return electionEventContext.verificationCardSetContexts().stream()
+				.filter(not(VerificationCardSetContext::testBallotBox))
+				.map(VerificationCardSetContext::numberOfVotingCards)
+				.reduce(0, Integer::sum);
+	}
+}
