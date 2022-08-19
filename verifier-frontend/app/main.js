@@ -1,0 +1,170 @@
+/*
+ * Copyright 2022 Post CH Ltd
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+const {app, BrowserWindow, session, Menu, dialog} = require('electron')
+const {createLogger, format, transports} = require('winston');
+const fs = require('fs');
+const path = require('path');
+const dateFormat = require('dateformat');
+const config = require('./config');
+
+// Logger config
+const logDir = 'logs';
+let suffix = dateFormat(new Date(), "yyyy-mm-dd-HHMMss");
+if (!fs.existsSync(logDir)) {
+  fs.mkdirSync(logDir);
+}
+const filename = path.join(logDir, 'verifier_' + suffix + '.log');
+const logger = createLogger({
+  format: format.combine(
+    format.timestamp({
+      format: 'YYYY-MM-DD HH:mm:ss'
+    }),
+    format.json()
+  ),
+  transports: [new transports.File({filename})]
+});
+
+
+// Backend server process
+let serverProcess;
+let platform = process.platform;
+
+if (platform === 'win32') {
+  console.log(app.getAppPath());
+  logger.log('info', app.getAppPath());
+
+  serverProcess = require('child_process')
+    .spawn('cmd.exe', ['/c', 'run-backend.bat'],
+      {
+        cwd: app.getAppPath() + '/../'
+      });
+} else {
+  // serverProcess = require('child_process').spawn(app.getAppPath() + '/run-backend');
+  console.error('Non windows OS is currently not implemented');
+  logger.log('error', 'Non windows OS is currently not implemented');
+}
+
+if (!serverProcess) {
+  console.error('Unable to start server from ' + app.getAppPath());
+  logger.log('error', 'Unable to start server from ' + app.getAppPath());
+  app.quit();
+  return;
+}
+
+serverProcess.stdout.on('data', function (data) {
+  console.log('Server: ' + data);
+  logger.log('info', 'Server: ' + data);
+});
+
+console.log('Server PID: ' + serverProcess.pid);
+logger.log('info', 'Server PID: ' + serverProcess.pid);
+
+
+let win;
+const prepareWindow = function () {
+
+  // Create the browser window.
+  win = new BrowserWindow({
+    show: false,
+    width: 1200,
+    height: 800,
+    webPreferences: {
+      plugins: true
+    }
+  });
+  const menu = Menu.buildFromTemplate([
+    {
+      label: 'File',
+      submenu: [
+        {
+          label: 'Toggle developer tools', click() {
+            win.webContents.toggleDevTools();
+          }
+        },
+        {
+          label: 'Exit', click() {
+            app.quit();
+          }
+        }
+      ]
+    }
+  ]);
+  Menu.setApplicationMenu(menu);
+  // win.setMenu(null);
+
+
+  //// uncomment below to open the DevTools.
+  // win.webContents.openDevTools()
+
+  // Event when the window is closed.
+  win.on('closed', function () {
+    win = null
+    app.quit();
+  });
+
+  win.on('close', function (e) {
+    if (serverProcess) {
+      e.preventDefault();
+
+      const kill = require('tree-kill');
+      kill(serverProcess.pid, 'SIGTERM', function () {
+        console.log('Server process killed');
+        logger.log('info', 'Server process killed');
+
+        serverProcess = null;
+
+        win.close();
+      });
+    }
+  });
+};
+
+const startUp = function (counter) {
+  const requestPromise = require('minimal-request-promise');
+
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+  app.on('ready', function () {
+    prepareWindow();
+  });
+
+  requestPromise.get(config.serverConnectionCheckUrl()).then(
+    function (response) {
+      console.log('Server started!');
+      logger.log('info', 'Server started!');
+      win.loadURL(`file://${__dirname}/index.html`);
+      win.maximize();
+      win.show();
+  }, function (response) {
+    console.log('Waiting for the server start... (' + counter + '/20)');
+    logger.log('info', 'Waiting for the server start...');
+    if (counter < 20) {
+      setTimeout(function () {
+        startUp(counter + 1);
+      }, 800);
+    } else {
+      dialog.showMessageBox(win, {
+        type: "error",
+        message: "Unable to connect to server. Application will stop"
+      }).then(resp => {
+        app.exit(0);
+      }).catch(err => {
+        app.exit(-1);
+      })
+    }
+  });
+};
+
+startUp(1);

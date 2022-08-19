@@ -1,0 +1,15 @@
+**/target
+
+# IntelliJ IDEA
+.idea/
+*.iml
+.run/
+
+# Eclipse
+.settings/
+.classpath
+.project
+bin/
+
+# Maven local repository
+.m2/
