@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>verifier</artifactId>
+		<groupId>ch.post.it.evoting.verifier</groupId>
+		<version>0.9.1.0</version>
+	</parent>
+
+	<artifactId>verifier-assembly</artifactId>
+	<packaging>pom</packaging>
+
+	<properties>
+		<download-maven-plugin.version>1.6.7</download-maven-plugin.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>ch.post.it.evoting.verifier</groupId>
+			<artifactId>verifier-backend</artifactId>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>ch.post.it.evoting.verifier</groupId>
+			<artifactId>verifier-frontend</artifactId>
+			<type>zip</type>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>download-maven-plugin</artifactId>
+				<version>${download-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>download-openjdk-jre-win64</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>${openjdk-jre.win64.url}</url>
+							<outputDirectory>${project.build.directory}/jre</outputDirectory>
+							<unpack>true</unpack>
+							<sha256>${openjdk-jre.win64.sha256}</sha256>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>distro-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/assembly/assembly.xml</descriptor>
+							</descriptors>
+							<appendAssemblyId>false</appendAssemblyId>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

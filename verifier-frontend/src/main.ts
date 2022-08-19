@@ -1,0 +1,51 @@
+/*
+ * Copyright 2022 Post CH Ltd
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import {enableProdMode, LOCALE_ID} from '@angular/core';
+import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+
+import {AppModule} from './app/app.module';
+import {environment} from './environments/environment';
+
+if (environment.production) {
+  enableProdMode();
+}
+
+const providers = [
+  {provide: LOCALE_ID, useValue: getUsersLocale()}
+];
+
+platformBrowserDynamic([providers]).bootstrapModule(AppModule)
+  .catch(err => console.log(err));
+
+
+function getUsersLocale(): string {
+  const supportedLanguages = ['en'];
+
+  // Get lang from navigator
+  if (typeof window === 'undefined' || typeof window.navigator === 'undefined') {
+    return supportedLanguages[0].toUpperCase();
+  }
+  const wn = window.navigator as any;
+  let lang = wn.languages ? wn.languages[0] : supportedLanguages[0];
+  lang = lang || wn.language || wn.browserLanguage || wn.userLanguage;
+
+  // Filter on supported languages
+  lang = supportedLanguages.filter(function (value) {
+    return value === lang;
+  })[0] || supportedLanguages[0];
+
+  return lang.toUpperCase();
+}
