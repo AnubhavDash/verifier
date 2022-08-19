@@ -1,0 +1,210 @@
+<div class="container-fluid">
+  <div class="row m-1">
+    <div class="col-12 p-1 m-1 text-center">
+      <h1 class="display-1">Swiss Post Verifier</h1>
+    </div>
+  </div>
+  <input (change)="configurationUpload($event)" type="file" style="display: none" #fileUpload accept=".zip">
+  <div class="row m-1 mb-3">
+    <div class="col-12 p-0">
+      <div class="h-100 p-3 bg-white rounded shadow">
+        <div class="input-group mb-2">
+          <div class="input-group-prepend">
+            <span class="input-group-text bg-outline-secondary">Dataset</span>
+          </div>
+          <button mat-mini-fab color="primary" class="form-control upload-button" (click)="fileUpload.click()">
+            <span *ngIf="!filename">Not uploaded yet. Click to upload one</span>
+            {{filename}} <span *ngIf="hash">({{hash}})</span>
+          </button>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <button (click)="startProcess(verifierEvent.CONFIGURATION)" [disabled]="startDisabled"
+                    class="btn btn-primary mr-1" type="button">
+              <i aria-hidden="true" class="bi-caret-right-fill"></i> Verify Setup
+            </button>
+            <button (click)="startProcess(verifierEvent.DECRYPTION)" [disabled]="startDisabled" class="btn btn-primary mr-1"
+                    type="button">
+              <i aria-hidden="true" class="bi-caret-right-fill"></i> Verify Tally
+            </button>
+            <button (click)="resetProcess()" [disabled]="!isProcessComplete()" class="btn btn-outline-primary" type="button">
+              <i aria-hidden="true" class="bi-arrow-counterclockwise"></i> Reset
+            </button>
+          </div>
+          <div class="col-1 font-weight-bold mt-2 text-right">
+            Status
+          </div>
+          <div class="col-4 mt-2">
+            <div *ngIf="!processStarted">
+              Verification not run
+            </div>
+            <div *ngIf="processStarted && !isProcessComplete()">
+              <div class="spinner-border spinner-border-sm text-primary" role="status">
+                <span class="sr-only">In progress...</span>
+              </div>
+              Verification in progress...
+            </div>
+            <div *ngIf="processStarted && isProcessComplete()">
+              <i aria-hidden="true" class="bi-check-circle text-success"></i> Verification completed
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-12">
+            <div class="float-left">
+              <button (click)="filterVerificationsAll()" [class.active]="verificationFilter.ALL.active" class="btn btn-outline-info mr-1 mt-1"
+                      type="button">
+                All verifications <span class="badge badge-light">{{verificationsSize}}</span>
+              </button>
+              <button (click)="filterVerificationsOK()" [class.active]="verificationFilter.OK.active" class="btn btn-outline-success mr-1 mt-1"
+                      type="button">
+                Success <span class="badge badge-light">{{statusCounterOK()}}</span>
+              </button>
+              <button (click)="filterVerificationsNOK()" [class.active]="verificationFilter.NOK.active" class="btn btn-outline-danger mr-1 mt-1"
+                      type="button">
+                Failure <span class="badge badge-light">{{statusCounterNOK()}}</span>
+              </button>
+              <button (click)="filterVerificationsERROR()" [class.active]="verificationFilter.ERROR.active" class="btn btn-outline-warning mr-1 mt-1"
+                      type="button">
+                Error <span class="badge badge-light">{{statusCounterERROR()}}</span>
+              </button>
+              <button (click)="filterVerificationsNA()" [class.active]="verificationFilter.NA.active" class="btn btn-outline-secondary mt-1"
+                      type="button">
+                Not Run <span class="badge badge-light">{{statusCounterNA()}}</span>
+              </button>
+            </div>
+            <div class="form-check ml-4 mt-2 pt-1 float-left">
+              <input [(ngModel)]="toggleMessage" class="form-check-input" id="toggleMessageSwitch" type="checkbox">
+              <label class="form-check-label" for="toggleMessageSwitch">Display failure/error messages</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row m-1" id="verification-report">
+    <div class="col-12 p-3 mb-3 bg-white rounded shadow">
+      <div class="row">
+        <div class="col-6">
+          <h2 class="display-2 mb-3">Verification report</h2>
+        </div>
+        <div class="col-6 text-right" data-html2canvas-ignore>
+          <button (click)="exportToPDF()" [disabled]="!printMode || isExportingToPDF" class="btn btn-primary ml-3">
+            <span *ngIf="isExportingToPDF" aria-hidden="true" class="spinner-grow spinner-grow-sm" role="status"></span>
+            <i *ngIf="!isExportingToPDF" aria-hidden="true" class="bi-printer"></i> Print to PDF
+          </button>
+          <div class="custom-control custom-switch float-right ml-3 mt-2">
+            <input [(ngModel)]="printMode" class="custom-control-input" id="togglePrintModeSwitch" type="checkbox">
+            <label class="custom-control-label" for="togglePrintModeSwitch">Print mode</label>
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="printMode">
+        <div class="row mt-3">
+          <div class="col-4 font-weight-bold">
+            Date / Time
+          </div>
+          <div class="col-8">{{currentDate}}</div>
+        </div>
+        <div class="row">
+          <div class="col-4 font-weight-bold">
+            Election event id
+          </div>
+          <div class="col-8">xxxxxxxxxxx</div>
+        </div>
+        <div class="row mb-4">
+          <div class="col-4 font-weight-bold">
+            Verification data input hash (SHA-256)
+          </div>
+          <div class="col-8">{{hash}}</div>
+        </div>
+      </ng-container>
+      <div class="row">
+        <div class="col">
+          <table aria-label="Verification definitions list" class="table mt-2 mb-0" role="table">
+            <thead>
+            <tr>
+              <th class="text-center" scope="col">Phase</th>
+              <th class="text-center" scope="col">Id</th>
+              <th scope="col">Name</th>
+              <th scope="col">Category</th>
+              <th scope="col">Description</th>
+              <th class="text-center" scope="col">Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <ng-container *ngFor="let verification of verifications | statusFilter: verificationStatusFilter | keyvalue">
+              <tr [class.alert-danger]="isNotOK(verification.value.status)"
+                  [class.alert-dark]="isNA(verification.value.status)"
+                  [class.alert-warning]="isError(verification.value.status)"
+                  class="html2pdf-no-break">
+                <td class="text-center block-name">{{verification.value.block}}</td>
+                <td class="text-center">{{verification.value.verificationId}}</td>
+                <td>{{verification.value.name}}</td>
+                <td>{{verification.value.category}}</td>
+                <td>{{verification.value.description | localize}}</td>
+                <td class="text-center h3">
+                  <div *ngIf="isOK(verification.value.status)" class="text-success" role="status">
+                    <i aria-hidden="true" class="bi-check-circle"></i> <span class="sr-only">{{verification.value.status}}</span>
+                  </div>
+                  <div *ngIf="isNotOK(verification.value.status)" role="status" title="{{verification.value.message | localize}}">
+                    <i aria-hidden="true" class="bi-x-circle"></i> <span class="sr-only">{{verification.value.status}}</span>
+                  </div>
+                  <div *ngIf="isError(verification.value.status)" role="status" title="{{verification.value.message | localize}}">
+                    <i aria-hidden="true" class="bi-exclamation-circle"></i> <span class="sr-only">{{verification.value.status}}</span>
+                  </div>
+                  <div *ngIf="isNA(verification.value.status)" role="status">
+                    <i aria-hidden="true" class="bi-dash-circle"></i> <span class="sr-only">{{verification.value.status}}</span>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="toggleMessage && (isNotOK(verification.value.status) || isError(verification.value.status))" class="html2pdf-no-break">
+                <td colspan="6">
+                  {{verification.value.message | localize}}
+                  <a *ngIf="verification.value.errorStack !== null" aria-controls="collapseExample" aria-expanded="false"
+                     class="collapsed text-decoration-none" data-html2canvas-ignore data-toggle="collapse"
+                     href="{{'#collapseExample' + verification.value.id}}" role="button">
+                    <span class="error-view-details">View details</span>
+                    <span class="error-hide-details">Hide details</span>
+                  </a>
+                  <div *ngIf="verification.value.errorStack" class="collapse text-monospace text-break"
+                       id="{{'collapseExample' + verification.value.id}}">
+                    <hr>
+                    {{verification.value.errorStack[0]}}
+                    <ul style="list-style-type:none;">
+                      <li *ngFor="let stack of verification.value.errorStack | slice:1; let i = index;">{{stack}}</li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div *ngIf="printMode" class="row html2pdf-no-break">
+        <div class="col-12 mt-5 mb-3">
+          <h2 class="display-2">Approval</h2>
+          <hr>
+        </div>
+        <div class="col-12">
+          <div class="row">
+            <div class="col-2 font-weight-bold">Name</div>
+            <div class="col-3"></div>
+            <div class="col-2 font-weight-bold">Signature</div>
+            <div class="col-5"></div>
+          </div>
+          <div class="row mt-5 mb-5">
+            <div class="col-2 font-weight-bold">Name</div>
+            <div class="col-3"></div>
+            <div class="col-2 font-weight-bold">Signature</div>
+            <div class="col-5"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

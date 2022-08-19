@@ -1,0 +1,552 @@
+/*
+ * Copyright 2022 Post CH Ltd
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package ch.post.it.evoting.verifier.backend.tools;
+
+import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.validateUUID;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
+
+import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import ch.post.it.evoting.cryptoprimitives.domain.election.CombinedCorrectnessInformation;
+import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
+import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
+import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
+import ch.post.it.evoting.cryptoprimitives.domain.mixnet.TallyComponentShufflePayload;
+import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeSharesPayload;
+import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationDataPayload;
+import ch.post.it.evoting.cryptoprimitives.domain.validations.FailedValidationException;
+import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
+import ch.post.it.evoting.verifier.backend.tools.path.PathService;
+import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
+import ch.post.it.evoting.verifier.protocol.domain.configuration.ControlComponentPublicKeysPayload;
+import ch.post.it.evoting.verifier.protocol.domain.configuration.EncryptionParametersPayload;
+import ch.post.it.evoting.verifier.protocol.domain.configuration.SetupComponentTallyDataPayload;
+import ch.post.it.evoting.verifier.protocol.domain.tally.ControlComponentBallotBoxPayload;
+import ch.post.it.evoting.verifier.protocol.domain.tally.TallyComponentVotesPayload;
+
+@Service
+public class ElectionDataExtractionService {
+
+	private final PathService pathService;
+	private final ObjectMapper objectMapper;
+
+	public ElectionDataExtractionService(final PathService pathService, final ObjectMapper objectMapper) {
+		this.pathService = pathService;
+		this.objectMapper = objectMapper;
+	}
+
+	/**
+	 * Gets the encryption parameters payload.
+	 *
+	 * @param inputDirectoryPath the root directory containing project files.
+	 * @return the encryption parameters payload found in the project files, at the expected location if it exists.
+	 * @throws UncheckedIOException if the file cannot be deserialized to an EncryptionParametersPayload.
+	 */
+	public EncryptionParametersPayload getEncryptionParametersPayload(final Path inputDirectoryPath) {
+		final PathNode encryptionParametersPathNode = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
+		try {
+			return objectMapper.readValue(encryptionParametersPathNode.getPath().toFile(), EncryptionParametersPayload.class);
+		} catch (final IOException e) {
+			throw new UncheckedIOException("Failed to deserialize encryption parameters.", e);
+		}
+	}
+
+	/**
+	 * Gets the election event context payload.
+	 *
+	 * @param inputDirectoryPath the root directory containing project files.
+	 * @return the election event context payload found in the project files, at the expected location if it exists.
+	 * @throws UncheckedIOException if the file cannot be deserialized to an ElectionEventContextPayload.
+	 */
+	public ElectionEventContextPayload getElectionEventContextPayload(final Path inputDirectoryPath) {
+		final PathNode electionEventContextPathNode = pathService.buildFromRootPath(StructureKey.ELECTION_EVENT_CONTEXT, inputDirectoryPath);
+		try {
+			return objectMapper.readValue(electionEventContextPathNode.getPath().toFile(), ElectionEventContextPayload.class);
+		} catch (final IOException e) {
+			throw new UncheckedIOException("Failed to deserialize election event.", e);
+		}
+	}
+
+	/**
+	 * Gets the election event context.
+	 *
+	 * @param inputDirectoryPath the dataset root directory.
+	 * @param electionEventId    the election event id for which to get the context.
+	 * @return the election event context for the given id.
+	 * @throws NullPointerException      if {@code inputDirectoryPath} is null.
+	 * @throws FailedValidationException if {@code electionEventId} is invalid.
+	 * @throws UncheckedIOException      if the deserialization of the election event context fails.
+	 */
+	public ElectionEventContext getElectionEventContext(final Path inputDirectoryPath, final String electionEventId) {
+		checkNotNull(inputDirectoryPath);
+		validateUUID(electionEventId);
+
+		final PathNode electionEventContextPayloadPath = pathService.buildFromRootPath(StructureKey.ELECTION_EVENT_CONTEXT, inputDirectoryPath);
+		try {
+			return objectMapper.readValue(electionEventContextPayloadPath.getPath().toFile(), ElectionEventContextPayload.class)
+					.getElectionEventContext();
+		} catch (final IOException e) {
+			throw new UncheckedIOException(
+					String.format("Failed to deserialize election event context. [path:%s ]", electionEventContextPayloadPath.getPath()), e);
+		}
+
+	}
+
+	/**
+	 * Gets all control component ballot box payloads of the different ballot boxes.
+	 *
+	 * @param inputDirectoryPath the dataset root directory.
+	 * @return the control component ballot box payloads.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 * @throws UncheckedIOException if the deserialization of any control component ballot box fails.
+	 */
+	public List<ControlComponentBallotBoxPayload> getControlComponentBallotBoxPayloads(final Path inputDirectoryPath) {
+		checkNotNull(inputDirectoryPath);
+
+		return getControlComponentBallotBoxPayloadsByBallotBox(inputDirectoryPath).stream()
+				.flatMap(List::stream)
+				.toList();
+	}
+
+	/**
+	 * Gets all control component ballot box payloads of the different ballot boxes grouped by ballot boxes.
+	 *
+	 * @param inputDirectoryPath the dataset root directory.
+	 * @return the control component ballot box payloads by ballot boxes.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 * @throws UncheckedIOException if the deserialization of any control component ballot box fails.
+	 */
+	public List<List<ControlComponentBallotBoxPayload>> getControlComponentBallotBoxPayloadsByBallotBox(final Path inputDirectoryPath) {
+		checkNotNull(inputDirectoryPath);
+
+		final PathNode ballotBoxes = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+
+		return ballotBoxes.getRegexPaths().stream()
+				.map(ballotBox -> pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_BALLOT_BOX, ballotBox))
+				.map(controlComponentBallotBoxes ->
+						controlComponentBallotBoxes.getRegexPaths().stream()
+								.map(controlComponentBallotBox -> {
+									try {
+										return objectMapper.readValue(controlComponentBallotBox.toFile(), ControlComponentBallotBoxPayload.class);
+									} catch (final IOException e) {
+										throw new UncheckedIOException(
+												String.format("Failed to deserialize control component ballot box payload. [path: %s]",
+														controlComponentBallotBox), e);
+									}
+								})
+								.toList())
+				.toList();
+	}
+
+	/**
+	 * Gets all control component ballot box payloads for the given ballot box.
+	 *
+	 * @param inputDirectoryPath the dataset root directory.
+	 * @param ballotBoxId        the ballot box id for which to get the control component ballot box payloads.
+	 * @return the control component ballot box payloads.
+	 * @throws NullPointerException      if {@code inputDirectoryPath} is null.
+	 * @throws FailedValidationException if {@code ballotBoxId} is invalid.
+	 * @throws UncheckedIOException      if the deserialization of any control component ballot box fails.
+	 */
+	public List<ControlComponentBallotBoxPayload> getControlComponentBallotBoxPayloads(final Path inputDirectoryPath, final String ballotBoxId) {
+		checkNotNull(inputDirectoryPath);
+		validateUUID(ballotBoxId);
+
+		final PathNode pathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOXES_DIR, inputDirectoryPath);
+
+		final Path ballotBoxIdPath = pathNode.getPath().resolve(ballotBoxId);
+		final List<Path> ballotBoxPayloadPaths = pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_BALLOT_BOX,
+				ballotBoxIdPath).getRegexPaths();
+
+		return ballotBoxPayloadPaths.stream()
+				.map(path -> {
+					try {
+						return objectMapper.readValue(path.toFile(), ControlComponentBallotBoxPayload.class);
+					} catch (final IOException e) {
+						throw new UncheckedIOException(String.format("Failed to deserialize control component ballot box payload. [path: %s]", path),
+								e);
+					}
+				})
+				.toList();
+	}
+
+	/**
+	 * Gets all control component shuffle payloads of the different ballot boxes.
+	 *
+	 * @param inputDirectoryPath the dataset root directory.
+	 * @return the control component shuffle payloads.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 * @throws UncheckedIOException if the deserialization of any control component shuffle fails.
+	 */
+	public List<ControlComponentShufflePayload> getControlComponentShufflePayloads(final Path inputDirectoryPath) {
+		checkNotNull(inputDirectoryPath);
+
+		final PathNode ballotBoxes = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+
+		return ballotBoxes.getRegexPaths().stream()
+				.map(ballotBox -> pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_SHUFFLE, ballotBox))
+				.map(controlComponentShuffles ->
+						controlComponentShuffles.getRegexPaths().stream()
+								.map(controlComponentShuffle -> {
+									try {
+										return objectMapper.readValue(controlComponentShuffle.toFile(), ControlComponentShufflePayload.class);
+									} catch (final IOException e) {
+										throw new UncheckedIOException(
+												String.format("Failed to deserialize control component shuffle payload. [path: %s]",
+														controlComponentShuffle), e);
+									}
+								})
+								.toList())
+				.flatMap(List::stream)
+				.toList();
+	}
+
+	/**
+	 * Gets all control component shuffle payloads for the given ballot box.
+	 *
+	 * @param inputDirectoryPath the dataset root directory.
+	 * @param ballotBoxId        the ballot box id for which to get the control component shuffle payloads.
+	 * @return the control component shuffle payloads.
+	 * @throws NullPointerException      if {@code inputDirectoryPath} is null.
+	 * @throws FailedValidationException if {@code ballotBoxId} is invalid.
+	 * @throws UncheckedIOException      if the deserialization of any control component shuffle payloads fails.
+	 */
+	public List<ControlComponentShufflePayload> getControlComponentShufflePayloads(final Path inputDirectoryPath, final String ballotBoxId) {
+		checkNotNull(inputDirectoryPath);
+		validateUUID(ballotBoxId);
+
+		final PathNode pathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOXES_DIR, inputDirectoryPath);
+
+		final Path ballotBoxIdPath = pathNode.getPath().resolve(ballotBoxId);
+		final List<Path> controlComponentShufflePayloadPaths = pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_SHUFFLE,
+				ballotBoxIdPath).getRegexPaths();
+
+		return controlComponentShufflePayloadPaths.stream()
+				.map(path -> {
+					try {
+						return objectMapper.readValue(path.toFile(), ControlComponentShufflePayload.class);
+					} catch (final IOException e) {
+						throw new UncheckedIOException(String.format("Failed to deserialize control component shuffle payload. [path: %s]", path), e);
+					}
+				})
+				.toList();
+	}
+
+	public SetupComponentTallyDataPayload getSetupComponentTallyDataPayload(final Path verificationCardSetIdPath) {
+		checkNotNull(verificationCardSetIdPath);
+
+		final PathNode nodePath = pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_TALLY_DATA, verificationCardSetIdPath);
+
+		try {
+			return objectMapper.readValue(nodePath.getPath().toFile(), SetupComponentTallyDataPayload.class);
+		} catch (final IOException e) {
+			throw new UncheckedIOException(
+					String.format("Failed to deserialize SetupComponentTallyDataPayload. [verificationCardSetIdPath: %s]", verificationCardSetIdPath),
+					e);
+		}
+	}
+
+	/**
+	 * Gets the setup component tally data payload for the given verification card set.
+	 *
+	 * @param inputDirectoryPath    the dataset root directory.
+	 * @param verificationCardSetId the verification card set id for which to get setup component tally data payload.
+	 * @return the setup component tally data payload.
+	 * @throws NullPointerException      if {@code inputDirectoryPath} is null.
+	 * @throws FailedValidationException if {@code verificationCardSetId} is invalid.
+	 * @throws UncheckedIOException      if the deserialization of the setup component tally data payload fails.
+	 */
+	public SetupComponentTallyDataPayload getSetupComponentTallyDataPayload(final Path inputDirectoryPath, final String verificationCardSetId) {
+		checkNotNull(inputDirectoryPath);
+		validateUUID(verificationCardSetId);
+
+		final PathNode verificationCardSet = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SETS_DIR, inputDirectoryPath);
+
+		final Path verificationCardSetIdPath = verificationCardSet.getPath().resolve(verificationCardSetId);
+		final Path tallyDataPath = pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_TALLY_DATA, verificationCardSetIdPath)
+				.getPath();
+
+		try {
+			return objectMapper.readValue(tallyDataPath.toFile(), SetupComponentTallyDataPayload.class);
+		} catch (final IOException e) {
+			throw new UncheckedIOException(String.format("Failed to deserialize setup component tally data payload. [path: %s]", tallyDataPath), e);
+		}
+	}
+
+	/**
+	 * Gets all setup component tally data payloads of the different verification card sets.
+	 *
+	 * @param inputDirectoryPath the dataset root directory.
+	 * @return all setup component tally data payloads.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 * @throws UncheckedIOException if the deserialization of the setup component tally data payloads fails.
+	 */
+	public List<SetupComponentTallyDataPayload> getSetupComponentTallyDataPayloads(final Path inputDirectoryPath) {
+		checkNotNull(inputDirectoryPath);
+
+		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
+
+		return verificationCardSets.getRegexPaths().stream()
+				.map(verificationCardSet -> pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_TALLY_DATA, verificationCardSet))
+				.map(tallyData -> {
+					try {
+						return objectMapper.readValue(tallyData.getPath().toFile(), SetupComponentTallyDataPayload.class);
+					} catch (final IOException e) {
+						throw new UncheckedIOException(
+								String.format("Failed to deserialize setup component tally data payload. [path: %s]", tallyData.getPath()), e);
+					}
+				})
+				.toList();
+	}
+
+	/**
+	 * Gets the combined correctness information for the given verification card set.
+	 *
+	 * @param inputDirectoryPath    the dataset root directory.
+	 * @param verificationCardSetId the verification card set id for which to get setup component tally data payload.
+	 * @return the combined correctness information.
+	 * @throws NullPointerException      if {@code inputDirectoryPath} is null.
+	 * @throws FailedValidationException if {@code verificationCardSetId} is invalid.
+	 * @throws UncheckedIOException      if the deserialization of the setup component verification data payload fails.
+	 */
+	public CombinedCorrectnessInformation getCombinedCorrectnessInformation(final Path inputDirectoryPath, final String verificationCardSetId) {
+		checkNotNull(inputDirectoryPath);
+		validateUUID(verificationCardSetId);
+
+		final PathNode verificationCardSet = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SETS_DIR, inputDirectoryPath);
+
+		final Path verificationCardSetIdPath = verificationCardSet.getPath().resolve(verificationCardSetId);
+		// All chunks contain the same combined correctness information.
+		final Path setupComponentVerificationDataPath = pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA,
+				verificationCardSetIdPath).getRegexPaths().get(0);
+
+		try {
+			return objectMapper.readValue(setupComponentVerificationDataPath.toFile(), SetupComponentVerificationDataPayload.class)
+					.getCombinedCorrectnessInformation();
+		} catch (final IOException e) {
+			throw new UncheckedIOException(
+					String.format("Failed to deserialize combined correctness information. [path: %s]", setupComponentVerificationDataPath), e);
+		}
+	}
+
+	/**
+	 * Gets all tally component shuffle payloads of the different ballot boxes.
+	 *
+	 * @param inputDirectoryPath the dataset root directory.
+	 * @return all tally component shuffle payloads.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 * @throws UncheckedIOException if the deserialization of the tally component shuffle payloads fails.
+	 */
+	public List<TallyComponentShufflePayload> getTallyComponentShufflePayloads(final Path inputDirectoryPath) {
+		checkNotNull(inputDirectoryPath);
+
+		final PathNode ballotBoxes = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+
+		return ballotBoxes.getRegexPaths()
+				.stream()
+				.map(bbId -> getTallyComponentShufflePayload(inputDirectoryPath, bbId.toFile().getName()))
+				.toList();
+	}
+
+	/**
+	 * Deserializes the TallyComponentShufflePayload contained in the ballot box directory.
+	 *
+	 * @param inputDirectoryPath the dataset root directory.
+	 * @param ballotBoxId        the ballot box id for which to get the tally component shuffle payload.
+	 * @throws UncheckedIOException if the tally component shuffle payload could not be read from the file.
+	 */
+	public TallyComponentShufflePayload getTallyComponentShufflePayload(final Path inputDirectoryPath, final String ballotBoxId) {
+		final PathNode pathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOXES_DIR, inputDirectoryPath);
+
+		final Path ballotBoxDirectoryPath = pathNode.getPath().resolve(ballotBoxId);
+
+		final PathNode tallyComponentShufflePayload = pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_SHUFFLE,
+				ballotBoxDirectoryPath);
+
+		try {
+			return objectMapper.readValue(tallyComponentShufflePayload.getPath().toFile(), TallyComponentShufflePayload.class);
+		} catch (final IOException e) {
+			throw new UncheckedIOException(e);
+		}
+	}
+
+	/**
+	 * Gets all tally component votes payloads of the different ballot boxes.
+	 *
+	 * @param inputDirectoryPath the dataset root directory.
+	 * @return all tally component votes payloads.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 * @throws UncheckedIOException if the deserialization of the tally component votes payloads fails.
+	 */
+	public List<TallyComponentVotesPayload> getTallyComponentVotesPayloads(final Path inputDirectoryPath) {
+		checkNotNull(inputDirectoryPath);
+
+		final PathNode ballotBoxes = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+
+		return ballotBoxes.getRegexPaths()
+				.stream()
+				.map(this::getTallyComponentVotesPayload)
+				.toList();
+	}
+
+	private TallyComponentVotesPayload getTallyComponentVotesPayload(final Path ballotBoxDirectoryPath) {
+		final PathNode tallyComponentVotesPayload = pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_VOTES,
+				ballotBoxDirectoryPath);
+
+		try {
+			return objectMapper.readValue(tallyComponentVotesPayload.getPath().toFile(), TallyComponentVotesPayload.class);
+		} catch (final IOException e) {
+			throw new UncheckedIOException(e);
+		}
+	}
+
+	/**
+	 * Gets all setup component verification data payloads of the different verification card sets.
+	 *
+	 * @param inputDirectoryPath the dataset root directory.
+	 * @return all setup component verification data payloads.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 * @throws UncheckedIOException if the deserialization of the setup component verification data payloads fails.
+	 */
+	public List<SetupComponentVerificationDataPayload> getSetupComponentVerificationDataPayloads(final Path inputDirectoryPath) {
+		checkNotNull(inputDirectoryPath);
+
+		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
+
+		return verificationCardSets.getRegexPaths()
+				.stream()
+				.map(this::deserializeSetupComponentVerificationDataPayload)
+				.flatMap(List::stream)
+				.toList();
+	}
+
+	/**
+	 * Deserializes the setup component verification data payloads chunks, given a path for a verification card set ID.
+	 *
+	 * @param verificationCardSetIdPath the path for the verification card set ID.
+	 * @return List of {@code SetupComponentVerificationDataPayload} each corresponding to a chunk.
+	 */
+	public List<SetupComponentVerificationDataPayload> deserializeSetupComponentVerificationDataPayload(final Path verificationCardSetIdPath) {
+		final PathNode nodePath = pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA, verificationCardSetIdPath);
+
+		return nodePath.getRegexPaths().stream()
+				.map(this::getSetupComponentVerificationDataPayload)
+				.toList();
+	}
+
+	public SetupComponentVerificationDataPayload getSetupComponentVerificationDataPayload(final Path filePath) {
+		try {
+			return objectMapper.readValue(filePath.toFile(), SetupComponentVerificationDataPayload.class);
+		} catch (final IOException e) {
+			throw new UncheckedIOException(
+					String.format("Failed to deserialize SetupComponentVerificationDataPayload payload. [filePath: %s]",
+							filePath), e);
+		}
+	}
+
+	/**
+	 * Gets all control component code shares payloads of the different verification card sets.
+	 *
+	 * @param inputDirectoryPath the dataset root directory.
+	 * @return all control component code shares payloads.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 * @throws UncheckedIOException if the deserialization of the control component code shares payloads fails.
+	 */
+	public List<ControlComponentCodeSharesPayload> getControlComponentCodeSharesPayloads(final Path inputDirectoryPath) {
+		checkNotNull(inputDirectoryPath);
+
+		return getControlComponentCodeSharesPayloadsByChunkAndVcs(inputDirectoryPath)
+				.flatMap(List::stream)
+				.toList();
+	}
+
+	/**
+	 * Deserializes and returns the control component code shares payloads for each chunk, given a path for a verification card set ID.
+	 *
+	 * @param verificationCardSetIdPath the path for the verification card set ID.
+	 * @return List of {@code ReturnCodeGenerationResponsePayload} for each chunk.
+	 */
+	public List<List<ControlComponentCodeSharesPayload>> deserializeControlComponentCodeSharesPayloads(final Path verificationCardSetIdPath) {
+		final PathNode nodePath = pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_CODE_SHARES, verificationCardSetIdPath);
+		final List<Path> filePaths = nodePath.getRegexPaths();
+		return filePaths.stream()
+				.map(this::getControlComponentCodeShares)
+				.toList();
+	}
+
+	/**
+	 * Gets all control component code shares payloads of the different verification card sets.
+	 *
+	 * @param inputDirectoryPath the dataset root directory.
+	 * @return all control component code shares payloads.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 * @throws UncheckedIOException if the deserialization of the control component code shares payloads fails.
+	 */
+	public Stream<List<ControlComponentCodeSharesPayload>> getControlComponentCodeSharesPayloadsByChunkAndVcs(final Path inputDirectoryPath) {
+		checkNotNull(inputDirectoryPath);
+
+		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
+		return verificationCardSets.getRegexPaths().stream()
+				.flatMap(verificationCardSetIdPath -> pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_CODE_SHARES,
+								verificationCardSetIdPath).getRegexPaths().stream())
+						.map(this::getControlComponentCodeShares);
+	}
+
+	public List<ControlComponentCodeSharesPayload> getControlComponentCodeShares(final Path filePath) {
+		try {
+			return Arrays.stream(objectMapper.readValue(filePath.toFile(), ControlComponentCodeSharesPayload[].class)).toList();
+		} catch (final IOException e) {
+			throw new UncheckedIOException(
+					String.format("Failed to deserialize ControlComponentCodeShares payloads. [filePath: %s]", filePath), e);
+		}
+	}
+
+	/**
+	 * Gets all the control components public keys payloads.
+	 *
+	 * @param inputDirectoryPath the dataset root directory.
+	 * @return all control components public keys payloads.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 * @throws UncheckedIOException if the deserialization of the control components public keys payloads fails.
+	 */
+	public List<ControlComponentPublicKeysPayload> getControlComponentPublicKeysPayloads(final Path inputDirectoryPath) {
+		checkNotNull(inputDirectoryPath);
+
+		final PathNode controlComponentPublicKeys = pathService.buildFromRootPath(StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS, inputDirectoryPath);
+
+		return controlComponentPublicKeys
+				.getRegexPaths()
+				.stream()
+				.map(path -> {
+					try {
+						return objectMapper.readValue(path.toFile(), ControlComponentPublicKeysPayload.class);
+					} catch (final IOException e) {
+						throw new UncheckedIOException("Failed to deserialize control component public keys payload.", e);
+					}
+				})
+				.toList();
+	}
+
+}

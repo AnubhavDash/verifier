@@ -1,0 +1,3 @@
+dataset/** -crlf
+verifier-setup-verification/src/test/resources/** -crlf
+verifier-tally-verification/src/test/resources/** -crlf

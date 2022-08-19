@@ -1,0 +1,13 @@
+{
+	"name": "Verifier",
+	"version": "0.9.0-1-SNAPSHOT",
+	"license": "MIT",
+	"main": "main.js",
+	"dependencies": {
+		"@electron/get": "1.13.1",
+		"winston": "3.6.0",
+		"minimal-request-promise": "1.5.0",
+		"dateformat": "4.6.3",
+		"tree-kill": "1.2.2"
+	}
+}
