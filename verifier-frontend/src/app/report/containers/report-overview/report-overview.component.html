@@ -4,7 +4,7 @@
       <h1 class="display-1">Swiss Post Verifier</h1>
     </div>
   </div>
-  <input (change)="configurationUpload($event)" type="file" style="display: none" #fileUpload accept=".zip">
+  <input #fileUpload (change)="configurationUpload($event)" accept=".zip" style="display: none" type="file">
   <div class="row m-1 mb-3">
     <div class="col-12 p-0">
       <div class="h-100 p-3 bg-white rounded shadow">
@@ -12,18 +12,18 @@
           <div class="input-group-prepend">
             <span class="input-group-text bg-outline-secondary">Dataset</span>
           </div>
-          <button mat-mini-fab color="primary" class="form-control upload-button" (click)="fileUpload.click()">
+          <button (click)="fileUpload.click()" class="form-control upload-button" color="primary" mat-mini-fab>
             <span *ngIf="!filename">Not uploaded yet. Click to upload one</span>
             {{filename}} <span *ngIf="hash">({{hash}})</span>
           </button>
         </div>
         <div class="row">
           <div class="col-6">
-            <button (click)="startProcess(verifierEvent.CONFIGURATION)" [disabled]="startDisabled"
+            <button (click)="startProcess(verifierEvent.PRE_SETUP)" [disabled]="startDisabled"
                     class="btn btn-primary mr-1" type="button">
               <i aria-hidden="true" class="bi-caret-right-fill"></i> Verify Setup
             </button>
-            <button (click)="startProcess(verifierEvent.DECRYPTION)" [disabled]="startDisabled" class="btn btn-primary mr-1"
+            <button (click)="startProcess(verifierEvent.PRE_TALLY)" [disabled]="startDisabled" class="btn btn-primary mr-1"
                     type="button">
               <i aria-hidden="true" class="bi-caret-right-fill"></i> Verify Tally
             </button>
@@ -104,6 +104,12 @@
       <ng-container *ngIf="printMode">
         <div class="row mt-3">
           <div class="col-4 font-weight-bold">
+            Verifier application version
+          </div>
+          <div class="col-8">Swiss Post Verifier {{appVersion}}</div>
+        </div>
+        <div class="row">
+          <div class="col-4 font-weight-bold">
             Date / Time
           </div>
           <div class="col-8">{{currentDate}}</div>
@@ -112,16 +118,74 @@
           <div class="col-4 font-weight-bold">
             Election event id
           </div>
-          <div class="col-8">xxxxxxxxxxx</div>
+          <div class="col-8">{{electionEventId}}</div>
         </div>
-        <div class="row mb-4">
+        <div class="row">
+          <div class="col-4 font-weight-bold">
+            Total number of authorized (non-test) voters
+          </div>
+          <div class="col-8">{{numberOfAuthorizedVoters}}</div>
+        </div>
+        <div class="row">
+          <div class="col-4 font-weight-bold">
+            Total number of test voters
+          </div>
+          <div class="col-8">{{numberOfTestVoters}}</div>
+        </div>
+        <div class="row">
           <div class="col-4 font-weight-bold">
             Verification data input hash (SHA-256)
           </div>
           <div class="col-8">{{hash}}</div>
         </div>
+        <hr>
+        <div class="row">
+          <div class="col-4 font-weight-bold">
+            Protocol participant
+          </div>
+          <div class="col-5 font-weight-bold">
+            Certificate fingerprint (SHA-256)
+          </div>
+        </div>
+        <div class="row">
+          <ng-container *ngFor="let fingerprint of fingerprints | keyvalue">
+            <div class="col-4">{{fingerprintsNames[fingerprint.key]}}</div>
+            <div class="col-8">{{fingerprint.value}}</div>
+          </ng-container>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-4 font-weight-bold">
+            Total number of verifications
+          </div>
+          <div class="col-8">{{verificationsSize}}</div>
+        </div>
+        <div class="row">
+          <div class="col-4 font-weight-bold">
+            Number of successful verifications
+          </div>
+          <div class="col-8">{{statusCounterOK()}}</div>
+        </div>
+        <div class="row">
+          <div class="col-4 font-weight-bold">
+            Number of failed verifications
+          </div>
+          <div class="col-8">{{statusCounterNOK()}}</div>
+        </div>
+        <div class="row">
+          <div class="col-4 font-weight-bold">
+            Number of error verifications
+          </div>
+          <div class="col-8">{{statusCounterERROR()}}</div>
+        </div>
+        <div class="row">
+          <div class="col-4 font-weight-bold">
+            Number of not run verifications
+          </div>
+          <div class="col-8">{{statusCounterNA()}}</div>
+        </div>
       </ng-container>
-      <div class="row">
+      <div class="row mt-4 html2pdf-break-page">
         <div class="col">
           <table aria-label="Verification definitions list" class="table mt-2 mb-0" role="table">
             <thead>
@@ -185,9 +249,9 @@
         </div>
       </div>
 
-      <div *ngIf="printMode" class="row html2pdf-no-break">
+      <div *ngIf="printMode" class="row html2pdf-break-page html2pdf-no-break">
         <div class="col-12 mt-5 mb-3">
-          <h2 class="display-2">Approval</h2>
+          <h4>The signers hereby confirm that they verified the correctness of the above information</h4>
           <hr>
         </div>
         <div class="col-12">

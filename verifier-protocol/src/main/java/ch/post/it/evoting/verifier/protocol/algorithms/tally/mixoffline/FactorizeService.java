@@ -44,7 +44,8 @@ public class FactorizeService {
 	 * @param psi            the expected number of factors of {@code x}. In the range [1, 120].
 	 * @return a group vector of size {@code psi} containing the prime factors, picked from {@code encodingPrimes}, of message {@code x}.
 	 */
-	static GroupVector<PrimeGqElement, GqGroup> factorize(final GqElement x, final GroupVector<PrimeGqElement, GqGroup> encodingPrimes, final int psi) {
+	public static GroupVector<PrimeGqElement, GqGroup> factorize(final GqElement x, final GroupVector<PrimeGqElement, GqGroup> encodingPrimes,
+			final int psi) {
 		checkNotNull(x);
 		checkNotNull(encodingPrimes);
 

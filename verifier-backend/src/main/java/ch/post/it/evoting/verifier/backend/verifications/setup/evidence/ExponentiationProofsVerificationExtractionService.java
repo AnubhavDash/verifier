@@ -44,9 +44,6 @@ import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
-import ch.post.it.evoting.verifier.backend.verifications.setup.evidence.algorithms.VerifyEncryptedExponentiationProofsInput;
-import ch.post.it.evoting.verifier.backend.verifications.setup.evidence.algorithms.VerifyEncryptedExponentiationProofsVerificationCardSetContext;
-import ch.post.it.evoting.verifier.backend.verifications.setup.evidence.algorithms.VerifyEncryptedExponentiationProofsVerificationCardSetInput;
 
 @Service
 public class ExponentiationProofsVerificationExtractionService {

@@ -19,14 +19,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
@@ -39,13 +38,15 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
+import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.dto.DatasetConfiguration;
 import ch.post.it.evoting.verifier.backend.dto.Verification;
-import ch.post.it.evoting.verifier.backend.event.ConfigurationEvent;
-import ch.post.it.evoting.verifier.backend.event.DecryptionEvent;
-import ch.post.it.evoting.verifier.backend.event.PreConfigurationEvent;
-import ch.post.it.evoting.verifier.backend.event.PreDecryptionEvent;
+import ch.post.it.evoting.verifier.backend.event.PreSetupEvent;
+import ch.post.it.evoting.verifier.backend.event.PreTallyEvent;
+import ch.post.it.evoting.verifier.backend.event.SetupEvent;
+import ch.post.it.evoting.verifier.backend.event.TallyEvent;
 import ch.post.it.evoting.verifier.backend.event.VerificationResultEvent;
 import ch.post.it.evoting.verifier.backend.mapper.VerificationMapper;
 import ch.post.it.evoting.verifier.backend.tools.Dataset;
@@ -55,10 +56,10 @@ import ch.post.it.evoting.verifier.backend.tools.DatasetService;
 public class VerifierProcessor {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(VerifierProcessor.class);
-	private static final String CONFIGURATION = ConfigurationEvent.TYPE;
-	private static final String DECRYPTION = DecryptionEvent.TYPE;
-	private static final String PRE_CONFIGURATION = PreConfigurationEvent.TYPE;
-	public static final String PRE_DECRYPTION = PreDecryptionEvent.TYPE;
+	private static final String SETUP = SetupEvent.TYPE;
+	private static final String TALLY = TallyEvent.TYPE;
+	private static final String PRE_SETUP = PreSetupEvent.TYPE;
+	private static final String PRE_TALLY = PreTallyEvent.TYPE;
 	private final ApplicationContext applicationContext;
 	private final ApplicationEventPublisher applicationEventPublisher;
 	private final DatasetService datasetService;
@@ -106,32 +107,49 @@ public class VerifierProcessor {
 		checkNotNull(filename, "filename must be not null");
 
 		this.dataset = new Dataset(file);
-		this.datasetConfiguration = new DatasetConfiguration(filename, DigestUtils.sha256Hex(file).toUpperCase());
+
+		// Get election event id and number of voters from election event context.
+		final ElectionEventContext electionEventContext = datasetService.extractElectionEventContext(this.dataset);
+		final String electionEventId = electionEventContext.electionEventId();
+		final Map<Boolean, Integer> testBallotBoxToTotalNumberOfVoters = electionEventContext.verificationCardSetContexts().stream()
+				.collect(Collectors.partitioningBy(
+						VerificationCardSetContext::testBallotBox,
+						Collectors.summingInt(VerificationCardSetContext::numberOfVotingCards)));
+
+		// Get the direct trust certificate fingerprints.
+		final Map<String, String> aliasesToFingerprints = datasetService.extractFingerprints();
+
+		final String datasetHash = DigestUtils.sha256Hex(file).toUpperCase();
+		this.datasetConfiguration = new DatasetConfiguration(filename, String.join(":", datasetHash.split("(?<=\\G.{2})")), electionEventId,
+				testBallotBoxToTotalNumberOfVoters.get(false), testBallotBoxToTotalNumberOfVoters.get(true), aliasesToFingerprints);
 	}
 
-	public void process(String runOptions) throws IOException {
+	public void process(String runOption) throws IOException {
 		checkNotNull(dataset, "A dataset must be uploaded before running the process");
 
 		final Path inputDirectory = datasetService.unpack(dataset).getUnpackFolder()
 				.orElseThrow(() -> new IllegalStateException("The dataset could not be unpacked"));
 		LOGGER.debug("The input directory is {}", inputDirectory);
 
-		final Set<String> events = new HashSet<>(Arrays.asList(runOptions.split(",")));
 		resetRunningCounter();
-		for (String event : events) {
-			switch (event) {
-			case CONFIGURATION -> {
-				addToRunningCounter(Set.of(CONFIGURATION, PRE_CONFIGURATION));
-				applicationEventPublisher.publishEvent(new PreConfigurationEvent(this, inputDirectory.toString()));
-				applicationEventPublisher.publishEvent(new ConfigurationEvent(this, inputDirectory.toString()));
-			}
-			case DECRYPTION -> {
-				addToRunningCounter(Set.of(DECRYPTION, PRE_DECRYPTION));
-				applicationEventPublisher.publishEvent(new PreDecryptionEvent(this, inputDirectory.toString()));
-				applicationEventPublisher.publishEvent(new DecryptionEvent(this, inputDirectory.toString()));
-			}
-			default -> LOGGER.error("Unknown event: {}", event);
-			}
+		switch (runOption) {
+		case PRE_SETUP -> {
+			addToRunningCounter(Set.of(PRE_SETUP));
+			applicationEventPublisher.publishEvent(new PreSetupEvent(this, inputDirectory.toString()));
+		}
+		case SETUP -> {
+			addToRunningCounter(Set.of(SETUP));
+			applicationEventPublisher.publishEvent(new SetupEvent(this, inputDirectory.toString()));
+		}
+		case PRE_TALLY -> {
+			addToRunningCounter(Set.of(PRE_TALLY));
+			applicationEventPublisher.publishEvent(new PreTallyEvent(this, inputDirectory.toString()));
+		}
+		case TALLY -> {
+			addToRunningCounter(Set.of(TALLY));
+			applicationEventPublisher.publishEvent(new TallyEvent(this, inputDirectory.toString()));
+		}
+		default -> LOGGER.error("Unknown event: {}", runOption);
 		}
 	}
 
@@ -141,13 +159,17 @@ public class VerifierProcessor {
 	}
 
 	private void addToRunningCounter(Set<String> events) {
-		processingVerificationCount += this.getVerifications().stream().filter(v -> v.getVerifierEvents().stream().anyMatch(events::contains)).count();
+		processingVerificationCount += this.getVerifications().stream().filter(v -> v.getVerifierEvents().stream().anyMatch(events::contains))
+				.count();
 	}
 
 	@Async
 	@EventListener(VerificationResultEvent.class)
-	public void verificationListener() {
-		if (finishedVerificationCounter.incrementAndGet() == processingVerificationCount) {
+	public void verificationListener(final VerificationResultEvent event) {
+		final boolean containsPreSetup = event.getVerificationResult().getVerificationDefinition().getVerifierEvents().contains(PRE_SETUP);
+		final boolean containsPreTally = event.getVerificationResult().getVerificationDefinition().getVerifierEvents().contains(PRE_TALLY);
+
+		if (!containsPreSetup && !containsPreTally && finishedVerificationCounter.incrementAndGet() == processingVerificationCount) {
 			datasetService.clean(dataset);
 		}
 	}
