@@ -419,7 +419,7 @@ public final class ChannelSecurityContextData {
 	 * @throws NullPointerException      if the election event id is null.
 	 * @throws FailedValidationException if the election event id is not a valid UUID.
 	 */
-	public static Hashable electoralBoardHashes(final String electionEventId) {
+	public static Hashable setupComponentElectoralBoardHashes(final String electionEventId) {
 		validateUUID(electionEventId);
 
 		return HashableList.of(
