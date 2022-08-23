@@ -84,14 +84,6 @@
 								"key": "TALLY_COMPONENT_VOTES",
 								"type": "FILE",
 								"name": "tallyComponentVotesPayload.json"
-							},
-							{
-								"key": "DECOMPRESSED_VOTES",
-								"type": "FILE",
-								"name": "decompressedVotes.csv",
-								"relations": [
-									"METADATA"
-								]
 							}
 						]
 					}
