@@ -101,7 +101,7 @@ public class VerifyCiphertextsConsistency extends AbstractVerification {
 							.filter(ciphertextSize -> ciphertextSize != numberWriteInsPlusOne)
 							.toList().isEmpty();
 					final boolean tallyShufflePayloadCiphertextsConsistent = information.tallyComponentShufflePayload.getVerifiableShuffle()
-							.orElseThrow().shuffledCiphertexts().getElementSize() == numberWriteInsPlusOne;
+							.shuffledCiphertexts().getElementSize() == numberWriteInsPlusOne;
 					return ballotBoxPayloadsCiphertextsConsistent && shufflePayloadsCiphertextsConsistent && tallyShufflePayloadCiphertextsConsistent;
 				})
 				.reduce(Boolean::logicalAnd).orElse(Boolean.FALSE);

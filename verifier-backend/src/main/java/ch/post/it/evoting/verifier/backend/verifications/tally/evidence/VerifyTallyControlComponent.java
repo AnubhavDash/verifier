@@ -136,7 +136,7 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 
 					final VerifyTallyControlComponentBallotBoxInput input = new VerifyTallyControlComponentBallotBoxInput.Builder()
 							.setPreviousPartiallyDecryptedVotes(lastControlComponentShufflePayload.getVerifiableDecryptions().getCiphertexts())
-							.setVerifiableShuffle(tallyComponentShufflePayload.getVerifiableShuffle().orElseThrow())
+							.setVerifiableShuffle(tallyComponentShufflePayload.getVerifiableShuffle())
 							.setVerifiablePlaintextDecryption(tallyComponentShufflePayload.getVerifiablePlaintextDecryption())
 							.setSelectedEncodedVotingOptions(L_votes)
 							.build();

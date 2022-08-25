@@ -93,9 +93,7 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 
 					final TallyComponentShufflePayload tallyComponentShufflePayload =
 							electionDataExtractionService.getTallyComponentShufflePayload(ballotBoxPath);
-					final int tallyComponentShufflePayloadSize = tallyComponentShufflePayload.getVerifiableShuffle()
-							.map(verifiableShuffle -> verifiableShuffle.shuffledCiphertexts().size())
-							.orElseThrow();
+					final int tallyComponentShufflePayloadSize = tallyComponentShufflePayload.getVerifiableShuffle().shuffledCiphertexts().size();
 
 					final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads =
 							electionDataExtractionService.getControlComponentBallotBoxPayloads(ballotBoxPath);
