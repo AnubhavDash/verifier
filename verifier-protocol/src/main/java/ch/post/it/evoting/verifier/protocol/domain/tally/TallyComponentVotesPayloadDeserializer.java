@@ -45,7 +45,7 @@ public class TallyComponentVotesPayloadDeserializer extends JsonDeserializer<Tal
 		final String ballotId = mapper.readValue(node.get("ballotId").toString(), String.class);
 		final String ballotBoxId = mapper.readValue(node.get("ballotBoxId").toString(), String.class);
 
-		final JsonNode groupNode = node.get("group");
+		final JsonNode groupNode = node.get("encryptionGroup");
 		final GqGroup gqGroup = mapper.readValue(groupNode.toString(), GqGroup.class);
 
 		final PrimeGqElement[][] votesArray = mapper.reader()

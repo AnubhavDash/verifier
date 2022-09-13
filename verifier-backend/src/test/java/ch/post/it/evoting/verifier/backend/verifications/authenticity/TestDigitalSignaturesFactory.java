@@ -62,7 +62,7 @@ public class TestDigitalSignaturesFactory {
 	 */
 	public SignatureVerification getTestSignatureVerification()
 			throws CertificateException, IOException, NoSuchAlgorithmException, KeyStoreException {
-		final KeyStore keyStore = KeyStore.getInstance("JKS");
+		final KeyStore keyStore = KeyStore.getInstance("PKCS12");
 		keyStore.load(null, new char[]{});
 		for (Map.Entry<Alias, KeysAndCert> entry :keysAndCertMap.entrySet()) {
 			keyStore.setCertificateEntry(entry.getKey().get(), entry.getValue().certificate());

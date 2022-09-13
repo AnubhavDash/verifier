@@ -1,0 +1,10 @@
+{
+  "electionEventId": "2ccedcecb6b44b6d8e0c7e4f8382166e",
+  "ballotId": "49b7c81920e34659bea270588b0f6aac",
+  "ballotBoxId": "9f2a48f5c2b147ca98fae7eb7519d56a",
+  "votes": [],
+  "signature": {
+	"signatureContents": "eAPo0BBeqLoloKOwhimAg/1z/+tJEkemPvfyqWVqIPKDAW4z6p3TssyftcJiNzVO1AQj3UZqY778SjG9Pm7PuZhuYYUGMXn90wowGDY2ajKN5XtFD62a78JcnE95Sr9A4zqQY+XL8B4APyVXsVDM4nWHbF8hvhoE0CILz8CtL2krUlO0d085KgdnFazLk3efkgBn/IppVbqqHNSCnrUdpVo05SgxCMQnXAYJlOWP3lXKKpkUzXdVedmJc6fg/1CyNm59s8SqceR61Og7iqZmxtN7yz8tKWPlIlCKxQY5ZgkUxFqK+EuurQOeZ5k61vpRmUGvsB0IRAoQwEH/ipCENVGRXRKV53/IDr1wfbkB34tXlC15x1S1NBv1+uPCZaLqQV0h709mQbxTtPCmsDMXiPP12zqmFRZRGEzSgZq6wvfeNZIdamweX2GrrBO2n9ZEfXb67XSn+ndkkW01KL4hvlRts8brsvHFHRTmEdChoAgoCbfz6YguuvKLFE1GWgFm"
+  },
+  "encryptionGroup": null
+}
