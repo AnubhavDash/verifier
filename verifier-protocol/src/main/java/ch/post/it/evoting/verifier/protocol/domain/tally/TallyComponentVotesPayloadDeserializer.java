@@ -19,6 +19,8 @@ import static ch.post.it.evoting.cryptoprimitives.math.GroupVector.toGroupVector
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -36,28 +38,30 @@ public class TallyComponentVotesPayloadDeserializer extends JsonDeserializer<Tal
 
 	@Override
 	public TallyComponentVotesPayload deserialize(final JsonParser parser, final DeserializationContext context) throws IOException {
-
 		final ObjectMapper mapper = DomainObjectMapper.getNewInstance();
 
 		final JsonNode node = mapper.readTree(parser);
-
 		final String electionEventId = mapper.readValue(node.get("electionEventId").toString(), String.class);
 		final String ballotId = mapper.readValue(node.get("ballotId").toString(), String.class);
 		final String ballotBoxId = mapper.readValue(node.get("ballotBoxId").toString(), String.class);
 
 		final JsonNode groupNode = node.get("encryptionGroup");
-		final GqGroup gqGroup = mapper.readValue(groupNode.toString(), GqGroup.class);
+		final GqGroup encryptionGroup = mapper.readValue(groupNode.toString(), GqGroup.class);
 
-		final PrimeGqElement[][] votesArray = mapper.reader()
-				.withAttribute("group", gqGroup)
-				.readValue(node.get("votes"), PrimeGqElement[][].class);
-
-		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> votes = Arrays.stream(votesArray)
+		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> votes = Arrays.stream(mapper.reader()
+						.withAttribute("group", encryptionGroup)
+						.readValue(node.get("votes"), PrimeGqElement[][].class))
 				.map(GroupVector::of)
 				.collect(toGroupVector());
 
+		final List<List<String>> actualSelectedVotingOptions = Arrays.stream(mapper.reader()
+						.readValue(node.get("actualSelectedVotingOptions"), String[][].class))
+				.map(Arrays::stream)
+				.map(Stream::toList)
+				.toList();
+
 		final CryptoPrimitivesSignature signature = mapper.readValue(node.get("signature").toString(), CryptoPrimitivesSignature.class);
 
-		return new TallyComponentVotesPayload(electionEventId, ballotId, ballotBoxId, votes, signature);
+		return new TallyComponentVotesPayload(electionEventId, ballotId, ballotBoxId, encryptionGroup, votes, actualSelectedVotingOptions, signature);
 	}
 }
