@@ -18,6 +18,7 @@ package ch.post.it.evoting.verifier.backend.tools.path;
 public enum StructureKey {
 
 	SETUP_DIR,
+	CONFIGURATION_ANONYMIZED,
 	ELECTION_EVENT_CONTEXT,
 	CONTROL_COMPONENT_PUBLIC_KEYS,
 	ENCRYPTION_PARAMETERS,

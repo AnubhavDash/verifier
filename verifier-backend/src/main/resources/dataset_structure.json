@@ -4,6 +4,11 @@
 		"type": "DIRECTORY",
 		"name": "setup",
 		"content": [
+		    {
+			    "key": "CONFIGURATION_ANONYMIZED",
+			    "type": "FILE",
+			    "name": "configuration-anonymized.xml"
+		    },
 			{
 				"key": "ELECTION_EVENT_CONTEXT",
 				"type": "FILE",
