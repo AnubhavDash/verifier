@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import ch.post.it.evoting.cryptoprimitives.domain.ControlComponentConstants;
+import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
@@ -94,6 +95,7 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 		final String ee = context.getElectionEventId();
 		final String bb = context.getBallotBoxId();
 		final int psi = context.getNumberOfSelectableVotingOptions();
+		final PrimesMappingTable pTable = context.getPrimesMappingTable();
 		final ElGamalMultiRecipientPublicKey EL_pk = context.getElectionPublicKey();
 		final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> EL_pk_1_to_4 = context.getCcmElectionPublicKeys();
 		final ElGamalMultiRecipientPublicKey EB_pk = context.getElectoralBoardPublicKey();
@@ -148,6 +150,7 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 					.setElectionEventId(ee)
 					.setNumberOfSelectableVotingOptions(psi)
 					.setNumberOfAllowedWriteInsPlusOne(delta_hat)
+					.setPrimesMappingTable(pTable)
 					.build();
 
 			final VerifyVotingClientProofsInput verifyVotingClientProofsInput = new VerifyVotingClientProofsInput.Builder()

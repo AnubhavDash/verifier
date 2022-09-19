@@ -24,6 +24,7 @@ import com.google.common.collect.MoreCollectors;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.ControlComponentPublicKeys;
 import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
+import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
 import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
@@ -46,6 +47,8 @@ public class VerifyOnlineControlComponentsBallotBoxContext {
 		this.electionEventContext = checkNotNull(electionEventContext);
 
 		checkArgument(this.electionEventId.equals(this.electionEventContext.electionEventId()));
+		checkArgument(electionEventContext.verificationCardSetContexts().stream()
+				.anyMatch(verificationCardSetContext -> verificationCardSetContext.ballotBoxId().equals(ballotBoxId)));
 	}
 
 	public String getElectionEventId() {
@@ -90,5 +93,14 @@ public class VerifyOnlineControlComponentsBallotBoxContext {
 				.filter(not(VerificationCardSetContext::testBallotBox))
 				.map(VerificationCardSetContext::numberOfVotingCards)
 				.reduce(0, Integer::sum);
+	}
+
+	public PrimesMappingTable getPrimesMappingTable() {
+		return electionEventContext.verificationCardSetContexts().stream()
+				.filter(verificationCardSetContext -> verificationCardSetContext.ballotBoxId().equals(ballotBoxId))
+				.map(VerificationCardSetContext::primesMappingTable)
+				.findAny()
+				// The constructor already verifies the verification card set contexts for the wanted ballotBoxId exists.
+				.orElseThrow();
 	}
 }

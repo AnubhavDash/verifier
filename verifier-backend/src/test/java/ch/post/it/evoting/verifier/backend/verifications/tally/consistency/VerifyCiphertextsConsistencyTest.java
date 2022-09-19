@@ -28,8 +28,15 @@ import org.junit.jupiter.api.Test;
 import com.google.common.collect.Streams;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
+import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
+import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTableEntry;
 import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
+import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
+import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
+import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
+import ch.post.it.evoting.cryptoprimitives.math.Random;
+import ch.post.it.evoting.cryptoprimitives.math.RandomFactory;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
@@ -57,13 +64,18 @@ class VerifyCiphertextsConsistencyTest extends TallyVerificationTest {
 	@Test
 	void testVerifyNokBallotBoxCiphertexts() {
 		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(datasetPath);
+		final GqGroup encryptionGroup = electionEventContextPayload.getEncryptionGroup();
 		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
 		final List<VerificationCardSetContext> vcsContexts = electionEventContext.verificationCardSetContexts();
 		final VerificationCardSetContext firstContext = vcsContexts.get(0);
 		final int numberOfWriteInsPlusOne = firstContext.numberOfWriteInFields() + 1;
+		final Random random = RandomFactory.createRandom();
+		final PrimeGqElement encodedVotingOption = PrimeGqElement.PrimeGqElementFactory.getSmallPrimeGroupMembers(encryptionGroup, 1).get(0);
+		final GroupVector<PrimesMappingTableEntry, GqGroup> pTable = GroupVector.of(new PrimesMappingTableEntry(random.genRandomBase16String(4),
+				encodedVotingOption));
 		final VerificationCardSetContext modifiedFirstContext = new VerificationCardSetContext(firstContext.verificationCardSetId(),
 				firstContext.ballotBoxId(), firstContext.testBallotBox(), numberOfWriteInsPlusOne, firstContext.numberOfVotingCards(),
-				firstContext.gracePeriod());
+				firstContext.gracePeriod(), new PrimesMappingTable(pTable));
 		final List<VerificationCardSetContext> modifiedVcsContexts = Streams.concat(Stream.of(modifiedFirstContext), vcsContexts.stream().skip(1))
 				.toList();
 		final ElectionEventContext modifiedElectionEventContext = spy(electionEventContext);

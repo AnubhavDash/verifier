@@ -25,10 +25,10 @@ import java.util.stream.Collectors;
 
 import com.google.common.base.Preconditions;
 
+import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
+import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTableEntry;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
-import ch.post.it.evoting.verifier.protocol.domain.configuration.PrimesMappingTable;
-import ch.post.it.evoting.verifier.protocol.domain.configuration.PrimesMappingTableEntry;
 
 public class VerifyPrimesMappingTableConsistencyAlgorithm {
 
