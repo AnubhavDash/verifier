@@ -19,7 +19,10 @@ import static ch.post.it.evoting.cryptoprimitives.utils.Validations.allEqual;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.List;
 import java.util.stream.Stream;
+
+import com.google.common.base.Preconditions;
 
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.VerifiablePlaintextDecryption;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
@@ -39,14 +42,17 @@ public class VerifyTallyControlComponentBallotBoxInput {
 	private final VerifiableShuffle verifiableShuffle;
 	private final VerifiablePlaintextDecryption verifiablePlaintextDecryption;
 	private final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> selectedEncodedVotingOptions;
+	private final List<List<String>> selectedDecodedVotingOptions;
 
 	private VerifyTallyControlComponentBallotBoxInput(final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> previousPartiallyDecryptedVotes,
 			final VerifiableShuffle verifiableShuffle, final VerifiablePlaintextDecryption verifiablePlaintextDecryption,
-			final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> selectedEncodedVotingOptions) {
+			final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> selectedEncodedVotingOptions,
+			final List<List<String>> selectedDecodedVotingOptions) {
 		this.previousPartiallyDecryptedVotes = previousPartiallyDecryptedVotes;
 		this.verifiableShuffle = verifiableShuffle;
 		this.verifiablePlaintextDecryption = verifiablePlaintextDecryption;
 		this.selectedEncodedVotingOptions = selectedEncodedVotingOptions;
+		this.selectedDecodedVotingOptions = selectedDecodedVotingOptions;
 	}
 
 	public GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> getPreviousPartiallyDecryptedVotes() {
@@ -80,11 +86,16 @@ public class VerifyTallyControlComponentBallotBoxInput {
 		return selectedEncodedVotingOptions;
 	}
 
+	public List<List<String>> getSelectedDecodedVotingOptions() {
+		return selectedDecodedVotingOptions;
+	}
+
 	public static class Builder {
 		private GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> previousPartiallyDecryptedVotes;
 		private VerifiableShuffle verifiableShuffle;
 		private VerifiablePlaintextDecryption verifiablePlaintextDecryption;
 		private GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> selectedEncodedVotingOptions;
+		private List<List<String>> selectedDecodedVotingOptions;
 
 		public Builder setPreviousPartiallyDecryptedVotes(
 				final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> previousPartiallyDecryptedVotes) {
@@ -108,15 +119,30 @@ public class VerifyTallyControlComponentBallotBoxInput {
 			return this;
 		}
 
+		public Builder setSelectedDecodedVotingOptions(final List<List<String>> selectedDecodedVotingOptions) {
+			checkNotNull(selectedDecodedVotingOptions);
+			final List<List<String>> selectedDecodedVotingOptionsCopy = List.copyOf(selectedDecodedVotingOptions);
+			selectedDecodedVotingOptionsCopy.forEach(Preconditions::checkNotNull);
+
+			this.selectedDecodedVotingOptions = selectedDecodedVotingOptionsCopy.stream()
+					.map(List::copyOf)
+					.toList();
+			return this;
+		}
+
 		public VerifyTallyControlComponentBallotBoxInput build() {
 			checkNotNull(previousPartiallyDecryptedVotes);
 			checkNotNull(verifiableShuffle);
 			checkNotNull(verifiablePlaintextDecryption);
 			checkNotNull(selectedEncodedVotingOptions);
+			checkNotNull(selectedDecodedVotingOptions);
 
 			checkArgument(allEqual(Stream.of(previousPartiallyDecryptedVotes, verifiableShuffle.shuffledCiphertexts()), GroupVector::getGroup),
 					"All input must have the same group.");
 			checkArgument(verifiablePlaintextDecryption.getGroup().equals(previousPartiallyDecryptedVotes.getGroup()));
+
+			checkArgument(selectedEncodedVotingOptions.size() == selectedDecodedVotingOptions.size(),
+					"There must be as many encoded as decoded voting options.");
 
 			if (!selectedEncodedVotingOptions.isEmpty()) {
 				checkArgument(verifiablePlaintextDecryption.getGroup().equals(selectedEncodedVotingOptions.getGroup()));
@@ -131,7 +157,7 @@ public class VerifyTallyControlComponentBallotBoxInput {
 					GroupVector::getElementSize), "All input must have the same number of elements.");
 
 			return new VerifyTallyControlComponentBallotBoxInput(previousPartiallyDecryptedVotes, verifiableShuffle, verifiablePlaintextDecryption,
-					selectedEncodedVotingOptions);
+					selectedEncodedVotingOptions, selectedDecodedVotingOptions);
 		}
 	}
 }

@@ -25,6 +25,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
+import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
 import ch.post.it.evoting.cryptoprimitives.mixnet.MixnetFactory;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
@@ -32,13 +33,19 @@ import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
+import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.DecodeVotingOptionsAlgorithm;
 
 class VerifyTallyControlComponentTest extends TallyVerificationTest {
 
 	@BeforeAll
 	static void setUpAll() {
+		final ElGamal elGamal = ElGamalFactory.createElGamal();
+		final DecodeVotingOptionsAlgorithm decodeVotingOptionsAlgorithm = new DecodeVotingOptionsAlgorithm();
+		final VerifyProcessPlaintextsAlgorithm verifyProcessPlaintextsAlgorithm = new VerifyProcessPlaintextsAlgorithm(elGamal,
+				decodeVotingOptionsAlgorithm);
 		final VerifyTallyControlComponentBallotBoxAlgorithm verifyTallyControlComponentBallotBoxAlgorithm = new VerifyTallyControlComponentBallotBoxAlgorithm(
-				MixnetFactory.createMixnet(), ZeroKnowledgeProofFactory.createZeroKnowledgeProof(), ElGamalFactory.createElGamal());
+				MixnetFactory.createMixnet(), ZeroKnowledgeProofFactory.createZeroKnowledgeProof(), verifyProcessPlaintextsAlgorithm);
+
 		verification = new VerifyTallyControlComponent(new ElectionDataExtractionService(pathService, DomainObjectMapper.getNewInstance()),
 				verifyTallyControlComponentBallotBoxAlgorithm, applicationEventPublisherMock);
 	}

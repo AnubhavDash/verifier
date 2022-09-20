@@ -99,8 +99,7 @@ public class VerifyOnlineControlComponentsBallotBoxContext {
 		return electionEventContext.verificationCardSetContexts().stream()
 				.filter(verificationCardSetContext -> verificationCardSetContext.ballotBoxId().equals(ballotBoxId))
 				.map(VerificationCardSetContext::primesMappingTable)
-				.findAny()
 				// The constructor already verifies the verification card set contexts for the wanted ballotBoxId exists.
-				.orElseThrow();
+				.collect(MoreCollectors.onlyElement());
 	}
 }

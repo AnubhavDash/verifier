@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
 import com.google.common.collect.MoreCollectors;
 
 import ch.post.it.evoting.cryptoprimitives.domain.ControlComponentConstants;
-import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTableEntry;
+import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
 import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
@@ -44,7 +44,6 @@ import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
-import ch.post.it.evoting.verifier.protocol.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.verifier.protocol.domain.tally.TallyComponentVotesPayload;
 
 @Component
@@ -101,25 +100,22 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 		final List<Boolean> tallyVerif = IntStream.range(0, N_bb)
 				.mapToObj(i -> {
 					final String bb_i = bb.get(i);
+
 					final VerificationCardSetContext verificationCardSetContext = verificationCardSetContexts.stream()
 							.filter(vcsContext -> vcsContext.ballotBoxId().equals(bb_i))
-							.findAny().orElseThrow(() -> new IllegalStateException("VerificationCardSetContext not found."));
+							.collect(MoreCollectors.onlyElement());
+
 					final TallyComponentShufflePayload tallyComponentShufflePayload = tallyComponentShufflePayloads.get(i);
 					final ControlComponentShufflePayload lastControlComponentShufflePayload = extractionService.getControlComponentShufflePayloads(
 							inputDirectoryPath, bb_i).get(ControlComponentConstants.NODE_IDS.last() - 1);
+
+					final PrimesMappingTable primesMappingTable = verificationCardSetContext.primesMappingTable();
 
 					final String vcs = verificationCardSetContext.verificationCardSetId();
 					final Integer numberOfSelections = extractionService.getCombinedCorrectnessInformation(inputDirectoryPath, vcs)
 							.getTotalNumberOfSelections();
 
-					final SetupComponentTallyDataPayload setupComponentTallyDataPayload = extractionService.getSetupComponentTallyDataPayload(
-							inputDirectoryPath, vcs);
-					final GroupVector<PrimesMappingTableEntry, GqGroup> pTable = setupComponentTallyDataPayload.getPrimesMappingTable().getPTable();
-					@SuppressWarnings("java:S117")
-					final GroupVector<PrimeGqElement, GqGroup> p_tilde = pTable.stream().map(PrimesMappingTableEntry::encodedVotingOption)
-							.collect(GroupVector.toGroupVector());
 					final TallyComponentVotesPayload tallyComponentVotesPayload = tallyComponentVotesPayloads.get(i);
-					@SuppressWarnings("java:S117")
 					final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> L_votes = tallyComponentVotesPayload.getVotes().stream()
 							.map(list -> list.stream()
 									.map(p -> PrimeGqElement.PrimeGqElementFactory.fromValue(p.getValueAsInt(), encryptionGroup))
@@ -132,13 +128,14 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 							.numberOfWriteInFields();
 
 					final VerifyTallyControlComponentBallotBoxContext context = new VerifyTallyControlComponentBallotBoxContext(encryptionGroup, ee,
-							bb_i, electoralBoardPublicKey, p_tilde, numberOfSelections, numberOfAllowedWriteIns + 1);
+							bb_i, electoralBoardPublicKey, primesMappingTable, numberOfSelections, numberOfAllowedWriteIns + 1);
 
 					final VerifyTallyControlComponentBallotBoxInput input = new VerifyTallyControlComponentBallotBoxInput.Builder()
 							.setPreviousPartiallyDecryptedVotes(lastControlComponentShufflePayload.getVerifiableDecryptions().getCiphertexts())
 							.setVerifiableShuffle(tallyComponentShufflePayload.getVerifiableShuffle())
 							.setVerifiablePlaintextDecryption(tallyComponentShufflePayload.getVerifiablePlaintextDecryption())
 							.setSelectedEncodedVotingOptions(L_votes)
+							.setSelectedDecodedVotingOptions(tallyComponentVotesPayload.getActualSelectedVotingOptions())
 							.build();
 
 					return verifyTallyControlComponentBallotBoxAlgorithm.verifyTallyControlComponentBallotBox(context, input);

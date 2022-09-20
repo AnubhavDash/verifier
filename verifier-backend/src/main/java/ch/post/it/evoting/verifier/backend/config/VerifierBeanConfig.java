@@ -41,6 +41,7 @@ import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProo
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
 import ch.post.it.evoting.verifier.backend.tools.KeystoreRepository;
 import ch.post.it.evoting.verifier.backend.verifications.setup.consistency.VerifyPrimesMappingTableConsistencyAlgorithm;
+import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.DecodeVotingOptionsAlgorithm;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.VerifyMixDecOfflineAlgorithm;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.VerifyVotingClientProofsAlgorithm;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixonline.GetMixnetInitialCiphertextsAlgorithm;
@@ -98,8 +99,14 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
+	public DecodeVotingOptionsAlgorithm decodeVotingOptionsAlgorithm() {
+		return new DecodeVotingOptionsAlgorithm();
+	}
+
+	@Bean
 	KeyStore keystore(final KeystoreRepository repository,
-			@Value("${direct.trust.keystore.type}") final String keystoreType)
+			@Value("${direct.trust.keystore.type}")
+			final String keystoreType)
 			throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
 		var keyStore = KeyStore.getInstance(keystoreType);
 		keyStore.load(repository.getKeyStore(), repository.getKeystorePassword());
