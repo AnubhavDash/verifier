@@ -17,8 +17,12 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 import java.math.BigInteger;
+
+import ch.post.it.evoting.cryptoprimitives.internal.securitylevel.SecurityLevelConfig;
+import ch.post.it.evoting.cryptoprimitives.internal.securitylevel.SecurityLevelInternal;
 
 import org.springframework.stereotype.Service;
 
@@ -56,6 +60,9 @@ public class VerifyEncryptionParametersAlgorithm {
 		checkNotNull(g_hat);
 		checkNotNull(seed);
 		checkArgument(p_hat.compareTo(q_hat.shiftLeft(1).add(BigInteger.ONE)) == 0, "p_hat must be equal to 2 * q_hat + 1.");
+
+		//Require
+		checkState(SecurityLevelConfig.getSystemSecurityLevel() == SecurityLevelInternal.EXTENDED, "security level must be EXTENDED (group modulus 3072 bits)");
 
 		// Operation.
 		final GqGroup gqGroup = elGamal.getEncryptionParameters(seed);
