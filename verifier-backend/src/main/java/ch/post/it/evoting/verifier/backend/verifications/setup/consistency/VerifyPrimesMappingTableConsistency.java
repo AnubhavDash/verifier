@@ -21,7 +21,9 @@ import java.util.List;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
+import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
 import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
+import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -30,7 +32,6 @@ import ch.post.it.evoting.verifier.backend.event.SetupEvent;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
-import ch.post.it.evoting.verifier.protocol.domain.configuration.SetupComponentTallyDataPayload;
 
 @Component
 public class VerifyPrimesMappingTableConsistency extends AbstractVerification {
@@ -60,11 +61,10 @@ public class VerifyPrimesMappingTableConsistency extends AbstractVerification {
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) {
-		final List<SetupComponentTallyDataPayload> setupComponentTallyDataPayloads = extractionService.getSetupComponentTallyDataPayloads(
-				inputDirectoryPath);
-		final List<PrimesMappingTable> primesMappingTables = setupComponentTallyDataPayloads.stream()
-				.map(SetupComponentTallyDataPayload::getPrimesMappingTable)
+	public VerificationResult verify(final Path inputDirectoryPath) {
+		final ElectionEventContext electionEventContext = extractionService.getElectionEventContext(inputDirectoryPath);
+		final List<PrimesMappingTable> primesMappingTables = electionEventContext.verificationCardSetContexts().stream()
+				.map(VerificationCardSetContext::primesMappingTable)
 				.toList();
 
 		if (consistencyAlgorithm.verifyPrimesMappingTableConsistency(primesMappingTables)) {

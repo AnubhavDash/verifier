@@ -24,7 +24,6 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
 import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
@@ -48,12 +47,9 @@ public class SetupComponentTallyDataPayloadDeserializer extends JsonDeserializer
 		final ElGamalMultiRecipientPublicKey[] verificationCardPublicKeys = mapper.reader()
 				.withAttribute("group", encryptionGroup)
 				.readValue(node.get("verificationCardPublicKeys"), ElGamalMultiRecipientPublicKey[].class);
-		final PrimesMappingTable primesMappingTable = mapper.reader()
-				.withAttribute("group", encryptionGroup)
-				.readValue(node.get("primesMappingTable").toString(), PrimesMappingTable.class);
 		final CryptoPrimitivesSignature signature = mapper.readValue(node.get("signature").toString(), CryptoPrimitivesSignature.class);
 
 		return new SetupComponentTallyDataPayload(electionEventId, verificationCardSetId, encryptionGroup, List.of(verificationCardIds),
-				GroupVector.of(verificationCardPublicKeys), primesMappingTable, signature);
+				GroupVector.of(verificationCardPublicKeys), signature);
 	}
 }

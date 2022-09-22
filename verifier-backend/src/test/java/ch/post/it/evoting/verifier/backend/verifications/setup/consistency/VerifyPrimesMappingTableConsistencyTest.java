@@ -16,36 +16,37 @@
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.List;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.spy;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
-import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTableEntry;
-import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
-import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
-import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
-import ch.post.it.evoting.cryptoprimitives.math.Random;
-import ch.post.it.evoting.cryptoprimitives.math.RandomFactory;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
-import ch.post.it.evoting.verifier.protocol.domain.configuration.SetupComponentTallyDataPayload;
 
 class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
+
+	private static VerifyPrimesMappingTableConsistencyAlgorithm consistencyAlgorithm;
 
 	@BeforeAll
 	static void setupAll() {
 		final ElectionDataExtractionService extractionService = new ElectionDataExtractionService(pathService, objectMapper);
-		final VerifyPrimesMappingTableConsistencyAlgorithm consistencyAlgorithm = new VerifyPrimesMappingTableConsistencyAlgorithm();
+		consistencyAlgorithm = spy(VerifyPrimesMappingTableConsistencyAlgorithm.class);
+
 		verification = new VerifyPrimesMappingTableConsistency(extractionService, consistencyAlgorithm, applicationEventPublisherMock);
+	}
+
+	@BeforeEach
+	void setUp() {
+		reset(consistencyAlgorithm);
 	}
 
 	@Test
@@ -59,30 +60,10 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 
 	@Test
 	void verifyNok() {
-		final GqGroup encryptionGroup = new ElectionDataExtractionService(pathService, objectMapper).getEncryptionParametersPayload(datasetPath)
-				.getEncryptionGroup();
-		final Random random = RandomFactory.createRandom();
-		final PrimeGqElement encodedVotingOption = PrimeGqElement.PrimeGqElementFactory.getSmallPrimeGroupMembers(encryptionGroup, 1).get(0);
+		doReturn(false).when(consistencyAlgorithm).verifyPrimesMappingTableConsistency(anyList());
 
-		final GroupVector<PrimesMappingTableEntry, GqGroup> pTable1 = GroupVector.of(new PrimesMappingTableEntry(random.genRandomBase16String(4),
-				encodedVotingOption));
-		final SetupComponentTallyDataPayload tallyDataPayloadMock1 = mock(SetupComponentTallyDataPayload.class);
-		when(tallyDataPayloadMock1.getPrimesMappingTable()).thenReturn(new PrimesMappingTable(pTable1));
-
-		final GroupVector<PrimesMappingTableEntry, GqGroup> pTable2 = GroupVector.of(new PrimesMappingTableEntry(random.genRandomBase16String(4),
-				encodedVotingOption));
-		final SetupComponentTallyDataPayload tallyDataPayloadMock2 = mock(SetupComponentTallyDataPayload.class);
-		when(tallyDataPayloadMock2.getPrimesMappingTable()).thenReturn(new PrimesMappingTable(pTable2));
-
-		final ElectionDataExtractionService extractionServiceMock = mock(ElectionDataExtractionService.class);
-		when(extractionServiceMock.getSetupComponentTallyDataPayloads(datasetPath)).thenReturn(
-				List.of(tallyDataPayloadMock1, tallyDataPayloadMock2));
-
-		final VerifyPrimesMappingTableConsistency verificationWithMock = new VerifyPrimesMappingTableConsistency(extractionServiceMock,
-				new VerifyPrimesMappingTableConsistencyAlgorithm(), applicationEventPublisherMock);
-
-		final VerificationResult result = verificationWithMock.verify(datasetPath);
-		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),
+		final VerificationResult result = verification.verify(datasetPath);
+		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification305.nok.message"));
 		assertEquals(expectedResult, result);
 	}

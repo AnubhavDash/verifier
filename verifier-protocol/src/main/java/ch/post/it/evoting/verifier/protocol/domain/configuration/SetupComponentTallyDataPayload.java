@@ -29,7 +29,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SignedPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.cryptoprimitives.domain.validations.Validations;
@@ -42,7 +41,7 @@ import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 
 @JsonDeserialize(using = SetupComponentTallyDataPayloadDeserializer.class)
 @JsonPropertyOrder({ "electionEventId", "verificationCardSetId", "encryptionGroup", "verificationCardIds", "verificationCardPublicKeys",
-		"primesMappingTable", "signature" })
+		"signature" })
 public class SetupComponentTallyDataPayload implements SignedPayload {
 
 	@JsonProperty
@@ -59,9 +58,6 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 
 	@JsonProperty
 	private final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> verificationCardPublicKeys;
-
-	@JsonProperty
-	private final PrimesMappingTable primesMappingTable;
 
 	@JsonProperty
 	private CryptoPrimitivesSignature signature;
@@ -83,13 +79,10 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 			@JsonProperty("verificationCardPublicKeys")
 			final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> verificationCardPublicKeys,
 
-			@JsonProperty("primesMappingTable")
-			final PrimesMappingTable primesMappingTable,
-
 			@JsonProperty("signature")
 			final CryptoPrimitivesSignature signature) {
 
-		this(electionEventId, verificationCardSetId, encryptionGroup, verificationCardIds, verificationCardPublicKeys, primesMappingTable);
+		this(electionEventId, verificationCardSetId, encryptionGroup, verificationCardIds, verificationCardPublicKeys);
 		this.signature = checkNotNull(signature);
 	}
 
@@ -98,8 +91,7 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 			final String verificationCardSetId,
 			final GqGroup encryptionGroup,
 			final List<String> verificationCardIds,
-			final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> verificationCardPublicKeys,
-			final PrimesMappingTable primesMappingTable) {
+			final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> verificationCardPublicKeys) {
 		this.electionEventId = validateUUID(electionEventId);
 		this.verificationCardSetId = validateUUID(verificationCardSetId);
 		this.encryptionGroup = checkNotNull(encryptionGroup);
@@ -119,10 +111,6 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 
 		checkArgument(this.verificationCardIds.size() == this.verificationCardPublicKeys.size(),
 				"The verification card ids list size must be equal to the verification card public keys list size.");
-
-		this.primesMappingTable = checkNotNull(primesMappingTable);
-		checkArgument(this.encryptionGroup.equals(this.primesMappingTable.getPTable().getGroup()),
-				"The encryption group must be the same as the primes mapping table.");
 	}
 
 	public String getElectionEventId() {
@@ -145,10 +133,6 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 		return verificationCardPublicKeys;
 	}
 
-	public PrimesMappingTable getPrimesMappingTable() {
-		return primesMappingTable;
-	}
-
 	@Override
 	public CryptoPrimitivesSignature getSignature() {
 		return signature;
@@ -166,8 +150,7 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 				HashableString.from(verificationCardSetId),
 				encryptionGroup,
 				HashableList.from(verificationCardIds.stream().map(HashableString::from).toList()),
-				verificationCardPublicKeys,
-				primesMappingTable);
+				verificationCardPublicKeys);
 	}
 
 	@Override
@@ -185,7 +168,6 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 				encryptionGroup.equals(that.encryptionGroup) &&
 				verificationCardIds.equals(that.verificationCardIds) &&
 				verificationCardPublicKeys.equals(that.verificationCardPublicKeys) &&
-				primesMappingTable.equals(that.primesMappingTable) &&
 				Objects.equals(signature, that.signature);
 	}
 
@@ -197,7 +179,6 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 				encryptionGroup,
 				verificationCardIds,
 				verificationCardPublicKeys,
-				primesMappingTable,
 				signature);
 	}
 }
