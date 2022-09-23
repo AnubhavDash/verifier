@@ -10,6 +10,11 @@
 
 	<artifactId>verifier-backend</artifactId>
 
+
+	<properties>
+		<maven-jaxb2-plugin.version>0.15.1</maven-jaxb2-plugin.version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>ch.post.it.evoting.verifier</groupId>
@@ -123,6 +128,15 @@
 			<artifactId>commons-lang3</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- jaxb -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -139,6 +153,42 @@
 						<goals>
 							<goal>repackage</goal>
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jvnet.jaxb2.maven2</groupId>
+				<artifactId>maven-jaxb2-plugin</artifactId>
+				<version>${maven-jaxb2-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>evoting-config</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<schemaDirectory>${basedir}/src/main/resources/xsd</schemaDirectory>
+							<schemaIncludes>evoting-config-4-3.xsd</schemaIncludes>
+							<generateDirectory>${basedir}/target/generated-sources/java/evotingconfig</generateDirectory>
+							<generatePackage>ch.post.it.verifier.backend.domain.xmlns.evotingconfig</generatePackage>
+							<episode>false</episode>
+							<args>
+								<arg>-Xfluent-api</arg>
+								<arg>-Xsetters</arg>
+							</args>
+							<plugins>
+								<plugin>
+									<groupId>org.jvnet.jaxb2_commons</groupId>
+									<artifactId>jaxb2-fluent-api</artifactId>
+									<version>3.0</version>
+								</plugin>
+								<plugin>
+									<groupId>org.jvnet.jaxb2_commons</groupId>
+									<artifactId>jaxb2-basics</artifactId>
+									<version>0.11.1</version>
+								</plugin>
+							</plugins>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

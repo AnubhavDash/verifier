@@ -1,0 +1,111 @@
+//
+// Ce fichier a été généré par Eclipse Implementation of JAXB, v2.3.6 
+// Voir https://eclipse-ee4j.github.io/jaxb-ri 
+// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
+// Généré le : 2022.09.21 à 10:29:08 AM CEST 
+//
+
+
+package ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+
+/**
+ * <p>Classe Java pour electoralAuthorityMembersType complex type.
+ * 
+ * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+ * 
+ * <pre>
+ * &lt;complexType name="electoralAuthorityMembersType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="electoralAuthorityMemberName" maxOccurs="unbounded"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}token"&gt;
+ *               &lt;minLength value="1"/&gt;
+ *               &lt;maxLength value="100"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
+ * </pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "electoralAuthorityMembersType", propOrder = {
+    "electoralAuthorityMemberName"
+})
+public class ElectoralAuthorityMembersType {
+
+    @XmlElement(required = true)
+    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+    protected List<String> electoralAuthorityMemberName;
+
+    /**
+     * Gets the value of the electoralAuthorityMemberName property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the electoralAuthorityMemberName property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getElectoralAuthorityMemberName().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link String }
+     * 
+     * 
+     */
+    public List<String> getElectoralAuthorityMemberName() {
+        if (electoralAuthorityMemberName == null) {
+            electoralAuthorityMemberName = new ArrayList<String>();
+        }
+        return this.electoralAuthorityMemberName;
+    }
+
+    public ElectoralAuthorityMembersType withElectoralAuthorityMemberName(String... values) {
+        if (values!= null) {
+            for (String value: values) {
+                getElectoralAuthorityMemberName().add(value);
+            }
+        }
+        return this;
+    }
+
+    public ElectoralAuthorityMembersType withElectoralAuthorityMemberName(Collection<String> values) {
+        if (values!= null) {
+            getElectoralAuthorityMemberName().addAll(values);
+        }
+        return this;
+    }
+
+    public void setElectoralAuthorityMemberName(List<String> value) {
+        this.electoralAuthorityMemberName = null;
+        if (value!= null) {
+            List<String> draftl = this.getElectoralAuthorityMemberName();
+            draftl.addAll(value);
+        }
+    }
+
+}

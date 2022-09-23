@@ -1,0 +1,567 @@
+//
+// Ce fichier a été généré par Eclipse Implementation of JAXB, v2.3.6 
+// Voir https://eclipse-ee4j.github.io/jaxb-ri 
+// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
+// Généré le : 2022.09.21 à 10:29:08 AM CEST 
+//
+
+
+package ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig;
+
+import javax.xml.bind.annotation.XmlRegistry;
+
+
+/**
+ * This object contains factory methods for each 
+ * Java content interface and Java element interface 
+ * generated in the ch.post.it.verifier.backend.domain.xmlns.evotingconfig package. 
+ * <p>An ObjectFactory allows you to programatically 
+ * construct new instances of the Java representation 
+ * for XML content. The Java representation of XML 
+ * content can consist of schema derived interfaces 
+ * and classes representing the binding of schema 
+ * type definitions, element declarations and model 
+ * groups.  Factory methods for each of these are 
+ * provided in this class.
+ * 
+ */
+@XmlRegistry
+public class ObjectFactory {
+
+
+    /**
+     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: ch.post.it.verifier.backend.domain.xmlns.evotingconfig
+     * 
+     */
+    public ObjectFactory() {
+    }
+
+    /**
+     * Create an instance of {@link ListUnionDescriptionType }
+     * 
+     */
+    public ListUnionDescriptionType createListUnionDescriptionType() {
+        return new ListUnionDescriptionType();
+    }
+
+    /**
+     * Create an instance of {@link PersonType }
+     * 
+     */
+    public PersonType createPersonType() {
+        return new PersonType();
+    }
+
+    /**
+     * Create an instance of {@link BallotQuestionType }
+     * 
+     */
+    public BallotQuestionType createBallotQuestionType() {
+        return new BallotQuestionType();
+    }
+
+    /**
+     * Create an instance of {@link CandidateType }
+     * 
+     */
+    public CandidateType createCandidateType() {
+        return new CandidateType();
+    }
+
+    /**
+     * Create an instance of {@link ListDescriptionInformationType }
+     * 
+     */
+    public ListDescriptionInformationType createListDescriptionInformationType() {
+        return new ListDescriptionInformationType();
+    }
+
+    /**
+     * Create an instance of {@link PartyAffiliationformationType }
+     * 
+     */
+    public PartyAffiliationformationType createPartyAffiliationformationType() {
+        return new PartyAffiliationformationType();
+    }
+
+    /**
+     * Create an instance of {@link OccupationalTitleInformationType }
+     * 
+     */
+    public OccupationalTitleInformationType createOccupationalTitleInformationType() {
+        return new OccupationalTitleInformationType();
+    }
+
+    /**
+     * Create an instance of {@link CandidateTextInformationType }
+     * 
+     */
+    public CandidateTextInformationType createCandidateTextInformationType() {
+        return new CandidateTextInformationType();
+    }
+
+    /**
+     * Create an instance of {@link ElectionDescriptionInformationType }
+     * 
+     */
+    public ElectionDescriptionInformationType createElectionDescriptionInformationType() {
+        return new ElectionDescriptionInformationType();
+    }
+
+    /**
+     * Create an instance of {@link BallotDescriptionInformationType }
+     * 
+     */
+    public BallotDescriptionInformationType createBallotDescriptionInformationType() {
+        return new BallotDescriptionInformationType();
+    }
+
+    /**
+     * Create an instance of {@link VoteDescriptionInformationType }
+     * 
+     */
+    public VoteDescriptionInformationType createVoteDescriptionInformationType() {
+        return new VoteDescriptionInformationType();
+    }
+
+    /**
+     * Create an instance of {@link ContestDescriptionInformationType }
+     * 
+     */
+    public ContestDescriptionInformationType createContestDescriptionInformationType() {
+        return new ContestDescriptionInformationType();
+    }
+
+    /**
+     * Create an instance of {@link HeaderType }
+     * 
+     */
+    public HeaderType createHeaderType() {
+        return new HeaderType();
+    }
+
+    /**
+     * Create an instance of {@link Configuration }
+     * 
+     */
+    public Configuration createConfiguration() {
+        return new Configuration();
+    }
+
+    /**
+     * Create an instance of {@link ContestType }
+     * 
+     */
+    public ContestType createContestType() {
+        return new ContestType();
+    }
+
+    /**
+     * Create an instance of {@link AuthorizationsType }
+     * 
+     */
+    public AuthorizationsType createAuthorizationsType() {
+        return new AuthorizationsType();
+    }
+
+    /**
+     * Create an instance of {@link RegisterType }
+     * 
+     */
+    public RegisterType createRegisterType() {
+        return new RegisterType();
+    }
+
+    /**
+     * Create an instance of {@link ElectoralAuthorityType }
+     * 
+     */
+    public ElectoralAuthorityType createElectoralAuthorityType() {
+        return new ElectoralAuthorityType();
+    }
+
+    /**
+     * Create an instance of {@link ElectoralAuthorityMembersType }
+     * 
+     */
+    public ElectoralAuthorityMembersType createElectoralAuthorityMembersType() {
+        return new ElectoralAuthorityMembersType();
+    }
+
+    /**
+     * Create an instance of {@link AnswerInformationType }
+     * 
+     */
+    public AnswerInformationType createAnswerInformationType() {
+        return new AnswerInformationType();
+    }
+
+    /**
+     * Create an instance of {@link ElectionType }
+     * 
+     */
+    public ElectionType createElectionType() {
+        return new ElectionType();
+    }
+
+    /**
+     * Create an instance of {@link ElectionInformationType }
+     * 
+     */
+    public ElectionInformationType createElectionInformationType() {
+        return new ElectionInformationType();
+    }
+
+    /**
+     * Create an instance of {@link IncumbentTextInfoType }
+     * 
+     */
+    public IncumbentTextInfoType createIncumbentTextInfoType() {
+        return new IncumbentTextInfoType();
+    }
+
+    /**
+     * Create an instance of {@link IncumbentTextType }
+     * 
+     */
+    public IncumbentTextType createIncumbentTextType() {
+        return new IncumbentTextType();
+    }
+
+    /**
+     * Create an instance of {@link IncumbentType }
+     * 
+     */
+    public IncumbentType createIncumbentType() {
+        return new IncumbentType();
+    }
+
+    /**
+     * Create an instance of {@link VarListTextInfoType }
+     * 
+     */
+    public VarListTextInfoType createVarListTextInfoType() {
+        return new VarListTextInfoType();
+    }
+
+    /**
+     * Create an instance of {@link VarListTextType }
+     * 
+     */
+    public VarListTextType createVarListTextType() {
+        return new VarListTextType();
+    }
+
+    /**
+     * Create an instance of {@link ListType }
+     * 
+     */
+    public ListType createListType() {
+        return new ListType();
+    }
+
+    /**
+     * Create an instance of {@link DwellingAddressType }
+     * 
+     */
+    public DwellingAddressType createDwellingAddressType() {
+        return new DwellingAddressType();
+    }
+
+    /**
+     * Create an instance of {@link CandidatePositionType }
+     * 
+     */
+    public CandidatePositionType createCandidatePositionType() {
+        return new CandidatePositionType();
+    }
+
+    /**
+     * Create an instance of {@link BallotType }
+     * 
+     */
+    public BallotType createBallotType() {
+        return new BallotType();
+    }
+
+    /**
+     * Create an instance of {@link StandardBallotType }
+     * 
+     */
+    public StandardBallotType createStandardBallotType() {
+        return new StandardBallotType();
+    }
+
+    /**
+     * Create an instance of {@link VariantBallotType }
+     * 
+     */
+    public VariantBallotType createVariantBallotType() {
+        return new VariantBallotType();
+    }
+
+    /**
+     * Create an instance of {@link StandardQuestionType }
+     * 
+     */
+    public StandardQuestionType createStandardQuestionType() {
+        return new StandardQuestionType();
+    }
+
+    /**
+     * Create an instance of {@link TieBreakQuestionType }
+     * 
+     */
+    public TieBreakQuestionType createTieBreakQuestionType() {
+        return new TieBreakQuestionType();
+    }
+
+    /**
+     * Create an instance of {@link StandardAnswerType }
+     * 
+     */
+    public StandardAnswerType createStandardAnswerType() {
+        return new StandardAnswerType();
+    }
+
+    /**
+     * Create an instance of {@link TiebreakAnswerType }
+     * 
+     */
+    public TiebreakAnswerType createTiebreakAnswerType() {
+        return new TiebreakAnswerType();
+    }
+
+    /**
+     * Create an instance of {@link VoteType }
+     * 
+     */
+    public VoteType createVoteType() {
+        return new VoteType();
+    }
+
+    /**
+     * Create an instance of {@link VoteInformationType }
+     * 
+     */
+    public VoteInformationType createVoteInformationType() {
+        return new VoteInformationType();
+    }
+
+    /**
+     * Create an instance of {@link ExtendedAuthenticationKeyType }
+     * 
+     */
+    public ExtendedAuthenticationKeyType createExtendedAuthenticationKeyType() {
+        return new ExtendedAuthenticationKeyType();
+    }
+
+    /**
+     * Create an instance of {@link ExtendedAuthenticationKeysType }
+     * 
+     */
+    public ExtendedAuthenticationKeysType createExtendedAuthenticationKeysType() {
+        return new ExtendedAuthenticationKeysType();
+    }
+
+    /**
+     * Create an instance of {@link VoterType }
+     * 
+     */
+    public VoterType createVoterType() {
+        return new VoterType();
+    }
+
+    /**
+     * Create an instance of {@link PhysicalAddressType }
+     * 
+     */
+    public PhysicalAddressType createPhysicalAddressType() {
+        return new PhysicalAddressType();
+    }
+
+    /**
+     * Create an instance of {@link ElectronicAddressType }
+     * 
+     */
+    public ElectronicAddressType createElectronicAddressType() {
+        return new ElectronicAddressType();
+    }
+
+    /**
+     * Create an instance of {@link AuthorizationObjectType }
+     * 
+     */
+    public AuthorizationObjectType createAuthorizationObjectType() {
+        return new AuthorizationObjectType();
+    }
+
+    /**
+     * Create an instance of {@link AuthorizationType }
+     * 
+     */
+    public AuthorizationType createAuthorizationType() {
+        return new AuthorizationType();
+    }
+
+    /**
+     * Create an instance of {@link ListUnionType }
+     * 
+     */
+    public ListUnionType createListUnionType() {
+        return new ListUnionType();
+    }
+
+    /**
+     * Create an instance of {@link ReferencedElectionInformationType }
+     * 
+     */
+    public ReferencedElectionInformationType createReferencedElectionInformationType() {
+        return new ReferencedElectionInformationType();
+    }
+
+    /**
+     * Create an instance of {@link ExtendedAuthenticationKeysDefinitionType }
+     * 
+     */
+    public ExtendedAuthenticationKeysDefinitionType createExtendedAuthenticationKeysDefinitionType() {
+        return new ExtendedAuthenticationKeysDefinitionType();
+    }
+
+    /**
+     * Create an instance of {@link DomainOfInfluenceType }
+     * 
+     */
+    public DomainOfInfluenceType createDomainOfInfluenceType() {
+        return new DomainOfInfluenceType();
+    }
+
+    /**
+     * Create an instance of {@link CountingCircleType }
+     * 
+     */
+    public CountingCircleType createCountingCircleType() {
+        return new CountingCircleType();
+    }
+
+    /**
+     * Create an instance of {@link UiPropertiesType }
+     * 
+     */
+    public UiPropertiesType createUiPropertiesType() {
+        return new UiPropertiesType();
+    }
+
+    /**
+     * Create an instance of {@link PropertyType }
+     * 
+     */
+    public PropertyType createPropertyType() {
+        return new PropertyType();
+    }
+
+    /**
+     * Create an instance of {@link ListUnionDescriptionType.ListUnionDescriptionInfo }
+     * 
+     */
+    public ListUnionDescriptionType.ListUnionDescriptionInfo createListUnionDescriptionTypeListUnionDescriptionInfo() {
+        return new ListUnionDescriptionType.ListUnionDescriptionInfo();
+    }
+
+    /**
+     * Create an instance of {@link PersonType.Municipality }
+     * 
+     */
+    public PersonType.Municipality createPersonTypeMunicipality() {
+        return new PersonType.Municipality();
+    }
+
+    /**
+     * Create an instance of {@link BallotQuestionType.BallotQuestionInfo }
+     * 
+     */
+    public BallotQuestionType.BallotQuestionInfo createBallotQuestionTypeBallotQuestionInfo() {
+        return new BallotQuestionType.BallotQuestionInfo();
+    }
+
+    /**
+     * Create an instance of {@link CandidateType.Swiss }
+     * 
+     */
+    public CandidateType.Swiss createCandidateTypeSwiss() {
+        return new CandidateType.Swiss();
+    }
+
+    /**
+     * Create an instance of {@link ListDescriptionInformationType.ListDescriptionInfo }
+     * 
+     */
+    public ListDescriptionInformationType.ListDescriptionInfo createListDescriptionInformationTypeListDescriptionInfo() {
+        return new ListDescriptionInformationType.ListDescriptionInfo();
+    }
+
+    /**
+     * Create an instance of {@link PartyAffiliationformationType.PartyAffiliationInfo }
+     * 
+     */
+    public PartyAffiliationformationType.PartyAffiliationInfo createPartyAffiliationformationTypePartyAffiliationInfo() {
+        return new PartyAffiliationformationType.PartyAffiliationInfo();
+    }
+
+    /**
+     * Create an instance of {@link OccupationalTitleInformationType.OccupationalTitleInfo }
+     * 
+     */
+    public OccupationalTitleInformationType.OccupationalTitleInfo createOccupationalTitleInformationTypeOccupationalTitleInfo() {
+        return new OccupationalTitleInformationType.OccupationalTitleInfo();
+    }
+
+    /**
+     * Create an instance of {@link CandidateTextInformationType.CandidateTextInfo }
+     * 
+     */
+    public CandidateTextInformationType.CandidateTextInfo createCandidateTextInformationTypeCandidateTextInfo() {
+        return new CandidateTextInformationType.CandidateTextInfo();
+    }
+
+    /**
+     * Create an instance of {@link ElectionDescriptionInformationType.ElectionDescriptionInfo }
+     * 
+     */
+    public ElectionDescriptionInformationType.ElectionDescriptionInfo createElectionDescriptionInformationTypeElectionDescriptionInfo() {
+        return new ElectionDescriptionInformationType.ElectionDescriptionInfo();
+    }
+
+    /**
+     * Create an instance of {@link BallotDescriptionInformationType.BallotDescriptionInfo }
+     * 
+     */
+    public BallotDescriptionInformationType.BallotDescriptionInfo createBallotDescriptionInformationTypeBallotDescriptionInfo() {
+        return new BallotDescriptionInformationType.BallotDescriptionInfo();
+    }
+
+    /**
+     * Create an instance of {@link VoteDescriptionInformationType.VoteDescriptionInfo }
+     * 
+     */
+    public VoteDescriptionInformationType.VoteDescriptionInfo createVoteDescriptionInformationTypeVoteDescriptionInfo() {
+        return new VoteDescriptionInformationType.VoteDescriptionInfo();
+    }
+
+    /**
+     * Create an instance of {@link ContestDescriptionInformationType.ContestDescriptionInfo }
+     * 
+     */
+    public ContestDescriptionInformationType.ContestDescriptionInfo createContestDescriptionInformationTypeContestDescriptionInfo() {
+        return new ContestDescriptionInformationType.ContestDescriptionInfo();
+    }
+
+    /**
+     * Create an instance of {@link HeaderType.PartialDelivery }
+     * 
+     */
+    public HeaderType.PartialDelivery createHeaderTypePartialDelivery() {
+        return new HeaderType.PartialDelivery();
+    }
+
+}

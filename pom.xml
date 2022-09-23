@@ -28,6 +28,9 @@
 		<jackson.version>2.13.3</jackson.version>
 		<jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
 		<jakarta.xml.bind-api.version>4.0.0</jakarta.xml.bind-api.version>
+		<javax.xml.bind.version>2.2.11</javax.xml.bind.version>
+		<jaxb-impl.version>2.3.6</jaxb-impl.version>
+		<jaxb-runtime.version>3.0.2</jaxb-runtime.version>
 		<junit-jupiter.version>5.9.0</junit-jupiter.version>
 		<lombok.version>1.18.24</lombok.version>
 		<mapstruct.version>1.5.2.Final</mapstruct.version>
@@ -121,6 +124,18 @@
 				<groupId>ch.post.it.evoting.cryptoprimitives.domain</groupId>
 				<artifactId>crypto-primitives-domain</artifactId>
 				<version>${crypto-primitives-domain.version}</version>
+			</dependency>
+
+			<!-- jaxb -->
+			<dependency>
+				<groupId>javax.xml.bind</groupId>
+				<artifactId>jaxb-api</artifactId>
+				<version>${javax.xml.bind.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.xml.bind</groupId>
+				<artifactId>jaxb-impl</artifactId>
+				<version>${jaxb-impl.version}</version>
 			</dependency>
 
 			<!-- junit -->

@@ -38,6 +38,7 @@ import ch.post.it.evoting.cryptoprimitives.domain.mixnet.TallyComponentShufflePa
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeSharesPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationDataPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.validations.FailedValidationException;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
@@ -55,6 +56,12 @@ public class ElectionDataExtractionService {
 	public ElectionDataExtractionService(final PathService pathService, final ObjectMapper objectMapper) {
 		this.pathService = pathService;
 		this.objectMapper = objectMapper;
+	}
+
+	public Configuration getConfiguration(final Path inputDirectoryPath) {
+		final PathNode configurationPathNode = pathService.buildFromRootPath(StructureKey.CONFIGURATION_ANONYMIZED, inputDirectoryPath);
+		final XmlFileRepository<Configuration> xmlFileRepository = new XmlFileRepository<>();
+		return xmlFileRepository.read(configurationPathNode.getPath().toString(), "xsd/evoting-config-4-3.xsd", Configuration.class);
 	}
 
 	/**
