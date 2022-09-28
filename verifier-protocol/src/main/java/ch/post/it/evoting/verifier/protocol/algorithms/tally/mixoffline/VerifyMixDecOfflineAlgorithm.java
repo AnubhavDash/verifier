@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -128,7 +129,9 @@ public class VerifyMixDecOfflineAlgorithm {
 		if (decryptVerif.stream().allMatch(VerificationResult::isVerified) && shuffleVerif.stream().allMatch(VerificationResult::isVerified)) {
 			return true;
 		} else {
-			decryptVerif.forEach(verificationResult -> LOGGER.error(verificationResult.getErrorMessages().getFirst()));
+			decryptVerif.stream()
+					.filter(Predicate.not(VerificationResult::isVerified))
+					.forEach(verificationResult -> LOGGER.error(verificationResult.getErrorMessages().getFirst()));
 			return false;
 		}
 	}

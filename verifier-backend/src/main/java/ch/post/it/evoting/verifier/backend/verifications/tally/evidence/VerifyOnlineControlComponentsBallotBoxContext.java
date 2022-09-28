@@ -69,7 +69,7 @@ public class VerifyOnlineControlComponentsBallotBoxContext {
 
 	public GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> getCcmElectionPublicKeys() {
 		return electionEventContext.combinedControlComponentPublicKeys().stream()
-				.map(ControlComponentPublicKeys::ccmElectionPublicKey)
+				.map(ControlComponentPublicKeys::ccmjElectionPublicKey)
 				.collect(GroupVector.toGroupVector());
 	}
 

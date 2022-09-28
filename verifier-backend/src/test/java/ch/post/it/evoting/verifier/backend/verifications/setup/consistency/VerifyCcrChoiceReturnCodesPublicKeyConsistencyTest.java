@@ -61,8 +61,8 @@ class VerifyCcrChoiceReturnCodesPublicKeyConsistencyTest extends SetupVerificati
 		final ControlComponentPublicKeys controlComponentPublicKeys = controlComponentPublicKeysPayload3.getControlComponentPublicKeys();
 
 		final ControlComponentPublicKeys modifiedControlComponentPublicKeys = spy(controlComponentPublicKeys);
-		doReturn(controlComponentPublicKeys.ccmElectionPublicKey())
-				.when(modifiedControlComponentPublicKeys).ccrChoiceReturnCodesEncryptionPublicKey();
+		doReturn(controlComponentPublicKeys.ccmjElectionPublicKey())
+				.when(modifiedControlComponentPublicKeys).ccrjChoiceReturnCodesEncryptionPublicKey();
 
 		final ControlComponentPublicKeysPayload modifiedControlComponentPublicKeysPayload3 = new ControlComponentPublicKeysPayload(
 				controlComponentPublicKeysPayload3.getEncryptionGroup(),

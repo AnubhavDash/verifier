@@ -75,7 +75,7 @@ public class VerifyElectionPublicKeyConsistency extends AbstractVerification {
 						Stream.of(electionEventContext.electoralBoardPublicKey()),
 						electionEventContext.combinedControlComponentPublicKeys()
 								.stream()
-								.map(ControlComponentPublicKeys::ccmElectionPublicKey)
+								.map(ControlComponentPublicKeys::ccmjElectionPublicKey)
 								.map(ccmElectionPublicKey -> new ElGamalMultiRecipientPublicKey(
 										ccmElectionPublicKey.getKeyElements().subList(0, electionEventContext.getMaxNumberOfWriteInFields() + 1))))
 				.collect(GroupVector.toGroupVector());

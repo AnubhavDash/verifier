@@ -22,8 +22,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.List;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -38,41 +36,30 @@ import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 @JsonPropertyOrder({ "encryptionGroup", "electionEventId", "controlComponentPublicKeys", "signature" })
 public class ControlComponentPublicKeysPayload implements SignedPayload {
 
-	@JsonProperty
 	private final GqGroup encryptionGroup;
 
-	@JsonProperty
 	private final String electionEventId;
 
-	@JsonProperty
 	private final ControlComponentPublicKeys controlComponentPublicKeys;
 
-	@JsonProperty
 	private CryptoPrimitivesSignature signature;
 
-	@JsonCreator
 	public ControlComponentPublicKeysPayload(
-			@JsonProperty("encryptionGroup")
 			final GqGroup encryptionGroup,
-			@JsonProperty("electionEventId")
 			final String electionEventId,
-			@JsonProperty("controlComponentPublicKeys")
 			final ControlComponentPublicKeys controlComponentPublicKeys,
-			@JsonProperty("signature")
 			final CryptoPrimitivesSignature signature) {
-
 		this(encryptionGroup, electionEventId, controlComponentPublicKeys);
 		this.signature = checkNotNull(signature);
 	}
 
 	public ControlComponentPublicKeysPayload(final GqGroup encryptionGroup, final String electionEventId,
 			final ControlComponentPublicKeys controlComponentPublicKeys) {
-
 		this.encryptionGroup = checkNotNull(encryptionGroup);
 		this.electionEventId = validateUUID(electionEventId);
 		this.controlComponentPublicKeys = checkNotNull(controlComponentPublicKeys);
-		checkArgument(encryptionGroup.equals(controlComponentPublicKeys.ccmElectionPublicKey().getGroup()),
-				"The groups of the control component public keys payload and the ccm election public key of the control component public keys must be equal.");
+		checkArgument(encryptionGroup.equals(controlComponentPublicKeys.ccmjElectionPublicKey().getGroup()),
+				"The groups of the control component public keys payload and the CCMj election public key of the control component public keys must be equal.");
 	}
 
 	public GqGroup getEncryptionGroup() {

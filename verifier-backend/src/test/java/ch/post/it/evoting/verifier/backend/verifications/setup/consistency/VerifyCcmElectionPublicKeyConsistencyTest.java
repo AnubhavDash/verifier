@@ -61,8 +61,8 @@ class VerifyCcmElectionPublicKeyConsistencyTest extends SetupVerificationTest {
 		final ControlComponentPublicKeys controlComponentPublicKeys = controlComponentPublicKeysPayload3.getControlComponentPublicKeys();
 
 		final ControlComponentPublicKeys modifiedControlComponentPublicKeys = spy(controlComponentPublicKeys);
-		doReturn(controlComponentPublicKeys.ccrChoiceReturnCodesEncryptionPublicKey())
-				.when(modifiedControlComponentPublicKeys).ccmElectionPublicKey();
+		doReturn(controlComponentPublicKeys.ccrjChoiceReturnCodesEncryptionPublicKey())
+				.when(modifiedControlComponentPublicKeys).ccmjElectionPublicKey();
 		final ControlComponentPublicKeysPayload modifiedControlComponentPublicKeysPayload3 = new ControlComponentPublicKeysPayload(
 				controlComponentPublicKeysPayload3.getEncryptionGroup(),
 				controlComponentPublicKeysPayload3.getElectionEventId(),
