@@ -427,4 +427,11 @@ public final class ChannelSecurityContextData {
 				HashableString.from(electionEventId));
 	}
 
+	/**
+	 * @return The additional context data for the message configuration XML.
+	 */
+	public static Hashable setupComponentConfig() {
+		return HashableString.from("configuration");
+	}
+
 }

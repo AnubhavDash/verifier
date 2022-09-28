@@ -62,7 +62,7 @@ public class ElectionDataExtractionService {
 	public Configuration getConfiguration(final Path inputDirectoryPath) {
 		final PathNode configurationPathNode = pathService.buildFromRootPath(StructureKey.CONFIGURATION_ANONYMIZED, inputDirectoryPath);
 		final XmlFileRepository<Configuration> xmlFileRepository = new XmlFileRepository<>();
-		return xmlFileRepository.read(configurationPathNode.getPath().toString(), "xsd/evoting-config-4-3.xsd", Configuration.class);
+		return xmlFileRepository.read(configurationPathNode.getPath().toString(), "xsd/evoting-config-4-4.xsd", Configuration.class);
 	}
 
 	/**

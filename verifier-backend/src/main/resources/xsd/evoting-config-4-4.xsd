@@ -1085,8 +1085,7 @@
 				<xs:element name="contest" type="config:contestType"/>
 				<xs:element name="authorizations" type="config:authorizationsType"/>
 				<xs:element name="register" type="config:registerType"/>
-				<xs:element name="signature" type="xs:base64Binary"
-										minOccurs="0" maxOccurs="1"/> <!-- Unsigned as input, signed as output. -->
+				<xs:element name="signature" type="xs:base64Binary"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
