@@ -56,7 +56,7 @@ class CheckSignatureEncryptedCodeSharesTest extends SetupVerificationTest {
 
 	@Test
 	void testExpectedSignerSuccess() throws SignatureException {
-		final ControlComponentCodeSharesPayload controlComponentCodeSharesPayload = electionDataExtractionService.getControlComponentCodeSharesPayloads(
+		final ControlComponentCodeSharesPayload controlComponentCodeSharesPayload = electionDataExtractionService.getControlComponentCodeSharesPayloadsOrderedByNodeId(
 				datasetPath).get(0);
 		final int nodeId = controlComponentCodeSharesPayload.getNodeId();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.getControlComponentByNodeId(nodeId));
@@ -69,7 +69,7 @@ class CheckSignatureEncryptedCodeSharesTest extends SetupVerificationTest {
 
 	@Test
 	void testUnexpectedSignerFails() throws SignatureException {
-		final ControlComponentCodeSharesPayload controlComponentCodeSharesPayload = electionDataExtractionService.getControlComponentCodeSharesPayloads(
+		final ControlComponentCodeSharesPayload controlComponentCodeSharesPayload = electionDataExtractionService.getControlComponentCodeSharesPayloadsOrderedByNodeId(
 				datasetPath).get(0);
 		final int nodeId = controlComponentCodeSharesPayload.getNodeId();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_TALLY);

@@ -66,7 +66,7 @@ public class VerifyConfirmedEncryptedVotesConsistency extends AbstractVerificati
 				.getElectionEventContext()
 				.verificationCardSetContexts().stream()
 				.map(VerificationCardSetContext::ballotBoxId)
-				.map(ballotBoxId -> extractionService.getControlComponentBallotBoxPayloads(inputDirectoryPath, ballotBoxId));
+				.map(ballotBoxId -> extractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(inputDirectoryPath, ballotBoxId));
 		if (confirmedVotesConsistent(ballotBoxPayloads)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {

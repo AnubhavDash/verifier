@@ -55,7 +55,7 @@ class VerifyConfirmedEncryptedVotesConsistencyTest extends TallyVerificationTest
 
 	@Test
 	void testVerifyNok() {
-		final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads = extractionService.getAllControlComponentBallotBoxPayloads(
+		final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads = extractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
 				datasetPath);
 		final ControlComponentBallotBoxPayload payloadWithVotes = controlComponentBallotBoxPayloads.stream()
 				.filter(payload -> payload.getConfirmedEncryptedVotes().size() > 1 && payload.getNodeId() == 1)
@@ -67,12 +67,12 @@ class VerifyConfirmedEncryptedVotesConsistencyTest extends TallyVerificationTest
 				payloadWithVotes.getNodeId(),
 				confirmedEncryptedVotesWithMissingVote);
 		final List<ControlComponentBallotBoxPayload> newControlComponentBallotBoxPayloads = Streams.concat(Stream.of(newPayload),
-				extractionService.getControlComponentBallotBoxPayloads(datasetPath, newPayload.getBallotBoxId()).stream()
+				extractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(datasetPath, newPayload.getBallotBoxId()).stream()
 						.filter(payload -> payload.getNodeId() != 1)).toList();
 
 		final ElectionDataExtractionService extractionServiceMock = spy(extractionService);
 		doReturn(newControlComponentBallotBoxPayloads).when(extractionServiceMock)
-				.getControlComponentBallotBoxPayloads(datasetPath, newPayload.getBallotBoxId());
+				.getControlComponentBallotBoxPayloadsOrderedByNodeId(datasetPath, newPayload.getBallotBoxId());
 		final VerifyConfirmedEncryptedVotesConsistency verificationWithMock = new VerifyConfirmedEncryptedVotesConsistency(
 				applicationEventPublisherMock, extractionServiceMock);
 

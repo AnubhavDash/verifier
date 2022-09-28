@@ -74,7 +74,7 @@ public class CheckSignatureOnlineShuffle extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final var controlComponentShufflePayloads = electionDataExtractionService.getAllControlComponentShufflePayloads(inputDirectoryPath);
+		final var controlComponentShufflePayloads = electionDataExtractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(inputDirectoryPath);
 
 		final boolean verified = controlComponentShufflePayloads
 				.stream()

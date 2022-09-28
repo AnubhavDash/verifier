@@ -63,7 +63,7 @@ class VerifyNumberConfirmedEncryptedVotesConsistencyTest extends TallyVerificati
 
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
 		doReturn(Collections.singletonList(controlComponentBallotBoxPayload)).when(electionDataExtractionServiceSpy)
-				.getControlComponentBallotBoxPayloads(any());
+				.getControlComponentBallotBoxPayloadsOrderedByNodeId(any());
 
 		final VerifyNumberConfirmedEncryptedVotesConsistency verifyNumberConfirmedEncryptedVotesConsistency =
 				new VerifyNumberConfirmedEncryptedVotesConsistency(applicationEventPublisherMock, pathService, electionDataExtractionServiceSpy);

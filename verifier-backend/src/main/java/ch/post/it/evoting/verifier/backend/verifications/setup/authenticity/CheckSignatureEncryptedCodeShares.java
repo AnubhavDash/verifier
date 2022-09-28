@@ -73,7 +73,7 @@ public class CheckSignatureEncryptedCodeShares extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final var controlComponentCodeSharesPayloads = electionDataExtractionService.getControlComponentCodeSharesPayloads(
+		final var controlComponentCodeSharesPayloads = electionDataExtractionService.getControlComponentCodeSharesPayloadsOrderedByNodeId(
 				inputDirectoryPath);
 
 		final boolean verified = controlComponentCodeSharesPayloads

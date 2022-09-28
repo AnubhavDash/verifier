@@ -106,7 +106,7 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 							.collect(MoreCollectors.onlyElement());
 
 					final TallyComponentShufflePayload tallyComponentShufflePayload = tallyComponentShufflePayloads.get(i);
-					final ControlComponentShufflePayload lastControlComponentShufflePayload = extractionService.getControlComponentShufflePayloads(
+					final ControlComponentShufflePayload lastControlComponentShufflePayload = extractionService.getControlComponentShufflePayloadsOrderedByNodeId(
 							inputDirectoryPath, bb_i).get(ControlComponentConstants.NODE_IDS.last() - 1);
 
 					final PrimesMappingTable primesMappingTable = verificationCardSetContext.primesMappingTable();

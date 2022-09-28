@@ -68,9 +68,9 @@ public class VerifyCiphertextsConsistency extends AbstractVerification {
 				.map(vcsContext -> {
 					final String ballotBoxId = vcsContext.ballotBoxId();
 					final int numberWriteInsPlusOne = vcsContext.numberOfWriteInFields() + 1;
-					final List<ControlComponentBallotBoxPayload> ballotBoxPayloads = extractionService.getControlComponentBallotBoxPayloads(
+					final List<ControlComponentBallotBoxPayload> ballotBoxPayloads = extractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(
 							inputDirectoryPath, ballotBoxId);
-					final List<ControlComponentShufflePayload> shufflePayloads = extractionService.getControlComponentShufflePayloads(
+					final List<ControlComponentShufflePayload> shufflePayloads = extractionService.getControlComponentShufflePayloadsOrderedByNodeId(
 							inputDirectoryPath, ballotBoxId);
 					final TallyComponentShufflePayload tallyComponentShufflePayload = extractionService.getTallyComponentShufflePayload(
 							inputDirectoryPath, ballotBoxId);

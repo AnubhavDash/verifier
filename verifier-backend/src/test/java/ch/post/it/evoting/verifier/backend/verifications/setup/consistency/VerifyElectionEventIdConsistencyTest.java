@@ -69,7 +69,7 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 		when(controlComponentCodeSharesPayloadMock.getElectionEventId()).thenReturn("wrong election event ID");
 
 		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(singletonList(controlComponentCodeSharesPayloadMock)).when(extractionServiceSpy).getControlComponentCodeSharesPayloads(datasetPath);
+		doReturn(singletonList(controlComponentCodeSharesPayloadMock)).when(extractionServiceSpy).getControlComponentCodeSharesPayloadsOrderedByNodeId(datasetPath);
 
 		final VerifyElectionEventIdConsistency verifyElectionEventIdConsistency = new VerifyElectionEventIdConsistency(
 				applicationEventPublisherMock, extractionServiceSpy);

@@ -104,7 +104,7 @@ public class VerifyChunkConsistency extends AbstractVerification {
 
     private boolean validateControlComponentCodeSharesPayloadContentMatchFileName(final Path payloadPath) {
         final int expectedChunkId = Integer.parseInt(payloadPath.getFileName().toString().split("\\.")[1]);
-        return electionDataExtractionService.getControlComponentCodeShares(payloadPath).stream()
+        return electionDataExtractionService.getControlComponentCodeSharesOrderedByNodeId(payloadPath).stream()
                 .allMatch(controlComponentCodeSharesPayload -> controlComponentCodeSharesPayload.getChunkId() == expectedChunkId);
     }
 

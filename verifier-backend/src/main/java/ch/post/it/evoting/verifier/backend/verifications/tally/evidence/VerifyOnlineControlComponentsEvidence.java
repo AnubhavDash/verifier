@@ -80,12 +80,12 @@ public class VerifyOnlineControlComponentsEvidence extends AbstractVerification 
 				.map(VerificationCardSetContext::ballotBoxId)
 				.toList();
 
-		final Map<String, List<ControlComponentBallotBoxPayload>> controlComponentBallotBoxesByBallotBoxId = electionDataExtractionService.getAllControlComponentBallotBoxPayloads(
+		final Map<String, List<ControlComponentBallotBoxPayload>> controlComponentBallotBoxesByBallotBoxId = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
 						inputDirectoryPath).stream()
-				.collect(Collectors.groupingByConcurrent(ControlComponentBallotBoxPayload::getBallotBoxId));
-		final Map<String, List<ControlComponentShufflePayload>> controlComponentShufflesByBallotBoxId = electionDataExtractionService.getAllControlComponentShufflePayloads(
+				.collect(Collectors.groupingBy(ControlComponentBallotBoxPayload::getBallotBoxId));
+		final Map<String, List<ControlComponentShufflePayload>> controlComponentShufflesByBallotBoxId = electionDataExtractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
 						inputDirectoryPath).stream()
-				.collect(Collectors.groupingByConcurrent(ControlComponentShufflePayload::getBallotBoxId));
+				.collect(Collectors.groupingBy(ControlComponentShufflePayload::getBallotBoxId));
 
 		final Map<String, SetupComponentTallyDataPayload> setupComponentTallyDataByBallotBoxId = ballotBoxIds.stream()
 				.collect(Collectors.toMap(Function.identity(), bb -> {

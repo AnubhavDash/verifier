@@ -96,13 +96,13 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 					final int tallyComponentShufflePayloadSize = tallyComponentShufflePayload.getVerifiableShuffle().shuffledCiphertexts().size();
 
 					final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads =
-							electionDataExtractionService.getControlComponentBallotBoxPayloads(ballotBoxPath);
+							electionDataExtractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(ballotBoxPath);
 					final List<Integer> controlComponentBallotBoxPayloadsSizes = controlComponentBallotBoxPayloads.stream()
 							.map(controlComponentBallotBoxPayload -> controlComponentBallotBoxPayload.getConfirmedEncryptedVotes().size())
 							.toList();
 
 					final List<ControlComponentShufflePayload> controlComponentShufflePayloads =
-							electionDataExtractionService.getControlComponentShufflePayloads(ballotBoxPath);
+							electionDataExtractionService.getControlComponentShufflePayloadsOrderedByNodeId(ballotBoxPath);
 					final List<Integer> controlComponentShufflePayloadsSizes = controlComponentShufflePayloads.stream()
 							.map(controlComponentShufflePayload -> controlComponentShufflePayload.getVerifiableShuffle().shuffledCiphertexts().size())
 							.toList();

@@ -56,7 +56,7 @@ class CheckSignatureOnlineShuffleTest extends TallyVerificationTest {
 
 	@Test
 	void testExpectedSignerSuccess() throws SignatureException {
-		final ControlComponentShufflePayload controlComponentShufflePayload = electionDataExtractionService.getAllControlComponentShufflePayloads(
+		final ControlComponentShufflePayload controlComponentShufflePayload = electionDataExtractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
 				datasetPath).get(0);
 		final int nodeId = controlComponentShufflePayload.getNodeId();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.getControlComponentByNodeId(nodeId));
@@ -69,7 +69,7 @@ class CheckSignatureOnlineShuffleTest extends TallyVerificationTest {
 
 	@Test
 	void testUnexpectedSignerFails() throws SignatureException {
-		final ControlComponentShufflePayload controlComponentShufflePayload = electionDataExtractionService.getAllControlComponentShufflePayloads(
+		final ControlComponentShufflePayload controlComponentShufflePayload = electionDataExtractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
 				datasetPath).get(0);
 		final int nodeId = controlComponentShufflePayload.getNodeId();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_CONFIG);

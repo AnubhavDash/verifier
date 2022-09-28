@@ -56,7 +56,7 @@ class CheckSignatureBallotBoxTest extends TallyVerificationTest {
 
 	@Test
 	void testExpectedSignerSuccess() throws SignatureException {
-		final ControlComponentBallotBoxPayload controlComponentBallotBoxPayload = electionDataExtractionService.getAllControlComponentBallotBoxPayloads(
+		final ControlComponentBallotBoxPayload controlComponentBallotBoxPayload = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
 				datasetPath).get(0);
 		final int nodeId = controlComponentBallotBoxPayload.getNodeId();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.getControlComponentByNodeId(nodeId));
@@ -69,7 +69,7 @@ class CheckSignatureBallotBoxTest extends TallyVerificationTest {
 
 	@Test
 	void testUnexpectedSignerFails() throws SignatureException {
-		final ControlComponentBallotBoxPayload controlComponentBallotBoxPayload = electionDataExtractionService.getAllControlComponentBallotBoxPayloads(
+		final ControlComponentBallotBoxPayload controlComponentBallotBoxPayload = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
 				datasetPath).get(0);
 		final int nodeId = controlComponentBallotBoxPayload.getNodeId();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.VOTING_SERVER);

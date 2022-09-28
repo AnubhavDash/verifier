@@ -66,7 +66,7 @@ public class VerifyVotingCardIdsConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(Path inputDirectoryPath) {
-		List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads = extractionService.getAllControlComponentBallotBoxPayloads(
+		List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads = extractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
 				inputDirectoryPath);
 
 		List<SetupComponentTallyDataPayload> setupComponentTallyDataPayloads = extractionService.getSetupComponentTallyDataPayloads(

@@ -74,7 +74,7 @@ public class CheckSignatureBallotBox extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final var controlComponentBallotBoxPayloads = electionDataExtractionService.getAllControlComponentBallotBoxPayloads(inputDirectoryPath);
+		final var controlComponentBallotBoxPayloads = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(inputDirectoryPath);
 
 		final boolean verified = controlComponentBallotBoxPayloads
 				.stream()

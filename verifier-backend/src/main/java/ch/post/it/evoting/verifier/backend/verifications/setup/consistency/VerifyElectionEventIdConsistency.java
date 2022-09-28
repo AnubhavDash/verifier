@@ -76,7 +76,7 @@ public class VerifyElectionEventIdConsistency extends AbstractVerification {
     }
 
     private boolean validateControlComponentCodeSharesPayload(Path inputDirectoryPath, String electionEventId) {
-        return electionDataExtractionService.getControlComponentCodeSharesPayloads(inputDirectoryPath).stream()
+        return electionDataExtractionService.getControlComponentCodeSharesPayloadsOrderedByNodeId(inputDirectoryPath).stream()
                 .allMatch(controlComponentCodeSharesPayload -> electionEventId.equals(controlComponentCodeSharesPayload.getElectionEventId()));
     }
 
