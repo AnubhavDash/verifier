@@ -15,7 +15,6 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
-import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -33,6 +32,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
@@ -65,10 +65,12 @@ class VerifyTallyNodeIdsConsistencyTest extends TallyVerificationTest {
 	@DisplayName("inconsistent node id in control component ballot box payloads failed")
 	void inconsistentNodeId(int... nodeIds) {
 
-		final List<ControlComponentBallotBoxPayload> payloads = generateBallotBoxesMock(nodeIds);
+		final List<ControlComponentBallotBoxPayload> ballotBoxPayloads = generateBallotBoxesMock(nodeIds);
+		final List<ControlComponentShufflePayload> shufflePayloads = generateShufflesMock(nodeIds);
 
 		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(singletonList(payloads)).when(extractionServiceSpy).getControlComponentBallotBoxPayloadsByBallotBox(datasetPath);
+		doReturn(ballotBoxPayloads).when(extractionServiceSpy).getAllControlComponentBallotBoxPayloadsOrderedByNodeId(datasetPath);
+		doReturn(shufflePayloads).when(extractionServiceSpy).getAllControlComponentShufflePayloadsOrderedByNodeId(datasetPath);
 
 		final VerifyTallyNodeIdsConsistency verifyElectionEventIdConsistency = new VerifyTallyNodeIdsConsistency(
 				applicationEventPublisherMock, extractionServiceSpy);
@@ -94,6 +96,18 @@ class VerifyTallyNodeIdsConsistencyTest extends TallyVerificationTest {
 				.map(nodeId -> {
 					final var mock = mock(ControlComponentBallotBoxPayload.class);
 					when(mock.getNodeId()).thenReturn(nodeId);
+					when(mock.getBallotBoxId()).thenReturn("7b170560b5ae4b6b87ab00119ddc6782");
+					return mock;
+				})
+				.toList();
+	}
+
+	private List<ControlComponentShufflePayload> generateShufflesMock(int... nodeIds) {
+		return Arrays.stream(nodeIds).boxed()
+				.map(nodeId -> {
+					final var mock = mock(ControlComponentShufflePayload.class);
+					when(mock.getNodeId()).thenReturn(nodeId);
+					when(mock.getBallotBoxId()).thenReturn("7b170560b5ae4b6b87ab00119ddc6782");
 					return mock;
 				})
 				.toList();

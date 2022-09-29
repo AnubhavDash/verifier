@@ -7,22 +7,22 @@
 		    {
 			    "key": "CONFIGURATION_ANONYMIZED",
 			    "type": "FILE",
-			    "name": "configuration-anonymized.xml"
+				"name": "configuration-anonymized\\.xml"
 		    },
 			{
 				"key": "ELECTION_EVENT_CONTEXT",
 				"type": "FILE",
-				"name": "electionEventContextPayload.json"
+				"name": "electionEventContextPayload\\.json"
 			},
 			{
 				"key": "CONTROL_COMPONENT_PUBLIC_KEYS",
 				"type": "FILE",
-				"name": "controlComponentPublicKeysPayload\\.[1-4]\\.json"
+				"name": "controlComponentPublicKeysPayload\\.([1-4])\\.json"
 			},
 			{
 				"key": "ENCRYPTION_PARAMETERS",
 				"type": "FILE",
-				"name": "encryptionParametersPayload.json"
+				"name": "encryptionParametersPayload\\.json"
 			},
 			{
 				"key": "VERIFICATION_CARD_SETS_DIR",
@@ -37,17 +37,17 @@
 							{
 								"key": "CONTROL_COMPONENT_CODE_SHARES",
 								"type": "FILE",
-								"name": "controlComponentCodeSharesPayload(\\.[0-9]+)?\\.json"
+								"name": "controlComponentCodeSharesPayload\\.([0-9]+)\\.json"
 							},
 							{
 								"key": "SETUP_COMPONENT_VERIFICATION_DATA",
 								"type": "FILE",
-								"name": "setupComponentVerificationDataPayload.[0-9].json"
+								"name": "setupComponentVerificationDataPayload\\.([0-9]+)\\.json"
 							},
 							{
 								"key": "SETUP_COMPONENT_TALLY_DATA",
 								"type": "FILE",
-								"name": "setupComponentTallyDataPayload.json"
+								"name": "setupComponentTallyDataPayload\\.json"
 							}
 						]
 					}
@@ -73,22 +73,22 @@
 							{
 								"key": "CONTROL_COMPONENT_BALLOT_BOX",
 								"type": "FILE",
-								"name": "controlComponentBallotBoxPayload_[1-4].json"
+								"name": "controlComponentBallotBoxPayload_([1-4])\\.json"
 							},
 							{
 								"key": "CONTROL_COMPONENT_SHUFFLE",
 								"type": "FILE",
-								"name": "controlComponentShufflePayload_[1-4].json"
+								"name": "controlComponentShufflePayload_([1-4])\\.json"
 							},
 							{
 								"key": "TALLY_COMPONENT_SHUFFLE",
 								"type": "FILE",
-								"name": "tallyComponentShufflePayload.json"
+								"name": "tallyComponentShufflePayload\\.json"
 							},
 							{
 								"key": "TALLY_COMPONENT_VOTES",
 								"type": "FILE",
-								"name": "tallyComponentVotesPayload.json"
+								"name": "tallyComponentVotesPayload\\.json"
 							}
 						]
 					}
