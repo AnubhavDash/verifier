@@ -23,6 +23,9 @@ All verifications performed in the verifier are listed in the table below:
 | Setup | 309 | VerifyVerificationCardSetsConsistency          |
 | Setup | 310 | VerifyChunkConsistency                         |
 | Setup | 311 | VerifyNodeIdsConsistency                       |
+| Setup | 312 | VerifyTotalVotersConsistency                   |
+| Setup | 313 | VerifyCcmAndCcrSchnorrProofsConsistency        |
+| Setup | 314 | VerifySetupFileNamesConsistency                |
 | Setup | 500 | VerifyEncryptionParameters                     |
 | Setup | 501 | VerifySmallPrimeGroupMembers                   |
 | Setup | 502 | VerifyVotingOptions                            |
@@ -41,6 +44,8 @@ All verifications performed in the verifier are listed in the table below:
 | Tally | 305 | VerifyEncryptionGroupConsistency               |
 | Tally | 306 | VerifyTallyNodeIdsConsistency                  |
 | Tally | 307 | VerifyVotingCardIdsConsistency                 |
+| Tally | 308 | VerifyBallotBoxIdsConsistency                  |
+| Tally | 309 | VerifyTallyFileNamesConsistency                |
 | Tally | 500 | VerifyOnlineControlComponents                  |
 | Tally | 501 | VerifyTallyControlComponent                    |
 

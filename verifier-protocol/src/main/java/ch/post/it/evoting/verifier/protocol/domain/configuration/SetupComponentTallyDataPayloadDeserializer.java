@@ -41,6 +41,7 @@ public class SetupComponentTallyDataPayloadDeserializer extends JsonDeserializer
 		final JsonNode node = mapper.readTree(parser);
 		final String electionEventId = mapper.readValue(node.get("electionEventId").toString(), String.class);
 		final String verificationCardSetId = mapper.readValue(node.get("verificationCardSetId").toString(), String.class);
+		final String ballotBoxAlias = mapper.readValue(node.get("ballotBoxAlias").toString(), String.class);
 		final JsonNode encryptionGroupNode = node.get("encryptionGroup");
 		final GqGroup encryptionGroup = mapper.readValue(encryptionGroupNode.toString(), GqGroup.class);
 		final String[] verificationCardIds = mapper.readValue(node.get("verificationCardIds").toString(), String[].class);
@@ -49,7 +50,7 @@ public class SetupComponentTallyDataPayloadDeserializer extends JsonDeserializer
 				.readValue(node.get("verificationCardPublicKeys"), ElGamalMultiRecipientPublicKey[].class);
 		final CryptoPrimitivesSignature signature = mapper.readValue(node.get("signature").toString(), CryptoPrimitivesSignature.class);
 
-		return new SetupComponentTallyDataPayload(electionEventId, verificationCardSetId, encryptionGroup, List.of(verificationCardIds),
-				GroupVector.of(verificationCardPublicKeys), signature);
+		return new SetupComponentTallyDataPayload(electionEventId, verificationCardSetId, ballotBoxAlias, encryptionGroup,
+				List.of(verificationCardIds), GroupVector.of(verificationCardPublicKeys), signature);
 	}
 }
