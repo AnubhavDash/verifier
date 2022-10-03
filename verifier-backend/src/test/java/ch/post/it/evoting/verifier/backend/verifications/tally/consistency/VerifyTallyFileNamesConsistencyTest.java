@@ -33,6 +33,7 @@ import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShuffle
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.backend.tools.XmlFileRepository;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
 import ch.post.it.evoting.verifier.protocol.domain.tally.ControlComponentBallotBoxPayload;
@@ -55,7 +56,8 @@ class VerifyTallyFileNamesConsistencyTest extends TallyVerificationTest {
 	@Test
 	void verifyNokBallotBoxPayloadNodeId() throws IOException {
 		final ObjectMapper objectMapperMock = spy(objectMapper);
-		final ElectionDataExtractionService extractionService = new ElectionDataExtractionService(pathService, objectMapper);
+		final ElectionDataExtractionService extractionService = new ElectionDataExtractionService(pathService, objectMapper,
+				new XmlFileRepository<>(), new XmlFileRepository<>());
 		final ControlComponentBallotBoxPayload firstBallotBoxPayload = extractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
 				datasetPath).get(0);
 		doReturn(firstBallotBoxPayload).when(objectMapperMock).readValue(any(File.class), eq(ControlComponentBallotBoxPayload.class));
@@ -72,7 +74,8 @@ class VerifyTallyFileNamesConsistencyTest extends TallyVerificationTest {
 	@Test
 	void verifyNokShufflePayloadNodeId() throws IOException {
 		final ObjectMapper objectMapperMock = spy(objectMapper);
-		final ElectionDataExtractionService extractionService = new ElectionDataExtractionService(pathService, objectMapperMock);
+		final ElectionDataExtractionService extractionService = new ElectionDataExtractionService(pathService, objectMapperMock,
+				new XmlFileRepository<>(), new XmlFileRepository<>());
 		final ControlComponentShufflePayload firstShufflePayload = extractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
 				datasetPath).get(0);
 		doReturn(firstShufflePayload).when(objectMapperMock).readValue(any(File.class), eq(ControlComponentShufflePayload.class));

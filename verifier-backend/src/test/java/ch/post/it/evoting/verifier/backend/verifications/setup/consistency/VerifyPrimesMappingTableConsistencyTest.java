@@ -27,7 +27,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
@@ -38,10 +37,9 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		final ElectionDataExtractionService extractionService = new ElectionDataExtractionService(pathService, objectMapper);
 		consistencyAlgorithm = spy(VerifyPrimesMappingTableConsistencyAlgorithm.class);
 
-		verification = new VerifyPrimesMappingTableConsistency(extractionService, consistencyAlgorithm, applicationEventPublisherMock);
+		verification = new VerifyPrimesMappingTableConsistency(electionDataExtractionService, consistencyAlgorithm, applicationEventPublisherMock);
 	}
 
 	@BeforeEach

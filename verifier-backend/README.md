@@ -11,6 +11,7 @@ All verifications performed in the verifier are listed in the table below:
 | Setup | 203 | CheckSignatureVerificationData                 |
 | Setup | 204 | CheckSignatureEncryptedCodeShares              |
 | Setup | 205 | CheckSignatureTallyData                        |
+| Setup | 206 | CheckSignatureSetupComponentConfig             |
 | Setup | 300 | VerifyEncryptionGroupConsistency               |
 | Setup | 301 | VerifyCCrChoiceReturnCodesPublicKeyConsistency |
 | Setup | 302 | VerifyCCmElectionPublicKeyConsistency          |
@@ -36,6 +37,7 @@ All verifications performed in the verifier are listed in the table below:
 | Tally | 201 | CheckSignatureOnlineShuffle                    |
 | Tally | 202 | CheckSignatureOfflineShuffle                   |
 | Tally | 203 | CheckSignatureProcessedVotes                   |
+| Tally | 205 | CheckSignatureTallyComponentEch0110            |
 | Tally | 300 | VerifyConfirmedEncryptedVotesConsistency       |
 | Tally | 301 | VerifyCiphertextsConsistency                   |
 | Tally | 302 | VerifyPlaintextsConsistency                    |

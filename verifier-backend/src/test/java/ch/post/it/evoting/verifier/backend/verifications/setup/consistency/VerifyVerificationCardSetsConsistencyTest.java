@@ -27,7 +27,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
@@ -38,12 +37,8 @@ import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerification
 @DisplayName("VerifyVerificationCardSetsConsistency with")
 class VerifyVerificationCardSetsConsistencyTest extends SetupVerificationTest {
 
-	private static ElectionDataExtractionService electionDataExtractionService;
-
 	@BeforeAll
 	static void setUpAll() {
-		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper);
-
 		verification = new VerifyVerificationCardSetsConsistency(pathService, applicationEventPublisherMock, electionDataExtractionService);
 	}
 

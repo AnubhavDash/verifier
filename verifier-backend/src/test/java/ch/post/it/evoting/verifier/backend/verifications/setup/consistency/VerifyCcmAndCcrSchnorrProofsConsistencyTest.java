@@ -15,7 +15,6 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -23,17 +22,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 
 class VerifyCcmAndCcrSchnorrProofsConsistencyTest extends SetupVerificationTest {
 
-	private static ElectionDataExtractionService extractionService = new ElectionDataExtractionService(pathService, objectMapper);
-
 	@BeforeAll
 	static void setupAll() {
-		extractionService = new ElectionDataExtractionService(pathService, objectMapper);
-		verification = new VerifyCcmAndCcrSchnorrProofsConsistency(extractionService, applicationEventPublisherMock);
+		verification = new VerifyCcmAndCcrSchnorrProofsConsistency(electionDataExtractionService, applicationEventPublisherMock);
 	}
 
 	@Test

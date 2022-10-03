@@ -34,7 +34,6 @@ import ch.post.it.evoting.cryptoprimitives.mixnet.MixnetFactory;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
@@ -59,7 +58,6 @@ class VerifyOnlineControlComponentsEvidenceTest extends TallyVerificationTest {
 
 		final VerifyOnlineControlComponentsBallotBoxAlgorithm verifyOnlineControlComponentsBallotBoxAlgorithm = new VerifyOnlineControlComponentsBallotBoxAlgorithm(
 				verifyMixDecOfflineAlgorithm, verifyVotingClientProofsAlgorithm, getMixnetInitialCiphertextsAlgorithm);
-		final ElectionDataExtractionService electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper);
 
 		verifyOnlineControlComponentsVerification = spy(
 				new VerifyOnlineControlComponentsVerification(verifyOnlineControlComponentsBallotBoxAlgorithm));

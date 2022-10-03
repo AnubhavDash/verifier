@@ -22,7 +22,6 @@ import org.mockito.Answers;
 import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
 import ch.post.it.evoting.verifier.protocol.domain.EncryptedVerifiableVote;
 import ch.post.it.evoting.verifier.protocol.domain.configuration.SetupComponentTallyDataPayload;
@@ -31,11 +30,8 @@ import ch.post.it.evoting.verifier.protocol.domain.tally.ControlComponentBallotB
 @DisplayName("VerifyVotingCardSetIdsConsistency with")
 class VerifyVotingCardIdsConsistencyTest extends TallyVerificationTest {
 
-	private static ElectionDataExtractionService electionDataExtractionService;
-
 	@BeforeAll
 	static void setupAll() {
-		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper);
 		verification = new VerifyVotingCardIdsConsistency(applicationEventPublisherMock, electionDataExtractionService);
 	}
 

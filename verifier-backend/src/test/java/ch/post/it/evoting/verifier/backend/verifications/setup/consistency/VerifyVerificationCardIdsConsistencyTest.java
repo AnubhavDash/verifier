@@ -34,12 +34,8 @@ import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerification
 
 class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 
-	private static ElectionDataExtractionService electionDataExtractionService;
-
 	@BeforeAll
 	static void setUpAll() {
-		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper);
-
 		verification = new VerifyVerificationCardIdsConsistency(pathService, applicationEventPublisherMock, electionDataExtractionService);
 	}
 

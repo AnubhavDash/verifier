@@ -43,11 +43,8 @@ import ch.post.it.evoting.verifier.protocol.domain.tally.ControlComponentBallotB
 @DisplayName("VerifyTallyNodeIdsConsistency with")
 class VerifyTallyNodeIdsConsistencyTest extends TallyVerificationTest {
 
-	private static ElectionDataExtractionService electionDataExtractionService;
-
 	@BeforeAll
 	static void setupAll() {
-		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper);
 		verification = new VerifyTallyNodeIdsConsistency(applicationEventPublisherMock, electionDataExtractionService);
 	}
 

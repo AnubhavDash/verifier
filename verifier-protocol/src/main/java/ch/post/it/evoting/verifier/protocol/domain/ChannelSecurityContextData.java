@@ -103,57 +103,6 @@ public final class ChannelSecurityContextData {
 	}
 
 	/**
-	 * @param electionEventId       ee, the election event id. Must be non-null and a valid UUID.
-	 * @param verificationCardSetId vcs, the verification card set id. Must be non-null and a valid UUID.
-	 * @return The additional context data for the message L<sub>lVCC</sub>.
-	 * @throws NullPointerException      if the election event id or the verification card set id is null.
-	 * @throws FailedValidationException if the election event id or the verification card set id is not a valid UUID.
-	 */
-	public static Hashable setupComponentLVCCAllowList(final String electionEventId, final String verificationCardSetId) {
-		validateUUID(electionEventId);
-		validateUUID(verificationCardSetId);
-
-		return HashableList.of(
-				HashableString.from("lvcc allow list"),
-				HashableString.from(electionEventId),
-				HashableString.from(verificationCardSetId));
-	}
-
-	/**
-	 * @param electionEventId       ee, the election event id. Must be non-null and a valid UUID.
-	 * @param verificationCardSetId vcs, the verification card set id. Must be non-null and a valid UUID.
-	 * @return The additional context data for the message CMtable.
-	 * @throws NullPointerException      if the election event id or the verification card set id is null.
-	 * @throws FailedValidationException if the election event id or the verification card set id is not a valid UUID.
-	 */
-	public static Hashable setupComponentCMTable(final String electionEventId, final String verificationCardSetId) {
-		validateUUID(electionEventId);
-		validateUUID(verificationCardSetId);
-
-		return HashableList.of(
-				HashableString.from("cm table"),
-				HashableString.from(electionEventId),
-				HashableString.from(verificationCardSetId));
-	}
-
-	/**
-	 * @param electionEventId       ee, the election event id. Must be non-null and a valid UUID.
-	 * @param verificationCardSetId vcs, the verification card set id. Must be non-null and a valid UUID.
-	 * @return The additional context data for the message VCks.
-	 * @throws NullPointerException      if the election event id or the verification card set id is null.
-	 * @throws FailedValidationException if the election event id or the verification card set id is not a valid UUID.
-	 */
-	public static Hashable setupComponentVerificationCardKeystores(final String electionEventId, final String verificationCardSetId) {
-		validateUUID(electionEventId);
-		validateUUID(verificationCardSetId);
-
-		return HashableList.of(
-				HashableString.from("vc keystore"),
-				HashableString.from(electionEventId),
-				HashableString.from(verificationCardSetId));
-	}
-
-	/**
 	 * @param electionEventId ee, the election event id. Must be non-null and a valid UUID.
 	 * @return The additional context data for the message ( {pk<sub>CCRj</sub>}<sup>4</sup><sub>j=1</sub>, pk<sub>CCR</sub>,
 	 * {ELpk,j}<sup>4</sup><sub>j=1</sub>, EB<sub>pk</sub>, EL<sub>pk</sub> ).
@@ -184,152 +133,6 @@ public final class ChannelSecurityContextData {
 				HashableString.from("tally data"),
 				HashableString.from(electionEventId),
 				HashableString.from(verificationCardSetId));
-	}
-
-	/**
-	 * @param electionEventId       ee, the election event id. Must be non-null and a valid UUID.
-	 * @param verificationCardSetId vcs, the verification card set id. Must be non-null and a valid UUID.
-	 * @param verificationCardId    vc<sub>id</sub>, the verification card id. Must be non-null and a valid UUID.
-	 * @return The additional context data for the message ( E1, E2, E&#771;1, π<sub>Exp</sub>, π<sub>EqEnc</sub> ).
-	 * @throws NullPointerException      if any input id is null.
-	 * @throws FailedValidationException if any input id is not a valid UUID.
-	 */
-	public static Hashable votingServerEncryptedVote(final String electionEventId, final String verificationCardSetId,
-			final String verificationCardId) {
-
-		validateUUID(electionEventId);
-		validateUUID(verificationCardSetId);
-		validateUUID(verificationCardId);
-
-		return HashableList.of(
-				HashableString.from("encrypted vote"),
-				HashableString.from(electionEventId),
-				HashableString.from(verificationCardSetId),
-				HashableString.from(verificationCardId));
-	}
-
-	/**
-	 * @param nodeId                j, the node id. Must be part of the known node ids.
-	 * @param electionEventId       ee, the election event id. Must be non-null and a valid UUID.
-	 * @param verificationCardSetId vcs, the verification card set id. Must be non-null and a valid UUID.
-	 * @param verificationCardId    vc<sub>id</sub>, the verification card id. Must be non-null and a valid UUID.
-	 * @return The additional context data for the message ( d<sub>j</sub>, π<sub>decPCC,j</sub> ).
-	 * @throws NullPointerException      if any input id is null.
-	 * @throws FailedValidationException if any input id is not a valid UUID.
-	 * @throws IllegalArgumentException  if the node id is not part of the known node ids.
-	 */
-	public static Hashable controlComponentPartialDecrypt(final int nodeId, final String electionEventId, final String verificationCardSetId,
-			final String verificationCardId) {
-
-		checkArgument(NODE_IDS.contains(nodeId), NODE_ID_INPUT_VALIDATION_ERROR_MESSAGE, nodeId);
-		validateUUID(electionEventId);
-		validateUUID(verificationCardSetId);
-		validateUUID(verificationCardId);
-
-		return HashableList.of(
-				HashableString.from("partial decrypt"),
-				HashableBigInteger.from(BigInteger.valueOf(nodeId)),
-				HashableString.from(electionEventId),
-				HashableString.from(verificationCardSetId),
-				HashableString.from(verificationCardId));
-	}
-
-	/**
-	 * @param nodeId                j, the node id. Must be part of the known node ids.
-	 * @param electionEventId       ee, the election event id. Must be non-null and a valid UUID.
-	 * @param verificationCardSetId vcs, the verification card set id. Must be non-null and a valid UUID.
-	 * @param verificationCardId    vc<sub>id</sub>, the verification card id. Must be non-null and a valid UUID.
-	 * @return The additional context data for the message lCC<sub>j,id</sub>.
-	 * @throws NullPointerException      if any input id is null.
-	 * @throws FailedValidationException if any input id is not a valid UUID.
-	 * @throws IllegalArgumentException  if the node id is not part of the known node ids.
-	 */
-	public static Hashable controlComponentLCCShare(final int nodeId, final String electionEventId, final String verificationCardSetId,
-			final String verificationCardId) {
-
-		checkArgument(NODE_IDS.contains(nodeId), NODE_ID_INPUT_VALIDATION_ERROR_MESSAGE, nodeId);
-		validateUUID(electionEventId);
-		validateUUID(verificationCardSetId);
-		validateUUID(verificationCardId);
-
-		return HashableList.of(
-				HashableString.from("lcc share"),
-				HashableBigInteger.from(BigInteger.valueOf(nodeId)),
-				HashableString.from(electionEventId),
-				HashableString.from(verificationCardSetId),
-				HashableString.from(verificationCardId));
-	}
-
-	/**
-	 * @param electionEventId       ee, the election event id. Must be non-null and a valid UUID.
-	 * @param verificationCardSetId vcs, the verification card set id. Must be non-null and a valid UUID.
-	 * @param verificationCardId    vc<sub>id</sub>, the verification card id. Must be non-null and a valid UUID.
-	 * @return The additional context data for the message CK<sub>id</sub>.
-	 * @throws NullPointerException      if any input id is null.
-	 * @throws FailedValidationException if any input id is not a valid UUID.
-	 */
-	public static Hashable votingServerConfirm(final String electionEventId, final String verificationCardSetId, final String verificationCardId) {
-
-		validateUUID(electionEventId);
-		validateUUID(verificationCardSetId);
-		validateUUID(verificationCardId);
-
-		return HashableList.of(
-				HashableString.from("confirmation key"),
-				HashableString.from(electionEventId),
-				HashableString.from(verificationCardSetId),
-				HashableString.from(verificationCardId));
-	}
-
-	/**
-	 * @param nodeId                j, the node id. Must be part of the known node ids.
-	 * @param electionEventId       ee, the election event id. Must be non-null and a valid UUID.
-	 * @param verificationCardSetId vcs, the verification card set id. Must be non-null and a valid UUID.
-	 * @param verificationCardId    vc<sub>id</sub>, the verification card id. Must be non-null and a valid UUID.
-	 * @return The additional context data for the message hlVCC<sub>id,j</sub>.
-	 * @throws NullPointerException      if any input id is null.
-	 * @throws FailedValidationException if any input id is not a valid UUID.
-	 * @throws IllegalArgumentException  if the node id is not part of the known node ids.
-	 */
-	public static Hashable controlComponenthlVCC(final int nodeId, final String electionEventId, final String verificationCardSetId,
-			final String verificationCardId) {
-
-		checkArgument(NODE_IDS.contains(nodeId), NODE_ID_INPUT_VALIDATION_ERROR_MESSAGE, nodeId);
-		validateUUID(electionEventId);
-		validateUUID(verificationCardSetId);
-		validateUUID(verificationCardId);
-
-		return HashableList.of(
-				HashableString.from("hlvcc"),
-				HashableBigInteger.from(BigInteger.valueOf(nodeId)),
-				HashableString.from(electionEventId),
-				HashableString.from(verificationCardSetId),
-				HashableString.from(verificationCardId));
-	}
-
-	/**
-	 * @param nodeId                j, the node id. Must be part of the known node ids.
-	 * @param electionEventId       ee, the election event id. Must be non-null and a valid UUID.
-	 * @param verificationCardSetId vcs, the verification card set id. Must be non-null and a valid UUID.
-	 * @param verificationCardId    vc<sub>id</sub>, the verification card id. Must be non-null and a valid UUID.
-	 * @return The additional context data for the message lVCC<sub>id,j</sub>.
-	 * @throws NullPointerException      if any input id is null.
-	 * @throws FailedValidationException if any input id is not a valid UUID.
-	 * @throws IllegalArgumentException  if the node id is not part of the known node ids.
-	 */
-	public static Hashable controlComponentlVCCShare(final int nodeId, final String electionEventId, final String verificationCardSetId,
-			final String verificationCardId) {
-
-		checkArgument(NODE_IDS.contains(nodeId), NODE_ID_INPUT_VALIDATION_ERROR_MESSAGE, nodeId);
-		validateUUID(electionEventId);
-		validateUUID(verificationCardSetId);
-		validateUUID(verificationCardId);
-
-		return HashableList.of(HashableString.from("lvcc share"),
-				HashableBigInteger.from(BigInteger.valueOf(nodeId)),
-				HashableString.from(electionEventId),
-				HashableString.from(verificationCardSetId),
-				HashableString.from(verificationCardId));
 	}
 
 	/**
@@ -414,24 +217,17 @@ public final class ChannelSecurityContextData {
 	}
 
 	/**
-	 * @param electionEventId ee, the election event id. Must be non-null and a valid UUID.
-	 * @return The additional context data for the message ( Hash_1, ..., Hash_k ).
-	 * @throws NullPointerException      if the election event id is null.
-	 * @throws FailedValidationException if the election event id is not a valid UUID.
-	 */
-	public static Hashable setupComponentElectoralBoardHashes(final String electionEventId) {
-		validateUUID(electionEventId);
-
-		return HashableList.of(
-				HashableString.from("electoral board hashes"),
-				HashableString.from(electionEventId));
-	}
-
-	/**
 	 * @return The additional context data for the message configuration XML.
 	 */
 	public static Hashable setupComponentConfig() {
 		return HashableString.from("configuration");
+	}
+
+	/**
+	 * @return The additional context data for the message eCH 0110 XML.
+	 */
+	public static Hashable tallyComponentEch0110() {
+		return HashableString.from("eCH 0110");
 	}
 
 }

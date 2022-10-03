@@ -34,17 +34,13 @@ import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureGeneration;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
-import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
 import ch.post.it.evoting.verifier.protocol.domain.ChannelSecurityContextData;
 
 class CheckSignatureOnlineShuffleTest extends TallyVerificationTest {
 
-	private ElectionDataExtractionService electionDataExtractionService;
-
 	@BeforeEach
 	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
-		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper);
 		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
 		verification = new CheckSignatureOnlineShuffle(applicationEventPublisherMock, electionDataExtractionService, testSignatureVerification);
 	}

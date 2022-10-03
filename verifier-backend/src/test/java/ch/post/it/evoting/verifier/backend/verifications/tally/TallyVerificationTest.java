@@ -31,12 +31,16 @@ import org.springframework.context.ApplicationEventPublisher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ch.ech.xmlns.ech_0110._4.Delivery;
 import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.tools.CertificateLoader;
+import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
+import ch.post.it.evoting.verifier.backend.tools.XmlFileRepository;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.verifications.authenticity.TestDigitalSignaturesFactory;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
 
 public abstract class TallyVerificationTest {
 
@@ -47,6 +51,10 @@ public abstract class TallyVerificationTest {
 	protected static AbstractVerification verification;
 	protected static CertificateLoader certificateLoader;
 	protected static ApplicationEventPublisher applicationEventPublisherMock;
+	protected static XmlFileRepository<Delivery> deliveryXmlFileRepository;
+	protected static XmlFileRepository<Configuration> configurationXmlFileRepository;
+	protected static ElectionDataExtractionService electionDataExtractionService;
+
 
 	@BeforeAll
 	static void baseSetUpAll() {
@@ -56,6 +64,10 @@ public abstract class TallyVerificationTest {
 		applicationEventPublisherMock = mock(ApplicationEventPublisher.class);
 		datasetPath = Paths.get("").toAbsolutePath().getParent().resolve("datasets").resolve("dataset1");
 		signatureFactory = new TestDigitalSignaturesFactory();
+		deliveryXmlFileRepository = new XmlFileRepository<>();
+		configurationXmlFileRepository = new XmlFileRepository<>();
+		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper, deliveryXmlFileRepository, configurationXmlFileRepository);
+
 	}
 
 	@BeforeEach

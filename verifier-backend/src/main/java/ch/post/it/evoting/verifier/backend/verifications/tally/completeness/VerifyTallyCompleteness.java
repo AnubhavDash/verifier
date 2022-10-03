@@ -98,6 +98,7 @@ public class VerifyTallyCompleteness extends AbstractVerification {
 
 	private boolean verifyTallyCompleteness(final Path inputDirectoryPath) {
 		try {
+			pathService.buildFromRootPath(StructureKey.TALLY_COMPONENT_ECH0110, inputDirectoryPath);
 			pathService.buildFromRootPath(StructureKey.BALLOT_BOXES_DIR, inputDirectoryPath);
 			final List<Path> ballotBoxIds = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath).getRegexPaths();
 			ballotBoxIds.forEach(bb -> checkState(

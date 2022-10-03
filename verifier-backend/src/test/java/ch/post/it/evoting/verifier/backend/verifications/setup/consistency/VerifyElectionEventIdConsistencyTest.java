@@ -41,12 +41,8 @@ import lombok.SneakyThrows;
 @DisplayName("VerifyElectionEventIdConsistency with")
 class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 
-	private static ElectionDataExtractionService electionDataExtractionService;
-
 	@BeforeAll
 	static void setUpAll() {
-		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper);
-
 		verification = new VerifyElectionEventIdConsistency(applicationEventPublisherMock,
 				electionDataExtractionService);
 	}

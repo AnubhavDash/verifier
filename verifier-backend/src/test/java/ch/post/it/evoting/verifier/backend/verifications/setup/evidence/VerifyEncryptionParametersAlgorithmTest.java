@@ -19,10 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
-import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
-import ch.post.it.evoting.cryptoprimitives.math.GqElement;
-import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
+import java.math.BigInteger;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,11 +27,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
+import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
+import ch.post.it.evoting.cryptoprimitives.math.GqElement;
+import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
+
 import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
 import uk.org.webcompere.systemstubs.jupiter.SystemStub;
 import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
-
-import java.math.BigInteger;
 
 @ExtendWith(SystemStubsExtension.class)
 class VerifyEncryptionParametersAlgorithmTest {

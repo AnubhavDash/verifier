@@ -45,12 +45,9 @@ import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerification
 
 class VerifyPlaintextsConsistencyTest extends TallyVerificationTest {
 
-	private static ElectionDataExtractionService extractionService;
-
 	@BeforeAll
 	static void setupAll() {
-		extractionService = new ElectionDataExtractionService(pathService, objectMapper);
-		verification = new VerifyPlaintextsConsistency(applicationEventPublisherMock, extractionService);
+		verification = new VerifyPlaintextsConsistency(applicationEventPublisherMock, electionDataExtractionService);
 	}
 
 	@Test
@@ -63,7 +60,7 @@ class VerifyPlaintextsConsistencyTest extends TallyVerificationTest {
 
 	@Test
 	void verifyNok() {
-		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(datasetPath);
+		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(datasetPath);
 		final GqGroup encryptionGroup = electionEventContextPayload.getEncryptionGroup();
 		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
 		final List<VerificationCardSetContext> vcsContexts = electionEventContext.verificationCardSetContexts();
@@ -82,7 +79,7 @@ class VerifyPlaintextsConsistencyTest extends TallyVerificationTest {
 		doReturn(modifiedVcsContexts).when(modifiedElectionEventContext).verificationCardSetContexts();
 		final ElectionEventContextPayload modifiedElectionEventContextPayload = new ElectionEventContextPayload(
 				electionEventContextPayload.getEncryptionGroup(), modifiedElectionEventContext);
-		final ElectionDataExtractionService extractionServiceMock = spy(extractionService);
+		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
 		doReturn(modifiedElectionEventContextPayload).when(extractionServiceMock).getElectionEventContextPayload(datasetPath);
 
 		final VerifyPlaintextsConsistency verificationWithMock = new VerifyPlaintextsConsistency(applicationEventPublisherMock,

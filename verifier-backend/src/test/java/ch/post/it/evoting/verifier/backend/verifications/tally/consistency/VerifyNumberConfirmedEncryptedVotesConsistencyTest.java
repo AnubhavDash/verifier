@@ -37,12 +37,8 @@ import ch.post.it.evoting.verifier.protocol.domain.tally.ControlComponentBallotB
 
 class VerifyNumberConfirmedEncryptedVotesConsistencyTest extends TallyVerificationTest {
 
-	private static ElectionDataExtractionService electionDataExtractionService;
-
 	@BeforeAll
 	static void setUpAll() {
-		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper);
-
 		verification = new VerifyNumberConfirmedEncryptedVotesConsistency(applicationEventPublisherMock, pathService, electionDataExtractionService);
 	}
 

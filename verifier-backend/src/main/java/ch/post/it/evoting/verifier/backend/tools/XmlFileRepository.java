@@ -18,10 +18,11 @@ package ch.post.it.evoting.verifier.backend.tools;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
@@ -55,7 +56,7 @@ public class XmlFileRepository<T> {
 	 * source file.
 	 *
 	 * @param sourceFilePath the path to the source file.
-	 * @param schemaFilePath the path to the schema file.
+	 * @param schemaResourceName the path to the schema file.
 	 * @param clazz          the class of the object to be returned.
 	 * @return the object of type {@code clazz} representing the source file.
 	 * @throws NullPointerException     if any of the inputs is null.
@@ -65,23 +66,26 @@ public class XmlFileRepository<T> {
 	 *                                      <li>the schema file has not the XSD extension or does not exist.</li>
 	 *                                  </ul>
 	 */
-	protected T read(final String sourceFilePath, final String schemaFilePath, final Class<T> clazz) {
+	public T read(final Path sourceFilePath, final String schemaResourceName, final Class<T> clazz) {
 		checkNotNull(sourceFilePath);
-		checkArgument(sourceFilePath.toLowerCase().endsWith(XML_EXTENSION),
-				"The provided source file path does not target an XML file. [sourceFilePath: %s]", sourceFilePath);
-		final File sourceFile = new File(sourceFilePath);
-		checkArgument(sourceFile.exists(), "The provided source file does not exist. [sourceFilePath: %s]", sourceFilePath);
-
+		checkNotNull(schemaResourceName);
 		checkNotNull(clazz);
 
+		checkArgument(sourceFilePath.toString().toLowerCase().endsWith(XML_EXTENSION),
+				"The provided source file path does not target an XML file. [sourceFilePath: %s]", sourceFilePath);
+		checkArgument(Files.exists(sourceFilePath), "The provided source file does not exist. [sourceFilePath: %s]", sourceFilePath);
+
+		checkArgument(schemaResourceName.toLowerCase().endsWith(XSD_EXTENSION),
+				"The provided schema file path does not target an XSD file. [schemaResourceName: %s]", schemaResourceName);
+
 		final JAXBContext jaxbContext = newJaxbContext(clazz);
-		final Schema schema = loadSchema(schemaFilePath);
+		final Schema schema = loadSchema(schemaResourceName);
 		final Unmarshaller jaxbUnmarshaller = createUnmarshaller(jaxbContext, schema);
 
 		try {
-			return clazz.cast(jaxbUnmarshaller.unmarshal(sourceFile));
+			return clazz.cast(jaxbUnmarshaller.unmarshal(sourceFilePath.toFile()));
 		} catch (final JAXBException e) {
-			throw new IllegalStateException(e);
+			throw new IllegalStateException(String.format("Failed to read xml file. [sourceFilePath: %s]", sourceFilePath), e);
 		}
 	}
 
@@ -89,7 +93,7 @@ public class XmlFileRepository<T> {
 	 * Writes the provided object in the provided destination path while validating it against the provided schema file.
 	 *
 	 * @param object              the object to be written.
-	 * @param schemaFilePath      the path to the schema file.
+	 * @param schemaResourceName      the path to the schema file.
 	 * @param destinationFilePath the path to the destination file.
 	 * @throws NullPointerException     if any of the inputs is null.
 	 * @throws IllegalArgumentException if
@@ -98,15 +102,19 @@ public class XmlFileRepository<T> {
 	 *                                      <li>the destination file has not the XML extension.</li>
 	 *                                  </ul>
 	 */
-	protected void write(final T object, final String schemaFilePath, final String destinationFilePath) {
+	public Path write(final T object, final String schemaResourceName, final Path destinationFilePath) {
 		checkNotNull(object);
-
+		checkNotNull(schemaResourceName);
 		checkNotNull(destinationFilePath);
-		checkArgument(destinationFilePath.toLowerCase().endsWith(XML_EXTENSION),
+
+		checkArgument(schemaResourceName.toLowerCase().endsWith(XSD_EXTENSION),
+				"The provided schema file path does not target an XSD file. [schemaResourceName: %s]", schemaResourceName);
+
+		checkArgument(destinationFilePath.toString().toLowerCase().endsWith(XML_EXTENSION),
 				"The provided destination file path does not target an XML file. [destinationFilePath: %s]", destinationFilePath);
 
 		final JAXBContext jaxbContext = newJaxbContext(object.getClass());
-		final Schema schema = loadSchema(schemaFilePath);
+		final Schema schema = loadSchema(schemaResourceName);
 		final Marshaller jaxbMarshaller = createMarshaller(jaxbContext, schema);
 		final Document document = newDocument();
 
@@ -118,13 +126,15 @@ public class XmlFileRepository<T> {
 
 		final Transformer transformer = newTransformer();
 
-		try (final FileOutputStream fileOutput = new FileOutputStream(destinationFilePath)) {
+		try (final OutputStream fileOutput = Files.newOutputStream(destinationFilePath)) {
 			transformer.transform(new DOMSource(document), new StreamResult(fileOutput));
 		} catch (final TransformerException e) {
-			throw new IllegalStateException("Unable to create XML file. Cause: " + e.getLocalizedMessage(), e);
+			throw new IllegalStateException("Unable to create XML file.", e);
 		} catch (final IOException e) {
-			throw new IllegalStateException("Filed to create xml output file. Cause: " + e.getLocalizedMessage(), e);
+			throw new IllegalStateException("Failed to create xml output file.", e);
 		}
+
+		return destinationFilePath;
 	}
 
 	private static Unmarshaller createUnmarshaller(final JAXBContext jaxbContext, final Schema schema) {
@@ -132,28 +142,22 @@ public class XmlFileRepository<T> {
 		try {
 			jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 		} catch (final JAXBException e) {
-			throw new IllegalStateException(e);
+			throw new IllegalStateException("Failed to create unmarshaller", e);
 		}
 		jaxbUnmarshaller.setSchema(schema);
 		return jaxbUnmarshaller;
 	}
 
-	private Schema loadSchema(String xsdLocation) {
-		checkNotNull(xsdLocation);
-		checkArgument(xsdLocation.toLowerCase().endsWith(XSD_EXTENSION),
-				"The provided schema file path does not target an XSD file. [xsdLocation: %s]", xsdLocation);
-
-		final URL schemaUrl = getClass().getClassLoader().getResource(xsdLocation);
-		checkNotNull(schemaUrl, "The provided schema file does not exist. [xsdLocation: %s]", xsdLocation);
-
+	private Schema loadSchema(final String schemaResourceName) {
 		try {
 			final SchemaFactory schemaFactory = SchemaFactory.newDefaultInstance();
 			schemaFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-			schemaFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+			schemaFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "file");
 
+			final URL schemaUrl = this.getClass().getClassLoader().getResource(schemaResourceName);
 			return schemaFactory.newSchema(schemaUrl);
 		} catch (final SAXException e) {
-			throw new IllegalStateException(String.format("Could not create new schema for %s. ", xsdLocation), e);
+			throw new IllegalStateException(String.format("Could not create new schema. [schemaResourceName: %s]", schemaResourceName), e);
 		}
 
 	}
@@ -167,7 +171,7 @@ public class XmlFileRepository<T> {
 		try {
 			transformer = transformerFactory.newTransformer();
 		} catch (final TransformerConfigurationException e) {
-			throw new IllegalStateException(e);
+			throw new IllegalStateException("Failed to create transformer.", e);
 		}
 		transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -179,7 +183,7 @@ public class XmlFileRepository<T> {
 		try {
 			jaxbMarshaller = jaxbContext.createMarshaller();
 		} catch (final JAXBException e) {
-			throw new IllegalStateException(e);
+			throw new IllegalStateException("Failed to create marshaller.", e);
 		}
 		jaxbMarshaller.setSchema(schema);
 		return jaxbMarshaller;
@@ -190,7 +194,7 @@ public class XmlFileRepository<T> {
 		try {
 			jaxbContext = JAXBContext.newInstance(clazz);
 		} catch (final JAXBException e) {
-			throw new IllegalStateException(e);
+			throw new IllegalStateException("Failed to create JAXBContext.", e);
 		}
 		return jaxbContext;
 	}
@@ -200,7 +204,7 @@ public class XmlFileRepository<T> {
 		try {
 			document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 		} catch (final ParserConfigurationException e) {
-			throw new IllegalStateException(e);
+			throw new IllegalStateException("Failed to create Document.", e);
 		}
 		return document;
 	}

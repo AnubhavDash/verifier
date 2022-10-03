@@ -37,12 +37,9 @@ import ch.post.it.evoting.verifier.protocol.domain.configuration.ControlComponen
 
 class VerifySetupNodeIdsConsistencyTest extends SetupVerificationTest {
 
-	private static ElectionDataExtractionService extractionService;
-
 	@BeforeAll
 	static void setupAll() {
-		extractionService = new ElectionDataExtractionService(pathService, objectMapper);
-		verification = new VerifySetupNodeIdsConsistency(applicationEventPublisherMock, extractionService);
+		verification = new VerifySetupNodeIdsConsistency(applicationEventPublisherMock, electionDataExtractionService);
 	}
 
 	@Test
@@ -55,8 +52,8 @@ class VerifySetupNodeIdsConsistencyTest extends SetupVerificationTest {
 
 	@Test
 	void verifyNokControlComponentPublicKeysCompleteness() {
-		final ElectionDataExtractionService extractionServiceMock = spy(extractionService);
-		final List<ControlComponentPublicKeysPayload> publicKeysPayloads = extractionService.getControlComponentPublicKeysPayloads(
+		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
+		final List<ControlComponentPublicKeysPayload> publicKeysPayloads = electionDataExtractionService.getControlComponentPublicKeysPayloads(
 				datasetPath);
 		doReturn(publicKeysPayloads.subList(0, publicKeysPayloads.size() - 1)).when(extractionServiceMock)
 				.getControlComponentPublicKeysPayloads(datasetPath);
@@ -71,8 +68,8 @@ class VerifySetupNodeIdsConsistencyTest extends SetupVerificationTest {
 
 	@Test
 	void verifyNokControlComponentPublicKeysUniqueness() {
-		final ElectionDataExtractionService extractionServiceMock = spy(extractionService);
-		final List<ControlComponentPublicKeysPayload> publicKeysPayloads = extractionService.getControlComponentPublicKeysPayloads(
+		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
+		final List<ControlComponentPublicKeysPayload> publicKeysPayloads = electionDataExtractionService.getControlComponentPublicKeysPayloads(
 				datasetPath);
 		final List<ControlComponentPublicKeysPayload> publicKeysWithDuplicateNodeIds = Streams.concat(publicKeysPayloads.stream(),
 				Stream.of(publicKeysPayloads.get(0))).toList();
@@ -88,8 +85,8 @@ class VerifySetupNodeIdsConsistencyTest extends SetupVerificationTest {
 
 	@Test
 	void verifyNokCodeShares() {
-		final ElectionDataExtractionService extractionServiceMock = spy(extractionService);
-		final Stream<List<ControlComponentCodeSharesPayload>> codeSharesPayloads = extractionService.getControlComponentCodeSharesPayloadsByChunkAndVcs(
+		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
+		final Stream<List<ControlComponentCodeSharesPayload>> codeSharesPayloads = electionDataExtractionService.getControlComponentCodeSharesPayloadsByChunkAndVcs(
 				datasetPath);
 		final Stream<List<ControlComponentCodeSharesPayload>> codeSharesPayloadsMissingNodeId = codeSharesPayloads.map(
 				codeSharesList -> codeSharesList.stream()

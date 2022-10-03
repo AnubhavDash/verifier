@@ -35,12 +35,8 @@ import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerification
 
 class VerifyBallotBoxIdsConsistencyTest extends TallyVerificationTest {
 
-	private static ElectionDataExtractionService electionDataExtractionService;
-
 	@BeforeAll
 	static void setUpAll() {
-		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper);
-
 		verification = new VerifyBallotBoxIdsConsistency(applicationEventPublisherMock, pathService, electionDataExtractionService);
 	}
 

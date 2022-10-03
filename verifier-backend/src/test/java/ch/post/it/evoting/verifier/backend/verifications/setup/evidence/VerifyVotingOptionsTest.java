@@ -27,7 +27,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
@@ -41,8 +40,7 @@ class VerifyVotingOptionsTest extends SetupVerificationTest {
 	static void setUpAll() {
 		verifyVotingOptionsAlgorithm = spy(new VerifyVotingOptionsAlgorithm());
 
-		verification = new VerifyVotingOptions(new ElectionDataExtractionService(pathService, objectMapper), applicationEventPublisherMock,
-				verifyVotingOptionsAlgorithm);
+		verification = new VerifyVotingOptions(electionDataExtractionService, applicationEventPublisherMock, verifyVotingOptionsAlgorithm);
 	}
 
 	@AfterEach

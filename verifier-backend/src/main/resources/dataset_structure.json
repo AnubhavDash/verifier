@@ -60,7 +60,12 @@
 		"type": "DIRECTORY",
 		"name": "tally",
 		"content": [
-			{
+		  {
+			"key": "TALLY_COMPONENT_ECH0110",
+			"type": "FILE",
+			"name": "eCH-0110_.+\\.xml"
+		  },
+		  {
 				"key": "BALLOT_BOXES_DIR",
 				"type": "DIRECTORY",
 				"name": "ballot_boxes",

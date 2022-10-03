@@ -24,13 +24,11 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
 import ch.post.it.evoting.cryptoprimitives.mixnet.MixnetFactory;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.DecodeVotingOptionsAlgorithm;
@@ -46,8 +44,8 @@ class VerifyTallyControlComponentTest extends TallyVerificationTest {
 		final VerifyTallyControlComponentBallotBoxAlgorithm verifyTallyControlComponentBallotBoxAlgorithm = new VerifyTallyControlComponentBallotBoxAlgorithm(
 				MixnetFactory.createMixnet(), ZeroKnowledgeProofFactory.createZeroKnowledgeProof(), verifyProcessPlaintextsAlgorithm);
 
-		verification = new VerifyTallyControlComponent(new ElectionDataExtractionService(pathService, DomainObjectMapper.getNewInstance()),
-				verifyTallyControlComponentBallotBoxAlgorithm, applicationEventPublisherMock);
+		verification = new VerifyTallyControlComponent(electionDataExtractionService, verifyTallyControlComponentBallotBoxAlgorithm,
+				applicationEventPublisherMock);
 	}
 
 	@Test
@@ -62,9 +60,8 @@ class VerifyTallyControlComponentTest extends TallyVerificationTest {
 	void verifyNok() {
 		final VerifyTallyControlComponentBallotBoxAlgorithm algorithmMock = mock(VerifyTallyControlComponentBallotBoxAlgorithm.class);
 		when(algorithmMock.verifyTallyControlComponentBallotBox(any(), any())).thenReturn(false);
-		final VerifyTallyControlComponent verificationWithMock = new VerifyTallyControlComponent(
-				new ElectionDataExtractionService(pathService, DomainObjectMapper.getNewInstance()),
-				algorithmMock, applicationEventPublisherMock);
+		final VerifyTallyControlComponent verificationWithMock = new VerifyTallyControlComponent(electionDataExtractionService, algorithmMock,
+				applicationEventPublisherMock);
 		final VerificationResult result = verificationWithMock.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),

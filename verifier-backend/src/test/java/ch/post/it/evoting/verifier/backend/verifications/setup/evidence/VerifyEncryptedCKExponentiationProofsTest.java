@@ -28,7 +28,6 @@ import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
@@ -46,7 +45,7 @@ class VerifyEncryptedCKExponentiationProofsTest extends SetupVerificationTest {
 		final VerifyEncryptedCKExponentiationProofsAlgorithm verifyEncryptedCKExponentiationProofsAlgorithm = new VerifyEncryptedCKExponentiationProofsAlgorithm(
 				verifyCKProofsVerificationCardSetAlgorithm);
 		final ExponentiationProofsVerificationExtractionService exponentiationProofsVerificationExtractionService = new ExponentiationProofsVerificationExtractionService(
-				new ElectionDataExtractionService(pathService, objectMapper), pathService);
+				electionDataExtractionService, pathService);
 		verification = new VerifyEncryptedCKExponentiationProofs(applicationEventPublisherMock, exponentiationProofsVerificationExtractionService,
 				verifyEncryptedCKExponentiationProofsAlgorithm);
 	}

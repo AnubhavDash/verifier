@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ch.ech.xmlns.ech_0110._4.Delivery;
 import ch.post.it.evoting.cryptoprimitives.domain.election.CombinedCorrectnessInformation;
 import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
@@ -39,7 +40,6 @@ import ch.post.it.evoting.cryptoprimitives.domain.mixnet.TallyComponentShufflePa
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeSharesPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationDataPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.validations.FailedValidationException;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
@@ -47,22 +47,43 @@ import ch.post.it.evoting.verifier.protocol.domain.configuration.ControlComponen
 import ch.post.it.evoting.verifier.protocol.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.verifier.protocol.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.protocol.domain.tally.TallyComponentVotesPayload;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
 
 @Service
 public class ElectionDataExtractionService {
 
 	private final PathService pathService;
 	private final ObjectMapper objectMapper;
+	private final XmlFileRepository<Delivery> deliveryXmlFileRepository;
+	private final XmlFileRepository<Configuration> configurationXmlFileRepository;
 
-	public ElectionDataExtractionService(final PathService pathService, final ObjectMapper objectMapper) {
+	public ElectionDataExtractionService(
+			final PathService pathService,
+			final ObjectMapper objectMapper,
+			final XmlFileRepository<Delivery> deliveryXmlFileRepository,
+			final XmlFileRepository<Configuration> configurationXmlFileRepository) {
 		this.pathService = pathService;
 		this.objectMapper = objectMapper;
+		this.deliveryXmlFileRepository = deliveryXmlFileRepository;
+		this.configurationXmlFileRepository = configurationXmlFileRepository;
 	}
 
 	public Configuration getConfiguration(final Path inputDirectoryPath) {
 		final PathNode configurationPathNode = pathService.buildFromRootPath(StructureKey.CONFIGURATION_ANONYMIZED, inputDirectoryPath);
-		final XmlFileRepository<Configuration> xmlFileRepository = new XmlFileRepository<>();
-		return xmlFileRepository.read(configurationPathNode.getPath().toString(), "xsd/evoting-config-4-4.xsd", Configuration.class);
+		return configurationXmlFileRepository.read(configurationPathNode.getPath(), "xsd/evoting-config-4-4.xsd", Configuration.class);
+	}
+
+	/**
+	 * Gets the tally component eCH-0110.
+	 *
+	 * @param inputDirectoryPath the root directory containing project files.
+	 * @return the tally component eCH-0110 as {@link Delivery} found in the project files, at the expected location if it exists.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 * @throws UncheckedIOException if the file cannot be deserialized to a Delivery.
+	 */
+	public Delivery getTallyComponentEch0110(final Path inputDirectoryPath) {
+		final PathNode deliveryPathNode = pathService.buildFromRootPath(StructureKey.TALLY_COMPONENT_ECH0110, inputDirectoryPath);
+		return deliveryXmlFileRepository.read(deliveryPathNode.getPath(), "xsd/eCH-0110-4-0.xsd", Delivery.class);
 	}
 
 	/**
@@ -184,7 +205,8 @@ public class ElectionDataExtractionService {
 	 * @throws FailedValidationException if {@code ballotBoxId} is invalid.
 	 * @throws UncheckedIOException      if the deserialization of any control component ballot box fails.
 	 */
-	public List<ControlComponentBallotBoxPayload> getControlComponentBallotBoxPayloadsOrderedByNodeId(final Path inputDirectoryPath, final String ballotBoxId) {
+	public List<ControlComponentBallotBoxPayload> getControlComponentBallotBoxPayloadsOrderedByNodeId(final Path inputDirectoryPath,
+			final String ballotBoxId) {
 		checkNotNull(inputDirectoryPath);
 		validateUUID(ballotBoxId);
 
@@ -261,7 +283,8 @@ public class ElectionDataExtractionService {
 	 * @throws FailedValidationException if {@code ballotBoxId} is invalid.
 	 * @throws UncheckedIOException      if the deserialization of any control component shuffle payloads fails.
 	 */
-	public List<ControlComponentShufflePayload> getControlComponentShufflePayloadsOrderedByNodeId(final Path inputDirectoryPath, final String ballotBoxId) {
+	public List<ControlComponentShufflePayload> getControlComponentShufflePayloadsOrderedByNodeId(final Path inputDirectoryPath,
+			final String ballotBoxId) {
 		checkNotNull(inputDirectoryPath);
 		validateUUID(ballotBoxId);
 
@@ -554,7 +577,8 @@ public class ElectionDataExtractionService {
 	}
 
 	/**
-	 * Deserializes and returns the control component code shares payloads for each chunk, given a path for a verification card set ID, ordered by node id.
+	 * Deserializes and returns the control component code shares payloads for each chunk, given a path for a verification card set ID, ordered by
+	 * node id.
 	 *
 	 * @param verificationCardSetIdPath the path for the verification card set ID.
 	 * @return List of {@code ReturnCodeGenerationResponsePayload} for each chunk.

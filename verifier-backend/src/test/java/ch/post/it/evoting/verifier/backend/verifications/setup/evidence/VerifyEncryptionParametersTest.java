@@ -23,11 +23,9 @@ import static org.mockito.Mockito.spy;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
@@ -38,12 +36,10 @@ class VerifyEncryptionParametersTest extends SetupVerificationTest {
 
 	@BeforeAll
 	static void setUpAll() {
-		final ElectionDataExtractionService extractionService = new ElectionDataExtractionService(pathService, DomainObjectMapper.getNewInstance());
-
 		final ElGamal elGamal = ElGamalFactory.createElGamal();
 		verifyEncryptionParametersAlgorithm = spy(new VerifyEncryptionParametersAlgorithm(elGamal));
 
-		verification = new VerifyEncryptionParameters(extractionService, applicationEventPublisherMock, verifyEncryptionParametersAlgorithm);
+		verification = new VerifyEncryptionParameters(electionDataExtractionService, applicationEventPublisherMock, verifyEncryptionParametersAlgorithm);
 	}
 
 	@Test

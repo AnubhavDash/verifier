@@ -35,12 +35,9 @@ import ch.post.it.evoting.verifier.protocol.domain.configuration.ControlComponen
 
 class VerifyCcrChoiceReturnCodesPublicKeyConsistencyTest extends SetupVerificationTest {
 
-	private static ElectionDataExtractionService extractionService = new ElectionDataExtractionService(pathService, objectMapper);
-
 	@BeforeAll
 	static void setupAll() {
-		extractionService = new ElectionDataExtractionService(pathService, objectMapper);
-		verification = new VerifyCcrChoiceReturnCodesPublicKeyConsistency(extractionService, applicationEventPublisherMock);
+		verification = new VerifyCcrChoiceReturnCodesPublicKeyConsistency(electionDataExtractionService, applicationEventPublisherMock);
 	}
 
 	@Test
@@ -55,7 +52,7 @@ class VerifyCcrChoiceReturnCodesPublicKeyConsistencyTest extends SetupVerificati
 	@Test
 	@DisplayName("inconsistent pk_CCR_j fails.")
 	void inconsistentCcrChoiceReturnCodesPublicKeys() {
-		final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = extractionService.getControlComponentPublicKeysPayloads(
+		final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = electionDataExtractionService.getControlComponentPublicKeysPayloads(
 				datasetPath);
 		final ControlComponentPublicKeysPayload controlComponentPublicKeysPayload3 = controlComponentPublicKeysPayloads.get(3);
 		final ControlComponentPublicKeys controlComponentPublicKeys = controlComponentPublicKeysPayload3.getControlComponentPublicKeys();
@@ -69,7 +66,7 @@ class VerifyCcrChoiceReturnCodesPublicKeyConsistencyTest extends SetupVerificati
 				controlComponentPublicKeysPayload3.getElectionEventId(),
 				modifiedControlComponentPublicKeys);
 
-		final ElectionDataExtractionService extractionServiceMock = spy(extractionService);
+		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
 		doReturn(List.of(controlComponentPublicKeysPayloads.get(0), controlComponentPublicKeysPayloads.get(1),
 				controlComponentPublicKeysPayloads.get(2), modifiedControlComponentPublicKeysPayload3))
 				.when(extractionServiceMock).getControlComponentPublicKeysPayloads(datasetPath);
