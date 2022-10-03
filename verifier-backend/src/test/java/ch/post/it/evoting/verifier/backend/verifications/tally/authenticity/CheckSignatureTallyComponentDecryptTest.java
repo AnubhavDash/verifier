@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ch.post.it.evoting.verifier.backend.verifications.setup.authenticity;
+package ch.post.it.evoting.verifier.backend.verifications.tally.authenticity;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -31,42 +31,43 @@ import org.junit.jupiter.api.Test;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
-import ch.post.it.evoting.verifier.backend.hashable.HashableContestConfigurationFactory;
-import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
+import ch.post.it.evoting.verifier.backend.hashable.HashableContestResultsFactory;
+import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
+import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
 import ch.post.it.evoting.verifier.protocol.domain.ChannelSecurityContextData;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 
-class CheckSignatureSetupComponentConfigTest extends SetupVerificationTest {
+class CheckSignatureTallyComponentDecryptTest extends TallyVerificationTest {
 
 	@BeforeEach
 	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
 		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
-		verification = new CheckSignatureSetupComponentConfig(applicationEventPublisherMock, electionDataExtractionService, testSignatureVerification);
+		verification = new CheckSignatureTallyComponentDecrypt(applicationEventPublisherMock, electionDataExtractionService, testSignatureVerification);
 	}
 
 	@Test
 	void testOK() throws SignatureException {
-		final Configuration configuration = electionDataExtractionService.getSetupComponentConfig(datasetPath);
+		final Results results = electionDataExtractionService.getTallyComponentDecrypt(datasetPath);
 
-		configuration.setSignature(generateSignature(configuration));
+		results.setSignature(generateSignature(results));
 
-		assertTrue(((CheckSignatureSetupComponentConfig) verification).verifySignature(configuration), "the signature is not valid");
+		assertTrue(((CheckSignatureTallyComponentDecrypt) verification).verifySignature(results), "the signature is not valid");
 	}
 
 	@Test
 	void testNOK() throws SignatureException {
-		final Configuration configuration = electionDataExtractionService.getSetupComponentConfig(datasetPath);
+		final Results results = electionDataExtractionService.getTallyComponentDecrypt(datasetPath);
 
-		configuration.setSignature(generateSignature(configuration));
-		configuration.getContest().setContestIdentification("new value");
+		results.setSignature(generateSignature(results));
+		results.setContestIdentification("new value");
 
-		assertFalse(((CheckSignatureSetupComponentConfig) verification).verifySignature(configuration), "the signature is valid but it should not");
+		assertFalse(((CheckSignatureTallyComponentDecrypt) verification).verifySignature(results), "the signature is valid but it should not");
 	}
 
-	private byte[] generateSignature(final Configuration configuration) throws SignatureException {
-		final Hashable hash = HashableContestConfigurationFactory.fromConfiguration(configuration);
-		final Hashable additionalContextData = ChannelSecurityContextData.setupComponentConfig();
+	private byte[] generateSignature(final Results results) throws SignatureException {
+		final Hashable hash = HashableContestResultsFactory.fromResults(results);
+		final Hashable additionalContextData = ChannelSecurityContextData.tallyComponentDecrypt();
 
-		return signatureFactory.getTestSignatureGeneration(Alias.SDM_CONFIG).genSignature(hash, additionalContextData);
+		return signatureFactory.getTestSignatureGeneration(Alias.SDM_TALLY).genSignature(hash, additionalContextData);
 	}
 }

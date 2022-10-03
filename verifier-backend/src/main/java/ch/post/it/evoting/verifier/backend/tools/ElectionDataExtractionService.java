@@ -48,6 +48,7 @@ import ch.post.it.evoting.verifier.protocol.domain.configuration.SetupComponentT
 import ch.post.it.evoting.verifier.protocol.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.protocol.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 
 @Service
 public class ElectionDataExtractionService {
@@ -56,21 +57,45 @@ public class ElectionDataExtractionService {
 	private final ObjectMapper objectMapper;
 	private final XmlFileRepository<Delivery> deliveryXmlFileRepository;
 	private final XmlFileRepository<Configuration> configurationXmlFileRepository;
+	private final XmlFileRepository<Results> resultsXmlFileRepository;
 
 	public ElectionDataExtractionService(
 			final PathService pathService,
 			final ObjectMapper objectMapper,
 			final XmlFileRepository<Delivery> deliveryXmlFileRepository,
-			final XmlFileRepository<Configuration> configurationXmlFileRepository) {
+			final XmlFileRepository<Configuration> configurationXmlFileRepository,
+			final XmlFileRepository<Results> resultsXmlFileRepository) {
 		this.pathService = pathService;
 		this.objectMapper = objectMapper;
 		this.deliveryXmlFileRepository = deliveryXmlFileRepository;
 		this.configurationXmlFileRepository = configurationXmlFileRepository;
+		this.resultsXmlFileRepository = resultsXmlFileRepository;
 	}
 
-	public Configuration getConfiguration(final Path inputDirectoryPath) {
+	/**
+	 * Gets the setup component config.
+	 *
+	 * @param inputDirectoryPath the root directory containing project files.
+	 * @return the setup component config as {@link Configuration} found in the project files, at the expected location if it exists.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 * @throws UncheckedIOException if the file cannot be deserialized to a Configuration.
+	 */
+	public Configuration getSetupComponentConfig(final Path inputDirectoryPath) {
 		final PathNode configurationPathNode = pathService.buildFromRootPath(StructureKey.CONFIGURATION_ANONYMIZED, inputDirectoryPath);
-		return configurationXmlFileRepository.read(configurationPathNode.getPath(), "xsd/evoting-config-4-4.xsd", Configuration.class);
+		return configurationXmlFileRepository.read(configurationPathNode.getPath(), XsdConstants.SETUP_COMPONENT_CONFIG_XSD, Configuration.class);
+	}
+
+	/**
+	 * Gets the tally component decrypt.
+	 *
+	 * @param inputDirectoryPath the root directory containing project files.
+	 * @return the tally component decrypt as {@link Results} found in the project files, at the expected location if it exists.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 * @throws UncheckedIOException if the file cannot be deserialized to a Results.
+	 */
+	public Results getTallyComponentDecrypt(final Path inputDirectoryPath) {
+		final PathNode resultsPathNode = pathService.buildFromRootPath(StructureKey.TALLY_COMPONENT_DECRYPT, inputDirectoryPath);
+		return resultsXmlFileRepository.read(resultsPathNode.getPath(), XsdConstants.TALLY_COMPONENT_DECRYPT_XSD, Results.class);
 	}
 
 	/**
@@ -83,7 +108,7 @@ public class ElectionDataExtractionService {
 	 */
 	public Delivery getTallyComponentEch0110(final Path inputDirectoryPath) {
 		final PathNode deliveryPathNode = pathService.buildFromRootPath(StructureKey.TALLY_COMPONENT_ECH0110, inputDirectoryPath);
-		return deliveryXmlFileRepository.read(deliveryPathNode.getPath(), "xsd/eCH-0110-4-0.xsd", Delivery.class);
+		return deliveryXmlFileRepository.read(deliveryPathNode.getPath(), XsdConstants.TALLY_COMPONENT_ECH_0110 , Delivery.class);
 	}
 
 	/**

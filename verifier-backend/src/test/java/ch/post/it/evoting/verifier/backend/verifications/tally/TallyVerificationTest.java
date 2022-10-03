@@ -41,6 +41,7 @@ import ch.post.it.evoting.verifier.backend.tools.XmlFileRepository;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.verifications.authenticity.TestDigitalSignaturesFactory;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 
 public abstract class TallyVerificationTest {
 
@@ -53,8 +54,8 @@ public abstract class TallyVerificationTest {
 	protected static ApplicationEventPublisher applicationEventPublisherMock;
 	protected static XmlFileRepository<Delivery> deliveryXmlFileRepository;
 	protected static XmlFileRepository<Configuration> configurationXmlFileRepository;
+	protected static XmlFileRepository<Results> resultsXmlFileRepository;
 	protected static ElectionDataExtractionService electionDataExtractionService;
-
 
 	@BeforeAll
 	static void baseSetUpAll() {
@@ -66,8 +67,9 @@ public abstract class TallyVerificationTest {
 		signatureFactory = new TestDigitalSignaturesFactory();
 		deliveryXmlFileRepository = new XmlFileRepository<>();
 		configurationXmlFileRepository = new XmlFileRepository<>();
-		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper, deliveryXmlFileRepository, configurationXmlFileRepository);
-
+		resultsXmlFileRepository = new XmlFileRepository<>();
+		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper, deliveryXmlFileRepository,
+				configurationXmlFileRepository, resultsXmlFileRepository);
 	}
 
 	@BeforeEach

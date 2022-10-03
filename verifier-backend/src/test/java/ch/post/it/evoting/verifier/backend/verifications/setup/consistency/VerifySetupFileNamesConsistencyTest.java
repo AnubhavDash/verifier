@@ -56,8 +56,7 @@ class VerifySetupFileNamesConsistencyTest extends SetupVerificationTest {
 	void verifyNok() throws IOException {
 		final ObjectMapper objectMapperMock = spy(objectMapper);
 		final ElectionDataExtractionService extractionService = new ElectionDataExtractionService(pathService, objectMapper,
-				new XmlFileRepository<>(),
-				new XmlFileRepository<>());
+				new XmlFileRepository<>(), new XmlFileRepository<>(), new XmlFileRepository<>());
 		final ControlComponentPublicKeysPayload firstPublicKeysPayload = extractionService.getControlComponentPublicKeysPayloads(
 				datasetPath).get(0);
 		doReturn(firstPublicKeysPayload).when(objectMapperMock).readValue(any(File.class), eq(ControlComponentPublicKeysPayload.class));

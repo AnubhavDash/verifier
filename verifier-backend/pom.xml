@@ -170,10 +170,41 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
+							<locale>en</locale>
 							<schemaDirectory>${basedir}/src/main/resources/xsd</schemaDirectory>
 							<schemaIncludes>evoting-config-4-4.xsd</schemaIncludes>
 							<generateDirectory>${basedir}/target/generated-sources/java/evotingconfig</generateDirectory>
 							<generatePackage>ch.post.it.verifier.backend.domain.xmlns.evotingconfig</generatePackage>
+							<episode>false</episode>
+							<args>
+								<arg>-Xfluent-api</arg>
+								<arg>-Xsetters</arg>
+							</args>
+							<plugins>
+								<plugin>
+									<groupId>org.jvnet.jaxb2_commons</groupId>
+									<artifactId>jaxb2-fluent-api</artifactId>
+									<version>${jaxb-fluent-api.version}</version>
+								</plugin>
+								<plugin>
+									<groupId>org.jvnet.jaxb2_commons</groupId>
+									<artifactId>jaxb2-basics</artifactId>
+									<version>${jaxb2-basics.version}</version>
+								</plugin>
+							</plugins>
+						</configuration>
+					</execution>
+					<execution>
+						<id>evoting-decrypt</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<locale>en</locale>
+							<schemaDirectory>${basedir}/src/main/resources/xsd</schemaDirectory>
+							<schemaIncludes>evoting-decrypt-1-3.xsd</schemaIncludes>
+							<generateDirectory>${basedir}/target/generated-sources/java/evotingdecrypt</generateDirectory>
+							<generatePackage>ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt</generatePackage>
 							<episode>false</episode>
 							<args>
 								<arg>-Xfluent-api</arg>
@@ -199,6 +230,7 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
+							<locale>en</locale>
 							<schemaDirectory>${basedir}/src/main/resources/xsd</schemaDirectory>
 							<schemaIncludes>eCH-*.xsd</schemaIncludes>
 							<bindingDirectory>src/main/resources/xsd</bindingDirectory>

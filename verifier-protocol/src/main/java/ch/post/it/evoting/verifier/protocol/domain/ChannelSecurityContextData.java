@@ -230,4 +230,11 @@ public final class ChannelSecurityContextData {
 		return HashableString.from("eCH 0110");
 	}
 
+	/**
+	 * @return The additional context data for the message evoting decrypt XML.
+	 */
+	public static Hashable tallyComponentDecrypt() {
+		return HashableString.from("evoting decrypt");
+	}
+
 }

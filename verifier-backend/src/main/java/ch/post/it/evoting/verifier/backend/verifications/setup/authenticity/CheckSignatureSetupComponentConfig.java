@@ -73,7 +73,7 @@ public class CheckSignatureSetupComponentConfig extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final Configuration configuration = electionDataExtractionService.getConfiguration(inputDirectoryPath);
+		final Configuration configuration = electionDataExtractionService.getSetupComponentConfig(inputDirectoryPath);
 
 		final boolean verified = verifySignature(configuration);
 

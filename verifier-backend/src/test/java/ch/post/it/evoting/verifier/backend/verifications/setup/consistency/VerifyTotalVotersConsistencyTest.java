@@ -41,13 +41,13 @@ class VerifyTotalVotersConsistencyTest extends SetupVerificationTest {
 
 	@Test
 	void verifyNokBadVoterTotal() {
-		final Configuration configuration = electionDataExtractionService.getConfiguration(datasetPath);
+		final Configuration configuration = electionDataExtractionService.getSetupComponentConfig(datasetPath);
 		final Configuration configurationMock = spy(configuration);
 		final HeaderType headerType = new HeaderType();
 		headerType.setVoterTotal(BigInteger.valueOf(39));
 		when(configurationMock.getHeader()).thenReturn(headerType);
 		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-		doReturn(configurationMock).when(extractionServiceMock).getConfiguration(datasetPath);
+		doReturn(configurationMock).when(extractionServiceMock).getSetupComponentConfig(datasetPath);
 
 		final VerifyTotalVotersConsistency verificationBadVoterTotal = new VerifyTotalVotersConsistency(applicationEventPublisherMock,
 				extractionServiceMock);

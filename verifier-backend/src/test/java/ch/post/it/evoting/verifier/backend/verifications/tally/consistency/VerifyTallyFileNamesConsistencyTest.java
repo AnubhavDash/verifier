@@ -57,7 +57,7 @@ class VerifyTallyFileNamesConsistencyTest extends TallyVerificationTest {
 	void verifyNokBallotBoxPayloadNodeId() throws IOException {
 		final ObjectMapper objectMapperMock = spy(objectMapper);
 		final ElectionDataExtractionService extractionService = new ElectionDataExtractionService(pathService, objectMapper,
-				new XmlFileRepository<>(), new XmlFileRepository<>());
+				new XmlFileRepository<>(), new XmlFileRepository<>(), new XmlFileRepository<>());
 		final ControlComponentBallotBoxPayload firstBallotBoxPayload = extractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
 				datasetPath).get(0);
 		doReturn(firstBallotBoxPayload).when(objectMapperMock).readValue(any(File.class), eq(ControlComponentBallotBoxPayload.class));
@@ -75,7 +75,7 @@ class VerifyTallyFileNamesConsistencyTest extends TallyVerificationTest {
 	void verifyNokShufflePayloadNodeId() throws IOException {
 		final ObjectMapper objectMapperMock = spy(objectMapper);
 		final ElectionDataExtractionService extractionService = new ElectionDataExtractionService(pathService, objectMapperMock,
-				new XmlFileRepository<>(), new XmlFileRepository<>());
+				new XmlFileRepository<>(), new XmlFileRepository<>(), new XmlFileRepository<>());
 		final ControlComponentShufflePayload firstShufflePayload = extractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
 				datasetPath).get(0);
 		doReturn(firstShufflePayload).when(objectMapperMock).readValue(any(File.class), eq(ControlComponentShufflePayload.class));

@@ -13,28 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.post.it.evoting.verifier.backend.tools.path;
+package ch.post.it.evoting.verifier.backend.tools;
 
-public enum StructureKey {
+public final class XsdConstants {
 
-	SETUP_DIR,
-	CONFIGURATION_ANONYMIZED,
-	ELECTION_EVENT_CONTEXT,
-	CONTROL_COMPONENT_PUBLIC_KEYS,
-	ENCRYPTION_PARAMETERS,
-	VERIFICATION_CARD_SETS_DIR,
-	VERIFICATION_CARD_SET_ID_DIR,
-	CONTROL_COMPONENT_CODE_SHARES,
-	SETUP_COMPONENT_VERIFICATION_DATA,
-	SETUP_COMPONENT_TALLY_DATA,
+	public static final String SETUP_COMPONENT_CONFIG_XSD = "xsd/evoting-config-4-4.xsd";
+	public static final String TALLY_COMPONENT_DECRYPT_XSD = "xsd/evoting-decrypt-1-3.xsd";
+	public static final String TALLY_COMPONENT_ECH_0110 = "xsd/eCH-0110-4-0.xsd";
 
-	TALLY_DIR,
-	TALLY_COMPONENT_DECRYPT,
-	TALLY_COMPONENT_ECH0110,
-	BALLOT_BOXES_DIR,
-	BALLOT_BOX_ID_DIR,
-	CONTROL_COMPONENT_BALLOT_BOX,
-	CONTROL_COMPONENT_SHUFFLE,
-	TALLY_COMPONENT_SHUFFLE,
-	TALLY_COMPONENT_VOTES
+	private XsdConstants() {
+		// Intentionally left blank.
+	}
+
 }

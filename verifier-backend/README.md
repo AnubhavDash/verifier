@@ -37,6 +37,7 @@ All verifications performed in the verifier are listed in the table below:
 | Tally | 201 | CheckSignatureOnlineShuffle                    |
 | Tally | 202 | CheckSignatureOfflineShuffle                   |
 | Tally | 203 | CheckSignatureProcessedVotes                   |
+| Tally | 204 | CheckSignatureTallyComponentDecrypt            |
 | Tally | 205 | CheckSignatureTallyComponentEch0110            |
 | Tally | 300 | VerifyConfirmedEncryptedVotesConsistency       |
 | Tally | 301 | VerifyCiphertextsConsistency                   |
