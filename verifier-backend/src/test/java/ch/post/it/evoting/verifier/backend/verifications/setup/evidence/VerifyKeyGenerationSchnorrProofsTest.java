@@ -16,40 +16,41 @@
 package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
+import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 
-@DisplayName("VerifyVotingOptions with")
-class VerifyVotingOptionsTest extends SetupVerificationTest {
+class VerifyKeyGenerationSchnorrProofsTest extends SetupVerificationTest {
 
-	private static VerifyVotingOptionsAlgorithm verifyVotingOptionsAlgorithm;
+	private static VerifyKeyGenerationSchnorrProofsAlgorithm verifyKeyGenerationSchnorrProofsAlgorithm;
 
 	@BeforeAll
 	static void setUpAll() {
-		verifyVotingOptionsAlgorithm = spy(new VerifyVotingOptionsAlgorithm());
+		final ZeroKnowledgeProof zeroKnowledgeProof = ZeroKnowledgeProofFactory.createZeroKnowledgeProof();
+		verifyKeyGenerationSchnorrProofsAlgorithm = spy(new VerifyKeyGenerationSchnorrProofsAlgorithm(zeroKnowledgeProof));
 
-		verification = new VerifyVotingOptions(electionDataExtractionService, applicationEventPublisherMock, verifyVotingOptionsAlgorithm);
+		verification = new VerifyKeyGenerationSchnorrProofs(applicationEventPublisherMock, electionDataExtractionService,
+				verifyKeyGenerationSchnorrProofsAlgorithm);
 	}
 
 	@BeforeEach
 	void setUp() {
-		reset(verifyVotingOptionsAlgorithm);
+		reset(verifyKeyGenerationSchnorrProofsAlgorithm);
 	}
 
 	@Test
-	@DisplayName("valid input files is successful")
 	void executeTestOK() {
 		final VerificationResult result = verification.verify(datasetPath);
 
@@ -58,15 +59,13 @@ class VerifyVotingOptionsTest extends SetupVerificationTest {
 	}
 
 	@Test
-	@DisplayName("algorithm returning false is failed")
-	void algorithmReturningFalse() {
-		doReturn(false).when(verifyVotingOptionsAlgorithm).verifyVotingOptions(any(), any());
+	void executeTestNOK() {
+		doReturn(false).when(verifyKeyGenerationSchnorrProofsAlgorithm).verifyKeyGenerationSchnorrProofs(any(), any());
 
 		final VerificationResult result = verification.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification502.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification505.nok.message"));
 		assertEquals(expectedResult, result);
 	}
-
 }

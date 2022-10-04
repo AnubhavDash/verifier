@@ -23,8 +23,8 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -66,7 +66,7 @@ class VerifyOnlineControlComponentsEvidenceTest extends TallyVerificationTest {
 				verifyOnlineControlComponentsVerification);
 	}
 
-	@AfterEach
+	@BeforeEach
 	void setUp() {
 		reset(verifyOnlineControlComponentsVerification);
 	}

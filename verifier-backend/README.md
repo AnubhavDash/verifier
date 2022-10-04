@@ -32,6 +32,7 @@ All verifications performed in the verifier are listed in the table below:
 | Setup | 502 | VerifyVotingOptions                            |
 | Setup | 503 | VerifyEncryptedPCCExponentiationProofs         |
 | Setup | 504 | VerifyEncryptedCKExponentiationProofs          |
+| Setup | 505 | VerifyKeyGenerationSchnorrProofs               |
 | Tally | 100 | VerifyTallyCompleteness                        |
 | Tally | 200 | CheckSignatureBallotBox                        |
 | Tally | 201 | CheckSignatureOnlineShuffle                    |
@@ -52,4 +53,5 @@ All verifications performed in the verifier are listed in the table below:
 | Tally | 500 | VerifyOnlineControlComponents                  |
 | Tally | 501 | VerifyTallyControlComponent                    |
 
-For detailed information, please refer to the verifier specification [document](https://gitlab.com/swisspost-evoting/e-voting/e-voting-documentation/-/blob/master/System/Verifier_Specification.pdf).
+For detailed information, please refer to the verifier
+specification [document](https://gitlab.com/swisspost-evoting/e-voting/e-voting-documentation/-/blob/master/System/Verifier_Specification.pdf).
