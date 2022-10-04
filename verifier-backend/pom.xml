@@ -268,7 +268,7 @@
 				</dependencies>
 			</plugin>
 			<plugin>
-				<groupId>io.github.zlika</groupId>
+				<groupId>ch.galinet</groupId>
 				<artifactId>reproducible-build-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
