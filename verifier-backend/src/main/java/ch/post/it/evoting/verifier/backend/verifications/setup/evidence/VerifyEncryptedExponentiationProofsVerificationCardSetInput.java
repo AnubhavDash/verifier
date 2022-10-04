@@ -28,25 +28,26 @@ import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCipherte
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
+import ch.post.it.evoting.cryptoprimitives.math.ZqGroup;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ExponentiationProof;
 
 /**
  * Regroups the input values needed by the VerifyEncryptedPCCExponentiationProofsVerificationCardSet algorithm.
  * <ul>
  * <li>vc, the {@code GroupVector} of verification card IDs. Not null and valid UUIDs.</li>
- * <li>c_pCC, the encrypted, hashed partial Choice Return Codes. Not null.</li>
- * <li>K_j, the Voter Choice Return Code Generation public keys. Not null.</li>
- * <li>c_expPCC_j, the exponentiated, encrypted, hashed partial Choice Return Codes. Not null.</li>
- * <li>pi_expPCC_j, the proofs of correct exponentiation. Not null.</li>
+ * <li>c<sub>pCC</sub>, the encrypted, hashed partial Choice Return Codes. Not null.</li>
+ * <li>K<sub>j</sub>, the Voter Choice Return Code Generation public keys. Not null.</li>
+ * <li>c<sub>expPCC,j</sub>, the exponentiated, encrypted, hashed partial Choice Return Codes. Not null.</li>
+ * <li>pi<sub>expPCC,j</sub>, the proofs of correct exponentiation. Not null.</li>
  * </ul>
  * <p>
  * And by the VerifyEncryptedCKExponentiationProofsVerificationCardSet algorithm.
  * <ul>
  * <li>vc, the {@code GroupVector} of verification card IDs. Not null and valid UUIDs.</li>
- * <li>c_ck, the encrypted, hashed Confirmation Key. Not null.</li>
- * <li>Kc_j, the Voter Vote Cast Return Code Generation public keys. Not null.</li>
- * <li>c_expCK_j, the exponentiated, encrypted, hashed Confirmation Key. Not null.</li>
- * <li>pi_expCK_j, the proofs of correct exponentiation. Not null.</li>
+ * <li>c<sub>ck</sub>, the encrypted, hashed Confirmation Key. Not null.</li>
+ * <li>Kc<sub>j</sub>, the Voter Vote Cast Return Code Generation public keys. Not null.</li>
+ * <li>c<sub>expCK,j</sub>, the exponentiated, encrypted, hashed Confirmation Key. Not null.</li>
+ * <li>pi<sub>expCK,j</sub>, the proofs of correct exponentiation. Not null.</li>
  * </ul>
  */
 public class VerifyEncryptedExponentiationProofsVerificationCardSetInput {
@@ -55,91 +56,86 @@ public class VerifyEncryptedExponentiationProofsVerificationCardSetInput {
 	private final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> encryptedHashedPartialChoiceReturnCodes;
 	private final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> voterChoiceReturnCodeGenerationPublicKeys;
 	private final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> exponentiatedEncryptedHashedPartialChoiceReturnCodes;
-	private final List<ExponentiationProof> proofsOfCorrectPCCExponentiation;
+	private final GroupVector<ExponentiationProof, ZqGroup> proofsOfCorrectPCCExponentiation;
 	private final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> encryptedHashedConfirmationKey;
 	private final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> voterVoteCastReturnCodeGenerationPublicKeys;
 	private final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> exponentiatedEncryptedHashedConfirmationKey;
-	private final List<ExponentiationProof> proofsOfCorrectCKExponentiation;
+	private final GroupVector<ExponentiationProof, ZqGroup> proofsOfCorrectCKExponentiation;
 
 	public VerifyEncryptedExponentiationProofsVerificationCardSetInput(final List<SetupComponentVerificationData> setupComponentVerificationData,
 			final List<ControlComponentCodeShare> controlComponentCodeShares) {
 		checkNotNull(setupComponentVerificationData);
 		checkNotNull(controlComponentCodeShares);
 
-		this.verificationCardIds = setupComponentVerificationData
+		verificationCardIds = setupComponentVerificationData
 				.stream()
 				.map(SetupComponentVerificationData::verificationCardId)
 				.toList();
-
-		this.encryptedHashedPartialChoiceReturnCodes = setupComponentVerificationData
+		encryptedHashedPartialChoiceReturnCodes = setupComponentVerificationData
 				.stream()
 				.map(SetupComponentVerificationData::encryptedHashedSquaredPartialChoiceReturnCodes)
 				.collect(GroupVector.toGroupVector());
-
-		this.voterChoiceReturnCodeGenerationPublicKeys = controlComponentCodeShares
+		voterChoiceReturnCodeGenerationPublicKeys = controlComponentCodeShares
 				.stream()
 				.map(ControlComponentCodeShare::voterChoiceReturnCodeGenerationPublicKey)
 				.collect(GroupVector.toGroupVector());
-
-		this.exponentiatedEncryptedHashedPartialChoiceReturnCodes = controlComponentCodeShares
+		exponentiatedEncryptedHashedPartialChoiceReturnCodes = controlComponentCodeShares
 				.stream()
 				.map(ControlComponentCodeShare::exponentiatedEncryptedPartialChoiceReturnCodes)
 				.collect(GroupVector.toGroupVector());
-
-		this.proofsOfCorrectPCCExponentiation = controlComponentCodeShares
+		proofsOfCorrectPCCExponentiation = controlComponentCodeShares
 				.stream()
 				.map(ControlComponentCodeShare::encryptedPartialChoiceReturnCodeExponentiationProof)
 				.collect(GroupVector.toGroupVector());
-
-		this.encryptedHashedConfirmationKey = setupComponentVerificationData
+		encryptedHashedConfirmationKey = setupComponentVerificationData
 				.stream()
 				.map(SetupComponentVerificationData::encryptedHashedSquaredConfirmationKey)
 				.collect(GroupVector.toGroupVector());
-
-		this.voterVoteCastReturnCodeGenerationPublicKeys = controlComponentCodeShares
+		voterVoteCastReturnCodeGenerationPublicKeys = controlComponentCodeShares
 				.stream()
 				.map(ControlComponentCodeShare::voterVoteCastReturnCodeGenerationPublicKey)
 				.collect(GroupVector.toGroupVector());
-
-		this.exponentiatedEncryptedHashedConfirmationKey = controlComponentCodeShares
+		exponentiatedEncryptedHashedConfirmationKey = controlComponentCodeShares
 				.stream()
 				.map(ControlComponentCodeShare::exponentiatedEncryptedConfirmationKey)
 				.collect(GroupVector.toGroupVector());
-
-		this.proofsOfCorrectCKExponentiation = controlComponentCodeShares
+		proofsOfCorrectCKExponentiation = controlComponentCodeShares
 				.stream()
 				.map(ControlComponentCodeShare::encryptedConfirmationKeyExponentiationProof)
 				.collect(GroupVector.toGroupVector());
 
 		checkNotNull(verificationCardIds);
 		verificationCardIds.forEach(Validations::validateUUID);
-		checkNotNull(encryptedHashedPartialChoiceReturnCodes);
-		checkNotNull(voterChoiceReturnCodeGenerationPublicKeys);
-		checkNotNull(exponentiatedEncryptedHashedPartialChoiceReturnCodes);
-		checkNotNull(proofsOfCorrectPCCExponentiation);
 
-		checkArgument(Stream.of(verificationCardIds.size(), encryptedHashedPartialChoiceReturnCodes.size(),
-				voterChoiceReturnCodeGenerationPublicKeys.size(), exponentiatedEncryptedHashedPartialChoiceReturnCodes.size(),
-				proofsOfCorrectPCCExponentiation.size(), encryptedHashedConfirmationKey.size(),
-				voterVoteCastReturnCodeGenerationPublicKeys.size(), exponentiatedEncryptedHashedConfirmationKey.size(),
-				proofsOfCorrectCKExponentiation.size()).distinct().count() == 1, "All input elements need to have the same size.");
+		validateInput(encryptedHashedPartialChoiceReturnCodes, voterChoiceReturnCodeGenerationPublicKeys,
+				exponentiatedEncryptedHashedPartialChoiceReturnCodes, proofsOfCorrectPCCExponentiation);
+		validateInput(encryptedHashedConfirmationKey, voterVoteCastReturnCodeGenerationPublicKeys, exponentiatedEncryptedHashedConfirmationKey,
+				proofsOfCorrectCKExponentiation);
 
 		checkArgument(
 				encryptedHashedPartialChoiceReturnCodes.getElementSize() == exponentiatedEncryptedHashedPartialChoiceReturnCodes.getElementSize(),
-				"The size of each encrypted, hashed partial Choice Return Codes should be equal to the size of each exponentiated, encrypted, hashed partial Choice Return Codes.");
+				"The size of each encrypted, hashed partial Choice Return Codes should be equal to the size of each "
+						+ "exponentiated, encrypted, hashed partial Choice Return Codes.");
+	}
 
-		checkNotNull(encryptedHashedConfirmationKey);
-		checkNotNull(voterVoteCastReturnCodeGenerationPublicKeys);
-		checkNotNull(exponentiatedEncryptedHashedConfirmationKey);
-		checkNotNull(proofsOfCorrectPCCExponentiation);
+	private void validateInput(final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> encryptedHashedCiphertexts,
+			final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> voterReturnCodeGenerationPublicKeys,
+			final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> exponentiatedEncryptedHashedCiphertexts,
+			final GroupVector<ExponentiationProof, ZqGroup> proofsOfCorrectExponentiation) {
+		checkNotNull(encryptedHashedCiphertexts);
+		checkNotNull(voterReturnCodeGenerationPublicKeys);
+		checkNotNull(exponentiatedEncryptedHashedCiphertexts);
+		checkNotNull(proofsOfCorrectExponentiation);
 
-		checkArgument(Stream.of(verificationCardIds.size(), encryptedHashedConfirmationKey.size(),
-				voterVoteCastReturnCodeGenerationPublicKeys.size(), exponentiatedEncryptedHashedConfirmationKey.size(),
-				proofsOfCorrectPCCExponentiation.size()).distinct().count() == 1, "All input elements need to have the same size.");
+		checkArgument(Stream.of(encryptedHashedCiphertexts.getGroup(), voterReturnCodeGenerationPublicKeys.getGroup(),
+						exponentiatedEncryptedHashedCiphertexts.getGroup()).distinct().count() == 1,
+				"All input elements must have the same encryption group.");
+		checkArgument(proofsOfCorrectExponentiation.getGroup().hasSameOrderAs(encryptedHashedCiphertexts.getGroup()),
+				"The group of the proofs of correct exponentiation must have the same order as the input's encryption group.");
 
-		checkArgument(
-				encryptedHashedConfirmationKey.getElementSize() == exponentiatedEncryptedHashedConfirmationKey.getElementSize(),
-				"The size of each encrypted, hashed Confirmation Key should be equal to the size of each exponentiated, encrypted, hashed Confirmation Key.");
+		checkArgument(Stream.of(verificationCardIds.size(), encryptedHashedCiphertexts.size(), voterReturnCodeGenerationPublicKeys.size(),
+						exponentiatedEncryptedHashedCiphertexts.size(), proofsOfCorrectExponentiation.size()).distinct().count() == 1,
+				"All input elements must have the same size.");
 	}
 
 	public List<String> getVerificationCardIds() {
@@ -158,7 +154,7 @@ public class VerifyEncryptedExponentiationProofsVerificationCardSetInput {
 		return exponentiatedEncryptedHashedPartialChoiceReturnCodes;
 	}
 
-	public List<ExponentiationProof> getProofsOfCorrectPCCExponentiation() {
+	public GroupVector<ExponentiationProof, ZqGroup> getProofsOfCorrectPCCExponentiation() {
 		return proofsOfCorrectPCCExponentiation;
 	}
 
@@ -174,7 +170,7 @@ public class VerifyEncryptedExponentiationProofsVerificationCardSetInput {
 		return exponentiatedEncryptedHashedConfirmationKey;
 	}
 
-	public List<ExponentiationProof> getProofsOfCorrectCKExponentiation() {
+	public GroupVector<ExponentiationProof, ZqGroup> getProofsOfCorrectCKExponentiation() {
 		return proofsOfCorrectCKExponentiation;
 	}
 }
