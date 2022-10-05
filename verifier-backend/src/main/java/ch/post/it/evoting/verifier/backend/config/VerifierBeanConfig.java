@@ -117,7 +117,7 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
-	SignatureVerification keystoreService(final KeyStore keyStore){
+	SignatureVerification keystoreService(final KeyStore keyStore) {
 		return SignatureFactory.getInstance()
 				.createSignatureVerification(keyStore);
 	}

@@ -108,7 +108,7 @@ public class ElectionDataExtractionService {
 	 */
 	public Delivery getTallyComponentEch0110(final Path inputDirectoryPath) {
 		final PathNode deliveryPathNode = pathService.buildFromRootPath(StructureKey.TALLY_COMPONENT_ECH0110, inputDirectoryPath);
-		return deliveryXmlFileRepository.read(deliveryPathNode.getPath(), XsdConstants.TALLY_COMPONENT_ECH_0110 , Delivery.class);
+		return deliveryXmlFileRepository.read(deliveryPathNode.getPath(), XsdConstants.TALLY_COMPONENT_ECH_0110, Delivery.class);
 	}
 
 	/**
@@ -532,6 +532,34 @@ public class ElectionDataExtractionService {
 			return objectMapper.readValue(tallyComponentVotesPayload.getPath().toFile(), TallyComponentVotesPayload.class);
 		} catch (final IOException e) {
 			throw new UncheckedIOException(e);
+		}
+	}
+
+	/**
+	 * Gets the tally component votes data payload for the given ballot box.
+	 *
+	 * @param inputDirectoryPath the dataset root directory.
+	 * @param ballotBoxId        the ballot box id for which to get tally component votes payload.
+	 * @return tally component votes payload.
+	 * @throws NullPointerException      if {@code inputDirectoryPath} is null.
+	 * @throws FailedValidationException if {@code ballotBoxId} is invalid.
+	 * @throws UncheckedIOException      if the deserialization of the tally component votes payload fails.
+	 */
+	public TallyComponentVotesPayload getTallyComponentVotesPayload(final Path inputDirectoryPath, final String ballotBoxId) {
+		checkNotNull(inputDirectoryPath);
+		validateUUID(ballotBoxId);
+
+		final PathNode ballotBox = pathService.buildFromRootPath(StructureKey.BALLOT_BOXES_DIR, inputDirectoryPath);
+
+		final Path ballotBoxIdPath = ballotBox.getPath().resolve(ballotBoxId);
+		final Path tallyComponentVotesPath = pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_VOTES, ballotBoxIdPath)
+				.getPath();
+
+		try {
+			return objectMapper.readValue(tallyComponentVotesPath.toFile(), TallyComponentVotesPayload.class);
+		} catch (final IOException e) {
+			throw new UncheckedIOException(
+					String.format("Failed to deserialize tally component votes payload. [path: %s]", tallyComponentVotesPath), e);
 		}
 	}
 

@@ -47,6 +47,7 @@
 		<rootProject>verifier</rootProject>
 		<slf4j.version>2.0.3</slf4j.version>
 		<spring-boot.version>2.7.4</spring-boot.version>
+		<super-machine.version>0.1.0</super-machine.version>
 		<system-stubs.version>2.0.1</system-stubs.version>
 		<versions-maven-plugin.version>2.12.0</versions-maven-plugin.version>
 		<zip4j.version>2.11.2</zip4j.version>
@@ -102,6 +103,12 @@
 				<groupId>commons-codec</groupId>
 				<artifactId>commons-codec</artifactId>
 				<version>${commons-codec.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.swisspush</groupId>
+				<artifactId>super-machine</artifactId>
+				<version>${super-machine.version}</version>
 			</dependency>
 
 			<!-- crypto-primitives -->
