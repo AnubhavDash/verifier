@@ -80,7 +80,10 @@ import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteInformationTyp
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoterType;
 
-public interface HashableContestConfigurationFactory {
+public interface HashableConfigurationFactory {
+
+	String ANSWER_TYPE = "answerType"; // Avoids literal duplication.
+
 	static Hashable fromConfiguration(final Configuration configuration) {
 		return HashableList.of(
 				fromHeader(configuration.getHeader()),
@@ -90,20 +93,11 @@ public interface HashableContestConfigurationFactory {
 		);
 	}
 
-	static Hashable fromConfigurationStreamedVoters(final Configuration configuration, final Hashable registerHash) {
-		return HashableList.of(
-				fromHeader(configuration.getHeader()),
-				fromContest(configuration.getContest()),
-				fromAuthorizations(configuration.getAuthorizations()),
-				registerHash
-		);
-	}
-
 	private static Hashable fromHeader(final HeaderType header) {
 		return HashableList.of(
 				HashableUtils.fromDate(header.getFileDate()),
 				HashableBigInteger.from(header.getVoterTotal()),
-				HashableUtils.fromNullable(header.getPartialDelivery(), "partialDelivery", HashableContestConfigurationFactory::fromPartialDelivery));
+				HashableUtils.fromNullable(header.getPartialDelivery(), "partialDelivery", HashableConfigurationFactory::fromPartialDelivery));
 	}
 
 	private static Hashable fromPartialDelivery(final HeaderType.PartialDelivery partialDelivery) {
@@ -122,14 +116,14 @@ public interface HashableContestConfigurationFactory {
 				HashableUtils.fromDate(contest.getEvotingFromDate()),
 				HashableUtils.fromDate(contest.getEvotingToDate()),
 				HashableUtils.fromNullable(contest.getElectoralAuthority(), "electoralAuthority",
-						HashableContestConfigurationFactory::fromElectoralAuthority),
+						HashableConfigurationFactory::fromElectoralAuthority),
 				HashableUtils.fromNullable(contest.getExtendedAuthenticationKeys(), "electoralAuthority",
-						HashableContestConfigurationFactory::fromExtendedAuthenticationKeyReferences),
+						HashableConfigurationFactory::fromExtendedAuthenticationKeyReferences),
 				HashableUtils.fromNullableCollection(contest.getElectionInformation(), "electionInformation",
-						HashableContestConfigurationFactory::fromElectionInformations),
+						HashableConfigurationFactory::fromElectionInformations),
 				HashableUtils.fromNullableCollection(contest.getVoteInformation(), "voteInformation",
-						HashableContestConfigurationFactory::fromVoteInformations),
-				HashableUtils.fromNullable(contest.getUiProperties(), "uiProperties", HashableContestConfigurationFactory::fromUiProperties)
+						HashableConfigurationFactory::fromVoteInformations),
+				HashableUtils.fromNullable(contest.getUiProperties(), "uiProperties", HashableConfigurationFactory::fromUiProperties)
 		);
 	}
 
@@ -138,7 +132,7 @@ public interface HashableContestConfigurationFactory {
 	}
 
 	private static Hashable fromContestDescriptions(final ContestDescriptionInformationType contestDescriptions) {
-		return contestDescriptions.getContestDescriptionInfo().stream().map(HashableContestConfigurationFactory::fromContestDescription)
+		return contestDescriptions.getContestDescriptionInfo().stream().map(HashableConfigurationFactory::fromContestDescription)
 				.collect(HashableList.toHashableList());
 	}
 
@@ -168,17 +162,17 @@ public interface HashableContestConfigurationFactory {
 	}
 
 	private static Hashable fromElectionInformations(final List<ElectionInformationType> electionInformations) {
-		return electionInformations.stream().map(HashableContestConfigurationFactory::fromElectionInformation).collect(HashableList.toHashableList());
+		return electionInformations.stream().map(HashableConfigurationFactory::fromElectionInformation).collect(HashableList.toHashableList());
 	}
 
 	private static Hashable fromElectionInformation(final ElectionInformationType electionInformation) {
 		return HashableList.of(
 				fromElection(electionInformation.getElection()),
 				HashableUtils.fromNullableCollection(electionInformation.getCandidate(), "candidate",
-						HashableContestConfigurationFactory::fromCandidates),
-				HashableUtils.fromNullableCollection(electionInformation.getList(), "list", HashableContestConfigurationFactory::fromLists),
+						HashableConfigurationFactory::fromCandidates),
+				HashableUtils.fromNullableCollection(electionInformation.getList(), "list", HashableConfigurationFactory::fromLists),
 				HashableUtils.fromNullableCollection(electionInformation.getListUnion(), "listUnion",
-						HashableContestConfigurationFactory::fromListUnions)
+						HashableConfigurationFactory::fromListUnions)
 		);
 	}
 
@@ -193,13 +187,13 @@ public interface HashableContestConfigurationFactory {
 				HashableBigInteger.from(election.getCandidateAccumulation()),
 				HashableBigInteger.from(election.getMinimalCandidateSelectionInList()),
 				HashableUtils.fromNullableCollection(election.getReferencedElection(), "referencedElection",
-						HashableContestConfigurationFactory::fromReferencedElections),
-				HashableUtils.fromNullable(election.getUiProperties(), "uiProperties", HashableContestConfigurationFactory::fromUiProperties)
+						HashableConfigurationFactory::fromReferencedElections),
+				HashableUtils.fromNullable(election.getUiProperties(), "uiProperties", HashableConfigurationFactory::fromUiProperties)
 		);
 	}
 
 	private static Hashable fromElectionDescriptions(final ElectionDescriptionInformationType electionDescriptions) {
-		return electionDescriptions.getElectionDescriptionInfo().stream().map(HashableContestConfigurationFactory::fromElectionDescription)
+		return electionDescriptions.getElectionDescriptionInfo().stream().map(HashableConfigurationFactory::fromElectionDescription)
 				.collect(HashableList.toHashableList());
 	}
 
@@ -213,7 +207,7 @@ public interface HashableContestConfigurationFactory {
 	}
 
 	private static Hashable fromReferencedElections(final List<ReferencedElectionInformationType> referencedElections) {
-		return referencedElections.stream().map(HashableContestConfigurationFactory::fromReferencedElection).collect(HashableList.toHashableList());
+		return referencedElections.stream().map(HashableConfigurationFactory::fromReferencedElection).collect(HashableList.toHashableList());
 	}
 
 	private static Hashable fromReferencedElection(final ReferencedElectionInformationType referencedElection) {
@@ -224,7 +218,7 @@ public interface HashableContestConfigurationFactory {
 	}
 
 	private static Hashable fromUiProperties(final UiPropertiesType uiProperties) {
-		return uiProperties.getProperty().stream().map(HashableContestConfigurationFactory::fromUiProperty)
+		return uiProperties.getProperty().stream().map(HashableConfigurationFactory::fromUiProperty)
 				.collect(HashableList.toHashableList());
 	}
 
@@ -236,7 +230,7 @@ public interface HashableContestConfigurationFactory {
 	}
 
 	private static Hashable fromCandidates(final List<CandidateType> candidates) {
-		return candidates.stream().map(HashableContestConfigurationFactory::fromCandidate).collect(HashableList.toHashableList());
+		return candidates.stream().map(HashableConfigurationFactory::fromCandidate).collect(HashableList.toHashableList());
 	}
 
 	private static Hashable fromCandidate(final CandidateType candidate) {
@@ -252,20 +246,20 @@ public interface HashableContestConfigurationFactory {
 		elements.add(HashableString.from(candidate.getSex()));
 		elements.add(fromIncumbent(candidate.getIncumbent()));
 		elements.add(HashableUtils.fromNullable(candidate.getDwellingAddress(), "dwellingAddress",
-				HashableContestConfigurationFactory::fromDwellingAddress));
+				HashableConfigurationFactory::fromDwellingAddress));
 		elements.add(fromSwiss(candidate.getSwiss()));
 		elements.add(HashableUtils.fromNullable(candidate.getOccupationalTitle(), "occupationTitle",
-				HashableContestConfigurationFactory::fromOccupationalTitle));
+				HashableConfigurationFactory::fromOccupationalTitle));
 		elements.add(HashableUtils.fromNullableBigInteger(candidate.getPosition(), "position"));
 		elements.add(HashableUtils.fromNullableString(candidate.getReferenceOnPosition(), "referenceOnPosition"));
 		elements.add(HashableUtils.fromNullable(candidate.getPartyAffiliation(), "partyAffiliation",
-				HashableContestConfigurationFactory::fromPartyAffiliationInformation));
+				HashableConfigurationFactory::fromPartyAffiliationInformation));
 
 		return HashableList.from(elements);
 	}
 
 	private static Hashable fromCandidateTextInformation(final CandidateTextInformationType candidateTexts) {
-		return candidateTexts.getCandidateTextInfo().stream().map(HashableContestConfigurationFactory::fromCandidateText)
+		return candidateTexts.getCandidateTextInfo().stream().map(HashableConfigurationFactory::fromCandidateText)
 				.collect(HashableList.toHashableList());
 	}
 
@@ -285,7 +279,7 @@ public interface HashableContestConfigurationFactory {
 			@Nullable
 			final IncumbentTextType incumbentTexts) {
 		return HashableUtils.fromNullable(incumbentTexts, "incumbentText",
-				f -> f.getIncumbentTextInfo().stream().map(HashableContestConfigurationFactory::fromIncumbentText)
+				f -> f.getIncumbentTextInfo().stream().map(HashableConfigurationFactory::fromIncumbentText)
 						.collect(HashableList.toHashableList()));
 	}
 
@@ -318,7 +312,7 @@ public interface HashableContestConfigurationFactory {
 			@Nullable
 			final OccupationalTitleInformationType occupationalTitle) {
 		return HashableUtils.fromNullable(occupationalTitle, "occupationalTitle",
-				f -> f.getOccupationalTitleInfo().stream().map(HashableContestConfigurationFactory::fromOccupationalTitleInfo)
+				f -> f.getOccupationalTitleInfo().stream().map(HashableConfigurationFactory::fromOccupationalTitleInfo)
 						.collect(HashableList.toHashableList()));
 	}
 
@@ -330,7 +324,7 @@ public interface HashableContestConfigurationFactory {
 	}
 
 	private static Hashable fromPartyAffiliationInformation(final PartyAffiliationformationType partyAffiliationformation) {
-		return partyAffiliationformation.getPartyAffiliationInfo().stream().map(HashableContestConfigurationFactory::fromPartyAffiliation)
+		return partyAffiliationformation.getPartyAffiliationInfo().stream().map(HashableConfigurationFactory::fromPartyAffiliation)
 				.collect(HashableList.toHashableList());
 	}
 
@@ -343,7 +337,7 @@ public interface HashableContestConfigurationFactory {
 	}
 
 	private static Hashable fromLists(final List<ListType> lists) {
-		return lists.stream().map(HashableContestConfigurationFactory::fromList).collect(HashableList.toHashableList());
+		return lists.stream().map(HashableConfigurationFactory::fromList).collect(HashableList.toHashableList());
 	}
 
 	private static Hashable fromList(final ListType list) {
@@ -354,15 +348,15 @@ public interface HashableContestConfigurationFactory {
 		elements.add(HashableBigInteger.from(list.getListOrderOfPrecedence()));
 		elements.add(HashableString.from(Boolean.toString(list.isListEmpty())));
 		elements.add(HashableUtils.fromNullableCollection(list.getCandidatePosition(), "candidatePosition",
-				HashableContestConfigurationFactory::fromCandidatePositions));
-		elements.add(HashableUtils.fromNullable(list.getVarListText1(), "varListText1", HashableContestConfigurationFactory::fromVarListTexts));
-		elements.add(HashableUtils.fromNullable(list.getVarListText2(), "varListText2", HashableContestConfigurationFactory::fromVarListTexts));
+				HashableConfigurationFactory::fromCandidatePositions));
+		elements.add(HashableUtils.fromNullable(list.getVarListText1(), "varListText1", HashableConfigurationFactory::fromVarListTexts));
+		elements.add(HashableUtils.fromNullable(list.getVarListText2(), "varListText2", HashableConfigurationFactory::fromVarListTexts));
 
 		return HashableList.from(elements);
 	}
 
 	private static Hashable fromListDescriptionInformation(final ListDescriptionInformationType listDescriptionInformation) {
-		return listDescriptionInformation.getListDescriptionInfo().stream().map(HashableContestConfigurationFactory::fromListDescription)
+		return listDescriptionInformation.getListDescriptionInfo().stream().map(HashableConfigurationFactory::fromListDescription)
 				.collect(HashableList.toHashableList());
 	}
 
@@ -375,7 +369,7 @@ public interface HashableContestConfigurationFactory {
 	}
 
 	private static Hashable fromCandidatePositions(final List<CandidatePositionType> candidatePositions) {
-		return candidatePositions.stream().map(HashableContestConfigurationFactory::fromCandidatePosition).collect(HashableList.toHashableList());
+		return candidatePositions.stream().map(HashableConfigurationFactory::fromCandidatePosition).collect(HashableList.toHashableList());
 	}
 
 	private static Hashable fromCandidatePosition(final CandidatePositionType candidatePosition) {
@@ -390,7 +384,7 @@ public interface HashableContestConfigurationFactory {
 	}
 
 	private static Hashable fromVarListTexts(final VarListTextType varListTexts) {
-		return varListTexts.getVarListTextInfo().stream().map(HashableContestConfigurationFactory::fromVarListTextInfo)
+		return varListTexts.getVarListTextInfo().stream().map(HashableConfigurationFactory::fromVarListTextInfo)
 				.collect(HashableList.toHashableList());
 	}
 
@@ -402,7 +396,7 @@ public interface HashableContestConfigurationFactory {
 	}
 
 	private static Hashable fromListUnions(final List<ListUnionType> listUnions) {
-		return listUnions.stream().map(HashableContestConfigurationFactory::fromListUnion).collect(HashableList.toHashableList());
+		return listUnions.stream().map(HashableConfigurationFactory::fromListUnion).collect(HashableList.toHashableList());
 	}
 
 	private static Hashable fromListUnion(final ListUnionType listUnion) {
@@ -415,7 +409,7 @@ public interface HashableContestConfigurationFactory {
 	}
 
 	private static Hashable fromListUnionDescriptions(final ListUnionDescriptionType listUnionDescriptions) {
-		return listUnionDescriptions.getListUnionDescriptionInfo().stream().map(HashableContestConfigurationFactory::fromListUnionDescription)
+		return listUnionDescriptions.getListUnionDescriptionInfo().stream().map(HashableConfigurationFactory::fromListUnionDescription)
 				.collect(HashableList.toHashableList());
 	}
 
@@ -429,7 +423,7 @@ public interface HashableContestConfigurationFactory {
 	private static Hashable fromVoteInformations(final List<VoteInformationType> voteInformations) {
 		return voteInformations.stream()
 				.map(VoteInformationType::getVote)
-				.map(HashableContestConfigurationFactory::fromVote).collect(HashableList.toHashableList());
+				.map(HashableConfigurationFactory::fromVote).collect(HashableList.toHashableList());
 	}
 
 	private static Hashable fromVote(final VoteType vote) {
@@ -442,7 +436,7 @@ public interface HashableContestConfigurationFactory {
 	}
 
 	private static Hashable fromVoteDescriptionInformation(final VoteDescriptionInformationType voteDescriptionInformation) {
-		return voteDescriptionInformation.getVoteDescriptionInfo().stream().map(HashableContestConfigurationFactory::fromVoteDescription)
+		return voteDescriptionInformation.getVoteDescriptionInfo().stream().map(HashableConfigurationFactory::fromVoteDescription)
 				.collect(HashableList.toHashableList());
 	}
 
@@ -454,7 +448,7 @@ public interface HashableContestConfigurationFactory {
 	}
 
 	private static Hashable fromBallots(final List<BallotType> ballots) {
-		return ballots.stream().map(HashableContestConfigurationFactory::fromBallot).collect(HashableList.toHashableList());
+		return ballots.stream().map(HashableConfigurationFactory::fromBallot).collect(HashableList.toHashableList());
 	}
 
 	private static Hashable fromBallot(final BallotType ballot) {
@@ -466,13 +460,13 @@ public interface HashableContestConfigurationFactory {
 				HashableString.from(ballot.getBallotIdentification()),
 				HashableBigInteger.from(ballot.getBallotPosition()),
 				HashableUtils.fromNullable(ballot.getBallotDescription(), "ballotDescription",
-						HashableContestConfigurationFactory::fromBallotDescription),
+						HashableConfigurationFactory::fromBallotDescription),
 				isStandard ? fromStandardBallot(ballot.getStandardBallot()) : fromVariantBallot(ballot.getVariantBallot())
 		);
 	}
 
 	private static Hashable fromBallotDescription(final BallotDescriptionInformationType ballotDescriptionInformation) {
-		return ballotDescriptionInformation.getBallotDescriptionInfo().stream().map(HashableContestConfigurationFactory::fromBallotDescriptionInfo)
+		return ballotDescriptionInformation.getBallotDescriptionInfo().stream().map(HashableConfigurationFactory::fromBallotDescriptionInfo)
 				.collect(HashableList.toHashableList());
 	}
 
@@ -488,14 +482,14 @@ public interface HashableContestConfigurationFactory {
 	private static Hashable fromStandardBallot(final StandardBallotType standardBallot) {
 		return HashableList.of(
 				HashableString.from(standardBallot.getQuestionIdentification()),
-				HashableUtils.fromNullableBigInteger(standardBallot.getAnswerType(), "answerType"),
+				HashableUtils.fromNullableBigInteger(standardBallot.getAnswerType(), ANSWER_TYPE),
 				fromBallotQuestions(standardBallot.getBallotQuestion()),
 				fromAnswers(standardBallot.getAnswer())
 		);
 	}
 
 	private static Hashable fromBallotQuestions(final BallotQuestionType ballotQuestions) {
-		return ballotQuestions.getBallotQuestionInfo().stream().map(HashableContestConfigurationFactory::fromBallotQuestion)
+		return ballotQuestions.getBallotQuestionInfo().stream().map(HashableConfigurationFactory::fromBallotQuestion)
 				.collect(HashableList.toHashableList());
 	}
 
@@ -509,7 +503,7 @@ public interface HashableContestConfigurationFactory {
 	}
 
 	private static Hashable fromAnswers(final List<StandardAnswerType> answers) {
-		return answers.stream().map(HashableContestConfigurationFactory::fromAnswer).collect(HashableList.toHashableList());
+		return answers.stream().map(HashableConfigurationFactory::fromAnswer).collect(HashableList.toHashableList());
 	}
 
 	private static Hashable fromAnswer(final StandardAnswerType answer) {
@@ -523,7 +517,7 @@ public interface HashableContestConfigurationFactory {
 	}
 
 	private static Hashable fromAnswerInfos(final List<AnswerInformationType> answerInformations) {
-		return answerInformations.stream().map(HashableContestConfigurationFactory::fromAnswerInfo).collect(HashableList.toHashableList());
+		return answerInformations.stream().map(HashableConfigurationFactory::fromAnswerInfo).collect(HashableList.toHashableList());
 	}
 
 	private static Hashable fromAnswerInfo(final AnswerInformationType answerInformation) {
@@ -535,10 +529,10 @@ public interface HashableContestConfigurationFactory {
 
 	private static Hashable fromVariantBallot(final VariantBallotType variantBallot) {
 		return HashableList.of(
-				variantBallot.getStandardQuestion().stream().map(HashableContestConfigurationFactory::fromStandardQuestion)
+				variantBallot.getStandardQuestion().stream().map(HashableConfigurationFactory::fromStandardQuestion)
 						.collect(HashableList.toHashableList()),
 				HashableUtils.fromNullableCollection(variantBallot.getTieBreakQuestion(), "tieBreakQuestion",
-						f -> f.stream().map(HashableContestConfigurationFactory::fromTiebreakQuestion)
+						f -> f.stream().map(HashableConfigurationFactory::fromTiebreakQuestion)
 								.collect(HashableList.toHashableList()))
 		);
 	}
@@ -548,7 +542,7 @@ public interface HashableContestConfigurationFactory {
 				HashableString.from(question.getQuestionIdentification()),
 				HashableBigInteger.from(question.getQuestionPosition()),
 				HashableUtils.fromNullableString(question.getQuestionNumber(), "questionNumber"),
-				HashableUtils.fromNullableBigInteger(question.getAnswerType(), "answerType"),
+				HashableUtils.fromNullableBigInteger(question.getAnswerType(), ANSWER_TYPE),
 				fromBallotQuestions(question.getBallotQuestion()),
 				fromAnswers(question.getAnswer())
 		);
@@ -559,14 +553,14 @@ public interface HashableContestConfigurationFactory {
 				HashableString.from(question.getQuestionIdentification()),
 				HashableBigInteger.from(question.getQuestionPosition()),
 				HashableUtils.fromNullableString(question.getQuestionNumber(), "questionNumber"),
-				HashableUtils.fromNullableBigInteger(question.getAnswerType(), "answerType"),
+				HashableUtils.fromNullableBigInteger(question.getAnswerType(), ANSWER_TYPE),
 				fromBallotQuestions(question.getBallotQuestion()),
 				fromTiebreakAnswers(question.getAnswer())
 		);
 	}
 
 	private static Hashable fromTiebreakAnswers(final List<TiebreakAnswerType> answers) {
-		return answers.stream().map(HashableContestConfigurationFactory::fromTiebreakAnswer).collect(HashableList.toHashableList());
+		return answers.stream().map(HashableConfigurationFactory::fromTiebreakAnswer).collect(HashableList.toHashableList());
 	}
 
 	private static Hashable fromTiebreakAnswer(final TiebreakAnswerType answer) {
@@ -580,7 +574,7 @@ public interface HashableContestConfigurationFactory {
 	}
 
 	private static Hashable fromAuthorizations(final AuthorizationsType authorizations) {
-		return authorizations.getAuthorization().stream().map(HashableContestConfigurationFactory::fromAuthorization)
+		return authorizations.getAuthorization().stream().map(HashableConfigurationFactory::fromAuthorization)
 				.collect(HashableList.toHashableList());
 	}
 
@@ -598,7 +592,7 @@ public interface HashableContestConfigurationFactory {
 	}
 
 	private static Hashable fromAuthorizationObjects(final List<AuthorizationObjectType> authorizationObjects) {
-		return authorizationObjects.stream().map(HashableContestConfigurationFactory::fromAuthorizationObject).collect(HashableList.toHashableList());
+		return authorizationObjects.stream().map(HashableConfigurationFactory::fromAuthorizationObject).collect(HashableList.toHashableList());
 	}
 
 	private static Hashable fromAuthorizationObject(final AuthorizationObjectType authorizationObject) {
@@ -625,7 +619,7 @@ public interface HashableContestConfigurationFactory {
 	}
 
 	private static Hashable fromRegister(final RegisterType register) {
-		return register.getVoter().stream().map(HashableContestConfigurationFactory::fromVoter).collect(HashableList.toHashableList());
+		return register.getVoter().stream().map(HashableConfigurationFactory::fromVoter).collect(HashableList.toHashableList());
 	}
 
 	static Hashable fromVoter(final VoterType voter) {
@@ -633,16 +627,16 @@ public interface HashableContestConfigurationFactory {
 				HashableString.from(voter.getVoterIdentification()),
 				HashableString.from(voter.getAuthorization()),
 				HashableUtils.fromNullable(voter.getExtendedAuthenticationKeys(), "extendedAuthenticationKeys",
-						HashableContestConfigurationFactory::fromExtendedAuthenticationKeys),
+						HashableConfigurationFactory::fromExtendedAuthenticationKeys),
 				HashableString.from(voter.getSex().value()),
 				HashableString.from(voter.getVoterType().value()),
-				HashableUtils.fromNullable(voter.getPerson(), "person", HashableContestConfigurationFactory::fromPerson)
+				HashableUtils.fromNullable(voter.getPerson(), "person", HashableConfigurationFactory::fromPerson)
 		);
 	}
 
 	private static Hashable fromExtendedAuthenticationKeys(final ExtendedAuthenticationKeysType extendedAuthenticationKeys) {
 		return extendedAuthenticationKeys.getExtendedAuthenticationKey().stream()
-				.map(HashableContestConfigurationFactory::fromExtendedAuthenticationKey)
+				.map(HashableConfigurationFactory::fromExtendedAuthenticationKey)
 				.collect(HashableList.toHashableList());
 	}
 
@@ -662,9 +656,9 @@ public interface HashableContestConfigurationFactory {
 				fromLanguage(person.getLanguageOfCorrespondance()),
 				HashableString.from(person.getResidenceCountryId()),
 				fromMunicipality(person.getMunicipality()),
-				HashableUtils.fromNullable(person.getPhysicalAddress(), "physicalAddress", HashableContestConfigurationFactory::fromPhysicalAddress),
+				HashableUtils.fromNullable(person.getPhysicalAddress(), "physicalAddress", HashableConfigurationFactory::fromPhysicalAddress),
 				HashableUtils.fromNullableCollection(person.getElectronicAddress(), "electronicAddress",
-						HashableContestConfigurationFactory::fromElectronicAddresses)
+						HashableConfigurationFactory::fromElectronicAddresses)
 		);
 	}
 
@@ -706,7 +700,7 @@ public interface HashableContestConfigurationFactory {
 	}
 
 	private static Hashable fromElectronicAddresses(final List<ElectronicAddressType> electronicAddresses) {
-		return electronicAddresses.stream().map(HashableContestConfigurationFactory::fromElectronicAddress).collect(HashableList.toHashableList());
+		return electronicAddresses.stream().map(HashableConfigurationFactory::fromElectronicAddress).collect(HashableList.toHashableList());
 	}
 
 	private static Hashable fromElectronicAddress(final ElectronicAddressType electronicAddress) {

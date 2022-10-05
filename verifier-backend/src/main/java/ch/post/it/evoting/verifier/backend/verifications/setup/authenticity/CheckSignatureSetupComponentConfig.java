@@ -33,7 +33,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
-import ch.post.it.evoting.verifier.backend.hashable.HashableContestConfigurationFactory;
+import ch.post.it.evoting.verifier.backend.hashable.HashableConfigurationFactory;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -93,7 +93,7 @@ public class CheckSignatureSetupComponentConfig extends AbstractVerification {
 
 		checkState(signature != null, "The signature of the setup component config file is null.");
 
-		final Hashable hash = HashableContestConfigurationFactory.fromConfiguration(configuration);
+		final Hashable hash = HashableConfigurationFactory.fromConfiguration(configuration);
 		final Hashable additionalContextData = ChannelSecurityContextData.setupComponentConfig();
 
 		try {

@@ -21,12 +21,11 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.math.BigInteger;
 
-import ch.post.it.evoting.cryptoprimitives.internal.securitylevel.SecurityLevelConfig;
-import ch.post.it.evoting.cryptoprimitives.internal.securitylevel.SecurityLevelInternal;
-
 import org.springframework.stereotype.Service;
 
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
+import ch.post.it.evoting.cryptoprimitives.internal.securitylevel.SecurityLevelConfig;
+import ch.post.it.evoting.cryptoprimitives.internal.securitylevel.SecurityLevelInternal;
 import ch.post.it.evoting.cryptoprimitives.math.GqElement;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 

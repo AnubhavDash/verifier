@@ -32,62 +32,62 @@ import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.ElectionType;
 import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.VoteType;
 
-public interface HashableContestResultsFactory {
+public interface HashableResultsFactory {
 	static Hashable fromResults(final Results results) {
 		return HashableList.of(
 				HashableString.from(results.getContestIdentification()),
 				HashableBigInteger.from(results.getCastBallots()),
-				HashableContestResultsFactory.fromBallotBoxes(results.getBallotsBox())
+				HashableResultsFactory.fromBallotBoxes(results.getBallotsBox())
 		);
 	}
 
 	private static Hashable fromBallotBoxes(final List<BallotBoxType> ballotBoxes) {
-		return ballotBoxes.stream().map(HashableContestResultsFactory::fromBallotBox).collect(HashableList.toHashableList());
+		return ballotBoxes.stream().map(HashableResultsFactory::fromBallotBox).collect(HashableList.toHashableList());
 	}
 
 	private static Hashable fromBallotBox(final BallotBoxType ballotBox) {
 		return HashableList.of(
 				HashableString.from(ballotBox.getBallotBoxIdentification()),
-				HashableContestResultsFactory.fromCountingCircles(ballotBox.getCountingCircle())
+				HashableResultsFactory.fromCountingCircles(ballotBox.getCountingCircle())
 		);
 	}
 
 	private static Hashable fromCountingCircles(final List<CountingCircleType> countingCircles) {
-		return countingCircles.stream().map(HashableContestResultsFactory::fromCountingCircle).collect(HashableList.toHashableList());
+		return countingCircles.stream().map(HashableResultsFactory::fromCountingCircle).collect(HashableList.toHashableList());
 	}
 
 	private static Hashable fromCountingCircle(final CountingCircleType countingCircle) {
 		return HashableList.of(
 				HashableString.from(countingCircle.getCountingCircleIdentification()),
-				HashableContestResultsFactory.fromDomainsOfInfluence(countingCircle.getDomainOfInfluence())
+				HashableResultsFactory.fromDomainsOfInfluence(countingCircle.getDomainOfInfluence())
 		);
 	}
 
 	private static Hashable fromDomainsOfInfluence(final List<DomainOfInfluenceType> domainsOfInfluence) {
-		return domainsOfInfluence.stream().map(HashableContestResultsFactory::fromDomainOfInfluence).collect(HashableList.toHashableList());
+		return domainsOfInfluence.stream().map(HashableResultsFactory::fromDomainOfInfluence).collect(HashableList.toHashableList());
 	}
 
 	private static Hashable fromDomainOfInfluence(final DomainOfInfluenceType domainOfInfluence) {
 		return HashableList.of(
 				HashableString.from(domainOfInfluence.getDomainOfInfluenceIdentification()),
-				HashableContestResultsFactory.fromVotes(domainOfInfluence.getVote()),
-				HashableContestResultsFactory.fromElections(domainOfInfluence.getElection())
+				HashableResultsFactory.fromVotes(domainOfInfluence.getVote()),
+				HashableResultsFactory.fromElections(domainOfInfluence.getElection())
 		);
 	}
 
 	private static Hashable fromVotes(final List<VoteType> votes) {
-		return votes.stream().map(HashableContestResultsFactory::fromVote).collect(HashableList.toHashableList());
+		return votes.stream().map(HashableResultsFactory::fromVote).collect(HashableList.toHashableList());
 	}
 
 	private static Hashable fromVote(final VoteType vote) {
 		return HashableList.of(
 				HashableString.from(vote.getVoteIdentification()),
-				HashableContestResultsFactory.fromBallotVotes(vote.getBallot())
+				HashableResultsFactory.fromBallotVotes(vote.getBallot())
 		);
 	}
 
 	private static Hashable fromBallotVotes(final List<BallotVoteType> ballots) {
-		return ballots.stream().map(HashableContestResultsFactory::fromBallotVote).collect(HashableList.toHashableList());
+		return ballots.stream().map(HashableResultsFactory::fromBallotVote).collect(HashableList.toHashableList());
 	}
 
 	private static Hashable fromBallotVote(final BallotVoteType ballot) {
@@ -95,18 +95,18 @@ public interface HashableContestResultsFactory {
 	}
 
 	private static Hashable fromElections(final List<ElectionType> elections) {
-		return elections.stream().map(HashableContestResultsFactory::fromElection).collect(HashableList.toHashableList());
+		return elections.stream().map(HashableResultsFactory::fromElection).collect(HashableList.toHashableList());
 	}
 
 	private static Hashable fromElection(final ElectionType election) {
 		return HashableList.of(
 				HashableString.from(election.getElectionIdentification()),
-				HashableContestResultsFactory.fromBallotElections(election.getBallot())
+				HashableResultsFactory.fromBallotElections(election.getBallot())
 		);
 	}
 
 	private static Hashable fromBallotElections(final List<BallotElectionType> ballots) {
-		return ballots.stream().map(HashableContestResultsFactory::fromBallotElection).collect(HashableList.toHashableList());
+		return ballots.stream().map(HashableResultsFactory::fromBallotElection).collect(HashableList.toHashableList());
 	}
 
 	private static Hashable fromBallotElection(final BallotElectionType electionBallot) {

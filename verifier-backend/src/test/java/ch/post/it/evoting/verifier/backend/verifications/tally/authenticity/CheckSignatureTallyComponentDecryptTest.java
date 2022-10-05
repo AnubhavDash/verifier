@@ -31,8 +31,7 @@ import org.junit.jupiter.api.Test;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
-import ch.post.it.evoting.verifier.backend.hashable.HashableContestResultsFactory;
-import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
+import ch.post.it.evoting.verifier.backend.hashable.HashableResultsFactory;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
 import ch.post.it.evoting.verifier.protocol.domain.ChannelSecurityContextData;
 import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
@@ -65,7 +64,7 @@ class CheckSignatureTallyComponentDecryptTest extends TallyVerificationTest {
 	}
 
 	private byte[] generateSignature(final Results results) throws SignatureException {
-		final Hashable hash = HashableContestResultsFactory.fromResults(results);
+		final Hashable hash = HashableResultsFactory.fromResults(results);
 		final Hashable additionalContextData = ChannelSecurityContextData.tallyComponentDecrypt();
 
 		return signatureFactory.getTestSignatureGeneration(Alias.SDM_TALLY).genSignature(hash, additionalContextData);

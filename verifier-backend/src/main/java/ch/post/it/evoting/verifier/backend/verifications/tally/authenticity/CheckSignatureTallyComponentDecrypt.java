@@ -33,7 +33,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
-import ch.post.it.evoting.verifier.backend.hashable.HashableContestResultsFactory;
+import ch.post.it.evoting.verifier.backend.hashable.HashableResultsFactory;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
@@ -92,7 +92,7 @@ public class CheckSignatureTallyComponentDecrypt extends AbstractVerification {
 
 		checkState(signature != null, "The signature of the tally component decrypt file is null.");
 
-		final Hashable hash = HashableContestResultsFactory.fromResults(results);
+		final Hashable hash = HashableResultsFactory.fromResults(results);
 		final Hashable additionalContextData = ChannelSecurityContextData.tallyComponentDecrypt();
 
 		try {

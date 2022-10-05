@@ -34,8 +34,8 @@ import ch.ech.xmlns.ech_0110._4.Delivery;
 import ch.post.it.evoting.cryptoprimitives.domain.validations.FailedValidationException;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hash;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
-import ch.post.it.evoting.verifier.backend.hashable.HashableContestResultsFactory;
 import ch.post.it.evoting.verifier.backend.hashable.HashableEch0110Factory;
+import ch.post.it.evoting.verifier.backend.hashable.HashableResultsFactory;
 import ch.post.it.evoting.verifier.backend.tools.ContestResultsMapper;
 import ch.post.it.evoting.verifier.backend.tools.DeliveryMapper;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
@@ -91,8 +91,8 @@ public class VerifyTallyFilesAlgorithm {
 		eCH0110XML_prime.getResultDelivery().getReportingBody().withCreationDateTime(originalCreationDateTime);
 
 		// Compare hash of fields.
-		final Hashable hashableEvotingDecryptXML = HashableContestResultsFactory.fromResults(evotingDecryptXML);
-		final Hashable hashableEvotingDecryptXML_prime = HashableContestResultsFactory.fromResults(evotingDecryptXML_prime);
+		final Hashable hashableEvotingDecryptXML = HashableResultsFactory.fromResults(evotingDecryptXML);
+		final Hashable hashableEvotingDecryptXML_prime = HashableResultsFactory.fromResults(evotingDecryptXML_prime);
 		final Hashable hashableECH110XML = HashableEch0110Factory.fromDelivery(eCH0110XML);
 		final Hashable hashableECH110XML_prime = HashableEch0110Factory.fromDelivery(eCH0110XML_prime);
 
