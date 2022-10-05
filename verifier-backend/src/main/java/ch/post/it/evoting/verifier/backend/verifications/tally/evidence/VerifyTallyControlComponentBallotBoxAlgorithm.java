@@ -20,6 +20,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
@@ -38,6 +40,8 @@ import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProo
 
 @Service
 public class VerifyTallyControlComponentBallotBoxAlgorithm {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(VerifyTallyControlComponentBallotBoxAlgorithm.class);
 
 	private final Mixnet mixnet;
 	private final ZeroKnowledgeProof zeroKnowledgeProof;
@@ -92,7 +96,7 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> L_votes = input.getSelectedEncodedVotingOptions();
 		final List<List<String>> L_decodedVotes = input.getSelectedDecodedVotingOptions();
 
-		// Cross-size checks.
+		// Cross-checks.
 		checkArgument(encryptionGroup.equals(c_dec_4.getGroup()), "The context and input should have the same encryption group.");
 		if (!L_votes.isEmpty()) {
 			checkArgument(L_votes.getElementSize() == psi,
@@ -121,10 +125,19 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 		final List<String> i_aux = List.of(ee, bb, "MixDecOffline");
 
 		final VerificationResult shuffleVerif = mixnet.verifyShuffle(c_dec_4, c_mix_5, pi_mix_5, EB_pk);
+		if (!shuffleVerif.isVerified()) {
+			LOGGER.error("The shuffle proofs are invalid. [ee: {}, bb: {}, errorMessage: {}]", ee, bb, shuffleVerif.getErrorMessages().getFirst());
+		}
 
 		final VerificationResult decryptVerif = zeroKnowledgeProof.verifyDecryptions(c_mix_5, EB_pk, pi_dec_5, i_aux);
+		if (!decryptVerif.isVerified()) {
+			LOGGER.error("The decryption proofs are invalid. [ee: {}, bb: {}, errorMessage: {}]", ee, bb, decryptVerif.getErrorMessages().getFirst());
+		}
 
 		final boolean processVerif = verifyProcessPlaintextsAlgorithm.verifyProcessPlaintexts(pTable, m, psi, delta_hat, L_votes, L_decodedVotes);
+		if (!processVerif) {
+			LOGGER.error("The process plaintexts verification failed. [ee: {}, bb: {}]", ee, bb);
+		}
 
 		return shuffleVerif.isVerified() && decryptVerif.isVerified() && processVerif;
 	}

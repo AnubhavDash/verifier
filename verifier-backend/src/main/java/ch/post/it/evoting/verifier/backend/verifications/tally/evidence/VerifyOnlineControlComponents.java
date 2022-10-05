@@ -42,18 +42,18 @@ import ch.post.it.evoting.verifier.protocol.domain.configuration.SetupComponentT
 import ch.post.it.evoting.verifier.protocol.domain.tally.ControlComponentBallotBoxPayload;
 
 @Component
-public class VerifyOnlineControlComponentsEvidence extends AbstractVerification {
+public class VerifyOnlineControlComponents extends AbstractVerification {
 
 	private final ElectionDataExtractionService electionDataExtractionService;
-	private final VerifyOnlineControlComponentsVerification verifyOnlineControlComponentsVerification;
+	private final VerifyOnlineControlComponentsAlgorithm verifyOnlineControlComponentsAlgorithm;
 
-	public VerifyOnlineControlComponentsEvidence(
+	public VerifyOnlineControlComponents(
 			final ApplicationEventPublisher applicationEventPublisher,
 			final ElectionDataExtractionService electionDataExtractionService,
-			final VerifyOnlineControlComponentsVerification verifyOnlineControlComponentsVerification) {
+			final VerifyOnlineControlComponentsAlgorithm verifyOnlineControlComponentsAlgorithm) {
 		super(applicationEventPublisher);
 		this.electionDataExtractionService = electionDataExtractionService;
-		this.verifyOnlineControlComponentsVerification = verifyOnlineControlComponentsVerification;
+		this.verifyOnlineControlComponentsAlgorithm = verifyOnlineControlComponentsAlgorithm;
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class VerifyOnlineControlComponentsEvidence extends AbstractVerification 
 				}));
 
 		final VerificationResult verificationResult;
-		if (verifyOnlineControlComponentsVerification.verifyOnlineControlComponents(electionEventId, ballotBoxIds, numberOfSelectionsByBallotBoxId,
+		if (verifyOnlineControlComponentsAlgorithm.verifyOnlineControlComponents(electionEventId, ballotBoxIds, numberOfSelectionsByBallotBoxId,
 				controlComponentBallotBoxesByBallotBoxId, controlComponentShufflesByBallotBoxId, setupComponentTallyDataByBallotBoxId,
 				electionEventContext
 		)) {

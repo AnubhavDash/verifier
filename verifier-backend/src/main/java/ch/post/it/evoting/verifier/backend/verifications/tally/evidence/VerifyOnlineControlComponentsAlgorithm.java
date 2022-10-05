@@ -42,13 +42,13 @@ import ch.post.it.evoting.verifier.protocol.domain.configuration.SetupComponentT
 import ch.post.it.evoting.verifier.protocol.domain.tally.ControlComponentBallotBoxPayload;
 
 @Service
-public class VerifyOnlineControlComponentsVerification {
+public class VerifyOnlineControlComponentsAlgorithm {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(VerifyOnlineControlComponentsVerification.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(VerifyOnlineControlComponentsAlgorithm.class);
 
 	private final VerifyOnlineControlComponentsBallotBoxAlgorithm verifyOnlineControlComponentsBallotBoxAlgorithm;
 
-	public VerifyOnlineControlComponentsVerification(
+	public VerifyOnlineControlComponentsAlgorithm(
 			final VerifyOnlineControlComponentsBallotBoxAlgorithm verifyOnlineControlComponentsBallotBoxAlgorithm) {
 		this.verifyOnlineControlComponentsBallotBoxAlgorithm = verifyOnlineControlComponentsBallotBoxAlgorithm;
 	}

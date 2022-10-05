@@ -20,7 +20,6 @@ import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -53,16 +52,14 @@ public class VerifyTallyFilesAlgorithm {
 	/**
 	 * Verifies the correctness of the evoting-decrypt and eCH-0110 files.
 	 *
-	 * @param inputDirectoryPath the dataset path.
-	 * @param electionEventId    the associated election event id.
-	 * @param input              the {@link VerifyTallyFilesInput} containing the configuration, evoting-decrypt and eCH-0110 files.
+	 * @param electionEventId the associated election event id.
+	 * @param input           the {@link VerifyTallyFilesInput} containing the configuration, evoting-decrypt and eCH-0110 files.
 	 * @return {@code true} if the files are correct, {@code false} otherwise.
 	 * @throws NullPointerException      if any input parameter is null.
 	 * @throws FailedValidationException if {@code electionEventId} is invalid.
 	 */
 	@SuppressWarnings("java:S117")
-	public boolean verifyTallyFiles(final Path inputDirectoryPath, final String electionEventId, final VerifyTallyFilesInput input) {
-		checkNotNull(inputDirectoryPath);
+	public boolean verifyTallyFiles(final String electionEventId, final VerifyTallyFilesInput input) {
 		checkNotNull(input);
 		validateUUID(electionEventId);
 

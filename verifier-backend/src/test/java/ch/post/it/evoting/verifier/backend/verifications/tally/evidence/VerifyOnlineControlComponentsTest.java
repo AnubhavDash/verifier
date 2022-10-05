@@ -42,9 +42,9 @@ import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.VerifyVo
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixonline.GetMixnetInitialCiphertextsAlgorithm;
 
 @DisplayName("VerifyOnlineControlComponentsEvidence with")
-class VerifyOnlineControlComponentsEvidenceTest extends TallyVerificationTest {
+class VerifyOnlineControlComponentsTest extends TallyVerificationTest {
 
-	private static VerifyOnlineControlComponentsVerification verifyOnlineControlComponentsVerification;
+	private static VerifyOnlineControlComponentsAlgorithm verifyOnlineControlComponentsAlgorithm;
 
 	@BeforeAll
 	static void setUpAll() {
@@ -59,16 +59,16 @@ class VerifyOnlineControlComponentsEvidenceTest extends TallyVerificationTest {
 		final VerifyOnlineControlComponentsBallotBoxAlgorithm verifyOnlineControlComponentsBallotBoxAlgorithm = new VerifyOnlineControlComponentsBallotBoxAlgorithm(
 				verifyMixDecOfflineAlgorithm, verifyVotingClientProofsAlgorithm, getMixnetInitialCiphertextsAlgorithm);
 
-		verifyOnlineControlComponentsVerification = spy(
-				new VerifyOnlineControlComponentsVerification(verifyOnlineControlComponentsBallotBoxAlgorithm));
+		verifyOnlineControlComponentsAlgorithm = spy(
+				new VerifyOnlineControlComponentsAlgorithm(verifyOnlineControlComponentsBallotBoxAlgorithm));
 
-		verification = new VerifyOnlineControlComponentsEvidence(applicationEventPublisherMock, electionDataExtractionService,
-				verifyOnlineControlComponentsVerification);
+		verification = new VerifyOnlineControlComponents(applicationEventPublisherMock, electionDataExtractionService,
+				verifyOnlineControlComponentsAlgorithm);
 	}
 
 	@BeforeEach
 	void setUp() {
-		reset(verifyOnlineControlComponentsVerification);
+		reset(verifyOnlineControlComponentsAlgorithm);
 	}
 
 	@Test
@@ -83,7 +83,7 @@ class VerifyOnlineControlComponentsEvidenceTest extends TallyVerificationTest {
 	@Test
 	@DisplayName("algorithm returning false is failed")
 	void algorithmReturningFalse() {
-		doReturn(false).when(verifyOnlineControlComponentsVerification)
+		doReturn(false).when(verifyOnlineControlComponentsAlgorithm)
 				.verifyOnlineControlComponents(any(), anyList(), anyMap(), anyMap(), anyMap(), anyMap(), any());
 
 		final VerificationResult result = verification.verify(datasetPath);
