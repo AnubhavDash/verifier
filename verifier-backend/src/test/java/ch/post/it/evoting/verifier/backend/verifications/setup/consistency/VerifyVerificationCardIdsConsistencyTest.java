@@ -34,12 +34,8 @@ import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerification
 
 class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 
-	private static ElectionDataExtractionService electionDataExtractionService;
-
 	@BeforeAll
 	static void setUpAll() {
-		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper);
-
 		verification = new VerifyVerificationCardIdsConsistency(pathService, applicationEventPublisherMock, electionDataExtractionService);
 	}
 
@@ -64,7 +60,7 @@ class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 		final VerificationResult result = verifyVerificationCardIdsConsistency.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification308.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification311.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 

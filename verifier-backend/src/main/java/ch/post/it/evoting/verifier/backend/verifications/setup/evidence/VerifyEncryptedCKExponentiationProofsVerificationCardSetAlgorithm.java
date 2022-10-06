@@ -32,6 +32,7 @@ import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKe
 import ch.post.it.evoting.cryptoprimitives.math.GqElement;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
+import ch.post.it.evoting.cryptoprimitives.math.ZqGroup;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ExponentiationProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
 
@@ -72,10 +73,13 @@ public class VerifyEncryptedCKExponentiationProofsVerificationCardSetAlgorithm {
 		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_ck = input.getEncryptedHashedConfirmationKey();
 		final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> Kc_j = input.getVoterVoteCastReturnCodeGenerationPublicKeys();
 		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_expCK_j = input.getExponentiatedEncryptedHashedConfirmationKey();
-		final List<ExponentiationProof> pi_expCK_j = input.getProofsOfCorrectCKExponentiation();
+		final GroupVector<ExponentiationProof, ZqGroup> pi_expCK_j = input.getProofsOfCorrectCKExponentiation();
+
+		// Cross-group check.
+		checkArgument(c_ck.getGroup().equals(group), "The context and input must have the same encryption group.");
 
 		// Cross-size validations.
-		checkArgument(vc.size() == N_E, "The number of verification card ids must be equal to the number of voters.");
+		checkArgument(vc.size() == N_E, "The size of each input must be equal to the number of voters.");
 
 		// Operation.
 		return IntStream.range(0, N_E)

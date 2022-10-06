@@ -4,7 +4,7 @@
 
 	<groupId>ch.post.it.evoting.verifier</groupId>
 	<artifactId>verifier</artifactId>
-	<version>1.0.0.0</version>
+	<version>1.1.0.0</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -18,36 +18,40 @@
 		<maven-enforcer-plugin.requiredJavaVersion>[17.0.3]</maven-enforcer-plugin.requiredJavaVersion>
 		<maven-enforcer-plugin.requiredMavenVersion>[3.8.6]</maven-enforcer-plugin.requiredMavenVersion>
 		<maven.compiler.release>17</maven.compiler.release>
-		<project.build.outputTimestamp>2022-08-19T11:10:02+02:00</project.build.outputTimestamp>
+		<project.build.outputTimestamp>2022-10-06T13:46:34+02:00</project.build.outputTimestamp>
 
-		<bouncycastle.version>1.71</bouncycastle.version>
+		<bouncycastle.version>1.72</bouncycastle.version>
 		<commons-codec.version>1.15</commons-codec.version>
-		<crypto-primitives-version>0.15.2.3</crypto-primitives-version>
-		<crypto-primitives-domain.version>0.15.2.5</crypto-primitives-domain.version>
+		<crypto-primitives-version>1.0.0.2</crypto-primitives-version>
+		<crypto-primitives-domain.version>1.0.0.2</crypto-primitives-domain.version>
 		<guava.version>31.1-jre</guava.version>
-		<jackson.version>2.13.3</jackson.version>
+		<jackson.version>2.13.4</jackson.version>
 		<jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
 		<jakarta.xml.bind-api.version>4.0.0</jakarta.xml.bind-api.version>
-		<junit-jupiter.version>5.9.0</junit-jupiter.version>
+		<javax.xml.bind.version>2.3.1</javax.xml.bind.version>
+		<jaxb-impl.version>2.3.6</jaxb-impl.version>
+		<junit-jupiter.version>5.9.1</junit-jupiter.version>
 		<lombok.version>1.18.24</lombok.version>
 		<mapstruct.version>1.5.2.Final</mapstruct.version>
 		<maven-assembly-plugin.version>3.4.2</maven-assembly-plugin.version>
 		<maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
 		<maven-deploy-plugin.version>3.0.0</maven-deploy-plugin.version>
 		<maven-enforcer-plugin.version>3.1.0</maven-enforcer-plugin.version>
-		<maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
+		<maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
 		<maven-release-plugin.version>3.0.0-M6</maven-release-plugin.version>
 		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
 		<maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
-		<mockito.version>4.7.0</mockito.version>
+		<mockito.version>4.8.0</mockito.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<reproducible-build-maven-plugin.version>0.15</reproducible-build-maven-plugin.version>
+		<reproducible-build-maven-plugin.version>0.15.1</reproducible-build-maven-plugin.version>
 		<rootProject>verifier</rootProject>
-		<slf4j.version>1.7.36</slf4j.version>
-		<spring-boot.version>2.7.2</spring-boot.version>
+		<slf4j.version>2.0.3</slf4j.version>
+		<spring-boot.version>2.7.4</spring-boot.version>
+		<super-machine.version>0.1.0</super-machine.version>
 		<system-stubs.version>2.0.1</system-stubs.version>
-		<versions-maven-plugin.version>2.11.0</versions-maven-plugin.version>
-		<zip4j.version>2.11.1</zip4j.version>
+		<versions-maven-plugin.version>2.12.0</versions-maven-plugin.version>
+		<zip4j.version>2.11.2</zip4j.version>
+		<apache.commons-lang3>3.12.0</apache.commons-lang3>
 
 		<!-- sonar -->
 		<sonar.scm.disabled>true</sonar.scm.disabled>
@@ -101,6 +105,12 @@
 				<version>${commons-codec.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>org.swisspush</groupId>
+				<artifactId>super-machine</artifactId>
+				<version>${super-machine.version}</version>
+			</dependency>
+
 			<!-- crypto-primitives -->
 			<dependency>
 				<groupId>ch.post.it.evoting.cryptoprimitives</groupId>
@@ -120,6 +130,18 @@
 				<groupId>ch.post.it.evoting.cryptoprimitives.domain</groupId>
 				<artifactId>crypto-primitives-domain</artifactId>
 				<version>${crypto-primitives-domain.version}</version>
+			</dependency>
+
+			<!-- jaxb -->
+			<dependency>
+				<groupId>javax.xml.bind</groupId>
+				<artifactId>jaxb-api</artifactId>
+				<version>${javax.xml.bind.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.xml.bind</groupId>
+				<artifactId>jaxb-impl</artifactId>
+				<version>${jaxb-impl.version}</version>
 			</dependency>
 
 			<!-- junit -->
@@ -156,6 +178,11 @@
 			</dependency>
 
 			<!-- logging -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-simple</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
@@ -226,6 +253,13 @@
 				<artifactId>spring-boot-starter-validation</artifactId>
 				<version>${spring-boot.version}</version>
 			</dependency>
+
+			<!--org.apache-->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${apache.commons-lang3}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -278,11 +312,18 @@
 					</configuration>
 				</plugin>
 				<plugin>
-					<groupId>io.github.zlika</groupId>
+					<groupId>ch.galinet</groupId>
 					<artifactId>reproducible-build-maven-plugin</artifactId>
 					<version>${reproducible-build-maven-plugin.version}</version>
 					<executions>
 						<execution>
+							<id>strip-jaxb</id>
+							<goals>
+								<goal>strip-jaxb</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>strip-jar</id>
 							<goals>
 								<goal>strip-jar</goal>
 							</goals>

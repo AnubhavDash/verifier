@@ -61,16 +61,16 @@ public class VerifyCiphertextsConsistency extends AbstractVerification {
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) {
+	public VerificationResult verify(final Path inputDirectoryPath) {
 		final List<VerificationCardSetContext> verificationCardSetContexts = extractionService.getElectionEventContextPayload(inputDirectoryPath)
 				.getElectionEventContext().verificationCardSetContexts();
 		final List<Ciphertexts> ciphertexts = verificationCardSetContexts.stream()
 				.map(vcsContext -> {
 					final String ballotBoxId = vcsContext.ballotBoxId();
 					final int numberWriteInsPlusOne = vcsContext.numberOfWriteInFields() + 1;
-					final List<ControlComponentBallotBoxPayload> ballotBoxPayloads = extractionService.getControlComponentBallotBoxPayloads(
+					final List<ControlComponentBallotBoxPayload> ballotBoxPayloads = extractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(
 							inputDirectoryPath, ballotBoxId);
-					final List<ControlComponentShufflePayload> shufflePayloads = extractionService.getControlComponentShufflePayloads(
+					final List<ControlComponentShufflePayload> shufflePayloads = extractionService.getControlComponentShufflePayloadsOrderedByNodeId(
 							inputDirectoryPath, ballotBoxId);
 					final TallyComponentShufflePayload tallyComponentShufflePayload = extractionService.getTallyComponentShufflePayload(
 							inputDirectoryPath, ballotBoxId);
@@ -101,7 +101,7 @@ public class VerifyCiphertextsConsistency extends AbstractVerification {
 							.filter(ciphertextSize -> ciphertextSize != numberWriteInsPlusOne)
 							.toList().isEmpty();
 					final boolean tallyShufflePayloadCiphertextsConsistent = information.tallyComponentShufflePayload.getVerifiableShuffle()
-							.orElseThrow().shuffledCiphertexts().getElementSize() == numberWriteInsPlusOne;
+							.shuffledCiphertexts().getElementSize() == numberWriteInsPlusOne;
 					return ballotBoxPayloadsCiphertextsConsistent && shufflePayloadsCiphertextsConsistent && tallyShufflePayloadCiphertextsConsistent;
 				})
 				.reduce(Boolean::logicalAnd).orElse(Boolean.FALSE);

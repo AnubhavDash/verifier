@@ -13,7 +13,8 @@
             <span class="input-group-text bg-outline-secondary">Dataset</span>
           </div>
           <button (click)="fileUpload.click()" class="form-control upload-button" color="primary" mat-mini-fab>
-            <span *ngIf="!filename">Not uploaded yet. Click to upload one</span>
+            <span *ngIf="!filename && !datasetLoading">Not uploaded yet. Click to upload one</span>
+            <span *ngIf="!filename && datasetLoading">Uploading dataset...</span>
             {{filename}} <span *ngIf="hash">({{hash}})</span>
           </button>
         </div>
@@ -56,6 +57,11 @@
               <button (click)="filterVerificationsAll()" [class.active]="verificationFilter.ALL.active" class="btn btn-outline-info mr-1 mt-1"
                       type="button">
                 All verifications <span class="badge badge-light">{{verificationsSize}}</span>
+              </button>
+              <button (click)="filterVerificationsRUNNING()" [class.active]="verificationFilter.RUNNING.active"
+                      class="btn btn-outline-primary mr-1 mt-1"
+                      type="button">
+                Running <span class="badge badge-light">{{statusCounterRUNNING()}}</span>
               </button>
               <button (click)="filterVerificationsOK()" [class.active]="verificationFilter.OK.active" class="btn btn-outline-success mr-1 mt-1"
                       type="button">
@@ -210,6 +216,9 @@
                 <td>{{verification.value.category}}</td>
                 <td>{{verification.value.description | localize}}</td>
                 <td class="text-center h3">
+                  <div *ngIf="isRUNNING(verification.value.status)" class="text-primary" role="status">
+                    <i aria-hidden="true" class="bi-circle"></i> <span class="sr-only">{{verification.value.status}}</span>
+                  </div>
                   <div *ngIf="isOK(verification.value.status)" class="text-success" role="status">
                     <i aria-hidden="true" class="bi-check-circle"></i> <span class="sr-only">{{verification.value.status}}</span>
                   </div>

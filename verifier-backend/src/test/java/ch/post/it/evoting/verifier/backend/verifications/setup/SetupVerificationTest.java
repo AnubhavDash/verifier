@@ -31,22 +31,31 @@ import org.springframework.context.ApplicationEventPublisher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ch.ech.xmlns.ech_0110._4.Delivery;
 import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.tools.CertificateLoader;
+import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
+import ch.post.it.evoting.verifier.backend.tools.XmlFileRepository;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.verifications.authenticity.TestDigitalSignaturesFactory;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 
 public abstract class SetupVerificationTest {
 
-	public static TestDigitalSignaturesFactory signatureFactory;
+	protected static TestDigitalSignaturesFactory signatureFactory;
 	protected static AbstractVerification verification;
 	protected static Path datasetPath;
 	protected static PathService pathService;
 	protected static CertificateLoader certificateLoader;
 	protected static ApplicationEventPublisher applicationEventPublisherMock;
 	protected static ObjectMapper objectMapper;
+	protected static XmlFileRepository<Delivery> deliveryXmlFileRepository;
+	protected static XmlFileRepository<Configuration> configurationXmlFileRepository;
+	protected static XmlFileRepository<Results> resultsXmlFileRepository;
+	protected static ElectionDataExtractionService electionDataExtractionService;
 
 	@BeforeAll
 	static void baseSetUpAll() {
@@ -56,6 +65,11 @@ public abstract class SetupVerificationTest {
 		objectMapper = DomainObjectMapper.getNewInstance();
 		datasetPath = Paths.get("").toAbsolutePath().getParent().resolve("datasets").resolve("dataset-setup1");
 		signatureFactory = new TestDigitalSignaturesFactory();
+		deliveryXmlFileRepository = new XmlFileRepository<>();
+		configurationXmlFileRepository = new XmlFileRepository<>();
+		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper, deliveryXmlFileRepository,
+				configurationXmlFileRepository, resultsXmlFileRepository);
+		resultsXmlFileRepository = new XmlFileRepository<>();
 	}
 
 	@BeforeEach

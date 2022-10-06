@@ -31,7 +31,7 @@ import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
  * <li>j, the CCR's index. In the range [1, 4].</li>
  * <li>ee, the election event ID. Not null and a valid UUID.</li>
  * <li>vcs, the verification card set ID. Not null and a valid UUID.</li>
- * <li>N_E, the number of voters. Strictly positive.</li>
+ * <li>N<sub>E</sub>, the number of voters. Strictly positive.</li>
  * <li>n, number of voting options. Only needed for VerifyEncryptedPCCExponentiationProofsVerificationCardSet.</li>
  * </ul>
  */

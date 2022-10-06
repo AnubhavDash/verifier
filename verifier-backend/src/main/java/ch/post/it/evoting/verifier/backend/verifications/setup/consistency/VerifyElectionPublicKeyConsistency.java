@@ -59,15 +59,15 @@ public class VerifyElectionPublicKeyConsistency extends AbstractVerification {
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification304.description"));
-		definition.setId(304);
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification306.description"));
+		definition.setId(306);
 		definition.setName("VerifyElectionPublicKeyConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) {
+	public VerificationResult verify(final Path inputDirectoryPath) {
 		final ElectionEventContext electionEventContext = extractionService.getElectionEventContextPayload(inputDirectoryPath)
 				.getElectionEventContext();
 
@@ -75,7 +75,7 @@ public class VerifyElectionPublicKeyConsistency extends AbstractVerification {
 						Stream.of(electionEventContext.electoralBoardPublicKey()),
 						electionEventContext.combinedControlComponentPublicKeys()
 								.stream()
-								.map(ControlComponentPublicKeys::ccmElectionPublicKey)
+								.map(ControlComponentPublicKeys::ccmjElectionPublicKey)
 								.map(ccmElectionPublicKey -> new ElGamalMultiRecipientPublicKey(
 										ccmElectionPublicKey.getKeyElements().subList(0, electionEventContext.getMaxNumberOfWriteInFields() + 1))))
 				.collect(GroupVector.toGroupVector());
@@ -86,7 +86,7 @@ public class VerifyElectionPublicKeyConsistency extends AbstractVerification {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification304.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification306.nok.message"));
 		}
 	}
 }

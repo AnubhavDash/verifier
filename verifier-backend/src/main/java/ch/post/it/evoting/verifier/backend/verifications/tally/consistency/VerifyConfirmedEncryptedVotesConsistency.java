@@ -41,7 +41,7 @@ public class VerifyConfirmedEncryptedVotesConsistency extends AbstractVerificati
 
 	private final ElectionDataExtractionService extractionService;
 
-	public VerifyConfirmedEncryptedVotesConsistency(ApplicationEventPublisher applicationEventPublisher,
+	public VerifyConfirmedEncryptedVotesConsistency(final ApplicationEventPublisher applicationEventPublisher,
 			final ElectionDataExtractionService extractionService) {
 		super(applicationEventPublisher);
 		this.extractionService = extractionService;
@@ -61,12 +61,12 @@ public class VerifyConfirmedEncryptedVotesConsistency extends AbstractVerificati
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) {
+	public VerificationResult verify(final Path inputDirectoryPath) {
 		final Stream<List<ControlComponentBallotBoxPayload>> ballotBoxPayloads = extractionService.getElectionEventContextPayload(inputDirectoryPath)
 				.getElectionEventContext()
 				.verificationCardSetContexts().stream()
 				.map(VerificationCardSetContext::ballotBoxId)
-				.map(ballotBoxId -> extractionService.getControlComponentBallotBoxPayloads(inputDirectoryPath, ballotBoxId));
+				.map(ballotBoxId -> extractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(inputDirectoryPath, ballotBoxId));
 		if (confirmedVotesConsistent(ballotBoxPayloads)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {

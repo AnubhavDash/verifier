@@ -41,12 +41,8 @@ import lombok.SneakyThrows;
 @DisplayName("VerifyElectionEventIdConsistency with")
 class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 
-	private static ElectionDataExtractionService electionDataExtractionService;
-
 	@BeforeAll
 	static void setUpAll() {
-		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper);
-
 		verification = new VerifyElectionEventIdConsistency(applicationEventPublisherMock,
 				electionDataExtractionService);
 	}
@@ -69,7 +65,7 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 		when(controlComponentCodeSharesPayloadMock.getElectionEventId()).thenReturn("wrong election event ID");
 
 		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(singletonList(controlComponentCodeSharesPayloadMock)).when(extractionServiceSpy).getControlComponentCodeSharesPayloads(datasetPath);
+		doReturn(singletonList(controlComponentCodeSharesPayloadMock)).when(extractionServiceSpy).getControlComponentCodeSharesPayloadsOrderedByNodeId(datasetPath);
 
 		final VerifyElectionEventIdConsistency verifyElectionEventIdConsistency = new VerifyElectionEventIdConsistency(
 				applicationEventPublisherMock, extractionServiceSpy);
@@ -77,7 +73,7 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 		final VerificationResult result = verifyElectionEventIdConsistency.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification306.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification308.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 
@@ -99,7 +95,7 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 		final VerificationResult result = verifyElectionEventIdConsistency.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification306.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification308.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 
@@ -120,7 +116,7 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 		final VerificationResult result = verifyElectionEventIdConsistency.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification306.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification308.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 
@@ -141,7 +137,7 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 		final VerificationResult result = verifyElectionEventIdConsistency.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification306.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification308.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 }

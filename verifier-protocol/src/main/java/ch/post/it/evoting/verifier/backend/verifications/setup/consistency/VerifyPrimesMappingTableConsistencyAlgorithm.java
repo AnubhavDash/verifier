@@ -18,24 +18,23 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Preconditions;
 
+import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
+import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTableEntry;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
-import ch.post.it.evoting.verifier.protocol.domain.configuration.PrimesMappingTable;
-import ch.post.it.evoting.verifier.protocol.domain.configuration.PrimesMappingTableEntry;
 
 public class VerifyPrimesMappingTableConsistencyAlgorithm {
 
 	/**
 	 * Verifies that all PrimesMappingTables are consistent.
 	 * <ul>
-	 *     <li>A PrimesMappingTable must not contain duplicate encoded voting options</li>
+	 *     <li>A PrimesMappingTable must not contain duplicate encoded voting options. This is ensured by {@link PrimesMappingTable#from(List)}</li>
 	 *     <li>The same encoded voting option must have the same actual voting option in each table</li>
 	 * </ul>
 	 *
@@ -47,13 +46,7 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 		checkArgument(!primesMappingTables.isEmpty());
 		primesMappingTables.forEach(Preconditions::checkNotNull);
 
-		// 1. Check that neither of the PrimesMappingTables contains duplicates
-		final Boolean uniquenessVerif = primesMappingTables.stream()
-				.map(PrimesMappingTable::getPTable)
-				.map(pTable -> pTable.size() == new HashSet<>(pTable).size())
-				.reduce(Boolean::logicalAnd).orElse(false);
-
-		// 2. Check that the same encoded voting option has the same actual voting option in all PrimesMappingTables
+		// Check that the same encoded voting option has the same actual voting option in all PrimesMappingTables
 		final Set<PrimesMappingTableEntry> primesMappingTableEntries = primesMappingTables.stream()
 				.map(PrimesMappingTable::getPTable)
 				.flatMap(GroupVector::stream)
@@ -61,9 +54,8 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 		final Set<PrimeGqElement> encodedVotingOptions = primesMappingTableEntries.stream()
 				.map(PrimesMappingTableEntry::encodedVotingOption)
 				.collect(Collectors.toSet());
-		final boolean mappingVerif = primesMappingTableEntries.size() == encodedVotingOptions.size();
 
-		return uniquenessVerif && mappingVerif;
+		return primesMappingTableEntries.size() == encodedVotingOptions.size();
 	}
 
 }

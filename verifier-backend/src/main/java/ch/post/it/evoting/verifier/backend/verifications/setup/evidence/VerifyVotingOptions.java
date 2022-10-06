@@ -18,11 +18,14 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.List;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
+import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
+import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
+import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTableEntry;
+import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.EncryptionParametersPayload;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupElement;
@@ -36,9 +39,6 @@ import ch.post.it.evoting.verifier.backend.event.SetupEvent;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
-import ch.post.it.evoting.verifier.protocol.domain.configuration.PrimesMappingTable;
-import ch.post.it.evoting.verifier.protocol.domain.configuration.PrimesMappingTableEntry;
-import ch.post.it.evoting.verifier.protocol.domain.configuration.SetupComponentTallyDataPayload;
 
 @Component
 public class VerifyVotingOptions extends AbstractVerification {
@@ -87,14 +87,13 @@ public class VerifyVotingOptions extends AbstractVerification {
 	}
 
 	/**
-	 * The consistency check of the setup component tally data payloads are done in another verification.
+	 * The consistency checks of the primes mapping tables are done in another verification.
 	 */
 	private GroupVector<PrimeGqElement, GqGroup> extractEncodedVotingOptions(final Path inputDirectoryPath) {
-		final List<SetupComponentTallyDataPayload> setupComponentTallyDataPayloads = extractionService.getSetupComponentTallyDataPayloads(
-				inputDirectoryPath);
+		final ElectionEventContext electionEventContext = extractionService.getElectionEventContext(inputDirectoryPath);
 
-		return setupComponentTallyDataPayloads.stream()
-				.map(SetupComponentTallyDataPayload::getPrimesMappingTable)
+		return electionEventContext.verificationCardSetContexts().stream()
+				.map(VerificationCardSetContext::primesMappingTable)
 				.map(PrimesMappingTable::getPTable)
 				.flatMap(Collection::stream)
 				.map(PrimesMappingTableEntry::encodedVotingOption)

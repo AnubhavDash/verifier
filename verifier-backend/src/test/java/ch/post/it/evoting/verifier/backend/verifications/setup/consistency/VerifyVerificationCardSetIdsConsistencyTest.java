@@ -37,12 +37,8 @@ import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerification
 
 class VerifyVerificationCardSetIdsConsistencyTest extends SetupVerificationTest {
 
-	private static ElectionDataExtractionService electionDataExtractionService;
-
 	@BeforeAll
 	static void setUpAll() {
-		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper);
-
 		verification = new VerifyVerificationCardSetIdsConsistency(applicationEventPublisherMock, pathService, electionDataExtractionService);
 	}
 
@@ -58,7 +54,7 @@ class VerifyVerificationCardSetIdsConsistencyTest extends SetupVerificationTest 
 	@Test
 	@DisplayName("inconsistent verification card set ids is failed")
 	void inconsistentVerificationCardIds() {
-		SetupComponentVerificationDataPayload setupComponentVerificationDataPayloadMock = mock(SetupComponentVerificationDataPayload.class);
+		final SetupComponentVerificationDataPayload setupComponentVerificationDataPayloadMock = mock(SetupComponentVerificationDataPayload.class);
 		when(setupComponentVerificationDataPayloadMock.getVerificationCardSetId()).thenReturn("4c6f28483a324d84b5363261aa2062f6");
 
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
@@ -71,7 +67,7 @@ class VerifyVerificationCardSetIdsConsistencyTest extends SetupVerificationTest 
 		final VerificationResult result = verifyVerificationCardSetIdsConsistency.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification307.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification309.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 }
