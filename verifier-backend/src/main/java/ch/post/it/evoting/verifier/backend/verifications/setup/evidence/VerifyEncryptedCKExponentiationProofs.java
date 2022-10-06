@@ -49,8 +49,8 @@ public class VerifyEncryptedCKExponentiationProofs extends AbstractVerification 
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
-				"setup.verification504.description"));
-		definition.setId(504);
+				"setup.verification505.description"));
+		definition.setId(505);
 		definition.setName("VerifyEncryptedCKExponentiationProofs");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
@@ -67,7 +67,7 @@ public class VerifyEncryptedCKExponentiationProofs extends AbstractVerification 
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
 					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
-							"setup.verification.exponentiation.proofs.nok.message"));
+							"setup.verification505.nok.message"));
 		}
 	}
 }

@@ -19,27 +19,39 @@ import static ch.post.it.evoting.cryptoprimitives.utils.Validations.allEqual;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.List;
 import java.util.stream.Stream;
 
+import org.springframework.stereotype.Service;
+
+import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
+import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTableEntry;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientMessage;
+import ch.post.it.evoting.cryptoprimitives.math.GqElement;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
+import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.DecodeVotingOptionsAlgorithm;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.FactorizeService;
 
+@Service
 public final class VerifyProcessPlaintextsAlgorithm {
 
 	private final ElGamal elGamal;
+	private final DecodeVotingOptionsAlgorithm decodeVotingOptionsAlgorithm;
 
-	public VerifyProcessPlaintextsAlgorithm(final ElGamal elGamal) {
+	public VerifyProcessPlaintextsAlgorithm(
+			final ElGamal elGamal,
+			final DecodeVotingOptionsAlgorithm decodeVotingOptionsAlgorithm) {
 		this.elGamal = elGamal;
+		this.decodeVotingOptionsAlgorithm = decodeVotingOptionsAlgorithm;
 	}
 
 	/**
 	 * Factorizes each plaintext vote.
 	 *
-	 * @param encodedVotingOptions            p_tile, the encoded voting options. Must be non-null.
+	 * @param primesMappingTable              pTable, the primes mapping table. Must be non-null.
 	 * @param plaintextVotes                  m, the list of plaintext votes. Must be non-null.
 	 * @param numberOfSelectableVotingOptions psi, the number of selectable voting options. Must be between 1 and 120 inclusive.
 	 * @param numberOfAllowedWriteInsPlusOne  delta_hat, the number of write-ins + 1. Must be strictly positive.
@@ -50,6 +62,7 @@ public final class VerifyProcessPlaintextsAlgorithm {
 	 *                                      <li>the number of elements of each plaintext vote does not correspond to the number of allowed write ins plus one.</li>
 	 *                                      <li>not all selected encoded voting options are of size selected number of selectable voting options.</li>
 	 *                                      <li>the plaintext votes, encoded voting options and selected encoded voting options do not have the same group.</li>
+	 *                                      <li>there is a different number of selected encoded and decoded voting options.</li>
 	 *                                      <li>the number of selectable voting options is strictly smaller than 1.</li>
 	 *                                      <li>the number of selectable voting options is strictly greater than 120.</li>
 	 *                                      <li>the number of allowed write-ins + 1 is smaller or equal to 0.</li>
@@ -59,19 +72,29 @@ public final class VerifyProcessPlaintextsAlgorithm {
 	 */
 	@SuppressWarnings("java:S117")
 	public boolean verifyProcessPlaintexts(
-			final GroupVector<PrimeGqElement, GqGroup> encodedVotingOptions, final GroupVector<ElGamalMultiRecipientMessage, GqGroup> plaintextVotes,
+			final PrimesMappingTable primesMappingTable, final GroupVector<ElGamalMultiRecipientMessage, GqGroup> plaintextVotes,
 			final int numberOfSelectableVotingOptions, final int numberOfAllowedWriteInsPlusOne,
-			final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> selectedEncodedVotingOptions) {
+			final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> selectedEncodedVotingOptions,
+			final List<List<String>> selectedDecodedVotingOptions) {
 
+		checkNotNull(primesMappingTable);
 		checkNotNull(plaintextVotes);
-		checkNotNull(encodedVotingOptions);
+		checkNotNull(selectedEncodedVotingOptions);
+		checkNotNull(selectedDecodedVotingOptions);
 
 		// Cross size and cross group checks.
 		checkArgument(plaintextVotes.getElementSize() == numberOfAllowedWriteInsPlusOne,
 				"The number of elements of each plaintext vote must correspond to the number of allowed write ins plus one. [votes: %s, allowed write-ins plus one: %s]",
 				plaintextVotes.getElementSize(), numberOfAllowedWriteInsPlusOne);
+
+		final GroupVector<PrimeGqElement, GqGroup> encodedVotingOptions = primesMappingTable.getPTable().stream()
+				.map(PrimesMappingTableEntry::encodedVotingOption)
+				.collect(GroupVector.toGroupVector());
 		checkArgument(allEqual(Stream.of(plaintextVotes, encodedVotingOptions), GroupVector::getGroup),
 				"The plaintext votes and the encoded voting options must have the same group.");
+
+		checkArgument(selectedEncodedVotingOptions.size() == selectedDecodedVotingOptions.size(),
+				"There must be as many encoded as decoded voting options.");
 
 		if (!selectedEncodedVotingOptions.isEmpty()) {
 			checkArgument(selectedEncodedVotingOptions.getElementSize() == numberOfSelectableVotingOptions,
@@ -85,11 +108,14 @@ public final class VerifyProcessPlaintextsAlgorithm {
 		final GqGroup group = plaintextVotes.getGroup();
 
 		// Input.
+		final PrimesMappingTable pTable = primesMappingTable;
 		final GroupVector<PrimeGqElement, GqGroup> p_tilde = encodedVotingOptions;
 		final GroupVector<ElGamalMultiRecipientMessage, GqGroup> m = plaintextVotes;
 		final int psi = numberOfSelectableVotingOptions;
 		final int delta_hat = numberOfAllowedWriteInsPlusOne;
 		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> L_votes = selectedEncodedVotingOptions;
+		final List<List<String>> L_decodedVotes = selectedDecodedVotingOptions;
+
 		checkArgument(psi >= 1, "The number of selectable voting options must be greater or equal to 1. [psi: %s]", psi);
 		checkArgument(psi <= 120, "The number of selectable voting options must be smaller or equal to 120. [psi: %s]", psi);
 		checkArgument(delta_hat > 0, "The number of allowed write-ins + 1 must be strictly greater than 0. [delta_hat: %s]", delta_hat);
@@ -107,13 +133,30 @@ public final class VerifyProcessPlaintextsAlgorithm {
 		// Operation.
 		final ElGamalMultiRecipientMessage one_vector = elGamal.ones(group, delta_hat);
 
-		// Equivalent stream to the for-loop.
-		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> p_hat_prime = m.stream()
-				.filter(m_i -> !m_i.equals(one_vector))
-				.map(m_i -> FactorizeService.factorize(m_i.get(0), p_tilde, psi))
-				.collect(GroupVector.toGroupVector());
+		record FactorizedDecodedVotes(GroupVector<PrimeGqElement, GqGroup> factorized, List<String> decoded) {
+		}
 
-		return p_hat_prime.equals(L_votes);
+		// Equivalent stream to the for-loop.
+		final List<FactorizedDecodedVotes> factorizedDecodedVotes = m.stream()
+				.filter(m_i -> !m_i.equals(one_vector))
+				.map(m_i -> {
+					final GqElement phi_i_0 = m_i.get(0);
+					final GroupVector<PrimeGqElement, GqGroup> p_hat_prime_k = FactorizeService.factorize(phi_i_0, p_tilde, psi);
+
+					final List<String> v_hat_prime_k = decodeVotingOptionsAlgorithm.decodeVotingOptions(p_hat_prime_k, pTable);
+
+					return new FactorizedDecodedVotes(p_hat_prime_k, v_hat_prime_k);
+				})
+				.toList();
+
+		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> p_hat_prime = factorizedDecodedVotes.stream()
+				.map(FactorizedDecodedVotes::factorized)
+				.collect(GroupVector.toGroupVector());
+		final List<List<String>> v_hat_prime = factorizedDecodedVotes.stream()
+				.map(FactorizedDecodedVotes::decoded)
+				.toList();
+
+		return p_hat_prime.equals(L_votes) && v_hat_prime.equals(L_decodedVotes);
 	}
 
 }

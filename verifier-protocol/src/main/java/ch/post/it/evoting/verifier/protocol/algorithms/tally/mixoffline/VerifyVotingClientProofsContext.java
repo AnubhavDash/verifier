@@ -18,8 +18,13 @@ package ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline;
 import static ch.post.it.evoting.cryptoprimitives.domain.VotingOptionsConstants.MAXIMUM_NUMBER_OF_SELECTABLE_VOTING_OPTIONS;
 import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.validateUUID;
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
+import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
+import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTableEntry;
 import ch.post.it.evoting.cryptoprimitives.domain.validations.FailedValidationException;
+import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
+import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 
 /**
  * Regroups the context values needed by the VerifyVotingClientProofs algorithm.
@@ -28,6 +33,7 @@ import ch.post.it.evoting.cryptoprimitives.domain.validations.FailedValidationEx
  * <li>ee, the election event id. Not null.</li>
  * <li>psi, the number of selectable voting options. In range [1, 120].</li>
  * <li>delta_hat, the number of allowed write-ins + 1. Strictly positive.</li>
+ * <li>pTable, the primes mapping table of size n. Must be non-null.</li>
  * </ul>
  */
 public class VerifyVotingClientProofsContext {
@@ -35,12 +41,14 @@ public class VerifyVotingClientProofsContext {
 	private final String electionEventId;
 	private final int numberOfSelectableVotingOptions;
 	private final int numberOfAllowedWriteInsPlusOne;
+	private final GroupVector<PrimesMappingTableEntry, GqGroup> primesMappingTable;
 
 	private VerifyVotingClientProofsContext(final String electionEventId, final int numberOfSelectableVotingOptions,
-			final int numberOfAllowedWriteInsPlusOne) {
+			final int numberOfAllowedWriteInsPlusOne, final GroupVector<PrimesMappingTableEntry, GqGroup> primesMappingTable) {
 		this.electionEventId = electionEventId;
 		this.numberOfSelectableVotingOptions = numberOfSelectableVotingOptions;
 		this.numberOfAllowedWriteInsPlusOne = numberOfAllowedWriteInsPlusOne;
+		this.primesMappingTable = primesMappingTable;
 	}
 
 	public String getElectionEventId() {
@@ -55,24 +63,34 @@ public class VerifyVotingClientProofsContext {
 		return numberOfAllowedWriteInsPlusOne;
 	}
 
+	public GroupVector<PrimesMappingTableEntry, GqGroup> getPrimesMappingTable() {
+		return primesMappingTable;
+	}
+
 	public static class Builder {
 
 		private String electionEventId;
 		private int numberOfSelectableVotingOptions;
 		private int numberOfAllowedWriteInsPlusOne;
+		private PrimesMappingTable primesMappingTable;
 
-		public Builder setElectionEventId(final String electionEventId) {
+		public VerifyVotingClientProofsContext.Builder setElectionEventId(final String electionEventId) {
 			this.electionEventId = electionEventId;
 			return this;
 		}
 
-		public Builder setNumberOfSelectableVotingOptions(final int numberOfSelectableVotingOptions) {
+		public VerifyVotingClientProofsContext.Builder setNumberOfSelectableVotingOptions(final int numberOfSelectableVotingOptions) {
 			this.numberOfSelectableVotingOptions = numberOfSelectableVotingOptions;
 			return this;
 		}
 
-		public Builder setNumberOfAllowedWriteInsPlusOne(final int numberOfAllowedWriteInsPlusOne) {
+		public VerifyVotingClientProofsContext.Builder setNumberOfAllowedWriteInsPlusOne(final int numberOfAllowedWriteInsPlusOne) {
 			this.numberOfAllowedWriteInsPlusOne = numberOfAllowedWriteInsPlusOne;
+			return this;
+		}
+
+		public VerifyVotingClientProofsContext.Builder setPrimesMappingTable(final PrimesMappingTable primesMappingTable) {
+			this.primesMappingTable = primesMappingTable;
 			return this;
 		}
 
@@ -89,6 +107,7 @@ public class VerifyVotingClientProofsContext {
 		 */
 		public VerifyVotingClientProofsContext build() {
 			validateUUID(electionEventId);
+			checkNotNull(primesMappingTable);
 
 			final int psi = numberOfSelectableVotingOptions;
 			final int delta_hat = numberOfAllowedWriteInsPlusOne;
@@ -99,7 +118,8 @@ public class VerifyVotingClientProofsContext {
 					MAXIMUM_NUMBER_OF_SELECTABLE_VOTING_OPTIONS, psi);
 			checkArgument(0 < delta_hat, "The number of allowed write ins plus one must be a strictly positive number. [delta_hat: %s]", delta_hat);
 
-			return new VerifyVotingClientProofsContext(electionEventId, numberOfSelectableVotingOptions, numberOfAllowedWriteInsPlusOne);
+			return new VerifyVotingClientProofsContext(electionEventId, numberOfSelectableVotingOptions, numberOfAllowedWriteInsPlusOne,
+					primesMappingTable.getPTable());
 		}
 	}
 

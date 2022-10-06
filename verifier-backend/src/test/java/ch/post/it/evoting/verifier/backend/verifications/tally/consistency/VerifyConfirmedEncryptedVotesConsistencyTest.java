@@ -37,12 +37,9 @@ import ch.post.it.evoting.verifier.protocol.domain.tally.ControlComponentBallotB
 
 class VerifyConfirmedEncryptedVotesConsistencyTest extends TallyVerificationTest {
 
-	private static ElectionDataExtractionService extractionService;
-
 	@BeforeAll
 	static void setupAll() {
-		extractionService = new ElectionDataExtractionService(pathService, objectMapper);
-		verification = new VerifyConfirmedEncryptedVotesConsistency(applicationEventPublisherMock, extractionService);
+		verification = new VerifyConfirmedEncryptedVotesConsistency(applicationEventPublisherMock, electionDataExtractionService);
 	}
 
 	@Test
@@ -55,7 +52,7 @@ class VerifyConfirmedEncryptedVotesConsistencyTest extends TallyVerificationTest
 
 	@Test
 	void testVerifyNok() {
-		final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads = extractionService.getAllControlComponentBallotBoxPayloads(
+		final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
 				datasetPath);
 		final ControlComponentBallotBoxPayload payloadWithVotes = controlComponentBallotBoxPayloads.stream()
 				.filter(payload -> payload.getConfirmedEncryptedVotes().size() > 1 && payload.getNodeId() == 1)
@@ -67,12 +64,12 @@ class VerifyConfirmedEncryptedVotesConsistencyTest extends TallyVerificationTest
 				payloadWithVotes.getNodeId(),
 				confirmedEncryptedVotesWithMissingVote);
 		final List<ControlComponentBallotBoxPayload> newControlComponentBallotBoxPayloads = Streams.concat(Stream.of(newPayload),
-				extractionService.getControlComponentBallotBoxPayloads(datasetPath, newPayload.getBallotBoxId()).stream()
+				electionDataExtractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(datasetPath, newPayload.getBallotBoxId()).stream()
 						.filter(payload -> payload.getNodeId() != 1)).toList();
 
-		final ElectionDataExtractionService extractionServiceMock = spy(extractionService);
+		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
 		doReturn(newControlComponentBallotBoxPayloads).when(extractionServiceMock)
-				.getControlComponentBallotBoxPayloads(datasetPath, newPayload.getBallotBoxId());
+				.getControlComponentBallotBoxPayloadsOrderedByNodeId(datasetPath, newPayload.getBallotBoxId());
 		final VerifyConfirmedEncryptedVotesConsistency verificationWithMock = new VerifyConfirmedEncryptedVotesConsistency(
 				applicationEventPublisherMock, extractionServiceMock);
 

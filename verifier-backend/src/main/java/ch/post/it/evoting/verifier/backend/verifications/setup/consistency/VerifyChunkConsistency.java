@@ -63,8 +63,8 @@ public class VerifyChunkConsistency extends AbstractVerification {
         definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
         definition.setCategory(Category.CONSISTENCY);
         definition.setDescription(
-                TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification310.description"));
-        definition.setId(310);
+                TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification314.description"));
+        definition.setId(314);
         definition.setName("VerifyChunkConsistency");
         definition.addVerifierEvent(SetupEvent.TYPE);
         return definition;
@@ -82,12 +82,12 @@ public class VerifyChunkConsistency extends AbstractVerification {
             return VerificationResult.success(getVerificationDefinition());
         } else {
             return VerificationResult.failure(getVerificationDefinition(),
-                    TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification310.nok.message"));
+                    TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification314.nok.message"));
         }
     }
 
     private boolean validateControlComponentCodeSharesPayloads(final PathNode verificationCardSets) {
-        List<List<Path>> payloadsPerCardSet = verificationCardSets.getRegexPaths().stream()
+        final List<List<Path>> payloadsPerCardSet = verificationCardSets.getRegexPaths().stream()
                 .map(path -> pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_CODE_SHARES, path).getRegexPaths())
                 .toList();
 
@@ -104,7 +104,7 @@ public class VerifyChunkConsistency extends AbstractVerification {
 
     private boolean validateControlComponentCodeSharesPayloadContentMatchFileName(final Path payloadPath) {
         final int expectedChunkId = Integer.parseInt(payloadPath.getFileName().toString().split("\\.")[1]);
-        return electionDataExtractionService.getControlComponentCodeShares(payloadPath).stream()
+        return electionDataExtractionService.getControlComponentCodeSharesOrderedByNodeId(payloadPath).stream()
                 .allMatch(controlComponentCodeSharesPayload -> controlComponentCodeSharesPayload.getChunkId() == expectedChunkId);
     }
 

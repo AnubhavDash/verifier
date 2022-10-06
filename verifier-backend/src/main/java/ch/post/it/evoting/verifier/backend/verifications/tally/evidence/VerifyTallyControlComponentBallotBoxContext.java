@@ -19,30 +19,29 @@ import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
-import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
-import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
 
 public record VerifyTallyControlComponentBallotBoxContext(GqGroup encryptionGroup, String electionEventId, String ballotBoxId,
 														  ElGamalMultiRecipientPublicKey electoralBoardPublicKey,
-														  GroupVector<PrimeGqElement, GqGroup> encodedVotingOptions,
+														  PrimesMappingTable primesMappingTable,
 														  int numberOfSelectableVotingOptions, int numberOfAllowedWriteInsPlusOne) {
 
 	public VerifyTallyControlComponentBallotBoxContext(final GqGroup encryptionGroup, final String electionEventId, final String ballotBoxId,
-			final ElGamalMultiRecipientPublicKey electoralBoardPublicKey, final GroupVector<PrimeGqElement, GqGroup> encodedVotingOptions,
+			final ElGamalMultiRecipientPublicKey electoralBoardPublicKey, final PrimesMappingTable primesMappingTable,
 			final int numberOfSelectableVotingOptions,
 			final int numberOfAllowedWriteInsPlusOne) {
 		this.encryptionGroup = checkNotNull(encryptionGroup);
 		this.electionEventId = validateUUID(electionEventId);
 		this.ballotBoxId = validateUUID(ballotBoxId);
 		this.electoralBoardPublicKey = checkNotNull(electoralBoardPublicKey);
-		this.encodedVotingOptions = checkNotNull(encodedVotingOptions);
+		this.primesMappingTable = checkNotNull(primesMappingTable);
 		this.numberOfSelectableVotingOptions = numberOfSelectableVotingOptions;
 		this.numberOfAllowedWriteInsPlusOne = numberOfAllowedWriteInsPlusOne;
 
 		checkArgument(electoralBoardPublicKey.getGroup().equals(encryptionGroup));
-		checkArgument(encodedVotingOptions.getGroup().equals(encryptionGroup));
+		checkArgument(primesMappingTable.getPTable().getGroup().equals(encryptionGroup));
 
 		checkArgument(1 <= numberOfSelectableVotingOptions && numberOfSelectableVotingOptions <= 120,
 				"The number of selectable voting options must be within the allowed bounds.");

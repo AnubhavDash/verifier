@@ -49,8 +49,8 @@ public class VerifyEncryptedPCCExponentiationProofs extends AbstractVerification
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
-				"setup.verification503.description"));
-		definition.setId(503);
+				"setup.verification504.description"));
+		definition.setId(504);
 		definition.setName("VerifyEncryptedPCCExponentiationProofs");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
@@ -67,7 +67,7 @@ public class VerifyEncryptedPCCExponentiationProofs extends AbstractVerification
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
 					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
-							"setup.verification.exponentiation.proofs.nok.message"));
+							"setup.verification504.nok.message"));
 		}
 	}
 }

@@ -28,6 +28,7 @@ import org.springframework.context.annotation.Primary;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ch.ech.xmlns.ech_0110._4.Delivery;
 import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
@@ -40,10 +41,13 @@ import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
 import ch.post.it.evoting.verifier.backend.tools.KeystoreRepository;
+import ch.post.it.evoting.verifier.backend.tools.XmlFileRepository;
 import ch.post.it.evoting.verifier.backend.verifications.setup.consistency.VerifyPrimesMappingTableConsistencyAlgorithm;
+import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.DecodeVotingOptionsAlgorithm;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.VerifyMixDecOfflineAlgorithm;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.VerifyVotingClientProofsAlgorithm;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixonline.GetMixnetInitialCiphertextsAlgorithm;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 
 @Configuration
 public class VerifierBeanConfig {
@@ -98,8 +102,14 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
+	public DecodeVotingOptionsAlgorithm decodeVotingOptionsAlgorithm() {
+		return new DecodeVotingOptionsAlgorithm();
+	}
+
+	@Bean
 	KeyStore keystore(final KeystoreRepository repository,
-			@Value("${direct.trust.keystore.type}") final String keystoreType)
+			@Value("${direct.trust.keystore.type}")
+			final String keystoreType)
 			throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
 		var keyStore = KeyStore.getInstance(keystoreType);
 		keyStore.load(repository.getKeyStore(), repository.getKeystorePassword());
@@ -107,8 +117,23 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
-	SignatureVerification keystoreService(final KeyStore keyStore){
+	SignatureVerification keystoreService(final KeyStore keyStore) {
 		return SignatureFactory.getInstance()
 				.createSignatureVerification(keyStore);
+	}
+
+	@Bean
+	XmlFileRepository<ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration> configurationXmlFileRepository() {
+		return new XmlFileRepository<>();
+	}
+
+	@Bean
+	XmlFileRepository<Delivery> deliveryXmlFileRepository() {
+		return new XmlFileRepository<>();
+	}
+
+	@Bean
+	XmlFileRepository<Results> resultsXmlFileRepository() {
+		return new XmlFileRepository<>();
 	}
 }

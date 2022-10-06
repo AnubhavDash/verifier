@@ -36,12 +36,9 @@ import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerification
 class VerifyChoiceReturnCodesPublicKeyConsistencyTest extends SetupVerificationTest {
 
 	private static final ElGamal EL_GAMAL = ElGamalFactory.createElGamal();
-	private static ElectionDataExtractionService extractionService = new ElectionDataExtractionService(pathService, objectMapper);
-
 	@BeforeAll
 	static void setupAll() {
-		extractionService = new ElectionDataExtractionService(pathService, objectMapper);
-		verification = new VerifyChoiceReturnCodesPublicKeyConsistency(EL_GAMAL, extractionService, applicationEventPublisherMock);
+		verification = new VerifyChoiceReturnCodesPublicKeyConsistency(EL_GAMAL, electionDataExtractionService, applicationEventPublisherMock);
 	}
 
 	@Test
@@ -56,7 +53,7 @@ class VerifyChoiceReturnCodesPublicKeyConsistencyTest extends SetupVerificationT
 	@Test
 	@DisplayName("inconsistent pk_CCR fails.")
 	void inconsistentChoiceReturnCodesPublicKey() {
-		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(datasetPath);
+		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(datasetPath);
 		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
 
 		final ElectionEventContext modifiedElectionEventContext = spy(electionEventContext);
@@ -64,7 +61,7 @@ class VerifyChoiceReturnCodesPublicKeyConsistencyTest extends SetupVerificationT
 		final ElectionEventContextPayload modifiedElectionEventContextPayload = new ElectionEventContextPayload(
 				electionEventContextPayload.getEncryptionGroup(), modifiedElectionEventContext);
 
-		final ElectionDataExtractionService extractionServiceMock = spy(extractionService);
+		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
 		doReturn(modifiedElectionEventContextPayload).when(extractionServiceMock).getElectionEventContextPayload(datasetPath);
 
 		final VerifyChoiceReturnCodesPublicKeyConsistency verificationWithMock = new VerifyChoiceReturnCodesPublicKeyConsistency(EL_GAMAL,
@@ -72,7 +69,7 @@ class VerifyChoiceReturnCodesPublicKeyConsistencyTest extends SetupVerificationT
 
 		final VerificationResult result = verificationWithMock.verify(datasetPath);
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification303.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification305.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 }

@@ -40,8 +40,8 @@ import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 
 @JsonDeserialize(using = SetupComponentTallyDataPayloadDeserializer.class)
-@JsonPropertyOrder({ "electionEventId", "verificationCardSetId", "encryptionGroup", "verificationCardIds", "verificationCardPublicKeys",
-		"primesMappingTable", "signature" })
+@JsonPropertyOrder({ "electionEventId", "verificationCardSetId", "ballotBoxAlias", "encryptionGroup", "verificationCardIds",
+		"verificationCardPublicKeys", "signature" })
 public class SetupComponentTallyDataPayload implements SignedPayload {
 
 	@JsonProperty
@@ -51,6 +51,9 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 	private final String verificationCardSetId;
 
 	@JsonProperty
+	private final String ballotBoxAlias;
+
+	@JsonProperty
 	private final GqGroup encryptionGroup;
 
 	@JsonProperty
@@ -58,9 +61,6 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 
 	@JsonProperty
 	private final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> verificationCardPublicKeys;
-
-	@JsonProperty
-	private final PrimesMappingTable primesMappingTable;
 
 	@JsonProperty
 	private CryptoPrimitivesSignature signature;
@@ -73,6 +73,9 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 			@JsonProperty("verificationCardSetId")
 			final String verificationCardSetId,
 
+			@JsonProperty("ballotBoxAlias")
+			final String ballotBoxAlias,
+
 			@JsonProperty("encryptionGroup")
 			final GqGroup encryptionGroup,
 
@@ -82,26 +85,27 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 			@JsonProperty("verificationCardPublicKeys")
 			final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> verificationCardPublicKeys,
 
-			@JsonProperty("primesMappingTable")
-			final PrimesMappingTable primesMappingTable,
-
 			@JsonProperty("signature")
 			final CryptoPrimitivesSignature signature) {
 
-		this(electionEventId, verificationCardSetId, encryptionGroup, verificationCardIds, verificationCardPublicKeys, primesMappingTable);
+		this(electionEventId, verificationCardSetId, ballotBoxAlias, encryptionGroup, verificationCardIds, verificationCardPublicKeys);
 		this.signature = checkNotNull(signature);
 	}
 
 	public SetupComponentTallyDataPayload(
 			final String electionEventId,
 			final String verificationCardSetId,
+			final String ballotBoxAlias,
 			final GqGroup encryptionGroup,
 			final List<String> verificationCardIds,
-			final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> verificationCardPublicKeys,
-			final PrimesMappingTable primesMappingTable) {
+			final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> verificationCardPublicKeys) {
+
 		this.electionEventId = validateUUID(electionEventId);
 		this.verificationCardSetId = validateUUID(verificationCardSetId);
+		this.ballotBoxAlias = checkNotNull(ballotBoxAlias);
 		this.encryptionGroup = checkNotNull(encryptionGroup);
+
+		checkArgument(!this.ballotBoxAlias.isBlank(), "The ballot box alias must not be blank.");
 
 		this.verificationCardIds = List.copyOf(checkNotNull(verificationCardIds));
 		checkArgument(!this.verificationCardIds.isEmpty(), "The verification card ids list must be non-empty.");
@@ -118,10 +122,6 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 
 		checkArgument(this.verificationCardIds.size() == this.verificationCardPublicKeys.size(),
 				"The verification card ids list size must be equal to the verification card public keys list size.");
-
-		this.primesMappingTable = checkNotNull(primesMappingTable);
-		checkArgument(this.encryptionGroup.equals(this.primesMappingTable.getPTable().getGroup()),
-				"The encryption group must be the same as the primes mapping table.");
 	}
 
 	public String getElectionEventId() {
@@ -130,6 +130,10 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 
 	public String getVerificationCardSetId() {
 		return verificationCardSetId;
+	}
+
+	public String getBallotBoxAlias() {
+		return ballotBoxAlias;
 	}
 
 	public GqGroup getEncryptionGroup() {
@@ -142,10 +146,6 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 
 	public GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> getVerificationCardPublicKeys() {
 		return verificationCardPublicKeys;
-	}
-
-	public PrimesMappingTable getPrimesMappingTable() {
-		return primesMappingTable;
 	}
 
 	@Override
@@ -163,10 +163,10 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 		return List.of(
 				HashableString.from(electionEventId),
 				HashableString.from(verificationCardSetId),
+				HashableString.from(ballotBoxAlias),
 				encryptionGroup,
 				HashableList.from(verificationCardIds.stream().map(HashableString::from).toList()),
-				verificationCardPublicKeys,
-				primesMappingTable);
+				verificationCardPublicKeys);
 	}
 
 	@Override
@@ -177,26 +177,15 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-
 		final SetupComponentTallyDataPayload that = (SetupComponentTallyDataPayload) o;
-		return electionEventId.equals(that.electionEventId) &&
-				verificationCardSetId.equals(that.verificationCardSetId) &&
-				encryptionGroup.equals(that.encryptionGroup) &&
-				verificationCardIds.equals(that.verificationCardIds) &&
-				verificationCardPublicKeys.equals(that.verificationCardPublicKeys) &&
-				primesMappingTable.equals(that.primesMappingTable) &&
-				Objects.equals(signature, that.signature);
+		return electionEventId.equals(that.electionEventId) && verificationCardSetId.equals(that.verificationCardSetId) && ballotBoxAlias.equals(
+				that.ballotBoxAlias) && encryptionGroup.equals(that.encryptionGroup) && verificationCardIds.equals(that.verificationCardIds)
+				&& verificationCardPublicKeys.equals(that.verificationCardPublicKeys) && Objects.equals(signature, that.signature);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(
-				electionEventId,
-				verificationCardSetId,
-				encryptionGroup,
-				verificationCardIds,
-				verificationCardPublicKeys,
-				primesMappingTable,
+		return Objects.hash(electionEventId, verificationCardSetId, ballotBoxAlias, encryptionGroup, verificationCardIds, verificationCardPublicKeys,
 				signature);
 	}
 }

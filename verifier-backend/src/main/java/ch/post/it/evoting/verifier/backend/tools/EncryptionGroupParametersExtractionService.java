@@ -20,7 +20,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
-import java.util.Objects;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -219,9 +218,7 @@ public class EncryptionGroupParametersExtractionService {
 								"Failed to deserialize the encryption group parameters from the tally component votes payload. [path: %s]",
 								tallyComponentVotesPayloadPath), e);
 					}
-				})
-				// use only TallyComponentVotesPayload that have votes
-				.filter(Objects::nonNull);
+				});
 
 	}
 

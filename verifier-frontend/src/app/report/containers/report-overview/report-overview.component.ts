@@ -42,6 +42,7 @@ export class ReportOverviewComponent implements OnInit {
   verifierEvent = VerifierEvent;
   currentDate: string;
   isExportingToPDF = false;
+  datasetLoading = false;
   filename = '';
   hash = '';
   electionEventId = '';
@@ -54,6 +55,10 @@ export class ReportOverviewComponent implements OnInit {
     ALL: {
       value: '',
       active: true
+    },
+    RUNNING: {
+      value: 'RUNNING',
+      active: false
     },
     OK: {
       value: 'OK',
@@ -129,7 +134,7 @@ export class ReportOverviewComponent implements OnInit {
     this.eventStarted = runOption;
     this.processorService.processVerifications(runOption).subscribe(() => {
       console.log('processVerifications ', runOption);
-      this.updateNAStatus(runOption);
+      this.updateStatus(runOption);
     });
   }
 
@@ -142,11 +147,12 @@ export class ReportOverviewComponent implements OnInit {
     }
   }
 
-  updateNAStatus(runOptions: string) {
+  updateStatus(runOptions: string) {
     Object.keys(this.verifications).forEach(key => {
       let notFound = true;
       this.verifications[key].events.forEach(event => {
         if (event.indexOf(runOptions) >= 0) {
+          this.verifications[key].status = this.verificationFilter.RUNNING.value;
           notFound = false;
         }
       });
@@ -194,6 +200,10 @@ export class ReportOverviewComponent implements OnInit {
     });
   }
 
+  isRUNNING(status) {
+    return status === 'RUNNING';
+  }
+
   isOK(status) {
     return status === 'OK';
   }
@@ -218,6 +228,10 @@ export class ReportOverviewComponent implements OnInit {
     });
   }
 
+  filterVerificationsRUNNING() {
+    this.toggleVerificationFilter('RUNNING');
+  }
+
   filterVerificationsOK() {
     this.toggleVerificationFilter('OK');
   }
@@ -236,6 +250,10 @@ export class ReportOverviewComponent implements OnInit {
 
   statusCounterAll() {
     return this.statusCounterOK() + this.statusCounterNOK() + this.statusCounterNA() + this.statusCounterERROR();
+  }
+
+  statusCounterRUNNING() {
+    return this.statusCounter(this.verificationFilter.RUNNING.value);
   }
 
   statusCounterOK() {
@@ -285,6 +303,7 @@ export class ReportOverviewComponent implements OnInit {
   }
 
   configurationUpload(event) {
+    this.datasetLoading = true;
     const file = event.target.files[0];
     if (file) {
       this.filename = '';
@@ -297,6 +316,7 @@ export class ReportOverviewComponent implements OnInit {
       this.processorService.uploadDataset(file).subscribe(() => {
         this.startDisabled = false;
         this.processorService.getDatasetConfiguration().subscribe(configuration => {
+          this.datasetLoading = false;
           this.filename = configuration.filename;
           this.hash = configuration.hash;
           this.electionEventId = configuration.electionEventId;

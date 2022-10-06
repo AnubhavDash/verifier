@@ -66,7 +66,7 @@ public class VerifyTallyCompleteness extends AbstractVerification {
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) {
+	public VerificationResult verify(final Path inputDirectoryPath) {
 		if (verifySetupCompleteness(inputDirectoryPath) && verifyTallyCompleteness(inputDirectoryPath)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
@@ -79,6 +79,7 @@ public class VerifyTallyCompleteness extends AbstractVerification {
 		try {
 			pathService.buildFromRootPath(StructureKey.SETUP_DIR, inputDirectoryPath);
 			pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
+			pathService.buildFromRootPath(StructureKey.CONFIGURATION_ANONYMIZED, inputDirectoryPath);
 			pathService.buildFromRootPath(StructureKey.ELECTION_EVENT_CONTEXT, inputDirectoryPath);
 			checkState(pathService.buildFromRootPath(StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS, inputDirectoryPath).getRegexPaths().size()
 					== NODE_IDS.size());
@@ -97,6 +98,8 @@ public class VerifyTallyCompleteness extends AbstractVerification {
 
 	private boolean verifyTallyCompleteness(final Path inputDirectoryPath) {
 		try {
+			pathService.buildFromRootPath(StructureKey.TALLY_COMPONENT_DECRYPT, inputDirectoryPath);
+			pathService.buildFromRootPath(StructureKey.TALLY_COMPONENT_ECH0110, inputDirectoryPath);
 			pathService.buildFromRootPath(StructureKey.BALLOT_BOXES_DIR, inputDirectoryPath);
 			final List<Path> ballotBoxIds = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath).getRegexPaths();
 			ballotBoxIds.forEach(bb -> checkState(

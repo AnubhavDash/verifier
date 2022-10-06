@@ -37,12 +37,8 @@ import ch.post.it.evoting.verifier.protocol.domain.tally.ControlComponentBallotB
 
 class VerifyNumberConfirmedEncryptedVotesConsistencyTest extends TallyVerificationTest {
 
-	private static ElectionDataExtractionService electionDataExtractionService;
-
 	@BeforeAll
 	static void setUpAll() {
-		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper);
-
 		verification = new VerifyNumberConfirmedEncryptedVotesConsistency(applicationEventPublisherMock, pathService, electionDataExtractionService);
 	}
 
@@ -63,7 +59,7 @@ class VerifyNumberConfirmedEncryptedVotesConsistencyTest extends TallyVerificati
 
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
 		doReturn(Collections.singletonList(controlComponentBallotBoxPayload)).when(electionDataExtractionServiceSpy)
-				.getControlComponentBallotBoxPayloads(any());
+				.getControlComponentBallotBoxPayloadsOrderedByNodeId(any());
 
 		final VerifyNumberConfirmedEncryptedVotesConsistency verifyNumberConfirmedEncryptedVotesConsistency =
 				new VerifyNumberConfirmedEncryptedVotesConsistency(applicationEventPublisherMock, pathService, electionDataExtractionServiceSpy);
@@ -71,7 +67,7 @@ class VerifyNumberConfirmedEncryptedVotesConsistencyTest extends TallyVerificati
 		final VerificationResult result = verifyNumberConfirmedEncryptedVotesConsistency.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification304.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification306.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 

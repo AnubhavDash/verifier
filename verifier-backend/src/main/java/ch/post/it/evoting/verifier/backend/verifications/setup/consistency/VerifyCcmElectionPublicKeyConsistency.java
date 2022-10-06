@@ -53,27 +53,27 @@ public class VerifyCcmElectionPublicKeyConsistency extends AbstractVerification 
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification302.description"));
-		definition.setId(302);
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification303.description"));
+		definition.setId(303);
 		definition.setName("VerifyCCmElectionPublicKeyConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) {
+	public VerificationResult verify(final Path inputDirectoryPath) {
 		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(inputDirectoryPath);
 		final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = extractionService.getControlComponentPublicKeysPayloads(
 				inputDirectoryPath);
 
 		final Map<Integer, ElGamalMultiRecipientPublicKey> electionEventContextPublicKeys = electionEventContextPayload.getElectionEventContext()
 				.combinedControlComponentPublicKeys().stream()
-				.collect(Collectors.toMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccmElectionPublicKey));
+				.collect(Collectors.toMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccmjElectionPublicKey));
 
 		final boolean sameCCMElectionPublicKeys = controlComponentPublicKeysPayloads.stream()
 				.map(ControlComponentPublicKeysPayload::getControlComponentPublicKeys)
 				.map(controlComponentPublicKeys -> electionEventContextPublicKeys.get(controlComponentPublicKeys.nodeId())
-						.equals(controlComponentPublicKeys.ccmElectionPublicKey()))
+						.equals(controlComponentPublicKeys.ccmjElectionPublicKey()))
 				.reduce(Boolean::logicalAnd)
 				.orElseThrow();
 
@@ -81,7 +81,7 @@ public class VerifyCcmElectionPublicKeyConsistency extends AbstractVerification 
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification302.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification303.nok.message"));
 		}
 	}
 }
