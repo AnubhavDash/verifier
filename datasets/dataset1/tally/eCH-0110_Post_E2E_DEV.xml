@@ -1,693 +1,695 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<eCH-0110:delivery xmlns:eCH-0110="http://www.ech.ch/xmlns/eCH-0110/4" xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008/3" xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/4" xmlns:eCH-0222="http://www.ech.ch/xmlns/eCH-0222/1">
-  <eCH-0110:deliveryHeader>
-    <eCH-0058:senderId>http://www.post.ch</eCH-0058:senderId>
-    <eCH-0058:messageId>a38be23881fb475c83be3f5061246dff</eCH-0058:messageId>
-    <eCH-0058:messageType>http://www.post.ch</eCH-0058:messageType>
-    <eCH-0058:sendingApplication>
-      <eCH-0058:manufacturer>SwissPost</eCH-0058:manufacturer>
-      <eCH-0058:product>E-Voting</eCH-0058:product>
-      <eCH-0058:productVersion>1</eCH-0058:productVersion>
+<eCH-0110:delivery xmlns:eCH-0110="http://www.ech.ch/xmlns/eCH-0110/4" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/4">
+	<eCH-0110:deliveryHeader>
+		<eCH-0058:senderId>http://www.post.ch</eCH-0058:senderId>
+		<eCH-0058:messageId>b00c4961b79d496795939cd4b8b113c9</eCH-0058:messageId>
+		<eCH-0058:messageType>http://www.post.ch</eCH-0058:messageType>
+		<eCH-0058:sendingApplication>
+			<eCH-0058:manufacturer>SwissPost</eCH-0058:manufacturer>
+			<eCH-0058:product>E-Voting</eCH-0058:product>
+			<eCH-0058:productVersion>1</eCH-0058:productVersion>
     </eCH-0058:sendingApplication>
-    <eCH-0058:messageDate>2022-10-03T11:00:29.004831</eCH-0058:messageDate>
-    <eCH-0058:action>1</eCH-0058:action>
-    <eCH-0058:testDeliveryFlag>false</eCH-0058:testDeliveryFlag>
-  </eCH-0110:deliveryHeader>
-  <eCH-0110:resultDelivery>
-    <eCH-0110:reportingBody>
-      <eCH-0110:reportingBodyIdentification>SwissPost</eCH-0110:reportingBodyIdentification>
-      <eCH-0110:creationDateTime>2022-10-03T11:00:29.010977800</eCH-0110:creationDateTime>
-    </eCH-0110:reportingBody>
-    <eCH-0110:contestInformation>
-      <eCH-0155:contestIdentification>Post_E2E_DEV</eCH-0155:contestIdentification>
-      <eCH-0155:contestDate>2022-08-15</eCH-0155:contestDate>
-      <eCH-0155:contestDescription>
-        <eCH-0155:contestDescriptionInfo>
-          <eCH-0155:language>DE</eCH-0155:language>
-          <eCH-0155:contestDescription>Post_E2E_DEV</eCH-0155:contestDescription>
-        </eCH-0155:contestDescriptionInfo>
-        <eCH-0155:contestDescriptionInfo>
-          <eCH-0155:language>FR</eCH-0155:language>
-          <eCH-0155:contestDescription>Post_E2E_DEV</eCH-0155:contestDescription>
-        </eCH-0155:contestDescriptionInfo>
-        <eCH-0155:contestDescriptionInfo>
-          <eCH-0155:language>IT</eCH-0155:language>
-          <eCH-0155:contestDescription>Post_E2E_DEV</eCH-0155:contestDescription>
-        </eCH-0155:contestDescriptionInfo>
-        <eCH-0155:contestDescriptionInfo>
-          <eCH-0155:language>RM</eCH-0155:language>
-          <eCH-0155:contestDescription>Post_E2E_DEV</eCH-0155:contestDescription>
-        </eCH-0155:contestDescriptionInfo>
-      </eCH-0155:contestDescription>
-      <eCH-0155:eVotingPeriod>
-        <eCH-0155:eVotingPeriodFrom>2022-08-01T15:00:00+02:00</eCH-0155:eVotingPeriodFrom>
-        <eCH-0155:eVotingPeriodTill>2023-03-31T17:00:00+01:00</eCH-0155:eVotingPeriodTill>
-      </eCH-0155:eVotingPeriod>
-    </eCH-0110:contestInformation>
-    <eCH-0110:countingCircleResults>
-      <eCH-0110:countingCircle>
-        <eCH-0155:countingCircleId>BE-MU-10001</eCH-0155:countingCircleId>
-        <eCH-0155:countingCircleName>TestBallotBox_ICH</eCH-0155:countingCircleName>
-      </eCH-0110:countingCircle>
-      <eCH-0110:votingCardsInformation>
-        <eCH-0110:countOfReceivedValidVotingCardsTotal>2</eCH-0110:countOfReceivedValidVotingCardsTotal>
-        <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
-      </eCH-0110:votingCardsInformation>
-      <eCH-0110:voteResults>
-        <eCH-0110:vote>
-          <eCH-0155:voteIdentification>1000000000-2</eCH-0155:voteIdentification>
-          <eCH-0155:domainOfInfluenceIdentification>doid-ch1-mu</eCH-0155:domainOfInfluenceIdentification>
-          <eCH-0155:voteDescription>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>DE</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (de)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>FR</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (fr)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>IT</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (it)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>RM</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (rm)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-          </eCH-0155:voteDescription>
-        </eCH-0110:vote>
-        <eCH-0110:countOfVotersInformation>
-          <eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
-        </eCH-0110:countOfVotersInformation>
-        <eCH-0110:ballotResult>
-          <eCH-0110:ballotIdentification>1000000000</eCH-0110:ballotIdentification>
-          <eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
-          <eCH-0110:ballotDescription>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>DE</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (de)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>FR</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (fr)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>IT</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (it)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>RM</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (rm)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-          </eCH-0110:ballotDescription>
-          <eCH-0110:countOfReceivedBallotsTotal>
-            <eCH-0110:total>2</eCH-0110:total>
-          </eCH-0110:countOfReceivedBallotsTotal>
-          <eCH-0110:countOfAccountedBallotsTotal>
-            <eCH-0110:total>2</eCH-0110:total>
-          </eCH-0110:countOfAccountedBallotsTotal>
-          <eCH-0110:countOfUnaccountedBallotsTotal>
-            <eCH-0110:total>0</eCH-0110:total>
-          </eCH-0110:countOfUnaccountedBallotsTotal>
-          <eCH-0110:countOfUnaccountedBlankBallots>
-            <eCH-0110:total>0</eCH-0110:total>
-          </eCH-0110:countOfUnaccountedBlankBallots>
-          <eCH-0110:countOfUnaccountedInvalidBallots>
-            <eCH-0110:total>0</eCH-0110:total>
-          </eCH-0110:countOfUnaccountedInvalidBallots>
-          <eCH-0110:standardBallot>
-            <eCH-0110:questionIdentification>1000000000-EVotingProposition</eCH-0110:questionIdentification>
-            <eCH-0110:question>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>DE</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (de)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>FR</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (fr)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>IT</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (it)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>RM</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (rm)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-            </eCH-0110:question>
-            <eCH-0110:countOfAnswerYes>
-              <eCH-0110:total>2</eCH-0110:total>
-            </eCH-0110:countOfAnswerYes>
-            <eCH-0110:countOfAnswerNo>
-              <eCH-0110:total>0</eCH-0110:total>
-            </eCH-0110:countOfAnswerNo>
-            <eCH-0110:countOfAnswerInvalid>
-              <eCH-0110:total>0</eCH-0110:total>
-            </eCH-0110:countOfAnswerInvalid>
-            <eCH-0110:countOfAnswerEmpty>
-              <eCH-0110:total>0</eCH-0110:total>
-            </eCH-0110:countOfAnswerEmpty>
-          </eCH-0110:standardBallot>
-        </eCH-0110:ballotResult>
-      </eCH-0110:voteResults>
-    </eCH-0110:countingCircleResults>
-    <eCH-0110:countingCircleResults>
-      <eCH-0110:countingCircle>
-        <eCH-0155:countingCircleId>BE-MU-10001</eCH-0155:countingCircleId>
-        <eCH-0155:countingCircleName>TestBallotBox_ICH</eCH-0155:countingCircleName>
-      </eCH-0110:countingCircle>
-      <eCH-0110:votingCardsInformation>
-        <eCH-0110:countOfReceivedValidVotingCardsTotal>2</eCH-0110:countOfReceivedValidVotingCardsTotal>
-        <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
-      </eCH-0110:votingCardsInformation>
-      <eCH-0110:voteResults>
-        <eCH-0110:vote>
-          <eCH-0155:voteIdentification>1000000000-2</eCH-0155:voteIdentification>
-          <eCH-0155:domainOfInfluenceIdentification>doid-ch1-mu</eCH-0155:domainOfInfluenceIdentification>
-          <eCH-0155:voteDescription>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>DE</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (de)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>FR</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (fr)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>IT</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (it)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>RM</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (rm)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-          </eCH-0155:voteDescription>
-        </eCH-0110:vote>
-        <eCH-0110:countOfVotersInformation>
-          <eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
-        </eCH-0110:countOfVotersInformation>
-        <eCH-0110:ballotResult>
-          <eCH-0110:ballotIdentification>1000000000</eCH-0110:ballotIdentification>
-          <eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
-          <eCH-0110:ballotDescription>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>DE</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (de)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>FR</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (fr)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>IT</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (it)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>RM</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (rm)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-          </eCH-0110:ballotDescription>
-          <eCH-0110:countOfReceivedBallotsTotal>
-            <eCH-0110:total>2</eCH-0110:total>
-          </eCH-0110:countOfReceivedBallotsTotal>
-          <eCH-0110:countOfAccountedBallotsTotal>
-            <eCH-0110:total>2</eCH-0110:total>
-          </eCH-0110:countOfAccountedBallotsTotal>
-          <eCH-0110:countOfUnaccountedBallotsTotal>
-            <eCH-0110:total>0</eCH-0110:total>
-          </eCH-0110:countOfUnaccountedBallotsTotal>
-          <eCH-0110:countOfUnaccountedBlankBallots>
-            <eCH-0110:total>0</eCH-0110:total>
-          </eCH-0110:countOfUnaccountedBlankBallots>
-          <eCH-0110:countOfUnaccountedInvalidBallots>
-            <eCH-0110:total>0</eCH-0110:total>
-          </eCH-0110:countOfUnaccountedInvalidBallots>
-          <eCH-0110:standardBallot>
-            <eCH-0110:questionIdentification>1000000000-EVotingProposition</eCH-0110:questionIdentification>
-            <eCH-0110:question>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>DE</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (de)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>FR</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (fr)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>IT</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (it)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>RM</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (rm)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-            </eCH-0110:question>
-            <eCH-0110:countOfAnswerYes>
-              <eCH-0110:total>2</eCH-0110:total>
-            </eCH-0110:countOfAnswerYes>
-            <eCH-0110:countOfAnswerNo>
-              <eCH-0110:total>0</eCH-0110:total>
-            </eCH-0110:countOfAnswerNo>
-            <eCH-0110:countOfAnswerInvalid>
-              <eCH-0110:total>0</eCH-0110:total>
-            </eCH-0110:countOfAnswerInvalid>
-            <eCH-0110:countOfAnswerEmpty>
-              <eCH-0110:total>0</eCH-0110:total>
-            </eCH-0110:countOfAnswerEmpty>
-          </eCH-0110:standardBallot>
-        </eCH-0110:ballotResult>
-      </eCH-0110:voteResults>
-    </eCH-0110:countingCircleResults>
-    <eCH-0110:countingCircleResults>
-      <eCH-0110:countingCircle>
-        <eCH-0155:countingCircleId>BE-MU-10002</eCH-0155:countingCircleId>
-        <eCH-0155:countingCircleName>TestBallotBox_ACH</eCH-0155:countingCircleName>
-      </eCH-0110:countingCircle>
-      <eCH-0110:votingCardsInformation>
-        <eCH-0110:countOfReceivedValidVotingCardsTotal>2</eCH-0110:countOfReceivedValidVotingCardsTotal>
-        <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
-      </eCH-0110:votingCardsInformation>
-      <eCH-0110:voteResults>
-        <eCH-0110:vote>
-          <eCH-0155:voteIdentification>1000000000-2</eCH-0155:voteIdentification>
-          <eCH-0155:domainOfInfluenceIdentification>doid-ch1-mu</eCH-0155:domainOfInfluenceIdentification>
-          <eCH-0155:voteDescription>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>DE</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (de)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>FR</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (fr)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>IT</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (it)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>RM</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (rm)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-          </eCH-0155:voteDescription>
-        </eCH-0110:vote>
-        <eCH-0110:countOfVotersInformation>
-          <eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
-        </eCH-0110:countOfVotersInformation>
-        <eCH-0110:ballotResult>
-          <eCH-0110:ballotIdentification>1000000000</eCH-0110:ballotIdentification>
-          <eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
-          <eCH-0110:ballotDescription>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>DE</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (de)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>FR</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (fr)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>IT</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (it)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>RM</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (rm)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-          </eCH-0110:ballotDescription>
-          <eCH-0110:countOfReceivedBallotsTotal>
-            <eCH-0110:total>2</eCH-0110:total>
-          </eCH-0110:countOfReceivedBallotsTotal>
-          <eCH-0110:countOfAccountedBallotsTotal>
-            <eCH-0110:total>1</eCH-0110:total>
-          </eCH-0110:countOfAccountedBallotsTotal>
-          <eCH-0110:countOfUnaccountedBallotsTotal>
-            <eCH-0110:total>1</eCH-0110:total>
-          </eCH-0110:countOfUnaccountedBallotsTotal>
-          <eCH-0110:countOfUnaccountedBlankBallots>
-            <eCH-0110:total>1</eCH-0110:total>
-          </eCH-0110:countOfUnaccountedBlankBallots>
-          <eCH-0110:countOfUnaccountedInvalidBallots>
-            <eCH-0110:total>0</eCH-0110:total>
-          </eCH-0110:countOfUnaccountedInvalidBallots>
-          <eCH-0110:standardBallot>
-            <eCH-0110:questionIdentification>1000000000-EVotingProposition</eCH-0110:questionIdentification>
-            <eCH-0110:question>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>DE</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (de)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>FR</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (fr)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>IT</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (it)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>RM</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (rm)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-            </eCH-0110:question>
-            <eCH-0110:countOfAnswerYes>
-              <eCH-0110:total>1</eCH-0110:total>
-            </eCH-0110:countOfAnswerYes>
-            <eCH-0110:countOfAnswerNo>
-              <eCH-0110:total>0</eCH-0110:total>
-            </eCH-0110:countOfAnswerNo>
-            <eCH-0110:countOfAnswerInvalid>
-              <eCH-0110:total>0</eCH-0110:total>
-            </eCH-0110:countOfAnswerInvalid>
-            <eCH-0110:countOfAnswerEmpty>
-              <eCH-0110:total>1</eCH-0110:total>
-            </eCH-0110:countOfAnswerEmpty>
-          </eCH-0110:standardBallot>
-        </eCH-0110:ballotResult>
-      </eCH-0110:voteResults>
-    </eCH-0110:countingCircleResults>
-    <eCH-0110:countingCircleResults>
-      <eCH-0110:countingCircle>
-        <eCH-0155:countingCircleId>BE-MU-10003</eCH-0155:countingCircleId>
-        <eCH-0155:countingCircleName>TestBallotBox2_ICH</eCH-0155:countingCircleName>
-      </eCH-0110:countingCircle>
-      <eCH-0110:votingCardsInformation>
-        <eCH-0110:countOfReceivedValidVotingCardsTotal>0</eCH-0110:countOfReceivedValidVotingCardsTotal>
-        <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
-      </eCH-0110:votingCardsInformation>
-      <eCH-0110:voteResults>
-        <eCH-0110:vote>
-          <eCH-0155:voteIdentification>1000000000-2</eCH-0155:voteIdentification>
-          <eCH-0155:domainOfInfluenceIdentification>doid-ch1-mu</eCH-0155:domainOfInfluenceIdentification>
-          <eCH-0155:voteDescription>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>DE</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (de)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>FR</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (fr)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>IT</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (it)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>RM</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (rm)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-          </eCH-0155:voteDescription>
-        </eCH-0110:vote>
-        <eCH-0110:countOfVotersInformation>
-          <eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
-        </eCH-0110:countOfVotersInformation>
-        <eCH-0110:ballotResult>
-          <eCH-0110:ballotIdentification>1000000000</eCH-0110:ballotIdentification>
-          <eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
-          <eCH-0110:ballotDescription>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>DE</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (de)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>FR</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (fr)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>IT</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (it)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>RM</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (rm)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-          </eCH-0110:ballotDescription>
-          <eCH-0110:countOfReceivedBallotsTotal>
-            <eCH-0110:total>0</eCH-0110:total>
-          </eCH-0110:countOfReceivedBallotsTotal>
-          <eCH-0110:countOfAccountedBallotsTotal>
-            <eCH-0110:total>0</eCH-0110:total>
-          </eCH-0110:countOfAccountedBallotsTotal>
-          <eCH-0110:countOfUnaccountedBallotsTotal>
-            <eCH-0110:total>0</eCH-0110:total>
-          </eCH-0110:countOfUnaccountedBallotsTotal>
-          <eCH-0110:countOfUnaccountedBlankBallots>
-            <eCH-0110:total>0</eCH-0110:total>
-          </eCH-0110:countOfUnaccountedBlankBallots>
-          <eCH-0110:countOfUnaccountedInvalidBallots>
-            <eCH-0110:total>0</eCH-0110:total>
-          </eCH-0110:countOfUnaccountedInvalidBallots>
-          <eCH-0110:standardBallot>
-            <eCH-0110:questionIdentification>1000000000-EVotingProposition</eCH-0110:questionIdentification>
-            <eCH-0110:question>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>DE</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (de)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>FR</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (fr)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>IT</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (it)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>RM</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (rm)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-            </eCH-0110:question>
-            <eCH-0110:countOfAnswerYes>
-              <eCH-0110:total>0</eCH-0110:total>
-            </eCH-0110:countOfAnswerYes>
-            <eCH-0110:countOfAnswerNo>
-              <eCH-0110:total>0</eCH-0110:total>
-            </eCH-0110:countOfAnswerNo>
-            <eCH-0110:countOfAnswerInvalid>
-              <eCH-0110:total>0</eCH-0110:total>
-            </eCH-0110:countOfAnswerInvalid>
-            <eCH-0110:countOfAnswerEmpty>
-              <eCH-0110:total>0</eCH-0110:total>
-            </eCH-0110:countOfAnswerEmpty>
-          </eCH-0110:standardBallot>
-        </eCH-0110:ballotResult>
-      </eCH-0110:voteResults>
-    </eCH-0110:countingCircleResults>
-    <eCH-0110:countingCircleResults>
-      <eCH-0110:countingCircle>
-        <eCH-0155:countingCircleId>BE-MU-10003</eCH-0155:countingCircleId>
-        <eCH-0155:countingCircleName>TestBallotBox2_ICH</eCH-0155:countingCircleName>
-      </eCH-0110:countingCircle>
-      <eCH-0110:votingCardsInformation>
-        <eCH-0110:countOfReceivedValidVotingCardsTotal>0</eCH-0110:countOfReceivedValidVotingCardsTotal>
-        <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
-      </eCH-0110:votingCardsInformation>
-      <eCH-0110:voteResults>
-        <eCH-0110:vote>
-          <eCH-0155:voteIdentification>1000000000-2</eCH-0155:voteIdentification>
-          <eCH-0155:domainOfInfluenceIdentification>doid-ch1-mu</eCH-0155:domainOfInfluenceIdentification>
-          <eCH-0155:voteDescription>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>DE</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (de)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>FR</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (fr)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>IT</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (it)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>RM</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (rm)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-          </eCH-0155:voteDescription>
-        </eCH-0110:vote>
-        <eCH-0110:countOfVotersInformation>
-          <eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
-        </eCH-0110:countOfVotersInformation>
-        <eCH-0110:ballotResult>
-          <eCH-0110:ballotIdentification>1000000000</eCH-0110:ballotIdentification>
-          <eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
-          <eCH-0110:ballotDescription>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>DE</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (de)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>FR</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (fr)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>IT</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (it)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>RM</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (rm)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-          </eCH-0110:ballotDescription>
-          <eCH-0110:countOfReceivedBallotsTotal>
-            <eCH-0110:total>0</eCH-0110:total>
-          </eCH-0110:countOfReceivedBallotsTotal>
-          <eCH-0110:countOfAccountedBallotsTotal>
-            <eCH-0110:total>0</eCH-0110:total>
-          </eCH-0110:countOfAccountedBallotsTotal>
-          <eCH-0110:countOfUnaccountedBallotsTotal>
-            <eCH-0110:total>0</eCH-0110:total>
-          </eCH-0110:countOfUnaccountedBallotsTotal>
-          <eCH-0110:countOfUnaccountedBlankBallots>
-            <eCH-0110:total>0</eCH-0110:total>
-          </eCH-0110:countOfUnaccountedBlankBallots>
-          <eCH-0110:countOfUnaccountedInvalidBallots>
-            <eCH-0110:total>0</eCH-0110:total>
-          </eCH-0110:countOfUnaccountedInvalidBallots>
-          <eCH-0110:standardBallot>
-            <eCH-0110:questionIdentification>1000000000-EVotingProposition</eCH-0110:questionIdentification>
-            <eCH-0110:question>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>DE</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (de)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>FR</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (fr)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>IT</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (it)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>RM</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (rm)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-            </eCH-0110:question>
-            <eCH-0110:countOfAnswerYes>
-              <eCH-0110:total>0</eCH-0110:total>
-            </eCH-0110:countOfAnswerYes>
-            <eCH-0110:countOfAnswerNo>
-              <eCH-0110:total>0</eCH-0110:total>
-            </eCH-0110:countOfAnswerNo>
-            <eCH-0110:countOfAnswerInvalid>
-              <eCH-0110:total>0</eCH-0110:total>
-            </eCH-0110:countOfAnswerInvalid>
-            <eCH-0110:countOfAnswerEmpty>
-              <eCH-0110:total>0</eCH-0110:total>
-            </eCH-0110:countOfAnswerEmpty>
-          </eCH-0110:standardBallot>
-        </eCH-0110:ballotResult>
-      </eCH-0110:voteResults>
-    </eCH-0110:countingCircleResults>
-    <eCH-0110:countingCircleResults>
-      <eCH-0110:countingCircle>
-        <eCH-0155:countingCircleId>BE-MU-10004</eCH-0155:countingCircleId>
-        <eCH-0155:countingCircleName>TestBallotBox2_ACH</eCH-0155:countingCircleName>
-      </eCH-0110:countingCircle>
-      <eCH-0110:votingCardsInformation>
-        <eCH-0110:countOfReceivedValidVotingCardsTotal>1</eCH-0110:countOfReceivedValidVotingCardsTotal>
-        <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
-      </eCH-0110:votingCardsInformation>
-      <eCH-0110:voteResults>
-        <eCH-0110:vote>
-          <eCH-0155:voteIdentification>1000000000-2</eCH-0155:voteIdentification>
-          <eCH-0155:domainOfInfluenceIdentification>doid-ch1-mu</eCH-0155:domainOfInfluenceIdentification>
-          <eCH-0155:voteDescription>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>DE</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (de)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>FR</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (fr)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>IT</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (it)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-            <eCH-0155:voteDescriptionInfo>
-              <eCH-0155:language>RM</eCH-0155:language>
-              <eCH-0155:voteDescription>Proposition (rm)</eCH-0155:voteDescription>
-            </eCH-0155:voteDescriptionInfo>
-          </eCH-0155:voteDescription>
-        </eCH-0110:vote>
-        <eCH-0110:countOfVotersInformation>
-          <eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
-        </eCH-0110:countOfVotersInformation>
-        <eCH-0110:ballotResult>
-          <eCH-0110:ballotIdentification>1000000000</eCH-0110:ballotIdentification>
-          <eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
-          <eCH-0110:ballotDescription>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>DE</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (de)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>FR</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (fr)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>IT</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (it)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-            <eCH-0155:ballotDescriptionInfo>
-              <eCH-0155:language>RM</eCH-0155:language>
-              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (rm)</eCH-0155:ballotDescriptionLong>
-            </eCH-0155:ballotDescriptionInfo>
-          </eCH-0110:ballotDescription>
-          <eCH-0110:countOfReceivedBallotsTotal>
-            <eCH-0110:total>1</eCH-0110:total>
-          </eCH-0110:countOfReceivedBallotsTotal>
-          <eCH-0110:countOfAccountedBallotsTotal>
-            <eCH-0110:total>1</eCH-0110:total>
-          </eCH-0110:countOfAccountedBallotsTotal>
-          <eCH-0110:countOfUnaccountedBallotsTotal>
-            <eCH-0110:total>0</eCH-0110:total>
-          </eCH-0110:countOfUnaccountedBallotsTotal>
-          <eCH-0110:countOfUnaccountedBlankBallots>
-            <eCH-0110:total>0</eCH-0110:total>
-          </eCH-0110:countOfUnaccountedBlankBallots>
-          <eCH-0110:countOfUnaccountedInvalidBallots>
-            <eCH-0110:total>0</eCH-0110:total>
-          </eCH-0110:countOfUnaccountedInvalidBallots>
-          <eCH-0110:standardBallot>
-            <eCH-0110:questionIdentification>1000000000-EVotingProposition</eCH-0110:questionIdentification>
-            <eCH-0110:question>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>DE</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (de)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>FR</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (fr)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>IT</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (it)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-              <eCH-0155:ballotQuestionInfo>
-                <eCH-0155:language>RM</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (rm)</eCH-0155:ballotQuestion>
-              </eCH-0155:ballotQuestionInfo>
-            </eCH-0110:question>
-            <eCH-0110:countOfAnswerYes>
-              <eCH-0110:total>1</eCH-0110:total>
-            </eCH-0110:countOfAnswerYes>
-            <eCH-0110:countOfAnswerNo>
-              <eCH-0110:total>0</eCH-0110:total>
-            </eCH-0110:countOfAnswerNo>
-            <eCH-0110:countOfAnswerInvalid>
-              <eCH-0110:total>0</eCH-0110:total>
-            </eCH-0110:countOfAnswerInvalid>
-            <eCH-0110:countOfAnswerEmpty>
-              <eCH-0110:total>0</eCH-0110:total>
-            </eCH-0110:countOfAnswerEmpty>
-          </eCH-0110:standardBallot>
-        </eCH-0110:ballotResult>
-      </eCH-0110:voteResults>
-    </eCH-0110:countingCircleResults>
-    <eCH-0110:extension>
-      <signature>kKKXq/4AIz++EScyMEVEspI9qn4y3T2Ds3MABRp5aurRAP0SB33+tFCoIrpbvOfyOFrMv/gy9zJF6pLua39Dgbj9icj8w3xiqWK0zPaXt90bLsbqTUN59xjTPAfN+nvw6jjLh1BJlGNqq8Q3DLTiLTC1i1mikolMsWZeDBtrFlIjJb4gTDS7Zu+orCwaeDOCZd6DgPZMydcZTa8xADCJmHudv3WLzXBpFJSSjeqGrbPUcSxwyAy4ETDhDcOsZEtJRVQrcvxX9nGxxr02dPaTXzTXvoSZvhfHSv/+xyuYCw1fVrEYu60Rnfyi4sGGKkK8y53oSaxRFhUJxEfJ62/J4Ucpe5pqD0Os0AO4hVOgwoiNuGoyQIsOCIjTHi46ouyQQCSN0Z2ph3kOmi4b8Fuj35R/cwUyF93CKUDRmVsT03lBEbt1ZvuvxwJXdtoPjggLFhTS8Eyp1tWuaHosK30ibMTh8kgVZ+2RIGwhQlJYnmA/0ZB8uGRv4dJMxX/JJUo3</signature>
-    </eCH-0110:extension>
-  </eCH-0110:resultDelivery>
+		<eCH-0058:messageDate>2022-10-05T15:45:40.055022500</eCH-0058:messageDate>
+		<eCH-0058:action>1</eCH-0058:action>
+		<eCH-0058:testDeliveryFlag>false</eCH-0058:testDeliveryFlag>
+	</eCH-0110:deliveryHeader>
+	<eCH-0110:resultDelivery>
+		<eCH-0110:reportingBody>
+			<eCH-0110:reportingBodyIdentification>SwissPost</eCH-0110:reportingBodyIdentification>
+			<eCH-0110:creationDateTime>2022-10-05T15:45:40.071237400</eCH-0110:creationDateTime>
+		</eCH-0110:reportingBody>
+		<eCH-0110:contestInformation>
+			<eCH-0155:contestIdentification>Post_E2E_DEV</eCH-0155:contestIdentification>
+			<eCH-0155:contestDate>2022-08-15</eCH-0155:contestDate>
+			<eCH-0155:contestDescription>
+				<eCH-0155:contestDescriptionInfo>
+					<eCH-0155:language>DE</eCH-0155:language>
+					<eCH-0155:contestDescription>Post_E2E_DEV</eCH-0155:contestDescription>
+				</eCH-0155:contestDescriptionInfo>
+				<eCH-0155:contestDescriptionInfo>
+					<eCH-0155:language>FR</eCH-0155:language>
+					<eCH-0155:contestDescription>Post_E2E_DEV</eCH-0155:contestDescription>
+				</eCH-0155:contestDescriptionInfo>
+				<eCH-0155:contestDescriptionInfo>
+					<eCH-0155:language>IT</eCH-0155:language>
+					<eCH-0155:contestDescription>Post_E2E_DEV</eCH-0155:contestDescription>
+				</eCH-0155:contestDescriptionInfo>
+				<eCH-0155:contestDescriptionInfo>
+					<eCH-0155:language>RM</eCH-0155:language>
+					<eCH-0155:contestDescription>Post_E2E_DEV</eCH-0155:contestDescription>
+				</eCH-0155:contestDescriptionInfo>
+			</eCH-0155:contestDescription>
+			<eCH-0155:eVotingPeriod>
+				<eCH-0155:eVotingPeriodFrom>2022-08-01T15:00:00+02:00</eCH-0155:eVotingPeriodFrom>
+				<eCH-0155:eVotingPeriodTill>2023-03-31T17:00:00+01:00</eCH-0155:eVotingPeriodTill>
+			</eCH-0155:eVotingPeriod>
+		</eCH-0110:contestInformation>
+		<eCH-0110:countingCircleResults>
+			<eCH-0110:countingCircle>
+				<eCH-0155:countingCircleId>BE-MU-10001</eCH-0155:countingCircleId>
+				<eCH-0155:countingCircleName>TestBallotBox_ICH</eCH-0155:countingCircleName>
+			</eCH-0110:countingCircle>
+			<eCH-0110:votingCardsInformation>
+				<eCH-0110:countOfReceivedValidVotingCardsTotal>0</eCH-0110:countOfReceivedValidVotingCardsTotal>
+				<eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
+			</eCH-0110:votingCardsInformation>
+			<eCH-0110:voteResults>
+				<eCH-0110:vote>
+					<eCH-0155:voteIdentification>1000000000-2</eCH-0155:voteIdentification>
+					<eCH-0155:domainOfInfluenceIdentification>doid-ch1-mu</eCH-0155:domainOfInfluenceIdentification>
+					<eCH-0155:voteDescription>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>DE</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (de)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>FR</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (fr)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>IT</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (it)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>RM</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (rm)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+					</eCH-0155:voteDescription>
+				</eCH-0110:vote>
+				<eCH-0110:countOfVotersInformation>
+					<eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
+				</eCH-0110:countOfVotersInformation>
+				<eCH-0110:ballotResult>
+					<eCH-0110:ballotIdentification>1000000000</eCH-0110:ballotIdentification>
+					<eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
+					<eCH-0110:ballotDescription>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>DE</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (de)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>FR</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (fr)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>IT</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (it)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>RM</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (rm)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+					</eCH-0110:ballotDescription>
+					<eCH-0110:countOfReceivedBallotsTotal>
+						<eCH-0110:total>0</eCH-0110:total>
+					</eCH-0110:countOfReceivedBallotsTotal>
+					<eCH-0110:countOfAccountedBallotsTotal>
+						<eCH-0110:total>0</eCH-0110:total>
+					</eCH-0110:countOfAccountedBallotsTotal>
+					<eCH-0110:countOfUnaccountedBallotsTotal>
+						<eCH-0110:total>0</eCH-0110:total>
+					</eCH-0110:countOfUnaccountedBallotsTotal>
+					<eCH-0110:countOfUnaccountedBlankBallots>
+						<eCH-0110:total>0</eCH-0110:total>
+					</eCH-0110:countOfUnaccountedBlankBallots>
+					<eCH-0110:countOfUnaccountedInvalidBallots>
+						<eCH-0110:total>0</eCH-0110:total>
+					</eCH-0110:countOfUnaccountedInvalidBallots>
+					<eCH-0110:standardBallot>
+						<eCH-0110:questionIdentification>1000000000-EVotingProposition</eCH-0110:questionIdentification>
+						<eCH-0110:question>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>DE</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (de)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>FR</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (fr)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>IT</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (it)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>RM</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (rm)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+						</eCH-0110:question>
+						<eCH-0110:countOfAnswerYes>
+							<eCH-0110:total>0</eCH-0110:total>
+						</eCH-0110:countOfAnswerYes>
+						<eCH-0110:countOfAnswerNo>
+							<eCH-0110:total>0</eCH-0110:total>
+						</eCH-0110:countOfAnswerNo>
+						<eCH-0110:countOfAnswerInvalid>
+							<eCH-0110:total>0</eCH-0110:total>
+						</eCH-0110:countOfAnswerInvalid>
+						<eCH-0110:countOfAnswerEmpty>
+							<eCH-0110:total>0</eCH-0110:total>
+						</eCH-0110:countOfAnswerEmpty>
+					</eCH-0110:standardBallot>
+				</eCH-0110:ballotResult>
+			</eCH-0110:voteResults>
+		</eCH-0110:countingCircleResults>
+		<eCH-0110:countingCircleResults>
+			<eCH-0110:countingCircle>
+				<eCH-0155:countingCircleId>BE-MU-10001</eCH-0155:countingCircleId>
+				<eCH-0155:countingCircleName>TestBallotBox_ICH</eCH-0155:countingCircleName>
+			</eCH-0110:countingCircle>
+			<eCH-0110:votingCardsInformation>
+				<eCH-0110:countOfReceivedValidVotingCardsTotal>0</eCH-0110:countOfReceivedValidVotingCardsTotal>
+				<eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
+			</eCH-0110:votingCardsInformation>
+			<eCH-0110:voteResults>
+				<eCH-0110:vote>
+					<eCH-0155:voteIdentification>1000000000-2</eCH-0155:voteIdentification>
+					<eCH-0155:domainOfInfluenceIdentification>doid-ch1-mu</eCH-0155:domainOfInfluenceIdentification>
+					<eCH-0155:voteDescription>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>DE</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (de)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>FR</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (fr)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>IT</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (it)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>RM</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (rm)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+					</eCH-0155:voteDescription>
+				</eCH-0110:vote>
+				<eCH-0110:countOfVotersInformation>
+					<eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
+				</eCH-0110:countOfVotersInformation>
+				<eCH-0110:ballotResult>
+					<eCH-0110:ballotIdentification>1000000000</eCH-0110:ballotIdentification>
+					<eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
+					<eCH-0110:ballotDescription>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>DE</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (de)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>FR</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (fr)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>IT</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (it)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>RM</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (rm)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+					</eCH-0110:ballotDescription>
+					<eCH-0110:countOfReceivedBallotsTotal>
+						<eCH-0110:total>0</eCH-0110:total>
+					</eCH-0110:countOfReceivedBallotsTotal>
+					<eCH-0110:countOfAccountedBallotsTotal>
+						<eCH-0110:total>0</eCH-0110:total>
+					</eCH-0110:countOfAccountedBallotsTotal>
+					<eCH-0110:countOfUnaccountedBallotsTotal>
+						<eCH-0110:total>0</eCH-0110:total>
+					</eCH-0110:countOfUnaccountedBallotsTotal>
+					<eCH-0110:countOfUnaccountedBlankBallots>
+						<eCH-0110:total>0</eCH-0110:total>
+					</eCH-0110:countOfUnaccountedBlankBallots>
+					<eCH-0110:countOfUnaccountedInvalidBallots>
+						<eCH-0110:total>0</eCH-0110:total>
+					</eCH-0110:countOfUnaccountedInvalidBallots>
+					<eCH-0110:standardBallot>
+						<eCH-0110:questionIdentification>1000000000-EVotingProposition</eCH-0110:questionIdentification>
+						<eCH-0110:question>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>DE</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (de)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>FR</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (fr)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>IT</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (it)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>RM</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (rm)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+						</eCH-0110:question>
+						<eCH-0110:countOfAnswerYes>
+							<eCH-0110:total>0</eCH-0110:total>
+						</eCH-0110:countOfAnswerYes>
+						<eCH-0110:countOfAnswerNo>
+							<eCH-0110:total>0</eCH-0110:total>
+						</eCH-0110:countOfAnswerNo>
+						<eCH-0110:countOfAnswerInvalid>
+							<eCH-0110:total>0</eCH-0110:total>
+						</eCH-0110:countOfAnswerInvalid>
+						<eCH-0110:countOfAnswerEmpty>
+							<eCH-0110:total>0</eCH-0110:total>
+						</eCH-0110:countOfAnswerEmpty>
+					</eCH-0110:standardBallot>
+				</eCH-0110:ballotResult>
+			</eCH-0110:voteResults>
+		</eCH-0110:countingCircleResults>
+		<eCH-0110:countingCircleResults>
+			<eCH-0110:countingCircle>
+				<eCH-0155:countingCircleId>BE-MU-10002</eCH-0155:countingCircleId>
+				<eCH-0155:countingCircleName>TestBallotBox_ACH</eCH-0155:countingCircleName>
+			</eCH-0110:countingCircle>
+			<eCH-0110:votingCardsInformation>
+				<eCH-0110:countOfReceivedValidVotingCardsTotal>0</eCH-0110:countOfReceivedValidVotingCardsTotal>
+				<eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
+			</eCH-0110:votingCardsInformation>
+			<eCH-0110:voteResults>
+				<eCH-0110:vote>
+					<eCH-0155:voteIdentification>1000000000-2</eCH-0155:voteIdentification>
+					<eCH-0155:domainOfInfluenceIdentification>doid-ch1-mu</eCH-0155:domainOfInfluenceIdentification>
+					<eCH-0155:voteDescription>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>DE</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (de)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>FR</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (fr)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>IT</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (it)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>RM</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (rm)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+					</eCH-0155:voteDescription>
+				</eCH-0110:vote>
+				<eCH-0110:countOfVotersInformation>
+					<eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
+				</eCH-0110:countOfVotersInformation>
+				<eCH-0110:ballotResult>
+					<eCH-0110:ballotIdentification>1000000000</eCH-0110:ballotIdentification>
+					<eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
+					<eCH-0110:ballotDescription>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>DE</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (de)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>FR</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (fr)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>IT</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (it)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>RM</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (rm)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+					</eCH-0110:ballotDescription>
+					<eCH-0110:countOfReceivedBallotsTotal>
+						<eCH-0110:total>0</eCH-0110:total>
+					</eCH-0110:countOfReceivedBallotsTotal>
+					<eCH-0110:countOfAccountedBallotsTotal>
+						<eCH-0110:total>0</eCH-0110:total>
+					</eCH-0110:countOfAccountedBallotsTotal>
+					<eCH-0110:countOfUnaccountedBallotsTotal>
+						<eCH-0110:total>0</eCH-0110:total>
+					</eCH-0110:countOfUnaccountedBallotsTotal>
+					<eCH-0110:countOfUnaccountedBlankBallots>
+						<eCH-0110:total>0</eCH-0110:total>
+					</eCH-0110:countOfUnaccountedBlankBallots>
+					<eCH-0110:countOfUnaccountedInvalidBallots>
+						<eCH-0110:total>0</eCH-0110:total>
+					</eCH-0110:countOfUnaccountedInvalidBallots>
+					<eCH-0110:standardBallot>
+						<eCH-0110:questionIdentification>1000000000-EVotingProposition</eCH-0110:questionIdentification>
+						<eCH-0110:question>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>DE</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (de)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>FR</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (fr)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>IT</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (it)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>RM</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (rm)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+						</eCH-0110:question>
+						<eCH-0110:countOfAnswerYes>
+							<eCH-0110:total>0</eCH-0110:total>
+						</eCH-0110:countOfAnswerYes>
+						<eCH-0110:countOfAnswerNo>
+							<eCH-0110:total>0</eCH-0110:total>
+						</eCH-0110:countOfAnswerNo>
+						<eCH-0110:countOfAnswerInvalid>
+							<eCH-0110:total>0</eCH-0110:total>
+						</eCH-0110:countOfAnswerInvalid>
+						<eCH-0110:countOfAnswerEmpty>
+							<eCH-0110:total>0</eCH-0110:total>
+						</eCH-0110:countOfAnswerEmpty>
+					</eCH-0110:standardBallot>
+				</eCH-0110:ballotResult>
+			</eCH-0110:voteResults>
+		</eCH-0110:countingCircleResults>
+		<eCH-0110:countingCircleResults>
+			<eCH-0110:countingCircle>
+				<eCH-0155:countingCircleId>BE-MU-10003</eCH-0155:countingCircleId>
+				<eCH-0155:countingCircleName>TestBallotBox2_ICH</eCH-0155:countingCircleName>
+			</eCH-0110:countingCircle>
+			<eCH-0110:votingCardsInformation>
+				<eCH-0110:countOfReceivedValidVotingCardsTotal>2</eCH-0110:countOfReceivedValidVotingCardsTotal>
+				<eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
+			</eCH-0110:votingCardsInformation>
+			<eCH-0110:voteResults>
+				<eCH-0110:vote>
+					<eCH-0155:voteIdentification>1000000000-2</eCH-0155:voteIdentification>
+					<eCH-0155:domainOfInfluenceIdentification>doid-ch1-mu</eCH-0155:domainOfInfluenceIdentification>
+					<eCH-0155:voteDescription>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>DE</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (de)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>FR</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (fr)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>IT</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (it)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>RM</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (rm)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+					</eCH-0155:voteDescription>
+				</eCH-0110:vote>
+				<eCH-0110:countOfVotersInformation>
+					<eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
+				</eCH-0110:countOfVotersInformation>
+				<eCH-0110:ballotResult>
+					<eCH-0110:ballotIdentification>1000000000</eCH-0110:ballotIdentification>
+					<eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
+					<eCH-0110:ballotDescription>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>DE</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (de)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>FR</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (fr)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>IT</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (it)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>RM</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (rm)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+					</eCH-0110:ballotDescription>
+					<eCH-0110:countOfReceivedBallotsTotal>
+						<eCH-0110:total>2</eCH-0110:total>
+					</eCH-0110:countOfReceivedBallotsTotal>
+					<eCH-0110:countOfAccountedBallotsTotal>
+						<eCH-0110:total>2</eCH-0110:total>
+					</eCH-0110:countOfAccountedBallotsTotal>
+					<eCH-0110:countOfUnaccountedBallotsTotal>
+						<eCH-0110:total>0</eCH-0110:total>
+					</eCH-0110:countOfUnaccountedBallotsTotal>
+					<eCH-0110:countOfUnaccountedBlankBallots>
+						<eCH-0110:total>0</eCH-0110:total>
+					</eCH-0110:countOfUnaccountedBlankBallots>
+					<eCH-0110:countOfUnaccountedInvalidBallots>
+						<eCH-0110:total>0</eCH-0110:total>
+					</eCH-0110:countOfUnaccountedInvalidBallots>
+					<eCH-0110:standardBallot>
+						<eCH-0110:questionIdentification>1000000000-EVotingProposition</eCH-0110:questionIdentification>
+						<eCH-0110:question>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>DE</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (de)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>FR</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (fr)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>IT</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (it)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>RM</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (rm)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+						</eCH-0110:question>
+						<eCH-0110:countOfAnswerYes>
+							<eCH-0110:total>2</eCH-0110:total>
+						</eCH-0110:countOfAnswerYes>
+						<eCH-0110:countOfAnswerNo>
+							<eCH-0110:total>0</eCH-0110:total>
+						</eCH-0110:countOfAnswerNo>
+						<eCH-0110:countOfAnswerInvalid>
+							<eCH-0110:total>0</eCH-0110:total>
+						</eCH-0110:countOfAnswerInvalid>
+						<eCH-0110:countOfAnswerEmpty>
+							<eCH-0110:total>0</eCH-0110:total>
+						</eCH-0110:countOfAnswerEmpty>
+					</eCH-0110:standardBallot>
+				</eCH-0110:ballotResult>
+			</eCH-0110:voteResults>
+		</eCH-0110:countingCircleResults>
+		<eCH-0110:countingCircleResults>
+			<eCH-0110:countingCircle>
+				<eCH-0155:countingCircleId>BE-MU-10003</eCH-0155:countingCircleId>
+				<eCH-0155:countingCircleName>TestBallotBox2_ICH</eCH-0155:countingCircleName>
+			</eCH-0110:countingCircle>
+			<eCH-0110:votingCardsInformation>
+				<eCH-0110:countOfReceivedValidVotingCardsTotal>2</eCH-0110:countOfReceivedValidVotingCardsTotal>
+				<eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
+			</eCH-0110:votingCardsInformation>
+			<eCH-0110:voteResults>
+				<eCH-0110:vote>
+					<eCH-0155:voteIdentification>1000000000-2</eCH-0155:voteIdentification>
+					<eCH-0155:domainOfInfluenceIdentification>doid-ch1-mu</eCH-0155:domainOfInfluenceIdentification>
+					<eCH-0155:voteDescription>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>DE</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (de)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>FR</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (fr)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>IT</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (it)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>RM</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (rm)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+					</eCH-0155:voteDescription>
+				</eCH-0110:vote>
+				<eCH-0110:countOfVotersInformation>
+					<eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
+				</eCH-0110:countOfVotersInformation>
+				<eCH-0110:ballotResult>
+					<eCH-0110:ballotIdentification>1000000000</eCH-0110:ballotIdentification>
+					<eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
+					<eCH-0110:ballotDescription>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>DE</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (de)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>FR</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (fr)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>IT</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (it)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>RM</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (rm)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+					</eCH-0110:ballotDescription>
+					<eCH-0110:countOfReceivedBallotsTotal>
+						<eCH-0110:total>2</eCH-0110:total>
+					</eCH-0110:countOfReceivedBallotsTotal>
+					<eCH-0110:countOfAccountedBallotsTotal>
+						<eCH-0110:total>2</eCH-0110:total>
+					</eCH-0110:countOfAccountedBallotsTotal>
+					<eCH-0110:countOfUnaccountedBallotsTotal>
+						<eCH-0110:total>0</eCH-0110:total>
+					</eCH-0110:countOfUnaccountedBallotsTotal>
+					<eCH-0110:countOfUnaccountedBlankBallots>
+						<eCH-0110:total>0</eCH-0110:total>
+					</eCH-0110:countOfUnaccountedBlankBallots>
+					<eCH-0110:countOfUnaccountedInvalidBallots>
+						<eCH-0110:total>0</eCH-0110:total>
+					</eCH-0110:countOfUnaccountedInvalidBallots>
+					<eCH-0110:standardBallot>
+						<eCH-0110:questionIdentification>1000000000-EVotingProposition</eCH-0110:questionIdentification>
+						<eCH-0110:question>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>DE</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (de)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>FR</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (fr)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>IT</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (it)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>RM</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (rm)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+						</eCH-0110:question>
+						<eCH-0110:countOfAnswerYes>
+							<eCH-0110:total>2</eCH-0110:total>
+						</eCH-0110:countOfAnswerYes>
+						<eCH-0110:countOfAnswerNo>
+							<eCH-0110:total>0</eCH-0110:total>
+						</eCH-0110:countOfAnswerNo>
+						<eCH-0110:countOfAnswerInvalid>
+							<eCH-0110:total>0</eCH-0110:total>
+						</eCH-0110:countOfAnswerInvalid>
+						<eCH-0110:countOfAnswerEmpty>
+							<eCH-0110:total>0</eCH-0110:total>
+						</eCH-0110:countOfAnswerEmpty>
+					</eCH-0110:standardBallot>
+				</eCH-0110:ballotResult>
+			</eCH-0110:voteResults>
+		</eCH-0110:countingCircleResults>
+		<eCH-0110:countingCircleResults>
+			<eCH-0110:countingCircle>
+				<eCH-0155:countingCircleId>BE-MU-10004</eCH-0155:countingCircleId>
+				<eCH-0155:countingCircleName>TestBallotBox2_ACH</eCH-0155:countingCircleName>
+			</eCH-0110:countingCircle>
+			<eCH-0110:votingCardsInformation>
+				<eCH-0110:countOfReceivedValidVotingCardsTotal>3</eCH-0110:countOfReceivedValidVotingCardsTotal>
+				<eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
+			</eCH-0110:votingCardsInformation>
+			<eCH-0110:voteResults>
+				<eCH-0110:vote>
+					<eCH-0155:voteIdentification>1000000000-2</eCH-0155:voteIdentification>
+					<eCH-0155:domainOfInfluenceIdentification>doid-ch1-mu</eCH-0155:domainOfInfluenceIdentification>
+					<eCH-0155:voteDescription>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>DE</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (de)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>FR</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (fr)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>IT</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (it)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+						<eCH-0155:voteDescriptionInfo>
+							<eCH-0155:language>RM</eCH-0155:language>
+							<eCH-0155:voteDescription>Proposition (rm)</eCH-0155:voteDescription>
+						</eCH-0155:voteDescriptionInfo>
+					</eCH-0155:voteDescription>
+				</eCH-0110:vote>
+				<eCH-0110:countOfVotersInformation>
+					<eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
+				</eCH-0110:countOfVotersInformation>
+				<eCH-0110:ballotResult>
+					<eCH-0110:ballotIdentification>1000000000</eCH-0110:ballotIdentification>
+					<eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
+					<eCH-0110:ballotDescription>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>DE</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (de)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>FR</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (fr)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>IT</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (it)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+						<eCH-0155:ballotDescriptionInfo>
+							<eCH-0155:language>RM</eCH-0155:language>
+							<eCH-0155:ballotDescriptionLong>Proposition concerning Test (rm)</eCH-0155:ballotDescriptionLong>
+						</eCH-0155:ballotDescriptionInfo>
+					</eCH-0110:ballotDescription>
+					<eCH-0110:countOfReceivedBallotsTotal>
+						<eCH-0110:total>3</eCH-0110:total>
+					</eCH-0110:countOfReceivedBallotsTotal>
+					<eCH-0110:countOfAccountedBallotsTotal>
+						<eCH-0110:total>2</eCH-0110:total>
+					</eCH-0110:countOfAccountedBallotsTotal>
+					<eCH-0110:countOfUnaccountedBallotsTotal>
+						<eCH-0110:total>1</eCH-0110:total>
+					</eCH-0110:countOfUnaccountedBallotsTotal>
+					<eCH-0110:countOfUnaccountedBlankBallots>
+						<eCH-0110:total>1</eCH-0110:total>
+					</eCH-0110:countOfUnaccountedBlankBallots>
+					<eCH-0110:countOfUnaccountedInvalidBallots>
+						<eCH-0110:total>0</eCH-0110:total>
+					</eCH-0110:countOfUnaccountedInvalidBallots>
+					<eCH-0110:standardBallot>
+						<eCH-0110:questionIdentification>1000000000-EVotingProposition</eCH-0110:questionIdentification>
+						<eCH-0110:question>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>DE</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (de)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>FR</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (fr)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>IT</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (it)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+							<eCH-0155:ballotQuestionInfo>
+								<eCH-0155:language>RM</eCH-0155:language>
+								<eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (rm)</eCH-0155:ballotQuestion>
+							</eCH-0155:ballotQuestionInfo>
+						</eCH-0110:question>
+						<eCH-0110:countOfAnswerYes>
+							<eCH-0110:total>0</eCH-0110:total>
+						</eCH-0110:countOfAnswerYes>
+						<eCH-0110:countOfAnswerNo>
+							<eCH-0110:total>2</eCH-0110:total>
+						</eCH-0110:countOfAnswerNo>
+						<eCH-0110:countOfAnswerInvalid>
+							<eCH-0110:total>0</eCH-0110:total>
+						</eCH-0110:countOfAnswerInvalid>
+						<eCH-0110:countOfAnswerEmpty>
+							<eCH-0110:total>1</eCH-0110:total>
+						</eCH-0110:countOfAnswerEmpty>
+					</eCH-0110:standardBallot>
+				</eCH-0110:ballotResult>
+			</eCH-0110:voteResults>
+		</eCH-0110:countingCircleResults>
+		<eCH-0110:extension>
+			<signature>
+				VmaGZsAJkLPr4pFvVyLmvY+OeY6tbgiM1yw0o4QxhWo+XJYNr9oax2h/lvPjporac5DuYvICydkr9NeNdOoZQivfFszD9qmZ/s5eM4xPDPbqFRgJHxQolZeBdwEb1IJeOKyDdEhdx+gT8AqBMXEXkEweYppVtdbeh8KMVnhgDnvT65Y2H9ojDSy8V4ZRAuyhewZFaeWgnhPyuUm8FhNufhlLaYHxbHeDcdwj9NsxqRyt3HkBWPM0jGA25STYgC5kitnluot4l49Ix4LtHSJuJ0R4+d9c0Gx8cEJtlzpoyQd2D2wZVu/RqwxGQgcPEbLyjfWSap32sbi4x2YezjizDMv5R75DWlWbJEn4TBz6QZEp0bNGj7T0s8GTDsWVPNQGjTu9NQbBoP0951E29N5nxMMuRhBlvqHoj5FQm1iTNP62E49FfqJ12beamBU2Zl7XbuaEy0Gg23v4WPE5y+3lUohaLKpu1vvh1h1GphO1/cPQg4IXWFwuqZ+cR989e39t
+			</signature>
+		</eCH-0110:extension>
+	</eCH-0110:resultDelivery>
 </eCH-0110:delivery>
