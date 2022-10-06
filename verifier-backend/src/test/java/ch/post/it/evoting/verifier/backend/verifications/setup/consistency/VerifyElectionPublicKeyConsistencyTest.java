@@ -41,12 +41,9 @@ class VerifyElectionPublicKeyConsistencyTest extends SetupVerificationTest {
 
 	private final static ElGamal EL_GAMAL = ElGamalFactory.createElGamal();
 
-	private static ElectionDataExtractionService extractionService = new ElectionDataExtractionService(pathService, objectMapper);
-
 	@BeforeAll
 	static void setupAll() {
-		extractionService = new ElectionDataExtractionService(pathService, objectMapper);
-		verification = new VerifyElectionPublicKeyConsistency(EL_GAMAL, extractionService, applicationEventPublisherMock);
+		verification = new VerifyElectionPublicKeyConsistency(EL_GAMAL, electionDataExtractionService, applicationEventPublisherMock);
 	}
 
 	@Test
@@ -61,7 +58,7 @@ class VerifyElectionPublicKeyConsistencyTest extends SetupVerificationTest {
 	@Test
 	@DisplayName("inconsistent EL_pk fails.")
 	void inconsistentElectionEventPublicKey() {
-		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(datasetPath);
+		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(datasetPath);
 		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
 
 		final List<GqElement> modifiedKeyElements = electionEventContext.choiceReturnCodesEncryptionPublicKey()
@@ -72,7 +69,7 @@ class VerifyElectionPublicKeyConsistencyTest extends SetupVerificationTest {
 		final ElectionEventContextPayload modifiedElectionEventContextPayload = new ElectionEventContextPayload(
 				electionEventContextPayload.getEncryptionGroup(), modifiedElectionEventContext);
 
-		final ElectionDataExtractionService extractionServiceMock = spy(extractionService);
+		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
 		doReturn(modifiedElectionEventContextPayload).when(extractionServiceMock).getElectionEventContextPayload(datasetPath);
 
 		final VerifyElectionPublicKeyConsistency verificationWithMock = new VerifyElectionPublicKeyConsistency(EL_GAMAL, extractionServiceMock,
@@ -80,7 +77,7 @@ class VerifyElectionPublicKeyConsistencyTest extends SetupVerificationTest {
 
 		final VerificationResult result = verificationWithMock.verify(datasetPath);
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification304.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification306.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 }

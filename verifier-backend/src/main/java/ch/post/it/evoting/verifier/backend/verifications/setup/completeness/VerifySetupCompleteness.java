@@ -67,7 +67,7 @@ public class VerifySetupCompleteness extends AbstractVerification {
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) {
+	public VerificationResult verify(final Path inputDirectoryPath) {
 		if (verifySetupCompleteness(inputDirectoryPath)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
@@ -81,6 +81,7 @@ public class VerifySetupCompleteness extends AbstractVerification {
 		try {
 			pathService.buildFromRootPath(StructureKey.SETUP_DIR, inputDirectoryPath);
 			pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
+			pathService.buildFromRootPath(StructureKey.CONFIGURATION_ANONYMIZED, inputDirectoryPath);
 			pathService.buildFromRootPath(StructureKey.ELECTION_EVENT_CONTEXT, inputDirectoryPath);
 			checkState(pathService.buildFromRootPath(StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS, inputDirectoryPath).getRegexPaths().size()
 					== NODE_IDS.size());

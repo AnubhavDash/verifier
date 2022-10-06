@@ -17,13 +17,8 @@ package ch.post.it.evoting.verifier.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Import;
-
-import ch.post.it.evoting.verifier.backend.config.SetupVerificationModuleConfiguration;
-import ch.post.it.evoting.verifier.backend.config.TallyVerificationModuleConfiguration;
 
 @SpringBootApplication
-@Import({ SetupVerificationModuleConfiguration.class, TallyVerificationModuleConfiguration.class })
 public class Application {
 
 	public static void main(final String[] args) {

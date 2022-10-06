@@ -31,12 +31,7 @@ public class EncryptionGroupParametersPayloadDeserializer extends JsonDeserializ
 		final JsonNode node = mapper.readTree(parser);
 		final JsonNode encryptionGroupNode = node.path("encryptionGroup");
 
-		final EncryptionGroupParameters encryptionGroup;
-		if (!encryptionGroupNode.isMissingNode()) {
-			encryptionGroup = mapper.readValue(encryptionGroupNode.toString(), EncryptionGroupParameters.class);
-		} else {
-			encryptionGroup = mapper.readValue(node.get("group").toString(), EncryptionGroupParameters.class);
-		}
+		final EncryptionGroupParameters encryptionGroup = mapper.readValue(encryptionGroupNode.toString(), EncryptionGroupParameters.class);
 
 		return new EncryptionGroupParametersPayload(encryptionGroup);
 	}

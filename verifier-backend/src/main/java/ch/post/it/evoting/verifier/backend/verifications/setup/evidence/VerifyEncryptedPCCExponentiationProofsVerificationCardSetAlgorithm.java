@@ -32,6 +32,7 @@ import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKe
 import ch.post.it.evoting.cryptoprimitives.math.GqElement;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
+import ch.post.it.evoting.cryptoprimitives.math.ZqGroup;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ExponentiationProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
 
@@ -73,11 +74,15 @@ public class VerifyEncryptedPCCExponentiationProofsVerificationCardSetAlgorithm 
 		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_pCC = input.getEncryptedHashedPartialChoiceReturnCodes();
 		final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> K_j = input.getVoterChoiceReturnCodeGenerationPublicKeys();
 		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_expPCC_j = input.getExponentiatedEncryptedHashedPartialChoiceReturnCodes();
-		final List<ExponentiationProof> pi_expPCC_j = input.getProofsOfCorrectPCCExponentiation();
+		final GroupVector<ExponentiationProof, ZqGroup> pi_expPCC_j = input.getProofsOfCorrectPCCExponentiation();
+
+		// Cross-group check.
+		checkArgument(c_pCC.getGroup().equals(group), "The context and input must have the same encryption group.");
 
 		// Cross-size validations.
-		checkArgument(vc.size() == N_E, "The number of verification card ids must be equal to the number of voters.");
-		checkArgument(c_pCC.getElementSize() == n, "The size of each partial Choice Return Code must be equal to the number of voting options.");
+		checkArgument(vc.size() == N_E, "The size of each input must be equal to the number of voters.");
+		checkArgument(c_pCC.getElementSize() == n, "The size of each exponentiated and encrypted, hashed partial "
+				+ "Choice Return Codes must be equal to the number of voting options.");
 
 		// Operation.
 		return IntStream.range(0, N_E)

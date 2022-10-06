@@ -57,9 +57,9 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 		final VerificationDefinition definition = new VerificationDefinition();
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
-		definition.setDescription(TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME,
-				"tally.verification304.description"));
-		definition.setId(304);
+		definition.setDescription(
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification306.description"));
+		definition.setId(306);
 		definition.setName("VerifyNumberConfirmedEncryptedVotesConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;
@@ -77,7 +77,7 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification304.nok.message"));
+					getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification306.nok.message"));
 		}
 	}
 
@@ -93,18 +93,16 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 
 					final TallyComponentShufflePayload tallyComponentShufflePayload =
 							electionDataExtractionService.getTallyComponentShufflePayload(ballotBoxPath);
-					final int tallyComponentShufflePayloadSize = tallyComponentShufflePayload.getVerifiableShuffle()
-							.map(verifiableShuffle -> verifiableShuffle.shuffledCiphertexts().size())
-							.orElseThrow();
+					final int tallyComponentShufflePayloadSize = tallyComponentShufflePayload.getVerifiableShuffle().shuffledCiphertexts().size();
 
 					final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads =
-							electionDataExtractionService.getControlComponentBallotBoxPayloads(ballotBoxPath);
+							electionDataExtractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(ballotBoxPath);
 					final List<Integer> controlComponentBallotBoxPayloadsSizes = controlComponentBallotBoxPayloads.stream()
 							.map(controlComponentBallotBoxPayload -> controlComponentBallotBoxPayload.getConfirmedEncryptedVotes().size())
 							.toList();
 
 					final List<ControlComponentShufflePayload> controlComponentShufflePayloads =
-							electionDataExtractionService.getControlComponentShufflePayloads(ballotBoxPath);
+							electionDataExtractionService.getControlComponentShufflePayloadsOrderedByNodeId(ballotBoxPath);
 					final List<Integer> controlComponentShufflePayloadsSizes = controlComponentShufflePayloads.stream()
 							.map(controlComponentShufflePayload -> controlComponentShufflePayload.getVerifiableShuffle().shuffledCiphertexts().size())
 							.toList();

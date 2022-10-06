@@ -117,6 +117,17 @@ public class PathService {
 		return structureMap.get(structureKey);
 	}
 
+	public String getRegexGroup(final StructureKey structureKey, final String fileName, final int groupIndex) {
+		final Pattern pattern = Pattern.compile(this.getStructureNode(structureKey).getQualifier());
+		final Matcher matcher = pattern.matcher(fileName);
+
+		if (!matcher.matches()) {
+			throw new IllegalStateException("File name not matching pattern.");
+		}
+
+		return matcher.group(groupIndex);
+	}
+
 	/**
 	 * Recursive method that populate the internal structureMap from the dataset tree description. All the checks for missing nodes, wrong structure,
 	 * etc... are already done when calling this method.

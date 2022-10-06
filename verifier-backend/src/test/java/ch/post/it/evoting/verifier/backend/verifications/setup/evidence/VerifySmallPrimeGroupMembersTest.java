@@ -18,14 +18,14 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
@@ -38,9 +38,14 @@ class VerifySmallPrimeGroupMembersTest extends SetupVerificationTest {
 	static void setUpAll() {
 		verifySmallPrimeGroupMembersAlgorithm = spy(new VerifySmallPrimeGroupMembersAlgorithm());
 		verification = new VerifySmallPrimeGroupMembers(
-				new ElectionDataExtractionService(pathService, DomainObjectMapper.getNewInstance()),
+				electionDataExtractionService,
 				verifySmallPrimeGroupMembersAlgorithm,
 				applicationEventPublisherMock);
+	}
+
+	@BeforeEach
+	void setUp() {
+		reset(verifySmallPrimeGroupMembersAlgorithm);
 	}
 
 	@Test

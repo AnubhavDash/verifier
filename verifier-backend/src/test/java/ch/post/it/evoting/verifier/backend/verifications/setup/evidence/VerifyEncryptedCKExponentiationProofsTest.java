@@ -21,14 +21,13 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
@@ -46,12 +45,12 @@ class VerifyEncryptedCKExponentiationProofsTest extends SetupVerificationTest {
 		final VerifyEncryptedCKExponentiationProofsAlgorithm verifyEncryptedCKExponentiationProofsAlgorithm = new VerifyEncryptedCKExponentiationProofsAlgorithm(
 				verifyCKProofsVerificationCardSetAlgorithm);
 		final ExponentiationProofsVerificationExtractionService exponentiationProofsVerificationExtractionService = new ExponentiationProofsVerificationExtractionService(
-				new ElectionDataExtractionService(pathService, objectMapper), pathService);
+				electionDataExtractionService, pathService);
 		verification = new VerifyEncryptedCKExponentiationProofs(applicationEventPublisherMock, exponentiationProofsVerificationExtractionService,
 				verifyEncryptedCKExponentiationProofsAlgorithm);
 	}
 
-	@AfterEach
+	@BeforeEach
 	void setUp() {
 		reset(verifyCKProofsVerificationCardSetAlgorithm);
 	}
@@ -74,7 +73,7 @@ class VerifyEncryptedCKExponentiationProofsTest extends SetupVerificationTest {
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
-						"setup.verification.exponentiation.proofs.nok.message"));
+						"setup.verification505.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 }
