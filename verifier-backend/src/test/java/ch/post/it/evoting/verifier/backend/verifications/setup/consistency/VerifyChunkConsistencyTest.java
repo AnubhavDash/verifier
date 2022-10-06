@@ -59,12 +59,12 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 	@MethodSource("invalidChunkIdConsistencyProvider")
 	@DisplayName("invalid chunk ID in control component code shares are detected")
 	@SneakyThrows
-	void invalidChunkIdConsistency(String path) {
+	void invalidChunkIdConsistency(final String path) {
 		final Path inputDirectory = Paths.get(getClass().getResource(path).toURI());
 		final VerificationResult result = verification.verify(inputDirectory);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification310.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification314.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 

@@ -61,7 +61,7 @@ public class VerifyCiphertextsConsistency extends AbstractVerification {
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) {
+	public VerificationResult verify(final Path inputDirectoryPath) {
 		final List<VerificationCardSetContext> verificationCardSetContexts = extractionService.getElectionEventContextPayload(inputDirectoryPath)
 				.getElectionEventContext().verificationCardSetContexts();
 		final List<Ciphertexts> ciphertexts = verificationCardSetContexts.stream()

@@ -55,15 +55,15 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification313.description"));
-		definition.setId(313);
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification304.description"));
+		definition.setId(304);
 		definition.setName("VerifyCcmAndCcrSchnorrProofsConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) {
+	public VerificationResult verify(final Path inputDirectoryPath) {
 		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(inputDirectoryPath);
 		final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = extractionService.getControlComponentPublicKeysPayloads(
 				inputDirectoryPath);
@@ -94,7 +94,7 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification313.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification304.nok.message"));
 		}
 	}
 }

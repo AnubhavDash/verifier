@@ -102,7 +102,7 @@ class VerifyEncryptionParametersAlgorithmTest {
 	@Test
 	@DisplayName("wrong seed returns false")
 	void wrongSeedFails() {
-		String badSeed = "65684";
+		final String badSeed = "65684";
 		assertFalse(verifyEncryptionParametersAlgorithm.verifyEncryptionParameters(p, q, g, badSeed));
 	}
 

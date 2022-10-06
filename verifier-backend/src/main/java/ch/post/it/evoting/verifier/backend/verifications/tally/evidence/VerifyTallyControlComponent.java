@@ -71,7 +71,7 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 
 	@Override
 	@SuppressWarnings("java:S117")
-	public VerificationResult verify(Path inputDirectoryPath) {
+	public VerificationResult verify(final Path inputDirectoryPath) {
 		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(inputDirectoryPath);
 		final List<ControlComponentShufflePayload> controlComponentShufflePayloads = extractionService
 				.getAllControlComponentShufflePayloadsOrderedByNodeId(inputDirectoryPath);

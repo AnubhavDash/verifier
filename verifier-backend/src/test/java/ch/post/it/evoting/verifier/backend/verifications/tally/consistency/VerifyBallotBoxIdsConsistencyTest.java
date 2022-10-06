@@ -52,7 +52,7 @@ class VerifyBallotBoxIdsConsistencyTest extends TallyVerificationTest {
 	@Test
 	@DisplayName("inconsistent ballot box ids is failed")
 	void inconsistentVerificationCardIds() {
-		TallyComponentShufflePayload tallyComponentShufflePayloadMock = mock(TallyComponentShufflePayload.class);
+		final TallyComponentShufflePayload tallyComponentShufflePayloadMock = mock(TallyComponentShufflePayload.class);
 		when(tallyComponentShufflePayloadMock.getBallotBoxId()).thenReturn("4c6f28483a324d84b5363261aa2062f6");
 
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
@@ -65,7 +65,7 @@ class VerifyBallotBoxIdsConsistencyTest extends TallyVerificationTest {
 		final VerificationResult result = verifyVerificationCardSetIdsConsistency.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification308.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification304.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 }

@@ -57,9 +57,9 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 		final VerificationDefinition definition = new VerificationDefinition();
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
-		definition.setDescription(TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME,
-				"tally.verification304.description"));
-		definition.setId(304);
+		definition.setDescription(
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification306.description"));
+		definition.setId(306);
 		definition.setName("VerifyNumberConfirmedEncryptedVotesConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;
@@ -77,7 +77,7 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification304.nok.message"));
+					getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification306.nok.message"));
 		}
 	}
 

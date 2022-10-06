@@ -75,7 +75,7 @@ class VerifyCcmElectionPublicKeyConsistencyTest extends SetupVerificationTest {
 
 		final VerificationResult result = verificationWithMock.verify(datasetPath);
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification302.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification303.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 }

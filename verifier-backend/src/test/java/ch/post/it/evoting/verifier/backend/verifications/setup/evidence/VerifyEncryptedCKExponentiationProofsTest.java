@@ -73,7 +73,7 @@ class VerifyEncryptedCKExponentiationProofsTest extends SetupVerificationTest {
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
-						"setup.verification.exponentiation.proofs.nok.message"));
+						"setup.verification505.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 }

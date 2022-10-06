@@ -56,15 +56,15 @@ public class VerifyChoiceReturnCodesPublicKeyConsistency extends AbstractVerific
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification303.description"));
-		definition.setId(303);
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification305.description"));
+		definition.setId(305);
 		definition.setName("VerifyChoiceReturnCodesPublicKeyConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) {
+	public VerificationResult verify(final Path inputDirectoryPath) {
 		final ElectionEventContext electionEventContext = extractionService.getElectionEventContextPayload(inputDirectoryPath)
 				.getElectionEventContext();
 
@@ -79,7 +79,7 @@ public class VerifyChoiceReturnCodesPublicKeyConsistency extends AbstractVerific
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification303.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification305.nok.message"));
 		}
 	}
 }

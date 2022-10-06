@@ -58,7 +58,7 @@ public class VerifyTotalVotersConsistency extends AbstractVerification {
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) {
+	public VerificationResult verify(final Path inputDirectoryPath) {
 		final Configuration configuration = extractionService.getSetupComponentConfig(inputDirectoryPath);
 
 		final int voterTotal = configuration.getHeader().getVoterTotal().intValueExact();

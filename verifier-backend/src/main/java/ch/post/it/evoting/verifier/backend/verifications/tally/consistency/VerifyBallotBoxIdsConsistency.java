@@ -59,15 +59,15 @@ public class VerifyBallotBoxIdsConsistency extends AbstractVerification {
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification308.description"));
-		definition.setId(308);
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification304.description"));
+		definition.setId(304);
 		definition.setName("VerifyBallotBoxIdsConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) {
+	public VerificationResult verify(final Path inputDirectoryPath) {
 		final boolean sameBallotBoxIds = extractBallotBoxIds(inputDirectoryPath).stream()
 				.parallel()
 				.map(payloadsBallotBoxIds -> payloadsBallotBoxIds.ballotBoxId().equals(payloadsBallotBoxIds.ccBallotBoxIds())
@@ -81,7 +81,7 @@ public class VerifyBallotBoxIdsConsistency extends AbstractVerification {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification308.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification304.nok.message"));
 		}
 	}
 

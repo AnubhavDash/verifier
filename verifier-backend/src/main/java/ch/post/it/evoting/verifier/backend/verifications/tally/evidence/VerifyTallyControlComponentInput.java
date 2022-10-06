@@ -88,7 +88,7 @@ public class VerifyTallyControlComponentInput {
 		this.tallyControlComponentVotes = tallyComponentVotesPayloadMap.values().stream()
 				.sorted(Comparator.comparing(TallyComponentVotesPayload::getBallotBoxId))
 				.toList();
-		Map<String, List<List<String>>> allSelectedDecodedVotingOptionsMap = new HashMap<>();
+		final Map<String, List<List<String>>> allSelectedDecodedVotingOptionsMap = new HashMap<>();
 		tallyComponentVotesPayloadMap.forEach((key, value) -> allSelectedDecodedVotingOptionsMap.put(key, value.getActualSelectedVotingOptions()));
 		this.allSelectedDecodedVotingOptions = Map.copyOf(allSelectedDecodedVotingOptionsMap);
 	}

@@ -67,7 +67,7 @@ public class VerifySetupCompleteness extends AbstractVerification {
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) {
+	public VerificationResult verify(final Path inputDirectoryPath) {
 		if (verifySetupCompleteness(inputDirectoryPath)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {

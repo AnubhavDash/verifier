@@ -64,15 +64,15 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification307.description"));
-		definition.setId(307);
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification309.description"));
+		definition.setId(309);
 		definition.setName("VerifyVerificationCardSetIdsConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
 	}
 
 	@Override
-	public VerificationResult verify(Path inputDirectoryPath) {
+	public VerificationResult verify(final Path inputDirectoryPath) {
 		final boolean sameVerificationCardSetIds = extractVerificationCardSetIds(inputDirectoryPath)
 				.stream()
 				.parallel()
@@ -87,7 +87,7 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification307.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification309.nok.message"));
 		}
 	}
 
