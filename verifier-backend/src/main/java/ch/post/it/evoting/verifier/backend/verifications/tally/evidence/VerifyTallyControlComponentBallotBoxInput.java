@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.List;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import com.google.common.base.Preconditions;
@@ -72,10 +73,9 @@ public class VerifyTallyControlComponentBallotBoxInput {
 	}
 
 	public VerifiableDecryptions getVerifiableDecryptions() {
-		final GqGroup group = verifiablePlaintextDecryption.getGroup();
 		final GroupVector<ElGamalMultiRecipientMessage, GqGroup> decryptedVotes = verifiablePlaintextDecryption.getDecryptedVotes();
-		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> ciphertexts = decryptedVotes.stream()
-				.map(vote -> ElGamalMultiRecipientCiphertext.create(group.getIdentity(), vote.getElements()))
+		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> ciphertexts = IntStream.range(0, decryptedVotes.size())
+				.mapToObj(i -> ElGamalMultiRecipientCiphertext.create(verifiableShuffle.shuffledCiphertexts().get(i).getGamma(), decryptedVotes.get(i).getElements()))
 				.collect(GroupVector.toGroupVector());
 		final GroupVector<DecryptionProof, ZqGroup> decryptionProofs = verifiablePlaintextDecryption.getDecryptionProofs();
 
