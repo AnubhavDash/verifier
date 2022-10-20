@@ -55,19 +55,22 @@ public class ElectionDataExtractionService {
 
 	private final PathService pathService;
 	private final ObjectMapper objectMapper;
-	private final XmlFileRepository<Delivery> deliveryXmlFileRepository;
+	private final XmlFileRepository<Delivery> ech0110XmlFileRepository;
+	private final XmlFileRepository<ch.ech.xmlns.ech_0222._1.Delivery> ech0222XmlFileRepository;
 	private final XmlFileRepository<Configuration> configurationXmlFileRepository;
 	private final XmlFileRepository<Results> resultsXmlFileRepository;
 
 	public ElectionDataExtractionService(
 			final PathService pathService,
 			final ObjectMapper objectMapper,
-			final XmlFileRepository<Delivery> deliveryXmlFileRepository,
+			final XmlFileRepository<Delivery> ech0110XmlFileRepository,
+			final XmlFileRepository<ch.ech.xmlns.ech_0222._1.Delivery> ech0222XmlFileRepository,
 			final XmlFileRepository<Configuration> configurationXmlFileRepository,
 			final XmlFileRepository<Results> resultsXmlFileRepository) {
 		this.pathService = pathService;
 		this.objectMapper = objectMapper;
-		this.deliveryXmlFileRepository = deliveryXmlFileRepository;
+		this.ech0110XmlFileRepository = ech0110XmlFileRepository;
+		this.ech0222XmlFileRepository = ech0222XmlFileRepository;
 		this.configurationXmlFileRepository = configurationXmlFileRepository;
 		this.resultsXmlFileRepository = resultsXmlFileRepository;
 	}
@@ -108,7 +111,22 @@ public class ElectionDataExtractionService {
 	 */
 	public Delivery getTallyComponentEch0110(final Path inputDirectoryPath) {
 		final PathNode deliveryPathNode = pathService.buildFromRootPath(StructureKey.TALLY_COMPONENT_ECH0110, inputDirectoryPath);
-		return deliveryXmlFileRepository.read(deliveryPathNode.getPath(), XsdConstants.TALLY_COMPONENT_ECH_0110, Delivery.class);
+		return ech0110XmlFileRepository.read(deliveryPathNode.getPath(), XsdConstants.TALLY_COMPONENT_ECH_0110, Delivery.class);
+	}
+
+	/**
+	 * Gets the tally component eCH-0222.
+	 *
+	 * @param inputDirectoryPath the root directory containing project files.
+	 * @return the tally component eCH-0222 as {@link ch.ech.xmlns.ech_0222._1.Delivery} found in the project files, at the expected location if it
+	 * exists.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 * @throws UncheckedIOException if the file cannot be deserialized to a Delivery.
+	 */
+	public ch.ech.xmlns.ech_0222._1.Delivery getTallyComponentEch0222(final Path inputDirectoryPath) {
+		final PathNode deliveryPathNode = pathService.buildFromRootPath(StructureKey.TALLY_COMPONENT_ECH0222, inputDirectoryPath);
+		return ech0222XmlFileRepository.read(deliveryPathNode.getPath(), XsdConstants.TALLY_COMPONENT_ECH_0222,
+				ch.ech.xmlns.ech_0222._1.Delivery.class);
 	}
 
 	/**
