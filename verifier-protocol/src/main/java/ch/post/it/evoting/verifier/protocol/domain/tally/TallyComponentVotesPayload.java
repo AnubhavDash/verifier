@@ -26,8 +26,6 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.base.Preconditions;
@@ -46,48 +44,23 @@ import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
 @JsonDeserialize(using = TallyComponentVotesPayloadDeserializer.class)
 public class TallyComponentVotesPayload implements SignedPayload {
 
-	@JsonProperty
 	private final String electionEventId;
 
-	@JsonProperty
 	private final String ballotId;
 
-	@JsonProperty
 	private final String ballotBoxId;
-
-	@JsonProperty
 	private final GqGroup encryptionGroup;
-
-	@JsonProperty
 	private final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> votes;
-
-	@JsonProperty
 	private final List<List<String>> actualSelectedVotingOptions;
-
-	@JsonProperty
 	private CryptoPrimitivesSignature signature;
 
-	@JsonCreator
 	public TallyComponentVotesPayload(
-			@JsonProperty(value = "electionEventId", required = true)
 			final String electionEventId,
-
-			@JsonProperty(value = "ballotId", required = true)
 			final String ballotId,
-
-			@JsonProperty(value = "ballotBoxId", required = true)
 			final String ballotBoxId,
-
-			@JsonProperty(value = "encryptionGroup", required = true)
 			final GqGroup encryptionGroup,
-
-			@JsonProperty(value = "votes", required = true)
 			final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> votes,
-
-			@JsonProperty(value = "actualSelectedVotingOptions", required = true)
 			final List<List<String>> actualSelectedVotingOptions,
-
-			@JsonProperty(value = "signature", required = true)
 			final CryptoPrimitivesSignature signature
 	) {
 		this(electionEventId, ballotId, ballotBoxId, encryptionGroup, votes, actualSelectedVotingOptions);

@@ -32,13 +32,19 @@ public class VerifyTallyFilesInput {
 	private final Configuration setupComponentConfig;
 	private final Results tallyComponentDecrypt;
 	private final Delivery tallyComponentEch0110;
+	private final ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222;
 	private final Map<String, List<List<String>>> allSelectedDecodedVotingOptions;
 
-	private VerifyTallyFilesInput(final Configuration setupComponentConfig, final Results tallyComponentDecrypt,
-			final Delivery tallyComponentEch0110, final Map<String, List<List<String>>> allSelectedDecodedVotingOptions) {
+	private VerifyTallyFilesInput(
+			final Configuration setupComponentConfig,
+			final Results tallyComponentDecrypt,
+			final Delivery tallyComponentEch0110,
+			final ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222,
+			final Map<String, List<List<String>>> allSelectedDecodedVotingOptions) {
 		this.setupComponentConfig = setupComponentConfig;
 		this.tallyComponentDecrypt = tallyComponentDecrypt;
 		this.tallyComponentEch0110 = tallyComponentEch0110;
+		this.tallyComponentEch0222 = tallyComponentEch0222;
 		this.allSelectedDecodedVotingOptions = allSelectedDecodedVotingOptions;
 	}
 
@@ -54,6 +60,10 @@ public class VerifyTallyFilesInput {
 		return tallyComponentEch0110;
 	}
 
+	public ch.ech.xmlns.ech_0222._1.Delivery getTallyComponentEch0222() {
+		return tallyComponentEch0222;
+	}
+
 	public final Map<String, List<List<String>>> getAllSelectedDecodedVotingOptions() {
 		return allSelectedDecodedVotingOptions;
 	}
@@ -63,6 +73,7 @@ public class VerifyTallyFilesInput {
 		private Configuration setupComponentConfig;
 		private Results tallyComponentDecrypt;
 		private Delivery tallyComponentEch0110;
+		private ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222;
 		private Map<String, List<List<String>>> allSelectedDecodedVotingOptions;
 
 		public Builder setupComponentConfig(final Configuration setupComponentConfig) {
@@ -77,6 +88,11 @@ public class VerifyTallyFilesInput {
 
 		public Builder setTallyComponentEch0110(final Delivery tallyComponentEch0110) {
 			this.tallyComponentEch0110 = tallyComponentEch0110;
+			return this;
+		}
+
+		public Builder setTallyComponentEch0222(final ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222) {
+			this.tallyComponentEch0222 = tallyComponentEch0222;
 			return this;
 		}
 
@@ -103,9 +119,11 @@ public class VerifyTallyFilesInput {
 			checkNotNull(setupComponentConfig);
 			checkNotNull(tallyComponentDecrypt);
 			checkNotNull(tallyComponentEch0110);
+			checkNotNull(tallyComponentEch0222);
 			checkNotNull(allSelectedDecodedVotingOptions);
 
-			return new VerifyTallyFilesInput(setupComponentConfig, tallyComponentDecrypt, tallyComponentEch0110, allSelectedDecodedVotingOptions);
+			return new VerifyTallyFilesInput(setupComponentConfig, tallyComponentDecrypt, tallyComponentEch0110, tallyComponentEch0222,
+					allSelectedDecodedVotingOptions);
 		}
 	}
 

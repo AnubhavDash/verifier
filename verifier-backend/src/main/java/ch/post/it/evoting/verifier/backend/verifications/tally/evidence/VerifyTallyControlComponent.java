@@ -82,10 +82,11 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 		final Configuration electionEventConfiguration = extractionService.getSetupComponentConfig(inputDirectoryPath);
 		final Results tallyControlComponentDecryptions = extractionService.getTallyComponentDecrypt(inputDirectoryPath);
 		final Delivery tallyControlComponentResults = extractionService.getTallyComponentEch0110(inputDirectoryPath);
+		final ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222 = extractionService.getTallyComponentEch0222(inputDirectoryPath);
 
 		final VerifyTallyControlComponentInput input = new VerifyTallyControlComponentInput(electionEventContextPayload,
 				controlComponentShufflePayloads, tallyComponentShufflePayloads, tallyComponentVotesPayloads, electionEventConfiguration,
-				tallyControlComponentDecryptions, tallyControlComponentResults);
+				tallyControlComponentDecryptions, tallyControlComponentResults, tallyComponentEch0222);
 
 		final Map<String, Integer> numberOfSelectableVotingOptions = electionEventContextPayload.getElectionEventContext()
 				.verificationCardSetContexts().stream()

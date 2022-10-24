@@ -21,7 +21,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -99,9 +98,12 @@ public class VerifyMixDecOfflineAlgorithm {
 		final List<VerificationResult> shuffleVerif = new ArrayList<>();
 		final List<VerificationResult> decryptVerif = new ArrayList<>();
 
+		record Verifs(VerificationResult shuffleVerif, VerificationResult decryptVerif) {
+		}
+
 		// Operation
 		final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> EL_pk_1To4_prime = EL_pk_1To4.stream()
-				.map(EL_pk_j -> EL_pk_j.getKeyElements().subList(0, delta))
+				.map(EL_pk_j -> GroupVector.from(EL_pk_j.getKeyElements().subList(0, delta)))
 				.map(ElGamalMultiRecipientPublicKey::new)
 				.collect(GroupVector.toGroupVector());
 		final VerificationResult shuffleVerif_1 = mixnet.verifyShuffle(c_init_1, c_mix.get(0), pi_mix.get(0), EL_pk);
@@ -110,7 +112,7 @@ public class VerifyMixDecOfflineAlgorithm {
 		final VerificationResult decryptVerif_1 = zeroKnowledgeProof.verifyDecryptions(c_mix.get(0), EL_pk_1To4.get(0), cAndPi_dec.get(0), i_aux_1);
 		decryptVerif.add(decryptVerif_1);
 		// The specification uses 1 indexing, but we are bound to 0 indexing
-		for (int j = 1; j <= 3; j++) {
+		final List<Verifs> verifs = IntStream.rangeClosed(1, 3).parallel().mapToObj(j -> {
 			final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> publicKeysToCombine = Streams.concat(
 					IntStream.range(j, 4).mapToObj(EL_pk_1To4_prime::get), Stream.of(EB_pk)).collect(GroupVector.toGroupVector());
 			final ElGamalMultiRecipientPublicKey EL_pk_bar = elGamal.combinePublicKeys(publicKeysToCombine);
@@ -118,20 +120,20 @@ public class VerifyMixDecOfflineAlgorithm {
 			final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_mix_j = c_mix.get(j);
 			final ShuffleArgument pi_mix_j = pi_mix.get(j);
 			final VerificationResult shuffleVerif_j = mixnet.verifyShuffle(c_dec_j_minus_1, c_mix_j, pi_mix_j, EL_pk_bar);
-			shuffleVerif.add(shuffleVerif_j);
 			final List<String> i_aux_j = List.of(ee, bb, "MixDecOnline", integerToString(j + 1)); // 0-indexing
 			final ElGamalMultiRecipientPublicKey EL_pk_j = EL_pk_1To4.get(j);
 			final VerifiableDecryptions cAndPi_dec_j = cAndPi_dec.get(j);
 			final VerificationResult decryptVerif_j = zeroKnowledgeProof.verifyDecryptions(c_mix_j, EL_pk_j, cAndPi_dec_j, i_aux_j);
-			decryptVerif.add(decryptVerif_j);
-		}
+			return new Verifs(shuffleVerif_j, decryptVerif_j);
+		}).toList();
+
+		shuffleVerif.addAll(verifs.stream().map(Verifs::shuffleVerif).toList());
+		decryptVerif.addAll(verifs.stream().map(Verifs::decryptVerif).toList());
 
 		if (decryptVerif.stream().allMatch(VerificationResult::isVerified) && shuffleVerif.stream().allMatch(VerificationResult::isVerified)) {
 			return true;
 		} else {
-			decryptVerif.stream()
-					.filter(Predicate.not(VerificationResult::isVerified))
-					.forEach(verificationResult -> LOGGER.error(verificationResult.getErrorMessages().getFirst()));
+			decryptVerif.forEach(verificationResult -> LOGGER.error(verificationResult.getErrorMessages().getFirst()));
 			return false;
 		}
 	}

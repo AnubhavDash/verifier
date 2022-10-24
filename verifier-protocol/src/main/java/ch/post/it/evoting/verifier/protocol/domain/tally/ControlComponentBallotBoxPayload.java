@@ -29,8 +29,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -55,19 +53,12 @@ public class ControlComponentBallotBoxPayload implements SignedPayload {
 	private final List<EncryptedVerifiableVote> confirmedEncryptedVotes;
 	private CryptoPrimitivesSignature signature;
 
-	@JsonCreator
 	public ControlComponentBallotBoxPayload(
-			@JsonProperty("encryptionGroup")
 			final GqGroup encryptionGroup,
-			@JsonProperty("electionEventId")
 			final String electionEventId,
-			@JsonProperty("ballotBoxId")
 			final String ballotBoxId,
-			@JsonProperty("nodeId")
 			final int nodeId,
-			@JsonProperty("confirmedEncryptedVotes")
 			final List<EncryptedVerifiableVote> confirmedEncryptedVotes,
-			@JsonProperty("signature")
 			final CryptoPrimitivesSignature signature) {
 
 		this(encryptionGroup, electionEventId, ballotBoxId, nodeId, confirmedEncryptedVotes);

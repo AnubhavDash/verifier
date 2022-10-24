@@ -78,6 +78,7 @@ public class VerifyTallyControlComponentAlgorithm {
 		final Configuration electionEventConfiguration = input.getElectionEventConfiguration();
 		final Results tallyControlComponentDecryptions = input.getTallyControlComponentDecryptions();
 		final Delivery tallyControlComponentResults = input.getTallyControlComponentResults();
+		final ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222 = input.getTallyComponentEch0222();
 		final Map<String, List<List<String>>> allSelectedDecodedVotingOptions = input.getAllSelectedDecodedVotingOptions();
 
 		// Cross-checks.
@@ -133,6 +134,7 @@ public class VerifyTallyControlComponentAlgorithm {
 				.setupComponentConfig(electionEventConfiguration)
 				.setTallyComponentDecrypt(tallyControlComponentDecryptions)
 				.setTallyComponentEch0110(tallyControlComponentResults)
+				.setTallyComponentEch0222(tallyComponentEch0222)
 				.setAllSelectedDecodedVotingOptions(allSelectedDecodedVotingOptions)
 				.build();
 		final boolean tallyFilesVerif = verifyTallyFilesAlgorithm.verifyTallyFiles(ee, verifyTallyFilesInput);

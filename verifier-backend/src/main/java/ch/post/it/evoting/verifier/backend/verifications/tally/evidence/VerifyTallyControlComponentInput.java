@@ -47,6 +47,7 @@ import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
  * <li>Election Event Configuration, the configuration-anonymized as {@link Configuration}. Not null.</li>
  * <li>Tally Control Component Decryptions, the evoting-decrypt as {@link Results}. Not null.</li>
  * <li>Tally Control Component Results, the eCH-0110 as {@link Delivery}. Not null.</li>
+ * <li>Tally Control Component eCH-0222 as {@link ch.ech.xmlns.ech_0222._1.Delivery}. Not null.</li>
  * </ul>
  */
 public class VerifyTallyControlComponentInput {
@@ -60,6 +61,7 @@ public class VerifyTallyControlComponentInput {
 	private final Configuration electionEventConfiguration;
 	private final Results tallyControlComponentDecryptions;
 	private final Delivery tallyControlComponentResults;
+	private final ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222;
 
 	public VerifyTallyControlComponentInput(final ElectionEventContextPayload electionEventContextPayload,
 			final List<ControlComponentShufflePayload> controlComponentShufflePayloads,
@@ -67,7 +69,7 @@ public class VerifyTallyControlComponentInput {
 			final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads,
 			final Configuration electionEventConfiguration,
 			final Results tallyControlComponentDecryptions,
-			final Delivery tallyControlComponentResults) {
+			final Delivery tallyControlComponentResults, final ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222) {
 		this.lastOnlineControlComponentShuffles = List.copyOf(checkNotNull(controlComponentShufflePayloads)).stream()
 				.filter(controlComponentShufflePayload -> controlComponentShufflePayload.getNodeId() == ControlComponentConstants.NODE_IDS.last())
 				.sorted(Comparator.comparing(ControlComponentShufflePayload::getBallotBoxId))
@@ -83,6 +85,7 @@ public class VerifyTallyControlComponentInput {
 				.map(VerificationCardSetContext::ballotBoxId)
 				.sorted(String::compareTo)
 				.toList();
+		this.tallyComponentEch0222 = checkNotNull(tallyComponentEch0222);
 
 		final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloadMap = Map.copyOf(checkNotNull(tallyComponentVotesPayloads));
 		this.tallyControlComponentVotes = tallyComponentVotesPayloadMap.values().stream()
@@ -131,6 +134,10 @@ public class VerifyTallyControlComponentInput {
 
 	public Delivery getTallyControlComponentResults() {
 		return tallyControlComponentResults;
+	}
+
+	public ch.ech.xmlns.ech_0222._1.Delivery getTallyComponentEch0222() {
+		return tallyComponentEch0222;
 	}
 
 	public Map<String, List<List<String>>> getAllSelectedDecodedVotingOptions() {
