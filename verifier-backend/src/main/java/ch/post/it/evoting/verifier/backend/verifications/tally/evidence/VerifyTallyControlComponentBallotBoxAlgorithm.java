@@ -79,13 +79,14 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 		checkNotNull(input);
 
 		// Context.
-		final GqGroup encryptionGroup = context.encryptionGroup();
-		final String ee = context.electionEventId();
-		final String bb = context.ballotBoxId();
-		final ElGamalMultiRecipientPublicKey EB_pk = context.electoralBoardPublicKey();
-		final PrimesMappingTable pTable = context.primesMappingTable();
-		final int psi = context.numberOfSelectableVotingOptions();
-		final int delta_hat = context.numberOfAllowedWriteInsPlusOne();
+		final GqGroup encryptionGroup = context.getEncryptionGroup();
+		final String ee = context.getElectionEventId();
+		final String bb = context.getBallotBoxId();
+		final ElGamalMultiRecipientPublicKey EB_pk = context.getElectoralBoardPublicKey();
+		final PrimesMappingTable pTable = context.getPrimesMappingTable();
+		final GroupVector<PrimeGqElement, GqGroup> p_w_tilde = context.getWriteInVotingOptions();
+		final int psi = context.getNumberOfSelectableVotingOptions();
+		final int delta_hat = context.getNumberOfAllowedWriteInsPlusOne();
 
 		// Input.
 		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_dec_4 = input.getPreviousPartiallyDecryptedVotes();
@@ -95,6 +96,7 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 		final VerifiableDecryptions pi_dec_5 = input.getVerifiableDecryptions();
 		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> L_votes = input.getSelectedEncodedVotingOptions();
 		final List<List<String>> L_decodedVotes = input.getSelectedDecodedVotingOptions();
+		final List<List<String>> L_writeIns = input.getSelectedDecodedWriteInVotes();
 
 		// Cross-checks.
 		checkArgument(encryptionGroup.equals(c_dec_4.getGroup()), "The context and input should have the same encryption group.");
@@ -134,7 +136,17 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 			LOGGER.error("The decryption proofs are invalid. [ee: {}, bb: {}, errorMessage: {}]", ee, bb, decryptVerif.getErrorMessages().getFirst());
 		}
 
-		final boolean processVerif = verifyProcessPlaintextsAlgorithm.verifyProcessPlaintexts(pTable, m, psi, delta_hat, L_votes, L_decodedVotes);
+		final boolean processVerif = verifyProcessPlaintextsAlgorithm.verifyProcessPlaintexts(encryptionGroup,
+				new VerifyProcessPlaintextsInput.Builder()
+						.setPrimesMappingTable(pTable)
+						.setPlaintextVotes(m)
+						.setWriteInVotingOptions(p_w_tilde)
+						.setNumberOfSelectableVotingOptions(psi)
+						.setNumberOfAllowedWriteInsPlusOne(delta_hat)
+						.setSelectedEncodedVotingOptions(L_votes)
+						.setSelectedDecodedVotingOptions(L_decodedVotes)
+						.setSelectedDecodedWriteInVotes(L_writeIns)
+						.build());
 		if (!processVerif) {
 			LOGGER.error("The process plaintexts verification failed. [ee: {}, bb: {}]", ee, bb);
 		}

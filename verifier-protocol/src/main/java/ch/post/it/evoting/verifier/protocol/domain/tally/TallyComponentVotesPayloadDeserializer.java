@@ -60,8 +60,15 @@ public class TallyComponentVotesPayloadDeserializer extends JsonDeserializer<Tal
 				.map(Stream::toList)
 				.toList();
 
+		final List<List<String>> decodedWriteInVotes = Arrays.stream(mapper.reader()
+						.readValue(node.get("decodedWriteInVotes"), String[][].class))
+				.map(Arrays::stream)
+				.map(Stream::toList)
+				.toList();
+
 		final CryptoPrimitivesSignature signature = mapper.readValue(node.get("signature").toString(), CryptoPrimitivesSignature.class);
 
-		return new TallyComponentVotesPayload(electionEventId, ballotId, ballotBoxId, encryptionGroup, votes, actualSelectedVotingOptions, signature);
+		return new TallyComponentVotesPayload(electionEventId, ballotId, ballotBoxId, encryptionGroup, votes, actualSelectedVotingOptions,
+				decodedWriteInVotes, signature);
 	}
 }

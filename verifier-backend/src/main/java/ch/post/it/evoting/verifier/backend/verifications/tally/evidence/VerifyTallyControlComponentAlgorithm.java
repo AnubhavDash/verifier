@@ -18,6 +18,7 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -59,13 +60,15 @@ public class VerifyTallyControlComponentAlgorithm {
 	 *
 	 * @param input                           the input for the VerifyTallyControlComponent algorithm. Not null.
 	 * @param numberOfSelectableVotingOptions the number of selectable voting options grouped by ballot box id.
+	 * @param writeInVotingOptions            the write-in voting options grouped by ballot box id.
 	 * @return true if the operations are valid for all ballot boxes, false otherwise.
 	 */
 	@SuppressWarnings("java:S117")
 	public boolean verifyTallyControlComponent(final VerifyTallyControlComponentInput input,
-			final Map<String, Integer> numberOfSelectableVotingOptions) {
+			final Map<String, Integer> numberOfSelectableVotingOptions, final Map<String, List<BigInteger>> writeInVotingOptions) {
 		checkNotNull(input);
 		checkNotNull(numberOfSelectableVotingOptions);
+		checkNotNull(writeInVotingOptions);
 
 		// Input.
 		final GqGroup encryptionGroup = input.getEncryptionGroup();
@@ -97,9 +100,19 @@ public class VerifyTallyControlComponentAlgorithm {
 					final VerificationCardSetContext verificationCardSetContext = electionEventContext.verificationCardSetContexts().stream()
 							.filter(vcsContext -> vcsContext.ballotBoxId().equals(bb_i))
 							.collect(MoreCollectors.onlyElement());
-					final VerifyTallyControlComponentBallotBoxContext context_bb_i = new VerifyTallyControlComponentBallotBoxContext(encryptionGroup,
-							ee, bb_i, electionEventContext.electoralBoardPublicKey(), verificationCardSetContext.primesMappingTable(),
-							numberOfSelectableVotingOptions.get(bb_i), verificationCardSetContext.numberOfWriteInFields() + 1);
+					final GroupVector<PrimeGqElement, GqGroup> writeInVotingOptions_bb_i = writeInVotingOptions.get(bb_i).stream()
+							.map(option -> PrimeGqElement.PrimeGqElementFactory.fromValue(option.intValue(), encryptionGroup))
+							.collect(GroupVector.toGroupVector());
+					final VerifyTallyControlComponentBallotBoxContext context_bb_i = new VerifyTallyControlComponentBallotBoxContext.Builder()
+							.setEncryptionGroup(encryptionGroup)
+							.setElectionEventId(ee)
+							.setBallotBoxId(bb_i)
+							.setElectoralBoardPublicKey(electionEventContext.electoralBoardPublicKey())
+							.setPrimesMappingTable(verificationCardSetContext.primesMappingTable())
+							.setWriteInVotingOptions(writeInVotingOptions_bb_i)
+							.setNumberOfSelectableVotingOptions(numberOfSelectableVotingOptions.get(bb_i))
+							.setNumberOfAllowedWriteInsPlusOne(verificationCardSetContext.numberOfWriteInFields() + 1)
+							.build();
 
 					final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_dec_4 = lastOnlineControlComponentShuffles.get(i)
 							.getVerifiableDecryptions()
@@ -116,10 +129,12 @@ public class VerifyTallyControlComponentAlgorithm {
 									.collect(GroupVector.toGroupVector()))
 							.collect(GroupVector.toGroupVector());
 					final List<List<String>> L_decodedVotes = tallyControlComponentVote.getActualSelectedVotingOptions();
+					final List<List<String>> L_writeIns = tallyControlComponentVote.getDecodedWriteInVotes();
 
 					final VerifyTallyControlComponentBallotBoxInput input_bb_i = new VerifyTallyControlComponentBallotBoxInput.Builder()
 							.setSelectedEncodedVotingOptions(L_votes)
 							.setSelectedDecodedVotingOptions(L_decodedVotes)
+							.setSelectedDecodedWriteInVotes(L_writeIns)
 							.setPreviousPartiallyDecryptedVotes(c_dec_4)
 							.setVerifiableShuffle(c_mix_5_pi_mix_5)
 							.setVerifiablePlaintextDecryption(m_pi_dec_5)
