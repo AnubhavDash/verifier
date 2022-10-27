@@ -40,6 +40,7 @@ All verifications performed in the verifier are listed in the table below:
 | Tally | Authenticity | 203 | VerifySignatureTallyComponentVotes                |
 | Tally | Authenticity | 204 | VerifySignatureTallyComponentDecrypt              |
 | Tally | Authenticity | 205 | VerifySignatureTallyComponentEch0110              |
+| Tally | Authenticity | 206 | VerifySignatureTallyComponentEch0222              |
 | Tally | Consistency  | 300 | VerifyConfirmedEncryptedVotesConsistency          |
 | Tally | Consistency  | 301 | VerifyCiphertextsConsistency                      |
 | Tally | Consistency  | 302 | VerifyPlaintextsConsistency                       |

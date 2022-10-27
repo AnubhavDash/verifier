@@ -22,7 +22,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -34,9 +33,12 @@ import ch.post.it.evoting.cryptoprimitives.domain.validations.FailedValidationEx
 import ch.post.it.evoting.cryptoprimitives.hashing.Hash;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.verifier.backend.hashable.HashableEch0110Factory;
+import ch.post.it.evoting.verifier.backend.hashable.HashableEch0222Factory;
 import ch.post.it.evoting.verifier.backend.hashable.HashableResultsFactory;
-import ch.post.it.evoting.verifier.backend.tools.ContestResultsMapper;
 import ch.post.it.evoting.verifier.backend.tools.DeliveryMapper;
+import ch.post.it.evoting.verifier.backend.tools.RawDataDeliveryMapper;
+import ch.post.it.evoting.verifier.backend.tools.ResultDeliveryMapper;
+import ch.post.it.evoting.verifier.protocol.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
 import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 
@@ -50,10 +52,10 @@ public class VerifyTallyFilesAlgorithm {
 	}
 
 	/**
-	 * Verifies the correctness of the evoting-decrypt and eCH-0110 files.
+	 * Verifies the correctness of the evoting-decrypt, eCH-0110 and eCH-0222 files.
 	 *
 	 * @param electionEventId the associated election event id.
-	 * @param input           the {@link VerifyTallyFilesInput} containing the configuration, evoting-decrypt and eCH-0110 files.
+	 * @param input           the {@link VerifyTallyFilesInput} containing the configuration, evoting-decrypt, eCH-0110 and eCH-0222 files.
 	 * @return {@code true} if the files are correct, {@code false} otherwise.
 	 * @throws NullPointerException      if any input parameter is null.
 	 * @throws FailedValidationException if {@code electionEventId} is invalid.
@@ -70,31 +72,43 @@ public class VerifyTallyFilesAlgorithm {
 		final Configuration configurationXML = input.getSetupComponentConfig();
 		final Results evotingDecryptXML = input.getTallyComponentDecrypt();
 		final Delivery eCH0110XML = input.getTallyComponentEch0110();
-		final Map<String, List<List<String>>> L_decodedVotes_bb = input.getAllSelectedDecodedVotingOptions();
+		final ch.ech.xmlns.ech_0222._1.Delivery eCH0222XML = input.getTallyComponentEch0222();
+		final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads = input.getTallyComponentVotesPayloads();
 
-		checkArgument(L_decodedVotes_bb.values().stream()
+		checkArgument(tallyComponentVotesPayloads.values().stream()
+						.map(TallyComponentVotesPayload::getActualSelectedVotingOptions)
 						.flatMap(Collection::stream)
-						.flatMap(Collection::stream).allMatch(v -> VALID_XML_TOKEN_PATTERN.matcher(v).matches()),
+						.flatMap(Collection::stream)
+						.allMatch(v -> VALID_XML_TOKEN_PATTERN.matcher(v).matches()),
 				"Voting options should match a valid xml xs:token");
 
 		// Operation.
-		final Results evotingDecryptXML_prime = ContestResultsMapper.toResults(configurationXML, L_decodedVotes_bb);
-		final Delivery eCH0110XML_prime = DeliveryMapper.INSTANCE.map(ee, configurationXML, evotingDecryptXML_prime);
+		final Results evotingDecryptXML_prime = ResultDeliveryMapper.toResults(configurationXML, tallyComponentVotesPayloads);
+		final Delivery eCH0110XML_prime = DeliveryMapper.INSTANCE.map(ee, configurationXML, evotingDecryptXML);
+		final ch.ech.xmlns.ech_0222._1.Delivery eCH0222XML_prime = RawDataDeliveryMapper.createECH0222(ee, configurationXML, evotingDecryptXML);
 
 		// Ignore timestamp fields (use original timestamps in re-generated files).
-		final XMLGregorianCalendar originalMessageDate = eCH0110XML.getDeliveryHeader().getMessageDate();
-		eCH0110XML_prime.getDeliveryHeader().withMessageDate(originalMessageDate);
-		final XMLGregorianCalendar originalCreationDateTime = eCH0110XML.getResultDelivery().getReportingBody().getCreationDateTime();
-		eCH0110XML_prime.getResultDelivery().getReportingBody().withCreationDateTime(originalCreationDateTime);
+		final XMLGregorianCalendar eCH0110OriginalMessageDate = eCH0110XML.getDeliveryHeader().getMessageDate();
+		eCH0110XML_prime.getDeliveryHeader().withMessageDate(eCH0110OriginalMessageDate);
+		final XMLGregorianCalendar eCH0110OriginalCreationDateTime = eCH0110XML.getResultDelivery().getReportingBody().getCreationDateTime();
+		eCH0110XML_prime.getResultDelivery().getReportingBody().withCreationDateTime(eCH0110OriginalCreationDateTime);
+
+		final XMLGregorianCalendar eCH0222OriginalMessageDate = eCH0222XML.getDeliveryHeader().getMessageDate();
+		eCH0222XML_prime.getDeliveryHeader().withMessageDate(eCH0222OriginalMessageDate);
+		final XMLGregorianCalendar eCH0222OriginalCreationDateTime = eCH0222XML.getRawDataDelivery().getReportingBody().getCreationDateTime();
+		eCH0222XML_prime.getRawDataDelivery().getReportingBody().withCreationDateTime(eCH0222OriginalCreationDateTime);
 
 		// Compare hash of fields.
 		final Hashable hashableEvotingDecryptXML = HashableResultsFactory.fromResults(evotingDecryptXML);
 		final Hashable hashableEvotingDecryptXML_prime = HashableResultsFactory.fromResults(evotingDecryptXML_prime);
-		final Hashable hashableECH110XML = HashableEch0110Factory.fromDelivery(eCH0110XML);
-		final Hashable hashableECH110XML_prime = HashableEch0110Factory.fromDelivery(eCH0110XML_prime);
+		final Hashable hashableECH0110XML = HashableEch0110Factory.fromDelivery(eCH0110XML);
+		final Hashable hashableECH0110XML_prime = HashableEch0110Factory.fromDelivery(eCH0110XML_prime);
+		final Hashable hashableECH0222XML = HashableEch0222Factory.fromDelivery(eCH0222XML);
+		final Hashable hashableECH0222XML_prime = HashableEch0222Factory.fromDelivery(eCH0222XML_prime);
 
 		return Arrays.equals(hash.recursiveHash(hashableEvotingDecryptXML), hash.recursiveHash(hashableEvotingDecryptXML_prime))
-				&& Arrays.equals(hash.recursiveHash(hashableECH110XML), hash.recursiveHash(hashableECH110XML_prime));
+				&& Arrays.equals(hash.recursiveHash(hashableECH0110XML), hash.recursiveHash(hashableECH0110XML_prime))
+				&& Arrays.equals(hash.recursiveHash(hashableECH0222XML), hash.recursiveHash(hashableECH0222XML_prime));
 	}
 
 }

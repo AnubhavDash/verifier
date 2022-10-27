@@ -44,8 +44,10 @@ public class TranslationHelper {
 		Map<Language, String> result = new EnumMap<>(Language.class);
 		Arrays.stream(Language.values())
 				.forEach(lang -> {
-					formatter.applyPattern(getFromResourceBundle(resourceBundleName, key, lang.getLocale()));
-					result.put(lang, formatter.format(args));
+					synchronized (formatter) {
+						formatter.applyPattern(getFromResourceBundle(resourceBundleName, key, lang.getLocale()));
+						result.put(lang, formatter.format(args));
+					}
 				});
 		return result;
 	}

@@ -20,24 +20,15 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
-
-import lombok.SneakyThrows;
 
 class VerifyChunkConsistencyTest extends SetupVerificationTest {
 
@@ -55,32 +46,12 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 		assertEquals(expectedResult, verificationResult);
 	}
 
-	@ParameterizedTest
-	@MethodSource("invalidChunkIdConsistencyProvider")
-	@DisplayName("invalid chunk ID in control component code shares are detected")
-	@SneakyThrows
-	void invalidChunkIdConsistency(final String path) {
-		final Path inputDirectory = Paths.get(getClass().getResource(path).toURI());
-		final VerificationResult result = verification.verify(inputDirectory);
-
-		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification314.nok.message"));
-		assertEquals(expectedResult, result);
-	}
-
-	static Stream<Arguments> invalidChunkIdConsistencyProvider() {
-		return Stream.of(
-				Arguments.of("/setup/VerifyChunkConsistencyTest/chunking-control-component-code-shares-invalid-ids"),
-				Arguments.of("/setup/VerifyChunkConsistencyTest/chunking-setup-component-verification-data-invalid-ids"),
-				Arguments.of("/setup/VerifyChunkConsistencyTest/chunking-invalid-monotony")
-		);
-	}
-
 	@Test
 	@DisplayName("validate the monotony check algorithm pass with happy path")
 	void monotonyCheckWorkWithHappyPath() {
 		// given
-		final var verifyChunkConsistency = new VerifyChunkConsistency(pathService, applicationEventPublisherMock, electionDataExtractionService);
+		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, applicationEventPublisherMock,
+				electionDataExtractionService);
 		final List<List<Path>> payloadsPerCardSet = List.of(
 				List.of(
 						Path.of("/root/dir/controlComponentPublicKeysPayload.0.json"),
@@ -106,7 +77,8 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 	@DisplayName("validate the monotony check algorithm detect missing index")
 	void monotonyCheckDetectMissingIndex() {
 		// given
-		final var verifyChunkConsistency = new VerifyChunkConsistency(pathService, applicationEventPublisherMock, electionDataExtractionService);
+		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, applicationEventPublisherMock,
+				electionDataExtractionService);
 		final List<List<Path>> payloadsPerCardSet = List.of(
 				List.of(
 						Path.of("/root/dir/controlComponentPublicKeysPayload.0.json"),
@@ -126,7 +98,8 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 	@DisplayName("validate the monotony check algorithm detect duplicated index")
 	void monotonyCheckDetectDuplicatedIndex() {
 		// given
-		final var verifyChunkConsistency = new VerifyChunkConsistency(pathService, applicationEventPublisherMock, electionDataExtractionService);
+		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, applicationEventPublisherMock,
+				electionDataExtractionService);
 		final List<List<Path>> payloadsPerCardSet = List.of(
 				List.of(
 						Path.of("/root/dir/controlComponentPublicKeysPayload.0.json"),
@@ -147,7 +120,8 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 	@DisplayName("validate the monotony check algorithm detect illegal start of index")
 	void monotonyCheckDetectIllegalStartOfIndex() {
 		// given
-		final var verifyChunkConsistency = new VerifyChunkConsistency(pathService, applicationEventPublisherMock, electionDataExtractionService);
+		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, applicationEventPublisherMock,
+				electionDataExtractionService);
 		final List<List<Path>> payloadsPerCardSet = List.of(
 				List.of(
 						Path.of("/root/dir/controlComponentPublicKeysPayload.1.json"),
@@ -167,7 +141,8 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 	@DisplayName("validate the monotony check algorithm fails if any sequence is wrong")
 	void monotonyCheckPriorityToFailing() {
 		// given
-		final var verifyChunkConsistency = new VerifyChunkConsistency(pathService, applicationEventPublisherMock, electionDataExtractionService);
+		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, applicationEventPublisherMock,
+				electionDataExtractionService);
 		final List<List<Path>> payloadsPerCardSet = List.of(
 				List.of(
 						Path.of("/root/dir/controlComponentPublicKeysPayload.0.json"),
@@ -190,7 +165,8 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 	@DisplayName("validate the monotony check algorithm pass if nothing to check")
 	void monotonyCheckEmptyListIsValid() {
 		// given
-		final var verifyChunkConsistency = new VerifyChunkConsistency(pathService, applicationEventPublisherMock, electionDataExtractionService);
+		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, applicationEventPublisherMock,
+				electionDataExtractionService);
 		final List<List<Path>> payloadsPerCardSet = Collections.emptyList();
 
 		// when

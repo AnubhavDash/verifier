@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.List;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import com.google.common.base.Preconditions;
@@ -36,6 +37,20 @@ import ch.post.it.evoting.cryptoprimitives.mixnet.VerifiableShuffle;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.DecryptionProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.VerifiableDecryptions;
 
+/**
+ * Regroups the input values needed by the VerifyTallyControlComponentBallotBox algorithm.
+ *
+ * <ul>
+ * <li>c<sub>dec, 4</sub>, the last online control component’s partially decrypted votes. Non-null.</li>
+ * <li>c<sub>mix, 5</sub>, the tally component’s shuffled votes. Non-null.</li>
+ * <li>pi<sub>mix, 5</sub>, the tally component’s shuffle proofs. Non-null.</li>
+ * <li>m, the decrypted votes. Non-null.</li>
+ * <li>pi<sub>dec, 5</sub>, the decryption proofs. Non-null.</li>
+ * <li>L<sub>votes</sub>, the list of all selected encoded voting options. Non-null.</li>
+ * <li>L<sub>decodedVotes</sub>, the list of all selected decoded voting options. Non-null.</li>
+ * <li>L<sub>writeIns</sub>, the list of all selected decoded write-in votes. Non-null.</li>
+ * </ul>
+ */
 public class VerifyTallyControlComponentBallotBoxInput {
 
 	private final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> previousPartiallyDecryptedVotes;
@@ -43,16 +58,18 @@ public class VerifyTallyControlComponentBallotBoxInput {
 	private final VerifiablePlaintextDecryption verifiablePlaintextDecryption;
 	private final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> selectedEncodedVotingOptions;
 	private final List<List<String>> selectedDecodedVotingOptions;
+	private final List<List<String>> selectedDecodedWriteInVotes;
 
 	private VerifyTallyControlComponentBallotBoxInput(final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> previousPartiallyDecryptedVotes,
 			final VerifiableShuffle verifiableShuffle, final VerifiablePlaintextDecryption verifiablePlaintextDecryption,
 			final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> selectedEncodedVotingOptions,
-			final List<List<String>> selectedDecodedVotingOptions) {
+			final List<List<String>> selectedDecodedVotingOptions, final List<List<String>> selectedDecodedWriteInVotes) {
 		this.previousPartiallyDecryptedVotes = previousPartiallyDecryptedVotes;
 		this.verifiableShuffle = verifiableShuffle;
 		this.verifiablePlaintextDecryption = verifiablePlaintextDecryption;
 		this.selectedEncodedVotingOptions = selectedEncodedVotingOptions;
 		this.selectedDecodedVotingOptions = selectedDecodedVotingOptions;
+		this.selectedDecodedWriteInVotes = selectedDecodedWriteInVotes;
 	}
 
 	public GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> getPreviousPartiallyDecryptedVotes() {
@@ -72,10 +89,10 @@ public class VerifyTallyControlComponentBallotBoxInput {
 	}
 
 	public VerifiableDecryptions getVerifiableDecryptions() {
-		final GqGroup group = verifiablePlaintextDecryption.getGroup();
 		final GroupVector<ElGamalMultiRecipientMessage, GqGroup> decryptedVotes = verifiablePlaintextDecryption.getDecryptedVotes();
-		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> ciphertexts = decryptedVotes.stream()
-				.map(vote -> ElGamalMultiRecipientCiphertext.create(group.getIdentity(), vote.getElements()))
+		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> ciphertexts = IntStream.range(0, decryptedVotes.size())
+				.mapToObj(i -> ElGamalMultiRecipientCiphertext.create(verifiableShuffle.shuffledCiphertexts().get(i).getGamma(),
+						decryptedVotes.get(i).getElements()))
 				.collect(GroupVector.toGroupVector());
 		final GroupVector<DecryptionProof, ZqGroup> decryptionProofs = verifiablePlaintextDecryption.getDecryptionProofs();
 
@@ -87,7 +104,15 @@ public class VerifyTallyControlComponentBallotBoxInput {
 	}
 
 	public List<List<String>> getSelectedDecodedVotingOptions() {
-		return selectedDecodedVotingOptions;
+		return selectedDecodedVotingOptions.stream()
+				.map(List::copyOf)
+				.toList();
+	}
+
+	public List<List<String>> getSelectedDecodedWriteInVotes() {
+		return selectedDecodedWriteInVotes.stream()
+				.map(List::copyOf)
+				.toList();
 	}
 
 	public static class Builder {
@@ -96,6 +121,7 @@ public class VerifyTallyControlComponentBallotBoxInput {
 		private VerifiablePlaintextDecryption verifiablePlaintextDecryption;
 		private GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> selectedEncodedVotingOptions;
 		private List<List<String>> selectedDecodedVotingOptions;
+		private List<List<String>> selectedDecodedWriteInVotes;
 
 		public Builder setPreviousPartiallyDecryptedVotes(
 				final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> previousPartiallyDecryptedVotes) {
@@ -130,23 +156,47 @@ public class VerifyTallyControlComponentBallotBoxInput {
 			return this;
 		}
 
+		public Builder setSelectedDecodedWriteInVotes(final List<List<String>> selectedDecodedWriteInVotes) {
+			checkNotNull(selectedDecodedWriteInVotes);
+			final List<List<String>> selectedDecodedWriteInVotesCopy = List.copyOf(selectedDecodedWriteInVotes);
+			selectedDecodedWriteInVotesCopy.forEach(Preconditions::checkNotNull);
+
+			this.selectedDecodedWriteInVotes = selectedDecodedWriteInVotesCopy.stream()
+					.map(List::copyOf)
+					.toList();
+			return this;
+		}
+
+		/**
+		 * @throws NullPointerException     if any parameter is null.
+		 * @throws IllegalArgumentException if
+		 *                                  <ul>
+		 *                                      <li>not all input have the same group.</li>
+		 *                                      <li>there is a different number of selected encoded and decoded voting options.</li>
+		 *                                      <li>there is a different number of selected write-in votes and selected encoded voting options.</li>
+		 *                                      <li>not all input have the same size.</li>
+		 *                                      <li>not all input have the same number of elements.</li>
+		 *                                  </ul>
+		 */
 		public VerifyTallyControlComponentBallotBoxInput build() {
 			checkNotNull(previousPartiallyDecryptedVotes);
 			checkNotNull(verifiableShuffle);
 			checkNotNull(verifiablePlaintextDecryption);
 			checkNotNull(selectedEncodedVotingOptions);
 			checkNotNull(selectedDecodedVotingOptions);
+			checkNotNull(selectedDecodedWriteInVotes);
 
-			checkArgument(allEqual(Stream.of(previousPartiallyDecryptedVotes, verifiableShuffle.shuffledCiphertexts()), GroupVector::getGroup),
+			checkArgument(allEqual(Stream.of(previousPartiallyDecryptedVotes, verifiableShuffle.shuffledCiphertexts(),
+							verifiablePlaintextDecryption.getDecryptedVotes()), GroupVector::getGroup),
 					"All input must have the same group.");
-			checkArgument(verifiablePlaintextDecryption.getGroup().equals(previousPartiallyDecryptedVotes.getGroup()));
-
-			checkArgument(selectedEncodedVotingOptions.size() == selectedDecodedVotingOptions.size(),
-					"There must be as many encoded as decoded voting options.");
-
 			if (!selectedEncodedVotingOptions.isEmpty()) {
 				checkArgument(verifiablePlaintextDecryption.getGroup().equals(selectedEncodedVotingOptions.getGroup()));
 			}
+
+			checkArgument(selectedEncodedVotingOptions.size() == selectedDecodedVotingOptions.size(),
+					"There must be as many encoded as decoded voting options.");
+			checkArgument(selectedDecodedWriteInVotes.size() == selectedEncodedVotingOptions.size(),
+					"There must be as many decoded write-in votes as encoded voting options.");
 
 			checkArgument(allEqual(Stream.of(previousPartiallyDecryptedVotes, verifiableShuffle.shuffledCiphertexts(),
 							verifiablePlaintextDecryption.getDecryptedVotes(), verifiablePlaintextDecryption.getDecryptionProofs()), GroupVector::size),
@@ -157,7 +207,7 @@ public class VerifyTallyControlComponentBallotBoxInput {
 					GroupVector::getElementSize), "All input must have the same number of elements.");
 
 			return new VerifyTallyControlComponentBallotBoxInput(previousPartiallyDecryptedVotes, verifiableShuffle, verifiablePlaintextDecryption,
-					selectedEncodedVotingOptions, selectedDecodedVotingOptions);
+					selectedEncodedVotingOptions, selectedDecodedVotingOptions, selectedDecodedWriteInVotes);
 		}
 	}
 }

@@ -44,13 +44,14 @@ import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.verifier.backend.hashable.HashableEch0110Factory;
 import ch.post.it.evoting.verifier.backend.tools.XmlFileRepository;
+import ch.post.it.evoting.verifier.backend.tools.XsdConstants;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
 import ch.post.it.evoting.verifier.protocol.domain.ChannelSecurityContextData;
 
 class VerifySignatureTallyComponentEch0110Test extends TallyVerificationTest {
 
 	private final XmlFileRepository<Delivery> xmlFileRepository = new XmlFileRepository<>();
-	private final String schemaResourceName = "xsd/eCH-0110-4-0.xsd";
+	private final String schemaResourceName = XsdConstants.TALLY_COMPONENT_ECH_0110;
 
 	@BeforeEach
 	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
