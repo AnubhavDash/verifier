@@ -25,7 +25,7 @@
 		<crypto-primitives-version>1.0.0.4</crypto-primitives-version>
 		<crypto-primitives-domain.version>1.0.0.4</crypto-primitives-domain.version>
 		<guava.version>31.1-jre</guava.version>
-		<jackson.version>2.13.4</jackson.version>
+		<jackson.version>2.13.4.20221013</jackson.version>
 		<jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
 		<jakarta.xml.bind-api.version>4.0.0</jakarta.xml.bind-api.version>
 		<javax.xml.bind.version>2.3.1</javax.xml.bind.version>
