@@ -48,16 +48,14 @@ public class IntegerToWriteInAlgorithm {
 		final BigInteger a = BigInteger.valueOf(WRITE_IN_ALPHABET.size());
 
 		// Operation.
-		final LinkedList<char[]> s = new LinkedList<>();
+		final LinkedList<String> s = new LinkedList<>();
 		while (x.compareTo(BigInteger.ZERO) > 0) {
 			final BigInteger b = x.mod(a);
-			final char[] c = WRITE_IN_ALPHABET.get(b.intValueExact());
+			final String c = WRITE_IN_ALPHABET.get(b.intValueExact());
 			s.add(0, c);
 			x = x.subtract(b).divide(a);
 		}
 
-		return s.stream()
-				.map(String::valueOf)
-				.collect(Collectors.joining());
+		return String.join("", s);
 	}
 }

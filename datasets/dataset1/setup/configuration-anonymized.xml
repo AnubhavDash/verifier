@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <configuration xmlns="http://www.evoting.ch/xmlns/config/4">
 	<header>
-		<fileDate>2022-08-04T10:37:33.369+02:00</fileDate>
+		<fileDate>2022-10-20T18:20:49.695+02:00</fileDate>
 		<voterTotal>40</voterTotal>
 	</header>
 	<contest>
@@ -65,7 +65,7 @@
 					</electionDescriptionInfo>
 				</electionDescription>
 				<numberOfMandates>1</numberOfMandates>
-				<writeInsAllowed>false</writeInsAllowed>
+				<writeInsAllowed>true</writeInsAllowed>
 				<candidateAccumulation>1</candidateAccumulation>
 				<minimalCandidateSelectionInList>1</minimalCandidateSelectionInList>
 				<uiProperties>
@@ -1324,6 +1324,6 @@
 		</voter>
 	</register>
 	<signature>
-		wAImWL+724NOsyJeT29xMJieE404lruFt0L24QkehCHDx+57t+9sKCXUGPz4iZ7t5PVr9QEzOOf41ZWU3h0JQSBFa93yVAqQY/LI3jJncrkCBGoBxEFrdgb03oKfhbRCbv/0RtrTkBZgzJ8pvQGrphCTg63VTIeCqrwc1CEPiHTLc6T5ffQ2iVOxlEh07O4oVHA90rDk9pbGeV6QPfM+brSa9jb8aomeFqsHKCvIdByGvhJOExMVPjn9Lh2jXBA/2c2HKg/DdtvLgG3Ukax75hYLBY5hi+9/du3NtKszFBHS7m53tsPpWtUWBY21dKgZzsp1zyuy/hGufDeYxxxr95OwvgXA6MlBMNqXXrWY6XwvrYcYl24LegxTWA63tycFmZ7PhtA9mIXVgAIYnLZ2UlWKg9HeP8F8FKeHyBEjLE5gY/m3TWgqeMaanSH4XpxYegw4YGo7xSkGt0BWhhw12lQfovNcm3YPDL03aoJlowsrK7VzUXs0ccJN3gzGXfB3
+		mY1gKGP1opqBy8hmj3zGB0aqn+GoqcJVeWnFroHaAg9yk4X+F386RW3vabI4/VX+7811csWjLWoVxuZtJrLPeXOUIbxVIigkrt4e119Enp3oOqJpxVBKgK8MkbMkvhU7e5/vKBFjiJOqvrm4jSxD/QcIfivXO0wm4j52UdG3XUu2M4bFB+CC4NS7wNJ9nzhF34f/didyKnw3/XmMut3YqlMZ7mGr0z6bLhviuzeADCYPkVeGyxe3/XBpk35guPNLYfLouH7H0mMydPyMiZeUIm4OrcdKwjJNYmCCRSegq3DYGlxqwmjstosLOeEYgJg+iiw+0P9tsnMr/Zuy7PwSzoIBnudrTzhGQIVdFjHIpKMca3iHiAhjgrLFPH7r2CuOl5iZtWsd5gr/O0IlB3zsuqh/x5eMdJ5Mdi2uFHjDs5RyNaagnXsAjjV4BEl8w2BDozKBIGuYjNCz4B9iaN9Jpy5Oaym2TBghChH/9VU9o/C0xQ45EBInvMAj6jIKEdSl
 	</signature>
 </configuration>

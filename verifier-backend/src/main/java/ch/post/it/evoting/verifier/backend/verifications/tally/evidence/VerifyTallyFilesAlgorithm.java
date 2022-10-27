@@ -22,7 +22,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -39,6 +38,7 @@ import ch.post.it.evoting.verifier.backend.hashable.HashableResultsFactory;
 import ch.post.it.evoting.verifier.backend.tools.DeliveryMapper;
 import ch.post.it.evoting.verifier.backend.tools.RawDataDeliveryMapper;
 import ch.post.it.evoting.verifier.backend.tools.ResultDeliveryMapper;
+import ch.post.it.evoting.verifier.protocol.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
 import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 
@@ -73,16 +73,17 @@ public class VerifyTallyFilesAlgorithm {
 		final Results evotingDecryptXML = input.getTallyComponentDecrypt();
 		final Delivery eCH0110XML = input.getTallyComponentEch0110();
 		final ch.ech.xmlns.ech_0222._1.Delivery eCH0222XML = input.getTallyComponentEch0222();
-		final Map<String, List<List<String>>> L_decodedVotes_bb = input.getAllSelectedDecodedVotingOptions();
+		final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads = input.getTallyComponentVotesPayloads();
 
-		checkArgument(L_decodedVotes_bb.values().stream()
+		checkArgument(tallyComponentVotesPayloads.values().stream()
+						.map(TallyComponentVotesPayload::getActualSelectedVotingOptions)
 						.flatMap(Collection::stream)
 						.flatMap(Collection::stream)
 						.allMatch(v -> VALID_XML_TOKEN_PATTERN.matcher(v).matches()),
 				"Voting options should match a valid xml xs:token");
 
 		// Operation.
-		final Results evotingDecryptXML_prime = ResultDeliveryMapper.toResults(configurationXML, L_decodedVotes_bb);
+		final Results evotingDecryptXML_prime = ResultDeliveryMapper.toResults(configurationXML, tallyComponentVotesPayloads);
 		final Delivery eCH0110XML_prime = DeliveryMapper.INSTANCE.map(ee, configurationXML, evotingDecryptXML);
 		final ch.ech.xmlns.ech_0222._1.Delivery eCH0222XML_prime = RawDataDeliveryMapper.createECH0222(ee, configurationXML, evotingDecryptXML);
 

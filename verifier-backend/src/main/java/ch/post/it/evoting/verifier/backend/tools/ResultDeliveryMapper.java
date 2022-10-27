@@ -26,11 +26,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import com.google.common.collect.MoreCollectors;
 import com.google.common.collect.Streams;
 
+import ch.post.it.evoting.verifier.protocol.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.BallotType;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.CandidateType;
@@ -63,42 +65,43 @@ public class ResultDeliveryMapper {
 	}
 
 	/**
-	 * Returns the contest results tally output.
+	 * Returns the tally component decrypt output.
 	 *
-	 * @param configuration                                       the configuration of the event.
-	 * @param authorizationAliasToSelectedDecodedVotingOptionsMap a map with the authorization alias as key, and the related selected decoded voting
-	 *                                                            options.
+	 * @param configuration                                     the configuration of the event.
+	 * @param authorizationAliasToTallyComponentVotesPayloadMap a map with the authorization alias as key, and the related tally component votes
+	 *                                                          payload as value.
 	 * @return the results built with the inputs.
 	 * @throws NullPointerException     if any input is null.
 	 * @throws IllegalArgumentException if the input map does not contain exactly one entry per authorization.
 	 */
 	public static Results toResults(final Configuration configuration,
-			final Map<String, List<List<String>>> authorizationAliasToSelectedDecodedVotingOptionsMap) {
+			final Map<String, TallyComponentVotesPayload> authorizationAliasToTallyComponentVotesPayloadMap) {
 
 		checkNotNull(configuration);
-		checkNotNull(authorizationAliasToSelectedDecodedVotingOptionsMap);
+		checkNotNull(authorizationAliasToTallyComponentVotesPayloadMap);
 
 		final List<AuthorizationType> authorizations = configuration.getAuthorizations().getAuthorization();
 
-		checkArgument(authorizations.size() == authorizationAliasToSelectedDecodedVotingOptionsMap.size(),
-				"There must be exactly the same number of authorizations as the number of selected decoded voting options lists.");
+		checkArgument(authorizations.size() == authorizationAliasToTallyComponentVotesPayloadMap.size(),
+				"There must be exactly the same number of authorizations as tally component votes payload mappings.");
 
 		checkArgument(authorizations.stream()
 				.allMatch(authorizationType -> {
 					final String authorizationAlias = authorizationType.getAuthorizationAlias();
 
-					return authorizationAliasToSelectedDecodedVotingOptionsMap.get(authorizationAlias) != null;
-				}), "There must be an existing list of selected decoded voting options mapping for each authorization.");
+					return authorizationAliasToTallyComponentVotesPayloadMap.get(authorizationAlias) != null;
+				}), "There must be an existing tally component votes payload mapping for each authorization.");
 
 		final ContestType contest = configuration.getContest();
 		final String contestIdentification = contest.getContestIdentification();
-		final int castBallots = authorizationAliasToSelectedDecodedVotingOptionsMap.values().stream()
+		final int castBallots = authorizationAliasToTallyComponentVotesPayloadMap.values().stream()
+				.map(TallyComponentVotesPayload::getVotes)
 				.mapToInt(List::size)
 				.sum();
 
 		final List<BallotBoxType> ballotBoxes = authorizations.stream()
 				.map(authorizationType -> toBallotBoxType(authorizationType, contest,
-						authorizationAliasToSelectedDecodedVotingOptionsMap.get(authorizationType.getAuthorizationAlias())))
+						authorizationAliasToTallyComponentVotesPayloadMap.get(authorizationType.getAuthorizationAlias())))
 				.toList();
 
 		final Results results = new Results();
@@ -110,7 +113,7 @@ public class ResultDeliveryMapper {
 	}
 
 	private static BallotBoxType toBallotBoxType(final AuthorizationType authorizationType, final ContestType contestType,
-			final List<List<String>> allSelectedDecodedVotingOptions) {
+			final TallyComponentVotesPayload tallyComponentVotesPayload) {
 
 		final String ballotBoxIdentification = authorizationType.getAuthorizationIdentification();
 
@@ -142,8 +145,12 @@ public class ResultDeliveryMapper {
 		ballotBoxType.setBallotBoxIdentification(ballotBoxIdentification);
 		ballotBoxType.getCountingCircle().addAll(countingCircles);
 
-		allSelectedDecodedVotingOptions.forEach(listOfSelectedVotingOptionsPerVoter ->
-				updateBallotBoxTypeWithSelectedVotingOptions(contestType, ballotBoxType, listOfSelectedVotingOptionsPerVoter));
+		IntStream.range(0, tallyComponentVotesPayload.getActualSelectedVotingOptions().size())
+				.forEach(i -> updateBallotTypeWithSelectedVotingOptions(
+						contestType,
+						ballotBoxType,
+						tallyComponentVotesPayload.getActualSelectedVotingOptions().get(i),
+						tallyComponentVotesPayload.getDecodedWriteInVotes().get(i)));
 
 		return ballotBoxType;
 	}
@@ -174,13 +181,14 @@ public class ResultDeliveryMapper {
 				}).toList();
 	}
 
-	private static void updateBallotBoxTypeWithSelectedVotingOptions(final ContestType contestType, final BallotBoxType ballotBoxType,
-			final List<String> listOfSelectedVotingOptionsPerVoter) {
+	private static void updateBallotTypeWithSelectedVotingOptions(final ContestType contestType, final BallotBoxType ballotBoxType,
+			final List<String> listOfActualSelectedVotingOptionsPerVoter, final List<String> listOfDecodedWriteInsPerVoter) {
+
 		final Map<IdentificationIds, BallotVoteType> ballotVoteTypes = new HashMap<>();
 		final Map<IdentificationIds, BallotElectionType> ballotElectionTypes = new HashMap<>();
 
-		for (final String answer : listOfSelectedVotingOptionsPerVoter) {
-
+		int currentWriteInIndex = 0;
+		for (final String answer : listOfActualSelectedVotingOptionsPerVoter) {
 			final AnswerAdditionalInformation answerAdditionalInformation = getAnswerAdditionalInformation(contestType, answer);
 
 			switch (answerAdditionalInformation.type) {
@@ -216,6 +224,16 @@ public class ResultDeliveryMapper {
 				}
 				ballotElectionType.setChosenListIdentification(answer);
 			}
+			case WRITE_INS_CANDIDATE_VALUE -> {
+				BallotElectionType ballotElectionType = ballotElectionTypes.get(answerAdditionalInformation.identificationIds());
+				if (ballotElectionType == null) {
+					ballotElectionType = new BallotElectionType();
+					ballotElectionTypes.put(answerAdditionalInformation.identificationIds(), ballotElectionType);
+				}
+				// It is assumed all dummy values across elections are at the end.
+				final String decodedWriteIn = listOfDecodedWriteInsPerVoter.get(currentWriteInIndex++);
+				ballotElectionType.getChosenWriteInsCandidateValue().add(decodedWriteIn.substring(decodedWriteIn.indexOf("#") + 1));
+			}
 			default -> throw new IllegalStateException(String.format("No matching found for answer. [answer: %s]", answer));
 			}
 		}
@@ -250,6 +268,7 @@ public class ResultDeliveryMapper {
 
 	private static AnswerAdditionalInformation getAnswerAdditionalInformation(final ContestType contestType,
 			final String actualSelectedVotingOption) {
+
 		final Optional<AnswerAdditionalInformation> optionalVoteAnswerAdditionalInformation = from(contestType)
 				.find(VoteType.class).stream()
 				// Keep votes if any of their answer (either standard, variant or tie-break) matches the voter selection.
@@ -266,6 +285,7 @@ public class ResultDeliveryMapper {
 		for (final ElectionInformationType electionInformation : contestType.getElectionInformation()) {
 			final String domainOfInfluence = electionInformation.getElection().getDomainOfInfluence();
 
+			// Candidate identification.
 			final Optional<CandidateType> optionalCandidateMatch = electionInformation.getCandidate().stream()
 					.filter(candidateType -> actualSelectedVotingOption.equals(candidateType.getCandidateIdentification()))
 					.findAny();
@@ -275,6 +295,7 @@ public class ResultDeliveryMapper {
 						new IdentificationIds(domainOfInfluence, electionInformation.getElection().getElectionIdentification()));
 			}
 
+			// Candidate list identification.
 			final Optional<ListType> optionalCandidatePositionMatch = electionInformation.getList().stream()
 					.filter(list -> list.getCandidatePosition().stream()
 							.anyMatch(candidatePositionType -> candidatePositionType.getCandidateListIdentification()
@@ -286,6 +307,7 @@ public class ResultDeliveryMapper {
 						new IdentificationIds(domainOfInfluence, electionInformation.getElection().getElectionIdentification()));
 			}
 
+			// List identification.
 			final Optional<ListType> optionalListIdentificationMatch = electionInformation.getList().stream()
 					.filter(list -> list.getListIdentification().equals(actualSelectedVotingOption))
 					.findAny();
@@ -295,6 +317,11 @@ public class ResultDeliveryMapper {
 						new IdentificationIds(domainOfInfluence, electionInformation.getElection().getElectionIdentification()));
 			}
 
+			// Write ins candidate value.
+			if (actualSelectedVotingOption.startsWith("WRITE_IN_")) {
+				return new AnswerAdditionalInformation(AnswerAdditionalInformationEnum.WRITE_INS_CANDIDATE_VALUE,
+						new IdentificationIds(domainOfInfluence, electionInformation.getElection().getElectionIdentification()));
+			}
 		}
 
 		return new AnswerAdditionalInformation(AnswerAdditionalInformationEnum.UNKNOWN, new IdentificationIds(null, null));
@@ -327,6 +354,7 @@ public class ResultDeliveryMapper {
 		CANDIDATE_IDENTIFICATION,
 		CANDIDATE_LIST_IDENTIFICATION,
 		LIST_IDENTIFICATION,
+		WRITE_INS_CANDIDATE_VALUE,
 		UNKNOWN
 	}
 

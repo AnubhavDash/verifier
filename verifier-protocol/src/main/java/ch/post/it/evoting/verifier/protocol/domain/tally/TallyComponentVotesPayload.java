@@ -22,7 +22,6 @@ import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -129,7 +128,7 @@ public class TallyComponentVotesPayload implements SignedPayload {
 
 		checkArgument(decodedWriteInVotes.stream()
 						.allMatch(decodedWriteInVote -> decodedWriteInVote.size() <= MAXIMUM_NUMBER_OF_WRITE_IN_OPTIONS),
-				"The number of writeIn voting options must not exceed %s", MAXIMUM_NUMBER_OF_WRITE_IN_OPTIONS);
+				"The number of write-in voting options must not exceed %s", MAXIMUM_NUMBER_OF_WRITE_IN_OPTIONS);
 
 		checkArgument(decodedWriteInVotes.stream()
 						.flatMap(Collection::stream)
@@ -137,8 +136,8 @@ public class TallyComponentVotesPayload implements SignedPayload {
 				"The size of any write-in voting option must not exceed %s.", MAXIMUM_WRITE_IN_OPTION_LENGTH);
 
 		final Predicate<String> isInAlphabet = element -> element.chars()
-				.mapToObj(Character::toChars)
-				.allMatch(chars -> WriteInAlphabet.WRITE_IN_ALPHABET.stream().anyMatch(el -> Arrays.equals(el, chars)));
+				.mapToObj(Character::toString)
+				.allMatch(character -> WriteInAlphabet.WRITE_IN_ALPHABET.stream().anyMatch(el -> el.equals(character)));
 
 		checkArgument(decodedWriteInVotes.stream()
 						.flatMap(Collection::stream)

@@ -126,12 +126,15 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 		// Algorithm.
 		final List<String> i_aux = List.of(ee, bb, "MixDecOffline");
 
-		final VerificationResult shuffleVerif = mixnet.verifyShuffle(c_dec_4, c_mix_5, pi_mix_5, EB_pk);
+		final ElGamalMultiRecipientPublicKey EB_pk_cut = new ElGamalMultiRecipientPublicKey(
+				GroupVector.from(EB_pk.getKeyElements().subList(0, delta_hat)));
+
+		final VerificationResult shuffleVerif = mixnet.verifyShuffle(c_dec_4, c_mix_5, pi_mix_5, EB_pk_cut);
 		if (!shuffleVerif.isVerified()) {
 			LOGGER.error("The shuffle proofs are invalid. [ee: {}, bb: {}, errorMessage: {}]", ee, bb, shuffleVerif.getErrorMessages().getFirst());
 		}
 
-		final VerificationResult decryptVerif = zeroKnowledgeProof.verifyDecryptions(c_mix_5, EB_pk, pi_dec_5, i_aux);
+		final VerificationResult decryptVerif = zeroKnowledgeProof.verifyDecryptions(c_mix_5, EB_pk_cut, pi_dec_5, i_aux);
 		if (!decryptVerif.isVerified()) {
 			LOGGER.error("The decryption proofs are invalid. [ee: {}, bb: {}, errorMessage: {}]", ee, bb, decryptVerif.getErrorMessages().getFirst());
 		}

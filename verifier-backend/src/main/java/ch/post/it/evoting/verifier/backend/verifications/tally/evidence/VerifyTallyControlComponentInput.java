@@ -56,7 +56,7 @@ public class VerifyTallyControlComponentInput {
 	private final List<ControlComponentShufflePayload> lastOnlineControlComponentShuffles;
 	private final List<TallyComponentShufflePayload> tallyControlComponentShuffles;
 	private final List<TallyComponentVotesPayload> tallyControlComponentVotes;
-	private final Map<String, List<List<String>>> allSelectedDecodedVotingOptions;
+	private final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads;
 	private final ElectionEventContextPayload electionEventContextPayload;
 	private final Configuration electionEventConfiguration;
 	private final Results tallyControlComponentDecryptions;
@@ -91,9 +91,7 @@ public class VerifyTallyControlComponentInput {
 		this.tallyControlComponentVotes = tallyComponentVotesPayloadMap.values().stream()
 				.sorted(Comparator.comparing(TallyComponentVotesPayload::getBallotBoxId))
 				.toList();
-		final Map<String, List<List<String>>> allSelectedDecodedVotingOptionsMap = new HashMap<>();
-		tallyComponentVotesPayloadMap.forEach((key, value) -> allSelectedDecodedVotingOptionsMap.put(key, value.getActualSelectedVotingOptions()));
-		this.allSelectedDecodedVotingOptions = Map.copyOf(allSelectedDecodedVotingOptionsMap);
+		this.tallyComponentVotesPayloads = tallyComponentVotesPayloadMap;
 	}
 
 	public String getElectionEventId() {
@@ -101,19 +99,19 @@ public class VerifyTallyControlComponentInput {
 	}
 
 	public List<String> getBallotBoxIds() {
-		return ballotBoxIds;
+		return List.copyOf(ballotBoxIds);
 	}
 
 	public List<ControlComponentShufflePayload> getLastOnlineControlComponentShuffles() {
-		return lastOnlineControlComponentShuffles;
+		return List.copyOf(lastOnlineControlComponentShuffles);
 	}
 
 	public List<TallyComponentShufflePayload> getTallyControlComponentShuffles() {
-		return tallyControlComponentShuffles;
+		return List.copyOf(tallyControlComponentShuffles);
 	}
 
 	public List<TallyComponentVotesPayload> getTallyControlComponentVotes() {
-		return tallyControlComponentVotes;
+		return List.copyOf(tallyControlComponentVotes);
 	}
 
 	public ElectionEventContext getElectionEventContext() {
@@ -140,7 +138,7 @@ public class VerifyTallyControlComponentInput {
 		return tallyComponentEch0222;
 	}
 
-	public Map<String, List<List<String>>> getAllSelectedDecodedVotingOptions() {
-		return allSelectedDecodedVotingOptions;
+	public Map<String, TallyComponentVotesPayload> getTallyComponentVotesPayloads() {
+		return tallyComponentVotesPayloads;
 	}
 }

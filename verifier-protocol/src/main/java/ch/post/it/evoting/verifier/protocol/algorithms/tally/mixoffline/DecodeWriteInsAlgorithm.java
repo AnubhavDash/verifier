@@ -68,8 +68,7 @@ public class DecodeWriteInsAlgorithm {
 		for (int i = 0; i < psi; i++) {
 			final PrimeGqElement p_i_hat = p_hat.get(i);
 			if (isWriteInOptionAlgorithm.isWriteInOption(p_w_tilde, p_i_hat)) {
-				final GqElement w_k = GqElement.GqElementFactory.fromValue(w.get(k).getValue(), p_w_tilde.getGroup());
-				final String s_k_hat = quadraticResidueToWriteInAlgorithm.quadraticResidueToWriteIn(w_k);
+				final String s_k_hat = quadraticResidueToWriteInAlgorithm.quadraticResidueToWriteIn(w.get(k));
 				s_hat.add(s_k_hat);
 				k++;
 			}
