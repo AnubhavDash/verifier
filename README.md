@@ -38,15 +38,14 @@ We strive for excellent code quality to minimize the risk of bugs and vulnerabil
 ### SonarQube Analysis
 
 We parametrize SonarQube with the built-in Sonar way quality profile. The SonarQube analysis of the verifier code reveals 0 bugs, 0 vulnerabilities, 0
-security hotspots, and 47 code smells.
+security hotspots, and 55 code smells.
 
 ![SonarQube](SonarQube_Verifier.jpg)
 
-The verifier contains 47 code smells in the code. [Code smells](https://docs.sonarqube.org/latest/user-guide/concepts/) are
+The verifier contains 55 code smells in the code. [Code smells](https://docs.sonarqube.org/latest/user-guide/concepts/) are
 maintainability-related issues that might increase the likelihood of errors in future code changes but do not directly impact the code's security and
 robustness. An example would be a method that contains too many if/else statements, therefore has a high cognitive complexity, hence is difficult to
-maintain. 46 out of the 47 code smells stem from a deprecated code duplication rule. The verifier's code base incurs some code duplication since every verification class uses a specific template defining the verification IDs
-and category.
+maintain.
 
 ### JFrog X-Ray Analysis
 
@@ -54,7 +53,7 @@ At the time of writing (October 2022), the published source code does not contai
 
 ## Changelog
 
-An overview of all major changes within the published releases is available [here.](CHANGELOG.md)
+An overview of all major changes within the published releases is available [here](CHANGELOG.md).
 
 ## Future Work
 

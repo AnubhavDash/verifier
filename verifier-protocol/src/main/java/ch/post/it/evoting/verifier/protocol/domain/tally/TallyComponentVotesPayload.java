@@ -16,6 +16,8 @@
 package ch.post.it.evoting.verifier.protocol.domain.tally;
 
 import static ch.post.it.evoting.cryptoprimitives.domain.VotingOptionsConstants.MAXIMUM_ACTUAL_VOTING_OPTION_LENGTH;
+import static ch.post.it.evoting.cryptoprimitives.domain.VotingOptionsConstants.MAXIMUM_NUMBER_OF_WRITE_IN_OPTIONS;
+import static ch.post.it.evoting.cryptoprimitives.domain.VotingOptionsConstants.MAXIMUM_WRITE_IN_OPTION_LENGTH;
 import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.validateUUID;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -26,8 +28,6 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.base.Preconditions;
@@ -41,56 +41,35 @@ import ch.post.it.evoting.cryptoprimitives.hashing.HashableString;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
+import ch.post.it.evoting.verifier.protocol.domain.WriteInAlphabet;
 
-@JsonPropertyOrder({ "electionEventId", "ballotId", "ballotBoxId", "encryptionGroup", "votes", "actualSelectedVotingOptions", "signature" })
+@JsonPropertyOrder({ "electionEventId", "ballotId", "ballotBoxId", "encryptionGroup", "votes", "actualSelectedVotingOptions",
+		"decodedWriteInVotes", "signature" })
 @JsonDeserialize(using = TallyComponentVotesPayloadDeserializer.class)
 public class TallyComponentVotesPayload implements SignedPayload {
 
-	@JsonProperty
 	private final String electionEventId;
 
-	@JsonProperty
 	private final String ballotId;
 
-	@JsonProperty
 	private final String ballotBoxId;
-
-	@JsonProperty
 	private final GqGroup encryptionGroup;
-
-	@JsonProperty
 	private final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> votes;
-
-	@JsonProperty
 	private final List<List<String>> actualSelectedVotingOptions;
-
-	@JsonProperty
+	private final List<List<String>> decodedWriteInVotes;
 	private CryptoPrimitivesSignature signature;
 
-	@JsonCreator
 	public TallyComponentVotesPayload(
-			@JsonProperty(value = "electionEventId", required = true)
 			final String electionEventId,
-
-			@JsonProperty(value = "ballotId", required = true)
 			final String ballotId,
-
-			@JsonProperty(value = "ballotBoxId", required = true)
 			final String ballotBoxId,
-
-			@JsonProperty(value = "encryptionGroup", required = true)
 			final GqGroup encryptionGroup,
-
-			@JsonProperty(value = "votes", required = true)
 			final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> votes,
-
-			@JsonProperty(value = "actualSelectedVotingOptions", required = true)
 			final List<List<String>> actualSelectedVotingOptions,
-
-			@JsonProperty(value = "signature", required = true)
+			final List<List<String>> decodedWriteInVotes,
 			final CryptoPrimitivesSignature signature
 	) {
-		this(electionEventId, ballotId, ballotBoxId, encryptionGroup, votes, actualSelectedVotingOptions);
+		this(electionEventId, ballotId, ballotBoxId, encryptionGroup, votes, actualSelectedVotingOptions, decodedWriteInVotes);
 		this.signature = checkNotNull(signature);
 	}
 
@@ -100,7 +79,8 @@ public class TallyComponentVotesPayload implements SignedPayload {
 			final String ballotBoxId,
 			final GqGroup encryptionGroup,
 			final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> votes,
-			final List<List<String>> actualSelectedVotingOptions
+			final List<List<String>> actualSelectedVotingOptions,
+			final List<List<String>> decodedWriteInVotes
 	) {
 		this.electionEventId = validateUUID(electionEventId);
 		this.ballotId = validateUUID(ballotId);
@@ -132,6 +112,37 @@ public class TallyComponentVotesPayload implements SignedPayload {
 						.allMatch(isNotBlank.and(isSmallerThanMaxLength)),
 				"The actual selected voting options must be non-blank strings and their length must not exceed %s.",
 				MAXIMUM_ACTUAL_VOTING_OPTION_LENGTH);
+
+		List<List<String>> decodedWriteInVotesCopy = List.copyOf(checkNotNull(decodedWriteInVotes));
+
+		decodedWriteInVotesCopy.forEach(Preconditions::checkNotNull);
+		decodedWriteInVotesCopy = decodedWriteInVotesCopy.stream()
+				.map(List::copyOf)
+				.toList();
+
+		decodedWriteInVotesCopy.forEach(options -> options.forEach(Preconditions::checkNotNull));
+
+		this.decodedWriteInVotes = decodedWriteInVotesCopy;
+
+		checkArgument(votes.size() == decodedWriteInVotes.size(), "There must be as many write-in voting options as votes.");
+
+		checkArgument(decodedWriteInVotes.stream()
+						.allMatch(decodedWriteInVote -> decodedWriteInVote.size() <= MAXIMUM_NUMBER_OF_WRITE_IN_OPTIONS),
+				"The number of write-in voting options must not exceed %s", MAXIMUM_NUMBER_OF_WRITE_IN_OPTIONS);
+
+		checkArgument(decodedWriteInVotes.stream()
+						.flatMap(Collection::stream)
+						.allMatch(decodedWriteIn -> decodedWriteIn.length() <= MAXIMUM_WRITE_IN_OPTION_LENGTH),
+				"The size of any write-in voting option must not exceed %s.", MAXIMUM_WRITE_IN_OPTION_LENGTH);
+
+		final Predicate<String> isInAlphabet = element -> element.chars()
+				.mapToObj(Character::toString)
+				.allMatch(character -> WriteInAlphabet.WRITE_IN_ALPHABET.stream().anyMatch(el -> el.equals(character)));
+
+		checkArgument(decodedWriteInVotes.stream()
+						.flatMap(Collection::stream)
+						.allMatch(isInAlphabet),
+				"The write-in voting options characters must be in the defined alphabet.");
 	}
 
 	public String getElectionEventId() {
@@ -155,7 +166,15 @@ public class TallyComponentVotesPayload implements SignedPayload {
 	}
 
 	public List<List<String>> getActualSelectedVotingOptions() {
-		return actualSelectedVotingOptions;
+		return actualSelectedVotingOptions.stream()
+				.map(List::copyOf)
+				.toList();
+	}
+
+	public List<List<String>> getDecodedWriteInVotes() {
+		return decodedWriteInVotes.stream()
+				.map(List::copyOf)
+				.toList();
 	}
 
 	@Override
@@ -186,8 +205,14 @@ public class TallyComponentVotesPayload implements SignedPayload {
 							.map(votingOption -> HashableList.from(votingOption.stream()
 									.map(HashableString::from)
 									.toList()))
+							.toList()),
+					HashableList.from(decodedWriteInVotes.stream()
+							.map(decodedWriteInVote -> HashableList.from(decodedWriteInVote.stream()
+									.map(HashableString::from)
+									.toList()))
 							.toList()));
 		} else {
+
 			return List.of(
 					HashableString.from(electionEventId),
 					HashableString.from(ballotBoxId),
@@ -211,12 +236,13 @@ public class TallyComponentVotesPayload implements SignedPayload {
 				&& encryptionGroup.equals(that.encryptionGroup) &&
 				votes.equals(that.votes) &&
 				actualSelectedVotingOptions.equals(that.actualSelectedVotingOptions) &&
+				decodedWriteInVotes.equals(that.decodedWriteInVotes) &&
 				Objects.equals(signature, that.signature);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(electionEventId, ballotId, ballotBoxId, encryptionGroup, votes, actualSelectedVotingOptions, signature);
+		return Objects.hash(electionEventId, ballotId, ballotBoxId, encryptionGroup, votes, actualSelectedVotingOptions, decodedWriteInVotes,
+				signature);
 	}
 }
-

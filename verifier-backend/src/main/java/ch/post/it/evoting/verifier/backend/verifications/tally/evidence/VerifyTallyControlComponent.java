@@ -17,6 +17,7 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
 import static ch.post.it.evoting.verifier.backend.tools.TranslationHelper.getFromResourceBundle;
 
+import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -82,10 +83,11 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 		final Configuration electionEventConfiguration = extractionService.getSetupComponentConfig(inputDirectoryPath);
 		final Results tallyControlComponentDecryptions = extractionService.getTallyComponentDecrypt(inputDirectoryPath);
 		final Delivery tallyControlComponentResults = extractionService.getTallyComponentEch0110(inputDirectoryPath);
+		final ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222 = extractionService.getTallyComponentEch0222(inputDirectoryPath);
 
 		final VerifyTallyControlComponentInput input = new VerifyTallyControlComponentInput(electionEventContextPayload,
 				controlComponentShufflePayloads, tallyComponentShufflePayloads, tallyComponentVotesPayloads, electionEventConfiguration,
-				tallyControlComponentDecryptions, tallyControlComponentResults);
+				tallyControlComponentDecryptions, tallyControlComponentResults, tallyComponentEch0222);
 
 		final Map<String, Integer> numberOfSelectableVotingOptions = electionEventContextPayload.getElectionEventContext()
 				.verificationCardSetContexts().stream()
@@ -94,7 +96,15 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 								.getCombinedCorrectnessInformation(inputDirectoryPath, vcContext.verificationCardSetId())
 								.getTotalNumberOfSelections()));
 
-		final boolean result = verifyTallyControlComponentAlgorithm.verifyTallyControlComponent(input, numberOfSelectableVotingOptions);
+		final Map<String, List<BigInteger>> writeInVotingOptions = electionEventContextPayload.getElectionEventContext()
+				.verificationCardSetContexts().stream()
+				.collect(Collectors.toMap(VerificationCardSetContext::ballotBoxId,
+						vcContext -> extractionService
+								.getCombinedCorrectnessInformation(inputDirectoryPath, vcContext.verificationCardSetId())
+								.getTotalListOfWriteInOptions()));
+
+		final boolean result = verifyTallyControlComponentAlgorithm.verifyTallyControlComponent(input, numberOfSelectableVotingOptions,
+				writeInVotingOptions);
 
 		if (result) {
 			return VerificationResult.success(getVerificationDefinition());

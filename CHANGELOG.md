@@ -1,5 +1,17 @@
 # Changelog
 
+## Release 1.2
+
+Release 1.2 includes the following functionalities and improvements:
+
+* Support Elections in the eCH-0110 file
+* Integrate the DecodeWriteIns (including all the sub-algorithms) in the VerifyProcessPlaintexts algorithm
+* Check the signature of the eCH-0222 & add it to the completeness check
+* Add the verification of the eCH-0222 to the VerifyTallyFiles Algorithm
+* Updated dependencies and third-party libraries.
+
+---
+
 ## Release 1.1
 
 Release 1.1 fixes the following known issues and incorporates feedback from the Federal Chancellery's mandated experts.

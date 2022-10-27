@@ -31,4 +31,14 @@
 			<namespace:prefix name="eCH-0222" namespaceURI="http://www.ech.ch/xmlns/eCH-0222/1"/>
 		</jxb:bindings>
 	</jxb:bindings>
+	<jxb:bindings schemaLocation="eCH-0222-1-0.xsd">
+		<jxb:bindings>
+			<namespace:prefix name="eCH-0222"/>
+			<namespace:prefix name="eCH-0008" namespaceURI="http://www.ech.ch/xmlns/eCH-0008/3"/>
+			<namespace:prefix name="eCH-0010" namespaceURI="http://www.ech.ch/xmlns/eCH-0010/6"/>
+			<namespace:prefix name="eCH-0044" namespaceURI="http://www.ech.ch/xmlns/eCH-0044/4"/>
+			<namespace:prefix name="eCH-0058" namespaceURI="http://www.ech.ch/xmlns/eCH-0058/5"/>
+			<namespace:prefix name="eCH-0155" namespaceURI="http://www.ech.ch/xmlns/eCH-0155/4"/>
+		</jxb:bindings>
+	</jxb:bindings>
 </jxb:bindings>

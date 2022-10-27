@@ -231,6 +231,13 @@ public final class ChannelSecurityContextData {
 	}
 
 	/**
+	 * @return The additional context data for the message eCH 0222 XML.
+	 */
+	public static Hashable tallyComponentEch0222() {
+		return HashableString.from("eCH 0222");
+	}
+
+	/**
 	 * @return The additional context data for the message evoting decrypt XML.
 	 */
 	public static Hashable tallyComponentDecrypt() {
