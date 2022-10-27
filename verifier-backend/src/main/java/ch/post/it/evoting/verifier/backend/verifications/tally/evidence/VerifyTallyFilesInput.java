@@ -17,11 +17,7 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-
-import com.google.common.base.Preconditions;
 
 import ch.ech.xmlns.ech_0110._4.Delivery;
 import ch.post.it.evoting.verifier.protocol.domain.tally.TallyComponentVotesPayload;
