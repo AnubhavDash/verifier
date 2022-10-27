@@ -30,9 +30,7 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.backend.tools.XmlFileRepository;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 import ch.post.it.evoting.verifier.protocol.domain.configuration.ControlComponentPublicKeysPayload;
@@ -55,9 +53,7 @@ class VerifySetupFileNamesConsistencyTest extends SetupVerificationTest {
 	@Test
 	void verifyNok() throws IOException {
 		final ObjectMapper objectMapperMock = spy(objectMapper);
-		final ElectionDataExtractionService extractionService = new ElectionDataExtractionService(pathService, objectMapper,
-				new XmlFileRepository<>(), new XmlFileRepository<>(), new XmlFileRepository<>());
-		final ControlComponentPublicKeysPayload firstPublicKeysPayload = extractionService.getControlComponentPublicKeysPayloads(
+		final ControlComponentPublicKeysPayload firstPublicKeysPayload = electionDataExtractionService.getControlComponentPublicKeysPayloads(
 				datasetPath).get(0);
 		doReturn(firstPublicKeysPayload).when(objectMapperMock).readValue(any(File.class), eq(ControlComponentPublicKeysPayload.class));
 

@@ -117,7 +117,7 @@ public record VerifyMixDecInput(GroupVector<ElGamalMultiRecipientCiphertext, GqG
 				ccmElectionPublicKeys.stream()
 						.map(ccmElectionPublicKey ->
 								new ElGamalMultiRecipientPublicKey(
-										ccmElectionPublicKey.getKeyElements().subList(0, electoralBoardPublicKey.size()))),
+										GroupVector.from(ccmElectionPublicKey.getKeyElements().subList(0, electoralBoardPublicKey.size())))),
 				Stream.of(electoralBoardPublicKey)).collect(GroupVector.toGroupVector());
 
 		checkArgument(electionPublicKey.equals(ElGamalFactory.createElGamal().combinePublicKeys(publicKeys)),

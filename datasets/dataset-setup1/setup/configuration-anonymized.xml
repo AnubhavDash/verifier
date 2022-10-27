@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <configuration xmlns="http://www.evoting.ch/xmlns/config/4">
 	<header>
-		<fileDate>2022-08-04T10:37:33.369+02:00</fileDate>
+		<fileDate>2022-10-27T08:31:43.365+02:00</fileDate>
 		<voterTotal>40</voterTotal>
 	</header>
 	<contest>
@@ -64,8 +64,8 @@
 						<electionDescription>Election (rm)</electionDescription>
 					</electionDescriptionInfo>
 				</electionDescription>
-				<numberOfMandates>1</numberOfMandates>
-				<writeInsAllowed>false</writeInsAllowed>
+				<numberOfMandates>2</numberOfMandates>
+				<writeInsAllowed>true</writeInsAllowed>
 				<candidateAccumulation>1</candidateAccumulation>
 				<minimalCandidateSelectionInList>1</minimalCandidateSelectionInList>
 				<uiProperties>
@@ -577,6 +577,29 @@
 					<candidateListIdentification>ae3a5d49-b15d-3e88-8bdd-cbf965497a8c</candidateListIdentification>
 					<positionOnList>1</positionOnList>
 					<candidateReferenceOnPosition>99.01</candidateReferenceOnPosition>
+					<candidateTextOnPosition>
+						<candidateTextInfo>
+							<language>de</language>
+							<candidateText>Kein Name ausgewählt</candidateText>
+						</candidateTextInfo>
+						<candidateTextInfo>
+							<language>fr</language>
+							<candidateText>Aucun nom sélectionné</candidateText>
+						</candidateTextInfo>
+						<candidateTextInfo>
+							<language>it</language>
+							<candidateText>Nessun nominativo selezionato</candidateText>
+						</candidateTextInfo>
+						<candidateTextInfo>
+							<language>rm</language>
+							<candidateText>Nagin num selecziunà</candidateText>
+						</candidateTextInfo>
+					</candidateTextOnPosition>
+				</candidatePosition>
+				<candidatePosition>
+					<candidateListIdentification>a95fed74-bf0b-339a-9037-ae6a49aa9ee1</candidateListIdentification>
+					<positionOnList>2</positionOnList>
+					<candidateReferenceOnPosition>99.02</candidateReferenceOnPosition>
 					<candidateTextOnPosition>
 						<candidateTextInfo>
 							<language>de</language>
@@ -1324,6 +1347,6 @@
 		</voter>
 	</register>
 	<signature>
-		wAImWL+724NOsyJeT29xMJieE404lruFt0L24QkehCHDx+57t+9sKCXUGPz4iZ7t5PVr9QEzOOf41ZWU3h0JQSBFa93yVAqQY/LI3jJncrkCBGoBxEFrdgb03oKfhbRCbv/0RtrTkBZgzJ8pvQGrphCTg63VTIeCqrwc1CEPiHTLc6T5ffQ2iVOxlEh07O4oVHA90rDk9pbGeV6QPfM+brSa9jb8aomeFqsHKCvIdByGvhJOExMVPjn9Lh2jXBA/2c2HKg/DdtvLgG3Ukax75hYLBY5hi+9/du3NtKszFBHS7m53tsPpWtUWBY21dKgZzsp1zyuy/hGufDeYxxxr95OwvgXA6MlBMNqXXrWY6XwvrYcYl24LegxTWA63tycFmZ7PhtA9mIXVgAIYnLZ2UlWKg9HeP8F8FKeHyBEjLE5gY/m3TWgqeMaanSH4XpxYegw4YGo7xSkGt0BWhhw12lQfovNcm3YPDL03aoJlowsrK7VzUXs0ccJN3gzGXfB3
+		RCp6z2ywLXZHW74hiuq4Dpiedpqj1m7DzyppBDts230O/nXJhji0aI/7nQZ13ch1aLzLIRvh4lepzMb3BD8/MFdam8KLpdJDnAfg+0pUJInTjYJbTezNohnI1N5v4lfwPLtki3/8XY584t2KXiQjgTB98m11DueHy011cTbXSUhCb5A/LntuY0OolpZhCYyeei3cW+HD13I7t2IhrCMx04QRBabLu5RZkkav2Pmeukb+hCd+MkIJvWzWdsW8pbF5Zbj+RZ+8gDFqGfeqZGEZl+ua8+ebDMDDD4J9APEhss5+rlvZQPzPwF1TZGuLqu5b5SuM7pRng3ihbX4/i02Xd5mXA36bAYMKuryVGpM/k1yh8cIzjmrbYnh/yDvhUDfAgN9X5lCSLyrJiB1x0w3tXlZF8Ha+tS9Md3ojITlbMjFQwF+MvOKe9nbXJhZqkLtkh9tB0g5Br7B1fPAk9t8t05rV7MISFZoSQgCmiB1CedAVmMJPbIS/6bMk++0vuqaN
 	</signature>
 </configuration>

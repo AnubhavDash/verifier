@@ -43,7 +43,11 @@ import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProo
 import ch.post.it.evoting.verifier.backend.tools.KeystoreRepository;
 import ch.post.it.evoting.verifier.backend.tools.XmlFileRepository;
 import ch.post.it.evoting.verifier.backend.verifications.setup.consistency.VerifyPrimesMappingTableConsistencyAlgorithm;
+import ch.post.it.evoting.verifier.protocol.algorithms.tally.IntegerToWriteInAlgorithm;
+import ch.post.it.evoting.verifier.protocol.algorithms.tally.QuadraticResidueToWriteInAlgorithm;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.DecodeVotingOptionsAlgorithm;
+import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.DecodeWriteInsAlgorithm;
+import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.IsWriteInOptionAlgorithm;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.VerifyMixDecOfflineAlgorithm;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.VerifyVotingClientProofsAlgorithm;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixonline.GetMixnetInitialCiphertextsAlgorithm;
@@ -104,6 +108,27 @@ public class VerifierBeanConfig {
 	@Bean
 	public DecodeVotingOptionsAlgorithm decodeVotingOptionsAlgorithm() {
 		return new DecodeVotingOptionsAlgorithm();
+	}
+
+	@Bean
+	public DecodeWriteInsAlgorithm decodeWriteInsAlgorithm(final IsWriteInOptionAlgorithm isWriteInOptionAlgorithm, final
+			QuadraticResidueToWriteInAlgorithm quadraticResidueToWriteInAlgorithm) {
+		return new DecodeWriteInsAlgorithm(isWriteInOptionAlgorithm, quadraticResidueToWriteInAlgorithm);
+	}
+
+	@Bean
+	public IsWriteInOptionAlgorithm isWriteInOptionAlgorithm() {
+		return new IsWriteInOptionAlgorithm();
+	}
+
+	@Bean
+	public QuadraticResidueToWriteInAlgorithm quadraticResidueToWriteInAlgorithm(final IntegerToWriteInAlgorithm integerToWriteInAlgorithm) {
+		return new QuadraticResidueToWriteInAlgorithm(integerToWriteInAlgorithm);
+	}
+
+	@Bean
+	public IntegerToWriteInAlgorithm integerToWriteInAlgorithm() {
+		return new IntegerToWriteInAlgorithm();
 	}
 
 	@Bean

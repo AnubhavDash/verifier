@@ -15,6 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.hashable;
 
+import static ch.post.it.evoting.cryptoprimitives.hashing.HashableList.toHashableList;
 import static ch.post.it.evoting.verifier.backend.hashable.HashableUtils.fromDate;
 import static ch.post.it.evoting.verifier.backend.hashable.HashableUtils.fromNullable;
 import static ch.post.it.evoting.verifier.backend.hashable.HashableUtils.fromNullableBigInteger;
@@ -58,15 +59,17 @@ import ch.post.it.evoting.cryptoprimitives.hashing.HashableList;
 import ch.post.it.evoting.cryptoprimitives.hashing.HashableString;
 
 interface HashableEch0155Factory {
+
 	static Hashable fromAnswerInformation(
 			@Nullable
 			final AnswerInformationType answerInformation) {
+
 		return fromNullable(answerInformation, "answerInformation", ait ->
 				HashableList.of(
 						fromNullableBigInteger(ait.getAnswerType(), "answer"),
 						ait.getAnswerOptionIdentification().stream()
 								.map(HashableEch0155Factory::fromAnswerOptionIdentification)
-								.collect(HashableList.toHashableList())
+								.collect(toHashableList())
 				));
 	}
 
@@ -74,8 +77,9 @@ interface HashableEch0155Factory {
 		return HashableList.of(
 				HashableString.from(answerOptionIdentification.getAnswerIdentification()),
 				HashableBigInteger.from(answerOptionIdentification.getAnswerSequenceNumber()),
-				answerOptionIdentification.getAnswerTextInformation().stream().map(HashableEch0155Factory::fromAnswerTextInformation)
-						.collect(HashableList.toHashableList())
+				answerOptionIdentification.getAnswerTextInformation().stream()
+						.map(HashableEch0155Factory::fromAnswerTextInformation)
+						.collect(toHashableList())
 		);
 	}
 
@@ -88,8 +92,9 @@ interface HashableEch0155Factory {
 	}
 
 	static Hashable fromBallotDescription(final BallotDescriptionInformationType ballotDescription) {
-		return ballotDescription.getBallotDescriptionInfo().stream().map(HashableEch0155Factory::fromBallotDescriptionInfo)
-				.collect(HashableList.toHashableList());
+		return ballotDescription.getBallotDescriptionInfo().stream()
+				.map(HashableEch0155Factory::fromBallotDescriptionInfo)
+				.collect(toHashableList());
 	}
 
 	static Hashable fromBallotDescriptionInfo(final BallotDescriptionInformationType.BallotDescriptionInfo ballotDescriptionInfo) {
@@ -107,7 +112,7 @@ interface HashableEch0155Factory {
 		return fromNullable(ballotQuestion, "ballotQuestion",
 				bq -> bq.getBallotQuestionInfo().stream()
 						.map(HashableEch0155Factory::fromBallotQuestionInfo)
-						.collect(HashableList.toHashableList()));
+						.collect(toHashableList()));
 	}
 
 	static Hashable fromBallotQuestionInfo(final BallotQuestionType.BallotQuestionInfo ballotQuestionInfo) {
@@ -130,19 +135,22 @@ interface HashableEch0155Factory {
 		return HashableList.of(
 				fromNullable(candidate.getVn(), "vn", vn -> HashableBigInteger.from(BigInteger.valueOf(vn))),
 				HashableString.from(candidate.getCandidateIdentification()),
-				fromNullable(candidate.getBfSNumberCanton(), "bfsNumberCanton",
+				fromNullable(candidate.getBfSNumberCanton(),
+						"bfsNumberCanton",
 						bfsNumberCanton -> HashableBigInteger.from(BigInteger.valueOf(bfsNumberCanton))),
 				HashableString.from(candidate.getFamilyName()),
 				fromNullableString(candidate.getFirstName(), "firstName"),
 				HashableString.from(candidate.getCallName()),
-				candidate.getCandidateText().getCandidateTextInfo().stream().map(HashableEch0155Factory::fromCandidateTextInfo)
-						.collect(HashableList.toHashableList()),
+				candidate.getCandidateText().getCandidateTextInfo().stream()
+						.map(HashableEch0155Factory::fromCandidateTextInfo)
+						.collect(toHashableList()),
 				fromDate(candidate.getDateOfBirth()),
 				HashableString.from(candidate.getSex()),
-				fromNullable(candidate.getOccupationalTitle(), "occupationalTitle",
+				fromNullable(candidate.getOccupationalTitle(),
+						"occupationalTitle",
 						occupationalTitle -> occupationalTitle.getOccupationalTitleInfo().stream()
 								.map(HashableEch0155Factory::fromOccupationalTitleInfo)
-								.collect(HashableList.toHashableList())),
+								.collect(toHashableList())),
 				HashableEch0010Factory.fromPersonMailAddress(candidate.getContactAddress()),
 				fromPoliticalAddressInfo(candidate.getPoliticalAddress()),
 				HashableEch0010Factory.fromAddressInformation(candidate.getDwellingAddress()),
@@ -187,7 +195,9 @@ interface HashableEch0155Factory {
 	}
 
 	static Hashable fromRoleInformation(final RoleInformationType roleInformation) {
-		return roleInformation.getRoleInfo().stream().map(HashableEch0155Factory::fromRoleInfo).collect(HashableList.toHashableList());
+		return roleInformation.getRoleInfo().stream()
+				.map(HashableEch0155Factory::fromRoleInfo)
+				.collect(toHashableList());
 	}
 
 	static Hashable fromRoleInfo(final RoleInformationType.RoleInfo roleInfo) {
@@ -198,8 +208,9 @@ interface HashableEch0155Factory {
 	}
 
 	static Hashable fromPartyAffiliation(final PartyAffiliationformationType partyAffiliationformation) {
-		return partyAffiliationformation.getPartyAffiliationInfo().stream().map(HashableEch0155Factory::fromPartyAffiliationInfo)
-				.collect(HashableList.toHashableList());
+		return partyAffiliationformation.getPartyAffiliationInfo().stream()
+				.map(HashableEch0155Factory::fromPartyAffiliationInfo)
+				.collect(toHashableList());
 	}
 
 	static Hashable fromPartyAffiliationInfo(final PartyAffiliationformationType.PartyAffiliationInfo partyAffiliationInfo) {
@@ -212,7 +223,7 @@ interface HashableEch0155Factory {
 
 	static Hashable fromContestInformation(final ContestType contestInformation) {
 		return HashableList.of(
-				HashableString.from(contestInformation.getContestIdentification()),
+				fromContestIdentification(contestInformation.getContestIdentification()),
 				fromDate(contestInformation.getContestDate()),
 				fromNullable(contestInformation.getContestDescription(), "contestDescription", HashableEch0155Factory::fromContestDescription),
 				fromNullable(contestInformation.getEVotingPeriod(), "eVotingPeriod", HashableEch0155Factory::fromEvotingPeriod)
@@ -222,11 +233,10 @@ interface HashableEch0155Factory {
 	static Hashable fromContestDescription(final ContestDescriptionInformationType contestDescription) {
 		return contestDescription.getContestDescriptionInfo().stream()
 				.map(HashableEch0155Factory::fromContestDescriptionInformation)
-				.collect(HashableList.toHashableList());
+				.collect(toHashableList());
 	}
 
-	static Hashable fromContestDescriptionInformation(
-			final ContestDescriptionInformationType.ContestDescriptionInfo contestDescriptionInformation) {
+	static Hashable fromContestDescriptionInformation(final ContestDescriptionInformationType.ContestDescriptionInfo contestDescriptionInformation) {
 		return HashableList.of(
 				HashableString.from(contestDescriptionInformation.getLanguage()),
 				HashableString.from(contestDescriptionInformation.getContestDescription())
@@ -246,7 +256,7 @@ interface HashableEch0155Factory {
 		return fromNullable(candidateTextInformation, "candidateTextInformation",
 				cti -> cti.getCandidateTextInfo().stream()
 						.map(HashableEch0155Factory::fromCandidateTextInfo)
-						.collect(HashableList.toHashableList()));
+						.collect(toHashableList()));
 	}
 
 	static Hashable fromDomainOfInfluence(final DomainOfInfluenceType domainOfInfluence) {
@@ -260,22 +270,23 @@ interface HashableEch0155Factory {
 
 	static Hashable fromCountingCircle(final CountingCircleType countingCircle) {
 		return HashableList.of(
-				fromNullableString(countingCircle.getCountingCircleId(), "countingCircleId"),
+				fromNullable(countingCircle.getCountingCircleId(), "countingCircleId", HashableEch0155Factory::fromCountingCircleId),
 				fromNullableString(countingCircle.getCountingCircleName(), "countingCircleName")
 		);
 	}
 
 	static Hashable fromVote(final VoteType vote) {
 		return HashableList.of(
-				HashableString.from(vote.getVoteIdentification()),
+				fromVoteIdentification(vote.getVoteIdentification()),
 				HashableString.from(vote.getDomainOfInfluenceIdentification()),
 				fromNullable(vote.getVoteDescription(), "voteDescription", HashableEch0155Factory::fromVoteDescription)
 		);
 	}
 
 	static Hashable fromVoteDescription(final VoteDescriptionInformationType voteDescription) {
-		return voteDescription.getVoteDescriptionInfo().stream().map(HashableEch0155Factory::fromVoteDescriptionInfo)
-				.collect(HashableList.toHashableList());
+		return voteDescription.getVoteDescriptionInfo().stream()
+				.map(HashableEch0155Factory::fromVoteDescriptionInfo)
+				.collect(toHashableList());
 	}
 
 	static Hashable fromVoteDescriptionInfo(final VoteDescriptionInformationType.VoteDescriptionInfo voteDescriptionInfo) {
@@ -298,11 +309,13 @@ interface HashableEch0155Factory {
 				HashableString.from(electionType.getElectionIdentification()),
 				HashableBigInteger.from(electionType.getTypeOfElection()),
 				fromNullableBigInteger(electionType.getElectionPosition(), "electionPosition"),
-				electionType.getElectionDescription().getElectionDescriptionInfo().stream().map(HashableEch0155Factory::fromElectionDescriptionInfo)
-						.collect(HashableList.toHashableList()),
+				electionType.getElectionDescription().getElectionDescriptionInfo().stream()
+						.map(HashableEch0155Factory::fromElectionDescriptionInfo)
+						.collect(toHashableList()),
 				HashableBigInteger.from(electionType.getNumberOfMandates()),
-				electionType.getReferencedElection().stream().map(HashableEch0155Factory::fromReferencedElectionInformation)
-						.collect(HashableList.toHashableList())
+				electionType.getReferencedElection().stream()
+						.map(HashableEch0155Factory::fromReferencedElectionInformation)
+						.collect(toHashableList())
 		);
 	}
 
@@ -316,9 +329,12 @@ interface HashableEch0155Factory {
 	static Hashable fromVotingCard(final VotingCardType votingCard) {
 		return HashableList.of(
 				fromNullableString(votingCard.getVotingCardNumber(), "votingCardNumber"),
-				fromNullable(votingCard.getVotingPersonIdentification(), "votingPersonIdentification",
+				fromNullable(votingCard.getVotingPersonIdentification(),
+						"votingPersonIdentification",
 						HashableEch0155Factory::fromVotingPersonIdentification),
-				votingCard.getDomainOfInfluence().stream().map(HashableEch0155Factory::fromDomainOfInfluence).collect(HashableList.toHashableList()),
+				votingCard.getDomainOfInfluence().stream()
+						.map(HashableEch0155Factory::fromDomainOfInfluence)
+						.collect(toHashableList()),
 				fromNullableBigInteger(votingCard.getVoterType(), "voterType"),
 				fromNullableBigInteger(votingCard.getVotingChannel(), "votingChannel"),
 				fromNullableDate(votingCard.getDateOfVoting(), "dateOfVoting"),
@@ -334,7 +350,7 @@ interface HashableEch0155Factory {
 				HashableEch0044Factory.fromNamedPersonId(votingPersonIdentification.getLocalPersonId()),
 				votingPersonIdentification.getOtherPersonId().stream()
 						.map(HashableEch0044Factory::fromNamedPersonId)
-						.collect(HashableList.toHashableList()),
+						.collect(toHashableList()),
 				fromNullableString(votingPersonIdentification.getOfficialName(), "officialName"),
 				fromNullableString(votingPersonIdentification.getFirstName(), "firstName"),
 				fromNullableString(votingPersonIdentification.getSex(), "sex"),
@@ -348,7 +364,7 @@ interface HashableEch0155Factory {
 		return fromNullable(electionGroupDescription, "electionGroupDescription",
 				egd -> egd.getElectionDescriptionInfo().stream()
 						.map(HashableEch0155Factory::fromElectionDescriptionInfo)
-						.collect(HashableList.toHashableList()));
+						.collect(toHashableList()));
 	}
 
 	static Hashable fromListDescriptionInfo(final ListDescriptionInformationType.ListDescriptionInfo listDescriptionInfo) {
@@ -364,7 +380,7 @@ interface HashableEch0155Factory {
 			final TieBreakQuestionType tieBreakQuestion) {
 		return fromNullable(tieBreakQuestion, "tieBreakQuestion", tbq -> tbq.getTieBreakQuestionInfo().stream()
 				.map(HashableEch0155Factory::fromTieBreakQuestionInfo)
-				.collect(HashableList.toHashableList()));
+				.collect(toHashableList()));
 	}
 
 	static Hashable fromTieBreakQuestionInfo(final TieBreakQuestionType.TieBreakQuestionInfo tieBreakQuestionInfo) {
@@ -374,5 +390,45 @@ interface HashableEch0155Factory {
 				HashableString.from(tieBreakQuestionInfo.getTieBreakQuestion()),
 				fromNullableString(tieBreakQuestionInfo.getTieBreakQuestion2(), "tieBreakQuestion2")
 		);
+	}
+
+	static Hashable fromIdentifier(final String identifier) {
+		return HashableString.from(identifier);
+	}
+
+	static Hashable fromContestIdentification(final String contestIdentification) {
+		return fromIdentifier(contestIdentification);
+	}
+
+	static Hashable fromCountingCircleId(final String countingCircleId) {
+		return fromIdentifier(countingCircleId);
+	}
+
+	static Hashable fromVoteIdentification(final String voteIdentification) {
+		return fromIdentifier(voteIdentification);
+	}
+
+	static Hashable fromBallotIdentification(final String ballotIdentification) {
+		return fromIdentifier(ballotIdentification);
+	}
+
+	static Hashable fromQuestionId(final String questionIdentification) {
+		return fromIdentifier(questionIdentification);
+	}
+
+	static Hashable fromElectionIdentification(final String electionGroupIdentification) {
+		return fromIdentifier(electionGroupIdentification);
+	}
+
+	static Hashable fromListIdentification(final String listIdentification) {
+		return fromIdentifier(listIdentification);
+	}
+
+	static Hashable fromWriteIn(final String writeIn) {
+		return HashableString.from(writeIn);
+	}
+
+	static Hashable fromCandidateReferenceOnPosition(final String candidateReferenceOnPosition) {
+		return HashableString.from(candidateReferenceOnPosition);
 	}
 }

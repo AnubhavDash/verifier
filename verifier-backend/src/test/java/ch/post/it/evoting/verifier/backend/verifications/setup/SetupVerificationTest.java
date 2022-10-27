@@ -52,7 +52,8 @@ public abstract class SetupVerificationTest {
 	protected static CertificateLoader certificateLoader;
 	protected static ApplicationEventPublisher applicationEventPublisherMock;
 	protected static ObjectMapper objectMapper;
-	protected static XmlFileRepository<Delivery> deliveryXmlFileRepository;
+	protected static XmlFileRepository<Delivery> ech0110XmlFileRepository;
+	protected static XmlFileRepository<ch.ech.xmlns.ech_0222._1.Delivery> ech0222XmlFileRepository;
 	protected static XmlFileRepository<Configuration> configurationXmlFileRepository;
 	protected static XmlFileRepository<Results> resultsXmlFileRepository;
 	protected static ElectionDataExtractionService electionDataExtractionService;
@@ -65,10 +66,11 @@ public abstract class SetupVerificationTest {
 		objectMapper = DomainObjectMapper.getNewInstance();
 		datasetPath = Paths.get("").toAbsolutePath().getParent().resolve("datasets").resolve("dataset-setup1");
 		signatureFactory = new TestDigitalSignaturesFactory();
-		deliveryXmlFileRepository = new XmlFileRepository<>();
+		ech0110XmlFileRepository = new XmlFileRepository<>();
+		ech0222XmlFileRepository = new XmlFileRepository<>();
 		configurationXmlFileRepository = new XmlFileRepository<>();
-		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper, deliveryXmlFileRepository,
-				configurationXmlFileRepository, resultsXmlFileRepository);
+		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper, ech0110XmlFileRepository,
+				ech0222XmlFileRepository, configurationXmlFileRepository, resultsXmlFileRepository);
 		resultsXmlFileRepository = new XmlFileRepository<>();
 	}
 

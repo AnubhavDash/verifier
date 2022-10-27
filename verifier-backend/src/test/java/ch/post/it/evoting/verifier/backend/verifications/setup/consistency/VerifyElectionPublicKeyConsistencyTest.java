@@ -19,8 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
-import java.util.List;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,6 +29,8 @@ import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqElement;
+import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
+import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
@@ -61,9 +61,9 @@ class VerifyElectionPublicKeyConsistencyTest extends SetupVerificationTest {
 		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(datasetPath);
 		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
 
-		final List<GqElement> modifiedKeyElements = electionEventContext.choiceReturnCodesEncryptionPublicKey()
+		final GroupVector<GqElement, GqGroup> modifiedKeyElements = GroupVector.from(electionEventContext.choiceReturnCodesEncryptionPublicKey()
 				.getKeyElements()
-				.subList(0, electionEventContext.electoralBoardPublicKey().size());
+				.subList(0, electionEventContext.electoralBoardPublicKey().size()));
 		final ElectionEventContext modifiedElectionEventContext = spy(electionEventContext);
 		doReturn(new ElGamalMultiRecipientPublicKey(modifiedKeyElements)).when(modifiedElectionEventContext).electoralBoardPublicKey();
 		final ElectionEventContextPayload modifiedElectionEventContextPayload = new ElectionEventContextPayload(
