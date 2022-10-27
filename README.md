@@ -42,7 +42,7 @@ security hotspots, and 55 code smells.
 
 ![SonarQube](SonarQube_Verifier.jpg)
 
-The verifier contains 54 code smells in the code. [Code smells](https://docs.sonarqube.org/latest/user-guide/concepts/) are
+The verifier contains 55 code smells in the code. [Code smells](https://docs.sonarqube.org/latest/user-guide/concepts/) are
 maintainability-related issues that might increase the likelihood of errors in future code changes but do not directly impact the code's security and
 robustness. An example would be a method that contains too many if/else statements, therefore has a high cognitive complexity, hence is difficult to
 maintain.
