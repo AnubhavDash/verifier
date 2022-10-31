@@ -21,7 +21,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
@@ -31,6 +30,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
@@ -41,9 +41,9 @@ public class VerifyConfirmedEncryptedVotesConsistency extends AbstractVerificati
 
 	private final ElectionDataExtractionService extractionService;
 
-	public VerifyConfirmedEncryptedVotesConsistency(final ApplicationEventPublisher applicationEventPublisher,
+	public VerifyConfirmedEncryptedVotesConsistency(final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService extractionService) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.extractionService = extractionService;
 	}
 

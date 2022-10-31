@@ -39,7 +39,7 @@ class VerifyFileNameVerificationCardSetIdsConsistencyTest extends SetupVerificat
 
 	@BeforeAll
 	static void setUpAll() {
-		verification = new VerifyFileNameVerificationCardSetIdsConsistency(pathService, applicationEventPublisherMock, electionDataExtractionService);
+		verification = new VerifyFileNameVerificationCardSetIdsConsistency(pathService, resultPublisherServiceMock, electionDataExtractionService);
 	}
 
 	@Test
@@ -60,8 +60,9 @@ class VerifyFileNameVerificationCardSetIdsConsistencyTest extends SetupVerificat
 		final PathService pathServiceMock = mock(PathService.class);
 		when(pathServiceMock.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, datasetPath)).thenReturn(pathNodeMock);
 
-		final VerifyFileNameVerificationCardSetIdsConsistency verifyFileNameVerificationCardSetIdsConsistency = new VerifyFileNameVerificationCardSetIdsConsistency(pathServiceMock,
-				applicationEventPublisherMock, electionDataExtractionService);
+		final VerifyFileNameVerificationCardSetIdsConsistency verifyFileNameVerificationCardSetIdsConsistency = new VerifyFileNameVerificationCardSetIdsConsistency(
+				pathServiceMock,
+				resultPublisherServiceMock, electionDataExtractionService);
 
 		final VerificationResult result = verifyFileNameVerificationCardSetIdsConsistency.verify(datasetPath);
 

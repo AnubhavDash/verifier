@@ -21,7 +21,6 @@ import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.security.SignatureException;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Element;
 
@@ -41,6 +40,7 @@ import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
 import ch.post.it.evoting.verifier.backend.hashable.HashableEch0110Factory;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
@@ -53,10 +53,10 @@ public class VerifySignatureTallyComponentEch0110 extends AbstractVerification {
 	private final SignatureVerification signatureVerification;
 
 	protected VerifySignatureTallyComponentEch0110(
-			final ApplicationEventPublisher applicationEventPublisher,
+			final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService electionDataExtractionService,
 			final SignatureVerification signatureVerification) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.electionDataExtractionService = electionDataExtractionService;
 		this.signatureVerification = signatureVerification;
 	}

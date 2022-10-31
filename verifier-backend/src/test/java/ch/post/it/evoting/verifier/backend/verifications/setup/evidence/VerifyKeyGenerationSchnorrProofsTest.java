@@ -41,7 +41,7 @@ class VerifyKeyGenerationSchnorrProofsTest extends SetupVerificationTest {
 		final ZeroKnowledgeProof zeroKnowledgeProof = ZeroKnowledgeProofFactory.createZeroKnowledgeProof();
 		verifyKeyGenerationSchnorrProofsAlgorithm = spy(new VerifyKeyGenerationSchnorrProofsAlgorithm(zeroKnowledgeProof));
 
-		verification = new VerifyKeyGenerationSchnorrProofs(applicationEventPublisherMock, electionDataExtractionService,
+		verification = new VerifyKeyGenerationSchnorrProofs(resultPublisherServiceMock, electionDataExtractionService,
 				verifyKeyGenerationSchnorrProofsAlgorithm);
 	}
 

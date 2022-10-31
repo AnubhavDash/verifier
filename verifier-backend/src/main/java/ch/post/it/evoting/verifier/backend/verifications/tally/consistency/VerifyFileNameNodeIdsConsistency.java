@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,6 +29,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
@@ -43,9 +43,9 @@ public class VerifyFileNameNodeIdsConsistency extends AbstractVerification {
 	private final PathService pathService;
 	private final ObjectMapper objectMapper;
 
-	protected VerifyFileNameNodeIdsConsistency(final ApplicationEventPublisher applicationEventPublisher, final PathService pathService,
+	protected VerifyFileNameNodeIdsConsistency(final ResultPublisherService resultPublisherService, final PathService pathService,
 			final ObjectMapper objectMapper) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.pathService = pathService;
 		this.objectMapper = objectMapper;
 	}

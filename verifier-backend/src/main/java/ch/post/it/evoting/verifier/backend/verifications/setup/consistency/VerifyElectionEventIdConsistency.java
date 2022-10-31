@@ -17,7 +17,6 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
 import java.nio.file.Path;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
@@ -25,6 +24,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -38,9 +38,9 @@ public class VerifyElectionEventIdConsistency extends AbstractVerification {
     private final ElectionDataExtractionService electionDataExtractionService;
 
     protected VerifyElectionEventIdConsistency(
-            final ApplicationEventPublisher applicationEventPublisher,
+            final ResultPublisherService resultPublisherService,
             final ElectionDataExtractionService electionDataExtractionService) {
-        super(applicationEventPublisher);
+        super(resultPublisherService);
         this.electionDataExtractionService = electionDataExtractionService;
     }
 

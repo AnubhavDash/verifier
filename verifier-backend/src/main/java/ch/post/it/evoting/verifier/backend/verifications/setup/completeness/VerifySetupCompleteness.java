@@ -24,7 +24,6 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -35,6 +34,7 @@ import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.PreSetupEvent;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
@@ -47,8 +47,8 @@ public class VerifySetupCompleteness extends AbstractVerification {
 	private final PathService pathService;
 
 	protected VerifySetupCompleteness(final PathService pathService,
-			final ApplicationEventPublisher applicationEventPublisher) {
-		super(applicationEventPublisher);
+			final ResultPublisherService resultPublisherService) {
+		super(resultPublisherService);
 		this.pathService = pathService;
 	}
 

@@ -21,7 +21,6 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -31,6 +30,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
@@ -49,11 +49,11 @@ public class VerifyChunkConsistency extends AbstractVerification {
     private final ElectionDataExtractionService electionDataExtractionService;
 
     protected VerifyChunkConsistency(
-            final PathService pathService,
-            final ApplicationEventPublisher applicationEventPublisher,
-            final ElectionDataExtractionService electionDataExtractionService) {
-        super(applicationEventPublisher);
-        this.pathService = pathService;
+			final PathService pathService,
+			final ResultPublisherService resultPublisherService,
+			final ElectionDataExtractionService electionDataExtractionService) {
+		super(resultPublisherService);
+		this.pathService = pathService;
         this.electionDataExtractionService = electionDataExtractionService;
     }
 

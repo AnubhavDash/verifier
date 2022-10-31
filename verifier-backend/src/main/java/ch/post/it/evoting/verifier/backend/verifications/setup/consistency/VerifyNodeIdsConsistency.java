@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.ControlComponentPublicKeys;
@@ -32,6 +31,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -42,9 +42,9 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 
 	private final ElectionDataExtractionService extractionService;
 
-	protected VerifyNodeIdsConsistency(final ApplicationEventPublisher applicationEventPublisher,
+	protected VerifyNodeIdsConsistency(final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService extractionService) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.extractionService = extractionService;
 	}
 

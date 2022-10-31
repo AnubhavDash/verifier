@@ -44,7 +44,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<reproducible-build-maven-plugin.version>0.15.1</reproducible-build-maven-plugin.version>
 		<rootProject>verifier</rootProject>
-		<slf4j.version>2.0.3</slf4j.version>
+		<slf4j.version>1.7.36</slf4j.version>
 		<spring-boot.version>2.7.4</spring-boot.version>
 		<super-machine.version>0.1.0</super-machine.version>
 		<system-stubs.version>2.0.1</system-stubs.version>
@@ -243,6 +243,11 @@
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-validation</artifactId>
+				<version>${spring-boot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-log4j2</artifactId>
 				<version>${spring-boot.version}</version>
 			</dependency>
 

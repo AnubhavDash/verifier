@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.MoreCollectors;
@@ -41,6 +40,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
@@ -59,9 +59,9 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 
 	protected VerifyVerificationCardIdsConsistency(
 			final PathService pathService,
-			final ApplicationEventPublisher applicationEventPublisher,
+			final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService electionDataExtractionService) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.pathService = pathService;
 		this.electionDataExtractionService = electionDataExtractionService;
 	}

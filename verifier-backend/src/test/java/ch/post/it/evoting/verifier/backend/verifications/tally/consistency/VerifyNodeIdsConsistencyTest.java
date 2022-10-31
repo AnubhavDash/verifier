@@ -45,7 +45,7 @@ class VerifyNodeIdsConsistencyTest extends TallyVerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyNodeIdsConsistency(applicationEventPublisherMock, electionDataExtractionService);
+		verification = new VerifyNodeIdsConsistency(resultPublisherServiceMock, electionDataExtractionService);
 	}
 
 	@Test
@@ -70,7 +70,7 @@ class VerifyNodeIdsConsistencyTest extends TallyVerificationTest {
 		doReturn(shufflePayloads).when(extractionServiceSpy).getAllControlComponentShufflePayloadsOrderedByNodeId(datasetPath);
 
 		final VerifyNodeIdsConsistency verifyElectionEventIdConsistency = new VerifyNodeIdsConsistency(
-				applicationEventPublisherMock, extractionServiceSpy);
+				resultPublisherServiceMock, extractionServiceSpy);
 
 		final VerificationResult result = verifyElectionEventIdConsistency.verify(datasetPath);
 

@@ -44,7 +44,7 @@ class VerifyEncryptionGroupConsistencyTest extends TallyVerificationTest {
 	static void setupAll() {
 		differentEncryptionGroupParameters = new EncryptionGroupParameters("p", "q", "g");
 		extractionService = new EncryptionGroupParametersExtractionService(pathService, objectMapper);
-		verification = new VerifyEncryptionGroupConsistency(applicationEventPublisherMock, extractionService);
+		verification = new VerifyEncryptionGroupConsistency(resultPublisherServiceMock, extractionService);
 	}
 
 	@Test
@@ -99,7 +99,7 @@ class VerifyEncryptionGroupConsistencyTest extends TallyVerificationTest {
 	}
 
 	private void assertInvalidVerification(final EncryptionGroupParametersExtractionService groupParametersExtractorMock) {
-		final VerifyEncryptionGroupConsistency invalidVerification = new VerifyEncryptionGroupConsistency(applicationEventPublisherMock,
+		final VerifyEncryptionGroupConsistency invalidVerification = new VerifyEncryptionGroupConsistency(resultPublisherServiceMock,
 				groupParametersExtractorMock);
 		final VerificationResult verificationResult = invalidVerification.verify(datasetPath);
 

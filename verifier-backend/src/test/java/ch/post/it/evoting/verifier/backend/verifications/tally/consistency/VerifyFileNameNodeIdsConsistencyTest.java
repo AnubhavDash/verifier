@@ -41,7 +41,7 @@ class VerifyFileNameNodeIdsConsistencyTest extends TallyVerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyFileNameNodeIdsConsistency(applicationEventPublisherMock, pathService, objectMapper);
+		verification = new VerifyFileNameNodeIdsConsistency(resultPublisherServiceMock, pathService, objectMapper);
 	}
 
 	@Test
@@ -59,7 +59,7 @@ class VerifyFileNameNodeIdsConsistencyTest extends TallyVerificationTest {
 				datasetPath).get(0);
 		doReturn(firstBallotBoxPayload).when(objectMapperMock).readValue(any(File.class), eq(ControlComponentBallotBoxPayload.class));
 
-		final VerifyFileNameNodeIdsConsistency failingVerification = new VerifyFileNameNodeIdsConsistency(applicationEventPublisherMock,
+		final VerifyFileNameNodeIdsConsistency failingVerification = new VerifyFileNameNodeIdsConsistency(resultPublisherServiceMock,
 				pathService, objectMapperMock);
 		final VerificationResult verificationResult = failingVerification.verify(datasetPath);
 
@@ -77,7 +77,7 @@ class VerifyFileNameNodeIdsConsistencyTest extends TallyVerificationTest {
 				datasetPath).get(0);
 		doReturn(firstShufflePayload).when(objectMapperMock).readValue(any(File.class), eq(ControlComponentShufflePayload.class));
 
-		final VerifyFileNameNodeIdsConsistency failingVerification = new VerifyFileNameNodeIdsConsistency(applicationEventPublisherMock,
+		final VerifyFileNameNodeIdsConsistency failingVerification = new VerifyFileNameNodeIdsConsistency(resultPublisherServiceMock,
 				pathService, objectMapperMock);
 		final VerificationResult verificationResult = failingVerification.verify(datasetPath);
 

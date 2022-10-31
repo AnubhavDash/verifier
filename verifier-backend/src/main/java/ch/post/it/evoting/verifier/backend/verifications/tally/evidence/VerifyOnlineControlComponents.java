@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.MoreCollectors;
@@ -35,6 +34,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
@@ -48,10 +48,10 @@ public class VerifyOnlineControlComponents extends AbstractVerification {
 	private final VerifyOnlineControlComponentsAlgorithm verifyOnlineControlComponentsAlgorithm;
 
 	public VerifyOnlineControlComponents(
-			final ApplicationEventPublisher applicationEventPublisher,
+			final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService electionDataExtractionService,
 			final VerifyOnlineControlComponentsAlgorithm verifyOnlineControlComponentsAlgorithm) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.electionDataExtractionService = electionDataExtractionService;
 		this.verifyOnlineControlComponentsAlgorithm = verifyOnlineControlComponentsAlgorithm;
 	}

@@ -62,7 +62,7 @@ class VerifyOnlineControlComponentsTest extends TallyVerificationTest {
 		verifyOnlineControlComponentsAlgorithm = spy(
 				new VerifyOnlineControlComponentsAlgorithm(verifyOnlineControlComponentsBallotBoxAlgorithm));
 
-		verification = new VerifyOnlineControlComponents(applicationEventPublisherMock, electionDataExtractionService,
+		verification = new VerifyOnlineControlComponents(resultPublisherServiceMock, electionDataExtractionService,
 				verifyOnlineControlComponentsAlgorithm);
 	}
 

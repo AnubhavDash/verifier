@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.ControlComponentPublicKeys;
@@ -31,6 +30,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -42,8 +42,8 @@ public class VerifyCcmElectionPublicKeyConsistency extends AbstractVerification 
 	private final ElectionDataExtractionService extractionService;
 
 	protected VerifyCcmElectionPublicKeyConsistency(final ElectionDataExtractionService extractionService,
-			final ApplicationEventPublisher applicationEventPublisher) {
-		super(applicationEventPublisher);
+			final ResultPublisherService resultPublisherService) {
+		super(resultPublisherService);
 		this.extractionService = extractionService;
 	}
 

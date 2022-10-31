@@ -38,7 +38,7 @@ class VerifySetupCompletenessTest extends SetupVerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifySetupCompleteness(pathService, applicationEventPublisherMock);
+		verification = new VerifySetupCompleteness(pathService, resultPublisherServiceMock);
 	}
 
 	@Test
@@ -56,7 +56,7 @@ class VerifySetupCompletenessTest extends SetupVerificationTest {
 		final PathService spyPathService = spy(pathService);
 		doThrow(UncheckedIOException.class).when(spyPathService).buildFromRootPath(eq(StructureKey.ELECTION_EVENT_CONTEXT), any());
 
-		final VerifySetupCompleteness verificationWithSpy = new VerifySetupCompleteness(spyPathService, applicationEventPublisherMock);
+		final VerifySetupCompleteness verificationWithSpy = new VerifySetupCompleteness(spyPathService, resultPublisherServiceMock);
 		final VerificationResult result = verificationWithSpy.verify(datasetPath);
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithSpy.getVerificationDefinition(),
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "verification100.nok.message"));

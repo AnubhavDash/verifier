@@ -20,7 +20,6 @@ import static com.google.common.base.Preconditions.checkState;
 import java.nio.file.Path;
 import java.security.SignatureException;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -34,6 +33,7 @@ import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
 import ch.post.it.evoting.verifier.backend.hashable.HashableResultsFactory;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
@@ -47,10 +47,10 @@ public class VerifySignatureTallyComponentDecrypt extends AbstractVerification {
 	private final SignatureVerification signatureVerification;
 
 	protected VerifySignatureTallyComponentDecrypt(
-			final ApplicationEventPublisher applicationEventPublisher,
+			final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService electionDataExtractionService,
 			final SignatureVerification signatureVerification) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.electionDataExtractionService = electionDataExtractionService;
 		this.signatureVerification = signatureVerification;
 	}

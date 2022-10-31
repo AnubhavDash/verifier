@@ -43,7 +43,7 @@ class VerifyElectionPublicKeyConsistencyTest extends SetupVerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyElectionPublicKeyConsistency(EL_GAMAL, electionDataExtractionService, applicationEventPublisherMock);
+		verification = new VerifyElectionPublicKeyConsistency(EL_GAMAL, electionDataExtractionService, resultPublisherServiceMock);
 	}
 
 	@Test
@@ -73,7 +73,7 @@ class VerifyElectionPublicKeyConsistencyTest extends SetupVerificationTest {
 		doReturn(modifiedElectionEventContextPayload).when(extractionServiceMock).getElectionEventContextPayload(datasetPath);
 
 		final VerifyElectionPublicKeyConsistency verificationWithMock = new VerifyElectionPublicKeyConsistency(EL_GAMAL, extractionServiceMock,
-				applicationEventPublisherMock);
+				resultPublisherServiceMock);
 
 		final VerificationResult result = verificationWithMock.verify(datasetPath);
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),

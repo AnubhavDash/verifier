@@ -47,7 +47,7 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyVerificationCardIdsConsistency(applicationEventPublisherMock, electionDataExtractionService);
+		verification = new VerifyVerificationCardIdsConsistency(resultPublisherServiceMock, electionDataExtractionService);
 	}
 
 	@Test
@@ -66,7 +66,7 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 			final ElectionEventContextPayload electionEventContextPayloadMock,
 			final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloadsMock) {
 		// given
-		final var verifyElectionEventIdConsistency = new VerifyVerificationCardIdsConsistency(applicationEventPublisherMock,
+		final var verifyElectionEventIdConsistency = new VerifyVerificationCardIdsConsistency(resultPublisherServiceMock,
 				electionDataExtractionService);
 
 		// when
@@ -139,7 +139,7 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 		// given
 
 		// when
-		final var verifyElectionEventIdConsistency = new VerifyVerificationCardIdsConsistency(applicationEventPublisherMock,
+		final var verifyElectionEventIdConsistency = new VerifyVerificationCardIdsConsistency(resultPublisherServiceMock,
 				electionDataExtractionService);
 		final var result = verifyElectionEventIdConsistency.verifyVerificationCardIdsInExpectedSet(controlComponentBallotBoxPayloadsMock,
 				setupComponentTallyDataPayloads);

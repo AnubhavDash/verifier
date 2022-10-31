@@ -19,7 +19,6 @@ import java.nio.file.Path;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
@@ -29,6 +28,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
@@ -48,9 +48,9 @@ public class VerifyFileNameBallotBoxIdsConsistency extends AbstractVerification 
 
 	protected VerifyFileNameBallotBoxIdsConsistency(
 			final PathService pathService,
-			final ApplicationEventPublisher applicationEventPublisher,
+			final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService electionDataExtractionService) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.pathService = pathService;
 		this.electionDataExtractionService = electionDataExtractionService;
 	}

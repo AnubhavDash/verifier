@@ -38,7 +38,7 @@ class VerifyChoiceReturnCodesPublicKeyConsistencyTest extends SetupVerificationT
 	private static final ElGamal EL_GAMAL = ElGamalFactory.createElGamal();
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyChoiceReturnCodesPublicKeyConsistency(EL_GAMAL, electionDataExtractionService, applicationEventPublisherMock);
+		verification = new VerifyChoiceReturnCodesPublicKeyConsistency(EL_GAMAL, electionDataExtractionService, resultPublisherServiceMock);
 	}
 
 	@Test
@@ -65,7 +65,7 @@ class VerifyChoiceReturnCodesPublicKeyConsistencyTest extends SetupVerificationT
 		doReturn(modifiedElectionEventContextPayload).when(extractionServiceMock).getElectionEventContextPayload(datasetPath);
 
 		final VerifyChoiceReturnCodesPublicKeyConsistency verificationWithMock = new VerifyChoiceReturnCodesPublicKeyConsistency(EL_GAMAL,
-				extractionServiceMock, applicationEventPublisherMock);
+				extractionServiceMock, resultPublisherServiceMock);
 
 		final VerificationResult result = verificationWithMock.verify(datasetPath);
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),

@@ -37,7 +37,7 @@ class VerifyCcrChoiceReturnCodesPublicKeyConsistencyTest extends SetupVerificati
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyCcrChoiceReturnCodesPublicKeyConsistency(electionDataExtractionService, applicationEventPublisherMock);
+		verification = new VerifyCcrChoiceReturnCodesPublicKeyConsistency(electionDataExtractionService, resultPublisherServiceMock);
 	}
 
 	@Test
@@ -72,7 +72,7 @@ class VerifyCcrChoiceReturnCodesPublicKeyConsistencyTest extends SetupVerificati
 				.when(extractionServiceMock).getControlComponentPublicKeysPayloads(datasetPath);
 
 		final VerifyCcrChoiceReturnCodesPublicKeyConsistency verificationWithMock = new VerifyCcrChoiceReturnCodesPublicKeyConsistency(
-				extractionServiceMock, applicationEventPublisherMock);
+				extractionServiceMock, resultPublisherServiceMock);
 
 		final VerificationResult result = verificationWithMock.verify(datasetPath);
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),

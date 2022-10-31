@@ -18,7 +18,6 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 import java.nio.file.Path;
 import java.util.List;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
@@ -30,6 +29,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
@@ -41,9 +41,9 @@ public class VerifyCiphertextsConsistency extends AbstractVerification {
 
 	private final ElectionDataExtractionService extractionService;
 
-	public VerifyCiphertextsConsistency(final ApplicationEventPublisher applicationEventPublisher,
+	public VerifyCiphertextsConsistency(final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService extractionService) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.extractionService = extractionService;
 	}
 

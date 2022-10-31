@@ -19,7 +19,6 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
@@ -28,6 +27,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -38,9 +38,9 @@ public class VerifyTotalVotersConsistency extends AbstractVerification {
 
 	private final ElectionDataExtractionService extractionService;
 
-	protected VerifyTotalVotersConsistency(final ApplicationEventPublisher applicationEventPublisher,
+	protected VerifyTotalVotersConsistency(final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService extractionService) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.extractionService = extractionService;
 	}
 

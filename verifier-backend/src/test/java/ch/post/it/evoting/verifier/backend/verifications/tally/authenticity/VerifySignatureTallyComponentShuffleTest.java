@@ -42,7 +42,7 @@ class VerifySignatureTallyComponentShuffleTest extends TallyVerificationTest {
 	@BeforeEach
 	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
 		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
-		verification = new VerifySignatureTallyComponentShuffle(applicationEventPublisherMock, electionDataExtractionService, testSignatureVerification);
+		verification = new VerifySignatureTallyComponentShuffle(resultPublisherServiceMock, electionDataExtractionService, testSignatureVerification);
 	}
 
 	@Test

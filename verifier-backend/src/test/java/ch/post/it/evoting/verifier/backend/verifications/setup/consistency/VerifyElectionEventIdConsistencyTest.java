@@ -41,7 +41,7 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 
 	@BeforeAll
 	static void setUpAll() {
-		verification = new VerifyElectionEventIdConsistency(applicationEventPublisherMock,
+		verification = new VerifyElectionEventIdConsistency(resultPublisherServiceMock,
 				electionDataExtractionService);
 	}
 
@@ -66,7 +66,7 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 				.getControlComponentCodeSharesPayloadsOrderedByNodeId(datasetPath);
 
 		final VerifyElectionEventIdConsistency verifyElectionEventIdConsistency = new VerifyElectionEventIdConsistency(
-				applicationEventPublisherMock, extractionServiceSpy);
+				resultPublisherServiceMock, extractionServiceSpy);
 
 		final VerificationResult result = verifyElectionEventIdConsistency.verify(datasetPath);
 
@@ -87,7 +87,7 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 				.getSetupComponentVerificationDataPayloads(datasetPath);
 
 		final VerifyElectionEventIdConsistency verifyElectionEventIdConsistency = new VerifyElectionEventIdConsistency(
-				applicationEventPublisherMock, extractionServiceSpy);
+				resultPublisherServiceMock, extractionServiceSpy);
 
 		final VerificationResult result = verifyElectionEventIdConsistency.verify(datasetPath);
 
@@ -107,7 +107,7 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 		doReturn(singletonList(setupComponentTallyDataPayloadMock)).when(extractionServiceSpy).getSetupComponentTallyDataPayloads(datasetPath);
 
 		final VerifyElectionEventIdConsistency verifyElectionEventIdConsistency = new VerifyElectionEventIdConsistency(
-				applicationEventPublisherMock, extractionServiceSpy);
+				resultPublisherServiceMock, extractionServiceSpy);
 
 		final VerificationResult result = verifyElectionEventIdConsistency.verify(datasetPath);
 
@@ -127,7 +127,7 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 		doReturn(singletonList(controlComponentPublicKeysPayloadMock)).when(extractionServiceSpy).getControlComponentPublicKeysPayloads(datasetPath);
 
 		final VerifyElectionEventIdConsistency verifyElectionEventIdConsistency = new VerifyElectionEventIdConsistency(
-				applicationEventPublisherMock, extractionServiceSpy);
+				resultPublisherServiceMock, extractionServiceSpy);
 
 		final VerificationResult result = verifyElectionEventIdConsistency.verify(datasetPath);
 

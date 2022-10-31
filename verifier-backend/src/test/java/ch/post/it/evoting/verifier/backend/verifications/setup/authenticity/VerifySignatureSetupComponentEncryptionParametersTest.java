@@ -42,7 +42,7 @@ class VerifySignatureSetupComponentEncryptionParametersTest extends SetupVerific
 	@BeforeEach
 	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
 		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
-		verification = new VerifySignatureSetupComponentEncryptionParameters(applicationEventPublisherMock, electionDataExtractionService,
+		verification = new VerifySignatureSetupComponentEncryptionParameters(resultPublisherServiceMock, electionDataExtractionService,
 				testSignatureVerification);
 	}
 

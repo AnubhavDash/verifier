@@ -39,7 +39,7 @@ class VerifyFileNameBallotBoxIdsConsistencyTest extends TallyVerificationTest {
 
 	@BeforeAll
 	static void setUpAll() {
-		verification = new VerifyFileNameBallotBoxIdsConsistency(pathService, applicationEventPublisherMock, electionDataExtractionService);
+		verification = new VerifyFileNameBallotBoxIdsConsistency(pathService, resultPublisherServiceMock, electionDataExtractionService);
 	}
 
 	@Test
@@ -61,7 +61,7 @@ class VerifyFileNameBallotBoxIdsConsistencyTest extends TallyVerificationTest {
 		when(pathServiceMock.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, datasetPath)).thenReturn(pathNodeMock);
 
 		final VerifyFileNameBallotBoxIdsConsistency verifyFileNameBallotBoxIdsConsistency = new VerifyFileNameBallotBoxIdsConsistency(pathServiceMock,
-				applicationEventPublisherMock, electionDataExtractionService);
+				resultPublisherServiceMock, electionDataExtractionService);
 
 		final VerificationResult result = verifyFileNameBallotBoxIdsConsistency.verify(datasetPath);
 

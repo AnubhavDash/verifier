@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import ch.ech.xmlns.ech_0110._4.Delivery;
@@ -37,6 +36,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 import ch.post.it.evoting.verifier.protocol.domain.configuration.SetupComponentTallyDataPayload;
@@ -52,8 +52,8 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 
 	protected VerifyTallyControlComponent(final ElectionDataExtractionService extractionService,
 			final VerifyTallyControlComponentAlgorithm verifyTallyControlComponentAlgorithm,
-			final ApplicationEventPublisher applicationEventPublisher) {
-		super(applicationEventPublisher);
+			final ResultPublisherService resultPublisherService) {
+		super(resultPublisherService);
 		this.extractionService = extractionService;
 		this.verifyTallyControlComponentAlgorithm = verifyTallyControlComponentAlgorithm;
 	}

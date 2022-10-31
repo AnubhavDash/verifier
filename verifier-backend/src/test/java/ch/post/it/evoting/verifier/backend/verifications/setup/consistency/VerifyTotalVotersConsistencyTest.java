@@ -43,7 +43,7 @@ class VerifyTotalVotersConsistencyTest extends SetupVerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyTotalVotersConsistency(applicationEventPublisherMock, electionDataExtractionService);
+		verification = new VerifyTotalVotersConsistency(resultPublisherServiceMock, electionDataExtractionService);
 	}
 
 	@Test
@@ -64,7 +64,7 @@ class VerifyTotalVotersConsistencyTest extends SetupVerificationTest {
 		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
 		doReturn(configurationMock).when(extractionServiceMock).getSetupComponentConfig(datasetPath);
 
-		final VerifyTotalVotersConsistency verificationBadVoterTotal = new VerifyTotalVotersConsistency(applicationEventPublisherMock,
+		final VerifyTotalVotersConsistency verificationBadVoterTotal = new VerifyTotalVotersConsistency(resultPublisherServiceMock,
 				extractionServiceMock);
 
 		final IllegalStateException exception = assertThrows(IllegalStateException.class, () -> verificationBadVoterTotal.verify(datasetPath));
@@ -84,7 +84,7 @@ class VerifyTotalVotersConsistencyTest extends SetupVerificationTest {
 		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
 		doReturn(electionEventContextPayloadMock).when(extractionServiceMock).getElectionEventContextPayload(datasetPath);
 
-		final VerifyTotalVotersConsistency verificationNok = new VerifyTotalVotersConsistency(applicationEventPublisherMock,
+		final VerifyTotalVotersConsistency verificationNok = new VerifyTotalVotersConsistency(resultPublisherServiceMock,
 				extractionServiceMock);
 		final VerificationResult verificationResult = verificationNok.verify(datasetPath);
 

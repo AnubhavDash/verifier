@@ -24,7 +24,6 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
@@ -33,6 +32,7 @@ import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.PreTallyEvent;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
@@ -46,8 +46,8 @@ public class VerifyTallyCompleteness extends AbstractVerification {
 	private final PathService pathService;
 
 	protected VerifyTallyCompleteness(final PathService pathService,
-			final ApplicationEventPublisher applicationEventPublisher) {
-		super(applicationEventPublisher);
+			final ResultPublisherService resultPublisherService) {
+		super(resultPublisherService);
 		this.pathService = pathService;
 	}
 

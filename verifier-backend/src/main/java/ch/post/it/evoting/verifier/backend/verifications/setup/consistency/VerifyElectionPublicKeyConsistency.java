@@ -18,7 +18,6 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Streams;
@@ -34,6 +33,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -47,8 +47,8 @@ public class VerifyElectionPublicKeyConsistency extends AbstractVerification {
 	protected VerifyElectionPublicKeyConsistency(
 			final ElGamal elGamal,
 			final ElectionDataExtractionService extractionService,
-			final ApplicationEventPublisher applicationEventPublisher) {
-		super(applicationEventPublisher);
+			final ResultPublisherService resultPublisherService) {
+		super(resultPublisherService);
 		this.elGamal = elGamal;
 		this.extractionService = extractionService;
 	}

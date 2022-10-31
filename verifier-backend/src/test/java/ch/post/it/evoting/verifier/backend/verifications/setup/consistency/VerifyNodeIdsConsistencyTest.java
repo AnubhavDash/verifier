@@ -39,7 +39,7 @@ class VerifyNodeIdsConsistencyTest extends SetupVerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyNodeIdsConsistency(applicationEventPublisherMock, electionDataExtractionService);
+		verification = new VerifyNodeIdsConsistency(resultPublisherServiceMock, electionDataExtractionService);
 	}
 
 	@Test
@@ -58,7 +58,7 @@ class VerifyNodeIdsConsistencyTest extends SetupVerificationTest {
 		doReturn(publicKeysPayloads.subList(0, publicKeysPayloads.size() - 1)).when(extractionServiceMock)
 				.getControlComponentPublicKeysPayloads(datasetPath);
 
-		final VerifyNodeIdsConsistency verificationWithMock = new VerifyNodeIdsConsistency(applicationEventPublisherMock, extractionServiceMock);
+		final VerifyNodeIdsConsistency verificationWithMock = new VerifyNodeIdsConsistency(resultPublisherServiceMock, extractionServiceMock);
 		final VerificationResult verificationResult = verificationWithMock.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),
@@ -75,7 +75,7 @@ class VerifyNodeIdsConsistencyTest extends SetupVerificationTest {
 				Stream.of(publicKeysPayloads.get(0))).toList();
 		doReturn(publicKeysWithDuplicateNodeIds).when(extractionServiceMock).getControlComponentPublicKeysPayloads(datasetPath);
 
-		final VerifyNodeIdsConsistency verificationWithMock = new VerifyNodeIdsConsistency(applicationEventPublisherMock, extractionServiceMock);
+		final VerifyNodeIdsConsistency verificationWithMock = new VerifyNodeIdsConsistency(resultPublisherServiceMock, extractionServiceMock);
 		final VerificationResult verificationResult = verificationWithMock.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),
@@ -94,7 +94,7 @@ class VerifyNodeIdsConsistencyTest extends SetupVerificationTest {
 						.toList());
 		doReturn(codeSharesPayloadsMissingNodeId).when(extractionServiceMock).getControlComponentCodeSharesPayloadsByChunkAndVcs(datasetPath);
 
-		final VerifyNodeIdsConsistency verificationWithMock = new VerifyNodeIdsConsistency(applicationEventPublisherMock, extractionServiceMock);
+		final VerifyNodeIdsConsistency verificationWithMock = new VerifyNodeIdsConsistency(resultPublisherServiceMock, extractionServiceMock);
 		final VerificationResult verificationResult = verificationWithMock.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),
