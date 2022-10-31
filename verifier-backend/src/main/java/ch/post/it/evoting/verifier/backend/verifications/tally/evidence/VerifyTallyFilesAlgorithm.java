@@ -75,13 +75,6 @@ public class VerifyTallyFilesAlgorithm {
 		final ch.ech.xmlns.ech_0222._1.Delivery eCH0222XML = input.getTallyComponentEch0222();
 		final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads = input.getTallyComponentVotesPayloads();
 
-		checkArgument(tallyComponentVotesPayloads.values().stream()
-						.map(TallyComponentVotesPayload::getActualSelectedVotingOptions)
-						.flatMap(Collection::stream)
-						.flatMap(Collection::stream)
-						.allMatch(v -> VALID_XML_TOKEN_PATTERN.matcher(v).matches()),
-				"Voting options should match a valid xml xs:token");
-
 		// Operation.
 		final Results evotingDecryptXML_prime = ResultDeliveryMapper.toResults(configurationXML, tallyComponentVotesPayloads);
 		final Delivery eCH0110XML_prime = DeliveryMapper.INSTANCE.map(ee, configurationXML, evotingDecryptXML);
