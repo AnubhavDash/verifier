@@ -21,7 +21,6 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -65,14 +64,14 @@ public class PathService {
 		final StructureNode structureNode = getStructureNode(structureKey);
 
 		// If the file/folder has a dynamic part in its path, the dynamic part has to be specified.
-		if (structureNode.isDynamicAncestor()) {
+		if (structureNode.dynamicAncestor()) {
 			throw new IllegalArgumentException(String.format("The file/directory %s is contained in a folder with a dynamic name. Please use " +
 							"PathService.buildFromDynamicAncestorPath(FileTreeKey fileTreeKey, Path dynamicPath, Path inputDirectoryPath).",
-					structureNode.getQualifier()));
+					structureNode.qualifier()));
 		}
 
 		// Combine input path with file/directory parent path.
-		final Path combined = rootPath.resolve(structureNode.getParentPath());
+		final Path combined = rootPath.resolve(structureNode.parentPath());
 
 		try {
 			return new PathNode(resolve(combined, structureNode), structureNode);
@@ -93,9 +92,9 @@ public class PathService {
 		final StructureNode structureNode = getStructureNode(structureKey);
 
 		// Check if asked key is really dynamic.
-		if (!structureNode.isDynamicAncestor()) {
+		if (!structureNode.dynamicAncestor()) {
 			throw new IllegalArgumentException(String.format("The file/directory %s is not contained in a folder with a dynamic name. Please use " +
-					"PathService.buildFromRootPath(FileTreeKey fileTreeKey, Path rootPath).", structureNode.getQualifier()));
+					"PathService.buildFromRootPath(FileTreeKey fileTreeKey, Path rootPath).", structureNode.qualifier()));
 		}
 
 		// dynamicPath is already absolute
@@ -118,7 +117,7 @@ public class PathService {
 	}
 
 	public String getRegexGroup(final StructureKey structureKey, final String fileName, final int groupIndex) {
-		final Pattern pattern = Pattern.compile(this.getStructureNode(structureKey).getQualifier());
+		final Pattern pattern = Pattern.compile(this.getStructureNode(structureKey).qualifier());
 		final Matcher matcher = pattern.matcher(fileName);
 
 		if (!matcher.matches()) {
@@ -139,17 +138,7 @@ public class PathService {
 
 			// Register current node as long as it is not a dynamic name folder.
 			final PathType type = PathType.valueOf(node.path("type").asText());
-			if (PathType.FILE.equals(type)) {
-				// Check if there are defined relations and add them.
-				final JsonNode relationsNode = node.path("relations");
-				List<RelationType> relations = getRelations(relationsNode);
-				// Add PathNode to the map
-				structureMap.put(StructureKey.valueOf(node.path("key").asText()), new StructureNode(type, parentPath, currentName,
-						dynamicAncestor, relations));
-			} else {
-				structureMap.put(StructureKey.valueOf(node.path("key").asText()), new StructureNode(type, parentPath, currentName,
-						dynamicAncestor, null));
-			}
+			structureMap.put(StructureKey.valueOf(node.path("key").asText()), new StructureNode(type, parentPath, currentName, dynamicAncestor));
 
 			// If the current node is a folder or dynamic folder, recursively continue.
 			if (PathType.DIRECTORY.equals(type) || PathType.DYNAMIC_DIRECTORY.equals(type)) {
@@ -157,19 +146,6 @@ public class PathService {
 						dynamicAncestor || PathType.DYNAMIC_DIRECTORY.equals(type));
 			}
 		}
-	}
-
-	/**
-	 * Provide the list of the {@link RelationType}.
-	 */
-	private List<RelationType> getRelations(JsonNode relationsNode) {
-		List<RelationType> relations = new ArrayList<>();
-		if (!relationsNode.isMissingNode()) {
-			for (JsonNode relationNode : relationsNode) {
-				relations.add(RelationType.valueOf(relationNode.asText()));
-			}
-		}
-		return relations;
 	}
 
 	/**
@@ -183,7 +159,7 @@ public class PathService {
 		final String quotedSeparator = Pattern.quote(startingPath.getFileSystem().getSeparator());
 		// It is assumed that in dataset_structure file the file separators are /. Now we need to replace them with file system separators
 		// which are escaped to work in the regex.
-		final String escapedSeparatorQualifier = structureNode.getQualifier().replace("/", Matcher.quoteReplacement(quotedSeparator));
+		final String escapedSeparatorQualifier = structureNode.qualifier().replace("/", Matcher.quoteReplacement(quotedSeparator));
 		// Prepend with separator to ensure the path starts with it. Add a $ to be sure the path ends exactly with this regex.
 		final Pattern pattern = Pattern.compile(quotedSeparator + escapedSeparatorQualifier + "$");
 
@@ -200,13 +176,13 @@ public class PathService {
 			filteredPaths = paths
 					// Remove starting path itself in case it matched by accident.
 					.filter(path -> !startingPath.equals(path))
-					.filter(path -> PathType.FILE.equals(structureNode.getType()) ? Files.isRegularFile(path) : Files.isDirectory(path))
+					.filter(path -> PathType.FILE.equals(structureNode.type()) ? Files.isRegularFile(path) : Files.isDirectory(path))
 					.toList();
 		}
 
 		if (filteredPaths.isEmpty()) {
 			throw new NoSuchFileException(String.format("No file or directory found with given name/pattern. Starting path: %s " +
-					"namePattern:%s ", startingPath, structureNode.getQualifier()));
+					"namePattern:%s ", startingPath, structureNode.qualifier()));
 		} else {
 			return filteredPaths;
 		}

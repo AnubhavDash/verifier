@@ -81,14 +81,6 @@ class StructureChecker {
 	private static void checkFileNodeIntegrity(JsonNode node) {
 		final JsonNode key = node.path("key");
 		final JsonNode name = node.path("name");
-		final JsonNode relations = node.path("relations");
-		for (JsonNode relation : relations) {
-			try {
-				RelationType.valueOf(relation.asText());
-			} catch (IllegalArgumentException e) {
-				throw new IllegalArgumentException(String.format("Type does not exist: %s", relation.asText()));
-			}
-		}
 
 		final String type = node.path("type").asText();
 		checkNodeMissing(key, "key", type);

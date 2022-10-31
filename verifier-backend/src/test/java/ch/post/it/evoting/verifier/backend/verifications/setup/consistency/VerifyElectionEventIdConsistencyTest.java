@@ -36,8 +36,6 @@ import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerification
 import ch.post.it.evoting.verifier.protocol.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.verifier.protocol.domain.configuration.SetupComponentTallyDataPayload;
 
-import lombok.SneakyThrows;
-
 @DisplayName("VerifyElectionEventIdConsistency with")
 class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 
@@ -58,14 +56,14 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 
 	@Test
 	@DisplayName("inconsistent control component code shares payloads failed")
-	@SneakyThrows
 	void inconsistentControlComponentCodeSharesPayload() {
 
 		final ControlComponentCodeSharesPayload controlComponentCodeSharesPayloadMock = mock(ControlComponentCodeSharesPayload.class);
 		when(controlComponentCodeSharesPayloadMock.getElectionEventId()).thenReturn("wrong election event ID");
 
 		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(singletonList(controlComponentCodeSharesPayloadMock)).when(extractionServiceSpy).getControlComponentCodeSharesPayloadsOrderedByNodeId(datasetPath);
+		doReturn(singletonList(controlComponentCodeSharesPayloadMock)).when(extractionServiceSpy)
+				.getControlComponentCodeSharesPayloadsOrderedByNodeId(datasetPath);
 
 		final VerifyElectionEventIdConsistency verifyElectionEventIdConsistency = new VerifyElectionEventIdConsistency(
 				applicationEventPublisherMock, extractionServiceSpy);
@@ -79,7 +77,6 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 
 	@Test
 	@DisplayName("inconsistent setup component verification data payload failed")
-	@SneakyThrows
 	void inconsistentSetupComponentVerificationDataPayload() {
 
 		final SetupComponentVerificationDataPayload setupComponentVerificationDataPayloadMock = mock(SetupComponentVerificationDataPayload.class);
@@ -101,7 +98,6 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 
 	@Test
 	@DisplayName("inconsistent setup component tally data payload failed")
-	@SneakyThrows
 	void inconsistentSetupComponentTallyDataPayload() {
 
 		final SetupComponentTallyDataPayload setupComponentTallyDataPayloadMock = mock(SetupComponentTallyDataPayload.class);
@@ -122,7 +118,6 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 
 	@Test
 	@DisplayName("inconsistent control component public keys payload failed")
-	@SneakyThrows
 	void inconsistentControlComponentPublicKeysPayload() {
 
 		final ControlComponentPublicKeysPayload controlComponentPublicKeysPayloadMock = mock(ControlComponentPublicKeysPayload.class);
