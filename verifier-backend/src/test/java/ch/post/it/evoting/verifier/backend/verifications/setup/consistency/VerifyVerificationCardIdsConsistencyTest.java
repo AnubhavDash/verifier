@@ -20,15 +20,21 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationData;
+import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationDataPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 
@@ -64,4 +70,54 @@ class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 		assertEquals(expectedResult, result);
 	}
 
+	@Test
+	@DisplayName("wrong order of verification card ids in chunk is failed")
+	void wrongOrderVerificationCardIdsInChunk() {
+		final Path verificationCardSet = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, datasetPath).getRegexPaths().get(0);
+		final List<SetupComponentVerificationDataPayload> swappedPayloads = new ArrayList<>(
+				electionDataExtractionService.deserializeSetupComponentVerificationDataPayload(verificationCardSet));
+		final SetupComponentVerificationDataPayload setupComponentVerificationDataPayload = swappedPayloads.get(0);
+		final List<SetupComponentVerificationData> swappedSetupComponentVerificationData = new ArrayList<>(
+				setupComponentVerificationDataPayload.getSetupComponentVerificationData());
+		Collections.swap(swappedSetupComponentVerificationData, 0, 1);
+
+		final SetupComponentVerificationDataPayload swappedPayload = new SetupComponentVerificationDataPayload(
+				setupComponentVerificationDataPayload.getElectionEventId(), setupComponentVerificationDataPayload.getVerificationCardSetId(),
+				setupComponentVerificationDataPayload.getPartialChoiceReturnCodesAllowList(), setupComponentVerificationDataPayload.getChunkId(),
+				setupComponentVerificationDataPayload.getEncryptionGroup(), swappedSetupComponentVerificationData,
+				setupComponentVerificationDataPayload.getCombinedCorrectnessInformation());
+		swappedPayloads.set(0, swappedPayload);
+
+		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
+		doReturn(swappedPayloads).when(electionDataExtractionServiceSpy)
+				.deserializeSetupComponentVerificationDataPayload(verificationCardSet);
+		final VerifyVerificationCardIdsConsistency verifyVerificationCardIdsConsistency = new VerifyVerificationCardIdsConsistency(
+				pathService, resultPublisherServiceMock, electionDataExtractionServiceSpy);
+
+		final VerificationResult result = verifyVerificationCardIdsConsistency.verify(datasetPath);
+
+		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification311.nok.message"));
+		assertEquals(expectedResult, result);
+	}
+
+	@Test
+	@DisplayName("wrong order of verification card ids between chunks is failed")
+	void wrongOrderVerificationCardIdsBetweenChunks() {
+		final Path verificationCardSet = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, datasetPath).getRegexPaths().get(0);
+		final List<SetupComponentVerificationDataPayload> swapedPayloads = new ArrayList<>(
+				electionDataExtractionService.deserializeSetupComponentVerificationDataPayload(verificationCardSet));
+		Collections.swap(swapedPayloads, 0, 1);
+
+		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
+		doReturn(swapedPayloads).when(electionDataExtractionServiceSpy).deserializeSetupComponentVerificationDataPayload(verificationCardSet);
+		final VerifyVerificationCardIdsConsistency verifyVerificationCardIdsConsistency = new VerifyVerificationCardIdsConsistency(
+				pathService, resultPublisherServiceMock, electionDataExtractionServiceSpy);
+
+		final VerificationResult result = verifyVerificationCardIdsConsistency.verify(datasetPath);
+
+		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification311.nok.message"));
+		assertEquals(expectedResult, result);
+	}
 }
