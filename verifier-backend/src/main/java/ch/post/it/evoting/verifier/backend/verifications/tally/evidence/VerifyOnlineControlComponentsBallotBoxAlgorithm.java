@@ -133,6 +133,7 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 		checkArgument(N_C_hat >= 2, "There must be at least 2 shuffled votes.");
 		checkArgument(N_C >= 2 ? N_C_hat == N_C : N_C_hat == N_C + 2);
 		final List<String> vc_1 = confirmedEncryptedVotes.stream()
+				.parallel()
 				.map(EncryptedVerifiableVote::contextIds)
 				.map(ContextIds::verificationCardId)
 				.toList();
@@ -140,6 +141,7 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 
 		// Operation
 		final Map<String, ElGamalMultiRecipientCiphertext> vcMap_1 = confirmedEncryptedVotes.stream()
+				.parallel()
 				.collect(Collectors.toMap(encryptedVerifiableVote -> encryptedVerifiableVote.contextIds().verificationCardId(),
 						EncryptedVerifiableVote::encryptedVote));
 

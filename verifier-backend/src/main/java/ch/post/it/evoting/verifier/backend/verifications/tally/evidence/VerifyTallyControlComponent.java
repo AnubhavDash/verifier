@@ -75,9 +75,9 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 	public VerificationResult verify(final Path inputDirectoryPath) {
 		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(inputDirectoryPath);
 		final List<ControlComponentShufflePayload> controlComponentShufflePayloads = extractionService
-				.getAllControlComponentShufflePayloadsOrderedByNodeId(inputDirectoryPath);
+				.getAllControlComponentShufflePayloadsOrderedByNodeId(inputDirectoryPath).toList();
 		final List<TallyComponentShufflePayload> tallyComponentShufflePayloads = extractionService
-				.getTallyComponentShufflePayloads(inputDirectoryPath);
+				.getTallyComponentShufflePayloads(inputDirectoryPath).toList();
 		final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads = getAuthorizationAliasToTallyComponentVotesPayloadMap(
 				inputDirectoryPath, electionEventContextPayload.getElectionEventContext());
 		final Configuration electionEventConfiguration = extractionService.getSetupComponentConfig(inputDirectoryPath);
@@ -91,6 +91,7 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 
 		final Map<String, Integer> numberOfSelectableVotingOptions = electionEventContextPayload.getElectionEventContext()
 				.verificationCardSetContexts().stream()
+				.parallel()
 				.collect(Collectors.toMap(VerificationCardSetContext::ballotBoxId,
 						vcContext -> extractionService
 								.getCombinedCorrectnessInformation(inputDirectoryPath, vcContext.verificationCardSetId())
@@ -98,6 +99,7 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 
 		final Map<String, List<BigInteger>> writeInVotingOptions = electionEventContextPayload.getElectionEventContext()
 				.verificationCardSetContexts().stream()
+				.parallel()
 				.collect(Collectors.toMap(VerificationCardSetContext::ballotBoxId,
 						vcContext -> extractionService
 								.getCombinedCorrectnessInformation(inputDirectoryPath, vcContext.verificationCardSetId())

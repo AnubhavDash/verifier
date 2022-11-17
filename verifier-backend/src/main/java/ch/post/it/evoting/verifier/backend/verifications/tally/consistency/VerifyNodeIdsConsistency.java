@@ -70,7 +70,8 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 						inputDirectoryPath).stream()
 				.collect(Collectors.groupingBy(ControlComponentBallotBoxPayload::getBallotBoxId));
 		final Map<String, List<ControlComponentShufflePayload>> shufflePayloads = extractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
-						inputDirectoryPath).stream()
+						inputDirectoryPath)
+				.parallel()
 				.collect(Collectors.groupingBy(ControlComponentShufflePayload::getBallotBoxId));
 
 		if (isNodeIdConsistent(ballotBoxPayloads, shufflePayloads)) {
@@ -89,9 +90,11 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 		final Set<String> ballotBoxIds = ballotBoxPayloads.keySet();
 
 		return ballotBoxIds.stream()
+				.parallel()
 				.allMatch(bbId -> {
 							final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads = ballotBoxPayloads.get(bbId);
 							final List<Integer> ballotBoxPayloadsNodeIdList = controlComponentBallotBoxPayloads.stream()
+									.parallel()
 									.map(ControlComponentBallotBoxPayload::getNodeId)
 									.toList();
 							final Set<Integer> ballotBoxPayloadsNodeIds = Set.copyOf(ballotBoxPayloadsNodeIdList);
@@ -101,6 +104,7 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 
 							final List<ControlComponentShufflePayload> controlComponentShufflePayloads = shufflePayloads.get(bbId);
 							final List<Integer> shufflePaylodsNodeIdList = controlComponentShufflePayloads.stream()
+									.parallel()
 									.map(ControlComponentShufflePayload::getNodeId)
 									.toList();
 							final Set<Integer> shufflePayloadsNodeIds = Set.copyOf(shufflePaylodsNodeIdList);

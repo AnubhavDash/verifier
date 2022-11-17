@@ -20,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
+import java.io.InputStream;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Stream;
 

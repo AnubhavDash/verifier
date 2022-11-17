@@ -75,7 +75,7 @@ public class VerifyBallotBoxIdsConsistency extends AbstractVerification {
 						&& payloadsBallotBoxIds.ballotBoxId().equals(payloadsBallotBoxIds.tcShuffleId())
 						&& payloadsBallotBoxIds.ballotBoxId().equals(payloadsBallotBoxIds.tcVotesId()))
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 
 		if (sameBallotBoxIds) {
 			return VerificationResult.success(getVerificationDefinition());

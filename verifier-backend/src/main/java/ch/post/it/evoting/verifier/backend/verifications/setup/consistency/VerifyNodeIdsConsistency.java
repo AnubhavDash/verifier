@@ -65,13 +65,19 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 	public VerificationResult verify(final Path inputDirectoryPath) {
 		// Check controlComponentPublicKeysPayloads
 		final List<Integer> publicKeysNodeIds = extractionService.getControlComponentPublicKeysPayloads(inputDirectoryPath).stream()
+				.parallel()
 				.map(ControlComponentPublicKeysPayload::getControlComponentPublicKeys)
 				.map(ControlComponentPublicKeys::nodeId)
 				.toList();
 
 		// Check controlComponentCodeSharesPayloads
 		final Stream<List<Integer>> codeSharesNodeIds = extractionService.getControlComponentCodeSharesPayloadsByChunkAndVcs(inputDirectoryPath)
-				.map(payloadList -> payloadList.stream().map(ControlComponentCodeSharesPayload::getNodeId).toList());
+				.parallel()
+				.map(payloadList -> payloadList
+						.stream()
+						.parallel()
+						.map(ControlComponentCodeSharesPayload::getNodeId)
+						.toList());
 
 		if (verifyNodeIdsConsistency(publicKeysNodeIds, codeSharesNodeIds)) {
 			return VerificationResult.success(getVerificationDefinition());
@@ -85,8 +91,9 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 		final boolean verifPublicKeysNodeIdsComplete = Set.copyOf(publicKeysNodeIds).equals(NODE_IDS);
 		final boolean verifPublicKeyNodeIdsUnique = publicKeysNodeIds.size() == NODE_IDS.size();
 
-		final boolean verifCodeSharesNodeIds = codeSharesNodeIds.allMatch(
-				nodeIds -> NODE_IDS.equals(Set.copyOf(nodeIds)) && NODE_IDS.size() == nodeIds.size());
+		final boolean verifCodeSharesNodeIds = codeSharesNodeIds
+				.parallel()
+				.allMatch(nodeIds -> NODE_IDS.equals(Set.copyOf(nodeIds)) && NODE_IDS.size() == nodeIds.size());
 
 		return verifPublicKeysNodeIdsComplete && verifPublicKeyNodeIdsUnique && verifCodeSharesNodeIds;
 	}

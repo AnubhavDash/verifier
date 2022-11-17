@@ -56,15 +56,14 @@ public class VerifySignatureSetupComponentPublicKeys extends AbstractVerificatio
 		this.signatureVerification = signatureVerification;
 	}
 
-
 	@Override
 	public VerificationDefinition getVerificationDefinition() {
-		final var definition = new VerificationDefinition();
+		final VerificationDefinition definition = new VerificationDefinition();
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.AUTHENTICITY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
-						"verification.direct.trust.authenticity.description", "SetupComponentPublicKeys" ));
+						"verification.direct.trust.authenticity.description", "SetupComponentPublicKeys"));
 		definition.setId(202);
 		definition.setName("VerifySignatureSetupComponentPublicKeys");
 		definition.addVerifierEvent(SetupEvent.TYPE);
@@ -74,7 +73,7 @@ public class VerifySignatureSetupComponentPublicKeys extends AbstractVerificatio
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final var electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(
+		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(
 				inputDirectoryPath);
 
 		final boolean verified = verifySignature(electionEventContextPayload);

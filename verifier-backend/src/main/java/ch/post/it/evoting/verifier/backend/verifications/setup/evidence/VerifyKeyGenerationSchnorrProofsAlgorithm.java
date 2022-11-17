@@ -88,6 +88,7 @@ public class VerifyKeyGenerationSchnorrProofsAlgorithm {
 
 		// Operation.
 		final boolean verifSchnorrCCR = NODE_IDS.stream()
+				.parallel()
 				.flatMap(j -> {
 					final List<String> i_aux_CCR_j = List.of(ee, "GenKeysCCR", integerToString(j));
 					return IntStream.range(0, phi)
@@ -101,12 +102,14 @@ public class VerifyKeyGenerationSchnorrProofsAlgorithm {
 								return verifSchnorrCCR_j_i;
 							});
 				}).reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 
 		final boolean verifSchnorrCCM = NODE_IDS.stream()
+				.parallel()
 				.flatMap(j -> {
 					final List<String> i_aux_CCM_j = List.of(ee, "SetupTallyCCM", integerToString(j));
 					return IntStream.range(0, mu)
+							.parallel()
 							.mapToObj(i -> {
 								final boolean verifSchnorrCCM_j_i = zeroKnowledgeProof.verifySchnorrProof(pi_ELpk.get(j - 1).get(i),
 										EL_pk.get(j - 1).get(i), i_aux_CCM_j); // Due to zero indexing.
@@ -116,10 +119,11 @@ public class VerifyKeyGenerationSchnorrProofsAlgorithm {
 								return verifSchnorrCCM_j_i;
 							});
 				}).reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 
 		final List<String> i_aux_EB = List.of(ee, "SetupTallyEB");
 		final boolean verifSchnorrEB = IntStream.range(0, delta)
+				.parallel()
 				.mapToObj(i -> {
 					final boolean verifSchnorrEB_i = zeroKnowledgeProof.verifySchnorrProof(pi_EB.get(i), EB_pk.get(i), i_aux_EB);
 					if (!verifSchnorrEB_i) {
@@ -128,7 +132,7 @@ public class VerifyKeyGenerationSchnorrProofsAlgorithm {
 					return verifSchnorrEB_i;
 				})
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 
 		return verifSchnorrCCR && verifSchnorrCCM && verifSchnorrEB;
 	}

@@ -18,7 +18,9 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
@@ -76,11 +78,20 @@ public class VerifySetupFileNamesConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final boolean publicKeyFileNameConsistent = verifyControlComponentPublicKeyFileNameConsistency(inputDirectoryPath);
-		final boolean codeSharesFileNameConsistent = verifyControlComponentCodeSharesFileNameConsistency(inputDirectoryPath);
-		final boolean verificationDataFileNameConsistent = verifySetupComponentVerificationDataFileNameConsistency(inputDirectoryPath);
 
-		if (publicKeyFileNameConsistent && codeSharesFileNameConsistent && verificationDataFileNameConsistent) {
+		final List<Function<Path, Boolean>> validations = new ArrayList<>();
+		validations.add(this::verifyControlComponentPublicKeyFileNameConsistency);
+		validations.add(this::verifyControlComponentCodeSharesFileNameConsistency);
+		validations.add(this::verifySetupComponentVerificationDataFileNameConsistency);
+
+		final boolean fileNamesConsistent = validations
+				.stream()
+				.parallel()
+				.map(f -> f.apply(inputDirectoryPath))
+				.reduce(Boolean::logicalAnd)
+				.orElse(Boolean.FALSE);
+
+		if (fileNamesConsistent) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
@@ -92,6 +103,7 @@ public class VerifySetupFileNamesConsistency extends AbstractVerification {
 		final PathNode controlComponentPublicKeyNodes = pathService.buildFromRootPath(StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS, inputDirectoryPath);
 
 		return controlComponentPublicKeyNodes.getRegexPaths().stream()
+				.parallel()
 				.map(path -> {
 					final String fileName = path.getFileName().toString();
 					final String nodeIdGroup = pathService.getRegexGroup(StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS, fileName, 1);
@@ -109,18 +121,20 @@ public class VerifySetupFileNamesConsistency extends AbstractVerification {
 					return fileNodeId == payloadNodeId;
 				})
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 	}
 
 	private boolean verifyControlComponentCodeSharesFileNameConsistency(final Path inputDirectoryPath) {
 		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
 
 		return verificationCardSets.getRegexPaths().stream()
+				.parallel()
 				.map(verificationCardSetPath -> {
 					final PathNode controlComponentCodeSharesNode = pathService.buildFromDynamicAncestorPath(
 							StructureKey.CONTROL_COMPONENT_CODE_SHARES, verificationCardSetPath);
 
 					return controlComponentCodeSharesNode.getRegexPaths().stream()
+							.parallel()
 							.map(path -> {
 								final String fileName = path.getFileName().toString();
 								final String chunkIdGroup = pathService.getRegexGroup(StructureKey.CONTROL_COMPONENT_CODE_SHARES, fileName, 1);
@@ -135,21 +149,23 @@ public class VerifySetupFileNamesConsistency extends AbstractVerification {
 								return payloadChunkIds.stream().allMatch(payloadChunkId -> fileChunkId == payloadChunkId);
 							})
 							.reduce(Boolean::logicalAnd)
-							.orElseThrow();
+							.orElse(Boolean.FALSE);
 				})
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 	}
 
 	private boolean verifySetupComponentVerificationDataFileNameConsistency(final Path inputDirectoryPath) {
 		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
 
 		return verificationCardSets.getRegexPaths().stream()
+				.parallel()
 				.map(verificationCardSetPath -> {
 					final PathNode setupComponentVerificationDataNode = pathService.buildFromDynamicAncestorPath(
 							StructureKey.SETUP_COMPONENT_VERIFICATION_DATA, verificationCardSetPath);
 
 					return setupComponentVerificationDataNode.getRegexPaths().stream()
+							.parallel()
 							.map(path -> {
 								final String fileName = path.getFileName().toString();
 								final String chunkIdGroup = pathService.getRegexGroup(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA, fileName, 1);
@@ -168,9 +184,9 @@ public class VerifySetupFileNamesConsistency extends AbstractVerification {
 								return fileChunkId == payloadChunkId;
 							})
 							.reduce(Boolean::logicalAnd)
-							.orElseThrow();
+							.orElse(Boolean.FALSE);
 				})
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 	}
 }

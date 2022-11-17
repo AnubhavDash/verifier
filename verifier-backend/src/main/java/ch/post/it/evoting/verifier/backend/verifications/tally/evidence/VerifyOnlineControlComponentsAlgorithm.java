@@ -128,6 +128,7 @@ public class VerifyOnlineControlComponentsAlgorithm {
 				"All control component ballot box payloads must have the same confirmed encrypted votes.");
 
 		final List<Integer> ballotBoxPayloadsNodeIds = controlComponentBallotBoxPayloads.stream()
+				.parallel()
 				.map(ControlComponentBallotBoxPayload::getNodeId)
 				.toList();
 		checkState(NODE_IDS.size() == ballotBoxPayloadsNodeIds.size() && NODE_IDS.equals(new HashSet<>(ballotBoxPayloadsNodeIds)),
@@ -141,6 +142,7 @@ public class VerifyOnlineControlComponentsAlgorithm {
 				"All control component shuffle payloads must have the same ballot box id.");
 
 		final List<Integer> shufflePayloadsNodeIds = controlComponentShufflePayloads.stream()
+				.parallel()
 				.map(ControlComponentShufflePayload::getNodeId)
 				.toList();
 		checkState(NODE_IDS.size() == shufflePayloadsNodeIds.size() && NODE_IDS.equals(new HashSet<>(shufflePayloadsNodeIds)),

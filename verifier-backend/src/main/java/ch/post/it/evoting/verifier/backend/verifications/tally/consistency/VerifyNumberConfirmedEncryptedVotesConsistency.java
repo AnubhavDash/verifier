@@ -71,7 +71,7 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 				.parallel()
 				.map(this::verifyConsistency)
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 
 		if (isNumberConfirmedEncryptedVotesConsistent) {
 			return VerificationResult.success(getVerificationDefinition());

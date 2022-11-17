@@ -58,7 +58,7 @@ public class VerifySignatureControlComponentCodeShares extends AbstractVerificat
 
 	@Override
 	public VerificationDefinition getVerificationDefinition() {
-		final var definition = new VerificationDefinition();
+		final VerificationDefinition definition = new VerificationDefinition();
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.AUTHENTICITY);
 		definition.setDescription(
@@ -73,15 +73,11 @@ public class VerifySignatureControlComponentCodeShares extends AbstractVerificat
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final var controlComponentCodeSharesPayloads = electionDataExtractionService.getControlComponentCodeSharesPayloadsOrderedByNodeId(
-				inputDirectoryPath);
-
-		final boolean verified = controlComponentCodeSharesPayloads
-				.stream()
+		final boolean verified = electionDataExtractionService.getControlComponentCodeSharesPayloads(inputDirectoryPath)
 				.parallel()
 				.map(this::verifySignature)
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 
 		if (verified) {
 			return VerificationResult.success(getVerificationDefinition());

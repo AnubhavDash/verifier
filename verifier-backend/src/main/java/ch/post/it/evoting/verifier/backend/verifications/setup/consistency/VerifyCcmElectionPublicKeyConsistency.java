@@ -75,7 +75,7 @@ public class VerifyCcmElectionPublicKeyConsistency extends AbstractVerification 
 				.map(controlComponentPublicKeys -> electionEventContextPublicKeys.get(controlComponentPublicKeys.nodeId())
 						.equals(controlComponentPublicKeys.ccmjElectionPublicKey()))
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 
 		if (sameCCMElectionPublicKeys) {
 			return VerificationResult.success(getVerificationDefinition());

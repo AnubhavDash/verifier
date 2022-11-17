@@ -65,6 +65,7 @@ public class VerifyCiphertextsConsistency extends AbstractVerification {
 		final List<VerificationCardSetContext> verificationCardSetContexts = extractionService.getElectionEventContextPayload(inputDirectoryPath)
 				.getElectionEventContext().verificationCardSetContexts();
 		final List<Ciphertexts> ciphertexts = verificationCardSetContexts.stream()
+				.parallel()
 				.map(vcsContext -> {
 					final String ballotBoxId = vcsContext.ballotBoxId();
 					final int numberWriteInsPlusOne = vcsContext.numberOfWriteInFields() + 1;
@@ -87,6 +88,7 @@ public class VerifyCiphertextsConsistency extends AbstractVerification {
 
 	private boolean ciphertextsConsistent(final List<Ciphertexts> ciphertexts) {
 		return ciphertexts.stream()
+				.parallel()
 				.map(information -> {
 					final int numberWriteInsPlusOne = information.numberWriteInsPlusOne;
 					final boolean ballotBoxPayloadsCiphertextsConsistent = information.ballotBoxPayloads.stream()
@@ -104,7 +106,8 @@ public class VerifyCiphertextsConsistency extends AbstractVerification {
 							.shuffledCiphertexts().getElementSize() == numberWriteInsPlusOne;
 					return ballotBoxPayloadsCiphertextsConsistent && shufflePayloadsCiphertextsConsistent && tallyShufflePayloadCiphertextsConsistent;
 				})
-				.reduce(Boolean::logicalAnd).orElse(Boolean.FALSE);
+				.reduce(Boolean::logicalAnd)
+				.orElse(Boolean.FALSE);
 	}
 
 	private record Ciphertexts(List<ControlComponentBallotBoxPayload> ballotBoxPayloads, List<ControlComponentShufflePayload> shufflePayloads,

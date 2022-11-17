@@ -66,11 +66,11 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 			final ElectionEventContextPayload electionEventContextPayloadMock,
 			final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloadsMock) {
 		// given
-		final var verifyElectionEventIdConsistency = new VerifyVerificationCardIdsConsistency(resultPublisherServiceMock,
-				electionDataExtractionService);
+		final VerifyVerificationCardIdsConsistency verifyElectionEventIdConsistency = new VerifyVerificationCardIdsConsistency(
+				resultPublisherServiceMock, electionDataExtractionService);
 
 		// when
-		final var result = verifyElectionEventIdConsistency.verifyVerificationCardSetRelationToBallotBox(controlComponentBallotBoxPayloadsMock,
+		final boolean result = verifyElectionEventIdConsistency.verifyVerificationCardSetRelationToBallotBox(controlComponentBallotBoxPayloadsMock,
 				electionEventContextPayloadMock);
 
 		// then
@@ -139,9 +139,10 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 		// given
 
 		// when
-		final var verifyElectionEventIdConsistency = new VerifyVerificationCardIdsConsistency(resultPublisherServiceMock,
+		final VerifyVerificationCardIdsConsistency verifyElectionEventIdConsistency = new VerifyVerificationCardIdsConsistency(
+				resultPublisherServiceMock,
 				electionDataExtractionService);
-		final var result = verifyElectionEventIdConsistency.verifyVerificationCardIdsInExpectedSet(controlComponentBallotBoxPayloadsMock,
+		final boolean result = verifyElectionEventIdConsistency.verifyVerificationCardIdsInExpectedSet(controlComponentBallotBoxPayloadsMock,
 				setupComponentTallyDataPayloads);
 
 		// then
@@ -218,7 +219,7 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 					})
 					.toList();
 
-			final var electionEventContextPayloadMock = mock(ElectionEventContextPayload.class, Answers.RETURNS_DEEP_STUBS);
+			final ElectionEventContextPayload electionEventContextPayloadMock = mock(ElectionEventContextPayload.class, Answers.RETURNS_DEEP_STUBS);
 			when(electionEventContextPayloadMock.getElectionEventContext().verificationCardSetContexts()).thenReturn(verificationCardSetContexts);
 			return electionEventContextPayloadMock;
 		}
@@ -251,7 +252,7 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 						return mock;
 					})
 					.toList();
-			final var controlComponentBallotBoxPayload = mock(ControlComponentBallotBoxPayload.class);
+			final ControlComponentBallotBoxPayload controlComponentBallotBoxPayload = mock(ControlComponentBallotBoxPayload.class);
 			when(controlComponentBallotBoxPayload.getBallotBoxId()).thenReturn(ballotBoxId);
 			when(controlComponentBallotBoxPayload.getConfirmedEncryptedVotes()).thenReturn(encryptedVerifiableVotes);
 			return controlComponentBallotBoxPayload;

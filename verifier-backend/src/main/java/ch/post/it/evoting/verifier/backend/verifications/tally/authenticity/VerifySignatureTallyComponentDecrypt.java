@@ -57,7 +57,7 @@ public class VerifySignatureTallyComponentDecrypt extends AbstractVerification {
 
 	@Override
 	public VerificationDefinition getVerificationDefinition() {
-		final var definition = new VerificationDefinition();
+		final VerificationDefinition definition = new VerificationDefinition();
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.AUTHENTICITY);
 		definition.setDescription(

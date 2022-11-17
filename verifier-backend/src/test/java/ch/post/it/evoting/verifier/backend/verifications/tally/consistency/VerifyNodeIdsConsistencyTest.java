@@ -63,7 +63,7 @@ class VerifyNodeIdsConsistencyTest extends TallyVerificationTest {
 	void inconsistentNodeId(final int... nodeIds) {
 
 		final List<ControlComponentBallotBoxPayload> ballotBoxPayloads = generateBallotBoxesMock(nodeIds);
-		final List<ControlComponentShufflePayload> shufflePayloads = generateShufflesMock(nodeIds);
+		final Stream<ControlComponentShufflePayload> shufflePayloads = generateShufflesMock(nodeIds);
 
 		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
 		doReturn(ballotBoxPayloads).when(extractionServiceSpy).getAllControlComponentBallotBoxPayloadsOrderedByNodeId(datasetPath);
@@ -91,7 +91,7 @@ class VerifyNodeIdsConsistencyTest extends TallyVerificationTest {
 	private List<ControlComponentBallotBoxPayload> generateBallotBoxesMock(final int... nodeIds) {
 		return Arrays.stream(nodeIds).boxed()
 				.map(nodeId -> {
-					final var mock = mock(ControlComponentBallotBoxPayload.class);
+					final ControlComponentBallotBoxPayload mock = mock(ControlComponentBallotBoxPayload.class);
 					when(mock.getNodeId()).thenReturn(nodeId);
 					when(mock.getBallotBoxId()).thenReturn("7b170560b5ae4b6b87ab00119ddc6782");
 					return mock;
@@ -99,14 +99,13 @@ class VerifyNodeIdsConsistencyTest extends TallyVerificationTest {
 				.toList();
 	}
 
-	private List<ControlComponentShufflePayload> generateShufflesMock(final int... nodeIds) {
+	private Stream<ControlComponentShufflePayload> generateShufflesMock(final int... nodeIds) {
 		return Arrays.stream(nodeIds).boxed()
 				.map(nodeId -> {
-					final var mock = mock(ControlComponentShufflePayload.class);
+					final ControlComponentShufflePayload mock = mock(ControlComponentShufflePayload.class);
 					when(mock.getNodeId()).thenReturn(nodeId);
 					when(mock.getBallotBoxId()).thenReturn("7b170560b5ae4b6b87ab00119ddc6782");
 					return mock;
-				})
-				.toList();
+				});
 	}
 }

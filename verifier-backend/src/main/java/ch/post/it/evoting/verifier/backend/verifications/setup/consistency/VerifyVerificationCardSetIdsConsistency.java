@@ -81,7 +81,7 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 								&& payloadsVerificationCardSetIds.verificationCardSetId().equals(payloadsVerificationCardSetIds.codeShareIds())
 								&& payloadsVerificationCardSetIds.verificationCardSetId().equals(payloadsVerificationCardSetIds.tallyIds()))
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 
 		if (sameVerificationCardSetIds) {
 			return VerificationResult.success(getVerificationDefinition());

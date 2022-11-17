@@ -103,6 +103,6 @@ public class VerifyEncryptedCKExponentiationProofsVerificationCardSetAlgorithm {
 					return exponentiationVerif_id;
 				})
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 	}
 }

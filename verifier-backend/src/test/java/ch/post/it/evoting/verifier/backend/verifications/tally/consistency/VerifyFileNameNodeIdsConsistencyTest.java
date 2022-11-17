@@ -74,7 +74,7 @@ class VerifyFileNameNodeIdsConsistencyTest extends TallyVerificationTest {
 		final ElectionDataExtractionService extractionService = new ElectionDataExtractionService(pathService, objectMapperMock,
 				ech0110XmlFileRepository, ech0222XmlFileRepository, configurationXmlFileRepository, resultsXmlFileRepository);
 		final ControlComponentShufflePayload firstShufflePayload = extractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
-				datasetPath).get(0);
+				datasetPath).findFirst().orElseThrow();
 		doReturn(firstShufflePayload).when(objectMapperMock).readValue(any(File.class), eq(ControlComponentShufflePayload.class));
 
 		final VerifyFileNameNodeIdsConsistency failingVerification = new VerifyFileNameNodeIdsConsistency(resultPublisherServiceMock,

@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
@@ -82,7 +83,7 @@ public class ExponentiationProofsVerificationExtractionService {
 				.build();
 	}
 
-	public List<ContextAndInputForVerificationCardSetAndControlComponent> extractContextAndInputs(
+	public Stream<ContextAndInputForVerificationCardSetAndControlComponent> extractContextAndInputs(
 			final Path inputDirectoryPath, final VerifyEncryptedExponentiationProofsInput input) {
 		checkNotNull(inputDirectoryPath);
 		checkNotNull(input);
@@ -90,7 +91,9 @@ public class ExponentiationProofsVerificationExtractionService {
 		final String electionEventId = input.getElectionEventId();
 		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(inputDirectoryPath);
 		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
-		final Map<String, Integer> numberOfVoters = electionEventContext.verificationCardSetContexts().stream()
+		final Map<String, Integer> numberOfVoters = electionEventContext.verificationCardSetContexts()
+				.stream()
+				.parallel()
 				.collect(Collectors.toMap(VerificationCardSetContext::verificationCardSetId, VerificationCardSetContext::numberOfVotingCards));
 
 		checkArgument(electionEventContext.electionEventId().equals(electionEventId));
@@ -103,10 +106,11 @@ public class ExponentiationProofsVerificationExtractionService {
 				.stream()
 				.parallel()
 				.map(verificationCardSetIdPath -> {
-					final ContributionRequestResponse contributionRequestResponse = assembleRequestResponse(
-							verificationCardSetIdPath, electionEventId);
+					final ContributionRequestResponse contributionRequestResponse = assembleRequestResponse(verificationCardSetIdPath,
+							electionEventId);
 					return contributionRequestResponse.contributionResponses()
 							.stream()
+							.parallel()
 							.map(contributionResponse -> new ContextAndInputForVerificationCardSetAndControlComponent(
 									new VerifyEncryptedExponentiationProofsVerificationCardSetContext.Builder()
 											.setEncryptionGroup(electionEventContextPayload.getEncryptionGroup())
@@ -122,8 +126,7 @@ public class ExponentiationProofsVerificationExtractionService {
 											contributionResponse.responseValues()))
 							).toList();
 				})
-				.flatMap(Collection::stream)
-				.toList();
+				.flatMap(Collection::stream);
 	}
 
 	private ContributionRequestResponse assembleRequestResponse(final Path verificationCardSetIdPath,
@@ -142,6 +145,7 @@ public class ExponentiationProofsVerificationExtractionService {
 		verifyControlComponentCodeSharesConsistency(contributionResponsesPayloads, electionEventId,
 				verificationCardSetIdPath.getFileName().toString());
 		final Map<Integer, List<ControlComponentCodeSharesPayload>> chunkIdToContributionResponses = contributionResponsesPayloads.stream()
+				.parallel()
 				.filter(chunk -> chunk.stream().findFirst().isPresent())
 				.collect(Collectors.toMap(chunk -> chunk.stream().findFirst().get().getChunkId(), Function.identity()));
 
@@ -162,8 +166,7 @@ public class ExponentiationProofsVerificationExtractionService {
 							IntStream.range(0, chunkIdToContributionResponses.size())
 									.mapToObj(chunkIdToContributionResponses::get)
 									.flatMap(Collection::stream)
-									.filter(
-											controlComponentCodeSharesPayload -> controlComponentCodeSharesPayload.getNodeId() == nodeId)
+									.filter(controlComponentCodeSharesPayload -> controlComponentCodeSharesPayload.getNodeId() == nodeId)
 									.map(ControlComponentCodeSharesPayload::getControlComponentCodeShares)
 									.flatMap(Collection::stream)
 									.toList();
@@ -175,7 +178,8 @@ public class ExponentiationProofsVerificationExtractionService {
 			final Map<Integer, SetupComponentVerificationDataPayload> chunkIdToContributionRequests) {
 		final List<SetupComponentVerificationData> setupComponentVerificationData = IntStream.range(0, chunkIdToContributionRequests.size())
 				.mapToObj(chunkId -> chunkIdToContributionRequests.get(chunkId).getSetupComponentVerificationData())
-				.flatMap(Collection::stream).toList();
+				.flatMap(Collection::stream)
+				.toList();
 
 		// We assume the combinedCorrectnessInformation are the same between the contribution request.
 		return new ContributionRequest(
@@ -193,14 +197,16 @@ public class ExponentiationProofsVerificationExtractionService {
 				"There must be at least one chunk of control component code shares payload. [electionEventId: %s, verificationCardSetId: %s]",
 				electionEventId, verificationCardSetId));
 
-		checkArgument(IntStream.range(0, controlComponentCodeSharesPayloads.size()).parallel()
+		checkArgument(IntStream.range(0, controlComponentCodeSharesPayloads.size())
+						.parallel()
 						.allMatch(i -> controlComponentCodeSharesPayloads.get(i).size() == NODE_IDS.size()
 								&& controlComponentCodeSharesPayloads.get(i).stream()
 								.allMatch(nodeContributionResponse -> nodeContributionResponse.getChunkId() == i)),
 				"The chunk id sequence is interrupted or incomplete. [electionEventId: %s, verificationCardSetId: %s]", electionEventId,
 				verificationCardSetId);
 
-		checkState(controlComponentCodeSharesPayloads.parallelStream().flatMap(Collection::stream)
+		checkState(controlComponentCodeSharesPayloads.parallelStream()
+						.flatMap(Collection::stream)
 						.allMatch(payload -> electionEventId.equals(payload.getElectionEventId())
 								&& verificationCardSetId.equals(payload.getVerificationCardSetId())),
 				"All control component code shares payload must be related to the correct election event id and "

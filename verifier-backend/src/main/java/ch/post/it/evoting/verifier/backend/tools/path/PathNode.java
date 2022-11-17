@@ -15,24 +15,17 @@
  */
 package ch.post.it.evoting.verifier.backend.tools.path;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class PathNode {
 
 	private final List<Path> paths;
 	private final Path firstPath;
-	private final StructureNode structureNode;
 
-	PathNode(List<Path> path, StructureNode structureNode) {
+	PathNode(List<Path> path) {
 		this.paths = path;
 		this.firstPath = path.get(0);
-		this.structureNode = structureNode;
 	}
 
 	/**
@@ -51,37 +44,6 @@ public class PathNode {
 	 */
 	public List<Path> getRegexPaths() {
 		return paths;
-	}
-
-	public Path getRegexPath(String value) {
-		return paths.stream()
-				.filter(path -> path.getFileName().toString().equals(value))
-				.findAny()
-				.orElseThrow(() -> new IllegalArgumentException(String.format("Asked directory / file does not exist: %s", value)));
-	}
-
-	public List<Path> getSubDirectories() throws IOException {
-		if (Files.isDirectory(firstPath)) {
-			try (final Stream<Path> walk = Files.walk(firstPath, 1)) {
-				return walk.filter(p -> Files.isDirectory(p) && !firstPath.equals(p)).collect(Collectors.toCollection(ArrayList::new));
-			}
-		} else {
-			throw new IllegalArgumentException("The PathNode does not represent a directory.");
-		}
-	}
-
-	public List<Path> getSubFiles() throws IOException {
-		if (Files.isDirectory(firstPath)) {
-			try (final Stream<Path> walk = Files.walk(firstPath, 1)) {
-				return walk.filter(p -> Files.isRegularFile(p) && !firstPath.equals(p)).collect(Collectors.toCollection(ArrayList::new));
-			}
-		} else {
-			throw new IllegalArgumentException("The PathNode does not represent a directory.");
-		}
-	}
-
-	public String getQualifier() {
-		return structureNode.qualifier();
 	}
 
 }

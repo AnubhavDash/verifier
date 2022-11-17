@@ -77,7 +77,7 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 				.map(controlComponentPublicKeys -> electionEventCcmjSchnorrProofs.get(controlComponentPublicKeys.nodeId())
 						.equals(controlComponentPublicKeys.ccmjSchnorrProofs()))
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 
 		final Map<Integer, GroupVector<SchnorrProof, ZqGroup>> electionEventCcrjSchnorrProofs = electionEventContextPayload.getElectionEventContext()
 				.combinedControlComponentPublicKeys().stream()
@@ -88,7 +88,7 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 				.map(controlComponentPublicKeys -> electionEventCcrjSchnorrProofs.get(controlComponentPublicKeys.nodeId())
 						.equals(controlComponentPublicKeys.ccrjSchnorrProofs()))
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 
 		if (sameCcmjSchnorrProofs && sameCcrjSchnorrProofs) {
 			return VerificationResult.success(getVerificationDefinition());

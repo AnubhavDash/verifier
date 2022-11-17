@@ -85,7 +85,7 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 				.parallel()
 				.map(this::verifyConsistency)
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 
 		if (verificationCardIdsConsistent) {
 			return VerificationResult.success(getVerificationDefinition());

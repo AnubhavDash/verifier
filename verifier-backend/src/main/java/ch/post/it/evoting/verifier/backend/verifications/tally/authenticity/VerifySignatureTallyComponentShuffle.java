@@ -19,6 +19,8 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
 import java.security.SignatureException;
+import java.util.List;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
@@ -59,7 +61,7 @@ public class VerifySignatureTallyComponentShuffle extends AbstractVerification {
 
 	@Override
 	public VerificationDefinition getVerificationDefinition() {
-		final var definition = new VerificationDefinition();
+		final VerificationDefinition definition = new VerificationDefinition();
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.AUTHENTICITY);
 		definition.setDescription(
@@ -74,13 +76,13 @@ public class VerifySignatureTallyComponentShuffle extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final var tallyComponentShufflePayloads = electionDataExtractionService.getTallyComponentShufflePayloads(inputDirectoryPath);
+		final Stream<TallyComponentShufflePayload> tallyComponentShufflePayloads = electionDataExtractionService.getTallyComponentShufflePayloads(inputDirectoryPath);
 
 		final boolean verified = tallyComponentShufflePayloads
-				.stream()
+				.parallel()
 				.map(this::verifySignature)
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 
 		if (verified) {
 			return VerificationResult.success(getVerificationDefinition());

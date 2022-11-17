@@ -58,7 +58,7 @@ public class VerifySignatureSetupComponentEncryptionParameters extends AbstractV
 
 	@Override
 	public VerificationDefinition getVerificationDefinition() {
-		final var definition = new VerificationDefinition();
+		final VerificationDefinition definition = new VerificationDefinition();
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.AUTHENTICITY);
 		definition.setDescription(
@@ -73,7 +73,8 @@ public class VerifySignatureSetupComponentEncryptionParameters extends AbstractV
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final var encryptionParametersPayload = electionDataExtractionService.getEncryptionParametersPayload(inputDirectoryPath);
+		final EncryptionParametersPayload encryptionParametersPayload = electionDataExtractionService.getEncryptionParametersPayload(
+				inputDirectoryPath);
 
 		final boolean verified = verifySignature(encryptionParametersPayload);
 

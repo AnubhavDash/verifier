@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
 import java.security.SignatureException;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
@@ -59,7 +60,7 @@ public class VerifySignatureControlComponentBallotBox extends AbstractVerificati
 
 	@Override
 	public VerificationDefinition getVerificationDefinition() {
-		final var definition = new VerificationDefinition();
+		final VerificationDefinition definition = new VerificationDefinition();
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.AUTHENTICITY);
 		definition.setDescription(
@@ -74,14 +75,15 @@ public class VerifySignatureControlComponentBallotBox extends AbstractVerificati
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final var controlComponentBallotBoxPayloads = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(inputDirectoryPath);
+		final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
+				inputDirectoryPath);
 
 		final boolean verified = controlComponentBallotBoxPayloads
 				.stream()
 				.parallel()
 				.map(this::verifySignature)
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 
 		if (verified) {
 			return VerificationResult.success(getVerificationDefinition());

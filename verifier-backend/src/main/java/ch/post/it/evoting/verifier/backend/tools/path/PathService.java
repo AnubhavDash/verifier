@@ -74,7 +74,7 @@ public class PathService {
 		final Path combined = rootPath.resolve(structureNode.parentPath());
 
 		try {
-			return new PathNode(resolve(combined, structureNode), structureNode);
+			return new PathNode(resolve(combined, structureNode));
 		} catch (IOException e) {
 			throw new UncheckedIOException(
 					String.format("File or directory path could not be obtained for key %s and root path %s.", structureKey, rootPath), e);
@@ -99,7 +99,7 @@ public class PathService {
 
 		// dynamicPath is already absolute
 		try {
-			return new PathNode(resolve(dynamicPath, structureNode), structureNode);
+			return new PathNode(resolve(dynamicPath, structureNode));
 		} catch (IOException e) {
 			throw new UncheckedIOException(
 					String.format("File or directory path could not be obtained for key %s and dynamic path %s.", structureKey, dynamicPath), e);

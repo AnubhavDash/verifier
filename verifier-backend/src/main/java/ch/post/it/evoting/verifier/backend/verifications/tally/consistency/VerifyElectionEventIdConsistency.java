@@ -67,21 +67,23 @@ public class VerifyElectionEventIdConsistency extends AbstractVerification {
 
 		final boolean areControlComponentBallotBoxPayloadVerified = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
 						inputDirectoryPath).stream()
+				.parallel()
 				.map(ControlComponentBallotBoxPayload::getElectionEventId)
 				.allMatch(id -> id.equals(electionEventId));
 
 		final boolean areControlComponentShufflePayloadsVerified = electionDataExtractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
-						inputDirectoryPath).stream()
+						inputDirectoryPath)
+				.parallel()
 				.map(ControlComponentShufflePayload::getElectionEventId)
 				.allMatch(id -> id.equals(electionEventId));
 
 		final boolean areTallyComponentShufflePayloadsVerified = electionDataExtractionService.getTallyComponentShufflePayloads(inputDirectoryPath)
-				.stream()
+				.parallel()
 				.map(TallyComponentShufflePayload::getElectionEventId)
 				.allMatch(id -> id.equals(electionEventId));
 
-		final boolean areTallyComponentVotesPayloadsVerified = electionDataExtractionService.getTallyComponentVotesPayloads(
-						inputDirectoryPath).stream()
+		final boolean areTallyComponentVotesPayloadsVerified = electionDataExtractionService.getTallyComponentVotesPayloads(inputDirectoryPath)
+				.parallel()
 				.map(TallyComponentVotesPayload::getElectionEventId)
 				.allMatch(id -> id.equals(electionEventId));
 
