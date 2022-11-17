@@ -154,7 +154,7 @@ public class XmlFileRepository<T> {
 			schemaFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
 			schemaFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "file");
 
-			final URL schemaUrl = this.getClass().getClassLoader().getResource(schemaResourceName);
+			final URL schemaUrl = this.getClass().getResource(schemaResourceName);
 			return schemaFactory.newSchema(schemaUrl);
 		} catch (final SAXException e) {
 			throw new IllegalStateException(String.format("Could not create new schema. [schemaResourceName: %s]", schemaResourceName), e);

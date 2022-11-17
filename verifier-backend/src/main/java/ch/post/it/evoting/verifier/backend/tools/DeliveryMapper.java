@@ -186,14 +186,18 @@ public interface DeliveryMapper {
 
 	private List<CountingCircleResultsType> mapToCountingCircleResultsTypes(final Configuration configuration, final Results results) {
 
+		record CountingCircleTypeRecord(String id, String name) {
+		}
+
 		return configuration.getAuthorizations().getAuthorization().stream()
 				.map(AuthorizationType::getAuthorizationObject)
 				.flatMap(Collection::stream)
 				.map(AuthorizationObjectType::getCountingCircle)
+				.map(countingCircleType -> new CountingCircleTypeRecord(countingCircleType.getId(), countingCircleType.getName()))
 				.distinct()
 				.map(countingCircleType -> new CountingCircleType()
-						.withCountingCircleId(countingCircleType.getId())
-						.withCountingCircleName(countingCircleType.getName()))
+						.withCountingCircleId(countingCircleType.id())
+						.withCountingCircleName(countingCircleType.name()))
 				.map(countingCircleType -> new CountingCircleResultsType()
 						.withCountingCircle(countingCircleType)
 						.withVotingCardsInformation(mapToVotingCardsInformation(countingCircleType.getCountingCircleId(), results))
