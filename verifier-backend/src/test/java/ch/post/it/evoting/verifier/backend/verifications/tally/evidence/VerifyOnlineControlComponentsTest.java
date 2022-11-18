@@ -84,7 +84,7 @@ class VerifyOnlineControlComponentsTest extends TallyVerificationTest {
 	@DisplayName("algorithm returning false is failed")
 	void algorithmReturningFalse() {
 		doReturn(false).when(verifyOnlineControlComponentsAlgorithm)
-				.verifyOnlineControlComponents(any(), anyList(), anyMap(), anyMap(), anyMap(), anyMap(), any());
+				.verifyOnlineControlComponents(any(), anyList(), anyMap(), anyMap(), anyMap(), anyMap(), any(), any());
 
 		final VerificationResult result = verification.verify(datasetPath);
 

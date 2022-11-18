@@ -30,6 +30,7 @@ import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
 import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
+import ch.post.it.evoting.cryptoprimitives.domain.mixnet.SetupComponentPublicKeysPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
@@ -74,6 +75,8 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 	@SuppressWarnings("java:S117")
 	public VerificationResult verify(final Path inputDirectoryPath) {
 		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(inputDirectoryPath);
+		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = extractionService.getSetupComponentPublicKeysPayload(
+				inputDirectoryPath);
 		final List<ControlComponentShufflePayload> controlComponentShufflePayloads = extractionService
 				.getAllControlComponentShufflePayloadsOrderedByNodeId(inputDirectoryPath).toList();
 		final List<TallyComponentShufflePayload> tallyComponentShufflePayloads = extractionService
@@ -86,8 +89,8 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 		final ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222 = extractionService.getTallyComponentEch0222(inputDirectoryPath);
 
 		final VerifyTallyControlComponentInput input = new VerifyTallyControlComponentInput(electionEventContextPayload,
-				controlComponentShufflePayloads, tallyComponentShufflePayloads, tallyComponentVotesPayloads, electionEventConfiguration,
-				tallyControlComponentDecryptions, tallyControlComponentResults, tallyComponentEch0222);
+				setupComponentPublicKeysPayload, controlComponentShufflePayloads, tallyComponentShufflePayloads, tallyComponentVotesPayloads,
+				electionEventConfiguration, tallyControlComponentDecryptions, tallyControlComponentResults, tallyComponentEch0222);
 
 		final Map<String, Integer> numberOfSelectableVotingOptions = electionEventContextPayload.getElectionEventContext()
 				.verificationCardSetContexts().stream()

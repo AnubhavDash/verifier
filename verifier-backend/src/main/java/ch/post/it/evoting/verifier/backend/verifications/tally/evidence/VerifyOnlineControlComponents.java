@@ -26,9 +26,11 @@ import org.springframework.stereotype.Component;
 import com.google.common.collect.MoreCollectors;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
+import ch.post.it.evoting.cryptoprimitives.domain.election.SetupComponentPublicKeys;
 import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
+import ch.post.it.evoting.cryptoprimitives.domain.mixnet.SetupComponentPublicKeysPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -75,6 +77,10 @@ public class VerifyOnlineControlComponents extends AbstractVerification {
 				inputDirectoryPath);
 		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
 
+		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = electionDataExtractionService.getSetupComponentPublicKeysPayload(
+				inputDirectoryPath);
+		final SetupComponentPublicKeys setupComponentPublicKeys = setupComponentPublicKeysPayload.getSetupComponentPublicKeys();
+
 		final String electionEventId = electionEventContext.electionEventId();
 		final List<String> ballotBoxIds = electionEventContext.verificationCardSetContexts().stream()
 				.parallel()
@@ -116,7 +122,7 @@ public class VerifyOnlineControlComponents extends AbstractVerification {
 		final VerificationResult verificationResult;
 		if (verifyOnlineControlComponentsAlgorithm.verifyOnlineControlComponents(electionEventId, ballotBoxIds, numberOfSelectionsByBallotBoxId,
 				controlComponentBallotBoxesByBallotBoxId, controlComponentShufflesByBallotBoxId, setupComponentTallyDataByBallotBoxId,
-				electionEventContext
+				electionEventContext, setupComponentPublicKeys
 		)) {
 			verificationResult = VerificationResult.success(getVerificationDefinition());
 		} else {

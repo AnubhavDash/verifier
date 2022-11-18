@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
+import ch.post.it.evoting.cryptoprimitives.domain.election.SetupComponentPublicKeys;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.domain.validations.Validations;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
@@ -70,7 +71,8 @@ public class VerifyOnlineControlComponentsAlgorithm {
 			final Map<String, Integer> numberOfSelectableVotingOptions,
 			final Map<String, List<ControlComponentBallotBoxPayload>> controlComponentBallotBoxPayloads,
 			final Map<String, List<ControlComponentShufflePayload>> controlComponentShufflePayloads,
-			final Map<String, SetupComponentTallyDataPayload> setupComponentTallyDataPayloads, final ElectionEventContext electionEventContext) {
+			final Map<String, SetupComponentTallyDataPayload> setupComponentTallyDataPayloads, final ElectionEventContext electionEventContext,
+			final SetupComponentPublicKeys setupComponentPublicKeys) {
 		validateUUID(electionEventId);
 		checkNotNull(ballotBoxIds);
 		checkArgument(!ballotBoxIds.isEmpty());
@@ -99,7 +101,7 @@ public class VerifyOnlineControlComponentsAlgorithm {
 					final ControlComponentBallotBoxPayload firstControlComponentBallotBoxPayload = ballotBoxPayloads.get(0);
 
 					final VerifyOnlineControlComponentsBallotBoxContext context = new VerifyOnlineControlComponentsBallotBoxContext(
-							ee, bb, numberOfSelectableVotingOptions.get(bb), electionEventContext);
+							ee, bb, numberOfSelectableVotingOptions.get(bb), electionEventContext, setupComponentPublicKeys);
 					final VerifyOnlineControlComponentBallotBoxInput input = new VerifyOnlineControlComponentBallotBoxInput(
 							KMap, firstControlComponentBallotBoxPayload, shufflePayloads);
 

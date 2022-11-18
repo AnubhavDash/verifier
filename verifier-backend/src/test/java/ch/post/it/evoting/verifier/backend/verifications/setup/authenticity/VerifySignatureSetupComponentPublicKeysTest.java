@@ -30,7 +30,7 @@ import java.security.cert.CertificateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
+import ch.post.it.evoting.cryptoprimitives.domain.mixnet.SetupComponentPublicKeysPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureGeneration;
@@ -54,20 +54,20 @@ class VerifySignatureSetupComponentPublicKeysTest extends SetupVerificationTest 
 
 	@Test
 	void testExpectedSignerSuccess() throws SignatureException {
-		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(datasetPath);
+		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = electionDataExtractionService.getSetupComponentPublicKeysPayload(datasetPath);
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_CONFIG);
-		final byte[] signature = testSignatureGeneration.genSignature(electionEventContextPayload,
-				ChannelSecurityContextData.setupComponentPublicKeys(electionEventContextPayload.getElectionEventContext().electionEventId()));
-		electionEventContextPayload.setSignature(new CryptoPrimitivesSignature(signature));
-		assertTrue(((VerifySignatureSetupComponentPublicKeys) verification).verifySignature(electionEventContextPayload));
+		final byte[] signature = testSignatureGeneration.genSignature(setupComponentPublicKeysPayload,
+				ChannelSecurityContextData.setupComponentPublicKeys(setupComponentPublicKeysPayload.getElectionEventId()));
+		setupComponentPublicKeysPayload.setSignature(new CryptoPrimitivesSignature(signature));
+		assertTrue(((VerifySignatureSetupComponentPublicKeys) verification).verifySignature(setupComponentPublicKeysPayload));
 	}
 
 	@Test
 	void testUnexpectedSignerFails() throws SignatureException {
-		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(datasetPath);
+		final SetupComponentPublicKeysPayload electionEventContextPayload = electionDataExtractionService.getSetupComponentPublicKeysPayload(datasetPath);
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.CONTROL_COMPONENT_1);
 		final byte[] wrongSignature = testSignatureGeneration.genSignature(electionEventContextPayload,
-				ChannelSecurityContextData.setupComponentPublicKeys(electionEventContextPayload.getElectionEventContext().electionEventId()));
+				ChannelSecurityContextData.setupComponentPublicKeys(electionEventContextPayload.getElectionEventId()));
 		electionEventContextPayload.setSignature(new CryptoPrimitivesSignature(wrongSignature));
 		assertFalse(((VerifySignatureSetupComponentPublicKeys) verification).verifySignature(electionEventContextPayload));
 

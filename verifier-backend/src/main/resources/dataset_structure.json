@@ -15,6 +15,11 @@
 				"name": "electionEventContextPayload\\.json"
 			},
 			{
+				"key": "SETUP_COMPONENT_PUBLIC_KEYS",
+				"type": "FILE",
+				"name": "setupComponentPublicKeysPayload\\.json"
+			},
+			{
 				"key": "CONTROL_COMPONENT_PUBLIC_KEYS",
 				"type": "FILE",
 				"name": "controlComponentPublicKeysPayload\\.([1-4])\\.json"

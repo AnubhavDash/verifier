@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <configuration xmlns="http://www.evoting.ch/xmlns/config/4">
 	<header>
-		<fileDate>2022-10-27T08:31:43.365+02:00</fileDate>
+		<fileDate>2022-11-09T09:06:33.861+01:00</fileDate>
 		<voterTotal>40</voterTotal>
 	</header>
 	<contest>
@@ -66,7 +66,7 @@
 				</electionDescription>
 				<numberOfMandates>2</numberOfMandates>
 				<writeInsAllowed>true</writeInsAllowed>
-				<candidateAccumulation>1</candidateAccumulation>
+				<candidateAccumulation>2</candidateAccumulation>
 				<minimalCandidateSelectionInList>1</minimalCandidateSelectionInList>
 				<uiProperties>
 					<property>
@@ -843,18 +843,18 @@
 			</authorizationObject>
 		</authorization>
 		<authorization>
-			<authorizationIdentification>a19095e2-de2e-3c7c-82be-7a42b6724be8</authorizationIdentification>
+			<authorizationIdentification>16bca336-cba4-3b07-afaa-9d4d717e1d47</authorizationIdentification>
 			<authorizationName>TestBallotBox2_ACH</authorizationName>
-			<authorizationAlias>BE-CH-1|BE-MU-10004</authorizationAlias>
+			<authorizationAlias>BE-CT-1|BE-MU-10004</authorizationAlias>
 			<authorizationTest>true</authorizationTest>
 			<authorizationFromDate>2022-08-01T15:00:00+02:00</authorizationFromDate>
 			<authorizationToDate>2023-03-31T17:00:00+01:00</authorizationToDate>
 			<authorizationGracePeriod>900</authorizationGracePeriod>
 			<authorizationObject>
 				<domainOfInfluence>
-					<id>doid-ch1-mu</id>
+					<id>doid-ct1-mu</id>
 					<cantonCode>BE</cantonCode>
-					<type>CH</type>
+					<type>CT</type>
 					<localId>1</localId>
 				</domainOfInfluence>
 				<countingCircle>
@@ -1227,7 +1227,7 @@
 		</voter>
 		<voter>
 			<voterIdentification>10000031</voterIdentification>
-			<authorization>a19095e2-de2e-3c7c-82be-7a42b6724be8</authorization>
+			<authorization>16bca336-cba4-3b07-afaa-9d4d717e1d47</authorization>
 			<extendedAuthenticationKeys>
 				<extendedAuthenticationKey>
 					<name>birthDate</name>
@@ -1235,11 +1235,11 @@
 				</extendedAuthenticationKey>
 			</extendedAuthenticationKeys>
 			<sex>MALE</sex>
-			<voterType>SWISSABROAD</voterType>
+			<voterType>SWISSRESIDENT</voterType>
 		</voter>
 		<voter>
 			<voterIdentification>10000032</voterIdentification>
-			<authorization>a19095e2-de2e-3c7c-82be-7a42b6724be8</authorization>
+			<authorization>16bca336-cba4-3b07-afaa-9d4d717e1d47</authorization>
 			<extendedAuthenticationKeys>
 				<extendedAuthenticationKey>
 					<name>birthDate</name>
@@ -1247,11 +1247,11 @@
 				</extendedAuthenticationKey>
 			</extendedAuthenticationKeys>
 			<sex>FEMALE</sex>
-			<voterType>SWISSABROAD</voterType>
+			<voterType>SWISSRESIDENT</voterType>
 		</voter>
 		<voter>
 			<voterIdentification>10000033</voterIdentification>
-			<authorization>a19095e2-de2e-3c7c-82be-7a42b6724be8</authorization>
+			<authorization>16bca336-cba4-3b07-afaa-9d4d717e1d47</authorization>
 			<extendedAuthenticationKeys>
 				<extendedAuthenticationKey>
 					<name>birthDate</name>
@@ -1259,11 +1259,11 @@
 				</extendedAuthenticationKey>
 			</extendedAuthenticationKeys>
 			<sex>MALE</sex>
-			<voterType>SWISSABROAD</voterType>
+			<voterType>SWISSRESIDENT</voterType>
 		</voter>
 		<voter>
 			<voterIdentification>10000034</voterIdentification>
-			<authorization>a19095e2-de2e-3c7c-82be-7a42b6724be8</authorization>
+			<authorization>16bca336-cba4-3b07-afaa-9d4d717e1d47</authorization>
 			<extendedAuthenticationKeys>
 				<extendedAuthenticationKey>
 					<name>birthDate</name>
@@ -1271,11 +1271,11 @@
 				</extendedAuthenticationKey>
 			</extendedAuthenticationKeys>
 			<sex>FEMALE</sex>
-			<voterType>SWISSABROAD</voterType>
+			<voterType>SWISSRESIDENT</voterType>
 		</voter>
 		<voter>
 			<voterIdentification>10000035</voterIdentification>
-			<authorization>a19095e2-de2e-3c7c-82be-7a42b6724be8</authorization>
+			<authorization>16bca336-cba4-3b07-afaa-9d4d717e1d47</authorization>
 			<extendedAuthenticationKeys>
 				<extendedAuthenticationKey>
 					<name>birthDate</name>
@@ -1283,11 +1283,11 @@
 				</extendedAuthenticationKey>
 			</extendedAuthenticationKeys>
 			<sex>MALE</sex>
-			<voterType>SWISSABROAD</voterType>
+			<voterType>SWISSRESIDENT</voterType>
 		</voter>
 		<voter>
 			<voterIdentification>10000036</voterIdentification>
-			<authorization>a19095e2-de2e-3c7c-82be-7a42b6724be8</authorization>
+			<authorization>16bca336-cba4-3b07-afaa-9d4d717e1d47</authorization>
 			<extendedAuthenticationKeys>
 				<extendedAuthenticationKey>
 					<name>birthDate</name>
@@ -1295,11 +1295,11 @@
 				</extendedAuthenticationKey>
 			</extendedAuthenticationKeys>
 			<sex>FEMALE</sex>
-			<voterType>SWISSABROAD</voterType>
+			<voterType>SWISSRESIDENT</voterType>
 		</voter>
 		<voter>
 			<voterIdentification>10000037</voterIdentification>
-			<authorization>a19095e2-de2e-3c7c-82be-7a42b6724be8</authorization>
+			<authorization>16bca336-cba4-3b07-afaa-9d4d717e1d47</authorization>
 			<extendedAuthenticationKeys>
 				<extendedAuthenticationKey>
 					<name>birthDate</name>
@@ -1307,11 +1307,11 @@
 				</extendedAuthenticationKey>
 			</extendedAuthenticationKeys>
 			<sex>MALE</sex>
-			<voterType>SWISSABROAD</voterType>
+			<voterType>SWISSRESIDENT</voterType>
 		</voter>
 		<voter>
 			<voterIdentification>10000038</voterIdentification>
-			<authorization>a19095e2-de2e-3c7c-82be-7a42b6724be8</authorization>
+			<authorization>16bca336-cba4-3b07-afaa-9d4d717e1d47</authorization>
 			<extendedAuthenticationKeys>
 				<extendedAuthenticationKey>
 					<name>birthDate</name>
@@ -1319,11 +1319,11 @@
 				</extendedAuthenticationKey>
 			</extendedAuthenticationKeys>
 			<sex>FEMALE</sex>
-			<voterType>SWISSABROAD</voterType>
+			<voterType>SWISSRESIDENT</voterType>
 		</voter>
 		<voter>
 			<voterIdentification>10000039</voterIdentification>
-			<authorization>a19095e2-de2e-3c7c-82be-7a42b6724be8</authorization>
+			<authorization>16bca336-cba4-3b07-afaa-9d4d717e1d47</authorization>
 			<extendedAuthenticationKeys>
 				<extendedAuthenticationKey>
 					<name>birthDate</name>
@@ -1331,11 +1331,11 @@
 				</extendedAuthenticationKey>
 			</extendedAuthenticationKeys>
 			<sex>MALE</sex>
-			<voterType>SWISSABROAD</voterType>
+			<voterType>SWISSRESIDENT</voterType>
 		</voter>
 		<voter>
 			<voterIdentification>10000040</voterIdentification>
-			<authorization>a19095e2-de2e-3c7c-82be-7a42b6724be8</authorization>
+			<authorization>16bca336-cba4-3b07-afaa-9d4d717e1d47</authorization>
 			<extendedAuthenticationKeys>
 				<extendedAuthenticationKey>
 					<name>birthDate</name>
@@ -1343,10 +1343,10 @@
 				</extendedAuthenticationKey>
 			</extendedAuthenticationKeys>
 			<sex>FEMALE</sex>
-			<voterType>SWISSABROAD</voterType>
+			<voterType>SWISSRESIDENT</voterType>
 		</voter>
 	</register>
 	<signature>
-		RCp6z2ywLXZHW74hiuq4Dpiedpqj1m7DzyppBDts230O/nXJhji0aI/7nQZ13ch1aLzLIRvh4lepzMb3BD8/MFdam8KLpdJDnAfg+0pUJInTjYJbTezNohnI1N5v4lfwPLtki3/8XY584t2KXiQjgTB98m11DueHy011cTbXSUhCb5A/LntuY0OolpZhCYyeei3cW+HD13I7t2IhrCMx04QRBabLu5RZkkav2Pmeukb+hCd+MkIJvWzWdsW8pbF5Zbj+RZ+8gDFqGfeqZGEZl+ua8+ebDMDDD4J9APEhss5+rlvZQPzPwF1TZGuLqu5b5SuM7pRng3ihbX4/i02Xd5mXA36bAYMKuryVGpM/k1yh8cIzjmrbYnh/yDvhUDfAgN9X5lCSLyrJiB1x0w3tXlZF8Ha+tS9Md3ojITlbMjFQwF+MvOKe9nbXJhZqkLtkh9tB0g5Br7B1fPAk9t8t05rV7MISFZoSQgCmiB1CedAVmMJPbIS/6bMk++0vuqaN
+		mW36mLWlY07sl6trtJYYlXHpSgAIPbvZkIiSQiRTjaNEqPyi0zEi/HM5zeHUE+PXSqN7A8X/cPI9pABtDykh2fazsKbsOojqRRtd847Vy67WNi+dzsyNHil5V+Kn5io0/c6UpY+pmxXvJ5pXSsN6a/RGsR2Cyy1J5dsYhkBrBdW4qvkZnPK3M0uGtkp1LyEKpRBmb8gDfaNkQt+VmcTPQ0JmdPloHvSq6zvwqSwm4CylBJ0YBN0Uzccl2kehxvwNS6FQTFFbkX2G1Yu4VfT3+SKmJj9h0dTFZvU5/mI6DgCUBqtFc9KJtul4suZYshyGyyl4LJQqxGS39CUQkl6POwDKafje+eQsXOYJy1fegK9TiaWC/qKZ/wxD0fDcBGYQavdrCSRF0TZj5bOxqMKJh54OkLVkNPTz7ADvRXPs3Ex+95mfgJRSBX3zMHLEty1FVGSdteMq7H5hMpp0m+SxzDkKKznJmfGzfQrK1Y+ijOMAmZBIG/Fk99FoAbsp9wCD
 	</signature>
 </configuration>

@@ -24,9 +24,11 @@ import java.util.Map;
 import ch.ech.xmlns.ech_0110._4.Delivery;
 import ch.post.it.evoting.cryptoprimitives.domain.ControlComponentConstants;
 import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
+import ch.post.it.evoting.cryptoprimitives.domain.election.SetupComponentPublicKeys;
 import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
+import ch.post.it.evoting.cryptoprimitives.domain.mixnet.SetupComponentPublicKeysPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.verifier.protocol.domain.tally.TallyComponentVotesPayload;
@@ -57,12 +59,14 @@ public class VerifyTallyControlComponentInput {
 	private final List<TallyComponentVotesPayload> tallyControlComponentVotes;
 	private final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads;
 	private final ElectionEventContextPayload electionEventContextPayload;
+	private final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload;
 	private final Configuration electionEventConfiguration;
 	private final Results tallyControlComponentDecryptions;
 	private final Delivery tallyControlComponentResults;
 	private final ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222;
 
 	public VerifyTallyControlComponentInput(final ElectionEventContextPayload electionEventContextPayload,
+			final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload,
 			final List<ControlComponentShufflePayload> controlComponentShufflePayloads,
 			final List<TallyComponentShufflePayload> tallyComponentShufflePayloads,
 			final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads,
@@ -77,6 +81,7 @@ public class VerifyTallyControlComponentInput {
 				.sorted(Comparator.comparing(TallyComponentShufflePayload::getBallotBoxId))
 				.toList();
 		this.electionEventContextPayload = checkNotNull(electionEventContextPayload);
+		this.setupComponentPublicKeysPayload = checkNotNull(setupComponentPublicKeysPayload);
 		this.electionEventConfiguration = checkNotNull(electionEventConfiguration);
 		this.tallyControlComponentDecryptions = checkNotNull(tallyControlComponentDecryptions);
 		this.tallyControlComponentResults = checkNotNull(tallyControlComponentResults);
@@ -115,6 +120,10 @@ public class VerifyTallyControlComponentInput {
 
 	public ElectionEventContext getElectionEventContext() {
 		return electionEventContextPayload.getElectionEventContext();
+	}
+
+	public SetupComponentPublicKeys getSetupComponentPublicKeys() {
+		return setupComponentPublicKeysPayload.getSetupComponentPublicKeys();
 	}
 
 	public GqGroup getEncryptionGroup() {

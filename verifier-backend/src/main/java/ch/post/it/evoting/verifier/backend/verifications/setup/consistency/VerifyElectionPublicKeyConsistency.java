@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 import com.google.common.collect.Streams;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.ControlComponentPublicKeys;
-import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
+import ch.post.it.evoting.cryptoprimitives.domain.election.SetupComponentPublicKeys;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
@@ -68,22 +68,24 @@ public class VerifyElectionPublicKeyConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final ElectionEventContext electionEventContext = extractionService.getElectionEventContextPayload(inputDirectoryPath)
-				.getElectionEventContext();
+		final int maxNumberOfWriteInFields = extractionService.getElectionEventContextPayload(inputDirectoryPath).getElectionEventContext()
+				.getMaxNumberOfWriteInFields();
+		final SetupComponentPublicKeys setupComponentPublicKeys = extractionService.getSetupComponentPublicKeysPayload(inputDirectoryPath)
+				.getSetupComponentPublicKeys();
 
 		final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> publicKeys = Streams.concat(
-						Stream.of(electionEventContext.electoralBoardPublicKey()),
-						electionEventContext.combinedControlComponentPublicKeys()
+						Stream.of(setupComponentPublicKeys.electoralBoardPublicKey()),
+						setupComponentPublicKeys.combinedControlComponentPublicKeys()
 								.stream()
 								.map(ControlComponentPublicKeys::ccmjElectionPublicKey)
 								.map(ccmElectionPublicKey -> new ElGamalMultiRecipientPublicKey(
 										GroupVector.from(
-												ccmElectionPublicKey.getKeyElements().subList(0, electionEventContext.getMaxNumberOfWriteInFields() + 1)))))
+												ccmElectionPublicKey.getKeyElements().subList(0, maxNumberOfWriteInFields + 1)))))
 				.collect(GroupVector.toGroupVector());
 
 		final ElGamalMultiRecipientPublicKey combinedPublicKeys = elGamal.combinePublicKeys(publicKeys);
 
-		if (electionEventContext.electionPublicKey().equals(combinedPublicKeys)) {
+		if (setupComponentPublicKeys.electionPublicKey().equals(combinedPublicKeys)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),

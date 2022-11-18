@@ -36,6 +36,7 @@ import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.EncryptionParametersPayload;
+import ch.post.it.evoting.cryptoprimitives.domain.mixnet.SetupComponentPublicKeysPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeSharesPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationDataPayload;
@@ -162,6 +163,25 @@ public class ElectionDataExtractionService {
 		final PathNode electionEventContextPathNode = pathService.buildFromRootPath(StructureKey.ELECTION_EVENT_CONTEXT, inputDirectoryPath);
 		try {
 			return objectMapper.readValue(electionEventContextPathNode.getPath().toFile(), ElectionEventContextPayload.class);
+		} catch (final IOException e) {
+			throw new UncheckedIOException("Failed to deserialize election event.", e);
+		}
+	}
+
+	/**
+	 * Gets the setup component public keys payload.
+	 *
+	 * @param inputDirectoryPath the root directory containing project files.
+	 * @return the setup component public keys payload found in the project files, at the expected location if it exists.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 * @throws UncheckedIOException if the file cannot be deserialized to a SetupComponentPublicKeysPayload.
+	 */
+	public SetupComponentPublicKeysPayload getSetupComponentPublicKeysPayload(final Path inputDirectoryPath) {
+		checkNotNull(inputDirectoryPath);
+
+		final PathNode setupComponentPublicKeysPathNode = pathService.buildFromRootPath(StructureKey.SETUP_COMPONENT_PUBLIC_KEYS, inputDirectoryPath);
+		try {
+			return objectMapper.readValue(setupComponentPublicKeysPathNode.getPath().toFile(), SetupComponentPublicKeysPayload.class);
 		} catch (final IOException e) {
 			throw new UncheckedIOException("Failed to deserialize election event.", e);
 		}

@@ -15,13 +15,10 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
-import static ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTableEntry.VALID_XML_TOKEN_PATTERN;
 import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.validateUUID;
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Map;
 
 import javax.xml.datatype.XMLGregorianCalendar;
