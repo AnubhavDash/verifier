@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
+import ch.post.it.evoting.cryptoprimitives.domain.mapper.EncryptionGroupUtils;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.verifier.protocol.domain.EncryptedVerifiableVote;
@@ -37,17 +38,17 @@ public class ControlComponentBallotBoxPayloadDeserializer extends JsonDeserializ
 
 		final JsonNode node = mapper.readTree(parser);
 		final JsonNode encryptionGroupNode = node.get("encryptionGroup");
-		final GqGroup gqGroup = mapper.readValue(encryptionGroupNode.toString(), GqGroup.class);
+		final GqGroup encryptionGroup = EncryptionGroupUtils.getEncryptionGroup(mapper, encryptionGroupNode);
 
 		final String electionEventId = mapper.readValue(node.get("electionEventId").toString(), String.class);
 		final String ballotBoxId = mapper.readValue(node.get("ballotBoxId").toString(), String.class);
 		final int nodeId = mapper.readValue(node.get("nodeId").toString(), Integer.class);
 
-		final List<EncryptedVerifiableVote> votes = List.of(mapper.reader().withAttribute("group", gqGroup)
+		final List<EncryptedVerifiableVote> votes = List.of(mapper.reader().withAttribute("group", encryptionGroup)
 				.readValue(node.get("confirmedEncryptedVotes"), EncryptedVerifiableVote[].class));
 
 		final CryptoPrimitivesSignature signature = mapper.readValue(node.get("signature").toString(), CryptoPrimitivesSignature.class);
 
-		return new ControlComponentBallotBoxPayload(gqGroup, electionEventId, ballotBoxId, nodeId, votes, signature);
+		return new ControlComponentBallotBoxPayload(encryptionGroup, electionEventId, ballotBoxId, nodeId, votes, signature);
 	}
 }

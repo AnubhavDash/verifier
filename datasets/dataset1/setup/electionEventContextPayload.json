@@ -5,11 +5,11 @@
 		"g": "0x2"
 	},
 	"electionEventContext": {
-		"electionEventId": "23149b0978e54959afe6bfbb528ce315",
+		"electionEventId": "100c5e407e6b41f5a87008c953e33800",
 		"verificationCardSetContexts": [
 			{
-				"verificationCardSetId": "a9682154d7804ab9846859df2fba2d34",
-				"ballotBoxId": "2203f3686d7e4153a44e722fe401938a",
+				"verificationCardSetId": "a5e8c8cf14c14128a198a164935b7f67",
+				"ballotBoxId": "8d9e4343762f49d49b1715670ad42889",
 				"testBallotBox": true,
 				"numberOfWriteInFields": 2,
 				"numberOfVotingCards": 10,
@@ -18,39 +18,39 @@
 					"pTable": [
 						{
 							"actualVotingOption": "ae3a5d49-b15d-3e88-8bdd-cbf965497a8c",
-							"encodedVotingOption": 5
-						},
-						{
-							"actualVotingOption": "ae3a5d49-b15d-3e88-8bdd-cbf965497a8c",
-							"encodedVotingOption": 61
-						},
-						{
-							"actualVotingOption": "WRITE_IN_c6a06b5d35d6480db0361b84c894a588",
-							"encodedVotingOption": 53
-						},
-						{
-							"actualVotingOption": "WRITE_IN_c6a06b5d35d6480db0361b84c894a588",
-							"encodedVotingOption": 73
-						},
-						{
-							"actualVotingOption": "1-1",
-							"encodedVotingOption": 67
-						},
-						{
-							"actualVotingOption": "1-1",
-							"encodedVotingOption": 71
-						},
-						{
-							"actualVotingOption": "1-2",
 							"encodedVotingOption": 41
 						},
 						{
+							"actualVotingOption": "ae3a5d49-b15d-3e88-8bdd-cbf965497a8c",
+							"encodedVotingOption": 73
+						},
+						{
+							"actualVotingOption": "WRITE_IN_132cf6d4b0e447e58591f94180dfb2c3",
+							"encodedVotingOption": 43
+						},
+						{
+							"actualVotingOption": "WRITE_IN_132cf6d4b0e447e58591f94180dfb2c3",
+							"encodedVotingOption": 79
+						},
+						{
+							"actualVotingOption": "1-1",
+							"encodedVotingOption": 37
+						},
+						{
+							"actualVotingOption": "1-1",
+							"encodedVotingOption": 53
+						},
+						{
 							"actualVotingOption": "1-2",
-							"encodedVotingOption": 59
+							"encodedVotingOption": 5
+						},
+						{
+							"actualVotingOption": "1-2",
+							"encodedVotingOption": 67
 						},
 						{
 							"actualVotingOption": "1-3",
-							"encodedVotingOption": 43
+							"encodedVotingOption": 71
 						},
 						{
 							"actualVotingOption": "1-3",
@@ -62,7 +62,7 @@
 						},
 						{
 							"actualVotingOption": "1-4",
-							"encodedVotingOption": 79
+							"encodedVotingOption": 61
 						},
 						{
 							"actualVotingOption": "1-5",
@@ -70,14 +70,14 @@
 						},
 						{
 							"actualVotingOption": "1-5",
-							"encodedVotingOption": 37
+							"encodedVotingOption": 59
 						}
 					]
 				}
 			},
 			{
-				"verificationCardSetId": "f48d7f7f5cf743b989bc427fbc7f504f",
-				"ballotBoxId": "bba0403f4dc040b080a4dd54e4e62fca",
+				"verificationCardSetId": "5f0564e6788d4ef1bcefc1a6e04653f6",
+				"ballotBoxId": "6320651dd97d461199212e57e178e386",
 				"testBallotBox": true,
 				"numberOfWriteInFields": 2,
 				"numberOfVotingCards": 10,
@@ -98,39 +98,39 @@
 						},
 						{
 							"actualVotingOption": "ae3a5d49-b15d-3e88-8bdd-cbf965497a8c",
-							"encodedVotingOption": 5
-						},
-						{
-							"actualVotingOption": "ae3a5d49-b15d-3e88-8bdd-cbf965497a8c",
-							"encodedVotingOption": 61
-						},
-						{
-							"actualVotingOption": "WRITE_IN_c6a06b5d35d6480db0361b84c894a588",
-							"encodedVotingOption": 53
-						},
-						{
-							"actualVotingOption": "WRITE_IN_c6a06b5d35d6480db0361b84c894a588",
-							"encodedVotingOption": 73
-						},
-						{
-							"actualVotingOption": "1-1",
-							"encodedVotingOption": 67
-						},
-						{
-							"actualVotingOption": "1-1",
-							"encodedVotingOption": 71
-						},
-						{
-							"actualVotingOption": "1-2",
 							"encodedVotingOption": 41
 						},
 						{
+							"actualVotingOption": "ae3a5d49-b15d-3e88-8bdd-cbf965497a8c",
+							"encodedVotingOption": 73
+						},
+						{
+							"actualVotingOption": "WRITE_IN_132cf6d4b0e447e58591f94180dfb2c3",
+							"encodedVotingOption": 43
+						},
+						{
+							"actualVotingOption": "WRITE_IN_132cf6d4b0e447e58591f94180dfb2c3",
+							"encodedVotingOption": 79
+						},
+						{
+							"actualVotingOption": "1-1",
+							"encodedVotingOption": 37
+						},
+						{
+							"actualVotingOption": "1-1",
+							"encodedVotingOption": 53
+						},
+						{
 							"actualVotingOption": "1-2",
-							"encodedVotingOption": 59
+							"encodedVotingOption": 5
+						},
+						{
+							"actualVotingOption": "1-2",
+							"encodedVotingOption": 67
 						},
 						{
 							"actualVotingOption": "1-3",
-							"encodedVotingOption": 43
+							"encodedVotingOption": 71
 						},
 						{
 							"actualVotingOption": "1-3",
@@ -142,7 +142,7 @@
 						},
 						{
 							"actualVotingOption": "1-4",
-							"encodedVotingOption": 79
+							"encodedVotingOption": 61
 						},
 						{
 							"actualVotingOption": "1-5",
@@ -150,14 +150,14 @@
 						},
 						{
 							"actualVotingOption": "1-5",
-							"encodedVotingOption": 37
+							"encodedVotingOption": 59
 						}
 					]
 				}
 			},
 			{
-				"verificationCardSetId": "003db00d61b0429db59b1161482cd855",
-				"ballotBoxId": "a4e4cac5411c438ba82d16613f203022",
+				"verificationCardSetId": "b35060b420774eda807c27016759191f",
+				"ballotBoxId": "dd50942283504278b6adc5600096048a",
 				"testBallotBox": true,
 				"numberOfWriteInFields": 0,
 				"numberOfVotingCards": 10,
@@ -180,8 +180,8 @@
 				}
 			},
 			{
-				"verificationCardSetId": "b534b42aa4be4d8a9fdc9af957491c29",
-				"ballotBoxId": "6bfddc09cada493ba61ed87b3b3283d7",
+				"verificationCardSetId": "38d3b8a4583d4fc8af717a6a7f606537",
+				"ballotBoxId": "5ac1ba7e481c4e54854e69d409a326ee",
 				"testBallotBox": true,
 				"numberOfWriteInFields": 2,
 				"numberOfVotingCards": 10,
@@ -202,39 +202,39 @@
 						},
 						{
 							"actualVotingOption": "ae3a5d49-b15d-3e88-8bdd-cbf965497a8c",
-							"encodedVotingOption": 5
-						},
-						{
-							"actualVotingOption": "ae3a5d49-b15d-3e88-8bdd-cbf965497a8c",
-							"encodedVotingOption": 61
-						},
-						{
-							"actualVotingOption": "WRITE_IN_c6a06b5d35d6480db0361b84c894a588",
-							"encodedVotingOption": 53
-						},
-						{
-							"actualVotingOption": "WRITE_IN_c6a06b5d35d6480db0361b84c894a588",
-							"encodedVotingOption": 73
-						},
-						{
-							"actualVotingOption": "1-1",
-							"encodedVotingOption": 67
-						},
-						{
-							"actualVotingOption": "1-1",
-							"encodedVotingOption": 71
-						},
-						{
-							"actualVotingOption": "1-2",
 							"encodedVotingOption": 41
 						},
 						{
+							"actualVotingOption": "ae3a5d49-b15d-3e88-8bdd-cbf965497a8c",
+							"encodedVotingOption": 73
+						},
+						{
+							"actualVotingOption": "WRITE_IN_132cf6d4b0e447e58591f94180dfb2c3",
+							"encodedVotingOption": 43
+						},
+						{
+							"actualVotingOption": "WRITE_IN_132cf6d4b0e447e58591f94180dfb2c3",
+							"encodedVotingOption": 79
+						},
+						{
+							"actualVotingOption": "1-1",
+							"encodedVotingOption": 37
+						},
+						{
+							"actualVotingOption": "1-1",
+							"encodedVotingOption": 53
+						},
+						{
 							"actualVotingOption": "1-2",
-							"encodedVotingOption": 59
+							"encodedVotingOption": 5
+						},
+						{
+							"actualVotingOption": "1-2",
+							"encodedVotingOption": 67
 						},
 						{
 							"actualVotingOption": "1-3",
-							"encodedVotingOption": 43
+							"encodedVotingOption": 71
 						},
 						{
 							"actualVotingOption": "1-3",
@@ -246,7 +246,7 @@
 						},
 						{
 							"actualVotingOption": "1-4",
-							"encodedVotingOption": 79
+							"encodedVotingOption": 61
 						},
 						{
 							"actualVotingOption": "1-5",
@@ -254,7 +254,7 @@
 						},
 						{
 							"actualVotingOption": "1-5",
-							"encodedVotingOption": 37
+							"encodedVotingOption": 59
 						}
 					]
 				}
@@ -264,6 +264,6 @@
 		"finishTime": "2023-03-31T16:00:00"
 	},
 	"signature": {
-		"signatureContents": "v7Y7UGGUvcJVZv4A80UOzE6oTxVNghb39jjZGrTpHsi6Dt7O0v+jIf1JSe+iCoaD3Y0XdDLaFDV4L1ah4lxqRyEVPhuYAY029CrMi8ZjD8GyBEprMpOgF9uvtHWRvISk7DjzX2HKPCc9GRQD5KIBRa1V8Kz7BOC56TuX1QR1ihjROyz/ny3Ph3lfzJMzVHfmj56G5kiagqAur+6GU+azYdHXU53EfPLygGJKeSpEL2TP7j8k6CYJeQtt8+LZSOWFV1kA8FfPoi2R2s5xynAGx6i243e8jVuJR1TkAN/NzIZvJIQrROEx/6GN98QgJENYjEC9YZN7sHhNQt3tXtgfUnNa5zabXJG37Nf082UVViDSR3MkxFf0Eb27OFUI26MVB4usuGssQv/ccM/5nTpEbd3l9IJjRGM800WD6v53QcSJ2IvXq686G/yJaj6arSSKLnvS9wB6lTCX+4DA4g96mwoVYrAiW+pXmAeLmdTSPtxoKRl00r/45o+2Wf90pS4i"
+		"signatureContents": "geVz5WAfa68yZ2NA/kU+Yr7shCfWITYrFL1I4zHqEPUMlxzZUD+s5mXQSrSxt7d0MJtlbuNmouYZ6KJAknO6na0fhj14nDJpGIeItqfYeZ8i1A9nFOPKFxteDynjQ9rrb1CZLjbTasWIUfQnccjUneczzBezV9JniQgqDLHPeivrJmevcBXQjt2/OmeWlndWIrWHmT3DNkmhzjER/5ArJsC1MY51ErjTJ4sA3d+UllReirDAnkI40GujBhWd+GcVfqg+bSNpstC3wQpAvF7k4dH5UnAVkyucLpvNadzVsGTRulFPRkgPTDMXBSN6Wi0KFwJiQ/p4P0Zn4wZIQ8MOPdlKQeQXe8p57aypDK3pULCxQ+eE5LjJhQJf0sQ/ptKDdxA2dHAwRjWHpOR1ILAighQQi7tMnWY0Wgcv9HxuoPRBgDikFhMQ63c+l6CXt26cuYdtJNd3TpP6OmOu8aPv+ir5EEpRz5kAq0Sq3CgaSYq7aObFqqsQE+TFel/Fktr+"
 	}
 }

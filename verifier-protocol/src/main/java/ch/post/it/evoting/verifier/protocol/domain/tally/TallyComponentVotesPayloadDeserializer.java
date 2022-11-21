@@ -29,6 +29,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
+import ch.post.it.evoting.cryptoprimitives.domain.mapper.EncryptionGroupUtils;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
@@ -45,8 +46,8 @@ public class TallyComponentVotesPayloadDeserializer extends JsonDeserializer<Tal
 		final String ballotId = mapper.readValue(node.get("ballotId").toString(), String.class);
 		final String ballotBoxId = mapper.readValue(node.get("ballotBoxId").toString(), String.class);
 
-		final JsonNode groupNode = node.get("encryptionGroup");
-		final GqGroup encryptionGroup = mapper.readValue(groupNode.toString(), GqGroup.class);
+		final JsonNode encryptionGroupNode = node.get("encryptionGroup");
+		final GqGroup encryptionGroup = EncryptionGroupUtils.getEncryptionGroup(mapper, encryptionGroupNode);
 
 		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> votes = Arrays.stream(mapper.reader()
 						.withAttribute("group", encryptionGroup)
