@@ -17,7 +17,6 @@ package ch.post.it.evoting.verifier.backend.tools;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.swisspush.supermachine.BeanScanner.from;
 
 import java.math.BigInteger;
 import java.util.Collection;
@@ -47,6 +46,7 @@ import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.StandardQuestionTy
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.TieBreakQuestionType;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.TiebreakAnswerType;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VariantBallotType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteInformationType;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType;
 import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.BallotBoxType;
 import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.BallotElectionType;
@@ -157,10 +157,10 @@ public class ResultDeliveryMapper {
 
 	private static List<ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.VoteType> getVoteTypes(final String domainOfInfluenceId,
 			final ContestType contestType) {
-		return from(contestType)
-				.find(VoteType.class)
+		return contestType.getVoteInformation().stream().parallel()
+				.map(VoteInformationType::getVote)
 				.filter(voteType -> voteType.getDomainOfInfluence().equals(domainOfInfluenceId))
-				.extract(VoteType::getVoteIdentification).stream()
+				.map(VoteType::getVoteIdentification)
 				.map(voteId -> {
 					final ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.VoteType voteType = new ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.VoteType();
 					voteType.setVoteIdentification(voteId);
@@ -170,10 +170,10 @@ public class ResultDeliveryMapper {
 
 	private static List<ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.ElectionType> getElectionTypes(final String domainOfInfluenceId,
 			final ContestType contestType) {
-		return from(contestType)
-				.find(ElectionType.class)
+		return contestType.getElectionInformation().stream().parallel()
+				.map(ElectionInformationType::getElection)
 				.filter(electionType -> electionType.getDomainOfInfluence().equals(domainOfInfluenceId))
-				.extract(ElectionType::getElectionIdentification).stream()
+				.map(ElectionType::getElectionIdentification)
 				.map(electionId -> {
 					final ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.ElectionType electionType = new ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.ElectionType();
 					electionType.setElectionIdentification(electionId);
@@ -187,9 +187,15 @@ public class ResultDeliveryMapper {
 		final Map<IdentificationIds, BallotVoteType> ballotVoteTypes = new HashMap<>();
 		final Map<IdentificationIds, BallotElectionType> ballotElectionTypes = new HashMap<>();
 
+		final List<String> domainOfInfluencesOfBallotBox = ballotBoxType.getCountingCircle().stream().parallel()
+				.map(CountingCircleType::getDomainOfInfluence)
+				.flatMap(Collection::stream)
+				.map(DomainOfInfluenceType::getDomainOfInfluenceIdentification)
+				.toList();
+
 		int currentWriteInIndex = 0;
 		for (final String answer : listOfActualSelectedVotingOptionsPerVoter) {
-			final AnswerAdditionalInformation answerAdditionalInformation = getAnswerAdditionalInformation(contestType, answer);
+			final AnswerAdditionalInformation answerAdditionalInformation = getAnswerAdditionalInformation(contestType, domainOfInfluencesOfBallotBox, answer);
 
 			switch (answerAdditionalInformation.type) {
 			case VOTE_IDENTIFICATION -> {
@@ -240,12 +246,14 @@ public class ResultDeliveryMapper {
 
 		ballotVoteTypes.forEach((ids, ballotVoteType) -> {
 			final ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.VoteType vote =
-					from(ballotBoxType)
-							.find(DomainOfInfluenceType.class)
+					ballotBoxType.getCountingCircle().stream()
+							.map(CountingCircleType::getDomainOfInfluence)
+							.flatMap(Collection::stream)
 							.filter(domainOfInfluenceType -> domainOfInfluenceType.getDomainOfInfluenceIdentification()
 									.equals(ids.domainOfInfluenceIdentification()))
-							.find(ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.VoteType.class)
-							.filter(voteType -> voteType.getVoteIdentification().equals(ids.typeIdentification())).stream()
+							.map(DomainOfInfluenceType::getVote)
+							.flatMap(Collection::stream)
+							.filter(voteType -> voteType.getVoteIdentification().equals(ids.typeIdentification()))
 							.collect(MoreCollectors.onlyElement());
 
 			vote.getBallot().add(ballotVoteType);
@@ -253,12 +261,14 @@ public class ResultDeliveryMapper {
 
 		ballotElectionTypes.forEach((ids, ballotElectionType) -> {
 			final ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.ElectionType election =
-					from(ballotBoxType)
-							.find(DomainOfInfluenceType.class)
+					ballotBoxType.getCountingCircle().stream()
+							.map(CountingCircleType::getDomainOfInfluence)
+							.flatMap(Collection::stream)
 							.filter(domainOfInfluenceType -> domainOfInfluenceType.getDomainOfInfluenceIdentification()
 									.equals(ids.domainOfInfluenceIdentification()))
-							.find(ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.ElectionType.class)
-							.filter(electionType -> electionType.getElectionIdentification().equals(ids.typeIdentification())).stream()
+							.map(DomainOfInfluenceType::getElection)
+							.flatMap(Collection::stream)
+							.filter(electionType -> electionType.getElectionIdentification().equals(ids.typeIdentification()))
 							.collect(MoreCollectors.onlyElement());
 
 			election.getBallot().add(ballotElectionType);
@@ -267,16 +277,17 @@ public class ResultDeliveryMapper {
 	}
 
 	private static AnswerAdditionalInformation getAnswerAdditionalInformation(final ContestType contestType,
-			final String actualSelectedVotingOption) {
+			final List<String> domainOfInfluencesOfBallotBox, final String actualSelectedVotingOption) {
 
-		final Optional<AnswerAdditionalInformation> optionalVoteAnswerAdditionalInformation = from(contestType)
-				.find(VoteType.class).stream()
-				// Keep votes if any of their answer (either standard, variant or tie-break) matches the voter selection.
-				.filter(vote -> vote.getBallot().stream()
-						.anyMatch(ballotType -> isVotingOptionPresentAsAnswer(actualSelectedVotingOption, ballotType)))
-				.map(vote -> new AnswerAdditionalInformation(AnswerAdditionalInformationEnum.VOTE_IDENTIFICATION,
-						new IdentificationIds(vote.getDomainOfInfluence(), vote.getVoteIdentification())))
-				.findAny();
+		final Optional<AnswerAdditionalInformation> optionalVoteAnswerAdditionalInformation =
+				contestType.getVoteInformation().stream().parallel()
+						.map(VoteInformationType::getVote)
+						// Keep votes if any of their answer (either standard, variant or tie-break) matches the voter selection.
+						.filter(vote -> vote.getBallot().stream()
+								.anyMatch(ballotType -> isVotingOptionPresentAsAnswer(actualSelectedVotingOption, ballotType)))
+						.map(vote -> new AnswerAdditionalInformation(AnswerAdditionalInformationEnum.VOTE_IDENTIFICATION,
+								new IdentificationIds(vote.getDomainOfInfluence(), vote.getVoteIdentification())))
+						.findAny();
 
 		if (optionalVoteAnswerAdditionalInformation.isPresent()) {
 			return optionalVoteAnswerAdditionalInformation.get();
@@ -318,7 +329,7 @@ public class ResultDeliveryMapper {
 			}
 
 			// Write ins candidate value.
-			if (actualSelectedVotingOption.startsWith("WRITE_IN_")) {
+			if (actualSelectedVotingOption.startsWith("WRITE_IN_") && domainOfInfluencesOfBallotBox.contains(domainOfInfluence)) {
 				return new AnswerAdditionalInformation(AnswerAdditionalInformationEnum.WRITE_INS_CANDIDATE_VALUE,
 						new IdentificationIds(domainOfInfluence, electionInformation.getElection().getElectionIdentification()));
 			}
