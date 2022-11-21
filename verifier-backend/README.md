@@ -12,6 +12,7 @@ All verifications performed in the verifier are listed in the table below:
 | Setup | Authenticity | 204 | VerifySignatureSetupComponentVerificationData     |
 | Setup | Authenticity | 205 | VerifySignatureControlComponentCodeShares         |
 | Setup | Authenticity | 206 | VerifySignatureSetupComponentTallyData            |
+| Setup | Authenticity | 207 | VerifySignatureElectionEventContext               |
 | Setup | Consistency  | 300 | VerifyEncryptionGroupConsistency                  |
 | Setup | Consistency  | 301 | VerifySetupFileNamesConsistency                   |
 | Setup | Consistency  | 302 | VerifyCCrChoiceReturnCodesPublicKeyConsistency    |

@@ -56,7 +56,6 @@ public class VerifySignatureElectionEventContext extends AbstractVerification {
 		this.signatureVerification = signatureVerification;
 	}
 
-
 	@Override
 	public VerificationDefinition getVerificationDefinition() {
 		final var definition = new VerificationDefinition();
@@ -64,9 +63,9 @@ public class VerifySignatureElectionEventContext extends AbstractVerification {
 		definition.setCategory(Category.AUTHENTICITY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
-						"verification.direct.trust.authenticity.description", "SetupComponentPublicKeys" ));
-		definition.setId(202);
-		definition.setName("VerifySignatureSetupComponentPublicKeys");
+						"verification.direct.trust.authenticity.description", "ElectionEventContext"));
+		definition.setId(207);
+		definition.setName("VerifySignatureElectionEventContext");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
 	}
