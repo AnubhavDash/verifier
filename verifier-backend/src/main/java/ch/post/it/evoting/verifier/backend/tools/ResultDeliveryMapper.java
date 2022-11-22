@@ -60,6 +60,9 @@ import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
  */
 public class ResultDeliveryMapper {
 
+	private static final int AUTHORIZATION_ALIAS_LIMIT = 47;
+	private static final String AUTHORIZATION_ALIAS_ELLIPSIS = "...";
+
 	private ResultDeliveryMapper() {
 		// static usage only.
 	}
@@ -86,11 +89,11 @@ public class ResultDeliveryMapper {
 				"There must be exactly the same number of authorizations as tally component votes payload mappings.");
 
 		checkArgument(authorizations.stream()
-				.allMatch(authorizationType -> {
-					final String authorizationAlias = authorizationType.getAuthorizationAlias();
-
-					return authorizationAliasToTallyComponentVotesPayloadMap.get(authorizationAlias) != null;
-				}), "There must be an existing tally component votes payload mapping for each authorization.");
+						.parallel()
+						.map(AuthorizationType::getAuthorizationAlias)
+						.map(ResultDeliveryMapper::formatAuthorizationAlias)
+						.allMatch(authorizationAliasToTallyComponentVotesPayloadMap::containsKey),
+				"There must be an existing tally component votes payload mapping for each authorization.");
 
 		final ContestType contest = configuration.getContest();
 		final String contestIdentification = contest.getContestIdentification();
@@ -101,7 +104,7 @@ public class ResultDeliveryMapper {
 
 		final List<BallotBoxType> ballotBoxes = authorizations.stream()
 				.map(authorizationType -> toBallotBoxType(authorizationType, contest,
-						authorizationAliasToTallyComponentVotesPayloadMap.get(authorizationType.getAuthorizationAlias())))
+						authorizationAliasToTallyComponentVotesPayloadMap.get(formatAuthorizationAlias(authorizationType.getAuthorizationAlias()))))
 				.toList();
 
 		final Results results = new Results();
@@ -110,6 +113,21 @@ public class ResultDeliveryMapper {
 		results.setCastBallots(BigInteger.valueOf(castBallots));
 
 		return results;
+	}
+
+	/**
+	 * Formats the provided alias by truncating it with a suffix ellipsis {@value AUTHORIZATION_ALIAS_ELLIPSIS}, if its size is greater than
+	 * {@value AUTHORIZATION_ALIAS_LIMIT}. This is a legacy formatting.
+	 *
+	 * @param authorizationAlias the alias to format.
+	 * @return the formatted alias.
+	 */
+	private static String formatAuthorizationAlias(final String authorizationAlias) {
+		if (authorizationAlias.length() > AUTHORIZATION_ALIAS_LIMIT) {
+			return String.format("%s%s", authorizationAlias.substring(0, AUTHORIZATION_ALIAS_LIMIT), AUTHORIZATION_ALIAS_ELLIPSIS);
+		}
+
+		return authorizationAlias;
 	}
 
 	private static BallotBoxType toBallotBoxType(final AuthorizationType authorizationType, final ContestType contestType,
