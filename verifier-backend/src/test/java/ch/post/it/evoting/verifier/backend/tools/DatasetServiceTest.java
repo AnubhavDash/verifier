@@ -31,7 +31,8 @@ import net.lingala.zip4j.ZipFile;
 
 class DatasetServiceTest {
 
-	private final DatasetService datasetService = new DatasetService(DomainObjectMapper.getNewInstance(), new DirectoryService());
+	private final DatasetService datasetService = new DatasetService(DomainObjectMapper.getNewInstance(), new DirectoryService(),
+			new XmlFileRepository<>());
 	@TempDir
 	private Path tempDirectory;
 

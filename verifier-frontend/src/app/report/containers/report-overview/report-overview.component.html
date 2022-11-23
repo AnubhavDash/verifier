@@ -109,47 +109,46 @@
       </div>
       <ng-container *ngIf="printMode">
         <div class="row mt-3">
-          <div class="col-4 font-weight-bold">
+          <div class="col-12 font-weight-bold">
+            VERIFICATION INPUT
+            <hr>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-4">
             Verifier application version
           </div>
           <div class="col-8">Swiss Post Verifier {{appVersion}}</div>
         </div>
         <div class="row">
-          <div class="col-4 font-weight-bold">
+          <div class="col-4">
             Date / Time
           </div>
           <div class="col-8">{{currentDate}}</div>
         </div>
         <div class="row">
-          <div class="col-4 font-weight-bold">
+          <div class="col-4">
             Election event id
           </div>
           <div class="col-8">{{electionEventId}}</div>
         </div>
         <div class="row">
-          <div class="col-4 font-weight-bold">
-            Total number of authorized (non-test) voters
-          </div>
-          <div class="col-8">{{numberOfAuthorizedVoters}}</div>
-        </div>
-        <div class="row">
-          <div class="col-4 font-weight-bold">
-            Total number of test voters
-          </div>
-          <div class="col-8">{{numberOfTestVoters}}</div>
-        </div>
-        <div class="row">
-          <div class="col-4 font-weight-bold">
+          <div class="col-4">
             Verification data input hash (SHA-256)
           </div>
           <div class="col-8">{{hash}}</div>
         </div>
-        <hr>
-        <div class="row">
-          <div class="col-4 font-weight-bold">
+        <div class="row mt-3">
+          <div class="col-12 font-weight-bold">
+            CERTIFICATE AUTHENTICITY CHECKS
+            <hr>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-4">
             Protocol participant
           </div>
-          <div class="col-5 font-weight-bold">
+          <div class="col-8">
             Certificate fingerprint (SHA-256)
           </div>
         </div>
@@ -159,41 +158,106 @@
             <div class="col-8">{{fingerprint.value}}</div>
           </ng-container>
         </div>
-        <hr>
+        <div class="row mt-3 html2pdf-break-page">
+          <div class="col-12 font-weight-bold">
+            CONFIGURATION CORRECTNESS CHECKS
+            <hr>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-4">
+            Election Event Name
+          </div>
+          <div class="col-8">{{electionEventName}}</div>
+        </div>
         <div class="row">
-          <div class="col-4 font-weight-bold">
+          <div class="col-4">
+            Election Event Date
+          </div>
+          <div class="col-8">{{electionEventDate}}</div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            Number of elections
+          </div>
+          <div class="col-8">{{numberOfElections}}</div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            Number of votes
+          </div>
+          <div class="col-8">{{numberOfVotes}}</div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            Number of (non-test) ballot boxes
+          </div>
+          <div class="col-8">{{numberOfNonTestBallotBoxes}}</div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            Number of test ballot boxes
+          </div>
+          <div class="col-8">{{numberOfTestBallotBoxes}}</div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            Total number of authorized (non-test) voters
+          </div>
+          <div class="col-8">{{totalNumberOfAuthorizedNonTestVoters}}</div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            Total number of test voters
+          </div>
+          <div class="col-8">{{totalNumberOfTestVoters}}</div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-12 font-weight-bold">
+            VERIFICATION OVERVIEW
+            <hr>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-4">
             Total number of verifications
           </div>
           <div class="col-8">{{verificationsSize}}</div>
         </div>
         <div class="row">
-          <div class="col-4 font-weight-bold">
+          <div class="col-4">
             Number of successful verifications
           </div>
           <div class="col-8">{{statusCounterOK()}}</div>
         </div>
         <div class="row">
-          <div class="col-4 font-weight-bold">
+          <div class="col-4">
             Number of failed verifications
           </div>
           <div class="col-8">{{statusCounterNOK()}}</div>
         </div>
         <div class="row">
-          <div class="col-4 font-weight-bold">
+          <div class="col-4">
             Number of error verifications
           </div>
           <div class="col-8">{{statusCounterERROR()}}</div>
         </div>
         <div class="row">
-          <div class="col-4 font-weight-bold">
+          <div class="col-4">
             Number of not run verifications
           </div>
           <div class="col-8">{{statusCounterNA()}}</div>
         </div>
       </ng-container>
-      <div class="row mt-4 html2pdf-break-page">
+      <div class="row mt-3 html2pdf-break-page">
+        <div class="col-12 font-weight-bold">
+          VERIFICATION DETAILS
+          <hr>
+        </div>
+      </div>
+      <div class="row mt-1">
         <div class="col">
-          <table aria-label="Verification definitions list" class="table mt-2 mb-0" role="table">
+          <table aria-label="Verification definitions list" class="table mt-0 mb-0" role="table">
             <thead>
             <tr>
               <th class="text-center" scope="col">Phase</th>
@@ -259,11 +323,14 @@
       </div>
 
       <div *ngIf="printMode" class="row html2pdf-break-page html2pdf-no-break">
-        <div class="col-12 mt-5 mb-3">
-          <h4>The signers hereby confirm that they verified the correctness of the above information</h4>
+        <div class="col-12 mt-5 mb-3 font-weight-bold">
+          VERIFICATION CONFIRMATION
           <hr>
         </div>
         <div class="col-12">
+          <h4>The signers hereby confirm that they verified the correctness of the above information</h4>
+        </div>
+        <div class="col-12 m-4">
           <div class="row">
             <div class="col-2 font-weight-bold">Name</div>
             <div class="col-3"></div>

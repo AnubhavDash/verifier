@@ -50,6 +50,14 @@ export class ReportOverviewComponent implements OnInit {
   numberOfTestVoters = 0;
   fingerprints: Map<string, string> = new Map();
   appVersion = '';
+  electionEventName = '';
+  electionEventDate: string;
+  numberOfElections = 0;
+  numberOfVotes = 0;
+  numberOfNonTestBallotBoxes = 0;
+  numberOfTestBallotBoxes = 0;
+  totalNumberOfAuthorizedNonTestVoters = 0;
+  totalNumberOfTestVoters = 0;
 
   verificationFilter = {
     ALL: {
@@ -312,6 +320,13 @@ export class ReportOverviewComponent implements OnInit {
       this.numberOfAuthorizedVoters = 0;
       this.numberOfTestVoters = 0;
       this.fingerprints = new Map();
+      this.electionEventName = '';
+      this.numberOfElections = 0;
+      this.numberOfVotes = 0;
+      this.numberOfNonTestBallotBoxes = 0;
+      this.numberOfTestBallotBoxes = 0;
+      this.totalNumberOfAuthorizedNonTestVoters = 0;
+      this.totalNumberOfTestVoters = 0;
 
       this.processorService.uploadDataset(file).subscribe(() => {
         this.startDisabled = false;
@@ -323,6 +338,14 @@ export class ReportOverviewComponent implements OnInit {
           this.numberOfAuthorizedVoters = configuration.numberOfAuthorizedVoters;
           this.numberOfTestVoters = configuration.numberOfTestVoters;
           this.fingerprints = configuration.aliasesToFingerprints;
+          this.electionEventName = configuration.electionEventName;
+          this.electionEventDate = configuration.electionEventDate;
+          this.numberOfElections = configuration.numberOfElections;
+          this.numberOfVotes = configuration.numberOfVotes;
+          this.numberOfNonTestBallotBoxes = configuration.numberOfNonTestBallotBoxes;
+          this.numberOfTestBallotBoxes = configuration.numberOfTestBallotBoxes;
+          this.totalNumberOfAuthorizedNonTestVoters = configuration.totalNumberOfAuthorizedNonTestVoters;
+          this.totalNumberOfTestVoters = configuration.totalNumberOfTestVoters;
         });
       });
     }
@@ -401,6 +424,5 @@ export class ReportOverviewComponent implements OnInit {
       return `${date}.${month}.${year} ${hours}:${minutes}`;
     }
   }
-
 }
 
