@@ -41,13 +41,13 @@ import ch.post.it.evoting.verifier.protocol.domain.ChannelSecurityContextData;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
 
 @Component
-public class VerifySignatureSetupComponentConfig extends AbstractVerification {
+public class VerifySignatureCantonConfig extends AbstractVerification {
 
 	private final ElectionDataExtractionService electionDataExtractionService;
 
 	private final SignatureVerification signatureVerification;
 
-	protected VerifySignatureSetupComponentConfig(
+	protected VerifySignatureCantonConfig(
 			final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService electionDataExtractionService,
 			final SignatureVerification signatureVerification) {
@@ -63,9 +63,9 @@ public class VerifySignatureSetupComponentConfig extends AbstractVerification {
 		definition.setCategory(Category.AUTHENTICITY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
-						"verification.direct.trust.authenticity.description", "SetupComponentConfig"));
+						"verification.direct.trust.authenticity.description", "CantonConfig"));
 		definition.setId(201);
-		definition.setName("VerifySignatureSetupComponentConfig");
+		definition.setName("VerifySignatureCantonConfig");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
 	}
@@ -73,7 +73,7 @@ public class VerifySignatureSetupComponentConfig extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final Configuration configuration = electionDataExtractionService.getSetupComponentConfig(inputDirectoryPath);
+		final Configuration configuration = electionDataExtractionService.getCantonConfig(inputDirectoryPath);
 
 		final boolean verified = verifySignature(configuration);
 
@@ -82,7 +82,7 @@ public class VerifySignatureSetupComponentConfig extends AbstractVerification {
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
 					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
-							"verification.direct.trust.signature.fail", "SetupComponentConfig"));
+							"verification.direct.trust.signature.fail", "CantonConfig"));
 		}
 
 	}
@@ -91,15 +91,15 @@ public class VerifySignatureSetupComponentConfig extends AbstractVerification {
 	boolean verifySignature(final Configuration configuration) {
 		final byte[] signature = configuration.getSignature();
 
-		checkState(signature != null, "The signature of the setup component config file is null.");
+		checkState(signature != null, "The signature of the canton config file is null.");
 
 		final Hashable hash = HashableConfigurationFactory.fromConfiguration(configuration);
-		final Hashable additionalContextData = ChannelSecurityContextData.setupComponentConfig();
+		final Hashable additionalContextData = ChannelSecurityContextData.cantonConfig();
 
 		try {
-			return signatureVerification.verifySignature(Alias.SDM_CONFIG.toString(), hash, additionalContextData, signature);
+			return signatureVerification.verifySignature(Alias.CANTON.toString(), hash, additionalContextData, signature);
 		} catch (final SignatureException e) {
-			throw new IllegalStateException("Could not verify the signature of the setup component config file.");
+			throw new IllegalStateException("Could not verify the signature of the canton config file.");
 		}
 	}
 }

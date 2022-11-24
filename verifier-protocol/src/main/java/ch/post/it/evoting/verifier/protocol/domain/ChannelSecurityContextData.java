@@ -234,7 +234,7 @@ public final class ChannelSecurityContextData {
 	/**
 	 * @return The additional context data for the message configuration XML.
 	 */
-	public static Hashable setupComponentConfig() {
+	public static Hashable cantonConfig() {
 		return HashableString.from("configuration");
 	}
 

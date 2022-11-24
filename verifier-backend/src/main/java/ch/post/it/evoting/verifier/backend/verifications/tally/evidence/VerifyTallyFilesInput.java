@@ -26,27 +26,27 @@ import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 
 public class VerifyTallyFilesInput {
 
-	private final Configuration setupComponentConfig;
+	private final Configuration cantonConfig;
 	private final Results tallyComponentDecrypt;
 	private final Delivery tallyComponentEch0110;
 	private final ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222;
 	private final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads;
 
 	private VerifyTallyFilesInput(
-			final Configuration setupComponentConfig,
+			final Configuration cantonConfig,
 			final Results tallyComponentDecrypt,
 			final Delivery tallyComponentEch0110,
 			final ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222,
 			final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads) {
-		this.setupComponentConfig = setupComponentConfig;
+		this.cantonConfig = cantonConfig;
 		this.tallyComponentDecrypt = tallyComponentDecrypt;
 		this.tallyComponentEch0110 = tallyComponentEch0110;
 		this.tallyComponentEch0222 = tallyComponentEch0222;
 		this.tallyComponentVotesPayloads = tallyComponentVotesPayloads;
 	}
 
-	public Configuration getSetupComponentConfig() {
-		return setupComponentConfig;
+	public Configuration getCantonConfig() {
+		return cantonConfig;
 	}
 
 	public Results getTallyComponentDecrypt() {
@@ -67,14 +67,14 @@ public class VerifyTallyFilesInput {
 
 	public static class Builder {
 
-		private Configuration setupComponentConfig;
+		private Configuration cantonConfig;
 		private Results tallyComponentDecrypt;
 		private Delivery tallyComponentEch0110;
 		private ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222;
 		private Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads;
 
-		public Builder setupComponentConfig(final Configuration setupComponentConfig) {
-			this.setupComponentConfig = setupComponentConfig;
+		public Builder cantonConfig(final Configuration cantonConfig) {
+			this.cantonConfig = cantonConfig;
 			return this;
 		}
 
@@ -99,13 +99,13 @@ public class VerifyTallyFilesInput {
 		}
 
 		public VerifyTallyFilesInput build() {
-			checkNotNull(setupComponentConfig);
+			checkNotNull(cantonConfig);
 			checkNotNull(tallyComponentDecrypt);
 			checkNotNull(tallyComponentEch0110);
 			checkNotNull(tallyComponentEch0222);
 			checkNotNull(tallyComponentVotesPayloads);
 
-			return new VerifyTallyFilesInput(setupComponentConfig, tallyComponentDecrypt, tallyComponentEch0110, tallyComponentEch0222,
+			return new VerifyTallyFilesInput(cantonConfig, tallyComponentDecrypt, tallyComponentEch0110, tallyComponentEch0222,
 					tallyComponentVotesPayloads);
 		}
 	}

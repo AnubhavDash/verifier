@@ -17,7 +17,7 @@ package ch.post.it.evoting.verifier.backend.tools;
 
 public final class XsdConstants {
 
-	public static final String SETUP_COMPONENT_CONFIG_XSD = "/xsd/evoting-config-4-4.xsd";
+	public static final String CANTON_CONFIG_XSD = "/xsd/evoting-config-4-4.xsd";
 	public static final String TALLY_COMPONENT_DECRYPT_XSD = "/xsd/evoting-decrypt-1-3.xsd";
 	public static final String TALLY_COMPONENT_ECH_0110 = "/xsd/eCH-0110-4-0.xsd";
 	public static final String TALLY_COMPONENT_ECH_0222 = "/xsd/eCH-0222-1-0.xsd";

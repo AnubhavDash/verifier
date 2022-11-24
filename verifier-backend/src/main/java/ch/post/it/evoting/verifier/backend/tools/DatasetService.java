@@ -145,7 +145,7 @@ public class DatasetService {
 			LocalFileHeader entry;
 			while ((entry = zis.getNextEntry()) != null) {
 				if (!entry.isDirectory() && SETUP_CONFIGURATION_ANONYMIZED_XML.equals(entry.getFileName())) {
-					return configurationXmlFileRepository.read(zis, XsdConstants.SETUP_COMPONENT_CONFIG_XSD,
+					return configurationXmlFileRepository.read(zis, XsdConstants.CANTON_CONFIG_XSD,
 							Configuration.class);
 				}
 			}

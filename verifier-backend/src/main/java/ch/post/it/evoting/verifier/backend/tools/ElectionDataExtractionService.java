@@ -77,16 +77,16 @@ public class ElectionDataExtractionService {
 	}
 
 	/**
-	 * Gets the setup component config.
+	 * Gets the canton config.
 	 *
 	 * @param inputDirectoryPath the root directory containing project files.
-	 * @return the setup component config as {@link Configuration} found in the project files, at the expected location if it exists.
+	 * @return the canton config as {@link Configuration} found in the project files, at the expected location if it exists.
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the file cannot be deserialized to a Configuration.
 	 */
-	public Configuration getSetupComponentConfig(final Path inputDirectoryPath) {
+	public Configuration getCantonConfig(final Path inputDirectoryPath) {
 		final PathNode configurationPathNode = pathService.buildFromRootPath(StructureKey.CONFIGURATION_ANONYMIZED, inputDirectoryPath);
-		return configurationXmlFileRepository.read(configurationPathNode.getPath(), XsdConstants.SETUP_COMPONENT_CONFIG_XSD, Configuration.class);
+		return configurationXmlFileRepository.read(configurationPathNode.getPath(), XsdConstants.CANTON_CONFIG_XSD, Configuration.class);
 	}
 
 	/**

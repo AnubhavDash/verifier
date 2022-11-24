@@ -148,7 +148,7 @@ public class VerifyTallyControlComponentAlgorithm {
 				.orElse(Boolean.FALSE);
 
 		final VerifyTallyFilesInput verifyTallyFilesInput = new VerifyTallyFilesInput.Builder()
-				.setupComponentConfig(electionEventConfiguration)
+				.cantonConfig(electionEventConfiguration)
 				.setTallyComponentDecrypt(tallyControlComponentDecryptions)
 				.setTallyComponentEch0110(tallyControlComponentResults)
 				.setTallyComponentEch0222(tallyComponentEch0222)

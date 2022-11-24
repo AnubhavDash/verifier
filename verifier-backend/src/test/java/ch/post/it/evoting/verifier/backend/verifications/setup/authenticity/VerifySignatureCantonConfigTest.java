@@ -36,38 +36,38 @@ import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerification
 import ch.post.it.evoting.verifier.protocol.domain.ChannelSecurityContextData;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
 
-class VerifySignatureSetupComponentConfigTest extends SetupVerificationTest {
+class VerifySignatureCantonConfigTest extends SetupVerificationTest {
 
 	@BeforeEach
 	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
 		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
-		verification = new VerifySignatureSetupComponentConfig(resultPublisherServiceMock, electionDataExtractionService,
+		verification = new VerifySignatureCantonConfig(resultPublisherServiceMock, electionDataExtractionService,
 				testSignatureVerification);
 	}
 
 	@Test
 	void testOK() throws SignatureException {
-		final Configuration configuration = electionDataExtractionService.getSetupComponentConfig(datasetPath);
+		final Configuration configuration = electionDataExtractionService.getCantonConfig(datasetPath);
 
 		configuration.setSignature(generateSignature(configuration));
 
-		assertTrue(((VerifySignatureSetupComponentConfig) verification).verifySignature(configuration), "the signature is not valid");
+		assertTrue(((VerifySignatureCantonConfig) verification).verifySignature(configuration), "the signature is not valid");
 	}
 
 	@Test
 	void testNOK() throws SignatureException {
-		final Configuration configuration = electionDataExtractionService.getSetupComponentConfig(datasetPath);
+		final Configuration configuration = electionDataExtractionService.getCantonConfig(datasetPath);
 
 		configuration.setSignature(generateSignature(configuration));
 		configuration.getContest().setContestIdentification("new value");
 
-		assertFalse(((VerifySignatureSetupComponentConfig) verification).verifySignature(configuration), "the signature is valid but it should not");
+		assertFalse(((VerifySignatureCantonConfig) verification).verifySignature(configuration), "the signature is valid but it should not");
 	}
 
 	private byte[] generateSignature(final Configuration configuration) throws SignatureException {
 		final Hashable hash = HashableConfigurationFactory.fromConfiguration(configuration);
-		final Hashable additionalContextData = ChannelSecurityContextData.setupComponentConfig();
+		final Hashable additionalContextData = ChannelSecurityContextData.cantonConfig();
 
-		return signatureFactory.getTestSignatureGeneration(Alias.SDM_CONFIG).genSignature(hash, additionalContextData);
+		return signatureFactory.getTestSignatureGeneration(Alias.CANTON).genSignature(hash, additionalContextData);
 	}
 }

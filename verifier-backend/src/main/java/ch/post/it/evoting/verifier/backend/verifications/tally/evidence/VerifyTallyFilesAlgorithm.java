@@ -66,7 +66,7 @@ public class VerifyTallyFilesAlgorithm {
 		final String ee = electionEventId;
 
 		// Input.
-		final Configuration configurationXML = input.getSetupComponentConfig();
+		final Configuration configurationXML = input.getCantonConfig();
 		final Results evotingDecryptXML = input.getTallyComponentDecrypt();
 		final Delivery eCH0110XML = input.getTallyComponentEch0110();
 		final ch.ech.xmlns.ech_0222._1.Delivery eCH0222XML = input.getTallyComponentEch0222();
