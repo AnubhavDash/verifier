@@ -22,16 +22,16 @@
 
 		<bouncycastle.version>1.72</bouncycastle.version>
 		<commons-codec.version>1.15</commons-codec.version>
-		<crypto-primitives-version>1.1.0.2</crypto-primitives-version>
-		<crypto-primitives-domain.version>1.1.0.3</crypto-primitives-domain.version>
+		<crypto-primitives-version>1.1.0.3</crypto-primitives-version>
+		<crypto-primitives-domain.version>1.1.0.4</crypto-primitives-domain.version>
 		<guava.version>31.1-jre</guava.version>
-		<jackson.version>2.13.4.20221013</jackson.version>
+		<jackson.version>2.14.1</jackson.version>
 		<jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
 		<jakarta.xml.bind-api.version>4.0.0</jakarta.xml.bind-api.version>
-		<javax.xml.bind.version>2.3.1</javax.xml.bind.version>
-		<jaxb-impl.version>2.3.6</jaxb-impl.version>
+		<javax.xml.bind.version>2.4.0-b180830.0359</javax.xml.bind.version>
+		<jaxb-impl.version>2.3.7</jaxb-impl.version>
 		<junit-jupiter.version>5.9.1</junit-jupiter.version>
-		<mapstruct.version>1.5.2.Final</mapstruct.version>
+		<mapstruct.version>1.5.3.Final</mapstruct.version>
 		<maven-assembly-plugin.version>3.4.2</maven-assembly-plugin.version>
 		<maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
 		<maven-deploy-plugin.version>3.0.0</maven-deploy-plugin.version>
@@ -40,12 +40,12 @@
 		<maven-release-plugin.version>3.0.0-M6</maven-release-plugin.version>
 		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
 		<maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
-		<mockito.version>4.8.0</mockito.version>
+		<mockito.version>4.9.0</mockito.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<reproducible-build-maven-plugin.version>0.15.1</reproducible-build-maven-plugin.version>
 		<rootProject>verifier</rootProject>
 		<slf4j.version>1.7.36</slf4j.version>
-		<spring-boot.version>2.7.4</spring-boot.version>
+		<spring-boot.version>2.7.5</spring-boot.version>
 		<system-stubs.version>2.0.1</system-stubs.version>
 		<versions-maven-plugin.version>2.12.0</versions-maven-plugin.version>
 		<zip4j.version>2.11.2</zip4j.version>
@@ -217,6 +217,15 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter</artifactId>
 				<version>${spring-boot.version}</version>
+				<exclusions>
+					<!-- spring-boot-starter 2.7.5 uses a vulnerable snakeyaml version 1.30,
+							 and we don't need this functionality, therefore we remove it manually.
+							 As soon spring-boot-starter is updated we should be able to remove this exclusion -->
+					<exclusion>
+						<groupId>org.yaml</groupId>
+						<artifactId>snakeyaml</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
