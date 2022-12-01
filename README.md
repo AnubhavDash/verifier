@@ -30,10 +30,10 @@ The verifier is released under Apache 2.0.
 
 We strive for excellent code quality to minimize the risk of bugs and vulnerabilities. We rely on the following tools for code analysis.
 
-| Tool        | Focus                 |
-|-------------|-----------------------|
-| [SonarQube](https://www.sonarqube.org/)  | Code quality and code security      |
-| [JFrog X-Ray](https://jfrog.com/xray/) | Common vulnerabilities and exposures (CVE) analysis, Open-source software (OSS) license compliance | |
+| Tool                                    | Focus                                                                                              |
+|-----------------------------------------|----------------------------------------------------------------------------------------------------|
+| [SonarQube](https://www.sonarqube.org/) | Code quality and code security                                                                     |
+| [JFrog X-Ray](https://jfrog.com/xray/)  | Common vulnerabilities and exposures (CVE) analysis, Open-source software (OSS) license compliance | |
 
 ### SonarQube Analysis
 
@@ -54,6 +54,15 @@ At the time of writing (October 2022), the published source code does not contai
 ## Changelog
 
 An overview of all major changes within the published releases is available [here](CHANGELOG.md).
+
+## E-voting Compatibility
+
+The following table indicates the correspondence between the Verifier and E-voting system version.
+
+| Verifier version | [E-voting](https://gitlab.com/swisspost-evoting/e-voting/e-voting) version |
+|------------------|----------------------------------------------------------------------------|
+| 1.2              | 1.1                                                                        |
+| 1.3              | 1.2                                                                        |
 
 ## Future Work
 
