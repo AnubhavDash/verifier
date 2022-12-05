@@ -19,7 +19,6 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
 import java.security.SignatureException;
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
