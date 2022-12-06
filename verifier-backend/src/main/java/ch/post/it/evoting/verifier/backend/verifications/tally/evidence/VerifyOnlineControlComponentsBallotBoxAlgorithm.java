@@ -156,6 +156,7 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 		if (N_C >= 1) {
 
 			final VerifyVotingClientProofsContext verifyVotingClientProofsContext = new VerifyVotingClientProofsContext.Builder()
+					.setEncryptionGroup(encryptionGroup)
 					.setElectionEventId(ee)
 					.setNumberOfSelectableVotingOptions(psi)
 					.setNumberOfAllowedWriteInsPlusOne(delta_hat)

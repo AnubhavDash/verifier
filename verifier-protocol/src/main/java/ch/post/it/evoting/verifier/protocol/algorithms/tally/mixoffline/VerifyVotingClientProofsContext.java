@@ -30,7 +30,7 @@ import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
  * Regroups the context values needed by the VerifyVotingClientProofs algorithm.
  *
  * <ul>
- * <li>ee, the election event id. Not null.</li>
+ * <li>ee, the election event id. Not null and a valid UUID.</li>
  * <li>psi, the number of selectable voting options. In range [1, 120].</li>
  * <li>delta_hat, the number of allowed write-ins + 1. Strictly positive.</li>
  * <li>pTable, the primes mapping table of size n. Must be non-null.</li>
@@ -38,17 +38,23 @@ import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
  */
 public class VerifyVotingClientProofsContext {
 
+	private final GqGroup encryptionGroup;
 	private final String electionEventId;
 	private final int numberOfSelectableVotingOptions;
 	private final int numberOfAllowedWriteInsPlusOne;
 	private final GroupVector<PrimesMappingTableEntry, GqGroup> primesMappingTable;
 
-	private VerifyVotingClientProofsContext(final String electionEventId, final int numberOfSelectableVotingOptions,
+	private VerifyVotingClientProofsContext(final GqGroup encryptionGroup, final String electionEventId, final int numberOfSelectableVotingOptions,
 			final int numberOfAllowedWriteInsPlusOne, final GroupVector<PrimesMappingTableEntry, GqGroup> primesMappingTable) {
+		this.encryptionGroup = encryptionGroup;
 		this.electionEventId = electionEventId;
 		this.numberOfSelectableVotingOptions = numberOfSelectableVotingOptions;
 		this.numberOfAllowedWriteInsPlusOne = numberOfAllowedWriteInsPlusOne;
 		this.primesMappingTable = primesMappingTable;
+	}
+
+	public GqGroup getEncryptionGroup() {
+		return encryptionGroup;
 	}
 
 	public String getElectionEventId() {
@@ -69,10 +75,16 @@ public class VerifyVotingClientProofsContext {
 
 	public static class Builder {
 
+		private GqGroup encryptionGroup;
 		private String electionEventId;
 		private int numberOfSelectableVotingOptions;
 		private int numberOfAllowedWriteInsPlusOne;
 		private PrimesMappingTable primesMappingTable;
+
+		public VerifyVotingClientProofsContext.Builder setEncryptionGroup(final GqGroup encryptionGroup) {
+			this.encryptionGroup = encryptionGroup;
+			return this;
+		}
 
 		public VerifyVotingClientProofsContext.Builder setElectionEventId(final String electionEventId) {
 			this.electionEventId = electionEventId;
@@ -106,6 +118,7 @@ public class VerifyVotingClientProofsContext {
 		 *                                   </ul>
 		 */
 		public VerifyVotingClientProofsContext build() {
+			checkNotNull(encryptionGroup);
 			validateUUID(electionEventId);
 			checkNotNull(primesMappingTable);
 
@@ -117,9 +130,11 @@ public class VerifyVotingClientProofsContext {
 					"The number of selectable voting options should be smaller or equal to %s. [psi: %s]",
 					MAXIMUM_NUMBER_OF_SELECTABLE_VOTING_OPTIONS, psi);
 			checkArgument(0 < delta_hat, "The number of allowed write ins plus one must be a strictly positive number. [delta_hat: %s]", delta_hat);
+			checkArgument(encryptionGroup.equals(primesMappingTable.getPTable().getGroup()),
+					"The primes mapping table's entries must belong to the encryption group. [encryptionGroup: %s]", encryptionGroup);
 
-			return new VerifyVotingClientProofsContext(electionEventId, numberOfSelectableVotingOptions, numberOfAllowedWriteInsPlusOne,
-					primesMappingTable.getPTable());
+			return new VerifyVotingClientProofsContext(encryptionGroup, electionEventId, numberOfSelectableVotingOptions,
+					numberOfAllowedWriteInsPlusOne, primesMappingTable.getPTable());
 		}
 	}
 
