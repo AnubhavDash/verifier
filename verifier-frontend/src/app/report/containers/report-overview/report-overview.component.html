@@ -12,9 +12,10 @@
           <div class="input-group-prepend">
             <span class="input-group-text bg-outline-secondary">Dataset</span>
           </div>
-          <button (click)="fileUpload.click()" class="form-control upload-button" color="primary" mat-mini-fab>
-            <span *ngIf="!filename && !datasetLoading">Not uploaded yet. Click to upload one</span>
-            <span *ngIf="!filename && datasetLoading">Uploading dataset...</span>
+          <button (click)="fileUpload.click()" class="form-control upload-button" [ngClass]="{'is-invalid' : datasetLoadingError}" >
+            <span *ngIf="!filename && !datasetLoading && !datasetLoadingError">Not uploaded yet. Click to upload one</span>
+            <span *ngIf="!filename && datasetLoading && !datasetLoadingError">Uploading dataset...</span>
+            <span *ngIf="!datasetLoading && datasetLoadingError">An error occurred while uploading the dataset. More details in the logs.</span>
             {{filename}} <span *ngIf="hash">({{hash}})</span>
           </button>
         </div>

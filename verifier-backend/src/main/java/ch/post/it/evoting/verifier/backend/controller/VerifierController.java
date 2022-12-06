@@ -34,6 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ch.post.it.evoting.verifier.backend.dto.DatasetConfiguration;
 import ch.post.it.evoting.verifier.backend.dto.Verification;
 import ch.post.it.evoting.verifier.backend.processor.VerifierProcessor;
+import ch.post.it.evoting.verifier.backend.tools.DatasetExtractionException;
 
 @RestController
 @RequestMapping("/api/")
@@ -70,10 +71,17 @@ public class VerifierController {
 	}
 
 	@PostMapping("/dataset")
-	public void uploadDataset(
+	public ResponseEntity<String> uploadDataset(
 			@RequestParam("file")
-			MultipartFile file) throws IOException {
-		this.processor.setDataset(file.getBytes(), file.getOriginalFilename());
+			final MultipartFile file) throws IOException {
+		try {
+			this.processor.setDataset(file.getBytes(), file.getOriginalFilename());
+		} catch (final DatasetExtractionException e) {
+			LOGGER.error("An error occurred while uploading the dataset.", e);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@GetMapping("/verifications")

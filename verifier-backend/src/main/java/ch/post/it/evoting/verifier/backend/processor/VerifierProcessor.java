@@ -54,6 +54,7 @@ import ch.post.it.evoting.verifier.backend.event.TallyEvent;
 import ch.post.it.evoting.verifier.backend.event.VerificationResultEvent;
 import ch.post.it.evoting.verifier.backend.mapper.VerificationMapper;
 import ch.post.it.evoting.verifier.backend.tools.Dataset;
+import ch.post.it.evoting.verifier.backend.tools.DatasetExtractionException;
 import ch.post.it.evoting.verifier.backend.tools.DatasetService;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
@@ -108,9 +109,9 @@ public class VerifierProcessor {
 		return datasetConfiguration;
 	}
 
-	public void setDataset(byte[] file, String filename) {
-		checkNotNull(file, "zip file must be not null");
-		checkNotNull(filename, "filename must be not null");
+	public void setDataset(final byte[] file, final String filename) throws DatasetExtractionException {
+		checkNotNull(file);
+		checkNotNull(filename);
 
 		this.dataset = new Dataset(file);
 

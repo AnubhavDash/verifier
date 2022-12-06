@@ -122,7 +122,7 @@ public class DatasetService {
 		});
 	}
 
-	public ElectionEventContext extractElectionEventContext(final Dataset dataset) {
+	public ElectionEventContext extractElectionEventContext(final Dataset dataset) throws DatasetExtractionException {
 		checkNotNull(dataset);
 
 		try (final ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(dataset.getZip()))) {
@@ -132,13 +132,13 @@ public class DatasetService {
 					return objectMapper.readValue(zis, ElectionEventContextPayload.class).getElectionEventContext();
 				}
 			}
-			throw new IllegalStateException("Failed to find election event context payload in zip file.");
 		} catch (final IOException e) {
 			throw new UncheckedIOException("Failed to open zip.", e);
 		}
+		throw new DatasetExtractionException("Failed to find election event context payload in zip file.");
 	}
 
-	public Configuration extractConfiguration(final Dataset dataset) {
+	public Configuration extractConfiguration(final Dataset dataset) throws DatasetExtractionException {
 		checkNotNull(dataset);
 
 		try (final ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(dataset.getZip()))) {
@@ -149,10 +149,10 @@ public class DatasetService {
 							Configuration.class);
 				}
 			}
-			throw new IllegalStateException("Failed to configuration in zip file.");
 		} catch (final IOException e) {
 			throw new UncheckedIOException("Failed to open zip.", e);
 		}
+		throw new DatasetExtractionException("Failed to find configuration in zip file.");
 	}
 
 	/**
