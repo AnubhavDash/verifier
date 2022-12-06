@@ -100,7 +100,7 @@ public class ResultDeliveryMapper {
 		final int castBallots = authorizationAliasToTallyComponentVotesPayloadMap.values().stream()
 				.map(TallyComponentVotesPayload::getVotes)
 				.mapToInt(List::size)
-				.sum();
+				.reduce(0, Math::addExact);
 
 		final List<BallotBoxType> ballotBoxes = authorizations.stream()
 				.map(authorizationType -> toBallotBoxType(authorizationType, contest,

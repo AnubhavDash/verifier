@@ -18,6 +18,7 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
@@ -67,12 +68,20 @@ public class VerifyTotalVotersConsistency extends AbstractVerification {
 				"The voter total in the header must be the same as the size of the voter list. [voterTotal: %s, voterCount: %s]", voterTotal,
 				voterCount);
 
-		final int totalNumberOfVotingCards = extractionService.getElectionEventContextPayload(inputDirectoryPath).getElectionEventContext()
-				.verificationCardSetContexts().stream()
-				.mapToInt(VerificationCardSetContext::numberOfVotingCards)
-				.sum();
+		final List<VerificationCardSetContext> verificationCardSetContexts = extractionService.getElectionEventContextPayload(inputDirectoryPath)
+				.getElectionEventContext().verificationCardSetContexts();
 
-		if (voterCount == totalNumberOfVotingCards) {
+		boolean areAllNumberOfVotingCardsPositive = verificationCardSetContexts.stream()
+				.parallel()
+				.map(VerificationCardSetContext::numberOfVotingCards)
+				.allMatch(numberOfVotingCards -> numberOfVotingCards >= 0);
+
+		final int totalNumberOfVotingCards = verificationCardSetContexts.stream()
+				.parallel()
+				.mapToInt(VerificationCardSetContext::numberOfVotingCards)
+				.reduce(0, Math::addExact);
+
+		if (areAllNumberOfVotingCardsPositive && voterCount == totalNumberOfVotingCards) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),

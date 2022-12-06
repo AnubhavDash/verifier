@@ -220,7 +220,7 @@ public interface DeliveryMapper {
 						.flatMap(Collection::stream)
 						.map(ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.VoteType::getBallot)
 						.mapToLong(Collection::size)
-						.sum());
+						.reduce(0, Math::addExact));
 
 		return new VotingCardsInformationType()
 				.withCountOfReceivedValidVotingCardsTotal(countOfReceivedValidVotingCardsTotal)
@@ -385,7 +385,7 @@ public interface DeliveryMapper {
 						.filter(ballotElectionTypeExtended -> ballotElectionTypeExtended.isChangedBallot
 								&& !ballotElectionTypeExtended.isWithPartyAffiliation)
 						.mapToLong(BallotElectionTypeExtended::emptyVotes)
-						.sum()));
+						.reduce(0, Math::addExact)));
 	}
 
 	private ResultDetailType getCountOfChangedBallotsWithoutPartyAffiliation(final List<BallotElectionTypeExtended> ballotElectionTypesExtended) {
@@ -536,7 +536,7 @@ public interface DeliveryMapper {
 						ballotElectionTypesExtended.stream()
 								.filter(ballotElectionTypeExtended -> listIdentification.equals(ballotElectionTypeExtended.chosenListIdentification))
 								.mapToLong(BallotElectionTypeExtended::emptyVotes)
-								.sum()));
+								.reduce(0, Math::addExact)));
 	}
 
 	private ResultDetailType getCountOfCandidateVotes(final String listIdentification,
@@ -547,7 +547,7 @@ public interface DeliveryMapper {
 						ballotElectionTypesExtended.stream()
 								.filter(ballotElectionTypeExtended -> listIdentification.equals(ballotElectionTypeExtended.chosenListIdentification))
 								.mapToLong(BallotElectionTypeExtended::numberOfCandidatesFromChosenList)
-								.sum()));
+								.reduce(0, Math::addExact)));
 	}
 
 	private ResultDetailType getCountOfChangedBallots(final String listIdentification,
@@ -675,9 +675,9 @@ public interface DeliveryMapper {
 																.equals(chosenCandidateListIdentification))
 												.toList())
 										.mapToLong(Collection::size)
-										.sum()
+										.reduce(0, Math::addExact)
 				)
-				.sum());
+				.reduce(0, Math::addExact));
 	}
 
 	private List<CandidateListResultType> mapToCandidateListResultsForProportional(final String candidateIdentification,
