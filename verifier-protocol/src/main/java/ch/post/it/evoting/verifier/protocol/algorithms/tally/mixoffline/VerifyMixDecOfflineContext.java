@@ -17,16 +17,20 @@ package ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline;
 
 import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.validateUUID;
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import ch.post.it.evoting.cryptoprimitives.domain.validations.FailedValidationException;
+import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 
 /**
  * Represents the context of the verification of a mix
  */
-public record VerifyMixDecOfflineContext(String electionEventId, String ballotBoxId, int numberOfAllowedWriteInsPlusOne) {
+public record VerifyMixDecOfflineContext(GqGroup encryptionGroup, String electionEventId, String ballotBoxId, int numberOfAllowedWriteInsPlusOne) {
+
 	/**
 	 * Constructs the context of the VerifyMixDecOffline algorithm.
 	 *
+	 * @param encryptionGroup                encryptionGroup, the encryption group. Must be non-null.
 	 * @param electionEventId                ee, an election event ID. Must be non-null and a valid UUID.
 	 * @param ballotBoxId                    bb, a ballot box ID. Must be non-null and a valid UUID.
 	 * @param numberOfAllowedWriteInsPlusOne delta_hat, the number of allowed write-ins + 1 for the given ballot box. Must be strictly positive.
@@ -35,9 +39,9 @@ public record VerifyMixDecOfflineContext(String electionEventId, String ballotBo
 	 * @throws IllegalArgumentException  if {@code numberOfAllowedWriteInsPlusOne} is not strictly positive.
 	 */
 	public VerifyMixDecOfflineContext {
+		checkNotNull(encryptionGroup);
 		validateUUID(electionEventId);
 		validateUUID(ballotBoxId);
 		checkArgument(numberOfAllowedWriteInsPlusOne > 0, "The number of allowed write-ins + 1 must be strictly positive.");
 	}
-
 }

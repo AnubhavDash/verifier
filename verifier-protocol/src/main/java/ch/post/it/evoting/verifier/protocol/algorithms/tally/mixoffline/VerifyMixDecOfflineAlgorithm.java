@@ -41,6 +41,9 @@ import ch.post.it.evoting.cryptoprimitives.utils.VerificationResult;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.VerifiableDecryptions;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
 
+/**
+ * Implements the VerifyMixDecOffline algorithm.
+ */
 public class VerifyMixDecOfflineAlgorithm {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(VerifyMixDecOfflineAlgorithm.class);
@@ -67,6 +70,10 @@ public class VerifyMixDecOfflineAlgorithm {
 	public boolean verifyMixDecOffline(final VerifyMixDecOfflineContext context, final VerifyMixDecInput input) {
 		checkNotNull(context);
 		checkNotNull(input);
+
+		// Cross-group checks
+		checkArgument(context.encryptionGroup().equals(input.initialCiphertexts().getGroup()),
+				"The context and input must have the same encryption group.");
 
 		// Context
 		final String ee = context.electionEventId();
@@ -106,24 +113,32 @@ public class VerifyMixDecOfflineAlgorithm {
 				.map(EL_pk_j -> GroupVector.from(EL_pk_j.getKeyElements().subList(0, delta)))
 				.map(ElGamalMultiRecipientPublicKey::new)
 				.collect(GroupVector.toGroupVector());
+
 		final VerificationResult shuffleVerif_1 = mixnet.verifyShuffle(c_init_1, c_mix.get(0), pi_mix.get(0), EL_pk);
 		shuffleVerif.add(shuffleVerif_1);
+
 		final List<String> i_aux_1 = List.of(ee, bb, "MixDecOnline", integerToString(1));
+
 		final VerificationResult decryptVerif_1 = zeroKnowledgeProof.verifyDecryptions(c_mix.get(0), EL_pk_1To4.get(0), cAndPi_dec.get(0), i_aux_1);
 		decryptVerif.add(decryptVerif_1);
+
 		// The specification uses 1 indexing, but we are bound to 0 indexing
 		final List<Verifs> verifs = IntStream.rangeClosed(1, 3).parallel().mapToObj(j -> {
 			final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> publicKeysToCombine = Streams.concat(
 					IntStream.range(j, 4).mapToObj(EL_pk_1To4_prime::get), Stream.of(EB_pk)).collect(GroupVector.toGroupVector());
 			final ElGamalMultiRecipientPublicKey EL_pk_bar = elGamal.combinePublicKeys(publicKeysToCombine);
+
 			final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_dec_j_minus_1 = cAndPi_dec.get(j - 1).getCiphertexts();
 			final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_mix_j = c_mix.get(j);
 			final ShuffleArgument pi_mix_j = pi_mix.get(j);
 			final VerificationResult shuffleVerif_j = mixnet.verifyShuffle(c_dec_j_minus_1, c_mix_j, pi_mix_j, EL_pk_bar);
+
 			final List<String> i_aux_j = List.of(ee, bb, "MixDecOnline", integerToString(j + 1)); // 0-indexing
+
 			final ElGamalMultiRecipientPublicKey EL_pk_j = EL_pk_1To4.get(j);
 			final VerifiableDecryptions cAndPi_dec_j = cAndPi_dec.get(j);
 			final VerificationResult decryptVerif_j = zeroKnowledgeProof.verifyDecryptions(c_mix_j, EL_pk_j, cAndPi_dec_j, i_aux_j);
+
 			return new Verifs(shuffleVerif_j, decryptVerif_j);
 		}).toList();
 

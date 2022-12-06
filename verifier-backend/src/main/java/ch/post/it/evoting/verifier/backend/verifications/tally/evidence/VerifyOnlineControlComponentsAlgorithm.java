@@ -57,13 +57,13 @@ public class VerifyOnlineControlComponentsAlgorithm {
 	/**
 	 * Verifies the proofs of all OnlineControlComponents.
 	 *
-	 * @param electionEventId ee, the election event to be verified
-	 * @param ballotBoxIds bb, the ballot boxes to be verified
-	 * @param numberOfSelectableVotingOptions ψ, the number of selectable voting options per ballot box
+	 * @param electionEventId                   ee, the election event to be verified
+	 * @param ballotBoxIds                      bb, the ballot boxes to be verified
+	 * @param numberOfSelectableVotingOptions   ψ, the number of selectable voting options per ballot box
 	 * @param controlComponentBallotBoxPayloads the list of ControlComponentBallotBox payloads per ballot box
-	 * @param controlComponentShufflePayloads the list of OnlineControlComponentShuffle payloads per ballot box
-	 * @param setupComponentTallyDataPayloads the SetupComponentTallyData payload per ballot box
-	 * @param electionEventContext the election event context containing the public keys
+	 * @param controlComponentShufflePayloads   the list of OnlineControlComponentShuffle payloads per ballot box
+	 * @param setupComponentTallyDataPayloads   the SetupComponentTallyData payload per ballot box
+	 * @param electionEventContext              the election event context containing the public keys
 	 * @return {@code true} if all proofs verify for all ballot boxes, {@code false} otherwise
 	 */
 	@SuppressWarnings("java:S117")
@@ -98,14 +98,16 @@ public class VerifyOnlineControlComponentsAlgorithm {
 							.boxed()
 							.collect(Collectors.toMap(verificationCardIds::get, verificationCardPublicKeys::get));
 
-					final ControlComponentBallotBoxPayload firstControlComponentBallotBoxPayload = ballotBoxPayloads.get(0);
-
 					final VerifyOnlineControlComponentsBallotBoxContext context = new VerifyOnlineControlComponentsBallotBoxContext(
-							ee, bb, numberOfSelectableVotingOptions.get(bb), electionEventContext, setupComponentPublicKeys);
-					final VerifyOnlineControlComponentBallotBoxInput input = new VerifyOnlineControlComponentBallotBoxInput(
-							KMap, firstControlComponentBallotBoxPayload, shufflePayloads);
+							verificationCardPublicKeys.getGroup(), ee, bb, numberOfSelectableVotingOptions.get(bb), electionEventContext,
+							setupComponentPublicKeys);
 
-					final boolean bbOnlineCCVerif_i = verifyOnlineControlComponentsBallotBoxAlgorithm.verifyOnlineControlComponentsBallotBox(context, input);
+					final ControlComponentBallotBoxPayload firstControlComponentBallotBoxPayload = ballotBoxPayloads.get(0);
+					final VerifyOnlineControlComponentBallotBoxInput input = new VerifyOnlineControlComponentBallotBoxInput(KMap,
+							firstControlComponentBallotBoxPayload, shufflePayloads);
+
+					final boolean bbOnlineCCVerif_i = verifyOnlineControlComponentsBallotBoxAlgorithm.verifyOnlineControlComponentsBallotBox(context,
+							input);
 
 					if (!bbOnlineCCVerif_i) {
 						LOGGER.error("The online control component ballot box is invalid. [ballotBoxId: {}]", bb);

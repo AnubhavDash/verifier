@@ -15,6 +15,10 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,4 +30,11 @@ public record VerifyOnlineControlComponentBallotBoxInput(Map<String, ElGamalMult
 														 ControlComponentBallotBoxPayload firstControlComponentBallotBox,
 														 List<ControlComponentShufflePayload> controlComponentShuffles) {
 
+	public VerifyOnlineControlComponentBallotBoxInput(final Map<String, ElGamalMultiRecipientPublicKey> verificationCardPublicKeyMap,
+			final ControlComponentBallotBoxPayload firstControlComponentBallotBox,
+			final List<ControlComponentShufflePayload> controlComponentShuffles) {
+		this.verificationCardPublicKeyMap = Collections.unmodifiableMap(new LinkedHashMap<>(checkNotNull(verificationCardPublicKeyMap)));
+		this.firstControlComponentBallotBox = checkNotNull(firstControlComponentBallotBox);
+		this.controlComponentShuffles = List.copyOf(checkNotNull(controlComponentShuffles));
+	}
 }

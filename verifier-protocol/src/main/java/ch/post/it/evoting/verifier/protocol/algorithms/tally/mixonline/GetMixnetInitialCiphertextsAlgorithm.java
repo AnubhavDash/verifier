@@ -15,7 +15,6 @@
  */
 package ch.post.it.evoting.verifier.protocol.algorithms.tally.mixonline;
 
-import static ch.post.it.evoting.cryptoprimitives.utils.Validations.allEqual;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -26,7 +25,6 @@ import java.util.TreeMap;
 
 import com.google.common.annotations.VisibleForTesting;
 
-import ch.post.it.evoting.cryptoprimitives.domain.validations.Validations;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientMessage;
@@ -51,60 +49,43 @@ public class GetMixnetInitialCiphertextsAlgorithm {
 	 * Retrieves the mix net's initial ciphertexts from the confirmed, encrypted votes. The algorithm adds two trivial encryptions if there are less
 	 * than two confirmed votes in the ballot box.
 	 *
-	 * @param numberOfAllowedWriteInsPlusOne delta_hat, the number of allowed write-ins plus one. Must be strictly positive.
-	 * @param confirmedEncryptedVotes        vcMap<sub>j</sub>, map of verification card ids to confirmed, encrypted votes. Must be non-null.
-	 * @param electionPublicKey              EL<sub>pk</sub>, the election public key. Must be non-null.
+	 * @param context the {@link GetMixnetInitialCiphertextsContext}. Must be non-null.
+	 * @param input   the {@link GetMixnetInitialCiphertextsInput}. Must be non-null.
 	 * @return the mix net initial ciphertexts.
+	 * @throws NullPointerException     if any parameter is null.
+	 * @throws IllegalArgumentException if the context and input do not have the same encryption group.
 	 */
 	@SuppressWarnings("java:S117")
-	public GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> getMixnetInitialCiphertexts(final int numberOfAllowedWriteInsPlusOne,
-			final Map<String, ElGamalMultiRecipientCiphertext> confirmedEncryptedVotes, final ElGamalMultiRecipientPublicKey electionPublicKey) {
+	public GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> getMixnetInitialCiphertexts(final GetMixnetInitialCiphertextsContext context,
+			final GetMixnetInitialCiphertextsInput input) {
+		checkNotNull(context);
+		checkNotNull(input);
 
-		checkNotNull(confirmedEncryptedVotes);
-		checkNotNull(electionPublicKey);
+		// Cross-group checks.
+		checkArgument(context.encryptionGroup().equals(input.electionPublicKey().getGroup()),
+				"The context and input must have the same encryption group.");
 
-		// Size checks.
-		checkArgument(numberOfAllowedWriteInsPlusOne >= 1, "The number of allowed write-ins + 1 must be at least 1.");
-		final int delta_hat = numberOfAllowedWriteInsPlusOne;
-		final int delta = electionPublicKey.size();
-		checkArgument(delta_hat <= delta, "The election public key must have at least as many elements as the number of allowed write-ins + 1.");
+		// Context.
+		final GqGroup encryptionGroup = context.encryptionGroup();
 
-		final Map<String, ElGamalMultiRecipientCiphertext> vcMap_j = Map.copyOf(confirmedEncryptedVotes);
-		checkArgument(allEqual(vcMap_j.values().stream(), ElGamalMultiRecipientCiphertext::size),
-				"All ciphertexts must have the same size.");
-		vcMap_j.values().stream()
-				.findAny()
-				.map(ElGamalMultiRecipientCiphertext::size)
-				.ifPresent(l -> checkArgument(l == delta_hat, "The ciphertexts must be of size number of allowed write-ins + 1."));
-
-		// Groups check.
-		checkArgument(allEqual(vcMap_j.values().stream(), ElGamalMultiRecipientCiphertext::getGroup),
-				"All ciphertexts must have the same group.");
-
-		// Verification card id validation.
-		vcMap_j.keySet().forEach(Validations::validateUUID);
-
-		// Cross-group check.
-		vcMap_j.values().stream()
-				.findAny()
-				.ifPresent(elGamalMultiRecipientCiphertext -> checkArgument(
-						elGamalMultiRecipientCiphertext.getGroup().equals(electionPublicKey.getGroup()),
-						"The ciphertexts must have the same group as the election public key."));
-
-		// Variables.
+		// Input.
+		final int delta_hat = input.numberOfAllowedWriteInsPlusOne();
+		final Map<String, ElGamalMultiRecipientCiphertext> vcMap_j = input.encryptedConfirmedVotes();
+		final ElGamalMultiRecipientPublicKey EL_pk = input.electionPublicKey();
 		final int N_C = vcMap_j.size();
-		final ElGamalMultiRecipientPublicKey EL_pk = electionPublicKey;
-		final GqGroup gqGroup = EL_pk.getGroup();
 
-		// Operation
+		// Require.
+		// l = delta_hat <= delta is ensured by GetMixnetInitialCiphertextsInput.
+
+		// Operation.
 		final Map<String, ElGamalMultiRecipientCiphertext> vcMap_j_ordered = order(vcMap_j);
 
 		final List<ElGamalMultiRecipientCiphertext> c_init_j = new ArrayList<>(vcMap_j_ordered.values());
 
 		if (N_C < 2) {
-			final ElGamalMultiRecipientMessage oneMessage = elGamal.ones(gqGroup, delta_hat);
+			final ElGamalMultiRecipientMessage oneMessage = elGamal.ones(encryptionGroup, delta_hat);
 
-			final ZqElement oneExponent = ZqElement.create(1, ZqGroup.sameOrderAs(gqGroup));
+			final ZqElement oneExponent = ZqElement.create(1, ZqGroup.sameOrderAs(encryptionGroup));
 			final ElGamalMultiRecipientCiphertext E_trivial = elGamal.getCiphertext(oneMessage, oneExponent, EL_pk);
 
 			c_init_j.add(E_trivial);

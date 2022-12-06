@@ -33,16 +33,17 @@ import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 
 public class VerifyOnlineControlComponentsBallotBoxContext {
 
+	private final GqGroup encryptionGroup;
 	private final String electionEventId;
 	private final String ballotBoxId;
 	private final int numberOfSelectableVotingOptions;
 	private final ElectionEventContext electionEventContext;
 	private final SetupComponentPublicKeys setupComponentPublicKeys;
 
-	public VerifyOnlineControlComponentsBallotBoxContext(final String electionEventId, final String ballotBoxId,
-			final int numberOfSelectableVotingOptions,
-			final ElectionEventContext electionEventContext,
+	public VerifyOnlineControlComponentsBallotBoxContext(final GqGroup encryptionGroup, final String electionEventId, final String ballotBoxId,
+			final int numberOfSelectableVotingOptions, final ElectionEventContext electionEventContext,
 			final SetupComponentPublicKeys setupComponentPublicKeys) {
+		this.encryptionGroup = checkNotNull(encryptionGroup);
 		this.electionEventId = validateUUID(electionEventId);
 		this.ballotBoxId = validateUUID(ballotBoxId);
 		checkArgument(numberOfSelectableVotingOptions > 0);
@@ -53,6 +54,11 @@ public class VerifyOnlineControlComponentsBallotBoxContext {
 		checkArgument(this.electionEventId.equals(this.electionEventContext.electionEventId()));
 		checkArgument(electionEventContext.verificationCardSetContexts().stream()
 				.anyMatch(verificationCardSetContext -> verificationCardSetContext.ballotBoxId().equals(ballotBoxId)));
+		checkArgument(setupComponentPublicKeys.electionPublicKey().getGroup().equals(encryptionGroup));
+	}
+
+	public GqGroup getEncryptionGroup() {
+		return encryptionGroup;
 	}
 
 	public String getElectionEventId() {
