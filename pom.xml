@@ -22,8 +22,8 @@
 
 		<bouncycastle.version>1.72</bouncycastle.version>
 		<commons-codec.version>1.15</commons-codec.version>
-		<crypto-primitives-version>1.1.0.3</crypto-primitives-version>
-		<crypto-primitives-domain.version>1.1.0.4</crypto-primitives-domain.version>
+		<crypto-primitives-version>1.1.0.4</crypto-primitives-version>
+		<crypto-primitives-domain.version>1.1.0.5</crypto-primitives-domain.version>
 		<guava.version>31.1-jre</guava.version>
 		<jackson.version>2.14.1</jackson.version>
 		<jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
