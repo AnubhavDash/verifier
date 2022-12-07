@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -190,6 +191,7 @@ public interface DeliveryMapper {
 		}
 
 		return configuration.getAuthorizations().getAuthorization().stream()
+				.sorted(Comparator.comparing(AuthorizationType::getAuthorizationName))
 				.map(AuthorizationType::getAuthorizationObject)
 				.flatMap(Collection::stream)
 				.map(AuthorizationObjectType::getCountingCircle)

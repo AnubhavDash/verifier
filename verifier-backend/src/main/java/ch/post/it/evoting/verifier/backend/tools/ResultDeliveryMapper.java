@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.math.BigInteger;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,9 +61,6 @@ import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
  */
 public class ResultDeliveryMapper {
 
-	private static final int AUTHORIZATION_ALIAS_LIMIT = 47;
-	private static final String AUTHORIZATION_ALIAS_ELLIPSIS = "...";
-
 	private ResultDeliveryMapper() {
 		// static usage only.
 	}
@@ -70,41 +68,43 @@ public class ResultDeliveryMapper {
 	/**
 	 * Returns the tally component decrypt output.
 	 *
-	 * @param configuration                                     the configuration of the event.
-	 * @param authorizationAliasToTallyComponentVotesPayloadMap a map with the authorization alias as key, and the related tally component votes
-	 *                                                          payload as value.
+	 * @param configuration                                    the configuration of the event.
+	 * @param authorizationNameToTallyComponentVotesPayloadMap a map with the authorization name as key, and the related tally component votes payload
+	 *                                                         as value.
 	 * @return the results built with the inputs.
 	 * @throws NullPointerException     if any input is null.
 	 * @throws IllegalArgumentException if the input map does not contain exactly one entry per authorization.
 	 */
 	public static Results toResults(final Configuration configuration,
-			final Map<String, TallyComponentVotesPayload> authorizationAliasToTallyComponentVotesPayloadMap) {
+			final Map<String, TallyComponentVotesPayload> authorizationNameToTallyComponentVotesPayloadMap) {
 
 		checkNotNull(configuration);
-		checkNotNull(authorizationAliasToTallyComponentVotesPayloadMap);
+		checkNotNull(authorizationNameToTallyComponentVotesPayloadMap);
 
 		final List<AuthorizationType> authorizations = configuration.getAuthorizations().getAuthorization();
 
-		checkArgument(authorizations.size() == authorizationAliasToTallyComponentVotesPayloadMap.size(),
+		checkArgument(authorizations.size() == authorizationNameToTallyComponentVotesPayloadMap.size(),
 				"There must be exactly the same number of authorizations as tally component votes payload mappings.");
 
 		checkArgument(authorizations.stream()
 						.parallel()
-						.map(AuthorizationType::getAuthorizationAlias)
-						.map(ResultDeliveryMapper::formatAuthorizationAlias)
-						.allMatch(authorizationAliasToTallyComponentVotesPayloadMap::containsKey),
+						.map(AuthorizationType::getAuthorizationName)
+						.allMatch(authorizationNameToTallyComponentVotesPayloadMap::containsKey),
 				"There must be an existing tally component votes payload mapping for each authorization.");
 
 		final ContestType contest = configuration.getContest();
 		final String contestIdentification = contest.getContestIdentification();
-		final int castBallots = authorizationAliasToTallyComponentVotesPayloadMap.values().stream()
+		final int castBallots = authorizationNameToTallyComponentVotesPayloadMap.values().stream()
+				.parallel()
 				.map(TallyComponentVotesPayload::getVotes)
 				.mapToInt(List::size)
 				.reduce(0, Math::addExact);
 
 		final List<BallotBoxType> ballotBoxes = authorizations.stream()
+				.parallel()
+				.sorted(Comparator.comparing(AuthorizationType::getAuthorizationName))
 				.map(authorizationType -> toBallotBoxType(authorizationType, contest,
-						authorizationAliasToTallyComponentVotesPayloadMap.get(formatAuthorizationAlias(authorizationType.getAuthorizationAlias()))))
+						authorizationNameToTallyComponentVotesPayloadMap.get(authorizationType.getAuthorizationName())))
 				.toList();
 
 		final Results results = new Results();
@@ -113,21 +113,6 @@ public class ResultDeliveryMapper {
 		results.setCastBallots(BigInteger.valueOf(castBallots));
 
 		return results;
-	}
-
-	/**
-	 * Formats the provided alias by truncating it with a suffix ellipsis {@value AUTHORIZATION_ALIAS_ELLIPSIS}, if its size is greater than
-	 * {@value AUTHORIZATION_ALIAS_LIMIT}. This is a legacy formatting.
-	 *
-	 * @param authorizationAlias the alias to format.
-	 * @return the formatted alias.
-	 */
-	private static String formatAuthorizationAlias(final String authorizationAlias) {
-		if (authorizationAlias.length() > AUTHORIZATION_ALIAS_LIMIT) {
-			return String.format("%s%s", authorizationAlias.substring(0, AUTHORIZATION_ALIAS_LIMIT), AUTHORIZATION_ALIAS_ELLIPSIS);
-		}
-
-		return authorizationAlias;
 	}
 
 	private static BallotBoxType toBallotBoxType(final AuthorizationType authorizationType, final ContestType contestType,
@@ -213,7 +198,8 @@ public class ResultDeliveryMapper {
 
 		int currentWriteInIndex = 0;
 		for (final String answer : listOfActualSelectedVotingOptionsPerVoter) {
-			final AnswerAdditionalInformation answerAdditionalInformation = getAnswerAdditionalInformation(contestType, domainOfInfluencesOfBallotBox, answer);
+			final AnswerAdditionalInformation answerAdditionalInformation = getAnswerAdditionalInformation(contestType, domainOfInfluencesOfBallotBox,
+					answer);
 
 			switch (answerAdditionalInformation.type) {
 			case VOTE_IDENTIFICATION -> {

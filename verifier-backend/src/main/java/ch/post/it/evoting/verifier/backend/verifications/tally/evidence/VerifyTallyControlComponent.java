@@ -81,7 +81,7 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 				.getAllControlComponentShufflePayloadsOrderedByNodeId(inputDirectoryPath).toList();
 		final List<TallyComponentShufflePayload> tallyComponentShufflePayloads = extractionService
 				.getTallyComponentShufflePayloads(inputDirectoryPath).toList();
-		final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads = getAuthorizationAliasToTallyComponentVotesPayloadMap(
+		final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads = getAuthorizationNameToTallyComponentVotesPayloadMap(
 				inputDirectoryPath, electionEventContextPayload.getElectionEventContext());
 		final Configuration configuration = extractionService.getCantonConfig(inputDirectoryPath);
 		final Results tallyControlComponentDecryptions = extractionService.getTallyComponentDecrypt(inputDirectoryPath);
@@ -119,7 +119,7 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 		}
 	}
 
-	private Map<String, TallyComponentVotesPayload> getAuthorizationAliasToTallyComponentVotesPayloadMap(final Path inputDirectoryPath,
+	private Map<String, TallyComponentVotesPayload> getAuthorizationNameToTallyComponentVotesPayloadMap(final Path inputDirectoryPath,
 			final ElectionEventContext electionEventContext) {
 
 		record TallyComponentVotesTuple(String authorizationAlias, TallyComponentVotesPayload payload) {
@@ -132,12 +132,12 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 
 					final SetupComponentTallyDataPayload setupComponentTallyDataPayload = extractionService.getSetupComponentTallyDataPayload(
 							inputDirectoryPath, verificationCardSetId);
-					final String ballotBoxAlias = setupComponentTallyDataPayload.getBallotBoxAlias();
+					final String ballotBoxDefaultTitle = setupComponentTallyDataPayload.getBallotBoxDefaultTitle();
 
 					final TallyComponentVotesPayload tallyComponentVotesPayload = extractionService.getTallyComponentVotesPayload(
 							inputDirectoryPath, ballotBoxId);
 
-					return new TallyComponentVotesTuple(ballotBoxAlias, tallyComponentVotesPayload);
+					return new TallyComponentVotesTuple(ballotBoxDefaultTitle, tallyComponentVotesPayload);
 				})
 				.collect(Collectors.toMap(TallyComponentVotesTuple::authorizationAlias, TallyComponentVotesTuple::payload));
 	}
