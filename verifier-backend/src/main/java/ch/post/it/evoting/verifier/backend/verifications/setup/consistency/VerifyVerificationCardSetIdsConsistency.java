@@ -110,7 +110,7 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 							.collect(Collectors.toUnmodifiableSet());
 					checkArgument(verificationDataIds.size() == 1, "The setup component verification card set id size must be one.");
 
-					final List<List<ControlComponentCodeSharesPayload>> controlComponentCodeSharesPayloads = electionDataExtractionService.deserializeControlComponentCodeSharesPayloads(
+					final List<List<ControlComponentCodeSharesPayload>> controlComponentCodeSharesPayloads = electionDataExtractionService.deserializeControlComponentCodeSharesPayloadsOrderByChunkIdAndNodeId(
 							verificationCardSetIdPath);
 					final Set<String> codeShareIds = controlComponentCodeSharesPayloads.stream()
 							.flatMap(payloads -> payloads.stream()

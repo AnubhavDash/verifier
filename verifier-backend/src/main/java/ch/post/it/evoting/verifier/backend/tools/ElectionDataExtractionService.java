@@ -603,14 +603,14 @@ public class ElectionDataExtractionService {
 	}
 
 	/**
-	 * Gets all setup component verification data payloads of the different verification card sets.
+	 * Gets all setup component verification data payloads of the different verification card sets ordered by chunk id.
 	 *
 	 * @param inputDirectoryPath the dataset root directory.
 	 * @return all setup component verification data payloads.
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the deserialization of the setup component verification data payloads fails.
 	 */
-	public List<SetupComponentVerificationDataPayload> getSetupComponentVerificationDataPayloads(final Path inputDirectoryPath) {
+	public List<SetupComponentVerificationDataPayload> getSetupComponentVerificationDataPayloadsOrderByChunkId(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
 		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
@@ -620,6 +620,7 @@ public class ElectionDataExtractionService {
 				.parallel()
 				.map(this::deserializeSetupComponentVerificationDataPayload)
 				.flatMap(List::stream)
+				.sorted(Comparator.comparingInt(SetupComponentVerificationDataPayload::getChunkId))
 				.toList();
 	}
 
@@ -691,20 +692,21 @@ public class ElectionDataExtractionService {
 
 	/**
 	 * Deserializes and returns the control component code shares payloads for each chunk, given a path for a verification card set ID, ordered by
-	 * node id.
+	 * chunk id and node id.
 	 *
 	 * @param verificationCardSetIdPath the path for the verification card set ID.
 	 * @return List of {@code ReturnCodeGenerationResponsePayload} for each chunk.
 	 * @throws NullPointerException if {@code verificationCardSetIdPath} is null.
 	 */
-	public List<List<ControlComponentCodeSharesPayload>> deserializeControlComponentCodeSharesPayloads(final Path verificationCardSetIdPath) {
+	public List<List<ControlComponentCodeSharesPayload>> deserializeControlComponentCodeSharesPayloadsOrderByChunkIdAndNodeId(final Path verificationCardSetIdPath) {
 		checkNotNull(verificationCardSetIdPath);
 
 		final PathNode nodePath = pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_CODE_SHARES, verificationCardSetIdPath);
 		final List<Path> filePaths = nodePath.getRegexPaths();
 		return filePaths.stream()
 				.parallel()
-				.map(this::getControlComponentCodeSharesOrderedByNodeId)
+				.map(this::getControlComponentCodeSharesOrderByNodeId)
+				.sorted(Comparator.comparingInt(controlComponentCodeSharesPayloads -> controlComponentCodeSharesPayloads.get(0).getChunkId()))
 				.toList();
 	}
 
@@ -726,10 +728,10 @@ public class ElectionDataExtractionService {
 								verificationCardSetIdPath).getRegexPaths()
 						.stream()
 						.parallel())
-				.map(this::getControlComponentCodeSharesOrderedByNodeId);
+				.map(this::getControlComponentCodeSharesOrderByNodeId);
 	}
 
-	public List<ControlComponentCodeSharesPayload> getControlComponentCodeSharesOrderedByNodeId(final Path controlComponentCodeSharesPayloadsPath) {
+	public List<ControlComponentCodeSharesPayload> getControlComponentCodeSharesOrderByNodeId(final Path controlComponentCodeSharesPayloadsPath) {
 		checkNotNull(controlComponentCodeSharesPayloadsPath);
 
 		return getControlComponentCodeShares(controlComponentCodeSharesPayloadsPath)

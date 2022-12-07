@@ -117,7 +117,7 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 							.toList();
 
 					// The ControlComponentCodeSharesPayload ensures no duplicated verification card ids.
-					final List<List<ControlComponentCodeSharesPayload>> controlComponentCodeSharesPayloads = electionDataExtractionService.deserializeControlComponentCodeSharesPayloads(
+					final List<List<ControlComponentCodeSharesPayload>> controlComponentCodeSharesPayloads = electionDataExtractionService.deserializeControlComponentCodeSharesPayloadsOrderByChunkIdAndNodeId(
 							verificationCardSetIdPath);
 					final ConcurrentMap<Integer, List<String>> nodeIdsToCodeSharesIds = controlComponentCodeSharesPayloads.stream()
 							.flatMap(Collection::stream)

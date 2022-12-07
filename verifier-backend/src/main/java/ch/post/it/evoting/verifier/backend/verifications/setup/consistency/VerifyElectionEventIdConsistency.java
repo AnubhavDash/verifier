@@ -94,7 +94,7 @@ public class VerifyElectionEventIdConsistency extends AbstractVerification {
 	}
 
 	private boolean validateSetupComponentVerificationDataPayload(final Path inputDirectoryPath, final String electionEventId) {
-		return electionDataExtractionService.getSetupComponentVerificationDataPayloads(inputDirectoryPath).stream()
+		return electionDataExtractionService.getSetupComponentVerificationDataPayloadsOrderByChunkId(inputDirectoryPath).stream()
 				.parallel()
 				.allMatch(
 						setupComponentVerificationDataPayload -> electionEventId.equals(setupComponentVerificationDataPayload.getElectionEventId()));

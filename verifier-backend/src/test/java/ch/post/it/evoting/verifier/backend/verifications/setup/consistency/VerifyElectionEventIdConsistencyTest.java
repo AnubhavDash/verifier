@@ -84,7 +84,7 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 
 		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
 		doReturn(singletonList(setupComponentVerificationDataPayloadMock)).when(extractionServiceSpy)
-				.getSetupComponentVerificationDataPayloads(datasetPath);
+				.getSetupComponentVerificationDataPayloadsOrderByChunkId(datasetPath);
 
 		final VerifyElectionEventIdConsistency verifyElectionEventIdConsistency = new VerifyElectionEventIdConsistency(
 				resultPublisherServiceMock, extractionServiceSpy);

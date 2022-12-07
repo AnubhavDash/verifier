@@ -74,7 +74,7 @@ public class VerifySignatureSetupComponentVerificationData extends AbstractVerif
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final List<SetupComponentVerificationDataPayload> setupComponentVerificationDataPayloads = electionDataExtractionService.getSetupComponentVerificationDataPayloads(
+		final List<SetupComponentVerificationDataPayload> setupComponentVerificationDataPayloads = electionDataExtractionService.getSetupComponentVerificationDataPayloadsOrderByChunkId(
 				inputDirectoryPath);
 
 		final boolean verified = setupComponentVerificationDataPayloads

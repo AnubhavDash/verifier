@@ -140,7 +140,7 @@ public class ExponentiationProofsVerificationExtractionService {
 				.collect(Collectors.toMap(SetupComponentVerificationDataPayload::getChunkId, Function.identity()));
 
 		// Extract responses
-		final List<List<ControlComponentCodeSharesPayload>> contributionResponsesPayloads = extractionService.deserializeControlComponentCodeSharesPayloads(
+		final List<List<ControlComponentCodeSharesPayload>> contributionResponsesPayloads = extractionService.deserializeControlComponentCodeSharesPayloadsOrderByChunkIdAndNodeId(
 				verificationCardSetIdPath);
 		verifyControlComponentCodeSharesConsistency(contributionResponsesPayloads, electionEventId,
 				verificationCardSetIdPath.getFileName().toString());
