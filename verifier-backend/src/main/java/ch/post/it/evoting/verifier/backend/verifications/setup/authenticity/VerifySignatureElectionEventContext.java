@@ -58,7 +58,7 @@ public class VerifySignatureElectionEventContext extends AbstractVerification {
 
 	@Override
 	public VerificationDefinition getVerificationDefinition() {
-		final var definition = new VerificationDefinition();
+		final VerificationDefinition definition = new VerificationDefinition();
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.AUTHENTICITY);
 		definition.setDescription(
@@ -73,7 +73,7 @@ public class VerifySignatureElectionEventContext extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final var electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(
+		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(
 				inputDirectoryPath);
 
 		final boolean verified = verifySignature(electionEventContextPayload);

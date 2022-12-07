@@ -136,7 +136,7 @@ public class VerifierBeanConfig {
 			@Value("${direct.trust.keystore.type}")
 			final String keystoreType)
 			throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
-		var keyStore = KeyStore.getInstance(keystoreType);
+		final KeyStore keyStore = KeyStore.getInstance(keystoreType);
 		keyStore.load(repository.getKeyStore(), repository.getKeystorePassword());
 		return keyStore;
 	}
