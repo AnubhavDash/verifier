@@ -1,5 +1,30 @@
 # Changelog
 
+## Release 1.3
+
+Release 1.3 includes some feedback from the Federal Chancellery's mandated experts and other experts of the community.
+We want to thank the experts for their high-quality, constructive remarks:
+
+* Vanessa Teague (Thinking Cybersecurity), Olivier Pereira (Université catholique Louvain), Thomas Edmund Haines (Australian National University)
+* Aleksander Essex (Western University Canada)
+* Rolf Haenni, Reto Koenig, Philipp Locher, Eric Dubuis (Bern University of Applied Sciences)
+
+Release 1.3 includes the following functionalities and improvements:
+
+* Ensured that the control components' code shares match the expected content and order (feedback from Vanessa Teague, Olivier Pereira, and Thomas
+  Haines).
+* Simplified the QuadraticResidueToWriteIn algorithm (feedback from Vanessa Teague, Olivier Pereira, and Thomas Haines).
+* Improved the immutability of objects in the GetMixnetInitialCiphertexts algorithm (feedback from Rolf Haenni, Reto Koenig, Philipp Locher, and Eric Dubuis).
+* Minor alignment and validation improvements in various algorithms (feedback from Rolf Haenni, Reto Koenig, Philipp Locher, and Eric Dubuis).
+* Prevented an integer overflow in the consistency check of the number of voters.
+* Added information for the manual check by the auditors in the print mode UI.
+* Separated the election event context into a cryptographic setup component public keys object and a domain-specific election event context.
+* Optimized the performance in various operations using parallelization and caching.
+* Added a new participant "CANTON" to the direct trust keystores.
+* Updated dependencies and third-party libraries.
+
+---
+
 ## Release 1.2
 
 Release 1.2 includes the following functionalities and improvements:
