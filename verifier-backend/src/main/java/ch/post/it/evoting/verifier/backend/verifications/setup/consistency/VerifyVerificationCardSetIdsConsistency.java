@@ -103,7 +103,7 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 					final String vcsId = verificationCardSetIdPath.getFileName().toString();
 					final Set<String> verificationCardSetId = Set.of(vcsId);
 
-					final List<SetupComponentVerificationDataPayload> setupComponentVerificationDataPayloads = electionDataExtractionService.deserializeSetupComponentVerificationDataPayload(
+					final List<SetupComponentVerificationDataPayload> setupComponentVerificationDataPayloads = electionDataExtractionService.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(
 							verificationCardSetIdPath);
 					final Set<String> verificationDataIds = setupComponentVerificationDataPayloads.stream()
 							.map(SetupComponentVerificationDataPayload::getVerificationCardSetId)

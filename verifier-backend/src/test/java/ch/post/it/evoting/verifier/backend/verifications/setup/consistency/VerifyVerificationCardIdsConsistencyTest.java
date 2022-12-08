@@ -58,7 +58,7 @@ class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 	@DisplayName("inconsistent verification card ids is failed")
 	void inconsistentVerificationCardIds() {
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(List.of()).when(electionDataExtractionServiceSpy).deserializeSetupComponentVerificationDataPayload(any());
+		doReturn(List.of()).when(electionDataExtractionServiceSpy).deserializeSetupComponentVerificationDataPayloadOrderByChunkId(any());
 
 		final VerifyVerificationCardIdsConsistency verifyVerificationCardIdsConsistency = new VerifyVerificationCardIdsConsistency(
 				pathService, resultPublisherServiceMock, electionDataExtractionServiceSpy);
@@ -75,7 +75,7 @@ class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 	void wrongOrderVerificationCardIdsInChunk() {
 		final Path verificationCardSet = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, datasetPath).getRegexPaths().get(0);
 		final List<SetupComponentVerificationDataPayload> swappedPayloads = new ArrayList<>(
-				electionDataExtractionService.deserializeSetupComponentVerificationDataPayload(verificationCardSet));
+				electionDataExtractionService.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(verificationCardSet));
 		final SetupComponentVerificationDataPayload setupComponentVerificationDataPayload = swappedPayloads.get(0);
 		final List<SetupComponentVerificationData> swappedSetupComponentVerificationData = new ArrayList<>(
 				setupComponentVerificationDataPayload.getSetupComponentVerificationData());
@@ -90,7 +90,7 @@ class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
 		doReturn(swappedPayloads).when(electionDataExtractionServiceSpy)
-				.deserializeSetupComponentVerificationDataPayload(verificationCardSet);
+				.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(verificationCardSet);
 		final VerifyVerificationCardIdsConsistency verifyVerificationCardIdsConsistency = new VerifyVerificationCardIdsConsistency(
 				pathService, resultPublisherServiceMock, electionDataExtractionServiceSpy);
 
@@ -106,11 +106,11 @@ class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 	void wrongOrderVerificationCardIdsBetweenChunks() {
 		final Path verificationCardSet = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, datasetPath).getRegexPaths().get(0);
 		final List<SetupComponentVerificationDataPayload> swapedPayloads = new ArrayList<>(
-				electionDataExtractionService.deserializeSetupComponentVerificationDataPayload(verificationCardSet));
+				electionDataExtractionService.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(verificationCardSet));
 		Collections.swap(swapedPayloads, 0, 1);
 
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(swapedPayloads).when(electionDataExtractionServiceSpy).deserializeSetupComponentVerificationDataPayload(verificationCardSet);
+		doReturn(swapedPayloads).when(electionDataExtractionServiceSpy).deserializeSetupComponentVerificationDataPayloadOrderByChunkId(verificationCardSet);
 		final VerifyVerificationCardIdsConsistency verifyVerificationCardIdsConsistency = new VerifyVerificationCardIdsConsistency(
 				pathService, resultPublisherServiceMock, electionDataExtractionServiceSpy);
 

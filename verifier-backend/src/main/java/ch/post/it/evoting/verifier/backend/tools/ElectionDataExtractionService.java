@@ -618,20 +618,20 @@ public class ElectionDataExtractionService {
 		return verificationCardSets.getRegexPaths()
 				.stream()
 				.parallel()
-				.map(this::deserializeSetupComponentVerificationDataPayload)
+				.map(this::deserializeSetupComponentVerificationDataPayloadOrderByChunkId)
 				.flatMap(List::stream)
 				.sorted(Comparator.comparingInt(SetupComponentVerificationDataPayload::getChunkId))
 				.toList();
 	}
 
 	/**
-	 * Deserializes the setup component verification data payloads chunks, given a path for a verification card set ID.
+	 * Deserializes the setup component verification data payloads chunks, given a path for a verification card set ID ordered by chunk id.
 	 *
 	 * @param verificationCardSetIdPath the path for the verification card set ID.
 	 * @return List of {@code SetupComponentVerificationDataPayload} each corresponding to a chunk.
 	 * @throws NullPointerException if {@code verificationCardSetIdPath} is null.
 	 */
-	public List<SetupComponentVerificationDataPayload> deserializeSetupComponentVerificationDataPayload(final Path verificationCardSetIdPath) {
+	public List<SetupComponentVerificationDataPayload> deserializeSetupComponentVerificationDataPayloadOrderByChunkId(final Path verificationCardSetIdPath) {
 		checkNotNull(verificationCardSetIdPath);
 
 		final PathNode nodePath = pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA, verificationCardSetIdPath);
@@ -639,6 +639,7 @@ public class ElectionDataExtractionService {
 		return nodePath.getRegexPaths().stream()
 				.parallel()
 				.map(this::getSetupComponentVerificationDataPayload)
+				.sorted(Comparator.comparingInt(SetupComponentVerificationDataPayload::getChunkId))
 				.toList();
 	}
 

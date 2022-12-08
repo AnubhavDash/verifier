@@ -133,7 +133,7 @@ public class ExponentiationProofsVerificationExtractionService {
 			final String electionEventId) {
 
 		// Extract requests
-		final List<SetupComponentVerificationDataPayload> contributionRequestPayloads = extractionService.deserializeSetupComponentVerificationDataPayload(
+		final List<SetupComponentVerificationDataPayload> contributionRequestPayloads = extractionService.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(
 				verificationCardSetIdPath);
 
 		final Map<Integer, SetupComponentVerificationDataPayload> chunkIdToContributionRequests = contributionRequestPayloads.stream()

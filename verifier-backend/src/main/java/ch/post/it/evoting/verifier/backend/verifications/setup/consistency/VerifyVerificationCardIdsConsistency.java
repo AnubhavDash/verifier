@@ -107,7 +107,7 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 				.parallel()
 				.map(verificationCardSetIdPath -> {
 					// The SetupComponentVerificationDataPayload ensures no duplicated verification card ids.
-					final List<SetupComponentVerificationDataPayload> setupComponentVerificationDataPayloads = electionDataExtractionService.deserializeSetupComponentVerificationDataPayload(
+					final List<SetupComponentVerificationDataPayload> setupComponentVerificationDataPayloads = electionDataExtractionService.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(
 							verificationCardSetIdPath);
 					final List<String> verificationDataIds = setupComponentVerificationDataPayloads.stream()
 							.flatMap(

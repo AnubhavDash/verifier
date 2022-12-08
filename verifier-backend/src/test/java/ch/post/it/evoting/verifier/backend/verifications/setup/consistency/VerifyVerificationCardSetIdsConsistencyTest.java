@@ -59,7 +59,7 @@ class VerifyVerificationCardSetIdsConsistencyTest extends SetupVerificationTest 
 
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
 		doReturn(Collections.singletonList(setupComponentVerificationDataPayloadMock)).when(electionDataExtractionServiceSpy)
-				.deserializeSetupComponentVerificationDataPayload(any());
+				.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(any());
 
 		final VerifyVerificationCardSetIdsConsistency verifyVerificationCardSetIdsConsistency = new VerifyVerificationCardSetIdsConsistency(
 				resultPublisherServiceMock, pathService, electionDataExtractionServiceSpy);
