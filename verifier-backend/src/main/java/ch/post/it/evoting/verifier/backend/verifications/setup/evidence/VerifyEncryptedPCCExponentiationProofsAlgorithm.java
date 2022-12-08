@@ -15,10 +15,10 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,15 +41,14 @@ public class VerifyEncryptedPCCExponentiationProofsAlgorithm {
 	 *
 	 * @param input            the input for the VerifyEncryptedPCCExponentiationProofs algorithm.
 	 * @param contextAndInputs the contexts and inputs for the {@code VerifyEncryptedPCCExponentiationProofsVerificationCardSetAlgorithm} per control
-	 *                         component j and verification card set vcs_i.
+	 *                         component j and verification card set vcs_i as a {@link Stream}.
 	 * @return true if the proofs are valid for all the {@code j} and {@code i}, false otherwise.
 	 */
 	@SuppressWarnings("java:S117")
 	public boolean verifyEncryptedPCCExponentiationProofs(final VerifyEncryptedExponentiationProofsInput input,
-			final List<ExponentiationProofsVerificationExtractionService.ContextAndInputForVerificationCardSetAndControlComponent> contextAndInputs) {
+			final Stream<ExponentiationProofsVerificationExtractionService.ContextAndInputForVerificationCardSetAndControlComponent> contextAndInputs) {
 		checkNotNull(input);
 		checkNotNull(contextAndInputs);
-		checkArgument(!contextAndInputs.isEmpty());
 
 		// Input.
 		final String ee = input.getElectionEventId();
@@ -57,13 +56,12 @@ public class VerifyEncryptedPCCExponentiationProofsAlgorithm {
 
 		// Operation.
 		final boolean vcsEncryptedPCCVerif = contextAndInputs
-				.stream()
 				.parallel()
 				// Corresponds to the loop for j in [1, 4] and i in [0, N_bb)
 				.map(j_i -> verifyEncryptedPCCExponentiationProofsVerificationCardSetAlgorithm
 						.verifyEncryptedPCCExponentiationProofsVerificationCardSet(j_i.context(), j_i.input()))
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 
 		if (vcsEncryptedPCCVerif) {
 			LOGGER.debug("The encrypted PCC exponentiated proofs are valid. [ee: {}, vcs: {}]", ee, vcs);

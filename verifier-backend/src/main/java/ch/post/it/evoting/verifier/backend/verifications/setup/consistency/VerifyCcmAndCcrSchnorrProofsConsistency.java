@@ -20,11 +20,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.ControlComponentPublicKeys;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
+import ch.post.it.evoting.cryptoprimitives.domain.mixnet.SetupComponentPublicKeysPayload;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.ZqGroup;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.SchnorrProof;
@@ -33,6 +32,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -44,8 +44,8 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 	private final ElectionDataExtractionService extractionService;
 
 	protected VerifyCcmAndCcrSchnorrProofsConsistency(final ElectionDataExtractionService extractionService,
-			final ApplicationEventPublisher applicationEventPublisher) {
-		super(applicationEventPublisher);
+			final ResultPublisherService resultPublisherService) {
+		super(resultPublisherService);
 		this.extractionService = extractionService;
 	}
 
@@ -64,11 +64,11 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(inputDirectoryPath);
+		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = extractionService.getSetupComponentPublicKeysPayload(inputDirectoryPath);
 		final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = extractionService.getControlComponentPublicKeysPayloads(
 				inputDirectoryPath);
 
-		final Map<Integer, GroupVector<SchnorrProof, ZqGroup>> electionEventCcmjSchnorrProofs = electionEventContextPayload.getElectionEventContext()
+		final Map<Integer, GroupVector<SchnorrProof, ZqGroup>> electionEventCcmjSchnorrProofs = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
 				.combinedControlComponentPublicKeys().stream()
 				.collect(Collectors.toMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccmjSchnorrProofs));
 
@@ -77,9 +77,9 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 				.map(controlComponentPublicKeys -> electionEventCcmjSchnorrProofs.get(controlComponentPublicKeys.nodeId())
 						.equals(controlComponentPublicKeys.ccmjSchnorrProofs()))
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 
-		final Map<Integer, GroupVector<SchnorrProof, ZqGroup>> electionEventCcrjSchnorrProofs = electionEventContextPayload.getElectionEventContext()
+		final Map<Integer, GroupVector<SchnorrProof, ZqGroup>> electionEventCcrjSchnorrProofs = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
 				.combinedControlComponentPublicKeys().stream()
 				.collect(Collectors.toMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccrjSchnorrProofs));
 
@@ -88,7 +88,7 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 				.map(controlComponentPublicKeys -> electionEventCcrjSchnorrProofs.get(controlComponentPublicKeys.nodeId())
 						.equals(controlComponentPublicKeys.ccrjSchnorrProofs()))
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 
 		if (sameCcmjSchnorrProofs && sameCcrjSchnorrProofs) {
 			return VerificationResult.success(getVerificationDefinition());

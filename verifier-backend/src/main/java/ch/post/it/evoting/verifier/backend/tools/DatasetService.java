@@ -47,6 +47,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
 
 import jakarta.xml.bind.DatatypeConverter;
 import net.lingala.zip4j.io.inputstream.ZipInputStream;
@@ -55,8 +56,11 @@ import net.lingala.zip4j.model.LocalFileHeader;
 @Service
 public class DatasetService {
 
+	public static final String SETUP_CONFIGURATION_ANONYMIZED_XML = "setup/configuration-anonymized.xml";
+	public static final String SETUP_ELECTION_EVENT_CONTEXT_PAYLOAD_JSON = "setup/electionEventContextPayload.json";
 	private final ObjectMapper objectMapper;
 	private final DirectoryService directoryService;
+	private final XmlFileRepository<Configuration> configurationXmlFileRepository;
 
 	@Value("${direct.trust.keystore.type}")
 	private String keyStoreType;
@@ -67,9 +71,11 @@ public class DatasetService {
 	@Value("${direct.trust.keystore.password.location}")
 	private String keyStorePasswordLocation;
 
-	public DatasetService(final ObjectMapper objectMapper, final DirectoryService directoryService) {
+	public DatasetService(final ObjectMapper objectMapper, final DirectoryService directoryService,
+			final XmlFileRepository<Configuration> configurationXmlFileRepository) {
 		this.objectMapper = objectMapper;
 		this.directoryService = directoryService;
+		this.configurationXmlFileRepository = configurationXmlFileRepository;
 	}
 
 	public Dataset unpack(final Dataset dataset) throws IOException {
@@ -116,20 +122,37 @@ public class DatasetService {
 		});
 	}
 
-	public ElectionEventContext extractElectionEventContext(final Dataset dataset) {
+	public ElectionEventContext extractElectionEventContext(final Dataset dataset) throws DatasetExtractionException {
 		checkNotNull(dataset);
 
 		try (final ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(dataset.getZip()))) {
 			LocalFileHeader entry;
 			while ((entry = zis.getNextEntry()) != null) {
-				if (!entry.isDirectory() && "setup/electionEventContextPayload.json".equals(entry.getFileName())) {
+				if (!entry.isDirectory() && SETUP_ELECTION_EVENT_CONTEXT_PAYLOAD_JSON.equals(entry.getFileName())) {
 					return objectMapper.readValue(zis, ElectionEventContextPayload.class).getElectionEventContext();
 				}
 			}
-			throw new IllegalStateException("Failed to find election event context payload in zip file.");
 		} catch (final IOException e) {
 			throw new UncheckedIOException("Failed to open zip.", e);
 		}
+		throw new DatasetExtractionException("Failed to find election event context payload in zip file.");
+	}
+
+	public Configuration extractConfiguration(final Dataset dataset) throws DatasetExtractionException {
+		checkNotNull(dataset);
+
+		try (final ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(dataset.getZip()))) {
+			LocalFileHeader entry;
+			while ((entry = zis.getNextEntry()) != null) {
+				if (!entry.isDirectory() && SETUP_CONFIGURATION_ANONYMIZED_XML.equals(entry.getFileName())) {
+					return configurationXmlFileRepository.read(zis, XsdConstants.CANTON_CONFIG_XSD,
+							Configuration.class);
+				}
+			}
+		} catch (final IOException e) {
+			throw new UncheckedIOException("Failed to open zip.", e);
+		}
+		throw new DatasetExtractionException("Failed to find configuration in zip file.");
 	}
 
 	/**

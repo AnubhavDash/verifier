@@ -41,6 +41,8 @@ import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.VerifyVo
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.VerifyVotingClientProofsContext;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.VerifyVotingClientProofsInput;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixonline.GetMixnetInitialCiphertextsAlgorithm;
+import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixonline.GetMixnetInitialCiphertextsContext;
+import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixonline.GetMixnetInitialCiphertextsInput;
 import ch.post.it.evoting.verifier.protocol.domain.ContextIds;
 import ch.post.it.evoting.verifier.protocol.domain.EncryptedVerifiableVote;
 import ch.post.it.evoting.verifier.protocol.domain.tally.ControlComponentBallotBoxPayload;
@@ -67,22 +69,23 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 	/**
 	 * Verifies the proofs of the OnlineControlComponentBallotBoxes.
 	 * <p>
-	 *     Calls the verifyVotingClientProofs and verifyMixDecOffline algorithms.
+	 * Calls the verifyVotingClientProofs and verifyMixDecOffline algorithms.
 	 * </p>
 	 *
 	 * @param context the verification context consisting of
 	 *                <ul>
+	 *                <li>Encryption group encryptionGroup</li>
 	 *                <li>Election event ID ee</li>
 	 *                <li>Ballot box ID bb</li>
 	 *                <li>Number of selectable voting options ψ ∈ [1, 120]</li>
 	 *                <li>Election event context</li>
 	 *                </ul>
-	 * @param input the verification input consisting of
-	 *              <ul>
-	 *              <li>Key-value map of the verification card public keys <b>KMap</b></li>
-	 *              <li>First control component ballot box</li>
-	 *              <li>Control component shuffles</li>
-	 *              </ul>
+	 * @param input   the verification input consisting of
+	 *                <ul>
+	 *                <li>Key-value map of the verification card public keys <b>KMap</b></li>
+	 *                <li>First control component ballot box</li>
+	 *                <li>Control component shuffles</li>
+	 *                </ul>
 	 * @return {@code true} if all proofs verify, {@code false} otherwise
 	 */
 	@SuppressWarnings("java:S117")
@@ -92,6 +95,7 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 		checkNotNull(input);
 
 		// Context
+		final GqGroup encryptionGroup = context.getEncryptionGroup();
 		final String ee = context.getElectionEventId();
 		final String bb = context.getBallotBoxId();
 		final int psi = context.getNumberOfSelectableVotingOptions();
@@ -114,6 +118,9 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 				.map(ControlComponentShufflePayload::getVerifiableDecryptions).toList();
 
 		// Cross-checks
+		checkArgument(firstControlComponentBallotBox.getEncryptionGroup().equals(encryptionGroup),
+				"The context and input must have the same encryption group.");
+
 		final int N_E = KMap.size();
 		final int N_C = confirmedEncryptedVotes.size();
 		checkArgument(N_E >= N_C);
@@ -133,6 +140,7 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 		checkArgument(N_C_hat >= 2, "There must be at least 2 shuffled votes.");
 		checkArgument(N_C >= 2 ? N_C_hat == N_C : N_C_hat == N_C + 2);
 		final List<String> vc_1 = confirmedEncryptedVotes.stream()
+				.parallel()
 				.map(EncryptedVerifiableVote::contextIds)
 				.map(ContextIds::verificationCardId)
 				.toList();
@@ -140,6 +148,7 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 
 		// Operation
 		final Map<String, ElGamalMultiRecipientCiphertext> vcMap_1 = confirmedEncryptedVotes.stream()
+				.parallel()
 				.collect(Collectors.toMap(encryptedVerifiableVote -> encryptedVerifiableVote.contextIds().verificationCardId(),
 						EncryptedVerifiableVote::encryptedVote));
 
@@ -147,6 +156,7 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 		if (N_C >= 1) {
 
 			final VerifyVotingClientProofsContext verifyVotingClientProofsContext = new VerifyVotingClientProofsContext.Builder()
+					.setEncryptionGroup(encryptionGroup)
 					.setElectionEventId(ee)
 					.setNumberOfSelectableVotingOptions(psi)
 					.setNumberOfAllowedWriteInsPlusOne(delta_hat)
@@ -166,10 +176,12 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 			vcProofsVerif = true;
 		}
 
+		final GetMixnetInitialCiphertextsContext getMixnetInitialCiphertextsContext = new GetMixnetInitialCiphertextsContext(encryptionGroup, ee, bb);
+		final GetMixnetInitialCiphertextsInput getMixnetInitialCiphertextsInput = new GetMixnetInitialCiphertextsInput(delta_hat, vcMap_1, EL_pk);
 		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_init_1 = getMixnetInitialCiphertextsAlgorithm.getMixnetInitialCiphertexts(
-				delta_hat, vcMap_1, EL_pk);
+				getMixnetInitialCiphertextsContext, getMixnetInitialCiphertextsInput);
 
-		final VerifyMixDecOfflineContext verifyMixDecOfflineContext = new VerifyMixDecOfflineContext(ee, bb, delta_hat);
+		final VerifyMixDecOfflineContext verifyMixDecOfflineContext = new VerifyMixDecOfflineContext(encryptionGroup, ee, bb, delta_hat);
 		final VerifyMixDecInput verifyMixDecInput = new VerifyMixDecInput(c_init_1, c_mix_j_pi_mix_j, c_dec_j_pi_dec_j, EL_pk, EL_pk_1_to_4, EB_pk);
 
 		final boolean shuffleProofsVerif = verifyMixDecOfflineAlgorithm.verifyMixDecOffline(verifyMixDecOfflineContext, verifyMixDecInput);

@@ -39,7 +39,7 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 	static void setupAll() {
 		consistencyAlgorithm = spy(VerifyPrimesMappingTableConsistencyAlgorithm.class);
 
-		verification = new VerifyPrimesMappingTableConsistency(electionDataExtractionService, consistencyAlgorithm, applicationEventPublisherMock);
+		verification = new VerifyPrimesMappingTableConsistency(electionDataExtractionService, consistencyAlgorithm, resultPublisherServiceMock);
 	}
 
 	@BeforeEach

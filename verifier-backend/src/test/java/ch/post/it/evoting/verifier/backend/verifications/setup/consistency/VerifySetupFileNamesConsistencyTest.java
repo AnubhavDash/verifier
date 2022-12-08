@@ -39,7 +39,7 @@ class VerifySetupFileNamesConsistencyTest extends SetupVerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifySetupFileNamesConsistency(applicationEventPublisherMock, pathService, objectMapper, electionDataExtractionService);
+		verification = new VerifySetupFileNamesConsistency(resultPublisherServiceMock, pathService, objectMapper, electionDataExtractionService);
 	}
 
 	@Test
@@ -57,7 +57,7 @@ class VerifySetupFileNamesConsistencyTest extends SetupVerificationTest {
 				datasetPath).get(0);
 		doReturn(firstPublicKeysPayload).when(objectMapperMock).readValue(any(File.class), eq(ControlComponentPublicKeysPayload.class));
 
-		final VerifySetupFileNamesConsistency failingVerification = new VerifySetupFileNamesConsistency(applicationEventPublisherMock,
+		final VerifySetupFileNamesConsistency failingVerification = new VerifySetupFileNamesConsistency(resultPublisherServiceMock,
 				pathService, objectMapperMock, electionDataExtractionService);
 		final VerificationResult verificationResult = failingVerification.verify(datasetPath);
 

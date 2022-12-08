@@ -23,8 +23,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
+import ch.post.it.evoting.cryptoprimitives.domain.election.SetupComponentPublicKeys;
+import ch.post.it.evoting.cryptoprimitives.domain.mixnet.SetupComponentPublicKeysPayload;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
@@ -36,9 +36,10 @@ import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerification
 class VerifyChoiceReturnCodesPublicKeyConsistencyTest extends SetupVerificationTest {
 
 	private static final ElGamal EL_GAMAL = ElGamalFactory.createElGamal();
+
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyChoiceReturnCodesPublicKeyConsistency(EL_GAMAL, electionDataExtractionService, applicationEventPublisherMock);
+		verification = new VerifyChoiceReturnCodesPublicKeyConsistency(EL_GAMAL, electionDataExtractionService, resultPublisherServiceMock);
 	}
 
 	@Test
@@ -53,19 +54,21 @@ class VerifyChoiceReturnCodesPublicKeyConsistencyTest extends SetupVerificationT
 	@Test
 	@DisplayName("inconsistent pk_CCR fails.")
 	void inconsistentChoiceReturnCodesPublicKey() {
-		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(datasetPath);
-		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
+		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = electionDataExtractionService.getSetupComponentPublicKeysPayload(
+				datasetPath);
+		final SetupComponentPublicKeys setupComponentPublicKeys = setupComponentPublicKeysPayload.getSetupComponentPublicKeys();
 
-		final ElectionEventContext modifiedElectionEventContext = spy(electionEventContext);
-		doReturn(electionEventContext.electionPublicKey()).when(modifiedElectionEventContext).choiceReturnCodesEncryptionPublicKey();
-		final ElectionEventContextPayload modifiedElectionEventContextPayload = new ElectionEventContextPayload(
-				electionEventContextPayload.getEncryptionGroup(), modifiedElectionEventContext);
+		final SetupComponentPublicKeys modifiedSetupComponentPublicKeys = spy(setupComponentPublicKeys);
+		doReturn(setupComponentPublicKeys.electionPublicKey()).when(modifiedSetupComponentPublicKeys).choiceReturnCodesEncryptionPublicKey();
+		final SetupComponentPublicKeysPayload modifiedSetupComponentPublicKeysPayload = new SetupComponentPublicKeysPayload(
+				setupComponentPublicKeysPayload.getEncryptionGroup(), setupComponentPublicKeysPayload.getElectionEventId(),
+				modifiedSetupComponentPublicKeys);
 
 		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-		doReturn(modifiedElectionEventContextPayload).when(extractionServiceMock).getElectionEventContextPayload(datasetPath);
+		doReturn(modifiedSetupComponentPublicKeysPayload).when(extractionServiceMock).getSetupComponentPublicKeysPayload(datasetPath);
 
 		final VerifyChoiceReturnCodesPublicKeyConsistency verificationWithMock = new VerifyChoiceReturnCodesPublicKeyConsistency(EL_GAMAL,
-				extractionServiceMock, applicationEventPublisherMock);
+				extractionServiceMock, resultPublisherServiceMock);
 
 		final VerificationResult result = verificationWithMock.verify(datasetPath);
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),

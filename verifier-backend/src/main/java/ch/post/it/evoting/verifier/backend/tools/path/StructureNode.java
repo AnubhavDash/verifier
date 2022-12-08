@@ -16,23 +16,6 @@
 package ch.post.it.evoting.verifier.backend.tools.path;
 
 import java.nio.file.Path;
-import java.util.List;
 
-import lombok.Getter;
-
-@Getter
-public class StructureNode {
-	private final PathType type;
-	private final Path parentPath;
-	private final String qualifier;
-	private final boolean dynamicAncestor;
-	private final List<RelationType> relations;
-
-	StructureNode(PathType type, Path parentPath, String qualifier, boolean dynamicAncestor, List<RelationType> relations) {
-		this.type = type;
-		this.parentPath = parentPath;
-		this.qualifier = qualifier;
-		this.dynamicAncestor = dynamicAncestor;
-		this.relations = relations;
-	}
+record StructureNode(PathType type, Path parentPath, String qualifier, boolean dynamicAncestor) {
 }

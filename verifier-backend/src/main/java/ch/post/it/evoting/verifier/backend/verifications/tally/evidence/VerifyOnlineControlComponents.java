@@ -21,20 +21,22 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.MoreCollectors;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
+import ch.post.it.evoting.cryptoprimitives.domain.election.SetupComponentPublicKeys;
 import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
+import ch.post.it.evoting.cryptoprimitives.domain.mixnet.SetupComponentPublicKeysPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
@@ -48,10 +50,10 @@ public class VerifyOnlineControlComponents extends AbstractVerification {
 	private final VerifyOnlineControlComponentsAlgorithm verifyOnlineControlComponentsAlgorithm;
 
 	public VerifyOnlineControlComponents(
-			final ApplicationEventPublisher applicationEventPublisher,
+			final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService electionDataExtractionService,
 			final VerifyOnlineControlComponentsAlgorithm verifyOnlineControlComponentsAlgorithm) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.electionDataExtractionService = electionDataExtractionService;
 		this.verifyOnlineControlComponentsAlgorithm = verifyOnlineControlComponentsAlgorithm;
 	}
@@ -75,8 +77,13 @@ public class VerifyOnlineControlComponents extends AbstractVerification {
 				inputDirectoryPath);
 		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
 
+		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = electionDataExtractionService.getSetupComponentPublicKeysPayload(
+				inputDirectoryPath);
+		final SetupComponentPublicKeys setupComponentPublicKeys = setupComponentPublicKeysPayload.getSetupComponentPublicKeys();
+
 		final String electionEventId = electionEventContext.electionEventId();
 		final List<String> ballotBoxIds = electionEventContext.verificationCardSetContexts().stream()
+				.parallel()
 				.map(VerificationCardSetContext::ballotBoxId)
 				.toList();
 
@@ -84,10 +91,12 @@ public class VerifyOnlineControlComponents extends AbstractVerification {
 						inputDirectoryPath).stream()
 				.collect(Collectors.groupingBy(ControlComponentBallotBoxPayload::getBallotBoxId));
 		final Map<String, List<ControlComponentShufflePayload>> controlComponentShufflesByBallotBoxId = electionDataExtractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
-						inputDirectoryPath).stream()
+						inputDirectoryPath)
+				.parallel()
 				.collect(Collectors.groupingBy(ControlComponentShufflePayload::getBallotBoxId));
 
 		final Map<String, SetupComponentTallyDataPayload> setupComponentTallyDataByBallotBoxId = ballotBoxIds.stream()
+				.parallel()
 				.collect(Collectors.toMap(Function.identity(), bb -> {
 					final String verificationCardSetId = electionEventContext.verificationCardSetContexts().stream()
 							.filter(verificationCardSetContext -> verificationCardSetContext.ballotBoxId().equals(bb))
@@ -99,6 +108,7 @@ public class VerifyOnlineControlComponents extends AbstractVerification {
 				}));
 
 		final Map<String, Integer> numberOfSelectionsByBallotBoxId = ballotBoxIds.stream()
+				.parallel()
 				.collect(Collectors.toMap(Function.identity(), bb -> {
 					final String verificationCardSetId = electionEventContext.verificationCardSetContexts().stream()
 							.filter(verificationCardSetContext -> verificationCardSetContext.ballotBoxId().equals(bb))
@@ -112,7 +122,7 @@ public class VerifyOnlineControlComponents extends AbstractVerification {
 		final VerificationResult verificationResult;
 		if (verifyOnlineControlComponentsAlgorithm.verifyOnlineControlComponents(electionEventId, ballotBoxIds, numberOfSelectionsByBallotBoxId,
 				controlComponentBallotBoxesByBallotBoxId, controlComponentShufflesByBallotBoxId, setupComponentTallyDataByBallotBoxId,
-				electionEventContext
+				electionEventContext, setupComponentPublicKeys
 		)) {
 			verificationResult = VerificationResult.success(getVerificationDefinition());
 		} else {

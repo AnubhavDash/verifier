@@ -37,7 +37,7 @@ class VerifyCcmElectionPublicKeyConsistencyTest extends SetupVerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyCcmElectionPublicKeyConsistency(electionDataExtractionService, applicationEventPublisherMock);
+		verification = new VerifyCcmElectionPublicKeyConsistency(electionDataExtractionService, resultPublisherServiceMock);
 	}
 
 	@Test
@@ -71,7 +71,7 @@ class VerifyCcmElectionPublicKeyConsistencyTest extends SetupVerificationTest {
 				.when(extractionServiceMock).getControlComponentPublicKeysPayloads(datasetPath);
 
 		final VerifyCcmElectionPublicKeyConsistency verificationWithMock = new VerifyCcmElectionPublicKeyConsistency(
-				extractionServiceMock, applicationEventPublisherMock);
+				extractionServiceMock, resultPublisherServiceMock);
 
 		final VerificationResult result = verificationWithMock.verify(datasetPath);
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),

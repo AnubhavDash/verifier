@@ -20,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
+import java.io.InputStream;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -39,7 +41,7 @@ class VerifyConfirmedEncryptedVotesConsistencyTest extends TallyVerificationTest
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyConfirmedEncryptedVotesConsistency(applicationEventPublisherMock, electionDataExtractionService);
+		verification = new VerifyConfirmedEncryptedVotesConsistency(resultPublisherServiceMock, electionDataExtractionService);
 	}
 
 	@Test
@@ -71,7 +73,7 @@ class VerifyConfirmedEncryptedVotesConsistencyTest extends TallyVerificationTest
 		doReturn(newControlComponentBallotBoxPayloads).when(extractionServiceMock)
 				.getControlComponentBallotBoxPayloadsOrderedByNodeId(datasetPath, newPayload.getBallotBoxId());
 		final VerifyConfirmedEncryptedVotesConsistency verificationWithMock = new VerifyConfirmedEncryptedVotesConsistency(
-				applicationEventPublisherMock, extractionServiceMock);
+				resultPublisherServiceMock, extractionServiceMock);
 
 		final VerificationResult verificationResult = verificationWithMock.verify(datasetPath);
 

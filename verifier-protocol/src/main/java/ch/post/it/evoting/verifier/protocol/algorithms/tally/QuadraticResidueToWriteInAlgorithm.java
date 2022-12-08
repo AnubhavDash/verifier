@@ -19,8 +19,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.math.BigInteger;
 
-import org.bouncycastle.pqc.math.linearalgebra.IntegerFunctions;
-
 import ch.post.it.evoting.cryptoprimitives.math.GqElement;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.ZqElement;
@@ -45,30 +43,22 @@ public class QuadraticResidueToWriteInAlgorithm {
 	 * @throws NullPointerException if the input is null.
 	 */
 	public String quadraticResidueToWriteIn(final GqElement quadraticResidue) {
+		checkNotNull(quadraticResidue);
 
-		// Input.
-		final GqElement y = checkNotNull(quadraticResidue);
-
-		// Operation.
-		final ZqElement x = sqrtAndMod(y);
-
-		return integerToWriteInAlgorithm.integerToWriteIn(x);
-	}
-
-	/**
-	 * @return the square root mod p of {@code y} in {@link ZqGroup} of same order as {@code encryptionGroup}.
-	 */
-	private ZqElement sqrtAndMod(final GqElement y) {
-		final GqGroup gqGroup = y.getGroup();
+		final GqGroup gqGroup = quadraticResidue.getGroup();
 		final ZqGroup zqGroup = ZqGroup.sameOrderAs(gqGroup);
 		final BigInteger p = gqGroup.getP();
+		final BigInteger q = gqGroup.getQ();
 
-		// Computes sqrt(y) mod p
-		final BigInteger x = IntegerFunctions.ressol(y.getValue(), p);
+		// Input.
+		final BigInteger y = quadraticResidue.getValue();
 
-		// Takes the result in zqGroup
-		final BigInteger xInZqGroup = zqGroup.isGroupMember(x) ? x : p.subtract(x);
+		// Operation.
+		BigInteger x = y.modPow(p.add(BigInteger.ONE).divide(BigInteger.valueOf(4)), p);
+		if (x.compareTo(q) > 0) {
+			x = p.subtract(x);
+		}
 
-		return ZqElement.create(xInZqGroup, zqGroup);
+		return integerToWriteInAlgorithm.integerToWriteIn(ZqElement.create(x, zqGroup));
 	}
 }

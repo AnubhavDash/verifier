@@ -18,7 +18,7 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.ControlComponentPublicKeys;
-import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
+import ch.post.it.evoting.cryptoprimitives.domain.election.SetupComponentPublicKeys;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
@@ -46,23 +46,23 @@ public class VerifyKeyGenerationSchnorrProofsInput {
 	private final ElGamalMultiRecipientPublicKey electoralBoardPublicKey;
 	private final GroupVector<SchnorrProof, ZqGroup> electoralBoardSchnorrProofs;
 
-	public VerifyKeyGenerationSchnorrProofsInput(final ElectionEventContext electionEventContext) {
-		checkNotNull(electionEventContext);
+	public VerifyKeyGenerationSchnorrProofsInput(final SetupComponentPublicKeys setupComponentPublicKeys) {
+		checkNotNull(setupComponentPublicKeys);
 
-		this.ccrjChoiceReturnCodesEncryptionKeys = electionEventContext.combinedControlComponentPublicKeys().stream()
+		this.ccrjChoiceReturnCodesEncryptionKeys = setupComponentPublicKeys.combinedControlComponentPublicKeys().stream()
 				.map(ControlComponentPublicKeys::ccrjChoiceReturnCodesEncryptionPublicKey)
 				.collect(GroupVector.toGroupVector());
-		this.ccrjSchnorrProofs = electionEventContext.combinedControlComponentPublicKeys().stream()
+		this.ccrjSchnorrProofs = setupComponentPublicKeys.combinedControlComponentPublicKeys().stream()
 				.map(ControlComponentPublicKeys::ccrjSchnorrProofs)
 				.collect(GroupVector.toGroupVector());
-		this.ccmjElectionPublicKeys = electionEventContext.combinedControlComponentPublicKeys().stream()
+		this.ccmjElectionPublicKeys = setupComponentPublicKeys.combinedControlComponentPublicKeys().stream()
 				.map(ControlComponentPublicKeys::ccmjElectionPublicKey)
 				.collect(GroupVector.toGroupVector());
-		this.ccmjSchnorrProofs = electionEventContext.combinedControlComponentPublicKeys().stream()
+		this.ccmjSchnorrProofs = setupComponentPublicKeys.combinedControlComponentPublicKeys().stream()
 				.map(ControlComponentPublicKeys::ccmjSchnorrProofs)
 				.collect(GroupVector.toGroupVector());
-		this.electoralBoardPublicKey = electionEventContext.electoralBoardPublicKey();
-		this.electoralBoardSchnorrProofs = electionEventContext.electoralBoardSchnorrProofs();
+		this.electoralBoardPublicKey = setupComponentPublicKeys.electoralBoardPublicKey();
+		this.electoralBoardSchnorrProofs = setupComponentPublicKeys.electoralBoardSchnorrProofs();
 
 		// the cross-checks are done in the ElectionEventContext and CombineControlComponentPublicKeys constructor.
 	}

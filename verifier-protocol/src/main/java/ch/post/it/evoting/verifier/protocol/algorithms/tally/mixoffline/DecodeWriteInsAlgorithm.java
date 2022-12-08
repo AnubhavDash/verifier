@@ -59,7 +59,7 @@ public class DecodeWriteInsAlgorithm {
 		// Require.
 
 		checkArgument(1 <= delta_hat, "delta hat must be strictly positive. [delta_hat: %s]", delta_hat);
-		checkArgument(delta_hat <= psi, "psi must be greater or equal to delta_hat. [psi: %s, delta_hat: %s]", psi, delta_hat);
+		checkArgument(delta_hat <= psi + 1, "psi + 1 must be greater or equal to delta_hat. [psi: %s, delta_hat: %s]", psi, delta_hat);
 
 		// Operation.
 

@@ -43,7 +43,7 @@ class VerifyTotalVotersConsistencyTest extends SetupVerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyTotalVotersConsistency(applicationEventPublisherMock, electionDataExtractionService);
+		verification = new VerifyTotalVotersConsistency(resultPublisherServiceMock, electionDataExtractionService);
 	}
 
 	@Test
@@ -56,19 +56,19 @@ class VerifyTotalVotersConsistencyTest extends SetupVerificationTest {
 
 	@Test
 	void verifyNokBadVoterTotal() {
-		final Configuration configuration = electionDataExtractionService.getSetupComponentConfig(datasetPath);
+		final Configuration configuration = electionDataExtractionService.getCantonConfig(datasetPath);
 		final Configuration configurationMock = spy(configuration);
 		final HeaderType headerType = new HeaderType();
 		headerType.setVoterTotal(BigInteger.valueOf(39));
 		when(configurationMock.getHeader()).thenReturn(headerType);
 		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-		doReturn(configurationMock).when(extractionServiceMock).getSetupComponentConfig(datasetPath);
+		doReturn(configurationMock).when(extractionServiceMock).getCantonConfig(datasetPath);
 
-		final VerifyTotalVotersConsistency verificationBadVoterTotal = new VerifyTotalVotersConsistency(applicationEventPublisherMock,
+		final VerifyTotalVotersConsistency verificationBadVoterTotal = new VerifyTotalVotersConsistency(resultPublisherServiceMock,
 				extractionServiceMock);
 
 		final IllegalStateException exception = assertThrows(IllegalStateException.class, () -> verificationBadVoterTotal.verify(datasetPath));
-		assertEquals("The voter total in the header must be the same as the size of the voter list. [voterTotal: 39, voterCount: 40]",
+		assertEquals("The voter total in the header must be the same as the size of the voter list. [voterTotal: 39, voterCount: 65]",
 				Throwables.getRootCause(exception).getMessage());
 	}
 
@@ -84,7 +84,7 @@ class VerifyTotalVotersConsistencyTest extends SetupVerificationTest {
 		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
 		doReturn(electionEventContextPayloadMock).when(extractionServiceMock).getElectionEventContextPayload(datasetPath);
 
-		final VerifyTotalVotersConsistency verificationNok = new VerifyTotalVotersConsistency(applicationEventPublisherMock,
+		final VerifyTotalVotersConsistency verificationNok = new VerifyTotalVotersConsistency(resultPublisherServiceMock,
 				extractionServiceMock);
 		final VerificationResult verificationResult = verificationNok.verify(datasetPath);
 

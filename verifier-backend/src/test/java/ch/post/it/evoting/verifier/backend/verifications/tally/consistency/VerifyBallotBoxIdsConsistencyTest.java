@@ -37,7 +37,7 @@ class VerifyBallotBoxIdsConsistencyTest extends TallyVerificationTest {
 
 	@BeforeAll
 	static void setUpAll() {
-		verification = new VerifyBallotBoxIdsConsistency(applicationEventPublisherMock, pathService, electionDataExtractionService);
+		verification = new VerifyBallotBoxIdsConsistency(resultPublisherServiceMock, pathService, electionDataExtractionService);
 	}
 
 	@Test
@@ -60,7 +60,7 @@ class VerifyBallotBoxIdsConsistencyTest extends TallyVerificationTest {
 				.getTallyComponentShufflePayload(any(), any());
 
 		final VerifyBallotBoxIdsConsistency verifyVerificationCardSetIdsConsistency = new VerifyBallotBoxIdsConsistency(
-				applicationEventPublisherMock, pathService, electionDataExtractionServiceSpy);
+				resultPublisherServiceMock, pathService, electionDataExtractionServiceSpy);
 
 		final VerificationResult result = verifyVerificationCardSetIdsConsistency.verify(datasetPath);
 

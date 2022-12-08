@@ -17,7 +17,6 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 
 import java.nio.file.Path;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
@@ -25,6 +24,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 
@@ -35,17 +35,17 @@ public class VerifyEncryptedCKExponentiationProofs extends AbstractVerification 
 	private final VerifyEncryptedCKExponentiationProofsAlgorithm verifyEncryptedCKExponentiationProofsAlgorithm;
 
 	public VerifyEncryptedCKExponentiationProofs(
-			final ApplicationEventPublisher applicationEventPublisher,
+			final ResultPublisherService resultPublisherService,
 			final ExponentiationProofsVerificationExtractionService extractionService,
 			final VerifyEncryptedCKExponentiationProofsAlgorithm verifyEncryptedCKExponentiationProofsAlgorithm) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.extractionService = extractionService;
 		this.verifyEncryptedCKExponentiationProofsAlgorithm = verifyEncryptedCKExponentiationProofsAlgorithm;
 	}
 
 	@Override
 	public VerificationDefinition getVerificationDefinition() {
-		final var definition = new VerificationDefinition();
+		final VerificationDefinition definition = new VerificationDefinition();
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,

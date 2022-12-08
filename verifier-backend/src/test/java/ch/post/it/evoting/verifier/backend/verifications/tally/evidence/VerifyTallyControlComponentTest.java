@@ -58,7 +58,7 @@ class VerifyTallyControlComponentTest extends TallyVerificationTest {
 				VERIFY_TALLY_CONTROL_COMPONENT_BALLOT_BOX_ALGORITHM, VERIFY_TALLY_FILES_ALGORITHM);
 
 		verification = new VerifyTallyControlComponent(electionDataExtractionService, verifyTallyControlComponentAlgorithm,
-				applicationEventPublisherMock);
+				resultPublisherServiceMock);
 	}
 
 	@Test
@@ -76,7 +76,7 @@ class VerifyTallyControlComponentTest extends TallyVerificationTest {
 		final VerifyTallyControlComponentAlgorithm verifyTallyControlComponentAlgorithm = new VerifyTallyControlComponentAlgorithm(algorithmMock,
 				VERIFY_TALLY_FILES_ALGORITHM);
 		final VerifyTallyControlComponent verificationWithMock = new VerifyTallyControlComponent(electionDataExtractionService,
-				verifyTallyControlComponentAlgorithm, applicationEventPublisherMock);
+				verifyTallyControlComponentAlgorithm, resultPublisherServiceMock);
 		final VerificationResult result = verificationWithMock.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),
@@ -91,7 +91,7 @@ class VerifyTallyControlComponentTest extends TallyVerificationTest {
 		final VerifyTallyControlComponentAlgorithm verifyTallyControlComponentAlgorithm = new VerifyTallyControlComponentAlgorithm(
 				VERIFY_TALLY_CONTROL_COMPONENT_BALLOT_BOX_ALGORITHM, algorithmMock);
 		final VerifyTallyControlComponent verificationWithMock = new VerifyTallyControlComponent(electionDataExtractionService,
-				verifyTallyControlComponentAlgorithm, applicationEventPublisherMock);
+				verifyTallyControlComponentAlgorithm, resultPublisherServiceMock);
 		final VerificationResult result = verificationWithMock.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),

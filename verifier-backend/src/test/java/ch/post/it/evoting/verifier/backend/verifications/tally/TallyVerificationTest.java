@@ -27,7 +27,6 @@ import java.nio.file.Paths;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.ApplicationEventPublisher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -35,7 +34,7 @@ import ch.ech.xmlns.ech_0110._4.Delivery;
 import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
-import ch.post.it.evoting.verifier.backend.tools.CertificateLoader;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.XmlFileRepository;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
@@ -50,8 +49,7 @@ public abstract class TallyVerificationTest {
 	protected static ObjectMapper objectMapper;
 	protected static PathService pathService;
 	protected static AbstractVerification verification;
-	protected static CertificateLoader certificateLoader;
-	protected static ApplicationEventPublisher applicationEventPublisherMock;
+	protected static ResultPublisherService resultPublisherServiceMock;
 	protected static XmlFileRepository<Delivery> ech0110XmlFileRepository;
 	protected static XmlFileRepository<ch.ech.xmlns.ech_0222._1.Delivery> ech0222XmlFileRepository;
 	protected static XmlFileRepository<Configuration> configurationXmlFileRepository;
@@ -62,8 +60,7 @@ public abstract class TallyVerificationTest {
 	static void baseSetUpAll() {
 		objectMapper = DomainObjectMapper.getNewInstance();
 		pathService = new PathService();
-		certificateLoader = new CertificateLoader(pathService);
-		applicationEventPublisherMock = mock(ApplicationEventPublisher.class);
+		resultPublisherServiceMock = mock(ResultPublisherService.class);
 		datasetPath = Paths.get("").toAbsolutePath().getParent().resolve("datasets").resolve("dataset1");
 		signatureFactory = new TestDigitalSignaturesFactory();
 		ech0110XmlFileRepository = new XmlFileRepository<>();
@@ -76,7 +73,7 @@ public abstract class TallyVerificationTest {
 
 	@BeforeEach
 	void baseSetUp() {
-		reset(applicationEventPublisherMock);
+		reset(resultPublisherServiceMock);
 	}
 
 	@Test

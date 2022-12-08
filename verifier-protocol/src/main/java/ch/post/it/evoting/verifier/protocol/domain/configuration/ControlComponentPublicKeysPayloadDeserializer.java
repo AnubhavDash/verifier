@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.ControlComponentPublicKeys;
 import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
+import ch.post.it.evoting.cryptoprimitives.domain.mapper.EncryptionGroupUtils;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 
@@ -38,15 +39,15 @@ public class ControlComponentPublicKeysPayloadDeserializer extends JsonDeseriali
 
 		final JsonNode node = mapper.readTree(parser);
 		final JsonNode encryptionGroupNode = node.get("encryptionGroup");
-		final GqGroup gqGroup = mapper.readValue(encryptionGroupNode.toString(), GqGroup.class);
+		final GqGroup encryptionGroup = EncryptionGroupUtils.getEncryptionGroup(mapper, encryptionGroupNode);
 		final String electionEventId = mapper.readValue(node.get("electionEventId").toString(), String.class);
 
 		final ControlComponentPublicKeys controlComponentPublicKeys = mapper.reader()
-				.withAttribute("group", gqGroup)
+				.withAttribute("group", encryptionGroup)
 				.readValue(node.get("controlComponentPublicKeys"), ControlComponentPublicKeys.class);
 
 		final CryptoPrimitivesSignature signature = mapper.readValue(node.get("signature").toString(), CryptoPrimitivesSignature.class);
 
-		return new ControlComponentPublicKeysPayload(gqGroup, electionEventId, controlComponentPublicKeys, signature);
+		return new ControlComponentPublicKeysPayload(encryptionGroup, electionEventId, controlComponentPublicKeys, signature);
 	}
 }

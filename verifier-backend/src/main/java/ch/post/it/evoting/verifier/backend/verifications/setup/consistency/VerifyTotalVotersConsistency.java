@@ -18,8 +18,8 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
+import java.util.List;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
@@ -28,6 +28,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -38,9 +39,9 @@ public class VerifyTotalVotersConsistency extends AbstractVerification {
 
 	private final ElectionDataExtractionService extractionService;
 
-	protected VerifyTotalVotersConsistency(final ApplicationEventPublisher applicationEventPublisher,
+	protected VerifyTotalVotersConsistency(final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService extractionService) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.extractionService = extractionService;
 	}
 
@@ -59,7 +60,7 @@ public class VerifyTotalVotersConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final Configuration configuration = extractionService.getSetupComponentConfig(inputDirectoryPath);
+		final Configuration configuration = extractionService.getCantonConfig(inputDirectoryPath);
 
 		final int voterTotal = configuration.getHeader().getVoterTotal().intValueExact();
 		final int voterCount = configuration.getRegister().getVoter().size();
@@ -67,12 +68,20 @@ public class VerifyTotalVotersConsistency extends AbstractVerification {
 				"The voter total in the header must be the same as the size of the voter list. [voterTotal: %s, voterCount: %s]", voterTotal,
 				voterCount);
 
-		final int totalNumberOfVotingCards = extractionService.getElectionEventContextPayload(inputDirectoryPath).getElectionEventContext()
-				.verificationCardSetContexts().stream()
-				.mapToInt(VerificationCardSetContext::numberOfVotingCards)
-				.sum();
+		final List<VerificationCardSetContext> verificationCardSetContexts = extractionService.getElectionEventContextPayload(inputDirectoryPath)
+				.getElectionEventContext().verificationCardSetContexts();
 
-		if (voterCount == totalNumberOfVotingCards) {
+		boolean areAllNumberOfVotingCardsPositive = verificationCardSetContexts.stream()
+				.parallel()
+				.map(VerificationCardSetContext::numberOfVotingCards)
+				.allMatch(numberOfVotingCards -> numberOfVotingCards >= 0);
+
+		final int totalNumberOfVotingCards = verificationCardSetContexts.stream()
+				.parallel()
+				.mapToInt(VerificationCardSetContext::numberOfVotingCards)
+				.reduce(0, Math::addExact);
+
+		if (areAllNumberOfVotingCardsPositive && voterCount == totalNumberOfVotingCards) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),

@@ -47,7 +47,7 @@ class VerifyCiphertextsConsistencyTest extends TallyVerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyCiphertextsConsistency(applicationEventPublisherMock, electionDataExtractionService);
+		verification = new VerifyCiphertextsConsistency(resultPublisherServiceMock, electionDataExtractionService);
 	}
 
 	@Test
@@ -82,7 +82,7 @@ class VerifyCiphertextsConsistencyTest extends TallyVerificationTest {
 		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
 		doReturn(modifiedElectionEventContextPayload).when(extractionServiceMock).getElectionEventContextPayload(datasetPath);
 
-		final VerifyCiphertextsConsistency verificationWithMock = new VerifyCiphertextsConsistency(applicationEventPublisherMock,
+		final VerifyCiphertextsConsistency verificationWithMock = new VerifyCiphertextsConsistency(resultPublisherServiceMock,
 				extractionServiceMock);
 		final VerificationResult verificationResult = verificationWithMock.verify(datasetPath);
 

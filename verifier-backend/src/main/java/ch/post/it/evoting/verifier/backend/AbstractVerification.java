@@ -20,13 +20,13 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.verifier.backend.event.VerificationResultEvent;
 import ch.post.it.evoting.verifier.backend.event.VerifierEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 
 /**
  * Class to be extended by all verifications that want to be discovered and run by the Verifier.
@@ -35,10 +35,11 @@ import ch.post.it.evoting.verifier.backend.event.VerifierEvent;
 public abstract class AbstractVerification {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractVerification.class);
-	private final ApplicationEventPublisher applicationEventPublisher;
 
-	protected AbstractVerification(final ApplicationEventPublisher applicationEventPublisher) {
-		this.applicationEventPublisher = applicationEventPublisher;
+	private final ResultPublisherService resultPublisherService;
+
+	protected AbstractVerification(final ResultPublisherService resultPublisherService) {
+		this.resultPublisherService = resultPublisherService;
 	}
 
 	/**
@@ -61,13 +62,13 @@ public abstract class AbstractVerification {
 				result = verify(verifierEvent.getInputDirectoryPath());
 
 				// Publish result event, OK or NOK.
-				applicationEventPublisher.publishEvent(new VerificationResultEvent(this, result));
+				resultPublisherService.publish(result);
 			} catch (final Exception e) {
 				LOGGER.error("Verification error. [block: {}, id: {}]", definition.getBlock(), definition.getId(), e);
 
 				// Build and publish error result event.
 				final VerificationResult errorResult = VerificationResult.error(definition, e);
-				applicationEventPublisher.publishEvent(new VerificationResultEvent(this, errorResult));
+				resultPublisherService.publish(errorResult);
 			}
 
 		}

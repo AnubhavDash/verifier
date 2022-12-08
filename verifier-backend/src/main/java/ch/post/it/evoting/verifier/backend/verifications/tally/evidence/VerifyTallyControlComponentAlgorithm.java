@@ -30,6 +30,7 @@ import com.google.common.collect.MoreCollectors;
 
 import ch.ech.xmlns.ech_0110._4.Delivery;
 import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
+import ch.post.it.evoting.cryptoprimitives.domain.election.SetupComponentPublicKeys;
 import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.TallyComponentShufflePayload;
@@ -78,6 +79,7 @@ public class VerifyTallyControlComponentAlgorithm {
 		final List<TallyComponentVotesPayload> tallyControlComponentVotes = input.getTallyControlComponentVotes();
 		final List<TallyComponentShufflePayload> tallyControlComponentShuffles = input.getTallyControlComponentShuffles();
 		final ElectionEventContext electionEventContext = input.getElectionEventContext();
+		final SetupComponentPublicKeys setupComponentPublicKeys = input.getSetupComponentPublicKeys();
 		final Configuration electionEventConfiguration = input.getElectionEventConfiguration();
 		final Results tallyControlComponentDecryptions = input.getTallyControlComponentDecryptions();
 		final Delivery tallyControlComponentResults = input.getTallyControlComponentResults();
@@ -107,7 +109,7 @@ public class VerifyTallyControlComponentAlgorithm {
 							.setEncryptionGroup(encryptionGroup)
 							.setElectionEventId(ee)
 							.setBallotBoxId(bb_i)
-							.setElectoralBoardPublicKey(electionEventContext.electoralBoardPublicKey())
+							.setElectoralBoardPublicKey(setupComponentPublicKeys.electoralBoardPublicKey())
 							.setPrimesMappingTable(verificationCardSetContext.primesMappingTable())
 							.setWriteInVotingOptions(writeInVotingOptions_bb_i)
 							.setNumberOfSelectableVotingOptions(numberOfSelectableVotingOptions.get(bb_i))
@@ -143,10 +145,10 @@ public class VerifyTallyControlComponentAlgorithm {
 					return verifyTallyControlComponentBallotBoxAlgorithm.verifyTallyControlComponentBallotBox(context_bb_i, input_bb_i);
 				})
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 
 		final VerifyTallyFilesInput verifyTallyFilesInput = new VerifyTallyFilesInput.Builder()
-				.setupComponentConfig(electionEventConfiguration)
+				.cantonConfig(electionEventConfiguration)
 				.setTallyComponentDecrypt(tallyControlComponentDecryptions)
 				.setTallyComponentEch0110(tallyControlComponentResults)
 				.setTallyComponentEch0222(tallyComponentEch0222)

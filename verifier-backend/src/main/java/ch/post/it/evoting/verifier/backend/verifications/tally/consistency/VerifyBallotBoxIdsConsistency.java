@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
@@ -30,6 +29,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
@@ -46,9 +46,9 @@ public class VerifyBallotBoxIdsConsistency extends AbstractVerification {
 	private final PathService pathService;
 	private final ElectionDataExtractionService extractionService;
 
-	protected VerifyBallotBoxIdsConsistency(final ApplicationEventPublisher applicationEventPublisher, final PathService pathService,
+	protected VerifyBallotBoxIdsConsistency(final ResultPublisherService resultPublisherService, final PathService pathService,
 			final ElectionDataExtractionService extractionService) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.pathService = pathService;
 		this.extractionService = extractionService;
 	}
@@ -75,7 +75,7 @@ public class VerifyBallotBoxIdsConsistency extends AbstractVerification {
 						&& payloadsBallotBoxIds.ballotBoxId().equals(payloadsBallotBoxIds.tcShuffleId())
 						&& payloadsBallotBoxIds.ballotBoxId().equals(payloadsBallotBoxIds.tcVotesId()))
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 
 		if (sameBallotBoxIds) {
 			return VerificationResult.success(getVerificationDefinition());

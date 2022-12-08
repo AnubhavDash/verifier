@@ -42,7 +42,8 @@ class VerifySignatureSetupComponentVerificationDataTest extends SetupVerificatio
 	@BeforeEach
 	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
 		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
-		verification = new VerifySignatureSetupComponentVerificationData(applicationEventPublisherMock, electionDataExtractionService, testSignatureVerification);
+		verification = new VerifySignatureSetupComponentVerificationData(resultPublisherServiceMock, electionDataExtractionService,
+				testSignatureVerification);
 	}
 
 	@Test
@@ -52,7 +53,7 @@ class VerifySignatureSetupComponentVerificationDataTest extends SetupVerificatio
 
 	@Test
 	void testExpectedSignerSuccess() throws SignatureException {
-		final SetupComponentVerificationDataPayload setupComponentVerificationDataPayload = electionDataExtractionService.getSetupComponentVerificationDataPayloads(
+		final SetupComponentVerificationDataPayload setupComponentVerificationDataPayload = electionDataExtractionService.getSetupComponentVerificationDataPayloadsOrderByChunkId(
 				datasetPath).get(0);
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_CONFIG);
 		final byte[] signature = testSignatureGeneration.genSignature(setupComponentVerificationDataPayload,
@@ -64,7 +65,7 @@ class VerifySignatureSetupComponentVerificationDataTest extends SetupVerificatio
 
 	@Test
 	void testUnexpectedSignerFails() throws SignatureException {
-		final SetupComponentVerificationDataPayload setupComponentVerificationDataPayload = electionDataExtractionService.getSetupComponentVerificationDataPayloads(
+		final SetupComponentVerificationDataPayload setupComponentVerificationDataPayload = electionDataExtractionService.getSetupComponentVerificationDataPayloadsOrderByChunkId(
 				datasetPath).get(0);
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.CONTROL_COMPONENT_1);
 		final byte[] wrongSignature = testSignatureGeneration.genSignature(setupComponentVerificationDataPayload,

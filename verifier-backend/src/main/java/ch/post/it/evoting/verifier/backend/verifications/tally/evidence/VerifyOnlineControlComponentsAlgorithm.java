@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
+import ch.post.it.evoting.cryptoprimitives.domain.election.SetupComponentPublicKeys;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.domain.validations.Validations;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
@@ -56,13 +57,13 @@ public class VerifyOnlineControlComponentsAlgorithm {
 	/**
 	 * Verifies the proofs of all OnlineControlComponents.
 	 *
-	 * @param electionEventId ee, the election event to be verified
-	 * @param ballotBoxIds bb, the ballot boxes to be verified
-	 * @param numberOfSelectableVotingOptions ψ, the number of selectable voting options per ballot box
+	 * @param electionEventId                   ee, the election event to be verified
+	 * @param ballotBoxIds                      bb, the ballot boxes to be verified
+	 * @param numberOfSelectableVotingOptions   ψ, the number of selectable voting options per ballot box
 	 * @param controlComponentBallotBoxPayloads the list of ControlComponentBallotBox payloads per ballot box
-	 * @param controlComponentShufflePayloads the list of OnlineControlComponentShuffle payloads per ballot box
-	 * @param setupComponentTallyDataPayloads the SetupComponentTallyData payload per ballot box
-	 * @param electionEventContext the election event context containing the public keys
+	 * @param controlComponentShufflePayloads   the list of OnlineControlComponentShuffle payloads per ballot box
+	 * @param setupComponentTallyDataPayloads   the SetupComponentTallyData payload per ballot box
+	 * @param electionEventContext              the election event context containing the public keys
 	 * @return {@code true} if all proofs verify for all ballot boxes, {@code false} otherwise
 	 */
 	@SuppressWarnings("java:S117")
@@ -70,7 +71,8 @@ public class VerifyOnlineControlComponentsAlgorithm {
 			final Map<String, Integer> numberOfSelectableVotingOptions,
 			final Map<String, List<ControlComponentBallotBoxPayload>> controlComponentBallotBoxPayloads,
 			final Map<String, List<ControlComponentShufflePayload>> controlComponentShufflePayloads,
-			final Map<String, SetupComponentTallyDataPayload> setupComponentTallyDataPayloads, final ElectionEventContext electionEventContext) {
+			final Map<String, SetupComponentTallyDataPayload> setupComponentTallyDataPayloads, final ElectionEventContext electionEventContext,
+			final SetupComponentPublicKeys setupComponentPublicKeys) {
 		validateUUID(electionEventId);
 		checkNotNull(ballotBoxIds);
 		checkArgument(!ballotBoxIds.isEmpty());
@@ -96,14 +98,16 @@ public class VerifyOnlineControlComponentsAlgorithm {
 							.boxed()
 							.collect(Collectors.toMap(verificationCardIds::get, verificationCardPublicKeys::get));
 
-					final ControlComponentBallotBoxPayload firstControlComponentBallotBoxPayload = ballotBoxPayloads.get(0);
-
 					final VerifyOnlineControlComponentsBallotBoxContext context = new VerifyOnlineControlComponentsBallotBoxContext(
-							ee, bb, numberOfSelectableVotingOptions.get(bb), electionEventContext);
-					final VerifyOnlineControlComponentBallotBoxInput input = new VerifyOnlineControlComponentBallotBoxInput(
-							KMap, firstControlComponentBallotBoxPayload, shufflePayloads);
+							verificationCardPublicKeys.getGroup(), ee, bb, numberOfSelectableVotingOptions.get(bb), electionEventContext,
+							setupComponentPublicKeys);
 
-					final boolean bbOnlineCCVerif_i = verifyOnlineControlComponentsBallotBoxAlgorithm.verifyOnlineControlComponentsBallotBox(context, input);
+					final ControlComponentBallotBoxPayload firstControlComponentBallotBoxPayload = ballotBoxPayloads.get(0);
+					final VerifyOnlineControlComponentBallotBoxInput input = new VerifyOnlineControlComponentBallotBoxInput(KMap,
+							firstControlComponentBallotBoxPayload, shufflePayloads);
+
+					final boolean bbOnlineCCVerif_i = verifyOnlineControlComponentsBallotBoxAlgorithm.verifyOnlineControlComponentsBallotBox(context,
+							input);
 
 					if (!bbOnlineCCVerif_i) {
 						LOGGER.error("The online control component ballot box is invalid. [ballotBoxId: {}]", bb);
@@ -128,6 +132,7 @@ public class VerifyOnlineControlComponentsAlgorithm {
 				"All control component ballot box payloads must have the same confirmed encrypted votes.");
 
 		final List<Integer> ballotBoxPayloadsNodeIds = controlComponentBallotBoxPayloads.stream()
+				.parallel()
 				.map(ControlComponentBallotBoxPayload::getNodeId)
 				.toList();
 		checkState(NODE_IDS.size() == ballotBoxPayloadsNodeIds.size() && NODE_IDS.equals(new HashSet<>(ballotBoxPayloadsNodeIds)),
@@ -141,6 +146,7 @@ public class VerifyOnlineControlComponentsAlgorithm {
 				"All control component shuffle payloads must have the same ballot box id.");
 
 		final List<Integer> shufflePayloadsNodeIds = controlComponentShufflePayloads.stream()
+				.parallel()
 				.map(ControlComponentShufflePayload::getNodeId)
 				.toList();
 		checkState(NODE_IDS.size() == shufflePayloadsNodeIds.size() && NODE_IDS.equals(new HashSet<>(shufflePayloadsNodeIds)),

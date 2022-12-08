@@ -18,7 +18,6 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Streams;
@@ -29,6 +28,7 @@ import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.domain.EncryptionGroupParameters;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.EncryptionGroupParametersExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -38,9 +38,9 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 
 	private final EncryptionGroupParametersExtractionService extractionService;
 
-	public VerifyEncryptionGroupConsistency(final ApplicationEventPublisher applicationEventPublisher,
+	public VerifyEncryptionGroupConsistency(final ResultPublisherService resultPublisherService,
 			final EncryptionGroupParametersExtractionService extractionService) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.extractionService = extractionService;
 	}
 

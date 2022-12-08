@@ -17,16 +17,18 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 
 import java.nio.file.Path;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
+import ch.post.it.evoting.cryptoprimitives.domain.election.SetupComponentPublicKeys;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
+import ch.post.it.evoting.cryptoprimitives.domain.mixnet.SetupComponentPublicKeysPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -38,17 +40,17 @@ public class VerifyKeyGenerationSchnorrProofs extends AbstractVerification {
 	private final VerifyKeyGenerationSchnorrProofsAlgorithm verifyKeyGenerationSchnorrProofsAlgorithm;
 
 	public VerifyKeyGenerationSchnorrProofs(
-			final ApplicationEventPublisher applicationEventPublisher,
+			final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService extractionService,
 			final VerifyKeyGenerationSchnorrProofsAlgorithm verifyEncryptedCKExponentiationProofsAlgorithm) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.extractionService = extractionService;
 		this.verifyKeyGenerationSchnorrProofsAlgorithm = verifyEncryptedCKExponentiationProofsAlgorithm;
 	}
 
 	@Override
 	public VerificationDefinition getVerificationDefinition() {
-		final var definition = new VerificationDefinition();
+		final VerificationDefinition definition = new VerificationDefinition();
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
@@ -64,10 +66,14 @@ public class VerifyKeyGenerationSchnorrProofs extends AbstractVerification {
 		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(inputDirectoryPath);
 		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
 
+		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = extractionService.getSetupComponentPublicKeysPayload(
+				inputDirectoryPath);
+		final SetupComponentPublicKeys setupComponentPublicKeys = setupComponentPublicKeysPayload.getSetupComponentPublicKeys();
+
 		final VerifyKeyGenerationSchnorrProofsContext context = new VerifyKeyGenerationSchnorrProofsContext(
 				electionEventContextPayload.getEncryptionGroup(), electionEventContext.electionEventId(),
 				electionEventContext.getMaxNumberOfWriteInFields() + 1);
-		final VerifyKeyGenerationSchnorrProofsInput input = new VerifyKeyGenerationSchnorrProofsInput(electionEventContext);
+		final VerifyKeyGenerationSchnorrProofsInput input = new VerifyKeyGenerationSchnorrProofsInput(setupComponentPublicKeys);
 
 		final boolean result = verifyKeyGenerationSchnorrProofsAlgorithm.verifyKeyGenerationSchnorrProofs(context, input);
 

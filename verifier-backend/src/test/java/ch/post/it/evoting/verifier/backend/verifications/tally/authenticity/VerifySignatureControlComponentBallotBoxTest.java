@@ -42,7 +42,8 @@ class VerifySignatureControlComponentBallotBoxTest extends TallyVerificationTest
 	@BeforeEach
 	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
 		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
-		verification = new VerifySignatureControlComponentBallotBox(applicationEventPublisherMock, electionDataExtractionService, testSignatureVerification);
+		verification = new VerifySignatureControlComponentBallotBox(resultPublisherServiceMock, electionDataExtractionService,
+				testSignatureVerification);
 	}
 
 	@Test
