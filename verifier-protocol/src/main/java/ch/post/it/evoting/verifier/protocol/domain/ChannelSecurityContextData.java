@@ -109,6 +109,21 @@ public final class ChannelSecurityContextData {
 	 * @throws NullPointerException      if the election event id is null.
 	 * @throws FailedValidationException if the election event id is not a valid UUID.
 	 */
+	public static Hashable electionEventContext(final String electionEventId) {
+		validateUUID(electionEventId);
+
+		return HashableList.of(
+				HashableString.from("election event context"),
+				HashableString.from(electionEventId));
+	}
+
+	/**
+	 * @param electionEventId ee, the election event id. Must be non-null and a valid UUID.
+	 * @return The additional context data for the message ( {pk<sub>CCRj</sub>}<sup>4</sup><sub>j=1</sub>, pk<sub>CCR</sub>,
+	 * {ELpk,j}<sup>4</sup><sub>j=1</sub>, EB<sub>pk</sub>, EL<sub>pk</sub> ).
+	 * @throws NullPointerException      if the election event id is null.
+	 * @throws FailedValidationException if the election event id is not a valid UUID.
+	 */
 	public static Hashable setupComponentPublicKeys(final String electionEventId) {
 		validateUUID(electionEventId);
 
@@ -219,7 +234,7 @@ public final class ChannelSecurityContextData {
 	/**
 	 * @return The additional context data for the message configuration XML.
 	 */
-	public static Hashable setupComponentConfig() {
+	public static Hashable cantonConfig() {
 		return HashableString.from("configuration");
 	}
 

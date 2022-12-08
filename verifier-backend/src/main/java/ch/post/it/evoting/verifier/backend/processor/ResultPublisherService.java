@@ -17,15 +17,11 @@ package ch.post.it.evoting.verifier.backend.processor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import ch.post.it.evoting.verifier.backend.Status;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.dto.Verification;
-import ch.post.it.evoting.verifier.backend.event.VerificationResultEvent;
 import ch.post.it.evoting.verifier.backend.mapper.VerificationMapper;
 
 @Service
@@ -39,20 +35,12 @@ public class ResultPublisherService {
 		this.template = template;
 	}
 
-	@Async
-	@EventListener(VerificationResultEvent.class)
-	public void publishResult(final VerificationResultEvent event) {
-		final VerificationResult verificationResult = event.getVerificationResult();
+	public void publish(final VerificationResult verificationResult) {
 		final Verification verification = VerificationMapper.INSTANCE.map(verificationResult.getVerificationDefinition());
 		VerificationMapper.INSTANCE.update(verification, verificationResult);
 
-		if (verificationResult.getStatus() == Status.UNEXPECTED_ERROR) {
-			LOGGER.error("Verification result event ERROR received [{}], publishing to websocket...", verification);
-		} else {
-			LOGGER.info("Verification result event received [{}], publishing to websocket...", verification);
-		}
-
 		template.convertAndSend("/pushUpdate", verification);
+		LOGGER.info("Verification result published to websocket. [verification: {}, status: {}]", verification.getId(), verification.getStatus());
 	}
 
 }

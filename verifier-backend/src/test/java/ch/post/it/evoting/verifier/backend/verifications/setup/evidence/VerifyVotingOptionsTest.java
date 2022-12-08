@@ -40,7 +40,7 @@ class VerifyVotingOptionsTest extends SetupVerificationTest {
 	static void setUpAll() {
 		verifyVotingOptionsAlgorithm = spy(new VerifyVotingOptionsAlgorithm());
 
-		verification = new VerifyVotingOptions(electionDataExtractionService, applicationEventPublisherMock, verifyVotingOptionsAlgorithm);
+		verification = new VerifyVotingOptions(electionDataExtractionService, resultPublisherServiceMock, verifyVotingOptionsAlgorithm);
 	}
 
 	@BeforeEach

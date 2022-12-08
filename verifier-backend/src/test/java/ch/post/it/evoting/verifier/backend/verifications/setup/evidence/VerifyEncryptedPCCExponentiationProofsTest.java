@@ -46,7 +46,7 @@ class VerifyEncryptedPCCExponentiationProofsTest extends SetupVerificationTest {
 				verifyPCCProofsVerificationCardSetAlgorithm);
 		final ExponentiationProofsVerificationExtractionService exponentiationProofsVerificationExtractionService = new ExponentiationProofsVerificationExtractionService(
 				electionDataExtractionService, pathService);
-		verification = new VerifyEncryptedPCCExponentiationProofs(applicationEventPublisherMock, exponentiationProofsVerificationExtractionService,
+		verification = new VerifyEncryptedPCCExponentiationProofs(resultPublisherServiceMock, exponentiationProofsVerificationExtractionService,
 				verifyEncryptedPCCExponentiationProofsAlgorithm);
 	}
 

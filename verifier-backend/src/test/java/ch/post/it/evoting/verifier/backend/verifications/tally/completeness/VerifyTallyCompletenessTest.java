@@ -38,7 +38,7 @@ class VerifyTallyCompletenessTest extends TallyVerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyTallyCompleteness(pathService, applicationEventPublisherMock);
+		verification = new VerifyTallyCompleteness(pathService, resultPublisherServiceMock);
 	}
 
 	@Test
@@ -56,7 +56,7 @@ class VerifyTallyCompletenessTest extends TallyVerificationTest {
 		final PathService spyPathService = spy(pathService);
 		doThrow(UncheckedIOException.class).when(spyPathService).buildFromRootPath(eq(StructureKey.ELECTION_EVENT_CONTEXT), any());
 
-		final VerifyTallyCompleteness verificationWithSpy = new VerifyTallyCompleteness(spyPathService, applicationEventPublisherMock);
+		final VerifyTallyCompleteness verificationWithSpy = new VerifyTallyCompleteness(spyPathService, resultPublisherServiceMock);
 		final VerificationResult result = verificationWithSpy.verify(datasetPath);
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithSpy.getVerificationDefinition(),
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "verification100.nok.message"));
@@ -69,7 +69,7 @@ class VerifyTallyCompletenessTest extends TallyVerificationTest {
 		final PathService spyPathService = spy(pathService);
 		doThrow(UncheckedIOException.class).when(spyPathService).buildFromDynamicAncestorPath(eq(StructureKey.TALLY_COMPONENT_VOTES), any());
 
-		final VerifyTallyCompleteness verificationWithSpy = new VerifyTallyCompleteness(spyPathService, applicationEventPublisherMock);
+		final VerifyTallyCompleteness verificationWithSpy = new VerifyTallyCompleteness(spyPathService, resultPublisherServiceMock);
 		final VerificationResult result = verificationWithSpy.verify(datasetPath);
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithSpy.getVerificationDefinition(),
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "verification100.nok.message"));

@@ -42,7 +42,7 @@ class VerifySignatureTallyComponentShuffleTest extends TallyVerificationTest {
 	@BeforeEach
 	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
 		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
-		verification = new VerifySignatureTallyComponentShuffle(applicationEventPublisherMock, electionDataExtractionService, testSignatureVerification);
+		verification = new VerifySignatureTallyComponentShuffle(resultPublisherServiceMock, electionDataExtractionService, testSignatureVerification);
 	}
 
 	@Test
@@ -53,7 +53,7 @@ class VerifySignatureTallyComponentShuffleTest extends TallyVerificationTest {
 	@Test
 	void testExpectedSignerSuccess() throws SignatureException {
 		final TallyComponentShufflePayload tallyComponentShufflePayload = electionDataExtractionService.getTallyComponentShufflePayloads(datasetPath)
-				.get(0);
+				.findFirst().orElseThrow();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_TALLY);
 		final byte[] signature = testSignatureGeneration.genSignature(tallyComponentShufflePayload,
 				ChannelSecurityContextData.tallyComponentShuffle(tallyComponentShufflePayload.getElectionEventId(),
@@ -65,7 +65,7 @@ class VerifySignatureTallyComponentShuffleTest extends TallyVerificationTest {
 	@Test
 	void testUnexpectedSignerFails() throws SignatureException {
 		final TallyComponentShufflePayload tallyComponentShufflePayload = electionDataExtractionService.getTallyComponentShufflePayloads(datasetPath)
-				.get(0);
+				.findFirst().orElseThrow();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_CONFIG);
 		final byte[] wrongSignature = testSignatureGeneration.genSignature(tallyComponentShufflePayload,
 				ChannelSecurityContextData.tallyComponentShuffle(tallyComponentShufflePayload.getElectionEventId(),

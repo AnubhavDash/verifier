@@ -17,7 +17,6 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
 import java.nio.file.Path;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
@@ -27,6 +26,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -40,9 +40,9 @@ public class VerifyElectionEventIdConsistency extends AbstractVerification {
 	private final ElectionDataExtractionService electionDataExtractionService;
 
 	protected VerifyElectionEventIdConsistency(
-			final ApplicationEventPublisher applicationEventPublisher,
+			final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService electionDataExtractionService) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.electionDataExtractionService = electionDataExtractionService;
 	}
 
@@ -67,21 +67,23 @@ public class VerifyElectionEventIdConsistency extends AbstractVerification {
 
 		final boolean areControlComponentBallotBoxPayloadVerified = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
 						inputDirectoryPath).stream()
+				.parallel()
 				.map(ControlComponentBallotBoxPayload::getElectionEventId)
 				.allMatch(id -> id.equals(electionEventId));
 
 		final boolean areControlComponentShufflePayloadsVerified = electionDataExtractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
-						inputDirectoryPath).stream()
+						inputDirectoryPath)
+				.parallel()
 				.map(ControlComponentShufflePayload::getElectionEventId)
 				.allMatch(id -> id.equals(electionEventId));
 
 		final boolean areTallyComponentShufflePayloadsVerified = electionDataExtractionService.getTallyComponentShufflePayloads(inputDirectoryPath)
-				.stream()
+				.parallel()
 				.map(TallyComponentShufflePayload::getElectionEventId)
 				.allMatch(id -> id.equals(electionEventId));
 
-		final boolean areTallyComponentVotesPayloadsVerified = electionDataExtractionService.getTallyComponentVotesPayloads(
-						inputDirectoryPath).stream()
+		final boolean areTallyComponentVotesPayloadsVerified = electionDataExtractionService.getTallyComponentVotesPayloads(inputDirectoryPath)
+				.parallel()
 				.map(TallyComponentVotesPayload::getElectionEventId)
 				.allMatch(id -> id.equals(electionEventId));
 

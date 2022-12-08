@@ -19,15 +19,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
@@ -50,7 +54,10 @@ import ch.post.it.evoting.verifier.backend.event.TallyEvent;
 import ch.post.it.evoting.verifier.backend.event.VerificationResultEvent;
 import ch.post.it.evoting.verifier.backend.mapper.VerificationMapper;
 import ch.post.it.evoting.verifier.backend.tools.Dataset;
+import ch.post.it.evoting.verifier.backend.tools.DatasetExtractionException;
 import ch.post.it.evoting.verifier.backend.tools.DatasetService;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.AuthorizationType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
 
 @Component
 public class VerifierProcessor {
@@ -102,14 +109,19 @@ public class VerifierProcessor {
 		return datasetConfiguration;
 	}
 
-	public void setDataset(byte[] file, String filename) {
-		checkNotNull(file, "zip file must be not null");
-		checkNotNull(filename, "filename must be not null");
+	public void setDataset(final byte[] file, final String filename) throws DatasetExtractionException {
+		checkNotNull(file);
+		checkNotNull(filename);
 
 		this.dataset = new Dataset(file);
 
 		// Get election event id and number of voters from election event context.
 		final ElectionEventContext electionEventContext = datasetService.extractElectionEventContext(this.dataset);
+
+		// Get election event name, election event date, number of elections, number of votes, number of non-test ballot boxes, number of test
+		// ballot boxes, total number of authorized non-test voters and total number of test voters
+		final Configuration configuration = datasetService.extractConfiguration(this.dataset);
+
 		final String electionEventId = electionEventContext.electionEventId();
 		final Map<Boolean, Integer> testBallotBoxToTotalNumberOfVoters = electionEventContext.verificationCardSetContexts().stream()
 				.collect(Collectors.partitioningBy(
@@ -120,8 +132,27 @@ public class VerifierProcessor {
 		final Map<String, String> aliasesToFingerprints = datasetService.extractFingerprints();
 
 		final String datasetHash = DigestUtils.sha256Hex(file).toUpperCase();
+
+		final String electionEventName = configuration.getContest().getContestIdentification();
+
+		final XMLGregorianCalendar xmlElectionEventDate = configuration.getContest().getContestDate();
+		LocalDate electionEventDate = LocalDate.of(xmlElectionEventDate.getYear(), xmlElectionEventDate.getMonth(), xmlElectionEventDate.getDay());
+		String formattedelectionEventDate = DateTimeFormatter.ofPattern("dd.MM.yyyy", Locale.ENGLISH).format(electionEventDate);
+
+		final int numberOfElections = configuration.getContest().getElectionInformation().size();
+		final int numberOfVotes = configuration.getContest().getVoteInformation().size();
+
+		final long numberOfNonTestBallotBoxes = configuration.getAuthorizations().getAuthorization().stream().parallel()
+				.filter(authorizationType -> !authorizationType.isAuthorizationTest())
+				.count();
+
+		final long numberOfTestBallotBoxes = configuration.getAuthorizations().getAuthorization().stream().parallel()
+				.filter(AuthorizationType::isAuthorizationTest)
+				.count();
+
 		this.datasetConfiguration = new DatasetConfiguration(filename, String.join(":", datasetHash.split("(?<=\\G.{2})")), electionEventId,
-				testBallotBoxToTotalNumberOfVoters.get(false), testBallotBoxToTotalNumberOfVoters.get(true), aliasesToFingerprints);
+				aliasesToFingerprints, electionEventName, formattedelectionEventDate, numberOfElections, numberOfVotes, numberOfNonTestBallotBoxes,
+				numberOfTestBallotBoxes, testBallotBoxToTotalNumberOfVoters.get(false), testBallotBoxToTotalNumberOfVoters.get(true));
 	}
 
 	public void process(String runOption) throws IOException {

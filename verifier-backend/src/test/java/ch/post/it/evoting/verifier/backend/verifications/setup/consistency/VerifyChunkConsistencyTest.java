@@ -34,7 +34,7 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyChunkConsistency(pathService, applicationEventPublisherMock, electionDataExtractionService);
+		verification = new VerifyChunkConsistency(pathService, resultPublisherServiceMock, electionDataExtractionService);
 	}
 
 	@Test
@@ -50,7 +50,7 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 	@DisplayName("validate the monotony check algorithm pass with happy path")
 	void monotonyCheckWorkWithHappyPath() {
 		// given
-		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, applicationEventPublisherMock,
+		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, resultPublisherServiceMock,
 				electionDataExtractionService);
 		final List<List<Path>> payloadsPerCardSet = List.of(
 				List.of(
@@ -77,7 +77,7 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 	@DisplayName("validate the monotony check algorithm detect missing index")
 	void monotonyCheckDetectMissingIndex() {
 		// given
-		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, applicationEventPublisherMock,
+		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, resultPublisherServiceMock,
 				electionDataExtractionService);
 		final List<List<Path>> payloadsPerCardSet = List.of(
 				List.of(
@@ -98,7 +98,7 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 	@DisplayName("validate the monotony check algorithm detect duplicated index")
 	void monotonyCheckDetectDuplicatedIndex() {
 		// given
-		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, applicationEventPublisherMock,
+		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, resultPublisherServiceMock,
 				electionDataExtractionService);
 		final List<List<Path>> payloadsPerCardSet = List.of(
 				List.of(
@@ -120,7 +120,7 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 	@DisplayName("validate the monotony check algorithm detect illegal start of index")
 	void monotonyCheckDetectIllegalStartOfIndex() {
 		// given
-		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, applicationEventPublisherMock,
+		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, resultPublisherServiceMock,
 				electionDataExtractionService);
 		final List<List<Path>> payloadsPerCardSet = List.of(
 				List.of(
@@ -141,7 +141,7 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 	@DisplayName("validate the monotony check algorithm fails if any sequence is wrong")
 	void monotonyCheckPriorityToFailing() {
 		// given
-		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, applicationEventPublisherMock,
+		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, resultPublisherServiceMock,
 				electionDataExtractionService);
 		final List<List<Path>> payloadsPerCardSet = List.of(
 				List.of(
@@ -165,7 +165,7 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 	@DisplayName("validate the monotony check algorithm pass if nothing to check")
 	void monotonyCheckEmptyListIsValid() {
 		// given
-		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, applicationEventPublisherMock,
+		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, resultPublisherServiceMock,
 				electionDataExtractionService);
 		final List<List<Path>> payloadsPerCardSet = Collections.emptyList();
 

@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
+import ch.post.it.evoting.cryptoprimitives.domain.mapper.EncryptionGroupUtils;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
@@ -41,16 +42,16 @@ public class SetupComponentTallyDataPayloadDeserializer extends JsonDeserializer
 		final JsonNode node = mapper.readTree(parser);
 		final String electionEventId = mapper.readValue(node.get("electionEventId").toString(), String.class);
 		final String verificationCardSetId = mapper.readValue(node.get("verificationCardSetId").toString(), String.class);
-		final String ballotBoxAlias = mapper.readValue(node.get("ballotBoxAlias").toString(), String.class);
+		final String ballotBoxDefaultTitle = mapper.readValue(node.get("ballotBoxDefaultTitle").toString(), String.class);
 		final JsonNode encryptionGroupNode = node.get("encryptionGroup");
-		final GqGroup encryptionGroup = mapper.readValue(encryptionGroupNode.toString(), GqGroup.class);
+		final GqGroup encryptionGroup = EncryptionGroupUtils.getEncryptionGroup(mapper, encryptionGroupNode);
 		final String[] verificationCardIds = mapper.readValue(node.get("verificationCardIds").toString(), String[].class);
 		final ElGamalMultiRecipientPublicKey[] verificationCardPublicKeys = mapper.reader()
 				.withAttribute("group", encryptionGroup)
 				.readValue(node.get("verificationCardPublicKeys"), ElGamalMultiRecipientPublicKey[].class);
 		final CryptoPrimitivesSignature signature = mapper.readValue(node.get("signature").toString(), CryptoPrimitivesSignature.class);
 
-		return new SetupComponentTallyDataPayload(electionEventId, verificationCardSetId, ballotBoxAlias, encryptionGroup,
+		return new SetupComponentTallyDataPayload(electionEventId, verificationCardSetId, ballotBoxDefaultTitle, encryptionGroup,
 				List.of(verificationCardIds), GroupVector.of(verificationCardPublicKeys), signature);
 	}
 }

@@ -26,7 +26,7 @@ const suffix = dateFormat(new Date(), 'yyyy-mm-dd-HHMMss');
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir);
 }
-const filename = path.join(logDir, `verifier_${suffix}.log`);
+const filename = path.join(logDir, `verifier-frontend-app_${suffix}.log`);
 const logger = createLogger({
   format: format.combine(
     format.timestamp({
@@ -62,11 +62,6 @@ if (!serverProcess) {
   app.quit();
   return;
 }
-
-serverProcess.stdout.on('data', function (data) {
-  console.log('Server: ' + data);
-  logger.log('info', 'Server: ' + data);
-});
 
 console.log('Server PID: ' + serverProcess.pid);
 logger.log('info', 'Server PID: ' + serverProcess.pid);

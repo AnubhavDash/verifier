@@ -19,17 +19,19 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.swisspush.supermachine.BeanScanner;
+import org.apache.commons.lang3.StringUtils;
 
 import ch.ech.xmlns.ech_0058._5.HeaderType;
 import ch.ech.xmlns.ech_0058._5.SendingApplicationType;
@@ -40,15 +42,19 @@ import ch.ech.xmlns.ech_0222._1.EventRawDataDelivery;
 import ch.ech.xmlns.ech_0222._1.RawDataType;
 import ch.ech.xmlns.ech_0222._1.ReportingBodyType;
 import ch.ech.xmlns.ech_0222._1.VoteRawDataType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.BallotType;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.CandidatePositionType;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.CandidateType;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.ElectionInformationType;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.ListType;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.StandardAnswerType;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.StandardBallotType;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.StandardQuestionType;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.TieBreakQuestionType;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.TiebreakAnswerType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VariantBallotType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteInformationType;
 import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.BallotElectionType;
 import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.ElectionType;
 import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
@@ -155,10 +161,10 @@ public class RawDataDeliveryMapper {
 
 		return votes.stream()
 				.map(vote -> {
-					final Optional<ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType> voteConfig = BeanScanner.from(configuration)
-							.find(ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType.class)
+					final Optional<ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType> voteConfig = configuration.getContest()
+							.getVoteInformation().stream().parallel()
+							.map(VoteInformationType::getVote)
 							.filter(vt -> vt.getVoteIdentification().equals(vote.getVoteIdentification()))
-							.stream()
 							.findFirst();
 
 					if (voteConfig.isEmpty()) {
@@ -166,7 +172,7 @@ public class RawDataDeliveryMapper {
 					} else {
 						final VoteRawDataType voteRawDataType = new VoteRawDataType();
 						voteRawDataType.setVoteIdentification(vote.getVoteIdentification());
-						voteRawDataType.setBallotRawData(createVoteBallotRawData(vote, voteConfig.get(), countingCircleId));
+						voteRawDataType.setBallotRawData(createVoteBallotRawData(vote, voteConfig.get()));
 						return voteRawDataType;
 					}
 				})
@@ -225,16 +231,11 @@ public class RawDataDeliveryMapper {
 	}
 
 	private static List<VoteRawDataType.BallotRawData> createVoteBallotRawData(final VoteType voteType,
-			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType voteConfig, final String countingCircleId) {
+			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType voteConfig) {
 
-		final AtomicInteger ballotCounter = new AtomicInteger(1);
 		return voteType.getBallot().stream()
 				.map(ballotVote -> {
 					final VoteRawDataType.BallotRawData ballotRawData = new VoteRawDataType.BallotRawData();
-
-					final String ballotIdentification = String.format("%s#%s#%s", countingCircleId, voteType.getVoteIdentification(),
-							ballotCounter.getAndIncrement());
-					ballotRawData.setBallotIdentification(ballotIdentification);
 
 					final VoteRawDataType.BallotRawData.BallotCasted casted = new VoteRawDataType.BallotRawData.BallotCasted();
 
@@ -242,6 +243,11 @@ public class RawDataDeliveryMapper {
 							.map(answerId -> {
 								final String questionId = findQuestionIdentification(answerId, voteConfig);
 								final BigInteger answerType = findAnswerType(answerId, voteConfig);
+
+								if (StringUtils.isEmpty(ballotRawData.getBallotIdentification())) {
+									final String ballotIdentification = findBallotIdentificationFromQuestionIdentification(questionId, voteConfig);
+									ballotRawData.setBallotIdentification(ballotIdentification);
+								}
 
 								final VoteRawDataType.BallotRawData.BallotCasted.QuestionRawData questionRawData = new VoteRawDataType.BallotRawData.BallotCasted.QuestionRawData();
 								questionRawData.setQuestionIdentification(questionId);
@@ -276,9 +282,12 @@ public class RawDataDeliveryMapper {
 	private static List<AnswerOptionIdentificationType.AnswerTextInformation> createAnswerTextInformation(final String answerId,
 			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType voteConfig) {
 
-		final Optional<StandardAnswerType> answer = BeanScanner.from(voteConfig)
-				.find(StandardAnswerType.class)
-				.filter(standardAnswer -> standardAnswer.getAnswerIdentification().equals(answerId)).stream()
+		final Optional<StandardAnswerType> answer = voteConfig.getBallot().stream().parallel()
+				.map(BallotType::getStandardBallot)
+				.filter(Objects::nonNull)
+				.map(StandardBallotType::getAnswer)
+				.flatMap(Collection::stream)
+				.filter(standardAnswer -> standardAnswer.getAnswerIdentification().equals(answerId))
 				.findFirst();
 
 		if (answer.isPresent()) {
@@ -291,9 +300,14 @@ public class RawDataDeliveryMapper {
 					})
 					.toList();
 		} else {
-			final Optional<TiebreakAnswerType> tieAnswer = BeanScanner.from(voteConfig)
-					.find(TiebreakAnswerType.class)
-					.filter(a -> a.getAnswerIdentification().equals(answerId)).stream()
+			final Optional<TiebreakAnswerType> tieAnswer = voteConfig.getBallot().stream().parallel()
+					.map(BallotType::getVariantBallot)
+					.filter(Objects::nonNull)
+					.map(VariantBallotType::getTieBreakQuestion)
+					.flatMap(Collection::stream)
+					.map(TieBreakQuestionType::getAnswer)
+					.flatMap(Collection::stream)
+					.filter(a -> a.getAnswerIdentification().equals(answerId))
 					.findFirst();
 
 			if (tieAnswer.isPresent()) {
@@ -333,9 +347,10 @@ public class RawDataDeliveryMapper {
 		ballotElectionType.getChosenCandidateIdentification().forEach(chosenCandidateIdentification -> {
 			final ElectionRawDataType.BallotRawData.BallotPosition ballotPosition = new ElectionRawDataType.BallotRawData.BallotPosition();
 
-			final Optional<CandidateType> candidate = BeanScanner.from(configuration)
-					.find(CandidateType.class)
-					.filter(ca -> ca.getCandidateIdentification().equals(chosenCandidateIdentification)).stream()
+			final Optional<CandidateType> candidate = configuration.getContest().getElectionInformation().stream().parallel()
+					.map(ElectionInformationType::getCandidate)
+					.flatMap(Collection::stream)
+					.filter(ca -> ca.getCandidateIdentification().equals(chosenCandidateIdentification))
 					.findFirst();
 
 			if (candidate.isEmpty()) {
@@ -350,9 +365,12 @@ public class RawDataDeliveryMapper {
 		ballotElectionType.getChosenCandidateListIdentification().forEach(chosenCandidateListIdentification -> {
 			final ElectionRawDataType.BallotRawData.BallotPosition ballotPosition = new ElectionRawDataType.BallotRawData.BallotPosition();
 
-			final Optional<CandidatePositionType> candidatePosition = BeanScanner.from(configuration)
-					.find(CandidatePositionType.class)
-					.filter(ca -> ca.getCandidateListIdentification().equals(chosenCandidateListIdentification)).stream()
+			final Optional<CandidatePositionType> candidatePosition = configuration.getContest().getElectionInformation().stream().parallel()
+					.map(ElectionInformationType::getList)
+					.flatMap(Collection::stream)
+					.map(ListType::getCandidatePosition)
+					.flatMap(Collection::stream)
+					.filter(ca -> ca.getCandidateListIdentification().equals(chosenCandidateListIdentification))
 					.findFirst();
 
 			if (candidatePosition.isEmpty()) {
@@ -400,9 +418,10 @@ public class RawDataDeliveryMapper {
 			final BallotElectionType ballotElectionType) {
 
 		if (ballotElectionType.getChosenListIdentification() != null) {
-			final Optional<ListType> list = BeanScanner.from(configuration)
-					.find(ListType.class)
-					.filter(li -> li.getListIdentification().equals(ballotElectionType.getChosenListIdentification())).stream()
+			final Optional<ListType> list = configuration.getContest().getElectionInformation().stream().parallel()
+					.map(ElectionInformationType::getList)
+					.flatMap(Collection::stream)
+					.filter(li -> li.getListIdentification().equals(ballotElectionType.getChosenListIdentification()))
 					.findFirst();
 
 			if (list.isPresent()) {
@@ -465,17 +484,25 @@ public class RawDataDeliveryMapper {
 
 	private static BigInteger findAnswerType(final String answerId,
 			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType voteConfig) {
-		final Optional<StandardAnswerType> answer = BeanScanner.from(voteConfig)
-				.find(StandardAnswerType.class)
-				.filter(standardAnswer -> standardAnswer.getAnswerIdentification().equals(answerId)).stream()
+		final Optional<StandardAnswerType> answer = voteConfig.getBallot().stream().parallel()
+				.map(BallotType::getStandardBallot)
+				.filter(Objects::nonNull)
+				.map(StandardBallotType::getAnswer)
+				.flatMap(Collection::stream)
+				.filter(standardAnswer -> standardAnswer.getAnswerIdentification().equals(answerId))
 				.findFirst();
 
 		if (answer.isPresent()) {
 			return answer.get().getAnswerPosition();
 		} else {
-			final Optional<TiebreakAnswerType> answerTiebreak = BeanScanner.from(voteConfig)
-					.find(TiebreakAnswerType.class)
-					.filter(a -> a.getAnswerIdentification().equals(answerId)).stream()
+			final Optional<TiebreakAnswerType> answerTiebreak = voteConfig.getBallot().stream().parallel()
+					.map(BallotType::getVariantBallot)
+					.filter(Objects::nonNull)
+					.map(VariantBallotType::getTieBreakQuestion)
+					.flatMap(Collection::stream)
+					.map(TieBreakQuestionType::getAnswer)
+					.flatMap(Collection::stream)
+					.filter(a -> a.getAnswerIdentification().equals(answerId))
 					.findFirst();
 
 			if (answerTiebreak.isPresent()) {
@@ -488,29 +515,35 @@ public class RawDataDeliveryMapper {
 
 	private static String findQuestionIdentification(final String answerId,
 			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType voteConfig) {
-		final Optional<StandardBallotType> question = BeanScanner.from(voteConfig)
-				.find(StandardBallotType.class)
+		final Optional<StandardBallotType> question = voteConfig.getBallot().stream().parallel()
+				.map(BallotType::getStandardBallot)
+				.filter(Objects::nonNull)
 				.filter(standardBallot -> standardBallot.getAnswer().stream()
-						.anyMatch(standardAnswer -> standardAnswer.getAnswerIdentification().equals(answerId))).stream()
+						.anyMatch(standardAnswer -> standardAnswer.getAnswerIdentification().equals(answerId)))
 				.findFirst();
 
 		if (question.isPresent()) {
 			return question.get().getQuestionIdentification();
 		} else {
-
-			final Optional<StandardQuestionType> standQuestion = BeanScanner.from(voteConfig)
-					.find(StandardQuestionType.class)
+			final Optional<StandardQuestionType> standQuestion = voteConfig.getBallot().stream().parallel()
+					.map(BallotType::getVariantBallot)
+					.filter(Objects::nonNull)
+					.map(VariantBallotType::getStandardQuestion)
+					.flatMap(Collection::stream)
 					.filter(standardQuestion -> standardQuestion.getAnswer().stream()
-							.anyMatch(standardAnswer -> standardAnswer.getAnswerIdentification().equals(answerId))).stream()
+							.anyMatch(standardAnswer -> standardAnswer.getAnswerIdentification().equals(answerId)))
 					.findFirst();
 
 			if (standQuestion.isPresent()) {
 				return standQuestion.get().getQuestionIdentification();
 			} else {
-				final Optional<TieBreakQuestionType> tieQuestion = BeanScanner.from(voteConfig)
-						.find(TieBreakQuestionType.class)
+				final Optional<TieBreakQuestionType> tieQuestion = voteConfig.getBallot().stream().parallel()
+						.map(BallotType::getVariantBallot)
+						.filter(Objects::nonNull)
+						.map(VariantBallotType::getTieBreakQuestion)
+						.flatMap(Collection::stream)
 						.filter(tieBreakQuestion -> tieBreakQuestion.getAnswer()
-								.stream().anyMatch(tiebreakAnswer -> tiebreakAnswer.getAnswerIdentification().equals(answerId))).stream()
+								.stream().anyMatch(tiebreakAnswer -> tiebreakAnswer.getAnswerIdentification().equals(answerId)))
 						.findFirst();
 
 				if (tieQuestion.isPresent()) {
@@ -520,6 +553,24 @@ public class RawDataDeliveryMapper {
 				}
 			}
 		}
+	}
+
+	private static String findBallotIdentificationFromQuestionIdentification(final String questionId,
+			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType voteConfig) {
+		return voteConfig.getBallot().stream()
+				.parallel()
+				.filter(ballotType -> {
+					if (ballotType.getStandardBallot() != null) {
+						return questionId.equals(ballotType.getStandardBallot().getQuestionIdentification());
+					} else {
+						return Stream.concat(
+										ballotType.getVariantBallot().getStandardQuestion().stream().map(StandardQuestionType::getQuestionIdentification),
+										ballotType.getVariantBallot().getTieBreakQuestion().stream().map(TieBreakQuestionType::getQuestionIdentification))
+								.anyMatch(questionId::equals);
+					}
+				}).findFirst()
+				.orElseThrow(() -> new IllegalStateException(String.format("BallotIdentification not found. [questionId: %s]", questionId)))
+				.getBallotIdentification();
 	}
 
 	private static XMLGregorianCalendar currentXMLGregorianCalendar() {

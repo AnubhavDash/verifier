@@ -41,7 +41,7 @@ class VerifySignatureTallyComponentDecryptTest extends TallyVerificationTest {
 	@BeforeEach
 	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
 		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
-		verification = new VerifySignatureTallyComponentDecrypt(applicationEventPublisherMock, electionDataExtractionService, testSignatureVerification);
+		verification = new VerifySignatureTallyComponentDecrypt(resultPublisherServiceMock, electionDataExtractionService, testSignatureVerification);
 	}
 
 	@Test

@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.MoreCollectors;
@@ -41,6 +40,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
@@ -59,9 +59,9 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 
 	protected VerifyVerificationCardIdsConsistency(
 			final PathService pathService,
-			final ApplicationEventPublisher applicationEventPublisher,
+			final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService electionDataExtractionService) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.pathService = pathService;
 		this.electionDataExtractionService = electionDataExtractionService;
 	}
@@ -85,7 +85,7 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 				.parallel()
 				.map(this::verifyConsistency)
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 
 		if (verificationCardIdsConsistent) {
 			return VerificationResult.success(getVerificationDefinition());
@@ -107,7 +107,7 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 				.parallel()
 				.map(verificationCardSetIdPath -> {
 					// The SetupComponentVerificationDataPayload ensures no duplicated verification card ids.
-					final List<SetupComponentVerificationDataPayload> setupComponentVerificationDataPayloads = electionDataExtractionService.deserializeSetupComponentVerificationDataPayload(
+					final List<SetupComponentVerificationDataPayload> setupComponentVerificationDataPayloads = electionDataExtractionService.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(
 							verificationCardSetIdPath);
 					final List<String> verificationDataIds = setupComponentVerificationDataPayloads.stream()
 							.flatMap(
@@ -117,7 +117,7 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 							.toList();
 
 					// The ControlComponentCodeSharesPayload ensures no duplicated verification card ids.
-					final List<List<ControlComponentCodeSharesPayload>> controlComponentCodeSharesPayloads = electionDataExtractionService.deserializeControlComponentCodeSharesPayloads(
+					final List<List<ControlComponentCodeSharesPayload>> controlComponentCodeSharesPayloads = electionDataExtractionService.deserializeControlComponentCodeSharesPayloadsOrderByChunkIdAndNodeId(
 							verificationCardSetIdPath);
 					final ConcurrentMap<Integer, List<String>> nodeIdsToCodeSharesIds = controlComponentCodeSharesPayloads.stream()
 							.flatMap(Collection::stream)
@@ -143,10 +143,22 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 				.toList();
 	}
 
+	/**
+	 * Verifies:
+	 * <ul>
+	 *     <li>the verification card ids are unique among the SetupComponentVerificationDataPayload chunks.</li>
+	 *     <li>the verification card ids are unique among the ControlComponentCodeSharesPayload chunks.</li>
+	 *     <li>the ControlComponentCodeSharesPayloads' verification card ids have the same content and order across all nodes.</li>
+	 *     <li>the verification card ids of each payload have the same content and order.</li>
+	 *     <li>the verification card ids of the SetupComponentVerificationDataPayload's chunks have the same content and order than the
+	 *     verification card ids of the ControlComponentCodeSharesPayload's chunks.</li>
+	 *     <li>the number of verification card ids in each payload is equal to the {@code numberOfVotingCards}.</li>
+	 * </ul>
+	 */
 	private boolean verifyConsistency(final PayloadsVerificationCardIds payloadsVerificationCardIds) {
-		final List<String> verificationDataIds = payloadsVerificationCardIds.verificationDataIds;
+		final List<String> verificationDataIds = List.copyOf(payloadsVerificationCardIds.verificationDataIds);
 		final Map<Integer, List<String>> nodeIdsToCodeSharesIds = payloadsVerificationCardIds.nodeIdsToVerificationCardIds;
-		final List<String> tallyDataIds = payloadsVerificationCardIds.tallyDataIds;
+		final List<String> tallyDataIds = List.copyOf(payloadsVerificationCardIds.tallyDataIds);
 		final int numberOfVotingCards = payloadsVerificationCardIds.numberOfVotingCards;
 
 		final Set<String> verificationDataVerificationCardIds = Set.copyOf(verificationDataIds);
@@ -155,23 +167,28 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 			return false;
 		}
 
-		final Set<String> codeSharesVerificationIds = Set.copyOf(nodeIdsToCodeSharesIds.get(1));
+		final List<String> codeSharesVerificationIds = List.copyOf(nodeIdsToCodeSharesIds.get(1));
 		final boolean allCodeSharesIdsUniquePerNode = nodeIdsToCodeSharesIds.values().stream()
 				.allMatch(codeSharesIds -> codeSharesIds.size() == Set.copyOf(codeSharesIds).size());
-		final boolean allCodeSharesIdsEqualAcrossNodes = nodeIdsToCodeSharesIds.values().stream()
-				.allMatch(codeSharesIds -> Set.copyOf(codeSharesIds).equals(codeSharesVerificationIds));
-		if (!allCodeSharesIdsUniquePerNode || !allCodeSharesIdsEqualAcrossNodes) {
+		if (!allCodeSharesIdsUniquePerNode) {
 			LOGGER.info(
-					"There are either duplicated verification card ids among the ControlComponentCodeSharesPayload chunks or they are different across nodes.");
+					"There are either duplicated verification card ids among the ControlComponentCodeSharesPayload chunks.");
 			return false;
 		}
 
-		// The payload ensured no duplicates.
-		final Set<String> tallyDataVerificationCardIds = Set.copyOf(tallyDataIds);
+		// The SetupComponentTallyData payload ensured no verification card id duplicates.
 
-		return tallyDataVerificationCardIds.equals(verificationDataVerificationCardIds)
-				&& tallyDataVerificationCardIds.equals(codeSharesVerificationIds)
-				&& tallyDataVerificationCardIds.size() == numberOfVotingCards;
+		final boolean allCodeSharesIdsEqualAcrossNodes = nodeIdsToCodeSharesIds.values().stream()
+				.allMatch(codeSharesIds -> List.copyOf(codeSharesIds).equals(codeSharesVerificationIds));
+		if (!allCodeSharesIdsEqualAcrossNodes) {
+			LOGGER.info(
+					"The ControlComponentCodeSharesPayload's verification card ids are different across nodes.");
+			return false;
+		}
+
+		return tallyDataIds.equals(verificationDataIds)
+				&& tallyDataIds.equals(codeSharesVerificationIds)
+				&& tallyDataIds.size() == numberOfVotingCards;
 	}
 
 	private record PayloadsVerificationCardIds(List<String> verificationDataIds, Map<Integer, List<String>> nodeIdsToVerificationCardIds,

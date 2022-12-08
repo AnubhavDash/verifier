@@ -39,7 +39,7 @@ class VerifyNumberConfirmedEncryptedVotesConsistencyTest extends TallyVerificati
 
 	@BeforeAll
 	static void setUpAll() {
-		verification = new VerifyNumberConfirmedEncryptedVotesConsistency(applicationEventPublisherMock, pathService, electionDataExtractionService);
+		verification = new VerifyNumberConfirmedEncryptedVotesConsistency(resultPublisherServiceMock, pathService, electionDataExtractionService);
 	}
 
 	@Test
@@ -62,7 +62,7 @@ class VerifyNumberConfirmedEncryptedVotesConsistencyTest extends TallyVerificati
 				.getControlComponentBallotBoxPayloadsOrderedByNodeId(any());
 
 		final VerifyNumberConfirmedEncryptedVotesConsistency verifyNumberConfirmedEncryptedVotesConsistency =
-				new VerifyNumberConfirmedEncryptedVotesConsistency(applicationEventPublisherMock, pathService, electionDataExtractionServiceSpy);
+				new VerifyNumberConfirmedEncryptedVotesConsistency(resultPublisherServiceMock, pathService, electionDataExtractionServiceSpy);
 
 		final VerificationResult result = verifyNumberConfirmedEncryptedVotesConsistency.verify(datasetPath);
 

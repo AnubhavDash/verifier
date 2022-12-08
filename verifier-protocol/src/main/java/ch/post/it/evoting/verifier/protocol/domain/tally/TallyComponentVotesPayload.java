@@ -18,6 +18,7 @@ package ch.post.it.evoting.verifier.protocol.domain.tally;
 import static ch.post.it.evoting.cryptoprimitives.domain.VotingOptionsConstants.MAXIMUM_ACTUAL_VOTING_OPTION_LENGTH;
 import static ch.post.it.evoting.cryptoprimitives.domain.VotingOptionsConstants.MAXIMUM_NUMBER_OF_WRITE_IN_OPTIONS;
 import static ch.post.it.evoting.cryptoprimitives.domain.VotingOptionsConstants.MAXIMUM_WRITE_IN_OPTION_LENGTH;
+import static ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTableEntry.VALID_XML_TOKEN_PATTERN;
 import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.validateUUID;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -107,10 +108,11 @@ public class TallyComponentVotesPayload implements SignedPayload {
 
 		final Predicate<String> isNotBlank = element -> !element.isBlank();
 		final Predicate<String> isSmallerThanMaxLength = element -> element.length() <= MAXIMUM_ACTUAL_VOTING_OPTION_LENGTH;
+		final Predicate<String> isValidXmlToken = element -> VALID_XML_TOKEN_PATTERN.matcher(element).matches();
 		checkArgument(actualSelectedVotingOptions.stream()
 						.flatMap(Collection::stream)
-						.allMatch(isNotBlank.and(isSmallerThanMaxLength)),
-				"The actual selected voting options must be non-blank strings and their length must not exceed %s.",
+						.allMatch(isNotBlank.and(isSmallerThanMaxLength).and(isValidXmlToken)),
+				"The actual selected voting options must be non-blank strings, valid XML tokens and their length must not exceed %s.",
 				MAXIMUM_ACTUAL_VOTING_OPTION_LENGTH);
 
 		List<List<String>> decodedWriteInVotesCopy = List.copyOf(checkNotNull(decodedWriteInVotes));

@@ -41,7 +41,7 @@ class VerifyEncryptionParametersTest extends SetupVerificationTest {
 		final ElGamal elGamal = ElGamalFactory.createElGamal();
 		verifyEncryptionParametersAlgorithm = spy(new VerifyEncryptionParametersAlgorithm(elGamal));
 
-		verification = new VerifyEncryptionParameters(electionDataExtractionService, applicationEventPublisherMock, verifyEncryptionParametersAlgorithm);
+		verification = new VerifyEncryptionParameters(electionDataExtractionService, resultPublisherServiceMock, verifyEncryptionParametersAlgorithm);
 	}
 
 	@BeforeEach

@@ -18,8 +18,10 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,6 +32,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
@@ -43,9 +46,9 @@ public class VerifyFileNameNodeIdsConsistency extends AbstractVerification {
 	private final PathService pathService;
 	private final ObjectMapper objectMapper;
 
-	protected VerifyFileNameNodeIdsConsistency(final ApplicationEventPublisher applicationEventPublisher, final PathService pathService,
+	protected VerifyFileNameNodeIdsConsistency(final ResultPublisherService resultPublisherService, final PathService pathService,
 			final ObjectMapper objectMapper) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.pathService = pathService;
 		this.objectMapper = objectMapper;
 	}
@@ -65,10 +68,19 @@ public class VerifyFileNameNodeIdsConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final boolean controlComponentBallotBoxFileNamesConsistent = verifyControlComponentBallotBoxFileNamesConsistency(inputDirectoryPath);
-		final boolean controlComponentShuffleFileNamesConsistent = verifyControlComponentShuffleFileNamesConsistency(inputDirectoryPath);
 
-		if (controlComponentBallotBoxFileNamesConsistent && controlComponentShuffleFileNamesConsistent) {
+		final List<Function<Path, Boolean>> validations = new ArrayList<>();
+		validations.add(this::verifyControlComponentBallotBoxFileNamesConsistency);
+		validations.add(this::verifyControlComponentShuffleFileNamesConsistency);
+
+		final boolean fileNamesConsistent = validations
+				.stream()
+				.parallel()
+				.map(f -> f.apply(inputDirectoryPath))
+				.reduce(Boolean::logicalAnd)
+				.orElse(Boolean.FALSE);
+
+		if (fileNamesConsistent) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
@@ -80,6 +92,7 @@ public class VerifyFileNameNodeIdsConsistency extends AbstractVerification {
 		final PathNode ballotBoxes = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 
 		return ballotBoxes.getRegexPaths().stream()
+				.parallel()
 				.map(ballotBoxPath -> {
 					final PathNode controlComponentBallotBoxNode = pathService.buildFromDynamicAncestorPath(
 							StructureKey.CONTROL_COMPONENT_BALLOT_BOX, ballotBoxPath);
@@ -102,16 +115,17 @@ public class VerifyFileNameNodeIdsConsistency extends AbstractVerification {
 								return fileNodeId == payloadNodeId;
 							})
 							.reduce(Boolean::logicalAnd)
-							.orElseThrow();
+							.orElse(Boolean.FALSE);
 				})
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 	}
 
 	private boolean verifyControlComponentShuffleFileNamesConsistency(final Path inputDirectoryPath) {
 		final PathNode ballotBoxes = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 
 		return ballotBoxes.getRegexPaths().stream()
+				.parallel()
 				.map(ballotBoxPath -> {
 					final PathNode controlComponentShuffleNode = pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_SHUFFLE,
 							ballotBoxPath);
@@ -134,9 +148,9 @@ public class VerifyFileNameNodeIdsConsistency extends AbstractVerification {
 								return fileNodeId == payloadNodeId;
 							})
 							.reduce(Boolean::logicalAnd)
-							.orElseThrow();
+							.orElse(Boolean.FALSE);
 				})
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 	}
 }

@@ -62,8 +62,12 @@ public class VerifyVotingClientProofsAlgorithm {
 		checkNotNull(context);
 		checkNotNull(input);
 
+		// Cross-group check
+		checkArgument(context.getEncryptionGroup().equals(input.getElectionPublicKey().getGroup()),
+				"The context and the input must have the same group.");
+
 		// Variables.
-		final GqGroup gqGroup = input.getElectionPublicKey().getGroup();
+		final GqGroup gqGroup = context.getEncryptionGroup();
 		final GqElement g = gqGroup.getGenerator();
 		final String ee = context.getElectionEventId();
 		final GroupVector<PrimesMappingTableEntry, GqGroup> pTable = context.getPrimesMappingTable();
@@ -76,7 +80,7 @@ public class VerifyVotingClientProofsAlgorithm {
 
 		final List<String> vc_1 = input.getConfirmedVerificationCardIds();
 		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> E1_1 = input.getEncryptedConfirmedVotes();
-		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> E1_tilde_1 = input.getExponentiatedEncryptedVotes();
+		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> E1_1_tilde = input.getExponentiatedEncryptedVotes();
 		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> E2_1 = input.getEncryptedPartialChoiceReturnCodes();
 		final List<ExponentiationProof> pi_Exp_1 = input.getExponentiationProofs();
 		final List<PlaintextEqualityProof> pi_EqEnc_1 = input.getPlaintextEqualityProofs();
@@ -111,11 +115,11 @@ public class VerifyVotingClientProofsAlgorithm {
 
 					final ElGamalMultiRecipientCiphertext E1_1_i = E1_1.get(i);
 
-					final ElGamalMultiRecipientCiphertext E1_tilde_1_i = E1_tilde_1.get(i);
+					final ElGamalMultiRecipientCiphertext E1_1_i_tilde = E1_1_tilde.get(i);
 
 					final ElGamalMultiRecipientCiphertext E2_1_i = E2_1.get(i);
 					final GqElement gamma_2 = E2_1_i.getGamma();
-					final ElGamalMultiRecipientCiphertext E2_tilde_i = ElGamalMultiRecipientCiphertext.create(gamma_2,
+					final ElGamalMultiRecipientCiphertext E2_i_tilde = ElGamalMultiRecipientCiphertext.create(gamma_2,
 							List.of(E2_1_i.getPhis().stream().sequential().limit(psi).reduce(identity, GqElement::multiply)));
 
 					final List<String> i_aux = Streams.concat(
@@ -124,7 +128,7 @@ public class VerifyVotingClientProofsAlgorithm {
 							EL_pk.stream().map(EL_pk_i -> integerToString(EL_pk_i.getValue())),
 							E1_1_i.getPhis().stream().map(phi_1_i -> integerToString(phi_1_i.getValue())),
 							Stream.of("EncodedVotingOptions"),
-							p_tilde.stream().map(p_tilde_i -> integerToString(p_tilde_i.getValue())),
+							p_tilde.stream().map(p_i_tilde -> integerToString(p_i_tilde.getValue())),
 							Stream.of("VotingOptions"),
 							v_tilde.stream()
 					).toList();
@@ -133,8 +137,8 @@ public class VerifyVotingClientProofsAlgorithm {
 					final GqElement Phi_1_0 = E1_1_i.get(0);
 					final GroupVector<GqElement, GqGroup> bases = GroupVector.of(g, gamma_1, Phi_1_0);
 
-					final GqElement gamma_1_k_id = E1_tilde_1_i.getGamma();
-					final GqElement Phi_1_0_k_id = E1_tilde_1_i.get(0);
+					final GqElement gamma_1_k_id = E1_1_i_tilde.getGamma();
+					final GqElement Phi_1_0_k_id = E1_1_i_tilde.get(0);
 					final GroupVector<GqElement, GqGroup> exponentiations = GroupVector.of(K_id, gamma_1_k_id, Phi_1_0_k_id);
 
 					final ExponentiationProof pi_Exp_1_i = pi_Exp_1.get(i);
@@ -142,7 +146,7 @@ public class VerifyVotingClientProofsAlgorithm {
 
 					final GqElement EL_pk_0 = EL_pk.get(0);
 					final PlaintextEqualityProof pi_EqEnc_1_i = pi_EqEnc_1.get(i);
-					final boolean verifyEqEnc = zeroKnowledgeProof.verifyPlaintextEquality(E1_tilde_1_i, E2_tilde_i, EL_pk_0, pk_CCR_tilde,
+					final boolean verifyEqEnc = zeroKnowledgeProof.verifyPlaintextEquality(E1_1_i_tilde, E2_i_tilde, EL_pk_0, pk_CCR_tilde,
 							pi_EqEnc_1_i, i_aux);
 					return new ClientVerifs(verifyExp, verifyEqEnc);
 				})

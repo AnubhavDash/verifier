@@ -20,8 +20,8 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
 import java.security.SignatureException;
+import java.util.List;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -35,6 +35,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -49,17 +50,17 @@ public class VerifySignatureControlComponentPublicKeys extends AbstractVerificat
 	private final SignatureVerification signatureVerification;
 
 	protected VerifySignatureControlComponentPublicKeys(
-			final ApplicationEventPublisher applicationEventPublisher,
+			final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService electionDataExtractionService,
 			final SignatureVerification signatureVerification) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.electionDataExtractionService = electionDataExtractionService;
 		this.signatureVerification = signatureVerification;
 	}
 
 	@Override
 	public VerificationDefinition getVerificationDefinition() {
-		final var definition = new VerificationDefinition();
+		final VerificationDefinition definition = new VerificationDefinition();
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.AUTHENTICITY);
 		definition.setDescription(
@@ -74,7 +75,7 @@ public class VerifySignatureControlComponentPublicKeys extends AbstractVerificat
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final var controlComponentPublicKeysPayloads = electionDataExtractionService.getControlComponentPublicKeysPayloads(
+		final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = electionDataExtractionService.getControlComponentPublicKeysPayloads(
 				inputDirectoryPath);
 
 		checkState(NODE_IDS.size() == controlComponentPublicKeysPayloads.size(),
@@ -88,7 +89,7 @@ public class VerifySignatureControlComponentPublicKeys extends AbstractVerificat
 				.stream()
 				.map(this::verifySignature)
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 
 		if (verified) {
 			return VerificationResult.success(getVerificationDefinition());

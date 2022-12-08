@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
@@ -33,6 +32,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -44,9 +44,9 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 
 	private final ElectionDataExtractionService extractionService;
 
-	public VerifyNodeIdsConsistency(final ApplicationEventPublisher applicationEventPublisher,
+	public VerifyNodeIdsConsistency(final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService extractionService) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.extractionService = extractionService;
 	}
 
@@ -70,7 +70,8 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 						inputDirectoryPath).stream()
 				.collect(Collectors.groupingBy(ControlComponentBallotBoxPayload::getBallotBoxId));
 		final Map<String, List<ControlComponentShufflePayload>> shufflePayloads = extractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
-						inputDirectoryPath).stream()
+						inputDirectoryPath)
+				.parallel()
 				.collect(Collectors.groupingBy(ControlComponentShufflePayload::getBallotBoxId));
 
 		if (isNodeIdConsistent(ballotBoxPayloads, shufflePayloads)) {
@@ -89,9 +90,11 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 		final Set<String> ballotBoxIds = ballotBoxPayloads.keySet();
 
 		return ballotBoxIds.stream()
+				.parallel()
 				.allMatch(bbId -> {
 							final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads = ballotBoxPayloads.get(bbId);
 							final List<Integer> ballotBoxPayloadsNodeIdList = controlComponentBallotBoxPayloads.stream()
+									.parallel()
 									.map(ControlComponentBallotBoxPayload::getNodeId)
 									.toList();
 							final Set<Integer> ballotBoxPayloadsNodeIds = Set.copyOf(ballotBoxPayloadsNodeIdList);
@@ -101,6 +104,7 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 
 							final List<ControlComponentShufflePayload> controlComponentShufflePayloads = shufflePayloads.get(bbId);
 							final List<Integer> shufflePaylodsNodeIdList = controlComponentShufflePayloads.stream()
+									.parallel()
 									.map(ControlComponentShufflePayload::getNodeId)
 									.toList();
 							final Set<Integer> shufflePayloadsNodeIds = Set.copyOf(shufflePaylodsNodeIdList);

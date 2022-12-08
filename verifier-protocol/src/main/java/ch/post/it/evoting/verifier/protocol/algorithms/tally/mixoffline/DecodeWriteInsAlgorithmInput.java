@@ -121,7 +121,7 @@ public class DecodeWriteInsAlgorithmInput {
 			final int delta_hat = writeInVotingOptions.size() + 1;
 
 			checkArgument(1 <= delta_hat, "Delta_hat must be strictly positive. [delta_hat: %s]", delta_hat);
-			checkArgument(delta_hat <= psi, "Psi must be greater or equal to delta_hat. [psi: %s, delta_hat: %s]", psi, delta_hat);
+			checkArgument(delta_hat <= psi + 1, "Psi + 1 must be greater or equal to delta_hat. [psi: %s, delta_hat: %s]", psi, delta_hat);
 
 			return new DecodeWriteInsAlgorithmInput(writeInVotingOptions, selectedEncodedVotingOptions, encodedWriteIns);
 		}

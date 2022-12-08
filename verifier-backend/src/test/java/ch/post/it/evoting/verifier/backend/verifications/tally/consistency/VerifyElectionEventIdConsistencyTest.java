@@ -38,7 +38,7 @@ class VerifyElectionEventIdConsistencyTest extends TallyVerificationTest {
 
 	@BeforeAll
 	static void setUpAll() {
-		verification = new VerifyElectionEventIdConsistency(applicationEventPublisherMock, electionDataExtractionService);
+		verification = new VerifyElectionEventIdConsistency(resultPublisherServiceMock, electionDataExtractionService);
 	}
 
 	@Test
@@ -63,7 +63,7 @@ class VerifyElectionEventIdConsistencyTest extends TallyVerificationTest {
 		doReturn(electionEventContextPayloadMock).when(electionDataExtractionServiceSpy).getElectionEventContextPayload(any());
 
 		final VerifyElectionEventIdConsistency verifyElectionEventIdConsistency$ =
-				new VerifyElectionEventIdConsistency(applicationEventPublisherMock, electionDataExtractionServiceSpy);
+				new VerifyElectionEventIdConsistency(resultPublisherServiceMock, electionDataExtractionServiceSpy);
 
 		final VerificationResult result = verifyElectionEventIdConsistency$.verify(datasetPath);
 

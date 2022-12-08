@@ -42,8 +42,8 @@ public record EncryptedVerifiableVote(ContextIds contextIds,
 		checkNotNull(plaintextEqualityProof);
 
 		checkArgument(exponentiatedEncryptedVote.size() == 1, "The exponentiated encrypted vote size must be one.");
-		checkArgument(encryptedVote.size() <= encryptedPartialChoiceReturnCodes.size(),
-				"The encrypted vote size must be smaller or equal to the encrypter partial choice return codes size.");
+		checkArgument(encryptedVote.size() <= encryptedPartialChoiceReturnCodes.size() + 1,
+				"The encrypted vote size must be smaller or equal to the encrypted partial choice return codes size + 1.");
 
 		checkArgument(encryptedVote.getGroup().equals(exponentiatedEncryptedVote.getGroup()),
 				"The groups of the encrypted vote and the exponentiated encrypted vote must be the same.");

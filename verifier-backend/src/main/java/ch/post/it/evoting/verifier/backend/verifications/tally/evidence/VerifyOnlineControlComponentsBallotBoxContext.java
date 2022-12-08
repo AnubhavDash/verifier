@@ -25,6 +25,7 @@ import com.google.common.collect.MoreCollectors;
 import ch.post.it.evoting.cryptoprimitives.domain.election.ControlComponentPublicKeys;
 import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
 import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
+import ch.post.it.evoting.cryptoprimitives.domain.election.SetupComponentPublicKeys;
 import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
@@ -32,23 +33,32 @@ import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 
 public class VerifyOnlineControlComponentsBallotBoxContext {
 
+	private final GqGroup encryptionGroup;
 	private final String electionEventId;
 	private final String ballotBoxId;
 	private final int numberOfSelectableVotingOptions;
 	private final ElectionEventContext electionEventContext;
+	private final SetupComponentPublicKeys setupComponentPublicKeys;
 
-	public VerifyOnlineControlComponentsBallotBoxContext(final String electionEventId, final String ballotBoxId,
-			final int numberOfSelectableVotingOptions,
-			final ElectionEventContext electionEventContext) {
+	public VerifyOnlineControlComponentsBallotBoxContext(final GqGroup encryptionGroup, final String electionEventId, final String ballotBoxId,
+			final int numberOfSelectableVotingOptions, final ElectionEventContext electionEventContext,
+			final SetupComponentPublicKeys setupComponentPublicKeys) {
+		this.encryptionGroup = checkNotNull(encryptionGroup);
 		this.electionEventId = validateUUID(electionEventId);
 		this.ballotBoxId = validateUUID(ballotBoxId);
 		checkArgument(numberOfSelectableVotingOptions > 0);
 		this.numberOfSelectableVotingOptions = numberOfSelectableVotingOptions;
 		this.electionEventContext = checkNotNull(electionEventContext);
+		this.setupComponentPublicKeys = setupComponentPublicKeys;
 
 		checkArgument(this.electionEventId.equals(this.electionEventContext.electionEventId()));
 		checkArgument(electionEventContext.verificationCardSetContexts().stream()
 				.anyMatch(verificationCardSetContext -> verificationCardSetContext.ballotBoxId().equals(ballotBoxId)));
+		checkArgument(setupComponentPublicKeys.electionPublicKey().getGroup().equals(encryptionGroup));
+	}
+
+	public GqGroup getEncryptionGroup() {
+		return encryptionGroup;
 	}
 
 	public String getElectionEventId() {
@@ -64,21 +74,21 @@ public class VerifyOnlineControlComponentsBallotBoxContext {
 	}
 
 	public ElGamalMultiRecipientPublicKey getElectionPublicKey() {
-		return electionEventContext.electionPublicKey();
+		return setupComponentPublicKeys.electionPublicKey();
 	}
 
 	public GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> getCcmElectionPublicKeys() {
-		return electionEventContext.combinedControlComponentPublicKeys().stream()
+		return setupComponentPublicKeys.combinedControlComponentPublicKeys().stream()
 				.map(ControlComponentPublicKeys::ccmjElectionPublicKey)
 				.collect(GroupVector.toGroupVector());
 	}
 
 	public ElGamalMultiRecipientPublicKey getElectoralBoardPublicKey() {
-		return electionEventContext.electoralBoardPublicKey();
+		return setupComponentPublicKeys.electoralBoardPublicKey();
 	}
 
 	public ElGamalMultiRecipientPublicKey getChoiceReturnCodesEncryptionPublicKey() {
-		return electionEventContext.choiceReturnCodesEncryptionPublicKey();
+		return setupComponentPublicKeys.choiceReturnCodesEncryptionPublicKey();
 	}
 
 	public int getNumberOfAlloweWriteInsPlusOne() {

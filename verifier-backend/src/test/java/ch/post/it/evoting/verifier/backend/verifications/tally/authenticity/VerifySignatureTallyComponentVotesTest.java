@@ -42,7 +42,7 @@ class VerifySignatureTallyComponentVotesTest extends TallyVerificationTest {
 	@BeforeEach
 	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
 		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
-		verification = new VerifySignatureTallyComponentVotes(applicationEventPublisherMock, electionDataExtractionService, testSignatureVerification);
+		verification = new VerifySignatureTallyComponentVotes(resultPublisherServiceMock, electionDataExtractionService, testSignatureVerification);
 	}
 
 	@Test
@@ -53,7 +53,7 @@ class VerifySignatureTallyComponentVotesTest extends TallyVerificationTest {
 	@Test
 	void testExpectedSignerSuccess() throws SignatureException {
 		final TallyComponentVotesPayload tallyComponentVotesPayload = electionDataExtractionService.getTallyComponentVotesPayloads(datasetPath)
-				.get(0);
+				.findFirst().orElseThrow();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_TALLY);
 		final byte[] signature = testSignatureGeneration.genSignature(tallyComponentVotesPayload,
 				ChannelSecurityContextData.tallyComponentVotes(tallyComponentVotesPayload.getElectionEventId(),
@@ -65,7 +65,7 @@ class VerifySignatureTallyComponentVotesTest extends TallyVerificationTest {
 	@Test
 	void testUnexpectedSignerFails() throws SignatureException {
 		final TallyComponentVotesPayload tallyComponentVotesPayload = electionDataExtractionService.getTallyComponentVotesPayloads(datasetPath)
-				.get(0);
+				.findFirst().orElseThrow();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_CONFIG);
 		final byte[] wrongSignature = testSignatureGeneration.genSignature(tallyComponentVotesPayload,
 				ChannelSecurityContextData.tallyComponentVotes(tallyComponentVotesPayload.getElectionEventId(),

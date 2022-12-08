@@ -20,4 +20,12 @@ export class DatasetConfiguration {
   numberOfAuthorizedVoters: number;
   numberOfTestVoters: number;
   aliasesToFingerprints: Map<string, string>;
+  electionEventName: string;
+  electionEventDate: string;
+  numberOfElections: number;
+  numberOfVotes: number;
+  numberOfNonTestBallotBoxes: number;
+  numberOfTestBallotBoxes: number;
+  totalNumberOfAuthorizedNonTestVoters: number;
+  totalNumberOfTestVoters: number;
 }

@@ -28,7 +28,7 @@ class VerifyCcmAndCcrSchnorrProofsConsistencyTest extends SetupVerificationTest 
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyCcmAndCcrSchnorrProofsConsistency(electionDataExtractionService, applicationEventPublisherMock);
+		verification = new VerifyCcmAndCcrSchnorrProofsConsistency(electionDataExtractionService, resultPublisherServiceMock);
 	}
 
 	@Test

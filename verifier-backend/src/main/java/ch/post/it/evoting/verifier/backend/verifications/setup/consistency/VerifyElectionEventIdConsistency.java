@@ -16,8 +16,10 @@
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiFunction;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
@@ -25,75 +27,89 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 
 /**
- * This verification ensures that the election event IDs in the audit archive (data set) are consistent to the election event ID present in the file electionEventContextPayload.json.
+ * This verification ensures that the election event IDs in the audit archive (data set) are consistent to the election event ID present in the file
+ * electionEventContextPayload.json.
  */
 @Component("VerifySetupElectionEventIdConsistency")
 public class VerifyElectionEventIdConsistency extends AbstractVerification {
 
-    private final ElectionDataExtractionService electionDataExtractionService;
+	private final ElectionDataExtractionService electionDataExtractionService;
 
-    protected VerifyElectionEventIdConsistency(
-            final ApplicationEventPublisher applicationEventPublisher,
-            final ElectionDataExtractionService electionDataExtractionService) {
-        super(applicationEventPublisher);
-        this.electionDataExtractionService = electionDataExtractionService;
-    }
+	protected VerifyElectionEventIdConsistency(
+			final ResultPublisherService resultPublisherService,
+			final ElectionDataExtractionService electionDataExtractionService) {
+		super(resultPublisherService);
+		this.electionDataExtractionService = electionDataExtractionService;
+	}
 
-    @Override
-    public VerificationDefinition getVerificationDefinition() {
-        final VerificationDefinition definition = new VerificationDefinition();
-        definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
-        definition.setCategory(Category.CONSISTENCY);
-        definition.setDescription(
-                TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification308.description"));
-        definition.setId(308);
-        definition.setName("VerifyElectionEventIdConsistency");
-        definition.addVerifierEvent(SetupEvent.TYPE);
-        return definition;
-    }
+	@Override
+	public VerificationDefinition getVerificationDefinition() {
+		final VerificationDefinition definition = new VerificationDefinition();
+		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
+		definition.setCategory(Category.CONSISTENCY);
+		definition.setDescription(
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification308.description"));
+		definition.setId(308);
+		definition.setName("VerifyElectionEventIdConsistency");
+		definition.addVerifierEvent(SetupEvent.TYPE);
+		return definition;
+	}
 
-    @Override
-    public VerificationResult verify(final Path inputDirectoryPath) {
-        final String electionEventId = electionDataExtractionService.getElectionEventContextPayload(inputDirectoryPath)
-                .getElectionEventContext().electionEventId();
+	@Override
+	public VerificationResult verify(final Path inputDirectoryPath) {
+		final String electionEventId = electionDataExtractionService.getElectionEventContextPayload(inputDirectoryPath)
+				.getElectionEventContext().electionEventId();
 
-        final boolean sameElectionEventId = validateControlComponentCodeSharesPayload(inputDirectoryPath, electionEventId) &&
-                validateSetupComponentVerificationDataPayload(inputDirectoryPath, electionEventId) &&
-                validateSetupComponentTallyDataPayload(inputDirectoryPath, electionEventId) &&
-                validateControlComponentPublicKeysPayload(inputDirectoryPath, electionEventId);
+		final List<BiFunction<Path, String, Boolean>> validations = new ArrayList<>();
+		validations.add(this::validateControlComponentCodeSharesPayload);
+		validations.add(this::validateSetupComponentVerificationDataPayload);
+		validations.add(this::validateSetupComponentTallyDataPayload);
+		validations.add(this::validateControlComponentPublicKeysPayload);
 
-        if (sameElectionEventId) {
-            return VerificationResult.success(getVerificationDefinition());
-        } else {
-            return VerificationResult.failure(getVerificationDefinition(),
-                    TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification308.nok.message"));
-        }
-    }
+		final boolean sameElectionEventId = validations
+                .stream()
+                .parallel()
+                .map(f -> f.apply(inputDirectoryPath, electionEventId))
+				.reduce(Boolean::logicalAnd)
+				.orElse(Boolean.FALSE);
 
-    private boolean validateControlComponentCodeSharesPayload(final Path inputDirectoryPath, final String electionEventId) {
-        return electionDataExtractionService.getControlComponentCodeSharesPayloadsOrderedByNodeId(inputDirectoryPath).stream()
-                .allMatch(controlComponentCodeSharesPayload -> electionEventId.equals(controlComponentCodeSharesPayload.getElectionEventId()));
-    }
+		if (sameElectionEventId) {
+			return VerificationResult.success(getVerificationDefinition());
+		} else {
+			return VerificationResult.failure(getVerificationDefinition(),
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification308.nok.message"));
+		}
+	}
 
-    private boolean validateSetupComponentVerificationDataPayload(final Path inputDirectoryPath, final String electionEventId) {
-        return electionDataExtractionService.getSetupComponentVerificationDataPayloads(inputDirectoryPath).stream()
-                .allMatch(setupComponentVerificationDataPayload -> electionEventId.equals(setupComponentVerificationDataPayload.getElectionEventId()));
-    }
+	private boolean validateControlComponentCodeSharesPayload(final Path inputDirectoryPath, final String electionEventId) {
+		return electionDataExtractionService.getControlComponentCodeSharesPayloadsOrderedByNodeId(inputDirectoryPath).stream()
+				.parallel()
+				.allMatch(controlComponentCodeSharesPayload -> electionEventId.equals(controlComponentCodeSharesPayload.getElectionEventId()));
+	}
 
-    private boolean validateSetupComponentTallyDataPayload(final Path inputDirectoryPath, final String electionEventId) {
-        return electionDataExtractionService.getSetupComponentTallyDataPayloads(inputDirectoryPath).stream()
-                .allMatch(setupComponentTallyDataPayload -> electionEventId.equals(setupComponentTallyDataPayload.getElectionEventId()));
-    }
+	private boolean validateSetupComponentVerificationDataPayload(final Path inputDirectoryPath, final String electionEventId) {
+		return electionDataExtractionService.getSetupComponentVerificationDataPayloadsOrderByChunkId(inputDirectoryPath).stream()
+				.parallel()
+				.allMatch(
+						setupComponentVerificationDataPayload -> electionEventId.equals(setupComponentVerificationDataPayload.getElectionEventId()));
+	}
 
+	private boolean validateSetupComponentTallyDataPayload(final Path inputDirectoryPath, final String electionEventId) {
+		return electionDataExtractionService.getSetupComponentTallyDataPayloads(inputDirectoryPath).stream()
+				.parallel()
+				.allMatch(setupComponentTallyDataPayload -> electionEventId.equals(setupComponentTallyDataPayload.getElectionEventId()));
+	}
 
-    private boolean validateControlComponentPublicKeysPayload(final Path inputDirectoryPath, final String electionEventId) {
-        return electionDataExtractionService.getControlComponentPublicKeysPayloads(inputDirectoryPath).stream()
-                .allMatch(controlComponentPublicKeysPayload -> electionEventId.equals(controlComponentPublicKeysPayload.getElectionEventId()));
-    }
+	private boolean validateControlComponentPublicKeysPayload(final Path inputDirectoryPath, final String electionEventId) {
+		return electionDataExtractionService.getControlComponentPublicKeysPayloads(inputDirectoryPath).stream()
+				.parallel()
+				.allMatch(controlComponentPublicKeysPayload -> electionEventId.equals(controlComponentPublicKeysPayload.getElectionEventId()));
+	}
 }
 

@@ -40,7 +40,7 @@ import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 
 @JsonDeserialize(using = SetupComponentTallyDataPayloadDeserializer.class)
-@JsonPropertyOrder({ "electionEventId", "verificationCardSetId", "ballotBoxAlias", "encryptionGroup", "verificationCardIds",
+@JsonPropertyOrder({ "electionEventId", "verificationCardSetId", "ballotBoxDefaultTitle", "encryptionGroup", "verificationCardIds",
 		"verificationCardPublicKeys", "signature" })
 public class SetupComponentTallyDataPayload implements SignedPayload {
 
@@ -51,7 +51,7 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 	private final String verificationCardSetId;
 
 	@JsonProperty
-	private final String ballotBoxAlias;
+	private final String ballotBoxDefaultTitle;
 
 	@JsonProperty
 	private final GqGroup encryptionGroup;
@@ -73,8 +73,8 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 			@JsonProperty("verificationCardSetId")
 			final String verificationCardSetId,
 
-			@JsonProperty("ballotBoxAlias")
-			final String ballotBoxAlias,
+			@JsonProperty("ballotBoxDefaultTitle")
+			final String ballotBoxDefaultTitle,
 
 			@JsonProperty("encryptionGroup")
 			final GqGroup encryptionGroup,
@@ -88,24 +88,24 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 			@JsonProperty("signature")
 			final CryptoPrimitivesSignature signature) {
 
-		this(electionEventId, verificationCardSetId, ballotBoxAlias, encryptionGroup, verificationCardIds, verificationCardPublicKeys);
+		this(electionEventId, verificationCardSetId, ballotBoxDefaultTitle, encryptionGroup, verificationCardIds, verificationCardPublicKeys);
 		this.signature = checkNotNull(signature);
 	}
 
 	public SetupComponentTallyDataPayload(
 			final String electionEventId,
 			final String verificationCardSetId,
-			final String ballotBoxAlias,
+			final String ballotBoxDefaultTitle,
 			final GqGroup encryptionGroup,
 			final List<String> verificationCardIds,
 			final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> verificationCardPublicKeys) {
 
 		this.electionEventId = validateUUID(electionEventId);
 		this.verificationCardSetId = validateUUID(verificationCardSetId);
-		this.ballotBoxAlias = checkNotNull(ballotBoxAlias);
+		this.ballotBoxDefaultTitle = checkNotNull(ballotBoxDefaultTitle);
 		this.encryptionGroup = checkNotNull(encryptionGroup);
 
-		checkArgument(!this.ballotBoxAlias.isBlank(), "The ballot box alias must not be blank.");
+		checkArgument(!this.ballotBoxDefaultTitle.isBlank(), "The ballot box alias must not be blank.");
 
 		this.verificationCardIds = List.copyOf(checkNotNull(verificationCardIds));
 		checkArgument(!this.verificationCardIds.isEmpty(), "The verification card ids list must be non-empty.");
@@ -132,8 +132,8 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 		return verificationCardSetId;
 	}
 
-	public String getBallotBoxAlias() {
-		return ballotBoxAlias;
+	public String getBallotBoxDefaultTitle() {
+		return ballotBoxDefaultTitle;
 	}
 
 	public GqGroup getEncryptionGroup() {
@@ -163,7 +163,7 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 		return List.of(
 				HashableString.from(electionEventId),
 				HashableString.from(verificationCardSetId),
-				HashableString.from(ballotBoxAlias),
+				HashableString.from(ballotBoxDefaultTitle),
 				encryptionGroup,
 				HashableList.from(verificationCardIds.stream().map(HashableString::from).toList()),
 				verificationCardPublicKeys);
@@ -178,14 +178,14 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 			return false;
 		}
 		final SetupComponentTallyDataPayload that = (SetupComponentTallyDataPayload) o;
-		return electionEventId.equals(that.electionEventId) && verificationCardSetId.equals(that.verificationCardSetId) && ballotBoxAlias.equals(
-				that.ballotBoxAlias) && encryptionGroup.equals(that.encryptionGroup) && verificationCardIds.equals(that.verificationCardIds)
+		return electionEventId.equals(that.electionEventId) && verificationCardSetId.equals(that.verificationCardSetId) && ballotBoxDefaultTitle.equals(
+				that.ballotBoxDefaultTitle) && encryptionGroup.equals(that.encryptionGroup) && verificationCardIds.equals(that.verificationCardIds)
 				&& verificationCardPublicKeys.equals(that.verificationCardPublicKeys) && Objects.equals(signature, that.signature);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(electionEventId, verificationCardSetId, ballotBoxAlias, encryptionGroup, verificationCardIds, verificationCardPublicKeys,
+		return Objects.hash(electionEventId, verificationCardSetId, ballotBoxDefaultTitle, encryptionGroup, verificationCardIds, verificationCardPublicKeys,
 				signature);
 	}
 }

@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeSharesPayload;
@@ -32,6 +31,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
@@ -50,10 +50,10 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 	private final PathService pathService;
 	private final ElectionDataExtractionService electionDataExtractionService;
 
-	public VerifyVerificationCardSetIdsConsistency(final ApplicationEventPublisher applicationEventPublisher,
+	public VerifyVerificationCardSetIdsConsistency(final ResultPublisherService resultPublisherService,
 			final PathService pathService,
 			final ElectionDataExtractionService electionDataExtractionService) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.pathService = pathService;
 		this.electionDataExtractionService = electionDataExtractionService;
 	}
@@ -81,7 +81,7 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 								&& payloadsVerificationCardSetIds.verificationCardSetId().equals(payloadsVerificationCardSetIds.codeShareIds())
 								&& payloadsVerificationCardSetIds.verificationCardSetId().equals(payloadsVerificationCardSetIds.tallyIds()))
 				.reduce(Boolean::logicalAnd)
-				.orElseThrow();
+				.orElse(Boolean.FALSE);
 
 		if (sameVerificationCardSetIds) {
 			return VerificationResult.success(getVerificationDefinition());
@@ -103,14 +103,14 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 					final String vcsId = verificationCardSetIdPath.getFileName().toString();
 					final Set<String> verificationCardSetId = Set.of(vcsId);
 
-					final List<SetupComponentVerificationDataPayload> setupComponentVerificationDataPayloads = electionDataExtractionService.deserializeSetupComponentVerificationDataPayload(
+					final List<SetupComponentVerificationDataPayload> setupComponentVerificationDataPayloads = electionDataExtractionService.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(
 							verificationCardSetIdPath);
 					final Set<String> verificationDataIds = setupComponentVerificationDataPayloads.stream()
 							.map(SetupComponentVerificationDataPayload::getVerificationCardSetId)
 							.collect(Collectors.toUnmodifiableSet());
 					checkArgument(verificationDataIds.size() == 1, "The setup component verification card set id size must be one.");
 
-					final List<List<ControlComponentCodeSharesPayload>> controlComponentCodeSharesPayloads = electionDataExtractionService.deserializeControlComponentCodeSharesPayloads(
+					final List<List<ControlComponentCodeSharesPayload>> controlComponentCodeSharesPayloads = electionDataExtractionService.deserializeControlComponentCodeSharesPayloadsOrderByChunkIdAndNodeId(
 							verificationCardSetIdPath);
 					final Set<String> codeShareIds = controlComponentCodeSharesPayloads.stream()
 							.flatMap(payloads -> payloads.stream()

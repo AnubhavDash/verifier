@@ -23,14 +23,8 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.Language;
 import ch.post.it.evoting.verifier.backend.Status;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-@Getter
-@Setter
-@ToString
 public class Verification {
+
 	private String id;
 	private int verificationId;
 	private String block;
@@ -41,4 +35,84 @@ public class Verification {
 	private Map<Language, String> message;
 	private Set<String> verifierEvents;
 	private List<String> errorStack;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(final String id) {
+		this.id = id;
+	}
+
+	public int getVerificationId() {
+		return verificationId;
+	}
+
+	public void setVerificationId(final int verificationId) {
+		this.verificationId = verificationId;
+	}
+
+	public String getBlock() {
+		return block;
+	}
+
+	public void setBlock(final String block) {
+		this.block = block;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(final String name) {
+		this.name = name;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(final Category category) {
+		this.category = category;
+	}
+
+	public Map<Language, String> getDescription() {
+		return description;
+	}
+
+	public void setDescription(final Map<Language, String> description) {
+		this.description = description;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(final Status status) {
+		this.status = status;
+	}
+
+	public Map<Language, String> getMessage() {
+		return message;
+	}
+
+	public void setMessage(final Map<Language, String> message) {
+		this.message = message;
+	}
+
+	public Set<String> getVerifierEvents() {
+		return verifierEvents;
+	}
+
+	public void setVerifierEvents(final Set<String> verifierEvents) {
+		this.verifierEvents = verifierEvents;
+	}
+
+	public List<String> getErrorStack() {
+		return errorStack;
+	}
+
+	public void setErrorStack(final List<String> errorStack) {
+		this.errorStack = errorStack;
+	}
 }

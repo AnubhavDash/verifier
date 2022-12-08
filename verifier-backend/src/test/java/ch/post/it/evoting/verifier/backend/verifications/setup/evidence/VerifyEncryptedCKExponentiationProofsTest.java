@@ -46,7 +46,7 @@ class VerifyEncryptedCKExponentiationProofsTest extends SetupVerificationTest {
 				verifyCKProofsVerificationCardSetAlgorithm);
 		final ExponentiationProofsVerificationExtractionService exponentiationProofsVerificationExtractionService = new ExponentiationProofsVerificationExtractionService(
 				electionDataExtractionService, pathService);
-		verification = new VerifyEncryptedCKExponentiationProofs(applicationEventPublisherMock, exponentiationProofsVerificationExtractionService,
+		verification = new VerifyEncryptedCKExponentiationProofs(resultPublisherServiceMock, exponentiationProofsVerificationExtractionService,
 				verifyEncryptedCKExponentiationProofsAlgorithm);
 	}
 

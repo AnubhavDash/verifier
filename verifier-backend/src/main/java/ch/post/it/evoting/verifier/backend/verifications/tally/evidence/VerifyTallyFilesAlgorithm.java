@@ -15,13 +15,10 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
-import static ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTableEntry.VALID_XML_TOKEN_PATTERN;
 import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.validateUUID;
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Map;
 
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -69,18 +66,11 @@ public class VerifyTallyFilesAlgorithm {
 		final String ee = electionEventId;
 
 		// Input.
-		final Configuration configurationXML = input.getSetupComponentConfig();
+		final Configuration configurationXML = input.getCantonConfig();
 		final Results evotingDecryptXML = input.getTallyComponentDecrypt();
 		final Delivery eCH0110XML = input.getTallyComponentEch0110();
 		final ch.ech.xmlns.ech_0222._1.Delivery eCH0222XML = input.getTallyComponentEch0222();
 		final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads = input.getTallyComponentVotesPayloads();
-
-		checkArgument(tallyComponentVotesPayloads.values().stream()
-						.map(TallyComponentVotesPayload::getActualSelectedVotingOptions)
-						.flatMap(Collection::stream)
-						.flatMap(Collection::stream)
-						.allMatch(v -> VALID_XML_TOKEN_PATTERN.matcher(v).matches()),
-				"Voting options should match a valid xml xs:token");
 
 		// Operation.
 		final Results evotingDecryptXML_prime = ResultDeliveryMapper.toResults(configurationXML, tallyComponentVotesPayloads);

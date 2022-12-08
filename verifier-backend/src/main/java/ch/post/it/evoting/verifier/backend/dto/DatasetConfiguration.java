@@ -21,16 +21,24 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Map;
 
-public record DatasetConfiguration(String filename, String hash, String electionEventId, int numberOfAuthorizedVoters, int numberOfTestVoters,
-								   Map<String, String> aliasesToFingerprints) {
+public record DatasetConfiguration(String filename, String hash, String electionEventId, Map<String, String> aliasesToFingerprints,
+								   String electionEventName, String electionEventDate, int numberOfElections, int numberOfVotes,
+								   long numberOfNonTestBallotBoxes, long numberOfTestBallotBoxes, int totalNumberOfAuthorizedNonTestVoters,
+								   int totalNumberOfTestVoters) {
 
 	public DatasetConfiguration {
 		checkNotNull(filename);
 		checkNotNull(hash);
 		validateUUID(electionEventId);
-		checkArgument(numberOfAuthorizedVoters >= 0, "The number of authorized voters must be positive.");
-		checkArgument(numberOfTestVoters >= 0, "The number of test voters must be positive.");
 		checkNotNull(aliasesToFingerprints);
 		checkArgument(!aliasesToFingerprints.isEmpty(), "The aliases to fingerprints map must not be empty.");
+		checkNotNull(electionEventName);
+		checkNotNull(electionEventDate);
+		checkArgument(numberOfElections >= 0, "The number of elections must be positive.");
+		checkArgument(numberOfVotes >= 0, "The number of votes must be positive.");
+		checkArgument(numberOfNonTestBallotBoxes >= 0, "The number of non test ballot boxes must be positive.");
+		checkArgument(numberOfTestBallotBoxes >= 0, "The number of test ballot boxes must be positive.");
+		checkArgument(totalNumberOfAuthorizedNonTestVoters >= 0, "The total number of authorized non test voters must be positive.");
+		checkArgument(totalNumberOfTestVoters >= 0, "The total number of test voters must be positive.");
 	}
 }

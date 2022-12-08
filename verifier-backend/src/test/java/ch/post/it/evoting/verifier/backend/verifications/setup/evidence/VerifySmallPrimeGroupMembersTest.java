@@ -40,7 +40,7 @@ class VerifySmallPrimeGroupMembersTest extends SetupVerificationTest {
 		verification = new VerifySmallPrimeGroupMembers(
 				electionDataExtractionService,
 				verifySmallPrimeGroupMembersAlgorithm,
-				applicationEventPublisherMock);
+				resultPublisherServiceMock);
 	}
 
 	@BeforeEach

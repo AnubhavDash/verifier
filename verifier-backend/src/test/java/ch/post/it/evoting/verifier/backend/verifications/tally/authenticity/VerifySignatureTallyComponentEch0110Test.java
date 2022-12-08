@@ -56,7 +56,7 @@ class VerifySignatureTallyComponentEch0110Test extends TallyVerificationTest {
 	@BeforeEach
 	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
 		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
-		verification = new VerifySignatureTallyComponentEch0110(applicationEventPublisherMock, electionDataExtractionService,
+		verification = new VerifySignatureTallyComponentEch0110(resultPublisherServiceMock, electionDataExtractionService,
 				testSignatureVerification);
 	}
 

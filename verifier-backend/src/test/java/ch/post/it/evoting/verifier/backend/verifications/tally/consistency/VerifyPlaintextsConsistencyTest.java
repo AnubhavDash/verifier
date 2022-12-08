@@ -47,7 +47,7 @@ class VerifyPlaintextsConsistencyTest extends TallyVerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyPlaintextsConsistency(applicationEventPublisherMock, electionDataExtractionService);
+		verification = new VerifyPlaintextsConsistency(resultPublisherServiceMock, electionDataExtractionService);
 	}
 
 	@Test
@@ -82,7 +82,7 @@ class VerifyPlaintextsConsistencyTest extends TallyVerificationTest {
 		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
 		doReturn(modifiedElectionEventContextPayload).when(extractionServiceMock).getElectionEventContextPayload(datasetPath);
 
-		final VerifyPlaintextsConsistency verificationWithMock = new VerifyPlaintextsConsistency(applicationEventPublisherMock,
+		final VerifyPlaintextsConsistency verificationWithMock = new VerifyPlaintextsConsistency(resultPublisherServiceMock,
 				extractionServiceMock);
 		final VerificationResult verificationResult = verificationWithMock.verify(datasetPath);
 

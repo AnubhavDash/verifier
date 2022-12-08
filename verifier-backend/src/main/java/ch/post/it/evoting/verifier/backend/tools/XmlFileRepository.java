@@ -19,7 +19,9 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -55,9 +57,9 @@ public class XmlFileRepository<T> {
 	 * Reads the provided source file, validates it against the provided schema file and returns the object of type {@code clazz} representing the
 	 * source file.
 	 *
-	 * @param sourceFilePath the path to the source file.
+	 * @param sourceFilePath     the path to the source file.
 	 * @param schemaResourceName the path to the schema file.
-	 * @param clazz          the class of the object to be returned.
+	 * @param clazz              the class of the object to be returned.
 	 * @return the object of type {@code clazz} representing the source file.
 	 * @throws NullPointerException     if any of the inputs is null.
 	 * @throws IllegalArgumentException if
@@ -68,12 +70,36 @@ public class XmlFileRepository<T> {
 	 */
 	public T read(final Path sourceFilePath, final String schemaResourceName, final Class<T> clazz) {
 		checkNotNull(sourceFilePath);
-		checkNotNull(schemaResourceName);
-		checkNotNull(clazz);
-
 		checkArgument(sourceFilePath.toString().toLowerCase().endsWith(XML_EXTENSION),
 				"The provided source file path does not target an XML file. [sourceFilePath: %s]", sourceFilePath);
 		checkArgument(Files.exists(sourceFilePath), "The provided source file does not exist. [sourceFilePath: %s]", sourceFilePath);
+
+		try (InputStream inputStream = Files.newInputStream(sourceFilePath)) {
+			return read(inputStream, schemaResourceName, clazz);
+		} catch (IOException e) {
+			throw new UncheckedIOException(String.format("Could not read file. [sourceFilePath: %s]", sourceFilePath), e);
+		}
+	}
+
+	/**
+	 * Reads the provided input stream, validates it against the provided schema file and returns the object of type {@code clazz} representing the
+	 * source file.
+	 *
+	 * @param inputStream        the input stream to the file to be read.
+	 * @param schemaResourceName the path to the schema file.
+	 * @param clazz              the class of the object to be returned.
+	 * @return the object of type {@code clazz} representing the source file.
+	 * @throws NullPointerException     if any of the inputs is null.
+	 * @throws IllegalArgumentException if
+	 *                                  <ul>
+	 *                                      <li>the source file has not the XML extension or does not exist.</li>
+	 *                                      <li>the schema file has not the XSD extension or does not exist.</li>
+	 *                                  </ul>
+	 */
+	public T read(final InputStream inputStream, final String schemaResourceName, final Class<T> clazz) {
+		checkNotNull(inputStream);
+		checkNotNull(schemaResourceName);
+		checkNotNull(clazz);
 
 		checkArgument(schemaResourceName.toLowerCase().endsWith(XSD_EXTENSION),
 				"The provided schema file path does not target an XSD file. [schemaResourceName: %s]", schemaResourceName);
@@ -83,9 +109,9 @@ public class XmlFileRepository<T> {
 		final Unmarshaller jaxbUnmarshaller = createUnmarshaller(jaxbContext, schema);
 
 		try {
-			return clazz.cast(jaxbUnmarshaller.unmarshal(sourceFilePath.toFile()));
+			return clazz.cast(jaxbUnmarshaller.unmarshal(inputStream));
 		} catch (final JAXBException e) {
-			throw new IllegalStateException(String.format("Failed to read xml file. [sourceFilePath: %s]", sourceFilePath), e);
+			throw new IllegalStateException(String.format("Failed to read xml file. [sourceFilePath: %s]", inputStream), e);
 		}
 	}
 
@@ -93,7 +119,7 @@ public class XmlFileRepository<T> {
 	 * Writes the provided object in the provided destination path while validating it against the provided schema file.
 	 *
 	 * @param object              the object to be written.
-	 * @param schemaResourceName      the path to the schema file.
+	 * @param schemaResourceName  the path to the schema file.
 	 * @param destinationFilePath the path to the destination file.
 	 * @throws NullPointerException     if any of the inputs is null.
 	 * @throws IllegalArgumentException if
@@ -154,7 +180,7 @@ public class XmlFileRepository<T> {
 			schemaFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
 			schemaFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "file");
 
-			final URL schemaUrl = this.getClass().getClassLoader().getResource(schemaResourceName);
+			final URL schemaUrl = this.getClass().getResource(schemaResourceName);
 			return schemaFactory.newSchema(schemaUrl);
 		} catch (final SAXException e) {
 			throw new IllegalStateException(String.format("Could not create new schema. [schemaResourceName: %s]", schemaResourceName), e);

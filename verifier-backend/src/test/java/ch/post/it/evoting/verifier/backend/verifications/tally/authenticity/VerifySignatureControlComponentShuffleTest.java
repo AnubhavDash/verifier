@@ -42,7 +42,8 @@ class VerifySignatureControlComponentShuffleTest extends TallyVerificationTest {
 	@BeforeEach
 	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
 		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
-		verification = new VerifySignatureControlComponentShuffle(applicationEventPublisherMock, electionDataExtractionService, testSignatureVerification);
+		verification = new VerifySignatureControlComponentShuffle(resultPublisherServiceMock, electionDataExtractionService,
+				testSignatureVerification);
 	}
 
 	@Test
@@ -53,7 +54,7 @@ class VerifySignatureControlComponentShuffleTest extends TallyVerificationTest {
 	@Test
 	void testExpectedSignerSuccess() throws SignatureException {
 		final ControlComponentShufflePayload controlComponentShufflePayload = electionDataExtractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
-				datasetPath).get(0);
+				datasetPath).findFirst().orElseThrow();
 		final int nodeId = controlComponentShufflePayload.getNodeId();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.getControlComponentByNodeId(nodeId));
 		final byte[] signature = testSignatureGeneration.genSignature(controlComponentShufflePayload,
@@ -66,7 +67,7 @@ class VerifySignatureControlComponentShuffleTest extends TallyVerificationTest {
 	@Test
 	void testUnexpectedSignerFails() throws SignatureException {
 		final ControlComponentShufflePayload controlComponentShufflePayload = electionDataExtractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
-				datasetPath).get(0);
+				datasetPath).findFirst().orElseThrow();
 		final int nodeId = controlComponentShufflePayload.getNodeId();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_CONFIG);
 		final byte[] wrongSignature = testSignatureGeneration.genSignature(controlComponentShufflePayload,

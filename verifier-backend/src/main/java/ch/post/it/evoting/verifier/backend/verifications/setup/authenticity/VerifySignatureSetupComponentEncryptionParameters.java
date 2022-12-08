@@ -20,7 +20,6 @@ import static com.google.common.base.Preconditions.checkState;
 import java.nio.file.Path;
 import java.security.SignatureException;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -35,6 +34,7 @@ import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
+import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -48,17 +48,17 @@ public class VerifySignatureSetupComponentEncryptionParameters extends AbstractV
 	private final SignatureVerification signatureVerification;
 
 	protected VerifySignatureSetupComponentEncryptionParameters(
-			final ApplicationEventPublisher applicationEventPublisher,
+			final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService electionDataExtractionService,
 			final SignatureVerification signatureVerification) {
-		super(applicationEventPublisher);
+		super(resultPublisherService);
 		this.electionDataExtractionService = electionDataExtractionService;
 		this.signatureVerification = signatureVerification;
 	}
 
 	@Override
 	public VerificationDefinition getVerificationDefinition() {
-		final var definition = new VerificationDefinition();
+		final VerificationDefinition definition = new VerificationDefinition();
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.AUTHENTICITY);
 		definition.setDescription(
@@ -73,7 +73,8 @@ public class VerifySignatureSetupComponentEncryptionParameters extends AbstractV
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final var encryptionParametersPayload = electionDataExtractionService.getEncryptionParametersPayload(inputDirectoryPath);
+		final EncryptionParametersPayload encryptionParametersPayload = electionDataExtractionService.getEncryptionParametersPayload(
+				inputDirectoryPath);
 
 		final boolean verified = verifySignature(encryptionParametersPayload);
 
