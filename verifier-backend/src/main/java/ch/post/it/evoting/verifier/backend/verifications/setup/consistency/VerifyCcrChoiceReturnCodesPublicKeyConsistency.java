@@ -72,6 +72,7 @@ public class VerifyCcrChoiceReturnCodesPublicKeyConsistency extends AbstractVeri
 				.collect(Collectors.toMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccrjChoiceReturnCodesEncryptionPublicKey));
 
 		final boolean sameCCrChoiceReturnCodesPublicKeys = controlComponentPublicKeysPayloads.stream()
+				.parallel()
 				.map(ControlComponentPublicKeysPayload::getControlComponentPublicKeys)
 				.map(controlComponentPublicKeys -> electionEventContextPublicKeys.get(controlComponentPublicKeys.nodeId())
 						.equals(controlComponentPublicKeys.ccrjChoiceReturnCodesEncryptionPublicKey()))

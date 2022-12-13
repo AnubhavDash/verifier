@@ -18,7 +18,6 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 import static ch.post.it.evoting.verifier.backend.tools.TranslationHelper.getFromResourceBundle;
 
 import java.nio.file.Path;
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
@@ -62,11 +61,14 @@ public class VerifyConfirmedEncryptedVotesConsistency extends AbstractVerificati
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final Stream<List<ControlComponentBallotBoxPayload>> ballotBoxPayloads = extractionService.getElectionEventContextPayload(inputDirectoryPath)
+
+		final Stream<Stream<ControlComponentBallotBoxPayload>> ballotBoxPayloads = extractionService.getElectionEventContextPayload(inputDirectoryPath)
 				.getElectionEventContext()
 				.verificationCardSetContexts().stream()
+				.parallel()
 				.map(VerificationCardSetContext::ballotBoxId)
 				.map(ballotBoxId -> extractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(inputDirectoryPath, ballotBoxId));
+
 		if (confirmedVotesConsistent(ballotBoxPayloads)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
@@ -75,10 +77,11 @@ public class VerifyConfirmedEncryptedVotesConsistency extends AbstractVerificati
 		}
 	}
 
-	private boolean confirmedVotesConsistent(final Stream<List<ControlComponentBallotBoxPayload>> ballotBoxPayloadSupplier) {
+	private boolean confirmedVotesConsistent(final Stream<Stream<ControlComponentBallotBoxPayload>> ballotBoxPayloadSupplier) {
 		return ballotBoxPayloadSupplier
-				.map(ballotBoxPayloads -> Validations.allEqual(ballotBoxPayloads.stream(),
-						ControlComponentBallotBoxPayload::getConfirmedEncryptedVotes))
-				.reduce(Boolean::logicalAnd).orElse(Boolean.FALSE);
+				.parallel()
+				.map(ballotBoxPayloads -> Validations.allEqual(ballotBoxPayloads, ControlComponentBallotBoxPayload::getConfirmedEncryptedVotes))
+				.reduce(Boolean::logicalAnd)
+				.orElse(Boolean.FALSE);
 	}
 }

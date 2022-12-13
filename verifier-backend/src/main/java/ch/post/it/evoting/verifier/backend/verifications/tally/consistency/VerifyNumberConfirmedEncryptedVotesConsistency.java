@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
@@ -36,7 +35,6 @@ import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
-import ch.post.it.evoting.verifier.protocol.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.protocol.domain.tally.TallyComponentVotesPayload;
 
 @Component
@@ -95,15 +93,15 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 							electionDataExtractionService.getTallyComponentShufflePayload(ballotBoxPath);
 					final int tallyComponentShufflePayloadSize = tallyComponentShufflePayload.getVerifiableShuffle().shuffledCiphertexts().size();
 
-					final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads =
-							electionDataExtractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(ballotBoxPath);
-					final List<Integer> controlComponentBallotBoxPayloadsSizes = controlComponentBallotBoxPayloads.stream()
+					final List<Integer> controlComponentBallotBoxPayloadsSizes = electionDataExtractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(
+									ballotBoxPath)
+							.parallel()
 							.map(controlComponentBallotBoxPayload -> controlComponentBallotBoxPayload.getConfirmedEncryptedVotes().size())
 							.toList();
 
-					final List<ControlComponentShufflePayload> controlComponentShufflePayloads =
-							electionDataExtractionService.getControlComponentShufflePayloadsOrderedByNodeId(ballotBoxPath);
-					final List<Integer> controlComponentShufflePayloadsSizes = controlComponentShufflePayloads.stream()
+					final List<Integer> controlComponentShufflePayloadsSizes = electionDataExtractionService.getControlComponentShufflePayloadsOrderedByNodeId(
+									ballotBoxPath)
+							.parallel()
 							.map(controlComponentShufflePayload -> controlComponentShufflePayload.getVerifiableShuffle().shuffledCiphertexts().size())
 							.toList();
 

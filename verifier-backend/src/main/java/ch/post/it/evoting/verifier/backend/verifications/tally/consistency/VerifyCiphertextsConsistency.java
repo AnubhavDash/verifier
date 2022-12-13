@@ -70,9 +70,9 @@ public class VerifyCiphertextsConsistency extends AbstractVerification {
 					final String ballotBoxId = vcsContext.ballotBoxId();
 					final int numberWriteInsPlusOne = vcsContext.numberOfWriteInFields() + 1;
 					final List<ControlComponentBallotBoxPayload> ballotBoxPayloads = extractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(
-							inputDirectoryPath, ballotBoxId);
+							inputDirectoryPath, ballotBoxId).toList();
 					final List<ControlComponentShufflePayload> shufflePayloads = extractionService.getControlComponentShufflePayloadsOrderedByNodeId(
-							inputDirectoryPath, ballotBoxId);
+							inputDirectoryPath, ballotBoxId).toList();
 					final TallyComponentShufflePayload tallyComponentShufflePayload = extractionService.getTallyComponentShufflePayload(
 							inputDirectoryPath, ballotBoxId);
 					return new Ciphertexts(ballotBoxPayloads, shufflePayloads, tallyComponentShufflePayload, numberWriteInsPlusOne);
@@ -92,12 +92,14 @@ public class VerifyCiphertextsConsistency extends AbstractVerification {
 				.map(information -> {
 					final int numberWriteInsPlusOne = information.numberWriteInsPlusOne;
 					final boolean ballotBoxPayloadsCiphertextsConsistent = information.ballotBoxPayloads.stream()
+							.parallel()
 							.flatMap(payload -> payload.getConfirmedEncryptedVotes().stream())
 							.map(EncryptedVerifiableVote::encryptedVote)
 							.map(ElGamalMultiRecipientCiphertext::size)
 							.filter(ciphertextSize -> ciphertextSize != numberWriteInsPlusOne)
 							.toList().isEmpty();
 					final boolean shufflePayloadsCiphertextsConsistent = information.shufflePayloads.stream()
+							.parallel()
 							.flatMap(payload -> payload.getVerifiableDecryptions().getCiphertexts().stream())
 							.map(ElGamalMultiRecipientCiphertext::size)
 							.filter(ciphertextSize -> ciphertextSize != numberWriteInsPlusOne)

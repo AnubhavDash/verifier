@@ -74,11 +74,8 @@ public class VerifySignatureSetupComponentTallyData extends AbstractVerification
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final List<SetupComponentTallyDataPayload> setupComponentTallyDataPayloads = electionDataExtractionService.getSetupComponentTallyDataPayloads(
-				inputDirectoryPath);
-
-		final boolean verified = setupComponentTallyDataPayloads
-				.stream()
+		final boolean verified = electionDataExtractionService.getSetupComponentTallyDataPayloads(inputDirectoryPath)
+				.parallel()
 				.map(this::verifySignature)
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
