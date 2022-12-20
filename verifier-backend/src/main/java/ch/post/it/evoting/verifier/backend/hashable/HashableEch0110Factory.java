@@ -238,9 +238,10 @@ public interface HashableEch0110Factory {
 	private static Hashable fromMajoralElection(final ElectionResultType.MajoralElection majoralElection) {
 		return HashableList.of(
 				majoralElection.getCandidate().stream().map(HashableEch0110Factory::fromCandidateResult).collect(HashableList.toHashableList()),
-				fromResultDetail(majoralElection.getCountOfIndividualVotesTotal()),
-				fromResultDetail(majoralElection.getCountOfBlankVotesTotal()),
-				fromResultDetail(majoralElection.getCountOfInvalidVotesTotal())
+				fromNullable(majoralElection.getCountOfIndividualVotesTotal(), "countOfIndividualVotesTotal",
+						HashableEch0110Factory::fromResultDetail),
+				fromNullable(majoralElection.getCountOfBlankVotesTotal(), "countOfBlankVotesTotal", HashableEch0110Factory::fromResultDetail),
+				fromNullable(majoralElection.getCountOfInvalidVotesTotal(), "countOfInvalidVotesTotal", HashableEch0110Factory::fromResultDetail)
 		);
 	}
 

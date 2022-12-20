@@ -33,6 +33,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.common.collect.Streams;
+
 import ch.ech.xmlns.ech_0058._5.HeaderType;
 import ch.ech.xmlns.ech_0058._5.SendingApplicationType;
 import ch.ech.xmlns.ech_0155._4.AnswerOptionIdentificationType;
@@ -283,10 +285,12 @@ public class RawDataDeliveryMapper {
 			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType voteConfig) {
 
 		final Optional<StandardAnswerType> answer = voteConfig.getBallot().stream().parallel()
-				.map(BallotType::getStandardBallot)
-				.filter(Objects::nonNull)
-				.map(StandardBallotType::getAnswer)
-				.flatMap(Collection::stream)
+				.flatMap(ballotType -> Streams.concat(
+						ballotType.getStandardBallot() != null ? ballotType.getStandardBallot().getAnswer().stream() : Stream.empty(),
+						ballotType.getVariantBallot() != null ? ballotType.getVariantBallot().getStandardQuestion().stream()
+								.map(StandardQuestionType::getAnswer)
+								.flatMap(Collection::stream) : Stream.empty()
+				))
 				.filter(standardAnswer -> standardAnswer.getAnswerIdentification().equals(answerId))
 				.findFirst();
 
@@ -485,10 +489,12 @@ public class RawDataDeliveryMapper {
 	private static BigInteger findAnswerType(final String answerId,
 			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType voteConfig) {
 		final Optional<StandardAnswerType> answer = voteConfig.getBallot().stream().parallel()
-				.map(BallotType::getStandardBallot)
-				.filter(Objects::nonNull)
-				.map(StandardBallotType::getAnswer)
-				.flatMap(Collection::stream)
+				.flatMap(ballotType -> Streams.concat(
+						ballotType.getStandardBallot() != null ? ballotType.getStandardBallot().getAnswer().stream() : Stream.empty(),
+						ballotType.getVariantBallot() != null ? ballotType.getVariantBallot().getStandardQuestion().stream()
+								.map(StandardQuestionType::getAnswer)
+								.flatMap(Collection::stream) : Stream.empty()
+				))
 				.filter(standardAnswer -> standardAnswer.getAnswerIdentification().equals(answerId))
 				.findFirst();
 
