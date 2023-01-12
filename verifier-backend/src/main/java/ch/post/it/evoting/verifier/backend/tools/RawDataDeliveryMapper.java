@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -30,8 +31,6 @@ import java.util.stream.Stream;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-
-import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.collect.Streams;
 
@@ -236,35 +235,31 @@ public class RawDataDeliveryMapper {
 			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType voteConfig) {
 
 		return voteType.getBallot().stream()
-				.map(ballotVote -> {
-					final VoteRawDataType.BallotRawData ballotRawData = new VoteRawDataType.BallotRawData();
+				.flatMap(ballotVote -> {
+					final Map<String, VoteRawDataType.BallotRawData> ballotRawDataMap = new HashMap<>();
 
-					final VoteRawDataType.BallotRawData.BallotCasted casted = new VoteRawDataType.BallotRawData.BallotCasted();
+					for (final String answerId : ballotVote.getChosenAnswerIdentification()) {
+						final String questionId = findQuestionIdentification(answerId, voteConfig);
+						final BigInteger answerType = findAnswerType(answerId, voteConfig);
+						final String ballotIdentification = findBallotIdentificationFromQuestionIdentification(questionId, voteConfig);
 
-					casted.setQuestionRawData(ballotVote.getChosenAnswerIdentification().stream()
-							.map(answerId -> {
-								final String questionId = findQuestionIdentification(answerId, voteConfig);
-								final BigInteger answerType = findAnswerType(answerId, voteConfig);
+						final VoteRawDataType.BallotRawData ballotRawData = ballotRawDataMap.computeIfAbsent(ballotIdentification,
+								key -> new VoteRawDataType.BallotRawData()
+										.withBallotIdentification(key)
+										.withBallotCasted(new VoteRawDataType.BallotRawData.BallotCasted()));
 
-								if (StringUtils.isEmpty(ballotRawData.getBallotIdentification())) {
-									final String ballotIdentification = findBallotIdentificationFromQuestionIdentification(questionId, voteConfig);
-									ballotRawData.setBallotIdentification(ballotIdentification);
-								}
+						final VoteRawDataType.BallotRawData.BallotCasted.QuestionRawData questionRawData = new VoteRawDataType.BallotRawData.BallotCasted.QuestionRawData();
+						questionRawData.setQuestionIdentification(questionId);
 
-								final VoteRawDataType.BallotRawData.BallotCasted.QuestionRawData questionRawData = new VoteRawDataType.BallotRawData.BallotCasted.QuestionRawData();
-								questionRawData.setQuestionIdentification(questionId);
+						final VoteRawDataType.BallotRawData.BallotCasted.QuestionRawData.Casted castedAnswer = new VoteRawDataType.BallotRawData.BallotCasted.QuestionRawData.Casted();
+						castedAnswer.setCastedVote(answerType);
+						castedAnswer.setAnswerOptionIdentification(createAnswerOptionIdentification(answerId, answerType, voteConfig));
+						questionRawData.setCasted(castedAnswer);
 
-								final VoteRawDataType.BallotRawData.BallotCasted.QuestionRawData.Casted castedAnswer = new VoteRawDataType.BallotRawData.BallotCasted.QuestionRawData.Casted();
-								castedAnswer.setCastedVote(answerType);
-								castedAnswer.setAnswerOptionIdentification(createAnswerOptionIdentification(answerId, answerType, voteConfig));
-								questionRawData.setCasted(castedAnswer);
+						ballotRawData.getBallotCasted().getQuestionRawData().add(questionRawData);
+					}
 
-								return questionRawData;
-							})
-							.toList());
-					ballotRawData.setBallotCasted(casted);
-
-					return ballotRawData;
+					return ballotRawDataMap.values().stream();
 				})
 				.toList();
 	}
