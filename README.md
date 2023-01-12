@@ -61,8 +61,10 @@ The following table indicates the correspondence between the Verifier and E-voti
 
 | Verifier version | [E-voting](https://gitlab.com/swisspost-evoting/e-voting/e-voting) version |
 |------------------|----------------------------------------------------------------------------|
-| 1.2              | 1.1                                                                        |
-| 1.3              | 1.2                                                                        |
+| 1.2.0            | 1.1.0                                                                      |
+| 1.3.0            | 1.2.0                                                                      |
+| 1.3.1            | 1.2.1                                                                      |
+| 1.3.2            | 1.2.2                                                                      |
 
 ## Build information
 
