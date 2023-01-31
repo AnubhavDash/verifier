@@ -1057,13 +1057,16 @@ public interface DeliveryMapper {
 			final List<String> answersIdentifications) {
 
 		return tieBreakQuestionType.getAnswer().stream()
+				.parallel()
 				.filter(a -> Objects.isNull(a.isHiddenAnswer()) || !a.isHiddenAnswer())
 				.map(tiebreakAnswerType -> {
 
 					final String questionIdentification = tiebreakAnswerType.getStandardQuestionReference();
+					final String answerIdentification = tiebreakAnswerType.getAnswerIdentification();
 
 					final long countOfValidAnswers = answersIdentifications.stream()
-							.filter(answer -> answer.equals(questionIdentification))
+							.parallel()
+							.filter(answer -> answer.equals(answerIdentification))
 							.count();
 
 					return new VariantBallotResultType.TieBreak.CountInFavourOf()
