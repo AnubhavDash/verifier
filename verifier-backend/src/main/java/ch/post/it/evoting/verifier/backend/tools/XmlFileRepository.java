@@ -25,6 +25,7 @@ import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Locale;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
@@ -33,18 +34,22 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import org.springframework.stereotype.Repository;
 import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 @Repository
@@ -70,7 +75,7 @@ public class XmlFileRepository<T> {
 	 */
 	public T read(final Path sourceFilePath, final String schemaResourceName, final Class<T> clazz) {
 		checkNotNull(sourceFilePath);
-		checkArgument(sourceFilePath.toString().toLowerCase().endsWith(XML_EXTENSION),
+		checkArgument(sourceFilePath.toString().toLowerCase(Locale.ENGLISH).endsWith(XML_EXTENSION),
 				"The provided source file path does not target an XML file. [sourceFilePath: %s]", sourceFilePath);
 		checkArgument(Files.exists(sourceFilePath), "The provided source file does not exist. [sourceFilePath: %s]", sourceFilePath);
 
@@ -101,7 +106,7 @@ public class XmlFileRepository<T> {
 		checkNotNull(schemaResourceName);
 		checkNotNull(clazz);
 
-		checkArgument(schemaResourceName.toLowerCase().endsWith(XSD_EXTENSION),
+		checkArgument(schemaResourceName.toLowerCase(Locale.ENGLISH).endsWith(XSD_EXTENSION),
 				"The provided schema file path does not target an XSD file. [schemaResourceName: %s]", schemaResourceName);
 
 		final JAXBContext jaxbContext = newJaxbContext(clazz);
@@ -109,8 +114,15 @@ public class XmlFileRepository<T> {
 		final Unmarshaller jaxbUnmarshaller = createUnmarshaller(jaxbContext, schema);
 
 		try {
-			return clazz.cast(jaxbUnmarshaller.unmarshal(inputStream));
-		} catch (final JAXBException e) {
+			SAXParserFactory spf = SAXParserFactory.newInstance();
+			spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+			spf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+			spf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+			spf.setNamespaceAware(true);
+			Source xmlSource = new SAXSource(spf.newSAXParser().getXMLReader(), new InputSource(inputStream));
+
+			return clazz.cast(jaxbUnmarshaller.unmarshal(xmlSource));
+		} catch (final JAXBException | ParserConfigurationException | SAXException e) {
 			throw new IllegalStateException(String.format("Failed to read xml file. [sourceFilePath: %s]", inputStream), e);
 		}
 	}
@@ -133,10 +145,10 @@ public class XmlFileRepository<T> {
 		checkNotNull(schemaResourceName);
 		checkNotNull(destinationFilePath);
 
-		checkArgument(schemaResourceName.toLowerCase().endsWith(XSD_EXTENSION),
+		checkArgument(schemaResourceName.toLowerCase(Locale.ENGLISH).endsWith(XSD_EXTENSION),
 				"The provided schema file path does not target an XSD file. [schemaResourceName: %s]", schemaResourceName);
 
-		checkArgument(destinationFilePath.toString().toLowerCase().endsWith(XML_EXTENSION),
+		checkArgument(destinationFilePath.toString().toLowerCase(Locale.ENGLISH).endsWith(XML_EXTENSION),
 				"The provided destination file path does not target an XML file. [destinationFilePath: %s]", destinationFilePath);
 
 		final JAXBContext jaxbContext = newJaxbContext(object.getClass());
