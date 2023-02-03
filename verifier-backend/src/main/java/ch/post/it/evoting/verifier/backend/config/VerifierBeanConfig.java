@@ -51,6 +51,7 @@ import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.IsWriteI
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.VerifyMixDecOfflineAlgorithm;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.VerifyVotingClientProofsAlgorithm;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixonline.GetMixnetInitialCiphertextsAlgorithm;
+import ch.post.it.evoting.verifier.protocol.domain.xml.XmlNormalizer;
 import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 
 @Configuration
@@ -160,5 +161,10 @@ public class VerifierBeanConfig {
 	@Bean
 	XmlFileRepository<Results> resultsXmlFileRepository() {
 		return new XmlFileRepository<>();
+	}
+
+	@Bean
+	XmlNormalizer xmlNormalizer() {
+		return new XmlNormalizer();
 	}
 }

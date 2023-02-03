@@ -47,6 +47,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
+import ch.post.it.evoting.verifier.protocol.domain.xml.XsdConstants;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
 
 import jakarta.xml.bind.DatatypeConverter;

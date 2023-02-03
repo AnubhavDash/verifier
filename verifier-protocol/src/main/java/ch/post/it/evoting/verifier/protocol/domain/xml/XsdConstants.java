@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.post.it.evoting.verifier.backend.tools;
+package ch.post.it.evoting.verifier.protocol.domain.xml;
 
 public final class XsdConstants {
 

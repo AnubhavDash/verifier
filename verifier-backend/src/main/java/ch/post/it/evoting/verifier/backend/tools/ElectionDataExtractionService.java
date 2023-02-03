@@ -49,6 +49,7 @@ import ch.post.it.evoting.verifier.protocol.domain.configuration.ControlComponen
 import ch.post.it.evoting.verifier.protocol.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.verifier.protocol.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.protocol.domain.tally.TallyComponentVotesPayload;
+import ch.post.it.evoting.verifier.protocol.domain.xml.XsdConstants;
 import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
 import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 
