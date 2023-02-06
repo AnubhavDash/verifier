@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <results xmlns="http://www.evoting.ch/xmlns/decrypt/1">
 	<contestIdentification>Post_E2E_DEV</contestIdentification>
-	<castBallots>10</castBallots>
+	<castBallots>11</castBallots>
 	<ballotsBox>
 		<ballotBoxIdentification>16bca336-cba4-3b07-afaa-9d4d717e1d47</ballotBoxIdentification>
 		<countingCircle>
@@ -11,12 +11,8 @@
 				<election>
 					<electionIdentification>1000000000-1</electionIdentification>
 					<ballot>
-						<chosenCandidateIdentification>1-3</chosenCandidateIdentification>
-						<chosenCandidateIdentification>1-5</chosenCandidateIdentification>
-					</ballot>
-					<ballot>
-						<chosenWriteInsCandidateValue>Firstname Lastname-0</chosenWriteInsCandidateValue>
-						<chosenWriteInsCandidateValue>Firstname Lastname-1</chosenWriteInsCandidateValue>
+						<chosenCandidateIdentification>1-2</chosenCandidateIdentification>
+						<chosenCandidateIdentification>1-2</chosenCandidateIdentification>
 					</ballot>
 				</election>
 			</domainOfInfluence>
@@ -34,7 +30,13 @@
 						<chosenAnswerIdentification>b9c57a40-a555-35e1-972c-a1a6b7e03381</chosenAnswerIdentification>
 					</ballot>
 					<ballot>
+						<chosenAnswerIdentification>8814c2b6-8c73-38e8-99e6-830bffdf32c6</chosenAnswerIdentification>
+					</ballot>
+					<ballot>
 						<chosenAnswerIdentification>b9c57a40-a555-35e1-972c-a1a6b7e03381</chosenAnswerIdentification>
+					</ballot>
+					<ballot>
+						<chosenAnswerIdentification>57a30570-1722-3a7e-a8f9-7dd643d7f339</chosenAnswerIdentification>
 					</ballot>
 				</vote>
 			</domainOfInfluence>
@@ -43,12 +45,20 @@
 				<election>
 					<electionIdentification>1000000000-1</electionIdentification>
 					<ballot>
-						<chosenCandidateIdentification>1-1</chosenCandidateIdentification>
+						<chosenCandidateIdentification>1-2</chosenCandidateIdentification>
 						<chosenCandidateIdentification>1-3</chosenCandidateIdentification>
 					</ballot>
 					<ballot>
-						<chosenCandidateListIdentification>ae3a5d49-b15d-3e88-8bdd-cbf965497a8c</chosenCandidateListIdentification>
+						<chosenWriteInsCandidateValue>Brad Pitt</chosenWriteInsCandidateValue>
+						<chosenWriteInsCandidateValue>Angelina Jolie</chosenWriteInsCandidateValue>
+					</ballot>
+					<ballot>
 						<chosenCandidateIdentification>1-2</chosenCandidateIdentification>
+						<chosenCandidateIdentification>1-4</chosenCandidateIdentification>
+					</ballot>
+					<ballot>
+						<chosenCandidateIdentification>1-1</chosenCandidateIdentification>
+						<chosenCandidateIdentification>1-3</chosenCandidateIdentification>
 					</ballot>
 				</election>
 			</domainOfInfluence>
@@ -63,7 +73,10 @@
 				<vote>
 					<voteIdentification>1000000000-2</voteIdentification>
 					<ballot>
-						<chosenAnswerIdentification>57a30570-1722-3a7e-a8f9-7dd643d7f339</chosenAnswerIdentification>
+						<chosenAnswerIdentification>b9c57a40-a555-35e1-972c-a1a6b7e03381</chosenAnswerIdentification>
+					</ballot>
+					<ballot>
+						<chosenAnswerIdentification>8814c2b6-8c73-38e8-99e6-830bffdf32c6</chosenAnswerIdentification>
 					</ballot>
 				</vote>
 			</domainOfInfluence>
@@ -78,19 +91,16 @@
 				<vote>
 					<voteIdentification>1000000000-2</voteIdentification>
 					<ballot>
-						<chosenAnswerIdentification>8814c2b6-8c73-38e8-99e6-830bffdf32c6</chosenAnswerIdentification>
+						<chosenAnswerIdentification>b9c57a40-a555-35e1-972c-a1a6b7e03381</chosenAnswerIdentification>
+					</ballot>
+					<ballot>
+						<chosenAnswerIdentification>57a30570-1722-3a7e-a8f9-7dd643d7f339</chosenAnswerIdentification>
 					</ballot>
 					<ballot>
 						<chosenAnswerIdentification>8814c2b6-8c73-38e8-99e6-830bffdf32c6</chosenAnswerIdentification>
 					</ballot>
 					<ballot>
-						<chosenAnswerIdentification>8814c2b6-8c73-38e8-99e6-830bffdf32c6</chosenAnswerIdentification>
-					</ballot>
-					<ballot>
-						<chosenAnswerIdentification>8814c2b6-8c73-38e8-99e6-830bffdf32c6</chosenAnswerIdentification>
-					</ballot>
-					<ballot>
-						<chosenAnswerIdentification>8814c2b6-8c73-38e8-99e6-830bffdf32c6</chosenAnswerIdentification>
+						<chosenAnswerIdentification>b9c57a40-a555-35e1-972c-a1a6b7e03381</chosenAnswerIdentification>
 					</ballot>
 				</vote>
 			</domainOfInfluence>
@@ -99,30 +109,26 @@
 				<election>
 					<electionIdentification>1000000000-1</electionIdentification>
 					<ballot>
-						<chosenCandidateIdentification>1-2</chosenCandidateIdentification>
-						<chosenWriteInsCandidateValue>Firstname Lastname-0</chosenWriteInsCandidateValue>
-					</ballot>
-					<ballot>
-						<chosenCandidateIdentification>1-2</chosenCandidateIdentification>
-						<chosenCandidateIdentification>1-4</chosenCandidateIdentification>
-					</ballot>
-					<ballot>
 						<chosenCandidateIdentification>1-1</chosenCandidateIdentification>
-						<chosenCandidateIdentification>1-5</chosenCandidateIdentification>
+						<chosenCandidateIdentification>1-2</chosenCandidateIdentification>
 					</ballot>
 					<ballot>
 						<chosenCandidateIdentification>1-1</chosenCandidateIdentification>
 						<chosenCandidateIdentification>1-3</chosenCandidateIdentification>
 					</ballot>
 					<ballot>
+						<chosenCandidateIdentification>1-4</chosenCandidateIdentification>
 						<chosenCandidateIdentification>1-5</chosenCandidateIdentification>
-						<chosenWriteInsCandidateValue>Firstname Lastname-0</chosenWriteInsCandidateValue>
+					</ballot>
+					<ballot>
+						<chosenCandidateIdentification>1-2</chosenCandidateIdentification>
+						<chosenCandidateIdentification>1-2</chosenCandidateIdentification>
 					</ballot>
 				</election>
 			</domainOfInfluence>
 		</countingCircle>
 	</ballotsBox>
 	<signature>
-		Es5aMCxA2sSx2FWfUsl/lruSyinUaRhGsTFdPqbdWCBkNCrT4QMfWnZ4B0CT4s1GS/Mt0a8V0Cf2xUXnb43jDWzIAIBZqFB180TJFpMsWURYpyt/9f99UIGpirsoqL+bupkc4w6Ey1hfo1XXUZ5ItwPEFDob+5I6TYqnezZQoBwLmZZR/OFYZS9NZuaT+ofuz+TD8g7fNwqWcJJHk8bVH76fE1RhTPs+xsGLs6riluBdH7QoJ7/0lb3fX9UVFuGAjWq6MpygPz6D4+9Xy7Kz7SE/pUuUIvX7qtwnlH9R/DfyDierfi0NRifksf8z2PWLnOD5L5GQo3s3X+QIIzmTGQmYIHzwkHLyQrJ3glnzjj6592BGroCcIgCK7ZGemjU1znBcVBLvzosF9tOZUeHAjrw3HZnuDdvUC5oEt8uc6u9ZSsvK9ifTsCtQn0F4CP6wqxvfzb1ViusX1QobcVIuXJXtPe7sNjy2x7ROqV8DGlKwlPwG3sY48uDhG1iPo+vl
+		nQHES5SFFVRRypnx2bojQ4oxbhZluUZS17r54o5C45Qo8A24GP8kbJEdx4oeIAVTSRj5XxLOyDKEpkCdUJIkt9pQ7JBH5MKJ/Y3EH9W9fxCvGXj83QkKXjzzVc8zmF6AdzvMoKpKKf323twMoNND/q8HlRFRvIxZ55s7Y/IATDZqah2zObDkM1oPoacCwsVIK26gU8eAcyEYo153Kt+Z4TCvnC+7GDBwOfw6kz+PpJXS1aD7tpmk7KmwuskJ03rGlXSNVZQe6KjH88OMYV5HCDmRf39bB9P/8DGhQB52bfmvGUgl61WiK5ql8sJ6/UF8KNPhBDAfhJu9nfDrHrXJVnI/iKw+BtKo7nyGA3gbrJdcZpCknaOs0p3m+OgDKGKwqvJbs/HcVMbTyc8zi12QTkpvM0V2a85MTjskjgWMCRCJttl+233xcH4ow35pcRGZJhsN9KKWQuPRxfLCOw+zbCE3YKsFayio7LDtW7jxFYyQkxyJFuKJLRB5uST0dZ6m
 	</signature>
 </results>
