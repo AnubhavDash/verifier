@@ -1,0 +1,1237 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<eCH-0110:delivery xmlns:eCH-0110="http://www.ech.ch/xmlns/eCH-0110/4" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/4">
+  <eCH-0110:deliveryHeader>
+    <eCH-0058:senderId>http://www.post.ch</eCH-0058:senderId>
+    <eCH-0058:messageId>cedb6c01768c4c649f0d2cc819397c53</eCH-0058:messageId>
+    <eCH-0058:messageType>http://www.post.ch</eCH-0058:messageType>
+    <eCH-0058:sendingApplication>
+      <eCH-0058:manufacturer>SwissPost</eCH-0058:manufacturer>
+      <eCH-0058:product>E-Voting</eCH-0058:product>
+      <eCH-0058:productVersion>1</eCH-0058:productVersion>
+    </eCH-0058:sendingApplication>
+    <eCH-0058:messageDate>2023-02-06T17:35:41.087768600</eCH-0058:messageDate>
+    <eCH-0058:action>1</eCH-0058:action>
+    <eCH-0058:testDeliveryFlag>false</eCH-0058:testDeliveryFlag>
+  </eCH-0110:deliveryHeader>
+  <eCH-0110:resultDelivery>
+    <eCH-0110:reportingBody>
+      <eCH-0110:reportingBodyIdentification>SwissPost</eCH-0110:reportingBodyIdentification>
+      <eCH-0110:creationDateTime>2023-02-06T17:35:41.093120300</eCH-0110:creationDateTime>
+    </eCH-0110:reportingBody>
+    <eCH-0110:contestInformation>
+      <eCH-0155:contestIdentification>Post_E2E_DEV</eCH-0155:contestIdentification>
+      <eCH-0155:contestDate>2022-08-15</eCH-0155:contestDate>
+      <eCH-0155:contestDescription>
+        <eCH-0155:contestDescriptionInfo>
+          <eCH-0155:language>DE</eCH-0155:language>
+          <eCH-0155:contestDescription>Post_E2E_DEV</eCH-0155:contestDescription>
+        </eCH-0155:contestDescriptionInfo>
+        <eCH-0155:contestDescriptionInfo>
+          <eCH-0155:language>FR</eCH-0155:language>
+          <eCH-0155:contestDescription>Post_E2E_DEV</eCH-0155:contestDescription>
+        </eCH-0155:contestDescriptionInfo>
+        <eCH-0155:contestDescriptionInfo>
+          <eCH-0155:language>IT</eCH-0155:language>
+          <eCH-0155:contestDescription>Post_E2E_DEV</eCH-0155:contestDescription>
+        </eCH-0155:contestDescriptionInfo>
+        <eCH-0155:contestDescriptionInfo>
+          <eCH-0155:language>RM</eCH-0155:language>
+          <eCH-0155:contestDescription>Post_E2E_DEV</eCH-0155:contestDescription>
+        </eCH-0155:contestDescriptionInfo>
+      </eCH-0155:contestDescription>
+      <eCH-0155:eVotingPeriod>
+        <eCH-0155:eVotingPeriodFrom>2022-08-01T15:00:00+02:00</eCH-0155:eVotingPeriodFrom>
+        <eCH-0155:eVotingPeriodTill>2023-03-31T17:00:00+01:00</eCH-0155:eVotingPeriodTill>
+      </eCH-0155:eVotingPeriod>
+    </eCH-0110:contestInformation>
+    <eCH-0110:countingCircleResults>
+      <eCH-0110:countingCircle>
+        <eCH-0155:countingCircleId>BE-MU-10004</eCH-0155:countingCircleId>
+        <eCH-0155:countingCircleName>TestBallotBox2_ACH</eCH-0155:countingCircleName>
+      </eCH-0110:countingCircle>
+      <eCH-0110:votingCardsInformation>
+        <eCH-0110:countOfReceivedValidVotingCardsTotal>0</eCH-0110:countOfReceivedValidVotingCardsTotal>
+        <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
+      </eCH-0110:votingCardsInformation>
+      <eCH-0110:electionGroupResults>
+        <eCH-0110:domainOfInfluenceIdentification>doid-ct1-mu</eCH-0110:domainOfInfluenceIdentification>
+        <eCH-0110:electionGroupDescription>
+          <eCH-0155:electionDescriptionInfo>
+            <eCH-0155:language>DE</eCH-0155:language>
+            <eCH-0155:electionDescription>Election (de)</eCH-0155:electionDescription>
+          </eCH-0155:electionDescriptionInfo>
+          <eCH-0155:electionDescriptionInfo>
+            <eCH-0155:language>FR</eCH-0155:language>
+            <eCH-0155:electionDescription>Election (fr)</eCH-0155:electionDescription>
+          </eCH-0155:electionDescriptionInfo>
+          <eCH-0155:electionDescriptionInfo>
+            <eCH-0155:language>IT</eCH-0155:language>
+            <eCH-0155:electionDescription>Election (it)</eCH-0155:electionDescription>
+          </eCH-0155:electionDescriptionInfo>
+          <eCH-0155:electionDescriptionInfo>
+            <eCH-0155:language>RM</eCH-0155:language>
+            <eCH-0155:electionDescription>Election (rm)</eCH-0155:electionDescription>
+          </eCH-0155:electionDescriptionInfo>
+        </eCH-0110:electionGroupDescription>
+        <eCH-0110:countOfVotersInformation>
+          <eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
+        </eCH-0110:countOfVotersInformation>
+        <eCH-0110:countOfReceivedBallotsTotal>
+          <eCH-0110:total>2</eCH-0110:total>
+        </eCH-0110:countOfReceivedBallotsTotal>
+        <eCH-0110:countOfAccountedBallots>
+          <eCH-0110:total>2</eCH-0110:total>
+        </eCH-0110:countOfAccountedBallots>
+        <eCH-0110:countOfUnaccountedBallots>
+          <eCH-0110:total>0</eCH-0110:total>
+        </eCH-0110:countOfUnaccountedBallots>
+        <eCH-0110:countOfUnaccountedBlankBallots>
+          <eCH-0110:total>0</eCH-0110:total>
+        </eCH-0110:countOfUnaccountedBlankBallots>
+        <eCH-0110:countOfUnaccountedInvalidBallots>
+          <eCH-0110:total>0</eCH-0110:total>
+        </eCH-0110:countOfUnaccountedInvalidBallots>
+        <eCH-0110:electionResults>
+          <eCH-0110:election>
+            <eCH-0155:electionIdentification>1000000000-1</eCH-0155:electionIdentification>
+            <eCH-0155:typeOfElection>2</eCH-0155:typeOfElection>
+            <eCH-0155:electionDescription>
+              <eCH-0155:electionDescriptionInfo>
+                <eCH-0155:language>DE</eCH-0155:language>
+                <eCH-0155:electionDescription>Election (de)</eCH-0155:electionDescription>
+              </eCH-0155:electionDescriptionInfo>
+              <eCH-0155:electionDescriptionInfo>
+                <eCH-0155:language>FR</eCH-0155:language>
+                <eCH-0155:electionDescription>Election (fr)</eCH-0155:electionDescription>
+              </eCH-0155:electionDescriptionInfo>
+              <eCH-0155:electionDescriptionInfo>
+                <eCH-0155:language>IT</eCH-0155:language>
+                <eCH-0155:electionDescription>Election (it)</eCH-0155:electionDescription>
+              </eCH-0155:electionDescriptionInfo>
+              <eCH-0155:electionDescriptionInfo>
+                <eCH-0155:language>RM</eCH-0155:language>
+                <eCH-0155:electionDescription>Election (rm)</eCH-0155:electionDescription>
+              </eCH-0155:electionDescriptionInfo>
+            </eCH-0155:electionDescription>
+            <eCH-0155:numberOfMandates>2</eCH-0155:numberOfMandates>
+          </eCH-0110:election>
+          <eCH-0110:majoralElection>
+            <eCH-0110:candidate>
+              <eCH-0110:candidateInformation>
+                <eCH-0110:candidateIdentification>1-1</eCH-0110:candidateIdentification>
+                <eCH-0110:candidateReference>1</eCH-0110:candidateReference>
+                <eCH-0110:familyName>Muster</eCH-0110:familyName>
+                <eCH-0110:firstName>Karin</eCH-0110:firstName>
+                <eCH-0110:callName>Karin</eCH-0110:callName>
+                <eCH-0110:candidateText>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>DE</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (de)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>FR</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (fr)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>IT</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (it)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>RM</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (rm)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                </eCH-0110:candidateText>
+                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+              </eCH-0110:candidateInformation>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>cd875327-7d14-33b9-8db4-769d19f738c4</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:candidateInformation>
+                <eCH-0110:candidateIdentification>1-2</eCH-0110:candidateIdentification>
+                <eCH-0110:candidateReference>2</eCH-0110:candidateReference>
+                <eCH-0110:familyName>Muster</eCH-0110:familyName>
+                <eCH-0110:firstName>Paul</eCH-0110:firstName>
+                <eCH-0110:callName>Paul</eCH-0110:callName>
+                <eCH-0110:candidateText>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>DE</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (de)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>FR</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (fr)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>IT</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (it)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>RM</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (rm)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                </eCH-0110:candidateText>
+                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+              </eCH-0110:candidateInformation>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>cd875327-7d14-33b9-8db4-769d19f738c4</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:candidateInformation>
+                <eCH-0110:candidateIdentification>1-3</eCH-0110:candidateIdentification>
+                <eCH-0110:candidateReference>3</eCH-0110:candidateReference>
+                <eCH-0110:familyName>Muster</eCH-0110:familyName>
+                <eCH-0110:firstName>Lukas</eCH-0110:firstName>
+                <eCH-0110:callName>Lukas</eCH-0110:callName>
+                <eCH-0110:candidateText>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>DE</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (de)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>FR</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (fr)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>IT</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (it)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>RM</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (rm)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                </eCH-0110:candidateText>
+                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+              </eCH-0110:candidateInformation>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>cd875327-7d14-33b9-8db4-769d19f738c4</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:candidateInformation>
+                <eCH-0110:candidateIdentification>1-4</eCH-0110:candidateIdentification>
+                <eCH-0110:candidateReference>4</eCH-0110:candidateReference>
+                <eCH-0110:familyName>Muster</eCH-0110:familyName>
+                <eCH-0110:firstName>Peter</eCH-0110:firstName>
+                <eCH-0110:callName>Peter</eCH-0110:callName>
+                <eCH-0110:candidateText>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>DE</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (de)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>FR</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (fr)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>IT</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (it)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>RM</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (rm)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                </eCH-0110:candidateText>
+                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+              </eCH-0110:candidateInformation>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>cd875327-7d14-33b9-8db4-769d19f738c4</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:candidateInformation>
+                <eCH-0110:candidateIdentification>1-5</eCH-0110:candidateIdentification>
+                <eCH-0110:candidateReference>5</eCH-0110:candidateReference>
+                <eCH-0110:familyName>Muster</eCH-0110:familyName>
+                <eCH-0110:firstName>Oliver</eCH-0110:firstName>
+                <eCH-0110:callName>Oliver</eCH-0110:callName>
+                <eCH-0110:candidateText>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>DE</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (de)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>FR</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (fr)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>IT</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (it)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>RM</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (rm)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                </eCH-0110:candidateText>
+                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+              </eCH-0110:candidateInformation>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>cd875327-7d14-33b9-8db4-769d19f738c4</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:writeIn>E. Curb (y)</eCH-0110:writeIn>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>cd875327-7d14-33b9-8db4-769d19f738c4</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>1</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:writeIn>El Niño</eCH-0110:writeIn>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>cd875327-7d14-33b9-8db4-769d19f738c4</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>1</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:writeIn>Karl-Heinz Schweiß von Bättenberg ¢13.12.1925</eCH-0110:writeIn>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>cd875327-7d14-33b9-8db4-769d19f738c4</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>1</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:countOfInvalidVotesTotal>
+              <eCH-0110:total>0</eCH-0110:total>
+            </eCH-0110:countOfInvalidVotesTotal>
+          </eCH-0110:majoralElection>
+        </eCH-0110:electionResults>
+      </eCH-0110:electionGroupResults>
+    </eCH-0110:countingCircleResults>
+    <eCH-0110:countingCircleResults>
+      <eCH-0110:countingCircle>
+        <eCH-0155:countingCircleId>BE-MU-10003</eCH-0155:countingCircleId>
+        <eCH-0155:countingCircleName>TestBallotBox2_ICH</eCH-0155:countingCircleName>
+      </eCH-0110:countingCircle>
+      <eCH-0110:votingCardsInformation>
+        <eCH-0110:countOfReceivedValidVotingCardsTotal>0</eCH-0110:countOfReceivedValidVotingCardsTotal>
+        <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
+      </eCH-0110:votingCardsInformation>
+      <eCH-0110:voteResults>
+        <eCH-0110:vote>
+          <eCH-0155:voteIdentification>1000000000-2</eCH-0155:voteIdentification>
+          <eCH-0155:domainOfInfluenceIdentification>doid-ch1-mu</eCH-0155:domainOfInfluenceIdentification>
+          <eCH-0155:voteDescription>
+            <eCH-0155:voteDescriptionInfo>
+              <eCH-0155:language>DE</eCH-0155:language>
+              <eCH-0155:voteDescription>Proposition (de)</eCH-0155:voteDescription>
+            </eCH-0155:voteDescriptionInfo>
+            <eCH-0155:voteDescriptionInfo>
+              <eCH-0155:language>FR</eCH-0155:language>
+              <eCH-0155:voteDescription>Proposition (fr)</eCH-0155:voteDescription>
+            </eCH-0155:voteDescriptionInfo>
+            <eCH-0155:voteDescriptionInfo>
+              <eCH-0155:language>IT</eCH-0155:language>
+              <eCH-0155:voteDescription>Proposition (it)</eCH-0155:voteDescription>
+            </eCH-0155:voteDescriptionInfo>
+            <eCH-0155:voteDescriptionInfo>
+              <eCH-0155:language>RM</eCH-0155:language>
+              <eCH-0155:voteDescription>Proposition (rm)</eCH-0155:voteDescription>
+            </eCH-0155:voteDescriptionInfo>
+          </eCH-0155:voteDescription>
+        </eCH-0110:vote>
+        <eCH-0110:countOfVotersInformation>
+          <eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
+        </eCH-0110:countOfVotersInformation>
+        <eCH-0110:ballotResult>
+          <eCH-0110:ballotIdentification>1000000000</eCH-0110:ballotIdentification>
+          <eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
+          <eCH-0110:ballotDescription>
+            <eCH-0155:ballotDescriptionInfo>
+              <eCH-0155:language>DE</eCH-0155:language>
+              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (de)</eCH-0155:ballotDescriptionLong>
+            </eCH-0155:ballotDescriptionInfo>
+            <eCH-0155:ballotDescriptionInfo>
+              <eCH-0155:language>FR</eCH-0155:language>
+              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (fr)</eCH-0155:ballotDescriptionLong>
+            </eCH-0155:ballotDescriptionInfo>
+            <eCH-0155:ballotDescriptionInfo>
+              <eCH-0155:language>IT</eCH-0155:language>
+              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (it)</eCH-0155:ballotDescriptionLong>
+            </eCH-0155:ballotDescriptionInfo>
+            <eCH-0155:ballotDescriptionInfo>
+              <eCH-0155:language>RM</eCH-0155:language>
+              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (rm)</eCH-0155:ballotDescriptionLong>
+            </eCH-0155:ballotDescriptionInfo>
+          </eCH-0110:ballotDescription>
+          <eCH-0110:countOfReceivedBallotsTotal>
+            <eCH-0110:total>0</eCH-0110:total>
+          </eCH-0110:countOfReceivedBallotsTotal>
+          <eCH-0110:countOfAccountedBallotsTotal>
+            <eCH-0110:total>0</eCH-0110:total>
+          </eCH-0110:countOfAccountedBallotsTotal>
+          <eCH-0110:countOfUnaccountedBallotsTotal>
+            <eCH-0110:total>0</eCH-0110:total>
+          </eCH-0110:countOfUnaccountedBallotsTotal>
+          <eCH-0110:countOfUnaccountedBlankBallots>
+            <eCH-0110:total>0</eCH-0110:total>
+          </eCH-0110:countOfUnaccountedBlankBallots>
+          <eCH-0110:countOfUnaccountedInvalidBallots>
+            <eCH-0110:total>0</eCH-0110:total>
+          </eCH-0110:countOfUnaccountedInvalidBallots>
+          <eCH-0110:standardBallot>
+            <eCH-0110:questionIdentification>1000000000-EVotingProposition</eCH-0110:questionIdentification>
+            <eCH-0110:question>
+              <eCH-0155:ballotQuestionInfo>
+                <eCH-0155:language>DE</eCH-0155:language>
+                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (de)</eCH-0155:ballotQuestion>
+              </eCH-0155:ballotQuestionInfo>
+              <eCH-0155:ballotQuestionInfo>
+                <eCH-0155:language>FR</eCH-0155:language>
+                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (fr)</eCH-0155:ballotQuestion>
+              </eCH-0155:ballotQuestionInfo>
+              <eCH-0155:ballotQuestionInfo>
+                <eCH-0155:language>IT</eCH-0155:language>
+                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (it)</eCH-0155:ballotQuestion>
+              </eCH-0155:ballotQuestionInfo>
+              <eCH-0155:ballotQuestionInfo>
+                <eCH-0155:language>RM</eCH-0155:language>
+                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (rm)</eCH-0155:ballotQuestion>
+              </eCH-0155:ballotQuestionInfo>
+            </eCH-0110:question>
+            <eCH-0110:countOfAnswerYes>
+              <eCH-0110:total>0</eCH-0110:total>
+            </eCH-0110:countOfAnswerYes>
+            <eCH-0110:countOfAnswerNo>
+              <eCH-0110:total>0</eCH-0110:total>
+            </eCH-0110:countOfAnswerNo>
+            <eCH-0110:countOfAnswerInvalid>
+              <eCH-0110:total>0</eCH-0110:total>
+            </eCH-0110:countOfAnswerInvalid>
+            <eCH-0110:countOfAnswerEmpty>
+              <eCH-0110:total>0</eCH-0110:total>
+            </eCH-0110:countOfAnswerEmpty>
+          </eCH-0110:standardBallot>
+        </eCH-0110:ballotResult>
+      </eCH-0110:voteResults>
+      <eCH-0110:electionGroupResults>
+        <eCH-0110:domainOfInfluenceIdentification>doid-ct1-mu</eCH-0110:domainOfInfluenceIdentification>
+        <eCH-0110:electionGroupDescription>
+          <eCH-0155:electionDescriptionInfo>
+            <eCH-0155:language>DE</eCH-0155:language>
+            <eCH-0155:electionDescription>Election (de)</eCH-0155:electionDescription>
+          </eCH-0155:electionDescriptionInfo>
+          <eCH-0155:electionDescriptionInfo>
+            <eCH-0155:language>FR</eCH-0155:language>
+            <eCH-0155:electionDescription>Election (fr)</eCH-0155:electionDescription>
+          </eCH-0155:electionDescriptionInfo>
+          <eCH-0155:electionDescriptionInfo>
+            <eCH-0155:language>IT</eCH-0155:language>
+            <eCH-0155:electionDescription>Election (it)</eCH-0155:electionDescription>
+          </eCH-0155:electionDescriptionInfo>
+          <eCH-0155:electionDescriptionInfo>
+            <eCH-0155:language>RM</eCH-0155:language>
+            <eCH-0155:electionDescription>Election (rm)</eCH-0155:electionDescription>
+          </eCH-0155:electionDescriptionInfo>
+        </eCH-0110:electionGroupDescription>
+        <eCH-0110:countOfVotersInformation>
+          <eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
+        </eCH-0110:countOfVotersInformation>
+        <eCH-0110:countOfReceivedBallotsTotal>
+          <eCH-0110:total>0</eCH-0110:total>
+        </eCH-0110:countOfReceivedBallotsTotal>
+        <eCH-0110:countOfAccountedBallots>
+          <eCH-0110:total>0</eCH-0110:total>
+        </eCH-0110:countOfAccountedBallots>
+        <eCH-0110:countOfUnaccountedBallots>
+          <eCH-0110:total>0</eCH-0110:total>
+        </eCH-0110:countOfUnaccountedBallots>
+        <eCH-0110:countOfUnaccountedBlankBallots>
+          <eCH-0110:total>0</eCH-0110:total>
+        </eCH-0110:countOfUnaccountedBlankBallots>
+        <eCH-0110:countOfUnaccountedInvalidBallots>
+          <eCH-0110:total>0</eCH-0110:total>
+        </eCH-0110:countOfUnaccountedInvalidBallots>
+        <eCH-0110:electionResults>
+          <eCH-0110:election>
+            <eCH-0155:electionIdentification>1000000000-1</eCH-0155:electionIdentification>
+            <eCH-0155:typeOfElection>2</eCH-0155:typeOfElection>
+            <eCH-0155:electionDescription>
+              <eCH-0155:electionDescriptionInfo>
+                <eCH-0155:language>DE</eCH-0155:language>
+                <eCH-0155:electionDescription>Election (de)</eCH-0155:electionDescription>
+              </eCH-0155:electionDescriptionInfo>
+              <eCH-0155:electionDescriptionInfo>
+                <eCH-0155:language>FR</eCH-0155:language>
+                <eCH-0155:electionDescription>Election (fr)</eCH-0155:electionDescription>
+              </eCH-0155:electionDescriptionInfo>
+              <eCH-0155:electionDescriptionInfo>
+                <eCH-0155:language>IT</eCH-0155:language>
+                <eCH-0155:electionDescription>Election (it)</eCH-0155:electionDescription>
+              </eCH-0155:electionDescriptionInfo>
+              <eCH-0155:electionDescriptionInfo>
+                <eCH-0155:language>RM</eCH-0155:language>
+                <eCH-0155:electionDescription>Election (rm)</eCH-0155:electionDescription>
+              </eCH-0155:electionDescriptionInfo>
+            </eCH-0155:electionDescription>
+            <eCH-0155:numberOfMandates>2</eCH-0155:numberOfMandates>
+          </eCH-0110:election>
+          <eCH-0110:majoralElection>
+            <eCH-0110:candidate>
+              <eCH-0110:candidateInformation>
+                <eCH-0110:candidateIdentification>1-1</eCH-0110:candidateIdentification>
+                <eCH-0110:candidateReference>1</eCH-0110:candidateReference>
+                <eCH-0110:familyName>Muster</eCH-0110:familyName>
+                <eCH-0110:firstName>Karin</eCH-0110:firstName>
+                <eCH-0110:callName>Karin</eCH-0110:callName>
+                <eCH-0110:candidateText>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>DE</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (de)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>FR</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (fr)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>IT</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (it)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>RM</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (rm)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                </eCH-0110:candidateText>
+                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+              </eCH-0110:candidateInformation>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>cd875327-7d14-33b9-8db4-769d19f738c4</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:candidateInformation>
+                <eCH-0110:candidateIdentification>1-2</eCH-0110:candidateIdentification>
+                <eCH-0110:candidateReference>2</eCH-0110:candidateReference>
+                <eCH-0110:familyName>Muster</eCH-0110:familyName>
+                <eCH-0110:firstName>Paul</eCH-0110:firstName>
+                <eCH-0110:callName>Paul</eCH-0110:callName>
+                <eCH-0110:candidateText>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>DE</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (de)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>FR</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (fr)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>IT</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (it)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>RM</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (rm)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                </eCH-0110:candidateText>
+                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+              </eCH-0110:candidateInformation>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>cd875327-7d14-33b9-8db4-769d19f738c4</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:candidateInformation>
+                <eCH-0110:candidateIdentification>1-3</eCH-0110:candidateIdentification>
+                <eCH-0110:candidateReference>3</eCH-0110:candidateReference>
+                <eCH-0110:familyName>Muster</eCH-0110:familyName>
+                <eCH-0110:firstName>Lukas</eCH-0110:firstName>
+                <eCH-0110:callName>Lukas</eCH-0110:callName>
+                <eCH-0110:candidateText>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>DE</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (de)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>FR</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (fr)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>IT</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (it)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>RM</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (rm)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                </eCH-0110:candidateText>
+                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+              </eCH-0110:candidateInformation>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>cd875327-7d14-33b9-8db4-769d19f738c4</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:candidateInformation>
+                <eCH-0110:candidateIdentification>1-4</eCH-0110:candidateIdentification>
+                <eCH-0110:candidateReference>4</eCH-0110:candidateReference>
+                <eCH-0110:familyName>Muster</eCH-0110:familyName>
+                <eCH-0110:firstName>Peter</eCH-0110:firstName>
+                <eCH-0110:callName>Peter</eCH-0110:callName>
+                <eCH-0110:candidateText>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>DE</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (de)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>FR</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (fr)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>IT</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (it)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>RM</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (rm)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                </eCH-0110:candidateText>
+                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+              </eCH-0110:candidateInformation>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>cd875327-7d14-33b9-8db4-769d19f738c4</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:candidateInformation>
+                <eCH-0110:candidateIdentification>1-5</eCH-0110:candidateIdentification>
+                <eCH-0110:candidateReference>5</eCH-0110:candidateReference>
+                <eCH-0110:familyName>Muster</eCH-0110:familyName>
+                <eCH-0110:firstName>Oliver</eCH-0110:firstName>
+                <eCH-0110:callName>Oliver</eCH-0110:callName>
+                <eCH-0110:candidateText>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>DE</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (de)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>FR</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (fr)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>IT</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (it)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>RM</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (rm)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                </eCH-0110:candidateText>
+                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+              </eCH-0110:candidateInformation>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>cd875327-7d14-33b9-8db4-769d19f738c4</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:countOfInvalidVotesTotal>
+              <eCH-0110:total>0</eCH-0110:total>
+            </eCH-0110:countOfInvalidVotesTotal>
+          </eCH-0110:majoralElection>
+        </eCH-0110:electionResults>
+      </eCH-0110:electionGroupResults>
+    </eCH-0110:countingCircleResults>
+    <eCH-0110:countingCircleResults>
+      <eCH-0110:countingCircle>
+        <eCH-0155:countingCircleId>BE-MU-10002</eCH-0155:countingCircleId>
+        <eCH-0155:countingCircleName>TestBallotBox_ACH</eCH-0155:countingCircleName>
+      </eCH-0110:countingCircle>
+      <eCH-0110:votingCardsInformation>
+        <eCH-0110:countOfReceivedValidVotingCardsTotal>1</eCH-0110:countOfReceivedValidVotingCardsTotal>
+        <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
+      </eCH-0110:votingCardsInformation>
+      <eCH-0110:voteResults>
+        <eCH-0110:vote>
+          <eCH-0155:voteIdentification>1000000000-2</eCH-0155:voteIdentification>
+          <eCH-0155:domainOfInfluenceIdentification>doid-ch1-mu</eCH-0155:domainOfInfluenceIdentification>
+          <eCH-0155:voteDescription>
+            <eCH-0155:voteDescriptionInfo>
+              <eCH-0155:language>DE</eCH-0155:language>
+              <eCH-0155:voteDescription>Proposition (de)</eCH-0155:voteDescription>
+            </eCH-0155:voteDescriptionInfo>
+            <eCH-0155:voteDescriptionInfo>
+              <eCH-0155:language>FR</eCH-0155:language>
+              <eCH-0155:voteDescription>Proposition (fr)</eCH-0155:voteDescription>
+            </eCH-0155:voteDescriptionInfo>
+            <eCH-0155:voteDescriptionInfo>
+              <eCH-0155:language>IT</eCH-0155:language>
+              <eCH-0155:voteDescription>Proposition (it)</eCH-0155:voteDescription>
+            </eCH-0155:voteDescriptionInfo>
+            <eCH-0155:voteDescriptionInfo>
+              <eCH-0155:language>RM</eCH-0155:language>
+              <eCH-0155:voteDescription>Proposition (rm)</eCH-0155:voteDescription>
+            </eCH-0155:voteDescriptionInfo>
+          </eCH-0155:voteDescription>
+        </eCH-0110:vote>
+        <eCH-0110:countOfVotersInformation>
+          <eCH-0110:countOfVotersTotal>10</eCH-0110:countOfVotersTotal>
+        </eCH-0110:countOfVotersInformation>
+        <eCH-0110:ballotResult>
+          <eCH-0110:ballotIdentification>1000000000</eCH-0110:ballotIdentification>
+          <eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
+          <eCH-0110:ballotDescription>
+            <eCH-0155:ballotDescriptionInfo>
+              <eCH-0155:language>DE</eCH-0155:language>
+              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (de)</eCH-0155:ballotDescriptionLong>
+            </eCH-0155:ballotDescriptionInfo>
+            <eCH-0155:ballotDescriptionInfo>
+              <eCH-0155:language>FR</eCH-0155:language>
+              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (fr)</eCH-0155:ballotDescriptionLong>
+            </eCH-0155:ballotDescriptionInfo>
+            <eCH-0155:ballotDescriptionInfo>
+              <eCH-0155:language>IT</eCH-0155:language>
+              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (it)</eCH-0155:ballotDescriptionLong>
+            </eCH-0155:ballotDescriptionInfo>
+            <eCH-0155:ballotDescriptionInfo>
+              <eCH-0155:language>RM</eCH-0155:language>
+              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (rm)</eCH-0155:ballotDescriptionLong>
+            </eCH-0155:ballotDescriptionInfo>
+          </eCH-0110:ballotDescription>
+          <eCH-0110:countOfReceivedBallotsTotal>
+            <eCH-0110:total>1</eCH-0110:total>
+          </eCH-0110:countOfReceivedBallotsTotal>
+          <eCH-0110:countOfAccountedBallotsTotal>
+            <eCH-0110:total>1</eCH-0110:total>
+          </eCH-0110:countOfAccountedBallotsTotal>
+          <eCH-0110:countOfUnaccountedBallotsTotal>
+            <eCH-0110:total>0</eCH-0110:total>
+          </eCH-0110:countOfUnaccountedBallotsTotal>
+          <eCH-0110:countOfUnaccountedBlankBallots>
+            <eCH-0110:total>0</eCH-0110:total>
+          </eCH-0110:countOfUnaccountedBlankBallots>
+          <eCH-0110:countOfUnaccountedInvalidBallots>
+            <eCH-0110:total>0</eCH-0110:total>
+          </eCH-0110:countOfUnaccountedInvalidBallots>
+          <eCH-0110:standardBallot>
+            <eCH-0110:questionIdentification>1000000000-EVotingProposition</eCH-0110:questionIdentification>
+            <eCH-0110:question>
+              <eCH-0155:ballotQuestionInfo>
+                <eCH-0155:language>DE</eCH-0155:language>
+                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (de)</eCH-0155:ballotQuestion>
+              </eCH-0155:ballotQuestionInfo>
+              <eCH-0155:ballotQuestionInfo>
+                <eCH-0155:language>FR</eCH-0155:language>
+                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (fr)</eCH-0155:ballotQuestion>
+              </eCH-0155:ballotQuestionInfo>
+              <eCH-0155:ballotQuestionInfo>
+                <eCH-0155:language>IT</eCH-0155:language>
+                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (it)</eCH-0155:ballotQuestion>
+              </eCH-0155:ballotQuestionInfo>
+              <eCH-0155:ballotQuestionInfo>
+                <eCH-0155:language>RM</eCH-0155:language>
+                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (rm)</eCH-0155:ballotQuestion>
+              </eCH-0155:ballotQuestionInfo>
+            </eCH-0110:question>
+            <eCH-0110:countOfAnswerYes>
+              <eCH-0110:total>1</eCH-0110:total>
+            </eCH-0110:countOfAnswerYes>
+            <eCH-0110:countOfAnswerNo>
+              <eCH-0110:total>0</eCH-0110:total>
+            </eCH-0110:countOfAnswerNo>
+            <eCH-0110:countOfAnswerInvalid>
+              <eCH-0110:total>0</eCH-0110:total>
+            </eCH-0110:countOfAnswerInvalid>
+            <eCH-0110:countOfAnswerEmpty>
+              <eCH-0110:total>0</eCH-0110:total>
+            </eCH-0110:countOfAnswerEmpty>
+          </eCH-0110:standardBallot>
+        </eCH-0110:ballotResult>
+      </eCH-0110:voteResults>
+    </eCH-0110:countingCircleResults>
+    <eCH-0110:countingCircleResults>
+      <eCH-0110:countingCircle>
+        <eCH-0155:countingCircleId>BE-MU-10001</eCH-0155:countingCircleId>
+        <eCH-0155:countingCircleName>TestBallotBox_ICH</eCH-0155:countingCircleName>
+      </eCH-0110:countingCircle>
+      <eCH-0110:votingCardsInformation>
+        <eCH-0110:countOfReceivedValidVotingCardsTotal>11</eCH-0110:countOfReceivedValidVotingCardsTotal>
+        <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
+      </eCH-0110:votingCardsInformation>
+      <eCH-0110:voteResults>
+        <eCH-0110:vote>
+          <eCH-0155:voteIdentification>1000000000-2</eCH-0155:voteIdentification>
+          <eCH-0155:domainOfInfluenceIdentification>doid-ch1-mu</eCH-0155:domainOfInfluenceIdentification>
+          <eCH-0155:voteDescription>
+            <eCH-0155:voteDescriptionInfo>
+              <eCH-0155:language>DE</eCH-0155:language>
+              <eCH-0155:voteDescription>Proposition (de)</eCH-0155:voteDescription>
+            </eCH-0155:voteDescriptionInfo>
+            <eCH-0155:voteDescriptionInfo>
+              <eCH-0155:language>FR</eCH-0155:language>
+              <eCH-0155:voteDescription>Proposition (fr)</eCH-0155:voteDescription>
+            </eCH-0155:voteDescriptionInfo>
+            <eCH-0155:voteDescriptionInfo>
+              <eCH-0155:language>IT</eCH-0155:language>
+              <eCH-0155:voteDescription>Proposition (it)</eCH-0155:voteDescription>
+            </eCH-0155:voteDescriptionInfo>
+            <eCH-0155:voteDescriptionInfo>
+              <eCH-0155:language>RM</eCH-0155:language>
+              <eCH-0155:voteDescription>Proposition (rm)</eCH-0155:voteDescription>
+            </eCH-0155:voteDescriptionInfo>
+          </eCH-0155:voteDescription>
+        </eCH-0110:vote>
+        <eCH-0110:countOfVotersInformation>
+          <eCH-0110:countOfVotersTotal>35</eCH-0110:countOfVotersTotal>
+        </eCH-0110:countOfVotersInformation>
+        <eCH-0110:ballotResult>
+          <eCH-0110:ballotIdentification>1000000000</eCH-0110:ballotIdentification>
+          <eCH-0110:ballotPosition>1</eCH-0110:ballotPosition>
+          <eCH-0110:ballotDescription>
+            <eCH-0155:ballotDescriptionInfo>
+              <eCH-0155:language>DE</eCH-0155:language>
+              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (de)</eCH-0155:ballotDescriptionLong>
+            </eCH-0155:ballotDescriptionInfo>
+            <eCH-0155:ballotDescriptionInfo>
+              <eCH-0155:language>FR</eCH-0155:language>
+              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (fr)</eCH-0155:ballotDescriptionLong>
+            </eCH-0155:ballotDescriptionInfo>
+            <eCH-0155:ballotDescriptionInfo>
+              <eCH-0155:language>IT</eCH-0155:language>
+              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (it)</eCH-0155:ballotDescriptionLong>
+            </eCH-0155:ballotDescriptionInfo>
+            <eCH-0155:ballotDescriptionInfo>
+              <eCH-0155:language>RM</eCH-0155:language>
+              <eCH-0155:ballotDescriptionLong>Proposition concerning Test (rm)</eCH-0155:ballotDescriptionLong>
+            </eCH-0155:ballotDescriptionInfo>
+          </eCH-0110:ballotDescription>
+          <eCH-0110:countOfReceivedBallotsTotal>
+            <eCH-0110:total>11</eCH-0110:total>
+          </eCH-0110:countOfReceivedBallotsTotal>
+          <eCH-0110:countOfAccountedBallotsTotal>
+            <eCH-0110:total>9</eCH-0110:total>
+          </eCH-0110:countOfAccountedBallotsTotal>
+          <eCH-0110:countOfUnaccountedBallotsTotal>
+            <eCH-0110:total>2</eCH-0110:total>
+          </eCH-0110:countOfUnaccountedBallotsTotal>
+          <eCH-0110:countOfUnaccountedBlankBallots>
+            <eCH-0110:total>2</eCH-0110:total>
+          </eCH-0110:countOfUnaccountedBlankBallots>
+          <eCH-0110:countOfUnaccountedInvalidBallots>
+            <eCH-0110:total>0</eCH-0110:total>
+          </eCH-0110:countOfUnaccountedInvalidBallots>
+          <eCH-0110:standardBallot>
+            <eCH-0110:questionIdentification>1000000000-EVotingProposition</eCH-0110:questionIdentification>
+            <eCH-0110:question>
+              <eCH-0155:ballotQuestionInfo>
+                <eCH-0155:language>DE</eCH-0155:language>
+                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (de)</eCH-0155:ballotQuestion>
+              </eCH-0155:ballotQuestionInfo>
+              <eCH-0155:ballotQuestionInfo>
+                <eCH-0155:language>FR</eCH-0155:language>
+                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (fr)</eCH-0155:ballotQuestion>
+              </eCH-0155:ballotQuestionInfo>
+              <eCH-0155:ballotQuestionInfo>
+                <eCH-0155:language>IT</eCH-0155:language>
+                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (it)</eCH-0155:ballotQuestion>
+              </eCH-0155:ballotQuestionInfo>
+              <eCH-0155:ballotQuestionInfo>
+                <eCH-0155:language>RM</eCH-0155:language>
+                <eCH-0155:ballotQuestion>Do you want to accept the proposition concerning Test? (rm)</eCH-0155:ballotQuestion>
+              </eCH-0155:ballotQuestionInfo>
+            </eCH-0110:question>
+            <eCH-0110:countOfAnswerYes>
+              <eCH-0110:total>6</eCH-0110:total>
+            </eCH-0110:countOfAnswerYes>
+            <eCH-0110:countOfAnswerNo>
+              <eCH-0110:total>3</eCH-0110:total>
+            </eCH-0110:countOfAnswerNo>
+            <eCH-0110:countOfAnswerInvalid>
+              <eCH-0110:total>0</eCH-0110:total>
+            </eCH-0110:countOfAnswerInvalid>
+            <eCH-0110:countOfAnswerEmpty>
+              <eCH-0110:total>2</eCH-0110:total>
+            </eCH-0110:countOfAnswerEmpty>
+          </eCH-0110:standardBallot>
+        </eCH-0110:ballotResult>
+      </eCH-0110:voteResults>
+      <eCH-0110:electionGroupResults>
+        <eCH-0110:domainOfInfluenceIdentification>doid-ct1-mu</eCH-0110:domainOfInfluenceIdentification>
+        <eCH-0110:electionGroupDescription>
+          <eCH-0155:electionDescriptionInfo>
+            <eCH-0155:language>DE</eCH-0155:language>
+            <eCH-0155:electionDescription>Election (de)</eCH-0155:electionDescription>
+          </eCH-0155:electionDescriptionInfo>
+          <eCH-0155:electionDescriptionInfo>
+            <eCH-0155:language>FR</eCH-0155:language>
+            <eCH-0155:electionDescription>Election (fr)</eCH-0155:electionDescription>
+          </eCH-0155:electionDescriptionInfo>
+          <eCH-0155:electionDescriptionInfo>
+            <eCH-0155:language>IT</eCH-0155:language>
+            <eCH-0155:electionDescription>Election (it)</eCH-0155:electionDescription>
+          </eCH-0155:electionDescriptionInfo>
+          <eCH-0155:electionDescriptionInfo>
+            <eCH-0155:language>RM</eCH-0155:language>
+            <eCH-0155:electionDescription>Election (rm)</eCH-0155:electionDescription>
+          </eCH-0155:electionDescriptionInfo>
+        </eCH-0110:electionGroupDescription>
+        <eCH-0110:countOfVotersInformation>
+          <eCH-0110:countOfVotersTotal>35</eCH-0110:countOfVotersTotal>
+        </eCH-0110:countOfVotersInformation>
+        <eCH-0110:countOfReceivedBallotsTotal>
+          <eCH-0110:total>11</eCH-0110:total>
+        </eCH-0110:countOfReceivedBallotsTotal>
+        <eCH-0110:countOfAccountedBallots>
+          <eCH-0110:total>10</eCH-0110:total>
+        </eCH-0110:countOfAccountedBallots>
+        <eCH-0110:countOfUnaccountedBallots>
+          <eCH-0110:total>1</eCH-0110:total>
+        </eCH-0110:countOfUnaccountedBallots>
+        <eCH-0110:countOfUnaccountedBlankBallots>
+          <eCH-0110:total>1</eCH-0110:total>
+        </eCH-0110:countOfUnaccountedBlankBallots>
+        <eCH-0110:countOfUnaccountedInvalidBallots>
+          <eCH-0110:total>0</eCH-0110:total>
+        </eCH-0110:countOfUnaccountedInvalidBallots>
+        <eCH-0110:electionResults>
+          <eCH-0110:election>
+            <eCH-0155:electionIdentification>1000000000-1</eCH-0155:electionIdentification>
+            <eCH-0155:typeOfElection>2</eCH-0155:typeOfElection>
+            <eCH-0155:electionDescription>
+              <eCH-0155:electionDescriptionInfo>
+                <eCH-0155:language>DE</eCH-0155:language>
+                <eCH-0155:electionDescription>Election (de)</eCH-0155:electionDescription>
+              </eCH-0155:electionDescriptionInfo>
+              <eCH-0155:electionDescriptionInfo>
+                <eCH-0155:language>FR</eCH-0155:language>
+                <eCH-0155:electionDescription>Election (fr)</eCH-0155:electionDescription>
+              </eCH-0155:electionDescriptionInfo>
+              <eCH-0155:electionDescriptionInfo>
+                <eCH-0155:language>IT</eCH-0155:language>
+                <eCH-0155:electionDescription>Election (it)</eCH-0155:electionDescription>
+              </eCH-0155:electionDescriptionInfo>
+              <eCH-0155:electionDescriptionInfo>
+                <eCH-0155:language>RM</eCH-0155:language>
+                <eCH-0155:electionDescription>Election (rm)</eCH-0155:electionDescription>
+              </eCH-0155:electionDescriptionInfo>
+            </eCH-0155:electionDescription>
+            <eCH-0155:numberOfMandates>2</eCH-0155:numberOfMandates>
+          </eCH-0110:election>
+          <eCH-0110:majoralElection>
+            <eCH-0110:candidate>
+              <eCH-0110:candidateInformation>
+                <eCH-0110:candidateIdentification>1-1</eCH-0110:candidateIdentification>
+                <eCH-0110:candidateReference>1</eCH-0110:candidateReference>
+                <eCH-0110:familyName>Muster</eCH-0110:familyName>
+                <eCH-0110:firstName>Karin</eCH-0110:firstName>
+                <eCH-0110:callName>Karin</eCH-0110:callName>
+                <eCH-0110:candidateText>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>DE</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (de)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>FR</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (fr)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>IT</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (it)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>RM</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (rm)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                </eCH-0110:candidateText>
+                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+              </eCH-0110:candidateInformation>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>cd875327-7d14-33b9-8db4-769d19f738c4</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>8</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>8</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:candidateInformation>
+                <eCH-0110:candidateIdentification>1-2</eCH-0110:candidateIdentification>
+                <eCH-0110:candidateReference>2</eCH-0110:candidateReference>
+                <eCH-0110:familyName>Muster</eCH-0110:familyName>
+                <eCH-0110:firstName>Paul</eCH-0110:firstName>
+                <eCH-0110:callName>Paul</eCH-0110:callName>
+                <eCH-0110:candidateText>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>DE</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (de)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>FR</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (fr)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>IT</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (it)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>RM</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (rm)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                </eCH-0110:candidateText>
+                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+              </eCH-0110:candidateInformation>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>cd875327-7d14-33b9-8db4-769d19f738c4</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>2</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:candidateInformation>
+                <eCH-0110:candidateIdentification>1-3</eCH-0110:candidateIdentification>
+                <eCH-0110:candidateReference>3</eCH-0110:candidateReference>
+                <eCH-0110:familyName>Muster</eCH-0110:familyName>
+                <eCH-0110:firstName>Lukas</eCH-0110:firstName>
+                <eCH-0110:callName>Lukas</eCH-0110:callName>
+                <eCH-0110:candidateText>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>DE</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (de)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>FR</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (fr)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>IT</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (it)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>RM</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (rm)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                </eCH-0110:candidateText>
+                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+              </eCH-0110:candidateInformation>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>cd875327-7d14-33b9-8db4-769d19f738c4</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:candidateInformation>
+                <eCH-0110:candidateIdentification>1-4</eCH-0110:candidateIdentification>
+                <eCH-0110:candidateReference>4</eCH-0110:candidateReference>
+                <eCH-0110:familyName>Muster</eCH-0110:familyName>
+                <eCH-0110:firstName>Peter</eCH-0110:firstName>
+                <eCH-0110:callName>Peter</eCH-0110:callName>
+                <eCH-0110:candidateText>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>DE</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (de)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>FR</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (fr)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>IT</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (it)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>RM</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (rm)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                </eCH-0110:candidateText>
+                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+              </eCH-0110:candidateInformation>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>cd875327-7d14-33b9-8db4-769d19f738c4</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>2</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:candidateInformation>
+                <eCH-0110:candidateIdentification>1-5</eCH-0110:candidateIdentification>
+                <eCH-0110:candidateReference>5</eCH-0110:candidateReference>
+                <eCH-0110:familyName>Muster</eCH-0110:familyName>
+                <eCH-0110:firstName>Oliver</eCH-0110:firstName>
+                <eCH-0110:callName>Oliver</eCH-0110:callName>
+                <eCH-0110:candidateText>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>DE</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (de)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>FR</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (fr)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>IT</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (it)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>RM</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1970, Test, Bern (rm)</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                </eCH-0110:candidateText>
+                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+              </eCH-0110:candidateInformation>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>cd875327-7d14-33b9-8db4-769d19f738c4</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>2</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:writeIn>Agcàn Oïgûn 24-05-2000</eCH-0110:writeIn>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>cd875327-7d14-33b9-8db4-769d19f738c4</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>1</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:writeIn>Étienne Monçon (01.08.1976)</eCH-0110:writeIn>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>cd875327-7d14-33b9-8db4-769d19f738c4</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>1</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:writeIn>Frau Lehmann (Düdingen, 35/05/1966)</eCH-0110:writeIn>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>cd875327-7d14-33b9-8db4-769d19f738c4</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>1</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:countOfInvalidVotesTotal>
+              <eCH-0110:total>0</eCH-0110:total>
+            </eCH-0110:countOfInvalidVotesTotal>
+          </eCH-0110:majoralElection>
+        </eCH-0110:electionResults>
+      </eCH-0110:electionGroupResults>
+    </eCH-0110:countingCircleResults>
+    <eCH-0110:extension>
+      <signature>SONFQKtDswANhMrDylDAKbucg7OGlLKyqrr18AkA/uFevnKkhj63WiyNsrIHpwtDAKQNl6bpQfvNklrwxuOyIX/HnslkrSPaDKIfO/tLgreFa5pdPxattqNPgG5tzAXqsz1Kx2vvMNNTxNzLdZJ0XM3o6dUJXclHLLPfT3OPM01M99BIYAlFF06kzbcWG6hJUoxeuApjSuIJ9jMWncA305D0g6IU7PciBkR31+Hm2V6i3PfpQY4D7swKm1DCF7JOp3wqbQNIzTP1XITDylNGARr0JIudBMf6GJ6SHUczTCtgS6ii704QueR80s/kOqv3404HK+JzY/3XX4Zd836Cg2eJDN2TEW1BLKeNzlKEQ2byyAI27WtZiaFaOLBphaFIow3r2w9gGiGtoKV/UM4T0iAp8pAwvIMLxBbK8PTf7P0hbv1/2Ogbs1w9mHGjV7q7DQ7WoMr53cFK5lx5YbSbMBnPnho+wnyq/g3DSVFC7Fyc5hfxyjq0G/BuGDTm9MVQ</signature>
+    </eCH-0110:extension>
+  </eCH-0110:resultDelivery>
+</eCH-0110:delivery>
