@@ -1,1 +1,269 @@
-{"encryptionGroup":{"p":"0xBFF67CCCAE0F61B38BA70AD736CFA8EA284B5D6CAEBF2FED2FC88D0ADFF9E2B220BFD9CCDA59BD3BD52B12CDFCCF41AA3D9BF81F95A7D59452690BF45F7993BE760ABBCA3E29705D473A66638DCD6EA78663C0DB91E3E0AB1DFE1AFF25181D4D2C3BA059F9131D95D37F431233EA2276E052C960DCB130F9DFFDC0BE977C9947E7AE05EA516AA81B2528FEF03625ACFCF495C3AB5D5F176E06F1382AE96A470321092C0C1C02A196AB4DA20D3605B4E72A5CFD16CF9381C83513EBD18A8A4A21BF95B864EDA4C0214583E99A3180F7A561F19D451BC4354E7A284DC7EB0C5A05DC58856C6DC8CF3A57B42D866D85F453D1BD8CC61117FB606A40AF0A0EF76D603C7A307C0B8854355D5836774C6BB12238E09806782A487BB9888AE1DB54DECA3FEC374D30CC9A722D3052585069D212B62FD6758710337CA17411E82FF7E7E7B754F4C9F3A1C49AA15E0D0A0E9B05A2EA880216D052B780E68168CA336309D3C1802A278AFCF1C0F8FA3381C145DA0864892221B960ECD6D46165E057B55EEB","q":"0x5FFB3E665707B0D9C5D3856B9B67D4751425AEB6575F97F697E446856FFCF159105FECE66D2CDE9DEA958966FE67A0D51ECDFC0FCAD3EACA293485FA2FBCC9DF3B055DE51F14B82EA39D3331C6E6B753C331E06DC8F1F0558EFF0D7F928C0EA6961DD02CFC898ECAE9BFA18919F5113B702964B06E58987CEFFEE05F4BBE4CA3F3D702F528B5540D92947F781B12D67E7A4AE1D5AEAF8BB703789C1574B52381908496060E0150CB55A6D1069B02DA73952E7E8B67C9C0E41A89F5E8C5452510DFCADC3276D26010A2C1F4CD18C07BD2B0F8CEA28DE21AA73D1426E3F5862D02EE2C42B636E4679D2BDA16C336C2FA29E8DEC663088BFDB035205785077BB6B01E3D183E05C42A1AAEAC1B3BA635D8911C704C033C15243DDCC44570EDAA6F651FF61BA698664D391698292C2834E9095B17EB3AC38819BE50BA08F417FBF3F3DBAA7A64F9D0E24D50AF0685074D82D17544010B68295BC07340B46519B184E9E0C01513C57E78E07C7D19C0E0A2ED0432449110DCB0766B6A30B2F02BDAAF75","g":"0x3"},"electionEventContext":{"electionEventId":"cedb6c01768c4c649f0d2cc819397c53","verificationCardSetContexts":[{"verificationCardSetId":"43fda25e1dcc4ddabdcd778939be3df5","ballotBoxId":"b6d999f66e3042598f3b5d93dbfa894c","testBallotBox":true,"numberOfWriteInFields":2,"numberOfVotingCards":10,"gracePeriod":900,"primesMappingTable":{"pTable":[{"actualVotingOption":"WRITE_IN_2de3f706ed3c40b0b6e5d133193d5c5d","encodedVotingOption":19},{"actualVotingOption":"WRITE_IN_2de3f706ed3c40b0b6e5d133193d5c5d","encodedVotingOption":101},{"actualVotingOption":"ae3a5d49-b15d-3e88-8bdd-cbf965497a8c","encodedVotingOption":13},{"actualVotingOption":"ae3a5d49-b15d-3e88-8bdd-cbf965497a8c","encodedVotingOption":37},{"actualVotingOption":"1-1","encodedVotingOption":59},{"actualVotingOption":"1-1","encodedVotingOption":79},{"actualVotingOption":"1-2","encodedVotingOption":7},{"actualVotingOption":"1-2","encodedVotingOption":31},{"actualVotingOption":"1-3","encodedVotingOption":41},{"actualVotingOption":"1-3","encodedVotingOption":89},{"actualVotingOption":"1-4","encodedVotingOption":71},{"actualVotingOption":"1-4","encodedVotingOption":73},{"actualVotingOption":"1-5","encodedVotingOption":61},{"actualVotingOption":"1-5","encodedVotingOption":103}]}},{"verificationCardSetId":"94e0181ac8364064973ea26926c81acd","ballotBoxId":"0ccf5bd8d15f4aeeb1622d4dfb45b7dc","testBallotBox":true,"numberOfWriteInFields":2,"numberOfVotingCards":10,"gracePeriod":900,"primesMappingTable":{"pTable":[{"actualVotingOption":"8814c2b6-8c73-38e8-99e6-830bffdf32c6","encodedVotingOption":113},{"actualVotingOption":"57a30570-1722-3a7e-a8f9-7dd643d7f339","encodedVotingOption":131},{"actualVotingOption":"b9c57a40-a555-35e1-972c-a1a6b7e03381","encodedVotingOption":107},{"actualVotingOption":"WRITE_IN_2de3f706ed3c40b0b6e5d133193d5c5d","encodedVotingOption":19},{"actualVotingOption":"WRITE_IN_2de3f706ed3c40b0b6e5d133193d5c5d","encodedVotingOption":101},{"actualVotingOption":"ae3a5d49-b15d-3e88-8bdd-cbf965497a8c","encodedVotingOption":13},{"actualVotingOption":"ae3a5d49-b15d-3e88-8bdd-cbf965497a8c","encodedVotingOption":37},{"actualVotingOption":"1-1","encodedVotingOption":59},{"actualVotingOption":"1-1","encodedVotingOption":79},{"actualVotingOption":"1-2","encodedVotingOption":7},{"actualVotingOption":"1-2","encodedVotingOption":31},{"actualVotingOption":"1-3","encodedVotingOption":41},{"actualVotingOption":"1-3","encodedVotingOption":89},{"actualVotingOption":"1-4","encodedVotingOption":71},{"actualVotingOption":"1-4","encodedVotingOption":73},{"actualVotingOption":"1-5","encodedVotingOption":61},{"actualVotingOption":"1-5","encodedVotingOption":103}]}},{"verificationCardSetId":"14e37bde6f234a9b9149ba1e996e4109","ballotBoxId":"444a3aed020b44a287b02bb6d5d23ba9","testBallotBox":true,"numberOfWriteInFields":0,"numberOfVotingCards":10,"gracePeriod":900,"primesMappingTable":{"pTable":[{"actualVotingOption":"8814c2b6-8c73-38e8-99e6-830bffdf32c6","encodedVotingOption":113},{"actualVotingOption":"57a30570-1722-3a7e-a8f9-7dd643d7f339","encodedVotingOption":131},{"actualVotingOption":"b9c57a40-a555-35e1-972c-a1a6b7e03381","encodedVotingOption":107}]}},{"verificationCardSetId":"c75760ac69ca4f7d846e071372d523bd","ballotBoxId":"ba5493ce2d2441b3ab80271e8de88cd8","testBallotBox":true,"numberOfWriteInFields":2,"numberOfVotingCards":35,"gracePeriod":900,"primesMappingTable":{"pTable":[{"actualVotingOption":"8814c2b6-8c73-38e8-99e6-830bffdf32c6","encodedVotingOption":113},{"actualVotingOption":"57a30570-1722-3a7e-a8f9-7dd643d7f339","encodedVotingOption":131},{"actualVotingOption":"b9c57a40-a555-35e1-972c-a1a6b7e03381","encodedVotingOption":107},{"actualVotingOption":"WRITE_IN_2de3f706ed3c40b0b6e5d133193d5c5d","encodedVotingOption":19},{"actualVotingOption":"WRITE_IN_2de3f706ed3c40b0b6e5d133193d5c5d","encodedVotingOption":101},{"actualVotingOption":"ae3a5d49-b15d-3e88-8bdd-cbf965497a8c","encodedVotingOption":13},{"actualVotingOption":"ae3a5d49-b15d-3e88-8bdd-cbf965497a8c","encodedVotingOption":37},{"actualVotingOption":"1-1","encodedVotingOption":59},{"actualVotingOption":"1-1","encodedVotingOption":79},{"actualVotingOption":"1-2","encodedVotingOption":7},{"actualVotingOption":"1-2","encodedVotingOption":31},{"actualVotingOption":"1-3","encodedVotingOption":41},{"actualVotingOption":"1-3","encodedVotingOption":89},{"actualVotingOption":"1-4","encodedVotingOption":71},{"actualVotingOption":"1-4","encodedVotingOption":73},{"actualVotingOption":"1-5","encodedVotingOption":61},{"actualVotingOption":"1-5","encodedVotingOption":103}]}}],"startTime":"2022-08-01T15:00:00","finishTime":"2023-03-31T18:00:00"},"signature":{"signatureContents":"mWKjsR1iG6XLKZfUg7T18QJedqsOtEMby35VcNB64opU//DPiRsO5kWrFZnelYQk4Ik+t2U3chgpU2uinB34sZq/oMP527wXyjuiM4fW63knuxLY5rh9xaSIPLav/6T8GJuZix9avrzhUetwwUURDYn12YVMVKf9iJA/tiMiBZylxiQ1VvIkl1e81pWgHOZH3M5DJhyWwO1pt/ptOdHDWqIqaWUP4OQuhOeDg6cL6kz354nXl41I3ZS81PPivJkzrtHmOrPen18j8hIdSdsG7y0huiCgqX3SZ/oEF3RHkkhi0mQUTeHvt5uZFDteRCZSbrX59xqd+Q5COCWQ3m8b1X6Qd9n5k5l+HERGaVAZlzR27BMq5tnqsvy9iaBDa/CrhZIAJWEshWfmVYCGAIJQIZcyJ4Ce++SLZUEA+0ftI93f/o8uJsUNbBIALOFoDSkXZSOtgS+lpShm38/7/c9Zoq1BWvxXD/y3+9y9sH2RsT8HfNdPhERhaqGkzNcM2aUt"}}
+{
+	"encryptionGroup": {
+		"p": "0xBFF67CCCAE0F61B38BA70AD736CFA8EA284B5D6CAEBF2FED2FC88D0ADFF9E2B220BFD9CCDA59BD3BD52B12CDFCCF41AA3D9BF81F95A7D59452690BF45F7993BE760ABBCA3E29705D473A66638DCD6EA78663C0DB91E3E0AB1DFE1AFF25181D4D2C3BA059F9131D95D37F431233EA2276E052C960DCB130F9DFFDC0BE977C9947E7AE05EA516AA81B2528FEF03625ACFCF495C3AB5D5F176E06F1382AE96A470321092C0C1C02A196AB4DA20D3605B4E72A5CFD16CF9381C83513EBD18A8A4A21BF95B864EDA4C0214583E99A3180F7A561F19D451BC4354E7A284DC7EB0C5A05DC58856C6DC8CF3A57B42D866D85F453D1BD8CC61117FB606A40AF0A0EF76D603C7A307C0B8854355D5836774C6BB12238E09806782A487BB9888AE1DB54DECA3FEC374D30CC9A722D3052585069D212B62FD6758710337CA17411E82FF7E7E7B754F4C9F3A1C49AA15E0D0A0E9B05A2EA880216D052B780E68168CA336309D3C1802A278AFCF1C0F8FA3381C145DA0864892221B960ECD6D46165E057B55EEB",
+		"q": "0x5FFB3E665707B0D9C5D3856B9B67D4751425AEB6575F97F697E446856FFCF159105FECE66D2CDE9DEA958966FE67A0D51ECDFC0FCAD3EACA293485FA2FBCC9DF3B055DE51F14B82EA39D3331C6E6B753C331E06DC8F1F0558EFF0D7F928C0EA6961DD02CFC898ECAE9BFA18919F5113B702964B06E58987CEFFEE05F4BBE4CA3F3D702F528B5540D92947F781B12D67E7A4AE1D5AEAF8BB703789C1574B52381908496060E0150CB55A6D1069B02DA73952E7E8B67C9C0E41A89F5E8C5452510DFCADC3276D26010A2C1F4CD18C07BD2B0F8CEA28DE21AA73D1426E3F5862D02EE2C42B636E4679D2BDA16C336C2FA29E8DEC663088BFDB035205785077BB6B01E3D183E05C42A1AAEAC1B3BA635D8911C704C033C15243DDCC44570EDAA6F651FF61BA698664D391698292C2834E9095B17EB3AC38819BE50BA08F417FBF3F3DBAA7A64F9D0E24D50AF0685074D82D17544010B68295BC07340B46519B184E9E0C01513C57E78E07C7D19C0E0A2ED0432449110DCB0766B6A30B2F02BDAAF75",
+		"g": "0x3"
+	},
+	"electionEventContext": {
+		"electionEventId": "cedb6c01768c4c649f0d2cc819397c53",
+		"verificationCardSetContexts": [
+			{
+				"verificationCardSetId": "43fda25e1dcc4ddabdcd778939be3df5",
+				"ballotBoxId": "b6d999f66e3042598f3b5d93dbfa894c",
+				"testBallotBox": true,
+				"numberOfWriteInFields": 2,
+				"numberOfVotingCards": 10,
+				"gracePeriod": 900,
+				"primesMappingTable": {
+					"pTable": [
+						{
+							"actualVotingOption": "WRITE_IN_2de3f706ed3c40b0b6e5d133193d5c5d",
+							"encodedVotingOption": 19
+						},
+						{
+							"actualVotingOption": "WRITE_IN_2de3f706ed3c40b0b6e5d133193d5c5d",
+							"encodedVotingOption": 101
+						},
+						{
+							"actualVotingOption": "ae3a5d49-b15d-3e88-8bdd-cbf965497a8c",
+							"encodedVotingOption": 13
+						},
+						{
+							"actualVotingOption": "ae3a5d49-b15d-3e88-8bdd-cbf965497a8c",
+							"encodedVotingOption": 37
+						},
+						{
+							"actualVotingOption": "1-1",
+							"encodedVotingOption": 59
+						},
+						{
+							"actualVotingOption": "1-1",
+							"encodedVotingOption": 79
+						},
+						{
+							"actualVotingOption": "1-2",
+							"encodedVotingOption": 7
+						},
+						{
+							"actualVotingOption": "1-2",
+							"encodedVotingOption": 31
+						},
+						{
+							"actualVotingOption": "1-3",
+							"encodedVotingOption": 41
+						},
+						{
+							"actualVotingOption": "1-3",
+							"encodedVotingOption": 89
+						},
+						{
+							"actualVotingOption": "1-4",
+							"encodedVotingOption": 71
+						},
+						{
+							"actualVotingOption": "1-4",
+							"encodedVotingOption": 73
+						},
+						{
+							"actualVotingOption": "1-5",
+							"encodedVotingOption": 61
+						},
+						{
+							"actualVotingOption": "1-5",
+							"encodedVotingOption": 103
+						}
+					]
+				}
+			},
+			{
+				"verificationCardSetId": "94e0181ac8364064973ea26926c81acd",
+				"ballotBoxId": "0ccf5bd8d15f4aeeb1622d4dfb45b7dc",
+				"testBallotBox": true,
+				"numberOfWriteInFields": 2,
+				"numberOfVotingCards": 10,
+				"gracePeriod": 900,
+				"primesMappingTable": {
+					"pTable": [
+						{
+							"actualVotingOption": "8814c2b6-8c73-38e8-99e6-830bffdf32c6",
+							"encodedVotingOption": 113
+						},
+						{
+							"actualVotingOption": "57a30570-1722-3a7e-a8f9-7dd643d7f339",
+							"encodedVotingOption": 131
+						},
+						{
+							"actualVotingOption": "b9c57a40-a555-35e1-972c-a1a6b7e03381",
+							"encodedVotingOption": 107
+						},
+						{
+							"actualVotingOption": "WRITE_IN_2de3f706ed3c40b0b6e5d133193d5c5d",
+							"encodedVotingOption": 19
+						},
+						{
+							"actualVotingOption": "WRITE_IN_2de3f706ed3c40b0b6e5d133193d5c5d",
+							"encodedVotingOption": 101
+						},
+						{
+							"actualVotingOption": "ae3a5d49-b15d-3e88-8bdd-cbf965497a8c",
+							"encodedVotingOption": 13
+						},
+						{
+							"actualVotingOption": "ae3a5d49-b15d-3e88-8bdd-cbf965497a8c",
+							"encodedVotingOption": 37
+						},
+						{
+							"actualVotingOption": "1-1",
+							"encodedVotingOption": 59
+						},
+						{
+							"actualVotingOption": "1-1",
+							"encodedVotingOption": 79
+						},
+						{
+							"actualVotingOption": "1-2",
+							"encodedVotingOption": 7
+						},
+						{
+							"actualVotingOption": "1-2",
+							"encodedVotingOption": 31
+						},
+						{
+							"actualVotingOption": "1-3",
+							"encodedVotingOption": 41
+						},
+						{
+							"actualVotingOption": "1-3",
+							"encodedVotingOption": 89
+						},
+						{
+							"actualVotingOption": "1-4",
+							"encodedVotingOption": 71
+						},
+						{
+							"actualVotingOption": "1-4",
+							"encodedVotingOption": 73
+						},
+						{
+							"actualVotingOption": "1-5",
+							"encodedVotingOption": 61
+						},
+						{
+							"actualVotingOption": "1-5",
+							"encodedVotingOption": 103
+						}
+					]
+				}
+			},
+			{
+				"verificationCardSetId": "14e37bde6f234a9b9149ba1e996e4109",
+				"ballotBoxId": "444a3aed020b44a287b02bb6d5d23ba9",
+				"testBallotBox": true,
+				"numberOfWriteInFields": 0,
+				"numberOfVotingCards": 10,
+				"gracePeriod": 900,
+				"primesMappingTable": {
+					"pTable": [
+						{
+							"actualVotingOption": "8814c2b6-8c73-38e8-99e6-830bffdf32c6",
+							"encodedVotingOption": 113
+						},
+						{
+							"actualVotingOption": "57a30570-1722-3a7e-a8f9-7dd643d7f339",
+							"encodedVotingOption": 131
+						},
+						{
+							"actualVotingOption": "b9c57a40-a555-35e1-972c-a1a6b7e03381",
+							"encodedVotingOption": 107
+						}
+					]
+				}
+			},
+			{
+				"verificationCardSetId": "c75760ac69ca4f7d846e071372d523bd",
+				"ballotBoxId": "ba5493ce2d2441b3ab80271e8de88cd8",
+				"testBallotBox": true,
+				"numberOfWriteInFields": 2,
+				"numberOfVotingCards": 35,
+				"gracePeriod": 900,
+				"primesMappingTable": {
+					"pTable": [
+						{
+							"actualVotingOption": "8814c2b6-8c73-38e8-99e6-830bffdf32c6",
+							"encodedVotingOption": 113
+						},
+						{
+							"actualVotingOption": "57a30570-1722-3a7e-a8f9-7dd643d7f339",
+							"encodedVotingOption": 131
+						},
+						{
+							"actualVotingOption": "b9c57a40-a555-35e1-972c-a1a6b7e03381",
+							"encodedVotingOption": 107
+						},
+						{
+							"actualVotingOption": "WRITE_IN_2de3f706ed3c40b0b6e5d133193d5c5d",
+							"encodedVotingOption": 19
+						},
+						{
+							"actualVotingOption": "WRITE_IN_2de3f706ed3c40b0b6e5d133193d5c5d",
+							"encodedVotingOption": 101
+						},
+						{
+							"actualVotingOption": "ae3a5d49-b15d-3e88-8bdd-cbf965497a8c",
+							"encodedVotingOption": 13
+						},
+						{
+							"actualVotingOption": "ae3a5d49-b15d-3e88-8bdd-cbf965497a8c",
+							"encodedVotingOption": 37
+						},
+						{
+							"actualVotingOption": "1-1",
+							"encodedVotingOption": 59
+						},
+						{
+							"actualVotingOption": "1-1",
+							"encodedVotingOption": 79
+						},
+						{
+							"actualVotingOption": "1-2",
+							"encodedVotingOption": 7
+						},
+						{
+							"actualVotingOption": "1-2",
+							"encodedVotingOption": 31
+						},
+						{
+							"actualVotingOption": "1-3",
+							"encodedVotingOption": 41
+						},
+						{
+							"actualVotingOption": "1-3",
+							"encodedVotingOption": 89
+						},
+						{
+							"actualVotingOption": "1-4",
+							"encodedVotingOption": 71
+						},
+						{
+							"actualVotingOption": "1-4",
+							"encodedVotingOption": 73
+						},
+						{
+							"actualVotingOption": "1-5",
+							"encodedVotingOption": 61
+						},
+						{
+							"actualVotingOption": "1-5",
+							"encodedVotingOption": 103
+						}
+					]
+				}
+			}
+		],
+		"startTime": "2022-08-01T15:00:00",
+		"finishTime": "2023-03-31T18:00:00"
+	},
+	"signature": {
+		"signatureContents": "mWKjsR1iG6XLKZfUg7T18QJedqsOtEMby35VcNB64opU//DPiRsO5kWrFZnelYQk4Ik+t2U3chgpU2uinB34sZq/oMP527wXyjuiM4fW63knuxLY5rh9xaSIPLav/6T8GJuZix9avrzhUetwwUURDYn12YVMVKf9iJA/tiMiBZylxiQ1VvIkl1e81pWgHOZH3M5DJhyWwO1pt/ptOdHDWqIqaWUP4OQuhOeDg6cL6kz354nXl41I3ZS81PPivJkzrtHmOrPen18j8hIdSdsG7y0huiCgqX3SZ/oEF3RHkkhi0mQUTeHvt5uZFDteRCZSbrX59xqd+Q5COCWQ3m8b1X6Qd9n5k5l+HERGaVAZlzR27BMq5tnqsvy9iaBDa/CrhZIAJWEshWfmVYCGAIJQIZcyJ4Ce++SLZUEA+0ftI93f/o8uJsUNbBIALOFoDSkXZSOtgS+lpShm38/7/c9Zoq1BWvxXD/y3+9y9sH2RsT8HfNdPhERhaqGkzNcM2aUt"
+	}
+}
