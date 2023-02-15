@@ -67,27 +67,27 @@ import ch.ech.xmlns.ech_0155._4.TieBreakQuestionType;
 import ch.ech.xmlns.ech_0155._4.TieBreakQuestionType.TieBreakQuestionInfo;
 import ch.ech.xmlns.ech_0155._4.VoteDescriptionInformationType;
 import ch.ech.xmlns.ech_0155._4.VoteType;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.AuthorizationObjectType;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.AuthorizationType;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.BallotType;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.CandidatePositionType;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.CandidateType;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.ElectionDescriptionInformationType.ElectionDescriptionInfo;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.ElectionInformationType;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.ListType;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.RegisterType;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.StandardAnswerType;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.StandardBallotType;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.StandardQuestionType;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.TiebreakAnswerType;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VariantBallotType;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteInformationType;
-import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.BallotBoxType;
-import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.BallotElectionType;
-import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.BallotVoteType;
-import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.DomainOfInfluenceType;
-import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.AuthorizationObjectType;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.AuthorizationType;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.BallotType;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.CandidatePositionType;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.CandidateType;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.ElectionDescriptionInformationType.ElectionDescriptionInfo;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.ElectionInformationType;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.ListType;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.RegisterType;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.StandardAnswerType;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.StandardBallotType;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.StandardQuestionType;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.TiebreakAnswerType;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.VariantBallotType;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.VoteInformationType;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.BallotBoxType;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.BallotElectionType;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.BallotVoteType;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.DomainOfInfluenceType;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 
 /**
  * Maps to {@link ch.ech.xmlns.ech_0110._4.Delivery}.
@@ -107,27 +107,29 @@ public interface DeliveryMapper {
 
 	@Mapping(target = "EVotingPeriod.EVotingPeriodFrom", source = "contestType.evotingFromDate")
 	@Mapping(target = "EVotingPeriod.EVotingPeriodTill", source = "contestType.evotingToDate")
-	ContestType mapToContestInformation(final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.ContestType contestType);
+	ContestType mapToContestInformation(final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.ContestType contestType);
 
 	VoteDescriptionInformationType mapToVoteDescription(
-			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteDescriptionInformationType voteDescriptionInformationType);
+			final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.VoteDescriptionInformationType voteDescriptionInformationType);
 
 	BallotDescriptionInformationType mapToBallotDescriptionInformation(
-			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.BallotDescriptionInformationType ballotDescriptionInformationType);
+			final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.BallotDescriptionInformationType ballotDescriptionInformationType);
 
-	BallotQuestionType mapToBallotQuestion(final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.BallotQuestionType ballotQuestionType);
+	BallotQuestionType mapToBallotQuestion(
+			final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.BallotQuestionType ballotQuestionType);
 
 	@Mapping(target = "language", source = "ballotQuestionInfo.language")
 	@Mapping(target = "tieBreakQuestionTitle", source = "ballotQuestionInfo.ballotQuestionTitle")
 	@Mapping(target = "tieBreakQuestion", source = "ballotQuestionInfo.ballotQuestion")
 	TieBreakQuestionInfo mapToTieBreakQuestionInfo(
-			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.BallotQuestionType.BallotQuestionInfo ballotQuestionInfo);
+			final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.BallotQuestionType.BallotQuestionInfo ballotQuestionInfo);
 
-	ElectionType mapToElectionType(final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.ElectionType electionType);
+	ElectionType mapToElectionType(final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.ElectionType electionType);
 
 	@Mapping(target = "candidateReference", source = "candidateType.referenceOnPosition")
 	@Mapping(target = "officialCandidateYesNo", expression = "java(candidateType.getCandidateIdentification() != null)")
-	CandidateInformationType mapToCandidateInformationType(final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.CandidateType candidateType);
+	CandidateInformationType mapToCandidateInformationType(
+			final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.CandidateType candidateType);
 
 	ListInformationType mapToListInformationType(final ListType listType);
 
@@ -216,11 +218,11 @@ public interface DeliveryMapper {
 						.map(BallotBoxType::getCountingCircle)
 						.flatMap(Collection::stream)
 						.filter(countingCircleType -> countingCircleType.getCountingCircleIdentification().equals(countingCircleIdentification))
-						.map(ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.CountingCircleType::getDomainOfInfluence)
+						.map(ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.CountingCircleType::getDomainOfInfluence)
 						.flatMap(Collection::stream)
 						.map(DomainOfInfluenceType::getVote)
 						.flatMap(Collection::stream)
-						.map(ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.VoteType::getBallot)
+						.map(ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.VoteType::getBallot)
 						.mapToLong(Collection::size)
 						.reduce(0, Math::addExact));
 
@@ -276,7 +278,7 @@ public interface DeliveryMapper {
 	private ElectionGroupResultsType mapToElectionGroupResultsType(final Results results, final String countingCircleIdentification,
 			final List<ElectionInformationType> electionInformationTypes, final List<AuthorizationType> authorizationTypes,
 			final RegisterType registerType,
-			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.ElectionType electionType) {
+			final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.ElectionType electionType) {
 
 		final String domainOfInfluenceIdentification = electionType.getDomainOfInfluence();
 		final String electionIdentification = electionType.getElectionIdentification();
@@ -291,13 +293,13 @@ public interface DeliveryMapper {
 				.map(BallotBoxType::getCountingCircle)
 				.flatMap(Collection::stream)
 				.filter(countingCircleType -> countingCircleType.getCountingCircleIdentification().equals(countingCircleIdentification))
-				.map(ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.CountingCircleType::getDomainOfInfluence)
+				.map(ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.CountingCircleType::getDomainOfInfluence)
 				.flatMap(Collection::stream)
 				.filter(domainOfInfluenceType -> domainOfInfluenceType.getDomainOfInfluenceIdentification().equals(domainOfInfluenceIdentification))
 				.map(DomainOfInfluenceType::getElection)
 				.flatMap(Collection::stream)
 				.filter(et -> et.getElectionIdentification().equals(electionIdentification))
-				.map(ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.ElectionType::getBallot)
+				.map(ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.ElectionType::getBallot)
 				.flatMap(Collection::stream)
 				.toList();
 
@@ -345,7 +347,7 @@ public interface DeliveryMapper {
 
 	private ElectionResultType mapToElectionResultType(final ElectionInformationType electionInformationType,
 			final List<BallotElectionTypeExtended> ballotElectionTypesExtended) {
-		final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.ElectionType election = electionInformationType.getElection();
+		final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.ElectionType election = electionInformationType.getElection();
 		final BigInteger typeOfElection = election.getTypeOfElection();
 
 		final ElectionResultType electionResultType = new ElectionResultType()
@@ -789,7 +791,7 @@ public interface DeliveryMapper {
 				.flatMap(Collection::stream)
 				.filter(authorizationObjectType -> authorizationObjectType.getDomainOfInfluence().getId().equals(domainOfInfluenceIdentification))
 				.map(AuthorizationObjectType::getCountingCircle)
-				.map(ch.post.it.verifier.backend.domain.xmlns.evotingconfig.CountingCircleType::getId)
+				.map(ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.CountingCircleType::getId)
 				.toList().contains(countingCircleIdentification);
 	}
 
@@ -816,7 +818,7 @@ public interface DeliveryMapper {
 				.toList();
 	}
 
-	private List<BallotResultType> mapToBallotResultTypes(final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType voteType,
+	private List<BallotResultType> mapToBallotResultTypes(final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.VoteType voteType,
 			final Results results, final String countingCircleIdentification) {
 
 		final String voteIdentification = voteType.getVoteIdentification();
@@ -835,13 +837,13 @@ public interface DeliveryMapper {
 				.map(BallotBoxType::getCountingCircle)
 				.flatMap(Collection::stream)
 				.filter(countingCircleType -> countingCircleType.getCountingCircleIdentification().equals(countingCircleIdentification))
-				.map(ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.CountingCircleType::getDomainOfInfluence)
+				.map(ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.CountingCircleType::getDomainOfInfluence)
 				.flatMap(Collection::stream)
 				.filter(domainOfInfluenceType -> domainOfInfluenceType.getDomainOfInfluenceIdentification().equals(domainOfInfluenceIdentification))
 				.map(DomainOfInfluenceType::getVote)
 				.flatMap(Collection::stream)
 				.filter(voteType -> voteType.getVoteIdentification().equals(voteIdentification))
-				.map(ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.VoteType::getBallot)
+				.map(ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.VoteType::getBallot)
 				.flatMap(Collection::stream)
 				.toList();
 
@@ -934,7 +936,7 @@ public interface DeliveryMapper {
 			}
 		}
 
-		for (final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.TieBreakQuestionType tieBreakQuestionType : variantBallotType.getTieBreakQuestion()) {
+		for (final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.TieBreakQuestionType tieBreakQuestionType : variantBallotType.getTieBreakQuestion()) {
 			final TiebreakAnswerType emptyAnswerType = tieBreakQuestionType.getAnswer().stream()
 					.filter(a -> Objects.nonNull(a.isHiddenAnswer()))
 					.filter(TiebreakAnswerType::isHiddenAnswer)
@@ -1074,7 +1076,7 @@ public interface DeliveryMapper {
 	}
 
 	private static List<VariantBallotResultType.TieBreak.CountInFavourOf> mapToCountInFavourOf(
-			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.TieBreakQuestionType tieBreakQuestionType,
+			final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.TieBreakQuestionType tieBreakQuestionType,
 			final List<String> answersIdentifications) {
 
 		return tieBreakQuestionType.getAnswer().stream()
@@ -1099,7 +1101,7 @@ public interface DeliveryMapper {
 	}
 
 	private TieBreakQuestionType mapToTieBreakQuestionType(
-			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.BallotQuestionType ballotQuestionType) {
+			final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.BallotQuestionType ballotQuestionType) {
 
 		return new TieBreakQuestionType()
 				.withTieBreakQuestionInfo(ballotQuestionType.getBallotQuestionInfo().stream()

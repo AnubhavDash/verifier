@@ -59,7 +59,7 @@
 							<schemaDirectory>${basedir}/src/main/resources/xsd</schemaDirectory>
 							<schemaIncludes>evoting-config-4-4.xsd</schemaIncludes>
 							<generateDirectory>${basedir}/target/generated-sources/java/evotingconfig</generateDirectory>
-							<generatePackage>ch.post.it.verifier.backend.domain.xmlns.evotingconfig</generatePackage>
+							<generatePackage>ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig</generatePackage>
 							<episode>false</episode>
 							<args>
 								<arg>-Xfluent-api</arg>
@@ -89,7 +89,7 @@
 							<schemaDirectory>${basedir}/src/main/resources/xsd</schemaDirectory>
 							<schemaIncludes>evoting-decrypt-1-3.xsd</schemaIncludes>
 							<generateDirectory>${basedir}/target/generated-sources/java/evotingdecrypt</generateDirectory>
-							<generatePackage>ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt</generatePackage>
+							<generatePackage>ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt</generatePackage>
 							<episode>false</episode>
 							<args>
 								<arg>-Xfluent-api</arg>

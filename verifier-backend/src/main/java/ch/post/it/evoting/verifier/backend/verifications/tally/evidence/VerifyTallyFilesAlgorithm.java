@@ -29,6 +29,8 @@ import ch.ech.xmlns.ech_0110._4.Delivery;
 import ch.post.it.evoting.cryptoprimitives.domain.validations.FailedValidationException;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hash;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.verifier.backend.hashable.HashableEch0110Factory;
 import ch.post.it.evoting.verifier.backend.hashable.HashableEch0222Factory;
 import ch.post.it.evoting.verifier.backend.hashable.HashableResultsFactory;
@@ -37,8 +39,6 @@ import ch.post.it.evoting.verifier.backend.tools.RawDataDeliveryMapper;
 import ch.post.it.evoting.verifier.backend.tools.ResultDeliveryMapper;
 import ch.post.it.evoting.verifier.protocol.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.evoting.verifier.protocol.domain.xml.XmlNormalizer;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
-import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 
 @Service
 public class VerifyTallyFilesAlgorithm {

@@ -34,13 +34,13 @@ import ch.ech.xmlns.ech_0110._4.Delivery;
 import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.XmlFileRepository;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.verifications.authenticity.TestDigitalSignaturesFactory;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
-import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 
 public abstract class SetupVerificationTest {
 
