@@ -23,8 +23,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
+import java.util.stream.Stream;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -270,8 +276,7 @@ public interface DeliveryMapper {
 				.filter(electionType -> isDomainOfInfluenceInCountingCircle(electionType.getDomainOfInfluence(), countingCircleIdentification,
 						authorizationTypes))
 				.map(electionType -> mapToElectionGroupResultsType(results, countingCircleIdentification, electionInformationTypes,
-						authorizationTypes, registerType,
-						electionType))
+						authorizationTypes, registerType, electionType))
 				.toList();
 	}
 
@@ -303,7 +308,9 @@ public interface DeliveryMapper {
 				.flatMap(Collection::stream)
 				.toList();
 
-		final List<BallotElectionTypeExtended> ballotElectionTypesExtended = toBallotElectionTypeExtended(ballotElectionTypes, listTypes);
+		final BigInteger numberOfMandates = electionInformationType.getElection().getNumberOfMandates();
+		final List<BallotElectionTypeExtended> ballotElectionTypesExtended = toBallotElectionTypeExtended(ballotElectionTypes, listTypes,
+				numberOfMandates);
 
 		final BigInteger countOfUnaccountedBlankBallots = getCountOfUnaccountedBlankBallots(ballotElectionTypesExtended);
 		final BigInteger countOfUnaccountedInvalidBallots = BigInteger.ZERO;
@@ -512,7 +519,7 @@ public interface DeliveryMapper {
 							.withListInformation(mapToListInformationType(list))
 							.withCountOfChangedBallots(getCountOfChangedBallots(listIdentification, ballotElectionTypesExtended))
 							.withCountOfUnchangedBallots(getCountOfUnchangedBallots(listIdentification, ballotElectionTypesExtended))
-							.withCountOfCandidateVotes(getCountOfCandidateVotes(listIdentification, ballotElectionTypesExtended))
+							.withCountOfCandidateVotes(getCountOfCandidateVotes(listIdentification, isEmptyList, ballotElectionTypesExtended))
 							.withCountOfAdditionalVotes(
 									getCountOfAdditionalVotes(listIdentification, isEmptyList, ballotElectionTypesExtended));
 
@@ -544,14 +551,20 @@ public interface DeliveryMapper {
 	}
 
 	private ResultDetailType getCountOfCandidateVotes(final String listIdentification,
-			final List<BallotElectionTypeExtended> ballotElectionTypesExtended) {
+			final boolean isEmptyList, final List<BallotElectionTypeExtended> ballotElectionTypesExtended) {
+
+		final BigInteger countOfCandidateVotes = isEmptyList ?
+				BigInteger.ZERO :
+				BigInteger.valueOf(ballotElectionTypesExtended.stream()
+						.mapToLong(ballotElectionTypeExtended -> ballotElectionTypeExtended.votesPerList.entrySet().stream().parallel()
+								.filter(entry -> entry.getKey().equals(listIdentification))
+								.mapToLong(Map.Entry::getValue)
+								.findFirst()
+								.orElse(0))
+						.sum());
 
 		return new ResultDetailType()
-				.withTotal(BigInteger.valueOf(
-						ballotElectionTypesExtended.stream()
-								.filter(ballotElectionTypeExtended -> listIdentification.equals(ballotElectionTypeExtended.chosenListIdentification))
-								.mapToLong(BallotElectionTypeExtended::numberOfCandidatesFromChosenList)
-								.reduce(0, Math::addExact)));
+				.withTotal(countOfCandidateVotes);
 	}
 
 	private ResultDetailType getCountOfChangedBallots(final String listIdentification,
@@ -577,78 +590,111 @@ public interface DeliveryMapper {
 	}
 
 	private List<BallotElectionTypeExtended> toBallotElectionTypeExtended(final List<BallotElectionType> ballotElectionTypes,
-			final List<ListType> listTypes) {
+			final List<ListType> listTypes, final BigInteger numberOfMandates) {
 
-		final ListType emptyListType = listTypes.stream()
+		final long numberOfMandatesAsLong = numberOfMandates.longValueExact();
+
+		final ListType emptyListType = listTypes.stream().parallel()
 				.filter(ListType::isListEmpty)
 				.collect(MoreCollectors.onlyElement());
 
-		final List<String> emptyListCandidateListIdentifications = emptyListType.getCandidatePosition().stream()
+		final String emptyListTypeListIdentification = emptyListType.getListIdentification();
+
+		final List<String> emptyListCandidateListIdentifications = emptyListType.getCandidatePosition().stream().parallel()
 				.map(CandidatePositionType::getCandidateListIdentification)
 				.toList();
 
-		return ballotElectionTypes.stream()
+		return ballotElectionTypes.stream().parallel()
 				.map(ballotElectionType -> {
-					final String chosenListIdentification = ballotElectionType.getChosenListIdentification();
 
+					final String chosenListIdentification = ballotElectionType.getChosenListIdentification();
+					final boolean hasChosenListIdentification = Objects.nonNull(chosenListIdentification);
 					final List<String> chosenWriteInsCandidateValues = ballotElectionType.getChosenWriteInsCandidateValue();
 					final List<String> chosenCandidateListIdentifications = ballotElectionType.getChosenCandidateListIdentification();
 					final List<String> chosenCandidateIdentifications = ballotElectionType.getChosenCandidateIdentification();
 
-					final ListType chosenListType = listTypes.stream()
-							.filter(list -> list.getListIdentification().equals(chosenListIdentification))
+					checkState(chosenCandidateListIdentifications.size() <= numberOfMandatesAsLong,
+							"There cannot be more chosenCandidateListIdentifications than numberOfMandates. [size: %s, numberOfMandates: %s]",
+							chosenCandidateListIdentifications.size(), numberOfMandatesAsLong);
+					checkState(chosenCandidateIdentifications.size() <= numberOfMandatesAsLong,
+							"There cannot be more chosenCandidateIdentifications than numberOfMandates. [size: %s, numberOfMandates: %s]",
+							chosenCandidateIdentifications.size(), numberOfMandatesAsLong);
+
+					// Map for listId to # votes for selected candidates.
+					// Ex: (List2 -> 4), (List3 -> 2)
+					final Map<String, Long> votesPerList = chosenCandidateListIdentifications.stream().parallel()
+							.map(chosenCandidateListIdentification -> getListIdentificationFromCandidateListIdentification(listTypes,
+									chosenCandidateListIdentification))
+							.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+					final long emptyVotes = votesPerList.entrySet().stream().parallel()
+							.filter(entry -> entry.getKey().equals(emptyListTypeListIdentification))
+							.mapToLong(Map.Entry::getValue)
 							.findFirst()
-							.orElse(null);
+							.orElse(0);
 
-					final List<String> candidateListIdentificationsFromChosenList =
-							Objects.isNull(chosenListType) ? List.of() : chosenListType.getCandidatePosition().stream()
-									.map(CandidatePositionType::getCandidateListIdentification)
-									.toList();
+					final boolean isEmptyListChosen = emptyListTypeListIdentification.equals(chosenListIdentification);
 
-					final long emptyVotes = chosenCandidateListIdentifications.stream()
-							.filter(emptyListCandidateListIdentifications::contains)
-							.count();
+					final boolean hasNoChosenListButHasChosenCandidates = !hasChosenListIdentification &&
+							(!chosenCandidateIdentifications.isEmpty() || !chosenWriteInsCandidateValues.isEmpty());
 
-					final long numberOfCandidatesFromChosenList = chosenCandidateListIdentifications.stream()
-							.filter(candidateListIdentificationsFromChosenList::contains)
-							.count();
+					final String chosenListId = hasNoChosenListButHasChosenCandidates ? emptyListTypeListIdentification : chosenListIdentification;
 
-					final boolean isEmptyListChosen = emptyListType.getListIdentification().equals(chosenListIdentification);
+					final List<String> unchangedBallotChoices = buildUnchangedBallotChoices(chosenListId, listTypes, emptyListTypeListIdentification,
+							emptyListCandidateListIdentifications, numberOfMandatesAsLong);
 
-					final boolean isBlank =
-							(Objects.isNull(chosenListIdentification) || (isEmptyListChosen && emptyListCandidateListIdentifications.containsAll(
-									chosenCandidateListIdentifications)))
-									&& chosenCandidateIdentifications.stream().allMatch(Objects::isNull)
-									&& chosenWriteInsCandidateValues.stream().allMatch(Objects::isNull);
+					final List<String> currentBallotChoices = Stream.concat(chosenWriteInsCandidateValues.stream(),
+									Stream.concat(chosenCandidateListIdentifications.stream(), chosenCandidateIdentifications.stream()))
+							.toList();
 
-					final boolean ballotHasWriteIn = !chosenWriteInsCandidateValues.isEmpty();
+					final boolean areCurrentBallotChoicesUnchanged = new HashSet<>(unchangedBallotChoices).containsAll(currentBallotChoices) &&
+							new HashSet<>(currentBallotChoices).containsAll(unchangedBallotChoices) &&
+							currentBallotChoices.size() == unchangedBallotChoices.size();
 
-					final boolean allCandidatesFromListHaveBeenChosen = chosenCandidateListIdentifications.containsAll(
-							candidateListIdentificationsFromChosenList);
-
-					final boolean allChosenCandidatesAreFromList = candidateListIdentificationsFromChosenList.containsAll(
-							chosenCandidateListIdentifications);
-
-					final boolean chosenCandidatesNumberMatchNumberCandidatesFromList =
-							chosenCandidateListIdentifications.size() == candidateListIdentificationsFromChosenList.size();
-
-					final boolean hasNoChosenListButHasChosenCandidates =
-							(!chosenCandidateIdentifications.isEmpty() || !chosenWriteInsCandidateValues.isEmpty())
-									&& Objects.isNull(chosenListIdentification);
-
-					final boolean isChangedBallot = ballotHasWriteIn || !allCandidatesFromListHaveBeenChosen || !allChosenCandidatesAreFromList
-							|| !chosenCandidatesNumberMatchNumberCandidatesFromList || hasNoChosenListButHasChosenCandidates;
-
+					final boolean isChangedBallot = !areCurrentBallotChoicesUnchanged;
 					final boolean isWithPartyAffiliation = !isEmptyListChosen;
+					final boolean isBlank = (!hasChosenListIdentification || !isWithPartyAffiliation) && !isChangedBallot;
 
-					final String chosenList = hasNoChosenListButHasChosenCandidates ?
-							emptyListType.getListIdentification() :
-							chosenListIdentification;
-
-					return new BallotElectionTypeExtended(ballotElectionType, chosenList, isBlank, isChangedBallot, isWithPartyAffiliation,
-							emptyVotes, numberOfCandidatesFromChosenList);
+					return new BallotElectionTypeExtended(ballotElectionType, chosenListId, isBlank, isChangedBallot, isWithPartyAffiliation,
+							emptyVotes, votesPerList);
 				})
 				.toList();
+	}
+
+	private List<String> buildUnchangedBallotChoices(final String chosenListIdentification, final List<ListType> listTypes,
+			final String emptyListTypeListIdentification, final List<String> emptyListCandidateListIdentifications,
+			final long numberOfMandates) {
+
+		if (emptyListTypeListIdentification.equals(chosenListIdentification)) {
+			// case empty list, unchanged ballot is numberOfMandates times the first entry.
+			return LongStream.range(0, numberOfMandates).parallel()
+					.mapToObj(i -> emptyListCandidateListIdentifications.get(0))
+					.toList();
+		}
+
+		final List<String> candidateListIdentificationsFromChosenList = Objects.isNull(chosenListIdentification) ?
+				Collections.emptyList() :
+				listTypes.stream().parallel()
+						.filter(list -> list.getListIdentification().equals(chosenListIdentification))
+						.collect(MoreCollectors.onlyElement())
+						.getCandidatePosition().stream().parallel()
+						.map(CandidatePositionType::getCandidateListIdentification)
+						.toList();
+
+		return Stream.concat(candidateListIdentificationsFromChosenList.stream(),
+						LongStream.range(0, numberOfMandates - candidateListIdentificationsFromChosenList.size()).parallel()
+								.mapToObj(i -> emptyListCandidateListIdentifications.get(0)))
+				.toList();
+	}
+
+	private String getListIdentificationFromCandidateListIdentification(final List<ListType> lists, final String candidateListIdentification) {
+		return lists.stream().parallel()
+				.filter(list -> list.getCandidatePosition().stream().parallel()
+						.anyMatch(
+								candidatePositionType -> candidateListIdentification.equals(candidatePositionType.getCandidateListIdentification())))
+				.map(ListType::getListIdentification)
+				.distinct()
+				.collect(MoreCollectors.onlyElement());
 	}
 
 	private ElectionResultType.MajoralElection mapToMajoralElection(final BigInteger typeOfElection,
@@ -715,7 +761,7 @@ public interface DeliveryMapper {
 				.toList();
 	}
 
-	private ResultDetailType getCountOfvotesFromChangedBallot(final String candidateIdentification, final ListType listType, //TODO
+	private ResultDetailType getCountOfvotesFromChangedBallot(final String candidateIdentification, final ListType listType,
 			final List<CandidatePositionType> candidatePositionTypes, final List<BallotElectionTypeExtended> ballotElectionTypesExtended,
 			final ListType emptyList) {
 
@@ -730,9 +776,37 @@ public interface DeliveryMapper {
 
 					if (listType.getListIdentification().equals(emptyList.getListIdentification())) {
 						// Case empty list
-						return BigInteger.valueOf(ballotElectionTypeExtended.ballotElectionType.getChosenCandidateIdentification().stream()
-								.filter(candidateIdentification::equals)
-								.count());
+
+						final BallotElectionType ballotElectionType = ballotElectionTypeExtended.ballotElectionType;
+						final List<String> chosenCandidateIdentifications = ballotElectionType.getChosenCandidateIdentification();
+						final List<String> chosenCandidateListIdentifications = ballotElectionType.getChosenCandidateListIdentification();
+
+						final boolean candidatesChosenWithoutList =
+								!chosenCandidateIdentifications.isEmpty() && chosenCandidateListIdentifications.isEmpty();
+						final boolean candidatesChosenWithList =
+								chosenCandidateIdentifications.isEmpty() && !chosenCandidateListIdentifications.isEmpty();
+
+						if (candidatesChosenWithoutList) {
+							// case 1: using direct candidate identifications choices.
+							return BigInteger.valueOf(chosenCandidateIdentifications.stream().parallel()
+									.filter(candidateIdentification::equals)
+									.count());
+
+						} else if (candidatesChosenWithList) {
+							// case 2: using indirect (through lists) candidate list identifications choices.
+
+							return BigInteger.valueOf(chosenCandidateListIdentifications.stream().parallel()
+									.filter(chosenCandidateListIdentification ->
+											candidatePositionTypes.stream().parallel()
+													.anyMatch(candidatePosition ->
+															candidateIdentification.equals(candidatePosition.getCandidateIdentification())
+																	&& candidatePosition.getCandidateListIdentification()
+																	.equals(chosenCandidateListIdentification)))
+									.count());
+						} else {
+							return BigInteger.ZERO;
+						}
+
 					} else {
 						// Case non-empty list
 						final List<String> chosenCandidateListIdentifications = ballotElectionTypeExtended.ballotElectionType.getChosenCandidateListIdentification();
@@ -1110,8 +1184,7 @@ public interface DeliveryMapper {
 	}
 
 	record BallotElectionTypeExtended(BallotElectionType ballotElectionType, String chosenListIdentification, boolean isBlank,
-									  boolean isChangedBallot,
-									  boolean isWithPartyAffiliation, long emptyVotes, long numberOfCandidatesFromChosenList) {
+									  boolean isChangedBallot, boolean isWithPartyAffiliation, long emptyVotes, Map<String, Long> votesPerList) {
 	}
 
 	record Counts(BigInteger countOfAccountedBallotsTotal, BigInteger countOfUnaccountedBlankBallots) {
