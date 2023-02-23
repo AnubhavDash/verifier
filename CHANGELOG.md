@@ -1,5 +1,18 @@
 # Changelog
 
+## Release 1.3.3
+
+Release 1.3.3 contains some minor bug fixes and updates. Release 1.3.1 and 1.3.2 were internal releases and hence do not contain a separate readme.
+
+* Implemented additional XXE protection mechanisms including a locale dependent comparison of strings.
+* Fixed minor errors and XML serialization issues in the eCH tally files.
+* Improved the error handling when launching the verifier with an incomplete keystore.
+* Improved the handling of large election events by implementing streaming upload of the data sets.
+* Updated the data sets for compatibility with the e-voting release 1.2.3.
+* Updated dependencies and third-party libraries.
+
+---
+
 ## Release 1.3
 
 Release 1.3 includes some feedback from the Federal Chancellery's mandated experts and other experts of the community.
@@ -9,7 +22,7 @@ We want to thank the experts for their high-quality, constructive remarks:
 * Aleksander Essex (Western University Canada)
 * Rolf Haenni, Reto Koenig, Philipp Locher, Eric Dubuis (Bern University of Applied Sciences)
 
-Release 1.3 includes the following functionalities and improvements:
+The following functionalities and improvements are included in release 1.3:
 
 * Ensured that the control components' code shares match the expected content and order (feedback from Vanessa Teague, Olivier Pereira, and Thomas
   Haines).
@@ -27,7 +40,7 @@ Release 1.3 includes the following functionalities and improvements:
 
 ## Release 1.2
 
-Release 1.2 includes the following functionalities and improvements:
+The following functionalities and improvements are included in release 1.2:
 
 * Support Elections in the eCH-0110 file
 * Integrate the DecodeWriteIns (including all the sub-algorithms) in the VerifyProcessPlaintexts algorithm
@@ -39,14 +52,9 @@ Release 1.2 includes the following functionalities and improvements:
 
 ## Release 1.1
 
-Release 1.1 fixes the following known issues and incorporates feedback from the Federal Chancellery's mandated experts.
-We want to thank the experts for their high-quality, constructive remarks:
+Release 1.1 fixes the following known issues and incorporates feedback from the Federal Chancellery's mandated experts (see above).
 
-* Vanessa Teague (Thinking Cybersecurity), Olivier Pereira (Université catholique Louvain), Thomas Edmund Haines (Australian National University)
-* Aleksander Essex (Western University Canada)
-* Rolf Haenni, Reto Koenig, Philipp Locher, Eric Dubuis (Bern University of Applied Sciences)
-
-Release 1.1 includes the following functionalities and improvements:
+The following functionalities and improvements are included in release 1.1:
 
 * Enforced the security level EXTENDED (3072 bit modulus) in the algorithm VerifyEncryptionParameters (feedback from Aleksander Essex, Rolf Haenni, Reto Koenig, Philipp Locher, Eric Dubuis, Vanessa Teague, Olivier Pereira, and Thomas Haines).
 * Implemented the verification of the proper decoding of voting options and the generation of the tally files (feedback from Rolf Haenni, Reto Koenig, Philipp Locher, and Eric Dubuis).

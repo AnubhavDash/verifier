@@ -74,7 +74,6 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 		final Stream<List<Integer>> codeSharesNodeIds = extractionService.getControlComponentCodeSharesPayloadsByChunkAndVcs(inputDirectoryPath)
 				.parallel()
 				.map(payloadList -> payloadList
-						.stream()
 						.parallel()
 						.map(ControlComponentCodeSharesPayload::getNodeId)
 						.toList());

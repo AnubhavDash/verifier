@@ -22,6 +22,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -62,7 +64,7 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 		when(controlComponentCodeSharesPayloadMock.getElectionEventId()).thenReturn("wrong election event ID");
 
 		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(singletonList(controlComponentCodeSharesPayloadMock)).when(extractionServiceSpy)
+		doReturn(Stream.of(controlComponentCodeSharesPayloadMock)).when(extractionServiceSpy)
 				.getControlComponentCodeSharesPayloadsOrderedByNodeId(datasetPath);
 
 		final VerifyElectionEventIdConsistency verifyElectionEventIdConsistency = new VerifyElectionEventIdConsistency(
@@ -83,7 +85,7 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 		when(setupComponentVerificationDataPayloadMock.getElectionEventId()).thenReturn("wrong election event ID");
 
 		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(singletonList(setupComponentVerificationDataPayloadMock)).when(extractionServiceSpy)
+		doReturn(Stream.of(setupComponentVerificationDataPayloadMock)).when(extractionServiceSpy)
 				.getSetupComponentVerificationDataPayloadsOrderByChunkId(datasetPath);
 
 		final VerifyElectionEventIdConsistency verifyElectionEventIdConsistency = new VerifyElectionEventIdConsistency(
@@ -104,7 +106,7 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 		when(setupComponentTallyDataPayloadMock.getElectionEventId()).thenReturn("wrong election event ID");
 
 		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(singletonList(setupComponentTallyDataPayloadMock)).when(extractionServiceSpy).getSetupComponentTallyDataPayloads(datasetPath);
+		doReturn(Stream.of(setupComponentTallyDataPayloadMock)).when(extractionServiceSpy).getSetupComponentTallyDataPayloads(datasetPath);
 
 		final VerifyElectionEventIdConsistency verifyElectionEventIdConsistency = new VerifyElectionEventIdConsistency(
 				resultPublisherServiceMock, extractionServiceSpy);

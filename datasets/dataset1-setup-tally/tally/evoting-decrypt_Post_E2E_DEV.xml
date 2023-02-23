@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<results xmlns="http://www.evoting.ch/xmlns/decrypt/1">
+  <contestIdentification>Post_E2E_DEV</contestIdentification>
+  <castBallots>16</castBallots>
+  <ballotsBox>
+    <ballotBoxIdentification>516e2551-ee42-3401-9988-7dfebd0ac0c0</ballotBoxIdentification>
+    <countingCircle>
+      <countingCircleIdentification>10001</countingCircleIdentification>
+      <domainOfInfluence>
+        <domainOfInfluenceIdentification>doid-ch1-mu</domainOfInfluenceIdentification>
+        <vote>
+          <voteIdentification>ch_test</voteIdentification>
+          <ballot>
+            <chosenAnswerIdentification>3aa38c9e-6e93-3159-91e1-c3da90681572</chosenAnswerIdentification>
+            <chosenAnswerIdentification>d7a1b387-a90c-31ca-bfc2-ad038a1d9816</chosenAnswerIdentification>
+            <chosenAnswerIdentification>d0f886b7-03a8-3d8a-9e7d-4c9bfa02ddc6</chosenAnswerIdentification>
+            <chosenAnswerIdentification>65113930-4472-3aac-9cfd-162f501c78f5</chosenAnswerIdentification>
+          </ballot>
+        </vote>
+        <election>
+          <electionIdentification>nrw_test</electionIdentification>
+          <ballot>
+            <chosenListIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</chosenListIdentification>
+            <chosenCandidateListIdentification>a5eb2a7a-c5eb-31bd-8ed4-56870fc09f9e</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>b70e7acc-d866-307b-ab29-840bee593607</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>8a7290dd-4dbb-321c-8676-9684df16f3b3</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>a90c9dbb-b562-38e9-9d55-bf94d1bec858</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>5e7e8b1f-f12f-353e-84e2-846c4485aa98</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>71caa0ed-5f12-3dd5-b657-569e64df5eb6</chosenCandidateListIdentification>
+          </ballot>
+        </election>
+      </domainOfInfluence>
+    </countingCircle>
+  </ballotsBox>
+  <ballotsBox>
+    <ballotBoxIdentification>ec1ce02e-9b9b-3756-8d99-5bfd68678f6b</ballotBoxIdentification>
+    <countingCircle>
+      <countingCircleIdentification>10002</countingCircleIdentification>
+      <domainOfInfluence>
+        <domainOfInfluenceIdentification>doid-ch1-mu</domainOfInfluenceIdentification>
+        <vote>
+          <voteIdentification>ch_test</voteIdentification>
+          <ballot>
+            <chosenAnswerIdentification>16ac94e3-0c72-3570-9df9-050ebb18a9cc</chosenAnswerIdentification>
+            <chosenAnswerIdentification>d7a1b387-a90c-31ca-bfc2-ad038a1d9816</chosenAnswerIdentification>
+            <chosenAnswerIdentification>562a2034-f9a8-3783-abf5-624ec5ac08be</chosenAnswerIdentification>
+            <chosenAnswerIdentification>b4277282-00aa-3ccb-bdf2-4703ba2724e4</chosenAnswerIdentification>
+          </ballot>
+          <ballot>
+            <chosenAnswerIdentification>3aa38c9e-6e93-3159-91e1-c3da90681572</chosenAnswerIdentification>
+            <chosenAnswerIdentification>d7a1b387-a90c-31ca-bfc2-ad038a1d9816</chosenAnswerIdentification>
+            <chosenAnswerIdentification>562a2034-f9a8-3783-abf5-624ec5ac08be</chosenAnswerIdentification>
+            <chosenAnswerIdentification>e6467637-1921-3c4f-b669-88ba2f73a193</chosenAnswerIdentification>
+          </ballot>
+        </vote>
+        <election>
+          <electionIdentification>nrw_test</electionIdentification>
+          <ballot>
+            <chosenListIdentification>99</chosenListIdentification>
+            <chosenCandidateListIdentification>4ea3eb45-4872-3418-81d9-1e928937fc1b</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>4ea3eb45-4872-3418-81d9-1e928937fc1b</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>4ea3eb45-4872-3418-81d9-1e928937fc1b</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>a5eb2a7a-c5eb-31bd-8ed4-56870fc09f9e</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>b70e7acc-d866-307b-ab29-840bee593607</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>140cd0e8-0db1-3d9f-a86f-bf3538072350</chosenCandidateListIdentification>
+          </ballot>
+          <ballot>
+            <chosenListIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</chosenListIdentification>
+            <chosenCandidateListIdentification>4ea3eb45-4872-3418-81d9-1e928937fc1b</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>4ea3eb45-4872-3418-81d9-1e928937fc1b</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>b70e7acc-d866-307b-ab29-840bee593607</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>4fe371e8-3fde-385f-ad7c-42473e8047ec</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>8f1a8aa8-a7fb-349e-aadc-a326e95765b9</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>8f1a8aa8-a7fb-349e-aadc-a326e95765b9</chosenCandidateListIdentification>
+          </ballot>
+        </election>
+      </domainOfInfluence>
+      <domainOfInfluence>
+        <domainOfInfluenceIdentification>doid-ct1-mu</domainOfInfluenceIdentification>
+        <election>
+          <electionIdentification>majorz_test</electionIdentification>
+          <ballot>
+            <chosenWriteInsCandidateValue>1 Rot Doris</chosenWriteInsCandidateValue>
+          </ballot>
+          <ballot>
+            <chosenCandidateIdentification>9bfe1f69-6d35-4966-b281-a5dc39655e3a</chosenCandidateIdentification>
+          </ballot>
+        </election>
+      </domainOfInfluence>
+    </countingCircle>
+  </ballotsBox>
+  <ballotsBox>
+    <ballotBoxIdentification>7228df42-9812-3434-a123-7af149a88672</ballotBoxIdentification>
+    <countingCircle>
+      <countingCircleIdentification>10003</countingCircleIdentification>
+      <domainOfInfluence>
+        <domainOfInfluenceIdentification>doid-ct1-mu</domainOfInfluenceIdentification>
+        <election>
+          <electionIdentification>majorz_test</electionIdentification>
+          <ballot>
+            <chosenWriteInsCandidateValue>Ögülbärt  Ümöl-Ärk</chosenWriteInsCandidateValue>
+          </ballot>
+          <ballot>
+            <chosenWriteInsCandidateValue>FirstName LastName (dd.mm.yyyy)</chosenWriteInsCandidateValue>
+          </ballot>
+          <ballot>
+            <chosenWriteInsCandidateValue>CREATE TABLE Persons (PersonID int, LastName varchar(255), FirstName varchar(255))</chosenWriteInsCandidateValue>
+          </ballot>
+          <ballot>
+            <chosenWriteInsCandidateValue>www.google.com www.google.com</chosenWriteInsCandidateValue>
+          </ballot>
+          <ballot>
+            <chosenWriteInsCandidateValue>þ ß ð</chosenWriteInsCandidateValue>
+          </ballot>
+          <ballot>
+            <chosenWriteInsCandidateValue>k k</chosenWriteInsCandidateValue>
+          </ballot>
+          <ballot>
+            <chosenWriteInsCandidateValue>FirstName LastName (dd.mm.yyyy)</chosenWriteInsCandidateValue>
+          </ballot>
+          <ballot>
+            <chosenWriteInsCandidateValue>''Àbêlárd Ódëlôrd''</chosenWriteInsCandidateValue>
+          </ballot>
+          <ballot>
+            <chosenWriteInsCandidateValue>System.out.println('Hello World')</chosenWriteInsCandidateValue>
+          </ballot>
+          <ballot>
+            <chosenWriteInsCandidateValue>)o( --O-- ITI</chosenWriteInsCandidateValue>
+          </ballot>
+          <ballot>
+            <chosenWriteInsCandidateValue>0x320x330x23Ææ Øø (-)</chosenWriteInsCandidateValue>
+          </ballot>
+          <ballot>
+            <chosenWriteInsCandidateValue>Zyxel/Lexyz s</chosenWriteInsCandidateValue>
+          </ballot>
+          <ballot>
+            <chosenWriteInsCandidateValue>WRITE-IN-e4c6627c74a6427b9706a7185d6efa33 WRITE-IN-e4c6627c74a6427b9706a7185d6efa33 /</chosenWriteInsCandidateValue>
+          </ballot>
+        </election>
+      </domainOfInfluence>
+    </countingCircle>
+  </ballotsBox>
+  <ballotsBox>
+    <ballotBoxIdentification>88ac0932-b73a-3d2b-b04a-44a16176a5e9</ballotBoxIdentification>
+    <countingCircle>
+      <countingCircleIdentification>10004</countingCircleIdentification>
+      <domainOfInfluence>
+        <domainOfInfluenceIdentification>doid-ch1-mu</domainOfInfluenceIdentification>
+        <vote>
+          <voteIdentification>ch_test</voteIdentification>
+        </vote>
+        <election>
+          <electionIdentification>nrw_test</electionIdentification>
+        </election>
+      </domainOfInfluence>
+    </countingCircle>
+  </ballotsBox>
+  <signature>VRmt5YJ86b3LMA/z9cFXoBbYCf+drfClATkAhLBG1ycALIu+901dNCQWL6qe0O1pINl+p8EeFv2ryv3abzUlZ3Pxl9IECp27HODjt0m4vEGVWP5pgd0OENNjs6vzJkrCYTz7+JPZNWH2NI6H6HbNNDRTsAatKc7MOoISDQPuABTp3pc86JKb9025Utv9Pq3k+BCwY4xcYAwpNfYcPn3wwBvlEBOsqUECWuJwiqurPvf/cI876YO2/u+4PcG5dRFWMXE2EeD16K0w+W7caFd2timDq1Bc2q+rv0kxdTarflqOx6uPAalnUMo39FU9i0B1PCWp1oQm9Ul9ThoVCcq6u9xRiViztgh2oVbAQbP0kXP7clmkiLet3JUs0orY0qvO3A0Hf5oSGcRdbkpF8m1Tj8WgkMyVZ1Of3rXCjKIUCAwRNGGQSTrQgbOsA3krn3f5RLazKosweEeAvd1+W4y9cRuUpgsFy5xC8ZoNhLRXQv5RqZX0JXEjkugUGpyb9p0D</signature>
+</results>

@@ -102,7 +102,7 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 		checkArgument(encryptionGroup.equals(c_dec_4.getGroup()), "The context and input should have the same encryption group.");
 		if (!L_votes.isEmpty()) {
 			checkArgument(L_votes.getElementSize() == psi,
-					"The size of the p_hat_i elements should be equal to the number of selectable encoded voting options.");
+					"The size of the p_i_hat elements should be equal to the number of selectable encoded voting options.");
 			// It is ensured by the GroupVector class that all elements in L_votes have the same size.
 		}
 
@@ -120,7 +120,7 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 				"The number of mixed votes must be equal to the number of processed votes, if the number of confirmed votes is 2 or greater. "
 						+ "Otherwise, there must be two more mixed votes than confirmed votes (for N_C = 0 or 1).");
 		checkArgument(L_votes.stream().allMatch(p_tilde::containsAll), "All selected voting options must be a subset of the total voting options.");
-		L_votes.forEach(p_hat_i -> checkArgument(p_hat_i.stream().distinct().count() == p_hat_i.size(),
+		L_votes.forEach(p_i_hat -> checkArgument(p_i_hat.stream().distinct().count() == p_i_hat.size(),
 				"All selected encoded voting options in a vote must be distinct."));
 
 		// Algorithm.

@@ -73,6 +73,7 @@ public class VerifyFileNameBallotBoxIdsConsistency extends AbstractVerification 
 		final PathNode ballotBoxes = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 
 		final Set<String> ballotBoxIds = ballotBoxes.getRegexPaths().stream()
+				.parallel()
 				.map(Path::getFileName)
 				.map(Path::toString)
 				.collect(Collectors.toUnmodifiableSet());
@@ -80,6 +81,7 @@ public class VerifyFileNameBallotBoxIdsConsistency extends AbstractVerification 
 		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContextPayload(inputDirectoryPath)
 				.getElectionEventContext();
 		final Set<String> payloadBallotBoxIds = electionEventContext.verificationCardSetContexts().stream()
+				.parallel()
 				.map(VerificationCardSetContext::ballotBoxId)
 				.collect(Collectors.toUnmodifiableSet());
 

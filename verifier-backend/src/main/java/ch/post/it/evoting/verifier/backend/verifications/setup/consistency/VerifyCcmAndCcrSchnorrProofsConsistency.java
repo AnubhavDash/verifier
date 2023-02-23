@@ -16,8 +16,10 @@
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
@@ -68,33 +70,54 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 		final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = extractionService.getControlComponentPublicKeysPayloads(
 				inputDirectoryPath);
 
-		final Map<Integer, GroupVector<SchnorrProof, ZqGroup>> electionEventCcmjSchnorrProofs = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
-				.combinedControlComponentPublicKeys().stream()
-				.collect(Collectors.toMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccmjSchnorrProofs));
+		final List<BiFunction<SetupComponentPublicKeysPayload, List<ControlComponentPublicKeysPayload>, Boolean>> validations = new ArrayList<>();
+		validations.add(this::validateSameCcmjSchnorrProofs);
+		validations.add(this::validateSameCcrjSchnorrProofs);
 
-		final boolean sameCcmjSchnorrProofs = controlComponentPublicKeysPayloads.stream()
-				.map(ControlComponentPublicKeysPayload::getControlComponentPublicKeys)
-				.map(controlComponentPublicKeys -> electionEventCcmjSchnorrProofs.get(controlComponentPublicKeys.nodeId())
-						.equals(controlComponentPublicKeys.ccmjSchnorrProofs()))
+		final boolean verified = validations
+				.stream()
+				.parallel()
+				.map(f -> f.apply(setupComponentPublicKeysPayload, controlComponentPublicKeysPayloads))
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 
-		final Map<Integer, GroupVector<SchnorrProof, ZqGroup>> electionEventCcrjSchnorrProofs = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
-				.combinedControlComponentPublicKeys().stream()
-				.collect(Collectors.toMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccrjSchnorrProofs));
-
-		final boolean sameCcrjSchnorrProofs = controlComponentPublicKeysPayloads.stream()
-				.map(ControlComponentPublicKeysPayload::getControlComponentPublicKeys)
-				.map(controlComponentPublicKeys -> electionEventCcrjSchnorrProofs.get(controlComponentPublicKeys.nodeId())
-						.equals(controlComponentPublicKeys.ccrjSchnorrProofs()))
-				.reduce(Boolean::logicalAnd)
-				.orElse(Boolean.FALSE);
-
-		if (sameCcmjSchnorrProofs && sameCcrjSchnorrProofs) {
+		if (verified) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
 					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification304.nok.message"));
 		}
+	}
+
+	private boolean validateSameCcrjSchnorrProofs(final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload,
+			final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads) {
+		final Map<Integer, GroupVector<SchnorrProof, ZqGroup>> electionEventCcrjSchnorrProofs = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
+				.combinedControlComponentPublicKeys().stream()
+				.parallel()
+				.collect(Collectors.toConcurrentMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccrjSchnorrProofs));
+
+		return controlComponentPublicKeysPayloads.stream()
+				.parallel()
+				.map(ControlComponentPublicKeysPayload::getControlComponentPublicKeys)
+				.map(controlComponentPublicKeys -> electionEventCcrjSchnorrProofs.get(controlComponentPublicKeys.nodeId())
+						.equals(controlComponentPublicKeys.ccrjSchnorrProofs()))
+				.reduce(Boolean::logicalAnd)
+				.orElse(Boolean.FALSE);
+	}
+
+	private boolean validateSameCcmjSchnorrProofs(final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload,
+			final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads) {
+		final Map<Integer, GroupVector<SchnorrProof, ZqGroup>> electionEventCcmjSchnorrProofs = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
+				.combinedControlComponentPublicKeys().stream()
+				.parallel()
+				.collect(Collectors.toConcurrentMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccmjSchnorrProofs));
+
+		return controlComponentPublicKeysPayloads.stream()
+				.parallel()
+				.map(ControlComponentPublicKeysPayload::getControlComponentPublicKeys)
+				.map(controlComponentPublicKeys -> electionEventCcmjSchnorrProofs.get(controlComponentPublicKeys.nodeId())
+						.equals(controlComponentPublicKeys.ccmjSchnorrProofs()))
+				.reduce(Boolean::logicalAnd)
+				.orElse(Boolean.FALSE);
 	}
 }

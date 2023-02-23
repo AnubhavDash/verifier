@@ -54,7 +54,7 @@ class VerifySignatureControlComponentCodeSharesTest extends SetupVerificationTes
 	@Test
 	void testExpectedSignerSuccess() throws SignatureException {
 		final ControlComponentCodeSharesPayload controlComponentCodeSharesPayload = electionDataExtractionService.getControlComponentCodeSharesPayloadsOrderedByNodeId(
-				datasetPath).get(0);
+				datasetPath).toList().get(0);
 		final int nodeId = controlComponentCodeSharesPayload.getNodeId();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.getControlComponentByNodeId(nodeId));
 		final byte[] signature = testSignatureGeneration.genSignature(controlComponentCodeSharesPayload,
@@ -67,7 +67,7 @@ class VerifySignatureControlComponentCodeSharesTest extends SetupVerificationTes
 	@Test
 	void testUnexpectedSignerFails() throws SignatureException {
 		final ControlComponentCodeSharesPayload controlComponentCodeSharesPayload = electionDataExtractionService.getControlComponentCodeSharesPayloadsOrderedByNodeId(
-				datasetPath).get(0);
+				datasetPath).toList().get(0);
 		final int nodeId = controlComponentCodeSharesPayload.getNodeId();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_TALLY);
 		final byte[] wrongSignature = testSignatureGeneration.genSignature(controlComponentCodeSharesPayload,
