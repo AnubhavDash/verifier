@@ -68,7 +68,7 @@ class VerifyTotalVotersConsistencyTest extends SetupVerificationTest {
 				extractionServiceMock);
 
 		final IllegalStateException exception = assertThrows(IllegalStateException.class, () -> verificationBadVoterTotal.verify(datasetPath));
-		assertEquals("The voter total in the header must be the same as the size of the voter list. [voterTotal: 39, voterCount: 65]",
+		assertEquals("The voter total in the header must be the same as the size of the voter list. [voterTotal: 39, voterCount: 76]",
 				Throwables.getRootCause(exception).getMessage());
 	}
 
