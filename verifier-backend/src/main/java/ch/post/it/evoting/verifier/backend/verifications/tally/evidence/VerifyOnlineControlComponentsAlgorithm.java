@@ -78,7 +78,7 @@ public class VerifyOnlineControlComponentsAlgorithm {
 		checkArgument(!ballotBoxIds.isEmpty());
 
 		final List<String> ballotBoxIdsCopy = List.copyOf(ballotBoxIds);
-		ballotBoxIdsCopy.forEach(Validations::validateUUID);
+		ballotBoxIdsCopy.stream().parallel().forEach(Validations::validateUUID);
 
 		final String ee = electionEventId;
 

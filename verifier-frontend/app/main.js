@@ -19,22 +19,23 @@ const fs = require('fs');
 const path = require('path');
 const dateFormat = require('dateformat');
 const config = require('./config');
+const kill = require("tree-kill");
 
 // Logger config
 const logDir = 'logs';
 const suffix = dateFormat(new Date(), 'yyyy-mm-dd-HHMMss');
 if (!fs.existsSync(logDir)) {
-  fs.mkdirSync(logDir);
+	fs.mkdirSync(logDir);
 }
 const filename = path.join(logDir, `verifier-frontend-app_${suffix}.log`);
 const logger = createLogger({
-  format: format.combine(
-    format.timestamp({
-      format: 'YYYY-MM-DD HH:mm:ss'
-    }),
-    format.json()
-  ),
-  transports: [new transports.File({filename})]
+	format: format.combine(
+		format.timestamp({
+			format: 'YYYY-MM-DD HH:mm:ss'
+		}),
+		format.json()
+	),
+	transports: [new transports.File({filename})]
 });
 
 
@@ -43,24 +44,24 @@ let serverProcess;
 const platform = process.platform;
 
 if (platform === 'win32') {
-  console.log(app.getAppPath());
-  logger.log('info', app.getAppPath());
+	console.log(app.getAppPath());
+	logger.log('info', app.getAppPath());
 
-  serverProcess = require('child_process')
-    .spawn('cmd.exe', ['/c', 'run-backend.bat'],
-      {
-        cwd: app.getAppPath() + '/../'
-      });
+	serverProcess = require('child_process')
+		.spawn('cmd.exe', ['/c', 'run-backend.bat'],
+			{
+				cwd: app.getAppPath() + '/../'
+			});
 } else {
-  console.error('Non windows OS is currently not implemented');
-  logger.log('error', 'Non windows OS is currently not implemented');
+	console.error('Non windows OS is currently not implemented');
+	logger.log('error', 'Non windows OS is currently not implemented');
 }
 
 if (!serverProcess) {
-  console.error('Unable to start server from ' + app.getAppPath());
-  logger.log('error', 'Unable to start server from ' + app.getAppPath());
-  app.quit();
-  return;
+	console.error('Unable to start server from ' + app.getAppPath());
+	logger.log('error', 'Unable to start server from ' + app.getAppPath());
+	app.quit();
+	return;
 }
 
 console.log('Server PID: ' + serverProcess.pid);
@@ -70,91 +71,99 @@ logger.log('info', 'Server PID: ' + serverProcess.pid);
 let win;
 const prepareWindow = function () {
 
-  // Create the browser window.
-  win = new BrowserWindow({
-    show: false,
-    width: 1200,
-    height: 800,
-    webPreferences: {
-      plugins: true
-    }
-  });
-  win.webContents.on('did-finish-load', () => win.setTitle(`Swiss Post Verifier (${app.getVersion()})`));
-  const menu = Menu.buildFromTemplate([
-    {
-      label: 'File',
-      submenu: [
-        {
-          label: 'Toggle developer tools', click() {
-            win.webContents.toggleDevTools();
-          }
-        },
-        {
-          label: 'Exit', click() {
-            app.quit();
-          }
-        }
-      ]
-    }
-  ]);
-  Menu.setApplicationMenu(menu);
+	// Create the browser window.
+	win = new BrowserWindow({
+		show: false,
+		width: 1200,
+		height: 800,
+		webPreferences: {
+			plugins: true
+		}
+	});
+	win.webContents.on('did-finish-load', () => win.setTitle(`Swiss Post Verifier (${app.getVersion()})`));
+	const menu = Menu.buildFromTemplate([
+		{
+			label: 'File',
+			submenu: [
+				{
+					label: 'Toggle developer tools', click() {
+						win.webContents.toggleDevTools();
+					}
+				},
+				{
+					label: 'Exit', click() {
+						app.quit();
+					}
+				}
+			]
+		}
+	]);
+	Menu.setApplicationMenu(menu);
 
-  // Event when the window is closed.
-  win.on('closed', function () {
-    win = null;
-    app.quit();
-  });
+	// Event when the window is closed.
+	win.on('closed', function () {
+		win = null;
+		app.quit();
+	});
 
-  win.on('close', function (e) {
-    if (serverProcess) {
-      e.preventDefault();
+	win.on('close', function (e) {
+		if (serverProcess) {
+			e.preventDefault();
 
-      const kill = require('tree-kill');
-      kill(serverProcess.pid, 'SIGTERM', function () {
-        console.log('Server process killed');
-        logger.log('info', 'Server process killed');
+			const requestPromise = require('minimal-request-promise');
+			requestPromise.post(config.serverCleanUrl()).then(
+				function (_response) {
+					logger.log('info', 'Clean successful.');
+				},
+				function (_response) {
+					logger.log('error', 'Clean unsuccessful.');
+				}
+			);
+			kill(serverProcess.pid, 'SIGTERM', function () {
+				console.log('Server process killed');
+				logger.log('info', 'Server process killed');
 
-        serverProcess = null;
+				serverProcess = null;
 
-        win.close();
-      });
-    }
-  });
+				win.close();
+			});
+		}
+	});
 };
 
 const startUp = function (counter) {
-  const requestPromise = require('minimal-request-promise');
+	const requestPromise = require('minimal-request-promise');
 
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-  app.on('ready', function () {
-    prepareWindow();
-  });
+	process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+	app.on('ready', function () {
+		prepareWindow();
+	});
 
-  requestPromise.get(config.serverConnectionCheckUrl()).then(
-    function () {
-      console.log('Server started!');
-      logger.log('info', 'Server started!');
-      win.loadURL(`file://${__dirname}/index.html`);
-      win.maximize();
-      win.show();
-  }, function () {
-    console.log(`Waiting for the server start... (${counter}/20)`);
-    logger.log('info', 'Waiting for the server start...');
-    if (counter < 20) {
-      setTimeout(function () {
-        startUp(counter + 1);
-      }, 800);
-    } else {
-      dialog.showMessageBox(win, {
-        type: 'error',
-        message: 'Unable to connect to server. Application will stop'
-      }).then(() => {
-        app.exit(0);
-      }).catch(() => {
-        app.exit(-1);
-      });
-    }
-  });
+	requestPromise.get(config.serverConnectionCheckUrl()).then(
+		function () {
+			console.log('Server started!');
+			logger.log('info', 'Server started!');
+			win.loadURL(`file://${__dirname}/index.html`);
+			win.maximize();
+			win.show();
+		}, function () {
+			console.log(`Waiting for the server start... (${counter}/20)`);
+			logger.log('info', 'Waiting for the server start...');
+			if (counter < 20) {
+				setTimeout(function () {
+					startUp(counter + 1);
+				}, 800);
+			} else {
+				dialog.showMessageBox(win, {
+					type: 'error',
+					message: 'Unable to connect to server. Application will stop'
+				}).then(() => {
+					app.exit(0);
+				}).catch(() => {
+					app.exit(-1);
+				});
+			}
+		});
 };
 
 startUp(1);

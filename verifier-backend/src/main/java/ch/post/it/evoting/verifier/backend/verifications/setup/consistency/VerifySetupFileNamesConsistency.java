@@ -140,13 +140,10 @@ public class VerifySetupFileNamesConsistency extends AbstractVerification {
 								final String chunkIdGroup = pathService.getRegexGroup(StructureKey.CONTROL_COMPONENT_CODE_SHARES, fileName, 1);
 								final int fileChunkId = Integer.parseInt(chunkIdGroup);
 
-								final List<ControlComponentCodeSharesPayload> controlComponentCodeSharesPayloads = electionDataExtractionService.getControlComponentCodeSharesOrderByNodeId(
-										path);
-								final List<Integer> payloadChunkIds = controlComponentCodeSharesPayloads.stream()
+								return electionDataExtractionService.getControlComponentCodeSharesOrderByNodeId(path)
+										.parallel()
 										.map(ControlComponentCodeSharesPayload::getChunkId)
-										.toList();
-
-								return payloadChunkIds.stream().allMatch(payloadChunkId -> fileChunkId == payloadChunkId);
+										.allMatch(payloadChunkId -> fileChunkId == payloadChunkId);
 							})
 							.reduce(Boolean::logicalAnd)
 							.orElse(Boolean.FALSE);

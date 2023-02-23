@@ -98,6 +98,7 @@ public class VerifyFileNameNodeIdsConsistency extends AbstractVerification {
 							StructureKey.CONTROL_COMPONENT_BALLOT_BOX, ballotBoxPath);
 
 					return controlComponentBallotBoxNode.getRegexPaths().stream()
+							.parallel()
 							.map(path -> {
 								final String fileName = path.getFileName().toString();
 								final String nodeIdGroup = pathService.getRegexGroup(StructureKey.CONTROL_COMPONENT_BALLOT_BOX, fileName, 1);
@@ -131,6 +132,7 @@ public class VerifyFileNameNodeIdsConsistency extends AbstractVerification {
 							ballotBoxPath);
 
 					return controlComponentShuffleNode.getRegexPaths().stream()
+							.parallel()
 							.map(path -> {
 								final String fileName = path.getFileName().toString();
 								final String nodeIdGroup = pathService.getRegexGroup(StructureKey.CONTROL_COMPONENT_SHUFFLE, fileName, 1);

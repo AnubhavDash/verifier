@@ -12,20 +12,27 @@
           <div class="input-group-prepend">
             <span class="input-group-text bg-outline-secondary">Dataset</span>
           </div>
-          <button (click)="fileUpload.click()" class="form-control upload-button" [ngClass]="{'is-invalid' : datasetLoadingError}" >
+          <button (click)="fileUpload.click()" class="form-control upload-button" [ngClass]="{'is-invalid' : datasetLoadingError}"
+                  [disabled]="datasetLoading || (processStarted && !isProcessComplete())">
             <span *ngIf="!filename && !datasetLoading && !datasetLoadingError">Not uploaded yet. Click to upload one</span>
-            <span *ngIf="!filename && datasetLoading && !datasetLoadingError">Uploading dataset...</span>
+            <span *ngIf="!filename && datasetLoading && !datasetLoadingError">
+              <div class="spinner-border spinner-border-sm text-primary" role="status">
+                <span class="sr-only">In progress...</span>
+              </div>
+              Uploading dataset...
+            </span>
             <span *ngIf="!datasetLoading && datasetLoadingError">An error occurred while uploading the dataset. More details in the logs.</span>
+            <span *ngIf="!datasetLoading && !datasetLoadingError && hash"><i aria-hidden="true" class="bi-check-circle text-success"></i></span>
             {{filename}} <span *ngIf="hash">({{hash}})</span>
           </button>
         </div>
         <div class="row">
           <div class="col-6">
-            <button (click)="startProcess(verifierEvent.PRE_SETUP)" [disabled]="startDisabled"
+            <button (click)="startProcess(verifierEvent.PRE_SETUP)" [disabled]="startDisabled || datasetLoading"
                     class="btn btn-primary mr-1" type="button">
               <i aria-hidden="true" class="bi-caret-right-fill"></i> Verify Setup
             </button>
-            <button (click)="startProcess(verifierEvent.PRE_TALLY)" [disabled]="startDisabled" class="btn btn-primary mr-1"
+            <button (click)="startProcess(verifierEvent.PRE_TALLY)" [disabled]="startDisabled || datasetLoading" class="btn btn-primary mr-1"
                     type="button">
               <i aria-hidden="true" class="bi-caret-right-fill"></i> Verify Tally
             </button>

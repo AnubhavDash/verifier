@@ -68,7 +68,7 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 				extractionService.getFromTallyComponentVotesPayloads(inputDirectoryPath)
 		);
 
-		if (allGroupParameters.allMatch(group -> group.equals(encryptionGroupParameters))) {
+		if (allGroupParameters.parallel().allMatch(group -> group.equals(encryptionGroupParameters))) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),

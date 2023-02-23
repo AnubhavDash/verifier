@@ -25,38 +25,35 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
-
 import net.lingala.zip4j.ZipFile;
 
 class DatasetServiceTest {
 
-	private final DatasetService datasetService = new DatasetService(DomainObjectMapper.getNewInstance(), new DirectoryService(),
-			new XmlFileRepository<>());
+	private final DatasetService datasetService = new DatasetService(new DirectoryService());
 	@TempDir
 	private Path tempDirectory;
 
 	@Test
-	void testUnpack() throws IOException {
+	void testUnpack(@TempDir
+			final Path anotherTempDirectory) throws IOException {
 		final String zipName = "tempzip.zip";
 		final String filename1 = "file1.txt";
 		final String filename2 = "file2.txt";
 
-		try (ZipFile zf = new ZipFile(tempDirectory.resolve(zipName).toFile())) {
-			Path file1 = Files.createFile(tempDirectory.resolve(filename1));
+		try (final ZipFile zf = new ZipFile(tempDirectory.resolve(zipName).toFile())) {
+			final Path file1 = Files.createFile(tempDirectory.resolve(filename1));
 			zf.addFile(file1.toFile());
-			Path file2 = Files.createFile(tempDirectory.resolve(filename2));
+			final Path file2 = Files.createFile(tempDirectory.resolve(filename2));
 			zf.addFile(file2.toFile());
 		}
 
-		Dataset ds = new Dataset(Files.readAllBytes(tempDirectory.resolve(zipName)));
-		Dataset result = datasetService.unpack(ds);
+		final Dataset ds = new Dataset(Files.newInputStream(tempDirectory.resolve(zipName)), anotherTempDirectory);
+		final Dataset result = datasetService.unpack(ds);
 
-		assertTrue(result.getUnpackFolder().isPresent());
-		assertTrue(Files.exists(result.getUnpackFolder().get().resolve(filename1)));
-		assertTrue(Files.exists(result.getUnpackFolder().get().resolve(filename2)));
+		assertTrue(Files.exists(result.getUnpackFolder().resolve(filename1)));
+		assertTrue(Files.exists(result.getUnpackFolder().resolve(filename2)));
 
-		assertFalse(Files.exists(result.getUnpackFolder().get().resolve(zipName)));
+		assertFalse(Files.exists(result.getUnpackFolder().resolve(zipName)));
 	}
 
 }

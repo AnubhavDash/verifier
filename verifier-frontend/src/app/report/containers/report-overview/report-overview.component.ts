@@ -312,9 +312,9 @@ export class ReportOverviewComponent implements OnInit {
   }
 
   configurationUpload(event) {
-    this.datasetLoading = true;
     const file = event.target.files[0];
     if (file) {
+      this.datasetLoading = true;
       this.filename = '';
       this.hash = '';
       this.electionEventId = '';

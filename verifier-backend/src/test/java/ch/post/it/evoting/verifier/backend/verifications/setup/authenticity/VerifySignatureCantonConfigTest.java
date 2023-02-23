@@ -31,10 +31,10 @@ import org.junit.jupiter.api.Test;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.verifier.backend.hashable.HashableConfigurationFactory;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 import ch.post.it.evoting.verifier.protocol.domain.ChannelSecurityContextData;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
 
 class VerifySignatureCantonConfigTest extends SetupVerificationTest {
 

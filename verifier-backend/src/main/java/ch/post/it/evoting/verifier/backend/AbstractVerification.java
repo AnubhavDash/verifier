@@ -24,7 +24,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.verifier.backend.event.VerificationResultEvent;
 import ch.post.it.evoting.verifier.backend.event.VerifierEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 
@@ -71,6 +70,7 @@ public abstract class AbstractVerification {
 				resultPublisherService.publish(errorResult);
 			}
 
+
 		}
 	}
 
@@ -80,7 +80,7 @@ public abstract class AbstractVerification {
 	 * Method called when executing a verification that listens to an event.
 	 *
 	 * @param inputDirectoryPath The event that triggered the verification.
-	 * @return The result of the verification in the form of a {@link VerificationResultEvent}.
+	 * @return The result of the verification in the form of a {@link VerificationResult}.
 	 */
 	public abstract VerificationResult verify(final Path inputDirectoryPath);
 

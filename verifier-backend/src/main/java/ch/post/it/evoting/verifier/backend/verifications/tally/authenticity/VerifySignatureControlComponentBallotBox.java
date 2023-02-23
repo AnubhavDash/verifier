@@ -19,7 +19,6 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
 import java.security.SignatureException;
-import java.util.List;
 
 import org.springframework.stereotype.Component;
 
@@ -75,11 +74,7 @@ public class VerifySignatureControlComponentBallotBox extends AbstractVerificati
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
-				inputDirectoryPath);
-
-		final boolean verified = controlComponentBallotBoxPayloads
-				.stream()
+		final boolean verified = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(inputDirectoryPath)
 				.parallel()
 				.map(this::verifySignature)
 				.reduce(Boolean::logicalAnd)
