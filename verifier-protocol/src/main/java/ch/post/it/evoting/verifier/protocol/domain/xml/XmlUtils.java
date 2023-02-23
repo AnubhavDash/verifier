@@ -16,8 +16,15 @@
 package ch.post.it.evoting.verifier.protocol.domain.xml;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
+
+import ch.post.it.evoting.cryptoprimitives.domain.VotingOptionsConstants;
 
 public class XmlUtils {
+
+	private XmlUtils() {
+		//Intentionally left blank
+	}
 
 	private static final String REPLACE_CHARACTERS = "[\r\n\t]";
 	private static final String LEADING_SPACE = "^ *";
@@ -31,6 +38,9 @@ public class XmlUtils {
 	 */
 	public static String xsTokenNormalize(final String toNormalize) {
 		checkNotNull(toNormalize);
+		checkState(toNormalize.length() <= VotingOptionsConstants.MAXIMUM_WRITE_IN_OPTION_LENGTH,
+				"The length of the xsToken to normalize cannot exceed the maximum write-in option length [toNormalizeLength: %s, max: %s].",
+				toNormalize.length(), VotingOptionsConstants.MAXIMUM_WRITE_IN_OPTION_LENGTH);
 		return toNormalize.replaceAll(REPLACE_CHARACTERS, " ")
 				.replaceFirst(LEADING_SPACE, "")
 				.replaceFirst(TRAILING_SPACE, "")
