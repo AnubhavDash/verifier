@@ -1,7 +1,6 @@
 {
   "asar": false,
   "buildVersion": "1",
-  "copyright": "(c) Copyright 2022 Swiss Post Ltd.",
   "directories": {
     "output": "target/electron"
   },

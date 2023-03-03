@@ -29,8 +29,6 @@ import ch.ech.xmlns.ech_0110._4.Delivery;
 import ch.post.it.evoting.cryptoprimitives.domain.validations.FailedValidationException;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hash;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.verifier.backend.hashable.HashableEch0110Factory;
 import ch.post.it.evoting.verifier.backend.hashable.HashableEch0222Factory;
 import ch.post.it.evoting.verifier.backend.hashable.HashableResultsFactory;
@@ -38,17 +36,16 @@ import ch.post.it.evoting.verifier.backend.tools.DeliveryMapper;
 import ch.post.it.evoting.verifier.backend.tools.RawDataDeliveryMapper;
 import ch.post.it.evoting.verifier.backend.tools.ResultDeliveryMapper;
 import ch.post.it.evoting.verifier.protocol.domain.tally.TallyComponentVotesPayload;
-import ch.post.it.evoting.verifier.protocol.domain.xml.XmlNormalizer;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 
 @Service
 public class VerifyTallyFilesAlgorithm {
 
 	private final Hash hash;
-	private final XmlNormalizer xmlNormalizer;
 
-	public VerifyTallyFilesAlgorithm(final Hash hash, final XmlNormalizer xmlNormalizer) {
+	public VerifyTallyFilesAlgorithm(final Hash hash) {
 		this.hash = hash;
-		this.xmlNormalizer = xmlNormalizer;
 	}
 
 	/**
@@ -78,28 +75,26 @@ public class VerifyTallyFilesAlgorithm {
 		// Operation.
 		final Results evotingDecryptXML_prime = ResultDeliveryMapper.toResults(configurationXML, tallyComponentVotesPayloads);
 		final Delivery eCH0110XML_prime = DeliveryMapper.INSTANCE.map(ee, configurationXML, evotingDecryptXML);
-		final Delivery eCH0110XML_prime_normalized = xmlNormalizer.normalizeWriteInsEch0110(eCH0110XML_prime);
 		final ch.ech.xmlns.ech_0222._1.Delivery eCH0222XML_prime = RawDataDeliveryMapper.createECH0222(ee, configurationXML, evotingDecryptXML);
-		final ch.ech.xmlns.ech_0222._1.Delivery eCH0222XML_prime_normalized = xmlNormalizer.normalizeWriteInsEch0220(eCH0222XML_prime);
 
 		// Ignore timestamp fields (use original timestamps in re-generated files).
 		final XMLGregorianCalendar eCH0110OriginalMessageDate = eCH0110XML.getDeliveryHeader().getMessageDate();
-		eCH0110XML_prime_normalized.getDeliveryHeader().withMessageDate(eCH0110OriginalMessageDate);
+		eCH0110XML_prime.getDeliveryHeader().withMessageDate(eCH0110OriginalMessageDate);
 		final XMLGregorianCalendar eCH0110OriginalCreationDateTime = eCH0110XML.getResultDelivery().getReportingBody().getCreationDateTime();
-		eCH0110XML_prime_normalized.getResultDelivery().getReportingBody().withCreationDateTime(eCH0110OriginalCreationDateTime);
+		eCH0110XML_prime.getResultDelivery().getReportingBody().withCreationDateTime(eCH0110OriginalCreationDateTime);
 
 		final XMLGregorianCalendar eCH0222OriginalMessageDate = eCH0222XML.getDeliveryHeader().getMessageDate();
-		eCH0222XML_prime_normalized.getDeliveryHeader().withMessageDate(eCH0222OriginalMessageDate);
+		eCH0222XML_prime.getDeliveryHeader().withMessageDate(eCH0222OriginalMessageDate);
 		final XMLGregorianCalendar eCH0222OriginalCreationDateTime = eCH0222XML.getRawDataDelivery().getReportingBody().getCreationDateTime();
-		eCH0222XML_prime_normalized.getRawDataDelivery().getReportingBody().withCreationDateTime(eCH0222OriginalCreationDateTime);
+		eCH0222XML_prime.getRawDataDelivery().getReportingBody().withCreationDateTime(eCH0222OriginalCreationDateTime);
 
 		// Compare hash of fields.
 		final Hashable hashableEvotingDecryptXML = HashableResultsFactory.fromResults(evotingDecryptXML);
 		final Hashable hashableEvotingDecryptXML_prime = HashableResultsFactory.fromResults(evotingDecryptXML_prime);
 		final Hashable hashableECH0110XML = HashableEch0110Factory.fromDelivery(eCH0110XML);
-		final Hashable hashableECH0110XML_prime = HashableEch0110Factory.fromDelivery(eCH0110XML_prime_normalized);
+		final Hashable hashableECH0110XML_prime = HashableEch0110Factory.fromDelivery(eCH0110XML_prime);
 		final Hashable hashableECH0222XML = HashableEch0222Factory.fromDelivery(eCH0222XML);
-		final Hashable hashableECH0222XML_prime = HashableEch0222Factory.fromDelivery(eCH0222XML_prime_normalized);
+		final Hashable hashableECH0222XML_prime = HashableEch0222Factory.fromDelivery(eCH0222XML_prime);
 
 		return Arrays.equals(hash.recursiveHash(hashableEvotingDecryptXML), hash.recursiveHash(hashableEvotingDecryptXML_prime))
 				&& Arrays.equals(hash.recursiveHash(hashableECH0110XML), hash.recursiveHash(hashableECH0110XML_prime))

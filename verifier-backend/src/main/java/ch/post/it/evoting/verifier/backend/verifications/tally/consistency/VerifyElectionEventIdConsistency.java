@@ -16,9 +16,6 @@
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.BiFunction;
 
 import org.springframework.stereotype.Component;
 
@@ -68,55 +65,35 @@ public class VerifyElectionEventIdConsistency extends AbstractVerification {
 		final String electionEventId = electionDataExtractionService.getElectionEventContextPayload(inputDirectoryPath).getElectionEventContext()
 				.electionEventId();
 
-		final List<BiFunction<Path, String, Boolean>> validations = new ArrayList<>();
-		validations.add(this::areControlComponentBallotBoxPayloadsVerified);
-		validations.add(this::areControlComponentShufflePayloadsVerified);
-		validations.add(this::areTallyComponentShufflePayloadsVerified);
-		validations.add(this::areTallyComponentVotesPayloadsVerified);
-
-		final boolean verified = validations
-				.stream()
+		final boolean areControlComponentBallotBoxPayloadVerified = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
+						inputDirectoryPath).stream()
 				.parallel()
-				.map(f -> f.apply(inputDirectoryPath, electionEventId))
-				.reduce(Boolean::logicalAnd)
-				.orElse(Boolean.FALSE);
+				.map(ControlComponentBallotBoxPayload::getElectionEventId)
+				.allMatch(id -> id.equals(electionEventId));
 
-		if (verified) {
+		final boolean areControlComponentShufflePayloadsVerified = electionDataExtractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
+						inputDirectoryPath)
+				.parallel()
+				.map(ControlComponentShufflePayload::getElectionEventId)
+				.allMatch(id -> id.equals(electionEventId));
+
+		final boolean areTallyComponentShufflePayloadsVerified = electionDataExtractionService.getTallyComponentShufflePayloads(inputDirectoryPath)
+				.parallel()
+				.map(TallyComponentShufflePayload::getElectionEventId)
+				.allMatch(id -> id.equals(electionEventId));
+
+		final boolean areTallyComponentVotesPayloadsVerified = electionDataExtractionService.getTallyComponentVotesPayloads(inputDirectoryPath)
+				.parallel()
+				.map(TallyComponentVotesPayload::getElectionEventId)
+				.allMatch(id -> id.equals(electionEventId));
+
+		if (areControlComponentBallotBoxPayloadVerified && areControlComponentShufflePayloadsVerified && areTallyComponentShufflePayloadsVerified
+				&& areTallyComponentVotesPayloadsVerified) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
 					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification307.nok.message"));
 		}
-	}
-
-	private boolean areTallyComponentVotesPayloadsVerified(final Path inputDirectoryPath, final String electionEventId) {
-		return electionDataExtractionService.getTallyComponentVotesPayloads(inputDirectoryPath)
-				.parallel()
-				.map(TallyComponentVotesPayload::getElectionEventId)
-				.allMatch(id -> id.equals(electionEventId));
-	}
-
-	private boolean areTallyComponentShufflePayloadsVerified(final Path inputDirectoryPath, final String electionEventId) {
-		return electionDataExtractionService.getTallyComponentShufflePayloads(inputDirectoryPath)
-				.parallel()
-				.map(TallyComponentShufflePayload::getElectionEventId)
-				.allMatch(id -> id.equals(electionEventId));
-	}
-
-	private boolean areControlComponentShufflePayloadsVerified(final Path inputDirectoryPath, final String electionEventId) {
-		return electionDataExtractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
-						inputDirectoryPath)
-				.parallel()
-				.map(ControlComponentShufflePayload::getElectionEventId)
-				.allMatch(id -> id.equals(electionEventId));
-	}
-
-	private boolean areControlComponentBallotBoxPayloadsVerified(final Path inputDirectoryPath, final String electionEventId) {
-		return electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
-						inputDirectoryPath)
-				.parallel()
-				.map(ControlComponentBallotBoxPayload::getElectionEventId)
-				.allMatch(id -> id.equals(electionEventId));
 	}
 
 }

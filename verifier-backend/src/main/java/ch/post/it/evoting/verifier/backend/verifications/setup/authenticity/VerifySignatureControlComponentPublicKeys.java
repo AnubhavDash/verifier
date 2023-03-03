@@ -81,13 +81,12 @@ public class VerifySignatureControlComponentPublicKeys extends AbstractVerificat
 		checkState(NODE_IDS.size() == controlComponentPublicKeysPayloads.size(),
 				"The number of control component public keys payload should correspond to the number of control components.");
 
-		controlComponentPublicKeysPayloads.stream().parallel()
+		controlComponentPublicKeysPayloads
 				.forEach(payload -> checkState(NODE_IDS.contains(payload.getControlComponentPublicKeys().nodeId()),
 						"Invalid node id. [nodeId: %s]", payload.getControlComponentPublicKeys().nodeId()));
 
 		final boolean verified = controlComponentPublicKeysPayloads
 				.stream()
-				.parallel()
 				.map(this::verifySignature)
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);

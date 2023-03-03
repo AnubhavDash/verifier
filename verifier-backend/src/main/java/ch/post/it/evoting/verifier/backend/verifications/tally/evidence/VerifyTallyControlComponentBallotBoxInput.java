@@ -148,10 +148,9 @@ public class VerifyTallyControlComponentBallotBoxInput {
 		public Builder setSelectedDecodedVotingOptions(final List<List<String>> selectedDecodedVotingOptions) {
 			checkNotNull(selectedDecodedVotingOptions);
 			final List<List<String>> selectedDecodedVotingOptionsCopy = List.copyOf(selectedDecodedVotingOptions);
-			selectedDecodedVotingOptionsCopy.stream().parallel().forEach(Preconditions::checkNotNull);
+			selectedDecodedVotingOptionsCopy.forEach(Preconditions::checkNotNull);
 
 			this.selectedDecodedVotingOptions = selectedDecodedVotingOptionsCopy.stream()
-					.parallel()
 					.map(List::copyOf)
 					.toList();
 			return this;

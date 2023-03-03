@@ -91,9 +91,8 @@ public class TallyComponentVotesPayload implements SignedPayload {
 
 		List<List<String>> actualSelectedVotingOptionsCopy = List.copyOf(checkNotNull(actualSelectedVotingOptions));
 
-		actualSelectedVotingOptionsCopy.stream().parallel().forEach(Preconditions::checkNotNull);
+		actualSelectedVotingOptionsCopy.forEach(Preconditions::checkNotNull);
 		actualSelectedVotingOptionsCopy = actualSelectedVotingOptionsCopy.stream()
-				.parallel()
 				.map(List::copyOf)
 				.toList();
 

@@ -71,7 +71,6 @@ public class VerifyCcmElectionPublicKeyConsistency extends AbstractVerification 
 				.collect(Collectors.toMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccmjElectionPublicKey));
 
 		final boolean sameCCMElectionPublicKeys = controlComponentPublicKeysPayloads.stream()
-				.parallel()
 				.map(ControlComponentPublicKeysPayload::getControlComponentPublicKeys)
 				.map(controlComponentPublicKeys -> electionEventContextPublicKeys.get(controlComponentPublicKeys.nodeId())
 						.equals(controlComponentPublicKeys.ccmjElectionPublicKey()))

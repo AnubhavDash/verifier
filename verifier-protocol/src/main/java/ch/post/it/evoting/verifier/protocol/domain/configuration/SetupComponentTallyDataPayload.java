@@ -109,7 +109,7 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 
 		this.verificationCardIds = List.copyOf(checkNotNull(verificationCardIds));
 		checkArgument(!this.verificationCardIds.isEmpty(), "The verification card ids list must be non-empty.");
-		this.verificationCardIds.stream().parallel().forEach(Validations::validateUUID);
+		this.verificationCardIds.forEach(Validations::validateUUID);
 		checkArgument(new HashSet<>(this.verificationCardIds).size() == verificationCardIds.size(),
 				"The verification card ids list must not contain any duplicated id.");
 

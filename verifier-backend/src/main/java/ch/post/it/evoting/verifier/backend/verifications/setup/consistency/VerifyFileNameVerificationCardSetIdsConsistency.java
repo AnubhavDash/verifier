@@ -73,7 +73,6 @@ public class VerifyFileNameVerificationCardSetIdsConsistency extends AbstractVer
 		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
 
 		final Set<String> verificationCardSetIds = verificationCardSets.getRegexPaths().stream()
-				.parallel()
 				.map(Path::getFileName)
 				.map(Path::toString)
 				.collect(Collectors.toUnmodifiableSet());
@@ -81,7 +80,6 @@ public class VerifyFileNameVerificationCardSetIdsConsistency extends AbstractVer
 		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContextPayload(inputDirectoryPath)
 				.getElectionEventContext();
 		final Set<String> payloadVerificationCardSetIds = electionEventContext.verificationCardSetContexts().stream()
-				.parallel()
 				.map(VerificationCardSetContext::verificationCardSetId)
 				.collect(Collectors.toUnmodifiableSet());
 

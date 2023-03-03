@@ -54,7 +54,7 @@ class VerifySignatureSetupComponentVerificationDataTest extends SetupVerificatio
 	@Test
 	void testExpectedSignerSuccess() throws SignatureException {
 		final SetupComponentVerificationDataPayload setupComponentVerificationDataPayload = electionDataExtractionService.getSetupComponentVerificationDataPayloadsOrderByChunkId(
-				datasetPath).toList().get(0);
+				datasetPath).get(0);
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_CONFIG);
 		final byte[] signature = testSignatureGeneration.genSignature(setupComponentVerificationDataPayload,
 				ChannelSecurityContextData.setupComponentVerificationData(setupComponentVerificationDataPayload.getElectionEventId(),
@@ -66,7 +66,7 @@ class VerifySignatureSetupComponentVerificationDataTest extends SetupVerificatio
 	@Test
 	void testUnexpectedSignerFails() throws SignatureException {
 		final SetupComponentVerificationDataPayload setupComponentVerificationDataPayload = electionDataExtractionService.getSetupComponentVerificationDataPayloadsOrderByChunkId(
-				datasetPath).toList().get(0);
+				datasetPath).get(0);
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.CONTROL_COMPONENT_1);
 		final byte[] wrongSignature = testSignatureGeneration.genSignature(setupComponentVerificationDataPayload,
 				ChannelSecurityContextData.setupComponentVerificationData(setupComponentVerificationDataPayload.getElectionEventId(),

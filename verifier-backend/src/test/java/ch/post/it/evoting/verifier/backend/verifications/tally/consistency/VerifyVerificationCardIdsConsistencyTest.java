@@ -135,12 +135,13 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 	@DisplayName("inconsistent verification card ids in expected set failed")
 	void inconsistentVerificationCardIdsInExpectedSet(final String testName,
 			final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloadsMock,
-			final Stream<SetupComponentTallyDataPayload> setupComponentTallyDataPayloads) {
+			final List<SetupComponentTallyDataPayload> setupComponentTallyDataPayloads) {
 		// given
 
 		// when
 		final VerifyVerificationCardIdsConsistency verifyElectionEventIdConsistency = new VerifyVerificationCardIdsConsistency(
-				resultPublisherServiceMock, electionDataExtractionService);
+				resultPublisherServiceMock,
+				electionDataExtractionService);
 		final boolean result = verifyElectionEventIdConsistency.verifyVerificationCardIdsInExpectedSet(controlComponentBallotBoxPayloadsMock,
 				setupComponentTallyDataPayloads);
 
@@ -160,7 +161,7 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 								.add("verificationCardSetId_3", "verificationCardId_6")
 								.add("verificationCardSetId_3", "verificationCardId_7")
 								.build()
-						), Stream.of(
+						), List.of(
 								new SetupComponentTallyDataPayloadsMockBuilder("verificationCardSetId_1")
 										.add("verificationCardId_1")
 										.add("verificationCardId_2")
@@ -183,7 +184,7 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 										.add("verificationCardSetId_2", "verificationCardId_5")
 										.add("verificationCardSetId_3", "verificationCardId_6")
 										.build()
-								), Stream.of(
+								), List.of(
 										new SetupComponentTallyDataPayloadsMockBuilder("verificationCardSetId_1")
 												.add("verificationCardId_1")
 												.add("verificationCardId_2")

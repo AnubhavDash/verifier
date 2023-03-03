@@ -44,7 +44,7 @@ import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.verifier.backend.hashable.HashableEch0110Factory;
 import ch.post.it.evoting.verifier.backend.tools.XmlFileRepository;
-import ch.post.it.evoting.verifier.protocol.domain.xml.XsdConstants;
+import ch.post.it.evoting.verifier.backend.tools.XsdConstants;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
 import ch.post.it.evoting.verifier.protocol.domain.ChannelSecurityContextData;
 

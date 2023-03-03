@@ -45,8 +45,6 @@ import org.springframework.stereotype.Component;
 import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
 import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.AuthorizationType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.verifier.backend.dto.DatasetConfiguration;
 import ch.post.it.evoting.verifier.backend.dto.Verification;
 import ch.post.it.evoting.verifier.backend.event.PreSetupEvent;
@@ -59,6 +57,8 @@ import ch.post.it.evoting.verifier.backend.tools.DatasetExtractionException;
 import ch.post.it.evoting.verifier.backend.tools.DatasetService;
 import ch.post.it.evoting.verifier.backend.tools.DirectoryService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.AuthorizationType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
 
 @Component
 public class VerifierProcessor {

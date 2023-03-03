@@ -44,16 +44,14 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 	public boolean verifyPrimesMappingTableConsistency(final List<PrimesMappingTable> primesMappingTables) {
 		checkNotNull(primesMappingTables);
 		checkArgument(!primesMappingTables.isEmpty());
-		primesMappingTables.stream().parallel().forEach(Preconditions::checkNotNull);
+		primesMappingTables.forEach(Preconditions::checkNotNull);
 
 		// Check that the same encoded voting option has the same actual voting option in all PrimesMappingTables
 		final Set<PrimesMappingTableEntry> primesMappingTableEntries = primesMappingTables.stream()
-				.parallel()
 				.map(PrimesMappingTable::getPTable)
 				.flatMap(GroupVector::stream)
 				.collect(Collectors.toSet());
 		final Set<PrimeGqElement> encodedVotingOptions = primesMappingTableEntries.stream()
-				.parallel()
 				.map(PrimesMappingTableEntry::encodedVotingOption)
 				.collect(Collectors.toSet());
 

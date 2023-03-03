@@ -34,6 +34,7 @@ import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPay
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeShare;
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeSharesPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationData;
+import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationDataPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -106,9 +107,9 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 				.parallel()
 				.map(verificationCardSetIdPath -> {
 					// The SetupComponentVerificationDataPayload ensures no duplicated verification card ids.
-					final List<String> verificationDataIds = electionDataExtractionService.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(
-									verificationCardSetIdPath)
-							.parallel()
+					final List<SetupComponentVerificationDataPayload> setupComponentVerificationDataPayloads = electionDataExtractionService.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(
+							verificationCardSetIdPath);
+					final List<String> verificationDataIds = setupComponentVerificationDataPayloads.stream()
 							.flatMap(
 									setupComponentVerificationDataPayload -> setupComponentVerificationDataPayload.getSetupComponentVerificationData()
 											.stream())
@@ -133,7 +134,6 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 
 					final String verificationCardSetId = verificationCardSetIdPath.getFileName().toString();
 					final int numberOfVotingCards = verificationCardSetContexts.stream()
-							.parallel()
 							.filter(vcs -> vcs.verificationCardSetId().equals(verificationCardSetId))
 							.collect(MoreCollectors.onlyElement())
 							.numberOfVotingCards();

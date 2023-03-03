@@ -22,6 +22,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -61,7 +62,7 @@ class VerifyNodeIdsConsistencyTest extends TallyVerificationTest {
 	@DisplayName("inconsistent node id in control component ballot box payloads failed")
 	void inconsistentNodeId(final int... nodeIds) {
 
-		final Stream<ControlComponentBallotBoxPayload> ballotBoxPayloads = generateBallotBoxesMock(nodeIds);
+		final List<ControlComponentBallotBoxPayload> ballotBoxPayloads = generateBallotBoxesMock(nodeIds);
 		final Stream<ControlComponentShufflePayload> shufflePayloads = generateShufflesMock(nodeIds);
 
 		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
@@ -87,14 +88,15 @@ class VerifyNodeIdsConsistencyTest extends TallyVerificationTest {
 		);
 	}
 
-	private Stream<ControlComponentBallotBoxPayload> generateBallotBoxesMock(final int... nodeIds) {
+	private List<ControlComponentBallotBoxPayload> generateBallotBoxesMock(final int... nodeIds) {
 		return Arrays.stream(nodeIds).boxed()
 				.map(nodeId -> {
 					final ControlComponentBallotBoxPayload mock = mock(ControlComponentBallotBoxPayload.class);
 					when(mock.getNodeId()).thenReturn(nodeId);
 					when(mock.getBallotBoxId()).thenReturn("7b170560b5ae4b6b87ab00119ddc6782");
 					return mock;
-				});
+				})
+				.toList();
 	}
 
 	private Stream<ControlComponentShufflePayload> generateShufflesMock(final int... nodeIds) {
