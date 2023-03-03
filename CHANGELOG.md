@@ -7,6 +7,7 @@ Release 1.3.3 contains some minor bug fixes and updates. Release 1.3.1 and 1.3.2
 * Implemented additional XXE protection mechanisms including a locale dependent comparison of strings.
 * Fixed minor errors and XML serialization issues in the eCH tally files.
 * Improved the error handling when launching the verifier with an incomplete keystore.
+* Improved the handling of large election events by implementing streaming upload of the data sets.
 * Updated the data sets for compatibility with the e-voting release 1.2.3.
 * Updated dependencies and third-party libraries.
 

@@ -58,13 +58,14 @@ public class DirectoryService {
 	}
 
 	/**
-	 * Creates a new directory in the default temporary-file directory, using the given prefix to generate its name.
-	 * The resulting Path is secured so that only the current user can access
+	 * Creates a new directory in the default temporary-file directory, using the given prefix to generate its name. The resulting Path is secured so
+	 * that only the current user can access
+	 *
 	 * @param prefix the prefix string to be used in generating the directory's name; may be null
 	 * @return the path to the newly created directory
 	 * @throws IOException if an I/O error occurs or the temporary-file directory does not exist
 	 */
-	public Path createSecuredTemporaryDirectory(String prefix) throws IOException {
+	public Path createSecuredTemporaryDirectory(final String prefix) throws IOException {
 		@SuppressWarnings("java:S5443") // The security of the directory is set just after this creation
 		final Path tempDirectory = Files.createTempDirectory(prefix);
 		if (!secureDirectory(tempDirectory)) {
@@ -75,16 +76,18 @@ public class DirectoryService {
 
 	/**
 	 * Recursively delete the given directory
+	 *
 	 * @param deleteDirectory the directory to delete
-	 * @throws NullPointerException if the path is null
+	 * @throws NullPointerException     if the path is null
 	 * @throws IllegalArgumentException if the path is not a directory
 	 */
-	public void deleteTemporaryDirectory(Path deleteDirectory) {
+	public void deleteTemporaryDirectory(final Path deleteDirectory) {
 		checkNotNull(deleteDirectory, "the path must be not null");
 		checkArgument(Files.isDirectory(deleteDirectory), "Given path must be a directory");
 		try {
 			FileSystemUtils.deleteRecursively(deleteDirectory);
-		} catch (IOException e) {
+			LOGGER.debug("Temporary directory successfully deleted.");
+		} catch (final IOException e) {
 			LOGGER.warn("Unable to delete the existing temporary directory");
 		}
 	}

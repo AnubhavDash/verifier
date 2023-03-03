@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 module.exports = {
-  serverConnectionCheckUrl: function() {
-    return 'http://127.0.0.1:8080/api/ping';
-  }
+	serverConnectionCheckUrl: function () {
+		return 'http://127.0.0.1:8080/api/ping';
+	},
+	serverCleanUrl: function () {
+		return 'http://127.0.0.1:8080/api/clean';
+	}
 }

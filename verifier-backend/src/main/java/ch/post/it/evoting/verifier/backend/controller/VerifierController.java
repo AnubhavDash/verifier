@@ -16,9 +16,8 @@
 package ch.post.it.evoting.verifier.backend.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,11 +52,9 @@ public class VerifierController {
 		return true;
 	}
 
-	@GetMapping("/shutdown")
-	public void shutdown() {
-		final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
-		final long DELAY_BEFORE_EXECUTION = 10;
-		executor.schedule(() -> System.exit(0), DELAY_BEFORE_EXECUTION, TimeUnit.MILLISECONDS);
+	@PostMapping("/clean")
+	public void clean() {
+		this.processor.clean();
 	}
 
 	@PostMapping("/reset")
@@ -74,8 +71,9 @@ public class VerifierController {
 	public ResponseEntity<String> uploadDataset(
 			@RequestParam("file")
 			final MultipartFile file) throws IOException {
-		try {
-			this.processor.setDataset(file.getBytes(), file.getOriginalFilename());
+
+		try(final InputStream inputStream = file.getInputStream()) {
+			this.processor.setDataset(inputStream, file.getOriginalFilename());
 		} catch (final DatasetExtractionException e) {
 			LOGGER.error("An error occurred while uploading the dataset.", e);
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -95,7 +93,7 @@ public class VerifierController {
 			final String runOptions) {
 		try {
 			this.processor.process(runOptions);
-		} catch (IllegalArgumentException | IOException e) {
+		} catch (final IllegalArgumentException e) {
 			LOGGER.error("Unable to process the verifications", e);
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
