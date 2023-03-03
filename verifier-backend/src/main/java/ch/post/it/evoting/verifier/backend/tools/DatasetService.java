@@ -16,7 +16,6 @@
 package ch.post.it.evoting.verifier.backend.tools;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 import static java.util.function.Predicate.not;
 
 import java.io.FileOutputStream;
@@ -144,19 +143,12 @@ public class DatasetService {
 						Function.identity(),
 						aliasName -> {
 							final Certificate certificate;
-							try {
-								certificate = keyStore.getCertificate(aliasName);
-							} catch (final KeyStoreException e) {
-								throw new IllegalStateException(String.format("Failed to get certificate. [alias: %s]", aliasName), e);
-							}
-
-							checkState(certificate != null, "No certificate found for given alias. [alias: %s]", aliasName);
-
 							final byte[] encodedCertificate;
 							try {
+								certificate = keyStore.getCertificate(aliasName);
 								encodedCertificate = certificate.getEncoded();
-							} catch (final CertificateEncodingException e) {
-								throw new IllegalStateException(String.format("Failed to get encoded certificate. [alias: %s]", aliasName), e);
+							} catch (final KeyStoreException | CertificateEncodingException e) {
+								throw new IllegalStateException("Failed to get encoded certificate.", e);
 							}
 
 							final MessageDigest messageDigest;

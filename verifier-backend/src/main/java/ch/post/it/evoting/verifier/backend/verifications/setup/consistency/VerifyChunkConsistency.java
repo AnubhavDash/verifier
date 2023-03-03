@@ -18,10 +18,8 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
@@ -78,15 +76,8 @@ public class VerifyChunkConsistency extends AbstractVerification {
 
 		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
 
-		final List<Function<PathNode, Boolean>> validations = new ArrayList<>();
-		validations.add(this::validateControlComponentCodeSharesPayloads);
-		validations.add(this::validateSetupComponentVerificationDataPayloads);
-
-		final boolean isChunkIdsCoherent = validations.stream()
-				.parallel()
-				.map(f -> f.apply(verificationCardSets))
-				.reduce(Boolean::logicalAnd)
-				.orElse(Boolean.FALSE);
+		final boolean isChunkIdsCoherent = validateControlComponentCodeSharesPayloads(verificationCardSets) &&
+				validateSetupComponentVerificationDataPayloads(verificationCardSets);
 
 		if (isChunkIdsCoherent) {
 			return VerificationResult.success(getVerificationDefinition());
@@ -117,6 +108,7 @@ public class VerifyChunkConsistency extends AbstractVerification {
 	private boolean validateControlComponentCodeSharesPayloadContentMatchFileName(final Path payloadPath) {
 		final int expectedChunkId = Integer.parseInt(payloadPath.getFileName().toString().split("\\.")[1]);
 		return electionDataExtractionService.getControlComponentCodeSharesOrderByNodeId(payloadPath)
+				.stream()
 				.parallel()
 				.map(controlComponentCodeSharesPayload -> controlComponentCodeSharesPayload.getChunkId() == expectedChunkId)
 				.reduce(Boolean::logicalAnd)

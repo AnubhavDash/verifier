@@ -23,7 +23,7 @@ public class PathNode {
 	private final List<Path> paths;
 	private final Path firstPath;
 
-	PathNode(final List<Path> path) {
+	PathNode(List<Path> path) {
 		this.paths = path;
 		this.firstPath = path.get(0);
 	}

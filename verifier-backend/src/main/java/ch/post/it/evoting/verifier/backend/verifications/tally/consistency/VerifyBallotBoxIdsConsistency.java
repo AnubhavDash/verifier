@@ -93,14 +93,15 @@ public class VerifyBallotBoxIdsConsistency extends AbstractVerification {
 					final String bb = ballotBoxIdPath.getFileName().toString();
 					final Set<String> ballotBoxId = Set.of(bb);
 
-					final Set<String> controlComponentBallotBoxIds = extractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(
-									inputDirectoryPath, bb)
+					final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads = extractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(
+							inputDirectoryPath, bb);
+					final Set<String> controlComponentBallotBoxIds = controlComponentBallotBoxPayloads.stream()
 							.map(ControlComponentBallotBoxPayload::getBallotBoxId)
 							.collect(Collectors.toSet());
 
-					final Set<String> controlComponentShuffleIds = extractionService.getControlComponentShufflePayloadsOrderedByNodeId(
-									inputDirectoryPath, bb)
-							.parallel()
+					final List<ControlComponentShufflePayload> controlComponentShufflePayloads = extractionService.getControlComponentShufflePayloadsOrderedByNodeId(
+							inputDirectoryPath, bb);
+					final Set<String> controlComponentShuffleIds = controlComponentShufflePayloads.stream()
 							.map(ControlComponentShufflePayload::getBallotBoxId)
 							.collect(Collectors.toSet());
 

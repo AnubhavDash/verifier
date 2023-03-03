@@ -54,7 +54,7 @@ class VerifySignatureSetupComponentTallyDataTest extends SetupVerificationTest {
 	@Test
 	void testExpectedSignerSuccess() throws SignatureException {
 		final SetupComponentTallyDataPayload setupComponentTallyDataPayload = electionDataExtractionService.getSetupComponentTallyDataPayloads(
-				datasetPath).toList().get(0);
+				datasetPath).get(0);
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_CONFIG);
 		final byte[] signature = testSignatureGeneration.genSignature(setupComponentTallyDataPayload,
 				ChannelSecurityContextData.setupComponentTallyData(setupComponentTallyDataPayload.getElectionEventId(),
@@ -66,7 +66,7 @@ class VerifySignatureSetupComponentTallyDataTest extends SetupVerificationTest {
 	@Test
 	void testUnexpectedSignerFails() throws SignatureException {
 		final SetupComponentTallyDataPayload setupComponentTallyDataPayload = electionDataExtractionService.getSetupComponentTallyDataPayloads(
-				datasetPath).toList().get(0);
+				datasetPath).get(0);
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.CONTROL_COMPONENT_1);
 		final byte[] signature = testSignatureGeneration.genSignature(setupComponentTallyDataPayload,
 				ChannelSecurityContextData.setupComponentTallyData(setupComponentTallyDataPayload.getElectionEventId(),

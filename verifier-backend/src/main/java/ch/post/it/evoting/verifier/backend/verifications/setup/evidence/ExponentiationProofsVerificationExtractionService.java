@@ -133,14 +133,15 @@ public class ExponentiationProofsVerificationExtractionService {
 			final String electionEventId) {
 
 		// Extract requests
-		final Map<Integer, SetupComponentVerificationDataPayload> chunkIdToContributionRequests = extractionService.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(
-						verificationCardSetIdPath)
-				.parallel()
-				.collect(Collectors.toConcurrentMap(SetupComponentVerificationDataPayload::getChunkId, Function.identity()));
+		final List<SetupComponentVerificationDataPayload> contributionRequestPayloads = extractionService.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(
+				verificationCardSetIdPath);
+
+		final Map<Integer, SetupComponentVerificationDataPayload> chunkIdToContributionRequests = contributionRequestPayloads.stream()
+				.collect(Collectors.toMap(SetupComponentVerificationDataPayload::getChunkId, Function.identity()));
 
 		// Extract responses
 		final List<List<ControlComponentCodeSharesPayload>> contributionResponsesPayloads = extractionService.deserializeControlComponentCodeSharesPayloadsOrderByChunkIdAndNodeId(
-						verificationCardSetIdPath);
+				verificationCardSetIdPath);
 		verifyControlComponentCodeSharesConsistency(contributionResponsesPayloads, electionEventId,
 				verificationCardSetIdPath.getFileName().toString());
 		final Map<Integer, List<ControlComponentCodeSharesPayload>> chunkIdToContributionResponses = contributionResponsesPayloads.stream()
@@ -192,10 +193,9 @@ public class ExponentiationProofsVerificationExtractionService {
 		checkArgument(!controlComponentCodeSharesPayloads.isEmpty(),
 				"There must be at least one control component code share payload. [electionEventId: %s, verificationCardSetId: %s]", electionEventId,
 				verificationCardSetId);
-		controlComponentCodeSharesPayloads.stream().parallel()
-				.forEach(controlComponentCodeSharesPayload -> checkArgument(!controlComponentCodeSharesPayload.isEmpty(),
-						"There must be at least one chunk of control component code shares payload. [electionEventId: %s, verificationCardSetId: %s]",
-						electionEventId, verificationCardSetId));
+		controlComponentCodeSharesPayloads.forEach(controlComponentCodeSharesPayload -> checkArgument(!controlComponentCodeSharesPayload.isEmpty(),
+				"There must be at least one chunk of control component code shares payload. [electionEventId: %s, verificationCardSetId: %s]",
+				electionEventId, verificationCardSetId));
 
 		checkArgument(IntStream.range(0, controlComponentCodeSharesPayloads.size())
 						.parallel()

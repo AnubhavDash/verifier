@@ -86,13 +86,12 @@ class VerifyNodeIdsConsistencyTest extends SetupVerificationTest {
 	@Test
 	void verifyNokCodeShares() {
 		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-		final Stream<Stream<ControlComponentCodeSharesPayload>> codeSharesPayloads = electionDataExtractionService.getControlComponentCodeSharesPayloadsByChunkAndVcs(
+		final Stream<List<ControlComponentCodeSharesPayload>> codeSharesPayloads = electionDataExtractionService.getControlComponentCodeSharesPayloadsByChunkAndVcs(
 				datasetPath);
-		final Stream<Stream<ControlComponentCodeSharesPayload>> codeSharesPayloadsMissingNodeId = codeSharesPayloads
-				.parallel()
-				.map(codeSharesList -> codeSharesList
-						.parallel()
-						.filter(codeShare -> codeShare.getNodeId() != 1));
+		final Stream<List<ControlComponentCodeSharesPayload>> codeSharesPayloadsMissingNodeId = codeSharesPayloads.map(
+				codeSharesList -> codeSharesList.stream()
+						.filter(codeShare -> codeShare.getNodeId() != 1)
+						.toList());
 		doReturn(codeSharesPayloadsMissingNodeId).when(extractionServiceMock).getControlComponentCodeSharesPayloadsByChunkAndVcs(datasetPath);
 
 		final VerifyNodeIdsConsistency verificationWithMock = new VerifyNodeIdsConsistency(resultPublisherServiceMock, extractionServiceMock);

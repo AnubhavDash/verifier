@@ -103,9 +103,9 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 					final String vcsId = verificationCardSetIdPath.getFileName().toString();
 					final Set<String> verificationCardSetId = Set.of(vcsId);
 
-					final Set<String> verificationDataIds = electionDataExtractionService.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(
-									verificationCardSetIdPath)
-							.parallel()
+					final List<SetupComponentVerificationDataPayload> setupComponentVerificationDataPayloads = electionDataExtractionService.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(
+							verificationCardSetIdPath);
+					final Set<String> verificationDataIds = setupComponentVerificationDataPayloads.stream()
 							.map(SetupComponentVerificationDataPayload::getVerificationCardSetId)
 							.collect(Collectors.toUnmodifiableSet());
 					checkArgument(verificationDataIds.size() == 1, "The setup component verification card set id size must be one.");
@@ -113,9 +113,7 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 					final List<List<ControlComponentCodeSharesPayload>> controlComponentCodeSharesPayloads = electionDataExtractionService.deserializeControlComponentCodeSharesPayloadsOrderByChunkIdAndNodeId(
 							verificationCardSetIdPath);
 					final Set<String> codeShareIds = controlComponentCodeSharesPayloads.stream()
-							.parallel()
 							.flatMap(payloads -> payloads.stream()
-									.parallel()
 									.map(ControlComponentCodeSharesPayload::getVerificationCardSetId)
 									.collect(Collectors.toUnmodifiableSet())
 									.stream())

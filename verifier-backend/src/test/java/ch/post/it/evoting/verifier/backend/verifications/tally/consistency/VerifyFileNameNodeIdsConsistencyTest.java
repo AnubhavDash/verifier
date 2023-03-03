@@ -56,7 +56,7 @@ class VerifyFileNameNodeIdsConsistencyTest extends TallyVerificationTest {
 	void verifyNokBallotBoxPayloadNodeId() throws IOException {
 		final ObjectMapper objectMapperMock = spy(objectMapper);
 		final ControlComponentBallotBoxPayload firstBallotBoxPayload = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
-				datasetPath).toList().get(0);
+				datasetPath).get(0);
 		doReturn(firstBallotBoxPayload).when(objectMapperMock).readValue(any(File.class), eq(ControlComponentBallotBoxPayload.class));
 
 		final VerifyFileNameNodeIdsConsistency failingVerification = new VerifyFileNameNodeIdsConsistency(resultPublisherServiceMock,

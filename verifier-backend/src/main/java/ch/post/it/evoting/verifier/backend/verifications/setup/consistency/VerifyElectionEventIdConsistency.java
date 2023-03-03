@@ -88,20 +88,20 @@ public class VerifyElectionEventIdConsistency extends AbstractVerification {
 	}
 
 	private boolean validateControlComponentCodeSharesPayload(final Path inputDirectoryPath, final String electionEventId) {
-		return electionDataExtractionService.getControlComponentCodeSharesPayloadsOrderedByNodeId(inputDirectoryPath)
+		return electionDataExtractionService.getControlComponentCodeSharesPayloadsOrderedByNodeId(inputDirectoryPath).stream()
 				.parallel()
 				.allMatch(controlComponentCodeSharesPayload -> electionEventId.equals(controlComponentCodeSharesPayload.getElectionEventId()));
 	}
 
 	private boolean validateSetupComponentVerificationDataPayload(final Path inputDirectoryPath, final String electionEventId) {
-		return electionDataExtractionService.getSetupComponentVerificationDataPayloadsOrderByChunkId(inputDirectoryPath)
+		return electionDataExtractionService.getSetupComponentVerificationDataPayloadsOrderByChunkId(inputDirectoryPath).stream()
 				.parallel()
 				.allMatch(
 						setupComponentVerificationDataPayload -> electionEventId.equals(setupComponentVerificationDataPayload.getElectionEventId()));
 	}
 
 	private boolean validateSetupComponentTallyDataPayload(final Path inputDirectoryPath, final String electionEventId) {
-		return electionDataExtractionService.getSetupComponentTallyDataPayloads(inputDirectoryPath)
+		return electionDataExtractionService.getSetupComponentTallyDataPayloads(inputDirectoryPath).stream()
 				.parallel()
 				.allMatch(setupComponentTallyDataPayload -> electionEventId.equals(setupComponentTallyDataPayload.getElectionEventId()));
 	}

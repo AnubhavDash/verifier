@@ -70,7 +70,6 @@ public class VerifyChoiceReturnCodesPublicKeyConsistency extends AbstractVerific
 
 		final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> choiceReturnCodesPublicKeys = setupComponentPublicKeys.combinedControlComponentPublicKeys()
 				.stream()
-				.parallel()
 				.map(ControlComponentPublicKeys::ccrjChoiceReturnCodesEncryptionPublicKey)
 				.collect(GroupVector.toGroupVector());
 

@@ -23,14 +23,14 @@ import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.hashing.HashableBigInteger;
 import ch.post.it.evoting.cryptoprimitives.hashing.HashableList;
 import ch.post.it.evoting.cryptoprimitives.hashing.HashableString;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.BallotBoxType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.BallotElectionType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.BallotVoteType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.CountingCircleType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.DomainOfInfluenceType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.ElectionType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.Results;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.VoteType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.BallotBoxType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.BallotElectionType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.BallotVoteType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.CountingCircleType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.DomainOfInfluenceType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.ElectionType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.VoteType;
 
 public interface HashableResultsFactory {
 	static Hashable fromResults(final Results results) {

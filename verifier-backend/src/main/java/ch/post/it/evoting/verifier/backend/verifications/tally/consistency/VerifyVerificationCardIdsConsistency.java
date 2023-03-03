@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
@@ -68,9 +67,9 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 		final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads = extractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
-				inputDirectoryPath).toList();
+				inputDirectoryPath);
 
-		final Stream<SetupComponentTallyDataPayload> setupComponentTallyDataPayloads = extractionService.getSetupComponentTallyDataPayloads(
+		final List<SetupComponentTallyDataPayload> setupComponentTallyDataPayloads = extractionService.getSetupComponentTallyDataPayloads(
 				inputDirectoryPath);
 		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(inputDirectoryPath);
 
@@ -90,27 +89,23 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 		final Map<String, String> verificationCardSetIdToBallotBoxId = electionEventContextPayload
 				.getElectionEventContext()
 				.verificationCardSetContexts().stream()
-				.parallel()
-				.collect(Collectors.toConcurrentMap(VerificationCardSetContext::verificationCardSetId, VerificationCardSetContext::ballotBoxId));
+				.collect(Collectors.toMap(VerificationCardSetContext::verificationCardSetId, VerificationCardSetContext::ballotBoxId));
 
 		return controlComponentBallotBoxPayloads.stream()
-				.parallel()
 				.allMatch(payload -> payload.getConfirmedEncryptedVotes().stream()
-						.parallel()
 						.allMatch(encryptedVerifiableVote -> !payload.getBallotBoxId().isEmpty() && payload.getBallotBoxId()
-								.equals(verificationCardSetIdToBallotBoxId.get(encryptedVerifiableVote.contextIds().verificationCardSetId()))));
+								.equals(verificationCardSetIdToBallotBoxId.get(
+										encryptedVerifiableVote.contextIds().verificationCardSetId()))));
 	}
 
 	@VisibleForTesting
 	boolean verifyVerificationCardIdsInExpectedSet(final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloadsByBallotBox,
-			final Stream<SetupComponentTallyDataPayload> setupComponentTallyDataPayloads) {
-		final Map<String, Set<String>> verificationCardSetIdToVerificationCardIds = setupComponentTallyDataPayloads
-				.parallel()
-				.collect(Collectors.toConcurrentMap(SetupComponentTallyDataPayload::getVerificationCardSetId,
+			final List<SetupComponentTallyDataPayload> setupComponentTallyDataPayloads) {
+		final Map<String, Set<String>> verificationCardSetIdToVerificationCardIds = setupComponentTallyDataPayloads.stream()
+				.collect(Collectors.toMap(SetupComponentTallyDataPayload::getVerificationCardSetId,
 						setupComponentTallyDataPayload -> Set.copyOf(setupComponentTallyDataPayload.getVerificationCardIds())));
 
 		return controlComponentBallotBoxPayloadsByBallotBox.stream()
-				.parallel()
 				.flatMap(payload -> payload.getConfirmedEncryptedVotes().stream())
 				.allMatch(encryptedVerifiableVote -> {
 					final Set<String> expectedVerificationCardIds = verificationCardSetIdToVerificationCardIds.get(

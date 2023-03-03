@@ -43,23 +43,23 @@ import ch.ech.xmlns.ech_0222._1.EventRawDataDelivery;
 import ch.ech.xmlns.ech_0222._1.RawDataType;
 import ch.ech.xmlns.ech_0222._1.ReportingBodyType;
 import ch.ech.xmlns.ech_0222._1.VoteRawDataType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.BallotType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.CandidatePositionType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.CandidateType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.ElectionInformationType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.ListType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.StandardAnswerType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.StandardBallotType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.StandardQuestionType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.TieBreakQuestionType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.TiebreakAnswerType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.VariantBallotType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.VoteInformationType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.BallotElectionType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.ElectionType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.Results;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.VoteType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.BallotType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.CandidatePositionType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.CandidateType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.ElectionInformationType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.ListType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.StandardAnswerType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.StandardBallotType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.StandardQuestionType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.TieBreakQuestionType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.TiebreakAnswerType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VariantBallotType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteInformationType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.BallotElectionType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.ElectionType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.VoteType;
 
 public class RawDataDeliveryMapper {
 
@@ -162,7 +162,7 @@ public class RawDataDeliveryMapper {
 
 		return votes.stream()
 				.map(vote -> {
-					final Optional<ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.VoteType> voteConfig = configuration.getContest()
+					final Optional<ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType> voteConfig = configuration.getContest()
 							.getVoteInformation().stream().parallel()
 							.map(VoteInformationType::getVote)
 							.filter(vt -> vt.getVoteIdentification().equals(vote.getVoteIdentification()))
@@ -232,7 +232,7 @@ public class RawDataDeliveryMapper {
 	}
 
 	private static List<VoteRawDataType.BallotRawData> createVoteBallotRawData(final VoteType voteType,
-			final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.VoteType voteConfig) {
+			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType voteConfig) {
 
 		return voteType.getBallot().stream()
 				.flatMap(ballotVote -> {
@@ -265,7 +265,7 @@ public class RawDataDeliveryMapper {
 	}
 
 	private static AnswerOptionIdentificationType createAnswerOptionIdentification(final String answerId, final BigInteger answerType,
-			final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.VoteType voteConfig) {
+			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType voteConfig) {
 
 		final AnswerOptionIdentificationType answerOptionIdentificationType = new AnswerOptionIdentificationType();
 
@@ -277,7 +277,7 @@ public class RawDataDeliveryMapper {
 	}
 
 	private static List<AnswerOptionIdentificationType.AnswerTextInformation> createAnswerTextInformation(final String answerId,
-			final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.VoteType voteConfig) {
+			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType voteConfig) {
 
 		final Optional<StandardAnswerType> answer = voteConfig.getBallot().stream().parallel()
 				.flatMap(ballotType -> Streams.concat(
@@ -482,7 +482,7 @@ public class RawDataDeliveryMapper {
 	}
 
 	private static BigInteger findAnswerType(final String answerId,
-			final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.VoteType voteConfig) {
+			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType voteConfig) {
 		final Optional<StandardAnswerType> answer = voteConfig.getBallot().stream().parallel()
 				.flatMap(ballotType -> Streams.concat(
 						ballotType.getStandardBallot() != null ? ballotType.getStandardBallot().getAnswer().stream() : Stream.empty(),
@@ -515,7 +515,7 @@ public class RawDataDeliveryMapper {
 	}
 
 	private static String findQuestionIdentification(final String answerId,
-			final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.VoteType voteConfig) {
+			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType voteConfig) {
 		final Optional<StandardBallotType> question = voteConfig.getBallot().stream().parallel()
 				.map(BallotType::getStandardBallot)
 				.filter(Objects::nonNull)
@@ -557,7 +557,7 @@ public class RawDataDeliveryMapper {
 	}
 
 	private static String findBallotIdentificationFromQuestionIdentification(final String questionId,
-			final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.VoteType voteConfig) {
+			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType voteConfig) {
 		return voteConfig.getBallot().stream()
 				.parallel()
 				.filter(ballotType -> {

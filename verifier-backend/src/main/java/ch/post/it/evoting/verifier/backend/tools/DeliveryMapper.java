@@ -23,14 +23,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.LongStream;
-import java.util.stream.Stream;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -73,27 +67,27 @@ import ch.ech.xmlns.ech_0155._4.TieBreakQuestionType;
 import ch.ech.xmlns.ech_0155._4.TieBreakQuestionType.TieBreakQuestionInfo;
 import ch.ech.xmlns.ech_0155._4.VoteDescriptionInformationType;
 import ch.ech.xmlns.ech_0155._4.VoteType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.AuthorizationObjectType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.AuthorizationType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.BallotType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.CandidatePositionType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.CandidateType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.ElectionDescriptionInformationType.ElectionDescriptionInfo;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.ElectionInformationType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.ListType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.RegisterType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.StandardAnswerType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.StandardBallotType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.StandardQuestionType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.TiebreakAnswerType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.VariantBallotType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.VoteInformationType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.BallotBoxType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.BallotElectionType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.BallotVoteType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.DomainOfInfluenceType;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.Results;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.AuthorizationObjectType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.AuthorizationType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.BallotType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.CandidatePositionType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.CandidateType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.ElectionDescriptionInformationType.ElectionDescriptionInfo;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.ElectionInformationType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.ListType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.RegisterType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.StandardAnswerType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.StandardBallotType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.StandardQuestionType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.TiebreakAnswerType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VariantBallotType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteInformationType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.BallotBoxType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.BallotElectionType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.BallotVoteType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.DomainOfInfluenceType;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 
 /**
  * Maps to {@link ch.ech.xmlns.ech_0110._4.Delivery}.
@@ -103,8 +97,8 @@ public interface DeliveryMapper {
 
 	DeliveryMapper INSTANCE = Mappers.getMapper(DeliveryMapper.class);
 
-	BigInteger PROPORTIONAL = BigInteger.ONE;
-	BigInteger MAJORAL = BigInteger.valueOf(2);
+	BigInteger PROPORTIONAL = BigInteger.valueOf(2);
+	BigInteger MAJORAL = BigInteger.ONE;
 
 	String BLANK_STR = "BLANK";
 	String EMPTY_STR = "EMPTY";
@@ -113,29 +107,27 @@ public interface DeliveryMapper {
 
 	@Mapping(target = "EVotingPeriod.EVotingPeriodFrom", source = "contestType.evotingFromDate")
 	@Mapping(target = "EVotingPeriod.EVotingPeriodTill", source = "contestType.evotingToDate")
-	ContestType mapToContestInformation(final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.ContestType contestType);
+	ContestType mapToContestInformation(final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.ContestType contestType);
 
 	VoteDescriptionInformationType mapToVoteDescription(
-			final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.VoteDescriptionInformationType voteDescriptionInformationType);
+			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteDescriptionInformationType voteDescriptionInformationType);
 
 	BallotDescriptionInformationType mapToBallotDescriptionInformation(
-			final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.BallotDescriptionInformationType ballotDescriptionInformationType);
+			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.BallotDescriptionInformationType ballotDescriptionInformationType);
 
-	BallotQuestionType mapToBallotQuestion(
-			final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.BallotQuestionType ballotQuestionType);
+	BallotQuestionType mapToBallotQuestion(final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.BallotQuestionType ballotQuestionType);
 
 	@Mapping(target = "language", source = "ballotQuestionInfo.language")
 	@Mapping(target = "tieBreakQuestionTitle", source = "ballotQuestionInfo.ballotQuestionTitle")
 	@Mapping(target = "tieBreakQuestion", source = "ballotQuestionInfo.ballotQuestion")
 	TieBreakQuestionInfo mapToTieBreakQuestionInfo(
-			final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.BallotQuestionType.BallotQuestionInfo ballotQuestionInfo);
+			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.BallotQuestionType.BallotQuestionInfo ballotQuestionInfo);
 
-	ElectionType mapToElectionType(final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.ElectionType electionType);
+	ElectionType mapToElectionType(final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.ElectionType electionType);
 
 	@Mapping(target = "candidateReference", source = "candidateType.referenceOnPosition")
 	@Mapping(target = "officialCandidateYesNo", expression = "java(candidateType.getCandidateIdentification() != null)")
-	CandidateInformationType mapToCandidateInformationType(
-			final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.CandidateType candidateType);
+	CandidateInformationType mapToCandidateInformationType(final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.CandidateType candidateType);
 
 	ListInformationType mapToListInformationType(final ListType listType);
 
@@ -224,11 +216,11 @@ public interface DeliveryMapper {
 						.map(BallotBoxType::getCountingCircle)
 						.flatMap(Collection::stream)
 						.filter(countingCircleType -> countingCircleType.getCountingCircleIdentification().equals(countingCircleIdentification))
-						.map(ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.CountingCircleType::getDomainOfInfluence)
+						.map(ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.CountingCircleType::getDomainOfInfluence)
 						.flatMap(Collection::stream)
 						.map(DomainOfInfluenceType::getVote)
 						.flatMap(Collection::stream)
-						.map(ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.VoteType::getBallot)
+						.map(ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.VoteType::getBallot)
 						.mapToLong(Collection::size)
 						.reduce(0, Math::addExact));
 
@@ -276,14 +268,15 @@ public interface DeliveryMapper {
 				.filter(electionType -> isDomainOfInfluenceInCountingCircle(electionType.getDomainOfInfluence(), countingCircleIdentification,
 						authorizationTypes))
 				.map(electionType -> mapToElectionGroupResultsType(results, countingCircleIdentification, electionInformationTypes,
-						authorizationTypes, registerType, electionType))
+						authorizationTypes, registerType,
+						electionType))
 				.toList();
 	}
 
 	private ElectionGroupResultsType mapToElectionGroupResultsType(final Results results, final String countingCircleIdentification,
 			final List<ElectionInformationType> electionInformationTypes, final List<AuthorizationType> authorizationTypes,
 			final RegisterType registerType,
-			final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.ElectionType electionType) {
+			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.ElectionType electionType) {
 
 		final String domainOfInfluenceIdentification = electionType.getDomainOfInfluence();
 		final String electionIdentification = electionType.getElectionIdentification();
@@ -298,19 +291,17 @@ public interface DeliveryMapper {
 				.map(BallotBoxType::getCountingCircle)
 				.flatMap(Collection::stream)
 				.filter(countingCircleType -> countingCircleType.getCountingCircleIdentification().equals(countingCircleIdentification))
-				.map(ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.CountingCircleType::getDomainOfInfluence)
+				.map(ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.CountingCircleType::getDomainOfInfluence)
 				.flatMap(Collection::stream)
 				.filter(domainOfInfluenceType -> domainOfInfluenceType.getDomainOfInfluenceIdentification().equals(domainOfInfluenceIdentification))
 				.map(DomainOfInfluenceType::getElection)
 				.flatMap(Collection::stream)
 				.filter(et -> et.getElectionIdentification().equals(electionIdentification))
-				.map(ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.ElectionType::getBallot)
+				.map(ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.ElectionType::getBallot)
 				.flatMap(Collection::stream)
 				.toList();
 
-		final BigInteger numberOfMandates = electionInformationType.getElection().getNumberOfMandates();
-		final List<BallotElectionTypeExtended> ballotElectionTypesExtended = toBallotElectionTypeExtended(ballotElectionTypes, listTypes,
-				numberOfMandates);
+		final List<BallotElectionTypeExtended> ballotElectionTypesExtended = toBallotElectionTypeExtended(ballotElectionTypes, listTypes);
 
 		final BigInteger countOfUnaccountedBlankBallots = getCountOfUnaccountedBlankBallots(ballotElectionTypesExtended);
 		final BigInteger countOfUnaccountedInvalidBallots = BigInteger.ZERO;
@@ -354,7 +345,7 @@ public interface DeliveryMapper {
 
 	private ElectionResultType mapToElectionResultType(final ElectionInformationType electionInformationType,
 			final List<BallotElectionTypeExtended> ballotElectionTypesExtended) {
-		final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.ElectionType election = electionInformationType.getElection();
+		final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.ElectionType election = electionInformationType.getElection();
 		final BigInteger typeOfElection = election.getTypeOfElection();
 
 		final ElectionResultType electionResultType = new ElectionResultType()
@@ -428,7 +419,7 @@ public interface DeliveryMapper {
 					final CandidateResultType candidateResultType = new CandidateResultType()
 							.withCandidateInformation(mapToCandidateInformationType(candidate))
 							.withListResults(
-									mapToCandidateListResults(candidateIdentification, listTypes, ballotElectionTypesExtended));
+									mapToCandidateListResultsForProportional(candidateIdentification, listTypes, ballotElectionTypesExtended));
 
 					return candidateResultType.withCountOfVotesTotal(
 							getCountOfVotesTotal(typeOfElection, listTypes, ballotElectionTypesExtended, candidateResultType));
@@ -450,9 +441,9 @@ public interface DeliveryMapper {
 
 												return new CandidateListResultType()
 														.withListIdentification(list.getListIdentification())
-														.withCountOfvotesFromChangedBallots(
+														.withCountOfvotesFromUnchangedBallots(
 																new ResultDetailType().withTotal(isChosenList ? BigInteger.ONE : BigInteger.ZERO))
-														.withCountOfvotesFromUnchangedBallots(new ResultDetailType().withTotal(BigInteger.ZERO));
+														.withCountOfvotesFromChangedBallots(new ResultDetailType().withTotal(BigInteger.ZERO));
 											})
 											.toList())
 									.withCountOfVotesTotal(BigInteger.ONE)
@@ -519,7 +510,7 @@ public interface DeliveryMapper {
 							.withListInformation(mapToListInformationType(list))
 							.withCountOfChangedBallots(getCountOfChangedBallots(listIdentification, ballotElectionTypesExtended))
 							.withCountOfUnchangedBallots(getCountOfUnchangedBallots(listIdentification, ballotElectionTypesExtended))
-							.withCountOfCandidateVotes(getCountOfCandidateVotes(listIdentification, isEmptyList, ballotElectionTypesExtended))
+							.withCountOfCandidateVotes(getCountOfCandidateVotes(listIdentification, ballotElectionTypesExtended))
 							.withCountOfAdditionalVotes(
 									getCountOfAdditionalVotes(listIdentification, isEmptyList, ballotElectionTypesExtended));
 
@@ -551,20 +542,14 @@ public interface DeliveryMapper {
 	}
 
 	private ResultDetailType getCountOfCandidateVotes(final String listIdentification,
-			final boolean isEmptyList, final List<BallotElectionTypeExtended> ballotElectionTypesExtended) {
-
-		final BigInteger countOfCandidateVotes = isEmptyList ?
-				BigInteger.ZERO :
-				BigInteger.valueOf(ballotElectionTypesExtended.stream()
-						.mapToLong(ballotElectionTypeExtended -> ballotElectionTypeExtended.votesPerList.entrySet().stream().parallel()
-								.filter(entry -> entry.getKey().equals(listIdentification))
-								.mapToLong(Map.Entry::getValue)
-								.findFirst()
-								.orElse(0))
-						.sum());
+			final List<BallotElectionTypeExtended> ballotElectionTypesExtended) {
 
 		return new ResultDetailType()
-				.withTotal(countOfCandidateVotes);
+				.withTotal(BigInteger.valueOf(
+						ballotElectionTypesExtended.stream()
+								.filter(ballotElectionTypeExtended -> listIdentification.equals(ballotElectionTypeExtended.chosenListIdentification))
+								.mapToLong(BallotElectionTypeExtended::numberOfCandidatesFromChosenList)
+								.reduce(0, Math::addExact)));
 	}
 
 	private ResultDetailType getCountOfChangedBallots(final String listIdentification,
@@ -590,111 +575,70 @@ public interface DeliveryMapper {
 	}
 
 	private List<BallotElectionTypeExtended> toBallotElectionTypeExtended(final List<BallotElectionType> ballotElectionTypes,
-			final List<ListType> listTypes, final BigInteger numberOfMandates) {
+			final List<ListType> listTypes) {
 
-		final long numberOfMandatesAsLong = numberOfMandates.longValueExact();
-
-		final ListType emptyListType = listTypes.stream().parallel()
+		final ListType emptyListType = listTypes.stream()
 				.filter(ListType::isListEmpty)
 				.collect(MoreCollectors.onlyElement());
 
-		final String emptyListTypeListIdentification = emptyListType.getListIdentification();
-
-		final List<String> emptyListCandidateListIdentifications = emptyListType.getCandidatePosition().stream().parallel()
+		final List<String> emptyListCandidateListIdentifications = emptyListType.getCandidatePosition().stream()
 				.map(CandidatePositionType::getCandidateListIdentification)
 				.toList();
 
-		return ballotElectionTypes.stream().parallel()
+		return ballotElectionTypes.stream()
 				.map(ballotElectionType -> {
-
 					final String chosenListIdentification = ballotElectionType.getChosenListIdentification();
-					final boolean hasChosenListIdentification = Objects.nonNull(chosenListIdentification);
+
 					final List<String> chosenWriteInsCandidateValues = ballotElectionType.getChosenWriteInsCandidateValue();
 					final List<String> chosenCandidateListIdentifications = ballotElectionType.getChosenCandidateListIdentification();
 					final List<String> chosenCandidateIdentifications = ballotElectionType.getChosenCandidateIdentification();
 
-					checkState(chosenCandidateListIdentifications.size() <= numberOfMandatesAsLong,
-							"There cannot be more chosenCandidateListIdentifications than numberOfMandates. [size: %s, numberOfMandates: %s]",
-							chosenCandidateListIdentifications.size(), numberOfMandatesAsLong);
-					checkState(chosenCandidateIdentifications.size() <= numberOfMandatesAsLong,
-							"There cannot be more chosenCandidateIdentifications than numberOfMandates. [size: %s, numberOfMandates: %s]",
-							chosenCandidateIdentifications.size(), numberOfMandatesAsLong);
-
-					// Map for listId to # votes for selected candidates.
-					// Ex: (List2 -> 4), (List3 -> 2)
-					final Map<String, Long> votesPerList = chosenCandidateListIdentifications.stream().parallel()
-							.map(chosenCandidateListIdentification -> getListIdentificationFromCandidateListIdentification(listTypes,
-									chosenCandidateListIdentification))
-							.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-
-					final long emptyVotes = votesPerList.entrySet().stream().parallel()
-							.filter(entry -> entry.getKey().equals(emptyListTypeListIdentification))
-							.mapToLong(Map.Entry::getValue)
+					final ListType chosenListType = listTypes.stream()
+							.filter(list -> list.getListIdentification().equals(chosenListIdentification))
 							.findFirst()
-							.orElse(0);
+							.orElse(null);
 
-					final boolean isEmptyListChosen = emptyListTypeListIdentification.equals(chosenListIdentification);
+					final List<String> candidateListIdentificationsFromChosenList =
+							chosenListType == null ? List.of() : chosenListType.getCandidatePosition().stream()
+									.map(CandidatePositionType::getCandidateListIdentification)
+									.toList();
 
-					final boolean hasNoChosenListButHasChosenCandidates = !hasChosenListIdentification &&
-							(!chosenCandidateIdentifications.isEmpty() || !chosenWriteInsCandidateValues.isEmpty());
+					final long emptyVotes = chosenCandidateListIdentifications.stream()
+							.filter(emptyListCandidateListIdentifications::contains)
+							.count();
 
-					final String chosenListId = hasNoChosenListButHasChosenCandidates ? emptyListTypeListIdentification : chosenListIdentification;
+					final long numberOfCandidatesFromChosenList = chosenCandidateListIdentifications.stream()
+							.filter(candidateListIdentificationsFromChosenList::contains)
+							.count();
 
-					final List<String> unchangedBallotChoices = buildUnchangedBallotChoices(chosenListId, listTypes, emptyListTypeListIdentification,
-							emptyListCandidateListIdentifications, numberOfMandatesAsLong);
+					final boolean isEmptyListChosen = emptyListType.getListIdentification().equals(chosenListIdentification);
 
-					final List<String> currentBallotChoices = Stream.concat(chosenWriteInsCandidateValues.stream(),
-									Stream.concat(chosenCandidateListIdentifications.stream(), chosenCandidateIdentifications.stream()))
-							.toList();
+					final boolean isBlank =
+							(Objects.isNull(chosenListIdentification) || (isEmptyListChosen && emptyListCandidateListIdentifications.containsAll(
+									chosenCandidateListIdentifications)))
+									&& chosenCandidateIdentifications.stream().allMatch(Objects::isNull)
+									&& chosenWriteInsCandidateValues.stream().allMatch(Objects::isNull);
 
-					final boolean areCurrentBallotChoicesUnchanged = new HashSet<>(unchangedBallotChoices).containsAll(currentBallotChoices) &&
-							new HashSet<>(currentBallotChoices).containsAll(unchangedBallotChoices) &&
-							currentBallotChoices.size() == unchangedBallotChoices.size();
+					final boolean ballotHasWriteIn = !chosenWriteInsCandidateValues.isEmpty();
 
-					final boolean isChangedBallot = !areCurrentBallotChoicesUnchanged;
+					final boolean allCandidatesFromListHaveBeenChosen = chosenCandidateListIdentifications.containsAll(
+							candidateListIdentificationsFromChosenList);
+
+					final boolean allChosenCandidatesAreFromList = candidateListIdentificationsFromChosenList.containsAll(
+							chosenCandidateListIdentifications);
+
+					final boolean chosenCandidatesNumberMatchNumberCandidatesFromList =
+							chosenCandidateListIdentifications.size() == candidateListIdentificationsFromChosenList.size();
+
+					final boolean isChangedBallot = ballotHasWriteIn || !allCandidatesFromListHaveBeenChosen || !allChosenCandidatesAreFromList
+							|| !chosenCandidatesNumberMatchNumberCandidatesFromList;
+
 					final boolean isWithPartyAffiliation = !isEmptyListChosen;
-					final boolean isBlank = (!hasChosenListIdentification || !isWithPartyAffiliation) && !isChangedBallot;
 
-					return new BallotElectionTypeExtended(ballotElectionType, chosenListId, isBlank, isChangedBallot, isWithPartyAffiliation,
-							emptyVotes, votesPerList);
+					return new BallotElectionTypeExtended(ballotElectionType, chosenListIdentification, isBlank, isChangedBallot,
+							isWithPartyAffiliation, emptyVotes, numberOfCandidatesFromChosenList);
 				})
 				.toList();
-	}
-
-	private List<String> buildUnchangedBallotChoices(final String chosenListIdentification, final List<ListType> listTypes,
-			final String emptyListTypeListIdentification, final List<String> emptyListCandidateListIdentifications,
-			final long numberOfMandates) {
-
-		if (emptyListTypeListIdentification.equals(chosenListIdentification)) {
-			// case empty list, unchanged ballot is numberOfMandates times the first entry.
-			return LongStream.range(0, numberOfMandates).parallel()
-					.mapToObj(i -> emptyListCandidateListIdentifications.get(0))
-					.toList();
-		}
-
-		final List<String> candidateListIdentificationsFromChosenList = Objects.isNull(chosenListIdentification) ?
-				Collections.emptyList() :
-				listTypes.stream().parallel()
-						.filter(list -> list.getListIdentification().equals(chosenListIdentification))
-						.collect(MoreCollectors.onlyElement())
-						.getCandidatePosition().stream().parallel()
-						.map(CandidatePositionType::getCandidateListIdentification)
-						.toList();
-
-		return Stream.concat(candidateListIdentificationsFromChosenList.stream(),
-						LongStream.range(0, numberOfMandates - candidateListIdentificationsFromChosenList.size()).parallel()
-								.mapToObj(i -> emptyListCandidateListIdentifications.get(0)))
-				.toList();
-	}
-
-	private String getListIdentificationFromCandidateListIdentification(final List<ListType> lists, final String candidateListIdentification) {
-		return lists.stream().parallel()
-				.filter(list -> list.getCandidatePosition().stream().parallel()
-						.anyMatch(
-								candidatePositionType -> candidateListIdentification.equals(candidatePositionType.getCandidateListIdentification())))
-				.map(ListType::getListIdentification)
-				.distinct()
-				.collect(MoreCollectors.onlyElement());
 	}
 
 	private ElectionResultType.MajoralElection mapToMajoralElection(final BigInteger typeOfElection,
@@ -738,12 +682,9 @@ public interface DeliveryMapper {
 				.reduce(0, Math::addExact));
 	}
 
-	private List<CandidateListResultType> mapToCandidateListResults(final String candidateIdentification, final List<ListType> listTypes,
+	private List<CandidateListResultType> mapToCandidateListResultsForProportional(final String candidateIdentification,
+			final List<ListType> listTypes,
 			final List<BallotElectionTypeExtended> ballotElectionTypesExtended) {
-
-		final ListType emptyList = listTypes.stream()
-				.filter(ListType::isListEmpty)
-				.collect(MoreCollectors.onlyElement());
 
 		final List<CandidatePositionType> candidatePositionTypes = listTypes.stream()
 				.map(ListType::getCandidatePosition)
@@ -756,14 +697,12 @@ public interface DeliveryMapper {
 						.withCountOfvotesFromUnchangedBallots(
 								getCountOfvotesFromUnchangedBallot(candidateIdentification, list, ballotElectionTypesExtended))
 						.withCountOfvotesFromChangedBallots(
-								getCountOfvotesFromChangedBallot(candidateIdentification, list, candidatePositionTypes, ballotElectionTypesExtended,
-										emptyList)))
+								getCountOfvotesFromChangedBallot(candidateIdentification, list, candidatePositionTypes, ballotElectionTypesExtended)))
 				.toList();
 	}
 
 	private ResultDetailType getCountOfvotesFromChangedBallot(final String candidateIdentification, final ListType listType,
-			final List<CandidatePositionType> candidatePositionTypes, final List<BallotElectionTypeExtended> ballotElectionTypesExtended,
-			final ListType emptyList) {
+			final List<CandidatePositionType> candidatePositionTypes, final List<BallotElectionTypeExtended> ballotElectionTypesExtended) {
 
 		final BigInteger countOfvotesFromChangedBallot = ballotElectionTypesExtended.stream()
 				.filter(BallotElectionTypeExtended::isChangedBallot)
@@ -774,52 +713,16 @@ public interface DeliveryMapper {
 						return BigInteger.ZERO;
 					}
 
-					if (listType.getListIdentification().equals(emptyList.getListIdentification())) {
-						// Case empty list
+					final List<String> chosenCandidateListIdentifications = ballotElectionTypeExtended.ballotElectionType.getChosenCandidateListIdentification();
 
-						final BallotElectionType ballotElectionType = ballotElectionTypeExtended.ballotElectionType;
-						final List<String> chosenCandidateIdentifications = ballotElectionType.getChosenCandidateIdentification();
-						final List<String> chosenCandidateListIdentifications = ballotElectionType.getChosenCandidateListIdentification();
-
-						final boolean candidatesChosenWithoutList =
-								!chosenCandidateIdentifications.isEmpty() && chosenCandidateListIdentifications.isEmpty();
-						final boolean candidatesChosenWithList =
-								chosenCandidateIdentifications.isEmpty() && !chosenCandidateListIdentifications.isEmpty();
-
-						if (candidatesChosenWithoutList) {
-							// case 1: using direct candidate identifications choices.
-							return BigInteger.valueOf(chosenCandidateIdentifications.stream().parallel()
-									.filter(candidateIdentification::equals)
-									.count());
-
-						} else if (candidatesChosenWithList) {
-							// case 2: using indirect (through lists) candidate list identifications choices.
-
-							return BigInteger.valueOf(chosenCandidateListIdentifications.stream().parallel()
-									.filter(chosenCandidateListIdentification ->
-											candidatePositionTypes.stream().parallel()
-													.anyMatch(candidatePosition ->
-															candidateIdentification.equals(candidatePosition.getCandidateIdentification())
-																	&& candidatePosition.getCandidateListIdentification()
-																	.equals(chosenCandidateListIdentification)))
-									.count());
-						} else {
-							return BigInteger.ZERO;
-						}
-
-					} else {
-						// Case non-empty list
-						final List<String> chosenCandidateListIdentifications = ballotElectionTypeExtended.ballotElectionType.getChosenCandidateListIdentification();
-
-						return BigInteger.valueOf(chosenCandidateListIdentifications.stream()
-								.filter(chosenCandidateListIdentification ->
-										candidatePositionTypes.stream()
-												.anyMatch(candidatePosition ->
-														candidateIdentification.equals(candidatePosition.getCandidateIdentification())
-																&& candidatePosition.getCandidateListIdentification()
-																.equals(chosenCandidateListIdentification)))
-								.count());
-					}
+					return BigInteger.valueOf(chosenCandidateListIdentifications.stream()
+							.filter(chosenCandidateListIdentification ->
+									candidatePositionTypes.stream()
+											.anyMatch(candidatePosition ->
+													candidateIdentification.equals(candidatePosition.getCandidateIdentification())
+															&& candidatePosition.getCandidateListIdentification()
+															.equals(chosenCandidateListIdentification)))
+							.count());
 				})
 				.reduce(BigInteger.ZERO, BigInteger::add);
 
@@ -865,7 +768,7 @@ public interface DeliveryMapper {
 				.flatMap(Collection::stream)
 				.filter(authorizationObjectType -> authorizationObjectType.getDomainOfInfluence().getId().equals(domainOfInfluenceIdentification))
 				.map(AuthorizationObjectType::getCountingCircle)
-				.map(ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.CountingCircleType::getId)
+				.map(ch.post.it.verifier.backend.domain.xmlns.evotingconfig.CountingCircleType::getId)
 				.toList().contains(countingCircleIdentification);
 	}
 
@@ -892,7 +795,7 @@ public interface DeliveryMapper {
 				.toList();
 	}
 
-	private List<BallotResultType> mapToBallotResultTypes(final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.VoteType voteType,
+	private List<BallotResultType> mapToBallotResultTypes(final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.VoteType voteType,
 			final Results results, final String countingCircleIdentification) {
 
 		final String voteIdentification = voteType.getVoteIdentification();
@@ -911,13 +814,13 @@ public interface DeliveryMapper {
 				.map(BallotBoxType::getCountingCircle)
 				.flatMap(Collection::stream)
 				.filter(countingCircleType -> countingCircleType.getCountingCircleIdentification().equals(countingCircleIdentification))
-				.map(ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.CountingCircleType::getDomainOfInfluence)
+				.map(ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.CountingCircleType::getDomainOfInfluence)
 				.flatMap(Collection::stream)
 				.filter(domainOfInfluenceType -> domainOfInfluenceType.getDomainOfInfluenceIdentification().equals(domainOfInfluenceIdentification))
 				.map(DomainOfInfluenceType::getVote)
 				.flatMap(Collection::stream)
 				.filter(voteType -> voteType.getVoteIdentification().equals(voteIdentification))
-				.map(ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.VoteType::getBallot)
+				.map(ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.VoteType::getBallot)
 				.flatMap(Collection::stream)
 				.toList();
 
@@ -1010,7 +913,7 @@ public interface DeliveryMapper {
 			}
 		}
 
-		for (final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.TieBreakQuestionType tieBreakQuestionType : variantBallotType.getTieBreakQuestion()) {
+		for (final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.TieBreakQuestionType tieBreakQuestionType : variantBallotType.getTieBreakQuestion()) {
 			final TiebreakAnswerType emptyAnswerType = tieBreakQuestionType.getAnswer().stream()
 					.filter(a -> Objects.nonNull(a.isHiddenAnswer()))
 					.filter(TiebreakAnswerType::isHiddenAnswer)
@@ -1150,20 +1053,17 @@ public interface DeliveryMapper {
 	}
 
 	private static List<VariantBallotResultType.TieBreak.CountInFavourOf> mapToCountInFavourOf(
-			final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.TieBreakQuestionType tieBreakQuestionType,
+			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.TieBreakQuestionType tieBreakQuestionType,
 			final List<String> answersIdentifications) {
 
 		return tieBreakQuestionType.getAnswer().stream()
-				.parallel()
 				.filter(a -> Objects.isNull(a.isHiddenAnswer()) || !a.isHiddenAnswer())
 				.map(tiebreakAnswerType -> {
 
 					final String questionIdentification = tiebreakAnswerType.getStandardQuestionReference();
-					final String answerIdentification = tiebreakAnswerType.getAnswerIdentification();
 
 					final long countOfValidAnswers = answersIdentifications.stream()
-							.parallel()
-							.filter(answer -> answer.equals(answerIdentification))
+							.filter(answer -> answer.equals(questionIdentification))
 							.count();
 
 					return new VariantBallotResultType.TieBreak.CountInFavourOf()
@@ -1175,7 +1075,7 @@ public interface DeliveryMapper {
 	}
 
 	private TieBreakQuestionType mapToTieBreakQuestionType(
-			final ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.BallotQuestionType ballotQuestionType) {
+			final ch.post.it.verifier.backend.domain.xmlns.evotingconfig.BallotQuestionType ballotQuestionType) {
 
 		return new TieBreakQuestionType()
 				.withTieBreakQuestionInfo(ballotQuestionType.getBallotQuestionInfo().stream()
@@ -1184,7 +1084,8 @@ public interface DeliveryMapper {
 	}
 
 	record BallotElectionTypeExtended(BallotElectionType ballotElectionType, String chosenListIdentification, boolean isBlank,
-									  boolean isChangedBallot, boolean isWithPartyAffiliation, long emptyVotes, Map<String, Long> votesPerList) {
+									  boolean isChangedBallot,
+									  boolean isWithPartyAffiliation, long emptyVotes, long numberOfCandidatesFromChosenList) {
 	}
 
 	record Counts(BigInteger countOfAccountedBallotsTotal, BigInteger countOfUnaccountedBlankBallots) {

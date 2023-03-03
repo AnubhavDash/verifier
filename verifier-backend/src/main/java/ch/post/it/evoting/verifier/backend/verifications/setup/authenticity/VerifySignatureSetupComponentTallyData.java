@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
 import java.security.SignatureException;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
@@ -73,8 +74,11 @@ public class VerifySignatureSetupComponentTallyData extends AbstractVerification
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final boolean verified = electionDataExtractionService.getSetupComponentTallyDataPayloads(inputDirectoryPath)
-				.parallel()
+		final List<SetupComponentTallyDataPayload> setupComponentTallyDataPayloads = electionDataExtractionService.getSetupComponentTallyDataPayloads(
+				inputDirectoryPath);
+
+		final boolean verified = setupComponentTallyDataPayloads
+				.stream()
 				.map(this::verifySignature)
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);

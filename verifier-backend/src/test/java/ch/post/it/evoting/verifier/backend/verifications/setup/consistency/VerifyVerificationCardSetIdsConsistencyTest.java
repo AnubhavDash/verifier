@@ -17,14 +17,12 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-import java.util.List;
-import java.util.stream.Stream;
+import java.util.Collections;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -60,7 +58,7 @@ class VerifyVerificationCardSetIdsConsistencyTest extends SetupVerificationTest 
 		when(setupComponentVerificationDataPayloadMock.getVerificationCardSetId()).thenReturn("4c6f28483a324d84b5363261aa2062f6");
 
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
-		doAnswer(invocationOnMock -> Stream.of(setupComponentVerificationDataPayloadMock)).when(electionDataExtractionServiceSpy)
+		doReturn(Collections.singletonList(setupComponentVerificationDataPayloadMock)).when(electionDataExtractionServiceSpy)
 				.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(any());
 
 		final VerifyVerificationCardSetIdsConsistency verifyVerificationCardSetIdsConsistency = new VerifyVerificationCardSetIdsConsistency(

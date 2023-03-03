@@ -24,7 +24,6 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
@@ -42,8 +41,6 @@ import ch.post.it.evoting.cryptoprimitives.domain.mixnet.TallyComponentShufflePa
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeSharesPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationDataPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.validations.FailedValidationException;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
@@ -51,7 +48,8 @@ import ch.post.it.evoting.verifier.protocol.domain.configuration.ControlComponen
 import ch.post.it.evoting.verifier.protocol.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.verifier.protocol.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.protocol.domain.tally.TallyComponentVotesPayload;
-import ch.post.it.evoting.verifier.protocol.domain.xml.XsdConstants;
+import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
+import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 
 @Service
 public class ElectionDataExtractionService {
@@ -213,41 +211,39 @@ public class ElectionDataExtractionService {
 	}
 
 	/**
-	 * Gets all control component ballot box payloads of the different ballot boxes, ordered by node id as a {@link Stream}.
+	 * Gets all control component ballot box payloads of the different ballot boxes, ordered by node id.
 	 *
 	 * @param inputDirectoryPath the dataset root directory.
 	 * @return the control component ballot box payloads.
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the deserialization of any control component ballot box fails.
 	 */
-	public Stream<ControlComponentBallotBoxPayload> getAllControlComponentBallotBoxPayloadsOrderedByNodeId(final Path inputDirectoryPath) {
+	public List<ControlComponentBallotBoxPayload> getAllControlComponentBallotBoxPayloadsOrderedByNodeId(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
-		return getControlComponentBallotBoxPayloadsByBallotBox(inputDirectoryPath)
-				.parallel()
-				.flatMap(Function.identity())
-				.sorted(Comparator.comparingInt(ControlComponentBallotBoxPayload::getNodeId));
+		return getControlComponentBallotBoxPayloadsByBallotBox(inputDirectoryPath).stream()
+				.flatMap(List::stream)
+				.sorted(Comparator.comparingInt(ControlComponentBallotBoxPayload::getNodeId))
+				.toList();
 	}
 
 	/**
-	 * Gets all control component ballot box payloads of the different ballot boxes grouped by ballot boxes as a {@link Stream}.
+	 * Gets all control component ballot box payloads of the different ballot boxes grouped by ballot boxes.
 	 *
 	 * @param inputDirectoryPath the dataset root directory.
 	 * @return the control component ballot box payloads by ballot boxes.
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the deserialization of any control component ballot box fails.
 	 */
-	private Stream<Stream<ControlComponentBallotBoxPayload>> getControlComponentBallotBoxPayloadsByBallotBox(final Path inputDirectoryPath) {
+	public List<List<ControlComponentBallotBoxPayload>> getControlComponentBallotBoxPayloadsByBallotBox(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
 		final PathNode ballotBoxes = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 
 		return ballotBoxes.getRegexPaths().stream()
-				.parallel()
 				.map(ballotBox -> pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_BALLOT_BOX, ballotBox))
 				.map(controlComponentBallotBoxes ->
 						controlComponentBallotBoxes.getRegexPaths().stream()
-								.parallel()
 								.map(controlComponentBallotBox -> {
 									try {
 										return objectMapper.readValue(controlComponentBallotBox.toFile(), ControlComponentBallotBoxPayload.class);
@@ -257,11 +253,13 @@ public class ElectionDataExtractionService {
 														controlComponentBallotBox), e);
 									}
 								})
-								.sorted(Comparator.comparingInt(ControlComponentBallotBoxPayload::getNodeId)));
+								.sorted(Comparator.comparingInt(ControlComponentBallotBoxPayload::getNodeId))
+								.toList())
+				.toList();
 	}
 
 	/**
-	 * Gets all control component ballot box payloads for the given ballot box, ordered by node id as a {@link Stream}.
+	 * Gets all control component ballot box payloads for the given ballot box, ordered by node id.
 	 *
 	 * @param inputDirectoryPath the dataset root directory.
 	 * @param ballotBoxId        the ballot box id for which to get the control component ballot box payloads.
@@ -270,7 +268,7 @@ public class ElectionDataExtractionService {
 	 * @throws FailedValidationException if {@code ballotBoxId} is invalid.
 	 * @throws UncheckedIOException      if the deserialization of any control component ballot box fails.
 	 */
-	public Stream<ControlComponentBallotBoxPayload> getControlComponentBallotBoxPayloadsOrderedByNodeId(final Path inputDirectoryPath,
+	public List<ControlComponentBallotBoxPayload> getControlComponentBallotBoxPayloadsOrderedByNodeId(final Path inputDirectoryPath,
 			final String ballotBoxId) {
 		checkNotNull(inputDirectoryPath);
 		validateUUID(ballotBoxId);
@@ -282,20 +280,19 @@ public class ElectionDataExtractionService {
 	}
 
 	/**
-	 * Gets the control component ballot box payloads contained in the ballot box directory, ordered by node id as a {@link Stream}.
+	 * Gets the control component ballot box payloads contained in the ballot box directory, ordered by node id.
 	 *
 	 * @param ballotBoxDirectoryPath the path of a ballot box containing the control component ballot box payloads.
 	 * @throws NullPointerException if {@code ballotBoxDirectoryPath} is null.
 	 * @throws UncheckedIOException if the control component ballot box payloads could not be read.
 	 */
-	public Stream<ControlComponentBallotBoxPayload> getControlComponentBallotBoxPayloadsOrderedByNodeId(final Path ballotBoxDirectoryPath) {
+	public List<ControlComponentBallotBoxPayload> getControlComponentBallotBoxPayloadsOrderedByNodeId(final Path ballotBoxDirectoryPath) {
 		checkNotNull(ballotBoxDirectoryPath);
 
 		final List<Path> ballotBoxPayloadPaths =
 				pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_BALLOT_BOX, ballotBoxDirectoryPath).getRegexPaths();
 
 		return ballotBoxPayloadPaths.stream()
-				.parallel()
 				.map(path -> {
 					try {
 						return objectMapper.readValue(path.toFile(), ControlComponentBallotBoxPayload.class);
@@ -304,7 +301,8 @@ public class ElectionDataExtractionService {
 								e);
 					}
 				})
-				.sorted(Comparator.comparingInt(ControlComponentBallotBoxPayload::getNodeId));
+				.sorted(Comparator.comparingInt(ControlComponentBallotBoxPayload::getNodeId))
+				.toList();
 	}
 
 	/**
@@ -339,7 +337,7 @@ public class ElectionDataExtractionService {
 	}
 
 	/**
-	 * Gets all control component shuffle payloads for the given ballot box order by node id as a {@link Stream}.
+	 * Gets all control component shuffle payloads for the given ballot box order by node id.
 	 *
 	 * @param inputDirectoryPath the dataset root directory.
 	 * @param ballotBoxId        the ballot box id for which to get the control component shuffle payloads.
@@ -348,7 +346,7 @@ public class ElectionDataExtractionService {
 	 * @throws FailedValidationException if {@code ballotBoxId} is invalid.
 	 * @throws UncheckedIOException      if the deserialization of any control component shuffle payloads fails.
 	 */
-	public Stream<ControlComponentShufflePayload> getControlComponentShufflePayloadsOrderedByNodeId(final Path inputDirectoryPath,
+	public List<ControlComponentShufflePayload> getControlComponentShufflePayloadsOrderedByNodeId(final Path inputDirectoryPath,
 			final String ballotBoxId) {
 		checkNotNull(inputDirectoryPath);
 		validateUUID(ballotBoxId);
@@ -360,28 +358,27 @@ public class ElectionDataExtractionService {
 	}
 
 	/**
-	 * Gets the control component shuffle payloads contained in the ballot box directory ordered by node id as a {@link Stream}.
+	 * Gets the control component shuffle payloads contained in the ballot box directory ordered by node id.
 	 *
 	 * @param ballotBoxDirectoryPath the path of a ballot box containing the control component shuffle payloads.
 	 * @throws NullPointerException if {@code ballotBoxDirectoryPath} is null.
 	 * @throws UncheckedIOException if the control component shuffle payloads could not be read.
 	 */
-	public Stream<ControlComponentShufflePayload> getControlComponentShufflePayloadsOrderedByNodeId(final Path ballotBoxDirectoryPath) {
+	public List<ControlComponentShufflePayload> getControlComponentShufflePayloadsOrderedByNodeId(final Path ballotBoxDirectoryPath) {
 		checkNotNull(ballotBoxDirectoryPath);
 
 		final List<Path> controlComponentShufflePayloadPaths = pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_SHUFFLE,
 				ballotBoxDirectoryPath).getRegexPaths();
 
 		return controlComponentShufflePayloadPaths.stream()
-				.parallel()
 				.map(path -> {
 					try {
 						return objectMapper.readValue(path.toFile(), ControlComponentShufflePayload.class);
 					} catch (final IOException e) {
 						throw new UncheckedIOException(String.format("Failed to deserialize control component shuffle payload. [path: %s]", path), e);
 					}
-				})
-				.sorted(Comparator.comparingInt(ControlComponentShufflePayload::getNodeId));
+				}).sorted(Comparator.comparingInt(ControlComponentShufflePayload::getNodeId))
+				.toList();
 	}
 
 	public SetupComponentTallyDataPayload getSetupComponentTallyDataPayload(final Path verificationCardSetIdPath) {
@@ -426,14 +423,14 @@ public class ElectionDataExtractionService {
 	}
 
 	/**
-	 * Gets all setup component tally data payloads of the different verification card sets as a {@link Stream}.
+	 * Gets all setup component tally data payloads of the different verification card sets.
 	 *
 	 * @param inputDirectoryPath the dataset root directory.
 	 * @return all setup component tally data payloads.
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the deserialization of the setup component tally data payloads fails.
 	 */
-	public Stream<SetupComponentTallyDataPayload> getSetupComponentTallyDataPayloads(final Path inputDirectoryPath) {
+	public List<SetupComponentTallyDataPayload> getSetupComponentTallyDataPayloads(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
 		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
@@ -448,7 +445,8 @@ public class ElectionDataExtractionService {
 						throw new UncheckedIOException(
 								String.format("Failed to deserialize setup component tally data payload. [path: %s]", tallyData.getPath()), e);
 					}
-				});
+				})
+				.toList();
 	}
 
 	/**
@@ -605,14 +603,14 @@ public class ElectionDataExtractionService {
 	}
 
 	/**
-	 * Gets all setup component verification data payloads of the different verification card sets ordered by chunk id as a {@link Stream}.
+	 * Gets all setup component verification data payloads of the different verification card sets ordered by chunk id.
 	 *
 	 * @param inputDirectoryPath the dataset root directory.
 	 * @return all setup component verification data payloads.
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the deserialization of the setup component verification data payloads fails.
 	 */
-	public Stream<SetupComponentVerificationDataPayload> getSetupComponentVerificationDataPayloadsOrderByChunkId(final Path inputDirectoryPath) {
+	public List<SetupComponentVerificationDataPayload> getSetupComponentVerificationDataPayloadsOrderByChunkId(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
 		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
@@ -620,20 +618,20 @@ public class ElectionDataExtractionService {
 		return verificationCardSets.getRegexPaths()
 				.stream()
 				.parallel()
-				.flatMap(this::deserializeSetupComponentVerificationDataPayloadOrderByChunkId)
-				.sorted(Comparator.comparingInt(SetupComponentVerificationDataPayload::getChunkId));
+				.map(this::deserializeSetupComponentVerificationDataPayloadOrderByChunkId)
+				.flatMap(List::stream)
+				.sorted(Comparator.comparingInt(SetupComponentVerificationDataPayload::getChunkId))
+				.toList();
 	}
 
 	/**
-	 * Deserializes the setup component verification data payloads chunks, given a path for a verification card set ID ordered by chunk id as a
-	 * {@link Stream}.
+	 * Deserializes the setup component verification data payloads chunks, given a path for a verification card set ID ordered by chunk id.
 	 *
 	 * @param verificationCardSetIdPath the path for the verification card set ID.
 	 * @return List of {@code SetupComponentVerificationDataPayload} each corresponding to a chunk.
 	 * @throws NullPointerException if {@code verificationCardSetIdPath} is null.
 	 */
-	public Stream<SetupComponentVerificationDataPayload> deserializeSetupComponentVerificationDataPayloadOrderByChunkId(
-			final Path verificationCardSetIdPath) {
+	public List<SetupComponentVerificationDataPayload> deserializeSetupComponentVerificationDataPayloadOrderByChunkId(final Path verificationCardSetIdPath) {
 		checkNotNull(verificationCardSetIdPath);
 
 		final PathNode nodePath = pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA, verificationCardSetIdPath);
@@ -641,7 +639,8 @@ public class ElectionDataExtractionService {
 		return nodePath.getRegexPaths().stream()
 				.parallel()
 				.map(this::getSetupComponentVerificationDataPayload)
-				.sorted(Comparator.comparingInt(SetupComponentVerificationDataPayload::getChunkId));
+				.sorted(Comparator.comparingInt(SetupComponentVerificationDataPayload::getChunkId))
+				.toList();
 	}
 
 	public SetupComponentVerificationDataPayload getSetupComponentVerificationDataPayload(final Path setupComponentVerificationDataPayloadPath) {
@@ -657,19 +656,20 @@ public class ElectionDataExtractionService {
 	}
 
 	/**
-	 * Gets all control component code shares payloads of the different verification card sets ordered by node id as a {@link Stream}.
+	 * Gets all control component code shares payloads of the different verification card sets ordered by node id.
 	 *
 	 * @param inputDirectoryPath the dataset root directory.
 	 * @return all control component code shares payloads.
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the deserialization of the control component code shares payloads fails.
 	 */
-	public Stream<ControlComponentCodeSharesPayload> getControlComponentCodeSharesPayloadsOrderedByNodeId(final Path inputDirectoryPath) {
+	public List<ControlComponentCodeSharesPayload> getControlComponentCodeSharesPayloadsOrderedByNodeId(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
 		return getControlComponentCodeSharesPayloadsByChunkAndVcs(inputDirectoryPath)
-				.flatMap(Function.identity())
-				.sorted(Comparator.comparingInt(ControlComponentCodeSharesPayload::getNodeId));
+				.flatMap(List::stream)
+				.sorted(Comparator.comparingInt(ControlComponentCodeSharesPayload::getNodeId))
+				.toList();
 	}
 
 	/**
@@ -699,8 +699,7 @@ public class ElectionDataExtractionService {
 	 * @return List of {@code ReturnCodeGenerationResponsePayload} for each chunk.
 	 * @throws NullPointerException if {@code verificationCardSetIdPath} is null.
 	 */
-	public List<List<ControlComponentCodeSharesPayload>> deserializeControlComponentCodeSharesPayloadsOrderByChunkIdAndNodeId(
-			final Path verificationCardSetIdPath) {
+	public List<List<ControlComponentCodeSharesPayload>> deserializeControlComponentCodeSharesPayloadsOrderByChunkIdAndNodeId(final Path verificationCardSetIdPath) {
 		checkNotNull(verificationCardSetIdPath);
 
 		final PathNode nodePath = pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_CODE_SHARES, verificationCardSetIdPath);
@@ -708,20 +707,19 @@ public class ElectionDataExtractionService {
 		return filePaths.stream()
 				.parallel()
 				.map(this::getControlComponentCodeSharesOrderByNodeId)
-				.map(Stream::toList)
 				.sorted(Comparator.comparingInt(controlComponentCodeSharesPayloads -> controlComponentCodeSharesPayloads.get(0).getChunkId()))
 				.toList();
 	}
 
 	/**
-	 * Gets all control component code shares payloads of the different verification card sets as a {@link Stream}.
+	 * Gets all control component code shares payloads of the different verification card sets.
 	 *
 	 * @param inputDirectoryPath the dataset root directory.
 	 * @return all control component code shares payloads.
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the deserialization of the control component code shares payloads fails.
 	 */
-	public Stream<Stream<ControlComponentCodeSharesPayload>> getControlComponentCodeSharesPayloadsByChunkAndVcs(final Path inputDirectoryPath) {
+	public Stream<List<ControlComponentCodeSharesPayload>> getControlComponentCodeSharesPayloadsByChunkAndVcs(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
 		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
@@ -734,15 +732,15 @@ public class ElectionDataExtractionService {
 				.map(this::getControlComponentCodeSharesOrderByNodeId);
 	}
 
-	public Stream<ControlComponentCodeSharesPayload> getControlComponentCodeSharesOrderByNodeId(final Path controlComponentCodeSharesPayloadsPath) {
+	public List<ControlComponentCodeSharesPayload> getControlComponentCodeSharesOrderByNodeId(final Path controlComponentCodeSharesPayloadsPath) {
 		checkNotNull(controlComponentCodeSharesPayloadsPath);
 
 		return getControlComponentCodeShares(controlComponentCodeSharesPayloadsPath)
-				.parallel()
-				.sorted(Comparator.comparingInt(ControlComponentCodeSharesPayload::getNodeId));
+				.sorted(Comparator.comparingInt(ControlComponentCodeSharesPayload::getNodeId))
+				.toList();
 	}
 
-	private Stream<ControlComponentCodeSharesPayload> getControlComponentCodeShares(final Path controlComponentCodeSharesPayloadsPath) {
+	public Stream<ControlComponentCodeSharesPayload> getControlComponentCodeShares(final Path controlComponentCodeSharesPayloadsPath) {
 		checkNotNull(controlComponentCodeSharesPayloadsPath);
 
 		try {
