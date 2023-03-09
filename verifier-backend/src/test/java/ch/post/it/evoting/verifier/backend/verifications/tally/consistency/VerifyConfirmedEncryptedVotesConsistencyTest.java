@@ -17,11 +17,9 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
 import static ch.post.it.evoting.verifier.backend.tools.TranslationHelper.getFromResourceBundle;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.spy;
 
-import java.io.InputStream;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -54,9 +52,9 @@ class VerifyConfirmedEncryptedVotesConsistencyTest extends TallyVerificationTest
 
 	@Test
 	void testVerifyNok() {
-		final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
+		final Stream<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
 				datasetPath);
-		final ControlComponentBallotBoxPayload payloadWithVotes = controlComponentBallotBoxPayloads.stream()
+		final ControlComponentBallotBoxPayload payloadWithVotes = controlComponentBallotBoxPayloads
 				.filter(payload -> payload.getConfirmedEncryptedVotes().size() > 1 && payload.getNodeId() == 1)
 				.findFirst().orElseThrow(() -> new IllegalStateException("Could not find a ballot box payload with enough votes"));
 		final List<EncryptedVerifiableVote> confirmedEncryptedVotes = payloadWithVotes.getConfirmedEncryptedVotes();
@@ -66,11 +64,11 @@ class VerifyConfirmedEncryptedVotesConsistencyTest extends TallyVerificationTest
 				payloadWithVotes.getNodeId(),
 				confirmedEncryptedVotesWithMissingVote);
 		final List<ControlComponentBallotBoxPayload> newControlComponentBallotBoxPayloads = Streams.concat(Stream.of(newPayload),
-				electionDataExtractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(datasetPath, newPayload.getBallotBoxId()).stream()
+				electionDataExtractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(datasetPath, newPayload.getBallotBoxId())
 						.filter(payload -> payload.getNodeId() != 1)).toList();
 
 		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-		doReturn(newControlComponentBallotBoxPayloads).when(extractionServiceMock)
+		doAnswer(invocationOnMock -> newControlComponentBallotBoxPayloads.stream()).when(extractionServiceMock)
 				.getControlComponentBallotBoxPayloadsOrderedByNodeId(datasetPath, newPayload.getBallotBoxId());
 		final VerifyConfirmedEncryptedVotesConsistency verificationWithMock = new VerifyConfirmedEncryptedVotesConsistency(
 				resultPublisherServiceMock, extractionServiceMock);

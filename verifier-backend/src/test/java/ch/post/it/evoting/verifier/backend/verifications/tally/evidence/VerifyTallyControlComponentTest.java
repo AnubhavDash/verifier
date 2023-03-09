@@ -36,6 +36,7 @@ import ch.post.it.evoting.verifier.protocol.algorithms.tally.QuadraticResidueToW
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.DecodeVotingOptionsAlgorithm;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.DecodeWriteInsAlgorithm;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.IsWriteInOptionAlgorithm;
+import ch.post.it.evoting.verifier.protocol.domain.xml.XmlNormalizer;
 
 class VerifyTallyControlComponentTest extends TallyVerificationTest {
 
@@ -50,7 +51,7 @@ class VerifyTallyControlComponentTest extends TallyVerificationTest {
 			ElGamalFactory.createElGamal(), DECODE_VOTING_OPTIONS_ALGORITHM, DECODE_WRITE_INS_ALGORITHM);
 	private static final VerifyTallyControlComponentBallotBoxAlgorithm VERIFY_TALLY_CONTROL_COMPONENT_BALLOT_BOX_ALGORITHM = new VerifyTallyControlComponentBallotBoxAlgorithm(
 			MixnetFactory.createMixnet(), ZeroKnowledgeProofFactory.createZeroKnowledgeProof(), VERIFY_PROCESS_PLAINTEXTS_ALGORITHM);
-	private static final VerifyTallyFilesAlgorithm VERIFY_TALLY_FILES_ALGORITHM = new VerifyTallyFilesAlgorithm(HashService.getInstance());
+	private static final VerifyTallyFilesAlgorithm VERIFY_TALLY_FILES_ALGORITHM = new VerifyTallyFilesAlgorithm(HashService.getInstance(), new XmlNormalizer());
 
 	@BeforeAll
 	static void setUpAll() {

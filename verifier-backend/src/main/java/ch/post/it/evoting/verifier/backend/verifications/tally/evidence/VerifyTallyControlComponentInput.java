@@ -31,9 +31,9 @@ import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPay
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.SetupComponentPublicKeysPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.verifier.protocol.domain.tally.TallyComponentVotesPayload;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
-import ch.post.it.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 
 /**
  * Regroups the input values needed by the VerifyTallyControlComponent algorithm.

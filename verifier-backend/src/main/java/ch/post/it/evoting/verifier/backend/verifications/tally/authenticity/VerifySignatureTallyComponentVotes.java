@@ -78,6 +78,7 @@ public class VerifySignatureTallyComponentVotes extends AbstractVerification {
 		final Stream<TallyComponentVotesPayload> tallyComponentVotesPayloads = electionDataExtractionService.getTallyComponentVotesPayloads(inputDirectoryPath);
 
 		final boolean verified = tallyComponentVotesPayloads
+				.parallel()
 				.map(this::verifySignature)
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);

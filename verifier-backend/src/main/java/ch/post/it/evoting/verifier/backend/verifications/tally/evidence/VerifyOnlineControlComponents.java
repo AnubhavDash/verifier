@@ -88,12 +88,13 @@ public class VerifyOnlineControlComponents extends AbstractVerification {
 				.toList();
 
 		final Map<String, List<ControlComponentBallotBoxPayload>> controlComponentBallotBoxesByBallotBoxId = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
-						inputDirectoryPath).stream()
-				.collect(Collectors.groupingBy(ControlComponentBallotBoxPayload::getBallotBoxId));
+						inputDirectoryPath)
+				.parallel()
+				.collect(Collectors.groupingByConcurrent(ControlComponentBallotBoxPayload::getBallotBoxId));
 		final Map<String, List<ControlComponentShufflePayload>> controlComponentShufflesByBallotBoxId = electionDataExtractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
 						inputDirectoryPath)
 				.parallel()
-				.collect(Collectors.groupingBy(ControlComponentShufflePayload::getBallotBoxId));
+				.collect(Collectors.groupingByConcurrent(ControlComponentShufflePayload::getBallotBoxId));
 
 		final Map<String, SetupComponentTallyDataPayload> setupComponentTallyDataByBallotBoxId = ballotBoxIds.stream()
 				.parallel()

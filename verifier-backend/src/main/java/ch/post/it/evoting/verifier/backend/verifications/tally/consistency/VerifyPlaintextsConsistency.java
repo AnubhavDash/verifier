@@ -61,6 +61,7 @@ public class VerifyPlaintextsConsistency extends AbstractVerification {
 		final List<VerificationCardSetContext> verificationCardSetContexts = extractionService.getElectionEventContextPayload(inputDirectoryPath)
 				.getElectionEventContext().verificationCardSetContexts();
 		final List<Plaintexts> plaintexts = verificationCardSetContexts.stream()
+				.parallel()
 				.map(vcsContext -> {
 					final String ballotBoxId = vcsContext.ballotBoxId();
 					final int numberWriteInsPlusOne = vcsContext.numberOfWriteInFields() + 1;
@@ -81,8 +82,10 @@ public class VerifyPlaintextsConsistency extends AbstractVerification {
 
 	private boolean plaintextsConsistent(final List<Plaintexts> plaintexts) {
 		return plaintexts.stream()
+				.parallel()
 				.map(information -> information.tallyComponentShufflePayload.getVerifiablePlaintextDecryption()
 						.getDecryptedVotes().getElementSize() == information.numberWriteInsPlusOne)
-				.reduce(Boolean::logicalAnd).orElse(Boolean.FALSE);
+				.reduce(Boolean::logicalAnd)
+				.orElse(Boolean.FALSE);
 	}
 }

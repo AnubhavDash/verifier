@@ -29,11 +29,11 @@ public class AsyncExceptionHandler implements AsyncUncaughtExceptionHandler {
 
 	@Override
 	public void handleUncaughtException(final Throwable throwable, final Method method, final Object... objects) {
-		LOGGER.error("Exception message - {}", throwable.getMessage());
 		LOGGER.error("Method name - {}", method.getName());
 		for (final Object param : objects) {
 			LOGGER.error("Parameter value - {}", param);
 		}
+		LOGGER.error("An exception occurred.", throwable);
 	}
 
 }
