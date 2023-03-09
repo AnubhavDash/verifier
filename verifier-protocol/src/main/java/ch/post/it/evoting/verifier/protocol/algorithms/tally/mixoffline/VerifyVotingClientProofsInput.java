@@ -15,12 +15,12 @@
  */
 package ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline;
 
+import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.hasNoDuplicates;
 import static ch.post.it.evoting.cryptoprimitives.utils.Validations.allEqual;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -209,7 +209,7 @@ public class VerifyVotingClientProofsInput {
 
 			// Input ID checks.
 			confirmedVerificationCardIdsCopy.forEach(Validations::validateUUID);
-			checkArgument(new HashSet<>(confirmedVerificationCardIdsCopy).size() == confirmedVerificationCardIdsCopy.size(),
+			checkArgument(hasNoDuplicates(confirmedVerificationCardIdsCopy),
 					"The list of confirmed verification card IDs must not contain any duplicates.");
 			verificationCardPublicKeysCopy.keySet().forEach(Validations::validateUUID);
 			final String electionEventId = encryptedVerifiableVotes.get(0).contextIds().electionEventId();

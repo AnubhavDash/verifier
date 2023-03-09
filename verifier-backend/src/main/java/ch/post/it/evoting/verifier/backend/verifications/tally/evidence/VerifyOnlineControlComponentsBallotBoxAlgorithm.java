@@ -15,12 +15,12 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
+import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.hasNoDuplicates;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -144,7 +144,7 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 				.map(EncryptedVerifiableVote::contextIds)
 				.map(ContextIds::verificationCardId)
 				.toList();
-		checkArgument(Set.copyOf(vc_1).size() == vc_1.size(), "The verification card IDs must not contain duplicates.");
+		checkArgument(hasNoDuplicates(vc_1), "The verification card IDs must not contain duplicates.");
 
 		// Operation
 		final Map<String, ElGamalMultiRecipientCiphertext> vcMap_1 = confirmedEncryptedVotes.stream()

@@ -15,12 +15,12 @@
  */
 package ch.post.it.evoting.verifier.protocol.domain.configuration;
 
+import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.hasNoDuplicates;
 import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.validateUUID;
 import static ch.post.it.evoting.cryptoprimitives.utils.Validations.allEqual;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -110,8 +110,7 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 		this.verificationCardIds = List.copyOf(checkNotNull(verificationCardIds));
 		checkArgument(!this.verificationCardIds.isEmpty(), "The verification card ids list must be non-empty.");
 		this.verificationCardIds.stream().parallel().forEach(Validations::validateUUID);
-		checkArgument(new HashSet<>(this.verificationCardIds).size() == verificationCardIds.size(),
-				"The verification card ids list must not contain any duplicated id.");
+		checkArgument(hasNoDuplicates(this.verificationCardIds), "The verification card ids list must not contain any duplicated id.");
 
 		this.verificationCardPublicKeys = checkNotNull(verificationCardPublicKeys);
 		checkArgument(!this.verificationCardPublicKeys.isEmpty(), "The verification card public keys list must be non-empty.");
@@ -178,14 +177,16 @@ public class SetupComponentTallyDataPayload implements SignedPayload {
 			return false;
 		}
 		final SetupComponentTallyDataPayload that = (SetupComponentTallyDataPayload) o;
-		return electionEventId.equals(that.electionEventId) && verificationCardSetId.equals(that.verificationCardSetId) && ballotBoxDefaultTitle.equals(
+		return electionEventId.equals(that.electionEventId) && verificationCardSetId.equals(that.verificationCardSetId)
+				&& ballotBoxDefaultTitle.equals(
 				that.ballotBoxDefaultTitle) && encryptionGroup.equals(that.encryptionGroup) && verificationCardIds.equals(that.verificationCardIds)
 				&& verificationCardPublicKeys.equals(that.verificationCardPublicKeys) && Objects.equals(signature, that.signature);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(electionEventId, verificationCardSetId, ballotBoxDefaultTitle, encryptionGroup, verificationCardIds, verificationCardPublicKeys,
+		return Objects.hash(electionEventId, verificationCardSetId, ballotBoxDefaultTitle, encryptionGroup, verificationCardIds,
+				verificationCardPublicKeys,
 				signature);
 	}
 }

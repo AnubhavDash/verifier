@@ -15,11 +15,11 @@
  */
 package ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline;
 
+import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.hasNoDuplicates;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.math.BigInteger;
-import java.util.HashSet;
 
 import ch.post.it.evoting.cryptoprimitives.math.GqElement;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
@@ -55,8 +55,7 @@ public class FactorizeService {
 		// Encoding primes validity checking.
 		final GqGroup gqGroup = encodingPrimes.get(0).getGroup();
 
-		final HashSet<PrimeGqElement> distinctEncodingPrimes = new HashSet<>(encodingPrimes);
-		checkArgument(distinctEncodingPrimes.size() == encodingPrimes.size(), "The encoding primes must not contain duplicates.");
+		checkArgument(hasNoDuplicates(encodingPrimes), "The encoding primes must not contain duplicates.");
 
 		// Cross group checking.
 		checkArgument(x.getGroup().equals(gqGroup), "The element x and the encoding primes must be part of the same group.");
@@ -68,7 +67,9 @@ public class FactorizeService {
 
 		final GqElement product = factors.stream().reduce(gqGroup.getIdentity(), GqElement::multiply, GqElement::multiply);
 		if (!x.equals(product)) {
-			throw new IllegalArgumentException("The message x could not be factorized using the provided encoding primes.");
+			throw new IllegalArgumentException(
+					String.format("The message x could not be factorized using the provided encoding primes. [x: %s, encoding primes: %s]", x,
+							encodingPrimes));
 		}
 
 		if (factors.size() != psi) {

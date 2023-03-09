@@ -16,6 +16,7 @@
 package ch.post.it.evoting.verifier.protocol.domain.tally;
 
 import static ch.post.it.evoting.cryptoprimitives.domain.ControlComponentConstants.NODE_IDS;
+import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.hasNoDuplicates;
 import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.validateUUID;
 import static ch.post.it.evoting.cryptoprimitives.utils.Validations.allEqual;
 import static com.google.common.base.Preconditions.checkArgument;
@@ -23,11 +24,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.math.BigInteger;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -84,12 +82,10 @@ public class ControlComponentBallotBoxPayload implements SignedPayload {
 						encryptedVerifiableVote -> encryptedVerifiableVote.contextIds().verificationCardSetId()),
 				"All confirmed votes must have the same verification card set id.");
 
-		final Set<String> duplicatedVerificationCardIds = new HashSet<>();
-		checkArgument(encryptedVerifiableVotesCopy.stream()
+		checkArgument(hasNoDuplicates(encryptedVerifiableVotesCopy.stream()
 				.map(EncryptedVerifiableVote::contextIds)
 				.map(ContextIds::verificationCardId)
-				.filter(verificationCardId -> !duplicatedVerificationCardIds.add(verificationCardId))
-				.collect(Collectors.toSet()).isEmpty(), "All confirmation votes must have a different verification card id.");
+				.toList()), "All confirmation votes must have a different verification card id.");
 
 		checkArgument(
 				encryptedVerifiableVotesCopy.isEmpty() || encryptedVerifiableVotesCopy.get(0).contextIds().electionEventId().equals(electionEventId),

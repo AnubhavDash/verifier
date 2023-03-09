@@ -16,6 +16,7 @@
 package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 
 import static ch.post.it.evoting.cryptoprimitives.domain.ControlComponentConstants.NODE_IDS;
+import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.hasNoDuplicates;
 import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.validateUUID;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -25,7 +26,6 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -74,8 +74,7 @@ public class ExponentiationProofsVerificationExtractionService {
 		validateUUID(electionEventId);
 		checkNotNull(verificationCardSetIds);
 		verificationCardSetIds.forEach(Validations::validateUUID);
-		checkArgument(Set.copyOf(verificationCardSetIds).size() == verificationCardSetIds.size(),
-				"The verification card set IDs must not contain duplicates.");
+		checkArgument(hasNoDuplicates(verificationCardSetIds), "The verification card set IDs must not contain duplicates.");
 
 		return new VerifyEncryptedExponentiationProofsInput.Builder()
 				.setElectionEventId(electionEventId)
@@ -140,7 +139,7 @@ public class ExponentiationProofsVerificationExtractionService {
 
 		// Extract responses
 		final List<List<ControlComponentCodeSharesPayload>> contributionResponsesPayloads = extractionService.deserializeControlComponentCodeSharesPayloadsOrderByChunkIdAndNodeId(
-						verificationCardSetIdPath);
+				verificationCardSetIdPath);
 		verifyControlComponentCodeSharesConsistency(contributionResponsesPayloads, electionEventId,
 				verificationCardSetIdPath.getFileName().toString());
 		final Map<Integer, List<ControlComponentCodeSharesPayload>> chunkIdToContributionResponses = contributionResponsesPayloads.stream()
