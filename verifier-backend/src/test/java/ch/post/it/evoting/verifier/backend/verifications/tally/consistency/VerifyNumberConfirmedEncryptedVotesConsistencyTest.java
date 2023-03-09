@@ -17,12 +17,13 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.util.Collections;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -58,7 +59,7 @@ class VerifyNumberConfirmedEncryptedVotesConsistencyTest extends TallyVerificati
 		when(controlComponentBallotBoxPayload.getConfirmedEncryptedVotes()).thenReturn(Collections.emptyList());
 
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(Collections.singletonList(controlComponentBallotBoxPayload)).when(electionDataExtractionServiceSpy)
+		doAnswer(invocationOnMock -> Stream.of(controlComponentBallotBoxPayload)).when(electionDataExtractionServiceSpy)
 				.getControlComponentBallotBoxPayloadsOrderedByNodeId(any());
 
 		final VerifyNumberConfirmedEncryptedVotesConsistency verifyNumberConfirmedEncryptedVotesConsistency =

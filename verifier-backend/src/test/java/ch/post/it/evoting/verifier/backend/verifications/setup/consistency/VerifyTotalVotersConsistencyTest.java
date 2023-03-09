@@ -32,12 +32,12 @@ import com.google.common.base.Throwables;
 import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration;
+import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.HeaderType;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.Configuration;
-import ch.post.it.verifier.backend.domain.xmlns.evotingconfig.HeaderType;
 
 class VerifyTotalVotersConsistencyTest extends SetupVerificationTest {
 
@@ -68,7 +68,7 @@ class VerifyTotalVotersConsistencyTest extends SetupVerificationTest {
 				extractionServiceMock);
 
 		final IllegalStateException exception = assertThrows(IllegalStateException.class, () -> verificationBadVoterTotal.verify(datasetPath));
-		assertEquals("The voter total in the header must be the same as the size of the voter list. [voterTotal: 39, voterCount: 65]",
+		assertEquals("The voter total in the header must be the same as the size of the voter list. [voterTotal: 39, voterCount: 76]",
 				Throwables.getRootCause(exception).getMessage());
 	}
 
