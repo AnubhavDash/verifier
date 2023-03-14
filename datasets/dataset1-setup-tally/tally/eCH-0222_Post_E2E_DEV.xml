@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<eCH-0222:delivery xmlns:eCH-0222="http://www.ech.ch/xmlns/eCH-0222/1" xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008/3" xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/4">
+<eCH-0222:delivery xmlns:eCH-0222="http://www.ech.ch/xmlns/eCH-0222/1" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/4">
   <eCH-0222:deliveryHeader>
     <eCH-0058:senderId>http://www.post.ch</eCH-0058:senderId>
     <eCH-0058:messageId>f38d5b447ad74425b7f786c5cb6d54be</eCH-0058:messageId>
@@ -254,7 +254,7 @@
           </eCH-0222:ballotRawData>
         </eCH-0222:voteRawData>
         <eCH-0222:electionGroupBallotRawData>
-          <eCH-0222:electionGroupIdentification>f38d5b447ad74425b7f786c5cb6d54be</eCH-0222:electionGroupIdentification>
+          <eCH-0222:electionGroupIdentification>nrw_test</eCH-0222:electionGroupIdentification>
           <eCH-0222:electionRawData>
             <eCH-0222:electionIdentification>nrw_test</eCH-0222:electionIdentification>
             <eCH-0222:ballotRawData>
@@ -290,6 +290,9 @@
               </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
           </eCH-0222:electionRawData>
+        </eCH-0222:electionGroupBallotRawData>
+        <eCH-0222:electionGroupBallotRawData>
+          <eCH-0222:electionGroupIdentification>nrw_test</eCH-0222:electionGroupIdentification>
           <eCH-0222:electionRawData>
             <eCH-0222:electionIdentification>nrw_test</eCH-0222:electionIdentification>
             <eCH-0222:ballotRawData>
@@ -328,6 +331,9 @@
               </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
           </eCH-0222:electionRawData>
+        </eCH-0222:electionGroupBallotRawData>
+        <eCH-0222:electionGroupBallotRawData>
+          <eCH-0222:electionGroupIdentification>majorz_test</eCH-0222:electionGroupIdentification>
           <eCH-0222:electionRawData>
             <eCH-0222:electionIdentification>majorz_test</eCH-0222:electionIdentification>
             <eCH-0222:ballotRawData>
@@ -338,6 +344,9 @@
               </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
           </eCH-0222:electionRawData>
+        </eCH-0222:electionGroupBallotRawData>
+        <eCH-0222:electionGroupBallotRawData>
+          <eCH-0222:electionGroupIdentification>majorz_test</eCH-0222:electionGroupIdentification>
           <eCH-0222:electionRawData>
             <eCH-0222:electionIdentification>majorz_test</eCH-0222:electionIdentification>
             <eCH-0222:ballotRawData>
@@ -471,7 +480,7 @@
           </eCH-0222:ballotRawData>
         </eCH-0222:voteRawData>
         <eCH-0222:electionGroupBallotRawData>
-          <eCH-0222:electionGroupIdentification>f38d5b447ad74425b7f786c5cb6d54be</eCH-0222:electionGroupIdentification>
+          <eCH-0222:electionGroupIdentification>nrw_test</eCH-0222:electionGroupIdentification>
           <eCH-0222:electionRawData>
             <eCH-0222:electionIdentification>nrw_test</eCH-0222:electionIdentification>
             <eCH-0222:ballotRawData>
@@ -524,7 +533,7 @@
       <eCH-0222:countingCircleRawData>
         <eCH-0222:countingCircleId>10003</eCH-0222:countingCircleId>
         <eCH-0222:electionGroupBallotRawData>
-          <eCH-0222:electionGroupIdentification>f38d5b447ad74425b7f786c5cb6d54be</eCH-0222:electionGroupIdentification>
+          <eCH-0222:electionGroupIdentification>majorz_test</eCH-0222:electionGroupIdentification>
           <eCH-0222:electionRawData>
             <eCH-0222:electionIdentification>majorz_test</eCH-0222:electionIdentification>
             <eCH-0222:ballotRawData>
@@ -535,6 +544,9 @@
               </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
           </eCH-0222:electionRawData>
+        </eCH-0222:electionGroupBallotRawData>
+        <eCH-0222:electionGroupBallotRawData>
+          <eCH-0222:electionGroupIdentification>majorz_test</eCH-0222:electionGroupIdentification>
           <eCH-0222:electionRawData>
             <eCH-0222:electionIdentification>majorz_test</eCH-0222:electionIdentification>
             <eCH-0222:ballotRawData>
@@ -545,6 +557,9 @@
               </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
           </eCH-0222:electionRawData>
+        </eCH-0222:electionGroupBallotRawData>
+        <eCH-0222:electionGroupBallotRawData>
+          <eCH-0222:electionGroupIdentification>majorz_test</eCH-0222:electionGroupIdentification>
           <eCH-0222:electionRawData>
             <eCH-0222:electionIdentification>majorz_test</eCH-0222:electionIdentification>
             <eCH-0222:ballotRawData>
@@ -555,6 +570,9 @@
               </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
           </eCH-0222:electionRawData>
+        </eCH-0222:electionGroupBallotRawData>
+        <eCH-0222:electionGroupBallotRawData>
+          <eCH-0222:electionGroupIdentification>majorz_test</eCH-0222:electionGroupIdentification>
           <eCH-0222:electionRawData>
             <eCH-0222:electionIdentification>majorz_test</eCH-0222:electionIdentification>
             <eCH-0222:ballotRawData>
@@ -565,6 +583,9 @@
               </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
           </eCH-0222:electionRawData>
+        </eCH-0222:electionGroupBallotRawData>
+        <eCH-0222:electionGroupBallotRawData>
+          <eCH-0222:electionGroupIdentification>majorz_test</eCH-0222:electionGroupIdentification>
           <eCH-0222:electionRawData>
             <eCH-0222:electionIdentification>majorz_test</eCH-0222:electionIdentification>
             <eCH-0222:ballotRawData>
@@ -575,6 +596,9 @@
               </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
           </eCH-0222:electionRawData>
+        </eCH-0222:electionGroupBallotRawData>
+        <eCH-0222:electionGroupBallotRawData>
+          <eCH-0222:electionGroupIdentification>majorz_test</eCH-0222:electionGroupIdentification>
           <eCH-0222:electionRawData>
             <eCH-0222:electionIdentification>majorz_test</eCH-0222:electionIdentification>
             <eCH-0222:ballotRawData>
@@ -585,6 +609,9 @@
               </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
           </eCH-0222:electionRawData>
+        </eCH-0222:electionGroupBallotRawData>
+        <eCH-0222:electionGroupBallotRawData>
+          <eCH-0222:electionGroupIdentification>majorz_test</eCH-0222:electionGroupIdentification>
           <eCH-0222:electionRawData>
             <eCH-0222:electionIdentification>majorz_test</eCH-0222:electionIdentification>
             <eCH-0222:ballotRawData>
@@ -595,6 +622,9 @@
               </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
           </eCH-0222:electionRawData>
+        </eCH-0222:electionGroupBallotRawData>
+        <eCH-0222:electionGroupBallotRawData>
+          <eCH-0222:electionGroupIdentification>majorz_test</eCH-0222:electionGroupIdentification>
           <eCH-0222:electionRawData>
             <eCH-0222:electionIdentification>majorz_test</eCH-0222:electionIdentification>
             <eCH-0222:ballotRawData>
@@ -605,6 +635,9 @@
               </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
           </eCH-0222:electionRawData>
+        </eCH-0222:electionGroupBallotRawData>
+        <eCH-0222:electionGroupBallotRawData>
+          <eCH-0222:electionGroupIdentification>majorz_test</eCH-0222:electionGroupIdentification>
           <eCH-0222:electionRawData>
             <eCH-0222:electionIdentification>majorz_test</eCH-0222:electionIdentification>
             <eCH-0222:ballotRawData>
@@ -615,6 +648,9 @@
               </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
           </eCH-0222:electionRawData>
+        </eCH-0222:electionGroupBallotRawData>
+        <eCH-0222:electionGroupBallotRawData>
+          <eCH-0222:electionGroupIdentification>majorz_test</eCH-0222:electionGroupIdentification>
           <eCH-0222:electionRawData>
             <eCH-0222:electionIdentification>majorz_test</eCH-0222:electionIdentification>
             <eCH-0222:ballotRawData>
@@ -625,6 +661,9 @@
               </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
           </eCH-0222:electionRawData>
+        </eCH-0222:electionGroupBallotRawData>
+        <eCH-0222:electionGroupBallotRawData>
+          <eCH-0222:electionGroupIdentification>majorz_test</eCH-0222:electionGroupIdentification>
           <eCH-0222:electionRawData>
             <eCH-0222:electionIdentification>majorz_test</eCH-0222:electionIdentification>
             <eCH-0222:ballotRawData>
@@ -635,6 +674,9 @@
               </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
           </eCH-0222:electionRawData>
+        </eCH-0222:electionGroupBallotRawData>
+        <eCH-0222:electionGroupBallotRawData>
+          <eCH-0222:electionGroupIdentification>majorz_test</eCH-0222:electionGroupIdentification>
           <eCH-0222:electionRawData>
             <eCH-0222:electionIdentification>majorz_test</eCH-0222:electionIdentification>
             <eCH-0222:ballotRawData>
@@ -645,6 +687,9 @@
               </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
           </eCH-0222:electionRawData>
+        </eCH-0222:electionGroupBallotRawData>
+        <eCH-0222:electionGroupBallotRawData>
+          <eCH-0222:electionGroupIdentification>majorz_test</eCH-0222:electionGroupIdentification>
           <eCH-0222:electionRawData>
             <eCH-0222:electionIdentification>majorz_test</eCH-0222:electionIdentification>
             <eCH-0222:ballotRawData>

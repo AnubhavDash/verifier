@@ -76,7 +76,7 @@ public class RawDataDeliveryMapper {
 		final Delivery deliveryResult = new Delivery();
 
 		deliveryResult.setDeliveryHeader(createDeliveryHeader(electionEventId));
-		deliveryResult.setRawDataDelivery(createRawDataDelivery(electionEventId, configuration, decrypt));
+		deliveryResult.setRawDataDelivery(createRawDataDelivery(configuration, decrypt));
 
 		return deliveryResult;
 	}
@@ -92,13 +92,12 @@ public class RawDataDeliveryMapper {
 				.withTestDeliveryFlag(false);
 	}
 
-	private static EventRawDataDelivery createRawDataDelivery(final String electionEventId, final Configuration configuration,
-			final Results decrypt) {
+	private static EventRawDataDelivery createRawDataDelivery(final Configuration configuration, final Results decrypt) {
 
 		final EventRawDataDelivery eventRawDataDelivery = new EventRawDataDelivery();
 
 		eventRawDataDelivery.setReportingBody(createReportingBody());
-		eventRawDataDelivery.setRawData(createRawData(electionEventId, configuration, decrypt));
+		eventRawDataDelivery.setRawData(createRawData(configuration, decrypt));
 
 		return eventRawDataDelivery;
 	}
@@ -119,17 +118,16 @@ public class RawDataDeliveryMapper {
 		return reportingBody;
 	}
 
-	private static RawDataType createRawData(final String electionEventId, final Configuration configuration, final Results decrypt) {
+	private static RawDataType createRawData(final Configuration configuration, final Results decrypt) {
 		final RawDataType rawDataType = new RawDataType();
 
 		rawDataType.setContestIdentification(decrypt.getContestIdentification());
-		rawDataType.setCountingCircleRawData(createCountingCircleRawData(electionEventId, configuration, decrypt));
+		rawDataType.setCountingCircleRawData(createCountingCircleRawData(configuration, decrypt));
 
 		return rawDataType;
 	}
 
-	private static List<RawDataType.CountingCircleRawData> createCountingCircleRawData(final String electionEventId,
-			final Configuration configuration, final Results decrypt) {
+	private static List<RawDataType.CountingCircleRawData> createCountingCircleRawData(final Configuration configuration, final Results decrypt) {
 
 		final Map<String, List<VoteType>> mappingDecryptVoteToEch0222 = mappingDecryptVoteToEch0222(decrypt);
 		final Map<String, List<ElectionType>> mappingDecryptElectionToEch0222 = mappingDecryptElectionToEch0222(decrypt);
@@ -149,7 +147,7 @@ public class RawDataDeliveryMapper {
 
 					if (mappingDecryptElectionToEch0222.get(ccid) != null) {
 						countingCircleRawData.setElectionGroupBallotRawData(
-								createElectionGroupBallotRawData(electionEventId, mappingDecryptElectionToEch0222.get(ccid), configuration));
+								createElectionGroupBallotRawData(configuration, mappingDecryptElectionToEch0222.get(ccid)));
 					}
 
 					return countingCircleRawData;
@@ -181,23 +179,13 @@ public class RawDataDeliveryMapper {
 				.toList();
 	}
 
-	private static List<RawDataType.CountingCircleRawData.ElectionGroupBallotRawData> createElectionGroupBallotRawData(final String electionEventId,
-			final List<ElectionType> elections, final Configuration configuration) {
+	private static List<RawDataType.CountingCircleRawData.ElectionGroupBallotRawData> createElectionGroupBallotRawData(
+			final Configuration configuration, final List<ElectionType> elections) {
 
 		return elections.stream()
 				.flatMap(election -> election.getBallot().stream()
-						.map(ballotElection -> createElectionGroupBallot(electionEventId, election.getElectionIdentification(),
+						.map(ballotElection -> createElectionGroupBallot(election.getElectionIdentification(), election.getElectionIdentification(),
 								ballotElection, configuration)))
-				.map(electionGroupBallotRawData -> new AbstractMap.SimpleEntry<>(electionGroupBallotRawData.getElectionGroupIdentification(),
-						electionGroupBallotRawData))
-				.collect(Collectors.toMap(
-						AbstractMap.SimpleEntry::getKey,
-						AbstractMap.SimpleEntry::getValue,
-						(g1, g2) -> {
-							g1.getElectionRawData().addAll(g2.getElectionRawData());
-							return g1;
-						}))
-				.values().stream()
 				.filter(electionGroupBallotRawData -> !electionGroupBallotRawData.getElectionRawData().isEmpty())
 				.toList();
 	}
