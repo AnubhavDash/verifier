@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <configuration xmlns="http://www.evoting.ch/xmlns/config/4">
   <header>
-    <fileDate>2023-02-13T15:36:52.710+01:00</fileDate>
-    <voterTotal>76</voterTotal>
+    <fileDate>2023-03-06T08:22:10.566+01:00</fileDate>
+    <voterTotal>43</voterTotal>
   </header>
   <contest>
     <contestIdentification>Post_E2E_DEV</contestIdentification>
@@ -1174,234 +1174,6 @@
         <referenceOnPosition>01a.06</referenceOnPosition>
       </candidate>
       <candidate>
-        <candidateIdentification>d8d62d0b-3ac0-40aa-8142-b8f735e4bc3f</candidateIdentification>
-        <mrMrs>2</mrMrs>
-        <familyName>Sieben</familyName>
-        <firstName>Kandidat</firstName>
-        <callName>Gerd</callName>
-        <candidateText>
-          <candidateTextInfo>
-            <language>de</language>
-            <candidateText>01.01.1960, ?</candidateText>
-          </candidateTextInfo>
-          <candidateTextInfo>
-            <language>fr</language>
-            <candidateText>01.01.1960, ?</candidateText>
-          </candidateTextInfo>
-          <candidateTextInfo>
-            <language>it</language>
-            <candidateText>01.01.1960, ?</candidateText>
-          </candidateTextInfo>
-          <candidateTextInfo>
-            <language>rm</language>
-            <candidateText>01.01.1960, ?</candidateText>
-          </candidateTextInfo>
-        </candidateText>
-        <dateOfBirth>1960-01-01</dateOfBirth>
-        <sex>1</sex>
-        <incumbent>
-          <incumbent>false</incumbent>
-        </incumbent>
-        <dwellingAddress>
-          <foreignZipCode>?</foreignZipCode>
-          <town>?</town>
-        </dwellingAddress>
-        <swiss>
-          <origin>?</origin>
-        </swiss>
-        <referenceOnPosition>05a.01</referenceOnPosition>
-      </candidate>
-      <candidate>
-        <candidateIdentification>ff671047-7e0f-4198-974f-0041a55f1c70</candidateIdentification>
-        <mrMrs>1</mrMrs>
-        <familyName>Acht</familyName>
-        <firstName>Kandidat</firstName>
-        <callName>Hilde</callName>
-        <candidateText>
-          <candidateTextInfo>
-            <language>de</language>
-            <candidateText>01.01.1984, ?</candidateText>
-          </candidateTextInfo>
-          <candidateTextInfo>
-            <language>fr</language>
-            <candidateText>01.01.1984, ?</candidateText>
-          </candidateTextInfo>
-          <candidateTextInfo>
-            <language>it</language>
-            <candidateText>01.01.1984, ?</candidateText>
-          </candidateTextInfo>
-          <candidateTextInfo>
-            <language>rm</language>
-            <candidateText>01.01.1984, ?</candidateText>
-          </candidateTextInfo>
-        </candidateText>
-        <dateOfBirth>1984-01-01</dateOfBirth>
-        <sex>2</sex>
-        <incumbent>
-          <incumbent>false</incumbent>
-        </incumbent>
-        <dwellingAddress>
-          <foreignZipCode>?</foreignZipCode>
-          <town>?</town>
-        </dwellingAddress>
-        <swiss>
-          <origin>?</origin>
-        </swiss>
-        <referenceOnPosition>05a.02</referenceOnPosition>
-      </candidate>
-      <candidate>
-        <candidateIdentification>8ba15de5-4e9c-4b88-9fab-e1d8db45db49</candidateIdentification>
-        <mrMrs>2</mrMrs>
-        <familyName>Neun</familyName>
-        <firstName>Kandidat</firstName>
-        <callName>Inno</callName>
-        <candidateText>
-          <candidateTextInfo>
-            <language>de</language>
-            <candidateText>01.01.1983, ?</candidateText>
-          </candidateTextInfo>
-          <candidateTextInfo>
-            <language>fr</language>
-            <candidateText>01.01.1983, ?</candidateText>
-          </candidateTextInfo>
-          <candidateTextInfo>
-            <language>it</language>
-            <candidateText>01.01.1983, ?</candidateText>
-          </candidateTextInfo>
-          <candidateTextInfo>
-            <language>rm</language>
-            <candidateText>01.01.1983, ?</candidateText>
-          </candidateTextInfo>
-        </candidateText>
-        <dateOfBirth>1983-01-01</dateOfBirth>
-        <sex>1</sex>
-        <incumbent>
-          <incumbent>false</incumbent>
-        </incumbent>
-        <dwellingAddress>
-          <foreignZipCode>?</foreignZipCode>
-          <town>?</town>
-        </dwellingAddress>
-        <swiss>
-          <origin>?</origin>
-        </swiss>
-        <referenceOnPosition>05a.03</referenceOnPosition>
-      </candidate>
-      <candidate>
-        <candidateIdentification>7797d304-7c46-4fdd-850e-7a57a20aeb99</candidateIdentification>
-        <mrMrs>1</mrMrs>
-        <familyName>Zehn</familyName>
-        <firstName>Kandidat</firstName>
-        <callName>Janette</callName>
-        <candidateText>
-          <candidateTextInfo>
-            <language>de</language>
-            <candidateText>01.01.1972, ?</candidateText>
-          </candidateTextInfo>
-          <candidateTextInfo>
-            <language>fr</language>
-            <candidateText>01.01.1972, ?</candidateText>
-          </candidateTextInfo>
-          <candidateTextInfo>
-            <language>it</language>
-            <candidateText>01.01.1972, ?</candidateText>
-          </candidateTextInfo>
-          <candidateTextInfo>
-            <language>rm</language>
-            <candidateText>01.01.1972, ?</candidateText>
-          </candidateTextInfo>
-        </candidateText>
-        <dateOfBirth>1972-01-01</dateOfBirth>
-        <sex>2</sex>
-        <incumbent>
-          <incumbent>false</incumbent>
-        </incumbent>
-        <dwellingAddress>
-          <foreignZipCode>?</foreignZipCode>
-          <town>?</town>
-        </dwellingAddress>
-        <swiss>
-          <origin>?</origin>
-        </swiss>
-        <referenceOnPosition>05a.04</referenceOnPosition>
-      </candidate>
-      <candidate>
-        <candidateIdentification>ea12b112-3f31-4dd5-8f46-a0a5d53bd4ef</candidateIdentification>
-        <mrMrs>2</mrMrs>
-        <familyName>Elf</familyName>
-        <firstName>Kandidat</firstName>
-        <callName>Konstantin</callName>
-        <candidateText>
-          <candidateTextInfo>
-            <language>de</language>
-            <candidateText>01.01.1982, ?</candidateText>
-          </candidateTextInfo>
-          <candidateTextInfo>
-            <language>fr</language>
-            <candidateText>01.01.1982, ?</candidateText>
-          </candidateTextInfo>
-          <candidateTextInfo>
-            <language>it</language>
-            <candidateText>01.01.1982, ?</candidateText>
-          </candidateTextInfo>
-          <candidateTextInfo>
-            <language>rm</language>
-            <candidateText>01.01.1982, ?</candidateText>
-          </candidateTextInfo>
-        </candidateText>
-        <dateOfBirth>1982-01-01</dateOfBirth>
-        <sex>1</sex>
-        <incumbent>
-          <incumbent>false</incumbent>
-        </incumbent>
-        <dwellingAddress>
-          <foreignZipCode>?</foreignZipCode>
-          <town>?</town>
-        </dwellingAddress>
-        <swiss>
-          <origin>?</origin>
-        </swiss>
-        <referenceOnPosition>05a.05</referenceOnPosition>
-      </candidate>
-      <candidate>
-        <candidateIdentification>1323b3c2-1ef5-4114-b637-a285e2ba12e2</candidateIdentification>
-        <mrMrs>1</mrMrs>
-        <familyName>Zwölf</familyName>
-        <firstName>Kandidat</firstName>
-        <callName>Lara</callName>
-        <candidateText>
-          <candidateTextInfo>
-            <language>de</language>
-            <candidateText>01.01.1961, ?</candidateText>
-          </candidateTextInfo>
-          <candidateTextInfo>
-            <language>fr</language>
-            <candidateText>01.01.1961, ?</candidateText>
-          </candidateTextInfo>
-          <candidateTextInfo>
-            <language>it</language>
-            <candidateText>01.01.1961, ?</candidateText>
-          </candidateTextInfo>
-          <candidateTextInfo>
-            <language>rm</language>
-            <candidateText>01.01.1961, ?</candidateText>
-          </candidateTextInfo>
-        </candidateText>
-        <dateOfBirth>1961-01-01</dateOfBirth>
-        <sex>2</sex>
-        <incumbent>
-          <incumbent>false</incumbent>
-        </incumbent>
-        <dwellingAddress>
-          <foreignZipCode>?</foreignZipCode>
-          <town>?</town>
-        </dwellingAddress>
-        <swiss>
-          <origin>?</origin>
-        </swiss>
-        <referenceOnPosition>05a.06</referenceOnPosition>
-      </candidate>
-      <candidate>
         <candidateIdentification>6eb5e01e-755a-4794-9781-b76a32e7175c</candidateIdentification>
         <mrMrs>2</mrMrs>
         <familyName>Dreizehn</familyName>
@@ -1966,6 +1738,82 @@
           <origin>?</origin>
         </swiss>
         <referenceOnPosition>03a.06</referenceOnPosition>
+      </candidate>
+      <candidate>
+        <candidateIdentification>ff671047-7e0f-4198-974f-0041a55f1c70</candidateIdentification>
+        <mrMrs>1</mrMrs>
+        <familyName>Acht</familyName>
+        <firstName>Kandidat</firstName>
+        <callName>Hilde</callName>
+        <candidateText>
+          <candidateTextInfo>
+            <language>de</language>
+            <candidateText>01.01.1984, ?</candidateText>
+          </candidateTextInfo>
+          <candidateTextInfo>
+            <language>fr</language>
+            <candidateText>01.01.1984, ?</candidateText>
+          </candidateTextInfo>
+          <candidateTextInfo>
+            <language>it</language>
+            <candidateText>01.01.1984, ?</candidateText>
+          </candidateTextInfo>
+          <candidateTextInfo>
+            <language>rm</language>
+            <candidateText>01.01.1984, ?</candidateText>
+          </candidateTextInfo>
+        </candidateText>
+        <dateOfBirth>1984-01-01</dateOfBirth>
+        <sex>2</sex>
+        <incumbent>
+          <incumbent>false</incumbent>
+        </incumbent>
+        <dwellingAddress>
+          <foreignZipCode>?</foreignZipCode>
+          <town>?</town>
+        </dwellingAddress>
+        <swiss>
+          <origin>?</origin>
+        </swiss>
+        <referenceOnPosition>10.02</referenceOnPosition>
+      </candidate>
+      <candidate>
+        <candidateIdentification>8ba15de5-4e9c-4b88-9fab-e1d8db45db49</candidateIdentification>
+        <mrMrs>2</mrMrs>
+        <familyName>Neun</familyName>
+        <firstName>Kandidat</firstName>
+        <callName>Inno</callName>
+        <candidateText>
+          <candidateTextInfo>
+            <language>de</language>
+            <candidateText>01.01.1983, ?</candidateText>
+          </candidateTextInfo>
+          <candidateTextInfo>
+            <language>fr</language>
+            <candidateText>01.01.1983, ?</candidateText>
+          </candidateTextInfo>
+          <candidateTextInfo>
+            <language>it</language>
+            <candidateText>01.01.1983, ?</candidateText>
+          </candidateTextInfo>
+          <candidateTextInfo>
+            <language>rm</language>
+            <candidateText>01.01.1983, ?</candidateText>
+          </candidateTextInfo>
+        </candidateText>
+        <dateOfBirth>1983-01-01</dateOfBirth>
+        <sex>1</sex>
+        <incumbent>
+          <incumbent>false</incumbent>
+        </incumbent>
+        <dwellingAddress>
+          <foreignZipCode>?</foreignZipCode>
+          <town>?</town>
+        </dwellingAddress>
+        <swiss>
+          <origin>?</origin>
+        </swiss>
+        <referenceOnPosition>10.03</referenceOnPosition>
       </candidate>
       <list>
         <listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</listIdentification>
@@ -2535,8 +2383,56 @@
           </candidateTextOnPosition>
         </candidatePosition>
         <candidatePosition>
-          <candidateListIdentification>8f1a8aa8-a7fb-349e-aadc-a326e95765b9</candidateListIdentification>
+          <candidateListIdentification>45364b88-caa2-375d-9d28-90ece22d18a9</candidateListIdentification>
           <positionOnList>2</positionOnList>
+          <candidateReferenceOnPosition>10.02</candidateReferenceOnPosition>
+          <candidateIdentification>ff671047-7e0f-4198-974f-0041a55f1c70</candidateIdentification>
+          <candidateTextOnPosition>
+            <candidateTextInfo>
+              <language>de</language>
+              <candidateText>01.01.1975, ?</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>fr</language>
+              <candidateText>01.01.1975, ?</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>it</language>
+              <candidateText>01.01.1975, ?</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>rm</language>
+              <candidateText>01.01.1975, ?</candidateText>
+            </candidateTextInfo>
+          </candidateTextOnPosition>
+        </candidatePosition>
+        <candidatePosition>
+          <candidateListIdentification>45364b88-caa2-375d-9d28-90ece22d18a9</candidateListIdentification>
+          <positionOnList>3</positionOnList>
+          <candidateReferenceOnPosition>10.02</candidateReferenceOnPosition>
+          <candidateIdentification>ff671047-7e0f-4198-974f-0041a55f1c70</candidateIdentification>
+          <candidateTextOnPosition>
+            <candidateTextInfo>
+              <language>de</language>
+              <candidateText>01.01.1975, ?</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>fr</language>
+              <candidateText>01.01.1975, ?</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>it</language>
+              <candidateText>01.01.1975, ?</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>rm</language>
+              <candidateText>01.01.1975, ?</candidateText>
+            </candidateTextInfo>
+          </candidateTextOnPosition>
+        </candidatePosition>
+        <candidatePosition>
+          <candidateListIdentification>8f1a8aa8-a7fb-349e-aadc-a326e95765b9</candidateListIdentification>
+          <positionOnList>4</positionOnList>
           <candidateReferenceOnPosition>10.01</candidateReferenceOnPosition>
           <candidateIdentification>e5b16bd6-815b-4e02-8e9e-04064a19b6d0</candidateIdentification>
           <candidateTextOnPosition>
@@ -2725,6 +2621,55 @@
           </candidateTextOnPosition>
         </candidatePosition>
       </list>
+      <listUnion>
+        <listUnionIdentification>9bf162c8-0fc3-41ab-8aa3-2bde4d8cd26a</listUnionIdentification>
+        <listUnionDescription>
+          <listUnionDescriptionInfo>
+            <language>de</language>
+            <listUnionDescription>Vereinigte Liste 1: Partei 01 - Partei 02 - Partei 03</listUnionDescription>
+          </listUnionDescriptionInfo>
+          <listUnionDescriptionInfo>
+            <language>fr</language>
+            <listUnionDescription>Apparentement 1 : Partei 01 - Partei 02 - Partei 03</listUnionDescription>
+          </listUnionDescriptionInfo>
+          <listUnionDescriptionInfo>
+            <language>it</language>
+            <listUnionDescription>Lista unita 1: Partei 01 - Partei 02 - Partei 03</listUnionDescription>
+          </listUnionDescriptionInfo>
+          <listUnionDescriptionInfo>
+            <language>rm</language>
+            <listUnionDescription>Glista unida 1: Partei 01 - Partei 02 - Partei 03</listUnionDescription>
+          </listUnionDescriptionInfo>
+        </listUnionDescription>
+        <listUnionType>1</listUnionType>
+        <referencedList>244ab111-a5d4-4090-bed3-79f850a27fa1</referencedList>
+        <referencedList>50504845-5222-4e70-8d34-f812fce04009</referencedList>
+        <referencedList>9ef97382-006e-4e3d-b079-1b7e53da339b</referencedList>
+      </listUnion>
+      <listUnion>
+        <listUnionIdentification>dff349df-53da-489a-a4ea-a79704caf8bf</listUnionIdentification>
+        <listUnionDescription>
+          <listUnionDescriptionInfo>
+            <language>de</language>
+            <listUnionDescription>Vereinigte Subliste 1a: Partei 02 - Partei 03</listUnionDescription>
+          </listUnionDescriptionInfo>
+          <listUnionDescriptionInfo>
+            <language>fr</language>
+            <listUnionDescription>Sous-apparentement 1a : Partei 02 - Partei 03</listUnionDescription>
+          </listUnionDescriptionInfo>
+          <listUnionDescriptionInfo>
+            <language>it</language>
+            <listUnionDescription>Sublistino unito 1a: Partei 02 - Partei 03</listUnionDescription>
+          </listUnionDescriptionInfo>
+          <listUnionDescriptionInfo>
+            <language>rm</language>
+            <listUnionDescription>Sutglista unida 1a: Partei 02 - Partei 03</listUnionDescription>
+          </listUnionDescriptionInfo>
+        </listUnionDescription>
+        <listUnionType>2</listUnionType>
+        <referencedList>50504845-5222-4e70-8d34-f812fce04009</referencedList>
+        <referencedList>9ef97382-006e-4e3d-b079-1b7e53da339b</referencedList>
+      </listUnion>
     </electionInformation>
     <voteInformation>
       <vote>
@@ -3323,186 +3268,6 @@
       <voterType>SWISSRESIDENT</voterType>
     </voter>
     <voter>
-      <voterIdentification>200006</voterIdentification>
-      <authorization>ec1ce02e-9b9b-3756-8d99-5bfd68678f6b</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>MALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>200007</voterIdentification>
-      <authorization>ec1ce02e-9b9b-3756-8d99-5bfd68678f6b</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>FEMALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>200008</voterIdentification>
-      <authorization>ec1ce02e-9b9b-3756-8d99-5bfd68678f6b</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>MALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>200009</voterIdentification>
-      <authorization>ec1ce02e-9b9b-3756-8d99-5bfd68678f6b</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>FEMALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>200010</voterIdentification>
-      <authorization>ec1ce02e-9b9b-3756-8d99-5bfd68678f6b</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>MALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>200011</voterIdentification>
-      <authorization>ec1ce02e-9b9b-3756-8d99-5bfd68678f6b</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>MALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>200012</voterIdentification>
-      <authorization>ec1ce02e-9b9b-3756-8d99-5bfd68678f6b</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>FEMALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>200013</voterIdentification>
-      <authorization>ec1ce02e-9b9b-3756-8d99-5bfd68678f6b</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>FEMALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>200014</voterIdentification>
-      <authorization>ec1ce02e-9b9b-3756-8d99-5bfd68678f6b</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>FEMALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>200015</voterIdentification>
-      <authorization>ec1ce02e-9b9b-3756-8d99-5bfd68678f6b</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>MALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>200016</voterIdentification>
-      <authorization>ec1ce02e-9b9b-3756-8d99-5bfd68678f6b</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>MALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>200017</voterIdentification>
-      <authorization>ec1ce02e-9b9b-3756-8d99-5bfd68678f6b</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>FEMALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>200018</voterIdentification>
-      <authorization>ec1ce02e-9b9b-3756-8d99-5bfd68678f6b</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>MALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>200019</voterIdentification>
-      <authorization>ec1ce02e-9b9b-3756-8d99-5bfd68678f6b</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>FEMALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>200020</voterIdentification>
-      <authorization>ec1ce02e-9b9b-3756-8d99-5bfd68678f6b</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>MALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
       <voterIdentification>300001</voterIdentification>
       <authorization>7228df42-9812-3434-a123-7af149a88672</authorization>
       <extendedAuthenticationKeys>
@@ -3560,186 +3325,6 @@
         </extendedAuthenticationKey>
       </extendedAuthenticationKeys>
       <sex>FEMALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>300006</voterIdentification>
-      <authorization>7228df42-9812-3434-a123-7af149a88672</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>MALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>300007</voterIdentification>
-      <authorization>7228df42-9812-3434-a123-7af149a88672</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>FEMALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>300008</voterIdentification>
-      <authorization>7228df42-9812-3434-a123-7af149a88672</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>MALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>300009</voterIdentification>
-      <authorization>7228df42-9812-3434-a123-7af149a88672</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>FEMALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>300010</voterIdentification>
-      <authorization>7228df42-9812-3434-a123-7af149a88672</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>MALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>300011</voterIdentification>
-      <authorization>7228df42-9812-3434-a123-7af149a88672</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>MALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>300012</voterIdentification>
-      <authorization>7228df42-9812-3434-a123-7af149a88672</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>FEMALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>300013</voterIdentification>
-      <authorization>7228df42-9812-3434-a123-7af149a88672</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>FEMALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>300014</voterIdentification>
-      <authorization>7228df42-9812-3434-a123-7af149a88672</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>FEMALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>300015</voterIdentification>
-      <authorization>7228df42-9812-3434-a123-7af149a88672</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>MALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>300016</voterIdentification>
-      <authorization>7228df42-9812-3434-a123-7af149a88672</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>MALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>300017</voterIdentification>
-      <authorization>7228df42-9812-3434-a123-7af149a88672</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>FEMALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>300018</voterIdentification>
-      <authorization>7228df42-9812-3434-a123-7af149a88672</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>MALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>300019</voterIdentification>
-      <authorization>7228df42-9812-3434-a123-7af149a88672</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>FEMALE</sex>
-      <voterType>SWISSRESIDENT</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>300020</voterIdentification>
-      <authorization>7228df42-9812-3434-a123-7af149a88672</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>MALE</sex>
       <voterType>SWISSRESIDENT</voterType>
     </voter>
     <voter>
@@ -4126,42 +3711,6 @@
       <sex>FEMALE</sex>
       <voterType>SWISSABROAD</voterType>
     </voter>
-    <voter>
-      <voterIdentification>400033</voterIdentification>
-      <authorization>88ac0932-b73a-3d2b-b04a-44a16176a5e9</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>MALE</sex>
-      <voterType>SWISSABROAD</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>400034</voterIdentification>
-      <authorization>88ac0932-b73a-3d2b-b04a-44a16176a5e9</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>MALE</sex>
-      <voterType>SWISSABROAD</voterType>
-    </voter>
-    <voter>
-      <voterIdentification>400035</voterIdentification>
-      <authorization>88ac0932-b73a-3d2b-b04a-44a16176a5e9</authorization>
-      <extendedAuthenticationKeys>
-        <extendedAuthenticationKey>
-          <name>birthDate</name>
-          <value>1944-06-01</value>
-        </extendedAuthenticationKey>
-      </extendedAuthenticationKeys>
-      <sex>FEMALE</sex>
-      <voterType>SWISSABROAD</voterType>
-    </voter>
   </register>
-  <signature>SibjKKQSb7p9dBusCWtuSLF63YfUzMrb/nqYR8ATqtwosaozrVqYLAikhaDeuvvR56kKfx8DB9VN40MWo2sRLcjvEctREDfMSnLEfDqC9XjEsuj0L1igyqEK5USELVafH9rIWqMgjFycEtFt6jnDMjQt7S+7PnCaeqCejFeypniSgLJHCrb5XcF4UzTv0QWWq3TLruHu15porQmlD8smhdFphaLAan9yHbAZCjLkG2guCcKi+nDeyHR0HJU9tZchLa+FhwVvz7exMV2nF1KDDkwASsL4ctZmIdmAZk011uLGOLtW1Avg5HRM3HhPuAneyUztx24vp3F4EXW7xEnHCTXaJ4zeDNObYJlYWcEcsfO4RAe3ogAy2uI97hGVC0ehrEotU5DveIkKgspmAJr08sdRaeTxSr4adjCZZsK+eQ16rnvc7u5SjcHrpANUoYeOnZlOe60j0J95C0EvKBRjyuJZtheyfYgQZS63MRslvuan5qer/dSb3LrFygCzFirg</signature>
+  <signature>saXqvgB7j0PgTafuqfRGPnPw660QbrlhGalMQkOd1pAomVFZQC/WW5UhmK5sRCw8Tj/BbrIt681VHGKrtfdPLTvPh2woMcGegiy8451zrHeWvPoJjtQYB0rZHlgMdCwiFnKg2EjjGdOuCvkjdViNabrmDVFwBKxZVPVTip943b5VKaq6QIG73he6XVvPR1D3YsNK+/5licrshh7qGcFtCcqjmLYe3VNbQWCixOV22HxifQQaG/aCdjXbvggL/ik2GfdIVp5IqhERkpNQJ3o/whTbtOhHUW7A63UHdnASL3jXv3VNdaEZWcO+uy1q5bWigW53RftVJSTQoY2IupHJACMPVsB/N7VcaK+LANOAdmMyMMrjMATHRYVhnH4bKmV3Hmgixg1h7Xjiv5qxNvPcisvosrWdffq7ylXhZXX9onNb2hf/YwChFCq87yHzlwKFOdxpQeJCu3JE/wqk9PXDhfrFK4eupldl6GrvEEUY9UySt5PGun/XJc/gFE1fgFTB</signature>
 </configuration>
