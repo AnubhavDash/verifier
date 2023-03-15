@@ -18,6 +18,7 @@ package ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline;
 import static ch.post.it.evoting.cryptoprimitives.utils.Conversions.integerToString;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.function.Predicate.not;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -148,7 +149,9 @@ public class VerifyMixDecOfflineAlgorithm {
 		if (decryptVerif.stream().allMatch(VerificationResult::isVerified) && shuffleVerif.stream().allMatch(VerificationResult::isVerified)) {
 			return true;
 		} else {
-			decryptVerif.forEach(verificationResult -> LOGGER.error(verificationResult.getErrorMessages().getFirst()));
+			decryptVerif.stream()
+					.filter(not(VerificationResult::isVerified))
+					.forEach(verificationResult -> LOGGER.error(verificationResult.getErrorMessages().getFirst()));
 			return false;
 		}
 	}
