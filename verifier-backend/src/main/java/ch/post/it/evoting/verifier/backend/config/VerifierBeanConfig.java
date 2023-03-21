@@ -40,9 +40,10 @@ import ch.post.it.evoting.cryptoprimitives.signing.SignatureFactory;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.Results;
+import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
+import ch.post.it.evoting.evotinglibraries.xml.XmlNormalizer;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.verifier.backend.tools.KeystoreRepository;
-import ch.post.it.evoting.verifier.backend.tools.XmlFileRepository;
 import ch.post.it.evoting.verifier.backend.verifications.setup.consistency.VerifyPrimesMappingTableConsistencyAlgorithm;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.IntegerToWriteInAlgorithm;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.QuadraticResidueToWriteInAlgorithm;
@@ -52,7 +53,6 @@ import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.IsWriteI
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.VerifyMixDecOfflineAlgorithm;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.VerifyVotingClientProofsAlgorithm;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixonline.GetMixnetInitialCiphertextsAlgorithm;
-import ch.post.it.evoting.verifier.protocol.domain.xml.XmlNormalizer;
 
 @Configuration
 public class VerifierBeanConfig {
@@ -149,12 +149,17 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
-	XmlFileRepository<ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration> configurationXmlFileRepository() {
+	XmlFileRepository<ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration> configurationXmlFileRepository() {
 		return new XmlFileRepository<>();
 	}
 
 	@Bean
 	XmlFileRepository<Delivery> deliveryXmlFileRepository() {
+		return new XmlFileRepository<>();
+	}
+
+	@Bean
+	XmlFileRepository<ch.ech.xmlns.ech_0222._1.Delivery> ech0222DeliveryXmlFileRepository() {
 		return new XmlFileRepository<>();
 	}
 

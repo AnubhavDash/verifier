@@ -42,9 +42,9 @@ import ch.ech.xmlns.ech_0155._4.ExtensionType;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
-import ch.post.it.evoting.verifier.backend.hashable.HashableEch0110Factory;
-import ch.post.it.evoting.verifier.backend.tools.XmlFileRepository;
-import ch.post.it.evoting.verifier.protocol.domain.xml.XsdConstants;
+import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
+import ch.post.it.evoting.evotinglibraries.xml.XsdConstants;
+import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableEch0110Factory;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
 import ch.post.it.evoting.verifier.protocol.domain.ChannelSecurityContextData;
 

@@ -24,12 +24,11 @@
 		<commons-codec.version>1.15</commons-codec.version>
 		<crypto-primitives-version>1.2.1.2</crypto-primitives-version>
 		<crypto-primitives-domain.version>1.2.1.2</crypto-primitives-domain.version>
+		<e-voting-libraries.version>0.0.0.3</e-voting-libraries.version>
 		<guava.version>31.1-jre</guava.version>
 		<jackson.version>2.14.2</jackson.version>
 		<jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
 		<jakarta.xml.bind-api.version>4.0.0</jakarta.xml.bind-api.version>
-		<javax.xml.bind.version>2.4.0-b180830.0359</javax.xml.bind.version>
-		<jaxb-impl.version>2.3.7</jaxb-impl.version>
 		<junit-jupiter.version>5.9.2</junit-jupiter.version>
 		<mapstruct.version>1.5.3.Final</mapstruct.version>
 		<maven-assembly-plugin.version>3.4.2</maven-assembly-plugin.version>
@@ -125,16 +124,16 @@
 				<version>${crypto-primitives-domain.version}</version>
 			</dependency>
 
-			<!-- jaxb -->
+			<!-- e-voting-libraries -->
 			<dependency>
-				<groupId>javax.xml.bind</groupId>
-				<artifactId>jaxb-api</artifactId>
-				<version>${javax.xml.bind.version}</version>
+				<groupId>ch.post.it.evoting.evotinglibraries</groupId>
+				<artifactId>domain</artifactId>
+				<version>${e-voting-libraries.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.sun.xml.bind</groupId>
-				<artifactId>jaxb-impl</artifactId>
-				<version>${jaxb-impl.version}</version>
+				<groupId>ch.post.it.evoting.evotinglibraries</groupId>
+				<artifactId>xml</artifactId>
+				<version>${e-voting-libraries.version}</version>
 			</dependency>
 
 			<!-- junit -->
@@ -314,12 +313,6 @@
 					<artifactId>reproducible-build-maven-plugin</artifactId>
 					<version>${reproducible-build-maven-plugin.version}</version>
 					<executions>
-						<execution>
-							<id>strip-jaxb</id>
-							<goals>
-								<goal>strip-jaxb</goal>
-							</goals>
-						</execution>
 						<execution>
 							<id>strip-jar</id>
 							<goals>

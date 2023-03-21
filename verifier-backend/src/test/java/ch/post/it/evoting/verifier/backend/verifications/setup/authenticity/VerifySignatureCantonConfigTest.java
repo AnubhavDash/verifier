@@ -31,8 +31,8 @@ import org.junit.jupiter.api.Test;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration;
-import ch.post.it.evoting.verifier.backend.hashable.HashableConfigurationFactory;
+import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableCantonConfigFactory;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 import ch.post.it.evoting.verifier.protocol.domain.ChannelSecurityContextData;
 
@@ -65,7 +65,7 @@ class VerifySignatureCantonConfigTest extends SetupVerificationTest {
 	}
 
 	private byte[] generateSignature(final Configuration configuration) throws SignatureException {
-		final Hashable hash = HashableConfigurationFactory.fromConfiguration(configuration);
+		final Hashable hash = HashableCantonConfigFactory.fromConfiguration(configuration);
 		final Hashable additionalContextData = ChannelSecurityContextData.cantonConfig();
 
 		return signatureFactory.getTestSignatureGeneration(Alias.CANTON).genSignature(hash, additionalContextData);

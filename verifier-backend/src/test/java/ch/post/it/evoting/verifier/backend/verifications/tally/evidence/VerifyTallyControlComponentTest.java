@@ -28,6 +28,7 @@ import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
 import ch.post.it.evoting.cryptoprimitives.internal.hashing.HashService;
 import ch.post.it.evoting.cryptoprimitives.mixnet.MixnetFactory;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
+import ch.post.it.evoting.evotinglibraries.xml.XmlNormalizer;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
@@ -36,7 +37,6 @@ import ch.post.it.evoting.verifier.protocol.algorithms.tally.QuadraticResidueToW
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.DecodeVotingOptionsAlgorithm;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.DecodeWriteInsAlgorithm;
 import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.IsWriteInOptionAlgorithm;
-import ch.post.it.evoting.verifier.protocol.domain.xml.XmlNormalizer;
 
 class VerifyTallyControlComponentTest extends TallyVerificationTest {
 

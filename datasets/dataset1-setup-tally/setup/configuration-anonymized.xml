@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <configuration xmlns="http://www.evoting.ch/xmlns/config/4">
   <header>
-    <fileDate>2023-03-06T08:22:10.566+01:00</fileDate>
+    <fileDate>2023-03-15T11:47:36.384+01:00</fileDate>
     <voterTotal>43</voterTotal>
   </header>
   <contest>
@@ -1776,44 +1776,6 @@
           <origin>?</origin>
         </swiss>
         <referenceOnPosition>10.02</referenceOnPosition>
-      </candidate>
-      <candidate>
-        <candidateIdentification>8ba15de5-4e9c-4b88-9fab-e1d8db45db49</candidateIdentification>
-        <mrMrs>2</mrMrs>
-        <familyName>Neun</familyName>
-        <firstName>Kandidat</firstName>
-        <callName>Inno</callName>
-        <candidateText>
-          <candidateTextInfo>
-            <language>de</language>
-            <candidateText>01.01.1983, ?</candidateText>
-          </candidateTextInfo>
-          <candidateTextInfo>
-            <language>fr</language>
-            <candidateText>01.01.1983, ?</candidateText>
-          </candidateTextInfo>
-          <candidateTextInfo>
-            <language>it</language>
-            <candidateText>01.01.1983, ?</candidateText>
-          </candidateTextInfo>
-          <candidateTextInfo>
-            <language>rm</language>
-            <candidateText>01.01.1983, ?</candidateText>
-          </candidateTextInfo>
-        </candidateText>
-        <dateOfBirth>1983-01-01</dateOfBirth>
-        <sex>1</sex>
-        <incumbent>
-          <incumbent>false</incumbent>
-        </incumbent>
-        <dwellingAddress>
-          <foreignZipCode>?</foreignZipCode>
-          <town>?</town>
-        </dwellingAddress>
-        <swiss>
-          <origin>?</origin>
-        </swiss>
-        <referenceOnPosition>10.03</referenceOnPosition>
       </candidate>
       <list>
         <listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</listIdentification>
@@ -3712,5 +3674,5 @@
       <voterType>SWISSABROAD</voterType>
     </voter>
   </register>
-  <signature>saXqvgB7j0PgTafuqfRGPnPw660QbrlhGalMQkOd1pAomVFZQC/WW5UhmK5sRCw8Tj/BbrIt681VHGKrtfdPLTvPh2woMcGegiy8451zrHeWvPoJjtQYB0rZHlgMdCwiFnKg2EjjGdOuCvkjdViNabrmDVFwBKxZVPVTip943b5VKaq6QIG73he6XVvPR1D3YsNK+/5licrshh7qGcFtCcqjmLYe3VNbQWCixOV22HxifQQaG/aCdjXbvggL/ik2GfdIVp5IqhERkpNQJ3o/whTbtOhHUW7A63UHdnASL3jXv3VNdaEZWcO+uy1q5bWigW53RftVJSTQoY2IupHJACMPVsB/N7VcaK+LANOAdmMyMMrjMATHRYVhnH4bKmV3Hmgixg1h7Xjiv5qxNvPcisvosrWdffq7ylXhZXX9onNb2hf/YwChFCq87yHzlwKFOdxpQeJCu3JE/wqk9PXDhfrFK4eupldl6GrvEEUY9UySt5PGun/XJc/gFE1fgFTB</signature>
+  <signature>jA30HXi7y3w7yJjTk4EIuYGYK4rQTfLmIRIZXHq2EagcZfVqFNGaRbilz7hS27PA0KmmzI9MIyFdXjTYAI1jaR0J3S5wxGTYQCwr/2h6zbz7ndSJYPZjBMtnQrgPwDnJTGIfX8jCjsg06DGzm8WYv4HbUAM8gZjJM6Y1ORBO4LIJSK7wY8MMas0JN5+dISs0FCMDKKLYSJfQY6cJiJY5XeNKnZFsG/JgAlQhZb1lfufgsr2blEzfagkoVgIwkRYjzhVW0btCo5uAJUAyDwz3gZKrVu1yor2IJs70q5RaQz1hBf1wYZ5yyA1anPuMrCwJXIJCHQPoKbMCXXh53Wl5/VFC3ryBx16t+G0dW3tuR0mzGDNvHt+v2i7fsD3MVytMonU3FVucMZ5JejGL0s/nQ6iuu07X3ShrE8LzavGSbjXhknB71BIoOo1PQRph25jGmLzHAin44EOj28eqHq88NE9mV97xpMlOrf4QUTWIyn6tfsMwMfJZqPWJ0qEQ7q4Z</signature>
 </configuration>

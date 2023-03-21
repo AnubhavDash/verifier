@@ -20,9 +20,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Map;
 
 import ch.ech.xmlns.ech_0110._4.Delivery;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.Results;
-import ch.post.it.evoting.verifier.protocol.domain.tally.TallyComponentVotesPayload;
+import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 
 public class VerifyTallyFilesInput {
 
