@@ -67,7 +67,7 @@ public class VerifyChunkConsistency extends AbstractVerification {
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification314.description"));
-		definition.setId(314);
+		definition.setId("3.15");
 		definition.setName("VerifyChunkConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

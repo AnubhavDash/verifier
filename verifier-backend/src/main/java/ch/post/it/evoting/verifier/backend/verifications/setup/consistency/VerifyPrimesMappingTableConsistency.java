@@ -54,7 +54,7 @@ public class VerifyPrimesMappingTableConsistency extends AbstractVerification {
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification307.description"));
-		definition.setId(307);
+		definition.setId("3.08");
 		definition.setName("VerifyPrimesMappingTableConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

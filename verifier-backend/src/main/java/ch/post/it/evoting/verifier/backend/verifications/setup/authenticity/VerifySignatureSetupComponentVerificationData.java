@@ -64,7 +64,7 @@ public class VerifySignatureSetupComponentVerificationData extends AbstractVerif
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
 						"verification.direct.trust.authenticity.description", "SetupComponentVerificationData"));
-		definition.setId(204);
+		definition.setId("2.05");
 		definition.setName("VerifySignatureSetupComponentVerificationData");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

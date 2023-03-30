@@ -57,7 +57,7 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification308.description"));
-		definition.setId(308);
+		definition.setId("8.09");
 		definition.setName("VerifyNodeIdsConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

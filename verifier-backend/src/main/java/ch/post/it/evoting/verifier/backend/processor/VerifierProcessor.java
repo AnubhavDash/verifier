@@ -25,9 +25,9 @@ import java.math.BigInteger;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -104,8 +104,13 @@ public class VerifierProcessor {
 	}
 
 	public List<Verification> getVerifications() {
-		final List<Verification> result = new LinkedList<>(verifications);
-		result.sort(Comparator.comparing(Verification::getBlock).thenComparingInt(Verification::getVerificationId));
+		final List<Verification> result = new ArrayList<>(verifications);
+		result.sort(Comparator.comparing(Verification::getBlock)
+				.thenComparing((o1, o2) -> {
+					double id1 = Double.parseDouble(o1.getVerificationId());
+					double id2 = Double.parseDouble(o2.getVerificationId());
+					return Double.compare(id1, id2);
+				}));
 
 		return result;
 	}

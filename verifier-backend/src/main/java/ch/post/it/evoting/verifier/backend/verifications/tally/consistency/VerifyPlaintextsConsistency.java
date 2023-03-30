@@ -50,7 +50,7 @@ public class VerifyPlaintextsConsistency extends AbstractVerification {
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME,
 				"tally.verification302.description"));
-		definition.setId(302);
+		definition.setId("8.03");
 		definition.setName("VerifyPlaintextsConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

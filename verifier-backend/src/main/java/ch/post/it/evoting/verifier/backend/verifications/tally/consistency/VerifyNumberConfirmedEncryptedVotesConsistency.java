@@ -57,7 +57,7 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification306.description"));
-		definition.setId(306);
+		definition.setId("8.07");
 		definition.setName("VerifyNumberConfirmedEncryptedVotesConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

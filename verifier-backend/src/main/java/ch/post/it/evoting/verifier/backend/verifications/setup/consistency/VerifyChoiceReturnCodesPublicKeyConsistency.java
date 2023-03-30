@@ -57,7 +57,7 @@ public class VerifyChoiceReturnCodesPublicKeyConsistency extends AbstractVerific
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification305.description"));
-		definition.setId(305);
+		definition.setId("3.06");
 		definition.setName("VerifyChoiceReturnCodesPublicKeyConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

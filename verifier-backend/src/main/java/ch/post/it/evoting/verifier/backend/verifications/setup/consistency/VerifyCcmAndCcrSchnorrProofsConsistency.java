@@ -58,7 +58,7 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification304.description"));
-		definition.setId(304);
+		definition.setId("3.05");
 		definition.setName("VerifyCcmAndCcrSchnorrProofsConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

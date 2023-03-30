@@ -55,7 +55,7 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification313.description"));
-		definition.setId(313);
+		definition.setId("3.14");
 		definition.setName("VerifyNodeIdsConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

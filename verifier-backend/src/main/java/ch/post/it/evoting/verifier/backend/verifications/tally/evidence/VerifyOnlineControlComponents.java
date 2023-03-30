@@ -65,7 +65,7 @@ public class VerifyOnlineControlComponents extends AbstractVerification {
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME,
 				"tally.verification500.description"));
-		definition.setId(500);
+		definition.setId("10.01");
 		definition.setName("VerifyOnlineControlComponents");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

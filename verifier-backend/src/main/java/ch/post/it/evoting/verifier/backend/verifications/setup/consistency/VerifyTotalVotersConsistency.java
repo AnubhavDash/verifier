@@ -52,7 +52,7 @@ public class VerifyTotalVotersConsistency extends AbstractVerification {
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification312.description"));
-		definition.setId(312);
+		definition.setId("3.13");
 		definition.setName("VerifyTotalVotersConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

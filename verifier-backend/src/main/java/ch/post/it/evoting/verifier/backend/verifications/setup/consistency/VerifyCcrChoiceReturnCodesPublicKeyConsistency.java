@@ -54,7 +54,7 @@ public class VerifyCcrChoiceReturnCodesPublicKeyConsistency extends AbstractVeri
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification302.description"));
-		definition.setId(302);
+		definition.setId("3.03");
 		definition.setName("VerifyCCrChoiceReturnCodesPublicKeyConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

@@ -58,7 +58,7 @@ public class VerifyTallyCompleteness extends AbstractVerification {
 		definition.setCategory(Category.COMPLETENESS);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "verification100.description"));
-		definition.setId(100);
+		definition.setId("6.01");
 		definition.setName("VerifyTallyCompleteness");
 		definition.addVerifierEvent(PreTallyEvent.TYPE);
 		definition.addVerifierEvent(TallyEvent.TYPE);

@@ -64,7 +64,7 @@ public class VerifySignatureSetupComponentEncryptionParameters extends AbstractV
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
 						"verification.direct.trust.authenticity.description", "SetupComponentEncryptionParameters"));
-		definition.setId(200);
+		definition.setId("2.01");
 		definition.setName("VerifySignatureSetupComponentEncryptionParameters");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

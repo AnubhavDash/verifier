@@ -62,7 +62,7 @@ public class VerifyFileNameBallotBoxIdsConsistency extends AbstractVerification 
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification305.description"));
-		definition.setId(305);
+		definition.setId("8.06");
 		definition.setName("VerifyFileNameBallotBoxIdsConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

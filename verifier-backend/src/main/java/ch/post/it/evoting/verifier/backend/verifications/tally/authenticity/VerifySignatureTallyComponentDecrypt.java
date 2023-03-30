@@ -63,7 +63,7 @@ public class VerifySignatureTallyComponentDecrypt extends AbstractVerification {
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME,
 						"verification.direct.trust.authenticity.description", "TallyComponentDecrypt"));
-		definition.setId(204);
+		definition.setId("7.05");
 		definition.setName("VerifySignatureTallyComponentDecrypt");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

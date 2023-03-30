@@ -64,7 +64,7 @@ public class VerifySignatureCantonConfig extends AbstractVerification {
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
 						"verification.direct.trust.authenticity.description", "CantonConfig"));
-		definition.setId(201);
+		definition.setId("2.02");
 		definition.setName("VerifySignatureCantonConfig");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

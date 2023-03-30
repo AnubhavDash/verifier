@@ -64,7 +64,7 @@ public class VerifySignatureSetupComponentPublicKeys extends AbstractVerificatio
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
 						"verification.direct.trust.authenticity.description", "SetupComponentPublicKeys"));
-		definition.setId(202);
+		definition.setId("2.03");
 		definition.setName("VerifySignatureSetupComponentPublicKeys");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

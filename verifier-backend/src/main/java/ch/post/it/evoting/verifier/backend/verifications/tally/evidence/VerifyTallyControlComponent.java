@@ -65,7 +65,7 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification501.description"));
-		definition.setId(501);
+		definition.setId("10.02");
 		definition.setName("VerifyTallyControlComponent");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

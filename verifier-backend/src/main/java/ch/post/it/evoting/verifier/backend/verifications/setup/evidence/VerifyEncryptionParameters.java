@@ -56,7 +56,7 @@ public class VerifyEncryptionParameters extends AbstractVerification {
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification500.description"));
-		definition.setId(500);
+		definition.setId("5.01");
 		definition.setName("VerifyEncryptionParameters");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

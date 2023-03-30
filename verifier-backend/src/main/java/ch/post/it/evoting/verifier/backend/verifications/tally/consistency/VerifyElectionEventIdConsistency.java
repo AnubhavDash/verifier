@@ -56,7 +56,7 @@ public class VerifyElectionEventIdConsistency extends AbstractVerification {
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification307.description"));
-		definition.setId(307);
+		definition.setId("8.08");
 		definition.setName("VerifyElectionEventIdConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

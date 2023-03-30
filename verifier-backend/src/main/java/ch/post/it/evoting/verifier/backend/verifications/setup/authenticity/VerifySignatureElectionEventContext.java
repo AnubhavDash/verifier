@@ -64,7 +64,7 @@ public class VerifySignatureElectionEventContext extends AbstractVerification {
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
 						"verification.direct.trust.authenticity.description", "ElectionEventContext"));
-		definition.setId(207);
+		definition.setId("2.08");
 		definition.setName("VerifySignatureElectionEventContext");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
