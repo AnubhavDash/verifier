@@ -2,21 +2,21 @@
 <eCH-0222:delivery xmlns:eCH-0222="http://www.ech.ch/xmlns/eCH-0222/1" xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008/3" xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/4">
   <eCH-0222:deliveryHeader>
     <eCH-0058:senderId>http://www.post.ch</eCH-0058:senderId>
-    <eCH-0058:messageId>a7637902bd7b49f69ec121bf6541ea5d</eCH-0058:messageId>
+    <eCH-0058:messageId>A5D23657DC5C54EE0090B8A128399C72</eCH-0058:messageId>
     <eCH-0058:messageType>http://www.post.ch</eCH-0058:messageType>
     <eCH-0058:sendingApplication>
       <eCH-0058:manufacturer>SwissPost</eCH-0058:manufacturer>
       <eCH-0058:product>E-Voting</eCH-0058:product>
       <eCH-0058:productVersion>1</eCH-0058:productVersion>
     </eCH-0058:sendingApplication>
-    <eCH-0058:messageDate>2023-03-21T09:23:48.074320100</eCH-0058:messageDate>
+    <eCH-0058:messageDate>2023-03-29T10:26:39.968851900</eCH-0058:messageDate>
     <eCH-0058:action>1</eCH-0058:action>
     <eCH-0058:testDeliveryFlag>false</eCH-0058:testDeliveryFlag>
   </eCH-0222:deliveryHeader>
   <eCH-0222:rawDataDelivery>
     <eCH-0222:reportingBody>
       <eCH-0222:reportingBodyIdentification>SwissPost</eCH-0222:reportingBodyIdentification>
-      <eCH-0222:creationDateTime>2023-03-21T09:23:48.081618900</eCH-0222:creationDateTime>
+      <eCH-0222:creationDateTime>2023-03-29T10:26:39.969032300</eCH-0222:creationDateTime>
     </eCH-0222:reportingBody>
     <eCH-0222:rawData>
       <eCH-0222:contestIdentification>Post_E2E_DEV</eCH-0222:contestIdentification>
@@ -30,9 +30,35 @@
               <eCH-0222:questionRawData>
                 <eCH-0222:questionIdentification>16f99be5-0ce6-4a81-ae8b-1817ceecaebc</eCH-0222:questionIdentification>
                 <eCH-0222:casted>
+                  <eCH-0222:castedVote>2</eCH-0222:castedVote>
+                  <eCH-0222:answerOptionIdentification>
+                    <eCH-0155:answerIdentification>e9da718b-469e-35d4-8d7d-d6329621e755</eCH-0155:answerIdentification>
+                    <eCH-0155:answerSequenceNumber>2</eCH-0155:answerSequenceNumber>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>de</eCH-0155:language>
+                      <eCH-0155:answerText>Nein</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>fr</eCH-0155:language>
+                      <eCH-0155:answerText>Non</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>it</eCH-0155:language>
+                      <eCH-0155:answerText>No</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>rm</eCH-0155:language>
+                      <eCH-0155:answerText>Na</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                  </eCH-0222:answerOptionIdentification>
+                </eCH-0222:casted>
+              </eCH-0222:questionRawData>
+              <eCH-0222:questionRawData>
+                <eCH-0222:questionIdentification>b173aebb-7b2c-476a-97fa-c81d640e498a</eCH-0222:questionIdentification>
+                <eCH-0222:casted>
                   <eCH-0222:castedVote>1</eCH-0222:castedVote>
                   <eCH-0222:answerOptionIdentification>
-                    <eCH-0155:answerIdentification>d7a1b387-a90c-31ca-bfc2-ad038a1d9816</eCH-0155:answerIdentification>
+                    <eCH-0155:answerIdentification>d0f886b7-03a8-3d8a-9e7d-4c9bfa02ddc6</eCH-0155:answerIdentification>
                     <eCH-0155:answerSequenceNumber>1</eCH-0155:answerSequenceNumber>
                     <eCH-0155:answerTextInformation>
                       <eCH-0155:language>de</eCH-0155:language>
@@ -49,32 +75,6 @@
                     <eCH-0155:answerTextInformation>
                       <eCH-0155:language>rm</eCH-0155:language>
                       <eCH-0155:answerText>Gea</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                  </eCH-0222:answerOptionIdentification>
-                </eCH-0222:casted>
-              </eCH-0222:questionRawData>
-              <eCH-0222:questionRawData>
-                <eCH-0222:questionIdentification>b173aebb-7b2c-476a-97fa-c81d640e498a</eCH-0222:questionIdentification>
-                <eCH-0222:casted>
-                  <eCH-0222:castedVote>3</eCH-0222:castedVote>
-                  <eCH-0222:answerOptionIdentification>
-                    <eCH-0155:answerIdentification>004e5a94-c242-3ba4-837b-131b5698eaa7</eCH-0155:answerIdentification>
-                    <eCH-0155:answerSequenceNumber>3</eCH-0155:answerSequenceNumber>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>de</eCH-0155:language>
-                      <eCH-0155:answerText>Leer</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>fr</eCH-0155:language>
-                      <eCH-0155:answerText>Blanc</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>it</eCH-0155:language>
-                      <eCH-0155:answerText>Bianco</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>rm</eCH-0155:language>
-                      <eCH-0155:answerText>Vid</eCH-0155:answerText>
                     </eCH-0155:answerTextInformation>
                   </eCH-0222:answerOptionIdentification>
                 </eCH-0222:casted>
@@ -149,14 +149,8 @@
               </eCH-0222:listRawData>
               <eCH-0222:ballotPosition>
                 <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>d396ab8f-3c5f-4a88-81bc-494dba014287</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>01a.02</eCH-0222:candidateReferenceOnPosition>
-                </eCH-0222:candidate>
-              </eCH-0222:ballotPosition>
-              <eCH-0222:ballotPosition>
-                <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>d113bd2d-10aa-4519-89e9-ad7b49eafa76</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>01a.03</eCH-0222:candidateReferenceOnPosition>
+                  <eCH-0222:candidateIdentification>93d09b22-5b53-46cd-97c3-ae9cb122eab0</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>02a.03</eCH-0222:candidateReferenceOnPosition>
                 </eCH-0222:candidate>
               </eCH-0222:ballotPosition>
               <eCH-0222:ballotPosition>
@@ -167,20 +161,26 @@
               </eCH-0222:ballotPosition>
               <eCH-0222:ballotPosition>
                 <eCH-0222:candidate>
+                  <eCH-0222:candidateIdentification>8c12fee2-619f-47e1-82dd-cd4314c95807</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>02a.05</eCH-0222:candidateReferenceOnPosition>
+                </eCH-0222:candidate>
+              </eCH-0222:ballotPosition>
+              <eCH-0222:ballotPosition>
+                <eCH-0222:candidate>
+                  <eCH-0222:candidateIdentification>f5074d62-71f3-4a0e-9fb5-82cb03d4751e</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>02a.06</eCH-0222:candidateReferenceOnPosition>
+                </eCH-0222:candidate>
+              </eCH-0222:ballotPosition>
+              <eCH-0222:ballotPosition>
+                <eCH-0222:candidate>
+                  <eCH-0222:candidateIdentification>e5b16bd6-815b-4e02-8e9e-04064a19b6d0</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>10.01</eCH-0222:candidateReferenceOnPosition>
+                </eCH-0222:candidate>
+              </eCH-0222:ballotPosition>
+              <eCH-0222:ballotPosition>
+                <eCH-0222:candidate>
                   <eCH-0222:candidateIdentification>3a89019a-87ba-45b6-ac92-501ace75d05f</eCH-0222:candidateIdentification>
                   <eCH-0222:candidateReferenceOnPosition>03a.01</eCH-0222:candidateReferenceOnPosition>
-                </eCH-0222:candidate>
-              </eCH-0222:ballotPosition>
-              <eCH-0222:ballotPosition>
-                <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>9b175406-327d-42a2-9979-fcefb95e7620</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>03a.04</eCH-0222:candidateReferenceOnPosition>
-                </eCH-0222:candidate>
-              </eCH-0222:ballotPosition>
-              <eCH-0222:ballotPosition>
-                <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>ff671047-7e0f-4198-974f-0041a55f1c70</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>10.02</eCH-0222:candidateReferenceOnPosition>
                 </eCH-0222:candidate>
               </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
@@ -237,348 +237,6 @@
               <eCH-0222:questionRawData>
                 <eCH-0222:questionIdentification>b173aebb-7b2c-476a-97fa-c81d640e498a</eCH-0222:questionIdentification>
                 <eCH-0222:casted>
-                  <eCH-0222:castedVote>3</eCH-0222:castedVote>
-                  <eCH-0222:answerOptionIdentification>
-                    <eCH-0155:answerIdentification>004e5a94-c242-3ba4-837b-131b5698eaa7</eCH-0155:answerIdentification>
-                    <eCH-0155:answerSequenceNumber>3</eCH-0155:answerSequenceNumber>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>de</eCH-0155:language>
-                      <eCH-0155:answerText>Leer</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>fr</eCH-0155:language>
-                      <eCH-0155:answerText>Blanc</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>it</eCH-0155:language>
-                      <eCH-0155:answerText>Bianco</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>rm</eCH-0155:language>
-                      <eCH-0155:answerText>Vid</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                  </eCH-0222:answerOptionIdentification>
-                </eCH-0222:casted>
-              </eCH-0222:questionRawData>
-              <eCH-0222:questionRawData>
-                <eCH-0222:questionIdentification>1129f74b-1e49-4636-9731-84dba618bec6</eCH-0222:questionIdentification>
-                <eCH-0222:casted>
-                  <eCH-0222:castedVote>2</eCH-0222:castedVote>
-                  <eCH-0222:answerOptionIdentification>
-                    <eCH-0155:answerIdentification>b4277282-00aa-3ccb-bdf2-4703ba2724e4</eCH-0155:answerIdentification>
-                    <eCH-0155:answerSequenceNumber>2</eCH-0155:answerSequenceNumber>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>de</eCH-0155:language>
-                      <eCH-0155:answerText>Gegenentwurf</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>fr</eCH-0155:language>
-                      <eCH-0155:answerText>Contre-projet</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>it</eCH-0155:language>
-                      <eCH-0155:answerText>Controprogetto</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>rm</eCH-0155:language>
-                      <eCH-0155:answerText>Cuntraproposta</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                  </eCH-0222:answerOptionIdentification>
-                </eCH-0222:casted>
-              </eCH-0222:questionRawData>
-            </eCH-0222:ballotCasted>
-          </eCH-0222:ballotRawData>
-          <eCH-0222:ballotRawData>
-            <eCH-0222:ballotIdentification>9cbcbd59-94ad-4f48-bc7d-4bc38e5c0c51</eCH-0222:ballotIdentification>
-            <eCH-0222:ballotCasted>
-              <eCH-0222:questionRawData>
-                <eCH-0222:questionIdentification>806f52e6-9d49-4906-b2a8-7c89dfdf53e2</eCH-0222:questionIdentification>
-                <eCH-0222:casted>
-                  <eCH-0222:castedVote>2</eCH-0222:castedVote>
-                  <eCH-0222:answerOptionIdentification>
-                    <eCH-0155:answerIdentification>16ac94e3-0c72-3570-9df9-050ebb18a9cc</eCH-0155:answerIdentification>
-                    <eCH-0155:answerSequenceNumber>2</eCH-0155:answerSequenceNumber>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>de</eCH-0155:language>
-                      <eCH-0155:answerText>Nein</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>fr</eCH-0155:language>
-                      <eCH-0155:answerText>Non</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>it</eCH-0155:language>
-                      <eCH-0155:answerText>No</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>rm</eCH-0155:language>
-                      <eCH-0155:answerText>Na</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                  </eCH-0222:answerOptionIdentification>
-                </eCH-0222:casted>
-              </eCH-0222:questionRawData>
-            </eCH-0222:ballotCasted>
-          </eCH-0222:ballotRawData>
-          <eCH-0222:ballotRawData>
-            <eCH-0222:ballotIdentification>dd2bd50c-deca-40b0-8451-69e6d0eee612</eCH-0222:ballotIdentification>
-            <eCH-0222:ballotCasted>
-              <eCH-0222:questionRawData>
-                <eCH-0222:questionIdentification>16f99be5-0ce6-4a81-ae8b-1817ceecaebc</eCH-0222:questionIdentification>
-                <eCH-0222:casted>
-                  <eCH-0222:castedVote>3</eCH-0222:castedVote>
-                  <eCH-0222:answerOptionIdentification>
-                    <eCH-0155:answerIdentification>ecdbcc43-396a-348f-a671-919abfff4e12</eCH-0155:answerIdentification>
-                    <eCH-0155:answerSequenceNumber>3</eCH-0155:answerSequenceNumber>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>de</eCH-0155:language>
-                      <eCH-0155:answerText>Leer</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>fr</eCH-0155:language>
-                      <eCH-0155:answerText>Blanc</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>it</eCH-0155:language>
-                      <eCH-0155:answerText>Bianco</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>rm</eCH-0155:language>
-                      <eCH-0155:answerText>Vid</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                  </eCH-0222:answerOptionIdentification>
-                </eCH-0222:casted>
-              </eCH-0222:questionRawData>
-              <eCH-0222:questionRawData>
-                <eCH-0222:questionIdentification>b173aebb-7b2c-476a-97fa-c81d640e498a</eCH-0222:questionIdentification>
-                <eCH-0222:casted>
-                  <eCH-0222:castedVote>3</eCH-0222:castedVote>
-                  <eCH-0222:answerOptionIdentification>
-                    <eCH-0155:answerIdentification>004e5a94-c242-3ba4-837b-131b5698eaa7</eCH-0155:answerIdentification>
-                    <eCH-0155:answerSequenceNumber>3</eCH-0155:answerSequenceNumber>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>de</eCH-0155:language>
-                      <eCH-0155:answerText>Leer</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>fr</eCH-0155:language>
-                      <eCH-0155:answerText>Blanc</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>it</eCH-0155:language>
-                      <eCH-0155:answerText>Bianco</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>rm</eCH-0155:language>
-                      <eCH-0155:answerText>Vid</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                  </eCH-0222:answerOptionIdentification>
-                </eCH-0222:casted>
-              </eCH-0222:questionRawData>
-              <eCH-0222:questionRawData>
-                <eCH-0222:questionIdentification>1129f74b-1e49-4636-9731-84dba618bec6</eCH-0222:questionIdentification>
-                <eCH-0222:casted>
-                  <eCH-0222:castedVote>3</eCH-0222:castedVote>
-                  <eCH-0222:answerOptionIdentification>
-                    <eCH-0155:answerIdentification>e6467637-1921-3c4f-b669-88ba2f73a193</eCH-0155:answerIdentification>
-                    <eCH-0155:answerSequenceNumber>3</eCH-0155:answerSequenceNumber>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>de</eCH-0155:language>
-                      <eCH-0155:answerText>Leer</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>fr</eCH-0155:language>
-                      <eCH-0155:answerText>Blanc</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>it</eCH-0155:language>
-                      <eCH-0155:answerText>Bianco</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>rm</eCH-0155:language>
-                      <eCH-0155:answerText>Vid</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                  </eCH-0222:answerOptionIdentification>
-                </eCH-0222:casted>
-              </eCH-0222:questionRawData>
-            </eCH-0222:ballotCasted>
-          </eCH-0222:ballotRawData>
-          <eCH-0222:ballotRawData>
-            <eCH-0222:ballotIdentification>9cbcbd59-94ad-4f48-bc7d-4bc38e5c0c51</eCH-0222:ballotIdentification>
-            <eCH-0222:ballotCasted>
-              <eCH-0222:questionRawData>
-                <eCH-0222:questionIdentification>806f52e6-9d49-4906-b2a8-7c89dfdf53e2</eCH-0222:questionIdentification>
-                <eCH-0222:casted>
-                  <eCH-0222:castedVote>2</eCH-0222:castedVote>
-                  <eCH-0222:answerOptionIdentification>
-                    <eCH-0155:answerIdentification>16ac94e3-0c72-3570-9df9-050ebb18a9cc</eCH-0155:answerIdentification>
-                    <eCH-0155:answerSequenceNumber>2</eCH-0155:answerSequenceNumber>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>de</eCH-0155:language>
-                      <eCH-0155:answerText>Nein</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>fr</eCH-0155:language>
-                      <eCH-0155:answerText>Non</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>it</eCH-0155:language>
-                      <eCH-0155:answerText>No</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>rm</eCH-0155:language>
-                      <eCH-0155:answerText>Na</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                  </eCH-0222:answerOptionIdentification>
-                </eCH-0222:casted>
-              </eCH-0222:questionRawData>
-            </eCH-0222:ballotCasted>
-          </eCH-0222:ballotRawData>
-          <eCH-0222:ballotRawData>
-            <eCH-0222:ballotIdentification>dd2bd50c-deca-40b0-8451-69e6d0eee612</eCH-0222:ballotIdentification>
-            <eCH-0222:ballotCasted>
-              <eCH-0222:questionRawData>
-                <eCH-0222:questionIdentification>16f99be5-0ce6-4a81-ae8b-1817ceecaebc</eCH-0222:questionIdentification>
-                <eCH-0222:casted>
-                  <eCH-0222:castedVote>3</eCH-0222:castedVote>
-                  <eCH-0222:answerOptionIdentification>
-                    <eCH-0155:answerIdentification>ecdbcc43-396a-348f-a671-919abfff4e12</eCH-0155:answerIdentification>
-                    <eCH-0155:answerSequenceNumber>3</eCH-0155:answerSequenceNumber>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>de</eCH-0155:language>
-                      <eCH-0155:answerText>Leer</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>fr</eCH-0155:language>
-                      <eCH-0155:answerText>Blanc</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>it</eCH-0155:language>
-                      <eCH-0155:answerText>Bianco</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>rm</eCH-0155:language>
-                      <eCH-0155:answerText>Vid</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                  </eCH-0222:answerOptionIdentification>
-                </eCH-0222:casted>
-              </eCH-0222:questionRawData>
-              <eCH-0222:questionRawData>
-                <eCH-0222:questionIdentification>b173aebb-7b2c-476a-97fa-c81d640e498a</eCH-0222:questionIdentification>
-                <eCH-0222:casted>
-                  <eCH-0222:castedVote>1</eCH-0222:castedVote>
-                  <eCH-0222:answerOptionIdentification>
-                    <eCH-0155:answerIdentification>d0f886b7-03a8-3d8a-9e7d-4c9bfa02ddc6</eCH-0155:answerIdentification>
-                    <eCH-0155:answerSequenceNumber>1</eCH-0155:answerSequenceNumber>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>de</eCH-0155:language>
-                      <eCH-0155:answerText>Ja</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>fr</eCH-0155:language>
-                      <eCH-0155:answerText>Oui</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>it</eCH-0155:language>
-                      <eCH-0155:answerText>Si</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>rm</eCH-0155:language>
-                      <eCH-0155:answerText>Gea</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                  </eCH-0222:answerOptionIdentification>
-                </eCH-0222:casted>
-              </eCH-0222:questionRawData>
-              <eCH-0222:questionRawData>
-                <eCH-0222:questionIdentification>1129f74b-1e49-4636-9731-84dba618bec6</eCH-0222:questionIdentification>
-                <eCH-0222:casted>
-                  <eCH-0222:castedVote>2</eCH-0222:castedVote>
-                  <eCH-0222:answerOptionIdentification>
-                    <eCH-0155:answerIdentification>b4277282-00aa-3ccb-bdf2-4703ba2724e4</eCH-0155:answerIdentification>
-                    <eCH-0155:answerSequenceNumber>2</eCH-0155:answerSequenceNumber>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>de</eCH-0155:language>
-                      <eCH-0155:answerText>Gegenentwurf</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>fr</eCH-0155:language>
-                      <eCH-0155:answerText>Contre-projet</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>it</eCH-0155:language>
-                      <eCH-0155:answerText>Controprogetto</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>rm</eCH-0155:language>
-                      <eCH-0155:answerText>Cuntraproposta</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                  </eCH-0222:answerOptionIdentification>
-                </eCH-0222:casted>
-              </eCH-0222:questionRawData>
-            </eCH-0222:ballotCasted>
-          </eCH-0222:ballotRawData>
-          <eCH-0222:ballotRawData>
-            <eCH-0222:ballotIdentification>9cbcbd59-94ad-4f48-bc7d-4bc38e5c0c51</eCH-0222:ballotIdentification>
-            <eCH-0222:ballotCasted>
-              <eCH-0222:questionRawData>
-                <eCH-0222:questionIdentification>806f52e6-9d49-4906-b2a8-7c89dfdf53e2</eCH-0222:questionIdentification>
-                <eCH-0222:casted>
-                  <eCH-0222:castedVote>3</eCH-0222:castedVote>
-                  <eCH-0222:answerOptionIdentification>
-                    <eCH-0155:answerIdentification>fbed7bf6-a7ed-3812-bb0c-22e449aa4f96</eCH-0155:answerIdentification>
-                    <eCH-0155:answerSequenceNumber>3</eCH-0155:answerSequenceNumber>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>de</eCH-0155:language>
-                      <eCH-0155:answerText>Leer</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>fr</eCH-0155:language>
-                      <eCH-0155:answerText>Blanc</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>it</eCH-0155:language>
-                      <eCH-0155:answerText>Bianco</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>rm</eCH-0155:language>
-                      <eCH-0155:answerText>Vid</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                  </eCH-0222:answerOptionIdentification>
-                </eCH-0222:casted>
-              </eCH-0222:questionRawData>
-            </eCH-0222:ballotCasted>
-          </eCH-0222:ballotRawData>
-          <eCH-0222:ballotRawData>
-            <eCH-0222:ballotIdentification>dd2bd50c-deca-40b0-8451-69e6d0eee612</eCH-0222:ballotIdentification>
-            <eCH-0222:ballotCasted>
-              <eCH-0222:questionRawData>
-                <eCH-0222:questionIdentification>16f99be5-0ce6-4a81-ae8b-1817ceecaebc</eCH-0222:questionIdentification>
-                <eCH-0222:casted>
-                  <eCH-0222:castedVote>1</eCH-0222:castedVote>
-                  <eCH-0222:answerOptionIdentification>
-                    <eCH-0155:answerIdentification>d7a1b387-a90c-31ca-bfc2-ad038a1d9816</eCH-0155:answerIdentification>
-                    <eCH-0155:answerSequenceNumber>1</eCH-0155:answerSequenceNumber>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>de</eCH-0155:language>
-                      <eCH-0155:answerText>Ja</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>fr</eCH-0155:language>
-                      <eCH-0155:answerText>Oui</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>it</eCH-0155:language>
-                      <eCH-0155:answerText>Si</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>rm</eCH-0155:language>
-                      <eCH-0155:answerText>Gea</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                  </eCH-0222:answerOptionIdentification>
-                </eCH-0222:casted>
-              </eCH-0222:questionRawData>
-              <eCH-0222:questionRawData>
-                <eCH-0222:questionIdentification>b173aebb-7b2c-476a-97fa-c81d640e498a</eCH-0222:questionIdentification>
-                <eCH-0222:casted>
                   <eCH-0222:castedVote>1</eCH-0222:castedVote>
                   <eCH-0222:answerOptionIdentification>
                     <eCH-0155:answerIdentification>d0f886b7-03a8-3d8a-9e7d-4c9bfa02ddc6</eCH-0155:answerIdentification>
@@ -624,120 +282,6 @@
                     <eCH-0155:answerTextInformation>
                       <eCH-0155:language>rm</eCH-0155:language>
                       <eCH-0155:answerText>Vid</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                  </eCH-0222:answerOptionIdentification>
-                </eCH-0222:casted>
-              </eCH-0222:questionRawData>
-            </eCH-0222:ballotCasted>
-          </eCH-0222:ballotRawData>
-          <eCH-0222:ballotRawData>
-            <eCH-0222:ballotIdentification>9cbcbd59-94ad-4f48-bc7d-4bc38e5c0c51</eCH-0222:ballotIdentification>
-            <eCH-0222:ballotCasted>
-              <eCH-0222:questionRawData>
-                <eCH-0222:questionIdentification>806f52e6-9d49-4906-b2a8-7c89dfdf53e2</eCH-0222:questionIdentification>
-                <eCH-0222:casted>
-                  <eCH-0222:castedVote>3</eCH-0222:castedVote>
-                  <eCH-0222:answerOptionIdentification>
-                    <eCH-0155:answerIdentification>fbed7bf6-a7ed-3812-bb0c-22e449aa4f96</eCH-0155:answerIdentification>
-                    <eCH-0155:answerSequenceNumber>3</eCH-0155:answerSequenceNumber>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>de</eCH-0155:language>
-                      <eCH-0155:answerText>Leer</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>fr</eCH-0155:language>
-                      <eCH-0155:answerText>Blanc</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>it</eCH-0155:language>
-                      <eCH-0155:answerText>Bianco</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>rm</eCH-0155:language>
-                      <eCH-0155:answerText>Vid</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                  </eCH-0222:answerOptionIdentification>
-                </eCH-0222:casted>
-              </eCH-0222:questionRawData>
-            </eCH-0222:ballotCasted>
-          </eCH-0222:ballotRawData>
-          <eCH-0222:ballotRawData>
-            <eCH-0222:ballotIdentification>dd2bd50c-deca-40b0-8451-69e6d0eee612</eCH-0222:ballotIdentification>
-            <eCH-0222:ballotCasted>
-              <eCH-0222:questionRawData>
-                <eCH-0222:questionIdentification>16f99be5-0ce6-4a81-ae8b-1817ceecaebc</eCH-0222:questionIdentification>
-                <eCH-0222:casted>
-                  <eCH-0222:castedVote>3</eCH-0222:castedVote>
-                  <eCH-0222:answerOptionIdentification>
-                    <eCH-0155:answerIdentification>ecdbcc43-396a-348f-a671-919abfff4e12</eCH-0155:answerIdentification>
-                    <eCH-0155:answerSequenceNumber>3</eCH-0155:answerSequenceNumber>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>de</eCH-0155:language>
-                      <eCH-0155:answerText>Leer</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>fr</eCH-0155:language>
-                      <eCH-0155:answerText>Blanc</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>it</eCH-0155:language>
-                      <eCH-0155:answerText>Bianco</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>rm</eCH-0155:language>
-                      <eCH-0155:answerText>Vid</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                  </eCH-0222:answerOptionIdentification>
-                </eCH-0222:casted>
-              </eCH-0222:questionRawData>
-              <eCH-0222:questionRawData>
-                <eCH-0222:questionIdentification>b173aebb-7b2c-476a-97fa-c81d640e498a</eCH-0222:questionIdentification>
-                <eCH-0222:casted>
-                  <eCH-0222:castedVote>2</eCH-0222:castedVote>
-                  <eCH-0222:answerOptionIdentification>
-                    <eCH-0155:answerIdentification>562a2034-f9a8-3783-abf5-624ec5ac08be</eCH-0155:answerIdentification>
-                    <eCH-0155:answerSequenceNumber>2</eCH-0155:answerSequenceNumber>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>de</eCH-0155:language>
-                      <eCH-0155:answerText>Nein</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>fr</eCH-0155:language>
-                      <eCH-0155:answerText>Non</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>it</eCH-0155:language>
-                      <eCH-0155:answerText>No</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>rm</eCH-0155:language>
-                      <eCH-0155:answerText>Na</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                  </eCH-0222:answerOptionIdentification>
-                </eCH-0222:casted>
-              </eCH-0222:questionRawData>
-              <eCH-0222:questionRawData>
-                <eCH-0222:questionIdentification>1129f74b-1e49-4636-9731-84dba618bec6</eCH-0222:questionIdentification>
-                <eCH-0222:casted>
-                  <eCH-0222:castedVote>1</eCH-0222:castedVote>
-                  <eCH-0222:answerOptionIdentification>
-                    <eCH-0155:answerIdentification>65113930-4472-3aac-9cfd-162f501c78f5</eCH-0155:answerIdentification>
-                    <eCH-0155:answerSequenceNumber>1</eCH-0155:answerSequenceNumber>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>de</eCH-0155:language>
-                      <eCH-0155:answerText>Initiative</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>fr</eCH-0155:language>
-                      <eCH-0155:answerText>Initiative</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>it</eCH-0155:language>
-                      <eCH-0155:answerText>Iniziativa</eCH-0155:answerText>
-                    </eCH-0155:answerTextInformation>
-                    <eCH-0155:answerTextInformation>
-                      <eCH-0155:language>rm</eCH-0155:language>
-                      <eCH-0155:answerText>Iniziativa</eCH-0155:answerText>
                     </eCH-0155:answerTextInformation>
                   </eCH-0222:answerOptionIdentification>
                 </eCH-0222:casted>
@@ -807,9 +351,66 @@
               <eCH-0222:questionRawData>
                 <eCH-0222:questionIdentification>b173aebb-7b2c-476a-97fa-c81d640e498a</eCH-0222:questionIdentification>
                 <eCH-0222:casted>
+                  <eCH-0222:castedVote>1</eCH-0222:castedVote>
+                  <eCH-0222:answerOptionIdentification>
+                    <eCH-0155:answerIdentification>d0f886b7-03a8-3d8a-9e7d-4c9bfa02ddc6</eCH-0155:answerIdentification>
+                    <eCH-0155:answerSequenceNumber>1</eCH-0155:answerSequenceNumber>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>de</eCH-0155:language>
+                      <eCH-0155:answerText>Ja</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>fr</eCH-0155:language>
+                      <eCH-0155:answerText>Oui</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>it</eCH-0155:language>
+                      <eCH-0155:answerText>Si</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>rm</eCH-0155:language>
+                      <eCH-0155:answerText>Gea</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                  </eCH-0222:answerOptionIdentification>
+                </eCH-0222:casted>
+              </eCH-0222:questionRawData>
+              <eCH-0222:questionRawData>
+                <eCH-0222:questionIdentification>1129f74b-1e49-4636-9731-84dba618bec6</eCH-0222:questionIdentification>
+                <eCH-0222:casted>
+                  <eCH-0222:castedVote>3</eCH-0222:castedVote>
+                  <eCH-0222:answerOptionIdentification>
+                    <eCH-0155:answerIdentification>e6467637-1921-3c4f-b669-88ba2f73a193</eCH-0155:answerIdentification>
+                    <eCH-0155:answerSequenceNumber>3</eCH-0155:answerSequenceNumber>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>de</eCH-0155:language>
+                      <eCH-0155:answerText>Leer</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>fr</eCH-0155:language>
+                      <eCH-0155:answerText>Blanc</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>it</eCH-0155:language>
+                      <eCH-0155:answerText>Bianco</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>rm</eCH-0155:language>
+                      <eCH-0155:answerText>Vid</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                  </eCH-0222:answerOptionIdentification>
+                </eCH-0222:casted>
+              </eCH-0222:questionRawData>
+            </eCH-0222:ballotCasted>
+          </eCH-0222:ballotRawData>
+          <eCH-0222:ballotRawData>
+            <eCH-0222:ballotIdentification>9cbcbd59-94ad-4f48-bc7d-4bc38e5c0c51</eCH-0222:ballotIdentification>
+            <eCH-0222:ballotCasted>
+              <eCH-0222:questionRawData>
+                <eCH-0222:questionIdentification>806f52e6-9d49-4906-b2a8-7c89dfdf53e2</eCH-0222:questionIdentification>
+                <eCH-0222:casted>
                   <eCH-0222:castedVote>2</eCH-0222:castedVote>
                   <eCH-0222:answerOptionIdentification>
-                    <eCH-0155:answerIdentification>562a2034-f9a8-3783-abf5-624ec5ac08be</eCH-0155:answerIdentification>
+                    <eCH-0155:answerIdentification>16ac94e3-0c72-3570-9df9-050ebb18a9cc</eCH-0155:answerIdentification>
                     <eCH-0155:answerSequenceNumber>2</eCH-0155:answerSequenceNumber>
                     <eCH-0155:answerTextInformation>
                       <eCH-0155:language>de</eCH-0155:language>
@@ -826,6 +427,63 @@
                     <eCH-0155:answerTextInformation>
                       <eCH-0155:language>rm</eCH-0155:language>
                       <eCH-0155:answerText>Na</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                  </eCH-0222:answerOptionIdentification>
+                </eCH-0222:casted>
+              </eCH-0222:questionRawData>
+            </eCH-0222:ballotCasted>
+          </eCH-0222:ballotRawData>
+          <eCH-0222:ballotRawData>
+            <eCH-0222:ballotIdentification>dd2bd50c-deca-40b0-8451-69e6d0eee612</eCH-0222:ballotIdentification>
+            <eCH-0222:ballotCasted>
+              <eCH-0222:questionRawData>
+                <eCH-0222:questionIdentification>16f99be5-0ce6-4a81-ae8b-1817ceecaebc</eCH-0222:questionIdentification>
+                <eCH-0222:casted>
+                  <eCH-0222:castedVote>2</eCH-0222:castedVote>
+                  <eCH-0222:answerOptionIdentification>
+                    <eCH-0155:answerIdentification>e9da718b-469e-35d4-8d7d-d6329621e755</eCH-0155:answerIdentification>
+                    <eCH-0155:answerSequenceNumber>2</eCH-0155:answerSequenceNumber>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>de</eCH-0155:language>
+                      <eCH-0155:answerText>Nein</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>fr</eCH-0155:language>
+                      <eCH-0155:answerText>Non</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>it</eCH-0155:language>
+                      <eCH-0155:answerText>No</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>rm</eCH-0155:language>
+                      <eCH-0155:answerText>Na</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                  </eCH-0222:answerOptionIdentification>
+                </eCH-0222:casted>
+              </eCH-0222:questionRawData>
+              <eCH-0222:questionRawData>
+                <eCH-0222:questionIdentification>b173aebb-7b2c-476a-97fa-c81d640e498a</eCH-0222:questionIdentification>
+                <eCH-0222:casted>
+                  <eCH-0222:castedVote>3</eCH-0222:castedVote>
+                  <eCH-0222:answerOptionIdentification>
+                    <eCH-0155:answerIdentification>004e5a94-c242-3ba4-837b-131b5698eaa7</eCH-0155:answerIdentification>
+                    <eCH-0155:answerSequenceNumber>3</eCH-0155:answerSequenceNumber>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>de</eCH-0155:language>
+                      <eCH-0155:answerText>Leer</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>fr</eCH-0155:language>
+                      <eCH-0155:answerText>Blanc</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>it</eCH-0155:language>
+                      <eCH-0155:answerText>Bianco</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>rm</eCH-0155:language>
+                      <eCH-0155:answerText>Vid</eCH-0155:answerText>
                     </eCH-0155:answerTextInformation>
                   </eCH-0222:answerOptionIdentification>
                 </eCH-0222:casted>
@@ -852,6 +510,120 @@
                     <eCH-0155:answerTextInformation>
                       <eCH-0155:language>rm</eCH-0155:language>
                       <eCH-0155:answerText>Iniziativa</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                  </eCH-0222:answerOptionIdentification>
+                </eCH-0222:casted>
+              </eCH-0222:questionRawData>
+            </eCH-0222:ballotCasted>
+          </eCH-0222:ballotRawData>
+          <eCH-0222:ballotRawData>
+            <eCH-0222:ballotIdentification>9cbcbd59-94ad-4f48-bc7d-4bc38e5c0c51</eCH-0222:ballotIdentification>
+            <eCH-0222:ballotCasted>
+              <eCH-0222:questionRawData>
+                <eCH-0222:questionIdentification>806f52e6-9d49-4906-b2a8-7c89dfdf53e2</eCH-0222:questionIdentification>
+                <eCH-0222:casted>
+                  <eCH-0222:castedVote>2</eCH-0222:castedVote>
+                  <eCH-0222:answerOptionIdentification>
+                    <eCH-0155:answerIdentification>16ac94e3-0c72-3570-9df9-050ebb18a9cc</eCH-0155:answerIdentification>
+                    <eCH-0155:answerSequenceNumber>2</eCH-0155:answerSequenceNumber>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>de</eCH-0155:language>
+                      <eCH-0155:answerText>Nein</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>fr</eCH-0155:language>
+                      <eCH-0155:answerText>Non</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>it</eCH-0155:language>
+                      <eCH-0155:answerText>No</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>rm</eCH-0155:language>
+                      <eCH-0155:answerText>Na</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                  </eCH-0222:answerOptionIdentification>
+                </eCH-0222:casted>
+              </eCH-0222:questionRawData>
+            </eCH-0222:ballotCasted>
+          </eCH-0222:ballotRawData>
+          <eCH-0222:ballotRawData>
+            <eCH-0222:ballotIdentification>dd2bd50c-deca-40b0-8451-69e6d0eee612</eCH-0222:ballotIdentification>
+            <eCH-0222:ballotCasted>
+              <eCH-0222:questionRawData>
+                <eCH-0222:questionIdentification>16f99be5-0ce6-4a81-ae8b-1817ceecaebc</eCH-0222:questionIdentification>
+                <eCH-0222:casted>
+                  <eCH-0222:castedVote>3</eCH-0222:castedVote>
+                  <eCH-0222:answerOptionIdentification>
+                    <eCH-0155:answerIdentification>ecdbcc43-396a-348f-a671-919abfff4e12</eCH-0155:answerIdentification>
+                    <eCH-0155:answerSequenceNumber>3</eCH-0155:answerSequenceNumber>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>de</eCH-0155:language>
+                      <eCH-0155:answerText>Leer</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>fr</eCH-0155:language>
+                      <eCH-0155:answerText>Blanc</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>it</eCH-0155:language>
+                      <eCH-0155:answerText>Bianco</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>rm</eCH-0155:language>
+                      <eCH-0155:answerText>Vid</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                  </eCH-0222:answerOptionIdentification>
+                </eCH-0222:casted>
+              </eCH-0222:questionRawData>
+              <eCH-0222:questionRawData>
+                <eCH-0222:questionIdentification>b173aebb-7b2c-476a-97fa-c81d640e498a</eCH-0222:questionIdentification>
+                <eCH-0222:casted>
+                  <eCH-0222:castedVote>2</eCH-0222:castedVote>
+                  <eCH-0222:answerOptionIdentification>
+                    <eCH-0155:answerIdentification>562a2034-f9a8-3783-abf5-624ec5ac08be</eCH-0155:answerIdentification>
+                    <eCH-0155:answerSequenceNumber>2</eCH-0155:answerSequenceNumber>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>de</eCH-0155:language>
+                      <eCH-0155:answerText>Nein</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>fr</eCH-0155:language>
+                      <eCH-0155:answerText>Non</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>it</eCH-0155:language>
+                      <eCH-0155:answerText>No</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>rm</eCH-0155:language>
+                      <eCH-0155:answerText>Na</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                  </eCH-0222:answerOptionIdentification>
+                </eCH-0222:casted>
+              </eCH-0222:questionRawData>
+              <eCH-0222:questionRawData>
+                <eCH-0222:questionIdentification>1129f74b-1e49-4636-9731-84dba618bec6</eCH-0222:questionIdentification>
+                <eCH-0222:casted>
+                  <eCH-0222:castedVote>3</eCH-0222:castedVote>
+                  <eCH-0222:answerOptionIdentification>
+                    <eCH-0155:answerIdentification>e6467637-1921-3c4f-b669-88ba2f73a193</eCH-0155:answerIdentification>
+                    <eCH-0155:answerSequenceNumber>3</eCH-0155:answerSequenceNumber>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>de</eCH-0155:language>
+                      <eCH-0155:answerText>Leer</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>fr</eCH-0155:language>
+                      <eCH-0155:answerText>Blanc</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>it</eCH-0155:language>
+                      <eCH-0155:answerText>Bianco</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>rm</eCH-0155:language>
+                      <eCH-0155:answerText>Vid</eCH-0155:answerText>
                     </eCH-0155:answerTextInformation>
                   </eCH-0222:answerOptionIdentification>
                 </eCH-0222:casted>
@@ -921,9 +693,97 @@
               <eCH-0222:questionRawData>
                 <eCH-0222:questionIdentification>b173aebb-7b2c-476a-97fa-c81d640e498a</eCH-0222:questionIdentification>
                 <eCH-0222:casted>
+                  <eCH-0222:castedVote>3</eCH-0222:castedVote>
+                  <eCH-0222:answerOptionIdentification>
+                    <eCH-0155:answerIdentification>004e5a94-c242-3ba4-837b-131b5698eaa7</eCH-0155:answerIdentification>
+                    <eCH-0155:answerSequenceNumber>3</eCH-0155:answerSequenceNumber>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>de</eCH-0155:language>
+                      <eCH-0155:answerText>Leer</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>fr</eCH-0155:language>
+                      <eCH-0155:answerText>Blanc</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>it</eCH-0155:language>
+                      <eCH-0155:answerText>Bianco</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>rm</eCH-0155:language>
+                      <eCH-0155:answerText>Vid</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                  </eCH-0222:answerOptionIdentification>
+                </eCH-0222:casted>
+              </eCH-0222:questionRawData>
+              <eCH-0222:questionRawData>
+                <eCH-0222:questionIdentification>1129f74b-1e49-4636-9731-84dba618bec6</eCH-0222:questionIdentification>
+                <eCH-0222:casted>
+                  <eCH-0222:castedVote>3</eCH-0222:castedVote>
+                  <eCH-0222:answerOptionIdentification>
+                    <eCH-0155:answerIdentification>e6467637-1921-3c4f-b669-88ba2f73a193</eCH-0155:answerIdentification>
+                    <eCH-0155:answerSequenceNumber>3</eCH-0155:answerSequenceNumber>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>de</eCH-0155:language>
+                      <eCH-0155:answerText>Leer</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>fr</eCH-0155:language>
+                      <eCH-0155:answerText>Blanc</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>it</eCH-0155:language>
+                      <eCH-0155:answerText>Bianco</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>rm</eCH-0155:language>
+                      <eCH-0155:answerText>Vid</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                  </eCH-0222:answerOptionIdentification>
+                </eCH-0222:casted>
+              </eCH-0222:questionRawData>
+            </eCH-0222:ballotCasted>
+          </eCH-0222:ballotRawData>
+          <eCH-0222:ballotRawData>
+            <eCH-0222:ballotIdentification>9cbcbd59-94ad-4f48-bc7d-4bc38e5c0c51</eCH-0222:ballotIdentification>
+            <eCH-0222:ballotCasted>
+              <eCH-0222:questionRawData>
+                <eCH-0222:questionIdentification>806f52e6-9d49-4906-b2a8-7c89dfdf53e2</eCH-0222:questionIdentification>
+                <eCH-0222:casted>
+                  <eCH-0222:castedVote>3</eCH-0222:castedVote>
+                  <eCH-0222:answerOptionIdentification>
+                    <eCH-0155:answerIdentification>fbed7bf6-a7ed-3812-bb0c-22e449aa4f96</eCH-0155:answerIdentification>
+                    <eCH-0155:answerSequenceNumber>3</eCH-0155:answerSequenceNumber>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>de</eCH-0155:language>
+                      <eCH-0155:answerText>Leer</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>fr</eCH-0155:language>
+                      <eCH-0155:answerText>Blanc</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>it</eCH-0155:language>
+                      <eCH-0155:answerText>Bianco</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>rm</eCH-0155:language>
+                      <eCH-0155:answerText>Vid</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                  </eCH-0222:answerOptionIdentification>
+                </eCH-0222:casted>
+              </eCH-0222:questionRawData>
+            </eCH-0222:ballotCasted>
+          </eCH-0222:ballotRawData>
+          <eCH-0222:ballotRawData>
+            <eCH-0222:ballotIdentification>dd2bd50c-deca-40b0-8451-69e6d0eee612</eCH-0222:ballotIdentification>
+            <eCH-0222:ballotCasted>
+              <eCH-0222:questionRawData>
+                <eCH-0222:questionIdentification>16f99be5-0ce6-4a81-ae8b-1817ceecaebc</eCH-0222:questionIdentification>
+                <eCH-0222:casted>
                   <eCH-0222:castedVote>2</eCH-0222:castedVote>
                   <eCH-0222:answerOptionIdentification>
-                    <eCH-0155:answerIdentification>562a2034-f9a8-3783-abf5-624ec5ac08be</eCH-0155:answerIdentification>
+                    <eCH-0155:answerIdentification>e9da718b-469e-35d4-8d7d-d6329621e755</eCH-0155:answerIdentification>
                     <eCH-0155:answerSequenceNumber>2</eCH-0155:answerSequenceNumber>
                     <eCH-0155:answerTextInformation>
                       <eCH-0155:language>de</eCH-0155:language>
@@ -940,6 +800,32 @@
                     <eCH-0155:answerTextInformation>
                       <eCH-0155:language>rm</eCH-0155:language>
                       <eCH-0155:answerText>Na</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                  </eCH-0222:answerOptionIdentification>
+                </eCH-0222:casted>
+              </eCH-0222:questionRawData>
+              <eCH-0222:questionRawData>
+                <eCH-0222:questionIdentification>b173aebb-7b2c-476a-97fa-c81d640e498a</eCH-0222:questionIdentification>
+                <eCH-0222:casted>
+                  <eCH-0222:castedVote>1</eCH-0222:castedVote>
+                  <eCH-0222:answerOptionIdentification>
+                    <eCH-0155:answerIdentification>d0f886b7-03a8-3d8a-9e7d-4c9bfa02ddc6</eCH-0155:answerIdentification>
+                    <eCH-0155:answerSequenceNumber>1</eCH-0155:answerSequenceNumber>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>de</eCH-0155:language>
+                      <eCH-0155:answerText>Ja</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>fr</eCH-0155:language>
+                      <eCH-0155:answerText>Oui</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>it</eCH-0155:language>
+                      <eCH-0155:answerText>Si</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>rm</eCH-0155:language>
+                      <eCH-0155:answerText>Gea</eCH-0155:answerText>
                     </eCH-0155:answerTextInformation>
                   </eCH-0222:answerOptionIdentification>
                 </eCH-0222:casted>
@@ -966,6 +852,120 @@
                     <eCH-0155:answerTextInformation>
                       <eCH-0155:language>rm</eCH-0155:language>
                       <eCH-0155:answerText>Cuntraproposta</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                  </eCH-0222:answerOptionIdentification>
+                </eCH-0222:casted>
+              </eCH-0222:questionRawData>
+            </eCH-0222:ballotCasted>
+          </eCH-0222:ballotRawData>
+          <eCH-0222:ballotRawData>
+            <eCH-0222:ballotIdentification>9cbcbd59-94ad-4f48-bc7d-4bc38e5c0c51</eCH-0222:ballotIdentification>
+            <eCH-0222:ballotCasted>
+              <eCH-0222:questionRawData>
+                <eCH-0222:questionIdentification>806f52e6-9d49-4906-b2a8-7c89dfdf53e2</eCH-0222:questionIdentification>
+                <eCH-0222:casted>
+                  <eCH-0222:castedVote>1</eCH-0222:castedVote>
+                  <eCH-0222:answerOptionIdentification>
+                    <eCH-0155:answerIdentification>3aa38c9e-6e93-3159-91e1-c3da90681572</eCH-0155:answerIdentification>
+                    <eCH-0155:answerSequenceNumber>1</eCH-0155:answerSequenceNumber>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>de</eCH-0155:language>
+                      <eCH-0155:answerText>Ja</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>fr</eCH-0155:language>
+                      <eCH-0155:answerText>Oui</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>it</eCH-0155:language>
+                      <eCH-0155:answerText>Si</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>rm</eCH-0155:language>
+                      <eCH-0155:answerText>Gea</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                  </eCH-0222:answerOptionIdentification>
+                </eCH-0222:casted>
+              </eCH-0222:questionRawData>
+            </eCH-0222:ballotCasted>
+          </eCH-0222:ballotRawData>
+          <eCH-0222:ballotRawData>
+            <eCH-0222:ballotIdentification>dd2bd50c-deca-40b0-8451-69e6d0eee612</eCH-0222:ballotIdentification>
+            <eCH-0222:ballotCasted>
+              <eCH-0222:questionRawData>
+                <eCH-0222:questionIdentification>16f99be5-0ce6-4a81-ae8b-1817ceecaebc</eCH-0222:questionIdentification>
+                <eCH-0222:casted>
+                  <eCH-0222:castedVote>1</eCH-0222:castedVote>
+                  <eCH-0222:answerOptionIdentification>
+                    <eCH-0155:answerIdentification>d7a1b387-a90c-31ca-bfc2-ad038a1d9816</eCH-0155:answerIdentification>
+                    <eCH-0155:answerSequenceNumber>1</eCH-0155:answerSequenceNumber>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>de</eCH-0155:language>
+                      <eCH-0155:answerText>Ja</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>fr</eCH-0155:language>
+                      <eCH-0155:answerText>Oui</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>it</eCH-0155:language>
+                      <eCH-0155:answerText>Si</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>rm</eCH-0155:language>
+                      <eCH-0155:answerText>Gea</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                  </eCH-0222:answerOptionIdentification>
+                </eCH-0222:casted>
+              </eCH-0222:questionRawData>
+              <eCH-0222:questionRawData>
+                <eCH-0222:questionIdentification>b173aebb-7b2c-476a-97fa-c81d640e498a</eCH-0222:questionIdentification>
+                <eCH-0222:casted>
+                  <eCH-0222:castedVote>2</eCH-0222:castedVote>
+                  <eCH-0222:answerOptionIdentification>
+                    <eCH-0155:answerIdentification>562a2034-f9a8-3783-abf5-624ec5ac08be</eCH-0155:answerIdentification>
+                    <eCH-0155:answerSequenceNumber>2</eCH-0155:answerSequenceNumber>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>de</eCH-0155:language>
+                      <eCH-0155:answerText>Nein</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>fr</eCH-0155:language>
+                      <eCH-0155:answerText>Non</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>it</eCH-0155:language>
+                      <eCH-0155:answerText>No</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>rm</eCH-0155:language>
+                      <eCH-0155:answerText>Na</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                  </eCH-0222:answerOptionIdentification>
+                </eCH-0222:casted>
+              </eCH-0222:questionRawData>
+              <eCH-0222:questionRawData>
+                <eCH-0222:questionIdentification>1129f74b-1e49-4636-9731-84dba618bec6</eCH-0222:questionIdentification>
+                <eCH-0222:casted>
+                  <eCH-0222:castedVote>3</eCH-0222:castedVote>
+                  <eCH-0222:answerOptionIdentification>
+                    <eCH-0155:answerIdentification>e6467637-1921-3c4f-b669-88ba2f73a193</eCH-0155:answerIdentification>
+                    <eCH-0155:answerSequenceNumber>3</eCH-0155:answerSequenceNumber>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>de</eCH-0155:language>
+                      <eCH-0155:answerText>Leer</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>fr</eCH-0155:language>
+                      <eCH-0155:answerText>Blanc</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>it</eCH-0155:language>
+                      <eCH-0155:answerText>Bianco</eCH-0155:answerText>
+                    </eCH-0155:answerTextInformation>
+                    <eCH-0155:answerTextInformation>
+                      <eCH-0155:language>rm</eCH-0155:language>
+                      <eCH-0155:answerText>Vid</eCH-0155:answerText>
                     </eCH-0155:answerTextInformation>
                   </eCH-0222:answerOptionIdentification>
                 </eCH-0222:casted>
@@ -1013,18 +1013,15 @@
                 <eCH-0222:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0222:listIdentification>
               </eCH-0222:listRawData>
               <eCH-0222:ballotPosition>
-                <eCH-0222:isEmpty>true</eCH-0222:isEmpty>
-              </eCH-0222:ballotPosition>
-              <eCH-0222:ballotPosition>
                 <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>d396ab8f-3c5f-4a88-81bc-494dba014287</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>01a.02</eCH-0222:candidateReferenceOnPosition>
+                  <eCH-0222:candidateIdentification>6eb5e01e-755a-4794-9781-b76a32e7175c</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>02a.01</eCH-0222:candidateReferenceOnPosition>
                 </eCH-0222:candidate>
               </eCH-0222:ballotPosition>
               <eCH-0222:ballotPosition>
                 <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>6eb5e01e-755a-4794-9781-b76a32e7175c</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>02a.01</eCH-0222:candidateReferenceOnPosition>
+                  <eCH-0222:candidateIdentification>1d48f2f5-08a3-4d1f-be5e-80cfb6ed76e4</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>02a.02</eCH-0222:candidateReferenceOnPosition>
                 </eCH-0222:candidate>
               </eCH-0222:ballotPosition>
               <eCH-0222:ballotPosition>
@@ -1041,8 +1038,14 @@
               </eCH-0222:ballotPosition>
               <eCH-0222:ballotPosition>
                 <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>1eb4e5e4-d2fc-4cdf-bbc4-2f84439b9870</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>03a.03</eCH-0222:candidateReferenceOnPosition>
+                  <eCH-0222:candidateIdentification>8ed07d87-b81d-4dc8-aaeb-0d5d29a1c2dd</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>02a.04</eCH-0222:candidateReferenceOnPosition>
+                </eCH-0222:candidate>
+              </eCH-0222:ballotPosition>
+              <eCH-0222:ballotPosition>
+                <eCH-0222:candidate>
+                  <eCH-0222:candidateIdentification>04998ee9-33ce-4aae-beec-5fa4159e1ec0</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>03a.05</eCH-0222:candidateReferenceOnPosition>
                 </eCH-0222:candidate>
               </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
@@ -1054,17 +1057,8 @@
             <eCH-0222:electionIdentification>nrw_test</eCH-0222:electionIdentification>
             <eCH-0222:ballotRawData>
               <eCH-0222:listRawData>
-                <eCH-0222:listIdentification>99</eCH-0222:listIdentification>
+                <eCH-0222:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0222:listIdentification>
               </eCH-0222:listRawData>
-              <eCH-0222:ballotPosition>
-                <eCH-0222:isEmpty>true</eCH-0222:isEmpty>
-              </eCH-0222:ballotPosition>
-              <eCH-0222:ballotPosition>
-                <eCH-0222:isEmpty>true</eCH-0222:isEmpty>
-              </eCH-0222:ballotPosition>
-              <eCH-0222:ballotPosition>
-                <eCH-0222:isEmpty>true</eCH-0222:isEmpty>
-              </eCH-0222:ballotPosition>
               <eCH-0222:ballotPosition>
                 <eCH-0222:candidate>
                   <eCH-0222:candidateIdentification>d396ab8f-3c5f-4a88-81bc-494dba014287</eCH-0222:candidateIdentification>
@@ -1073,49 +1067,14 @@
               </eCH-0222:ballotPosition>
               <eCH-0222:ballotPosition>
                 <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>93d09b22-5b53-46cd-97c3-ae9cb122eab0</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>02a.03</eCH-0222:candidateReferenceOnPosition>
+                  <eCH-0222:candidateIdentification>d113bd2d-10aa-4519-89e9-ad7b49eafa76</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>01a.03</eCH-0222:candidateReferenceOnPosition>
                 </eCH-0222:candidate>
               </eCH-0222:ballotPosition>
-              <eCH-0222:ballotPosition>
-                <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>8ed07d87-b81d-4dc8-aaeb-0d5d29a1c2dd</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>02a.04</eCH-0222:candidateReferenceOnPosition>
-                </eCH-0222:candidate>
-              </eCH-0222:ballotPosition>
-            </eCH-0222:ballotRawData>
-          </eCH-0222:electionRawData>
-        </eCH-0222:electionGroupBallotRawData>
-        <eCH-0222:electionGroupBallotRawData>
-          <eCH-0222:electionGroupIdentification>nrw_test</eCH-0222:electionGroupIdentification>
-          <eCH-0222:electionRawData>
-            <eCH-0222:electionIdentification>nrw_test</eCH-0222:electionIdentification>
-            <eCH-0222:ballotRawData>
-              <eCH-0222:listRawData>
-                <eCH-0222:listIdentification>99</eCH-0222:listIdentification>
-              </eCH-0222:listRawData>
               <eCH-0222:ballotPosition>
                 <eCH-0222:candidate>
                   <eCH-0222:candidateIdentification>ed9f8446-fb14-4927-b5ec-b4db51cb77b1</eCH-0222:candidateIdentification>
                   <eCH-0222:candidateReferenceOnPosition>01a.06</eCH-0222:candidateReferenceOnPosition>
-                </eCH-0222:candidate>
-              </eCH-0222:ballotPosition>
-              <eCH-0222:ballotPosition>
-                <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>6eb5e01e-755a-4794-9781-b76a32e7175c</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>02a.01</eCH-0222:candidateReferenceOnPosition>
-                </eCH-0222:candidate>
-              </eCH-0222:ballotPosition>
-              <eCH-0222:ballotPosition>
-                <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>3a89019a-87ba-45b6-ac92-501ace75d05f</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>03a.01</eCH-0222:candidateReferenceOnPosition>
-                </eCH-0222:candidate>
-              </eCH-0222:ballotPosition>
-              <eCH-0222:ballotPosition>
-                <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>cdd0f070-a3a2-4a89-b525-fa19825d1305</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>03a.02</eCH-0222:candidateReferenceOnPosition>
                 </eCH-0222:candidate>
               </eCH-0222:ballotPosition>
               <eCH-0222:ballotPosition>
@@ -1130,6 +1089,59 @@
                   <eCH-0222:candidateReferenceOnPosition>03a.04</eCH-0222:candidateReferenceOnPosition>
                 </eCH-0222:candidate>
               </eCH-0222:ballotPosition>
+              <eCH-0222:ballotPosition>
+                <eCH-0222:candidate>
+                  <eCH-0222:candidateIdentification>ff671047-7e0f-4198-974f-0041a55f1c70</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>10.02</eCH-0222:candidateReferenceOnPosition>
+                </eCH-0222:candidate>
+              </eCH-0222:ballotPosition>
+            </eCH-0222:ballotRawData>
+          </eCH-0222:electionRawData>
+        </eCH-0222:electionGroupBallotRawData>
+        <eCH-0222:electionGroupBallotRawData>
+          <eCH-0222:electionGroupIdentification>nrw_test</eCH-0222:electionGroupIdentification>
+          <eCH-0222:electionRawData>
+            <eCH-0222:electionIdentification>nrw_test</eCH-0222:electionIdentification>
+            <eCH-0222:ballotRawData>
+              <eCH-0222:listRawData>
+                <eCH-0222:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0222:listIdentification>
+              </eCH-0222:listRawData>
+              <eCH-0222:ballotPosition>
+                <eCH-0222:candidate>
+                  <eCH-0222:candidateIdentification>d396ab8f-3c5f-4a88-81bc-494dba014287</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>01a.02</eCH-0222:candidateReferenceOnPosition>
+                </eCH-0222:candidate>
+              </eCH-0222:ballotPosition>
+              <eCH-0222:ballotPosition>
+                <eCH-0222:candidate>
+                  <eCH-0222:candidateIdentification>f74aacda-e4f1-493e-95b8-0984f0f18d89</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>01a.05</eCH-0222:candidateReferenceOnPosition>
+                </eCH-0222:candidate>
+              </eCH-0222:ballotPosition>
+              <eCH-0222:ballotPosition>
+                <eCH-0222:candidate>
+                  <eCH-0222:candidateIdentification>ed9f8446-fb14-4927-b5ec-b4db51cb77b1</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>01a.06</eCH-0222:candidateReferenceOnPosition>
+                </eCH-0222:candidate>
+              </eCH-0222:ballotPosition>
+              <eCH-0222:ballotPosition>
+                <eCH-0222:candidate>
+                  <eCH-0222:candidateIdentification>8c12fee2-619f-47e1-82dd-cd4314c95807</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>02a.05</eCH-0222:candidateReferenceOnPosition>
+                </eCH-0222:candidate>
+              </eCH-0222:ballotPosition>
+              <eCH-0222:ballotPosition>
+                <eCH-0222:candidate>
+                  <eCH-0222:candidateIdentification>cdd0f070-a3a2-4a89-b525-fa19825d1305</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>03a.02</eCH-0222:candidateReferenceOnPosition>
+                </eCH-0222:candidate>
+              </eCH-0222:ballotPosition>
+              <eCH-0222:ballotPosition>
+                <eCH-0222:candidate>
+                  <eCH-0222:candidateIdentification>04998ee9-33ce-4aae-beec-5fa4159e1ec0</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>03a.05</eCH-0222:candidateReferenceOnPosition>
+                </eCH-0222:candidate>
+              </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
           </eCH-0222:electionRawData>
         </eCH-0222:electionGroupBallotRawData>
@@ -1155,8 +1167,8 @@
               </eCH-0222:ballotPosition>
               <eCH-0222:ballotPosition>
                 <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>1d48f2f5-08a3-4d1f-be5e-80cfb6ed76e4</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>02a.02</eCH-0222:candidateReferenceOnPosition>
+                  <eCH-0222:candidateIdentification>93d09b22-5b53-46cd-97c3-ae9cb122eab0</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>02a.03</eCH-0222:candidateReferenceOnPosition>
                 </eCH-0222:candidate>
               </eCH-0222:ballotPosition>
               <eCH-0222:ballotPosition>
@@ -1167,58 +1179,14 @@
               </eCH-0222:ballotPosition>
               <eCH-0222:ballotPosition>
                 <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>04998ee9-33ce-4aae-beec-5fa4159e1ec0</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>03a.05</eCH-0222:candidateReferenceOnPosition>
+                  <eCH-0222:candidateIdentification>3a89019a-87ba-45b6-ac92-501ace75d05f</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>03a.01</eCH-0222:candidateReferenceOnPosition>
                 </eCH-0222:candidate>
               </eCH-0222:ballotPosition>
               <eCH-0222:ballotPosition>
                 <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>04998ee9-33ce-4aae-beec-5fa4159e1ec0</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>03a.05</eCH-0222:candidateReferenceOnPosition>
-                </eCH-0222:candidate>
-              </eCH-0222:ballotPosition>
-            </eCH-0222:ballotRawData>
-          </eCH-0222:electionRawData>
-        </eCH-0222:electionGroupBallotRawData>
-        <eCH-0222:electionGroupBallotRawData>
-          <eCH-0222:electionGroupIdentification>nrw_test</eCH-0222:electionGroupIdentification>
-          <eCH-0222:electionRawData>
-            <eCH-0222:electionIdentification>nrw_test</eCH-0222:electionIdentification>
-            <eCH-0222:ballotRawData>
-              <eCH-0222:listRawData>
-                <eCH-0222:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0222:listIdentification>
-              </eCH-0222:listRawData>
-              <eCH-0222:ballotPosition>
-                <eCH-0222:isEmpty>true</eCH-0222:isEmpty>
-              </eCH-0222:ballotPosition>
-              <eCH-0222:ballotPosition>
-                <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>8cc68a36-df81-4381-aaff-83544ffe6e6c</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>01a.01</eCH-0222:candidateReferenceOnPosition>
-                </eCH-0222:candidate>
-              </eCH-0222:ballotPosition>
-              <eCH-0222:ballotPosition>
-                <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>d113bd2d-10aa-4519-89e9-ad7b49eafa76</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>01a.03</eCH-0222:candidateReferenceOnPosition>
-                </eCH-0222:candidate>
-              </eCH-0222:ballotPosition>
-              <eCH-0222:ballotPosition>
-                <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>ed9f8446-fb14-4927-b5ec-b4db51cb77b1</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>01a.06</eCH-0222:candidateReferenceOnPosition>
-                </eCH-0222:candidate>
-              </eCH-0222:ballotPosition>
-              <eCH-0222:ballotPosition>
-                <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>8ed07d87-b81d-4dc8-aaeb-0d5d29a1c2dd</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>02a.04</eCH-0222:candidateReferenceOnPosition>
-                </eCH-0222:candidate>
-              </eCH-0222:ballotPosition>
-              <eCH-0222:ballotPosition>
-                <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>cdd0f070-a3a2-4a89-b525-fa19825d1305</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>03a.02</eCH-0222:candidateReferenceOnPosition>
+                  <eCH-0222:candidateIdentification>3a89019a-87ba-45b6-ac92-501ace75d05f</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>03a.01</eCH-0222:candidateReferenceOnPosition>
                 </eCH-0222:candidate>
               </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
@@ -1233,12 +1201,6 @@
                 <eCH-0222:listIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</eCH-0222:listIdentification>
               </eCH-0222:listRawData>
               <eCH-0222:ballotPosition>
-                <eCH-0222:isEmpty>true</eCH-0222:isEmpty>
-              </eCH-0222:ballotPosition>
-              <eCH-0222:ballotPosition>
-                <eCH-0222:isEmpty>true</eCH-0222:isEmpty>
-              </eCH-0222:ballotPosition>
-              <eCH-0222:ballotPosition>
                 <eCH-0222:candidate>
                   <eCH-0222:candidateIdentification>d396ab8f-3c5f-4a88-81bc-494dba014287</eCH-0222:candidateIdentification>
                   <eCH-0222:candidateReferenceOnPosition>01a.02</eCH-0222:candidateReferenceOnPosition>
@@ -1246,21 +1208,30 @@
               </eCH-0222:ballotPosition>
               <eCH-0222:ballotPosition>
                 <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>d113bd2d-10aa-4519-89e9-ad7b49eafa76</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>01a.03</eCH-0222:candidateReferenceOnPosition>
+                  <eCH-0222:candidateIdentification>f74aacda-e4f1-493e-95b8-0984f0f18d89</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>01a.05</eCH-0222:candidateReferenceOnPosition>
                 </eCH-0222:candidate>
               </eCH-0222:ballotPosition>
               <eCH-0222:ballotPosition>
                 <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>f5074d62-71f3-4a0e-9fb5-82cb03d4751e</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>02a.06</eCH-0222:candidateReferenceOnPosition>
+                  <eCH-0222:candidateIdentification>6eb5e01e-755a-4794-9781-b76a32e7175c</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>02a.01</eCH-0222:candidateReferenceOnPosition>
                 </eCH-0222:candidate>
               </eCH-0222:ballotPosition>
               <eCH-0222:ballotPosition>
                 <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>1eb4e5e4-d2fc-4cdf-bbc4-2f84439b9870</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>03a.03</eCH-0222:candidateReferenceOnPosition>
+                  <eCH-0222:candidateIdentification>04998ee9-33ce-4aae-beec-5fa4159e1ec0</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>03a.05</eCH-0222:candidateReferenceOnPosition>
                 </eCH-0222:candidate>
+              </eCH-0222:ballotPosition>
+              <eCH-0222:ballotPosition>
+                <eCH-0222:candidate>
+                  <eCH-0222:candidateIdentification>ff671047-7e0f-4198-974f-0041a55f1c70</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>10.02</eCH-0222:candidateReferenceOnPosition>
+                </eCH-0222:candidate>
+              </eCH-0222:ballotPosition>
+              <eCH-0222:ballotPosition>
+                <eCH-0222:isEmpty>true</eCH-0222:isEmpty>
               </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
           </eCH-0222:electionRawData>
@@ -1274,18 +1245,21 @@
                 <eCH-0222:listIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</eCH-0222:listIdentification>
               </eCH-0222:listRawData>
               <eCH-0222:ballotPosition>
-                <eCH-0222:isEmpty>true</eCH-0222:isEmpty>
-              </eCH-0222:ballotPosition>
-              <eCH-0222:ballotPosition>
                 <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>8cc68a36-df81-4381-aaff-83544ffe6e6c</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>01a.01</eCH-0222:candidateReferenceOnPosition>
+                  <eCH-0222:candidateIdentification>d396ab8f-3c5f-4a88-81bc-494dba014287</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>01a.02</eCH-0222:candidateReferenceOnPosition>
                 </eCH-0222:candidate>
               </eCH-0222:ballotPosition>
               <eCH-0222:ballotPosition>
                 <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>6eb5e01e-755a-4794-9781-b76a32e7175c</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>02a.01</eCH-0222:candidateReferenceOnPosition>
+                  <eCH-0222:candidateIdentification>1d48f2f5-08a3-4d1f-be5e-80cfb6ed76e4</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>02a.02</eCH-0222:candidateReferenceOnPosition>
+                </eCH-0222:candidate>
+              </eCH-0222:ballotPosition>
+              <eCH-0222:ballotPosition>
+                <eCH-0222:candidate>
+                  <eCH-0222:candidateIdentification>93d09b22-5b53-46cd-97c3-ae9cb122eab0</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>02a.03</eCH-0222:candidateReferenceOnPosition>
                 </eCH-0222:candidate>
               </eCH-0222:ballotPosition>
               <eCH-0222:ballotPosition>
@@ -1296,8 +1270,40 @@
               </eCH-0222:ballotPosition>
               <eCH-0222:ballotPosition>
                 <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>8c12fee2-619f-47e1-82dd-cd4314c95807</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>02a.05</eCH-0222:candidateReferenceOnPosition>
+                  <eCH-0222:candidateIdentification>e5b16bd6-815b-4e02-8e9e-04064a19b6d0</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>10.01</eCH-0222:candidateReferenceOnPosition>
+                </eCH-0222:candidate>
+              </eCH-0222:ballotPosition>
+              <eCH-0222:ballotPosition>
+                <eCH-0222:isEmpty>true</eCH-0222:isEmpty>
+              </eCH-0222:ballotPosition>
+            </eCH-0222:ballotRawData>
+          </eCH-0222:electionRawData>
+        </eCH-0222:electionGroupBallotRawData>
+        <eCH-0222:electionGroupBallotRawData>
+          <eCH-0222:electionGroupIdentification>nrw_test</eCH-0222:electionGroupIdentification>
+          <eCH-0222:electionRawData>
+            <eCH-0222:electionIdentification>nrw_test</eCH-0222:electionIdentification>
+            <eCH-0222:ballotRawData>
+              <eCH-0222:listRawData>
+                <eCH-0222:listIdentification>99</eCH-0222:listIdentification>
+              </eCH-0222:listRawData>
+              <eCH-0222:ballotPosition>
+                <eCH-0222:candidate>
+                  <eCH-0222:candidateIdentification>8cc68a36-df81-4381-aaff-83544ffe6e6c</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>01a.01</eCH-0222:candidateReferenceOnPosition>
+                </eCH-0222:candidate>
+              </eCH-0222:ballotPosition>
+              <eCH-0222:ballotPosition>
+                <eCH-0222:candidate>
+                  <eCH-0222:candidateIdentification>1da9fbd3-07a5-4d9e-b3c1-2342a07684f2</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>01a.04</eCH-0222:candidateReferenceOnPosition>
+                </eCH-0222:candidate>
+              </eCH-0222:ballotPosition>
+              <eCH-0222:ballotPosition>
+                <eCH-0222:candidate>
+                  <eCH-0222:candidateIdentification>1d48f2f5-08a3-4d1f-be5e-80cfb6ed76e4</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>02a.02</eCH-0222:candidateReferenceOnPosition>
                 </eCH-0222:candidate>
               </eCH-0222:ballotPosition>
               <eCH-0222:ballotPosition>
@@ -1305,6 +1311,15 @@
                   <eCH-0222:candidateIdentification>e5b16bd6-815b-4e02-8e9e-04064a19b6d0</eCH-0222:candidateIdentification>
                   <eCH-0222:candidateReferenceOnPosition>10.01</eCH-0222:candidateReferenceOnPosition>
                 </eCH-0222:candidate>
+              </eCH-0222:ballotPosition>
+              <eCH-0222:ballotPosition>
+                <eCH-0222:candidate>
+                  <eCH-0222:candidateIdentification>04998ee9-33ce-4aae-beec-5fa4159e1ec0</eCH-0222:candidateIdentification>
+                  <eCH-0222:candidateReferenceOnPosition>03a.05</eCH-0222:candidateReferenceOnPosition>
+                </eCH-0222:candidate>
+              </eCH-0222:ballotPosition>
+              <eCH-0222:ballotPosition>
+                <eCH-0222:isEmpty>true</eCH-0222:isEmpty>
               </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
           </eCH-0222:electionRawData>
@@ -1318,7 +1333,9 @@
             <eCH-0222:electionIdentification>majorz_test</eCH-0222:electionIdentification>
             <eCH-0222:ballotRawData>
               <eCH-0222:ballotPosition>
-                <eCH-0222:isEmpty>true</eCH-0222:isEmpty>
+                <eCH-0222:candidate>
+                  <eCH-0222:writeIn>Firstname Lastname-0</eCH-0222:writeIn>
+                </eCH-0222:candidate>
               </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
           </eCH-0222:electionRawData>
@@ -1330,8 +1347,7 @@
             <eCH-0222:ballotRawData>
               <eCH-0222:ballotPosition>
                 <eCH-0222:candidate>
-                  <eCH-0222:candidateIdentification>9bfe1f69-6d35-4966-b281-a5dc39655e3a</eCH-0222:candidateIdentification>
-                  <eCH-0222:candidateReferenceOnPosition>1</eCH-0222:candidateReferenceOnPosition>
+                  <eCH-0222:writeIn>Firstname Lastname-0</eCH-0222:writeIn>
                 </eCH-0222:candidate>
               </eCH-0222:ballotPosition>
             </eCH-0222:ballotRawData>
@@ -1340,7 +1356,7 @@
       </eCH-0222:countingCircleRawData>
     </eCH-0222:rawData>
     <eCH-0222:extension>
-      <signature>LtlWK7jSGVTkW1TSdJx6mReYssvd/IDfvioOQwhWBTDrQ2/QSwfuim0ajhKqt2/5jbFMJUYmZIlSiwUA7Wkq99lTxQK0hJKc9bl0FjK9KtEh7HA9TuW1WnjioNDHhUKB2oJIub5mb5UyxyVo8q39N7nyoEvTfmpQYtelfCb6yLeZ9gZPrgy5v095X9uo2LeAr9BzJ/C7WGpzdBVemUlxdsXGFBPUL3gTcbYtfJOk66ktkAlHn86sOlQN4qgnSNU8K7fMhp5FjNN+aIkCthmBB7cifZJNpRyFlqLz6B7YBhYon9Pvq2DQBuWADhhQgiBQbmCFJfK8nyC6KTo4xvLdXBzLemi0tn0qgmhPj5WpJaoBG5NDTMkXIfJzDwxoNYBbWT9VTMA+6Yx5jnNuLl8KzQU04RXy/yewkWQ8t4Gdi+0zOyrAO44P8VNMkqlTZQMguy1LXEtDSL9e6wImp1zMXCjayCASqrcsqKfy5lsjM10H6lcTzcvoocNYilUmxU4R</signature>
+      <signature>Rqhw+nCpj1BYQUeR7mObhmaV/S9S5XRV4T2eZ16Qr4JHv1Aytqzqg2WnlNZe5tmv1Z/MtXxTJfYjIJYgw6c5KWH9KAowdIICDILNsRvhFHbLmDOuC+0JKYqJemLjT9/QHv3AceZYO2rdHdnNd3flABl67h9dSTqD+yudxXnEcERB2npn2ERin5sq+UCOrHTaev4z94mDEbpEaW5t4kwPtKAs9LtPAq29+X3PsSsnQl3mzZdVPy87q7MFB+GNbU8LWE1VrgTzkBKyQe4UVIlKY6ULbDXFCwl/xcP08AV5BpKMi+vYXqL4U9HMhIsr6a8fXXeQxq6Wv4p6g1Us6OhiK/k8eIUfBeedEtlnBLghxfWg2gl9tLkHDRavrNAmcPVYbIl1pmtCjpqvG8x/gWnJNeV1sYmzFauNufa2xviwV+LLT7R2VFrAnt+VSgmdYrvzXuUsYHKBhZ5cOzqvWW1RFK0450IVYBHmKUC1tmYp0Lt/BO4s0mbv3hxDthdXQVts</signature>
     </eCH-0222:extension>
   </eCH-0222:rawDataDelivery>
 </eCH-0222:delivery>

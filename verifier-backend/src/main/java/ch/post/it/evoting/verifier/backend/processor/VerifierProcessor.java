@@ -21,9 +21,11 @@ import static com.google.common.base.Preconditions.checkState;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.math.BigInteger;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,6 +48,7 @@ import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
 import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.dto.DatasetConfiguration;
 import ch.post.it.evoting.verifier.backend.dto.Verification;
@@ -177,7 +180,11 @@ public class VerifierProcessor {
 				xmlElectionEventDate.getDay());
 		final String formattedElectionEventDate = DateTimeFormatter.ofPattern("dd.MM.yyyy", Locale.ENGLISH).format(electionEventDate);
 
-		final int numberOfElections = configuration.getContest().getElectionInformation().size();
+		final int numberOfElections = BigInteger.valueOf(configuration.getContest().getElectionGroupBallot().stream().parallel()
+				.map(ElectionGroupBallotType::getElectionInformation)
+				.mapToLong(Collection::size)
+				.sum()).intValueExact();
+
 		final int numberOfVotes = configuration.getContest().getVoteInformation().size();
 
 		final long numberOfNonTestBallotBoxes = configuration.getAuthorizations().getAuthorization().stream().parallel()
