@@ -99,9 +99,9 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 		} while (entry1.actualVotingOption().equals(entry0.actualVotingOption()));
 
 		final PrimesMappingTableEntry permutedEntry0 = new PrimesMappingTableEntry(entry0.actualVotingOption(),
-				entry1.encodedVotingOption());
+				entry1.encodedVotingOption(), entry0.semanticInformation());
 		final PrimesMappingTableEntry permutedEntry1 = new PrimesMappingTableEntry(entry1.actualVotingOption(),
-				entry0.encodedVotingOption());
+				entry0.encodedVotingOption(), entry1.semanticInformation());
 
 		final ArrayList<PrimesMappingTableEntry> permutedPTableList = new ArrayList<>(pTable.size());
 		permutedPTableList.add(permutedEntry0);

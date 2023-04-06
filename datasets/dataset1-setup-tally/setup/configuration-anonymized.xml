@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <configuration xmlns="http://www.evoting.ch/xmlns/config/5">
   <header>
-    <fileDate>2023-03-29T09:42:34.314+02:00</fileDate>
+    <fileDate>2023-03-30T10:37:51.932+02:00</fileDate>
     <voterTotal>43</voterTotal>
   </header>
   <contest>
@@ -51,7 +51,7 @@
       <keyName>birthDate</keyName>
     </extendedAuthenticationKeys>
     <electionGroupBallot>
-      <electionGroupIdentification>majorz_test</electionGroupIdentification>
+      <electionGroupIdentification>ca127938-5e2f-372f-8a4e-a0cb1da35b3b</electionGroupIdentification>
       <domainOfInfluence>doid-ct1-mu</domainOfInfluence>
       <electionGroupDescription>
         <electionGroupDescriptionInfo>
@@ -315,7 +315,7 @@
       </electionInformation>
     </electionGroupBallot>
     <electionGroupBallot>
-      <electionGroupIdentification>nrw_test</electionGroupIdentification>
+      <electionGroupIdentification>bb58e1f2-659c-3fb1-9897-c396e40c9b9e</electionGroupIdentification>
       <domainOfInfluence>doid-ch1-mu</domainOfInfluence>
       <electionGroupDescription>
         <electionGroupDescriptionInfo>
@@ -3192,5 +3192,5 @@
       <voterType>SWISSABROAD</voterType>
     </voter>
   </register>
-  <signature>jKuevcfDRyi4nLk6WRI7qi8TOjbXcZNi1guxjbR9T0be0S+gplpCh/yMzmaIhhjnRmBv/QoEnvSkcxsN5cOYezLMgcIRweU2PZ05rvGqSi1JKtpD+kHPvkSPYPNhzk5iZXfn11fZL6zCj649Tf5yF30FbyhmwhWYlAU41ecpfODzpBukEbCME0XQxSPT6ro9wo1y5jtF+Vwg86kT2LHZGiJwacjVk+jlCdi+v/8E6lAui5duYftgbthSK7sBGg6uLjb606h4/a7wwVxfK4rvh2AfXYm5Ti1cYoMvO6eJa4FBWnxKcI+AXiXngf1gAQaaEXK+MFxdioIjB0KxZkRD27N2MKm7fDTRQlFQLeqOWOSAWHE56ThEalUu4G4NBlBX+xd8Lz3XNjlPgw95cUJ5rdEZagQihT+wUo/dwziIikddxHIlvIfamP8mEqOELmR+WmeT0L3Bqv22mYwmQNFWGfnu0zeQ4Nh/bj0VMDJ7EH2s2L9AKP8EmtnCPstApGfI</signature>
+  <signature>QaTmLRvap9z4Jq0LuT+5CbjCpwKbdGopJfCfUVrlGtL/C6HoSKexTrh/RwT1jZ1CtRXhpRRalwcMcu6CU58kyykGh3dR5iQVZWTHZhXrECbH4qzbu25ffYqKKDc7MhLfDpvh9bh/a5yb0A8jBC5sG4z59n7z4LHCEr+5ZCXx+e3K2KxNJwVSymd4drjksYweUCczuLa5ZeexJyP0tVkEg4w2PzHPyE4MeH5bnU3n/CEjVcVxiBMjq653dFsXscwhcCkG8xYRQBiNOptnsKUjYpig/KZJmFiNMFLt/63r8r0yl2n4E1sa6TKeLHkYZfrKwmLSsw/fcHzUq3WTy/KOeafDomq5eBSR40yiWgnI5Ls8Os9ljptlc7vvkUH1MD8l+eUtefytolmCk1FvO4WtShVxxNhX9Kj5kVJR91U0zbiUgbhG165f2dNyarIjxkjxDAF2grCfp+/Koq+eeA18+oK9FS48Af6/fZql8rngdPK+osYxv5y/g7djD5m3PZzR</signature>
 </configuration>

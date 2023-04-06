@@ -69,7 +69,7 @@ class VerifyPlaintextsConsistencyTest extends TallyVerificationTest {
 		final Random random = RandomFactory.createRandom();
 		final PrimeGqElement encodedVotingOption = PrimeGqElement.PrimeGqElementFactory.getSmallPrimeGroupMembers(encryptionGroup, 1).get(0);
 		final GroupVector<PrimesMappingTableEntry, GqGroup> pTable = GroupVector.of(new PrimesMappingTableEntry(random.genRandomBase16String(4),
-				encodedVotingOption));
+				encodedVotingOption, "semantic information"));
 		final VerificationCardSetContext modifiedFirstContext = new VerificationCardSetContext(firstContext.verificationCardSetId(),
 				firstContext.ballotBoxId(), firstContext.testBallotBox(), numberOfWriteInsPlusOne, firstContext.numberOfVotingCards(),
 				firstContext.gracePeriod(), new PrimesMappingTable(pTable));
