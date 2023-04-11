@@ -114,8 +114,11 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 		}
 		final PrimesMappingTable permutedPrimesMappingTable = PrimesMappingTable.from(permutedPTableList);
 
-		return new VerificationCardSetContext(verificationCardSetContext.verificationCardSetId(), verificationCardSetContext.ballotBoxId(),
-				verificationCardSetContext.testBallotBox(), verificationCardSetContext.numberOfWriteInFields(),
-				verificationCardSetContext.numberOfVotingCards(), verificationCardSetContext.gracePeriod(), permutedPrimesMappingTable);
+		return new VerificationCardSetContext(verificationCardSetContext.verificationCardSetId(),
+				verificationCardSetContext.verificationCardSetAlias(), verificationCardSetContext.verificationCardSetDescription(),
+				verificationCardSetContext.ballotBoxId(), verificationCardSetContext.ballotBoxStartTime(),
+				verificationCardSetContext.ballotBoxFinishTime(), verificationCardSetContext.testBallotBox(),
+				verificationCardSetContext.numberOfWriteInFields(), verificationCardSetContext.numberOfVotingCards(),
+				verificationCardSetContext.gracePeriod(), permutedPrimesMappingTable);
 	}
 }

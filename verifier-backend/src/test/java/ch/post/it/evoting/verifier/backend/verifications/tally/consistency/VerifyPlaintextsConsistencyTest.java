@@ -71,8 +71,9 @@ class VerifyPlaintextsConsistencyTest extends TallyVerificationTest {
 		final GroupVector<PrimesMappingTableEntry, GqGroup> pTable = GroupVector.of(new PrimesMappingTableEntry(random.genRandomBase16String(4),
 				encodedVotingOption, "semantic information"));
 		final VerificationCardSetContext modifiedFirstContext = new VerificationCardSetContext(firstContext.verificationCardSetId(),
-				firstContext.ballotBoxId(), firstContext.testBallotBox(), numberOfWriteInsPlusOne, firstContext.numberOfVotingCards(),
-				firstContext.gracePeriod(), new PrimesMappingTable(pTable));
+				firstContext.verificationCardSetAlias(), firstContext.verificationCardSetDescription(), firstContext.ballotBoxId(),
+				firstContext.ballotBoxStartTime(), firstContext.ballotBoxFinishTime(), firstContext.testBallotBox(), numberOfWriteInsPlusOne,
+				firstContext.numberOfVotingCards(), firstContext.gracePeriod(), new PrimesMappingTable(pTable));
 		final List<VerificationCardSetContext> modifiedVcsContexts = Streams.concat(Stream.of(modifiedFirstContext), vcsContexts.stream().skip(1))
 				.toList();
 		final ElectionEventContext modifiedElectionEventContext = spy(electionEventContext);

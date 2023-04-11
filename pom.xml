@@ -23,7 +23,7 @@
 		<bouncycastle.version>1.72</bouncycastle.version>
 		<commons-codec.version>1.15</commons-codec.version>
 		<crypto-primitives-version>1.2.1.2</crypto-primitives-version>
-		<crypto-primitives-domain.version>1.2.1.3</crypto-primitives-domain.version>
+		<crypto-primitives-domain.version>1.2.1.4</crypto-primitives-domain.version>
 		<e-voting-libraries.version>0.0.1.2</e-voting-libraries.version>
 		<guava.version>31.1-jre</guava.version>
 		<jackson.version>2.14.2</jackson.version>
