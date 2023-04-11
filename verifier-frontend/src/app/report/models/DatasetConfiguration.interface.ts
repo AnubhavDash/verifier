@@ -28,4 +28,6 @@ export class DatasetConfiguration {
   numberOfTestBallotBoxes: number;
   totalNumberOfAuthorizedNonTestVoters: number;
   totalNumberOfTestVoters: number;
+  numberOfConfirmedNonTestVotes: number;
+  numberOfConfirmedTestVotes: number;
 }

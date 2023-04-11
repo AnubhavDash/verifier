@@ -62,7 +62,7 @@ public class VerifyVotingOptions extends AbstractVerification {
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
 				"setup.verification502.description"));
-		definition.setId("5.03");
+		definition.setId("05.03");
 		definition.setName("VerifyVotingOptions");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

@@ -31,6 +31,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -44,11 +45,16 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
+import com.google.common.collect.MoreCollectors;
+
 import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
 import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.ElectionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.VoteType;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.dto.DatasetConfiguration;
 import ch.post.it.evoting.verifier.backend.dto.Verification;
@@ -200,9 +206,19 @@ public class VerifierProcessor {
 				.filter(AuthorizationType::isAuthorizationTest)
 				.count();
 
+		Integer numberOfConfirmedNonTestVotes = null;
+		Integer numberOfConfirmedTestVotes = null;
+		if (electionDataExtractionService.existsTallyComponentDecrypt(inputDirectory)) {
+			final Results tallyComponentDecrypt = electionDataExtractionService.getTallyComponentDecrypt(inputDirectory);
+
+			numberOfConfirmedNonTestVotes = getNumberOfConfirmedVotes(configuration, tallyComponentDecrypt, false);
+			numberOfConfirmedTestVotes = getNumberOfConfirmedVotes(configuration, tallyComponentDecrypt, true);
+		}
+
 		this.datasetConfiguration = new DatasetConfiguration(filename, String.join(":", datasetHash.split("(?<=\\G.{2})")), electionEventId,
 				aliasesToFingerprints, electionEventName, formattedElectionEventDate, numberOfElections, numberOfVotes, numberOfNonTestBallotBoxes,
-				numberOfTestBallotBoxes, testBallotBoxToTotalNumberOfVoters.get(false), testBallotBoxToTotalNumberOfVoters.get(true));
+				numberOfTestBallotBoxes, testBallotBoxToTotalNumberOfVoters.get(false), testBallotBoxToTotalNumberOfVoters.get(true),
+				numberOfConfirmedNonTestVotes, numberOfConfirmedTestVotes);
 	}
 
 	public void process(final String runOption) {
@@ -228,5 +244,36 @@ public class VerifierProcessor {
 			datasetService.clean(dataset);
 			this.dataset = null;
 		}
+	}
+
+	private static int getNumberOfConfirmedVotes(final Configuration configuration, final Results tallyComponentDecrypt,
+			final boolean testAuthorizations) {
+
+		return configuration.getAuthorizations().getAuthorization().stream().parallel()
+				.filter(authorizationType -> testAuthorizations == authorizationType.isAuthorizationTest())
+				.map(AuthorizationType::getAuthorizationIdentification)
+				.map(nonTestAuthorizationIdentification -> tallyComponentDecrypt.getBallotsBox().stream().parallel()
+						.filter(bb -> bb.getBallotBoxIdentification().equals(nonTestAuthorizationIdentification))
+						.collect(MoreCollectors.onlyElement()))
+				.map(nonTestBallotBox -> nonTestBallotBox.getCountingCircle().stream().parallel()
+						.map(countingCircle -> countingCircle.getDomainOfInfluence().stream().parallel()
+								.map(domainOfInfluence -> {
+									final List<VoteType> voteList = domainOfInfluence.getVote();
+									final List<ElectionType> electionList = domainOfInfluence.getElection();
+									final boolean hasVotes = Objects.nonNull(voteList) && !voteList.isEmpty();
+									final boolean hasElections = Objects.nonNull(electionList) && !electionList.isEmpty();
+
+									if (hasVotes) {
+										return voteList.get(0).getBallot().size();
+									} else {
+										if (hasElections) {
+											return electionList.get(0).getBallot().size();
+										} else {
+											return 0;
+										}
+									}
+								}).reduce(0, Math::addExact)
+						).reduce(0, Math::addExact)
+				).reduce(0, Math::addExact);
 	}
 }

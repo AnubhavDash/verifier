@@ -55,7 +55,7 @@ public class VerifyKeyGenerationSchnorrProofs extends AbstractVerification {
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
 				"setup.verification503.description"));
-		definition.setId("5.04");
+		definition.setId("05.04");
 		definition.setName("VerifyKeyGenerationSchnorrProofs");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

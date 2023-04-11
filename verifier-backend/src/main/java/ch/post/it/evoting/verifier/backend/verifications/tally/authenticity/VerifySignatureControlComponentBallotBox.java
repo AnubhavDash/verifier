@@ -65,7 +65,7 @@ public class VerifySignatureControlComponentBallotBox extends AbstractVerificati
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
 						"verification.direct.trust.authenticity.description", "ControlComponentBallotBox"));
-		definition.setId("7.01");
+		definition.setId("07.01");
 		definition.setName("VerifySignatureControlComponentBallotBox");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

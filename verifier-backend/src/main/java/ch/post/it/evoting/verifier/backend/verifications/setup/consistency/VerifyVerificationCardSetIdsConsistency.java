@@ -65,7 +65,7 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification309.description"));
-		definition.setId("3.10");
+		definition.setId("03.10");
 		definition.setName("VerifyVerificationCardSetIdsConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

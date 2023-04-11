@@ -66,7 +66,7 @@ public class VerifySignatureControlComponentShuffle extends AbstractVerification
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
 						"verification.direct.trust.authenticity.description", "ControlComponentShuffle"));
-		definition.setId("7.02");
+		definition.setId("07.02");
 		definition.setName("VerifySignatureControlComponentShuffle");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

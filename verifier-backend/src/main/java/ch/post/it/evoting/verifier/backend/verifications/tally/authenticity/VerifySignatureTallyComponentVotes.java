@@ -66,7 +66,7 @@ public class VerifySignatureTallyComponentVotes extends AbstractVerification {
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
 						"verification.direct.trust.authenticity.description", "TallyComponentVotes"));
-		definition.setId("7.04");
+		definition.setId("07.04");
 		definition.setName("VerifySignatureTallyComponentVotes");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

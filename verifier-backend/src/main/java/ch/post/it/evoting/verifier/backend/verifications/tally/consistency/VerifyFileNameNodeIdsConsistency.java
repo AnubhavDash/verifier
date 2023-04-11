@@ -60,7 +60,7 @@ public class VerifyFileNameNodeIdsConsistency extends AbstractVerification {
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification309.description"));
-		definition.setId("8.10");
+		definition.setId("08.10");
 		definition.setName("VerifyFileNameNodeIdsConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

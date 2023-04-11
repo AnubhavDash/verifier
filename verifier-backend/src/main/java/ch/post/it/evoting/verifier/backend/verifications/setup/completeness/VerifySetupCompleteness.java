@@ -59,7 +59,7 @@ public class VerifySetupCompleteness extends AbstractVerification {
 		definition.setCategory(Category.COMPLETENESS);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "verification100.description"));
-		definition.setId("1.01");
+		definition.setId("01.01");
 		definition.setName("VerifySetupCompleteness");
 		definition.addVerifierEvent(PreSetupEvent.TYPE);
 		definition.addVerifierEvent(SetupEvent.TYPE);

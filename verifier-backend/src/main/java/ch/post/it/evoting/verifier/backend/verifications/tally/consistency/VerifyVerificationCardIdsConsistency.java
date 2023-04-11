@@ -59,7 +59,7 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification303.description"));
-		definition.setId("8.04");
+		definition.setId("08.04");
 		definition.setName("VerifyVerificationCardIdsConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

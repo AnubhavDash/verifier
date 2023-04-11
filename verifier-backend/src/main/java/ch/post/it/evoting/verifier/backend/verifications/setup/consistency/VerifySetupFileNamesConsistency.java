@@ -70,7 +70,7 @@ public class VerifySetupFileNamesConsistency extends AbstractVerification {
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification301.description"));
-		definition.setId("3.02");
+		definition.setId("03.02");
 		definition.setName("VerifySetupFileNamesConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

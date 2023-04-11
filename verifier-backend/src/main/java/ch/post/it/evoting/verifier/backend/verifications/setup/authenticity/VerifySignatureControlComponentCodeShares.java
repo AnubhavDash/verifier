@@ -64,7 +64,7 @@ public class VerifySignatureControlComponentCodeShares extends AbstractVerificat
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
 						"verification.direct.trust.authenticity.description", "ControlComponentCodeShares"));
-		definition.setId("2.06");
+		definition.setId("02.06");
 		definition.setName("VerifySignatureControlComponentCodeShares");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

@@ -54,7 +54,7 @@ public class VerifyCcmElectionPublicKeyConsistency extends AbstractVerification 
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification303.description"));
-		definition.setId("3.04");
+		definition.setId("03.04");
 		definition.setName("VerifyCCmElectionPublicKeyConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

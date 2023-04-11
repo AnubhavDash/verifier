@@ -59,13 +59,9 @@
           </div>
         </div>
         <hr>
-        <div class="row">
+        <div class="row" *ngIf="processStarted">
           <div class="col-12">
             <div class="float-left">
-              <button (click)="filterVerificationsAll()" [class.active]="verificationFilter.ALL.active" class="btn btn-outline-info mr-1 mt-1"
-                      type="button">
-                All verifications <span class="badge badge-light">{{verificationsSize}}</span>
-              </button>
               <button (click)="filterVerificationsRUNNING()" [class.active]="verificationFilter.RUNNING.active"
                       class="btn btn-outline-primary mr-1 mt-1"
                       type="button">
@@ -83,10 +79,6 @@
                       type="button">
                 Error <span class="badge badge-light">{{statusCounterERROR()}}</span>
               </button>
-              <button (click)="filterVerificationsNA()" [class.active]="verificationFilter.NA.active" class="btn btn-outline-secondary mt-1"
-                      type="button">
-                Not Run <span class="badge badge-light">{{statusCounterNA()}}</span>
-              </button>
             </div>
             <div class="form-check ml-4 mt-2 pt-1 float-left">
               <input [(ngModel)]="toggleMessage" class="form-check-input" id="toggleMessageSwitch" type="checkbox">
@@ -98,7 +90,7 @@
     </div>
   </div>
 
-  <div class="row m-1" id="verification-report">
+  <div class="row m-1" id="verification-report" *ngIf="processStarted">
     <div class="col-12 p-3 mb-3 bg-white rounded shadow">
       <div class="row">
         <div class="col-6">
@@ -130,9 +122,17 @@
         </div>
         <div class="row">
           <div class="col-4">
-            Date / Time
+            Execution start date / time
           </div>
-          <div class="col-8">{{currentDate}}</div>
+          <div class="col-8" *ngIf="startDate === null">-</div>
+          <div class="col-8" *ngIf="startDate !== null">{{startDate}}</div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            Execution end date / time
+          </div>
+          <div class="col-8" *ngIf="processStarted && isProcessComplete()">{{endDate}}</div>
+          <div class="col-8" *ngIf="!processStarted">-</div>
         </div>
         <div class="row">
           <div class="col-4">
@@ -145,6 +145,14 @@
             Verification data input hash (SHA-256)
           </div>
           <div class="col-8">{{hash}}</div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            Executed Verification
+          </div>
+          <div class="col-8" *ngIf="(eventStarted === VerifierEvent.PRE_SETUP) || (eventStarted === VerifierEvent.SETUP)">Verify Setup</div>
+		  <div class="col-8" *ngIf="(eventStarted === VerifierEvent.PRE_TALLY) || (eventStarted === VerifierEvent.TALLY)">Verify Tally</div>
+          <div class="col-8" *ngIf="eventStarted === null">-</div>
         </div>
         <div class="row mt-3">
           <div class="col-12 font-weight-bold">
@@ -192,7 +200,7 @@
         </div>
         <div class="row">
           <div class="col-4">
-            Number of votes
+            Number of votes (votations)
           </div>
           <div class="col-8">{{numberOfVotes}}</div>
         </div>
@@ -220,6 +228,20 @@
           </div>
           <div class="col-8">{{totalNumberOfTestVoters}}</div>
         </div>
+        <div class="row">
+          <div class="col-4">
+            Number of confirmed (non-test) votes
+          </div>
+          <div class="col-8" *ngIf="numberOfConfirmedNonTestVotes === null">-</div>
+          <div class="col-8" *ngIf="!(numberOfConfirmedNonTestVotes === null)">{{numberOfConfirmedNonTestVotes}}</div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            Number of confirmed test votes
+          </div>
+          <div class="col-8" *ngIf="numberOfConfirmedTestVotes === null">-</div>
+          <div class="col-8" *ngIf="!(numberOfConfirmedTestVotes === null)">{{numberOfConfirmedTestVotes}}</div>
+        </div>
         <div class="row mt-3">
           <div class="col-12 font-weight-bold">
             VERIFICATION OVERVIEW
@@ -228,9 +250,11 @@
         </div>
         <div class="row mt-3">
           <div class="col-4">
-            Total number of verifications
+            Total number of relevant verifications
           </div>
-          <div class="col-8">{{verificationsSize}}</div>
+          <div class="col-8" *ngIf="(eventStarted === VerifierEvent.PRE_SETUP) || (eventStarted === VerifierEvent.SETUP)">{{totalNumberOfSetupVerifications}}</div>
+          <div class="col-8" *ngIf="(eventStarted === VerifierEvent.PRE_TALLY) || (eventStarted === VerifierEvent.TALLY)">{{totalNumberOfTallyVerifications}}</div>
+          <div class="col-8" *ngIf="eventStarted === null">-</div>
         </div>
         <div class="row">
           <div class="col-4">
@@ -249,12 +273,6 @@
             Number of error verifications
           </div>
           <div class="col-8">{{statusCounterERROR()}}</div>
-        </div>
-        <div class="row">
-          <div class="col-4">
-            Number of not run verifications
-          </div>
-          <div class="col-8">{{statusCounterNA()}}</div>
         </div>
       </ng-container>
       <div class="row mt-3 html2pdf-break-page">

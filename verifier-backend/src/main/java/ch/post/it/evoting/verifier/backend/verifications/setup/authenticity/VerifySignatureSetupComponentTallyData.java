@@ -64,7 +64,7 @@ public class VerifySignatureSetupComponentTallyData extends AbstractVerification
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
 						"verification.direct.trust.authenticity.description", "SetupComponentTallyData"));
-		definition.setId("2.07");
+		definition.setId("02.07");
 		definition.setName("VerifySignatureSetupComponentTallyData");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

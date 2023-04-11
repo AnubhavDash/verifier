@@ -54,7 +54,7 @@ public class VerifyCiphertextsConsistency extends AbstractVerification {
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification301.description"));
-		definition.setId("8.02");
+		definition.setId("08.02");
 		definition.setName("VerifyCiphertextsConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

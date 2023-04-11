@@ -60,7 +60,7 @@ public class VerifyElectionPublicKeyConsistency extends AbstractVerification {
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification306.description"));
-		definition.setId("3.07");
+		definition.setId("03.07");
 		definition.setName("VerifyElectionPublicKeyConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

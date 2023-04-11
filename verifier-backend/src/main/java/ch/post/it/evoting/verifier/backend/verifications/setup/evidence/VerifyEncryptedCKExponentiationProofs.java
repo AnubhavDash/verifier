@@ -50,7 +50,7 @@ public class VerifyEncryptedCKExponentiationProofs extends AbstractVerification 
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
 				"setup.verification505.description"));
-		definition.setId("5.22");
+		definition.setId("05.22");
 		definition.setName("VerifyEncryptedCKExponentiationProofs");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

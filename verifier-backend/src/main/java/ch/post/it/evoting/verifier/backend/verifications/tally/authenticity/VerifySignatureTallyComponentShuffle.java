@@ -66,7 +66,7 @@ public class VerifySignatureTallyComponentShuffle extends AbstractVerification {
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
 						"verification.direct.trust.authenticity.description", "TallyComponentShuffle"));
-		definition.setId("7.03");
+		definition.setId("07.03");
 		definition.setName("VerifySignatureTallyComponentShuffle");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

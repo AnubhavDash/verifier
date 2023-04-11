@@ -18,6 +18,8 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 import java.math.BigInteger;
 import java.nio.file.Path;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.EncryptionParametersPayload;
@@ -36,6 +38,8 @@ import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerification
 @Component
 @SuppressWarnings("java:S117")
 public class VerifyEncryptionParameters extends AbstractVerification {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(VerifyEncryptionParameters.class);
 
 	private final ElectionDataExtractionService extractionService;
 	private final VerifyEncryptionParametersAlgorithm verifyEncryptionParametersAlgorithm;
@@ -56,7 +60,7 @@ public class VerifyEncryptionParameters extends AbstractVerification {
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification500.description"));
-		definition.setId("5.01");
+		definition.setId("05.01");
 		definition.setName("VerifyEncryptionParameters");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
@@ -80,6 +84,7 @@ public class VerifyEncryptionParameters extends AbstractVerification {
 					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification500.nok.message"));
 		} else {
 			verificationResult = VerificationResult.success(getVerificationDefinition());
+			LOGGER.info("Successfully verified the encryption parameters p, q, g. [p: {}, q: {}, g: {}]", p_hat, q_hat, g_hat);
 		}
 
 		return verificationResult;

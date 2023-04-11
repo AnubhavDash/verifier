@@ -60,7 +60,7 @@ public class VerifyBallotBoxIdsConsistency extends AbstractVerification {
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification304.description"));
-		definition.setId("8.05");
+		definition.setId("08.05");
 		definition.setName("VerifyBallotBoxIdsConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

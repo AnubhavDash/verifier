@@ -106,6 +106,14 @@ public class ElectionDataExtractionService {
 	}
 
 	/**
+	 * @param inputDirectoryPath the root directory containing project files.
+	 * @return if the tally component decrypt exists return true, otherwise false.
+	 */
+	public boolean existsTallyComponentDecrypt(final Path inputDirectoryPath) {
+		return pathService.existsFromRootPath(StructureKey.TALLY_COMPONENT_DECRYPT, inputDirectoryPath);
+	}
+
+	/**
 	 * Gets the tally component eCH-0110.
 	 *
 	 * @param inputDirectoryPath the root directory containing project files.
