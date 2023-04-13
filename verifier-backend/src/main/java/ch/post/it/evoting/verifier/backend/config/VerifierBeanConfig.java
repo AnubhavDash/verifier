@@ -40,19 +40,20 @@ import ch.post.it.evoting.cryptoprimitives.signing.SignatureFactory;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.FactorizeAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetActualVotingOptionsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.DecodeWriteInsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.IntegerToWriteInAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.IsWriteInOptionAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.QuadraticResidueToWriteInAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.VerifyMixDecOfflineAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.VerifyVotingClientProofsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixonline.GetMixnetInitialCiphertextsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
 import ch.post.it.evoting.evotinglibraries.xml.XmlNormalizer;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.verifier.backend.tools.KeystoreRepository;
 import ch.post.it.evoting.verifier.backend.verifications.setup.consistency.VerifyPrimesMappingTableConsistencyAlgorithm;
-import ch.post.it.evoting.verifier.protocol.algorithms.tally.IntegerToWriteInAlgorithm;
-import ch.post.it.evoting.verifier.protocol.algorithms.tally.QuadraticResidueToWriteInAlgorithm;
-import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.DecodeVotingOptionsAlgorithm;
-import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.DecodeWriteInsAlgorithm;
-import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.IsWriteInOptionAlgorithm;
-import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.VerifyMixDecOfflineAlgorithm;
-import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.VerifyVotingClientProofsAlgorithm;
-import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixonline.GetMixnetInitialCiphertextsAlgorithm;
 
 @Configuration
 public class VerifierBeanConfig {
@@ -107,13 +108,13 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
-	public DecodeVotingOptionsAlgorithm decodeVotingOptionsAlgorithm() {
-		return new DecodeVotingOptionsAlgorithm();
+	public GetActualVotingOptionsAlgorithm getActualVotingOptionsAlgorithm() {
+		return new GetActualVotingOptionsAlgorithm();
 	}
 
 	@Bean
 	public DecodeWriteInsAlgorithm decodeWriteInsAlgorithm(final IsWriteInOptionAlgorithm isWriteInOptionAlgorithm, final
-			QuadraticResidueToWriteInAlgorithm quadraticResidueToWriteInAlgorithm) {
+	QuadraticResidueToWriteInAlgorithm quadraticResidueToWriteInAlgorithm) {
 		return new DecodeWriteInsAlgorithm(isWriteInOptionAlgorithm, quadraticResidueToWriteInAlgorithm);
 	}
 
@@ -130,6 +131,11 @@ public class VerifierBeanConfig {
 	@Bean
 	public IntegerToWriteInAlgorithm integerToWriteInAlgorithm() {
 		return new IntegerToWriteInAlgorithm();
+	}
+
+	@Bean
+	public FactorizeAlgorithm factorizeAlgorithm() {
+		return new FactorizeAlgorithm();
 	}
 
 	@Bean

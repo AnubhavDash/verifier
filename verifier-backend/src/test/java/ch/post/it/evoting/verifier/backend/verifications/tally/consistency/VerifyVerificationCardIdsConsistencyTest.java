@@ -36,11 +36,11 @@ import org.mockito.Answers;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
+import ch.post.it.evoting.evotinglibraries.domain.common.EncryptedVerifiableVote;
+import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
+import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
-import ch.post.it.evoting.verifier.protocol.domain.EncryptedVerifiableVote;
-import ch.post.it.evoting.verifier.protocol.domain.configuration.SetupComponentTallyDataPayload;
-import ch.post.it.evoting.verifier.protocol.domain.tally.ControlComponentBallotBoxPayload;
 
 @DisplayName("VerifyVerificationCardIdsConsistencyTest with")
 class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {

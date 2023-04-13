@@ -36,6 +36,7 @@ import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCo
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeSharesPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationData;
 import ch.post.it.evoting.cryptoprimitives.domain.validations.Validations;
+import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -48,7 +49,6 @@ import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
-import ch.post.it.evoting.verifier.protocol.domain.configuration.SetupComponentTallyDataPayload;
 
 @Component("VerifySetupVerificationCardIdsConsistency")
 public class VerifyVerificationCardIdsConsistency extends AbstractVerification {

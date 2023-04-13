@@ -26,11 +26,6 @@
 	</dependencyManagement>
 
 	<dependencies>
-		<dependency>
-			<groupId>ch.post.it.evoting.verifier</groupId>
-			<artifactId>verifier-protocol</artifactId>
-		</dependency>
-
 		<!-- Spring-boot -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -104,6 +99,10 @@
 		<dependency>
 			<groupId>ch.post.it.evoting.evotinglibraries</groupId>
 			<artifactId>domain</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.post.it.evoting.evotinglibraries</groupId>
+			<artifactId>protocol-algorithms</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>ch.post.it.evoting.evotinglibraries</groupId>

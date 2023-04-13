@@ -32,6 +32,7 @@ import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShuffle
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.SetupComponentPublicKeysPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.TallyComponentShufflePayload;
+import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
@@ -43,7 +44,6 @@ import ch.post.it.evoting.verifier.backend.event.TallyEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
-import ch.post.it.evoting.verifier.protocol.domain.configuration.SetupComponentTallyDataPayload;
 
 @Component
 public class VerifyTallyControlComponent extends AbstractVerification {

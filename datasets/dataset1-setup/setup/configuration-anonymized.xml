@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <configuration xmlns="http://www.evoting.ch/xmlns/config/5">
   <header>
-    <fileDate>2023-03-30T10:37:51.932+02:00</fileDate>
+    <fileDate>2023-04-11T14:37:56.862+02:00</fileDate>
     <voterTotal>43</voterTotal>
   </header>
   <contest>
@@ -102,7 +102,7 @@
               <electionDescription>Elecziuns d'exempel cun Write-Ins</electionDescription>
             </electionDescriptionInfo>
           </electionDescription>
-          <electionPosition>0</electionPosition>
+          <electionPosition>1</electionPosition>
           <numberOfMandates>1</numberOfMandates>
           <writeInsAllowed>true</writeInsAllowed>
           <candidateAccumulation>1</candidateAccumulation>
@@ -310,7 +310,8 @@
           </candidatePosition>
         </list>
         <writeInCandidate>
-          <writeInCandidateIdentification>b8b21b21-8905-3d42-a231-ee35d5801cf9</writeInCandidateIdentification>
+          <writeInCandidateIdentification>f71ffce9-78c9-3621-895b-aebcc0849ad1</writeInCandidateIdentification>
+          <position>1</position>
         </writeInCandidate>
       </electionInformation>
     </electionGroupBallot>
@@ -366,7 +367,7 @@
               <electionDescription>Elecziuns d'exempel cun glistas</electionDescription>
             </electionDescriptionInfo>
           </electionDescription>
-          <electionPosition>0</electionPosition>
+          <electionPosition>1</electionPosition>
           <numberOfMandates>6</numberOfMandates>
           <writeInsAllowed>false</writeInsAllowed>
           <candidateAccumulation>2</candidateAccumulation>
@@ -3192,5 +3193,5 @@
       <voterType>SWISSABROAD</voterType>
     </voter>
   </register>
-  <signature>QaTmLRvap9z4Jq0LuT+5CbjCpwKbdGopJfCfUVrlGtL/C6HoSKexTrh/RwT1jZ1CtRXhpRRalwcMcu6CU58kyykGh3dR5iQVZWTHZhXrECbH4qzbu25ffYqKKDc7MhLfDpvh9bh/a5yb0A8jBC5sG4z59n7z4LHCEr+5ZCXx+e3K2KxNJwVSymd4drjksYweUCczuLa5ZeexJyP0tVkEg4w2PzHPyE4MeH5bnU3n/CEjVcVxiBMjq653dFsXscwhcCkG8xYRQBiNOptnsKUjYpig/KZJmFiNMFLt/63r8r0yl2n4E1sa6TKeLHkYZfrKwmLSsw/fcHzUq3WTy/KOeafDomq5eBSR40yiWgnI5Ls8Os9ljptlc7vvkUH1MD8l+eUtefytolmCk1FvO4WtShVxxNhX9Kj5kVJR91U0zbiUgbhG165f2dNyarIjxkjxDAF2grCfp+/Koq+eeA18+oK9FS48Af6/fZql8rngdPK+osYxv5y/g7djD5m3PZzR</signature>
+  <signature>uIW6bxAAXcwkntKGQ4c1otj7ZwXvqz3t4yP5QDHLHblKGP/b0/eyI0FPwD0397aOdwi7IEU5h7+yhGO4OwhXsAcqqSmwPqK855BA4Mc6gSURVFc+JMwf0iDUFgw4dxTKRTTiuI9uS4P5fyT5kqQfhwbBMjh2IOYzYadaNqQ+jGCv/kmhSlw59yG03OUqObDwcvhjaTS3CqhBk/DhEHfnfcYnCri+KEXArV4PCCS8cGO8cqzi+oQzX66o+NSGmihbj0T/FZTRbvWE+VoXa0XTNSdwOVnjVkv9YuQRPBw0jy/CEuO+mwigVZckX5FjINENcRd9KTEvNf1Erxlp1o0l1p2Dqo2WZsx40O31SQmyvHYRu6xAVTDndtT/FCd3yqsJo8u3wFM6jd8oI20/kGInk8B/+bAjYDG/syAj742dLpstrkG77LEa01PVcGlhny4k8y+76gsMFrCEAEIqKtUODX8b15QARmmACQVuZ57VBGllBAWkWpJa44GAMTjCEiPe</signature>
 </configuration>

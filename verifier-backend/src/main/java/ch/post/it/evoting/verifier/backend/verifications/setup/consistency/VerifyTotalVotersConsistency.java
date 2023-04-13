@@ -62,7 +62,7 @@ public class VerifyTotalVotersConsistency extends AbstractVerification {
 	public VerificationResult verify(final Path inputDirectoryPath) {
 		final Configuration configuration = extractionService.getCantonConfig(inputDirectoryPath);
 
-		final int voterTotal = configuration.getHeader().getVoterTotal().intValueExact();
+		final int voterTotal = configuration.getHeader().getVoterTotal();
 		final int voterCount = configuration.getRegister().getVoter().size();
 		checkState(voterTotal == voterCount,
 				"The voter total in the header must be the same as the size of the voter list. [voterTotal: %s, voterCount: %s]", voterTotal,

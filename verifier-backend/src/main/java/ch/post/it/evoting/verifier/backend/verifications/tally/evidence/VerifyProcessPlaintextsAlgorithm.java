@@ -30,25 +30,28 @@ import ch.post.it.evoting.cryptoprimitives.math.GqElement;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
-import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.DecodeVotingOptionsAlgorithm;
-import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.DecodeWriteInsAlgorithm;
-import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.DecodeWriteInsAlgorithmInput;
-import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.FactorizeService;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.FactorizeAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetActualVotingOptionsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.DecodeWriteInsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.DecodeWriteInsAlgorithmInput;
 
 @Service
 public final class VerifyProcessPlaintextsAlgorithm {
 
 	private final ElGamal elGamal;
-	private final DecodeVotingOptionsAlgorithm decodeVotingOptionsAlgorithm;
+	private final GetActualVotingOptionsAlgorithm getActualVotingOptionsAlgorithm;
 	private final DecodeWriteInsAlgorithm decodeWriteInsAlgorithm;
+	private final FactorizeAlgorithm factorizeAlgorithm;
 
 	public VerifyProcessPlaintextsAlgorithm(
 			final ElGamal elGamal,
-			final DecodeVotingOptionsAlgorithm decodeVotingOptionsAlgorithm,
-			final DecodeWriteInsAlgorithm decodeWriteInsAlgorithm) {
+			final GetActualVotingOptionsAlgorithm getActualVotingOptionsAlgorithm,
+			final DecodeWriteInsAlgorithm decodeWriteInsAlgorithm,
+			final FactorizeAlgorithm factorizeAlgorithm) {
 		this.elGamal = elGamal;
-		this.decodeVotingOptionsAlgorithm = decodeVotingOptionsAlgorithm;
+		this.getActualVotingOptionsAlgorithm = getActualVotingOptionsAlgorithm;
 		this.decodeWriteInsAlgorithm = decodeWriteInsAlgorithm;
+		this.factorizeAlgorithm = factorizeAlgorithm;
 	}
 
 	/**
@@ -106,9 +109,9 @@ public final class VerifyProcessPlaintextsAlgorithm {
 				.filter(m_i -> !m_i.equals(one_vector))
 				.map(m_i -> {
 					final GqElement phi_i_0 = m_i.get(0);
-					final GroupVector<PrimeGqElement, GqGroup> p_k_hat_prime = FactorizeService.factorize(phi_i_0, p_tilde, psi);
+					final GroupVector<PrimeGqElement, GqGroup> p_k_hat_prime = factorizeAlgorithm.factorize(phi_i_0, p_tilde, psi);
 
-					final List<String> v_k_hat_prime = decodeVotingOptionsAlgorithm.decodeVotingOptions(p_k_hat_prime, pTable);
+					final List<String> v_k_hat_prime = getActualVotingOptionsAlgorithm.getActualVotingOptions(pTable, p_k_hat_prime);
 
 					final GroupVector<GqElement, GqGroup> w_k_prime = m_i.getElements().subVector(1, l);
 

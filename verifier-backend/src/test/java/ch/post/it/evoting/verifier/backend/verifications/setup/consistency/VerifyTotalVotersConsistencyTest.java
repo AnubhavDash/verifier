@@ -21,7 +21,6 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -59,7 +58,7 @@ class VerifyTotalVotersConsistencyTest extends SetupVerificationTest {
 		final Configuration configuration = electionDataExtractionService.getCantonConfig(datasetPath);
 		final Configuration configurationMock = spy(configuration);
 		final HeaderType headerType = new HeaderType();
-		headerType.setVoterTotal(BigInteger.valueOf(39));
+		headerType.setVoterTotal(39);
 		when(configurationMock.getHeader()).thenReturn(headerType);
 		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
 		doReturn(configurationMock).when(extractionServiceMock).getCantonConfig(datasetPath);
