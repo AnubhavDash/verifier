@@ -415,7 +415,7 @@ export class ReportOverviewComponent implements OnInit {
     const filter = this.verificationFilter[key];
     if (filter.active) {
       filter.active = false;
-      this.verificationStatusFilter = this.verificationStatusFilter.replace(`${filter.value}|`, '');
+      this.verificationStatusFilter = this.verificationStatusFilter.replace(new RegExp('\\b' + filter.value + '\\|', 'g'), '');
       this.verificationFilter['ALL'].active = this.verificationStatusFilter === '';
     } else {
       this.activateVerificationFilter(key);
