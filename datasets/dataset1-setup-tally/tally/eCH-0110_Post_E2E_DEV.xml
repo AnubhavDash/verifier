@@ -2,21 +2,21 @@
 <eCH-0110:delivery xmlns:eCH-0110="http://www.ech.ch/xmlns/eCH-0110/4" xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008/3" xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/4" xmlns:eCH-0222="http://www.ech.ch/xmlns/eCH-0222/1">
   <eCH-0110:deliveryHeader>
     <eCH-0058:senderId>http://www.post.ch</eCH-0058:senderId>
-    <eCH-0058:messageId>77d4679c91734a32a415a3b7cd595ac7</eCH-0058:messageId>
+    <eCH-0058:messageId>25D50EBDDB17721EE96F47350E0B8A8D</eCH-0058:messageId>
     <eCH-0058:messageType>http://www.post.ch</eCH-0058:messageType>
     <eCH-0058:sendingApplication>
       <eCH-0058:manufacturer>SwissPost</eCH-0058:manufacturer>
       <eCH-0058:product>E-Voting</eCH-0058:product>
       <eCH-0058:productVersion>1</eCH-0058:productVersion>
     </eCH-0058:sendingApplication>
-    <eCH-0058:messageDate>2023-03-14T19:50:17.950314400</eCH-0058:messageDate>
+    <eCH-0058:messageDate>2023-04-19T14:05:01.122843600</eCH-0058:messageDate>
     <eCH-0058:action>1</eCH-0058:action>
     <eCH-0058:testDeliveryFlag>false</eCH-0058:testDeliveryFlag>
   </eCH-0110:deliveryHeader>
   <eCH-0110:resultDelivery>
     <eCH-0110:reportingBody>
       <eCH-0110:reportingBodyIdentification>SwissPost</eCH-0110:reportingBodyIdentification>
-      <eCH-0110:creationDateTime>2023-03-14T19:50:17.952591600</eCH-0110:creationDateTime>
+      <eCH-0110:creationDateTime>2023-04-19T14:05:01.139946</eCH-0110:creationDateTime>
     </eCH-0110:reportingBody>
     <eCH-0110:contestInformation>
       <eCH-0155:contestIdentification>Post_E2E_DEV</eCH-0155:contestIdentification>
@@ -348,6 +348,7 @@
           <eCH-0110:election>
             <eCH-0155:electionIdentification>nrw_test</eCH-0155:electionIdentification>
             <eCH-0155:typeOfElection>1</eCH-0155:typeOfElection>
+            <eCH-0155:electionPosition>1</eCH-0155:electionPosition>
             <eCH-0155:electionDescription>
               <eCH-0155:electionDescriptionInfo>
                 <eCH-0155:language>DE</eCH-0155:language>
@@ -990,450 +991,6 @@
                   <eCH-0155:candidateTextInfo>
                     <eCH-0155:language>RM</eCH-0155:language>
                     <eCH-0155:candidateText>29.01.1970, St.Gallen</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                </eCH-0110:candidateText>
-                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
-              </eCH-0110:candidateInformation>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>99</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
-            </eCH-0110:candidate>
-            <eCH-0110:candidate>
-              <eCH-0110:candidateInformation>
-                <eCH-0110:candidateIdentification>d8d62d0b-3ac0-40aa-8142-b8f735e4bc3f</eCH-0110:candidateIdentification>
-                <eCH-0110:candidateReference>05a.01</eCH-0110:candidateReference>
-                <eCH-0110:familyName>Sieben</eCH-0110:familyName>
-                <eCH-0110:firstName>Kandidat</eCH-0110:firstName>
-                <eCH-0110:callName>Gerd</eCH-0110:callName>
-                <eCH-0110:candidateText>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>DE</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1960, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>FR</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1960, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>IT</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1960, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>RM</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1960, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                </eCH-0110:candidateText>
-                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
-              </eCH-0110:candidateInformation>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>99</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
-            </eCH-0110:candidate>
-            <eCH-0110:candidate>
-              <eCH-0110:candidateInformation>
-                <eCH-0110:candidateIdentification>ff671047-7e0f-4198-974f-0041a55f1c70</eCH-0110:candidateIdentification>
-                <eCH-0110:candidateReference>05a.02</eCH-0110:candidateReference>
-                <eCH-0110:familyName>Acht</eCH-0110:familyName>
-                <eCH-0110:firstName>Kandidat</eCH-0110:firstName>
-                <eCH-0110:callName>Hilde</eCH-0110:callName>
-                <eCH-0110:candidateText>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>DE</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>FR</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>IT</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>RM</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                </eCH-0110:candidateText>
-                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
-              </eCH-0110:candidateInformation>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>99</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
-            </eCH-0110:candidate>
-            <eCH-0110:candidate>
-              <eCH-0110:candidateInformation>
-                <eCH-0110:candidateIdentification>8ba15de5-4e9c-4b88-9fab-e1d8db45db49</eCH-0110:candidateIdentification>
-                <eCH-0110:candidateReference>05a.03</eCH-0110:candidateReference>
-                <eCH-0110:familyName>Neun</eCH-0110:familyName>
-                <eCH-0110:firstName>Kandidat</eCH-0110:firstName>
-                <eCH-0110:callName>Inno</eCH-0110:callName>
-                <eCH-0110:candidateText>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>DE</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1983, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>FR</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1983, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>IT</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1983, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>RM</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1983, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                </eCH-0110:candidateText>
-                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
-              </eCH-0110:candidateInformation>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>99</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
-            </eCH-0110:candidate>
-            <eCH-0110:candidate>
-              <eCH-0110:candidateInformation>
-                <eCH-0110:candidateIdentification>7797d304-7c46-4fdd-850e-7a57a20aeb99</eCH-0110:candidateIdentification>
-                <eCH-0110:candidateReference>05a.04</eCH-0110:candidateReference>
-                <eCH-0110:familyName>Zehn</eCH-0110:familyName>
-                <eCH-0110:firstName>Kandidat</eCH-0110:firstName>
-                <eCH-0110:callName>Janette</eCH-0110:callName>
-                <eCH-0110:candidateText>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>DE</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1972, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>FR</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1972, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>IT</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1972, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>RM</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1972, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                </eCH-0110:candidateText>
-                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
-              </eCH-0110:candidateInformation>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>99</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
-            </eCH-0110:candidate>
-            <eCH-0110:candidate>
-              <eCH-0110:candidateInformation>
-                <eCH-0110:candidateIdentification>ea12b112-3f31-4dd5-8f46-a0a5d53bd4ef</eCH-0110:candidateIdentification>
-                <eCH-0110:candidateReference>05a.05</eCH-0110:candidateReference>
-                <eCH-0110:familyName>Elf</eCH-0110:familyName>
-                <eCH-0110:firstName>Kandidat</eCH-0110:firstName>
-                <eCH-0110:callName>Konstantin</eCH-0110:callName>
-                <eCH-0110:candidateText>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>DE</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1982, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>FR</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1982, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>IT</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1982, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>RM</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1982, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                </eCH-0110:candidateText>
-                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
-              </eCH-0110:candidateInformation>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>99</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
-            </eCH-0110:candidate>
-            <eCH-0110:candidate>
-              <eCH-0110:candidateInformation>
-                <eCH-0110:candidateIdentification>1323b3c2-1ef5-4114-b637-a285e2ba12e2</eCH-0110:candidateIdentification>
-                <eCH-0110:candidateReference>05a.06</eCH-0110:candidateReference>
-                <eCH-0110:familyName>Zwölf</eCH-0110:familyName>
-                <eCH-0110:firstName>Kandidat</eCH-0110:firstName>
-                <eCH-0110:callName>Lara</eCH-0110:callName>
-                <eCH-0110:candidateText>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>DE</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1961, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>FR</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1961, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>IT</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1961, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>RM</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1961, ?</eCH-0155:candidateText>
                   </eCH-0155:candidateTextInfo>
                 </eCH-0110:candidateText>
                 <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
@@ -2396,6 +1953,80 @@
                   <eCH-0155:candidateTextInfo>
                     <eCH-0155:language>RM</eCH-0155:language>
                     <eCH-0155:candidateText>01.01.1981, ?</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                </eCH-0110:candidateText>
+                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+              </eCH-0110:candidateInformation>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>99</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:candidateInformation>
+                <eCH-0110:candidateIdentification>ff671047-7e0f-4198-974f-0041a55f1c70</eCH-0110:candidateIdentification>
+                <eCH-0110:candidateReference>10.02</eCH-0110:candidateReference>
+                <eCH-0110:familyName>Acht</eCH-0110:familyName>
+                <eCH-0110:firstName>Kandidat</eCH-0110:firstName>
+                <eCH-0110:callName>Hilde</eCH-0110:callName>
+                <eCH-0110:candidateText>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>DE</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>FR</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>IT</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>RM</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
                   </eCH-0155:candidateTextInfo>
                 </eCH-0110:candidateText>
                 <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
@@ -2457,7 +2088,7 @@
         <eCH-0155:countingCircleName>CH_Testurne2</eCH-0155:countingCircleName>
       </eCH-0110:countingCircle>
       <eCH-0110:votingCardsInformation>
-        <eCH-0110:countOfReceivedValidVotingCardsTotal>3</eCH-0110:countOfReceivedValidVotingCardsTotal>
+        <eCH-0110:countOfReceivedValidVotingCardsTotal>2</eCH-0110:countOfReceivedValidVotingCardsTotal>
         <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
       </eCH-0110:votingCardsInformation>
       <eCH-0110:voteResults>
@@ -2484,7 +2115,7 @@
           </eCH-0155:voteDescription>
         </eCH-0110:vote>
         <eCH-0110:countOfVotersInformation>
-          <eCH-0110:countOfVotersTotal>20</eCH-0110:countOfVotersTotal>
+          <eCH-0110:countOfVotersTotal>5</eCH-0110:countOfVotersTotal>
         </eCH-0110:countOfVotersInformation>
         <eCH-0110:ballotResult>
           <eCH-0110:ballotIdentification>9cbcbd59-94ad-4f48-bc7d-4bc38e5c0c51</eCH-0110:ballotIdentification>
@@ -2512,16 +2143,16 @@
             </eCH-0155:ballotDescriptionInfo>
           </eCH-0110:ballotDescription>
           <eCH-0110:countOfReceivedBallotsTotal>
-            <eCH-0110:total>3</eCH-0110:total>
+            <eCH-0110:total>2</eCH-0110:total>
           </eCH-0110:countOfReceivedBallotsTotal>
           <eCH-0110:countOfAccountedBallotsTotal>
             <eCH-0110:total>2</eCH-0110:total>
           </eCH-0110:countOfAccountedBallotsTotal>
           <eCH-0110:countOfUnaccountedBallotsTotal>
-            <eCH-0110:total>1</eCH-0110:total>
+            <eCH-0110:total>0</eCH-0110:total>
           </eCH-0110:countOfUnaccountedBallotsTotal>
           <eCH-0110:countOfUnaccountedBlankBallots>
-            <eCH-0110:total>1</eCH-0110:total>
+            <eCH-0110:total>0</eCH-0110:total>
           </eCH-0110:countOfUnaccountedBlankBallots>
           <eCH-0110:countOfUnaccountedInvalidBallots>
             <eCH-0110:total>0</eCH-0110:total>
@@ -2556,7 +2187,7 @@
               <eCH-0110:total>0</eCH-0110:total>
             </eCH-0110:countOfAnswerInvalid>
             <eCH-0110:countOfAnswerEmpty>
-              <eCH-0110:total>1</eCH-0110:total>
+              <eCH-0110:total>0</eCH-0110:total>
             </eCH-0110:countOfAnswerEmpty>
           </eCH-0110:standardBallot>
         </eCH-0110:ballotResult>
@@ -2586,10 +2217,10 @@
             </eCH-0155:ballotDescriptionInfo>
           </eCH-0110:ballotDescription>
           <eCH-0110:countOfReceivedBallotsTotal>
-            <eCH-0110:total>3</eCH-0110:total>
+            <eCH-0110:total>2</eCH-0110:total>
           </eCH-0110:countOfReceivedBallotsTotal>
           <eCH-0110:countOfAccountedBallotsTotal>
-            <eCH-0110:total>3</eCH-0110:total>
+            <eCH-0110:total>2</eCH-0110:total>
           </eCH-0110:countOfAccountedBallotsTotal>
           <eCH-0110:countOfUnaccountedBallotsTotal>
             <eCH-0110:total>0</eCH-0110:total>
@@ -2622,16 +2253,16 @@
                 </eCH-0155:ballotQuestionInfo>
               </eCH-0110:question>
               <eCH-0110:countOfAnswerYes>
-                <eCH-0110:total>0</eCH-0110:total>
+                <eCH-0110:total>1</eCH-0110:total>
               </eCH-0110:countOfAnswerYes>
               <eCH-0110:countOfAnswerNo>
-                <eCH-0110:total>2</eCH-0110:total>
+                <eCH-0110:total>1</eCH-0110:total>
               </eCH-0110:countOfAnswerNo>
               <eCH-0110:countOfAnswerInvalid>
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAnswerInvalid>
               <eCH-0110:countOfAnswerEmpty>
-                <eCH-0110:total>1</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAnswerEmpty>
             </eCH-0110:questionInformation>
             <eCH-0110:questionInformation>
@@ -2658,7 +2289,7 @@
                 <eCH-0110:total>1</eCH-0110:total>
               </eCH-0110:countOfAnswerYes>
               <eCH-0110:countOfAnswerNo>
-                <eCH-0110:total>2</eCH-0110:total>
+                <eCH-0110:total>1</eCH-0110:total>
               </eCH-0110:countOfAnswerNo>
               <eCH-0110:countOfAnswerInvalid>
                 <eCH-0110:total>0</eCH-0110:total>
@@ -2691,12 +2322,12 @@
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAnswerInvalid>
               <eCH-0110:countOfAnswerEmpty>
-                <eCH-0110:total>2</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAnswerEmpty>
               <eCH-0110:countInFavourOf>
                 <eCH-0110:questionIdentification>16f99be5-0ce6-4a81-ae8b-1817ceecaebc</eCH-0110:questionIdentification>
                 <eCH-0110:countOfValidAnswers>
-                  <eCH-0110:total>0</eCH-0110:total>
+                  <eCH-0110:total>1</eCH-0110:total>
                 </eCH-0110:countOfValidAnswers>
               </eCH-0110:countInFavourOf>
               <eCH-0110:countInFavourOf>
@@ -2734,13 +2365,13 @@
           </eCH-0155:electionDescriptionInfo>
         </eCH-0110:electionGroupDescription>
         <eCH-0110:countOfVotersInformation>
-          <eCH-0110:countOfVotersTotal>20</eCH-0110:countOfVotersTotal>
+          <eCH-0110:countOfVotersTotal>5</eCH-0110:countOfVotersTotal>
         </eCH-0110:countOfVotersInformation>
         <eCH-0110:countOfReceivedBallotsTotal>
-          <eCH-0110:total>3</eCH-0110:total>
+          <eCH-0110:total>2</eCH-0110:total>
         </eCH-0110:countOfReceivedBallotsTotal>
         <eCH-0110:countOfAccountedBallots>
-          <eCH-0110:total>3</eCH-0110:total>
+          <eCH-0110:total>2</eCH-0110:total>
         </eCH-0110:countOfAccountedBallots>
         <eCH-0110:countOfUnaccountedBallots>
           <eCH-0110:total>0</eCH-0110:total>
@@ -2755,6 +2386,7 @@
           <eCH-0110:election>
             <eCH-0155:electionIdentification>majorz_test</eCH-0155:electionIdentification>
             <eCH-0155:typeOfElection>2</eCH-0155:typeOfElection>
+            <eCH-0155:electionPosition>1</eCH-0155:electionPosition>
             <eCH-0155:electionDescription>
               <eCH-0155:electionDescriptionInfo>
                 <eCH-0155:language>DE</eCH-0155:language>
@@ -2813,10 +2445,10 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
+                  <eCH-0110:total>1</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -2851,13 +2483,13 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>2</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
-              <eCH-0110:writeIn>Firstname Lastname-0</eCH-0110:writeIn>
+              <eCH-0110:writeIn>John White, St. Gallen, 19-04-1944</eCH-0110:writeIn>
               <eCH-0110:listResults>
                 <eCH-0110:listIdentification>ca127938-5e2f-372f-8a4e-a0cb1da35b3b</eCH-0110:listIdentification>
                 <eCH-0110:countOfvotesFromUnchangedBallots>
@@ -2900,13 +2532,13 @@
           </eCH-0155:electionDescriptionInfo>
         </eCH-0110:electionGroupDescription>
         <eCH-0110:countOfVotersInformation>
-          <eCH-0110:countOfVotersTotal>20</eCH-0110:countOfVotersTotal>
+          <eCH-0110:countOfVotersTotal>5</eCH-0110:countOfVotersTotal>
         </eCH-0110:countOfVotersInformation>
         <eCH-0110:countOfReceivedBallotsTotal>
-          <eCH-0110:total>3</eCH-0110:total>
+          <eCH-0110:total>2</eCH-0110:total>
         </eCH-0110:countOfReceivedBallotsTotal>
         <eCH-0110:countOfAccountedBallots>
-          <eCH-0110:total>3</eCH-0110:total>
+          <eCH-0110:total>2</eCH-0110:total>
         </eCH-0110:countOfAccountedBallots>
         <eCH-0110:countOfUnaccountedBallots>
           <eCH-0110:total>0</eCH-0110:total>
@@ -2921,6 +2553,7 @@
           <eCH-0110:election>
             <eCH-0155:electionIdentification>nrw_test</eCH-0155:electionIdentification>
             <eCH-0155:typeOfElection>1</eCH-0155:typeOfElection>
+            <eCH-0155:electionPosition>1</eCH-0155:electionPosition>
             <eCH-0155:electionDescription>
               <eCH-0155:electionDescriptionInfo>
                 <eCH-0155:language>DE</eCH-0155:language>
@@ -2947,7 +2580,7 @@
           </eCH-0110:election>
           <eCH-0110:proportionalElection>
             <eCH-0110:countOfChangedBallotsWithPartyAffiliation>
-              <eCH-0110:total>3</eCH-0110:total>
+              <eCH-0110:total>2</eCH-0110:total>
             </eCH-0110:countOfChangedBallotsWithPartyAffiliation>
             <eCH-0110:countOfChangedBallotsWithoutPartyAffiliation>
               <eCH-0110:total>0</eCH-0110:total>
@@ -2989,13 +2622,13 @@
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfUnchangedBallots>
               <eCH-0110:countOfCandidateVotes>
-                <eCH-0110:total>3</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfCandidateVotes>
               <eCH-0110:countOfAdditionalVotes>
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAdditionalVotes>
               <eCH-0110:countOfPartyVotes>
-                <eCH-0110:total>3</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfPartyVotes>
             </eCH-0110:list>
             <eCH-0110:list>
@@ -3026,19 +2659,19 @@
                 </eCH-0110:listDescription>
               </eCH-0110:listInformation>
               <eCH-0110:countOfChangedBallots>
-                <eCH-0110:total>2</eCH-0110:total>
+                <eCH-0110:total>1</eCH-0110:total>
               </eCH-0110:countOfChangedBallots>
               <eCH-0110:countOfUnchangedBallots>
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfUnchangedBallots>
               <eCH-0110:countOfCandidateVotes>
-                <eCH-0110:total>6</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfCandidateVotes>
               <eCH-0110:countOfAdditionalVotes>
-                <eCH-0110:total>3</eCH-0110:total>
+                <eCH-0110:total>1</eCH-0110:total>
               </eCH-0110:countOfAdditionalVotes>
               <eCH-0110:countOfPartyVotes>
-                <eCH-0110:total>9</eCH-0110:total>
+                <eCH-0110:total>1</eCH-0110:total>
               </eCH-0110:countOfPartyVotes>
             </eCH-0110:list>
             <eCH-0110:list>
@@ -3075,13 +2708,13 @@
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfUnchangedBallots>
               <eCH-0110:countOfCandidateVotes>
-                <eCH-0110:total>4</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfCandidateVotes>
               <eCH-0110:countOfAdditionalVotes>
-                <eCH-0110:total>2</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAdditionalVotes>
               <eCH-0110:countOfPartyVotes>
-                <eCH-0110:total>6</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfPartyVotes>
             </eCH-0110:list>
             <eCH-0110:list>
@@ -3212,7 +2845,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -3242,7 +2875,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -3508,7 +3141,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -3538,7 +3171,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -3563,450 +3196,6 @@
                   <eCH-0155:candidateTextInfo>
                     <eCH-0155:language>RM</eCH-0155:language>
                     <eCH-0155:candidateText>29.01.1970, St.Gallen</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                </eCH-0110:candidateText>
-                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
-              </eCH-0110:candidateInformation>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>99</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
-            </eCH-0110:candidate>
-            <eCH-0110:candidate>
-              <eCH-0110:candidateInformation>
-                <eCH-0110:candidateIdentification>d8d62d0b-3ac0-40aa-8142-b8f735e4bc3f</eCH-0110:candidateIdentification>
-                <eCH-0110:candidateReference>05a.01</eCH-0110:candidateReference>
-                <eCH-0110:familyName>Sieben</eCH-0110:familyName>
-                <eCH-0110:firstName>Kandidat</eCH-0110:firstName>
-                <eCH-0110:callName>Gerd</eCH-0110:callName>
-                <eCH-0110:candidateText>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>DE</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1960, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>FR</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1960, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>IT</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1960, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>RM</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1960, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                </eCH-0110:candidateText>
-                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
-              </eCH-0110:candidateInformation>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>99</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
-            </eCH-0110:candidate>
-            <eCH-0110:candidate>
-              <eCH-0110:candidateInformation>
-                <eCH-0110:candidateIdentification>ff671047-7e0f-4198-974f-0041a55f1c70</eCH-0110:candidateIdentification>
-                <eCH-0110:candidateReference>05a.02</eCH-0110:candidateReference>
-                <eCH-0110:familyName>Acht</eCH-0110:familyName>
-                <eCH-0110:firstName>Kandidat</eCH-0110:firstName>
-                <eCH-0110:callName>Hilde</eCH-0110:callName>
-                <eCH-0110:candidateText>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>DE</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>FR</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>IT</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>RM</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                </eCH-0110:candidateText>
-                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
-              </eCH-0110:candidateInformation>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>99</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
-            </eCH-0110:candidate>
-            <eCH-0110:candidate>
-              <eCH-0110:candidateInformation>
-                <eCH-0110:candidateIdentification>8ba15de5-4e9c-4b88-9fab-e1d8db45db49</eCH-0110:candidateIdentification>
-                <eCH-0110:candidateReference>05a.03</eCH-0110:candidateReference>
-                <eCH-0110:familyName>Neun</eCH-0110:familyName>
-                <eCH-0110:firstName>Kandidat</eCH-0110:firstName>
-                <eCH-0110:callName>Inno</eCH-0110:callName>
-                <eCH-0110:candidateText>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>DE</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1983, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>FR</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1983, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>IT</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1983, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>RM</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1983, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                </eCH-0110:candidateText>
-                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
-              </eCH-0110:candidateInformation>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>99</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
-            </eCH-0110:candidate>
-            <eCH-0110:candidate>
-              <eCH-0110:candidateInformation>
-                <eCH-0110:candidateIdentification>7797d304-7c46-4fdd-850e-7a57a20aeb99</eCH-0110:candidateIdentification>
-                <eCH-0110:candidateReference>05a.04</eCH-0110:candidateReference>
-                <eCH-0110:familyName>Zehn</eCH-0110:familyName>
-                <eCH-0110:firstName>Kandidat</eCH-0110:firstName>
-                <eCH-0110:callName>Janette</eCH-0110:callName>
-                <eCH-0110:candidateText>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>DE</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1972, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>FR</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1972, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>IT</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1972, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>RM</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1972, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                </eCH-0110:candidateText>
-                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
-              </eCH-0110:candidateInformation>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>99</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
-            </eCH-0110:candidate>
-            <eCH-0110:candidate>
-              <eCH-0110:candidateInformation>
-                <eCH-0110:candidateIdentification>ea12b112-3f31-4dd5-8f46-a0a5d53bd4ef</eCH-0110:candidateIdentification>
-                <eCH-0110:candidateReference>05a.05</eCH-0110:candidateReference>
-                <eCH-0110:familyName>Elf</eCH-0110:familyName>
-                <eCH-0110:firstName>Kandidat</eCH-0110:firstName>
-                <eCH-0110:callName>Konstantin</eCH-0110:callName>
-                <eCH-0110:candidateText>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>DE</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1982, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>FR</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1982, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>IT</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1982, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>RM</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1982, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                </eCH-0110:candidateText>
-                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
-              </eCH-0110:candidateInformation>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>99</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
-            </eCH-0110:candidate>
-            <eCH-0110:candidate>
-              <eCH-0110:candidateInformation>
-                <eCH-0110:candidateIdentification>1323b3c2-1ef5-4114-b637-a285e2ba12e2</eCH-0110:candidateIdentification>
-                <eCH-0110:candidateReference>05a.06</eCH-0110:candidateReference>
-                <eCH-0110:familyName>Zwölf</eCH-0110:familyName>
-                <eCH-0110:firstName>Kandidat</eCH-0110:firstName>
-                <eCH-0110:callName>Lara</eCH-0110:callName>
-                <eCH-0110:candidateText>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>DE</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1961, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>FR</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1961, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>IT</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1961, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>RM</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1961, ?</eCH-0155:candidateText>
                   </eCH-0155:candidateTextInfo>
                 </eCH-0110:candidateText>
                 <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
@@ -4100,7 +3289,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -4130,7 +3319,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -4174,7 +3363,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -4204,7 +3393,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -4248,7 +3437,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -4278,7 +3467,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -4470,7 +3659,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>2</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -4479,7 +3668,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -4500,7 +3689,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>3</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -4627,7 +3816,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -4648,7 +3837,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -4701,7 +3890,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -4722,7 +3911,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -4849,7 +4038,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -4870,7 +4059,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -4988,7 +4177,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -5018,7 +4207,81 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:candidateInformation>
+                <eCH-0110:candidateIdentification>ff671047-7e0f-4198-974f-0041a55f1c70</eCH-0110:candidateIdentification>
+                <eCH-0110:candidateReference>10.02</eCH-0110:candidateReference>
+                <eCH-0110:familyName>Acht</eCH-0110:familyName>
+                <eCH-0110:firstName>Kandidat</eCH-0110:firstName>
+                <eCH-0110:callName>Hilde</eCH-0110:callName>
+                <eCH-0110:candidateText>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>DE</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>FR</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>IT</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>RM</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                </eCH-0110:candidateText>
+                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+              </eCH-0110:candidateInformation>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>99</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
           </eCH-0110:proportionalElection>
         </eCH-0110:electionResults>
@@ -5058,13 +4321,13 @@
           </eCH-0155:electionDescriptionInfo>
         </eCH-0110:electionGroupDescription>
         <eCH-0110:countOfVotersInformation>
-          <eCH-0110:countOfVotersTotal>20</eCH-0110:countOfVotersTotal>
+          <eCH-0110:countOfVotersTotal>5</eCH-0110:countOfVotersTotal>
         </eCH-0110:countOfVotersInformation>
         <eCH-0110:countOfReceivedBallotsTotal>
-          <eCH-0110:total>1</eCH-0110:total>
+          <eCH-0110:total>2</eCH-0110:total>
         </eCH-0110:countOfReceivedBallotsTotal>
         <eCH-0110:countOfAccountedBallots>
-          <eCH-0110:total>1</eCH-0110:total>
+          <eCH-0110:total>2</eCH-0110:total>
         </eCH-0110:countOfAccountedBallots>
         <eCH-0110:countOfUnaccountedBallots>
           <eCH-0110:total>0</eCH-0110:total>
@@ -5079,6 +4342,7 @@
           <eCH-0110:election>
             <eCH-0155:electionIdentification>majorz_test</eCH-0155:electionIdentification>
             <eCH-0155:typeOfElection>2</eCH-0155:typeOfElection>
+            <eCH-0155:electionPosition>1</eCH-0155:electionPosition>
             <eCH-0155:electionDescription>
               <eCH-0155:electionDescriptionInfo>
                 <eCH-0155:language>DE</eCH-0155:language>
@@ -5180,6 +4444,19 @@
               </eCH-0110:listResults>
               <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:writeIn>John White 01.06.1964</eCH-0110:writeIn>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>ca127938-5e2f-372f-8a4e-a0cb1da35b3b</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>1</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
             <eCH-0110:countOfInvalidVotesTotal>
               <eCH-0110:total>0</eCH-0110:total>
             </eCH-0110:countOfInvalidVotesTotal>
@@ -5193,7 +4470,7 @@
         <eCH-0155:countingCircleName>CH_Testurne4</eCH-0155:countingCircleName>
       </eCH-0110:countingCircle>
       <eCH-0110:votingCardsInformation>
-        <eCH-0110:countOfReceivedValidVotingCardsTotal>6</eCH-0110:countOfReceivedValidVotingCardsTotal>
+        <eCH-0110:countOfReceivedValidVotingCardsTotal>9</eCH-0110:countOfReceivedValidVotingCardsTotal>
         <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
       </eCH-0110:votingCardsInformation>
       <eCH-0110:voteResults>
@@ -5220,7 +4497,7 @@
           </eCH-0155:voteDescription>
         </eCH-0110:vote>
         <eCH-0110:countOfVotersInformation>
-          <eCH-0110:countOfVotersTotal>35</eCH-0110:countOfVotersTotal>
+          <eCH-0110:countOfVotersTotal>32</eCH-0110:countOfVotersTotal>
         </eCH-0110:countOfVotersInformation>
         <eCH-0110:ballotResult>
           <eCH-0110:ballotIdentification>9cbcbd59-94ad-4f48-bc7d-4bc38e5c0c51</eCH-0110:ballotIdentification>
@@ -5248,16 +4525,16 @@
             </eCH-0155:ballotDescriptionInfo>
           </eCH-0110:ballotDescription>
           <eCH-0110:countOfReceivedBallotsTotal>
-            <eCH-0110:total>6</eCH-0110:total>
+            <eCH-0110:total>9</eCH-0110:total>
           </eCH-0110:countOfReceivedBallotsTotal>
           <eCH-0110:countOfAccountedBallotsTotal>
-            <eCH-0110:total>4</eCH-0110:total>
+            <eCH-0110:total>6</eCH-0110:total>
           </eCH-0110:countOfAccountedBallotsTotal>
           <eCH-0110:countOfUnaccountedBallotsTotal>
-            <eCH-0110:total>2</eCH-0110:total>
+            <eCH-0110:total>3</eCH-0110:total>
           </eCH-0110:countOfUnaccountedBallotsTotal>
           <eCH-0110:countOfUnaccountedBlankBallots>
-            <eCH-0110:total>2</eCH-0110:total>
+            <eCH-0110:total>3</eCH-0110:total>
           </eCH-0110:countOfUnaccountedBlankBallots>
           <eCH-0110:countOfUnaccountedInvalidBallots>
             <eCH-0110:total>0</eCH-0110:total>
@@ -5283,7 +4560,7 @@
               </eCH-0155:ballotQuestionInfo>
             </eCH-0110:question>
             <eCH-0110:countOfAnswerYes>
-              <eCH-0110:total>2</eCH-0110:total>
+              <eCH-0110:total>4</eCH-0110:total>
             </eCH-0110:countOfAnswerYes>
             <eCH-0110:countOfAnswerNo>
               <eCH-0110:total>2</eCH-0110:total>
@@ -5292,7 +4569,7 @@
               <eCH-0110:total>0</eCH-0110:total>
             </eCH-0110:countOfAnswerInvalid>
             <eCH-0110:countOfAnswerEmpty>
-              <eCH-0110:total>2</eCH-0110:total>
+              <eCH-0110:total>3</eCH-0110:total>
             </eCH-0110:countOfAnswerEmpty>
           </eCH-0110:standardBallot>
         </eCH-0110:ballotResult>
@@ -5322,16 +4599,16 @@
             </eCH-0155:ballotDescriptionInfo>
           </eCH-0110:ballotDescription>
           <eCH-0110:countOfReceivedBallotsTotal>
-            <eCH-0110:total>6</eCH-0110:total>
+            <eCH-0110:total>9</eCH-0110:total>
           </eCH-0110:countOfReceivedBallotsTotal>
           <eCH-0110:countOfAccountedBallotsTotal>
-            <eCH-0110:total>6</eCH-0110:total>
+            <eCH-0110:total>7</eCH-0110:total>
           </eCH-0110:countOfAccountedBallotsTotal>
           <eCH-0110:countOfUnaccountedBallotsTotal>
-            <eCH-0110:total>0</eCH-0110:total>
+            <eCH-0110:total>2</eCH-0110:total>
           </eCH-0110:countOfUnaccountedBallotsTotal>
           <eCH-0110:countOfUnaccountedBlankBallots>
-            <eCH-0110:total>0</eCH-0110:total>
+            <eCH-0110:total>2</eCH-0110:total>
           </eCH-0110:countOfUnaccountedBlankBallots>
           <eCH-0110:countOfUnaccountedInvalidBallots>
             <eCH-0110:total>0</eCH-0110:total>
@@ -5361,7 +4638,7 @@
                 <eCH-0110:total>3</eCH-0110:total>
               </eCH-0110:countOfAnswerYes>
               <eCH-0110:countOfAnswerNo>
-                <eCH-0110:total>0</eCH-0110:total>
+                <eCH-0110:total>1</eCH-0110:total>
               </eCH-0110:countOfAnswerNo>
               <eCH-0110:countOfAnswerInvalid>
                 <eCH-0110:total>0</eCH-0110:total>
@@ -5391,10 +4668,10 @@
                 </eCH-0155:ballotQuestionInfo>
               </eCH-0110:question>
               <eCH-0110:countOfAnswerYes>
-                <eCH-0110:total>2</eCH-0110:total>
+                <eCH-0110:total>4</eCH-0110:total>
               </eCH-0110:countOfAnswerYes>
               <eCH-0110:countOfAnswerNo>
-                <eCH-0110:total>3</eCH-0110:total>
+                <eCH-0110:total>2</eCH-0110:total>
               </eCH-0110:countOfAnswerNo>
               <eCH-0110:countOfAnswerInvalid>
                 <eCH-0110:total>0</eCH-0110:total>
@@ -5427,7 +4704,7 @@
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAnswerInvalid>
               <eCH-0110:countOfAnswerEmpty>
-                <eCH-0110:total>1</eCH-0110:total>
+                <eCH-0110:total>4</eCH-0110:total>
               </eCH-0110:countOfAnswerEmpty>
               <eCH-0110:countInFavourOf>
                 <eCH-0110:questionIdentification>16f99be5-0ce6-4a81-ae8b-1817ceecaebc</eCH-0110:questionIdentification>
@@ -5438,7 +4715,7 @@
               <eCH-0110:countInFavourOf>
                 <eCH-0110:questionIdentification>b173aebb-7b2c-476a-97fa-c81d640e498a</eCH-0110:questionIdentification>
                 <eCH-0110:countOfValidAnswers>
-                  <eCH-0110:total>4</eCH-0110:total>
+                  <eCH-0110:total>2</eCH-0110:total>
                 </eCH-0110:countOfValidAnswers>
               </eCH-0110:countInFavourOf>
             </eCH-0110:tieBreak>
@@ -5470,19 +4747,19 @@
           </eCH-0155:electionDescriptionInfo>
         </eCH-0110:electionGroupDescription>
         <eCH-0110:countOfVotersInformation>
-          <eCH-0110:countOfVotersTotal>35</eCH-0110:countOfVotersTotal>
+          <eCH-0110:countOfVotersTotal>32</eCH-0110:countOfVotersTotal>
         </eCH-0110:countOfVotersInformation>
         <eCH-0110:countOfReceivedBallotsTotal>
-          <eCH-0110:total>6</eCH-0110:total>
+          <eCH-0110:total>9</eCH-0110:total>
         </eCH-0110:countOfReceivedBallotsTotal>
         <eCH-0110:countOfAccountedBallots>
-          <eCH-0110:total>6</eCH-0110:total>
+          <eCH-0110:total>8</eCH-0110:total>
         </eCH-0110:countOfAccountedBallots>
         <eCH-0110:countOfUnaccountedBallots>
-          <eCH-0110:total>0</eCH-0110:total>
+          <eCH-0110:total>1</eCH-0110:total>
         </eCH-0110:countOfUnaccountedBallots>
         <eCH-0110:countOfUnaccountedBlankBallots>
-          <eCH-0110:total>0</eCH-0110:total>
+          <eCH-0110:total>1</eCH-0110:total>
         </eCH-0110:countOfUnaccountedBlankBallots>
         <eCH-0110:countOfUnaccountedInvalidBallots>
           <eCH-0110:total>0</eCH-0110:total>
@@ -5491,6 +4768,7 @@
           <eCH-0110:election>
             <eCH-0155:electionIdentification>nrw_test</eCH-0155:electionIdentification>
             <eCH-0155:typeOfElection>1</eCH-0155:typeOfElection>
+            <eCH-0155:electionPosition>1</eCH-0155:electionPosition>
             <eCH-0155:electionDescription>
               <eCH-0155:electionDescriptionInfo>
                 <eCH-0155:language>DE</eCH-0155:language>
@@ -5517,7 +4795,7 @@
           </eCH-0110:election>
           <eCH-0110:proportionalElection>
             <eCH-0110:countOfChangedBallotsWithPartyAffiliation>
-              <eCH-0110:total>5</eCH-0110:total>
+              <eCH-0110:total>7</eCH-0110:total>
             </eCH-0110:countOfChangedBallotsWithPartyAffiliation>
             <eCH-0110:countOfChangedBallotsWithoutPartyAffiliation>
               <eCH-0110:total>1</eCH-0110:total>
@@ -5553,19 +4831,19 @@
                 </eCH-0110:listDescription>
               </eCH-0110:listInformation>
               <eCH-0110:countOfChangedBallots>
-                <eCH-0110:total>0</eCH-0110:total>
+                <eCH-0110:total>2</eCH-0110:total>
               </eCH-0110:countOfChangedBallots>
               <eCH-0110:countOfUnchangedBallots>
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfUnchangedBallots>
               <eCH-0110:countOfCandidateVotes>
-                <eCH-0110:total>9</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfCandidateVotes>
               <eCH-0110:countOfAdditionalVotes>
-                <eCH-0110:total>0</eCH-0110:total>
+                <eCH-0110:total>2</eCH-0110:total>
               </eCH-0110:countOfAdditionalVotes>
               <eCH-0110:countOfPartyVotes>
-                <eCH-0110:total>9</eCH-0110:total>
+                <eCH-0110:total>2</eCH-0110:total>
               </eCH-0110:countOfPartyVotes>
             </eCH-0110:list>
             <eCH-0110:list>
@@ -5596,19 +4874,19 @@
                 </eCH-0110:listDescription>
               </eCH-0110:listInformation>
               <eCH-0110:countOfChangedBallots>
-                <eCH-0110:total>3</eCH-0110:total>
+                <eCH-0110:total>1</eCH-0110:total>
               </eCH-0110:countOfChangedBallots>
               <eCH-0110:countOfUnchangedBallots>
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfUnchangedBallots>
               <eCH-0110:countOfCandidateVotes>
-                <eCH-0110:total>8</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfCandidateVotes>
               <eCH-0110:countOfAdditionalVotes>
-                <eCH-0110:total>4</eCH-0110:total>
+                <eCH-0110:total>1</eCH-0110:total>
               </eCH-0110:countOfAdditionalVotes>
               <eCH-0110:countOfPartyVotes>
-                <eCH-0110:total>12</eCH-0110:total>
+                <eCH-0110:total>1</eCH-0110:total>
               </eCH-0110:countOfPartyVotes>
             </eCH-0110:list>
             <eCH-0110:list>
@@ -5639,19 +4917,19 @@
                 </eCH-0110:listDescription>
               </eCH-0110:listInformation>
               <eCH-0110:countOfChangedBallots>
-                <eCH-0110:total>2</eCH-0110:total>
+                <eCH-0110:total>3</eCH-0110:total>
               </eCH-0110:countOfChangedBallots>
               <eCH-0110:countOfUnchangedBallots>
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfUnchangedBallots>
               <eCH-0110:countOfCandidateVotes>
-                <eCH-0110:total>9</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfCandidateVotes>
               <eCH-0110:countOfAdditionalVotes>
-                <eCH-0110:total>3</eCH-0110:total>
+                <eCH-0110:total>2</eCH-0110:total>
               </eCH-0110:countOfAdditionalVotes>
               <eCH-0110:countOfPartyVotes>
-                <eCH-0110:total>12</eCH-0110:total>
+                <eCH-0110:total>2</eCH-0110:total>
               </eCH-0110:countOfPartyVotes>
             </eCH-0110:list>
             <eCH-0110:list>
@@ -5682,19 +4960,19 @@
                 </eCH-0110:listDescription>
               </eCH-0110:listInformation>
               <eCH-0110:countOfChangedBallots>
-                <eCH-0110:total>0</eCH-0110:total>
+                <eCH-0110:total>1</eCH-0110:total>
               </eCH-0110:countOfChangedBallots>
               <eCH-0110:countOfUnchangedBallots>
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfUnchangedBallots>
               <eCH-0110:countOfCandidateVotes>
-                <eCH-0110:total>2</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfCandidateVotes>
               <eCH-0110:countOfAdditionalVotes>
-                <eCH-0110:total>0</eCH-0110:total>
+                <eCH-0110:total>3</eCH-0110:total>
               </eCH-0110:countOfAdditionalVotes>
               <eCH-0110:countOfPartyVotes>
-                <eCH-0110:total>2</eCH-0110:total>
+                <eCH-0110:total>3</eCH-0110:total>
               </eCH-0110:countOfPartyVotes>
             </eCH-0110:list>
             <eCH-0110:list>
@@ -5728,7 +5006,7 @@
                 <eCH-0110:total>1</eCH-0110:total>
               </eCH-0110:countOfChangedBallots>
               <eCH-0110:countOfUnchangedBallots>
-                <eCH-0110:total>0</eCH-0110:total>
+                <eCH-0110:total>1</eCH-0110:total>
               </eCH-0110:countOfUnchangedBallots>
               <eCH-0110:countOfCandidateVotes>
                 <eCH-0110:total>0</eCH-0110:total>
@@ -5782,7 +5060,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -5809,10 +5087,10 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -5856,7 +5134,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -5865,7 +5143,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>2</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -5886,7 +5164,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>3</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -5930,7 +5208,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>2</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -5960,7 +5238,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -6152,450 +5430,6 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>99</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
-            </eCH-0110:candidate>
-            <eCH-0110:candidate>
-              <eCH-0110:candidateInformation>
-                <eCH-0110:candidateIdentification>d8d62d0b-3ac0-40aa-8142-b8f735e4bc3f</eCH-0110:candidateIdentification>
-                <eCH-0110:candidateReference>05a.01</eCH-0110:candidateReference>
-                <eCH-0110:familyName>Sieben</eCH-0110:familyName>
-                <eCH-0110:firstName>Kandidat</eCH-0110:firstName>
-                <eCH-0110:callName>Gerd</eCH-0110:callName>
-                <eCH-0110:candidateText>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>DE</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1960, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>FR</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1960, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>IT</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1960, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>RM</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1960, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                </eCH-0110:candidateText>
-                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
-              </eCH-0110:candidateInformation>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>99</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
-            </eCH-0110:candidate>
-            <eCH-0110:candidate>
-              <eCH-0110:candidateInformation>
-                <eCH-0110:candidateIdentification>ff671047-7e0f-4198-974f-0041a55f1c70</eCH-0110:candidateIdentification>
-                <eCH-0110:candidateReference>05a.02</eCH-0110:candidateReference>
-                <eCH-0110:familyName>Acht</eCH-0110:familyName>
-                <eCH-0110:firstName>Kandidat</eCH-0110:firstName>
-                <eCH-0110:callName>Hilde</eCH-0110:callName>
-                <eCH-0110:candidateText>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>DE</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>FR</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>IT</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>RM</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                </eCH-0110:candidateText>
-                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
-              </eCH-0110:candidateInformation>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>99</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
-            </eCH-0110:candidate>
-            <eCH-0110:candidate>
-              <eCH-0110:candidateInformation>
-                <eCH-0110:candidateIdentification>8ba15de5-4e9c-4b88-9fab-e1d8db45db49</eCH-0110:candidateIdentification>
-                <eCH-0110:candidateReference>05a.03</eCH-0110:candidateReference>
-                <eCH-0110:familyName>Neun</eCH-0110:familyName>
-                <eCH-0110:firstName>Kandidat</eCH-0110:firstName>
-                <eCH-0110:callName>Inno</eCH-0110:callName>
-                <eCH-0110:candidateText>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>DE</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1983, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>FR</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1983, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>IT</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1983, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>RM</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1983, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                </eCH-0110:candidateText>
-                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
-              </eCH-0110:candidateInformation>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>99</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
-            </eCH-0110:candidate>
-            <eCH-0110:candidate>
-              <eCH-0110:candidateInformation>
-                <eCH-0110:candidateIdentification>7797d304-7c46-4fdd-850e-7a57a20aeb99</eCH-0110:candidateIdentification>
-                <eCH-0110:candidateReference>05a.04</eCH-0110:candidateReference>
-                <eCH-0110:familyName>Zehn</eCH-0110:familyName>
-                <eCH-0110:firstName>Kandidat</eCH-0110:firstName>
-                <eCH-0110:callName>Janette</eCH-0110:callName>
-                <eCH-0110:candidateText>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>DE</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1972, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>FR</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1972, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>IT</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1972, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>RM</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1972, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                </eCH-0110:candidateText>
-                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
-              </eCH-0110:candidateInformation>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>99</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
-            </eCH-0110:candidate>
-            <eCH-0110:candidate>
-              <eCH-0110:candidateInformation>
-                <eCH-0110:candidateIdentification>ea12b112-3f31-4dd5-8f46-a0a5d53bd4ef</eCH-0110:candidateIdentification>
-                <eCH-0110:candidateReference>05a.05</eCH-0110:candidateReference>
-                <eCH-0110:familyName>Elf</eCH-0110:familyName>
-                <eCH-0110:firstName>Kandidat</eCH-0110:firstName>
-                <eCH-0110:callName>Konstantin</eCH-0110:callName>
-                <eCH-0110:candidateText>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>DE</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1982, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>FR</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1982, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>IT</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1982, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>RM</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1982, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                </eCH-0110:candidateText>
-                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
-              </eCH-0110:candidateInformation>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>99</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
-            </eCH-0110:candidate>
-            <eCH-0110:candidate>
-              <eCH-0110:candidateInformation>
-                <eCH-0110:candidateIdentification>1323b3c2-1ef5-4114-b637-a285e2ba12e2</eCH-0110:candidateIdentification>
-                <eCH-0110:candidateReference>05a.06</eCH-0110:candidateReference>
-                <eCH-0110:familyName>Zwölf</eCH-0110:familyName>
-                <eCH-0110:firstName>Kandidat</eCH-0110:firstName>
-                <eCH-0110:callName>Lara</eCH-0110:callName>
-                <eCH-0110:candidateText>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>DE</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1961, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>FR</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1961, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>IT</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1961, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>RM</eCH-0155:language>
-                    <eCH-0155:candidateText>01.01.1961, ?</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                </eCH-0110:candidateText>
-                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
-              </eCH-0110:candidateInformation>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
@@ -6753,7 +5587,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -6771,10 +5605,10 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -6818,7 +5652,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -6827,7 +5661,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -6848,7 +5682,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -6892,7 +5726,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -6922,7 +5756,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -6975,7 +5809,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -6996,7 +5830,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -7049,7 +5883,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -7067,10 +5901,10 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -7114,7 +5948,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>2</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -7144,7 +5978,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -7188,7 +6022,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -7197,7 +6031,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -7218,7 +6052,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -7262,7 +6096,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -7271,7 +6105,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -7289,10 +6123,10 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>3</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -7336,7 +6170,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -7366,7 +6200,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -7410,7 +6244,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>2</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -7440,7 +6274,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -7567,7 +6401,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -7588,14 +6422,88 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:candidateInformation>
+                <eCH-0110:candidateIdentification>ff671047-7e0f-4198-974f-0041a55f1c70</eCH-0110:candidateIdentification>
+                <eCH-0110:candidateReference>10.02</eCH-0110:candidateReference>
+                <eCH-0110:familyName>Acht</eCH-0110:familyName>
+                <eCH-0110:firstName>Kandidat</eCH-0110:firstName>
+                <eCH-0110:callName>Hilde</eCH-0110:callName>
+                <eCH-0110:candidateText>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>DE</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>FR</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>IT</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>RM</eCH-0155:language>
+                    <eCH-0155:candidateText>01.01.1984, ?</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                </eCH-0110:candidateText>
+                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+              </eCH-0110:candidateInformation>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>97e7687a-9ce7-4724-91bb-17396344b50c</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>99</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
           </eCH-0110:proportionalElection>
         </eCH-0110:electionResults>
       </eCH-0110:electionGroupResults>
     </eCH-0110:countingCircleResults>
     <eCH-0110:extension>
-      <signature>IicsMLReprzMjEbvho7NEAhu4GuNDf+XAZ70V9RDrKyat/GCJ3lcU4mMFemu5CCPTTetk/ugLXrVm/nJuW5nxiAPWZXFJQIOXTRHp2u+3ubczMrSk48d61FOcx4DFTwyDPUDbikskl7NdelaiC/yZI1pQaT02x5OCpm0Z9emgsdTofhxEHV+pfCuMyvaFqu0TPuxeVkuwBpdZAsm2qYxkrztR5/T88cG0Gls8e33JckKsYlD03cb0Czq7TwhHI0B5GqLfLa3HBbNOUezD/ESI9NHjAXhnmHU/w1Ktq2POfih+yHzKyUHIAE0enE9hs/AiFEDTajcL/x/cRuC87fh4bJwt9gk+iwhi8ZGi2jXwpVF/GwC8rDBDqu9NzZkpylq+4gHxXRaYfCFSCbpLgZU9xWAHIGs3n8qTJ8LTuEXuZamnkMU/B02zY8LHKmW7M8FhUfLdAQTNq1qAAttCKLFdNitgJg9nKNdF3OeOW8gl9i5n3X7VpLgL59tT4+DpyOY</signature>
+      <signature>IVHVtvXR2lw989TsFVlHqq7aaliru2MTZ+LnjBxhCu1/8FGFiGIZcKO4q2RZcc/m4xe/Lr0ghOb8Ylcx5ODALznSUbVSOq5tCPyvb2dy3eUhDfmqm7UJLJRyOVTsNMCW4FR5x7IFIhsvlcqfYaPOiuLaJzj12xGx6TLq8tY+vYQKeP/3kPgwZVv0UdFig2m7nSuDs08LHSjrMUfOW2yPxUKeXGsfbvezj8dTlfkLN0gEHN55+y6h9rfoDY+JB5pZ2oD8mSIE7lHmvsXkujGTeuv0IeLa4kCY7j2tfvu0aGZEWWyEXP5KtUXSIBd+zwK/axivxkeSFZNwwi31ntLtUEYUbaN9SGTTWc6KKnIsedBWW5jdSbnU1Z+PIVc4GI7yV9FU2rOpX0Xl1EuAVYSpl2Tl8jAbX+bUuHzc0GbkAwyzisIks2/ZyVYD4HyG15fvw1ZV9UqDBTXs6luIviKOWwfSb2KX231pkJxOwrSu6OdQfaPugGOPGj3GHlVx6coY</signature>
     </eCH-0110:extension>
   </eCH-0110:resultDelivery>
 </eCH-0110:delivery>

@@ -40,9 +40,9 @@ import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
 import ch.post.it.evoting.cryptoprimitives.mixnet.VerifiableShuffle;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.Results;
-import ch.post.it.evoting.verifier.protocol.domain.tally.TallyComponentVotesPayload;
+import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 
 @Service
 public class VerifyTallyControlComponentAlgorithm {

@@ -32,18 +32,18 @@ import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShuffle
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.SetupComponentPublicKeysPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.TallyComponentShufflePayload;
+import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
+import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
-import ch.post.it.evoting.verifier.protocol.domain.configuration.SetupComponentTallyDataPayload;
-import ch.post.it.evoting.verifier.protocol.domain.tally.TallyComponentVotesPayload;
 
 @Component
 public class VerifyTallyControlComponent extends AbstractVerification {
@@ -65,7 +65,7 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification501.description"));
-		definition.setId(501);
+		definition.setId("10.02");
 		definition.setName("VerifyTallyControlComponent");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

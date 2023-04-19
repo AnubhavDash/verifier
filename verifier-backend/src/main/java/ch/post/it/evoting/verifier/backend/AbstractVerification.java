@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 
 import ch.post.it.evoting.verifier.backend.event.VerifierEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
@@ -56,20 +57,22 @@ public abstract class AbstractVerification {
 
 		// Execute verification only if received event is one listened to.
 		if (listenedEvents.contains(verifierEvent.getType())) {
-			VerificationResult result;
+			final StopWatch stopWatch = new StopWatch();
 			try {
-				result = verify(verifierEvent.getInputDirectoryPath());
+				stopWatch.start();
+				final VerificationResult result = verify(verifierEvent.getInputDirectoryPath());
+				stopWatch.stop();
 
 				// Publish result event, OK or NOK.
-				resultPublisherService.publish(result);
+				resultPublisherService.publish(result, stopWatch.getTotalTimeSeconds());
 			} catch (final Exception e) {
+				stopWatch.stop();
 				LOGGER.error("Verification error. [block: {}, id: {}]", definition.getBlock(), definition.getId(), e);
 
 				// Build and publish error result event.
 				final VerificationResult errorResult = VerificationResult.error(definition, e);
-				resultPublisherService.publish(errorResult);
+				resultPublisherService.publish(errorResult, stopWatch.getTotalTimeSeconds());
 			}
-
 
 		}
 	}

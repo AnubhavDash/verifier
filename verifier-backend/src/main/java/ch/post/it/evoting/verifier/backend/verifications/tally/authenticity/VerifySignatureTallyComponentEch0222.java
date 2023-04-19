@@ -34,17 +34,17 @@ import ch.ech.xmlns.ech_0222._1.Delivery;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
+import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
+import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableEch0222Factory;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
-import ch.post.it.evoting.verifier.backend.hashable.HashableEch0222Factory;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
-import ch.post.it.evoting.verifier.protocol.domain.ChannelSecurityContextData;
 
 @Component
 public class VerifySignatureTallyComponentEch0222 extends AbstractVerification {
@@ -69,7 +69,7 @@ public class VerifySignatureTallyComponentEch0222 extends AbstractVerification {
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME,
 						"verification.direct.trust.authenticity.description", "TallyComponentEch0222"));
-		definition.setId(206);
+		definition.setId("07.07");
 		definition.setName("VerifySignatureTallyComponentEch0222");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

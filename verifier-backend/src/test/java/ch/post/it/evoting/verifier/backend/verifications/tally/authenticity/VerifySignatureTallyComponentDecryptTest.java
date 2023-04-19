@@ -31,10 +31,10 @@ import org.junit.jupiter.api.Test;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.Results;
-import ch.post.it.evoting.verifier.backend.hashable.HashableResultsFactory;
+import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
+import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableResultsFactory;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
-import ch.post.it.evoting.verifier.protocol.domain.ChannelSecurityContextData;
 
 class VerifySignatureTallyComponentDecryptTest extends TallyVerificationTest {
 

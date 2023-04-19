@@ -33,14 +33,17 @@ export class ReportOverviewComponent implements OnInit {
 
   verifications = {};
   verificationsSize = 0;
+  totalNumberOfSetupVerifications = 0;
+  totalNumberOfTallyVerifications = 0;
   verificationStatusFilter = '';
   toggleMessage = true;
   printMode = false;
   startDisabled = true;
   processStarted = false;
-  eventStarted = '';
+  eventStarted: string = null;
   verifierEvent = VerifierEvent;
-  currentDate: string;
+  startDate: string = null;
+  endDate: string = null;
   isExportingToPDF = false;
   datasetLoading = false;
   datasetLoadingError = false;
@@ -59,6 +62,8 @@ export class ReportOverviewComponent implements OnInit {
   numberOfTestBallotBoxes = 0;
   totalNumberOfAuthorizedNonTestVoters = 0;
   totalNumberOfTestVoters = 0;
+  numberOfConfirmedNonTestVotes: number = null;
+  numberOfConfirmedTestVotes: number = null;
 
   verificationFilter = {
     ALL: {
@@ -88,6 +93,7 @@ export class ReportOverviewComponent implements OnInit {
   };
 
   fingerprintsNames = {
+    canton: 'Canton',
     control_component_1: 'Control Component 1',
     control_component_2: 'Control Component 2',
     control_component_3: 'Control Component 3',
@@ -96,14 +102,12 @@ export class ReportOverviewComponent implements OnInit {
     sdm_tally: 'Tally Control Component'
   };
 
+  protected readonly VerifierEvent = VerifierEvent;
+
   private stompClient;
 
   constructor(private processorService: ProcessorService) {
     this.appVersion = packageJson.version;
-    this.currentDate = this.getCurrentDate();
-    setInterval(() => {
-      this.currentDate = this.getCurrentDate();
-    }, 1000);
   }
 
   static convert(input: any): VerificationDefinition {
@@ -134,6 +138,14 @@ export class ReportOverviewComponent implements OnInit {
         verifications[verification.id] = ReportOverviewComponent.convert(verification);
       }
       this.verifications = verifications;
+
+      this.totalNumberOfSetupVerifications = Object.keys(verifications)
+          .filter(key => verifications[key].block === 'setup')
+          .length;
+
+      this.totalNumberOfTallyVerifications = Object.keys(verifications)
+          .filter(key => verifications[key].block === 'tally')
+          .length;
     });
   }
 
@@ -141,6 +153,10 @@ export class ReportOverviewComponent implements OnInit {
     this.processStarted = true;
     this.startDisabled = true;
     this.eventStarted = runOption;
+    this.endDate = null;
+    if (runOption === VerifierEvent.PRE_SETUP || runOption === VerifierEvent.PRE_TALLY) {
+      this.startDate = this.getCurrentDate();
+    }
     this.processorService.processVerifications(runOption).subscribe(() => {
       console.log('processVerifications ', runOption);
       this.updateStatus(runOption);
@@ -172,7 +188,13 @@ export class ReportOverviewComponent implements OnInit {
   }
 
   isProcessComplete() {
-    return this.statusCounterAll() === this.verificationsSize;
+    const isProcessCompete = this.statusCounterAll() === this.verificationsSize;
+
+    if (isProcessCompete && this.endDate === null) {
+      this.endDate = this.getCurrentDate();
+    }
+
+    return isProcessCompete;
   }
 
   resetProcess(): void {
@@ -181,7 +203,9 @@ export class ReportOverviewComponent implements OnInit {
       this.initTable();
       this.processStarted = false;
       this.startDisabled = false;
-      this.eventStarted = '';
+      this.eventStarted = null;
+      this.startDate = null;
+      this.endDate = null;
     });
   }
 
@@ -289,7 +313,7 @@ export class ReportOverviewComponent implements OnInit {
       margin: [5, 0],
       filename: `${pdfFileName}.pdf`,
       pagebreak: {before: ['.html2pdf-break-page'], avoid: ['.html2pdf-no-break']},
-      image: {type: 'jpeg', quality: 0.98},
+      image: {type: 'jpeg', quality: 0.1},
       html2canvas: {scale: 4},
       jsPDF: {unit: 'mm', format: 'a4', orientation: 'landscape'}
     };
@@ -328,6 +352,9 @@ export class ReportOverviewComponent implements OnInit {
       this.numberOfTestBallotBoxes = 0;
       this.totalNumberOfAuthorizedNonTestVoters = 0;
       this.totalNumberOfTestVoters = 0;
+      this.eventStarted = null;
+      this.startDate = null;
+      this.endDate = null;
 
       this.processorService.uploadDataset(file).subscribe({
         next: () => {
@@ -349,6 +376,8 @@ export class ReportOverviewComponent implements OnInit {
             this.numberOfTestBallotBoxes = configuration.numberOfTestBallotBoxes;
             this.totalNumberOfAuthorizedNonTestVoters = configuration.totalNumberOfAuthorizedNonTestVoters;
             this.totalNumberOfTestVoters = configuration.totalNumberOfTestVoters;
+            this.numberOfConfirmedNonTestVotes = configuration.numberOfConfirmedNonTestVotes;
+            this.numberOfConfirmedTestVotes = configuration.numberOfConfirmedTestVotes;
           });
         },
         error: () => {
@@ -386,7 +415,7 @@ export class ReportOverviewComponent implements OnInit {
     const filter = this.verificationFilter[key];
     if (filter.active) {
       filter.active = false;
-      this.verificationStatusFilter = this.verificationStatusFilter.replace(`${filter.value}|`, '');
+      this.verificationStatusFilter = this.verificationStatusFilter.replace(new RegExp('\\b' + filter.value + '\\|', 'g'), '');
       this.verificationFilter['ALL'].active = this.verificationStatusFilter === '';
     } else {
       this.activateVerificationFilter(key);

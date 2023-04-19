@@ -24,6 +24,8 @@ import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.TallyComponentShufflePayload;
+import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
+import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -34,8 +36,6 @@ import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
-import ch.post.it.evoting.verifier.protocol.domain.tally.ControlComponentBallotBoxPayload;
-import ch.post.it.evoting.verifier.protocol.domain.tally.TallyComponentVotesPayload;
 
 @Component("VerifyTallyElectionEventIdConsistency")
 public class VerifyElectionEventIdConsistency extends AbstractVerification {
@@ -56,7 +56,7 @@ public class VerifyElectionEventIdConsistency extends AbstractVerification {
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification307.description"));
-		definition.setId(307);
+		definition.setId("08.08");
 		definition.setName("VerifyElectionEventIdConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

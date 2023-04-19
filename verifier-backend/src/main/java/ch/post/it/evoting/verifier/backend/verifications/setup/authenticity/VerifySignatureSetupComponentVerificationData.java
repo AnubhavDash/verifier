@@ -29,6 +29,7 @@ import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
+import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -38,7 +39,6 @@ import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
-import ch.post.it.evoting.verifier.protocol.domain.ChannelSecurityContextData;
 
 @Component
 public class VerifySignatureSetupComponentVerificationData extends AbstractVerification {
@@ -64,7 +64,7 @@ public class VerifySignatureSetupComponentVerificationData extends AbstractVerif
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
 						"verification.direct.trust.authenticity.description", "SetupComponentVerificationData"));
-		definition.setId(204);
+		definition.setId("02.05");
 		definition.setName("VerifySignatureSetupComponentVerificationData");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

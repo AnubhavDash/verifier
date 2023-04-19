@@ -26,7 +26,7 @@ import ch.post.it.evoting.verifier.backend.Status;
 public class Verification {
 
 	private String id;
-	private int verificationId;
+	private String verificationId;
 	private String block;
 	private String name;
 	private Category category;
@@ -44,11 +44,11 @@ public class Verification {
 		this.id = id;
 	}
 
-	public int getVerificationId() {
+	public String getVerificationId() {
 		return verificationId;
 	}
 
-	public void setVerificationId(final int verificationId) {
+	public void setVerificationId(final String verificationId) {
 		this.verificationId = verificationId;
 	}
 

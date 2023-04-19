@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeSharesPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationDataPayload;
+import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -38,7 +39,6 @@ import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
-import ch.post.it.evoting.verifier.protocol.domain.configuration.SetupComponentTallyDataPayload;
 
 /**
  * This verification ensures that the verification card set IDs in all files in the same directory and with the name of the parent folder are
@@ -65,7 +65,7 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification309.description"));
-		definition.setId(309);
+		definition.setId("03.10");
 		definition.setName("VerifyVerificationCardSetIdsConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

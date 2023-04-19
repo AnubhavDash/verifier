@@ -29,6 +29,7 @@ import ch.post.it.evoting.cryptoprimitives.domain.mixnet.SetupComponentPublicKey
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.ZqGroup;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.SchnorrProof;
+import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -38,7 +39,6 @@ import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
-import ch.post.it.evoting.verifier.protocol.domain.configuration.ControlComponentPublicKeysPayload;
 
 @Component
 public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerification {
@@ -58,7 +58,7 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification304.description"));
-		definition.setId(304);
+		definition.setId("03.05");
 		definition.setName("VerifyCcmAndCcrSchnorrProofsConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

@@ -40,19 +40,22 @@ import ch.post.it.evoting.cryptoprimitives.signing.SignatureFactory;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.Results;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.FactorizeAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetActualVotingOptionsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetEncodedVotingOptionsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetSemanticInformationAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.DecodeWriteInsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.IntegerToWriteInAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.IsWriteInOptionAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.QuadraticResidueToWriteInAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.VerifyMixDecOfflineAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.VerifyVotingClientProofsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixonline.GetMixnetInitialCiphertextsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
+import ch.post.it.evoting.evotinglibraries.xml.XmlNormalizer;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.verifier.backend.tools.KeystoreRepository;
-import ch.post.it.evoting.verifier.backend.tools.XmlFileRepository;
 import ch.post.it.evoting.verifier.backend.verifications.setup.consistency.VerifyPrimesMappingTableConsistencyAlgorithm;
-import ch.post.it.evoting.verifier.protocol.algorithms.tally.IntegerToWriteInAlgorithm;
-import ch.post.it.evoting.verifier.protocol.algorithms.tally.QuadraticResidueToWriteInAlgorithm;
-import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.DecodeVotingOptionsAlgorithm;
-import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.DecodeWriteInsAlgorithm;
-import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.IsWriteInOptionAlgorithm;
-import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.VerifyMixDecOfflineAlgorithm;
-import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixoffline.VerifyVotingClientProofsAlgorithm;
-import ch.post.it.evoting.verifier.protocol.algorithms.tally.mixonline.GetMixnetInitialCiphertextsAlgorithm;
-import ch.post.it.evoting.verifier.protocol.domain.xml.XmlNormalizer;
 
 @Configuration
 public class VerifierBeanConfig {
@@ -92,8 +95,10 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
-	public VerifyVotingClientProofsAlgorithm verifyVotingClientProofsAlgorithm(final ZeroKnowledgeProof zeroKnowledgeProof) {
-		return new VerifyVotingClientProofsAlgorithm(zeroKnowledgeProof);
+	public VerifyVotingClientProofsAlgorithm verifyVotingClientProofsAlgorithm(final ZeroKnowledgeProof zeroKnowledgeProof
+	) {
+		return new VerifyVotingClientProofsAlgorithm(zeroKnowledgeProof, getEncodedVotingOptionsAlgorithm(), getActualVotingOptionsAlgorithm(),
+				getSemanticInformationAlgorithm());
 	}
 
 	@Bean
@@ -107,13 +112,23 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
-	public DecodeVotingOptionsAlgorithm decodeVotingOptionsAlgorithm() {
-		return new DecodeVotingOptionsAlgorithm();
+	public GetEncodedVotingOptionsAlgorithm getEncodedVotingOptionsAlgorithm() {
+		return new GetEncodedVotingOptionsAlgorithm();
+	}
+
+	@Bean
+	public GetActualVotingOptionsAlgorithm getActualVotingOptionsAlgorithm() {
+		return new GetActualVotingOptionsAlgorithm();
+	}
+
+	@Bean
+	public GetSemanticInformationAlgorithm getSemanticInformationAlgorithm() {
+		return new GetSemanticInformationAlgorithm();
 	}
 
 	@Bean
 	public DecodeWriteInsAlgorithm decodeWriteInsAlgorithm(final IsWriteInOptionAlgorithm isWriteInOptionAlgorithm, final
-			QuadraticResidueToWriteInAlgorithm quadraticResidueToWriteInAlgorithm) {
+	QuadraticResidueToWriteInAlgorithm quadraticResidueToWriteInAlgorithm) {
 		return new DecodeWriteInsAlgorithm(isWriteInOptionAlgorithm, quadraticResidueToWriteInAlgorithm);
 	}
 
@@ -133,6 +148,11 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
+	public FactorizeAlgorithm factorizeAlgorithm() {
+		return new FactorizeAlgorithm();
+	}
+
+	@Bean
 	KeyStore keystore(final KeystoreRepository repository,
 			@Value("${direct.trust.keystore.type}")
 			final String keystoreType)
@@ -149,12 +169,17 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
-	XmlFileRepository<ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration> configurationXmlFileRepository() {
+	XmlFileRepository<ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration> configurationXmlFileRepository() {
 		return new XmlFileRepository<>();
 	}
 
 	@Bean
 	XmlFileRepository<Delivery> deliveryXmlFileRepository() {
+		return new XmlFileRepository<>();
+	}
+
+	@Bean
+	XmlFileRepository<ch.ech.xmlns.ech_0222._1.Delivery> ech0222DeliveryXmlFileRepository() {
 		return new XmlFileRepository<>();
 	}
 

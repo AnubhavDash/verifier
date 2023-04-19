@@ -26,7 +26,7 @@ export class StatusFilterPipe implements PipeTransform {
    */
   transform(raw: any, statusFilter: string): any {
     if (!statusFilter || statusFilter === '') {
-      return raw;
+      return [];
     }
 
     return Object.keys(raw)

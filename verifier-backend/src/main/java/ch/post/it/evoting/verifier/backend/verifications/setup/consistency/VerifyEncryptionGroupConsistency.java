@@ -51,7 +51,7 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification300.description"));
-		definition.setId(300);
+		definition.setId("03.01");
 		definition.setName("VerifyEncryptionGroupConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
