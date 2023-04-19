@@ -27,18 +27,18 @@ import com.google.common.annotations.VisibleForTesting;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
+import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
+import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableCantonConfigFactory;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
-import ch.post.it.evoting.verifier.backend.hashable.HashableConfigurationFactory;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
-import ch.post.it.evoting.verifier.protocol.domain.ChannelSecurityContextData;
 
 @Component
 public class VerifySignatureCantonConfig extends AbstractVerification {
@@ -64,7 +64,7 @@ public class VerifySignatureCantonConfig extends AbstractVerification {
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
 						"verification.direct.trust.authenticity.description", "CantonConfig"));
-		definition.setId(201);
+		definition.setId("02.02");
 		definition.setName("VerifySignatureCantonConfig");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
@@ -93,7 +93,7 @@ public class VerifySignatureCantonConfig extends AbstractVerification {
 
 		checkState(signature != null, "The signature of the canton config file is null.");
 
-		final Hashable hash = HashableConfigurationFactory.fromConfiguration(configuration);
+		final Hashable hash = HashableCantonConfigFactory.fromConfiguration(configuration);
 		final Hashable additionalContextData = ChannelSecurityContextData.cantonConfig();
 
 		try {

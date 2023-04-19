@@ -24,17 +24,17 @@ public class VerificationDefinition {
 
 	private final Set<String> verifierEvents = new HashSet<>();
 
-	private int id;
+	private String id;
 	private String block;
 	private String name;
 	private Category category;
 	private Map<Language, String> description;
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -79,7 +79,7 @@ public class VerificationDefinition {
 	}
 
 	public String computeUniqueKey() {
-		return String.format("%s-%02d", this.getBlock(), this.getId());
+		return String.format("%s-%s", this.getBlock(), this.getId());
 	}
 
 	@Override

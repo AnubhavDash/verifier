@@ -30,6 +30,7 @@ import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
+import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -40,7 +41,6 @@ import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
-import ch.post.it.evoting.verifier.protocol.domain.ChannelSecurityContextData;
 
 @Component
 public class VerifySignatureTallyComponentShuffle extends AbstractVerification {
@@ -66,7 +66,7 @@ public class VerifySignatureTallyComponentShuffle extends AbstractVerification {
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
 						"verification.direct.trust.authenticity.description", "TallyComponentShuffle"));
-		definition.setId(202);
+		definition.setId("07.03");
 		definition.setName("VerifySignatureTallyComponentShuffle");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;
@@ -75,7 +75,8 @@ public class VerifySignatureTallyComponentShuffle extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final Stream<TallyComponentShufflePayload> tallyComponentShufflePayloads = electionDataExtractionService.getTallyComponentShufflePayloads(inputDirectoryPath);
+		final Stream<TallyComponentShufflePayload> tallyComponentShufflePayloads = electionDataExtractionService.getTallyComponentShufflePayloads(
+				inputDirectoryPath);
 
 		final boolean verified = tallyComponentShufflePayloads
 				.parallel()

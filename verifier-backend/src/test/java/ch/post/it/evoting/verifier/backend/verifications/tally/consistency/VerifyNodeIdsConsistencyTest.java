@@ -32,12 +32,12 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
+import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
-import ch.post.it.evoting.verifier.protocol.domain.tally.ControlComponentBallotBoxPayload;
 
 @DisplayName("VerifyNodeIdsConsistencyTest with")
 class VerifyNodeIdsConsistencyTest extends TallyVerificationTest {

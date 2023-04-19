@@ -82,7 +82,7 @@ public class VerifyEncryptedCKExponentiationProofsVerificationCardSetAlgorithm {
 		checkArgument(vc.size() == N_E, "The size of each input must be equal to the number of voters.");
 
 		// Operation.
-		return IntStream.range(0, N_E)
+		final boolean verified = IntStream.range(0, N_E)
 				.parallel()
 				.mapToObj(id -> {
 					final GroupVector<GqElement, GqGroup> g = Stream.concat(Stream.of(group.getGenerator()), c_ck.get(id).stream())
@@ -104,5 +104,9 @@ public class VerifyEncryptedCKExponentiationProofsVerificationCardSetAlgorithm {
 				})
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
+
+		LOGGER.info("Successfully verified the CK exponentiation proofs of all verification cards in verification card set ID. [vcs: {}]", vcs);
+
+		return verified;
 	}
 }

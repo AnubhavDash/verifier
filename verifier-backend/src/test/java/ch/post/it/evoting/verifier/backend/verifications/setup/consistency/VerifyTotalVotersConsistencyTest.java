@@ -21,7 +21,6 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -31,9 +30,9 @@ import com.google.common.base.Throwables;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.HeaderType;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.HeaderType;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -59,7 +58,7 @@ class VerifyTotalVotersConsistencyTest extends SetupVerificationTest {
 		final Configuration configuration = electionDataExtractionService.getCantonConfig(datasetPath);
 		final Configuration configurationMock = spy(configuration);
 		final HeaderType headerType = new HeaderType();
-		headerType.setVoterTotal(BigInteger.valueOf(39));
+		headerType.setVoterTotal(39);
 		when(configurationMock.getHeader()).thenReturn(headerType);
 		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
 		doReturn(configurationMock).when(extractionServiceMock).getCantonConfig(datasetPath);
@@ -68,7 +67,7 @@ class VerifyTotalVotersConsistencyTest extends SetupVerificationTest {
 				extractionServiceMock);
 
 		final IllegalStateException exception = assertThrows(IllegalStateException.class, () -> verificationBadVoterTotal.verify(datasetPath));
-		assertEquals("The voter total in the header must be the same as the size of the voter list. [voterTotal: 39, voterCount: 76]",
+		assertEquals("The voter total in the header must be the same as the size of the voter list. [voterTotal: 39, voterCount: 43]",
 				Throwables.getRootCause(exception).getMessage());
 	}
 

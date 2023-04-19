@@ -24,7 +24,7 @@ import java.util.Map;
 
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
-import ch.post.it.evoting.verifier.protocol.domain.tally.ControlComponentBallotBoxPayload;
+import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
 
 public record VerifyOnlineControlComponentBallotBoxInput(Map<String, ElGamalMultiRecipientPublicKey> verificationCardPublicKeyMap,
 														 ControlComponentBallotBoxPayload firstControlComponentBallotBox,

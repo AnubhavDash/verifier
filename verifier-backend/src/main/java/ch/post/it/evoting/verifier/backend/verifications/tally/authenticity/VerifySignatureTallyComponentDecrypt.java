@@ -27,18 +27,18 @@ import com.google.common.annotations.VisibleForTesting;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
+import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
+import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableResultsFactory;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
-import ch.post.it.evoting.verifier.backend.hashable.HashableResultsFactory;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
-import ch.post.it.evoting.verifier.protocol.domain.ChannelSecurityContextData;
 
 @Component
 public class VerifySignatureTallyComponentDecrypt extends AbstractVerification {
@@ -63,7 +63,7 @@ public class VerifySignatureTallyComponentDecrypt extends AbstractVerification {
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME,
 						"verification.direct.trust.authenticity.description", "TallyComponentDecrypt"));
-		definition.setId(204);
+		definition.setId("07.05");
 		definition.setName("VerifySignatureTallyComponentDecrypt");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

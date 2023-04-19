@@ -24,6 +24,8 @@ import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetCo
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
+import ch.post.it.evoting.evotinglibraries.domain.common.EncryptedVerifiableVote;
+import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -33,8 +35,6 @@ import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
-import ch.post.it.evoting.verifier.protocol.domain.EncryptedVerifiableVote;
-import ch.post.it.evoting.verifier.protocol.domain.tally.ControlComponentBallotBoxPayload;
 
 @Component
 public class VerifyCiphertextsConsistency extends AbstractVerification {
@@ -54,7 +54,7 @@ public class VerifyCiphertextsConsistency extends AbstractVerification {
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification301.description"));
-		definition.setId(301);
+		definition.setId("08.02");
 		definition.setName("VerifyCiphertextsConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

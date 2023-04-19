@@ -1,0 +1,20 @@
+2023-04-19 16:12:08.187  INFO 35150 --- [main] o.s.boot.SpringApplication               : 
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::               (v2.7.10)
+
+
+2023-04-19 16:12:08.270  INFO 35150 --- [main] .p.i.e.v.b.v.VerificationIdCoherenceTest : Starting VerificationIdCoherenceTest using Java 17.0.5 on 65494a035456 with PID 35150 (started by baseuser in /opt/jenkins/workspace/e-voting/verifier_release/verifier-backend)
+2023-04-19 16:12:08.271  INFO 35150 --- [main] .p.i.e.v.b.v.VerificationIdCoherenceTest : The following 1 profile is active: "test"
+2023-04-19 16:12:10.610  INFO 35150 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@704ef389, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1ae54b05, org.springframework.security.web.context.SecurityContextPersistenceFilter@172ec40d, org.springframework.security.web.header.HeaderWriterFilter@11273bff, org.springframework.security.web.authentication.logout.LogoutFilter@15acf15f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@574f31ac, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@362089e4, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@44c2046d, org.springframework.security.web.session.SessionManagementFilter@775c34c, org.springframework.security.web.access.ExceptionTranslationFilter@526dc265, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@71fa70da]
+2023-04-19 16:12:11.607  INFO 35150 --- [main] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
+2023-04-19 16:12:11.608  INFO 35150 --- [main] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@dad7517]]
+2023-04-19 16:12:11.610  INFO 35150 --- [main] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
+2023-04-19 16:12:11.621  INFO 35150 --- [main] .p.i.e.v.b.v.VerificationIdCoherenceTest : Started VerificationIdCoherenceTest in 4.032 seconds (JVM running for 265.177)
+2023-04-19 16:12:11.958  INFO 35150 --- [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopping...
+2023-04-19 16:12:11.959  INFO 35150 --- [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@dad7517]]
+2023-04-19 16:12:11.960  INFO 35150 --- [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopped.

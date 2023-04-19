@@ -28,12 +28,12 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Streams;
 
+import ch.post.it.evoting.evotinglibraries.domain.common.EncryptedVerifiableVote;
+import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
-import ch.post.it.evoting.verifier.protocol.domain.EncryptedVerifiableVote;
-import ch.post.it.evoting.verifier.protocol.domain.tally.ControlComponentBallotBoxPayload;
 
 class VerifyConfirmedEncryptedVotesConsistencyTest extends TallyVerificationTest {
 

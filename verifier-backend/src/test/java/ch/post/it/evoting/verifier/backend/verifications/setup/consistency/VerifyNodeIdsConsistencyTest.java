@@ -28,12 +28,12 @@ import org.junit.jupiter.api.Test;
 import com.google.common.collect.Streams;
 
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeSharesPayload;
+import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
-import ch.post.it.evoting.verifier.protocol.domain.configuration.ControlComponentPublicKeysPayload;
 
 class VerifyNodeIdsConsistencyTest extends SetupVerificationTest {
 

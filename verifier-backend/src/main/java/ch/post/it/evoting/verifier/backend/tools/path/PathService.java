@@ -28,6 +28,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -35,6 +37,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class PathService {
+	private static final Logger LOGGER = LoggerFactory.getLogger(PathService.class);
 
 	private final Map<StructureKey, StructureNode> structureMap = new EnumMap<>(StructureKey.class);
 
@@ -48,7 +51,7 @@ public class PathService {
 
 			addMapEntry(rootNode, Paths.get(""), false);
 
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new IllegalArgumentException("Impossible to find/read structure file.");
 		}
 	}
@@ -75,10 +78,40 @@ public class PathService {
 
 		try {
 			return new PathNode(resolve(combined, structureNode));
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new UncheckedIOException(
 					String.format("File or directory path could not be obtained for key %s and root path %s.", structureKey, rootPath), e);
 		}
+	}
+
+	/**
+	 * @param structureKey The file or directory to obtain.
+	 * @param rootPath     The root path where the dataset lies.
+	 * @return if the file or directory to obtain exists in the dataset return true, otherwise false.
+	 */
+	public boolean existsFromRootPath(final StructureKey structureKey, final Path rootPath) {
+		final StructureNode structureNode = getStructureNode(structureKey);
+
+		// Combine input path with file/directory parent path.
+		final Path combined = rootPath.resolve(structureNode.parentPath());
+
+		if (!Files.exists(combined)) {
+			LOGGER.debug("Parent node could not be found. [structureKey: {}, rootPath: {}]", structureKey, rootPath);
+			return false;
+		}
+
+		final List<Path> pathList;
+		try {
+			pathList = resolve(combined, structureNode);
+		} catch (final NoSuchFileException e) {
+			LOGGER.debug(String.format("File could not be found. [structureKey: %s, rootPath: %s]", structureKey, rootPath), e);
+			return false;
+		} catch (final IOException e) {
+			LOGGER.debug(String.format("An unexpected IOException occurred. [structureKey: %s, rootPath: %s]", structureKey, rootPath), e);
+			return false;
+		}
+
+		return !pathList.isEmpty();
 	}
 
 	/**
@@ -100,7 +133,7 @@ public class PathService {
 		// dynamicPath is already absolute
 		try {
 			return new PathNode(resolve(dynamicPath, structureNode));
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new UncheckedIOException(
 					String.format("File or directory path could not be obtained for key %s and dynamic path %s.", structureKey, dynamicPath), e);
 		}
@@ -112,7 +145,7 @@ public class PathService {
 	 * @param structureKey The key of the map.
 	 * @return the {@code structureNode}.
 	 */
-	public StructureNode getStructureNode(StructureKey structureKey) {
+	public StructureNode getStructureNode(final StructureKey structureKey) {
 		return structureMap.get(structureKey);
 	}
 
@@ -131,10 +164,10 @@ public class PathService {
 	 * Recursive method that populate the internal structureMap from the dataset tree description. All the checks for missing nodes, wrong structure,
 	 * etc... are already done when calling this method.
 	 */
-	private void addMapEntry(JsonNode currentNode, Path parentPath, boolean dynamicAncestor) {
-		for (JsonNode node : currentNode) {
+	private void addMapEntry(final JsonNode currentNode, final Path parentPath, final boolean dynamicAncestor) {
+		for (final JsonNode node : currentNode) {
 			// Get the name which can be a regex.
-			String currentName = node.path("name").asText();
+			final String currentName = node.path("name").asText();
 
 			// Register current node as long as it is not a dynamic name folder.
 			final PathType type = PathType.valueOf(node.path("type").asText());
@@ -154,7 +187,7 @@ public class PathService {
 	 * @throws IOException         if an I/O error is thrown when accessing the starting file
 	 * @throws NoSuchFileException if no file or directory match the name or pattern
 	 */
-	private List<Path> resolve(Path startingPath, StructureNode structureNode) throws IOException {
+	private List<Path> resolve(final Path startingPath, final StructureNode structureNode) throws IOException {
 		// Get the escaped (to work in regex) file system separator.
 		final String quotedSeparator = Pattern.quote(startingPath.getFileSystem().getSeparator());
 		// It is assumed that in dataset_structure file the file separators are /. Now we need to replace them with file system separators
