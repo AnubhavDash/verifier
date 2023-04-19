@@ -15,11 +15,12 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
+import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.hasNoDuplicates;
+
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
@@ -34,6 +35,8 @@ import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPay
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeShare;
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeSharesPayload;
 import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationData;
+import ch.post.it.evoting.cryptoprimitives.domain.validations.Validations;
+import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -46,7 +49,6 @@ import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
-import ch.post.it.evoting.verifier.protocol.domain.configuration.SetupComponentTallyDataPayload;
 
 @Component("VerifySetupVerificationCardIdsConsistency")
 public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
@@ -72,7 +74,7 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification311.description"));
-		definition.setId(311);
+		definition.setId("03.12");
 		definition.setName("VerifyVerificationCardIdsConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
@@ -161,15 +163,13 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 		final List<String> tallyDataIds = List.copyOf(payloadsVerificationCardIds.tallyDataIds);
 		final int numberOfVotingCards = payloadsVerificationCardIds.numberOfVotingCards;
 
-		final Set<String> verificationDataVerificationCardIds = Set.copyOf(verificationDataIds);
-		if (verificationDataIds.size() != verificationDataVerificationCardIds.size()) {
+		if (!hasNoDuplicates(verificationDataIds)) {
 			LOGGER.info("There are duplicated verification card ids among the SetupComponentVerificationDataPayload chunks.");
 			return false;
 		}
 
 		final List<String> codeSharesVerificationIds = List.copyOf(nodeIdsToCodeSharesIds.get(1));
-		final boolean allCodeSharesIdsUniquePerNode = nodeIdsToCodeSharesIds.values().stream()
-				.allMatch(codeSharesIds -> codeSharesIds.size() == Set.copyOf(codeSharesIds).size());
+		final boolean allCodeSharesIdsUniquePerNode = nodeIdsToCodeSharesIds.values().stream().allMatch(Validations::hasNoDuplicates);
 		if (!allCodeSharesIdsUniquePerNode) {
 			LOGGER.info(
 					"There are either duplicated verification card ids among the ControlComponentCodeSharesPayload chunks.");

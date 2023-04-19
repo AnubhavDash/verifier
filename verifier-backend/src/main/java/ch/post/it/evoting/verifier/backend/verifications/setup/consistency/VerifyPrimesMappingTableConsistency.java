@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
 import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
 import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -54,7 +55,7 @@ public class VerifyPrimesMappingTableConsistency extends AbstractVerification {
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification307.description"));
-		definition.setId(307);
+		definition.setId("03.08");
 		definition.setName("VerifyPrimesMappingTableConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
@@ -67,8 +68,9 @@ public class VerifyPrimesMappingTableConsistency extends AbstractVerification {
 				.parallel()
 				.map(VerificationCardSetContext::primesMappingTable)
 				.toList();
+		final Configuration configuration = extractionService.getCantonConfig(inputDirectoryPath);
 
-		if (consistencyAlgorithm.verifyPrimesMappingTableConsistency(primesMappingTables)) {
+		if (consistencyAlgorithm.verifyPrimesMappingTableConsistency(primesMappingTables, configuration)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),

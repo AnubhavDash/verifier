@@ -29,16 +29,16 @@ import ch.ech.xmlns.ech_0110._4.Delivery;
 import ch.post.it.evoting.cryptoprimitives.domain.validations.FailedValidationException;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hash;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingdecrypt.Results;
-import ch.post.it.evoting.verifier.backend.hashable.HashableEch0110Factory;
-import ch.post.it.evoting.verifier.backend.hashable.HashableEch0222Factory;
-import ch.post.it.evoting.verifier.backend.hashable.HashableResultsFactory;
-import ch.post.it.evoting.verifier.backend.tools.DeliveryMapper;
-import ch.post.it.evoting.verifier.backend.tools.RawDataDeliveryMapper;
-import ch.post.it.evoting.verifier.backend.tools.ResultDeliveryMapper;
-import ch.post.it.evoting.verifier.protocol.domain.tally.TallyComponentVotesPayload;
-import ch.post.it.evoting.verifier.protocol.domain.xml.XmlNormalizer;
+import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
+import ch.post.it.evoting.evotinglibraries.xml.XmlNormalizer;
+import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableEch0110Factory;
+import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableEch0222Factory;
+import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableResultsFactory;
+import ch.post.it.evoting.evotinglibraries.xml.mapper.DeliveryMapper;
+import ch.post.it.evoting.evotinglibraries.xml.mapper.RawDataDeliveryMapper;
+import ch.post.it.evoting.evotinglibraries.xml.mapper.ResultDeliveryMapper;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 
 @Service
 public class VerifyTallyFilesAlgorithm {
@@ -77,7 +77,8 @@ public class VerifyTallyFilesAlgorithm {
 
 		// Operation.
 		final Results evotingDecryptXML_prime = ResultDeliveryMapper.toResults(configurationXML, tallyComponentVotesPayloads);
-		final Delivery eCH0110XML_prime = DeliveryMapper.INSTANCE.map(ee, configurationXML, evotingDecryptXML);
+		final Delivery eCH0110XML_prime = DeliveryMapper.INSTANCE.map(ee, configurationXML, evotingDecryptXML,
+				configurationXML.getAuthorizations().getAuthorization());
 		final Delivery eCH0110XML_prime_normalized = xmlNormalizer.normalizeWriteInsEch0110(eCH0110XML_prime);
 		final ch.ech.xmlns.ech_0222._1.Delivery eCH0222XML_prime = RawDataDeliveryMapper.createECH0222(ee, configurationXML, evotingDecryptXML);
 		final ch.ech.xmlns.ech_0222._1.Delivery eCH0222XML_prime_normalized = xmlNormalizer.normalizeWriteInsEch0220(eCH0222XML_prime);

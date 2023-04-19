@@ -1,5 +1,29 @@
 # Changelog
 
+## Release 1.4
+
+Release 1.4 includes some feedback from the Federal Chancellery's mandated experts and other experts of the community.
+We want to thank the experts for their high-quality, constructive remarks:
+
+* Vanessa Teague (Thinking Cybersecurity), Olivier Pereira (Université catholique Louvain), Thomas Edmund Haines (Australian National University)
+* Aleksander Essex (Western University Canada)
+* Rolf Haenni, Reto Koenig, Philipp Locher, Eric Dubuis (Bern University of Applied Sciences)
+
+The following functionalities and improvements are included in release 1.4:
+
+* Aligned the identifiers of the verifications to the identifiers in the verifier specification (feedback from Rolf Haenni, Reto Koenig, Philipp Locher, and Eric Dubuis).
+* Added the semantic information of the voting options to the primes mapping table (feedback from Rolf Haenni, Reto Koenig, Philipp Locher, Eric Dubuis).
+* Extended the VerifyPrimesMappingTableConsistency verification to check that the setup component's primes mapping table corresponds to the canton's configuration XML.
+* Modified the VerifyProcessPlaintexts verification to use the GetEncodedVotingOptions and GetActualVotingOptions algorithm.
+* Extracted common algorithms (Factorize, QuadraticResidueToWriteIn, IntegerToWriteIn, isWriteInOption, DecodeWriteIns, GetMixnetInitialCiphertexts, VerifyMixDecOffline, VerifyVotingClientProofs) to evoting-libraries.
+* Improved the duplicate checks in various data objects.
+* Improved the logging of errors and messages.
+* Various improvements in the user interface and the PDF report.
+* Updated the verifier to evoting-config version 5.
+* Updated dependencies and third-party libraries.
+
+---
+
 ## Release 1.3.3
 
 Release 1.3.3 contains some minor bug fixes and updates. Release 1.3.1 and 1.3.2 were internal releases and hence do not contain a separate readme.
@@ -15,12 +39,7 @@ Release 1.3.3 contains some minor bug fixes and updates. Release 1.3.1 and 1.3.2
 
 ## Release 1.3
 
-Release 1.3 includes some feedback from the Federal Chancellery's mandated experts and other experts of the community.
-We want to thank the experts for their high-quality, constructive remarks:
-
-* Vanessa Teague (Thinking Cybersecurity), Olivier Pereira (Université catholique Louvain), Thomas Edmund Haines (Australian National University)
-* Aleksander Essex (Western University Canada)
-* Rolf Haenni, Reto Koenig, Philipp Locher, Eric Dubuis (Bern University of Applied Sciences)
+Release 1.3 incorporates feedback from the Federal Chancellery's mandated experts (see above).
 
 The following functionalities and improvements are included in release 1.3:
 

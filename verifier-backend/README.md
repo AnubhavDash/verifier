@@ -2,59 +2,59 @@
 
 All verifications performed in the verifier are listed in the table below:
 
-| Phase | Category     | Id  | Name of the verification                          |
-|-------|--------------|-----|---------------------------------------------------|
-| Setup | Completeness | 100 | VerifySetupCompleteness                           |
-| Setup | Authenticity | 200 | VerifySignatureSetupComponentEncryptionParameters |
-| Setup | Authenticity | 201 | VerifySignatureCantonConfig                       |
-| Setup | Authenticity | 202 | VerifySignatureSetupComponentPublicKeys           |
-| Setup | Authenticity | 203 | VerifySignatureControlComponentPublicKeys         |
-| Setup | Authenticity | 204 | VerifySignatureSetupComponentVerificationData     |
-| Setup | Authenticity | 205 | VerifySignatureControlComponentCodeShares         |
-| Setup | Authenticity | 206 | VerifySignatureSetupComponentTallyData            |
-| Setup | Authenticity | 207 | VerifySignatureElectionEventContext               |
-| Setup | Consistency  | 300 | VerifyEncryptionGroupConsistency                  |
-| Setup | Consistency  | 301 | VerifySetupFileNamesConsistency                   |
-| Setup | Consistency  | 302 | VerifyCCrChoiceReturnCodesPublicKeyConsistency    |
-| Setup | Consistency  | 303 | VerifyCCmElectionPublicKeyConsistency             |
-| Setup | Consistency  | 304 | VerifyCcmAndCcrSchnorrProofsConsistency           |
-| Setup | Consistency  | 305 | VerifyChoiceReturnCodesPublicKeyConsistency       |
-| Setup | Consistency  | 306 | VerifyElectionPublicKeyConsistency                |
-| Setup | Consistency  | 307 | VerifyPrimesMappingTableConsistency               |
-| Setup | Consistency  | 308 | VerifyElectionEventIdConsistency                  |
-| Setup | Consistency  | 309 | VerifyVerificationCardSetIdsConsistency           |
-| Setup | Consistency  | 310 | VerifyFileNameVerificationCardSetIdsConsistency   |
-| Setup | Consistency  | 311 | VerifyVerificationCardIdsConsistency              |
-| Setup | Consistency  | 312 | VerifyTotalVotersConsistency                      |
-| Setup | Consistency  | 313 | VerifyNodeIdsConsistency                          |
-| Setup | Consistency  | 314 | VerifyChunkConsistency                            |
-| Setup | Evidence     | 500 | VerifyEncryptionParameters                        |
-| Setup | Evidence     | 501 | VerifySmallPrimeGroupMembers                      |
-| Setup | Evidence     | 502 | VerifyVotingOptions                               |
-| Setup | Evidence     | 503 | VerifyKeyGenerationSchnorrProofs                  |
-| Setup | Evidence     | 504 | VerifyEncryptedPCCExponentiationProofs            |
-| Setup | Evidence     | 505 | VerifyEncryptedCKExponentiationProofs             |
-| Tally | Completeness | 100 | VerifyTallyCompleteness                           |
-| Tally | Authenticity | 200 | VerifySignatureControlComponentBallotBox          |
-| Tally | Authenticity | 201 | VerifySignatureControlComponentShuffle            |
-| Tally | Authenticity | 202 | VerifySignatureTallyComponentShuffle              |
-| Tally | Authenticity | 203 | VerifySignatureTallyComponentVotes                |
-| Tally | Authenticity | 204 | VerifySignatureTallyComponentDecrypt              |
-| Tally | Authenticity | 205 | VerifySignatureTallyComponentEch0110              |
-| Tally | Authenticity | 206 | VerifySignatureTallyComponentEch0222              |
-| Tally | Consistency  | 300 | VerifyConfirmedEncryptedVotesConsistency          |
-| Tally | Consistency  | 301 | VerifyCiphertextsConsistency                      |
-| Tally | Consistency  | 302 | VerifyPlaintextsConsistency                       |
-| Tally | Consistency  | 303 | VerifyVerificationCardIdsConsistency              |
-| Tally | Consistency  | 304 | VerifyBallotBoxIdsConsistency                     |
-| Tally | Consistency  | 305 | VerifyFileNameBallotBoxIdsConsistency             |
-| Tally | Consistency  | 306 | VerifyNumberConfirmedEncryptedVotesConsistency    |
-| Tally | Consistency  | 307 | VerifyElectionEventIdConsistency                  |
-| Tally | Consistency  | 308 | VerifyNodeIdsConsistency                          |
-| Tally | Consistency  | 309 | VerifyFileNameNodeIdsConsistency                  |
-| Tally | Consistency  | 310 | VerifyEncryptionGroupConsistency                  |
-| Tally | Evidence     | 500 | VerifyOnlineControlComponents                     |
-| Tally | Evidence     | 501 | VerifyTallyControlComponent                       |
+| Phase | Category     | Id    | Name of the verification                          |
+|-------|--------------|-------|---------------------------------------------------|
+| Setup | Completeness | 01.01 | VerifySetupCompleteness                           |
+| Setup | Authenticity | 02.01 | VerifySignatureSetupComponentEncryptionParameters |
+| Setup | Authenticity | 02.02 | VerifySignatureCantonConfig                       |
+| Setup | Authenticity | 02.03 | VerifySignatureSetupComponentPublicKeys           |
+| Setup | Authenticity | 02.04 | VerifySignatureControlComponentPublicKeys         |
+| Setup | Authenticity | 02.05 | VerifySignatureSetupComponentVerificationData     |
+| Setup | Authenticity | 02.06 | VerifySignatureControlComponentCodeShares         |
+| Setup | Authenticity | 02.07 | VerifySignatureSetupComponentTallyData            |
+| Setup | Authenticity | 02.08 | VerifySignatureElectionEventContext               |
+| Setup | Consistency  | 03.01 | VerifyEncryptionGroupConsistency                  |
+| Setup | Consistency  | 03.02 | VerifySetupFileNamesConsistency                   |
+| Setup | Consistency  | 03.03 | VerifyCCrChoiceReturnCodesPublicKeyConsistency    |
+| Setup | Consistency  | 03.04 | VerifyCCmElectionPublicKeyConsistency             |
+| Setup | Consistency  | 03.05 | VerifyCcmAndCcrSchnorrProofsConsistency           |
+| Setup | Consistency  | 03.06 | VerifyChoiceReturnCodesPublicKeyConsistency       |
+| Setup | Consistency  | 03.07 | VerifyElectionPublicKeyConsistency                |
+| Setup | Consistency  | 03.08 | VerifyPrimesMappingTableConsistency               |
+| Setup | Consistency  | 03.09 | VerifyElectionEventIdConsistency                  |
+| Setup | Consistency  | 03.10 | VerifyVerificationCardSetIdsConsistency           |
+| Setup | Consistency  | 03.11 | VerifyFileNameVerificationCardSetIdsConsistency   |
+| Setup | Consistency  | 03.12 | VerifyVerificationCardIdsConsistency              |
+| Setup | Consistency  | 03.13 | VerifyTotalVotersConsistency                      |
+| Setup | Consistency  | 03.14 | VerifyNodeIdsConsistency                          |
+| Setup | Consistency  | 03.15 | VerifyChunkConsistency                            |
+| Setup | Evidence     | 05.01 | VerifyEncryptionParameters                        |
+| Setup | Evidence     | 05.02 | VerifySmallPrimeGroupMembers                      |
+| Setup | Evidence     | 05.03 | VerifyVotingOptions                               |
+| Setup | Evidence     | 05.04 | VerifyKeyGenerationSchnorrProofs                  |
+| Setup | Evidence     | 05.21 | VerifyEncryptedPCCExponentiationProofs            |
+| Setup | Evidence     | 05.22 | VerifyEncryptedCKExponentiationProofs             |
+| Tally | Completeness | 06.01 | VerifyTallyCompleteness                           |
+| Tally | Authenticity | 07.01 | VerifySignatureControlComponentBallotBox          |
+| Tally | Authenticity | 07.02 | VerifySignatureControlComponentShuffle            |
+| Tally | Authenticity | 07.03 | VerifySignatureTallyComponentShuffle              |
+| Tally | Authenticity | 07.04 | VerifySignatureTallyComponentVotes                |
+| Tally | Authenticity | 07.05 | VerifySignatureTallyComponentDecrypt              |
+| Tally | Authenticity | 07.06 | VerifySignatureTallyComponentEch0110              |
+| Tally | Authenticity | 07.07 | VerifySignatureTallyComponentEch0222              |
+| Tally | Consistency  | 08.01 | VerifyConfirmedEncryptedVotesConsistency          |
+| Tally | Consistency  | 08.02 | VerifyCiphertextsConsistency                      |
+| Tally | Consistency  | 08.03 | VerifyPlaintextsConsistency                       |
+| Tally | Consistency  | 08.04 | VerifyVerificationCardIdsConsistency              |
+| Tally | Consistency  | 08.05 | VerifyBallotBoxIdsConsistency                     |
+| Tally | Consistency  | 08.06 | VerifyFileNameBallotBoxIdsConsistency             |
+| Tally | Consistency  | 08.07 | VerifyNumberConfirmedEncryptedVotesConsistency    |
+| Tally | Consistency  | 08.08 | VerifyElectionEventIdConsistency                  |
+| Tally | Consistency  | 08.09 | VerifyNodeIdsConsistency                          |
+| Tally | Consistency  | 08.10 | VerifyFileNameNodeIdsConsistency                  |
+| Tally | Consistency  | 08.11 | VerifyEncryptionGroupConsistency                  |
+| Tally | Evidence     | 10.01 | VerifyOnlineControlComponents                     |
+| Tally | Evidence     | 10.02 | VerifyTallyControlComponent                       |
 
 For detailed information, please refer to the verifier
 specification [document](https://gitlab.com/swisspost-evoting/e-voting/e-voting-documentation/-/blob/master/System/Verifier_Specification.pdf).

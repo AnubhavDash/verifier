@@ -23,11 +23,11 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.domain.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
@@ -52,7 +52,7 @@ public class VerifyTotalVotersConsistency extends AbstractVerification {
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification312.description"));
-		definition.setId(312);
+		definition.setId("03.13");
 		definition.setName("VerifyTotalVotersConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
@@ -62,7 +62,7 @@ public class VerifyTotalVotersConsistency extends AbstractVerification {
 	public VerificationResult verify(final Path inputDirectoryPath) {
 		final Configuration configuration = extractionService.getCantonConfig(inputDirectoryPath);
 
-		final int voterTotal = configuration.getHeader().getVoterTotal().intValueExact();
+		final int voterTotal = configuration.getHeader().getVoterTotal();
 		final int voterCount = configuration.getRegister().getVoter().size();
 		checkState(voterTotal == voterCount,
 				"The voter total in the header must be the same as the size of the voter list. [voterTotal: %s, voterCount: %s]", voterTotal,

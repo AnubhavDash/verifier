@@ -20,11 +20,12 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Map;
+import java.util.Objects;
 
 public record DatasetConfiguration(String filename, String hash, String electionEventId, Map<String, String> aliasesToFingerprints,
 								   String electionEventName, String electionEventDate, int numberOfElections, int numberOfVotes,
 								   long numberOfNonTestBallotBoxes, long numberOfTestBallotBoxes, int totalNumberOfAuthorizedNonTestVoters,
-								   int totalNumberOfTestVoters) {
+								   int totalNumberOfTestVoters, Integer numberOfConfirmedNonTestVotes, Integer numberOfConfirmedTestVotes) {
 
 	public DatasetConfiguration {
 		checkNotNull(filename);
@@ -40,5 +41,11 @@ public record DatasetConfiguration(String filename, String hash, String election
 		checkArgument(numberOfTestBallotBoxes >= 0, "The number of test ballot boxes must be positive.");
 		checkArgument(totalNumberOfAuthorizedNonTestVoters >= 0, "The total number of authorized non test voters must be positive.");
 		checkArgument(totalNumberOfTestVoters >= 0, "The total number of test voters must be positive.");
+		if (Objects.nonNull(numberOfConfirmedNonTestVotes)) {
+			checkArgument(numberOfConfirmedNonTestVotes >= 0, "The number of confirmed non test votes must be positive.");
+		}
+		if (Objects.nonNull(numberOfConfirmedTestVotes)) {
+			checkArgument(numberOfConfirmedTestVotes >= 0, "The number of confirmed non test votes must be positive.");
+		}
 	}
 }

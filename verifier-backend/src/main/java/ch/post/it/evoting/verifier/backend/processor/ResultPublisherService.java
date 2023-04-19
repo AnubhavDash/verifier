@@ -35,12 +35,13 @@ public class ResultPublisherService {
 		this.template = template;
 	}
 
-	public void publish(final VerificationResult verificationResult) {
+	public void publish(final VerificationResult verificationResult, final double executionTime) {
 		final Verification verification = VerificationMapper.INSTANCE.map(verificationResult.getVerificationDefinition());
 		VerificationMapper.INSTANCE.update(verification, verificationResult);
 
 		template.convertAndSend("/pushUpdate", verification);
-		LOGGER.info("Verification result published to websocket. [verification: {}, status: {}]", verification.getId(), verification.getStatus());
+		LOGGER.info("Verification result published to websocket. [verification: {}, status: {}, executionTime(s): {}]", verification.getId(),
+				verification.getStatus(), executionTime);
 	}
 
 }

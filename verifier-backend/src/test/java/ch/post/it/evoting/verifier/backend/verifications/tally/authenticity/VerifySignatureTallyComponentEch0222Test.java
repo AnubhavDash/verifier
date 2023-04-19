@@ -41,11 +41,11 @@ import ch.ech.xmlns.ech_0222._1.Delivery;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
-import ch.post.it.evoting.verifier.backend.hashable.HashableEch0222Factory;
-import ch.post.it.evoting.verifier.backend.tools.XmlFileRepository;
-import ch.post.it.evoting.verifier.protocol.domain.xml.XsdConstants;
+import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
+import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
+import ch.post.it.evoting.evotinglibraries.xml.XsdConstants;
+import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableEch0222Factory;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
-import ch.post.it.evoting.verifier.protocol.domain.ChannelSecurityContextData;
 
 class VerifySignatureTallyComponentEch0222Test extends TallyVerificationTest {
 

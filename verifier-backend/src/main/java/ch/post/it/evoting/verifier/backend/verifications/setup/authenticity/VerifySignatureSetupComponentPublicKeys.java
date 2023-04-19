@@ -29,6 +29,7 @@ import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
 import ch.post.it.evoting.cryptoprimitives.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
+import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -38,7 +39,6 @@ import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
-import ch.post.it.evoting.verifier.protocol.domain.ChannelSecurityContextData;
 
 @Component
 public class VerifySignatureSetupComponentPublicKeys extends AbstractVerification {
@@ -64,7 +64,7 @@ public class VerifySignatureSetupComponentPublicKeys extends AbstractVerificatio
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
 						"verification.direct.trust.authenticity.description", "SetupComponentPublicKeys"));
-		definition.setId(202);
+		definition.setId("02.03");
 		definition.setName("VerifySignatureSetupComponentPublicKeys");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
@@ -102,7 +102,8 @@ public class VerifySignatureSetupComponentPublicKeys extends AbstractVerificatio
 					additionalContextData, signature.signatureContents());
 		} catch (final SignatureException e) {
 			throw new IllegalStateException(
-					String.format("Could not verify the signature of the setup component public keys payload. [electionEventId: %s]", electionEventId));
+					String.format("Could not verify the signature of the setup component public keys payload. [electionEventId: %s]",
+							electionEventId));
 		}
 	}
 }

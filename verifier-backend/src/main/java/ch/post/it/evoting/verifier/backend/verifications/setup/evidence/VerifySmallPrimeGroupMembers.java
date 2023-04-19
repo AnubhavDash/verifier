@@ -54,7 +54,7 @@ public class VerifySmallPrimeGroupMembers extends AbstractVerification {
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
 				"setup.verification501.description"));
-		definition.setId(501);
+		definition.setId("05.02");
 		definition.setName("VerifySmallPrimeGroupMembers");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

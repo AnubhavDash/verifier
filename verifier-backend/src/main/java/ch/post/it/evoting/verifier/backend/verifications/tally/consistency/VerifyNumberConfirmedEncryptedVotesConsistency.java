@@ -23,6 +23,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.TallyComponentShufflePayload;
+import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -35,7 +36,6 @@ import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
-import ch.post.it.evoting.verifier.protocol.domain.tally.TallyComponentVotesPayload;
 
 @Component
 public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVerification {
@@ -57,7 +57,7 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification306.description"));
-		definition.setId(306);
+		definition.setId("08.07");
 		definition.setName("VerifyNumberConfirmedEncryptedVotesConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

@@ -110,7 +110,7 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 		final int l = c_dec_4.getElementSize();
 		final int N_C_hat = c_dec_4.size();
 		final int N_C = L_votes.size();
-		final GroupVector<PrimeGqElement, GqGroup> p_tilde = pTable.getPTable().stream()
+		final GroupVector<PrimeGqElement, GqGroup> p_tilde = pTable.getPTable().stream().parallel()
 				.map(PrimesMappingTableEntry::encodedVotingOption)
 				.collect(GroupVector.toGroupVector());
 
@@ -119,8 +119,8 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 		checkArgument((N_C_hat == N_C) || (N_C_hat == N_C + 2 && N_C < 2),
 				"The number of mixed votes must be equal to the number of processed votes, if the number of confirmed votes is 2 or greater. "
 						+ "Otherwise, there must be two more mixed votes than confirmed votes (for N_C = 0 or 1).");
-		checkArgument(L_votes.stream().allMatch(p_tilde::containsAll), "All selected voting options must be a subset of the total voting options.");
-		L_votes.forEach(p_i_hat -> checkArgument(p_i_hat.stream().distinct().count() == p_i_hat.size(),
+		checkArgument(L_votes.stream().parallel().allMatch(p_tilde::containsAll), "All selected voting options must be a subset of the total voting options.");
+		L_votes.forEach(p_i_hat -> checkArgument(p_i_hat.stream().parallel().distinct().count() == p_i_hat.size(),
 				"All selected encoded voting options in a vote must be distinct."));
 
 		// Algorithm.
@@ -132,11 +132,15 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 		final VerificationResult shuffleVerif = mixnet.verifyShuffle(c_dec_4, c_mix_5, pi_mix_5, EB_pk_cut);
 		if (!shuffleVerif.isVerified()) {
 			LOGGER.error("The shuffle proofs are invalid. [ee: {}, bb: {}, errorMessage: {}]", ee, bb, shuffleVerif.getErrorMessages().getFirst());
+		} else {
+			LOGGER.info("The shuffle proofs are valid. [ee: {}, bb: {}]", ee, bb);
 		}
 
 		final VerificationResult decryptVerif = zeroKnowledgeProof.verifyDecryptions(c_mix_5, EB_pk_cut, pi_dec_5, i_aux);
 		if (!decryptVerif.isVerified()) {
 			LOGGER.error("The decryption proofs are invalid. [ee: {}, bb: {}, errorMessage: {}]", ee, bb, decryptVerif.getErrorMessages().getFirst());
+		} else {
+			LOGGER.info("The decryption proofs are valid. [ee: {}, bb: {}]", ee, bb);
 		}
 
 		final boolean processVerif = verifyProcessPlaintextsAlgorithm.verifyProcessPlaintexts(encryptionGroup,
@@ -152,6 +156,8 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 						.build());
 		if (!processVerif) {
 			LOGGER.error("The process plaintexts verification failed. [ee: {}, bb: {}]", ee, bb);
+		} else {
+			LOGGER.info("The process plaintexts verification succeeded. [ee: {}, bb: {}]", ee, bb);
 		}
 
 		return shuffleVerif.isVerified() && decryptVerif.isVerified() && processVerif;

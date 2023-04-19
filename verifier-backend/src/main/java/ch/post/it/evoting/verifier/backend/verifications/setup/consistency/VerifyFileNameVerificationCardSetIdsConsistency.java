@@ -62,7 +62,7 @@ public class VerifyFileNameVerificationCardSetIdsConsistency extends AbstractVer
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification310.description"));
-		definition.setId(310);
+		definition.setId("03.11");
 		definition.setName("VerifyFileNameVerificationCardSetIdsConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;

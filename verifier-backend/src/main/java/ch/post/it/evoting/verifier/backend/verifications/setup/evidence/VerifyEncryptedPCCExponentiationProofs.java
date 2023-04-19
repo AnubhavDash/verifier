@@ -50,7 +50,7 @@ public class VerifyEncryptedPCCExponentiationProofs extends AbstractVerification
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
 				"setup.verification504.description"));
-		definition.setId(504);
+		definition.setId("05.21");
 		definition.setName("VerifyEncryptedPCCExponentiationProofs");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
