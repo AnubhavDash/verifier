@@ -23,7 +23,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
-import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTableEntry;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientMessage;
 import ch.post.it.evoting.cryptoprimitives.math.GqElement;
@@ -32,6 +31,7 @@ import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.FactorizeAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetActualVotingOptionsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetEncodedVotingOptionsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.DecodeWriteInsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.DecodeWriteInsAlgorithmInput;
 
@@ -39,16 +39,19 @@ import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.wri
 public final class VerifyProcessPlaintextsAlgorithm {
 
 	private final ElGamal elGamal;
+	private final GetEncodedVotingOptionsAlgorithm getEncodedVotingOptionsAlgorithm;
 	private final GetActualVotingOptionsAlgorithm getActualVotingOptionsAlgorithm;
 	private final DecodeWriteInsAlgorithm decodeWriteInsAlgorithm;
 	private final FactorizeAlgorithm factorizeAlgorithm;
 
 	public VerifyProcessPlaintextsAlgorithm(
 			final ElGamal elGamal,
+			final GetEncodedVotingOptionsAlgorithm getEncodedVotingOptionsAlgorithm,
 			final GetActualVotingOptionsAlgorithm getActualVotingOptionsAlgorithm,
 			final DecodeWriteInsAlgorithm decodeWriteInsAlgorithm,
 			final FactorizeAlgorithm factorizeAlgorithm) {
 		this.elGamal = elGamal;
+		this.getEncodedVotingOptionsAlgorithm = getEncodedVotingOptionsAlgorithm;
 		this.getActualVotingOptionsAlgorithm = getActualVotingOptionsAlgorithm;
 		this.decodeWriteInsAlgorithm = decodeWriteInsAlgorithm;
 		this.factorizeAlgorithm = factorizeAlgorithm;
@@ -70,16 +73,12 @@ public final class VerifyProcessPlaintextsAlgorithm {
 	 */
 	@SuppressWarnings("java:S117")
 	public boolean verifyProcessPlaintexts(final GqGroup encryptionGroup, final VerifyProcessPlaintextsInput input) {
-
 		checkNotNull(encryptionGroup);
 		checkNotNull(input);
 		checkArgument(input.getPlaintextVotes().getGroup().equals(encryptionGroup), "The context and input must have the same group.");
 
 		// Input.
 		final PrimesMappingTable pTable = input.getPrimesMappingTable();
-		final GroupVector<PrimeGqElement, GqGroup> p_tilde = pTable.getPTable().stream()
-				.map(PrimesMappingTableEntry::encodedVotingOption)
-				.collect(GroupVector.toGroupVector());
 		final GroupVector<ElGamalMultiRecipientMessage, GqGroup> m = input.getPlaintextVotes();
 		final GroupVector<PrimeGqElement, GqGroup> p_w_tilde = input.getWriteInVotingOptions();
 		final int psi = input.getNumberOfSelectableVotingOptions();
@@ -109,7 +108,8 @@ public final class VerifyProcessPlaintextsAlgorithm {
 				.filter(m_i -> !m_i.equals(one_vector))
 				.map(m_i -> {
 					final GqElement phi_i_0 = m_i.get(0);
-					final GroupVector<PrimeGqElement, GqGroup> p_k_hat_prime = factorizeAlgorithm.factorize(phi_i_0, p_tilde, psi);
+					final GroupVector<PrimeGqElement, GqGroup> p_k_hat_prime = factorizeAlgorithm.factorize(phi_i_0,
+							getEncodedVotingOptionsAlgorithm.getEncodedVotingOptions(pTable, List.of()), psi);
 
 					final List<String> v_k_hat_prime = getActualVotingOptionsAlgorithm.getActualVotingOptions(pTable, p_k_hat_prime);
 

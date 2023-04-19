@@ -42,6 +42,8 @@ import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProo
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.FactorizeAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetActualVotingOptionsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetEncodedVotingOptionsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetSemanticInformationAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.DecodeWriteInsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.IntegerToWriteInAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.IsWriteInOptionAlgorithm;
@@ -93,8 +95,10 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
-	public VerifyVotingClientProofsAlgorithm verifyVotingClientProofsAlgorithm(final ZeroKnowledgeProof zeroKnowledgeProof) {
-		return new VerifyVotingClientProofsAlgorithm(zeroKnowledgeProof);
+	public VerifyVotingClientProofsAlgorithm verifyVotingClientProofsAlgorithm(final ZeroKnowledgeProof zeroKnowledgeProof
+	) {
+		return new VerifyVotingClientProofsAlgorithm(zeroKnowledgeProof, getEncodedVotingOptionsAlgorithm(), getActualVotingOptionsAlgorithm(),
+				getSemanticInformationAlgorithm());
 	}
 
 	@Bean
@@ -108,8 +112,18 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
+	public GetEncodedVotingOptionsAlgorithm getEncodedVotingOptionsAlgorithm() {
+		return new GetEncodedVotingOptionsAlgorithm();
+	}
+
+	@Bean
 	public GetActualVotingOptionsAlgorithm getActualVotingOptionsAlgorithm() {
 		return new GetActualVotingOptionsAlgorithm();
+	}
+
+	@Bean
+	public GetSemanticInformationAlgorithm getSemanticInformationAlgorithm() {
+		return new GetSemanticInformationAlgorithm();
 	}
 
 	@Bean

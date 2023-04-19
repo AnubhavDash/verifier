@@ -30,6 +30,7 @@ import ch.post.it.evoting.cryptoprimitives.mixnet.MixnetFactory;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.FactorizeAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetActualVotingOptionsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetEncodedVotingOptionsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.DecodeWriteInsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.IntegerToWriteInAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.IsWriteInOptionAlgorithm;
@@ -41,6 +42,7 @@ import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerification
 
 class VerifyTallyControlComponentTest extends TallyVerificationTest {
 
+	private static final GetEncodedVotingOptionsAlgorithm GET_ENCODED_VOTING_OPTIONS_ALGORITHM = new GetEncodedVotingOptionsAlgorithm();
 	private static final GetActualVotingOptionsAlgorithm GET_ACTUAL_VOTING_OPTIONS_ALGORITHM = new GetActualVotingOptionsAlgorithm();
 	private static final IsWriteInOptionAlgorithm IS_WRITE_IN_OPTION_ALGORITHM = new IsWriteInOptionAlgorithm();
 	private static final IntegerToWriteInAlgorithm INTEGER_TO_WRITE_IN_ALGORITHM = new IntegerToWriteInAlgorithm();
@@ -50,7 +52,8 @@ class VerifyTallyControlComponentTest extends TallyVerificationTest {
 			QUADRATIC_RESIDUE_TO_WRITE_IN_ALGORITHM);
 	private static final FactorizeAlgorithm FACTORIZE_ALGORITHM = new FactorizeAlgorithm();
 	private static final VerifyProcessPlaintextsAlgorithm VERIFY_PROCESS_PLAINTEXTS_ALGORITHM = new VerifyProcessPlaintextsAlgorithm(
-			ElGamalFactory.createElGamal(), GET_ACTUAL_VOTING_OPTIONS_ALGORITHM, DECODE_WRITE_INS_ALGORITHM, FACTORIZE_ALGORITHM);
+			ElGamalFactory.createElGamal(), GET_ENCODED_VOTING_OPTIONS_ALGORITHM, GET_ACTUAL_VOTING_OPTIONS_ALGORITHM, DECODE_WRITE_INS_ALGORITHM,
+			FACTORIZE_ALGORITHM);
 	private static final VerifyTallyControlComponentBallotBoxAlgorithm VERIFY_TALLY_CONTROL_COMPONENT_BALLOT_BOX_ALGORITHM = new VerifyTallyControlComponentBallotBoxAlgorithm(
 			MixnetFactory.createMixnet(), ZeroKnowledgeProofFactory.createZeroKnowledgeProof(), VERIFY_PROCESS_PLAINTEXTS_ALGORITHM);
 	private static final VerifyTallyFilesAlgorithm VERIFY_TALLY_FILES_ALGORITHM = new VerifyTallyFilesAlgorithm(HashService.getInstance(),
