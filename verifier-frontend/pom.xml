@@ -5,7 +5,7 @@
   <parent>
     <artifactId>verifier</artifactId>
     <groupId>ch.post.it.evoting.verifier</groupId>
-    <version>1.4.0.0</version>
+    <version>1.4.1.0-RC1</version>
   </parent>
 
   <artifactId>verifier-frontend</artifactId>
