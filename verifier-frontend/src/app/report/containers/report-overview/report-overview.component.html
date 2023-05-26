@@ -169,9 +169,9 @@
           </div>
         </div>
         <div class="row">
-          <ng-container *ngFor="let fingerprint of fingerprints | keyvalue">
-            <div class="col-4">{{fingerprintsNames[fingerprint.key]}}</div>
-            <div class="col-8">{{fingerprint.value}}</div>
+          <ng-container *ngFor="let name of fingerPrintsNamesKeys()">
+            <div class="col-4">{{fingerprintsNames[name]}}</div>
+            <div class="col-8">{{fingerprints[name]}}</div>
           </ng-container>
         </div>
         <div class="row mt-3 html2pdf-break-page">
@@ -200,9 +200,15 @@
         </div>
         <div class="row">
           <div class="col-4">
-            Number of votes (votations)
+            Number of votes (Abstimmungen / votations)
           </div>
           <div class="col-8">{{numberOfVotes}}</div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            Number of ballots (Vorlagen / objets)
+          </div>
+          <div class="col-8">{{numberOfBallots}}</div>
         </div>
         <div class="row">
           <div class="col-4">
