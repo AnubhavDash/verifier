@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public record DatasetConfiguration(String filename, String hash, String electionEventId, Map<String, String> aliasesToFingerprints,
-								   String electionEventName, String electionEventDate, int numberOfElections, int numberOfVotes,
+								   String electionEventName, String electionEventDate, int numberOfElections, int numberOfVotes, int numberOfBallots,
 								   long numberOfNonTestBallotBoxes, long numberOfTestBallotBoxes, int totalNumberOfAuthorizedNonTestVoters,
 								   int totalNumberOfTestVoters, Integer numberOfConfirmedNonTestVotes, Integer numberOfConfirmedTestVotes) {
 
@@ -37,6 +37,7 @@ public record DatasetConfiguration(String filename, String hash, String election
 		checkNotNull(electionEventDate);
 		checkArgument(numberOfElections >= 0, "The number of elections must be positive.");
 		checkArgument(numberOfVotes >= 0, "The number of votes must be positive.");
+		checkArgument(numberOfBallots >= 0, "The number of ballots must be positive.");
 		checkArgument(numberOfNonTestBallotBoxes >= 0, "The number of non test ballot boxes must be positive.");
 		checkArgument(numberOfTestBallotBoxes >= 0, "The number of test ballot boxes must be positive.");
 		checkArgument(totalNumberOfAuthorizedNonTestVoters >= 0, "The total number of authorized non test voters must be positive.");
