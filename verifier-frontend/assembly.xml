@@ -10,6 +10,8 @@
 
   <fileSets>
     <fileSet>
+      <fileMode>0644</fileMode>
+      <directoryMode>0755</directoryMode>
       <directory>${project.build.directory}/electron/win-unpacked</directory>
       <outputDirectory/>
       <filtered>false</filtered>

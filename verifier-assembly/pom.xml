@@ -5,14 +5,14 @@
 	<parent>
 		<artifactId>verifier</artifactId>
 		<groupId>ch.post.it.evoting.verifier</groupId>
-		<version>1.4.1.0-RC1</version>
+		<version>1.4.1.0-RC4</version>
 	</parent>
 
 	<artifactId>verifier-assembly</artifactId>
 	<packaging>pom</packaging>
 
 	<properties>
-		<download-maven-plugin.version>1.6.8</download-maven-plugin.version>
+		<download-maven-plugin.version>1.7.0</download-maven-plugin.version>
 	</properties>
 
 	<dependencies>

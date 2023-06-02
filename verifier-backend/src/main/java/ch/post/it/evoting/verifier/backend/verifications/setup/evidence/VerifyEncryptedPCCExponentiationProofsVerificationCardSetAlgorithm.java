@@ -109,7 +109,7 @@ public class VerifyEncryptedPCCExponentiationProofsVerificationCardSetAlgorithm 
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 
-		LOGGER.info("Successfully verified the pCC exponentiation proofs of all verification cards in verification card set ID [vcs: {}]", vcs);
+		LOGGER.debug("Successfully verified the pCC exponentiation proofs of all verification cards in verification card set ID [vcs: {}]", vcs);
 
 		return verified;
 	}

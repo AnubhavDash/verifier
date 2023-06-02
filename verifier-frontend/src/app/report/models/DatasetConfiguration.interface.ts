@@ -24,6 +24,7 @@ export class DatasetConfiguration {
   electionEventDate: string;
   numberOfElections: number;
   numberOfVotes: number;
+  numberOfBallots: number;
   numberOfNonTestBallotBoxes: number;
   numberOfTestBallotBoxes: number;
   totalNumberOfAuthorizedNonTestVoters: number;

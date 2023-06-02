@@ -58,6 +58,7 @@ export class ReportOverviewComponent implements OnInit {
   electionEventDate: string;
   numberOfElections = 0;
   numberOfVotes = 0;
+  numberOfBallots = 0;
   numberOfNonTestBallotBoxes = 0;
   numberOfTestBallotBoxes = 0;
   totalNumberOfAuthorizedNonTestVoters = 0;
@@ -94,12 +95,12 @@ export class ReportOverviewComponent implements OnInit {
 
   fingerprintsNames = {
     canton: 'Canton',
+    sdm_config: 'Setup Component',
+    sdm_tally: 'Tally Control Component',
     control_component_1: 'Control Component 1',
     control_component_2: 'Control Component 2',
     control_component_3: 'Control Component 3',
-    control_component_4: 'Control Component 4',
-    sdm_config: 'Setup Component',
-    sdm_tally: 'Tally Control Component'
+    control_component_4: 'Control Component 4'
   };
 
   protected readonly VerifierEvent = VerifierEvent;
@@ -124,6 +125,10 @@ export class ReportOverviewComponent implements OnInit {
     result.errorStack = input.errorStack;
     return result;
   }
+
+  fingerPrintsNamesKeys() {
+    return Object.keys(this.fingerprintsNames);
+  };
 
   ngOnInit(): void {
     this.initTable();
@@ -372,6 +377,7 @@ export class ReportOverviewComponent implements OnInit {
             this.electionEventDate = configuration.electionEventDate;
             this.numberOfElections = configuration.numberOfElections;
             this.numberOfVotes = configuration.numberOfVotes;
+            this.numberOfBallots = configuration.numberOfBallots;
             this.numberOfNonTestBallotBoxes = configuration.numberOfNonTestBallotBoxes;
             this.numberOfTestBallotBoxes = configuration.numberOfTestBallotBoxes;
             this.totalNumberOfAuthorizedNonTestVoters = configuration.totalNumberOfAuthorizedNonTestVoters;

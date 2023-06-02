@@ -52,6 +52,7 @@ import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetCo
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.ElectionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.VoteType;
@@ -198,6 +199,12 @@ public class VerifierProcessor {
 
 		final int numberOfVotes = configuration.getContest().getVoteInformation().size();
 
+		final int numberOfBallots = configuration.getContest().getVoteInformation().stream().parallel()
+				.map(VoteInformationType::getVote)
+				.flatMap(voteType -> voteType.getBallot().stream())
+				.mapToInt(ballotType -> ballotType == null ? 0 : 1)
+				.reduce(0, Math::addExact);
+
 		final long numberOfNonTestBallotBoxes = configuration.getAuthorizations().getAuthorization().stream().parallel()
 				.filter(authorizationType -> !authorizationType.isAuthorizationTest())
 				.count();
@@ -216,9 +223,9 @@ public class VerifierProcessor {
 		}
 
 		this.datasetConfiguration = new DatasetConfiguration(filename, String.join(":", datasetHash.split("(?<=\\G.{2})")), electionEventId,
-				aliasesToFingerprints, electionEventName, formattedElectionEventDate, numberOfElections, numberOfVotes, numberOfNonTestBallotBoxes,
-				numberOfTestBallotBoxes, testBallotBoxToTotalNumberOfVoters.get(false), testBallotBoxToTotalNumberOfVoters.get(true),
-				numberOfConfirmedNonTestVotes, numberOfConfirmedTestVotes);
+				aliasesToFingerprints, electionEventName, formattedElectionEventDate, numberOfElections, numberOfVotes, numberOfBallots,
+				numberOfNonTestBallotBoxes, numberOfTestBallotBoxes, testBallotBoxToTotalNumberOfVoters.get(false),
+				testBallotBoxToTotalNumberOfVoters.get(true), numberOfConfirmedNonTestVotes, numberOfConfirmedTestVotes);
 	}
 
 	public void process(final String runOption) {
