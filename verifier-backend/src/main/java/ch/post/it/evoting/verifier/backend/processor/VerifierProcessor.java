@@ -263,7 +263,8 @@ public class VerifierProcessor {
 						.filter(bb -> bb.getBallotBoxIdentification().equals(nonTestAuthorizationIdentification))
 						.collect(MoreCollectors.onlyElement()))
 				.map(nonTestBallotBox -> nonTestBallotBox.getCountingCircle().stream().parallel()
-						.map(countingCircle -> countingCircle.getDomainOfInfluence().stream().parallel()
+						.map(countingCircle -> countingCircle.getDomainOfInfluence().stream()
+								.findFirst()
 								.map(domainOfInfluence -> {
 									final List<VoteType> voteList = domainOfInfluence.getVote();
 									final List<ElectionType> electionList = domainOfInfluence.getElection();
@@ -279,7 +280,8 @@ public class VerifierProcessor {
 											return 0;
 										}
 									}
-								}).reduce(0, Math::addExact)
+								})
+								.orElse(0)
 						).reduce(0, Math::addExact)
 				).reduce(0, Math::addExact);
 	}
