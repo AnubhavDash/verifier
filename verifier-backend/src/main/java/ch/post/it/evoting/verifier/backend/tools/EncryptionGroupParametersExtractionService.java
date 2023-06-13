@@ -16,20 +16,18 @@
 package ch.post.it.evoting.verifier.backend.tools;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
-import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
-import java.util.stream.IntStream;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ch.post.it.evoting.cryptoprimitives.domain.ControlComponentConstants;
-import ch.post.it.evoting.verifier.backend.domain.EncryptionGroupParameters;
-import ch.post.it.evoting.verifier.backend.domain.EncryptionGroupParametersPayload;
+import ch.post.it.evoting.cryptoprimitives.utils.Validations;
+import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentCodeSharesPayloadDataExtractor;
+import ch.post.it.evoting.verifier.backend.dataextractors.EncryptionGroupParametersDataExtractor;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
@@ -38,11 +36,15 @@ import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 public class EncryptionGroupParametersExtractionService {
 
 	private final PathService pathService;
-	private final ObjectMapper objectMapper;
+	private final EncryptionGroupParametersDataExtractor encryptionGroupParametersDataExtractor;
+	private final ControlComponentCodeSharesPayloadDataExtractor controlComponentCodeSharesPayloadDataExtractor;
 
-	public EncryptionGroupParametersExtractionService(final PathService pathService, final ObjectMapper objectMapper) {
+	public EncryptionGroupParametersExtractionService(final PathService pathService,
+			final EncryptionGroupParametersDataExtractor encryptionGroupParametersDataExtractor,
+			final ControlComponentCodeSharesPayloadDataExtractor controlComponentCodeSharesPayloadDataExtractor) {
 		this.pathService = pathService;
-		this.objectMapper = objectMapper;
+		this.encryptionGroupParametersDataExtractor = encryptionGroupParametersDataExtractor;
+		this.controlComponentCodeSharesPayloadDataExtractor = controlComponentCodeSharesPayloadDataExtractor;
 	}
 
 	/**
@@ -53,17 +55,12 @@ public class EncryptionGroupParametersExtractionService {
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the extraction fails.
 	 */
-	public EncryptionGroupParameters getFromElectionEventContext(final Path inputDirectoryPath) {
+	public EncryptionGroupParametersDataExtractor.DataExtraction getFromElectionEventContext(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
 		final PathNode electionEventContextPayloadPath = pathService.buildFromRootPath(StructureKey.ELECTION_EVENT_CONTEXT, inputDirectoryPath);
-		try {
-			return objectMapper.readValue(electionEventContextPayloadPath.getPath().toFile(), EncryptionGroupParametersPayload.class).gqGroup();
-		} catch (final IOException e) {
-			throw new UncheckedIOException(String.format(
-					"Failed to deserialize the encryption group parameters from the election event context payload. [path: %s]",
-					electionEventContextPayloadPath), e);
-		}
+
+		return encryptionGroupParametersDataExtractor.load(electionEventContextPayloadPath.getPath());
 	}
 
 	/**
@@ -74,18 +71,12 @@ public class EncryptionGroupParametersExtractionService {
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the extraction fails.
 	 */
-	public EncryptionGroupParameters getFromEncryptionParameters(final Path inputDirectoryPath) {
+	public EncryptionGroupParametersDataExtractor.DataExtraction getFromEncryptionParameters(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
 		final PathNode encryptionParametersPayloadPath = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
-		try {
-			return objectMapper.readValue(encryptionParametersPayloadPath.getPath().toFile(), EncryptionGroupParametersPayload.class).gqGroup();
-		} catch (final IOException e) {
-			throw new UncheckedIOException(String.format(
-					"Failed to deserialize the encryption group parameters from the election event context payload. [path: %s]",
-					encryptionParametersPayloadPath), e);
-		}
 
+		return encryptionGroupParametersDataExtractor.load(encryptionParametersPayloadPath.getPath());
 	}
 
 	/**
@@ -96,21 +87,14 @@ public class EncryptionGroupParametersExtractionService {
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the extraction fails.
 	 */
-	public Stream<EncryptionGroupParameters> getFromControlComponentPublicKeys(final Path inputDirectoryPath) {
+	public Stream<EncryptionGroupParametersDataExtractor.DataExtraction> getFromControlComponentPublicKeys(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
 		final PathNode controlComponentPublicKeyPayloadPaths = pathService.buildFromRootPath(StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS,
 				inputDirectoryPath);
 		return controlComponentPublicKeyPayloadPaths.getRegexPaths().stream()
-				.map(path -> {
-					try {
-						return objectMapper.readValue(path.toFile(), EncryptionGroupParametersPayload.class).gqGroup();
-					} catch (final IOException e) {
-						throw new UncheckedIOException(String.format(
-								"Failed to deserialize the encryption group parameters from the control component public key payload. [path: %s]",
-								path), e);
-					}
-				});
+				.parallel()
+				.map(encryptionGroupParametersDataExtractor::load);
 	}
 
 	/**
@@ -121,7 +105,7 @@ public class EncryptionGroupParametersExtractionService {
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the extraction fails.
 	 */
-	public Stream<EncryptionGroupParameters> getFromControlComponentBallotBoxPayloads(final Path inputDirectoryPath) {
+	public Stream<EncryptionGroupParametersDataExtractor.DataExtraction> getFromControlComponentBallotBoxPayloads(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
 		final PathNode pathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
@@ -130,15 +114,8 @@ public class EncryptionGroupParametersExtractionService {
 				.flatMap(ballotBoxIdPath -> pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_BALLOT_BOX, ballotBoxIdPath)
 						.getRegexPaths()
 						.stream())
-				.map(ballotBoxPayloadPaths -> {
-					try {
-						return objectMapper.readValue(ballotBoxPayloadPaths.toFile(), EncryptionGroupParametersPayload.class).gqGroup();
-					} catch (final IOException e) {
-						throw new UncheckedIOException(String.format(
-								"Failed to deserialize the encryption group parameters from the control component ballot box payload. [path: %s]",
-								ballotBoxPayloadPaths), e);
-					}
-				});
+				.parallel()
+				.map(encryptionGroupParametersDataExtractor::load);
 	}
 
 	/**
@@ -149,7 +126,7 @@ public class EncryptionGroupParametersExtractionService {
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the extraction fails.
 	 */
-	public Stream<EncryptionGroupParameters> getFromControlComponentShufflePayloads(final Path inputDirectoryPath) {
+	public Stream<EncryptionGroupParametersDataExtractor.DataExtraction> getFromControlComponentShufflePayloads(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
 		final PathNode pathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
@@ -158,15 +135,8 @@ public class EncryptionGroupParametersExtractionService {
 				.flatMap(ballotBoxIdPath -> pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_SHUFFLE, ballotBoxIdPath)
 						.getRegexPaths()
 						.stream())
-				.map(ballotBoxPayloadPaths -> {
-					try {
-						return objectMapper.readValue(ballotBoxPayloadPaths.toFile(), EncryptionGroupParametersPayload.class).gqGroup();
-					} catch (final IOException e) {
-						throw new UncheckedIOException(String.format(
-								"Failed to deserialize the encryption group parameters from the control component shuffle payload. [path: %s]",
-								ballotBoxPayloadPaths), e);
-					}
-				});
+				.parallel()
+				.map(encryptionGroupParametersDataExtractor::load);
 	}
 
 	/**
@@ -176,23 +146,15 @@ public class EncryptionGroupParametersExtractionService {
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the extraction fails.
 	 */
-	public Stream<EncryptionGroupParameters> getFromTallyComponentShufflePayloads(final Path inputDirectoryPath) {
+	public Stream<EncryptionGroupParametersDataExtractor.DataExtraction> getFromTallyComponentShufflePayloads(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
 		final PathNode pathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 
 		return pathNode.getRegexPaths().stream()
-				.map(ballotBoxPayloadPath -> pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_SHUFFLE, ballotBoxPayloadPath))
-				.map(tallyComponentShufflePayloadPath -> {
-					try {
-						return objectMapper.readValue(tallyComponentShufflePayloadPath.getPath().toFile(),
-								EncryptionGroupParametersPayload.class).gqGroup();
-					} catch (IOException e) {
-						throw new UncheckedIOException(String.format(
-								"Failed to deserialize the encryption group parameters from the tally component shuffle payload. [path: %s]",
-								tallyComponentShufflePayloadPath), e);
-					}
-				});
+				.parallel()
+				.map(ballotBoxPayloadPath -> pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_SHUFFLE, ballotBoxPayloadPath).getPath())
+				.map(encryptionGroupParametersDataExtractor::load);
 	}
 
 	/**
@@ -202,23 +164,15 @@ public class EncryptionGroupParametersExtractionService {
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the extraction fails.
 	 */
-	public Stream<EncryptionGroupParameters> getFromTallyComponentVotesPayloads(final Path inputDirectoryPath) {
+	public Stream<EncryptionGroupParametersDataExtractor.DataExtraction> getFromTallyComponentVotesPayloads(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
 		final PathNode pathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 
 		return pathNode.getRegexPaths().stream()
-				.map(ballotBoxPayloadPath -> pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_VOTES, ballotBoxPayloadPath))
-				.map(tallyComponentVotesPayloadPath -> {
-					try {
-						return objectMapper.readValue(tallyComponentVotesPayloadPath.getPath().toFile(), EncryptionGroupParametersPayload.class)
-								.gqGroup();
-					} catch (final IOException e) {
-						throw new UncheckedIOException(String.format(
-								"Failed to deserialize the encryption group parameters from the tally component votes payload. [path: %s]",
-								tallyComponentVotesPayloadPath), e);
-					}
-				});
+				.parallel()
+				.map(ballotBoxPayloadPath -> pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_VOTES, ballotBoxPayloadPath).getPath())
+				.map(encryptionGroupParametersDataExtractor::load);
 
 	}
 
@@ -229,7 +183,7 @@ public class EncryptionGroupParametersExtractionService {
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the extraction fails.
 	 */
-	public Stream<EncryptionGroupParameters> getFromSetupComponentVerificationDataPayloads(final Path inputDirectoryPath) {
+	public Stream<EncryptionGroupParametersDataExtractor.DataExtraction> getFromSetupComponentVerificationDataPayloads(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
 		final PathNode pathNode = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
@@ -238,16 +192,8 @@ public class EncryptionGroupParametersExtractionService {
 				.flatMap(ballotBoxIdPath -> pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA, ballotBoxIdPath)
 						.getRegexPaths()
 						.stream())
-				.map(setupComponentVerificationDataPath -> {
-					try {
-						return objectMapper.readValue(setupComponentVerificationDataPath.toFile(),
-								EncryptionGroupParametersPayload.class).gqGroup();
-					} catch (final IOException e) {
-						throw new UncheckedIOException(String.format(
-								"Failed to deserialize the encryption group parameters from the setup component verification data payload. [path: %s]",
-								setupComponentVerificationDataPath), e);
-					}
-				});
+				.parallel()
+				.map(encryptionGroupParametersDataExtractor::load);
 	}
 
 	/**
@@ -258,7 +204,7 @@ public class EncryptionGroupParametersExtractionService {
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the extraction fails.
 	 */
-	public Stream<EncryptionGroupParameters> getFromControlComponentCodeShares(final Path inputDirectoryPath) {
+	public Stream<EncryptionGroupParametersDataExtractor.DataExtraction> getFromControlComponentCodeShares(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
 		final PathNode pathNode = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
@@ -268,25 +214,20 @@ public class EncryptionGroupParametersExtractionService {
 								verificationCardSetIdPath)
 						.getRegexPaths()
 						.stream())
-				.map(controlComponentCodeSharesPath -> {
-					try {
-						return objectMapper.readTree(controlComponentCodeSharesPath.toFile());
-					} catch (final IOException e) {
-						throw new UncheckedIOException(String.format(
-								"Failed to read the control component code shares. [path: %s]",
-								controlComponentCodeSharesPath), e);
-					}
-				})
-				.flatMap(node -> IntStream.range(0, ControlComponentConstants.NODE_IDS.size()).mapToObj(node::get))
-				.map(node -> {
-					try {
-						return objectMapper.readValue(node.toString(), EncryptionGroupParametersPayload.class).gqGroup();
-					} catch (final IOException e) {
-						throw new UncheckedIOException(
-								String.format(
-										"Failed to deserialize the encryption group parameters from the control component code shares payload. [node: %s]",
-										node), e);
-					}
+				.parallel()
+				.map(controlComponentCodeSharesPayloadDataExtractor::load)
+				.map(dataExtraction -> {
+
+					// Ensure all p, q, g are the same across a single payload file (ie for all nodes)
+					checkState(Validations.allEqual(dataExtraction.p().stream(), Function.identity()));
+					checkState(Validations.allEqual(dataExtraction.q().stream(), Function.identity()));
+					checkState(Validations.allEqual(dataExtraction.g().stream(), Function.identity()));
+
+					return new EncryptionGroupParametersDataExtractor.DataExtraction(
+							dataExtraction.p().iterator().next(),
+							dataExtraction.q().iterator().next(),
+							dataExtraction.g().iterator().next()
+					);
 				});
 	}
 
@@ -298,22 +239,14 @@ public class EncryptionGroupParametersExtractionService {
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the extraction fails.
 	 */
-	public Stream<EncryptionGroupParameters> getFromSetupComponentTallyDataPayloads(final Path inputDirectoryPath) {
+	public Stream<EncryptionGroupParametersDataExtractor.DataExtraction> getFromSetupComponentTallyDataPayloads(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
 		final PathNode pathNode = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
 
 		return pathNode.getRegexPaths().stream()
-				.map(vcsIdPath -> pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_TALLY_DATA, vcsIdPath))
-				.map(setupComponentTallyDataPath -> {
-					try {
-						return objectMapper.readValue(setupComponentTallyDataPath.getPath().toFile(),
-								EncryptionGroupParametersPayload.class).gqGroup();
-					} catch (final IOException e) {
-						throw new UncheckedIOException(String.format(
-								"Failed to deserialize the encryption group parameters from the setup component tally data payload. [path: %s]",
-								setupComponentTallyDataPath), e);
-					}
-				});
+				.parallel()
+				.map(vcsIdPath -> pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_TALLY_DATA, vcsIdPath).getPath())
+				.map(encryptionGroupParametersDataExtractor::load);
 	}
 }

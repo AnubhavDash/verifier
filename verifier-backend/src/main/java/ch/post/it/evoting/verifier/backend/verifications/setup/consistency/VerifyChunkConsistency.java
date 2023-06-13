@@ -27,14 +27,14 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
 
-import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationDataPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
+import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentCodeSharesPayloadDataExtractor;
+import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentVerificationDataPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
-import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
@@ -49,15 +49,18 @@ import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerification
 public class VerifyChunkConsistency extends AbstractVerification {
 
 	private final PathService pathService;
-	private final ElectionDataExtractionService electionDataExtractionService;
+	private final ControlComponentCodeSharesPayloadDataExtractor controlComponentCodeSharesPayloadDataExtractor;
+	private final SetupComponentVerificationDataPayloadDataExtractor setupComponentVerificationDataPayloadDataExtractor;
 
 	protected VerifyChunkConsistency(
 			final PathService pathService,
 			final ResultPublisherService resultPublisherService,
-			final ElectionDataExtractionService electionDataExtractionService) {
+			final ControlComponentCodeSharesPayloadDataExtractor controlComponentCodeSharesPayloadDataExtractor,
+			final SetupComponentVerificationDataPayloadDataExtractor setupComponentVerificationDataPayloadDataExtractor) {
 		super(resultPublisherService);
 		this.pathService = pathService;
-		this.electionDataExtractionService = electionDataExtractionService;
+		this.controlComponentCodeSharesPayloadDataExtractor = controlComponentCodeSharesPayloadDataExtractor;
+		this.setupComponentVerificationDataPayloadDataExtractor = setupComponentVerificationDataPayloadDataExtractor;
 	}
 
 	@Override
@@ -116,11 +119,9 @@ public class VerifyChunkConsistency extends AbstractVerification {
 
 	private boolean validateControlComponentCodeSharesPayloadContentMatchFileName(final Path payloadPath) {
 		final int expectedChunkId = Integer.parseInt(payloadPath.getFileName().toString().split("\\.")[1]);
-		return electionDataExtractionService.getControlComponentCodeSharesOrderByNodeId(payloadPath)
-				.parallel()
-				.map(controlComponentCodeSharesPayload -> controlComponentCodeSharesPayload.getChunkId() == expectedChunkId)
-				.reduce(Boolean::logicalAnd)
-				.orElse(Boolean.FALSE);
+
+		return controlComponentCodeSharesPayloadDataExtractor.load(payloadPath).chunkIds().stream()
+				.allMatch(chunkId -> chunkId == expectedChunkId);
 	}
 
 	private boolean validateSetupComponentVerificationDataPayloads(final PathNode verificationCardSets) {
@@ -135,6 +136,7 @@ public class VerifyChunkConsistency extends AbstractVerification {
 		// validate content of file match filename
 		final boolean doFileNameMatchContent = payloadsPerCardSet.stream()
 				.flatMap(Collection::stream)
+				.parallel()
 				.allMatch(this::validateSetupComponentVerificationDataPayloadContentMatchFileName);
 
 		return isSequenceMonotonic && doFileNameMatchContent;
@@ -142,8 +144,10 @@ public class VerifyChunkConsistency extends AbstractVerification {
 
 	private boolean validateSetupComponentVerificationDataPayloadContentMatchFileName(final Path payloadPath) {
 		final int expectedChunkId = Integer.parseInt(payloadPath.getFileName().toString().split("\\.")[1]);
-		final SetupComponentVerificationDataPayload payload = electionDataExtractionService.getSetupComponentVerificationDataPayload(payloadPath);
-		return payload.getChunkId() == expectedChunkId;
+
+		final Integer payloadChunkId = setupComponentVerificationDataPayloadDataExtractor.load(payloadPath).chunkId();
+
+		return payloadChunkId == expectedChunkId;
 	}
 
 	@VisibleForTesting

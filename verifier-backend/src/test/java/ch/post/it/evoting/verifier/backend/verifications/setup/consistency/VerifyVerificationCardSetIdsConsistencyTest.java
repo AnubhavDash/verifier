@@ -18,20 +18,16 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationDataPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
+import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentVerificationDataPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -56,12 +52,21 @@ class VerifyVerificationCardSetIdsConsistencyTest extends SetupVerificationTest 
 	@Test
 	@DisplayName("inconsistent verification card set ids is failed")
 	void inconsistentVerificationCardIds() {
-		final SetupComponentVerificationDataPayload setupComponentVerificationDataPayloadMock = mock(SetupComponentVerificationDataPayload.class);
-		when(setupComponentVerificationDataPayloadMock.getVerificationCardSetId()).thenReturn("4c6f28483a324d84b5363261aa2062f6");
+		final List<SetupComponentVerificationDataPayloadDataExtractor.DataExtraction> dataExtractions = electionDataExtractionService.getAllSetupComponentVerificationDataPayloadsDataExtractions(
+						datasetPath)
+				.map(dataExtraction -> new SetupComponentVerificationDataPayloadDataExtractor.DataExtraction(
+								dataExtraction.chunkId(),
+								dataExtraction.electionEventId(),
+								"wrong verification card set id",
+								dataExtraction.verificationCardIds()
+						)
+				)
+				.toList();
 
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
-		doAnswer(invocationOnMock -> Stream.of(setupComponentVerificationDataPayloadMock)).when(electionDataExtractionServiceSpy)
-				.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(any());
+
+		doAnswer(invocationOnMock -> dataExtractions.stream()).when(electionDataExtractionServiceSpy)
+				.getSetupComponentVerificationDataPayloadsDataExtractionsSortedByChunkId(any());
 
 		final VerifyVerificationCardSetIdsConsistency verifyVerificationCardSetIdsConsistency = new VerifyVerificationCardSetIdsConsistency(
 				resultPublisherServiceMock, pathService, electionDataExtractionServiceSpy);

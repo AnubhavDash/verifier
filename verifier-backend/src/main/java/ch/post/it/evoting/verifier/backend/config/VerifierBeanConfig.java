@@ -21,6 +21,8 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
+import org.jsfr.json.JsonSurfer;
+import org.jsfr.json.JsonSurferJackson;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -74,6 +76,11 @@ public class VerifierBeanConfig {
 	@Primary
 	public ObjectMapper objectMapper() {
 		return DomainObjectMapper.getNewInstance();
+	}
+
+	@Bean
+	public JsonSurfer jsonSurfer() {
+		return JsonSurferJackson.INSTANCE;
 	}
 
 	@Bean

@@ -25,6 +25,7 @@ import static org.mockito.Mockito.spy;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
@@ -33,9 +34,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationData;
-import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationDataPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
+import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentVerificationDataPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
@@ -65,7 +65,7 @@ class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 	void inconsistentVerificationCardIds() {
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
 		doAnswer(invocationOnMock -> Stream.of()).when(electionDataExtractionServiceSpy)
-				.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(any());
+				.getSetupComponentVerificationDataPayloadsDataExtractionsSortedByChunkId(any());
 
 		final VerifyVerificationCardIdsConsistency verifyVerificationCardIdsConsistency = new VerifyVerificationCardIdsConsistency(
 				pathService, resultPublisherServiceMock, electionDataExtractionServiceSpy);
@@ -84,25 +84,26 @@ class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 		final int randomIndex = random.nextInt(0, regexPaths.size());
 		final Path verificationCardSet = regexPaths.get(randomIndex);
 
-		final List<SetupComponentVerificationDataPayload> swappedPayloads = new ArrayList<>(
-				electionDataExtractionService.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(verificationCardSet).toList());
-		assumeTrue(swappedPayloads.size() > 1, "This test assumes at least two verification cards in the set.");
+		final List<SetupComponentVerificationDataPayloadDataExtractor.DataExtraction> swappedDataExtractions = new ArrayList<>(
+				electionDataExtractionService.getSetupComponentVerificationDataPayloadsDataExtractionsSortedByChunkId(verificationCardSet)
+						.sorted(Comparator.comparingInt(SetupComponentVerificationDataPayloadDataExtractor.DataExtraction::chunkId))
+						.toList());
+		assumeTrue(swappedDataExtractions.size() > 1, "This test assumes at least two verification cards in the set.");
 
-		final SetupComponentVerificationDataPayload setupComponentVerificationDataPayload = swappedPayloads.get(0);
-		final List<SetupComponentVerificationData> swappedSetupComponentVerificationData = new ArrayList<>(
-				setupComponentVerificationDataPayload.getSetupComponentVerificationData());
-		Collections.swap(swappedSetupComponentVerificationData, 0, 1);
+		final SetupComponentVerificationDataPayloadDataExtractor.DataExtraction dataExtraction = swappedDataExtractions.get(0);
+		final List<String> swappedVerificationCardIds = new ArrayList<>(dataExtraction.verificationCardIds());
+		Collections.swap(swappedVerificationCardIds, 0, 1);
 
-		final SetupComponentVerificationDataPayload swappedPayload = new SetupComponentVerificationDataPayload(
-				setupComponentVerificationDataPayload.getElectionEventId(), setupComponentVerificationDataPayload.getVerificationCardSetId(),
-				setupComponentVerificationDataPayload.getPartialChoiceReturnCodesAllowList(), setupComponentVerificationDataPayload.getChunkId(),
-				setupComponentVerificationDataPayload.getEncryptionGroup(), swappedSetupComponentVerificationData,
-				setupComponentVerificationDataPayload.getCombinedCorrectnessInformation());
-		swappedPayloads.set(0, swappedPayload);
+		final SetupComponentVerificationDataPayloadDataExtractor.DataExtraction swappedDataExtraction = new SetupComponentVerificationDataPayloadDataExtractor.DataExtraction(
+				dataExtraction.chunkId(),
+				dataExtraction.electionEventId(),
+				dataExtraction.verificationCardSetId(),
+				swappedVerificationCardIds);
+		swappedDataExtractions.set(0, swappedDataExtraction);
 
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(swappedPayloads.stream()).when(electionDataExtractionServiceSpy)
-				.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(verificationCardSet);
+		doReturn(swappedDataExtractions.stream()).when(electionDataExtractionServiceSpy)
+				.getSetupComponentVerificationDataPayloadsDataExtractionsSortedByChunkId(verificationCardSet);
 		final VerifyVerificationCardIdsConsistency verifyVerificationCardIdsConsistency = new VerifyVerificationCardIdsConsistency(
 				pathService, resultPublisherServiceMock, electionDataExtractionServiceSpy);
 
@@ -119,15 +120,17 @@ class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 		final List<Path> regexPaths = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, datasetPath).getRegexPaths();
 		final int randomIndex = random.nextInt(0, regexPaths.size());
 		final Path verificationCardSet = regexPaths.get(randomIndex);
-		final List<SetupComponentVerificationDataPayload> swappedPayloads = new ArrayList<>(
-				electionDataExtractionService.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(verificationCardSet).toList());
-		assumeTrue(swappedPayloads.size() > 1, "This test assumes at least two verification cards in the set.");
+		final List<SetupComponentVerificationDataPayloadDataExtractor.DataExtraction> swappedDataExtractions = new ArrayList<>(
+				electionDataExtractionService.getSetupComponentVerificationDataPayloadsDataExtractionsSortedByChunkId(verificationCardSet)
+						.sorted(Comparator.comparingInt(SetupComponentVerificationDataPayloadDataExtractor.DataExtraction::chunkId))
+						.toList());
+		assumeTrue(swappedDataExtractions.size() > 1, "This test assumes at least two verification cards in the set.");
 
-		Collections.swap(swappedPayloads, 0, 1);
+		Collections.swap(swappedDataExtractions, 0, 1);
 
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(swappedPayloads.stream()).when(electionDataExtractionServiceSpy)
-				.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(verificationCardSet);
+		doReturn(swappedDataExtractions.stream()).when(electionDataExtractionServiceSpy)
+				.getSetupComponentVerificationDataPayloadsDataExtractionsSortedByChunkId(verificationCardSet);
 		final VerifyVerificationCardIdsConsistency verifyVerificationCardIdsConsistency = new VerifyVerificationCardIdsConsistency(
 				pathService, resultPublisherServiceMock, electionDataExtractionServiceSpy);
 

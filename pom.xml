@@ -28,6 +28,7 @@
 		<jackson.version>2.15.2</jackson.version>
 		<jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
 		<jakarta.xml.bind-api.version>4.0.0</jakarta.xml.bind-api.version>
+		<jsurfer-jackson.version>1.6.3</jsurfer-jackson.version>
 		<junit-jupiter.version>5.10.0-M1</junit-jupiter.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
@@ -252,6 +253,18 @@
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
 				<version>${apache.commons-lang3}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.github.jsurfer</groupId>
+				<artifactId>jsurfer-jackson</artifactId>
+				<version>${jsurfer-jackson.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>com.fasterxml.jackson.core</groupId>
+						<artifactId>jackson-databind</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

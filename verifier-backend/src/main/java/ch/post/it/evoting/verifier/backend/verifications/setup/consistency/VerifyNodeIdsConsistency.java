@@ -18,19 +18,19 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 import static ch.post.it.evoting.cryptoprimitives.domain.ControlComponentConstants.NODE_IDS;
 
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.ControlComponentPublicKeys;
-import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeSharesPayload;
-import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
+import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentCodeSharesPayloadDataExtractor;
+import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentPublicKeysPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
@@ -64,19 +64,13 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 		// Check controlComponentPublicKeysPayloads
-		final List<Integer> publicKeysNodeIds = extractionService.getControlComponentPublicKeysPayloads(inputDirectoryPath).stream()
-				.parallel()
-				.map(ControlComponentPublicKeysPayload::getControlComponentPublicKeys)
-				.map(ControlComponentPublicKeys::nodeId)
+		final List<Integer> publicKeysNodeIds = extractionService.getControlComponentPublicKeysPayloadsDataExtractions(inputDirectoryPath)
+				.map(ControlComponentPublicKeysPayloadDataExtractor.DataExtraction::nodeId)
 				.toList();
 
 		// Check controlComponentCodeSharesPayloads
-		final Stream<List<Integer>> codeSharesNodeIds = extractionService.getControlComponentCodeSharesPayloadsByChunkAndVcs(inputDirectoryPath)
-				.parallel()
-				.map(payloadList -> payloadList
-						.parallel()
-						.map(ControlComponentCodeSharesPayload::getNodeId)
-						.toList());
+		final Stream<Collection<Integer>> codeSharesNodeIds = extractionService.getAllControlComponentCodeSharesPayloadsDataExtractions(inputDirectoryPath)
+				.map(ControlComponentCodeSharesPayloadDataExtractor.DataExtraction::nodeIds);
 
 		if (verifyNodeIdsConsistency(publicKeysNodeIds, codeSharesNodeIds)) {
 			return VerificationResult.success(getVerificationDefinition());
@@ -86,7 +80,7 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 		}
 	}
 
-	private boolean verifyNodeIdsConsistency(final List<Integer> publicKeysNodeIds, final Stream<List<Integer>> codeSharesNodeIds) {
+	private boolean verifyNodeIdsConsistency(final List<Integer> publicKeysNodeIds, final Stream<Collection<Integer>> codeSharesNodeIds) {
 		final boolean verifPublicKeysNodeIdsComplete = Set.copyOf(publicKeysNodeIds).equals(NODE_IDS);
 		final boolean verifPublicKeyNodeIdsUnique = publicKeysNodeIds.size() == NODE_IDS.size();
 
