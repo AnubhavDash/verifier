@@ -24,6 +24,7 @@ import static org.mockito.Mockito.reset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.jsfr.json.JsonSurferJackson;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,6 +38,12 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
+import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentCodeSharesPayloadDataExtractor;
+import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentPublicKeysPayloadDataExtractor;
+import ch.post.it.evoting.verifier.backend.dataextractors.ElectionEventContextPayloadDataExtractor;
+import ch.post.it.evoting.verifier.backend.dataextractors.EncryptionGroupParametersDataExtractor;
+import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentTallyDataPayloadDataExtractor;
+import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentVerificationDataPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
@@ -55,6 +62,12 @@ public abstract class TallyVerificationTest {
 	protected static XmlFileRepository<Configuration> configurationXmlFileRepository;
 	protected static XmlFileRepository<Results> resultsXmlFileRepository;
 	protected static ElectionDataExtractionService electionDataExtractionService;
+	protected static ElectionEventContextPayloadDataExtractor electionEventContextPayloadDataExtractor;
+	protected static SetupComponentVerificationDataPayloadDataExtractor setupComponentVerificationDataPayloadDataExtractor;
+	protected static SetupComponentTallyDataPayloadDataExtractor setupComponentTallyDataPayloadDataExtractor;
+	protected static ControlComponentPublicKeysPayloadDataExtractor controlComponentPublicKeysPayloadDataExtractor;
+	protected static ControlComponentCodeSharesPayloadDataExtractor controlComponentCodeSharesPayloadDataExtractor;
+	protected static EncryptionGroupParametersDataExtractor encryptionGroupParametersDataExtractor;
 
 	@BeforeAll
 	static void baseSetUpAll() {
@@ -67,8 +80,16 @@ public abstract class TallyVerificationTest {
 		ech0222XmlFileRepository = new XmlFileRepository<>();
 		configurationXmlFileRepository = new XmlFileRepository<>();
 		resultsXmlFileRepository = new XmlFileRepository<>();
+		electionEventContextPayloadDataExtractor = new ElectionEventContextPayloadDataExtractor(JsonSurferJackson.INSTANCE);
+		setupComponentVerificationDataPayloadDataExtractor = new SetupComponentVerificationDataPayloadDataExtractor(JsonSurferJackson.INSTANCE);
+		setupComponentTallyDataPayloadDataExtractor = new SetupComponentTallyDataPayloadDataExtractor(JsonSurferJackson.INSTANCE);
+		controlComponentPublicKeysPayloadDataExtractor = new ControlComponentPublicKeysPayloadDataExtractor(JsonSurferJackson.INSTANCE);
+		controlComponentCodeSharesPayloadDataExtractor = new ControlComponentCodeSharesPayloadDataExtractor(JsonSurferJackson.INSTANCE);
+		encryptionGroupParametersDataExtractor = new EncryptionGroupParametersDataExtractor(JsonSurferJackson.INSTANCE);
 		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper, ech0110XmlFileRepository,
-				ech0222XmlFileRepository, configurationXmlFileRepository, resultsXmlFileRepository);
+				ech0222XmlFileRepository, configurationXmlFileRepository, resultsXmlFileRepository, electionEventContextPayloadDataExtractor,
+				controlComponentCodeSharesPayloadDataExtractor, setupComponentVerificationDataPayloadDataExtractor,
+				controlComponentPublicKeysPayloadDataExtractor, setupComponentTallyDataPayloadDataExtractor);
 	}
 
 	@BeforeEach

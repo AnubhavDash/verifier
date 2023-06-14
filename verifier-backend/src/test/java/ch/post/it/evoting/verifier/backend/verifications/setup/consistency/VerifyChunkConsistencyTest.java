@@ -34,7 +34,8 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyChunkConsistency(pathService, resultPublisherServiceMock, electionDataExtractionService);
+		verification = new VerifyChunkConsistency(pathService, resultPublisherServiceMock, controlComponentCodeSharesPayloadDataExtractor,
+				setupComponentVerificationDataPayloadDataExtractor);
 	}
 
 	@Test
@@ -51,7 +52,7 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 	void monotonyCheckWorkWithHappyPath() {
 		// given
 		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, resultPublisherServiceMock,
-				electionDataExtractionService);
+				controlComponentCodeSharesPayloadDataExtractor, setupComponentVerificationDataPayloadDataExtractor);
 		final List<List<Path>> payloadsPerCardSet = List.of(
 				List.of(
 						Path.of("/root/dir/controlComponentPublicKeysPayload.0.json"),
@@ -78,7 +79,7 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 	void monotonyCheckDetectMissingIndex() {
 		// given
 		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, resultPublisherServiceMock,
-				electionDataExtractionService);
+				controlComponentCodeSharesPayloadDataExtractor, setupComponentVerificationDataPayloadDataExtractor);
 		final List<List<Path>> payloadsPerCardSet = List.of(
 				List.of(
 						Path.of("/root/dir/controlComponentPublicKeysPayload.0.json"),
@@ -99,7 +100,7 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 	void monotonyCheckDetectDuplicatedIndex() {
 		// given
 		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, resultPublisherServiceMock,
-				electionDataExtractionService);
+				controlComponentCodeSharesPayloadDataExtractor, setupComponentVerificationDataPayloadDataExtractor);
 		final List<List<Path>> payloadsPerCardSet = List.of(
 				List.of(
 						Path.of("/root/dir/controlComponentPublicKeysPayload.0.json"),
@@ -121,7 +122,7 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 	void monotonyCheckDetectIllegalStartOfIndex() {
 		// given
 		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, resultPublisherServiceMock,
-				electionDataExtractionService);
+				controlComponentCodeSharesPayloadDataExtractor, setupComponentVerificationDataPayloadDataExtractor);
 		final List<List<Path>> payloadsPerCardSet = List.of(
 				List.of(
 						Path.of("/root/dir/controlComponentPublicKeysPayload.1.json"),
@@ -142,7 +143,7 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 	void monotonyCheckPriorityToFailing() {
 		// given
 		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, resultPublisherServiceMock,
-				electionDataExtractionService);
+				controlComponentCodeSharesPayloadDataExtractor, setupComponentVerificationDataPayloadDataExtractor);
 		final List<List<Path>> payloadsPerCardSet = List.of(
 				List.of(
 						Path.of("/root/dir/controlComponentPublicKeysPayload.0.json"),
@@ -166,7 +167,7 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 	void monotonyCheckEmptyListIsValid() {
 		// given
 		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, resultPublisherServiceMock,
-				electionDataExtractionService);
+				controlComponentCodeSharesPayloadDataExtractor, setupComponentVerificationDataPayloadDataExtractor);
 		final List<List<Path>> payloadsPerCardSet = Collections.emptyList();
 
 		// when

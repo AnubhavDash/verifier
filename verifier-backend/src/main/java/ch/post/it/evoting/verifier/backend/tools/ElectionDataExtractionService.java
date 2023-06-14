@@ -15,8 +15,10 @@
  */
 package ch.post.it.evoting.verifier.backend.tools;
 
+import static ch.post.it.evoting.cryptoprimitives.domain.ControlComponentConstants.NODE_IDS;
 import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.validateUUID;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -30,6 +32,7 @@ import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.MoreCollectors;
 
 import ch.ech.xmlns.ech_0110._4.Delivery;
 import ch.post.it.evoting.cryptoprimitives.domain.election.CombinedCorrectnessInformation;
@@ -50,6 +53,11 @@ import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
 import ch.post.it.evoting.evotinglibraries.xml.XsdConstants;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
+import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentCodeSharesPayloadDataExtractor;
+import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentPublicKeysPayloadDataExtractor;
+import ch.post.it.evoting.verifier.backend.dataextractors.ElectionEventContextPayloadDataExtractor;
+import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentTallyDataPayloadDataExtractor;
+import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentVerificationDataPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
@@ -59,24 +67,38 @@ public class ElectionDataExtractionService {
 
 	private final PathService pathService;
 	private final ObjectMapper objectMapper;
+	private final ElectionEventContextPayloadDataExtractor electionEventContextPayloadDataExtractor;
 	private final XmlFileRepository<Delivery> ech0110XmlFileRepository;
 	private final XmlFileRepository<ch.ech.xmlns.ech_0222._1.Delivery> ech0222XmlFileRepository;
 	private final XmlFileRepository<Configuration> configurationXmlFileRepository;
 	private final XmlFileRepository<Results> resultsXmlFileRepository;
+	private final ControlComponentCodeSharesPayloadDataExtractor controlComponentCodeSharesPayloadDataExtractor;
+	private final SetupComponentVerificationDataPayloadDataExtractor setupComponentVerificationDataPayloadDataExtractor;
+	private final ControlComponentPublicKeysPayloadDataExtractor controlComponentPublicKeysPayloadDataExtractor;
+	private final SetupComponentTallyDataPayloadDataExtractor setupComponentTallyDataPayloadDataExtractor;
 
 	public ElectionDataExtractionService(
 			final PathService pathService,
 			final ObjectMapper objectMapper,
 			final XmlFileRepository<Delivery> ech0110XmlFileRepository,
 			final XmlFileRepository<ch.ech.xmlns.ech_0222._1.Delivery> ech0222XmlFileRepository,
-			final XmlFileRepository<Configuration> configurationXmlFileRepository,
-			final XmlFileRepository<Results> resultsXmlFileRepository) {
+			final XmlFileRepository<Configuration> configurationXmlFileRepository, final XmlFileRepository<Results> resultsXmlFileRepository,
+			final ElectionEventContextPayloadDataExtractor electionEventContextPayloadDataExtractor,
+			final ControlComponentCodeSharesPayloadDataExtractor controlComponentCodeSharesPayloadDataExtractor,
+			final SetupComponentVerificationDataPayloadDataExtractor setupComponentVerificationDataPayloadDataExtractor,
+			final ControlComponentPublicKeysPayloadDataExtractor controlComponentPublicKeysPayloadDataExtractor,
+			final SetupComponentTallyDataPayloadDataExtractor setupComponentTallyDataPayloadDataExtractor) {
 		this.pathService = pathService;
 		this.objectMapper = objectMapper;
+		this.electionEventContextPayloadDataExtractor = electionEventContextPayloadDataExtractor;
 		this.ech0110XmlFileRepository = ech0110XmlFileRepository;
 		this.ech0222XmlFileRepository = ech0222XmlFileRepository;
 		this.configurationXmlFileRepository = configurationXmlFileRepository;
 		this.resultsXmlFileRepository = resultsXmlFileRepository;
+		this.controlComponentCodeSharesPayloadDataExtractor = controlComponentCodeSharesPayloadDataExtractor;
+		this.setupComponentVerificationDataPayloadDataExtractor = setupComponentVerificationDataPayloadDataExtractor;
+		this.controlComponentPublicKeysPayloadDataExtractor = controlComponentPublicKeysPayloadDataExtractor;
+		this.setupComponentTallyDataPayloadDataExtractor = setupComponentTallyDataPayloadDataExtractor;
 	}
 
 	/**
@@ -393,20 +415,6 @@ public class ElectionDataExtractionService {
 				.sorted(Comparator.comparingInt(ControlComponentShufflePayload::getNodeId));
 	}
 
-	public SetupComponentTallyDataPayload getSetupComponentTallyDataPayload(final Path verificationCardSetIdPath) {
-		checkNotNull(verificationCardSetIdPath);
-
-		final PathNode nodePath = pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_TALLY_DATA, verificationCardSetIdPath);
-
-		try {
-			return objectMapper.readValue(nodePath.getPath().toFile(), SetupComponentTallyDataPayload.class);
-		} catch (final IOException e) {
-			throw new UncheckedIOException(
-					String.format("Failed to deserialize SetupComponentTallyDataPayload. [verificationCardSetIdPath: %s]", verificationCardSetIdPath),
-					e);
-		}
-	}
-
 	/**
 	 * Gets the setup component tally data payload for the given verification card set.
 	 *
@@ -614,26 +622,6 @@ public class ElectionDataExtractionService {
 	}
 
 	/**
-	 * Gets all setup component verification data payloads of the different verification card sets ordered by chunk id as a {@link Stream}.
-	 *
-	 * @param inputDirectoryPath the dataset root directory.
-	 * @return all setup component verification data payloads.
-	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
-	 * @throws UncheckedIOException if the deserialization of the setup component verification data payloads fails.
-	 */
-	public Stream<SetupComponentVerificationDataPayload> getSetupComponentVerificationDataPayloadsOrderByChunkId(final Path inputDirectoryPath) {
-		checkNotNull(inputDirectoryPath);
-
-		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
-
-		return verificationCardSets.getRegexPaths()
-				.stream()
-				.parallel()
-				.flatMap(this::deserializeSetupComponentVerificationDataPayloadOrderByChunkId)
-				.sorted(Comparator.comparingInt(SetupComponentVerificationDataPayload::getChunkId));
-	}
-
-	/**
 	 * Deserializes the setup component verification data payloads chunks, given a path for a verification card set ID ordered by chunk id as a
 	 * {@link Stream}.
 	 *
@@ -663,41 +651,6 @@ public class ElectionDataExtractionService {
 					String.format("Failed to deserialize SetupComponentVerificationDataPayload payload. [filePath: %s]",
 							setupComponentVerificationDataPayloadPath), e);
 		}
-	}
-
-	/**
-	 * Gets all control component code shares payloads of the different verification card sets ordered by node id as a {@link Stream}.
-	 *
-	 * @param inputDirectoryPath the dataset root directory.
-	 * @return all control component code shares payloads.
-	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
-	 * @throws UncheckedIOException if the deserialization of the control component code shares payloads fails.
-	 */
-	public Stream<ControlComponentCodeSharesPayload> getControlComponentCodeSharesPayloadsOrderedByNodeId(final Path inputDirectoryPath) {
-		checkNotNull(inputDirectoryPath);
-
-		return getControlComponentCodeSharesPayloadsByChunkAndVcs(inputDirectoryPath)
-				.flatMap(Function.identity())
-				.sorted(Comparator.comparingInt(ControlComponentCodeSharesPayload::getNodeId));
-	}
-
-	/**
-	 * Gets all control component code shares payloads of the different verification card sets as a {@link Stream}.
-	 *
-	 * @param inputDirectoryPath the dataset root directory.
-	 * @return all control component code shares payloads.
-	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
-	 * @throws UncheckedIOException if the deserialization of the control component code shares payloads fails.
-	 */
-	public Stream<ControlComponentCodeSharesPayload> getControlComponentCodeSharesPayloads(final Path inputDirectoryPath) {
-		checkNotNull(inputDirectoryPath);
-
-		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
-		return verificationCardSets.getRegexPaths().stream()
-				.parallel()
-				.flatMap(verificationCardSetIdPath -> pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_CODE_SHARES,
-						verificationCardSetIdPath).getRegexPaths().stream().parallel())
-				.flatMap(this::getControlComponentCodeShares);
 	}
 
 	/**
@@ -790,4 +743,242 @@ public class ElectionDataExtractionService {
 				.toList();
 	}
 
+	/**
+	 * Gets the election event context payload data extraction.
+	 *
+	 * @param inputDirectoryPath the root directory containing project files.
+	 * @return a data extraction of the election event context payload found in the project files, at the expected location if it exists.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 * @throws UncheckedIOException if the file cannot be read through.
+	 */
+	public ElectionEventContextPayloadDataExtractor.DataExtraction getElectionEventContextPayloadDataExtraction(final Path inputDirectoryPath) {
+		checkNotNull(inputDirectoryPath);
+
+		final PathNode electionEventContextPathNode = pathService.buildFromRootPath(StructureKey.ELECTION_EVENT_CONTEXT, inputDirectoryPath);
+
+		return electionEventContextPayloadDataExtractor.load(electionEventContextPathNode.getPath());
+	}
+
+	/**
+	 * Gets all control component code shares payloads data extractions of the different verification card sets as a {@link Stream}.
+	 *
+	 * @param inputDirectoryPath the dataset root directory.
+	 * @return all control component code shares payloads data extractions.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 * @throws UncheckedIOException if any file cannot be read through.
+	 */
+	public Stream<ControlComponentCodeSharesPayloadDataExtractor.DataExtraction> getAllControlComponentCodeSharesPayloadsDataExtractions(
+			final Path inputDirectoryPath) {
+		checkNotNull(inputDirectoryPath);
+
+		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
+
+		return verificationCardSets.getRegexPaths().stream()
+				.parallel()
+				.flatMap(this::getControlComponentCodeSharesPayloadsDataExtractions);
+	}
+
+	/**
+	 * Gets the control component code shares payloads data extractions, given a path for a verification card set ID as a {@link Stream}.
+	 *
+	 * @param verificationCardSetIdPath the path for the verification card set ID.
+	 * @return the control component code shares payloads data extractions.
+	 * @throws NullPointerException if {@code verificationCardSetIdPath} is null.
+	 * @throws UncheckedIOException if any file cannot be read through.
+	 */
+	public Stream<ControlComponentCodeSharesPayloadDataExtractor.DataExtraction> getControlComponentCodeSharesPayloadsDataExtractions(
+			final Path verificationCardSetIdPath) {
+		checkNotNull(verificationCardSetIdPath);
+
+		final PathNode nodePath = pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_CODE_SHARES, verificationCardSetIdPath);
+
+		return nodePath.getRegexPaths().stream()
+				.parallel()
+				.map(controlComponentCodeSharesPayloadDataExtractor::load);
+	}
+
+	/**
+	 * Gets all setup component verification data payloads data extractions of the different verification card sets as a {@link Stream}.
+	 *
+	 * @param inputDirectoryPath the dataset root directory.
+	 * @return all setup component verification data payloads data extractions.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 * @throws UncheckedIOException if any file cannot be read through.
+	 */
+	public Stream<SetupComponentVerificationDataPayloadDataExtractor.DataExtraction> getAllSetupComponentVerificationDataPayloadsDataExtractions(
+			final Path inputDirectoryPath) {
+		checkNotNull(inputDirectoryPath);
+
+		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
+
+		return verificationCardSets.getRegexPaths().stream()
+				.parallel()
+				.flatMap(this::getSetupComponentVerificationDataPayloadsDataExtractionsSortedByChunkId);
+	}
+
+	/**
+	 * Gets the setup component verification data payloads data extractions sorted by chunk id, given a path for a verification card set ID as a
+	 * {@link Stream}.
+	 *
+	 * @param verificationCardSetIdPath the path for the verification card set ID.
+	 * @return the setup component verification data payloads data extractions sorted by chunk id.
+	 * @throws NullPointerException if {@code verificationCardSetIdPath} is null.
+	 * @throws UncheckedIOException if any file cannot be read through.
+	 */
+	public Stream<SetupComponentVerificationDataPayloadDataExtractor.DataExtraction> getSetupComponentVerificationDataPayloadsDataExtractionsSortedByChunkId(
+			final Path verificationCardSetIdPath) {
+		checkNotNull(verificationCardSetIdPath);
+
+		final PathNode nodePath = pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA, verificationCardSetIdPath);
+
+		return nodePath.getRegexPaths().stream()
+				.parallel()
+				.map(setupComponentVerificationDataPayloadDataExtractor::load)
+				.sorted(Comparator.comparingInt(SetupComponentVerificationDataPayloadDataExtractor.DataExtraction::chunkId));
+	}
+
+	/**
+	 * Gets all the control components public keys payloads data extractions.
+	 *
+	 * @param inputDirectoryPath the dataset root directory.
+	 * @return all control components public keys payloads data extractions.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 * @throws UncheckedIOException if any file cannot be read through.
+	 */
+	public Stream<ControlComponentPublicKeysPayloadDataExtractor.DataExtraction> getControlComponentPublicKeysPayloadsDataExtractions(
+			final Path inputDirectoryPath) {
+		checkNotNull(inputDirectoryPath);
+
+		final PathNode controlComponentPublicKeys = pathService.buildFromRootPath(StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS, inputDirectoryPath);
+
+		return controlComponentPublicKeys.getRegexPaths().stream()
+				.parallel()
+				.map(controlComponentPublicKeysPayloadDataExtractor::load);
+	}
+
+	/**
+	 * Gets all setup component tally data payloads data extractions of the different verification card sets as a {@link Stream}.
+	 *
+	 * @param inputDirectoryPath the dataset root directory.
+	 * @return all setup component tally data payloads data extractions.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 * @throws UncheckedIOException if any file cannot be read through.
+	 */
+	public Stream<SetupComponentTallyDataPayloadDataExtractor.DataExtraction> getAllSetupComponentTallyDataPayloadsDataExtractions(
+			final Path inputDirectoryPath) {
+		checkNotNull(inputDirectoryPath);
+
+		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
+
+		return verificationCardSets.getRegexPaths().stream()
+				.parallel()
+				.flatMap(this::getSetupComponentTallyDataPayloadsDataExtractions);
+	}
+
+	/**
+	 * Gets the setup component tally data payloads data extractions, given a path for a verification card set ID as a {@link Stream}.
+	 *
+	 * @param verificationCardSetIdPath the path for the verification card set ID.
+	 * @return the setup component tally data payloads data extractions.
+	 * @throws NullPointerException if {@code verificationCardSetIdPath} is null.
+	 * @throws UncheckedIOException if any file cannot be read through.
+	 */
+	public Stream<SetupComponentTallyDataPayloadDataExtractor.DataExtraction> getSetupComponentTallyDataPayloadsDataExtractions(
+			final Path verificationCardSetIdPath) {
+		checkNotNull(verificationCardSetIdPath);
+
+		final PathNode nodePath = pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_TALLY_DATA, verificationCardSetIdPath);
+
+		return nodePath.getRegexPaths().stream()
+				.parallel()
+				.map(setupComponentTallyDataPayloadDataExtractor::load);
+	}
+
+	/**
+	 * Gets all the verification card set paths.
+	 *
+	 * @param inputDirectoryPath the dataset root directory.
+	 * @return all verification card set paths.
+	 */
+	public List<Path> getVerificationCardSetPaths(final Path inputDirectoryPath) {
+		return pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath).getRegexPaths();
+	}
+
+	/**
+	 * Loads the control component code share chunk files. There is one file per node.
+	 *
+	 * @param verificationCardSetPath the path of the verification card set.
+	 * @param chunkId                 the chunk id.
+	 * @return the list of control component code share chunk files ordered by node id.
+	 */
+	public List<ControlComponentCodeSharesPayload> getControlComponentCodeSharesPayloadChunkOrderByNodeId(final Path verificationCardSetPath,
+			final int chunkId) {
+		final Path file = pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_CODE_SHARES, verificationCardSetPath)
+				.getRegexPaths().stream()
+				.filter(filePath -> filePath.getFileName().toString().contains(String.format(".%s.", chunkId)))
+				.collect(MoreCollectors.onlyElement());
+		try {
+			final List<ControlComponentCodeSharesPayload> controlComponentCodeSharesPayloads = Arrays.stream(
+							objectMapper.readValue(file.toFile(), ControlComponentCodeSharesPayload[].class))
+					.sorted(Comparator.comparing(ControlComponentCodeSharesPayload::getNodeId))
+					.toList();
+			controlComponentCodeSharesPayloads.forEach(
+					controlComponentCodeSharesPayload -> checkState(controlComponentCodeSharesPayload.getChunkId() == chunkId));
+			checkState(controlComponentCodeSharesPayloads.size() == NODE_IDS.size());
+			return controlComponentCodeSharesPayloads;
+		} catch (final IOException e) {
+			throw new UncheckedIOException(e);
+		}
+	}
+
+	/**
+	 * Loads the setup component verification data chunk file.
+	 *
+	 * @param verificationCardSetPath the path of the verification card set.
+	 * @param chunkId                 the chunk id.
+	 * @return the setup component verification data chunk file.
+	 */
+	public SetupComponentVerificationDataPayload getSetupComponentVerificationDataPayloadChunk(final Path verificationCardSetPath,
+			final int chunkId) {
+		final Path file = pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA, verificationCardSetPath)
+				.getRegexPaths().stream()
+				.filter(filePath -> filePath.getFileName().toString().contains(String.format(".%s.", chunkId)))
+				.collect(MoreCollectors.onlyElement());
+		try {
+			final SetupComponentVerificationDataPayload setupComponentVerificationDataPayload = objectMapper.readValue(file.toFile(),
+					SetupComponentVerificationDataPayload.class);
+			checkState(setupComponentVerificationDataPayload.getChunkId() == chunkId);
+			return setupComponentVerificationDataPayload;
+		} catch (final IOException e) {
+			throw new UncheckedIOException(e);
+		}
+	}
+
+	/**
+	 * Calculates the amount of chunks within the given verification card set path.
+	 *
+	 * @param verificationCardSetPath the path of the verification card set.
+	 * @return the amount of chunks files related to the verification card set.
+	 */
+	public int determineVerificationCardSetChunkCount(final Path verificationCardSetPath) {
+		final List<Integer> values = pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA, verificationCardSetPath)
+				.getRegexPaths()
+				.stream()
+				.map(file -> {
+					final String filename = file.getFileName().toString();
+					return filename.substring(filename.indexOf('.') + 1, filename.lastIndexOf('.'));
+				})
+				.map(Integer::parseInt)
+				.toList();
+
+		final int maxValue = values.stream().max(Integer::compareTo).orElseThrow(() -> new IllegalStateException(
+				String.format("no chunk found for given verification card set. [verificationCardSetPath: %s]", verificationCardSetPath)));
+		final int minValue = values.stream().min(Integer::compareTo).orElseThrow();
+
+		checkState(minValue == 0);
+		checkState(values.size() == values.stream().distinct().count());
+		checkState(values.size() == maxValue + 1);
+
+		return maxValue + 1;
+	}
 }
