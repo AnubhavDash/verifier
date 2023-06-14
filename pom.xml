@@ -17,7 +17,7 @@
 		<maven-enforcer-plugin.requiredJavaVersion>[17.0.7]</maven-enforcer-plugin.requiredJavaVersion>
 		<maven-enforcer-plugin.requiredMavenVersion>[3.9.1]</maven-enforcer-plugin.requiredMavenVersion>
 		<maven.compiler.release>17</maven.compiler.release>
-		<project.build.outputTimestamp>2023-06-02T14:26:24+02:00</project.build.outputTimestamp>
+		<project.build.outputTimestamp>2023-06-14T11:28:34+02:00</project.build.outputTimestamp>
 
 		<bouncycastle.version>1.73</bouncycastle.version>
 		<commons-codec.version>1.15</commons-codec.version>
