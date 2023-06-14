@@ -67,6 +67,7 @@ public class VerifyVotingOptionsAlgorithm {
 		checkArgument(phi > 0, "phi must be strictly positive.");
 
 		final boolean isStrictlyAscending = IntStream.range(0, encodedVotingOptions.size() - 1)
+				.parallel()
 				.allMatch(i -> encodedVotingOptions.get(i).getValue().compareTo(encodedVotingOptions.get(i + 1).getValue()) < 0);
 		checkArgument(isStrictlyAscending, "The encoded voting options must be in strict ascending order.");
 
@@ -97,6 +98,7 @@ public class VerifyVotingOptionsAlgorithm {
 		final BigInteger p = p_vector.getGroup().getP();
 		final boolean verifB = p_vector.stream()
 				.skip(omega - phi)
+				.parallel()
 				.reduce(p_vector.getGroup().getIdentity(), MultiplicativeGroupElement::multiply, MultiplicativeGroupElement::multiply)
 				.getValue()
 				.compareTo(p) < 0;

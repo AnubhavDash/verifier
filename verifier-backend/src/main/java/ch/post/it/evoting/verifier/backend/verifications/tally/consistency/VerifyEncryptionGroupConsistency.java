@@ -16,17 +16,17 @@
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
 import java.nio.file.Path;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiFunction;
 
 import org.springframework.stereotype.Component;
-
-import com.google.common.collect.Streams;
 
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.domain.EncryptionGroupParameters;
+import ch.post.it.evoting.verifier.backend.dataextractors.EncryptionGroupParametersDataExtractor;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.EncryptionGroupParametersExtractionService;
@@ -59,20 +59,49 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final EncryptionGroupParameters encryptionGroupParameters = extractionService.getFromElectionEventContext(inputDirectoryPath);
+		final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction = extractionService.getFromElectionEventContext(inputDirectoryPath);
 
-		final Stream<EncryptionGroupParameters> allGroupParameters = Streams.concat(
-				extractionService.getFromControlComponentBallotBoxPayloads(inputDirectoryPath),
-				extractionService.getFromControlComponentShufflePayloads(inputDirectoryPath),
-				extractionService.getFromTallyComponentShufflePayloads(inputDirectoryPath),
-				extractionService.getFromTallyComponentVotesPayloads(inputDirectoryPath)
-		);
+		final List<BiFunction<Path, EncryptionGroupParametersDataExtractor.DataExtraction, Boolean>> validations = new ArrayList<>();
+		validations.add(this::validateControlComponentBallotBoxPayloads);
+		validations.add(this::validateControlComponentShufflePayloads);
+		validations.add(this::validateTallyComponentShufflePayloads);
+		validations.add(this::validateTallyComponentVotesPayloads);
 
-		if (allGroupParameters.parallel().allMatch(group -> group.equals(encryptionGroupParameters))) {
+		final boolean sameGroupParameters = validations.stream()
+				.parallel()
+				.map(f -> f.apply(inputDirectoryPath, encryptionGroupParametersDataExtraction))
+				.reduce(Boolean::logicalAnd)
+				.orElse(Boolean.FALSE);
+
+		if (sameGroupParameters) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
 					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification310.nok.message"));
 		}
+	}
+
+	private boolean validateControlComponentBallotBoxPayloads(final Path inputDirectoryPath, final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
+		return extractionService.getFromControlComponentBallotBoxPayloads(inputDirectoryPath)
+				.distinct()
+				.allMatch(encryptionGroupParametersDataExtraction::equals);
+	}
+
+	private boolean validateControlComponentShufflePayloads(final Path inputDirectoryPath, final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
+		return extractionService.getFromControlComponentShufflePayloads(inputDirectoryPath)
+				.distinct()
+				.allMatch(encryptionGroupParametersDataExtraction::equals);
+	}
+
+	private boolean validateTallyComponentShufflePayloads(final Path inputDirectoryPath, final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
+		return extractionService.getFromTallyComponentShufflePayloads(inputDirectoryPath)
+				.distinct()
+				.allMatch(encryptionGroupParametersDataExtraction::equals);
+	}
+
+	private boolean validateTallyComponentVotesPayloads(final Path inputDirectoryPath, final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
+		return extractionService.getFromTallyComponentVotesPayloads(inputDirectoryPath)
+				.distinct()
+				.allMatch(encryptionGroupParametersDataExtraction::equals);
 	}
 }

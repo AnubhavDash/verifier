@@ -15,8 +15,6 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,18 +22,15 @@ import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeSharesPayload;
-import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationDataPayload;
-import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
+import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentCodeSharesPayloadDataExtractor;
+import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentPublicKeysPayloadDataExtractor;
+import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentVerificationDataPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
-import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
@@ -45,22 +40,23 @@ import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerification
 @Component
 public class VerifySetupFileNamesConsistency extends AbstractVerification {
 
-	private static final String DESERIALIZATION_ERROR_MESSAGE = "Could not deserialize payload from file. [file name: %s]";
-
 	private final PathService pathService;
 
-	private final ObjectMapper objectMapper;
-	private final ElectionDataExtractionService electionDataExtractionService;
+	private final SetupComponentVerificationDataPayloadDataExtractor setupComponentVerificationDataPayloadDataExtractor;
+	private final ControlComponentPublicKeysPayloadDataExtractor controlComponentPublicKeysPayloadDataExtractor;
+	private final ControlComponentCodeSharesPayloadDataExtractor controlComponentCodeSharesPayloadDataExtractor;
 
 	protected VerifySetupFileNamesConsistency(
 			final ResultPublisherService resultPublisherService,
 			final PathService pathService,
-			final ObjectMapper objectMapper,
-			final ElectionDataExtractionService electionDataExtractionService) {
+			final SetupComponentVerificationDataPayloadDataExtractor setupComponentVerificationDataPayloadDataExtractor,
+			final ControlComponentPublicKeysPayloadDataExtractor controlComponentPublicKeysPayloadDataExtractor,
+			final ControlComponentCodeSharesPayloadDataExtractor controlComponentCodeSharesPayloadDataExtractor) {
 		super(resultPublisherService);
 		this.pathService = pathService;
-		this.objectMapper = objectMapper;
-		this.electionDataExtractionService = electionDataExtractionService;
+		this.setupComponentVerificationDataPayloadDataExtractor = setupComponentVerificationDataPayloadDataExtractor;
+		this.controlComponentPublicKeysPayloadDataExtractor = controlComponentPublicKeysPayloadDataExtractor;
+		this.controlComponentCodeSharesPayloadDataExtractor = controlComponentCodeSharesPayloadDataExtractor;
 	}
 
 	@Override
@@ -109,14 +105,7 @@ public class VerifySetupFileNamesConsistency extends AbstractVerification {
 					final String nodeIdGroup = pathService.getRegexGroup(StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS, fileName, 1);
 					final int fileNodeId = Integer.parseInt(nodeIdGroup);
 
-					final ControlComponentPublicKeysPayload controlComponentPublicKeysPayload;
-					try {
-						controlComponentPublicKeysPayload = objectMapper.readValue(path.toFile(), ControlComponentPublicKeysPayload.class);
-					} catch (final IOException e) {
-						final String errorMessage = String.format(DESERIALIZATION_ERROR_MESSAGE, path.getFileName());
-						throw new UncheckedIOException(errorMessage, e);
-					}
-					final int payloadNodeId = controlComponentPublicKeysPayload.getControlComponentPublicKeys().nodeId();
+					final int payloadNodeId = controlComponentPublicKeysPayloadDataExtractor.load(path).nodeId();
 
 					return fileNodeId == payloadNodeId;
 				})
@@ -140,9 +129,7 @@ public class VerifySetupFileNamesConsistency extends AbstractVerification {
 								final String chunkIdGroup = pathService.getRegexGroup(StructureKey.CONTROL_COMPONENT_CODE_SHARES, fileName, 1);
 								final int fileChunkId = Integer.parseInt(chunkIdGroup);
 
-								return electionDataExtractionService.getControlComponentCodeSharesOrderByNodeId(path)
-										.parallel()
-										.map(ControlComponentCodeSharesPayload::getChunkId)
+								return controlComponentCodeSharesPayloadDataExtractor.load(path).chunkIds().stream()
 										.allMatch(payloadChunkId -> fileChunkId == payloadChunkId);
 							})
 							.reduce(Boolean::logicalAnd)
@@ -168,15 +155,7 @@ public class VerifySetupFileNamesConsistency extends AbstractVerification {
 								final String chunkIdGroup = pathService.getRegexGroup(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA, fileName, 1);
 								final int fileChunkId = Integer.parseInt(chunkIdGroup);
 
-								final SetupComponentVerificationDataPayload setupComponentVerificationDataPayload;
-								try {
-									setupComponentVerificationDataPayload = objectMapper.readValue(path.toFile(),
-											SetupComponentVerificationDataPayload.class);
-								} catch (final IOException e) {
-									final String errorMessage = String.format(DESERIALIZATION_ERROR_MESSAGE, path.toFile().getName());
-									throw new UncheckedIOException(errorMessage, e);
-								}
-								final int payloadChunkId = setupComponentVerificationDataPayload.getChunkId();
+								final Integer payloadChunkId = setupComponentVerificationDataPayloadDataExtractor.load(path).chunkId();
 
 								return fileChunkId == payloadChunkId;
 							})
@@ -186,4 +165,5 @@ public class VerifySetupFileNamesConsistency extends AbstractVerification {
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 	}
+
 }

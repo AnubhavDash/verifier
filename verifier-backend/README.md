@@ -9,10 +9,8 @@ All verifications performed in the verifier are listed in the table below:
 | Setup | Authenticity | 02.02 | VerifySignatureCantonConfig                       |
 | Setup | Authenticity | 02.03 | VerifySignatureSetupComponentPublicKeys           |
 | Setup | Authenticity | 02.04 | VerifySignatureControlComponentPublicKeys         |
-| Setup | Authenticity | 02.05 | VerifySignatureSetupComponentVerificationData     |
-| Setup | Authenticity | 02.06 | VerifySignatureControlComponentCodeShares         |
-| Setup | Authenticity | 02.07 | VerifySignatureSetupComponentTallyData            |
-| Setup | Authenticity | 02.08 | VerifySignatureElectionEventContext               |
+| Setup | Authenticity | 02.05 | VerifySignatureSetupComponentTallyData            |
+| Setup | Authenticity | 02.06 | VerifySignatureElectionEventContext               |
 | Setup | Consistency  | 03.01 | VerifyEncryptionGroupConsistency                  |
 | Setup | Consistency  | 03.02 | VerifySetupFileNamesConsistency                   |
 | Setup | Consistency  | 03.03 | VerifyCCrChoiceReturnCodesPublicKeyConsistency    |
@@ -32,8 +30,7 @@ All verifications performed in the verifier are listed in the table below:
 | Setup | Evidence     | 05.02 | VerifySmallPrimeGroupMembers                      |
 | Setup | Evidence     | 05.03 | VerifyVotingOptions                               |
 | Setup | Evidence     | 05.04 | VerifyKeyGenerationSchnorrProofs                  |
-| Setup | Evidence     | 05.21 | VerifyEncryptedPCCExponentiationProofs            |
-| Setup | Evidence     | 05.22 | VerifyEncryptedCKExponentiationProofs             |
+| Setup | Evidence     | 05.21 | VerifySignatureVerificationDataAndCodeProofs      |
 | Tally | Completeness | 06.01 | VerifyTallyCompleteness                           |
 | Tally | Authenticity | 07.01 | VerifySignatureControlComponentBallotBox          |
 | Tally | Authenticity | 07.02 | VerifySignatureControlComponentShuffle            |

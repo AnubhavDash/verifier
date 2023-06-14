@@ -12,8 +12,7 @@ module.exports = {
     "plugins": [
         "eslint-plugin-import",
         "@angular-eslint/eslint-plugin",
-        "@typescript-eslint",
-        "@typescript-eslint/tslint"
+        "@typescript-eslint"
     ],
     "root": true,
     "rules": {
@@ -172,22 +171,6 @@ module.exports = {
                 "markers": [
                     "/"
                 ]
-            }
-        ],
-        "@typescript-eslint/tslint/config": [
-            "error",
-            {
-                "rules": {
-                    "import-spacing": true,
-                    "whitespace": [
-                        true,
-                        "check-branch",
-                        "check-decl",
-                        "check-operator",
-                        "check-separator",
-                        "check-type"
-                    ]
-                }
             }
         ]
     }

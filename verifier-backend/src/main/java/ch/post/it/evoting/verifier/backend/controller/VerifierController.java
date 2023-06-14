@@ -15,6 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.controller;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -72,7 +73,7 @@ public class VerifierController {
 			@RequestParam("file")
 			final MultipartFile file) throws IOException {
 
-		try(final InputStream inputStream = file.getInputStream()) {
+		try (final InputStream inputStream = new BufferedInputStream(file.getInputStream())) {
 			this.processor.setDataset(inputStream, file.getOriginalFilename());
 		} catch (final DatasetExtractionException e) {
 			LOGGER.error("An error occurred while uploading the dataset.", e);

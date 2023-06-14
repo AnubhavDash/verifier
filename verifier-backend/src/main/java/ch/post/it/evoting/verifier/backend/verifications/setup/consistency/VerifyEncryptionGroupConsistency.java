@@ -16,17 +16,17 @@
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
 import java.nio.file.Path;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiFunction;
 
 import org.springframework.stereotype.Component;
-
-import com.google.common.collect.Streams;
 
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.domain.EncryptionGroupParameters;
+import ch.post.it.evoting.verifier.backend.dataextractors.EncryptionGroupParametersDataExtractor;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.EncryptionGroupParametersExtractionService;
@@ -59,21 +59,55 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final EncryptionGroupParameters encryptionGroupParameters = extractionService.getFromElectionEventContext(inputDirectoryPath);
+		final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction = extractionService.getFromElectionEventContext(
+				inputDirectoryPath);
 
-		final Stream<EncryptionGroupParameters> allGroupParameters = Streams.concat(
-				Stream.of(extractionService.getFromEncryptionParameters(inputDirectoryPath)),
-				extractionService.getFromControlComponentPublicKeys(inputDirectoryPath),
-				extractionService.getFromSetupComponentVerificationDataPayloads(inputDirectoryPath),
-				extractionService.getFromControlComponentCodeShares(inputDirectoryPath),
-				extractionService.getFromSetupComponentTallyDataPayloads(inputDirectoryPath)
-		);
+		final List<BiFunction<Path, EncryptionGroupParametersDataExtractor.DataExtraction, Boolean>> validations = new ArrayList<>();
+		validations.add(this::validateEncryptionParameters);
+		validations.add(this::validateControlComponentPublicKeys);
+		validations.add(this::validateSetupComponentVerificationDataPayloads);
+		validations.add(this::validateControlComponentCodeSharesPayload);
+		validations.add(this::validateSetupComponentTallyDataPayloads);
 
-		if (allGroupParameters.allMatch(group -> group.equals(encryptionGroupParameters))) {
+		final boolean sameGroupParameters = validations.stream()
+				.parallel()
+				.map(f -> f.apply(inputDirectoryPath, encryptionGroupParametersDataExtraction))
+				.reduce(Boolean::logicalAnd)
+				.orElse(Boolean.FALSE);
+
+		if (sameGroupParameters) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
 					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification300.nok.message"));
 		}
+	}
+
+	private boolean validateEncryptionParameters(final Path inputDirectoryPath, final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
+		return encryptionGroupParametersDataExtraction.equals(extractionService.getFromEncryptionParameters(inputDirectoryPath));
+	}
+
+	private boolean validateControlComponentPublicKeys(final Path inputDirectoryPath, final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
+		return extractionService.getFromControlComponentPublicKeys(inputDirectoryPath)
+				.distinct()
+				.allMatch(encryptionGroupParametersDataExtraction::equals);
+	}
+
+	private boolean validateSetupComponentVerificationDataPayloads(final Path inputDirectoryPath, final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
+		return extractionService.getFromSetupComponentVerificationDataPayloads(inputDirectoryPath)
+				.distinct()
+				.allMatch(encryptionGroupParametersDataExtraction::equals);
+	}
+
+	private boolean validateControlComponentCodeSharesPayload(final Path inputDirectoryPath, final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
+		return extractionService.getFromControlComponentCodeShares(inputDirectoryPath)
+				.distinct()
+				.allMatch(encryptionGroupParametersDataExtraction::equals);
+	}
+
+	private boolean validateSetupComponentTallyDataPayloads(final Path inputDirectoryPath, final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
+		return extractionService.getFromSetupComponentTallyDataPayloads(inputDirectoryPath)
+				.distinct()
+				.allMatch(encryptionGroupParametersDataExtraction::equals);
 	}
 }

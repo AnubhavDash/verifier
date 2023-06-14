@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -151,6 +152,8 @@ public class VerifierProcessor {
 
 		LOGGER.info("Dataset successfully downloaded.");
 
+		final CompletableFuture<String> datasetHashCompletableFuture = getDatasetHashCompletableFuture();
+
 		final Path inputDirectory;
 		try {
 			inputDirectory = datasetService.unpack(dataset).getUnpackFolder();
@@ -176,12 +179,7 @@ public class VerifierProcessor {
 		// Get the direct trust certificate fingerprints.
 		final Map<String, String> aliasesToFingerprints = datasetService.extractFingerprints();
 
-		final String datasetHash;
-		try (final InputStream unpackedDatasetInputStream = dataset.newInputStream()) {
-			datasetHash = DigestUtils.sha256Hex(unpackedDatasetInputStream).toUpperCase();
-		} catch (final IOException e) {
-			throw new DatasetExtractionException("Failed to digest given dataset.");
-		}
+		final String datasetHash = datasetHashCompletableFuture.join();
 
 		LOGGER.info("Dataset digest successfully computed.");
 
@@ -228,6 +226,16 @@ public class VerifierProcessor {
 				testBallotBoxToTotalNumberOfVoters.get(true), numberOfConfirmedNonTestVotes, numberOfConfirmedTestVotes);
 	}
 
+	private CompletableFuture<String> getDatasetHashCompletableFuture() {
+		return CompletableFuture.supplyAsync( () -> {
+			try (final InputStream unpackedDatasetInputStream = dataset.newInputStream()) {
+				return DigestUtils.sha256Hex(unpackedDatasetInputStream).toUpperCase();
+			} catch (final IOException e) {
+				throw new UncheckedIOException("Failed to digest given dataset.", e);
+			}
+		});
+	}
+
 	public void process(final String runOption) {
 		checkNotNull(dataset, "A dataset must be uploaded before running the process.");
 		checkState(dataset.isUnpacked(), "A dataset must be unpacked before running the process.");
@@ -263,7 +271,8 @@ public class VerifierProcessor {
 						.filter(bb -> bb.getBallotBoxIdentification().equals(nonTestAuthorizationIdentification))
 						.collect(MoreCollectors.onlyElement()))
 				.map(nonTestBallotBox -> nonTestBallotBox.getCountingCircle().stream().parallel()
-						.map(countingCircle -> countingCircle.getDomainOfInfluence().stream().parallel()
+						.map(countingCircle -> countingCircle.getDomainOfInfluence().stream()
+								.findFirst()
 								.map(domainOfInfluence -> {
 									final List<VoteType> voteList = domainOfInfluence.getVote();
 									final List<ElectionType> electionList = domainOfInfluence.getElection();
@@ -279,7 +288,8 @@ public class VerifierProcessor {
 											return 0;
 										}
 									}
-								}).reduce(0, Math::addExact)
+								})
+								.orElse(0)
 						).reduce(0, Math::addExact)
 				).reduce(0, Math::addExact);
 	}

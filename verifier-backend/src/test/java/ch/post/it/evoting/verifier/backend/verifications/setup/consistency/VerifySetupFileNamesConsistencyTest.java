@@ -17,20 +17,15 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.spy;
-
-import java.io.File;
-import java.io.IOException;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
+import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentPublicKeysPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
@@ -39,7 +34,9 @@ class VerifySetupFileNamesConsistencyTest extends SetupVerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifySetupFileNamesConsistency(resultPublisherServiceMock, pathService, objectMapper, electionDataExtractionService);
+		verification = new VerifySetupFileNamesConsistency(resultPublisherServiceMock, pathService,
+				setupComponentVerificationDataPayloadDataExtractor,
+				controlComponentPublicKeysPayloadDataExtractor, controlComponentCodeSharesPayloadDataExtractor);
 	}
 
 	@Test
@@ -51,14 +48,22 @@ class VerifySetupFileNamesConsistencyTest extends SetupVerificationTest {
 	}
 
 	@Test
-	void verifyNok() throws IOException {
-		final ObjectMapper objectMapperMock = spy(objectMapper);
-		final ControlComponentPublicKeysPayload firstPublicKeysPayload = electionDataExtractionService.getControlComponentPublicKeysPayloads(
-				datasetPath).get(0);
-		doReturn(firstPublicKeysPayload).when(objectMapperMock).readValue(any(File.class), eq(ControlComponentPublicKeysPayload.class));
+	void verifyNok() {
+		final ControlComponentPublicKeysPayloadDataExtractor controlComponentPublicKeysPayloadDataExtractorMock = mock(
+				ControlComponentPublicKeysPayloadDataExtractor.class);
 
-		final VerifySetupFileNamesConsistency failingVerification = new VerifySetupFileNamesConsistency(resultPublisherServiceMock,
-				pathService, objectMapperMock, electionDataExtractionService);
+		final ControlComponentPublicKeysPayload firstPublicKeysPayload =
+				electionDataExtractionService.getControlComponentPublicKeysPayloads(datasetPath).get(0);
+
+		final String electionEventId = firstPublicKeysPayload.getElectionEventId();
+		final int nodeId = firstPublicKeysPayload.getControlComponentPublicKeys().nodeId();
+
+		when(controlComponentPublicKeysPayloadDataExtractorMock.load(any()))
+				.thenReturn(new ControlComponentPublicKeysPayloadDataExtractor.DataExtraction(nodeId, electionEventId));
+
+		final VerifySetupFileNamesConsistency failingVerification = new VerifySetupFileNamesConsistency(resultPublisherServiceMock, pathService,
+				setupComponentVerificationDataPayloadDataExtractor, controlComponentPublicKeysPayloadDataExtractorMock,
+				controlComponentCodeSharesPayloadDataExtractor);
 		final VerificationResult verificationResult = failingVerification.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),

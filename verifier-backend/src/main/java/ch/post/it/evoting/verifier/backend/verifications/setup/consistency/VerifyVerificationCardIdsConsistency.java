@@ -16,13 +16,17 @@
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
 import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.hasNoDuplicates;
+import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,11 +36,7 @@ import com.google.common.collect.MoreCollectors;
 
 import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
-import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeShare;
-import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeSharesPayload;
-import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationData;
 import ch.post.it.evoting.cryptoprimitives.domain.validations.Validations;
-import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -107,31 +107,48 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 		return verificationCardSets.getRegexPaths().stream()
 				.parallel()
 				.map(verificationCardSetIdPath -> {
-					// The SetupComponentVerificationDataPayload ensures no duplicated verification card ids.
-					final List<String> verificationDataIds = electionDataExtractionService.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(
+
+					final List<String> verificationDataIds = electionDataExtractionService.getSetupComponentVerificationDataPayloadsDataExtractionsSortedByChunkId(
 									verificationCardSetIdPath)
-							.parallel()
-							.flatMap(
-									setupComponentVerificationDataPayload -> setupComponentVerificationDataPayload.getSetupComponentVerificationData()
-											.stream())
-							.map(SetupComponentVerificationData::verificationCardId)
+							.map(dataExtraction -> {
+								final Collection<String> verificationCardIds = dataExtraction.verificationCardIds();
+
+								checkState(hasNoDuplicates(verificationCardIds));
+								return verificationCardIds;
+							})
+							.flatMap(Collection::stream)
 							.toList();
 
-					// The ControlComponentCodeSharesPayload ensures no duplicated verification card ids.
-					final List<List<ControlComponentCodeSharesPayload>> controlComponentCodeSharesPayloads = electionDataExtractionService.deserializeControlComponentCodeSharesPayloadsOrderByChunkIdAndNodeId(
-							verificationCardSetIdPath);
-					final ConcurrentMap<Integer, List<String>> nodeIdsToCodeSharesIds = controlComponentCodeSharesPayloads.stream()
-							.flatMap(Collection::stream)
-							.collect(Collectors.groupingByConcurrent(
-									ControlComponentCodeSharesPayload::getNodeId,
-									Collectors.flatMapping(codeSharesPayload -> codeSharesPayload.getControlComponentCodeShares().stream()
-													.map(ControlComponentCodeShare::verificationCardId),
-											Collectors.toList())));
+					final ConcurrentMap<Integer, List<String>> nodeIdsToCodeSharesIds = new ConcurrentHashMap<>();
+					electionDataExtractionService.getControlComponentCodeSharesPayloadsDataExtractions(verificationCardSetIdPath)
+							.sorted(Comparator.comparingInt(dataExtraction -> dataExtraction.chunkIds().iterator().next()))
+							.forEachOrdered(dataExtraction -> {
+								final List<String> verificationCardIdsNode1 = dataExtraction.verificationCardIdsNode1().stream().toList();
+								final List<String> verificationCardIdsNode2 = dataExtraction.verificationCardIdsNode2().stream().toList();
+								final List<String> verificationCardIdsNode3 = dataExtraction.verificationCardIdsNode3().stream().toList();
+								final List<String> verificationCardIdsNode4 = dataExtraction.verificationCardIdsNode4().stream().toList();
 
-					// The SetupComponentTallyDataPayload ensures no duplicated verification card ids.
-					final SetupComponentTallyDataPayload setupComponentTallyDataPayload = electionDataExtractionService.getSetupComponentTallyDataPayload(
-							verificationCardSetIdPath);
-					final List<String> tallyDataIds = setupComponentTallyDataPayload.getVerificationCardIds();
+								checkState(hasNoDuplicates(verificationCardIdsNode1));
+								checkState(hasNoDuplicates(verificationCardIdsNode2));
+								checkState(hasNoDuplicates(verificationCardIdsNode3));
+								checkState(hasNoDuplicates(verificationCardIdsNode4));
+
+								nodeIdsToCodeSharesIds.merge(1, verificationCardIdsNode1, (l1, l2) -> Stream.concat(l1.stream(), l2.stream()).toList());
+								nodeIdsToCodeSharesIds.merge(2, verificationCardIdsNode2, (l1, l2) -> Stream.concat(l1.stream(), l2.stream()).toList());
+								nodeIdsToCodeSharesIds.merge(3, verificationCardIdsNode3, (l1, l2) -> Stream.concat(l1.stream(), l2.stream()).toList());
+								nodeIdsToCodeSharesIds.merge(4, verificationCardIdsNode4, (l1, l2) -> Stream.concat(l1.stream(), l2.stream()).toList());
+							});
+
+
+					final List<String> tallyDataIds = electionDataExtractionService.getSetupComponentTallyDataPayloadsDataExtractions(verificationCardSetIdPath)
+							.map(dataExtraction -> {
+								final List<String> verificationCardIds = Arrays.asList(dataExtraction.verificationCardIds());
+
+								checkState(hasNoDuplicates(verificationCardIds));
+								return verificationCardIds;
+							})
+							.flatMap(Collection::stream)
+							.toList();
 
 					final String verificationCardSetId = verificationCardSetIdPath.getFileName().toString();
 					final int numberOfVotingCards = verificationCardSetContexts.stream()
@@ -169,7 +186,9 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 		}
 
 		final List<String> codeSharesVerificationIds = List.copyOf(nodeIdsToCodeSharesIds.get(1));
-		final boolean allCodeSharesIdsUniquePerNode = nodeIdsToCodeSharesIds.values().stream().allMatch(Validations::hasNoDuplicates);
+		final boolean allCodeSharesIdsUniquePerNode = nodeIdsToCodeSharesIds.values().stream()
+				.parallel()
+				.allMatch(Validations::hasNoDuplicates);
 		if (!allCodeSharesIdsUniquePerNode) {
 			LOGGER.info(
 					"There are either duplicated verification card ids among the ControlComponentCodeSharesPayload chunks.");
@@ -179,6 +198,7 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 		// The SetupComponentTallyData payload ensured no verification card id duplicates.
 
 		final boolean allCodeSharesIdsEqualAcrossNodes = nodeIdsToCodeSharesIds.values().stream()
+				.parallel()
 				.allMatch(codeSharesIds -> List.copyOf(codeSharesIds).equals(codeSharesVerificationIds));
 		if (!allCodeSharesIdsEqualAcrossNodes) {
 			LOGGER.info(

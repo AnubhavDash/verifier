@@ -15,24 +15,22 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
-import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeSharesPayload;
-import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationDataPayload;
-import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
-import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
+import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentCodeSharesPayloadDataExtractor;
+import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentPublicKeysPayloadDataExtractor;
+import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentTallyDataPayloadDataExtractor;
+import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentVerificationDataPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -43,8 +41,7 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 
 	@BeforeAll
 	static void setUpAll() {
-		verification = new VerifyElectionEventIdConsistency(resultPublisherServiceMock,
-				electionDataExtractionService);
+		verification = new VerifyElectionEventIdConsistency(resultPublisherServiceMock, electionDataExtractionService);
 	}
 
 	@Test
@@ -60,12 +57,26 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 	@DisplayName("inconsistent control component code shares payloads failed")
 	void inconsistentControlComponentCodeSharesPayload() {
 
-		final ControlComponentCodeSharesPayload controlComponentCodeSharesPayloadMock = mock(ControlComponentCodeSharesPayload.class);
-		when(controlComponentCodeSharesPayloadMock.getElectionEventId()).thenReturn("wrong election event ID");
-
 		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(Stream.of(controlComponentCodeSharesPayloadMock)).when(extractionServiceSpy)
-				.getControlComponentCodeSharesPayloadsOrderedByNodeId(datasetPath);
+
+		final Stream<ControlComponentCodeSharesPayloadDataExtractor.DataExtraction> dataExtractions = electionDataExtractionService.getAllControlComponentCodeSharesPayloadsDataExtractions(
+						datasetPath)
+				.map(dataExtraction -> new ControlComponentCodeSharesPayloadDataExtractor.DataExtraction(
+								dataExtraction.chunkIds(),
+								List.of("wrong election event ID"),
+								dataExtraction.nodeIds(),
+								dataExtraction.verificationCardSetIds(),
+								dataExtraction.verificationCardIdsNode1(),
+								dataExtraction.verificationCardIdsNode2(),
+								dataExtraction.verificationCardIdsNode3(),
+								dataExtraction.verificationCardIdsNode4(),
+								dataExtraction.p(),
+								dataExtraction.q(),
+								dataExtraction.g()
+						)
+				);
+
+		doReturn(dataExtractions).when(extractionServiceSpy).getAllControlComponentCodeSharesPayloadsDataExtractions(datasetPath);
 
 		final VerifyElectionEventIdConsistency verifyElectionEventIdConsistency = new VerifyElectionEventIdConsistency(
 				resultPublisherServiceMock, extractionServiceSpy);
@@ -81,12 +92,19 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 	@DisplayName("inconsistent setup component verification data payload failed")
 	void inconsistentSetupComponentVerificationDataPayload() {
 
-		final SetupComponentVerificationDataPayload setupComponentVerificationDataPayloadMock = mock(SetupComponentVerificationDataPayload.class);
-		when(setupComponentVerificationDataPayloadMock.getElectionEventId()).thenReturn("wrong election event ID");
-
 		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(Stream.of(setupComponentVerificationDataPayloadMock)).when(extractionServiceSpy)
-				.getSetupComponentVerificationDataPayloadsOrderByChunkId(datasetPath);
+
+		final Stream<SetupComponentVerificationDataPayloadDataExtractor.DataExtraction> dataExtractions = electionDataExtractionService.getAllSetupComponentVerificationDataPayloadsDataExtractions(
+						datasetPath)
+				.map(dataExtraction -> new SetupComponentVerificationDataPayloadDataExtractor.DataExtraction(
+								dataExtraction.chunkId(),
+								"wrong election event ID",
+								dataExtraction.verificationCardSetId(),
+								dataExtraction.verificationCardIds()
+						)
+				);
+
+		doReturn(dataExtractions).when(extractionServiceSpy).getAllSetupComponentVerificationDataPayloadsDataExtractions(datasetPath);
 
 		final VerifyElectionEventIdConsistency verifyElectionEventIdConsistency = new VerifyElectionEventIdConsistency(
 				resultPublisherServiceMock, extractionServiceSpy);
@@ -102,11 +120,18 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 	@DisplayName("inconsistent setup component tally data payload failed")
 	void inconsistentSetupComponentTallyDataPayload() {
 
-		final SetupComponentTallyDataPayload setupComponentTallyDataPayloadMock = mock(SetupComponentTallyDataPayload.class);
-		when(setupComponentTallyDataPayloadMock.getElectionEventId()).thenReturn("wrong election event ID");
-
 		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(Stream.of(setupComponentTallyDataPayloadMock)).when(extractionServiceSpy).getSetupComponentTallyDataPayloads(datasetPath);
+
+		final Stream<SetupComponentTallyDataPayloadDataExtractor.DataExtraction> dataExtractions = electionDataExtractionService.getAllSetupComponentTallyDataPayloadsDataExtractions(
+						datasetPath)
+				.map(dataExtraction -> new SetupComponentTallyDataPayloadDataExtractor.DataExtraction(
+								"wrong election event ID",
+								dataExtraction.verificationCardSetId(),
+								dataExtraction.verificationCardIds()
+						)
+				);
+
+		doReturn(dataExtractions).when(extractionServiceSpy).getAllSetupComponentTallyDataPayloadsDataExtractions(datasetPath);
 
 		final VerifyElectionEventIdConsistency verifyElectionEventIdConsistency = new VerifyElectionEventIdConsistency(
 				resultPublisherServiceMock, extractionServiceSpy);
@@ -122,11 +147,13 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 	@DisplayName("inconsistent control component public keys payload failed")
 	void inconsistentControlComponentPublicKeysPayload() {
 
-		final ControlComponentPublicKeysPayload controlComponentPublicKeysPayloadMock = mock(ControlComponentPublicKeysPayload.class);
-		when(controlComponentPublicKeysPayloadMock.getElectionEventId()).thenReturn("wrong election event ID");
+		final ControlComponentPublicKeysPayloadDataExtractor.DataExtraction dataExtraction = new ControlComponentPublicKeysPayloadDataExtractor.DataExtraction(
+				0,
+				"wrong election event ID"
+		);
 
 		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(singletonList(controlComponentPublicKeysPayloadMock)).when(extractionServiceSpy).getControlComponentPublicKeysPayloads(datasetPath);
+		doReturn(Stream.of(dataExtraction)).when(extractionServiceSpy).getControlComponentPublicKeysPayloadsDataExtractions(datasetPath);
 
 		final VerifyElectionEventIdConsistency verifyElectionEventIdConsistency = new VerifyElectionEventIdConsistency(
 				resultPublisherServiceMock, extractionServiceSpy);
