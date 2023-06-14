@@ -46,7 +46,7 @@ public class VerifyEncryptedPCCExponentiationProofsAlgorithm {
 	 */
 	@SuppressWarnings("java:S117")
 	public boolean verifyEncryptedPCCExponentiationProofs(final VerifyEncryptedExponentiationProofsInput input,
-			final Stream<ExponentiationProofsVerificationExtractionService.ContextAndInputForVerificationCardSetAndControlComponent> contextAndInputs) {
+			final List<ExponentiationProofsVerificationExtractionService.ContextAndInputForVerificationCardSetAndControlComponent> contextAndInputs) {
 		checkNotNull(input);
 		checkNotNull(contextAndInputs);
 
@@ -56,6 +56,7 @@ public class VerifyEncryptedPCCExponentiationProofsAlgorithm {
 
 		// Operation.
 		final boolean vcsEncryptedPCCVerif = contextAndInputs
+				.stream()
 				.parallel()
 				// Corresponds to the loop for j in [1, 4] and i in [0, N_bb)
 				.map(j_i -> verifyEncryptedPCCExponentiationProofsVerificationCardSetAlgorithm
