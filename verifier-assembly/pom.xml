@@ -42,6 +42,7 @@
 							<goal>wget</goal>
 						</goals>
 						<configuration>
+							<followRedirects>true</followRedirects>
 							<url>${openjdk-jre.win64.url}</url>
 							<outputDirectory>${project.build.directory}/jre</outputDirectory>
 							<unpack>true</unpack>
