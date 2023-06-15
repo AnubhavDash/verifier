@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>verifier</artifactId>
 		<groupId>ch.post.it.evoting.verifier</groupId>
-		<version>1.4.1.0-RC8</version>
+		<version>1.4.1.0</version>
 	</parent>
 
 	<artifactId>verifier-assembly</artifactId>
@@ -42,6 +42,7 @@
 							<goal>wget</goal>
 						</goals>
 						<configuration>
+							<followRedirects>true</followRedirects>
 							<url>${openjdk-jre.win64.url}</url>
 							<outputDirectory>${project.build.directory}/jre</outputDirectory>
 							<unpack>true</unpack>

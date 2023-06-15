@@ -1,13 +1,25 @@
 # Changelog
 
-## Release 1.4
+## Release 1.4.1
 
-Release 1.4 includes some feedback from the Federal Chancellery's mandated experts and other experts of the community.
+Release 1.4.1 includes some feedback from the Federal Chancellery's mandated experts and other experts of the community.
 We want to thank the experts for their high-quality, constructive remarks:
 
-* Vanessa Teague (Thinking Cybersecurity), Olivier Pereira (Université catholique Louvain), Thomas Edmund Haines (Australian National University)
+* Thomas Edmund Haines (Australian National University), Olivier Pereira (Université catholique Louvain), Vanessa Teague (Thinking Cybersecurity)
 * Aleksander Essex (Western University Canada)
 * Rolf Haenni, Reto Koenig, Philipp Locher, Eric Dubuis (Bern University of Applied Sciences)
+
+The following functionalities and improvements are included in release 1.4.1:
+
+* Merge verifications VerifySignatureSetupComponentVerificationData, VerifySignatureControlComponentCodeShares, VerifyEncryptedPCCExponentiationProofs, VerifyEncryptedCKExponentiationProofs into one verification VerifySignatureVerificationDataAndCodeProofs.
+* Chunk-wise execute the VerifySignatureVerificationDataAndCodeProofs.
+* Optimized the performance of consistency verifications by using a specialized library that avoid deserializing the entire payload.
+* Minor bug fixes in the PDF report.
+* Updated dependencies and third-party libraries.
+
+## Release 1.4
+
+Release 1.4 includes some feedback from the Federal Chancellery's mandated experts (see above) and other experts of the community.
 
 The following functionalities and improvements are included in release 1.4:
 
