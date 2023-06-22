@@ -15,7 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
-import static ch.post.it.evoting.cryptoprimitives.domain.ControlComponentConstants.NODE_IDS;
+import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;

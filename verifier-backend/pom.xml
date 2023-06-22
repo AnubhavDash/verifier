@@ -93,20 +93,16 @@
 			<artifactId>crypto-primitives</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>ch.post.it.evoting.cryptoprimitives.domain</groupId>
-			<artifactId>crypto-primitives-domain</artifactId>
+			<groupId>ch.post.it.evoting.evotinglibraries</groupId>
+			<artifactId>e-voting-libraries-domain</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>ch.post.it.evoting.evotinglibraries</groupId>
-			<artifactId>domain</artifactId>
+			<artifactId>e-voting-libraries-protocol-algorithms</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>ch.post.it.evoting.evotinglibraries</groupId>
-			<artifactId>protocol-algorithms</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>ch.post.it.evoting.evotinglibraries</groupId>
-			<artifactId>xml</artifactId>
+			<artifactId>e-voting-libraries-xml</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.mapstruct</groupId>

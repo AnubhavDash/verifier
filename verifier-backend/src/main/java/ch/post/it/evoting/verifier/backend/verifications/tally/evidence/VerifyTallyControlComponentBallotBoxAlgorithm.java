@@ -24,8 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
-import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTableEntry;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientMessage;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
@@ -37,6 +35,8 @@ import ch.post.it.evoting.cryptoprimitives.mixnet.ShuffleArgument;
 import ch.post.it.evoting.cryptoprimitives.utils.VerificationResult;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.VerifiableDecryptions;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
+import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
+import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTableEntry;
 
 @Service
 public class VerifyTallyControlComponentBallotBoxAlgorithm {

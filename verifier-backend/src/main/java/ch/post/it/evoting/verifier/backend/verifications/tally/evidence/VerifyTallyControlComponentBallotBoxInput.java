@@ -25,7 +25,6 @@ import java.util.stream.Stream;
 
 import com.google.common.base.Preconditions;
 
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.VerifiablePlaintextDecryption;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientMessage;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
@@ -36,6 +35,7 @@ import ch.post.it.evoting.cryptoprimitives.mixnet.ShuffleArgument;
 import ch.post.it.evoting.cryptoprimitives.mixnet.VerifiableShuffle;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.DecryptionProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.VerifiableDecryptions;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.VerifiablePlaintextDecryption;
 
 /**
  * Regroups the input values needed by the VerifyTallyControlComponentBallotBox algorithm.

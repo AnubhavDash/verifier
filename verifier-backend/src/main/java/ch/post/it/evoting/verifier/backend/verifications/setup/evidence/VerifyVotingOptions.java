@@ -21,15 +21,15 @@ import java.util.Comparator;
 
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
-import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
-import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTableEntry;
-import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.EncryptionParametersPayload;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupElement;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
+import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
+import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
+import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTableEntry;
+import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.EncryptionParametersPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;

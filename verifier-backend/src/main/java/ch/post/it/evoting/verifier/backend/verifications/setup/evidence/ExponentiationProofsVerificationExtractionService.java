@@ -15,9 +15,9 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 
-import static ch.post.it.evoting.cryptoprimitives.domain.ControlComponentConstants.NODE_IDS;
-import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.hasNoDuplicates;
-import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.validateUUID;
+import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
+import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.hasNoDuplicates;
+import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.validateUUID;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -33,14 +33,14 @@ import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
-import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
-import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeShare;
-import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeSharesPayload;
-import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationData;
-import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationDataPayload;
-import ch.post.it.evoting.cryptoprimitives.domain.validations.Validations;
+import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
+import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
+import ch.post.it.evoting.evotinglibraries.domain.returncodes.ControlComponentCodeShare;
+import ch.post.it.evoting.evotinglibraries.domain.returncodes.ControlComponentCodeSharesPayload;
+import ch.post.it.evoting.evotinglibraries.domain.returncodes.SetupComponentVerificationData;
+import ch.post.it.evoting.evotinglibraries.domain.returncodes.SetupComponentVerificationDataPayload;
+import ch.post.it.evoting.evotinglibraries.domain.validations.Validations;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;

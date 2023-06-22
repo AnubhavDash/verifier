@@ -22,11 +22,11 @@ import java.util.List;
 
 import com.google.common.base.Preconditions;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientMessage;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
+import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
 
 /**
  * Regroups the input values needed by the VerifyProcessPlaintexts algorithm.

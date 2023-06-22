@@ -15,7 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
-import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.hasNoDuplicates;
+import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.hasNoDuplicates;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
@@ -34,9 +34,9 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.collect.MoreCollectors;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
-import ch.post.it.evoting.cryptoprimitives.domain.validations.Validations;
+import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
+import ch.post.it.evoting.evotinglibraries.domain.validations.Validations;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;

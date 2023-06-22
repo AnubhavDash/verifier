@@ -20,9 +20,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
-import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
-import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
+import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
+import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
+import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;

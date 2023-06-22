@@ -15,16 +15,16 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
-import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.validateUUID;
+import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.validateUUID;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
-import ch.post.it.evoting.cryptoprimitives.domain.validations.FailedValidationException;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
+import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
+import ch.post.it.evoting.evotinglibraries.domain.validations.FailedValidationException;
 
 /**
  * Regroups the context values needed by the VerifyTallyControlComponentBallotBox algorithm.
