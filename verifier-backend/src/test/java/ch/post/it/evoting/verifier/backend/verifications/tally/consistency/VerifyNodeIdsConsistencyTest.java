@@ -31,7 +31,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;

@@ -27,16 +27,16 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Streams;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
-import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
-import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTableEntry;
-import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
 import ch.post.it.evoting.cryptoprimitives.math.Random;
 import ch.post.it.evoting.cryptoprimitives.math.RandomFactory;
+import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
+import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
+import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTableEntry;
+import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;

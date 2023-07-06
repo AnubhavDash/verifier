@@ -27,11 +27,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import ch.post.it.evoting.cryptoprimitives.domain.VotingOptionsConstants;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement.PrimeGqElementFactory;
+import ch.post.it.evoting.evotinglibraries.domain.VotingOptionsConstants;
 
 import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
 import uk.org.webcompere.systemstubs.jupiter.SystemStub;

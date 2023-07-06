@@ -15,7 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
-import static ch.post.it.evoting.cryptoprimitives.domain.ControlComponentConstants.NODE_IDS;
+import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
 
 import java.nio.file.Path;
 import java.util.Collection;

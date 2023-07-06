@@ -15,8 +15,8 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 
-import static ch.post.it.evoting.cryptoprimitives.domain.ControlComponentConstants.NODE_IDS;
 import static ch.post.it.evoting.cryptoprimitives.utils.Conversions.integerToString;
+import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 

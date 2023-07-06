@@ -25,8 +25,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.ControlComponentPublicKeys;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
+import ch.post.it.evoting.evotinglibraries.domain.election.ControlComponentPublicKeys;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;

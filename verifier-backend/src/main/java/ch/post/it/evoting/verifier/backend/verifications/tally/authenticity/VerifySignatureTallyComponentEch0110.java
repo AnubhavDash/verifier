@@ -31,10 +31,10 @@ import com.google.common.collect.MoreCollectors;
 
 import ch.ech.xmlns.ech_0110._4.Delivery;
 import ch.ech.xmlns.ech_0155._4.ExtensionType;
-import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
+import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
 import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableEch0110Factory;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
