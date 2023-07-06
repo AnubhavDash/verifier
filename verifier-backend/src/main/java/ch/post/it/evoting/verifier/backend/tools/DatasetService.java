@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
+import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
 
 import jakarta.xml.bind.DatatypeConverter;
 import net.lingala.zip4j.io.inputstream.ZipInputStream;
