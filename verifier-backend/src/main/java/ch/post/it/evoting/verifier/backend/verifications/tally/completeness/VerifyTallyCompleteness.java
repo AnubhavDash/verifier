@@ -87,7 +87,6 @@ public class VerifyTallyCompleteness extends AbstractVerification {
 			pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SETS_DIR, inputDirectoryPath);
 			final List<Path> verificationCardSetIds = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath)
 					.getRegexPaths();
-			verificationCardSetIds.stream().parallel().forEach(vcs -> pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_CODE_SHARES, vcs));
 			verificationCardSetIds.stream().parallel().forEach(vcs -> pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_TALLY_DATA, vcs));
 			verificationCardSetIds.stream().parallel().forEach(vcs -> pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA, vcs));
 			return true;

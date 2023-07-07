@@ -42,6 +42,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
@@ -50,6 +51,8 @@ import com.google.common.collect.MoreCollectors;
 
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
+import ch.post.it.evoting.evotinglibraries.domain.encryption.StreamedEncryptionDecryptionService;
+import ch.post.it.evoting.evotinglibraries.domain.validations.PasswordValidation;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
@@ -75,6 +78,8 @@ import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 public class VerifierProcessor {
 	private static final Logger LOGGER = LoggerFactory.getLogger(VerifierProcessor.class);
 
+	private static final byte[] ASSOCIATED_DATA = new byte[] {};
+
 	private static final String SETUP = SetupEvent.TYPE;
 	private static final String TALLY = TallyEvent.TYPE;
 	private static final String PRE_SETUP = PreSetupEvent.TYPE;
@@ -84,6 +89,8 @@ public class VerifierProcessor {
 	private final DatasetService datasetService;
 	private final ElectionDataExtractionService electionDataExtractionService;
 	private final DirectoryService directoryService;
+	private final StreamedEncryptionDecryptionService streamedEncryptionDecryptionService;
+	private final char[] importDecryptionPassword;
 	private Dataset dataset;
 	private DatasetConfiguration datasetConfiguration;
 	private List<Verification> verifications;
@@ -92,12 +99,18 @@ public class VerifierProcessor {
 			final ApplicationEventPublisher applicationEventPublisher,
 			final DatasetService datasetService,
 			final ElectionDataExtractionService electionDataExtractionService,
-			final DirectoryService directoryService) {
+			final DirectoryService directoryService,
+			final StreamedEncryptionDecryptionService streamedEncryptionDecryptionService,
+			@Value("${import.zip.decryption.password}")
+			final char[] importDecryptionPassword) {
 		this.applicationContext = applicationContext;
 		this.applicationEventPublisher = applicationEventPublisher;
 		this.datasetService = datasetService;
 		this.electionDataExtractionService = electionDataExtractionService;
 		this.directoryService = directoryService;
+		this.streamedEncryptionDecryptionService = streamedEncryptionDecryptionService;
+		this.importDecryptionPassword = importDecryptionPassword;
+		PasswordValidation.validate(this.importDecryptionPassword, "import decryption");
 	}
 
 	@PostConstruct
@@ -115,8 +128,8 @@ public class VerifierProcessor {
 		final List<Verification> result = new ArrayList<>(verifications);
 		result.sort(Comparator.comparing(Verification::getBlock)
 				.thenComparing((o1, o2) -> {
-					double id1 = Double.parseDouble(o1.getVerificationId());
-					double id2 = Double.parseDouble(o2.getVerificationId());
+					final double id1 = Double.parseDouble(o1.getVerificationId());
+					final double id2 = Double.parseDouble(o2.getVerificationId());
 					return Double.compare(id1, id2);
 				}));
 
@@ -148,7 +161,9 @@ public class VerifierProcessor {
 			datasetService.clean(dataset);
 		}
 
-		this.dataset = new Dataset(datasetInputStream, tempDirectory);
+		final InputStream decryptedStream = streamedEncryptionDecryptionService.decrypt(datasetInputStream, importDecryptionPassword,
+				ASSOCIATED_DATA);
+		this.dataset = new Dataset(decryptedStream, tempDirectory);
 
 		LOGGER.info("Dataset successfully downloaded.");
 
@@ -227,7 +242,7 @@ public class VerifierProcessor {
 	}
 
 	private CompletableFuture<String> getDatasetHashCompletableFuture() {
-		return CompletableFuture.supplyAsync( () -> {
+		return CompletableFuture.supplyAsync(() -> {
 			try (final InputStream unpackedDatasetInputStream = dataset.newInputStream()) {
 				return DigestUtils.sha256Hex(unpackedDatasetInputStream).toUpperCase();
 			} catch (final IOException e) {
@@ -267,8 +282,8 @@ public class VerifierProcessor {
 		return configuration.getAuthorizations().getAuthorization().stream().parallel()
 				.filter(authorizationType -> testAuthorizations == authorizationType.isAuthorizationTest())
 				.map(AuthorizationType::getAuthorizationIdentification)
-				.map(nonTestAuthorizationIdentification -> tallyComponentDecrypt.getBallotsBox().stream().parallel()
-						.filter(bb -> bb.getBallotBoxIdentification().equals(nonTestAuthorizationIdentification))
+				.map(authorizationIdentification -> tallyComponentDecrypt.getBallotsBox().stream().parallel()
+						.filter(bb -> bb.getBallotBoxIdentification().equals(authorizationIdentification))
 						.collect(MoreCollectors.onlyElement()))
 				.map(nonTestBallotBox -> nonTestBallotBox.getCountingCircle().stream().parallel()
 						.map(countingCircle -> countingCircle.getDomainOfInfluence().stream()

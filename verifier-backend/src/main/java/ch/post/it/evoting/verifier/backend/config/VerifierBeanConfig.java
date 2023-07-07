@@ -33,14 +33,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ch.ech.xmlns.ech_0110._4.Delivery;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
+import ch.post.it.evoting.cryptoprimitives.hashing.Argon2;
+import ch.post.it.evoting.cryptoprimitives.hashing.Argon2Factory;
+import ch.post.it.evoting.cryptoprimitives.hashing.Argon2Profile;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hash;
 import ch.post.it.evoting.cryptoprimitives.hashing.HashFactory;
+import ch.post.it.evoting.cryptoprimitives.math.Random;
+import ch.post.it.evoting.cryptoprimitives.math.RandomFactory;
 import ch.post.it.evoting.cryptoprimitives.mixnet.Mixnet;
 import ch.post.it.evoting.cryptoprimitives.mixnet.MixnetFactory;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureFactory;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
+import ch.post.it.evoting.evotinglibraries.domain.encryption.StreamedEncryptionDecryptionService;
 import ch.post.it.evoting.evotinglibraries.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.FactorizeAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetActualVotingOptionsAlgorithm;
@@ -198,5 +204,20 @@ public class VerifierBeanConfig {
 	@Bean
 	XmlNormalizer xmlNormalizer() {
 		return new XmlNormalizer();
+	}
+
+	@Bean
+	Argon2 argon2Standard() {
+		return Argon2Factory.createArgon2(Argon2Profile.STANDARD.getContext());
+	}
+
+	@Bean
+	public Random random() {
+		return RandomFactory.createRandom();
+	}
+
+	@Bean
+	StreamedEncryptionDecryptionService streamedEncryptionDecryptionService(final Random random, final Argon2 argon2) {
+		return new StreamedEncryptionDecryptionService(random, argon2);
 	}
 }

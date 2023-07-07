@@ -74,7 +74,7 @@ public abstract class TallyVerificationTest {
 		objectMapper = DomainObjectMapper.getNewInstance();
 		pathService = new PathService();
 		resultPublisherServiceMock = mock(ResultPublisherService.class);
-		datasetPath = Paths.get("").toAbsolutePath().getParent().resolve("datasets").resolve("dataset1-setup-tally");
+		datasetPath = Paths.get("").toAbsolutePath().getParent().resolve("datasets").resolve("dataset-tally");
 		signatureFactory = new TestDigitalSignaturesFactory();
 		ech0110XmlFileRepository = new XmlFileRepository<>();
 		ech0222XmlFileRepository = new XmlFileRepository<>();

@@ -74,7 +74,7 @@ public abstract class SetupVerificationTest {
 		pathService = new PathService();
 		resultPublisherServiceMock = mock(ResultPublisherService.class);
 		objectMapper = DomainObjectMapper.getNewInstance();
-		datasetPath = Paths.get("").toAbsolutePath().getParent().resolve("datasets").resolve("dataset1-setup");
+		datasetPath = Paths.get("").toAbsolutePath().getParent().resolve("datasets").resolve("dataset-setup");
 		signatureFactory = new TestDigitalSignaturesFactory();
 		ech0110XmlFileRepository = new XmlFileRepository<>();
 		ech0222XmlFileRepository = new XmlFileRepository<>();
