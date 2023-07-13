@@ -23,10 +23,10 @@ import java.util.stream.IntStream;
 
 import org.springframework.stereotype.Service;
 
+import ch.post.it.evoting.cryptoprimitives.domain.VotingOptionsConstants;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
-import ch.post.it.evoting.evotinglibraries.domain.VotingOptionsConstants;
 
 @Service
 public class VerifySmallPrimeGroupMembersAlgorithm {

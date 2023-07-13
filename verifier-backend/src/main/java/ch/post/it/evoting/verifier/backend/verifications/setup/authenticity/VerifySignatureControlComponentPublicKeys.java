@@ -15,7 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.authenticity;
 
-import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
+import static ch.post.it.evoting.cryptoprimitives.domain.ControlComponentConstants.NODE_IDS;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
@@ -26,12 +26,12 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
 
+import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
+import ch.post.it.evoting.cryptoprimitives.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
-import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
-import ch.post.it.evoting.evotinglibraries.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;

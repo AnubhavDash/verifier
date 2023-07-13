@@ -15,12 +15,12 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 
-import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.validateUUID;
+import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.validateUUID;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.List;
 
-import ch.post.it.evoting.evotinglibraries.domain.validations.Validations;
+import ch.post.it.evoting.cryptoprimitives.domain.validations.Validations;
 
 public class VerifyEncryptedExponentiationProofsInput {
 

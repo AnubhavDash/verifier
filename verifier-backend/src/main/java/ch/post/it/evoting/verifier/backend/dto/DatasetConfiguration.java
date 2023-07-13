@@ -15,7 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.dto;
 
-import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.validateUUID;
+import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.validateUUID;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 

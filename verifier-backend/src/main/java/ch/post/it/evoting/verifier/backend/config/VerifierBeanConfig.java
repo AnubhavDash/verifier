@@ -31,6 +31,7 @@ import org.springframework.context.annotation.Primary;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.ech.xmlns.ech_0110._4.Delivery;
+import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hash;
@@ -41,7 +42,6 @@ import ch.post.it.evoting.cryptoprimitives.signing.SignatureFactory;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
-import ch.post.it.evoting.evotinglibraries.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.FactorizeAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetActualVotingOptionsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetEncodedVotingOptionsAlgorithm;

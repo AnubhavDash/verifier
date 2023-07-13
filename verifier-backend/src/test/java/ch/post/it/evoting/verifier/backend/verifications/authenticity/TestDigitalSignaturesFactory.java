@@ -26,13 +26,13 @@ import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.Map;
 
+import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
 import ch.post.it.evoting.cryptoprimitives.signing.AuthorityInformation;
 import ch.post.it.evoting.cryptoprimitives.signing.GenKeysAndCert;
 import ch.post.it.evoting.cryptoprimitives.signing.KeysAndCert;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureFactory;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureGeneration;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
-import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
 
 /**
  * Utility functions to generate and verify signatures for unit testing authenticity checks.

@@ -48,8 +48,8 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.collect.MoreCollectors;
 
-import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
-import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
+import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
+import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;

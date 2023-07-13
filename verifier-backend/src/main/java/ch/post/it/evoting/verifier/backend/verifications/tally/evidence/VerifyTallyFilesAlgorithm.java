@@ -15,7 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
-import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.validateUUID;
+import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.validateUUID;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Arrays;
@@ -26,10 +26,10 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import org.springframework.stereotype.Service;
 
 import ch.ech.xmlns.ech_0110._4.Delivery;
+import ch.post.it.evoting.cryptoprimitives.domain.validations.FailedValidationException;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hash;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
-import ch.post.it.evoting.evotinglibraries.domain.validations.FailedValidationException;
 import ch.post.it.evoting.evotinglibraries.xml.XmlNormalizer;
 import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableEch0110Factory;
 import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableEch0222Factory;

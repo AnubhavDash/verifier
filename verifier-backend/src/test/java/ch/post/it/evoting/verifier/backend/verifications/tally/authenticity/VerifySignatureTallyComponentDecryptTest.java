@@ -28,10 +28,10 @@ import java.security.cert.CertificateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
-import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
 import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableResultsFactory;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;

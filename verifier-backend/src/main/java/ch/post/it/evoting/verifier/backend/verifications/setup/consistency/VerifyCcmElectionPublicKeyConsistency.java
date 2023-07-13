@@ -22,10 +22,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
+import ch.post.it.evoting.cryptoprimitives.domain.election.ControlComponentPublicKeys;
+import ch.post.it.evoting.cryptoprimitives.domain.mixnet.SetupComponentPublicKeysPayload;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
-import ch.post.it.evoting.evotinglibraries.domain.election.ControlComponentPublicKeys;
-import ch.post.it.evoting.evotinglibraries.domain.mixnet.SetupComponentPublicKeysPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;

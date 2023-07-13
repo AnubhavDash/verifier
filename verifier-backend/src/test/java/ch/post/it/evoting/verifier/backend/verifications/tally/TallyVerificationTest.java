@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.ech.xmlns.ech_0110._4.Delivery;
-import ch.post.it.evoting.evotinglibraries.domain.mapper.DomainObjectMapper;
+import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;

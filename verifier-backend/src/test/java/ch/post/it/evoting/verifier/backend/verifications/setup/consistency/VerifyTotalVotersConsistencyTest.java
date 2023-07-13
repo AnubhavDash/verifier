@@ -28,8 +28,8 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.base.Throwables;
 
-import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
-import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
+import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
+import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.HeaderType;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
