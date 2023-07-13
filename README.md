@@ -49,7 +49,7 @@ maintain.
 
 ### JFrog X-Ray Analysis
 
-At the time of writing (April 2023), the published source code contains no directly dependent Java component with known vulnerabilities except
+The X-Ray analysis indicates that the published source code contains no directly dependent Java component with known vulnerabilities except
 for the vulnerability [CVE-2016-1000027](https://nvd.nist.gov/vuln/detail/CVE-2016-1000027) in the Spring framework.
 This particular vulnerability is [somewhat contested](https://github.com/spring-projects/spring-framework/issues/24434)
 and our internal analysis concluded that it cannot be exploited in the verifier of the Swiss Post Voting System.
@@ -71,6 +71,7 @@ The following table indicates the correspondence between the Verifier and E-voti
 | 1.3.3            | 1.2.3                                                                      |
 | 1.4.0            | 1.3.0                                                                      |
 | 1.4.1            | 1.3.1                                                                      |
+| 1.4.2            | 1.3.2                                                                      |
 
 ## Build information
 
