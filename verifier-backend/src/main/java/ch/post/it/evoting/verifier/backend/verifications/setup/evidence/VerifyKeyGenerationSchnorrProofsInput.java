@@ -17,13 +17,13 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import ch.post.it.evoting.cryptoprimitives.domain.election.ControlComponentPublicKeys;
+import ch.post.it.evoting.cryptoprimitives.domain.election.SetupComponentPublicKeys;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.ZqGroup;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.SchnorrProof;
-import ch.post.it.evoting.evotinglibraries.domain.election.ControlComponentPublicKeys;
-import ch.post.it.evoting.evotinglibraries.domain.election.SetupComponentPublicKeys;
 
 /**
  * Regroups the input values needed by the VerifyKeyGenerationSchnorrProofs algorithm.
