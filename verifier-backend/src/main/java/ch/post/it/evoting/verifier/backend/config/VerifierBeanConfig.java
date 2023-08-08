@@ -208,7 +208,7 @@ public class VerifierBeanConfig {
 
 	@Bean
 	Argon2 argon2Standard() {
-		return Argon2Factory.createArgon2(Argon2Profile.STANDARD.getContext());
+		return Argon2Factory.createArgon2(Argon2Profile.STANDARD);
 	}
 
 	@Bean

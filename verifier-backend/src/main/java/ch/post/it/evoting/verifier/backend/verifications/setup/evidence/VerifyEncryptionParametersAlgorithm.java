@@ -61,7 +61,7 @@ public class VerifyEncryptionParametersAlgorithm {
 		checkArgument(p_hat.compareTo(q_hat.shiftLeft(1).add(BigInteger.ONE)) == 0, "p_hat must be equal to 2 * q_hat + 1.");
 
 		//Require
-		checkState(SecurityLevelConfig.getSystemSecurityLevel() == SecurityLevelInternal.EXTENDED, "security level must be EXTENDED (group modulus 3072 bits)");
+		checkState(SecurityLevelConfig.getSystemSecurityLevel() == SecurityLevelInternal.STANDARD, "security level must be STANDARD (group modulus 3072 bits)");
 
 		// Operation.
 		final GqGroup gqGroup = elGamal.getEncryptionParameters(seed);

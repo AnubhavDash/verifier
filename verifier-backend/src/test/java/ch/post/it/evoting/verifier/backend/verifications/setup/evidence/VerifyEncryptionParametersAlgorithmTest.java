@@ -53,7 +53,7 @@ class VerifyEncryptionParametersAlgorithmTest {
 
 	@BeforeAll
 	static void setupAll() {
-		environmentVariables.set("SECURITY_LEVEL", "EXTENDED");
+		environmentVariables.set("SECURITY_LEVEL", "STANDARD");
 	}
 
 	@BeforeEach
