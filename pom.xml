@@ -15,7 +15,7 @@
 
 	<properties>
 		<maven-enforcer-plugin.requiredJavaVersion>[17.0.7]</maven-enforcer-plugin.requiredJavaVersion>
-		<maven-enforcer-plugin.requiredMavenVersion>[3.9.1]</maven-enforcer-plugin.requiredMavenVersion>
+		<maven-enforcer-plugin.requiredMavenVersion>[3.9.4]</maven-enforcer-plugin.requiredMavenVersion>
 		<maven.compiler.release>17</maven.compiler.release>
 		<project.build.outputTimestamp>2023-07-06T15:18:19+02:00</project.build.outputTimestamp>
 
