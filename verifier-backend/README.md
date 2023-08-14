@@ -29,7 +29,7 @@ All verifications performed in the verifier are listed in the table below:
 | Setup | Evidence     | 05.01 | VerifyEncryptionParameters                        |
 | Setup | Evidence     | 05.02 | VerifySmallPrimeGroupMembers                      |
 | Setup | Evidence     | 05.03 | VerifyVotingOptions                               |
-| Setup | Evidence     | 05.04 | VerifyKeyGenerationSchnorrProofs                  |
+| Setup | Evidence     | 05.04 | VerifySchnorrProofs                  |
 | Setup | Evidence     | 05.21 | VerifySignatureVerificationDataAndCodeProofs      |
 | Tally | Completeness | 06.01 | VerifyTallyCompleteness                           |
 | Tally | Authenticity | 07.01 | VerifySignatureControlComponentBallotBox          |

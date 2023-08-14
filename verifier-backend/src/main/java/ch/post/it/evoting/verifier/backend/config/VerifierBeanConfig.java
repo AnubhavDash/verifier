@@ -48,6 +48,8 @@ import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProo
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
 import ch.post.it.evoting.evotinglibraries.domain.encryption.StreamedEncryptionDecryptionService;
 import ch.post.it.evoting.evotinglibraries.domain.mapper.DomainObjectMapper;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.proofofcorrectkeygeneration.VerifyCCSchnorrProofsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.proofofcorrectkeygeneration.VerifyKeyGenerationSchnorrProofsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.FactorizeAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetActualVotingOptionsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetEncodedVotingOptionsAlgorithm;
@@ -163,6 +165,17 @@ public class VerifierBeanConfig {
 	@Bean
 	public FactorizeAlgorithm factorizeAlgorithm() {
 		return new FactorizeAlgorithm();
+	}
+
+	@Bean
+	public VerifyCCSchnorrProofsAlgorithm verifyCCSchnorrProofsAlgorithm(final ZeroKnowledgeProof zeroKnowledgeProof) {
+		return new VerifyCCSchnorrProofsAlgorithm(zeroKnowledgeProof);
+	}
+
+	@Bean
+	public VerifyKeyGenerationSchnorrProofsAlgorithm verifyKeyGenerationSchnorrProofsAlgorithm(
+			final VerifyCCSchnorrProofsAlgorithm verifyCCSchnorrProofsAlgorithm) {
+		return new VerifyKeyGenerationSchnorrProofsAlgorithm(verifyCCSchnorrProofsAlgorithm);
 	}
 
 	@Bean
