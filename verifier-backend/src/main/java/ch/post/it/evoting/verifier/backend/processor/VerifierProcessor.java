@@ -35,8 +35,6 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -73,6 +71,9 @@ import ch.post.it.evoting.verifier.backend.tools.DatasetExtractionException;
 import ch.post.it.evoting.verifier.backend.tools.DatasetService;
 import ch.post.it.evoting.verifier.backend.tools.DirectoryService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 
 @Component
 public class VerifierProcessor {

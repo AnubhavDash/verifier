@@ -26,12 +26,12 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 	@Override
-	public void configureMessageBroker(MessageBrokerRegistry registry) {
+	public void configureMessageBroker(final MessageBrokerRegistry registry) {
 		registry.enableSimpleBroker("/pushUpdate");
 	}
 
 	@Override
-	public void registerStompEndpoints(StompEndpointRegistry stompEndpointRegistry) {
+	public void registerStompEndpoints(final StompEndpointRegistry stompEndpointRegistry) {
 		stompEndpointRegistry.addEndpoint("/socket").setAllowedOriginPatterns("*").withSockJS();
 	}
 }

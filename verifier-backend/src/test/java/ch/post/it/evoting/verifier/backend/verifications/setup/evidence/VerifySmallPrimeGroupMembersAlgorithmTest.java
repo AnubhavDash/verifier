@@ -21,11 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigInteger;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
@@ -33,24 +31,11 @@ import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement.PrimeGqElementFactory;
 import ch.post.it.evoting.evotinglibraries.domain.VotingOptionsConstants;
 
-import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
-import uk.org.webcompere.systemstubs.jupiter.SystemStub;
-import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
-
-@ExtendWith(SystemStubsExtension.class)
 class VerifySmallPrimeGroupMembersAlgorithmTest {
-
-	@SystemStub
-	private static EnvironmentVariables environmentVariables;
 
 	private final VerifySmallPrimeGroupMembersAlgorithm verifySmallPrimeGroupMembersAlgorithm = new VerifySmallPrimeGroupMembersAlgorithm();
 
 	private GroupVector<PrimeGqElement, GqGroup> primes;
-
-	@BeforeAll
-	static void setupAll() {
-		environmentVariables.set("SECURITY_LEVEL", "TESTING_ONLY");
-	}
 
 	@BeforeEach
 	void setup() {

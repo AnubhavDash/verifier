@@ -26,11 +26,9 @@ import java.math.BigInteger;
 import java.util.Collections;
 import java.util.Comparator;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.google.common.base.Throwables;
 
@@ -40,27 +38,14 @@ import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
 import ch.post.it.evoting.evotinglibraries.domain.VotingOptionsConstants;
 
-import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
-import uk.org.webcompere.systemstubs.jupiter.SystemStub;
-import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
-
-@ExtendWith(SystemStubsExtension.class)
 @DisplayName("VerifyVotingOptionsAlgorithm calling verifyVotingOptions with")
 class VerifyVotingOptionsAlgorithmTest {
-
-	@SystemStub
-	private static EnvironmentVariables environmentVariables;
 
 	private final int omega = VotingOptionsConstants.MAXIMUM_NUMBER_OF_VOTING_OPTIONS;
 	private final VerifyVotingOptionsAlgorithm verifyVotingOptionsAlgorithm = new VerifyVotingOptionsAlgorithm();
 
 	private GroupVector<PrimeGqElement, GqGroup> primes;
 	private GroupVector<PrimeGqElement, GqGroup> encodedVotingOptions;
-
-	@BeforeAll
-	static void setupAll() {
-		environmentVariables.set("SECURITY_LEVEL", "TESTING_ONLY");
-	}
 
 	@BeforeEach
 	void setup() {

@@ -18,15 +18,19 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
+import ch.post.it.evoting.cryptoprimitives.internal.securitylevel.SecurityLevelConfig;
+import ch.post.it.evoting.cryptoprimitives.internal.securitylevel.SecurityLevelInternal;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -51,7 +55,11 @@ class VerifyEncryptionParametersTest extends SetupVerificationTest {
 
 	@Test
 	void executeTestOK() {
-		final VerificationResult result = verification.verify(datasetPath);
+		final VerificationResult result;
+		try (final MockedStatic<SecurityLevelConfig> mocked = mockStatic(SecurityLevelConfig.class)) {
+			mocked.when(SecurityLevelConfig::getSystemSecurityLevel).thenReturn(SecurityLevelInternal.STANDARD);
+			result = verification.verify(datasetPath);
+		}
 
 		final VerificationResult expectedResult = VerificationResult.success(verification.getVerificationDefinition());
 		assertEquals(expectedResult, result);

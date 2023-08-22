@@ -16,19 +16,21 @@
 	<properties>
 		<maven-enforcer-plugin.requiredJavaVersion>[17.0.7]</maven-enforcer-plugin.requiredJavaVersion>
 		<maven-enforcer-plugin.requiredMavenVersion>[3.9.4]</maven-enforcer-plugin.requiredMavenVersion>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
 		<maven.compiler.release>17</maven.compiler.release>
 		<project.build.outputTimestamp>2023-07-06T15:18:19+02:00</project.build.outputTimestamp>
 
-		<bouncycastle.version>1.75</bouncycastle.version>
+		<bouncycastle.version>1.76</bouncycastle.version>
 		<commons-codec.version>1.16.0</commons-codec.version>
 		<crypto-primitives-version>1.4.0.2</crypto-primitives-version>
 		<e-voting-libraries.version>1.4.0.13</e-voting-libraries.version>
-		<guava.version>32.1.1-jre</guava.version>
+		<guava.version>32.1.2-jre</guava.version>
 		<jackson.version>2.15.2</jackson.version>
 		<jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
 		<jakarta.xml.bind-api.version>4.0.0</jakarta.xml.bind-api.version>
 		<jsurfer-jackson.version>1.6.4</jsurfer-jackson.version>
-		<junit-jupiter.version>5.10.0-M1</junit-jupiter.version>
+		<junit-jupiter.version>5.10.0</junit-jupiter.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
 		<maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
@@ -43,12 +45,11 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<reproducible-build-maven-plugin.version>0.15.2</reproducible-build-maven-plugin.version>
 		<rootProject>verifier</rootProject>
-		<slf4j.version>1.7.36</slf4j.version>
-		<spring-boot.version>2.7.13</spring-boot.version>
-		<system-stubs.version>2.0.2</system-stubs.version>
+		<slf4j.version>2.0.7</slf4j.version>
+		<spring-boot.version>3.1.2</spring-boot.version>
 		<versions-maven-plugin.version>2.16.0</versions-maven-plugin.version>
 		<zip4j.version>2.11.5</zip4j.version>
-		<apache.commons-lang3>3.12.0</apache.commons-lang3>
+		<apache.commons-lang3>3.13.0</apache.commons-lang3>
 
 		<!-- sonar -->
 		<sonar.scm.disabled>true</sonar.scm.disabled>
@@ -142,18 +143,6 @@
 				<version>${mockito.version}</version>
 			</dependency>
 
-			<!-- system stubs -->
-			<dependency>
-				<groupId>uk.org.webcompere</groupId>
-				<artifactId>system-stubs-core</artifactId>
-				<version>${system-stubs.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>uk.org.webcompere</groupId>
-				<artifactId>system-stubs-jupiter</artifactId>
-				<version>${system-stubs.version}</version>
-			</dependency>
-
 			<!-- net.lingala.zip4j -->
 			<dependency>
 				<groupId>net.lingala.zip4j</groupId>
@@ -205,7 +194,7 @@
 				<artifactId>spring-boot-starter</artifactId>
 				<version>${spring-boot.version}</version>
 				<exclusions>
-					<!-- spring-boot-starter 2.7.5 uses a vulnerable snakeyaml version 1.30,
+					<!-- spring-boot-starter 3.1.2 uses a vulnerable snakeyaml version 1.33,
 							 and we don't need this functionality, therefore we remove it manually.
 							 As soon spring-boot-starter is updated we should be able to remove this exclusion -->
 					<exclusion>
@@ -222,11 +211,6 @@
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-websocket</artifactId>
-				<version>${spring-boot.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-security</artifactId>
 				<version>${spring-boot.version}</version>
 			</dependency>
 			<dependency>
@@ -290,6 +274,9 @@
 						<systemPropertyVariables>
 							<jna.library.path>${env.JNA_LIBRARY_PATH}</jna.library.path>
 						</systemPropertyVariables>
+						<environmentVariables>
+							<SECURITY_LEVEL>TESTING_ONLY</SECURITY_LEVEL>
+						</environmentVariables>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -354,11 +341,6 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${maven-compiler-plugin.version}</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
 				<version>${maven-deploy-plugin.version}</version>
 			</plugin>
@@ -370,10 +352,6 @@
 				<configuration>
 					<preparationGoals>clean install</preparationGoals>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
