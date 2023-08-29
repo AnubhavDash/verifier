@@ -16,7 +16,6 @@
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
 import static ch.post.it.evoting.evotinglibraries.domain.election.ElectionAttributesAliasConstants.ALIAS_JOIN_DELIMITER;
-import static ch.post.it.evoting.evotinglibraries.domain.election.ElectionAttributesAliasConstants.ALIAS_PREFIX_WRITE_IN;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.function.Predicate.not;
@@ -176,9 +175,8 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 							.filter(ListType::isListEmpty)
 							.map(listType -> listType.getCandidatePosition().size() - 1)
 							.reduce(0, Integer::sum);
-					final int additionalWriteInFields = electionInformationType.getElection().isWriteInsAllowed() ? additionalBlankFields : 0;
 
-					return additionalCandidatesFields + additionalBlankFields + additionalWriteInFields;
+					return additionalCandidatesFields + additionalBlankFields;
 				})
 				.reduce(0, Integer::sum);
 		final int expectedPrimesMappingTableEntriesSize = configurationPartialPrimesMappingTableEntries.size() + additionalEntries;
@@ -200,15 +198,22 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 				.map(electionInformationType -> {
 					final ElectionType election = electionInformationType.getElection();
 					final String electionIdentification = election.getElectionIdentification();
+					final String electionDescription = election.getElectionDescription().getElectionDescriptionInfo()
+							.stream()
+							.parallel()
+							.filter(electionDescriptionInfo -> electionDescriptionInfo.getLanguage().equals(LanguageType.DE))
+							.map(ElectionDescriptionInfo::getElectionDescription)
+							.collect(MoreCollectors.onlyElement());
 					final Map<Boolean, List<ListType>> isEmptyList = electionInformationType.getList().stream()
 							.collect(Collectors.partitioningBy(ListType::isListEmpty));
 
-					final Set<PartialPrimesMappingTableEntry> emptyAndWriteIn = getEmptyAndWriteInEntries(electionInformationType,
-							isEmptyList.get(true));
+					final Set<PartialPrimesMappingTableEntry> emptyList = getEmptyListEntries(electionInformationType, isEmptyList.get(true),
+							electionDescription);
 					final Set<PartialPrimesMappingTableEntry> nonEmptyLists = getNonEmptyListsEntries(electionIdentification, isEmptyList.get(false));
-					final Set<PartialPrimesMappingTableEntry> candidates = getCandidatesEntries(electionInformationType, electionIdentification);
+					final Set<PartialPrimesMappingTableEntry> candidates = getCandidatesEntries(electionInformationType);
+					final Set<PartialPrimesMappingTableEntry> writeIns = getWriteInsEntries(electionInformationType, electionDescription);
 
-					return Stream.of(emptyAndWriteIn, nonEmptyLists, candidates)
+					return Stream.of(emptyList, nonEmptyLists, candidates, writeIns)
 							.flatMap(Set::stream)
 							.collect(Collectors.toSet());
 				})
@@ -216,16 +221,10 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 				.collect(Collectors.toSet());
 	}
 
-	private static Set<PartialPrimesMappingTableEntry> getEmptyAndWriteInEntries(final ElectionInformationType electionInformationType,
-			final List<ListType> emptyLists) {
+	private static Set<PartialPrimesMappingTableEntry> getEmptyListEntries(final ElectionInformationType electionInformationType,
+			final List<ListType> emptyLists, final String electionDescription) {
 		final ListType emptyList = emptyLists.stream().collect(MoreCollectors.onlyElement());
 		final ElectionType election = electionInformationType.getElection();
-		final String electionDescription = election.getElectionDescription().getElectionDescriptionInfo()
-				.stream()
-				.parallel()
-				.filter(electionDescriptionInfo -> electionDescriptionInfo.getLanguage().equals(LanguageType.DE))
-				.map(ElectionDescriptionInfo::getElectionDescription)
-				.collect(MoreCollectors.onlyElement());
 		final Set<PartialPrimesMappingTableEntry> emptyListEntries = new HashSet<>();
 
 		// empty position
@@ -233,14 +232,6 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 		final String emptyPositionSemanticInformation = String.join(SEMANTIC_INFORMATION_JOIN_DELIMITER, electionDescription,
 				SEMANTICS_SUFFIX_EMPTY_CANDIDATE);
 		emptyListEntries.add(new PartialPrimesMappingTableEntry(candidateListIdentification, emptyPositionSemanticInformation));
-
-		// write-ins position - only added if write-ins are allowed for an election
-		final String writeInsPositionSemanticInformation = String.join(SEMANTIC_INFORMATION_JOIN_DELIMITER, electionDescription,
-				SEMANTICS_SUFFIX_WRITE_IN);
-		if (election.isWriteInsAllowed()) {
-			emptyListEntries.add(new PartialPrimesMappingTableEntry(ALIAS_PREFIX_WRITE_IN + candidateListIdentification,
-					writeInsPositionSemanticInformation));
-		}
 
 		// empty list - only added if an election includes at least one non-empty list (otherwise it would be a candidate-only election without the possibility of selecting lists)
 		final boolean electionWithLists = electionInformationType.getList().stream().parallel().anyMatch(not(ListType::isListEmpty));
@@ -268,8 +259,7 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 		return new PartialPrimesMappingTableEntry(actualVotingOption, semanticInformation);
 	}
 
-	private static Set<PartialPrimesMappingTableEntry> getCandidatesEntries(final ElectionInformationType electionInformationType,
-			final String electionIdentification) {
+	private static Set<PartialPrimesMappingTableEntry> getCandidatesEntries(final ElectionInformationType electionInformationType) {
 		if (electionInformationType.getCandidate() == null) {
 			return Set.of();
 		}
@@ -277,11 +267,26 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 		return electionInformationType.getCandidate().stream()
 				.parallel()
 				.map(candidateType -> {
-					final String actualVotingOption = String.join(ALIAS_JOIN_DELIMITER, electionIdentification,
+					final String actualVotingOption = String.join(ALIAS_JOIN_DELIMITER,
+							electionInformationType.getElection().getElectionIdentification(),
 							candidateType.getCandidateIdentification());
 					final String semanticInformation = String.join(SEMANTIC_INFORMATION_JOIN_DELIMITER, candidateType.getFamilyName(),
 							candidateType.getFirstName(), candidateType.getCallName(), candidateType.getDateOfBirth().toXMLFormat());
 					return new PartialPrimesMappingTableEntry(actualVotingOption, semanticInformation);
+				}).collect(Collectors.toSet());
+	}
+
+	private static Set<PartialPrimesMappingTableEntry> getWriteInsEntries(final ElectionInformationType electionInformationType,
+			final String electionDescription) {
+		// write-ins position - only added if write-ins are allowed for an election
+		return electionInformationType.getWriteInCandidate().stream()
+				.map(writeInCandidate -> {
+					final String writeInsPositionAlias = String.join(ALIAS_JOIN_DELIMITER,
+							electionInformationType.getElection().getElectionIdentification(),
+							writeInCandidate.getWriteInCandidateIdentification());
+					final String writeInsPositionSemanticInformation = String.join(SEMANTIC_INFORMATION_JOIN_DELIMITER, electionDescription,
+							SEMANTICS_SUFFIX_WRITE_IN, String.valueOf(writeInCandidate.getPosition()));
+					return new PartialPrimesMappingTableEntry(writeInsPositionAlias, writeInsPositionSemanticInformation);
 				}).collect(Collectors.toSet());
 	}
 
