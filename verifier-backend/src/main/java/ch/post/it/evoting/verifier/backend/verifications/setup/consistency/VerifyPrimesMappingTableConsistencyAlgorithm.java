@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.function.TriFunction;
@@ -154,37 +155,16 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 	}
 
 	/**
-	 * Verifies that the number of tuples in the pTable corresponds to the configuration XML taking into account possible accumulation of candidates
-	 * ({@code additionalCandidatesFields}).
-	 * <p>
-	 * Blank positions in elections with multiple seats are interchangeable and have the same actual voting option and semantic information.
-	 * Therefore, we must take into account that they lead to additional tuples in the pTable ({@code additionalBlankFields}). The same applies for
-	 * elections with multiple write-in positions ({@code additionalWriteInFields}).
+	 * Verifies that the number of tuples in the pTable corresponds to the configuration XML.
 	 */
 	private boolean verifyNumberOfTuplesCorrespondsToConfiguration(final Set<PrimesMappingTableEntry> primesMappingTableEntries,
 			final Configuration configuration, final Set<PartialPrimesMappingTableEntry> configurationPartialPrimesMappingTableEntries) {
-		final int additionalEntries = configuration.getContest().getElectionGroupBallot().stream()
-				.parallel()
-				.map(ElectionGroupBallotType::getElectionInformation)
-				.flatMap(List::stream)
-				.map(electionInformationType -> {
-					final int additionalCandidatesFields = electionInformationType.getCandidate().size()
-							* (electionInformationType.getElection().getCandidateAccumulation().intValue() - 1);
-					final int additionalBlankFields = electionInformationType.getList().stream()
-							.parallel()
-							.filter(ListType::isListEmpty)
-							.map(listType -> listType.getCandidatePosition().size() - 1)
-							.reduce(0, Integer::sum);
-
-					return additionalCandidatesFields + additionalBlankFields;
-				})
-				.reduce(0, Integer::sum);
-		final int expectedPrimesMappingTableEntriesSize = configurationPartialPrimesMappingTableEntries.size() + additionalEntries;
+		final int expectedPrimesMappingTableEntriesSize = configurationPartialPrimesMappingTableEntries.size();
 
 		final boolean numberOfTuplesCorrespondsToConfiguration = primesMappingTableEntries.size() == expectedPrimesMappingTableEntriesSize;
 		if (!numberOfTuplesCorrespondsToConfiguration) {
 			LOGGER.error(
-					"The number of tuples in the pTable does not correspond to the configuration XML taking into account possible accumulation of candidates.");
+					"The number of tuples in the pTable does not correspond to the configuration XML.");
 		}
 
 		return numberOfTuplesCorrespondsToConfiguration;
@@ -228,10 +208,13 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 		final Set<PartialPrimesMappingTableEntry> emptyListEntries = new HashSet<>();
 
 		// empty position
-		final String candidateListIdentification = emptyList.getCandidatePosition().get(0).getCandidateListIdentification();
-		final String emptyPositionSemanticInformation = String.join(SEMANTIC_INFORMATION_JOIN_DELIMITER, electionDescription,
-				SEMANTICS_SUFFIX_EMPTY_CANDIDATE);
-		emptyListEntries.add(new PartialPrimesMappingTableEntry(candidateListIdentification, emptyPositionSemanticInformation));
+		emptyList.getCandidatePosition()
+				.forEach(candidatePositionType -> {
+					final String candidateListIdentification = candidatePositionType.getCandidateListIdentification();
+					final String emptyPositionSemanticInformation = String.join(SEMANTIC_INFORMATION_JOIN_DELIMITER, electionDescription,
+							SEMANTICS_SUFFIX_EMPTY_CANDIDATE, String.valueOf(candidatePositionType.getPositionOnList()));
+					emptyListEntries.add(new PartialPrimesMappingTableEntry(candidateListIdentification, emptyPositionSemanticInformation));
+				});
 
 		// empty list - only added if an election includes at least one non-empty list (otherwise it would be a candidate-only election without the possibility of selecting lists)
 		final boolean electionWithLists = electionInformationType.getList().stream().parallel().anyMatch(not(ListType::isListEmpty));
@@ -266,14 +249,17 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 
 		return electionInformationType.getCandidate().stream()
 				.parallel()
-				.map(candidateType -> {
-					final String actualVotingOption = String.join(ALIAS_JOIN_DELIMITER,
-							electionInformationType.getElection().getElectionIdentification(),
-							candidateType.getCandidateIdentification());
-					final String semanticInformation = String.join(SEMANTIC_INFORMATION_JOIN_DELIMITER, candidateType.getFamilyName(),
-							candidateType.getFirstName(), candidateType.getCallName(), candidateType.getDateOfBirth().toXMLFormat());
-					return new PartialPrimesMappingTableEntry(actualVotingOption, semanticInformation);
-				}).collect(Collectors.toSet());
+				.flatMap(candidateType ->
+						IntStream.range(0, electionInformationType.getElection().getCandidateAccumulation().intValue())
+								.mapToObj(String::valueOf)
+								.map(acc -> String.join(ALIAS_JOIN_DELIMITER, electionInformationType.getElection().getElectionIdentification(),
+										candidateType.getCandidateIdentification(), acc))
+								.map(actualVotingOption -> {
+									final String semanticInformation = String.join(SEMANTIC_INFORMATION_JOIN_DELIMITER, candidateType.getFamilyName(),
+											candidateType.getFirstName(), candidateType.getCallName(), candidateType.getDateOfBirth().toXMLFormat());
+									return new PartialPrimesMappingTableEntry(actualVotingOption, semanticInformation);
+								})
+				).collect(Collectors.toSet());
 	}
 
 	private static Set<PartialPrimesMappingTableEntry> getWriteInsEntries(final ElectionInformationType electionInformationType,

@@ -1,0 +1,46 @@
+{
+  "electionEventId": "3E548EBD1D06AC9879C5C1CDDD0ECD4F",
+  "ballotId": "76EA6C7F420A9FA785D903B64958F489",
+  "ballotBoxId": "2CE912ECB771508A7785077401457D65",
+  "encryptionGroup": {
+	"p": "v/Z8zK4PYbOLpwrXNs+o6ihLXWyuvy/tL8iNCt/54rIgv9nM2lm9O9UrEs38z0GqPZv4H5Wn1ZRSaQv0X3mTvnYKu8o+KXBdRzpmY43NbqeGY8DbkePgqx3+Gv8lGB1NLDugWfkTHZXTf0MSM+oiduBSyWDcsTD53/3Avpd8mUfnrgXqUWqoGyUo/vA2Jaz89JXDq11fF24G8Tgq6WpHAyEJLAwcAqGWq02iDTYFtOcqXP0Wz5OByDUT69GKikohv5W4ZO2kwCFFg+maMYD3pWHxnUUbxDVOeihNx+sMWgXcWIVsbcjPOle0LYZthfRT0b2MxhEX+2BqQK8KDvdtYDx6MHwLiFQ1XVg2d0xrsSI44JgGeCpIe7mIiuHbVN7KP+w3TTDMmnItMFJYUGnSErYv1nWHEDN8oXQR6C/35+e3VPTJ86HEmqFeDQoOmwWi6ogCFtBSt4DmgWjKM2MJ08GAKieK/PHA+PozgcFF2ghkiSIhuWDs1tRhZeBXtV7r",
+	"q": "X/s+ZlcHsNnF04Vrm2fUdRQlrrZXX5f2l+RGhW/88VkQX+zmbSzeneqViWb+Z6DVHs38D8rT6sopNIX6L7zJ3zsFXeUfFLguo50zMcbmt1PDMeBtyPHwVY7/DX+SjA6mlh3QLPyJjsrpv6GJGfURO3ApZLBuWJh87/7gX0u+TKPz1wL1KLVUDZKUf3gbEtZ+ekrh1a6vi7cDeJwVdLUjgZCElgYOAVDLVabRBpsC2nOVLn6LZ8nA5BqJ9ejFRSUQ38rcMnbSYBCiwfTNGMB70rD4zqKN4hqnPRQm4/WGLQLuLEK2NuRnnSvaFsM2wvop6N7GYwiL/bA1IFeFB3u2sB49GD4FxCoarqwbO6Y12JEccEwDPBUkPdzERXDtqm9lH/YbpphmTTkWmCksKDTpCVsX6zrDiBm+ULoI9Bf78/Pbqnpk+dDiTVCvBoUHTYLRdUQBC2gpW8BzQLRlGbGE6eDAFRPFfnjgfH0ZwOCi7QQyRJEQ3LB2a2owsvAr2q91",
+	"g": "Aw=="
+  },
+  "votes": [
+	[
+	  37,
+	  71,
+	  79,
+	  103,
+	  673,
+	  257,
+	  271,
+	  283,
+	  317,
+	  337,
+	  359
+	]
+  ],
+  "actualSelectedVotingOptions": [
+	[
+	  "ch_test|3aa38c9e-6e93-3159-91e1-c3da90681572",
+	  "ch_test|e9da718b-469e-35d4-8d7d-d6329621e755",
+	  "ch_test|d0f886b7-03a8-3d8a-9e7d-4c9bfa02ddc6",
+	  "ch_test|65113930-4472-3aac-9cfd-162f501c78f5",
+	  "nrw_test|244ab111-a5d4-4090-bed3-79f850a27fa1",
+	  "nrw_test|8cc68a36-df81-4381-aaff-83544ffe6e6c|1",
+	  "nrw_test|d396ab8f-3c5f-4a88-81bc-494dba014287|1",
+	  "nrw_test|d113bd2d-10aa-4519-89e9-ad7b49eafa76|1",
+	  "nrw_test|1da9fbd3-07a5-4d9e-b3c1-2342a07684f2|1",
+	  "nrw_test|f74aacda-e4f1-493e-95b8-0984f0f18d89|1",
+	  "nrw_test|ed9f8446-fb14-4927-b5ec-b4db51cb77b1|1"
+	]
+  ],
+  "decodedWriteInVotes": [
+	[]
+  ],
+  "signature": {
+	"signatureContents": "IeNkcH7l5aep73P6RK4aV70bPwW+1V5If7lSm1KRf6OCXwxfjpM8Vjk6HGNGlHKkIgdvYvrxJaa89fltQ5kCy1MUiKUGEMBlWNLiNz9e7ztMWYUxX3dtdrUlidxD+M4EzfqBQdeD3jyc0l95pELn8eRNl4Vv+FEipEqb9qRqBid/782x/g1soXE6LdXHh6CK7EMFIkoXJoxVTrhKRc0h9KjHeN2C1I7zdsPPeawBg7BFjO/l/kJBRTU7P/sLPnQA9Bi+4aWhJ/t4DCuufj3TvPyvp73hzasGNcwEzY3RGReMAQ80fsWG5M2QNpFfIrd4ch4ddm0iP8/RH3+5bke3WNwXiWQJ5CosjKvursgBc0Wt+Kl16MJra7aH8MThfyO2wCzXyf0i4tHjFkVUBnQldVoEVlbYXQe/uMNzS3BPwDa0iFRJ5pf4mLdirxw1DY/zp0iFgxmdyP55GFlXLxLuB0J3V68MqaYez8uJ26QJY29usp4XUMzHw8cZ/3vk5uJf"
+  }
+}

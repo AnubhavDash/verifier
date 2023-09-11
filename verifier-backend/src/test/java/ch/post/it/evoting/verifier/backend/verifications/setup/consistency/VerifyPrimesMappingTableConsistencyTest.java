@@ -123,9 +123,9 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 		} while (entry1.actualVotingOption().equals(entry0.actualVotingOption()));
 
 		final PrimesMappingTableEntry permutedEntry0 = new PrimesMappingTableEntry(entry0.actualVotingOption(),
-				entry1.encodedVotingOption(), entry0.semanticInformation());
+				entry1.encodedVotingOption(), entry0.semanticInformation(), entry0.correctnessInformation());
 		final PrimesMappingTableEntry permutedEntry1 = new PrimesMappingTableEntry(entry1.actualVotingOption(),
-				entry0.encodedVotingOption(), entry1.semanticInformation());
+				entry0.encodedVotingOption(), entry1.semanticInformation(), entry1.correctnessInformation());
 
 		final ArrayList<PrimesMappingTableEntry> permutedPTableList = new ArrayList<>(pTable.size());
 		permutedPTableList.add(permutedEntry0);
@@ -156,7 +156,7 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 								.collect(Collectors.partitioningBy(entry -> entry.encodedVotingOption().equals(encodedVotingOption)));
 						final PrimesMappingTableEntry pTable = toModify.get(true).stream().collect(MoreCollectors.onlyElement());
 						final PrimesMappingTableEntry newEntry = new PrimesMappingTableEntry("newActualVotingOption|NotInConfig",
-								pTable.encodedVotingOption(), pTable.semanticInformation());
+								pTable.encodedVotingOption(), pTable.semanticInformation(), pTable.correctnessInformation());
 
 						final ArrayList<PrimesMappingTableEntry> pTableWithNewEntry = new ArrayList<>(pTable.size());
 						pTableWithNewEntry.add(newEntry);
