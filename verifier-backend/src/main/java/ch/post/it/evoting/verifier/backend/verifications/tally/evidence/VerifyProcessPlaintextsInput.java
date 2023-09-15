@@ -203,7 +203,7 @@ public class VerifyProcessPlaintextsInput {
 					numberOfAllowedWriteInsPlusOne);
 
 			// Cross-group checks.
-			checkArgument(plaintextVotes.getGroup().equals(primesMappingTable.getPTable().getGroup()),
+			checkArgument(plaintextVotes.getGroup().equals(primesMappingTable.getEncryptionGroup()),
 					"The plaintext votes and the primes mapping table must have the same group.");
 			checkArgument(selectedEncodedVotingOptions.isEmpty() || selectedEncodedVotingOptions.getGroup().equals(plaintextVotes.getGroup()),
 					"The selected encoded voting options and plaintexts votes must have the same group.");

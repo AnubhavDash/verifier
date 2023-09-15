@@ -68,12 +68,12 @@ class VerifyCiphertextsConsistencyTest extends TallyVerificationTest {
 		final int numberOfWriteInsPlusOne = firstContext.numberOfWriteInFields() + 1;
 		final Random random = RandomFactory.createRandom();
 		final PrimeGqElement encodedVotingOption = PrimeGqElement.PrimeGqElementFactory.getSmallPrimeGroupMembers(encryptionGroup, 1).get(0);
-		final GroupVector<PrimesMappingTableEntry, GqGroup> pTable = GroupVector.of(new PrimesMappingTableEntry(random.genRandomBase16String(4),
+		final List<PrimesMappingTableEntry> pTable = List.of(new PrimesMappingTableEntry(random.genRandomBase16String(4),
 				encodedVotingOption, "semantic information", "correctnessInformation"));
 		final VerificationCardSetContext modifiedFirstContext = new VerificationCardSetContext(firstContext.verificationCardSetId(),
 				firstContext.verificationCardSetAlias(), firstContext.verificationCardSetDescription(), firstContext.ballotBoxId(),
 				firstContext.ballotBoxStartTime(), firstContext.ballotBoxFinishTime(), firstContext.testBallotBox(), numberOfWriteInsPlusOne,
-				firstContext.numberOfVotingCards(), firstContext.gracePeriod(), new PrimesMappingTable(pTable));
+				firstContext.numberOfVotingCards(), firstContext.gracePeriod(), PrimesMappingTable.from(pTable));
 		final List<VerificationCardSetContext> modifiedVcsContexts = Streams.concat(Stream.of(modifiedFirstContext), vcsContexts.stream().skip(1))
 				.toList();
 		final ElectionEventContext modifiedElectionEventContext = spy(electionEventContext);

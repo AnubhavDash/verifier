@@ -170,7 +170,7 @@ public class VerifyTallyControlComponentBallotBoxContext {
 			checkNotNull(writeInVotingOptions);
 
 			checkArgument(electoralBoardPublicKey.getGroup().equals(encryptionGroup));
-			checkArgument(primesMappingTable.getPTable().getGroup().equals(encryptionGroup));
+			checkArgument(primesMappingTable.getEncryptionGroup().equals(encryptionGroup));
 			checkArgument(writeInVotingOptions.isEmpty() || writeInVotingOptions.getGroup().equals(encryptionGroup));
 
 			checkArgument(writeInVotingOptions.size() + 1 == numberOfAllowedWriteInsPlusOne,
