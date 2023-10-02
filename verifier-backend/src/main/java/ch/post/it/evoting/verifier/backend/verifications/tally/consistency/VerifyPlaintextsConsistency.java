@@ -64,7 +64,7 @@ public class VerifyPlaintextsConsistency extends AbstractVerification {
 				.parallel()
 				.map(vcsContext -> {
 					final String ballotBoxId = vcsContext.ballotBoxId();
-					final int numberWriteInsPlusOne = vcsContext.numberOfWriteInFields() + 1;
+					final int numberWriteInsPlusOne = vcsContext.getNumberOfWriteIns() + 1;
 					final TallyComponentShufflePayload tallyComponentShufflePayload = extractionService.getTallyComponentShufflePayload(
 							inputDirectoryPath, ballotBoxId);
 					return new Plaintexts(tallyComponentShufflePayload, numberWriteInsPlusOne);
@@ -78,8 +78,6 @@ public class VerifyPlaintextsConsistency extends AbstractVerification {
 		}
 	}
 
-	private record Plaintexts(TallyComponentShufflePayload tallyComponentShufflePayload, int numberWriteInsPlusOne){}
-
 	private boolean plaintextsConsistent(final List<Plaintexts> plaintexts) {
 		return plaintexts.stream()
 				.parallel()
@@ -87,5 +85,8 @@ public class VerifyPlaintextsConsistency extends AbstractVerification {
 						.getDecryptedVotes().getElementSize() == information.numberWriteInsPlusOne)
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
+	}
+
+	private record Plaintexts(TallyComponentShufflePayload tallyComponentShufflePayload, int numberWriteInsPlusOne) {
 	}
 }

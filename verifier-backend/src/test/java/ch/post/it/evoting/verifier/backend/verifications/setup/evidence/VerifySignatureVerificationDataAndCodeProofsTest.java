@@ -120,12 +120,12 @@ class VerifySignatureVerificationDataAndCodeProofsTest extends SetupVerification
 				setupComponentVerificationData.getChunkId() + 1,
 				setupComponentVerificationData.getEncryptionGroup(),
 				setupComponentVerificationData.getSetupComponentVerificationData(),
-				setupComponentVerificationData.getCombinedCorrectnessInformation(),
 				setupComponentVerificationData.getSignature());
 
 		final boolean result = ((VerifySignatureVerificationDataAndCodeProofs) verification).verifySignatureSetupComponentVerificationData(another);
 		assertFalse(result);
 	}
+
 	@Test
 	void testSignatureControlComponentCodeSharesPayload() throws SignatureException {
 		final ControlComponentCodeSharesPayload controlComponentCodeShares = loadRandomControlComponentCodeShares();

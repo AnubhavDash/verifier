@@ -26,7 +26,8 @@ import java.security.SignatureException;
 import java.security.cert.CertificateException;
 import java.util.List;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
+
 import javax.xml.namespace.QName;
 
 import org.junit.jupiter.api.BeforeEach;

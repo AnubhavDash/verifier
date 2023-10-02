@@ -26,6 +26,7 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -90,10 +91,16 @@ public class ExponentiationProofsVerificationExtractionService {
 		final String electionEventId = input.getElectionEventId();
 		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(inputDirectoryPath);
 		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
-		final Map<String, Integer> numberOfVoters = electionEventContext.verificationCardSetContexts()
+		final ConcurrentMap<String, Integer> numberOfVoters = electionEventContext.verificationCardSetContexts()
 				.stream()
 				.parallel()
-				.collect(Collectors.toMap(VerificationCardSetContext::verificationCardSetId, VerificationCardSetContext::numberOfVotingCards));
+				.collect(Collectors.toConcurrentMap(VerificationCardSetContext::verificationCardSetId,
+						VerificationCardSetContext::numberOfVotingCards));
+
+		final ConcurrentMap<String, Integer> totalNumberOfVotingOptions = electionEventContext.verificationCardSetContexts().stream()
+				.parallel()
+				.collect(Collectors.toConcurrentMap(VerificationCardSetContext::verificationCardSetId,
+						vcContext -> vcContext.primesMappingTable().size()));
 
 		checkArgument(electionEventContext.electionEventId().equals(electionEventId));
 		checkArgument(electionEventContext.verificationCardSetContexts().size() == input.getVerificationCardSetIds().size());
@@ -106,7 +113,7 @@ public class ExponentiationProofsVerificationExtractionService {
 				.parallel()
 				.map(verificationCardSetIdPath -> {
 					final ContributionRequestResponse contributionRequestResponse = assembleRequestResponse(verificationCardSetIdPath,
-							electionEventId);
+							electionEventId, totalNumberOfVotingOptions);
 					return contributionRequestResponse.contributionResponses()
 							.stream()
 							.parallel()
@@ -129,7 +136,7 @@ public class ExponentiationProofsVerificationExtractionService {
 	}
 
 	private ContributionRequestResponse assembleRequestResponse(final Path verificationCardSetIdPath,
-			final String electionEventId) {
+			final String electionEventId, final ConcurrentMap<String, Integer> totalNumberOfVotingOptions) {
 
 		// Extract requests
 		final Map<Integer, SetupComponentVerificationDataPayload> chunkIdToContributionRequests = extractionService.deserializeSetupComponentVerificationDataPayloadOrderByChunkId(
@@ -137,11 +144,12 @@ public class ExponentiationProofsVerificationExtractionService {
 				.parallel()
 				.collect(Collectors.toConcurrentMap(SetupComponentVerificationDataPayload::getChunkId, Function.identity()));
 
+		final String verificationCardSetId = verificationCardSetIdPath.getFileName().toString();
+
 		// Extract responses
 		final List<List<ControlComponentCodeSharesPayload>> contributionResponsesPayloads = extractionService.deserializeControlComponentCodeSharesPayloadsOrderByChunkIdAndNodeId(
 				verificationCardSetIdPath);
-		verifyControlComponentCodeSharesConsistency(contributionResponsesPayloads, electionEventId,
-				verificationCardSetIdPath.getFileName().toString());
+		verifyControlComponentCodeSharesConsistency(contributionResponsesPayloads, electionEventId, verificationCardSetId);
 		final Map<Integer, List<ControlComponentCodeSharesPayload>> chunkIdToContributionResponses = contributionResponsesPayloads.stream()
 				.parallel()
 				.filter(chunk -> chunk.stream().findFirst().isPresent())
@@ -151,7 +159,7 @@ public class ExponentiationProofsVerificationExtractionService {
 				"Mismatch between the SetupComponentVerificationData and ControlComponentCodeShares chunks ids.");
 
 		return new ContributionRequestResponse(
-				mergeContributionRequestChunks(chunkIdToContributionRequests),
+				mergeContributionRequestChunks(chunkIdToContributionRequests, totalNumberOfVotingOptions.get(verificationCardSetId)),
 				mergeContributionResponsesChunks(chunkIdToContributionResponses)
 		);
 	}
@@ -173,16 +181,13 @@ public class ExponentiationProofsVerificationExtractionService {
 	}
 
 	private ContributionRequest mergeContributionRequestChunks(
-			final Map<Integer, SetupComponentVerificationDataPayload> chunkIdToContributionRequests) {
+			final Map<Integer, SetupComponentVerificationDataPayload> chunkIdToContributionRequests, final int totalNumberOfVotingOptions) {
 		final List<SetupComponentVerificationData> setupComponentVerificationData = IntStream.range(0, chunkIdToContributionRequests.size())
 				.mapToObj(chunkId -> chunkIdToContributionRequests.get(chunkId).getSetupComponentVerificationData())
 				.flatMap(Collection::stream)
 				.toList();
 
-		// We assume the combinedCorrectnessInformation are the same between the contribution request.
-		return new ContributionRequest(
-				chunkIdToContributionRequests.get(0).getCombinedCorrectnessInformation().getTotalNumberOfVotingOptions(),
-				setupComponentVerificationData
+		return new ContributionRequest(totalNumberOfVotingOptions, setupComponentVerificationData
 		);
 	}
 

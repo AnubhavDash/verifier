@@ -91,11 +91,11 @@ public class VerifyOnlineControlComponentsBallotBoxContext {
 		return setupComponentPublicKeys.choiceReturnCodesEncryptionPublicKey();
 	}
 
-	public int getNumberOfAlloweWriteInsPlusOne() {
+	public int getNumberOfAllowedWriteInsPlusOne() {
 		return electionEventContext.verificationCardSetContexts().stream()
 				.filter(verificationCardSetContext -> verificationCardSetContext.ballotBoxId().equals(ballotBoxId))
 				.collect(MoreCollectors.onlyElement())
-				.numberOfWriteInFields() + 1;
+				.getNumberOfWriteIns() + 1;
 	}
 
 	public int getNumberOfEligibleVoters() {

@@ -30,11 +30,7 @@ import com.google.common.collect.Streams;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
-import ch.post.it.evoting.cryptoprimitives.math.Random;
-import ch.post.it.evoting.cryptoprimitives.math.RandomFactory;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
-import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
-import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTableEntry;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
@@ -65,15 +61,22 @@ class VerifyPlaintextsConsistencyTest extends TallyVerificationTest {
 		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
 		final List<VerificationCardSetContext> vcsContexts = electionEventContext.verificationCardSetContexts();
 		final VerificationCardSetContext firstContext = vcsContexts.get(0);
-		final int numberOfWriteInsPlusOne = firstContext.numberOfWriteInFields() + 1;
-		final Random random = RandomFactory.createRandom();
-		final PrimeGqElement encodedVotingOption = PrimeGqElement.PrimeGqElementFactory.getSmallPrimeGroupMembers(encryptionGroup, 1).get(0);
-		final List<PrimesMappingTableEntry> pTable = List.of(new PrimesMappingTableEntry(random.genRandomBase16String(4),
-				encodedVotingOption, "semantic information", "correctnessInformation"));
-		final VerificationCardSetContext modifiedFirstContext = new VerificationCardSetContext(firstContext.verificationCardSetId(),
-				firstContext.verificationCardSetAlias(), firstContext.verificationCardSetDescription(), firstContext.ballotBoxId(),
-				firstContext.ballotBoxStartTime(), firstContext.ballotBoxFinishTime(), firstContext.testBallotBox(), numberOfWriteInsPlusOne,
-				firstContext.numberOfVotingCards(), firstContext.gracePeriod(), PrimesMappingTable.from(pTable));
+		final int size = firstContext.listOfWriteInOptions().size();
+		final GroupVector<PrimeGqElement, GqGroup> modifiedListOfWriteInOptions = PrimeGqElement.PrimeGqElementFactory.getSmallPrimeGroupMembers(
+				encryptionGroup, size + 1);
+		final VerificationCardSetContext modifiedFirstContext = new VerificationCardSetContext.Builder()
+				.setVerificationCardSetId(firstContext.verificationCardSetId())
+				.setVerificationCardSetAlias(firstContext.verificationCardSetAlias())
+				.setVerificationCardSetDescription(firstContext.verificationCardSetDescription())
+				.setBallotBoxId(firstContext.ballotBoxId())
+				.setBallotBoxStartTime(firstContext.ballotBoxStartTime())
+				.setBallotBoxFinishTime(firstContext.ballotBoxFinishTime())
+				.setTestBallotBox(firstContext.testBallotBox())
+				.setNumberOfVotingCards(firstContext.numberOfVotingCards())
+				.setGracePeriod(firstContext.gracePeriod())
+				.setPrimesMappingTable(firstContext.primesMappingTable())
+				.setCiSelections(firstContext.ciSelections())
+				.setListOfWriteInOptions(modifiedListOfWriteInOptions).build();
 		final List<VerificationCardSetContext> modifiedVcsContexts = Streams.concat(Stream.of(modifiedFirstContext), vcsContexts.stream().skip(1))
 				.toList();
 		final ElectionEventContext modifiedElectionEventContext = spy(electionEventContext);

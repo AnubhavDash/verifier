@@ -18,7 +18,6 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +65,8 @@ public class VerifyTallyControlComponentAlgorithm {
 	 */
 	@SuppressWarnings("java:S117")
 	public boolean verifyTallyControlComponent(final VerifyTallyControlComponentInput input,
-			final Map<String, Integer> numberOfSelectableVotingOptions, final Map<String, List<BigInteger>> writeInVotingOptions) {
+			final Map<String, Integer> numberOfSelectableVotingOptions,
+			final Map<String, GroupVector<PrimeGqElement, GqGroup>> writeInVotingOptions) {
 		checkNotNull(input);
 		checkNotNull(numberOfSelectableVotingOptions);
 		checkNotNull(writeInVotingOptions);
@@ -102,9 +102,7 @@ public class VerifyTallyControlComponentAlgorithm {
 					final VerificationCardSetContext verificationCardSetContext = electionEventContext.verificationCardSetContexts().stream()
 							.filter(vcsContext -> vcsContext.ballotBoxId().equals(bb_i))
 							.collect(MoreCollectors.onlyElement());
-					final GroupVector<PrimeGqElement, GqGroup> writeInVotingOptions_bb_i = writeInVotingOptions.get(bb_i).stream()
-							.map(option -> PrimeGqElement.PrimeGqElementFactory.fromValue(option.intValue(), encryptionGroup))
-							.collect(GroupVector.toGroupVector());
+					final GroupVector<PrimeGqElement, GqGroup> writeInVotingOptions_bb_i = writeInVotingOptions.get(bb_i);
 					final VerifyTallyControlComponentBallotBoxContext context_bb_i = new VerifyTallyControlComponentBallotBoxContext.Builder()
 							.setEncryptionGroup(encryptionGroup)
 							.setElectionEventId(ee)
@@ -113,7 +111,7 @@ public class VerifyTallyControlComponentAlgorithm {
 							.setPrimesMappingTable(verificationCardSetContext.primesMappingTable())
 							.setWriteInVotingOptions(writeInVotingOptions_bb_i)
 							.setNumberOfSelectableVotingOptions(numberOfSelectableVotingOptions.get(bb_i))
-							.setNumberOfAllowedWriteInsPlusOne(verificationCardSetContext.numberOfWriteInFields() + 1)
+							.setNumberOfAllowedWriteInsPlusOne(verificationCardSetContext.getNumberOfWriteIns() + 1)
 							.build();
 
 					final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_dec_4 = lastOnlineControlComponentShuffles.get(i)

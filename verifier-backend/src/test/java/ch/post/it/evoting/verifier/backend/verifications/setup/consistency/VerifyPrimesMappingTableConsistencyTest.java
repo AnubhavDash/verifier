@@ -138,12 +138,19 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 		}
 		final PrimesMappingTable permutedPrimesMappingTable = PrimesMappingTable.from(permutedPTableList);
 
-		return new VerificationCardSetContext(verificationCardSetContext.verificationCardSetId(),
-				verificationCardSetContext.verificationCardSetAlias(), verificationCardSetContext.verificationCardSetDescription(),
-				verificationCardSetContext.ballotBoxId(), verificationCardSetContext.ballotBoxStartTime(),
-				verificationCardSetContext.ballotBoxFinishTime(), verificationCardSetContext.testBallotBox(),
-				verificationCardSetContext.numberOfWriteInFields(), verificationCardSetContext.numberOfVotingCards(),
-				verificationCardSetContext.gracePeriod(), permutedPrimesMappingTable);
+		return new VerificationCardSetContext.Builder()
+				.setVerificationCardSetId(verificationCardSetContext.verificationCardSetId())
+				.setVerificationCardSetAlias(verificationCardSetContext.verificationCardSetAlias())
+				.setVerificationCardSetDescription(verificationCardSetContext.verificationCardSetDescription())
+				.setBallotBoxId(verificationCardSetContext.ballotBoxId())
+				.setBallotBoxStartTime(verificationCardSetContext.ballotBoxStartTime())
+				.setBallotBoxFinishTime(verificationCardSetContext.ballotBoxFinishTime())
+				.setTestBallotBox(verificationCardSetContext.testBallotBox())
+				.setNumberOfVotingCards(verificationCardSetContext.numberOfVotingCards())
+				.setGracePeriod(verificationCardSetContext.gracePeriod())
+				.setPrimesMappingTable(permutedPrimesMappingTable)
+				.setCiSelections(verificationCardSetContext.ciSelections())
+				.setListOfWriteInOptions(verificationCardSetContext.listOfWriteInOptions()).build();
 	}
 
 	private List<VerificationCardSetContext> addNewActualVotingOption(final List<VerificationCardSetContext> verificationCardSetContexts) {
@@ -163,12 +170,19 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 						pTableWithNewEntry.addAll(toModify.get(false));
 						final PrimesMappingTable notInConfigPrimesMappingTable = PrimesMappingTable.from(pTableWithNewEntry);
 
-						return new VerificationCardSetContext(verificationCardSetContext.verificationCardSetId(),
-								verificationCardSetContext.verificationCardSetAlias(), verificationCardSetContext.verificationCardSetDescription(),
-								verificationCardSetContext.ballotBoxId(), verificationCardSetContext.ballotBoxStartTime(),
-								verificationCardSetContext.ballotBoxFinishTime(), verificationCardSetContext.testBallotBox(),
-								verificationCardSetContext.numberOfWriteInFields(), verificationCardSetContext.numberOfVotingCards(),
-								verificationCardSetContext.gracePeriod(), notInConfigPrimesMappingTable);
+						return new VerificationCardSetContext.Builder()
+								.setVerificationCardSetId(verificationCardSetContext.verificationCardSetId())
+								.setVerificationCardSetAlias(verificationCardSetContext.verificationCardSetAlias())
+								.setVerificationCardSetDescription(verificationCardSetContext.verificationCardSetDescription())
+								.setBallotBoxId(verificationCardSetContext.ballotBoxId())
+								.setBallotBoxStartTime(verificationCardSetContext.ballotBoxStartTime())
+								.setBallotBoxFinishTime(verificationCardSetContext.ballotBoxFinishTime())
+								.setTestBallotBox(verificationCardSetContext.testBallotBox())
+								.setNumberOfVotingCards(verificationCardSetContext.numberOfVotingCards())
+								.setGracePeriod(verificationCardSetContext.gracePeriod())
+								.setPrimesMappingTable(notInConfigPrimesMappingTable)
+								.setCiSelections(verificationCardSetContext.ciSelections())
+								.setListOfWriteInOptions(verificationCardSetContext.listOfWriteInOptions()).build();
 					}
 					return verificationCardSetContext;
 				}).toList();

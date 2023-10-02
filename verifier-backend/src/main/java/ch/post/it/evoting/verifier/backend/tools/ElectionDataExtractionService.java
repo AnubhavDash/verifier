@@ -37,7 +37,6 @@ import com.google.common.collect.MoreCollectors;
 import ch.ech.xmlns.ech_0110._4.Delivery;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
-import ch.post.it.evoting.evotinglibraries.domain.election.CombinedCorrectnessInformation;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
@@ -469,36 +468,6 @@ public class ElectionDataExtractionService {
 	}
 
 	/**
-	 * Gets the combined correctness information for the given verification card set.
-	 *
-	 * @param inputDirectoryPath    the dataset root directory.
-	 * @param verificationCardSetId the verification card set id for which to get setup component tally data payload.
-	 * @return the combined correctness information.
-	 * @throws NullPointerException      if {@code inputDirectoryPath} is null.
-	 * @throws FailedValidationException if {@code verificationCardSetId} is invalid.
-	 * @throws UncheckedIOException      if the deserialization of the setup component verification data payload fails.
-	 */
-	public CombinedCorrectnessInformation getCombinedCorrectnessInformation(final Path inputDirectoryPath, final String verificationCardSetId) {
-		checkNotNull(inputDirectoryPath);
-		validateUUID(verificationCardSetId);
-
-		final PathNode verificationCardSet = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SETS_DIR, inputDirectoryPath);
-
-		final Path verificationCardSetIdPath = verificationCardSet.getPath().resolve(verificationCardSetId);
-		// All chunks contain the same combined correctness information.
-		final Path setupComponentVerificationDataPath = pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA,
-				verificationCardSetIdPath).getRegexPaths().get(0);
-
-		try {
-			return objectMapper.readValue(setupComponentVerificationDataPath.toFile(), SetupComponentVerificationDataPayload.class)
-					.getCombinedCorrectnessInformation();
-		} catch (final IOException e) {
-			throw new UncheckedIOException(
-					String.format("Failed to deserialize combined correctness information. [path: %s]", setupComponentVerificationDataPath), e);
-		}
-	}
-
-	/**
 	 * Gets all tally component shuffle payloads of the different ballot boxes as a {@link Stream}.
 	 *
 	 * @param inputDirectoryPath the dataset root directory.
@@ -673,27 +642,6 @@ public class ElectionDataExtractionService {
 				.map(Stream::toList)
 				.sorted(Comparator.comparingInt(controlComponentCodeSharesPayloads -> controlComponentCodeSharesPayloads.get(0).getChunkId()))
 				.toList();
-	}
-
-	/**
-	 * Gets all control component code shares payloads of the different verification card sets as a {@link Stream}.
-	 *
-	 * @param inputDirectoryPath the dataset root directory.
-	 * @return all control component code shares payloads.
-	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
-	 * @throws UncheckedIOException if the deserialization of the control component code shares payloads fails.
-	 */
-	public Stream<Stream<ControlComponentCodeSharesPayload>> getControlComponentCodeSharesPayloadsByChunkAndVcs(final Path inputDirectoryPath) {
-		checkNotNull(inputDirectoryPath);
-
-		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
-		return verificationCardSets.getRegexPaths().stream()
-				.parallel()
-				.flatMap(verificationCardSetIdPath -> pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_CODE_SHARES,
-								verificationCardSetIdPath).getRegexPaths()
-						.stream()
-						.parallel())
-				.map(this::getControlComponentCodeSharesOrderByNodeId);
 	}
 
 	public Stream<ControlComponentCodeSharesPayload> getControlComponentCodeSharesOrderByNodeId(final Path controlComponentCodeSharesPayloadsPath) {

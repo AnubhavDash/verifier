@@ -17,15 +17,18 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
 import static ch.post.it.evoting.verifier.backend.tools.TranslationHelper.getFromResourceBundle;
 
-import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
 import ch.ech.xmlns.ech_0110._4.Delivery;
+import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
+import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
+import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
@@ -75,6 +78,7 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 	@SuppressWarnings("java:S117")
 	public VerificationResult verify(final Path inputDirectoryPath) {
 		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(inputDirectoryPath);
+		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
 		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = extractionService.getSetupComponentPublicKeysPayload(
 				inputDirectoryPath);
 		final List<ControlComponentShufflePayload> controlComponentShufflePayloads = extractionService
@@ -82,7 +86,7 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 		final List<TallyComponentShufflePayload> tallyComponentShufflePayloads = extractionService
 				.getTallyComponentShufflePayloads(inputDirectoryPath).toList();
 		final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads = getAuthorizationNameToTallyComponentVotesPayloadMap(
-				inputDirectoryPath, electionEventContextPayload.getElectionEventContext());
+				inputDirectoryPath, electionEventContext);
 		final Configuration configuration = extractionService.getCantonConfig(inputDirectoryPath);
 		final Results tallyControlComponentDecryptions = extractionService.getTallyComponentDecrypt(inputDirectoryPath);
 		final Delivery tallyControlComponentResults = extractionService.getTallyComponentEch0110(inputDirectoryPath);
@@ -92,21 +96,13 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 				setupComponentPublicKeysPayload, controlComponentShufflePayloads, tallyComponentShufflePayloads, tallyComponentVotesPayloads,
 				configuration, tallyControlComponentDecryptions, tallyControlComponentResults, tallyComponentEch0222);
 
-		final Map<String, Integer> numberOfSelectableVotingOptions = electionEventContextPayload.getElectionEventContext()
-				.verificationCardSetContexts().stream()
+		final ConcurrentMap<String, Integer> numberOfSelectableVotingOptions = electionEventContext.verificationCardSetContexts().stream()
 				.parallel()
-				.collect(Collectors.toMap(VerificationCardSetContext::ballotBoxId,
-						vcContext -> extractionService
-								.getCombinedCorrectnessInformation(inputDirectoryPath, vcContext.verificationCardSetId())
-								.getTotalNumberOfSelections()));
+				.collect(Collectors.toConcurrentMap(VerificationCardSetContext::ballotBoxId, VerificationCardSetContext::getNumberOfSelections));
 
-		final Map<String, List<BigInteger>> writeInVotingOptions = electionEventContextPayload.getElectionEventContext()
-				.verificationCardSetContexts().stream()
+		final ConcurrentMap<String, GroupVector<PrimeGqElement, GqGroup>> writeInVotingOptions = electionEventContext.verificationCardSetContexts().stream()
 				.parallel()
-				.collect(Collectors.toMap(VerificationCardSetContext::ballotBoxId,
-						vcContext -> extractionService
-								.getCombinedCorrectnessInformation(inputDirectoryPath, vcContext.verificationCardSetId())
-								.getTotalListOfWriteInOptions()));
+				.collect(Collectors.toConcurrentMap(VerificationCardSetContext::ballotBoxId, VerificationCardSetContext::listOfWriteInOptions));
 
 		final boolean result = verifyTallyControlComponentAlgorithm.verifyTallyControlComponent(input, numberOfSelectableVotingOptions,
 				writeInVotingOptions);

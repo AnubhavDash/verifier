@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <configuration xmlns="http://www.evoting.ch/xmlns/config/5">
 	<header>
-		<fileDate>2023-08-09T15:32:59.646+02:00</fileDate>
+		<fileDate>2023-09-13T13:05:34.074+02:00</fileDate>
 		<voterTotal>43</voterTotal>
 	</header>
 	<contest>
@@ -105,7 +105,7 @@
 					<electionPosition>1</electionPosition>
 					<numberOfMandates>6</numberOfMandates>
 					<writeInsAllowed>false</writeInsAllowed>
-					<candidateAccumulation>2</candidateAccumulation>
+					<candidateAccumulation>1</candidateAccumulation>
 					<minimalCandidateSelectionInList>1</minimalCandidateSelectionInList>
 				</election>
 				<candidate>
@@ -1622,54 +1622,6 @@
 						<positionOnList>2</positionOnList>
 						<candidateReferenceOnPosition>10.02</candidateReferenceOnPosition>
 						<candidateIdentification>ff671047-7e0f-4198-974f-0041a55f1c70</candidateIdentification>
-						<candidateTextOnPosition>
-							<candidateTextInfo>
-								<language>de</language>
-								<candidateText>01.01.1975, ?</candidateText>
-							</candidateTextInfo>
-							<candidateTextInfo>
-								<language>fr</language>
-								<candidateText>01.01.1975, ?</candidateText>
-							</candidateTextInfo>
-							<candidateTextInfo>
-								<language>it</language>
-								<candidateText>01.01.1975, ?</candidateText>
-							</candidateTextInfo>
-							<candidateTextInfo>
-								<language>rm</language>
-								<candidateText>01.01.1975, ?</candidateText>
-							</candidateTextInfo>
-						</candidateTextOnPosition>
-					</candidatePosition>
-					<candidatePosition>
-						<candidateListIdentification>45364b88-caa2-375d-9d28-90ece22d18a9</candidateListIdentification>
-						<positionOnList>3</positionOnList>
-						<candidateReferenceOnPosition>10.02</candidateReferenceOnPosition>
-						<candidateIdentification>ff671047-7e0f-4198-974f-0041a55f1c70</candidateIdentification>
-						<candidateTextOnPosition>
-							<candidateTextInfo>
-								<language>de</language>
-								<candidateText>01.01.1975, ?</candidateText>
-							</candidateTextInfo>
-							<candidateTextInfo>
-								<language>fr</language>
-								<candidateText>01.01.1975, ?</candidateText>
-							</candidateTextInfo>
-							<candidateTextInfo>
-								<language>it</language>
-								<candidateText>01.01.1975, ?</candidateText>
-							</candidateTextInfo>
-							<candidateTextInfo>
-								<language>rm</language>
-								<candidateText>01.01.1975, ?</candidateText>
-							</candidateTextInfo>
-						</candidateTextOnPosition>
-					</candidatePosition>
-					<candidatePosition>
-						<candidateListIdentification>8f1a8aa8-a7fb-349e-aadc-a326e95765b9</candidateListIdentification>
-						<positionOnList>4</positionOnList>
-						<candidateReferenceOnPosition>10.01</candidateReferenceOnPosition>
-						<candidateIdentification>e5b16bd6-815b-4e02-8e9e-04064a19b6d0</candidateIdentification>
 						<candidateTextOnPosition>
 							<candidateTextInfo>
 								<language>de</language>
@@ -3216,6 +3168,6 @@
 		</voter>
 	</register>
 	<signature>
-		dFcnl4dQV71frc+Bk4/fWAAuHSPSoOZZHLFb/NnjiW14KDw0QA8cMQ3MG7Xhn8cy1toR7eYPpsgtSJKbj672u5wmkBoE/7LizIW8Q67DJx9/38yPYP15jHOgZEkxdRla3ZHU9jal+xdir+uCpKvdCnD+MsJyOG6YoBMyp+fhjvp8GL7znfo3ip55sR4FUH4si0h7tqmo0Tw2JeY6YJ98w7cR290R6VIO1sZqoJdBegcf/uOd08hAWB0XCTZZp4QOLMDAxzymP9B5Jy4obwAG00PrYpA5SBEhrTJd8IFPDcCVcuxRr8laWMe07FrzQcrs1RkjpAkBsn+tmvs+YfmrwxDkmAzAU3mgc9+uTAox2hzsF6WzycwyDRg0yqvbmoawixH6U7jFA9M/AUtDQm9UPFIhhSRrPY3RhlepGGy/4/XsA5E/jI2QwzBmWbrS6Bu6hGHU7CAHeqaFZ+kTZepjGUoMuNaOJtg1FL2qJnxGRjsS9BVudsYkTR9lO27Yp902
+		DYSJ9hpkOSuQYMlr00LcaU6XrWzArZruyNpZl3d8ltMcXzOe98KIAUbfq6/y1sXX7prVm3V/Ard2gFLMYDzNo5gCYGXxr6DAKnVhcDuECpeSTNJGiVg9ltFktxp75CUtR/kDSt4y6pfMu7/KMNQ255S5A/IdK5mbm1ZvM8ymd6k8P9vpsFYr3hI8DKv41quWjUlkiWy9XPL6BCWgrJEWjnQ3iFR5g4qjtYz2rRG+Jth5/3brP/fR2wiVCa6C8ZGY191Ow52/wpdI9igHrUtHV61LuBbDtW9/rZ3yvxqIubq+eis3/D97t69tgi+uaNfXqfU4eJWiSor3E3VRUL9GAEu+TDFyCwOc0/6EaVwrjDgfu+BFJdnhkg7jXJHOub/xfSoDFTLQDh85rcHwJ/Ol18E7Jwk1i/rrECAVd+BEkcFqUKrEVcqO+ZMUs9E0GLYqKFReTLvNevr+agOOCHnd6FNaoKb7JZTHrz+pieX7qRUrSNir0gP7DGsvAiLt96jL
 	</signature>
 </configuration>

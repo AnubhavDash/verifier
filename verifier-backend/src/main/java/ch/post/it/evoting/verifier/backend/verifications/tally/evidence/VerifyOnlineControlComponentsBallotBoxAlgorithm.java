@@ -108,7 +108,7 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 		final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> EL_pk_1_to_4 = context.getCcmElectionPublicKeys();
 		final ElGamalMultiRecipientPublicKey EB_pk = context.getElectoralBoardPublicKey();
 		final ElGamalMultiRecipientPublicKey pk_CCR = context.getChoiceReturnCodesEncryptionPublicKey();
-		final int delta_hat = context.getNumberOfAlloweWriteInsPlusOne();
+		final int delta_hat = context.getNumberOfAllowedWriteInsPlusOne();
 
 		// Input
 		final Map<String, ElGamalMultiRecipientPublicKey> KMap = input.verificationCardPublicKeyMap();

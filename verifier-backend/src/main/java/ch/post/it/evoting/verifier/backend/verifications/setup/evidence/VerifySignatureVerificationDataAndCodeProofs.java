@@ -20,7 +20,9 @@ import static com.google.common.base.Preconditions.checkState;
 import java.nio.file.Path;
 import java.security.SignatureException;
 import java.util.List;
+import java.util.concurrent.ConcurrentMap;
 import java.util.function.BooleanSupplier;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -31,6 +33,8 @@ import com.google.common.annotations.VisibleForTesting;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
+import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
+import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.evotinglibraries.domain.returncodes.ControlComponentCodeSharesPayload;
 import ch.post.it.evoting.evotinglibraries.domain.returncodes.SetupComponentVerificationDataPayload;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
@@ -83,6 +87,12 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 
 		final List<Path> verificationCardSets = electionDataExtractionService.getVerificationCardSetPaths(inputDirectoryPath);
 
+		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContext(inputDirectoryPath);
+
+		final ConcurrentMap<String, Integer> numberOfVotingOptions = electionEventContext.verificationCardSetContexts().stream()
+				.parallel()
+				.collect(Collectors.toConcurrentMap(VerificationCardSetContext::verificationCardSetId, VerificationCardSetContext::getNumberOfVotingOptions));
+
 		final boolean result = verificationCardSets.stream()
 				.parallel()
 				.map(path -> {
@@ -95,6 +105,9 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 								final List<ControlComponentCodeSharesPayload> controlComponentCodeShares = electionDataExtractionService.getControlComponentCodeSharesPayloadChunkOrderByNodeId(
 										path, chunk);
 
+								final int totalNumberOfVotingOptions = numberOfVotingOptions.get(
+										setupComponentVerificationData.getVerificationCardSetId());
+
 								final BooleanSupplier s1 = () -> verifySignatureSetupComponentVerificationData(setupComponentVerificationData);
 
 								final BooleanSupplier s2 = () -> controlComponentCodeShares.stream()
@@ -104,12 +117,13 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 
 								final BooleanSupplier v1 = verifyEncryptedPCCExponentiationProofs(
 										setupComponentVerificationData,
-										controlComponentCodeShares
-								);
+										controlComponentCodeShares,
+										totalNumberOfVotingOptions);
 
 								final BooleanSupplier v2 = verifyEncryptedCKExponentiationProofs(
 										setupComponentVerificationData,
-										controlComponentCodeShares);
+										controlComponentCodeShares,
+										totalNumberOfVotingOptions);
 
 								return Stream.of(s1, s2, v1, v2);
 							})
@@ -131,7 +145,7 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 	}
 
 	private BooleanSupplier verifyEncryptedCKExponentiationProofs(final SetupComponentVerificationDataPayload setupComponentVerificationData,
-			final List<ControlComponentCodeSharesPayload> controlComponentCodeSharesPayloads) {
+			final List<ControlComponentCodeSharesPayload> controlComponentCodeSharesPayloads, final int totalNumberOfVotingOptions) {
 
 		final VerifyEncryptedExponentiationProofsInput input = new VerifyEncryptedExponentiationProofsInput.Builder()
 				.setElectionEventId(setupComponentVerificationData.getElectionEventId())
@@ -147,8 +161,7 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 							.setElectionEventId(controlComponentCodeSharesPayload.getElectionEventId())
 							.setEncryptionGroup(controlComponentCodeSharesPayload.getEncryptionGroup())
 							.setNumberOfVoters(setupComponentVerificationData.getSetupComponentVerificationData().size())
-							.setNumberOfVotingOptions(
-									setupComponentVerificationData.getCombinedCorrectnessInformation().getTotalNumberOfVotingOptions())
+							.setNumberOfVotingOptions(totalNumberOfVotingOptions)
 							.build();
 
 					final VerifyEncryptedExponentiationProofsVerificationCardSetInput verificationCardSetInput = new VerifyEncryptedExponentiationProofsVerificationCardSetInput(
@@ -161,7 +174,7 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 	}
 
 	private BooleanSupplier verifyEncryptedPCCExponentiationProofs(final SetupComponentVerificationDataPayload setupComponentVerificationData,
-			final List<ControlComponentCodeSharesPayload> controlComponentCodeSharesPayloads) {
+			final List<ControlComponentCodeSharesPayload> controlComponentCodeSharesPayloads, final int totalNumberOfVotingOptions) {
 
 		final VerifyEncryptedExponentiationProofsInput input = new VerifyEncryptedExponentiationProofsInput.Builder()
 				.setElectionEventId(setupComponentVerificationData.getElectionEventId())
@@ -175,8 +188,7 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 									.setElectionEventId(controlComponentCodeSharesPayload.getElectionEventId())
 									.setJ(controlComponentCodeSharesPayload.getNodeId())
 									.setNumberOfVoters(setupComponentVerificationData.getSetupComponentVerificationData().size())
-									.setNumberOfVotingOptions(
-											setupComponentVerificationData.getCombinedCorrectnessInformation().getTotalNumberOfVotingOptions())
+									.setNumberOfVotingOptions(totalNumberOfVotingOptions)
 									.build();
 
 							final VerifyEncryptedExponentiationProofsVerificationCardSetInput verificationCardSetInput = new VerifyEncryptedExponentiationProofsVerificationCardSetInput(
