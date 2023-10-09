@@ -18,6 +18,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {DatasetConfiguration} from '../models/DatasetConfiguration.interface';
+import {DatasetType} from '../models/dataset-type.enum';
 
 @Injectable()
 export class ProcessorService {
@@ -45,17 +46,20 @@ export class ProcessorService {
     return this.http.post(environment.appUrl + '/api/reset', null, this.httpOptions);
   }
 
+  changeMode(): Observable<Object> {
+    return this.http.post(environment.appUrl + '/api/changeMode', null, this.httpOptions);
+  }
+
   getDatasetConfiguration(): Observable<DatasetConfiguration> {
     return this.http.get<DatasetConfiguration>(environment.appUrl + '/api/datasetConfiguration', this.httpOptions);
   }
 
-  uploadDataset(file: File): Observable<Object> {
+  uploadDataset(file: File, dataset: DatasetType): Observable<Object> {
     const options = Object.create(this.httpOptions);
     options.headers['Content-Type'] = undefined;
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post(environment.appUrl + '/api/dataset', formData, options);
+    return this.http.post(environment.appUrl + '/api/dataset/' + dataset, formData, options);
   }
-
 
 }

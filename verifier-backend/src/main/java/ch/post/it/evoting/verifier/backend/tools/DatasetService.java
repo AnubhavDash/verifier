@@ -66,7 +66,7 @@ public class DatasetService {
 	}
 
 	public Dataset unpack(final Dataset dataset) throws IOException {
-		checkNotNull(dataset, "The dataset must be not null");
+		checkNotNull(dataset, "The dataset must be not null.");
 
 		if (dataset.isUnpacked()) {
 			return dataset;
@@ -79,6 +79,8 @@ public class DatasetService {
 			while ((entry = zipInputStream.getNextEntry()) != null) {
 				if (!entry.isDirectory()) {
 					hasEntry = true;
+
+					dataset.setActualType(entry.getFileName());
 
 					final Path fileLocation = dataset.getUnpackFolder().resolve(entry.getFileName());
 
@@ -96,16 +98,21 @@ public class DatasetService {
 				throw new InvalidParameterException("input is not a ZIP file or is empty.");
 			}
 		}
+
+		checkState(dataset.getActualType() != null, "input is not a %s dataset.", dataset.getExpectedType());
+
 		dataset.setUnpacked(true);
 
 		return dataset;
 	}
 
-	public void clean(final Dataset dataset) {
+	public void clean(final Dataset dataset, final boolean deleteTemporaryDirectory) {
 		checkNotNull(dataset);
 
 		final Path unpackFolder = dataset.getUnpackFolder();
-		directoryService.deleteTemporaryDirectory(unpackFolder);
+		if (deleteTemporaryDirectory) {
+			directoryService.deleteTemporaryDirectory(unpackFolder);
+		}
 		dataset.removeUnpackFolder();
 	}
 
