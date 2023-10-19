@@ -20,12 +20,14 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.stream.Stream;
 
@@ -37,6 +39,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import com.google.common.base.Throwables;
 
+import ch.post.it.evoting.verifier.backend.tools.path.PathService;
+
 import net.lingala.zip4j.io.outputstream.ZipOutputStream;
 import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.model.enums.CompressionLevel;
@@ -46,10 +50,11 @@ class DatasetServiceTest {
 	private static final String DATASET_CONTEXT_EXPECTED_FILE = "configuration-anonymized.xml";
 	private static final String DATASET_CONTEXT_EXPECTED_FOLDER = "setup";
 	private static final String DATASET_SETUP_EXPECTED_FILE = "controlComponentCodeSharesPayload.0.json";
-	private static final String DATASET_SETUP_EXPECTED_FOLDER = "setup\\verification_card_sets\\43B803449095FA47C0335A3B489FB61B";
+	private static final String DATASET_SETUP_EXPECTED_FOLDER = Paths.get("setup", "verification_card_sets", "43B803449095FA47C0335A3B489FB61B")
+			.toString();
 	private static final String DATASET_TALLY_EXPECTED_FILE = "controlComponentBallotBoxPayload_1.json";
-	private static final String DATASET_TALLY_EXPECTED_FOLDER = "tally\\ballot_boxes\\0E65660B5AF70D18DA2D47C3F4718102";
-	private final DatasetService datasetService = new DatasetService(new DirectoryService());
+	private static final String DATASET_TALLY_EXPECTED_FOLDER = Paths.get("tally", "ballot_boxes", "0E65660B5AF70D18DA2D47C3F4718102").toString();
+	private final DatasetService datasetService = new DatasetService(new DirectoryService(), new PathService());
 
 	@TempDir
 	private Path zipDirectory;
@@ -67,7 +72,7 @@ class DatasetServiceTest {
 			final String folder,
 			final String file) throws IOException {
 		final String zipName = String.format("tmp-%s.zip", expectedType);
-		final String pathToFile = folder + "\\" + file;
+		final String pathToFile = folder + File.separator + file;
 
 		Files.createDirectories(folderToZip.resolve(folder));
 		Files.createFile(folderToZip.resolve(pathToFile));
@@ -97,7 +102,7 @@ class DatasetServiceTest {
 			final String folder,
 			final String file) throws IOException {
 		final String zipName = String.format("tmp-%s.zip", expectedType);
-		final String pathToFile = folder + "\\" + file;
+		final String pathToFile = folder + File.separator + file;
 
 		Files.createDirectories(folderToZip.resolve(folder));
 		Files.createFile(folderToZip.resolve(pathToFile));

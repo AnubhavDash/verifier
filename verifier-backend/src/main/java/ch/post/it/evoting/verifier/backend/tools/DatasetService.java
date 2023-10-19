@@ -43,6 +43,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
+import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 
 import jakarta.xml.bind.DatatypeConverter;
 import net.lingala.zip4j.io.inputstream.ZipInputStream;
@@ -51,6 +52,7 @@ import net.lingala.zip4j.model.LocalFileHeader;
 @Service
 public class DatasetService {
 	private final DirectoryService directoryService;
+	private final PathService pathService;
 
 	@Value("${direct.trust.keystore.type}")
 	private String keyStoreType;
@@ -61,8 +63,9 @@ public class DatasetService {
 	@Value("${direct.trust.keystore.password.location}")
 	private String keyStorePasswordLocation;
 
-	public DatasetService(final DirectoryService directoryService) {
+	public DatasetService(final DirectoryService directoryService, final PathService pathService) {
 		this.directoryService = directoryService;
+		this.pathService = pathService;
 	}
 
 	public Dataset unpack(final Dataset dataset) throws IOException {
@@ -80,8 +83,7 @@ public class DatasetService {
 				if (!entry.isDirectory()) {
 					hasEntry = true;
 
-					dataset.setActualType(entry.getFileName());
-
+					setActualDatasetType(dataset, entry.getFileName());
 					final Path fileLocation = dataset.getUnpackFolder().resolve(entry.getFileName());
 
 					if (!Files.exists(fileLocation.getParent())) {
@@ -179,4 +181,12 @@ public class DatasetService {
 						}));
 	}
 
+	private void setActualDatasetType(final Dataset dataset, final String fileName) {
+		if (dataset.getActualType() == null) {
+			Arrays.stream(DatasetType.values())
+					.filter(datasetType -> pathService.matchesStructureKey(datasetType.getStructureKey(), fileName))
+					.findAny()
+					.ifPresent(dataset::setActualType);
+		}
+	}
 }

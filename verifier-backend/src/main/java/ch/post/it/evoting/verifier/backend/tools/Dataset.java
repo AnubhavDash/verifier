@@ -15,7 +15,6 @@
  */
 package ch.post.it.evoting.verifier.backend.tools;
 
-import static ch.post.it.evoting.verifier.backend.tools.DatasetType.getDatasetType;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -84,13 +83,10 @@ public class Dataset {
 		return actualType;
 	}
 
-	public void setActualType(final String fileName) {
-		checkNotNull(fileName);
-		final DatasetType datasetType = getDatasetType(fileName);
-		if (datasetType != null) {
-			checkState(datasetType.equals(expectedType), "The given zip does not correspond to a %s dataset.", getExpectedType());
-			this.actualType = datasetType;
-		}
+	public void setActualType(final DatasetType datasetType) {
+		checkNotNull(datasetType);
+		checkState(datasetType.equals(expectedType), "The given zip does not correspond to a %s dataset.", getExpectedType());
+		this.actualType = datasetType;
 	}
 
 	public void removeUnpackFolder() {

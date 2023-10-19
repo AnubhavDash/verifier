@@ -15,6 +15,10 @@
  */
 package ch.post.it.evoting.verifier.backend.tools.path;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -64,6 +68,9 @@ public class PathService {
 	 * @return The path for the {@code datasetKey}.
 	 */
 	public PathNode buildFromRootPath(final StructureKey structureKey, final Path rootPath) {
+		checkNotNull(structureKey);
+		checkNotNull(rootPath);
+
 		final StructureNode structureNode = getStructureNode(structureKey);
 
 		// If the file/folder has a dynamic part in its path, the dynamic part has to be specified.
@@ -90,6 +97,9 @@ public class PathService {
 	 * @return if the file or directory to obtain exists in the dataset return true, otherwise false.
 	 */
 	public boolean existsFromRootPath(final StructureKey structureKey, final Path rootPath) {
+		checkNotNull(structureKey);
+		checkNotNull(rootPath);
+
 		final StructureNode structureNode = getStructureNode(structureKey);
 
 		// Combine input path with file/directory parent path.
@@ -122,6 +132,9 @@ public class PathService {
 	 * @return The path for the {@code datasetKey}.
 	 */
 	public PathNode buildFromDynamicAncestorPath(final StructureKey structureKey, final Path dynamicPath) {
+		checkNotNull(structureKey);
+		checkNotNull(dynamicPath);
+
 		final StructureNode structureNode = getStructureNode(structureKey);
 
 		// Check if asked key is really dynamic.
@@ -146,11 +159,41 @@ public class PathService {
 	 * @return the {@code structureNode}.
 	 */
 	public StructureNode getStructureNode(final StructureKey structureKey) {
+		checkNotNull(structureKey);
 		return structureMap.get(structureKey);
 	}
 
+	/**
+	 * @param structureKey The file to obtain.
+	 * @param fileName     The file to verify.
+	 * @return if the file matches the structure key pattern return true, false otherwise.
+	 */
+	public boolean matchesStructureKey(final StructureKey structureKey, final String fileName) {
+		checkNotNull(structureKey);
+		checkNotNull(fileName);
+
+		final StructureNode structureNode = getStructureNode(structureKey);
+		checkArgument(structureNode.type().equals(PathType.FILE), "The given structure key does not correspond to a file. [structureKey: %s]",
+				structureKey);
+
+		final String fileSeparatorRegex = "\\" + File.separator;
+		final String parentPathRegex = structureNode.parentPath().toString().replace(File.separator, fileSeparatorRegex);
+		final String filePathRegex = String.join(fileSeparatorRegex, parentPathRegex, structureNode.qualifier());
+		final Pattern pattern = Pattern.compile(filePathRegex);
+
+		return pattern.matcher(fileName).matches();
+	}
+
+	/**
+	 * @param structureKey The file to obtain.
+	 * @param fileName     The file to verify.
+	 * @return the regex group from which the file matched.
+	 */
 	public String getRegexGroup(final StructureKey structureKey, final String fileName, final int groupIndex) {
-		final Pattern pattern = Pattern.compile(this.getStructureNode(structureKey).qualifier());
+		checkNotNull(structureKey);
+		checkNotNull(fileName);
+
+		final Pattern pattern = Pattern.compile(getStructureNode(structureKey).qualifier());
 		final Matcher matcher = pattern.matcher(fileName);
 
 		if (!matcher.matches()) {

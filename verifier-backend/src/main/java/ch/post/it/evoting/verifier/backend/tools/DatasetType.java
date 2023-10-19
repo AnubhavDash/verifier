@@ -15,32 +15,20 @@
  */
 package ch.post.it.evoting.verifier.backend.tools;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import java.util.Arrays;
-import java.util.regex.Pattern;
+import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 
 public enum DatasetType {
-	CONTEXT("setup\\\\configuration-anonymized\\.xml"),
-	SETUP("setup\\\\verification_card_sets\\\\[a-zA-Z0-9]{32}\\\\controlComponentCodeSharesPayload\\.[0-9]+\\.json"),
-	TALLY("tally\\\\ballot_boxes\\\\[a-zA-Z0-9]{32}\\\\controlComponentBallotBoxPayload_[1-4]{1}\\.json");
+	CONTEXT(StructureKey.CONFIGURATION_ANONYMIZED),
+	SETUP(StructureKey.CONTROL_COMPONENT_CODE_SHARES),
+	TALLY(StructureKey.CONTROL_COMPONENT_BALLOT_BOX);
 
-	private final Pattern existingFilePattern;
+	private final StructureKey structureKey;
 
-	DatasetType(final String existingFileRegex) {
-		this.existingFilePattern = Pattern.compile(existingFileRegex);
+	DatasetType(final StructureKey structureKey) {
+		this.structureKey = structureKey;
 	}
 
-	public Pattern getExistingFilePattern() {
-		return existingFilePattern;
-	}
-
-	public static DatasetType getDatasetType(final String fileName) {
-		checkNotNull(fileName);
-
-		return Arrays.stream(DatasetType.values())
-				.filter(datasetType -> datasetType.getExistingFilePattern().matcher(fileName).matches())
-				.findAny()
-				.orElse(null);
+	public StructureKey getStructureKey() {
+		return structureKey;
 	}
 }
