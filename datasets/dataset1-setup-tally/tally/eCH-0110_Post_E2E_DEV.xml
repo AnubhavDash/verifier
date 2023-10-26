@@ -2,21 +2,21 @@
 <eCH-0110:delivery xmlns:eCH-0110="http://www.ech.ch/xmlns/eCH-0110/4" xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008/3" xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/4" xmlns:eCH-0222="http://www.ech.ch/xmlns/eCH-0222/1">
   <eCH-0110:deliveryHeader>
     <eCH-0058:senderId>http://www.post.ch</eCH-0058:senderId>
-    <eCH-0058:messageId>88DD634747EBF4638C0729C0E3E25C94</eCH-0058:messageId>
+    <eCH-0058:messageId>1ED1B386D0A3F5E54F05E8874C744106</eCH-0058:messageId>
     <eCH-0058:messageType>http://www.post.ch</eCH-0058:messageType>
     <eCH-0058:sendingApplication>
       <eCH-0058:manufacturer>SwissPost</eCH-0058:manufacturer>
       <eCH-0058:product>E-Voting</eCH-0058:product>
       <eCH-0058:productVersion>1</eCH-0058:productVersion>
     </eCH-0058:sendingApplication>
-    <eCH-0058:messageDate>2023-07-12T17:35:38.812950600</eCH-0058:messageDate>
+    <eCH-0058:messageDate>2023-10-26T16:00:39.050469300</eCH-0058:messageDate>
     <eCH-0058:action>1</eCH-0058:action>
     <eCH-0058:testDeliveryFlag>false</eCH-0058:testDeliveryFlag>
   </eCH-0110:deliveryHeader>
   <eCH-0110:resultDelivery>
     <eCH-0110:reportingBody>
       <eCH-0110:reportingBodyIdentification>SwissPost</eCH-0110:reportingBodyIdentification>
-      <eCH-0110:creationDateTime>2023-07-12T17:35:38.815950200</eCH-0110:creationDateTime>
+      <eCH-0110:creationDateTime>2023-10-26T16:00:39.058740200</eCH-0110:creationDateTime>
     </eCH-0110:reportingBody>
     <eCH-0110:contestInformation>
       <eCH-0155:contestIdentification>Post_E2E_DEV</eCH-0155:contestIdentification>
@@ -50,12 +50,12 @@
         <eCH-0155:countingCircleName>CH_Testurne1</eCH-0155:countingCircleName>
       </eCH-0110:countingCircle>
       <eCH-0110:votingCardsInformation>
-        <eCH-0110:countOfReceivedValidVotingCardsTotal>0</eCH-0110:countOfReceivedValidVotingCardsTotal>
+        <eCH-0110:countOfReceivedValidVotingCardsTotal>1</eCH-0110:countOfReceivedValidVotingCardsTotal>
         <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
       </eCH-0110:votingCardsInformation>
       <eCH-0110:voteResults>
         <eCH-0110:vote>
-          <eCH-0155:voteIdentification>4151943c-0b78-4c96-b46e-3f209e65dc2c</eCH-0155:voteIdentification>
+          <eCH-0155:voteIdentification>ch_test</eCH-0155:voteIdentification>
           <eCH-0155:domainOfInfluenceIdentification>doid-ch1-mu</eCH-0155:domainOfInfluenceIdentification>
           <eCH-0155:voteDescription>
             <eCH-0155:voteDescriptionInfo>
@@ -105,10 +105,10 @@
             </eCH-0155:ballotDescriptionInfo>
           </eCH-0110:ballotDescription>
           <eCH-0110:countOfReceivedBallotsTotal>
-            <eCH-0110:total>0</eCH-0110:total>
+            <eCH-0110:total>1</eCH-0110:total>
           </eCH-0110:countOfReceivedBallotsTotal>
           <eCH-0110:countOfAccountedBallotsTotal>
-            <eCH-0110:total>0</eCH-0110:total>
+            <eCH-0110:total>1</eCH-0110:total>
           </eCH-0110:countOfAccountedBallotsTotal>
           <eCH-0110:countOfUnaccountedBallotsTotal>
             <eCH-0110:total>0</eCH-0110:total>
@@ -140,7 +140,7 @@
               </eCH-0155:ballotQuestionInfo>
             </eCH-0110:question>
             <eCH-0110:countOfAnswerYes>
-              <eCH-0110:total>0</eCH-0110:total>
+              <eCH-0110:total>1</eCH-0110:total>
             </eCH-0110:countOfAnswerYes>
             <eCH-0110:countOfAnswerNo>
               <eCH-0110:total>0</eCH-0110:total>
@@ -179,10 +179,10 @@
             </eCH-0155:ballotDescriptionInfo>
           </eCH-0110:ballotDescription>
           <eCH-0110:countOfReceivedBallotsTotal>
-            <eCH-0110:total>0</eCH-0110:total>
+            <eCH-0110:total>1</eCH-0110:total>
           </eCH-0110:countOfReceivedBallotsTotal>
           <eCH-0110:countOfAccountedBallotsTotal>
-            <eCH-0110:total>0</eCH-0110:total>
+            <eCH-0110:total>1</eCH-0110:total>
           </eCH-0110:countOfAccountedBallotsTotal>
           <eCH-0110:countOfUnaccountedBallotsTotal>
             <eCH-0110:total>0</eCH-0110:total>
@@ -199,23 +199,23 @@
               <eCH-0110:question>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>DE</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2a. Wollen Sie den Vorschlag annehmen?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Wollen Sie den Vorschlag annehmen?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>FR</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2a. Acceptez-vous la deuxième proposition ?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Acceptez-vous la deuxième proposition ?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>IT</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2a. Accettare la seconda proposta ?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Accettare la seconda proposta ?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>RM</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2a. Acceptar la segunda proposta ?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Acceptar la segunda proposta ?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
               </eCH-0110:question>
               <eCH-0110:countOfAnswerYes>
-                <eCH-0110:total>0</eCH-0110:total>
+                <eCH-0110:total>1</eCH-0110:total>
               </eCH-0110:countOfAnswerYes>
               <eCH-0110:countOfAnswerNo>
                 <eCH-0110:total>0</eCH-0110:total>
@@ -232,23 +232,23 @@
               <eCH-0110:question>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>DE</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2b. Wollen Sie den Gegenvorschlag annehmen?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag annehmen?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>FR</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2b. Acceptez-vous la contre proposition ?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Acceptez-vous la contre proposition ?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>IT</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2b. Accettare la contra proposta ?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Accettare la contra proposta ?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>RM</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2b. Acceptar la cuntra proposta ?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Acceptar la cuntra proposta ?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
               </eCH-0110:question>
               <eCH-0110:countOfAnswerYes>
-                <eCH-0110:total>0</eCH-0110:total>
+                <eCH-0110:total>1</eCH-0110:total>
               </eCH-0110:countOfAnswerYes>
               <eCH-0110:countOfAnswerNo>
                 <eCH-0110:total>0</eCH-0110:total>
@@ -265,19 +265,19 @@
               <eCH-0110:tieBreakQuestion>
                 <eCH-0155:tieBreakQuestionInfo>
                   <eCH-0155:language>DE</eCH-0155:language>
-                  <eCH-0155:tieBreakQuestion>2c. Bei Gleichstand: Wollen Sie den Vorschlag oder den Gegenvorschlag annehmen?</eCH-0155:tieBreakQuestion>
+                  <eCH-0155:tieBreakQuestion>Bei Gleichstand: Wollen Sie den Vorschlag oder den Gegenvorschlag annehmen?</eCH-0155:tieBreakQuestion>
                 </eCH-0155:tieBreakQuestionInfo>
                 <eCH-0155:tieBreakQuestionInfo>
                   <eCH-0155:language>FR</eCH-0155:language>
-                  <eCH-0155:tieBreakQuestion>2c. En cas d'égalité : voulez-vous accepter la proposition ou la contre-proposition ?</eCH-0155:tieBreakQuestion>
+                  <eCH-0155:tieBreakQuestion>En cas d'égalité : voulez-vous accepter la proposition ou la contre-proposition ?</eCH-0155:tieBreakQuestion>
                 </eCH-0155:tieBreakQuestionInfo>
                 <eCH-0155:tieBreakQuestionInfo>
                   <eCH-0155:language>IT</eCH-0155:language>
-                  <eCH-0155:tieBreakQuestion>2c. In caso di parità di voti: volete accettare la proposta o la controproposta?</eCH-0155:tieBreakQuestion>
+                  <eCH-0155:tieBreakQuestion>In caso di parità di voti: volete accettare la proposta o la controproposta?</eCH-0155:tieBreakQuestion>
                 </eCH-0155:tieBreakQuestionInfo>
                 <eCH-0155:tieBreakQuestionInfo>
                   <eCH-0155:language>RM</eCH-0155:language>
-                  <eCH-0155:tieBreakQuestion>2c. En connex cun l’egualitad: vulais Vus acceptar la proposta u la cuntraproposta?</eCH-0155:tieBreakQuestion>
+                  <eCH-0155:tieBreakQuestion>En connex cun l’egualitad: vulais Vus acceptar la proposta u la cuntraproposta?</eCH-0155:tieBreakQuestion>
                 </eCH-0155:tieBreakQuestionInfo>
               </eCH-0110:tieBreakQuestion>
               <eCH-0110:countOfAnswerInvalid>
@@ -289,7 +289,7 @@
               <eCH-0110:countInFavourOf>
                 <eCH-0110:questionIdentification>16f99be5-0ce6-4a81-ae8b-1817ceecaebc</eCH-0110:questionIdentification>
                 <eCH-0110:countOfValidAnswers>
-                  <eCH-0110:total>0</eCH-0110:total>
+                  <eCH-0110:total>1</eCH-0110:total>
                 </eCH-0110:countOfValidAnswers>
               </eCH-0110:countInFavourOf>
               <eCH-0110:countInFavourOf>
@@ -330,10 +330,10 @@
           <eCH-0110:countOfVotersTotal>1</eCH-0110:countOfVotersTotal>
         </eCH-0110:countOfVotersInformation>
         <eCH-0110:countOfReceivedBallotsTotal>
-          <eCH-0110:total>0</eCH-0110:total>
+          <eCH-0110:total>1</eCH-0110:total>
         </eCH-0110:countOfReceivedBallotsTotal>
         <eCH-0110:countOfAccountedBallots>
-          <eCH-0110:total>0</eCH-0110:total>
+          <eCH-0110:total>1</eCH-0110:total>
         </eCH-0110:countOfAccountedBallots>
         <eCH-0110:countOfUnaccountedBallots>
           <eCH-0110:total>0</eCH-0110:total>
@@ -346,7 +346,7 @@
         </eCH-0110:countOfUnaccountedInvalidBallots>
         <eCH-0110:electionResults>
           <eCH-0110:election>
-            <eCH-0155:electionIdentification>01904d8c-8a10-4998-aecd-377f2688e3fa</eCH-0155:electionIdentification>
+            <eCH-0155:electionIdentification>nrw_test</eCH-0155:electionIdentification>
             <eCH-0155:typeOfElection>1</eCH-0155:typeOfElection>
             <eCH-0155:electionPosition>1</eCH-0155:electionPosition>
             <eCH-0155:electionDescription>
@@ -414,16 +414,16 @@
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfChangedBallots>
               <eCH-0110:countOfUnchangedBallots>
-                <eCH-0110:total>0</eCH-0110:total>
+                <eCH-0110:total>1</eCH-0110:total>
               </eCH-0110:countOfUnchangedBallots>
               <eCH-0110:countOfCandidateVotes>
-                <eCH-0110:total>0</eCH-0110:total>
+                <eCH-0110:total>6</eCH-0110:total>
               </eCH-0110:countOfCandidateVotes>
               <eCH-0110:countOfAdditionalVotes>
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAdditionalVotes>
               <eCH-0110:countOfPartyVotes>
-                <eCH-0110:total>0</eCH-0110:total>
+                <eCH-0110:total>6</eCH-0110:total>
               </eCH-0110:countOfPartyVotes>
             </eCH-0110:list>
             <eCH-0110:list>
@@ -628,7 +628,7 @@
               <eCH-0110:listResults>
                 <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
                 <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
+                  <eCH-0110:total>1</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
                   <eCH-0110:total>0</eCH-0110:total>
@@ -670,7 +670,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -702,7 +702,7 @@
               <eCH-0110:listResults>
                 <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
                 <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
+                  <eCH-0110:total>1</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
                   <eCH-0110:total>0</eCH-0110:total>
@@ -744,7 +744,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -776,7 +776,7 @@
               <eCH-0110:listResults>
                 <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
                 <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
+                  <eCH-0110:total>1</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
                   <eCH-0110:total>0</eCH-0110:total>
@@ -818,7 +818,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -850,7 +850,7 @@
               <eCH-0110:listResults>
                 <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
                 <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
+                  <eCH-0110:total>1</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
                   <eCH-0110:total>0</eCH-0110:total>
@@ -892,7 +892,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -924,7 +924,7 @@
               <eCH-0110:listResults>
                 <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
                 <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
+                  <eCH-0110:total>1</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
                   <eCH-0110:total>0</eCH-0110:total>
@@ -966,7 +966,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -998,7 +998,7 @@
               <eCH-0110:listResults>
                 <eCH-0110:listIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</eCH-0110:listIdentification>
                 <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
+                  <eCH-0110:total>1</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
                   <eCH-0110:total>0</eCH-0110:total>
@@ -1040,7 +1040,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -2088,12 +2088,12 @@
         <eCH-0155:countingCircleName>CH_Testurne2</eCH-0155:countingCircleName>
       </eCH-0110:countingCircle>
       <eCH-0110:votingCardsInformation>
-        <eCH-0110:countOfReceivedValidVotingCardsTotal>1</eCH-0110:countOfReceivedValidVotingCardsTotal>
+        <eCH-0110:countOfReceivedValidVotingCardsTotal>5</eCH-0110:countOfReceivedValidVotingCardsTotal>
         <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
       </eCH-0110:votingCardsInformation>
       <eCH-0110:voteResults>
         <eCH-0110:vote>
-          <eCH-0155:voteIdentification>4151943c-0b78-4c96-b46e-3f209e65dc2c</eCH-0155:voteIdentification>
+          <eCH-0155:voteIdentification>ch_test</eCH-0155:voteIdentification>
           <eCH-0155:domainOfInfluenceIdentification>doid-ch1-mu</eCH-0155:domainOfInfluenceIdentification>
           <eCH-0155:voteDescription>
             <eCH-0155:voteDescriptionInfo>
@@ -2143,16 +2143,16 @@
             </eCH-0155:ballotDescriptionInfo>
           </eCH-0110:ballotDescription>
           <eCH-0110:countOfReceivedBallotsTotal>
-            <eCH-0110:total>1</eCH-0110:total>
+            <eCH-0110:total>5</eCH-0110:total>
           </eCH-0110:countOfReceivedBallotsTotal>
           <eCH-0110:countOfAccountedBallotsTotal>
             <eCH-0110:total>1</eCH-0110:total>
           </eCH-0110:countOfAccountedBallotsTotal>
           <eCH-0110:countOfUnaccountedBallotsTotal>
-            <eCH-0110:total>0</eCH-0110:total>
+            <eCH-0110:total>4</eCH-0110:total>
           </eCH-0110:countOfUnaccountedBallotsTotal>
           <eCH-0110:countOfUnaccountedBlankBallots>
-            <eCH-0110:total>0</eCH-0110:total>
+            <eCH-0110:total>4</eCH-0110:total>
           </eCH-0110:countOfUnaccountedBlankBallots>
           <eCH-0110:countOfUnaccountedInvalidBallots>
             <eCH-0110:total>0</eCH-0110:total>
@@ -2187,7 +2187,7 @@
               <eCH-0110:total>0</eCH-0110:total>
             </eCH-0110:countOfAnswerInvalid>
             <eCH-0110:countOfAnswerEmpty>
-              <eCH-0110:total>0</eCH-0110:total>
+              <eCH-0110:total>4</eCH-0110:total>
             </eCH-0110:countOfAnswerEmpty>
           </eCH-0110:standardBallot>
         </eCH-0110:ballotResult>
@@ -2217,16 +2217,16 @@
             </eCH-0155:ballotDescriptionInfo>
           </eCH-0110:ballotDescription>
           <eCH-0110:countOfReceivedBallotsTotal>
-            <eCH-0110:total>1</eCH-0110:total>
+            <eCH-0110:total>5</eCH-0110:total>
           </eCH-0110:countOfReceivedBallotsTotal>
           <eCH-0110:countOfAccountedBallotsTotal>
             <eCH-0110:total>1</eCH-0110:total>
           </eCH-0110:countOfAccountedBallotsTotal>
           <eCH-0110:countOfUnaccountedBallotsTotal>
-            <eCH-0110:total>0</eCH-0110:total>
+            <eCH-0110:total>4</eCH-0110:total>
           </eCH-0110:countOfUnaccountedBallotsTotal>
           <eCH-0110:countOfUnaccountedBlankBallots>
-            <eCH-0110:total>0</eCH-0110:total>
+            <eCH-0110:total>4</eCH-0110:total>
           </eCH-0110:countOfUnaccountedBlankBallots>
           <eCH-0110:countOfUnaccountedInvalidBallots>
             <eCH-0110:total>0</eCH-0110:total>
@@ -2237,19 +2237,19 @@
               <eCH-0110:question>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>DE</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2a. Wollen Sie den Vorschlag annehmen?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Wollen Sie den Vorschlag annehmen?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>FR</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2a. Acceptez-vous la deuxième proposition ?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Acceptez-vous la deuxième proposition ?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>IT</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2a. Accettare la seconda proposta ?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Accettare la seconda proposta ?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>RM</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2a. Acceptar la segunda proposta ?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Acceptar la segunda proposta ?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
               </eCH-0110:question>
               <eCH-0110:countOfAnswerYes>
@@ -2270,26 +2270,26 @@
               <eCH-0110:question>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>DE</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2b. Wollen Sie den Gegenvorschlag annehmen?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag annehmen?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>FR</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2b. Acceptez-vous la contre proposition ?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Acceptez-vous la contre proposition ?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>IT</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2b. Accettare la contra proposta ?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Accettare la contra proposta ?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>RM</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2b. Acceptar la cuntra proposta ?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Acceptar la cuntra proposta ?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
               </eCH-0110:question>
               <eCH-0110:countOfAnswerYes>
-                <eCH-0110:total>1</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAnswerYes>
               <eCH-0110:countOfAnswerNo>
-                <eCH-0110:total>0</eCH-0110:total>
+                <eCH-0110:total>1</eCH-0110:total>
               </eCH-0110:countOfAnswerNo>
               <eCH-0110:countOfAnswerInvalid>
                 <eCH-0110:total>0</eCH-0110:total>
@@ -2303,19 +2303,19 @@
               <eCH-0110:tieBreakQuestion>
                 <eCH-0155:tieBreakQuestionInfo>
                   <eCH-0155:language>DE</eCH-0155:language>
-                  <eCH-0155:tieBreakQuestion>2c. Bei Gleichstand: Wollen Sie den Vorschlag oder den Gegenvorschlag annehmen?</eCH-0155:tieBreakQuestion>
+                  <eCH-0155:tieBreakQuestion>Bei Gleichstand: Wollen Sie den Vorschlag oder den Gegenvorschlag annehmen?</eCH-0155:tieBreakQuestion>
                 </eCH-0155:tieBreakQuestionInfo>
                 <eCH-0155:tieBreakQuestionInfo>
                   <eCH-0155:language>FR</eCH-0155:language>
-                  <eCH-0155:tieBreakQuestion>2c. En cas d'égalité : voulez-vous accepter la proposition ou la contre-proposition ?</eCH-0155:tieBreakQuestion>
+                  <eCH-0155:tieBreakQuestion>En cas d'égalité : voulez-vous accepter la proposition ou la contre-proposition ?</eCH-0155:tieBreakQuestion>
                 </eCH-0155:tieBreakQuestionInfo>
                 <eCH-0155:tieBreakQuestionInfo>
                   <eCH-0155:language>IT</eCH-0155:language>
-                  <eCH-0155:tieBreakQuestion>2c. In caso di parità di voti: volete accettare la proposta o la controproposta?</eCH-0155:tieBreakQuestion>
+                  <eCH-0155:tieBreakQuestion>In caso di parità di voti: volete accettare la proposta o la controproposta?</eCH-0155:tieBreakQuestion>
                 </eCH-0155:tieBreakQuestionInfo>
                 <eCH-0155:tieBreakQuestionInfo>
                   <eCH-0155:language>RM</eCH-0155:language>
-                  <eCH-0155:tieBreakQuestion>2c. En connex cun l’egualitad: vulais Vus acceptar la proposta u la cuntraproposta?</eCH-0155:tieBreakQuestion>
+                  <eCH-0155:tieBreakQuestion>En connex cun l’egualitad: vulais Vus acceptar la proposta u la cuntraproposta?</eCH-0155:tieBreakQuestion>
                 </eCH-0155:tieBreakQuestionInfo>
               </eCH-0110:tieBreakQuestion>
               <eCH-0110:countOfAnswerInvalid>
@@ -2327,186 +2327,19 @@
               <eCH-0110:countInFavourOf>
                 <eCH-0110:questionIdentification>16f99be5-0ce6-4a81-ae8b-1817ceecaebc</eCH-0110:questionIdentification>
                 <eCH-0110:countOfValidAnswers>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfValidAnswers>
               </eCH-0110:countInFavourOf>
               <eCH-0110:countInFavourOf>
                 <eCH-0110:questionIdentification>b173aebb-7b2c-476a-97fa-c81d640e498a</eCH-0110:questionIdentification>
                 <eCH-0110:countOfValidAnswers>
-                  <eCH-0110:total>0</eCH-0110:total>
+                  <eCH-0110:total>1</eCH-0110:total>
                 </eCH-0110:countOfValidAnswers>
               </eCH-0110:countInFavourOf>
             </eCH-0110:tieBreak>
           </eCH-0110:variantBallot>
         </eCH-0110:ballotResult>
       </eCH-0110:voteResults>
-      <eCH-0110:electionGroupResults>
-        <eCH-0110:domainOfInfluenceIdentification>doid-ct1-mu</eCH-0110:domainOfInfluenceIdentification>
-        <eCH-0110:electionGroupDescription>
-          <eCH-0155:electionDescriptionInfo>
-            <eCH-0155:language>DE</eCH-0155:language>
-            <eCH-0155:electionDescriptionShort>Beispielwahl mit Write-Ins</eCH-0155:electionDescriptionShort>
-            <eCH-0155:electionDescription>Beispielwahl mit Write-Ins</eCH-0155:electionDescription>
-          </eCH-0155:electionDescriptionInfo>
-          <eCH-0155:electionDescriptionInfo>
-            <eCH-0155:language>FR</eCH-0155:language>
-            <eCH-0155:electionDescriptionShort>Election d'exemple avec Write-Ins</eCH-0155:electionDescriptionShort>
-            <eCH-0155:electionDescription>Election d'exemple avec Write-Ins</eCH-0155:electionDescription>
-          </eCH-0155:electionDescriptionInfo>
-          <eCH-0155:electionDescriptionInfo>
-            <eCH-0155:language>IT</eCH-0155:language>
-            <eCH-0155:electionDescriptionShort>Elezioni d'esempio con Write-Ins</eCH-0155:electionDescriptionShort>
-            <eCH-0155:electionDescription>Elezioni d'esempio con Write-Ins</eCH-0155:electionDescription>
-          </eCH-0155:electionDescriptionInfo>
-          <eCH-0155:electionDescriptionInfo>
-            <eCH-0155:language>RM</eCH-0155:language>
-            <eCH-0155:electionDescriptionShort>Elecziuns d'exempel cun Write-Ins</eCH-0155:electionDescriptionShort>
-            <eCH-0155:electionDescription>Elecziuns d'exempel cun Write-Ins</eCH-0155:electionDescription>
-          </eCH-0155:electionDescriptionInfo>
-        </eCH-0110:electionGroupDescription>
-        <eCH-0110:countOfVotersInformation>
-          <eCH-0110:countOfVotersTotal>5</eCH-0110:countOfVotersTotal>
-        </eCH-0110:countOfVotersInformation>
-        <eCH-0110:countOfReceivedBallotsTotal>
-          <eCH-0110:total>1</eCH-0110:total>
-        </eCH-0110:countOfReceivedBallotsTotal>
-        <eCH-0110:countOfAccountedBallots>
-          <eCH-0110:total>1</eCH-0110:total>
-        </eCH-0110:countOfAccountedBallots>
-        <eCH-0110:countOfUnaccountedBallots>
-          <eCH-0110:total>0</eCH-0110:total>
-        </eCH-0110:countOfUnaccountedBallots>
-        <eCH-0110:countOfUnaccountedBlankBallots>
-          <eCH-0110:total>0</eCH-0110:total>
-        </eCH-0110:countOfUnaccountedBlankBallots>
-        <eCH-0110:countOfUnaccountedInvalidBallots>
-          <eCH-0110:total>0</eCH-0110:total>
-        </eCH-0110:countOfUnaccountedInvalidBallots>
-        <eCH-0110:electionResults>
-          <eCH-0110:election>
-            <eCH-0155:electionIdentification>b1d85030-9104-48e6-9108-94cf16b8aad8</eCH-0155:electionIdentification>
-            <eCH-0155:typeOfElection>2</eCH-0155:typeOfElection>
-            <eCH-0155:electionPosition>1</eCH-0155:electionPosition>
-            <eCH-0155:electionDescription>
-              <eCH-0155:electionDescriptionInfo>
-                <eCH-0155:language>DE</eCH-0155:language>
-                <eCH-0155:electionDescriptionShort>Beispielwahl mit Write-Ins</eCH-0155:electionDescriptionShort>
-                <eCH-0155:electionDescription>Beispielwahl mit Write-Ins</eCH-0155:electionDescription>
-              </eCH-0155:electionDescriptionInfo>
-              <eCH-0155:electionDescriptionInfo>
-                <eCH-0155:language>FR</eCH-0155:language>
-                <eCH-0155:electionDescriptionShort>Election d'exemple avec Write-Ins</eCH-0155:electionDescriptionShort>
-                <eCH-0155:electionDescription>Election d'exemple avec Write-Ins</eCH-0155:electionDescription>
-              </eCH-0155:electionDescriptionInfo>
-              <eCH-0155:electionDescriptionInfo>
-                <eCH-0155:language>IT</eCH-0155:language>
-                <eCH-0155:electionDescriptionShort>Elezioni d'esempio con Write-Ins</eCH-0155:electionDescriptionShort>
-                <eCH-0155:electionDescription>Elezioni d'esempio con Write-Ins</eCH-0155:electionDescription>
-              </eCH-0155:electionDescriptionInfo>
-              <eCH-0155:electionDescriptionInfo>
-                <eCH-0155:language>RM</eCH-0155:language>
-                <eCH-0155:electionDescriptionShort>Elecziuns d'exempel cun Write-Ins</eCH-0155:electionDescriptionShort>
-                <eCH-0155:electionDescription>Elecziuns d'exempel cun Write-Ins</eCH-0155:electionDescription>
-              </eCH-0155:electionDescriptionInfo>
-            </eCH-0155:electionDescription>
-            <eCH-0155:numberOfMandates>1</eCH-0155:numberOfMandates>
-          </eCH-0110:election>
-          <eCH-0110:majoralElection>
-            <eCH-0110:candidate>
-              <eCH-0110:candidateInformation>
-                <eCH-0110:candidateIdentification>9bfe1f69-6d35-4966-b281-a5dc39655e3a</eCH-0110:candidateIdentification>
-                <eCH-0110:candidateReference>1</eCH-0110:candidateReference>
-                <eCH-0110:familyName>Rot</eCH-0110:familyName>
-                <eCH-0110:firstName>Doris</eCH-0110:firstName>
-                <eCH-0110:callName>Doris</eCH-0110:callName>
-                <eCH-0110:candidateText>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>DE</eCH-0155:language>
-                    <eCH-0155:candidateText>29.11.1961, Wil</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>FR</eCH-0155:language>
-                    <eCH-0155:candidateText>29.11.1961, Wil</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>IT</eCH-0155:language>
-                    <eCH-0155:candidateText>29.11.1961, Wil</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>RM</eCH-0155:language>
-                    <eCH-0155:candidateText>29.11.1961, Wil</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                </eCH-0110:candidateText>
-                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
-              </eCH-0110:candidateInformation>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>3c9ace8b-f2f3-375e-a545-22111985c52f</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
-            </eCH-0110:candidate>
-            <eCH-0110:candidate>
-              <eCH-0110:candidateInformation>
-                <eCH-0110:candidateIdentification>b5c605ec-9398-41d9-b934-006c548381c3</eCH-0110:candidateIdentification>
-                <eCH-0110:candidateReference>2</eCH-0110:candidateReference>
-                <eCH-0110:familyName>Gelb</eCH-0110:familyName>
-                <eCH-0110:firstName>Henry</eCH-0110:firstName>
-                <eCH-0110:callName>Henry</eCH-0110:callName>
-                <eCH-0110:candidateText>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>DE</eCH-0155:language>
-                    <eCH-0155:candidateText>29.11.1954, Wil</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>FR</eCH-0155:language>
-                    <eCH-0155:candidateText>29.11.1954, Wil</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>IT</eCH-0155:language>
-                    <eCH-0155:candidateText>29.11.1954, Wil</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                  <eCH-0155:candidateTextInfo>
-                    <eCH-0155:language>RM</eCH-0155:language>
-                    <eCH-0155:candidateText>29.11.1954, Wil</eCH-0155:candidateText>
-                  </eCH-0155:candidateTextInfo>
-                </eCH-0110:candidateText>
-                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
-              </eCH-0110:candidateInformation>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>3c9ace8b-f2f3-375e-a545-22111985c52f</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
-            </eCH-0110:candidate>
-            <eCH-0110:candidate>
-              <eCH-0110:writeIn>Abcdefg hijklmnop .</eCH-0110:writeIn>
-              <eCH-0110:listResults>
-                <eCH-0110:listIdentification>3c9ace8b-f2f3-375e-a545-22111985c52f</eCH-0110:listIdentification>
-                <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
-                </eCH-0110:countOfvotesFromUnchangedBallots>
-                <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
-                </eCH-0110:countOfvotesFromChangedBallots>
-              </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
-            </eCH-0110:candidate>
-            <eCH-0110:countOfInvalidVotesTotal>
-              <eCH-0110:total>0</eCH-0110:total>
-            </eCH-0110:countOfInvalidVotesTotal>
-          </eCH-0110:majoralElection>
-        </eCH-0110:electionResults>
-      </eCH-0110:electionGroupResults>
       <eCH-0110:electionGroupResults>
         <eCH-0110:domainOfInfluenceIdentification>doid-ch1-mu</eCH-0110:domainOfInfluenceIdentification>
         <eCH-0110:electionGroupDescription>
@@ -2535,23 +2368,23 @@
           <eCH-0110:countOfVotersTotal>5</eCH-0110:countOfVotersTotal>
         </eCH-0110:countOfVotersInformation>
         <eCH-0110:countOfReceivedBallotsTotal>
-          <eCH-0110:total>1</eCH-0110:total>
+          <eCH-0110:total>5</eCH-0110:total>
         </eCH-0110:countOfReceivedBallotsTotal>
         <eCH-0110:countOfAccountedBallots>
           <eCH-0110:total>1</eCH-0110:total>
         </eCH-0110:countOfAccountedBallots>
         <eCH-0110:countOfUnaccountedBallots>
-          <eCH-0110:total>0</eCH-0110:total>
+          <eCH-0110:total>4</eCH-0110:total>
         </eCH-0110:countOfUnaccountedBallots>
         <eCH-0110:countOfUnaccountedBlankBallots>
-          <eCH-0110:total>0</eCH-0110:total>
+          <eCH-0110:total>4</eCH-0110:total>
         </eCH-0110:countOfUnaccountedBlankBallots>
         <eCH-0110:countOfUnaccountedInvalidBallots>
           <eCH-0110:total>0</eCH-0110:total>
         </eCH-0110:countOfUnaccountedInvalidBallots>
         <eCH-0110:electionResults>
           <eCH-0110:election>
-            <eCH-0155:electionIdentification>01904d8c-8a10-4998-aecd-377f2688e3fa</eCH-0155:electionIdentification>
+            <eCH-0155:electionIdentification>nrw_test</eCH-0155:electionIdentification>
             <eCH-0155:typeOfElection>1</eCH-0155:typeOfElection>
             <eCH-0155:electionPosition>1</eCH-0155:electionPosition>
             <eCH-0155:electionDescription>
@@ -2586,7 +2419,7 @@
               <eCH-0110:total>1</eCH-0110:total>
             </eCH-0110:countOfChangedBallotsWithoutPartyAffiliation>
             <eCH-0110:countOfEmptyVotesOfChangedBallotsWithoutPartyAffiliation>
-              <eCH-0110:total>5</eCH-0110:total>
+              <eCH-0110:total>0</eCH-0110:total>
             </eCH-0110:countOfEmptyVotesOfChangedBallotsWithoutPartyAffiliation>
             <eCH-0110:list>
               <eCH-0110:listInformation>
@@ -2622,13 +2455,13 @@
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfUnchangedBallots>
               <eCH-0110:countOfCandidateVotes>
-                <eCH-0110:total>1</eCH-0110:total>
+                <eCH-0110:total>6</eCH-0110:total>
               </eCH-0110:countOfCandidateVotes>
               <eCH-0110:countOfAdditionalVotes>
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAdditionalVotes>
               <eCH-0110:countOfPartyVotes>
-                <eCH-0110:total>1</eCH-0110:total>
+                <eCH-0110:total>6</eCH-0110:total>
               </eCH-0110:countOfPartyVotes>
             </eCH-0110:list>
             <eCH-0110:list>
@@ -2791,7 +2624,7 @@
                 <eCH-0110:total>1</eCH-0110:total>
               </eCH-0110:countOfChangedBallots>
               <eCH-0110:countOfUnchangedBallots>
-                <eCH-0110:total>0</eCH-0110:total>
+                <eCH-0110:total>4</eCH-0110:total>
               </eCH-0110:countOfUnchangedBallots>
               <eCH-0110:countOfCandidateVotes>
                 <eCH-0110:total>0</eCH-0110:total>
@@ -2872,10 +2705,10 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
+                  <eCH-0110:total>2</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -2946,10 +2779,10 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
+                  <eCH-0110:total>2</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -3168,10 +3001,10 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>0</eCH-0110:total>
+                  <eCH-0110:total>2</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -3242,10 +3075,10 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -4286,16 +4119,6 @@
           </eCH-0110:proportionalElection>
         </eCH-0110:electionResults>
       </eCH-0110:electionGroupResults>
-    </eCH-0110:countingCircleResults>
-    <eCH-0110:countingCircleResults>
-      <eCH-0110:countingCircle>
-        <eCH-0155:countingCircleId>10003</eCH-0155:countingCircleId>
-        <eCH-0155:countingCircleName>CH_Testurne3</eCH-0155:countingCircleName>
-      </eCH-0110:countingCircle>
-      <eCH-0110:votingCardsInformation>
-        <eCH-0110:countOfReceivedValidVotingCardsTotal>2</eCH-0110:countOfReceivedValidVotingCardsTotal>
-        <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
-      </eCH-0110:votingCardsInformation>
       <eCH-0110:electionGroupResults>
         <eCH-0110:domainOfInfluenceIdentification>doid-ct1-mu</eCH-0110:domainOfInfluenceIdentification>
         <eCH-0110:electionGroupDescription>
@@ -4324,23 +4147,23 @@
           <eCH-0110:countOfVotersTotal>5</eCH-0110:countOfVotersTotal>
         </eCH-0110:countOfVotersInformation>
         <eCH-0110:countOfReceivedBallotsTotal>
-          <eCH-0110:total>2</eCH-0110:total>
+          <eCH-0110:total>5</eCH-0110:total>
         </eCH-0110:countOfReceivedBallotsTotal>
         <eCH-0110:countOfAccountedBallots>
-          <eCH-0110:total>1</eCH-0110:total>
+          <eCH-0110:total>2</eCH-0110:total>
         </eCH-0110:countOfAccountedBallots>
         <eCH-0110:countOfUnaccountedBallots>
-          <eCH-0110:total>1</eCH-0110:total>
+          <eCH-0110:total>3</eCH-0110:total>
         </eCH-0110:countOfUnaccountedBallots>
         <eCH-0110:countOfUnaccountedBlankBallots>
-          <eCH-0110:total>1</eCH-0110:total>
+          <eCH-0110:total>3</eCH-0110:total>
         </eCH-0110:countOfUnaccountedBlankBallots>
         <eCH-0110:countOfUnaccountedInvalidBallots>
           <eCH-0110:total>0</eCH-0110:total>
         </eCH-0110:countOfUnaccountedInvalidBallots>
         <eCH-0110:electionResults>
           <eCH-0110:election>
-            <eCH-0155:electionIdentification>b1d85030-9104-48e6-9108-94cf16b8aad8</eCH-0155:electionIdentification>
+            <eCH-0155:electionIdentification>majorz_test</eCH-0155:electionIdentification>
             <eCH-0155:typeOfElection>2</eCH-0155:typeOfElection>
             <eCH-0155:electionPosition>1</eCH-0155:electionPosition>
             <eCH-0155:electionDescription>
@@ -4396,7 +4219,184 @@
                 <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
               </eCH-0110:candidateInformation>
               <eCH-0110:listResults>
-                <eCH-0110:listIdentification>3c9ace8b-f2f3-375e-a545-22111985c52f</eCH-0110:listIdentification>
+                <eCH-0110:listIdentification>ca127938-5e2f-372f-8a4e-a0cb1da35b3b</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>1</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:candidateInformation>
+                <eCH-0110:candidateIdentification>b5c605ec-9398-41d9-b934-006c548381c3</eCH-0110:candidateIdentification>
+                <eCH-0110:candidateReference>2</eCH-0110:candidateReference>
+                <eCH-0110:familyName>Gelb</eCH-0110:familyName>
+                <eCH-0110:firstName>Henry</eCH-0110:firstName>
+                <eCH-0110:callName>Henry</eCH-0110:callName>
+                <eCH-0110:candidateText>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>DE</eCH-0155:language>
+                    <eCH-0155:candidateText>29.11.1954, Wil</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>FR</eCH-0155:language>
+                    <eCH-0155:candidateText>29.11.1954, Wil</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>IT</eCH-0155:language>
+                    <eCH-0155:candidateText>29.11.1954, Wil</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>RM</eCH-0155:language>
+                    <eCH-0155:candidateText>29.11.1954, Wil</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                </eCH-0110:candidateText>
+                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+              </eCH-0110:candidateInformation>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>ca127938-5e2f-372f-8a4e-a0cb1da35b3b</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:writeIn>Ÿ¢œþõ Æðžøå-Ðûñïç'ëß</eCH-0110:writeIn>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>ca127938-5e2f-372f-8a4e-a0cb1da35b3b</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>1</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:countOfInvalidVotesTotal>
+              <eCH-0110:total>0</eCH-0110:total>
+            </eCH-0110:countOfInvalidVotesTotal>
+          </eCH-0110:majoralElection>
+        </eCH-0110:electionResults>
+      </eCH-0110:electionGroupResults>
+    </eCH-0110:countingCircleResults>
+    <eCH-0110:countingCircleResults>
+      <eCH-0110:countingCircle>
+        <eCH-0155:countingCircleId>10003</eCH-0155:countingCircleId>
+        <eCH-0155:countingCircleName>CH_Testurne3</eCH-0155:countingCircleName>
+      </eCH-0110:countingCircle>
+      <eCH-0110:votingCardsInformation>
+        <eCH-0110:countOfReceivedValidVotingCardsTotal>4</eCH-0110:countOfReceivedValidVotingCardsTotal>
+        <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
+      </eCH-0110:votingCardsInformation>
+      <eCH-0110:electionGroupResults>
+        <eCH-0110:domainOfInfluenceIdentification>doid-ct1-mu</eCH-0110:domainOfInfluenceIdentification>
+        <eCH-0110:electionGroupDescription>
+          <eCH-0155:electionDescriptionInfo>
+            <eCH-0155:language>DE</eCH-0155:language>
+            <eCH-0155:electionDescriptionShort>Beispielwahl mit Write-Ins</eCH-0155:electionDescriptionShort>
+            <eCH-0155:electionDescription>Beispielwahl mit Write-Ins</eCH-0155:electionDescription>
+          </eCH-0155:electionDescriptionInfo>
+          <eCH-0155:electionDescriptionInfo>
+            <eCH-0155:language>FR</eCH-0155:language>
+            <eCH-0155:electionDescriptionShort>Election d'exemple avec Write-Ins</eCH-0155:electionDescriptionShort>
+            <eCH-0155:electionDescription>Election d'exemple avec Write-Ins</eCH-0155:electionDescription>
+          </eCH-0155:electionDescriptionInfo>
+          <eCH-0155:electionDescriptionInfo>
+            <eCH-0155:language>IT</eCH-0155:language>
+            <eCH-0155:electionDescriptionShort>Elezioni d'esempio con Write-Ins</eCH-0155:electionDescriptionShort>
+            <eCH-0155:electionDescription>Elezioni d'esempio con Write-Ins</eCH-0155:electionDescription>
+          </eCH-0155:electionDescriptionInfo>
+          <eCH-0155:electionDescriptionInfo>
+            <eCH-0155:language>RM</eCH-0155:language>
+            <eCH-0155:electionDescriptionShort>Elecziuns d'exempel cun Write-Ins</eCH-0155:electionDescriptionShort>
+            <eCH-0155:electionDescription>Elecziuns d'exempel cun Write-Ins</eCH-0155:electionDescription>
+          </eCH-0155:electionDescriptionInfo>
+        </eCH-0110:electionGroupDescription>
+        <eCH-0110:countOfVotersInformation>
+          <eCH-0110:countOfVotersTotal>5</eCH-0110:countOfVotersTotal>
+        </eCH-0110:countOfVotersInformation>
+        <eCH-0110:countOfReceivedBallotsTotal>
+          <eCH-0110:total>4</eCH-0110:total>
+        </eCH-0110:countOfReceivedBallotsTotal>
+        <eCH-0110:countOfAccountedBallots>
+          <eCH-0110:total>4</eCH-0110:total>
+        </eCH-0110:countOfAccountedBallots>
+        <eCH-0110:countOfUnaccountedBallots>
+          <eCH-0110:total>0</eCH-0110:total>
+        </eCH-0110:countOfUnaccountedBallots>
+        <eCH-0110:countOfUnaccountedBlankBallots>
+          <eCH-0110:total>0</eCH-0110:total>
+        </eCH-0110:countOfUnaccountedBlankBallots>
+        <eCH-0110:countOfUnaccountedInvalidBallots>
+          <eCH-0110:total>0</eCH-0110:total>
+        </eCH-0110:countOfUnaccountedInvalidBallots>
+        <eCH-0110:electionResults>
+          <eCH-0110:election>
+            <eCH-0155:electionIdentification>majorz_test</eCH-0155:electionIdentification>
+            <eCH-0155:typeOfElection>2</eCH-0155:typeOfElection>
+            <eCH-0155:electionPosition>1</eCH-0155:electionPosition>
+            <eCH-0155:electionDescription>
+              <eCH-0155:electionDescriptionInfo>
+                <eCH-0155:language>DE</eCH-0155:language>
+                <eCH-0155:electionDescriptionShort>Beispielwahl mit Write-Ins</eCH-0155:electionDescriptionShort>
+                <eCH-0155:electionDescription>Beispielwahl mit Write-Ins</eCH-0155:electionDescription>
+              </eCH-0155:electionDescriptionInfo>
+              <eCH-0155:electionDescriptionInfo>
+                <eCH-0155:language>FR</eCH-0155:language>
+                <eCH-0155:electionDescriptionShort>Election d'exemple avec Write-Ins</eCH-0155:electionDescriptionShort>
+                <eCH-0155:electionDescription>Election d'exemple avec Write-Ins</eCH-0155:electionDescription>
+              </eCH-0155:electionDescriptionInfo>
+              <eCH-0155:electionDescriptionInfo>
+                <eCH-0155:language>IT</eCH-0155:language>
+                <eCH-0155:electionDescriptionShort>Elezioni d'esempio con Write-Ins</eCH-0155:electionDescriptionShort>
+                <eCH-0155:electionDescription>Elezioni d'esempio con Write-Ins</eCH-0155:electionDescription>
+              </eCH-0155:electionDescriptionInfo>
+              <eCH-0155:electionDescriptionInfo>
+                <eCH-0155:language>RM</eCH-0155:language>
+                <eCH-0155:electionDescriptionShort>Elecziuns d'exempel cun Write-Ins</eCH-0155:electionDescriptionShort>
+                <eCH-0155:electionDescription>Elecziuns d'exempel cun Write-Ins</eCH-0155:electionDescription>
+              </eCH-0155:electionDescriptionInfo>
+            </eCH-0155:electionDescription>
+            <eCH-0155:numberOfMandates>1</eCH-0155:numberOfMandates>
+          </eCH-0110:election>
+          <eCH-0110:majoralElection>
+            <eCH-0110:candidate>
+              <eCH-0110:candidateInformation>
+                <eCH-0110:candidateIdentification>9bfe1f69-6d35-4966-b281-a5dc39655e3a</eCH-0110:candidateIdentification>
+                <eCH-0110:candidateReference>1</eCH-0110:candidateReference>
+                <eCH-0110:familyName>Rot</eCH-0110:familyName>
+                <eCH-0110:firstName>Doris</eCH-0110:firstName>
+                <eCH-0110:callName>Doris</eCH-0110:callName>
+                <eCH-0110:candidateText>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>DE</eCH-0155:language>
+                    <eCH-0155:candidateText>29.11.1961, Wil</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>FR</eCH-0155:language>
+                    <eCH-0155:candidateText>29.11.1961, Wil</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>IT</eCH-0155:language>
+                    <eCH-0155:candidateText>29.11.1961, Wil</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                  <eCH-0155:candidateTextInfo>
+                    <eCH-0155:language>RM</eCH-0155:language>
+                    <eCH-0155:candidateText>29.11.1961, Wil</eCH-0155:candidateText>
+                  </eCH-0155:candidateTextInfo>
+                </eCH-0110:candidateText>
+                <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
+              </eCH-0110:candidateInformation>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>ca127938-5e2f-372f-8a4e-a0cb1da35b3b</eCH-0110:listIdentification>
                 <eCH-0110:countOfvotesFromUnchangedBallots>
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
@@ -4434,7 +4434,7 @@
                 <eCH-0110:officialCandidateYesNo>true</eCH-0110:officialCandidateYesNo>
               </eCH-0110:candidateInformation>
               <eCH-0110:listResults>
-                <eCH-0110:listIdentification>3c9ace8b-f2f3-375e-a545-22111985c52f</eCH-0110:listIdentification>
+                <eCH-0110:listIdentification>ca127938-5e2f-372f-8a4e-a0cb1da35b3b</eCH-0110:listIdentification>
                 <eCH-0110:countOfvotesFromUnchangedBallots>
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
@@ -4445,9 +4445,48 @@
               <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
+              <eCH-0110:writeIn>Abcdefg hijklmnop .</eCH-0110:writeIn>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>ca127938-5e2f-372f-8a4e-a0cb1da35b3b</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>1</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:writeIn>Àbélàrd Ôdèlörd (04/12/1986)</eCH-0110:writeIn>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>ca127938-5e2f-372f-8a4e-a0cb1da35b3b</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>1</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
               <eCH-0110:writeIn>Ÿ¢œþõ Æðžøå-Ðûñïç'ëß</eCH-0110:writeIn>
               <eCH-0110:listResults>
-                <eCH-0110:listIdentification>3c9ace8b-f2f3-375e-a545-22111985c52f</eCH-0110:listIdentification>
+                <eCH-0110:listIdentification>ca127938-5e2f-372f-8a4e-a0cb1da35b3b</eCH-0110:listIdentification>
+                <eCH-0110:countOfvotesFromUnchangedBallots>
+                  <eCH-0110:total>0</eCH-0110:total>
+                </eCH-0110:countOfvotesFromUnchangedBallots>
+                <eCH-0110:countOfvotesFromChangedBallots>
+                  <eCH-0110:total>1</eCH-0110:total>
+                </eCH-0110:countOfvotesFromChangedBallots>
+              </eCH-0110:listResults>
+              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+            </eCH-0110:candidate>
+            <eCH-0110:candidate>
+              <eCH-0110:writeIn>DROP TABLE COMMAND</eCH-0110:writeIn>
+              <eCH-0110:listResults>
+                <eCH-0110:listIdentification>ca127938-5e2f-372f-8a4e-a0cb1da35b3b</eCH-0110:listIdentification>
                 <eCH-0110:countOfvotesFromUnchangedBallots>
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
@@ -4470,12 +4509,12 @@
         <eCH-0155:countingCircleName>CH_Testurne4</eCH-0155:countingCircleName>
       </eCH-0110:countingCircle>
       <eCH-0110:votingCardsInformation>
-        <eCH-0110:countOfReceivedValidVotingCardsTotal>7</eCH-0110:countOfReceivedValidVotingCardsTotal>
+        <eCH-0110:countOfReceivedValidVotingCardsTotal>0</eCH-0110:countOfReceivedValidVotingCardsTotal>
         <eCH-0110:countOfReceivedInvalidVotingCardsTotal>0</eCH-0110:countOfReceivedInvalidVotingCardsTotal>
       </eCH-0110:votingCardsInformation>
       <eCH-0110:voteResults>
         <eCH-0110:vote>
-          <eCH-0155:voteIdentification>4151943c-0b78-4c96-b46e-3f209e65dc2c</eCH-0155:voteIdentification>
+          <eCH-0155:voteIdentification>ch_test</eCH-0155:voteIdentification>
           <eCH-0155:domainOfInfluenceIdentification>doid-ch1-mu</eCH-0155:domainOfInfluenceIdentification>
           <eCH-0155:voteDescription>
             <eCH-0155:voteDescriptionInfo>
@@ -4525,16 +4564,16 @@
             </eCH-0155:ballotDescriptionInfo>
           </eCH-0110:ballotDescription>
           <eCH-0110:countOfReceivedBallotsTotal>
-            <eCH-0110:total>7</eCH-0110:total>
+            <eCH-0110:total>0</eCH-0110:total>
           </eCH-0110:countOfReceivedBallotsTotal>
           <eCH-0110:countOfAccountedBallotsTotal>
-            <eCH-0110:total>5</eCH-0110:total>
+            <eCH-0110:total>0</eCH-0110:total>
           </eCH-0110:countOfAccountedBallotsTotal>
           <eCH-0110:countOfUnaccountedBallotsTotal>
-            <eCH-0110:total>2</eCH-0110:total>
+            <eCH-0110:total>0</eCH-0110:total>
           </eCH-0110:countOfUnaccountedBallotsTotal>
           <eCH-0110:countOfUnaccountedBlankBallots>
-            <eCH-0110:total>2</eCH-0110:total>
+            <eCH-0110:total>0</eCH-0110:total>
           </eCH-0110:countOfUnaccountedBlankBallots>
           <eCH-0110:countOfUnaccountedInvalidBallots>
             <eCH-0110:total>0</eCH-0110:total>
@@ -4560,16 +4599,16 @@
               </eCH-0155:ballotQuestionInfo>
             </eCH-0110:question>
             <eCH-0110:countOfAnswerYes>
-              <eCH-0110:total>1</eCH-0110:total>
+              <eCH-0110:total>0</eCH-0110:total>
             </eCH-0110:countOfAnswerYes>
             <eCH-0110:countOfAnswerNo>
-              <eCH-0110:total>4</eCH-0110:total>
+              <eCH-0110:total>0</eCH-0110:total>
             </eCH-0110:countOfAnswerNo>
             <eCH-0110:countOfAnswerInvalid>
               <eCH-0110:total>0</eCH-0110:total>
             </eCH-0110:countOfAnswerInvalid>
             <eCH-0110:countOfAnswerEmpty>
-              <eCH-0110:total>2</eCH-0110:total>
+              <eCH-0110:total>0</eCH-0110:total>
             </eCH-0110:countOfAnswerEmpty>
           </eCH-0110:standardBallot>
         </eCH-0110:ballotResult>
@@ -4599,16 +4638,16 @@
             </eCH-0155:ballotDescriptionInfo>
           </eCH-0110:ballotDescription>
           <eCH-0110:countOfReceivedBallotsTotal>
-            <eCH-0110:total>7</eCH-0110:total>
+            <eCH-0110:total>0</eCH-0110:total>
           </eCH-0110:countOfReceivedBallotsTotal>
           <eCH-0110:countOfAccountedBallotsTotal>
-            <eCH-0110:total>5</eCH-0110:total>
+            <eCH-0110:total>0</eCH-0110:total>
           </eCH-0110:countOfAccountedBallotsTotal>
           <eCH-0110:countOfUnaccountedBallotsTotal>
-            <eCH-0110:total>2</eCH-0110:total>
+            <eCH-0110:total>0</eCH-0110:total>
           </eCH-0110:countOfUnaccountedBallotsTotal>
           <eCH-0110:countOfUnaccountedBlankBallots>
-            <eCH-0110:total>2</eCH-0110:total>
+            <eCH-0110:total>0</eCH-0110:total>
           </eCH-0110:countOfUnaccountedBlankBallots>
           <eCH-0110:countOfUnaccountedInvalidBallots>
             <eCH-0110:total>0</eCH-0110:total>
@@ -4619,32 +4658,32 @@
               <eCH-0110:question>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>DE</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2a. Wollen Sie den Vorschlag annehmen?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Wollen Sie den Vorschlag annehmen?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>FR</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2a. Acceptez-vous la deuxième proposition ?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Acceptez-vous la deuxième proposition ?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>IT</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2a. Accettare la seconda proposta ?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Accettare la seconda proposta ?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>RM</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2a. Acceptar la segunda proposta ?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Acceptar la segunda proposta ?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
               </eCH-0110:question>
               <eCH-0110:countOfAnswerYes>
-                <eCH-0110:total>2</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAnswerYes>
               <eCH-0110:countOfAnswerNo>
-                <eCH-0110:total>2</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAnswerNo>
               <eCH-0110:countOfAnswerInvalid>
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAnswerInvalid>
               <eCH-0110:countOfAnswerEmpty>
-                <eCH-0110:total>1</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAnswerEmpty>
             </eCH-0110:questionInformation>
             <eCH-0110:questionInformation>
@@ -4652,32 +4691,32 @@
               <eCH-0110:question>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>DE</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2b. Wollen Sie den Gegenvorschlag annehmen?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag annehmen?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>FR</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2b. Acceptez-vous la contre proposition ?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Acceptez-vous la contre proposition ?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>IT</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2b. Accettare la contra proposta ?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Accettare la contra proposta ?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
                 <eCH-0155:ballotQuestionInfo>
                   <eCH-0155:language>RM</eCH-0155:language>
-                  <eCH-0155:ballotQuestion>2b. Acceptar la cuntra proposta ?</eCH-0155:ballotQuestion>
+                  <eCH-0155:ballotQuestion>Acceptar la cuntra proposta ?</eCH-0155:ballotQuestion>
                 </eCH-0155:ballotQuestionInfo>
               </eCH-0110:question>
               <eCH-0110:countOfAnswerYes>
-                <eCH-0110:total>1</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAnswerYes>
               <eCH-0110:countOfAnswerNo>
-                <eCH-0110:total>1</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAnswerNo>
               <eCH-0110:countOfAnswerInvalid>
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAnswerInvalid>
               <eCH-0110:countOfAnswerEmpty>
-                <eCH-0110:total>3</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAnswerEmpty>
             </eCH-0110:questionInformation>
             <eCH-0110:tieBreak>
@@ -4685,26 +4724,26 @@
               <eCH-0110:tieBreakQuestion>
                 <eCH-0155:tieBreakQuestionInfo>
                   <eCH-0155:language>DE</eCH-0155:language>
-                  <eCH-0155:tieBreakQuestion>2c. Bei Gleichstand: Wollen Sie den Vorschlag oder den Gegenvorschlag annehmen?</eCH-0155:tieBreakQuestion>
+                  <eCH-0155:tieBreakQuestion>Bei Gleichstand: Wollen Sie den Vorschlag oder den Gegenvorschlag annehmen?</eCH-0155:tieBreakQuestion>
                 </eCH-0155:tieBreakQuestionInfo>
                 <eCH-0155:tieBreakQuestionInfo>
                   <eCH-0155:language>FR</eCH-0155:language>
-                  <eCH-0155:tieBreakQuestion>2c. En cas d'égalité : voulez-vous accepter la proposition ou la contre-proposition ?</eCH-0155:tieBreakQuestion>
+                  <eCH-0155:tieBreakQuestion>En cas d'égalité : voulez-vous accepter la proposition ou la contre-proposition ?</eCH-0155:tieBreakQuestion>
                 </eCH-0155:tieBreakQuestionInfo>
                 <eCH-0155:tieBreakQuestionInfo>
                   <eCH-0155:language>IT</eCH-0155:language>
-                  <eCH-0155:tieBreakQuestion>2c. In caso di parità di voti: volete accettare la proposta o la controproposta?</eCH-0155:tieBreakQuestion>
+                  <eCH-0155:tieBreakQuestion>In caso di parità di voti: volete accettare la proposta o la controproposta?</eCH-0155:tieBreakQuestion>
                 </eCH-0155:tieBreakQuestionInfo>
                 <eCH-0155:tieBreakQuestionInfo>
                   <eCH-0155:language>RM</eCH-0155:language>
-                  <eCH-0155:tieBreakQuestion>2c. En connex cun l’egualitad: vulais Vus acceptar la proposta u la cuntraproposta?</eCH-0155:tieBreakQuestion>
+                  <eCH-0155:tieBreakQuestion>En connex cun l’egualitad: vulais Vus acceptar la proposta u la cuntraproposta?</eCH-0155:tieBreakQuestion>
                 </eCH-0155:tieBreakQuestionInfo>
               </eCH-0110:tieBreakQuestion>
               <eCH-0110:countOfAnswerInvalid>
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAnswerInvalid>
               <eCH-0110:countOfAnswerEmpty>
-                <eCH-0110:total>2</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAnswerEmpty>
               <eCH-0110:countInFavourOf>
                 <eCH-0110:questionIdentification>16f99be5-0ce6-4a81-ae8b-1817ceecaebc</eCH-0110:questionIdentification>
@@ -4715,7 +4754,7 @@
               <eCH-0110:countInFavourOf>
                 <eCH-0110:questionIdentification>b173aebb-7b2c-476a-97fa-c81d640e498a</eCH-0110:questionIdentification>
                 <eCH-0110:countOfValidAnswers>
-                  <eCH-0110:total>3</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfValidAnswers>
               </eCH-0110:countInFavourOf>
             </eCH-0110:tieBreak>
@@ -4750,23 +4789,23 @@
           <eCH-0110:countOfVotersTotal>32</eCH-0110:countOfVotersTotal>
         </eCH-0110:countOfVotersInformation>
         <eCH-0110:countOfReceivedBallotsTotal>
-          <eCH-0110:total>7</eCH-0110:total>
+          <eCH-0110:total>0</eCH-0110:total>
         </eCH-0110:countOfReceivedBallotsTotal>
         <eCH-0110:countOfAccountedBallots>
-          <eCH-0110:total>5</eCH-0110:total>
+          <eCH-0110:total>0</eCH-0110:total>
         </eCH-0110:countOfAccountedBallots>
         <eCH-0110:countOfUnaccountedBallots>
-          <eCH-0110:total>2</eCH-0110:total>
+          <eCH-0110:total>0</eCH-0110:total>
         </eCH-0110:countOfUnaccountedBallots>
         <eCH-0110:countOfUnaccountedBlankBallots>
-          <eCH-0110:total>2</eCH-0110:total>
+          <eCH-0110:total>0</eCH-0110:total>
         </eCH-0110:countOfUnaccountedBlankBallots>
         <eCH-0110:countOfUnaccountedInvalidBallots>
           <eCH-0110:total>0</eCH-0110:total>
         </eCH-0110:countOfUnaccountedInvalidBallots>
         <eCH-0110:electionResults>
           <eCH-0110:election>
-            <eCH-0155:electionIdentification>01904d8c-8a10-4998-aecd-377f2688e3fa</eCH-0155:electionIdentification>
+            <eCH-0155:electionIdentification>nrw_test</eCH-0155:electionIdentification>
             <eCH-0155:typeOfElection>1</eCH-0155:typeOfElection>
             <eCH-0155:electionPosition>1</eCH-0155:electionPosition>
             <eCH-0155:electionDescription>
@@ -4795,13 +4834,13 @@
           </eCH-0110:election>
           <eCH-0110:proportionalElection>
             <eCH-0110:countOfChangedBallotsWithPartyAffiliation>
-              <eCH-0110:total>2</eCH-0110:total>
+              <eCH-0110:total>0</eCH-0110:total>
             </eCH-0110:countOfChangedBallotsWithPartyAffiliation>
             <eCH-0110:countOfChangedBallotsWithoutPartyAffiliation>
-              <eCH-0110:total>2</eCH-0110:total>
+              <eCH-0110:total>0</eCH-0110:total>
             </eCH-0110:countOfChangedBallotsWithoutPartyAffiliation>
             <eCH-0110:countOfEmptyVotesOfChangedBallotsWithoutPartyAffiliation>
-              <eCH-0110:total>3</eCH-0110:total>
+              <eCH-0110:total>0</eCH-0110:total>
             </eCH-0110:countOfEmptyVotesOfChangedBallotsWithoutPartyAffiliation>
             <eCH-0110:list>
               <eCH-0110:listInformation>
@@ -4831,19 +4870,19 @@
                 </eCH-0110:listDescription>
               </eCH-0110:listInformation>
               <eCH-0110:countOfChangedBallots>
-                <eCH-0110:total>1</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfChangedBallots>
               <eCH-0110:countOfUnchangedBallots>
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfUnchangedBallots>
               <eCH-0110:countOfCandidateVotes>
-                <eCH-0110:total>1</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfCandidateVotes>
               <eCH-0110:countOfAdditionalVotes>
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAdditionalVotes>
               <eCH-0110:countOfPartyVotes>
-                <eCH-0110:total>1</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfPartyVotes>
             </eCH-0110:list>
             <eCH-0110:list>
@@ -4877,16 +4916,16 @@
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfChangedBallots>
               <eCH-0110:countOfUnchangedBallots>
-                <eCH-0110:total>1</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfUnchangedBallots>
               <eCH-0110:countOfCandidateVotes>
-                <eCH-0110:total>13</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfCandidateVotes>
               <eCH-0110:countOfAdditionalVotes>
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAdditionalVotes>
               <eCH-0110:countOfPartyVotes>
-                <eCH-0110:total>13</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfPartyVotes>
             </eCH-0110:list>
             <eCH-0110:list>
@@ -4923,13 +4962,13 @@
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfUnchangedBallots>
               <eCH-0110:countOfCandidateVotes>
-                <eCH-0110:total>5</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfCandidateVotes>
               <eCH-0110:countOfAdditionalVotes>
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAdditionalVotes>
               <eCH-0110:countOfPartyVotes>
-                <eCH-0110:total>5</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfPartyVotes>
             </eCH-0110:list>
             <eCH-0110:list>
@@ -4960,19 +4999,19 @@
                 </eCH-0110:listDescription>
               </eCH-0110:listInformation>
               <eCH-0110:countOfChangedBallots>
-                <eCH-0110:total>1</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfChangedBallots>
               <eCH-0110:countOfUnchangedBallots>
                 <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfUnchangedBallots>
               <eCH-0110:countOfCandidateVotes>
-                <eCH-0110:total>4</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfCandidateVotes>
               <eCH-0110:countOfAdditionalVotes>
-                <eCH-0110:total>4</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfAdditionalVotes>
               <eCH-0110:countOfPartyVotes>
-                <eCH-0110:total>8</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfPartyVotes>
             </eCH-0110:list>
             <eCH-0110:list>
@@ -5003,10 +5042,10 @@
                 </eCH-0110:listDescription>
               </eCH-0110:listInformation>
               <eCH-0110:countOfChangedBallots>
-                <eCH-0110:total>2</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfChangedBallots>
               <eCH-0110:countOfUnchangedBallots>
-                <eCH-0110:total>2</eCH-0110:total>
+                <eCH-0110:total>0</eCH-0110:total>
               </eCH-0110:countOfUnchangedBallots>
               <eCH-0110:countOfCandidateVotes>
                 <eCH-0110:total>0</eCH-0110:total>
@@ -5161,10 +5200,10 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -5495,13 +5534,13 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
                 <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
                 <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
                   <eCH-0110:total>0</eCH-0110:total>
@@ -5534,7 +5573,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -5569,13 +5608,13 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
                 <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
                 <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
                   <eCH-0110:total>0</eCH-0110:total>
@@ -5605,10 +5644,10 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>2</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>4</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -5649,7 +5688,7 @@
               <eCH-0110:listResults>
                 <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
                 <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
                   <eCH-0110:total>0</eCH-0110:total>
@@ -5679,10 +5718,10 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>2</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>3</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -5723,7 +5762,7 @@
               <eCH-0110:listResults>
                 <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
                 <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
                   <eCH-0110:total>0</eCH-0110:total>
@@ -5756,7 +5795,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -5797,7 +5836,7 @@
               <eCH-0110:listResults>
                 <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
                 <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
                   <eCH-0110:total>0</eCH-0110:total>
@@ -5830,7 +5869,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -5865,13 +5904,13 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
                 <eCH-0110:listIdentification>50504845-5222-4e70-8d34-f812fce04009</eCH-0110:listIdentification>
                 <eCH-0110:countOfvotesFromUnchangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
                   <eCH-0110:total>0</eCH-0110:total>
@@ -5904,7 +5943,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -5939,7 +5978,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -5966,7 +6005,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -5975,10 +6014,10 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>3</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -6049,10 +6088,10 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>2</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -6309,7 +6348,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>2</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -6348,7 +6387,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>2</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -6419,10 +6458,10 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
             <eCH-0110:candidate>
               <eCH-0110:candidateInformation>
@@ -6484,7 +6523,7 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromUnchangedBallots>
                 <eCH-0110:countOfvotesFromChangedBallots>
-                  <eCH-0110:total>1</eCH-0110:total>
+                  <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
               <eCH-0110:listResults>
@@ -6496,14 +6535,14 @@
                   <eCH-0110:total>0</eCH-0110:total>
                 </eCH-0110:countOfvotesFromChangedBallots>
               </eCH-0110:listResults>
-              <eCH-0110:countOfVotesTotal>1</eCH-0110:countOfVotesTotal>
+              <eCH-0110:countOfVotesTotal>0</eCH-0110:countOfVotesTotal>
             </eCH-0110:candidate>
           </eCH-0110:proportionalElection>
         </eCH-0110:electionResults>
       </eCH-0110:electionGroupResults>
     </eCH-0110:countingCircleResults>
     <eCH-0110:extension>
-      <signature>g7SpTCniF2/Z7VusfMivMosRL3/rjggq+umnmfxnDFzFzCANpA4pCNlhfGFsG31Z57qHOJEbCflm9ACjT8yGRG3CttyRGLBOTTtZ9Mm0BJhBZOV0kGe+ROe3EMn6TWuKiW68mJM/lbXz7EWhNlGKo1TJEEJnJxYsKt0C43X2QZijBwA+KXs2/cYgDbIkxLqdHbZ7cPkNu5T+HZruALpWuKg0uySjY6ZyadGoYmmv1IXm3PwC3/VjfIlT+Q61s9Ye5+BJgwsAPHW4Z5M+GIFynEquzNKnR/gc0oc1unqZTaa6VBE+yUbPL+KzMcrHotQ1S6Yi7KK1EMJfP23q4VzX07OkPeEdQDcKn43W51R06guNnDKuxKmKOyR5X1Q1yDwLReTGbguZhyZVGAZoaiRzgUSsXGZ30WeyPBdDAB+P+HYWxlsBYLfimDukqrjV3f8GqgdVb48qhoRuhbKesnAqsiePcZA1CUhB4FY5N8d788cQeM3hVgJN/AnflqJo1i8i</signature>
+      <signature>Q+LilWpZzZrhaxBX/0MRKzMVXKtUmSL/ZmfG/byRWISHnY4D0eK6T17XZ+txh7+XROPuNw9Rh+2sAcjbCdK43ip1jVLHNzlMQ0OaTV6XNS8gEQM+Cwww0LGIgP10r7AALs6yidq7wlUPCbCiHjNhMsEaWB4QUg7OCn7kk4vb0kqAIKPY4ZGdO2wvXNihHMXM+SNoLleboAMSJkHbNs3he8Iy4MANMiRMMP6fMMDuEJ0ZNOrBRNCzcYSGAeZwYGuoE9OZFUMnhZqh4WnQ44xQnW1dyZ+1kbvQN9kYqmZkcs69Gqs/AnE/9J67LY25o18sLtE4ukakRkXdtn8PYJq2Q1NekrzeKFPGjVgajbCMRP4A0dYtK+RzA13KvfAERc0nFRKDfyFpFl+TUv9FRdCL1FJ28tp1SKq8Zy3UUgfdRmYV2oMSy+wpdgDKfIw/aZDSVop6Wrd7t3dLto0+Nrxqc0e3DgNI1Zf9NVKvtm1RK8ijFrmirP9LSBMzrkBwk1+t</signature>
     </eCH-0110:extension>
   </eCH-0110:resultDelivery>
 </eCH-0110:delivery>

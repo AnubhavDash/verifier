@@ -72,18 +72,19 @@ The following table indicates the correspondence between the Verifier and E-voti
 | 1.4.0            | 1.3.0                                                                      |
 | 1.4.1            | 1.3.1                                                                      |
 | 1.4.2            | 1.3.2                                                                      |
+| 1.4.3            | 1.3.3                                                                      |
 
 ## Build information
 
 The following instructions provide step-by-step information to build the Verifier of the Swiss Post Voting System on a Windows machine.
 
 1. Ensure you have Maven and Node installed. We tested with following versions:
-   * OpenJDK Runtime Environment Temurin-17.0.7+7 (build 17.0.7+7)
-   * Apache Maven 3.9.1
-   * Node: v16.20.1
+    * OpenJDK Runtime Environment Temurin-17.0.8.1+1 (build 17.0.8.1+1)
+    * Apache Maven 3.9.1
+    * Node: v16.20.2
 
 2. Build using Maven
-   * `mvn clean install`
+    * `mvn clean install`
 
 3. The generated artifact is located in verifier-assembly\target\verifier-assembly-\<VERSION>.zip.
 
@@ -91,7 +92,8 @@ The following instructions provide step-by-step information to build the Verifie
 
 1. Unzip the generated artifact.
 
-2. Ensure that the verifier's keystore and the keystore's password file are located at the place indicated in the file [application.properties](./verifier-assembly/src/main/resources/application.properties).
+2. Ensure that the verifier's keystore and the keystore's password file are located at the place indicated in the
+   file [application.properties](./verifier-assembly/src/main/resources/application.properties).
 
 3. Launch the Verifier.exe.
 

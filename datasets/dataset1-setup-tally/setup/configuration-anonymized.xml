@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <configuration xmlns="http://www.evoting.ch/xmlns/config/5">
   <header>
-    <fileDate>2023-05-30T15:57:47.053+02:00</fileDate>
+    <fileDate>2023-08-07T13:44:59.634+02:00</fileDate>
     <voterTotal>43</voterTotal>
   </header>
   <contest>
@@ -51,272 +51,7 @@
       <keyName>birthDate</keyName>
     </extendedAuthenticationKeys>
     <electionGroupBallot>
-      <electionGroupIdentification>3c9ace8b-f2f3-375e-a545-22111985c52f</electionGroupIdentification>
-      <domainOfInfluence>doid-ct1-mu</domainOfInfluence>
-      <electionGroupDescription>
-        <electionGroupDescriptionInfo>
-          <language>de</language>
-          <electionGroupDescriptionShort>Beispielwahl mit Write-Ins</electionGroupDescriptionShort>
-          <electionGroupDescription>Beispielwahl mit Write-Ins</electionGroupDescription>
-        </electionGroupDescriptionInfo>
-        <electionGroupDescriptionInfo>
-          <language>fr</language>
-          <electionGroupDescriptionShort>Election d'exemple avec Write-Ins</electionGroupDescriptionShort>
-          <electionGroupDescription>Election d'exemple avec Write-Ins</electionGroupDescription>
-        </electionGroupDescriptionInfo>
-        <electionGroupDescriptionInfo>
-          <language>it</language>
-          <electionGroupDescriptionShort>Elezioni d'esempio con Write-Ins</electionGroupDescriptionShort>
-          <electionGroupDescription>Elezioni d'esempio con Write-Ins</electionGroupDescription>
-        </electionGroupDescriptionInfo>
-        <electionGroupDescriptionInfo>
-          <language>rm</language>
-          <electionGroupDescriptionShort>Elecziuns d'exempel cun Write-Ins</electionGroupDescriptionShort>
-          <electionGroupDescription>Elecziuns d'exempel cun Write-Ins</electionGroupDescription>
-        </electionGroupDescriptionInfo>
-      </electionGroupDescription>
-      <electionGroupPosition>1</electionGroupPosition>
-      <electionInformation>
-        <election>
-          <electionIdentification>b1d85030-9104-48e6-9108-94cf16b8aad8</electionIdentification>
-          <typeOfElection>2</typeOfElection>
-          <electionDescription>
-            <electionDescriptionInfo>
-              <language>de</language>
-              <electionDescriptionShort>Beispielwahl mit Write-Ins</electionDescriptionShort>
-              <electionDescription>Beispielwahl mit Write-Ins</electionDescription>
-            </electionDescriptionInfo>
-            <electionDescriptionInfo>
-              <language>fr</language>
-              <electionDescriptionShort>Election d'exemple avec Write-Ins</electionDescriptionShort>
-              <electionDescription>Election d'exemple avec Write-Ins</electionDescription>
-            </electionDescriptionInfo>
-            <electionDescriptionInfo>
-              <language>it</language>
-              <electionDescriptionShort>Elezioni d'esempio con Write-Ins</electionDescriptionShort>
-              <electionDescription>Elezioni d'esempio con Write-Ins</electionDescription>
-            </electionDescriptionInfo>
-            <electionDescriptionInfo>
-              <language>rm</language>
-              <electionDescriptionShort>Elecziuns d'exempel cun Write-Ins</electionDescriptionShort>
-              <electionDescription>Elecziuns d'exempel cun Write-Ins</electionDescription>
-            </electionDescriptionInfo>
-          </electionDescription>
-          <electionPosition>1</electionPosition>
-          <numberOfMandates>1</numberOfMandates>
-          <writeInsAllowed>true</writeInsAllowed>
-          <candidateAccumulation>1</candidateAccumulation>
-          <minimalCandidateSelectionInList>1</minimalCandidateSelectionInList>
-        </election>
-        <candidate>
-          <candidateIdentification>9bfe1f69-6d35-4966-b281-a5dc39655e3a</candidateIdentification>
-          <mrMrs>1</mrMrs>
-          <familyName>Rot</familyName>
-          <firstName>Doris</firstName>
-          <callName>Doris</callName>
-          <candidateText>
-            <candidateTextInfo>
-              <language>de</language>
-              <candidateText>29.11.1961, Wil</candidateText>
-            </candidateTextInfo>
-            <candidateTextInfo>
-              <language>fr</language>
-              <candidateText>29.11.1961, Wil</candidateText>
-            </candidateTextInfo>
-            <candidateTextInfo>
-              <language>it</language>
-              <candidateText>29.11.1961, Wil</candidateText>
-            </candidateTextInfo>
-            <candidateTextInfo>
-              <language>rm</language>
-              <candidateText>29.11.1961, Wil</candidateText>
-            </candidateTextInfo>
-          </candidateText>
-          <dateOfBirth>1961-11-29</dateOfBirth>
-          <sex>2</sex>
-          <incumbent>
-            <incumbent>false</incumbent>
-          </incumbent>
-          <dwellingAddress>
-            <swissZipCode>9500</swissZipCode>
-            <town>Wil</town>
-          </dwellingAddress>
-          <swiss>
-            <origin>?</origin>
-          </swiss>
-          <occupationalTitle>
-            <occupationalTitleInfo>
-              <language>de</language>
-              <occupationalTitle>Kandidatin</occupationalTitle>
-            </occupationalTitleInfo>
-            <occupationalTitleInfo>
-              <language>fr</language>
-              <occupationalTitle>Candidate</occupationalTitle>
-            </occupationalTitleInfo>
-            <occupationalTitleInfo>
-              <language>it</language>
-              <occupationalTitle>Candidata</occupationalTitle>
-            </occupationalTitleInfo>
-            <occupationalTitleInfo>
-              <language>rm</language>
-              <occupationalTitle>Candidata</occupationalTitle>
-            </occupationalTitleInfo>
-          </occupationalTitle>
-          <position>1</position>
-          <referenceOnPosition>1</referenceOnPosition>
-          <partyAffiliation>
-            <partyAffiliationInfo>
-              <language>de</language>
-              <partyAffiliationShort>Rote Partei</partyAffiliationShort>
-            </partyAffiliationInfo>
-            <partyAffiliationInfo>
-              <language>fr</language>
-              <partyAffiliationShort>Rote Partei</partyAffiliationShort>
-            </partyAffiliationInfo>
-            <partyAffiliationInfo>
-              <language>it</language>
-              <partyAffiliationShort>Rote Partei</partyAffiliationShort>
-            </partyAffiliationInfo>
-            <partyAffiliationInfo>
-              <language>rm</language>
-              <partyAffiliationShort>Rote Partei</partyAffiliationShort>
-            </partyAffiliationInfo>
-          </partyAffiliation>
-        </candidate>
-        <candidate>
-          <candidateIdentification>b5c605ec-9398-41d9-b934-006c548381c3</candidateIdentification>
-          <mrMrs>2</mrMrs>
-          <familyName>Gelb</familyName>
-          <firstName>Henry</firstName>
-          <callName>Henry</callName>
-          <candidateText>
-            <candidateTextInfo>
-              <language>de</language>
-              <candidateText>29.11.1954, Wil</candidateText>
-            </candidateTextInfo>
-            <candidateTextInfo>
-              <language>fr</language>
-              <candidateText>29.11.1954, Wil</candidateText>
-            </candidateTextInfo>
-            <candidateTextInfo>
-              <language>it</language>
-              <candidateText>29.11.1954, Wil</candidateText>
-            </candidateTextInfo>
-            <candidateTextInfo>
-              <language>rm</language>
-              <candidateText>29.11.1954, Wil</candidateText>
-            </candidateTextInfo>
-          </candidateText>
-          <dateOfBirth>1954-11-29</dateOfBirth>
-          <sex>1</sex>
-          <incumbent>
-            <incumbent>false</incumbent>
-          </incumbent>
-          <dwellingAddress>
-            <swissZipCode>9500</swissZipCode>
-            <town>Wil</town>
-          </dwellingAddress>
-          <swiss>
-            <origin>?</origin>
-          </swiss>
-          <occupationalTitle>
-            <occupationalTitleInfo>
-              <language>de</language>
-              <occupationalTitle>Kandidat</occupationalTitle>
-            </occupationalTitleInfo>
-            <occupationalTitleInfo>
-              <language>fr</language>
-              <occupationalTitle>Candidat</occupationalTitle>
-            </occupationalTitleInfo>
-            <occupationalTitleInfo>
-              <language>it</language>
-              <occupationalTitle>Candidato</occupationalTitle>
-            </occupationalTitleInfo>
-            <occupationalTitleInfo>
-              <language>rm</language>
-              <occupationalTitle>Candidat</occupationalTitle>
-            </occupationalTitleInfo>
-          </occupationalTitle>
-          <position>2</position>
-          <referenceOnPosition>2</referenceOnPosition>
-          <partyAffiliation>
-            <partyAffiliationInfo>
-              <language>de</language>
-              <partyAffiliationShort>Gelbe Partei</partyAffiliationShort>
-            </partyAffiliationInfo>
-            <partyAffiliationInfo>
-              <language>fr</language>
-              <partyAffiliationShort>Gelbe Partei</partyAffiliationShort>
-            </partyAffiliationInfo>
-            <partyAffiliationInfo>
-              <language>it</language>
-              <partyAffiliationShort>Gelbe Partei</partyAffiliationShort>
-            </partyAffiliationInfo>
-            <partyAffiliationInfo>
-              <language>rm</language>
-              <partyAffiliationShort>Gelbe Partei</partyAffiliationShort>
-            </partyAffiliationInfo>
-          </partyAffiliation>
-        </candidate>
-        <list>
-          <listIdentification>3c9ace8b-f2f3-375e-a545-22111985c52f</listIdentification>
-          <listIndentureNumber>99</listIndentureNumber>
-          <listDescription>
-            <listDescriptionInfo>
-              <language>de</language>
-              <listDescriptionShort>Leer</listDescriptionShort>
-              <listDescription>Leere Liste</listDescription>
-            </listDescriptionInfo>
-            <listDescriptionInfo>
-              <language>fr</language>
-              <listDescriptionShort>Leer</listDescriptionShort>
-              <listDescription>Leere Liste</listDescription>
-            </listDescriptionInfo>
-            <listDescriptionInfo>
-              <language>it</language>
-              <listDescriptionShort>Leer</listDescriptionShort>
-              <listDescription>Leere Liste</listDescription>
-            </listDescriptionInfo>
-            <listDescriptionInfo>
-              <language>rm</language>
-              <listDescriptionShort>Leer</listDescriptionShort>
-              <listDescription>Leere Liste</listDescription>
-            </listDescriptionInfo>
-          </listDescription>
-          <listOrderOfPrecedence>99</listOrderOfPrecedence>
-          <listEmpty>true</listEmpty>
-          <candidatePosition>
-            <candidateListIdentification>7a31df2c-f3fe-3187-8e3f-a88e31582a64</candidateListIdentification>
-            <positionOnList>1</positionOnList>
-            <candidateReferenceOnPosition>99.01</candidateReferenceOnPosition>
-            <candidateTextOnPosition>
-              <candidateTextInfo>
-                <language>de</language>
-                <candidateText>Kein Name ausgewählt</candidateText>
-              </candidateTextInfo>
-              <candidateTextInfo>
-                <language>fr</language>
-                <candidateText>Aucun nom sélectionné</candidateText>
-              </candidateTextInfo>
-              <candidateTextInfo>
-                <language>it</language>
-                <candidateText>Nessun nominativo selezionato</candidateText>
-              </candidateTextInfo>
-              <candidateTextInfo>
-                <language>rm</language>
-                <candidateText>Nagin num selecziunà</candidateText>
-              </candidateTextInfo>
-            </candidateTextOnPosition>
-          </candidatePosition>
-        </list>
-        <writeInCandidate>
-          <writeInCandidateIdentification>8541d316-9e3a-356d-a572-db9b0ac8e861</writeInCandidateIdentification>
-          <position>1</position>
-        </writeInCandidate>
-      </electionInformation>
-    </electionGroupBallot>
-    <electionGroupBallot>
-      <electionGroupIdentification>88596f18-97f2-3050-b346-482e0deee7a7</electionGroupIdentification>
+      <electionGroupIdentification>nrw_test</electionGroupIdentification>
       <domainOfInfluence>doid-ch1-mu</domainOfInfluence>
       <electionGroupDescription>
         <electionGroupDescriptionInfo>
@@ -343,7 +78,7 @@
       <electionGroupPosition>2</electionGroupPosition>
       <electionInformation>
         <election>
-          <electionIdentification>01904d8c-8a10-4998-aecd-377f2688e3fa</electionIdentification>
+          <electionIdentification>nrw_test</electionIdentification>
           <typeOfElection>1</typeOfElection>
           <electionDescription>
             <electionDescriptionInfo>
@@ -404,7 +139,7 @@
             <incumbentText>
               <incumbentTextInfo>
                 <language>de</language>
-                <incumbentText>Bisher</incumbentText>
+                <incumbentText>bisher</incumbentText>
               </incumbentTextInfo>
               <incumbentTextInfo>
                 <language>fr</language>
@@ -460,7 +195,7 @@
             <incumbentText>
               <incumbentTextInfo>
                 <language>de</language>
-                <incumbentText>Bisher</incumbentText>
+                <incumbentText>bisher</incumbentText>
               </incumbentTextInfo>
               <incumbentTextInfo>
                 <language>fr</language>
@@ -516,7 +251,7 @@
             <incumbentText>
               <incumbentTextInfo>
                 <language>de</language>
-                <incumbentText>Bisher</incumbentText>
+                <incumbentText>bisher</incumbentText>
               </incumbentTextInfo>
               <incumbentTextInfo>
                 <language>fr</language>
@@ -572,7 +307,7 @@
             <incumbentText>
               <incumbentTextInfo>
                 <language>de</language>
-                <incumbentText>Bisher</incumbentText>
+                <incumbentText>bisher</incumbentText>
               </incumbentTextInfo>
               <incumbentTextInfo>
                 <language>fr</language>
@@ -628,7 +363,7 @@
             <incumbentText>
               <incumbentTextInfo>
                 <language>de</language>
-                <incumbentText>Bisher</incumbentText>
+                <incumbentText>bisher</incumbentText>
               </incumbentTextInfo>
               <incumbentTextInfo>
                 <language>fr</language>
@@ -722,7 +457,7 @@
             <incumbentText>
               <incumbentTextInfo>
                 <language>de</language>
-                <incumbentText>Bisher</incumbentText>
+                <incumbentText>bisher</incumbentText>
               </incumbentTextInfo>
               <incumbentTextInfo>
                 <language>fr</language>
@@ -778,7 +513,7 @@
             <incumbentText>
               <incumbentTextInfo>
                 <language>de</language>
-                <incumbentText>Bisher</incumbentText>
+                <incumbentText>bisher</incumbentText>
               </incumbentTextInfo>
               <incumbentTextInfo>
                 <language>fr</language>
@@ -1024,7 +759,7 @@
             <incumbentText>
               <incumbentTextInfo>
                 <language>de</language>
-                <incumbentText>Bisher</incumbentText>
+                <incumbentText>bisher</incumbentText>
               </incumbentTextInfo>
               <incumbentTextInfo>
                 <language>fr</language>
@@ -1080,7 +815,7 @@
             <incumbentText>
               <incumbentTextInfo>
                 <language>de</language>
-                <incumbentText>Bisher</incumbentText>
+                <incumbentText>bisher</incumbentText>
               </incumbentTextInfo>
               <incumbentTextInfo>
                 <language>fr</language>
@@ -2152,9 +1887,274 @@
         </listUnion>
       </electionInformation>
     </electionGroupBallot>
+    <electionGroupBallot>
+      <electionGroupIdentification>majorz_test</electionGroupIdentification>
+      <domainOfInfluence>doid-ct1-mu</domainOfInfluence>
+      <electionGroupDescription>
+        <electionGroupDescriptionInfo>
+          <language>de</language>
+          <electionGroupDescriptionShort>Beispielwahl mit Write-Ins</electionGroupDescriptionShort>
+          <electionGroupDescription>Beispielwahl mit Write-Ins</electionGroupDescription>
+        </electionGroupDescriptionInfo>
+        <electionGroupDescriptionInfo>
+          <language>fr</language>
+          <electionGroupDescriptionShort>Election d'exemple avec Write-Ins</electionGroupDescriptionShort>
+          <electionGroupDescription>Election d'exemple avec Write-Ins</electionGroupDescription>
+        </electionGroupDescriptionInfo>
+        <electionGroupDescriptionInfo>
+          <language>it</language>
+          <electionGroupDescriptionShort>Elezioni d'esempio con Write-Ins</electionGroupDescriptionShort>
+          <electionGroupDescription>Elezioni d'esempio con Write-Ins</electionGroupDescription>
+        </electionGroupDescriptionInfo>
+        <electionGroupDescriptionInfo>
+          <language>rm</language>
+          <electionGroupDescriptionShort>Elecziuns d'exempel cun Write-Ins</electionGroupDescriptionShort>
+          <electionGroupDescription>Elecziuns d'exempel cun Write-Ins</electionGroupDescription>
+        </electionGroupDescriptionInfo>
+      </electionGroupDescription>
+      <electionGroupPosition>3</electionGroupPosition>
+      <electionInformation>
+        <election>
+          <electionIdentification>majorz_test</electionIdentification>
+          <typeOfElection>2</typeOfElection>
+          <electionDescription>
+            <electionDescriptionInfo>
+              <language>de</language>
+              <electionDescriptionShort>Beispielwahl mit Write-Ins</electionDescriptionShort>
+              <electionDescription>Beispielwahl mit Write-Ins</electionDescription>
+            </electionDescriptionInfo>
+            <electionDescriptionInfo>
+              <language>fr</language>
+              <electionDescriptionShort>Election d'exemple avec Write-Ins</electionDescriptionShort>
+              <electionDescription>Election d'exemple avec Write-Ins</electionDescription>
+            </electionDescriptionInfo>
+            <electionDescriptionInfo>
+              <language>it</language>
+              <electionDescriptionShort>Elezioni d'esempio con Write-Ins</electionDescriptionShort>
+              <electionDescription>Elezioni d'esempio con Write-Ins</electionDescription>
+            </electionDescriptionInfo>
+            <electionDescriptionInfo>
+              <language>rm</language>
+              <electionDescriptionShort>Elecziuns d'exempel cun Write-Ins</electionDescriptionShort>
+              <electionDescription>Elecziuns d'exempel cun Write-Ins</electionDescription>
+            </electionDescriptionInfo>
+          </electionDescription>
+          <electionPosition>1</electionPosition>
+          <numberOfMandates>1</numberOfMandates>
+          <writeInsAllowed>true</writeInsAllowed>
+          <candidateAccumulation>1</candidateAccumulation>
+          <minimalCandidateSelectionInList>1</minimalCandidateSelectionInList>
+        </election>
+        <candidate>
+          <candidateIdentification>9bfe1f69-6d35-4966-b281-a5dc39655e3a</candidateIdentification>
+          <mrMrs>1</mrMrs>
+          <familyName>Rot</familyName>
+          <firstName>Doris</firstName>
+          <callName>Doris</callName>
+          <candidateText>
+            <candidateTextInfo>
+              <language>de</language>
+              <candidateText>29.11.1961, Wil</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>fr</language>
+              <candidateText>29.11.1961, Wil</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>it</language>
+              <candidateText>29.11.1961, Wil</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>rm</language>
+              <candidateText>29.11.1961, Wil</candidateText>
+            </candidateTextInfo>
+          </candidateText>
+          <dateOfBirth>1961-11-29</dateOfBirth>
+          <sex>2</sex>
+          <incumbent>
+            <incumbent>false</incumbent>
+          </incumbent>
+          <dwellingAddress>
+            <swissZipCode>9500</swissZipCode>
+            <town>Wil</town>
+          </dwellingAddress>
+          <swiss>
+            <origin>?</origin>
+          </swiss>
+          <occupationalTitle>
+            <occupationalTitleInfo>
+              <language>de</language>
+              <occupationalTitle>Kandidatin</occupationalTitle>
+            </occupationalTitleInfo>
+            <occupationalTitleInfo>
+              <language>fr</language>
+              <occupationalTitle>Candidate</occupationalTitle>
+            </occupationalTitleInfo>
+            <occupationalTitleInfo>
+              <language>it</language>
+              <occupationalTitle>Candidata</occupationalTitle>
+            </occupationalTitleInfo>
+            <occupationalTitleInfo>
+              <language>rm</language>
+              <occupationalTitle>Candidata</occupationalTitle>
+            </occupationalTitleInfo>
+          </occupationalTitle>
+          <position>1</position>
+          <referenceOnPosition>1</referenceOnPosition>
+          <partyAffiliation>
+            <partyAffiliationInfo>
+              <language>de</language>
+              <partyAffiliationShort>Rote Partei</partyAffiliationShort>
+            </partyAffiliationInfo>
+            <partyAffiliationInfo>
+              <language>fr</language>
+              <partyAffiliationShort>Rote Partei</partyAffiliationShort>
+            </partyAffiliationInfo>
+            <partyAffiliationInfo>
+              <language>it</language>
+              <partyAffiliationShort>Rote Partei</partyAffiliationShort>
+            </partyAffiliationInfo>
+            <partyAffiliationInfo>
+              <language>rm</language>
+              <partyAffiliationShort>Rote Partei</partyAffiliationShort>
+            </partyAffiliationInfo>
+          </partyAffiliation>
+        </candidate>
+        <candidate>
+          <candidateIdentification>b5c605ec-9398-41d9-b934-006c548381c3</candidateIdentification>
+          <mrMrs>2</mrMrs>
+          <familyName>Gelb</familyName>
+          <firstName>Henry</firstName>
+          <callName>Henry</callName>
+          <candidateText>
+            <candidateTextInfo>
+              <language>de</language>
+              <candidateText>29.11.1954, Wil</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>fr</language>
+              <candidateText>29.11.1954, Wil</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>it</language>
+              <candidateText>29.11.1954, Wil</candidateText>
+            </candidateTextInfo>
+            <candidateTextInfo>
+              <language>rm</language>
+              <candidateText>29.11.1954, Wil</candidateText>
+            </candidateTextInfo>
+          </candidateText>
+          <dateOfBirth>1954-11-29</dateOfBirth>
+          <sex>1</sex>
+          <incumbent>
+            <incumbent>false</incumbent>
+          </incumbent>
+          <dwellingAddress>
+            <swissZipCode>9500</swissZipCode>
+            <town>Wil</town>
+          </dwellingAddress>
+          <swiss>
+            <origin>?</origin>
+          </swiss>
+          <occupationalTitle>
+            <occupationalTitleInfo>
+              <language>de</language>
+              <occupationalTitle>Kandidat</occupationalTitle>
+            </occupationalTitleInfo>
+            <occupationalTitleInfo>
+              <language>fr</language>
+              <occupationalTitle>Candidat</occupationalTitle>
+            </occupationalTitleInfo>
+            <occupationalTitleInfo>
+              <language>it</language>
+              <occupationalTitle>Candidato</occupationalTitle>
+            </occupationalTitleInfo>
+            <occupationalTitleInfo>
+              <language>rm</language>
+              <occupationalTitle>Candidat</occupationalTitle>
+            </occupationalTitleInfo>
+          </occupationalTitle>
+          <position>2</position>
+          <referenceOnPosition>2</referenceOnPosition>
+          <partyAffiliation>
+            <partyAffiliationInfo>
+              <language>de</language>
+              <partyAffiliationShort>Gelbe Partei</partyAffiliationShort>
+            </partyAffiliationInfo>
+            <partyAffiliationInfo>
+              <language>fr</language>
+              <partyAffiliationShort>Gelbe Partei</partyAffiliationShort>
+            </partyAffiliationInfo>
+            <partyAffiliationInfo>
+              <language>it</language>
+              <partyAffiliationShort>Gelbe Partei</partyAffiliationShort>
+            </partyAffiliationInfo>
+            <partyAffiliationInfo>
+              <language>rm</language>
+              <partyAffiliationShort>Gelbe Partei</partyAffiliationShort>
+            </partyAffiliationInfo>
+          </partyAffiliation>
+        </candidate>
+        <list>
+          <listIdentification>ca127938-5e2f-372f-8a4e-a0cb1da35b3b</listIdentification>
+          <listIndentureNumber>99</listIndentureNumber>
+          <listDescription>
+            <listDescriptionInfo>
+              <language>de</language>
+              <listDescriptionShort>Leer</listDescriptionShort>
+              <listDescription>Leere Liste</listDescription>
+            </listDescriptionInfo>
+            <listDescriptionInfo>
+              <language>fr</language>
+              <listDescriptionShort>Leer</listDescriptionShort>
+              <listDescription>Leere Liste</listDescription>
+            </listDescriptionInfo>
+            <listDescriptionInfo>
+              <language>it</language>
+              <listDescriptionShort>Leer</listDescriptionShort>
+              <listDescription>Leere Liste</listDescription>
+            </listDescriptionInfo>
+            <listDescriptionInfo>
+              <language>rm</language>
+              <listDescriptionShort>Leer</listDescriptionShort>
+              <listDescription>Leere Liste</listDescription>
+            </listDescriptionInfo>
+          </listDescription>
+          <listOrderOfPrecedence>99</listOrderOfPrecedence>
+          <listEmpty>true</listEmpty>
+          <candidatePosition>
+            <candidateListIdentification>1cde3adc-d3b8-3077-95b4-21ac2958a8fe</candidateListIdentification>
+            <positionOnList>1</positionOnList>
+            <candidateReferenceOnPosition>99.01</candidateReferenceOnPosition>
+            <candidateTextOnPosition>
+              <candidateTextInfo>
+                <language>de</language>
+                <candidateText>Kein Name ausgewählt</candidateText>
+              </candidateTextInfo>
+              <candidateTextInfo>
+                <language>fr</language>
+                <candidateText>Aucun nom sélectionné</candidateText>
+              </candidateTextInfo>
+              <candidateTextInfo>
+                <language>it</language>
+                <candidateText>Nessun nominativo selezionato</candidateText>
+              </candidateTextInfo>
+              <candidateTextInfo>
+                <language>rm</language>
+                <candidateText>Nagin num selecziunà</candidateText>
+              </candidateTextInfo>
+            </candidateTextOnPosition>
+          </candidatePosition>
+        </list>
+        <writeInCandidate>
+          <writeInCandidateIdentification>f71ffce9-78c9-3621-895b-aebcc0849ad1</writeInCandidateIdentification>
+          <position>1</position>
+        </writeInCandidate>
+      </electionInformation>
+    </electionGroupBallot>
     <voteInformation>
       <vote>
-        <voteIdentification>4151943c-0b78-4c96-b46e-3f209e65dc2c</voteIdentification>
+        <voteIdentification>ch_test</voteIdentification>
         <domainOfInfluence>doid-ch1-mu</domainOfInfluence>
         <voteDescription>
           <voteDescriptionInfo>
@@ -2317,24 +2317,24 @@
             <standardQuestion>
               <questionIdentification>16f99be5-0ce6-4a81-ae8b-1817ceecaebc</questionIdentification>
               <questionPosition>2</questionPosition>
-              <questionNumber>2</questionNumber>
+              <questionNumber>2a</questionNumber>
               <answerType>2</answerType>
               <ballotQuestion>
                 <ballotQuestionInfo>
                   <language>de</language>
-                  <ballotQuestion>2a. Wollen Sie den Vorschlag annehmen?</ballotQuestion>
+                  <ballotQuestion>Wollen Sie den Vorschlag annehmen?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>fr</language>
-                  <ballotQuestion>2a. Acceptez-vous la deuxième proposition ?</ballotQuestion>
+                  <ballotQuestion>Acceptez-vous la deuxième proposition ?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>it</language>
-                  <ballotQuestion>2a. Accettare la seconda proposta ?</ballotQuestion>
+                  <ballotQuestion>Accettare la seconda proposta ?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>rm</language>
-                  <ballotQuestion>2a. Acceptar la segunda proposta ?</ballotQuestion>
+                  <ballotQuestion>Acceptar la segunda proposta ?</ballotQuestion>
                 </ballotQuestionInfo>
               </ballotQuestion>
               <answer>
@@ -2405,24 +2405,24 @@
             <standardQuestion>
               <questionIdentification>b173aebb-7b2c-476a-97fa-c81d640e498a</questionIdentification>
               <questionPosition>3</questionPosition>
-              <questionNumber>3</questionNumber>
+              <questionNumber>2b</questionNumber>
               <answerType>2</answerType>
               <ballotQuestion>
                 <ballotQuestionInfo>
                   <language>de</language>
-                  <ballotQuestion>2b. Wollen Sie den Gegenvorschlag annehmen?</ballotQuestion>
+                  <ballotQuestion>Wollen Sie den Gegenvorschlag annehmen?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>fr</language>
-                  <ballotQuestion>2b. Acceptez-vous la contre proposition ?</ballotQuestion>
+                  <ballotQuestion>Acceptez-vous la contre proposition ?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>it</language>
-                  <ballotQuestion>2b. Accettare la contra proposta ?</ballotQuestion>
+                  <ballotQuestion>Accettare la contra proposta ?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>rm</language>
-                  <ballotQuestion>2b. Acceptar la cuntra proposta ?</ballotQuestion>
+                  <ballotQuestion>Acceptar la cuntra proposta ?</ballotQuestion>
                 </ballotQuestionInfo>
               </ballotQuestion>
               <answer>
@@ -2493,24 +2493,24 @@
             <tieBreakQuestion>
               <questionIdentification>1129f74b-1e49-4636-9731-84dba618bec6</questionIdentification>
               <questionPosition>4</questionPosition>
-              <questionNumber>4</questionNumber>
+              <questionNumber>2c</questionNumber>
               <answerType>4</answerType>
               <ballotQuestion>
                 <ballotQuestionInfo>
                   <language>de</language>
-                  <ballotQuestion>2c. Bei Gleichstand: Wollen Sie den Vorschlag oder den Gegenvorschlag annehmen?</ballotQuestion>
+                  <ballotQuestion>Bei Gleichstand: Wollen Sie den Vorschlag oder den Gegenvorschlag annehmen?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>fr</language>
-                  <ballotQuestion>2c. En cas d'égalité : voulez-vous accepter la proposition ou la contre-proposition ?</ballotQuestion>
+                  <ballotQuestion>En cas d'égalité : voulez-vous accepter la proposition ou la contre-proposition ?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>it</language>
-                  <ballotQuestion>2c. In caso di parità di voti: volete accettare la proposta o la controproposta?</ballotQuestion>
+                  <ballotQuestion>In caso di parità di voti: volete accettare la proposta o la controproposta?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>rm</language>
-                  <ballotQuestion>2c. En connex cun l’egualitad: vulais Vus acceptar la proposta u la cuntraproposta?</ballotQuestion>
+                  <ballotQuestion>En connex cun l’egualitad: vulais Vus acceptar la proposta u la cuntraproposta?</ballotQuestion>
                 </ballotQuestionInfo>
               </ballotQuestion>
               <answer>
@@ -3193,5 +3193,5 @@
       <voterType>SWISSABROAD</voterType>
     </voter>
   </register>
-  <signature>NdhtoirOplenoPHS3FbPy58jIvGFAwcHCf9s9K5RNetbUHICsoA1nAqL2EreANw67CPljuJSkrnjB0VZjla8vRNIIe6IimwtJORFh1yacVrxk5chFoyk1CarV/n8/kgOIeFWHAE3p1FDj0UAXs8yMJ5IuzGmcZfblVA13XpntGAgZF5WbpNRdETAEADtnszbaD8Cy5L2drLQq8QDKqEgFwA4mt3E53dyE2lh43T8ZQIkjMzZ2O9lHZhFAmUy5AA3dl+/8vkHwcSIfc7SSdRvE3mJ6p9oGMCjs0CAck8njwDLdACIQIN5SYQcnTYTeUBaAdwy2TaOdU6zIbpLzauTYWtdEtZ26R9yV2fkJtIobIt/lI2eTLHGP4ONma4Eng7e7PWiRTTul2ur9D/XZO2kWapoHvDIb4yDaK0bt1ocAJOlpe1M1+GOOBe2JatJpGosDj/+tjrcAhMZ319sGMzoAelP6GqRFPnAvIt12DReP+gCRMShqfSZNp21Km/eMITe</signature>
+  <signature>e+Ez0J5UqeAVUwJkMZSYlyZ8yA0bMZrwjjoUgGP8/lT0fuz7BNlCNMTYDix6sfRDZ052aVeBFRsQYC9O0luZgdDV/lvF1tmttc10DELJuIoxjPGrkSQ0LnWjb0ALj4bGZXt3X85o3V5h7/r+v4rZ6sSMRw5pJQuQdmKKMa6nOSJLlUuU89iQibB6N9F9xC2A+KMl3OZMcr41N7yowewPtaOl0DyclyD7WB5jzTeSOEzS90zxbjDb0fG3lvaxOXw3Oq+zM8EdpREeLpBjj03GmAidLaywx+cOKsXScA5LkUEgYxmxFz83L9E/i49TrNJyd3DQHm9lXTOD+jUrgZVflyniLoedea+g3ln/uNCYcIYFlaVCa0CkpBaM4mXKN12QdIJQlCBwhTSder/3EAAaFzMuK9h71jUWJjNsgkMnNb3V7FOioXXT8Icqkr2V4lNQ0ki+pV9GUxFqIn7jGU9GWmMP/o083Irq58KdBxu36PsMHfDBXfWYWQh9951uaFEx</signature>
 </configuration>
