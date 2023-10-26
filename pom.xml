@@ -14,8 +14,8 @@
 	</modules>
 
 	<properties>
-		<maven-enforcer-plugin.requiredJavaVersion>[17.0.7]</maven-enforcer-plugin.requiredJavaVersion>
-		<maven-enforcer-plugin.requiredMavenVersion>[3.9.4]</maven-enforcer-plugin.requiredMavenVersion>
+		<maven-enforcer-plugin.requiredJavaVersion>[17.0.8-1]</maven-enforcer-plugin.requiredJavaVersion>
+		<maven-enforcer-plugin.requiredMavenVersion>[3.9.1]</maven-enforcer-plugin.requiredMavenVersion>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 		<maven.compiler.release>17</maven.compiler.release>
@@ -396,11 +396,11 @@
 			<properties>
 
 				<!-- OpenJDK -->
-				<openjdk-jre.version>jdk-17.0.7+7-jre</openjdk-jre.version>
+				<openjdk-jre.version>jdk-17.0.8.1+1-jre</openjdk-jre.version>
 				<openjdk-jre.win64.url>
-					https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.7%2B7/OpenJDK17U-jre_x64_windows_hotspot_17.0.7_7.zip
+					https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.8.1%2B1/OpenJDK17U-jdk_x64_windows_hotspot_17.0.8.1_1.zip
 				</openjdk-jre.win64.url>
-				<openjdk-jre.win64.sha256>62e82c1afa7509424813e9cb22d8becfec4346d7505e6d2fc8770af4dcd5b9a0</openjdk-jre.win64.sha256>
+				<openjdk-jre.win64.sha256>651a795155dc918c06cc9fd4b37253b9cbbca5ec8e76d4a8fa7cdaeb1f52761c</openjdk-jre.win64.sha256>
 
 			</properties>
 		</profile>
