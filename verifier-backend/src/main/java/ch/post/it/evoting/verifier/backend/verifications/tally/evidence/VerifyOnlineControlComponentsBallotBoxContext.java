@@ -69,6 +69,13 @@ public class VerifyOnlineControlComponentsBallotBoxContext {
 		return ballotBoxId;
 	}
 
+	public String getVerificationCardSetId() {
+		return electionEventContext.verificationCardSetContexts().stream()
+				.filter(verificationCardSetContext -> verificationCardSetContext.ballotBoxId().equals(ballotBoxId))
+				.map(VerificationCardSetContext::verificationCardSetId)
+				.collect(MoreCollectors.onlyElement());
+	}
+
 	public int getNumberOfSelectableVotingOptions() {
 		return numberOfSelectableVotingOptions;
 	}

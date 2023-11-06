@@ -26,38 +26,74 @@
         <vote>
           <voteIdentification>ch_test</voteIdentification>
           <ballot>
+            <chosenAnswerIdentification>fbed7bf6-a7ed-3812-bb0c-22e449aa4f96</chosenAnswerIdentification>
+            <chosenAnswerIdentification>ecdbcc43-396a-348f-a671-919abfff4e12</chosenAnswerIdentification>
+            <chosenAnswerIdentification>004e5a94-c242-3ba4-837b-131b5698eaa7</chosenAnswerIdentification>
+            <chosenAnswerIdentification>e6467637-1921-3c4f-b669-88ba2f73a193</chosenAnswerIdentification>
+          </ballot>
+          <ballot>
+            <chosenAnswerIdentification>fbed7bf6-a7ed-3812-bb0c-22e449aa4f96</chosenAnswerIdentification>
+            <chosenAnswerIdentification>ecdbcc43-396a-348f-a671-919abfff4e12</chosenAnswerIdentification>
+            <chosenAnswerIdentification>004e5a94-c242-3ba4-837b-131b5698eaa7</chosenAnswerIdentification>
+            <chosenAnswerIdentification>e6467637-1921-3c4f-b669-88ba2f73a193</chosenAnswerIdentification>
+          </ballot>
+          <ballot>
+            <chosenAnswerIdentification>3aa38c9e-6e93-3159-91e1-c3da90681572</chosenAnswerIdentification>
+            <chosenAnswerIdentification>e9da718b-469e-35d4-8d7d-d6329621e755</chosenAnswerIdentification>
+            <chosenAnswerIdentification>d0f886b7-03a8-3d8a-9e7d-4c9bfa02ddc6</chosenAnswerIdentification>
+            <chosenAnswerIdentification>65113930-4472-3aac-9cfd-162f501c78f5</chosenAnswerIdentification>
+          </ballot>
+          <ballot>
             <chosenAnswerIdentification>16ac94e3-0c72-3570-9df9-050ebb18a9cc</chosenAnswerIdentification>
             <chosenAnswerIdentification>e9da718b-469e-35d4-8d7d-d6329621e755</chosenAnswerIdentification>
             <chosenAnswerIdentification>562a2034-f9a8-3783-abf5-624ec5ac08be</chosenAnswerIdentification>
             <chosenAnswerIdentification>e6467637-1921-3c4f-b669-88ba2f73a193</chosenAnswerIdentification>
           </ballot>
           <ballot>
-            <chosenAnswerIdentification>fbed7bf6-a7ed-3812-bb0c-22e449aa4f96</chosenAnswerIdentification>
-            <chosenAnswerIdentification>ecdbcc43-396a-348f-a671-919abfff4e12</chosenAnswerIdentification>
-            <chosenAnswerIdentification>004e5a94-c242-3ba4-837b-131b5698eaa7</chosenAnswerIdentification>
-            <chosenAnswerIdentification>e6467637-1921-3c4f-b669-88ba2f73a193</chosenAnswerIdentification>
-          </ballot>
-          <ballot>
-            <chosenAnswerIdentification>fbed7bf6-a7ed-3812-bb0c-22e449aa4f96</chosenAnswerIdentification>
-            <chosenAnswerIdentification>ecdbcc43-396a-348f-a671-919abfff4e12</chosenAnswerIdentification>
-            <chosenAnswerIdentification>004e5a94-c242-3ba4-837b-131b5698eaa7</chosenAnswerIdentification>
-            <chosenAnswerIdentification>e6467637-1921-3c4f-b669-88ba2f73a193</chosenAnswerIdentification>
-          </ballot>
-          <ballot>
             <chosenAnswerIdentification>16ac94e3-0c72-3570-9df9-050ebb18a9cc</chosenAnswerIdentification>
-            <chosenAnswerIdentification>ecdbcc43-396a-348f-a671-919abfff4e12</chosenAnswerIdentification>
-            <chosenAnswerIdentification>562a2034-f9a8-3783-abf5-624ec5ac08be</chosenAnswerIdentification>
-            <chosenAnswerIdentification>65113930-4472-3aac-9cfd-162f501c78f5</chosenAnswerIdentification>
-          </ballot>
-          <ballot>
-            <chosenAnswerIdentification>fbed7bf6-a7ed-3812-bb0c-22e449aa4f96</chosenAnswerIdentification>
-            <chosenAnswerIdentification>ecdbcc43-396a-348f-a671-919abfff4e12</chosenAnswerIdentification>
+            <chosenAnswerIdentification>e9da718b-469e-35d4-8d7d-d6329621e755</chosenAnswerIdentification>
             <chosenAnswerIdentification>004e5a94-c242-3ba4-837b-131b5698eaa7</chosenAnswerIdentification>
-            <chosenAnswerIdentification>e6467637-1921-3c4f-b669-88ba2f73a193</chosenAnswerIdentification>
+            <chosenAnswerIdentification>b4277282-00aa-3ccb-bdf2-4703ba2724e4</chosenAnswerIdentification>
           </ballot>
         </vote>
         <election>
           <electionIdentification>nrw_test</electionIdentification>
+          <ballot>
+            <chosenListIdentification>99</chosenListIdentification>
+            <chosenCandidateListIdentification>4ea3eb45-4872-3418-81d9-1e928937fc1b</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>d2838d83-b21e-3758-b3db-428094b8c39f</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>c2275508-2e7e-33e7-8fb8-4aaa48979288</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>0e08a1c6-62d3-3e54-8642-6792536ba039</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>899e6604-8374-370d-961c-e1537d2f7d53</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>1a6ea144-5fe6-376a-a659-aa8d72bb2ad8</chosenCandidateListIdentification>
+          </ballot>
+          <ballot>
+            <chosenListIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</chosenListIdentification>
+            <chosenCandidateListIdentification>d2838d83-b21e-3758-b3db-428094b8c39f</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>c2275508-2e7e-33e7-8fb8-4aaa48979288</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>0e08a1c6-62d3-3e54-8642-6792536ba039</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>899e6604-8374-370d-961c-e1537d2f7d53</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>1a6ea144-5fe6-376a-a659-aa8d72bb2ad8</chosenCandidateListIdentification>
+            <chosenCandidateIdentification>6eb5e01e-755a-4794-9781-b76a32e7175c</chosenCandidateIdentification>
+          </ballot>
+          <ballot>
+            <chosenListIdentification>99</chosenListIdentification>
+            <chosenCandidateIdentification>8cc68a36-df81-4381-aaff-83544ffe6e6c</chosenCandidateIdentification>
+            <chosenCandidateIdentification>6eb5e01e-755a-4794-9781-b76a32e7175c</chosenCandidateIdentification>
+            <chosenCandidateIdentification>1d48f2f5-08a3-4d1f-be5e-80cfb6ed76e4</chosenCandidateIdentification>
+            <chosenCandidateIdentification>e5b16bd6-815b-4e02-8e9e-04064a19b6d0</chosenCandidateIdentification>
+            <chosenCandidateIdentification>3a89019a-87ba-45b6-ac92-501ace75d05f</chosenCandidateIdentification>
+            <chosenCandidateIdentification>ff671047-7e0f-4198-974f-0041a55f1c70</chosenCandidateIdentification>
+          </ballot>
+          <ballot>
+            <chosenListIdentification>99</chosenListIdentification>
+            <chosenCandidateListIdentification>4ea3eb45-4872-3418-81d9-1e928937fc1b</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>c2275508-2e7e-33e7-8fb8-4aaa48979288</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>0e08a1c6-62d3-3e54-8642-6792536ba039</chosenCandidateListIdentification>
+            <chosenCandidateListIdentification>899e6604-8374-370d-961c-e1537d2f7d53</chosenCandidateListIdentification>
+            <chosenCandidateIdentification>93d09b22-5b53-46cd-97c3-ae9cb122eab0</chosenCandidateIdentification>
+            <chosenCandidateIdentification>25d225ee-2a75-49ac-b8f5-18a1be37f574</chosenCandidateIdentification>
+          </ballot>
           <ballot>
             <chosenListIdentification>9ef97382-006e-4e3d-b079-1b7e53da339b</chosenListIdentification>
             <chosenCandidateIdentification>3a89019a-87ba-45b6-ac92-501ace75d05f</chosenCandidateIdentification>
@@ -67,42 +103,6 @@
             <chosenCandidateIdentification>04998ee9-33ce-4aae-beec-5fa4159e1ec0</chosenCandidateIdentification>
             <chosenCandidateIdentification>25d225ee-2a75-49ac-b8f5-18a1be37f574</chosenCandidateIdentification>
           </ballot>
-          <ballot>
-            <chosenListIdentification>99</chosenListIdentification>
-            <chosenCandidateListIdentification>4ea3eb45-4872-3418-81d9-1e928937fc1b</chosenCandidateListIdentification>
-            <chosenCandidateListIdentification>d2838d83-b21e-3758-b3db-428094b8c39f</chosenCandidateListIdentification>
-            <chosenCandidateListIdentification>c2275508-2e7e-33e7-8fb8-4aaa48979288</chosenCandidateListIdentification>
-            <chosenCandidateListIdentification>0e08a1c6-62d3-3e54-8642-6792536ba039</chosenCandidateListIdentification>
-            <chosenCandidateListIdentification>899e6604-8374-370d-961c-e1537d2f7d53</chosenCandidateListIdentification>
-            <chosenCandidateListIdentification>1a6ea144-5fe6-376a-a659-aa8d72bb2ad8</chosenCandidateListIdentification>
-          </ballot>
-          <ballot>
-            <chosenListIdentification>99</chosenListIdentification>
-            <chosenCandidateListIdentification>4ea3eb45-4872-3418-81d9-1e928937fc1b</chosenCandidateListIdentification>
-            <chosenCandidateListIdentification>d2838d83-b21e-3758-b3db-428094b8c39f</chosenCandidateListIdentification>
-            <chosenCandidateListIdentification>c2275508-2e7e-33e7-8fb8-4aaa48979288</chosenCandidateListIdentification>
-            <chosenCandidateListIdentification>0e08a1c6-62d3-3e54-8642-6792536ba039</chosenCandidateListIdentification>
-            <chosenCandidateListIdentification>899e6604-8374-370d-961c-e1537d2f7d53</chosenCandidateListIdentification>
-            <chosenCandidateIdentification>ff671047-7e0f-4198-974f-0041a55f1c70</chosenCandidateIdentification>
-          </ballot>
-          <ballot>
-            <chosenListIdentification>99</chosenListIdentification>
-            <chosenCandidateListIdentification>4ea3eb45-4872-3418-81d9-1e928937fc1b</chosenCandidateListIdentification>
-            <chosenCandidateListIdentification>d2838d83-b21e-3758-b3db-428094b8c39f</chosenCandidateListIdentification>
-            <chosenCandidateListIdentification>c2275508-2e7e-33e7-8fb8-4aaa48979288</chosenCandidateListIdentification>
-            <chosenCandidateListIdentification>0e08a1c6-62d3-3e54-8642-6792536ba039</chosenCandidateListIdentification>
-            <chosenCandidateListIdentification>899e6604-8374-370d-961c-e1537d2f7d53</chosenCandidateListIdentification>
-            <chosenCandidateListIdentification>1a6ea144-5fe6-376a-a659-aa8d72bb2ad8</chosenCandidateListIdentification>
-          </ballot>
-          <ballot>
-            <chosenListIdentification>99</chosenListIdentification>
-            <chosenCandidateListIdentification>0e08a1c6-62d3-3e54-8642-6792536ba039</chosenCandidateListIdentification>
-            <chosenCandidateListIdentification>1a6ea144-5fe6-376a-a659-aa8d72bb2ad8</chosenCandidateListIdentification>
-            <chosenCandidateIdentification>1da9fbd3-07a5-4d9e-b3c1-2342a07684f2</chosenCandidateIdentification>
-            <chosenCandidateIdentification>cdd0f070-a3a2-4a89-b525-fa19825d1305</chosenCandidateIdentification>
-            <chosenCandidateIdentification>9b175406-327d-42a2-9979-fcefb95e7620</chosenCandidateIdentification>
-            <chosenCandidateIdentification>25d225ee-2a75-49ac-b8f5-18a1be37f574</chosenCandidateIdentification>
-          </ballot>
         </election>
       </domainOfInfluence>
       <domainOfInfluence>
@@ -110,16 +110,16 @@
         <election>
           <electionIdentification>majorz_test</electionIdentification>
           <ballot>
-            <chosenWriteInsCandidateValue>Abcdefg hijklmnop .</chosenWriteInsCandidateValue>
-          </ballot>
-          <ballot>
             <chosenWriteInsCandidateValue>DROP TABLE COMMAND</chosenWriteInsCandidateValue>
           </ballot>
           <ballot>
-            <chosenCandidateIdentification>b5c605ec-9398-41d9-b934-006c548381c3</chosenCandidateIdentification>
+            <chosenWriteInsCandidateValue>Abcdefg hijklmnop .</chosenWriteInsCandidateValue>
           </ballot>
           <ballot>
             <chosenWriteInsCandidateValue>Àbélàrd Ôdèlörd (04/12/1986)</chosenWriteInsCandidateValue>
+          </ballot>
+          <ballot>
+            <chosenCandidateIdentification>9bfe1f69-6d35-4966-b281-a5dc39655e3a</chosenCandidateIdentification>
           </ballot>
           <ballot>
             <chosenWriteInsCandidateValue>Ÿ¢œþõ Æðžøå-Ðûñïç'ëß</chosenWriteInsCandidateValue>
@@ -137,7 +137,10 @@
         <election>
           <electionIdentification>majorz_test</electionIdentification>
           <ballot>
-            <chosenCandidateIdentification>9bfe1f69-6d35-4966-b281-a5dc39655e3a</chosenCandidateIdentification>
+            <chosenWriteInsCandidateValue>chulfvbhjakdbhqvkh vkhqwklecn haq.qw.kjeqiwjhaslfhjasdqahf fasdmnklfnsfklj/sfkslmnfv()àéèpéàlpè</chosenWriteInsCandidateValue>
+          </ballot>
+          <ballot>
+            <chosenCandidateListIdentification>1cde3adc-d3b8-3077-95b4-21ac2958a8fe</chosenCandidateListIdentification>
           </ballot>
         </election>
       </domainOfInfluence>
@@ -157,12 +160,6 @@
             <chosenAnswerIdentification>004e5a94-c242-3ba4-837b-131b5698eaa7</chosenAnswerIdentification>
             <chosenAnswerIdentification>e6467637-1921-3c4f-b669-88ba2f73a193</chosenAnswerIdentification>
           </ballot>
-          <ballot>
-            <chosenAnswerIdentification>16ac94e3-0c72-3570-9df9-050ebb18a9cc</chosenAnswerIdentification>
-            <chosenAnswerIdentification>d7a1b387-a90c-31ca-bfc2-ad038a1d9816</chosenAnswerIdentification>
-            <chosenAnswerIdentification>562a2034-f9a8-3783-abf5-624ec5ac08be</chosenAnswerIdentification>
-            <chosenAnswerIdentification>b4277282-00aa-3ccb-bdf2-4703ba2724e4</chosenAnswerIdentification>
-          </ballot>
         </vote>
         <election>
           <electionIdentification>nrw_test</electionIdentification>
@@ -175,18 +172,9 @@
             <chosenCandidateListIdentification>899e6604-8374-370d-961c-e1537d2f7d53</chosenCandidateListIdentification>
             <chosenCandidateListIdentification>1a6ea144-5fe6-376a-a659-aa8d72bb2ad8</chosenCandidateListIdentification>
           </ballot>
-          <ballot>
-            <chosenListIdentification>244ab111-a5d4-4090-bed3-79f850a27fa1</chosenListIdentification>
-            <chosenCandidateIdentification>6eb5e01e-755a-4794-9781-b76a32e7175c</chosenCandidateIdentification>
-            <chosenCandidateIdentification>1d48f2f5-08a3-4d1f-be5e-80cfb6ed76e4</chosenCandidateIdentification>
-            <chosenCandidateIdentification>93d09b22-5b53-46cd-97c3-ae9cb122eab0</chosenCandidateIdentification>
-            <chosenCandidateIdentification>8ed07d87-b81d-4dc8-aaeb-0d5d29a1c2dd</chosenCandidateIdentification>
-            <chosenCandidateIdentification>8c12fee2-619f-47e1-82dd-cd4314c95807</chosenCandidateIdentification>
-            <chosenCandidateIdentification>f5074d62-71f3-4a0e-9fb5-82cb03d4751e</chosenCandidateIdentification>
-          </ballot>
         </election>
       </domainOfInfluence>
     </countingCircle>
   </ballotsBox>
-  <signature>QUjxZGSOM91YMy2r6eqFgSl1RyPfnCF0bkEDWF9BrPmZAZg0GM45CT16rjoIYvBy7hp2v7sHInG7rftDvJmQpPasJL/m6quqN2VOxaOPa+V6daoQESNqBsV6Z0VxzS+vRRfgziCxmdO6EQH8brsjmwP5OjLL+MtBVHGcPZucp7naPaAk7v11lSrwOfrlb5/7ama0HjS/EO9lWqSYxsSz2GmMtPSc4PJ3EDrXKC9rrHDGcov9fUSRv1Dyryyqj0JaDRo7WawoqR5o0iCMYEEct3nZyvk1RwFdVa6ohEjPZUM3ywnRZDQD82LbNwTQa+6f41zQABHhm28XHX/1vlGPHFGr/yeJngakcEKSBHTjSf+el8NWNQp4A/upBEWkDYbrwW1isDMnTHLsHLzTi2L0V+k0+3Q5Rnzfa5qDPC5urKmLlFZUULfRJYG78xdC9QbMBm86T/XyvLaGDoh2DpCM90BcPM/+x4P0YkjFFW+uRev/nrvs2c+wF7Gw/5C+Br4z</signature>
+  <signature>DPyAZHtkJR8E5mQgo17ZVx/Mx7YuSzFLYKCi39DwHFbAvWlJlW5GvN+aAg0qd4gvsdgeFI4GH3Q4I31tpfgRCQY/t3CjHDmTEFTiux5GwNjvtwwps0/2B+ltQum1FOcbm3lnIvOJuD84aEYgVfYc7QLkqqDllYsMeU8BRrQAv7TZQ+s36CjCd/jKTcrev65saBXOKpwxj82e8clHPVUJC8sPujfDOOaNZLjxsYOe5j5oF6kVXOyAGY0HTwKPwKvJoidycHmMAsulN76xEzC6CdIs0QJ3LG5XPKxMDi5V02IkXCgp2C/eXL0qk5wzzzsLRicLi+2OoAZk9LnfbcRDy77OkAJ7N0Z1KXa8ELtKqnkM6l922G/OIyVFBvddz6Zh0AKib0YFvJlP4/F/TaXcEVE8mtipeU8+kdeoXWem6KEiz4TwAP6+lnYXHRrT/5M98K9otJ7w97lPvRNYbdmukYws6GwQPiBkrOS0/6sRX7LpPjyUV5Wc4rJN+Aj1Fg5k</signature>
 </results>

@@ -102,6 +102,7 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 		final GqGroup encryptionGroup = context.getEncryptionGroup();
 		final String ee = context.getElectionEventId();
 		final String bb = context.getBallotBoxId();
+		final String vcs = context.getVerificationCardSetId();
 		final int psi = context.getNumberOfSelectableVotingOptions();
 		final PrimesMappingTable pTable = context.getPrimesMappingTable();
 		final ElGamalMultiRecipientPublicKey EL_pk = context.getElectionPublicKey();
@@ -162,6 +163,7 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 			final VerifyVotingClientProofsContext verifyVotingClientProofsContext = new VerifyVotingClientProofsContext.Builder()
 					.setEncryptionGroup(encryptionGroup)
 					.setElectionEventId(ee)
+					.setVerificationCardSetId(vcs)
 					.setNumberOfSelectableVotingOptions(psi)
 					.setNumberOfAllowedWriteInsPlusOne(delta_hat)
 					.setPrimesMappingTable(pTable)

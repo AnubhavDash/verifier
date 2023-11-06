@@ -35,6 +35,7 @@ import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProo
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetActualVotingOptionsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetEncodedVotingOptionsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetHashContextAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetSemanticInformationAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.VerifyMixDecOfflineAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.VerifyVotingClientProofsAlgorithm;
@@ -53,14 +54,12 @@ class VerifyOnlineControlComponentsTest extends TallyVerificationTest {
 	static void setUpAll() {
 		final ElGamal elGamal = ElGamalFactory.createElGamal();
 		final ZeroKnowledgeProof zeroKnowledgeProof = ZeroKnowledgeProofFactory.createZeroKnowledgeProof();
-		final GetEncodedVotingOptionsAlgorithm getEncodedVotingOptionsAlgorithm = new GetEncodedVotingOptionsAlgorithm();
-		final GetActualVotingOptionsAlgorithm getActualVotingOptionsAlgorithm = new GetActualVotingOptionsAlgorithm();
-		final GetSemanticInformationAlgorithm getSemanticInformationAlgorithm = new GetSemanticInformationAlgorithm();
+		final GetHashContextAlgorithm getHashContextAlgorithm = new GetHashContextAlgorithm();
 
 		final VerifyMixDecOfflineAlgorithm verifyMixDecOfflineAlgorithm = new VerifyMixDecOfflineAlgorithm(elGamal, MixnetFactory.createMixnet(),
 				zeroKnowledgeProof);
 		final VerifyVotingClientProofsAlgorithm verifyVotingClientProofsAlgorithm = new VerifyVotingClientProofsAlgorithm(zeroKnowledgeProof,
-				getEncodedVotingOptionsAlgorithm, getActualVotingOptionsAlgorithm, getSemanticInformationAlgorithm);
+				getHashContextAlgorithm);
 		final GetMixnetInitialCiphertextsAlgorithm getMixnetInitialCiphertextsAlgorithm = new GetMixnetInitialCiphertextsAlgorithm(elGamal);
 
 		final VerifyOnlineControlComponentsBallotBoxAlgorithm verifyOnlineControlComponentsBallotBoxAlgorithm = new VerifyOnlineControlComponentsBallotBoxAlgorithm(

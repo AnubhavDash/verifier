@@ -53,6 +53,7 @@ import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.pro
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.FactorizeAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetActualVotingOptionsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetEncodedVotingOptionsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetHashContextAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetSemanticInformationAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.DecodeWriteInsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.IntegerToWriteInAlgorithm;
@@ -110,10 +111,8 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
-	public VerifyVotingClientProofsAlgorithm verifyVotingClientProofsAlgorithm(final ZeroKnowledgeProof zeroKnowledgeProof
-	) {
-		return new VerifyVotingClientProofsAlgorithm(zeroKnowledgeProof, getEncodedVotingOptionsAlgorithm(), getActualVotingOptionsAlgorithm(),
-				getSemanticInformationAlgorithm());
+	public VerifyVotingClientProofsAlgorithm verifyVotingClientProofsAlgorithm(final ZeroKnowledgeProof zeroKnowledgeProof) {
+		return new VerifyVotingClientProofsAlgorithm(zeroKnowledgeProof, getHashContextAlgorithm());
 	}
 
 	@Bean
@@ -139,6 +138,11 @@ public class VerifierBeanConfig {
 	@Bean
 	public GetSemanticInformationAlgorithm getSemanticInformationAlgorithm() {
 		return new GetSemanticInformationAlgorithm();
+	}
+
+	@Bean
+	public GetHashContextAlgorithm getHashContextAlgorithm() {
+		return new GetHashContextAlgorithm();
 	}
 
 	@Bean
