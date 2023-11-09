@@ -39,13 +39,14 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import jakarta.xml.bind.DatatypeConverter;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 
-import jakarta.xml.bind.DatatypeConverter;
 import net.lingala.zip4j.io.inputstream.ZipInputStream;
 import net.lingala.zip4j.model.LocalFileHeader;
 
@@ -147,7 +148,7 @@ public class DatasetService {
 		}
 
 		return Arrays.stream(Alias.values())
-				.filter(not(Alias.VOTING_SERVER::equals))
+				.filter(not(Alias.VOTING_SERVER::equals).and(not(Alias.PRINTING_COMPONENT::equals)))
 				.map(Alias::get)
 				.collect(Collectors.toMap(
 						Function.identity(),
