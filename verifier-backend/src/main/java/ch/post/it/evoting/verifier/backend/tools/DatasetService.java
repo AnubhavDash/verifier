@@ -109,12 +109,12 @@ public class DatasetService {
 		return dataset;
 	}
 
-	public void clean(final Dataset dataset, final boolean deleteTemporaryDirectory) {
+	public void clean(final Dataset dataset, final boolean deleteDirectory) {
 		checkNotNull(dataset);
 
 		final Path unpackFolder = dataset.getUnpackFolder();
-		if (deleteTemporaryDirectory) {
-			directoryService.deleteTemporaryDirectory(unpackFolder);
+		if (deleteDirectory) {
+			directoryService.deleteDirectory(unpackFolder);
 		}
 		dataset.removeUnpackFolder();
 	}

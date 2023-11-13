@@ -35,6 +35,9 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -75,9 +78,6 @@ import ch.post.it.evoting.verifier.backend.tools.DatasetService;
 import ch.post.it.evoting.verifier.backend.tools.DatasetType;
 import ch.post.it.evoting.verifier.backend.tools.DirectoryService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
-
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
 
 @Component
 public class VerifierProcessor {
@@ -172,23 +172,23 @@ public class VerifierProcessor {
 		checkNotNull(filename);
 
 		if (this.contextDataset != null) {
-			datasetService.clean(contextDataset, true);
+			datasetService.clean(contextDataset, false);
 		}
 		this.setupDataset = null;
 		this.tallyDataset = null;
 		this.datasetConfigurationSetup = null;
 		this.datasetConfigurationTally = null;
 
-		final Path tempDirectory;
+		final Path directory;
 		try {
-			tempDirectory = directoryService.createSecuredTemporaryDirectory("verifier-dataset");
+			directory = directoryService.createSecuredDirectory();
 		} catch (final IOException e) {
-			throw new DatasetExtractionException("Could not create secured temporary directory for dataset extraction.");
+			throw new DatasetExtractionException("Could not create secured directory for dataset extraction.");
 		}
 
-		LOGGER.debug("Secured temporary directory successfully created for dataset. [directory: {}]", tempDirectory);
+		LOGGER.debug("Secured directory successfully created for dataset. [directory: {}]", directory);
 
-		this.contextDataset = downloadDataset(datasetInputStream, tempDirectory, DatasetType.CONTEXT);
+		this.contextDataset = downloadDataset(datasetInputStream, directory, DatasetType.CONTEXT);
 
 		final CompletableFuture<String> datasetHashCompletableFuture = getDatasetHashCompletableFuture(contextDataset);
 		final Path inputDirectory = unpackDataset(contextDataset);
@@ -359,7 +359,7 @@ public class VerifierProcessor {
 	@PreDestroy
 	public void clean() {
 		if (this.contextDataset != null) {
-			datasetService.clean(contextDataset, true);
+			datasetService.clean(contextDataset, false);
 			this.contextDataset = null;
 		}
 		if (this.setupDataset != null) {

@@ -167,6 +167,8 @@ export class ReportOverviewComponent implements OnInit {
     this.processorService.changeMode().subscribe((_value) => {
       this.filename = '';
       this.hash = '';
+      this.contextFilename = '';
+      this.contextHash = '';
       this.startDisabled = true;
       this.datasetLoadingError = false;
       this.verifierMode = newVerifierMode;
@@ -187,7 +189,7 @@ export class ReportOverviewComponent implements OnInit {
       return;
     }
 
-    if (this.filename) {
+    if (this.contextFilename || this.filename) {
       this.triggerModal = true;
       return;
     }

@@ -16,14 +16,28 @@
           </div>
         </div>
         <div class="row mb-2">
-          <div class="col-2 offset-2">
+          <div class="col-2">
+            <div aria-controls="modalCenter" class="btn-group btn-block">
+              <label [class.active]="isSetupMode()" class="btn btn-outline-dark">
+                <input (click)="changeModeToSetup()" [disabled]="(processStarted && !isProcessComplete()) || isDatasetLoading()" autocomplete="off"
+                       class="custom-control-input" data-target="#modalCenter" data-toggle="modal" id="setupMode" type="radio">Setup Mode
+              </label>
+              <label [class.active]="isTallyMode()" class="btn btn-outline-dark">
+                <input (click)="changeModeToTally()" [disabled]="(processStarted && !isProcessComplete()) || isDatasetLoading()" autocomplete="off"
+                       class="custom-control-input" data-target="#modalCenter" data-toggle="modal" id="tallyMode" type="radio">Tally Mode
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div *ngIf="verifierMode" class="col-2">
             <button (click)="fileUploadContext.click()" [disabled]="isDatasetLoading() || (processStarted && !isProcessComplete())"
                     class="btn btn-block upload-button btn-secondary text-center"><i aria-hidden="true" class="bi-upload"></i> Upload Context
               Dataset
             </button>
           </div>
           <div class="col-8 mt-2">
-            <span *ngIf="!contextFilename && !isDatasetLoading() && !contextDatasetLoadingError">Not uploaded yet. Click to upload one</span>
+            <span *ngIf="verifierMode && !contextFilename && !isDatasetLoading() && !contextDatasetLoadingError">Not uploaded yet. Click to upload one</span>
             <span *ngIf="!contextFilename && contextDatasetLoading">
                   <div class="spinner-border spinner-border-sm text-primary" role="status">
                     <span class="sr-only">In progress...</span>
@@ -40,31 +54,19 @@
           </div>
         </div>
         <div class="row mb-2">
-          <div class="col-2">
-            <div aria-controls="modalCenter" class="btn-group btn-block">
-              <label [class.active]="isSetupMode()" class="btn btn-outline-dark">
-                <input (click)="changeModeToSetup()" [disabled]="(processStarted && !isProcessComplete()) || isDatasetLoading()" autocomplete="off"
-                       class="custom-control-input" data-target="#modalCenter" data-toggle="modal" id="setupMode" type="radio">Setup Mode
-              </label>
-              <label [class.active]="isTallyMode()" class="btn btn-outline-dark">
-                <input (click)="changeModeToTally()" [disabled]="(processStarted && !isProcessComplete()) || isDatasetLoading()" autocomplete="off"
-                       class="custom-control-input" data-target="#modalCenter" data-toggle="modal" id="tallyMode" type="radio">Tally Mode
-              </label>
-            </div>
-            <div *ngIf="triggerModal" aria-hidden="true" aria-labelledby="modalCenterTitle" class="modal fade" id="modalCenter"
-                 role="dialog" tabindex="-1">
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="modalCenterTitle">Careful!</h5>
-                  </div>
-                  <div class="modal-body">
-                    Are you sure you want to change the mode? All information will be lost.
-                  </div>
-                  <div class="modal-footer">
-                    <button (click)="this.triggerModal=false" class="btn btn-secondary" data-dismiss="modal" type="button">Keep mode</button>
-                    <button (click)="changeMode()" class="btn btn-danger" data-dismiss="modal" type="button">Change mode</button>
-                  </div>
+          <div *ngIf="triggerModal" aria-hidden="true" aria-labelledby="modalCenterTitle" class="modal fade" id="modalCenter"
+               role="dialog" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalCenterTitle">Careful!</h5>
+                </div>
+                <div class="modal-body">
+                  Are you sure you want to change the mode? All information will be lost.
+                </div>
+                <div class="modal-footer">
+                  <button (click)="this.triggerModal=false" class="btn btn-secondary" data-dismiss="modal" type="button">Keep mode</button>
+                  <button (click)="changeMode()" class="btn btn-danger" data-dismiss="modal" type="button">Change mode</button>
                 </div>
               </div>
             </div>

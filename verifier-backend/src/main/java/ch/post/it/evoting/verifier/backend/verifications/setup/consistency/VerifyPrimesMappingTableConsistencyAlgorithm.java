@@ -334,18 +334,16 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 
 		return variantBallot.getTieBreakQuestion().stream()
 				.parallel()
-				.flatMap(tieBreakQuestionType -> {
-					return tieBreakQuestionType.getAnswer().stream()
-							.parallel()
-							.map(tiebreakAnswerType -> {
-								final String actualVotingOption = String.join(ALIAS_JOIN_DELIMITER, voteIdentification,
-										tiebreakAnswerType.getAnswerIdentification());
-								final String semanticInformation = getAnswerInformation(tiebreakAnswerType.isHiddenAnswer(),
-										tieBreakQuestionType.getBallotQuestion().getBallotQuestionInfo(), BallotQuestionInfo::getBallotQuestion,
-										tiebreakAnswerType.getAnswerInfo(), AnswerInformationType::getAnswer);
-								return new PartialPrimesMappingTableEntry(actualVotingOption, semanticInformation);
-							});
-				})
+				.flatMap(tieBreakQuestionType -> tieBreakQuestionType.getAnswer().stream()
+						.parallel()
+						.map(tiebreakAnswerType -> {
+							final String actualVotingOption = String.join(ALIAS_JOIN_DELIMITER, voteIdentification,
+									tiebreakAnswerType.getAnswerIdentification());
+							final String semanticInformation = getAnswerInformation(tiebreakAnswerType.isHiddenAnswer(),
+									tieBreakQuestionType.getBallotQuestion().getBallotQuestionInfo(), BallotQuestionInfo::getBallotQuestion,
+									tiebreakAnswerType.getAnswerInfo(), AnswerInformationType::getAnswer);
+							return new PartialPrimesMappingTableEntry(actualVotingOption, semanticInformation);
+						}))
 				.collect(Collectors.toSet());
 	}
 

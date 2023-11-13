@@ -41,54 +41,79 @@ import java.nio.file.attribute.AclEntry;
 import java.nio.file.attribute.AclFileAttributeView;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.nio.file.attribute.UserPrincipal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 
 @Service
 public class DirectoryService {
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(DirectoryService.class);
 
-	public DirectoryService() {
-		//intentionally left blank
+	private static final String PREFIX = "verifier-dataset";
+	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH_mm_ss");
+
+	private final Path datasetUnzipLocation;
+
+	public DirectoryService(
+			@Value("${dataset.unzip.location:}")
+			final Path datasetUnzipLocation) {
+
+		if (datasetUnzipLocation == null) {
+			this.datasetUnzipLocation = Path.of(System.getProperty("java.io.tmpdir"));
+		} else {
+			try {
+				this.datasetUnzipLocation = datasetUnzipLocation.toRealPath(LinkOption.NOFOLLOW_LINKS);
+			} catch (final IOException e) {
+				throw new IllegalStateException(String.format("The provided directory path does not exist. [path: %s]", datasetUnzipLocation));
+			}
+		}
+
+		LOGGER.debug("Unzip location set. [path: {}]", this.datasetUnzipLocation);
 	}
 
 	/**
-	 * Creates a new directory in the default temporary-file directory, using the given prefix to generate its name. The resulting Path is secured so
-	 * that only the current user can access
+	 * Creates a new directory in configured directory, using a prefix and the current timestamp to generate its name. The resulting Path is secured
+	 * so that only the current user can access
 	 *
-	 * @param prefix the prefix string to be used in generating the directory's name; may be null
-	 * @return the path to the newly created directory
-	 * @throws IOException if an I/O error occurs or the temporary-file directory does not exist
+	 * @return the path to the newly created directory.
+	 * @throws IOException if an I/O error occurs during directory creation.
 	 */
-	public Path createSecuredTemporaryDirectory(final String prefix) throws IOException {
-		@SuppressWarnings("java:S5443") // The security of the directory is set just after this creation
-		final Path tempDirectory = Files.createTempDirectory(prefix);
-		if (!secureDirectory(tempDirectory)) {
-			LOGGER.warn("Unable to set the security on the temporary directory that only the current user can access.");
+	public Path createSecuredDirectory() throws IOException {
+		final LocalDateTime now = LocalDateTime.now();
+		final String timestamp = dateTimeFormatter.format(now);
+
+		final Path directory = Files.createDirectory(datasetUnzipLocation.resolve(Path.of(PREFIX + "-" + timestamp)));
+		if (!secureDirectory(directory)) {
+			LOGGER.warn("Unable to set the security on the directory that only the current user can access.");
 		}
-		return tempDirectory;
+		LOGGER.info("Unzip directory has been created. [path: {}]", directory);
+
+		return directory;
 	}
 
 	/**
 	 * Recursively delete the given directory
 	 *
-	 * @param deleteDirectory the directory to delete
+	 * @param directoryToDelete the directory to delete
 	 * @throws NullPointerException     if the path is null
 	 * @throws IllegalArgumentException if the path is not a directory
 	 */
-	public void deleteTemporaryDirectory(final Path deleteDirectory) {
-		checkNotNull(deleteDirectory, "the path must be not null");
-		checkArgument(Files.isDirectory(deleteDirectory), "Given path must be a directory");
+	public void deleteDirectory(final Path directoryToDelete) {
+		checkNotNull(directoryToDelete);
+		checkArgument(Files.isDirectory(directoryToDelete), "Given path must be a directory");
 		try {
-			FileSystemUtils.deleteRecursively(deleteDirectory);
-			LOGGER.debug("Temporary directory successfully deleted.");
+			FileSystemUtils.deleteRecursively(directoryToDelete);
+			LOGGER.debug("Directory successfully deleted.");
 		} catch (final IOException e) {
-			LOGGER.warn("Unable to delete the existing temporary directory");
+			LOGGER.warn("Unable to delete the existing directory");
 		}
 	}
 

@@ -31,6 +31,7 @@ import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -54,7 +55,16 @@ class DatasetServiceTest {
 			.toString();
 	private static final String DATASET_TALLY_EXPECTED_FILE = "controlComponentBallotBoxPayload_1.json";
 	private static final String DATASET_TALLY_EXPECTED_FOLDER = Paths.get("tally", "ballot_boxes", "0E65660B5AF70D18DA2D47C3F4718102").toString();
-	private final DatasetService datasetService = new DatasetService(new DirectoryService(), new PathService());
+
+	private static DatasetService datasetService;
+
+	@TempDir
+	private static Path datasetTempDir;
+
+	@BeforeAll
+	static void setUpAll() {
+		datasetService = new DatasetService(new DirectoryService(datasetTempDir), new PathService());
+	}
 
 	@TempDir
 	private Path zipDirectory;
