@@ -52,6 +52,7 @@ class DatasetConfigurationTest {
 				.setElectionEventId(electionEventId)
 				.setAliasesToFingerprints(aliasesToFingerprints)
 				.setElectionEventName("ElectionEvent")
+				.setElectionEventSeed("seed")
 				.setElectionEventDate("25.11.2022")
 				.setNumberOfElections(2)
 				.setNumberOfVotes(1)

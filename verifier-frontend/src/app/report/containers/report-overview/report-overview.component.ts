@@ -62,6 +62,7 @@ export class ReportOverviewComponent implements OnInit {
   fingerprints: Map<string, string> = new Map();
   appVersion = '';
   electionEventName = '';
+  electionEventSeed = '';
   electionEventDate: string;
   numberOfElections = 0;
   numberOfVotes = 0;
@@ -444,6 +445,7 @@ export class ReportOverviewComponent implements OnInit {
     this.electionEventId = '';
     this.fingerprints = new Map();
     this.electionEventName = '';
+    this.electionEventSeed = '';
     this.numberOfElections = 0;
     this.numberOfVotes = 0;
     this.numberOfNonTestBallotBoxes = 0;
@@ -460,6 +462,7 @@ export class ReportOverviewComponent implements OnInit {
           this.electionEventId = configuration.context.electionEventId;
           this.fingerprints = configuration.context.aliasesToFingerprints;
           this.electionEventName = configuration.context.electionEventName;
+          this.electionEventSeed = configuration.context.electionEventSeed;
           this.electionEventDate = configuration.context.electionEventDate;
           this.numberOfElections = configuration.context.numberOfElections;
           this.numberOfVotes = configuration.context.numberOfVotes;

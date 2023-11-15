@@ -53,6 +53,7 @@ import com.google.common.collect.MoreCollectors;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.evotinglibraries.domain.encryption.StreamedEncryptionDecryptionService;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.EncryptionParametersPayload;
 import ch.post.it.evoting.evotinglibraries.domain.validations.PasswordValidation;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
@@ -196,15 +197,19 @@ public class VerifierProcessor {
 		// Get election event id and number of voters from election event context.
 		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContext(inputDirectory);
 
-		// Get election event name, election event date, number of elections, number of votes, number of non-test ballot boxes, number of test
-		// ballot boxes, total number of authorized non-test voters and total number of test voters
-		final Configuration configuration = electionDataExtractionService.getCantonConfig(inputDirectory);
-
 		final String electionEventId = electionEventContext.electionEventId();
 		final Map<Boolean, Integer> testBallotBoxToTotalNumberOfVoters = electionEventContext.verificationCardSetContexts().stream()
 				.collect(Collectors.partitioningBy(
 						VerificationCardSetContext::testBallotBox,
 						Collectors.summingInt(VerificationCardSetContext::numberOfVotingCards)));
+
+		// Get election event name, election event date, number of elections, number of votes, number of non-test ballot boxes, number of test
+		// ballot boxes, total number of authorized non-test voters and total number of test voters.
+		final Configuration configuration = electionDataExtractionService.getCantonConfig(inputDirectory);
+
+		// Get election event seed.
+		final EncryptionParametersPayload encryptionParametersPayload = electionDataExtractionService.getEncryptionParametersPayload(inputDirectory);
+		final String electionEventSeed = encryptionParametersPayload.getSeed();
 
 		// Get the direct trust certificate fingerprints.
 		final Map<String, String> aliasesToFingerprints = datasetService.extractFingerprints();
@@ -247,6 +252,7 @@ public class VerifierProcessor {
 				.setElectionEventId(electionEventId)
 				.setAliasesToFingerprints(aliasesToFingerprints)
 				.setElectionEventName(electionEventName)
+				.setElectionEventSeed(electionEventSeed)
 				.setElectionEventDate(formattedElectionEventDate)
 				.setNumberOfElections(numberOfElections)
 				.setNumberOfVotes(numberOfVotes)

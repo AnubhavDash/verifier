@@ -28,6 +28,7 @@ public class DatasetConfigurationContext {
 	private final String electionEventId;
 	private final Map<String, String> aliasesToFingerprints;
 	private final String electionEventName;
+	private final String electionEventSeed;
 	private final String electionEventDate;
 	private final int numberOfElections;
 	private final int numberOfVotes;
@@ -38,14 +39,16 @@ public class DatasetConfigurationContext {
 	private final int totalNumberOfTestVoters;
 
 	private DatasetConfigurationContext(final String filename, final String hash, final String electionEventId,
-			final Map<String, String> aliasesToFingerprints, final String electionEventName, final String electionEventDate,
-			final int numberOfElections, final int numberOfVotes, final int numberOfBallots, final int numberOfNonTestBallotBoxes,
-			final int numberOfTestBallotBoxes, final int totalNumberOfAuthorizedNonTestVoters, final int totalNumberOfTestVoters) {
+			final Map<String, String> aliasesToFingerprints, final String electionEventName, final String electionEventSeed,
+			final String electionEventDate, final int numberOfElections, final int numberOfVotes, final int numberOfBallots,
+			final int numberOfNonTestBallotBoxes, final int numberOfTestBallotBoxes, final int totalNumberOfAuthorizedNonTestVoters,
+			final int totalNumberOfTestVoters) {
 		this.filename = checkNotNull(filename);
 		this.hash = checkNotNull(hash);
 		this.electionEventId = validateUUID(electionEventId);
 		this.aliasesToFingerprints = checkNotNull(aliasesToFingerprints);
 		this.electionEventName = checkNotNull(electionEventName);
+		this.electionEventSeed = checkNotNull(electionEventSeed);
 		this.electionEventDate = checkNotNull(electionEventDate);
 		this.numberOfElections = numberOfElections;
 		this.numberOfVotes = numberOfVotes;
@@ -83,6 +86,10 @@ public class DatasetConfigurationContext {
 
 	public String getElectionEventName() {
 		return electionEventName;
+	}
+
+	public String getElectionEventSeed() {
+		return electionEventSeed;
 	}
 
 	public String getElectionEventDate() {
@@ -123,6 +130,7 @@ public class DatasetConfigurationContext {
 		private String electionEventId;
 		private Map<String, String> aliasesToFingerprints;
 		private String electionEventName;
+		private String electionEventSeed;
 		private String electionEventDate;
 		private int numberOfElections;
 		private int numberOfVotes;
@@ -154,6 +162,11 @@ public class DatasetConfigurationContext {
 
 		public Builder setElectionEventName(final String electionEventName) {
 			this.electionEventName = electionEventName;
+			return this;
+		}
+
+		public Builder setElectionEventSeed(final String electionEventSeed) {
+			this.electionEventSeed = electionEventSeed;
 			return this;
 		}
 
@@ -198,8 +211,8 @@ public class DatasetConfigurationContext {
 		}
 
 		public DatasetConfigurationContext build() {
-			return new DatasetConfigurationContext(filename, hash, electionEventId, aliasesToFingerprints, electionEventName, electionEventDate,
-					numberOfElections, numberOfVotes, numberOfBallots, numberOfNonTestBallotBoxes, numberOfTestBallotBoxes,
+			return new DatasetConfigurationContext(filename, hash, electionEventId, aliasesToFingerprints, electionEventName, electionEventSeed,
+					electionEventDate, numberOfElections, numberOfVotes, numberOfBallots, numberOfNonTestBallotBoxes, numberOfTestBallotBoxes,
 					totalNumberOfAuthorizedNonTestVoters, totalNumberOfTestVoters);
 		}
 	}

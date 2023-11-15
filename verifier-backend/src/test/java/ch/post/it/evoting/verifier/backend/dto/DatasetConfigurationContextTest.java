@@ -54,6 +54,7 @@ class DatasetConfigurationContextTest {
 				.setElectionEventId(electionEventId)
 				.setAliasesToFingerprints(aliasesToFingerprints)
 				.setElectionEventName("ElectionEvent")
+				.setElectionEventSeed("seed")
 				.setElectionEventDate("25.11.2022")
 				.setNumberOfElections(2)
 				.setNumberOfVotes(1)
@@ -100,6 +101,14 @@ class DatasetConfigurationContextTest {
 	@DisplayName("null election event name throws NullPointerException")
 	void nullElectionEventNameThrows() {
 		builder.setElectionEventName(null);
+
+		assertThrows(NullPointerException.class, builder::build);
+	}
+
+	@Test
+	@DisplayName("null election event seed throws NullPointerException")
+	void nullElectionEventSeedThrows() {
+		builder.setElectionEventSeed(null);
 
 		assertThrows(NullPointerException.class, builder::build);
 	}

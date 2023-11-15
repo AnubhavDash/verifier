@@ -19,6 +19,7 @@ export class DatasetConfigurationContext {
   electionEventId: string;
   aliasesToFingerprints: Map<string, string>;
   electionEventName: string;
+  electionEventSeed: string;
   electionEventDate: string;
   numberOfElections: number;
   numberOfVotes: number;
