@@ -18,7 +18,6 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -109,15 +108,8 @@ public class VerifyOnlineControlComponents extends AbstractVerification {
 							inputDirectoryPath, verificationCardSetId);
 				}));
 
-		final ConcurrentMap<String, Integer> numberOfSelectionsByBallotBoxId = ballotBoxIds.stream()
-				.parallel()
-				.collect(Collectors.toConcurrentMap(Function.identity(), bb -> electionEventContext.verificationCardSetContexts().stream()
-						.filter(verificationCardSetContext -> verificationCardSetContext.ballotBoxId().equals(bb))
-						.collect(MoreCollectors.onlyElement())
-						.getNumberOfSelections()));
-
 		final VerificationResult verificationResult;
-		if (verifyOnlineControlComponentsAlgorithm.verifyOnlineControlComponents(electionEventId, ballotBoxIds, numberOfSelectionsByBallotBoxId,
+		if (verifyOnlineControlComponentsAlgorithm.verifyOnlineControlComponents(electionEventId, ballotBoxIds,
 				controlComponentBallotBoxesByBallotBoxId, controlComponentShufflesByBallotBoxId, setupComponentTallyDataByBallotBoxId,
 				electionEventContext, setupComponentPublicKeys
 		)) {

@@ -39,16 +39,17 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
  * Regroups the input values needed by the VerifyTallyControlComponent algorithm.
  *
  * <ul>
- * <li>ee, the election event context. Not null and a valid UUID.</li>
- * <li>bb, the vector of ballot box ids, sorted. Not null and valid UUIDs.</li>
- * <li>Last Online Control Component Shuffles, sorted by ballot box id. Not null.</li>
- * <li>Tally Control Component Shuffles, sorted by ballot box id. Not null.</li>
- * <li>Tally Control Component Votes, sorted by ballot box id. Not null.</li>
- * <li>Election Event Context. Not null.</li>
- * <li>Election Event Configuration, the configuration-anonymized as {@link Configuration}. Not null.</li>
- * <li>Tally Control Component Decryptions, the evoting-decrypt as {@link Results}. Not null.</li>
- * <li>Tally Control Component Results, the eCH-0110 as {@link Delivery}. Not null.</li>
- * <li>Tally Control Component eCH-0222 as {@link ch.ech.xmlns.ech_0222._1.Delivery}. Not null.</li>
+ *     <li>ee, the election event context. Not null and a valid UUID.</li>
+ *     <li>bb, the vector of ballot box ids, sorted. Not null and valid UUIDs.</li>
+ *     <li>Last Online Control Component Shuffles, sorted by ballot box id. Not null.</li>
+ *     <li>Tally Control Component Shuffles, sorted by ballot box id. Not null.</li>
+ *     <li>Tally Control Component Votes, sorted by ballot box id. Not null.</li>
+ *     <li>Election Event Context. Not null.</li>
+ *     <li>Setup Component Public Keys. Not null.</li>
+ *     <li>Election Event Configuration, the configuration-anonymized as {@link Configuration}. Not null.</li>
+ *     <li>Tally Control Component Decryptions, the evoting-decrypt as {@link Results}. Not null.</li>
+ *     <li>Tally Control Component Detailed Results, the eCH-0222 as {@link ch.ech.xmlns.ech_0222._1.Delivery}. Not null.</li>
+ *     <li>Tally Control Component Results, the eCH-0110 as {@link Delivery}. Not null.</li>
  * </ul>
  */
 public class VerifyTallyControlComponentInput {
@@ -62,17 +63,18 @@ public class VerifyTallyControlComponentInput {
 	private final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload;
 	private final Configuration electionEventConfiguration;
 	private final Results tallyControlComponentDecryptions;
+	private final ch.ech.xmlns.ech_0222._1.Delivery tallyControlComponentDetailedResults;
 	private final Delivery tallyControlComponentResults;
-	private final ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222;
 
-	public VerifyTallyControlComponentInput(final ElectionEventContextPayload electionEventContextPayload,
-			final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload,
-			final List<ControlComponentShufflePayload> controlComponentShufflePayloads,
+	public VerifyTallyControlComponentInput(final List<ControlComponentShufflePayload> controlComponentShufflePayloads,
 			final List<TallyComponentShufflePayload> tallyComponentShufflePayloads,
 			final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads,
+			final ElectionEventContextPayload electionEventContextPayload,
+			final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload,
 			final Configuration electionEventConfiguration,
 			final Results tallyControlComponentDecryptions,
-			final Delivery tallyControlComponentResults, final ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222) {
+			final ch.ech.xmlns.ech_0222._1.Delivery tallyControlComponentDetailedResults,
+			final Delivery tallyControlComponentResults) {
 		this.lastOnlineControlComponentShuffles = List.copyOf(checkNotNull(controlComponentShufflePayloads)).stream()
 				.filter(controlComponentShufflePayload -> controlComponentShufflePayload.getNodeId() == ControlComponentConstants.NODE_IDS.last())
 				.sorted(Comparator.comparing(ControlComponentShufflePayload::getBallotBoxId))
@@ -85,11 +87,12 @@ public class VerifyTallyControlComponentInput {
 		this.electionEventConfiguration = checkNotNull(electionEventConfiguration);
 		this.tallyControlComponentDecryptions = checkNotNull(tallyControlComponentDecryptions);
 		this.tallyControlComponentResults = checkNotNull(tallyControlComponentResults);
+		// The ElectionEventContext constructor ensures all ballot box ids are distinct.
 		this.ballotBoxIds = electionEventContextPayload.getElectionEventContext().verificationCardSetContexts().stream()
 				.map(VerificationCardSetContext::ballotBoxId)
 				.sorted(String::compareTo)
 				.toList();
-		this.tallyComponentEch0222 = checkNotNull(tallyComponentEch0222);
+		this.tallyControlComponentDetailedResults = checkNotNull(tallyControlComponentDetailedResults);
 
 		final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloadMap = Map.copyOf(checkNotNull(tallyComponentVotesPayloads));
 		this.tallyControlComponentVotes = tallyComponentVotesPayloadMap.values().stream()
@@ -142,8 +145,8 @@ public class VerifyTallyControlComponentInput {
 		return tallyControlComponentResults;
 	}
 
-	public ch.ech.xmlns.ech_0222._1.Delivery getTallyComponentEch0222() {
-		return tallyComponentEch0222;
+	public ch.ech.xmlns.ech_0222._1.Delivery getTallyControlComponentDetailedResults() {
+		return tallyControlComponentDetailedResults;
 	}
 
 	public Map<String, TallyComponentVotesPayload> getTallyComponentVotesPayloads() {

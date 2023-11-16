@@ -33,10 +33,11 @@ import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
 import ch.post.it.evoting.cryptoprimitives.mixnet.MixnetFactory;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetActualVotingOptionsAlgorithm;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetEncodedVotingOptionsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetBlankCorrectnessInformationAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetDeltaHatAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetHashContextAlgorithm;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetSemanticInformationAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetPsiAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetWriteInEncodedVotingOptionsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.VerifyMixDecOfflineAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.VerifyVotingClientProofsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixonline.GetMixnetInitialCiphertextsAlgorithm;
@@ -55,15 +56,20 @@ class VerifyOnlineControlComponentsTest extends TallyVerificationTest {
 		final ElGamal elGamal = ElGamalFactory.createElGamal();
 		final ZeroKnowledgeProof zeroKnowledgeProof = ZeroKnowledgeProofFactory.createZeroKnowledgeProof();
 		final GetHashContextAlgorithm getHashContextAlgorithm = new GetHashContextAlgorithm();
+		final GetBlankCorrectnessInformationAlgorithm getBlankCorrectnessInformationAlgorithm = new GetBlankCorrectnessInformationAlgorithm();
+		final GetWriteInEncodedVotingOptionsAlgorithm getWriteInEncodedVotingOptionsAlgorithm = new GetWriteInEncodedVotingOptionsAlgorithm();
+		final GetPsiAlgorithm getPsiAlgorithm = new GetPsiAlgorithm(getBlankCorrectnessInformationAlgorithm);
+		final GetDeltaHatAlgorithm getDeltaHatAlgorithm = new GetDeltaHatAlgorithm(getWriteInEncodedVotingOptionsAlgorithm);
 
 		final VerifyMixDecOfflineAlgorithm verifyMixDecOfflineAlgorithm = new VerifyMixDecOfflineAlgorithm(elGamal, MixnetFactory.createMixnet(),
 				zeroKnowledgeProof);
 		final VerifyVotingClientProofsAlgorithm verifyVotingClientProofsAlgorithm = new VerifyVotingClientProofsAlgorithm(zeroKnowledgeProof,
-				getHashContextAlgorithm);
+				getHashContextAlgorithm, getPsiAlgorithm, getDeltaHatAlgorithm);
 		final GetMixnetInitialCiphertextsAlgorithm getMixnetInitialCiphertextsAlgorithm = new GetMixnetInitialCiphertextsAlgorithm(elGamal);
 
 		final VerifyOnlineControlComponentsBallotBoxAlgorithm verifyOnlineControlComponentsBallotBoxAlgorithm = new VerifyOnlineControlComponentsBallotBoxAlgorithm(
-				verifyMixDecOfflineAlgorithm, verifyVotingClientProofsAlgorithm, getMixnetInitialCiphertextsAlgorithm);
+				verifyMixDecOfflineAlgorithm, verifyVotingClientProofsAlgorithm, getMixnetInitialCiphertextsAlgorithm, getPsiAlgorithm,
+				getDeltaHatAlgorithm);
 
 		verifyOnlineControlComponentsAlgorithm = spy(
 				new VerifyOnlineControlComponentsAlgorithm(verifyOnlineControlComponentsBallotBoxAlgorithm));
@@ -90,7 +96,7 @@ class VerifyOnlineControlComponentsTest extends TallyVerificationTest {
 	@DisplayName("algorithm returning false is failed")
 	void algorithmReturningFalse() {
 		doReturn(false).when(verifyOnlineControlComponentsAlgorithm)
-				.verifyOnlineControlComponents(any(), anyList(), anyMap(), anyMap(), anyMap(), anyMap(), any(), any());
+				.verifyOnlineControlComponents(any(), anyList(), anyMap(), anyMap(), anyMap(), any(), any());
 
 		final VerificationResult result = verification.verify(datasetPath);
 

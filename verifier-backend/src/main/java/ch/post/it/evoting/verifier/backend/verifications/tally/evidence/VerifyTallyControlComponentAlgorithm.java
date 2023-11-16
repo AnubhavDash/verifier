@@ -15,10 +15,8 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
@@ -58,60 +56,43 @@ public class VerifyTallyControlComponentAlgorithm {
 	/**
 	 * Verifies the Tally control component’s operations.
 	 *
-	 * @param input                           the input for the VerifyTallyControlComponent algorithm. Not null.
-	 * @param numberOfSelectableVotingOptions the number of selectable voting options grouped by ballot box id.
-	 * @param writeInVotingOptions            the write-in voting options grouped by ballot box id.
+	 * @param input the input for the VerifyTallyControlComponent algorithm as a {@link VerifyTallyControlComponentInput}. Not null.
 	 * @return true if the operations are valid for all ballot boxes, false otherwise.
 	 */
 	@SuppressWarnings("java:S117")
-	public boolean verifyTallyControlComponent(final VerifyTallyControlComponentInput input,
-			final Map<String, Integer> numberOfSelectableVotingOptions,
-			final Map<String, GroupVector<PrimeGqElement, GqGroup>> writeInVotingOptions) {
+	public boolean verifyTallyControlComponent(final VerifyTallyControlComponentInput input) {
 		checkNotNull(input);
-		checkNotNull(numberOfSelectableVotingOptions);
-		checkNotNull(writeInVotingOptions);
 
 		// Input.
 		final GqGroup encryptionGroup = input.getEncryptionGroup();
 		final String ee = input.getElectionEventId();
-		final List<String> bb = input.getBallotBoxIds();
+		final List<String> bb_vector = input.getBallotBoxIds();
 		final List<ControlComponentShufflePayload> lastOnlineControlComponentShuffles = input.getLastOnlineControlComponentShuffles();
-		final List<TallyComponentVotesPayload> tallyControlComponentVotes = input.getTallyControlComponentVotes();
 		final List<TallyComponentShufflePayload> tallyControlComponentShuffles = input.getTallyControlComponentShuffles();
+		final List<TallyComponentVotesPayload> tallyControlComponentVotes = input.getTallyControlComponentVotes();
 		final ElectionEventContext electionEventContext = input.getElectionEventContext();
 		final SetupComponentPublicKeys setupComponentPublicKeys = input.getSetupComponentPublicKeys();
 		final Configuration electionEventConfiguration = input.getElectionEventConfiguration();
+		final ch.ech.xmlns.ech_0222._1.Delivery tallyControlComponentDetailedResults = input.getTallyControlComponentDetailedResults();
 		final Results tallyControlComponentDecryptions = input.getTallyControlComponentDecryptions();
 		final Delivery tallyControlComponentResults = input.getTallyControlComponentResults();
-		final ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222 = input.getTallyComponentEch0222();
-		final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads = input.getTallyComponentVotesPayloads();
-
-		// Cross-checks.
-		checkArgument(bb.size() == numberOfSelectableVotingOptions.keySet().size(),
-				"There must be a number of selectable voting options for each ballot box.");
-		checkArgument(new HashSet<>(bb).equals(numberOfSelectableVotingOptions.keySet()),
-				"The number of selectable voting options must be for the input's ballot boxes.");
 
 		// Operation.
-		final int N_bb = bb.size();
+		final int N_bb = bb_vector.size();
 		final boolean tallyVerif = IntStream.range(0, N_bb)
 				.parallel()
 				.mapToObj(i -> {
-					final String bb_i = bb.get(i);
+					final String bb_i = bb_vector.get(i);
 
 					final VerificationCardSetContext verificationCardSetContext = electionEventContext.verificationCardSetContexts().stream()
 							.filter(vcsContext -> vcsContext.ballotBoxId().equals(bb_i))
 							.collect(MoreCollectors.onlyElement());
-					final GroupVector<PrimeGqElement, GqGroup> writeInVotingOptions_bb_i = writeInVotingOptions.get(bb_i);
 					final VerifyTallyControlComponentBallotBoxContext context_bb_i = new VerifyTallyControlComponentBallotBoxContext.Builder()
 							.setEncryptionGroup(encryptionGroup)
 							.setElectionEventId(ee)
 							.setBallotBoxId(bb_i)
 							.setElectoralBoardPublicKey(setupComponentPublicKeys.electoralBoardPublicKey())
 							.setPrimesMappingTable(verificationCardSetContext.primesMappingTable())
-							.setWriteInVotingOptions(writeInVotingOptions_bb_i)
-							.setNumberOfSelectableVotingOptions(numberOfSelectableVotingOptions.get(bb_i))
-							.setNumberOfAllowedWriteInsPlusOne(verificationCardSetContext.getNumberOfWriteIns() + 1)
 							.build();
 
 					final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_dec_4 = lastOnlineControlComponentShuffles.get(i)
@@ -145,11 +126,12 @@ public class VerifyTallyControlComponentAlgorithm {
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 
+		final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads = input.getTallyComponentVotesPayloads();
 		final VerifyTallyFilesInput verifyTallyFilesInput = new VerifyTallyFilesInput.Builder()
 				.cantonConfig(electionEventConfiguration)
 				.setTallyComponentDecrypt(tallyControlComponentDecryptions)
 				.setTallyComponentEch0110(tallyControlComponentResults)
-				.setTallyComponentEch0222(tallyComponentEch0222)
+				.setTallyComponentEch0222(tallyControlComponentDetailedResults)
 				.setTallyComponentVotesPayloads(tallyComponentVotesPayloads)
 				.build();
 		final boolean tallyFilesVerif = verifyTallyFilesAlgorithm.verifyTallyFiles(ee, verifyTallyFilesInput);

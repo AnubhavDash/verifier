@@ -24,6 +24,17 @@ import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPaylo
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 
+/**
+ * Regroups the input values needed by the VerifyTallyFiles algorithm.
+ *
+ * <ul>
+ *     <li>Election Event Configuration, the configuration-anonymized as {@link Configuration}. Not null.</li>
+ *     <li>Tally Control Component Decryptions, the evoting-decrypt as {@link Results}. Not null.</li>
+ *     <li>Tally Control Component Results, the eCH-0110 as {@link Delivery}. Not null.</li>
+ *     <li>Tally Control Component Detailed Results, the eCH-0222 as {@link ch.ech.xmlns.ech_0222._1.Delivery}. Not null.</li>
+ *     <li>L_decodedVotesbb, the list of all selected decoded voting options for each ballot box. Not null.</li>
+ * </ul>
+ */
 public class VerifyTallyFilesInput {
 
 	private final Configuration cantonConfig;
@@ -35,8 +46,7 @@ public class VerifyTallyFilesInput {
 	private VerifyTallyFilesInput(
 			final Configuration cantonConfig,
 			final Results tallyComponentDecrypt,
-			final Delivery tallyComponentEch0110,
-			final ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222,
+			final Delivery tallyComponentEch0110, final ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222,
 			final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads) {
 		this.cantonConfig = cantonConfig;
 		this.tallyComponentDecrypt = tallyComponentDecrypt;

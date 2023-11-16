@@ -41,14 +41,14 @@ import ch.post.it.evoting.evotinglibraries.domain.mixnet.VerifiablePlaintextDecr
  * Regroups the input values needed by the VerifyTallyControlComponentBallotBox algorithm.
  *
  * <ul>
- * <li>c<sub>dec, 4</sub>, the last online control component’s partially decrypted votes. Non-null.</li>
- * <li>c<sub>mix, 5</sub>, the tally component’s shuffled votes. Non-null.</li>
- * <li>pi<sub>mix, 5</sub>, the tally component’s shuffle proofs. Non-null.</li>
- * <li>m, the decrypted votes. Non-null.</li>
- * <li>pi<sub>dec, 5</sub>, the decryption proofs. Non-null.</li>
- * <li>L<sub>votes</sub>, the list of all selected encoded voting options. Non-null.</li>
- * <li>L<sub>decodedVotes</sub>, the list of all selected decoded voting options. Non-null.</li>
- * <li>L<sub>writeIns</sub>, the list of all selected decoded write-in votes. Non-null.</li>
+ *     <li>c<sub>dec, 4</sub>, the last online control component’s partially decrypted votes. Non-null.</li>
+ *     <li>c<sub>mix, 5</sub>, the tally component’s shuffled votes. Non-null.</li>
+ *     <li>pi<sub>mix, 5</sub>, the tally component’s shuffle proofs. Non-null.</li>
+ *     <li>m, the decrypted votes. Non-null.</li>
+ *     <li>pi<sub>dec, 5</sub>, the decryption proofs. Non-null.</li>
+ *     <li>L<sub>votes</sub>, the list of all selected encoded voting options. Non-null.</li>
+ *     <li>L<sub>decodedVotes</sub>, the list of all selected decoded voting options. Non-null.</li>
+ *     <li>L<sub>writeIns</sub>, the list of all selected decoded write-in votes. Non-null.</li>
  * </ul>
  */
 public class VerifyTallyControlComponentBallotBoxInput {
@@ -198,6 +198,12 @@ public class VerifyTallyControlComponentBallotBoxInput {
 					"There must be as many encoded as decoded voting options.");
 			checkArgument(selectedDecodedWriteInVotes.size() == selectedEncodedVotingOptions.size(),
 					"There must be as many decoded write-in votes as encoded voting options.");
+
+			checkArgument(allEqual(selectedDecodedVotingOptions.stream(), List::size),
+					"All selected decoded voting options must have the same size.");
+			checkArgument(selectedEncodedVotingOptions.isEmpty()
+							|| selectedEncodedVotingOptions.getElementSize() == selectedDecodedVotingOptions.get(0).size(),
+					"All selected encoded and decoded voting options must have the same size.");
 
 			checkArgument(allEqual(Stream.of(previousPartiallyDecryptedVotes, verifiableShuffle.shuffledCiphertexts(),
 							verifiablePlaintextDecryption.getDecryptedVotes(), verifiablePlaintextDecryption.getDecryptionProofs()), GroupVector::size),

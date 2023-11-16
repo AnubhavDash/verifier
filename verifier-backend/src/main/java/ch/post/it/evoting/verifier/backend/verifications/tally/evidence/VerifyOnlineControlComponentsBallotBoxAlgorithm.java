@@ -33,12 +33,13 @@ import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.mixnet.VerifiableShuffle;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.VerifiableDecryptions;
-import ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants;
 import ch.post.it.evoting.evotinglibraries.domain.common.ContextIds;
 import ch.post.it.evoting.evotinglibraries.domain.common.EncryptedVerifiableVote;
 import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetDeltaHatAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetPsiAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.VerifyMixDecInput;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.VerifyMixDecOfflineAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.VerifyMixDecOfflineContext;
@@ -60,14 +61,20 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 	private final VerifyMixDecOfflineAlgorithm verifyMixDecOfflineAlgorithm;
 	private final VerifyVotingClientProofsAlgorithm verifyVotingClientProofsAlgorithm;
 	private final GetMixnetInitialCiphertextsAlgorithm getMixnetInitialCiphertextsAlgorithm;
+	private final GetPsiAlgorithm getPsiAlgorithm;
+	private final GetDeltaHatAlgorithm getDeltaHatAlgorithm;
 
 	public VerifyOnlineControlComponentsBallotBoxAlgorithm(
 			final VerifyMixDecOfflineAlgorithm verifyMixDecOfflineAlgorithm,
 			final VerifyVotingClientProofsAlgorithm verifyVotingClientProofsAlgorithm,
-			final GetMixnetInitialCiphertextsAlgorithm getMixnetInitialCiphertextsAlgorithm) {
+			final GetMixnetInitialCiphertextsAlgorithm getMixnetInitialCiphertextsAlgorithm,
+			final GetPsiAlgorithm getPsiAlgorithm,
+			final GetDeltaHatAlgorithm getDeltaHatAlgorithm) {
 		this.verifyMixDecOfflineAlgorithm = verifyMixDecOfflineAlgorithm;
 		this.verifyVotingClientProofsAlgorithm = verifyVotingClientProofsAlgorithm;
 		this.getMixnetInitialCiphertextsAlgorithm = getMixnetInitialCiphertextsAlgorithm;
+		this.getPsiAlgorithm = getPsiAlgorithm;
+		this.getDeltaHatAlgorithm = getDeltaHatAlgorithm;
 	}
 
 	/**
@@ -81,7 +88,6 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 	 *                <li>Encryption group encryptionGroup</li>
 	 *                <li>Election event ID ee</li>
 	 *                <li>Ballot box ID bb</li>
-	 *                <li>Number of selectable voting options ψ ∈ [1, 120]</li>
 	 *                <li>Election event context</li>
 	 *                </ul>
 	 * @param input   the verification input consisting of
@@ -94,24 +100,29 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 	 */
 	@SuppressWarnings("java:S117")
 	public boolean verifyOnlineControlComponentsBallotBox(
-			final VerifyOnlineControlComponentsBallotBoxContext context, final VerifyOnlineControlComponentBallotBoxInput input) {
+			final VerifyOnlineControlComponentsBallotBoxContext context, final VerifyOnlineControlComponentsBallotBoxInput input) {
 		checkNotNull(context);
 		checkNotNull(input);
 
-		// Context
+		// Cross-group check.
+		checkArgument(context.getEncryptionGroup().equals(input.firstControlComponentBallotBox().getEncryptionGroup()),
+				"The context and input must have the same encryption group.");
+
+		// Context.
 		final GqGroup encryptionGroup = context.getEncryptionGroup();
 		final String ee = context.getElectionEventId();
 		final String bb = context.getBallotBoxId();
-		final String vcs = context.getVerificationCardSetId();
-		final int psi = context.getNumberOfSelectableVotingOptions();
-		final PrimesMappingTable pTable = context.getPrimesMappingTable();
 		final ElGamalMultiRecipientPublicKey EL_pk = context.getElectionPublicKey();
 		final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> EL_pk_1_to_4 = context.getCcmElectionPublicKeys();
 		final ElGamalMultiRecipientPublicKey EB_pk = context.getElectoralBoardPublicKey();
 		final ElGamalMultiRecipientPublicKey pk_CCR = context.getChoiceReturnCodesEncryptionPublicKey();
-		final int delta_hat = context.getNumberOfAllowedWriteInsPlusOne();
+		final String vcs = context.getVerificationCardSetId();
+		final int N_E = context.getNumberOfEligibleVoters();
+		final PrimesMappingTable pTable = context.getPrimesMappingTable();
+		final int psi = getPsiAlgorithm.getPsi(pTable);
+		final int delta_hat = getDeltaHatAlgorithm.getDeltaHat(pTable);
 
-		// Input
+		// Input.
 		final Map<String, ElGamalMultiRecipientPublicKey> KMap = input.verificationCardPublicKeyMap();
 		final ControlComponentBallotBoxPayload firstControlComponentBallotBox = input.firstControlComponentBallotBox();
 		// vc_1, E1_1, E1_tilde_1, E2_1, pi_Exp_1, pi_EqEnc_1
@@ -123,27 +134,20 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 		final List<VerifiableDecryptions> c_dec_j_pi_dec_j = controlComponentShuffles.stream().parallel()
 				.map(ControlComponentShufflePayload::getVerifiableDecryptions)
 				.toList();
-
-		// Cross-checks
-		checkArgument(firstControlComponentBallotBox.getEncryptionGroup().equals(encryptionGroup),
-				"The context and input must have the same encryption group.");
-
-		final int N_E = KMap.size();
 		final int N_C = confirmedEncryptedVotes.size();
-		checkArgument(N_E >= N_C);
-
-		final int nodeIdsSize = ControlComponentConstants.NODE_IDS.size();
-		checkArgument(c_mix_j_pi_mix_j.size() == nodeIdsSize, "There must be as many shuffle proofs as there are nodes. [nodeIdsSize: %s]",
-				nodeIdsSize);
-		checkArgument(c_dec_j_pi_dec_j.size() == nodeIdsSize, "There must be as many decryption proofs as there are nodes. [nodeIdsSize: %s]",
-				nodeIdsSize);
 		final int N_C_hat = c_mix_j_pi_mix_j.get(0).shuffledCiphertexts().size();
-		final int l = c_mix_j_pi_mix_j.get(0).shuffledCiphertexts().getElementSize();
 
-		// Requires
-		checkArgument(l == delta_hat,
-				"The number element size of the shuffled and the partially decrypted votes must correspond to the number of allowed write ins + 1. [l: %s, delta_hat: %s]",
-				l, delta_hat);
+		// Cross-checks.
+		checkArgument(KMap.size() == N_E,
+				"The size of the verification card public keys' key-value map must be equal to the number of eligible voters. [KMap_size: %s, N_E: %s]",
+				KMap.size(), N_E);
+		checkArgument(c_mix_j_pi_mix_j.get(0).shuffledCiphertexts().getElementSize() == delta_hat,
+				"The element size of the shuffled and the partially decrypted votes must correspond to the number of allowed write ins + 1. [l: %s, delta_hat: %s]",
+				c_mix_j_pi_mix_j.get(0).shuffledCiphertexts().getElementSize(), delta_hat);
+		checkArgument(confirmedEncryptedVotes.isEmpty() || confirmedEncryptedVotes.get(0).encryptedPartialChoiceReturnCodes().size() == psi,
+				"The size of the encrypted, partial Choice Return Codes must be equal to the number of selectable voting options. [psi: %s]", psi);
+
+		// Require.
 		checkArgument(N_C_hat >= 2, "There must be at least 2 shuffled votes.");
 		checkArgument(N_C >= 2 ? N_C_hat == N_C : N_C_hat == N_C + 2);
 		final List<String> vc_1 = confirmedEncryptedVotes.stream().parallel()
@@ -152,7 +156,7 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 				.toList();
 		checkArgument(hasNoDuplicates(vc_1), "The verification card IDs must not contain duplicates.");
 
-		// Operation
+		// Operation.
 		final Map<String, ElGamalMultiRecipientCiphertext> vcMap_1 = confirmedEncryptedVotes.stream().parallel()
 				.collect(Collectors.toMap(encryptedVerifiableVote -> encryptedVerifiableVote.contextIds().verificationCardId(),
 						EncryptedVerifiableVote::encryptedVote));
@@ -164,8 +168,6 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 					.setEncryptionGroup(encryptionGroup)
 					.setElectionEventId(ee)
 					.setVerificationCardSetId(vcs)
-					.setNumberOfSelectableVotingOptions(psi)
-					.setNumberOfAllowedWriteInsPlusOne(delta_hat)
 					.setPrimesMappingTable(pTable)
 					.build();
 
@@ -188,8 +190,9 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 			vcProofsVerif = true;
 		}
 
-		final GetMixnetInitialCiphertextsContext getMixnetInitialCiphertextsContext = new GetMixnetInitialCiphertextsContext(encryptionGroup, ee, bb);
-		final GetMixnetInitialCiphertextsInput getMixnetInitialCiphertextsInput = new GetMixnetInitialCiphertextsInput(delta_hat, vcMap_1, EL_pk);
+		final GetMixnetInitialCiphertextsContext getMixnetInitialCiphertextsContext = new GetMixnetInitialCiphertextsContext(encryptionGroup, ee, bb,
+				delta_hat);
+		final GetMixnetInitialCiphertextsInput getMixnetInitialCiphertextsInput = new GetMixnetInitialCiphertextsInput(vcMap_1, EL_pk);
 		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_init_1 = getMixnetInitialCiphertextsAlgorithm.getMixnetInitialCiphertexts(
 				getMixnetInitialCiphertextsContext, getMixnetInitialCiphertextsInput);
 

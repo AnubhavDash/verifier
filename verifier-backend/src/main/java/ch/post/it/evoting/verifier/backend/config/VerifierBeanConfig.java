@@ -52,13 +52,18 @@ import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.pro
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.proofofcorrectkeygeneration.VerifyKeyGenerationSchnorrProofsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.FactorizeAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetActualVotingOptionsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetBlankCorrectnessInformationAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetDeltaHatAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetEncodedVotingOptionsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetHashContextAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetPsiAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetSemanticInformationAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetWriteInEncodedVotingOptionsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.DecodeWriteInsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.IntegerToWriteInAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.IsWriteInOptionAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.QuadraticResidueToWriteInAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.ProcessPlaintextsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.VerifyMixDecOfflineAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.VerifyVotingClientProofsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixonline.GetMixnetInitialCiphertextsAlgorithm;
@@ -111,8 +116,11 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
-	public VerifyVotingClientProofsAlgorithm verifyVotingClientProofsAlgorithm(final ZeroKnowledgeProof zeroKnowledgeProof) {
-		return new VerifyVotingClientProofsAlgorithm(zeroKnowledgeProof, getHashContextAlgorithm());
+	public VerifyVotingClientProofsAlgorithm verifyVotingClientProofsAlgorithm(final ZeroKnowledgeProof zeroKnowledgeProof,
+			final GetHashContextAlgorithm getHashContextAlgorithm,
+			final GetPsiAlgorithm getPsiAlgorithm,
+			final GetDeltaHatAlgorithm getDeltaHatAlgorithm) {
+		return new VerifyVotingClientProofsAlgorithm(zeroKnowledgeProof, getHashContextAlgorithm, getPsiAlgorithm, getDeltaHatAlgorithm);
 	}
 
 	@Bean
@@ -123,6 +131,19 @@ public class VerifierBeanConfig {
 	@Bean
 	public GetMixnetInitialCiphertextsAlgorithm getMixnetInitialCiphertextsAlgorithm(final ElGamal elGamal) {
 		return new GetMixnetInitialCiphertextsAlgorithm(elGamal);
+	}
+
+	@Bean
+	public ProcessPlaintextsAlgorithm processPlaintextsAlgorithm(final ElGamal elGamal,
+			final FactorizeAlgorithm factorizeAlgorithm,
+			final DecodeWriteInsAlgorithm decodeWriteInsAlgorithm,
+			final GetEncodedVotingOptionsAlgorithm getEncodedVotingOptionsAlgorithm,
+			final GetActualVotingOptionsAlgorithm getActualVotingOptionsAlgorithm,
+			final GetWriteInEncodedVotingOptionsAlgorithm getWriteInEncodedVotingOptionsAlgorithm,
+			final GetPsiAlgorithm getPsiAlgorithm,
+			final GetDeltaHatAlgorithm getDeltaHatAlgorithm) {
+		return new ProcessPlaintextsAlgorithm(elGamal, factorizeAlgorithm, decodeWriteInsAlgorithm, getEncodedVotingOptionsAlgorithm,
+				getActualVotingOptionsAlgorithm, getWriteInEncodedVotingOptionsAlgorithm, getPsiAlgorithm, getDeltaHatAlgorithm);
 	}
 
 	@Bean
@@ -138,6 +159,26 @@ public class VerifierBeanConfig {
 	@Bean
 	public GetSemanticInformationAlgorithm getSemanticInformationAlgorithm() {
 		return new GetSemanticInformationAlgorithm();
+	}
+
+	@Bean
+	public GetBlankCorrectnessInformationAlgorithm getBlankCorrectnessInformationAlgorithm() {
+		return new GetBlankCorrectnessInformationAlgorithm();
+	}
+
+	@Bean
+	public GetWriteInEncodedVotingOptionsAlgorithm getWriteInEncodedVotingOptionsAlgorithm() {
+		return new GetWriteInEncodedVotingOptionsAlgorithm();
+	}
+
+	@Bean
+	public GetPsiAlgorithm getPsiAlgorithm(final GetBlankCorrectnessInformationAlgorithm getBlankCorrectnessInformationAlgorithm) {
+		return new GetPsiAlgorithm(getBlankCorrectnessInformationAlgorithm);
+	}
+
+	@Bean
+	public GetDeltaHatAlgorithm getDeltaHatAlgorithm(final GetWriteInEncodedVotingOptionsAlgorithm getWriteInEncodedVotingOptionsAlgorithm) {
+		return new GetDeltaHatAlgorithm(getWriteInEncodedVotingOptionsAlgorithm);
 	}
 
 	@Bean
