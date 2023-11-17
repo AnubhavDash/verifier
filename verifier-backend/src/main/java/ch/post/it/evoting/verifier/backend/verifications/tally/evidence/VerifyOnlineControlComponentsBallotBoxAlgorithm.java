@@ -190,8 +190,8 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 			vcProofsVerif = true;
 		}
 
-		final GetMixnetInitialCiphertextsContext getMixnetInitialCiphertextsContext = new GetMixnetInitialCiphertextsContext(encryptionGroup, ee, bb,
-				delta_hat);
+		final GetMixnetInitialCiphertextsContext getMixnetInitialCiphertextsContext =
+				new GetMixnetInitialCiphertextsContext(encryptionGroup, delta_hat);
 		final GetMixnetInitialCiphertextsInput getMixnetInitialCiphertextsInput = new GetMixnetInitialCiphertextsInput(vcMap_1, EL_pk);
 		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_init_1 = getMixnetInitialCiphertextsAlgorithm.getMixnetInitialCiphertexts(
 				getMixnetInitialCiphertextsContext, getMixnetInitialCiphertextsInput);
