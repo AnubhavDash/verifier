@@ -24,6 +24,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.math.Base16Alphabet;
 import ch.post.it.evoting.cryptoprimitives.math.Random;
 import ch.post.it.evoting.cryptoprimitives.math.RandomFactory;
 import ch.post.it.evoting.evotinglibraries.domain.common.Constants;
@@ -38,7 +39,7 @@ class DatasetConfigurationTest {
 	@BeforeEach
 	void setup() {
 		final Random random = RandomFactory.createRandom();
-		final String electionEventId = random.genRandomBase16String(Constants.ID_LENGTH);
+		final String electionEventId = random.genRandomString(Constants.ID_LENGTH, Base16Alphabet.getInstance());
 		final String contextFilename = String.format("dataset-context-%s.zip", electionEventId);
 		final String hash = "DC:D5:9D:15:4C:AB:F3:09:17:25:A1:55:F8:07:E6:DD:10:F5:F6:70:4D:28:5F:77:A9:79:BB:E1:0A:DD:D6:9C";
 		final Map<String, String> aliasesToFingerprints = Map.of(

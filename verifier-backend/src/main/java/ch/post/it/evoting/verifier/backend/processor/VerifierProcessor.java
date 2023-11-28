@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2023 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -59,7 +59,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Authorization
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.ElectionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.ElectionGroupType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.VoteType;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
@@ -396,16 +396,16 @@ public class VerifierProcessor {
 						.map(countingCircle -> countingCircle.getDomainOfInfluence().stream()
 								.findFirst()
 								.map(domainOfInfluence -> {
-									final List<VoteType> voteList = domainOfInfluence.getVote();
-									final List<ElectionType> electionList = domainOfInfluence.getElection();
-									final boolean hasVotes = Objects.nonNull(voteList) && !voteList.isEmpty();
-									final boolean hasElections = Objects.nonNull(electionList) && !electionList.isEmpty();
+									final List<VoteType> votes = domainOfInfluence.getVote();
+									final List<ElectionGroupType> electionGroups = domainOfInfluence.getElectionGroup();
+									final boolean hasVotes = Objects.nonNull(votes) && !votes.isEmpty();
+									final boolean hasElections = Objects.nonNull(electionGroups) && !electionGroups.isEmpty();
 
 									if (hasVotes) {
-										return voteList.get(0).getBallot().size();
+										return votes.get(0).getBallot().size();
 									} else {
 										if (hasElections) {
-											return electionList.get(0).getBallot().size();
+											return electionGroups.get(0).getBallot().size();
 										} else {
 											return 0;
 										}

@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2023 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,6 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 
+import static ch.post.it.evoting.evotinglibraries.domain.validations.EncryptionParametersSeedValidation.validateSeed;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -57,11 +58,12 @@ public class VerifyEncryptionParametersAlgorithm {
 		checkNotNull(p_hat);
 		checkNotNull(q_hat);
 		checkNotNull(g_hat);
-		checkNotNull(seed);
+		validateSeed(seed);
 		checkArgument(p_hat.compareTo(q_hat.shiftLeft(1).add(BigInteger.ONE)) == 0, "p_hat must be equal to 2 * q_hat + 1.");
 
 		//Require
-		checkState(SecurityLevelConfig.getSystemSecurityLevel() == SecurityLevelInternal.STANDARD, "security level must be STANDARD (group modulus 3072 bits)");
+		checkState(SecurityLevelConfig.getSystemSecurityLevel() == SecurityLevelInternal.STANDARD,
+				"security level must be STANDARD (group modulus 3072 bits)");
 
 		// Operation.
 		final GqGroup gqGroup = elGamal.getEncryptionParameters(seed);

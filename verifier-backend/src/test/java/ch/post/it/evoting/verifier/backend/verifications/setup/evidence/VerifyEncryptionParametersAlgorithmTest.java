@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2023 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,6 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 
+import static ch.post.it.evoting.cryptoprimitives.utils.Conversions.byteArrayToInteger;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -31,13 +32,17 @@ import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
 import ch.post.it.evoting.cryptoprimitives.internal.securitylevel.SecurityLevelConfig;
 import ch.post.it.evoting.cryptoprimitives.internal.securitylevel.SecurityLevelInternal;
+import ch.post.it.evoting.cryptoprimitives.math.Base64;
+import ch.post.it.evoting.cryptoprimitives.math.BaseEncodingFactory;
 import ch.post.it.evoting.cryptoprimitives.math.GqElement;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
+import ch.post.it.evoting.evotinglibraries.domain.validations.FailedValidationException;
 
 class VerifyEncryptionParametersAlgorithmTest {
 
 	private final ElGamal elGamal = ElGamalFactory.createElGamal();
 	private final VerifyEncryptionParametersAlgorithm verifyEncryptionParametersAlgorithm = new VerifyEncryptionParametersAlgorithm(elGamal);
+	private final Base64 base64 = BaseEncodingFactory.createBase64();
 
 	private GqGroup encryptionGroup;
 	private BigInteger p;
@@ -47,16 +52,17 @@ class VerifyEncryptionParametersAlgorithmTest {
 
 	@BeforeEach
 	void setup() {
+		final byte[] bytesP = base64.base64Decode(
+				"rnSjVsUQCZqi5wU7hgXvjCwUJ7SBKlx2FGb2/H572foRw1sffLdYhB1aS9pUDmlo5XgOAruXqnKublYuO7v33imQ75x4CH+9jDxtRtpsnv31t2FNxPVT0h5giq25tyy42N79bX1hsbwl/1FFczgBHQ6NQkYckljNnVaqGnJVnYavHdrGb4nVrg1bxOsP02IL1jqdyNPprrO2CkO8mmy1M9lXnGwDBYpBHL5sioHSi0qtudvoM3Me9W5YFdrFWKJ1f2kmSViguvv+2AEcQ2wXEcsRxPSmLKl5S/JrBcBW9uwC78HnnfTsMrwxNZlWqZ9dnGbmZ0LE6PTRS+JSIeYPtaWOcWG4DLpSMJpJLSZhvYPgsCuAHwfZ6KNeshrBbFKBJwU1CvuYgRbHgAAo2TtnmfwBASxtooay4vvkoJiNA66PP6EZoE3NHnlFFdybiy8GH39Pyi+ZUauXSWaZ4k6776TFpGNyGR/12wR9lVgHHzvKZsDVr5ASZ3Z7ZwZ4iWdn");
+		p = byteArrayToInteger(bytesP);
 
-		p = new BigInteger(
-				"ac2feb59d9c6d336e70e4f93932631f70116b079e6601592bc95a47551a7e395d45492186e516d36b9040910e9e7cef9c691f9db0d6371f3dac38fcf605d060a4446658db2383a1ddf3e4fd9bd88e2674a21d5e3af62ba88da688dd10a55ee9bf59f16bc9567dc2491d3997d31bfc77cb2d876a192708c8ead6ea72fb166159062afae92357f641500681a5c9187314c3b92103bd0f7ba909246f7d81d4f0c9d49929e5704cf069b8cfa3e1378a7c7a11acd1bdaf400f895216ae3cae06e8ac058d6b75ea635cd047d29fcd273cad1cb9d2716b148e4809366733a15904053ef28d169827ad6ef313a64a96cbf4841e84012893632dc9dcc82c3d9077f6d7faf5e82ea3f00bd71512795276be9bec16f0270ac61432c3bc9202f20dd382945d0b3547230e84d2a9889969c695e1f0a5143a17665be5e9658c969d903fa35d98e91502d30335161b4177abd3462800a592ef8ffb1ec59d1e1199b044f52c3cf49f4d279e1562d933fdb1842d691abcb4711f438b5d03e966aa027e16eab253ed7",
-				16);
-		q = new BigInteger(
-				"5617f5acece3699b738727c9c99318fb808b583cf3300ac95e4ad23aa8d3f1caea2a490c3728b69b5c82048874f3e77ce348fced86b1b8f9ed61c7e7b02e8305222332c6d91c1d0eef9f27ecdec47133a510eaf1d7b15d446d3446e8852af74dfacf8b5e4ab3ee1248e9ccbe98dfe3be596c3b50c938464756b75397d8b30ac83157d7491abfb20a80340d2e48c398a61dc9081de87bdd4849237bec0ea7864ea4c94f2b8267834dc67d1f09bc53e3d08d668ded7a007c4a90b571e5703745602c6b5baf531ae6823e94fe6939e568e5ce938b58a4724049b3399d0ac82029f79468b4c13d6b77989d3254b65fa420f42009449b196e4ee64161ec83bfb6bfd7af41751f805eb8a893ca93b5f4df60b781385630a1961de49017906e9c14a2e859aa39187426954c44cb4e34af0f8528a1d0bb32df2f4b2c64b4ec81fd1aecc748a8169819a8b0da0bbd5e9a3140052c977c7fd8f62ce8f08ccd8227a961e7a4fa693cf0ab16c99fed8c216b48d5e5a388fa1c5ae81f4b355013f0b755929f6b",
-				16);
-		encryptionGroup = new GqGroup(p, q, BigInteger.valueOf(2));
+		final byte[] bytesQ = base64.base64Decode(
+				"VzpRq2KIBM1Rc4KdwwL3xhYKE9pAlS47CjN7fj897P0I4a2PvlusQg6tJe0qBzS0crwHAV3L1TlXNysXHd377xTId848BD/exh42o202T37627Cm4nqp6Q8wRVbc25ZcbG9+tr6w2N4S/6iiuZwAjodGoSMOSSxmzqtVDTkqzsNXju1jN8Tq1wat4nWH6bEF6x1O5Gn011nbBSHeTTZameyrzjYBgsUgjl82RUDpRaVW3O30GbmPercsCu1irFE6v7STJKxQXX3/bACOIbYLiOWI4npTFlS8pfk1guAre3YBd+Dzzvp2GV4YmsyrVM+uzjNzM6FidHpopfEpEPMH2tLHOLDcBl0pGE0klpMw3sHwWBXAD4Ps9FGvWQ1gtilAk4KahX3MQItjwAAUbJ2zzP4AgJY20UNZcX3yUExGgddHn9CM0Cbmjzyiiu5NxZeDD7+n5RfMqNXLpLNM8Sdd99Ji0jG5DI/67YI+yqwDj53lM2Bq18gJM7s9s4M8RLOz");
+		q = byteArrayToInteger(bytesQ);
+
+		encryptionGroup = new GqGroup(p, q, byteArrayToInteger(base64.base64Decode("Ag==")));
 		g = encryptionGroup.getGenerator();
-		seed = "11111111";
+		seed = "NE_20231117_TT01";
 	}
 
 	@Test
@@ -92,12 +98,12 @@ class VerifyEncryptionParametersAlgorithmTest {
 	}
 
 	@Test
-	@DisplayName("wrong seed returns false")
+	@DisplayName("wrong seed throws FailedValidationException ")
 	void wrongSeedFails() {
-		final String badSeed = "11111112";
+		final String badSeed = "NE_20231117_XX01";
 		try (final MockedStatic<SecurityLevelConfig> mocked = mockStatic(SecurityLevelConfig.class)) {
 			mocked.when(SecurityLevelConfig::getSystemSecurityLevel).thenReturn(SecurityLevelInternal.STANDARD);
-			assertFalse(verifyEncryptionParametersAlgorithm.verifyEncryptionParameters(p, q, g, badSeed));
+			assertThrows(FailedValidationException.class, () -> verifyEncryptionParametersAlgorithm.verifyEncryptionParameters(p, q, g, badSeed));
 		}
 	}
 
