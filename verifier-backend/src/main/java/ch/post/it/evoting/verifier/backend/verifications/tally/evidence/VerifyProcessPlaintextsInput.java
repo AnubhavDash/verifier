@@ -47,8 +47,7 @@ public class VerifyProcessPlaintextsInput {
 
 	private VerifyProcessPlaintextsInput(final GroupVector<ElGamalMultiRecipientMessage, GqGroup> plaintextVotes,
 			final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> selectedEncodedVotingOptions,
-			final List<List<String>> selectedDecodedVotingOptions,
-			final List<List<String>> selectedDecodedWriteInVotes) {
+			final List<List<String>> selectedDecodedVotingOptions, final List<List<String>> selectedDecodedWriteInVotes) {
 		this.plaintextVotes = plaintextVotes;
 		this.selectedEncodedVotingOptions = selectedEncodedVotingOptions;
 		this.selectedDecodedVotingOptions = selectedDecodedVotingOptions;

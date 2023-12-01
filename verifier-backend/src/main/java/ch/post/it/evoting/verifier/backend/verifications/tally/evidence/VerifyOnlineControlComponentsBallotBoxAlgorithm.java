@@ -38,8 +38,7 @@ import ch.post.it.evoting.evotinglibraries.domain.common.EncryptedVerifiableVote
 import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetDeltaHatAlgorithm;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetPsiAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.PrimesMappingTableAlgorithms;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.VerifyMixDecInput;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.VerifyMixDecOfflineAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.VerifyMixDecOfflineContext;
@@ -61,20 +60,17 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 	private final VerifyMixDecOfflineAlgorithm verifyMixDecOfflineAlgorithm;
 	private final VerifyVotingClientProofsAlgorithm verifyVotingClientProofsAlgorithm;
 	private final GetMixnetInitialCiphertextsAlgorithm getMixnetInitialCiphertextsAlgorithm;
-	private final GetPsiAlgorithm getPsiAlgorithm;
-	private final GetDeltaHatAlgorithm getDeltaHatAlgorithm;
+	private final PrimesMappingTableAlgorithms primesMappingTableAlgorithms;
 
 	public VerifyOnlineControlComponentsBallotBoxAlgorithm(
 			final VerifyMixDecOfflineAlgorithm verifyMixDecOfflineAlgorithm,
 			final VerifyVotingClientProofsAlgorithm verifyVotingClientProofsAlgorithm,
 			final GetMixnetInitialCiphertextsAlgorithm getMixnetInitialCiphertextsAlgorithm,
-			final GetPsiAlgorithm getPsiAlgorithm,
-			final GetDeltaHatAlgorithm getDeltaHatAlgorithm) {
+			final PrimesMappingTableAlgorithms primesMappingTableAlgorithms) {
 		this.verifyMixDecOfflineAlgorithm = verifyMixDecOfflineAlgorithm;
 		this.verifyVotingClientProofsAlgorithm = verifyVotingClientProofsAlgorithm;
 		this.getMixnetInitialCiphertextsAlgorithm = getMixnetInitialCiphertextsAlgorithm;
-		this.getPsiAlgorithm = getPsiAlgorithm;
-		this.getDeltaHatAlgorithm = getDeltaHatAlgorithm;
+		this.primesMappingTableAlgorithms = primesMappingTableAlgorithms;
 	}
 
 	/**
@@ -119,8 +115,8 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 		final String vcs = context.getVerificationCardSetId();
 		final int N_E = context.getNumberOfEligibleVoters();
 		final PrimesMappingTable pTable = context.getPrimesMappingTable();
-		final int psi = getPsiAlgorithm.getPsi(pTable);
-		final int delta_hat = getDeltaHatAlgorithm.getDeltaHat(pTable);
+		final int psi = primesMappingTableAlgorithms.getPsi(pTable);
+		final int delta_hat = primesMappingTableAlgorithms.getDeltaHat(pTable);
 
 		// Input.
 		final Map<String, ElGamalMultiRecipientPublicKey> KMap = input.verificationCardPublicKeyMap();

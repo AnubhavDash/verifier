@@ -28,6 +28,7 @@ import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
 import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.ProcessPlaintextsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.ProcessPlaintextsContext;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.ProcessPlaintextsOutput;
 
 @Service
@@ -43,9 +44,8 @@ public final class VerifyProcessPlaintextsAlgorithm {
 	/**
 	 * Verifies that all plaintext votes have been processed correctly.
 	 *
-	 * @param encryptionGroup    the encryption group. Must be non-null.
-	 * @param primesMappingTable the pTable. Must be non-null.
-	 * @param input              the input as a {@link VerifyProcessPlaintextsInput}. Must be non-null.
+	 * @param context the context as a {@link VerifyProcessPlaintextsContext}. Must be non-null.
+	 * @param input   the input as a {@link VerifyProcessPlaintextsInput}. Must be non-null.
 	 * @return true if L_votes, L_decodedVotes and L_writeIns were generated correctly, false otherwise.
 	 * @throws NullPointerException     if any parameter is null.
 	 * @throws IllegalArgumentException if
@@ -56,16 +56,18 @@ public final class VerifyProcessPlaintextsAlgorithm {
 	 *                                  </ul>
 	 */
 	@SuppressWarnings("java:S117")
-	public boolean verifyProcessPlaintexts(final GqGroup encryptionGroup, final PrimesMappingTable primesMappingTable,
-			final VerifyProcessPlaintextsInput input) {
-		checkNotNull(encryptionGroup);
+	public boolean verifyProcessPlaintexts(final VerifyProcessPlaintextsContext context, final VerifyProcessPlaintextsInput input) {
+		checkNotNull(context);
 		checkNotNull(input);
 
 		// Cross-group check.
-		checkArgument(input.getPlaintextVotes().getGroup().equals(encryptionGroup), "The context and input must have the same group.");
+		checkArgument(input.getPlaintextVotes().getGroup().equals(context.encryptionGroup()), "The context and input must have the same group.");
 
 		// Context.
-		final PrimesMappingTable pTable = checkNotNull(primesMappingTable);
+		final GqGroup encryptionGroup = context.encryptionGroup();
+		final String ee = context.electionEventId();
+		final String bb = context.ballotBoxId();
+		final PrimesMappingTable pTable = context.primesMappingTable();
 
 		// Input.
 		final GroupVector<ElGamalMultiRecipientMessage, GqGroup> m = input.getPlaintextVotes();
@@ -80,8 +82,9 @@ public final class VerifyProcessPlaintextsAlgorithm {
 		checkArgument(N_C >= 2 ? N_C_hat == N_C : N_C_hat == N_C + 2);
 
 		// Operation.
+		final ProcessPlaintextsContext processPlaintextsContext = new ProcessPlaintextsContext(encryptionGroup, ee, bb, pTable);
 		final ProcessPlaintextsOutput L_votes_prime_L_decodedVotes_prime_L_writeIns_prime = processPlaintextsAlgorithm.processPlaintexts(
-				encryptionGroup, pTable, m);
+				processPlaintextsContext, m);
 
 		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> L_votes_prime = L_votes_prime_L_decodedVotes_prime_L_writeIns_prime.getSelectedEncodedVotingOptions();
 		final List<List<String>> L_decodedVotes_prime = L_votes_prime_L_decodedVotes_prime_L_writeIns_prime.getSelectedDecodedVotingOptions();

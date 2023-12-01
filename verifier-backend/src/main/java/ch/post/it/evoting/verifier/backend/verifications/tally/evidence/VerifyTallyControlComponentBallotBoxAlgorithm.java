@@ -36,9 +36,7 @@ import ch.post.it.evoting.cryptoprimitives.utils.VerificationResult;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.VerifiableDecryptions;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
 import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetDeltaHatAlgorithm;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetEncodedVotingOptionsAlgorithm;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetPsiAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.PrimesMappingTableAlgorithms;
 
 @Service
 public class VerifyTallyControlComponentBallotBoxAlgorithm {
@@ -46,22 +44,17 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 	private static final Logger LOGGER = LoggerFactory.getLogger(VerifyTallyControlComponentBallotBoxAlgorithm.class);
 
 	private final Mixnet mixnet;
-	private final GetPsiAlgorithm getPsiAlgorithm;
-	private final GetDeltaHatAlgorithm getDeltaHatAlgorithm;
 	private final ZeroKnowledgeProof zeroKnowledgeProof;
-	private final GetEncodedVotingOptionsAlgorithm getEncodedVotingOptionsAlgorithm;
+	private final PrimesMappingTableAlgorithms primesMappingTableAlgorithms;
 	private final VerifyProcessPlaintextsAlgorithm verifyProcessPlaintextsAlgorithm;
 
-	public VerifyTallyControlComponentBallotBoxAlgorithm(final Mixnet mixnet, final GetPsiAlgorithm getPsiAlgorithm,
-			final GetDeltaHatAlgorithm getDeltaHatAlgorithm, final ZeroKnowledgeProof zeroKnowledgeProof,
-			final GetEncodedVotingOptionsAlgorithm getEncodedVotingOptionsAlgorithm,
+	public VerifyTallyControlComponentBallotBoxAlgorithm(final Mixnet mixnet, final ZeroKnowledgeProof zeroKnowledgeProof,
+			final PrimesMappingTableAlgorithms primesMappingTableAlgorithms1,
 			final VerifyProcessPlaintextsAlgorithm verifyProcessPlaintextsAlgorithm) {
 		this.mixnet = mixnet;
-		this.getPsiAlgorithm = getPsiAlgorithm;
-		this.getDeltaHatAlgorithm = getDeltaHatAlgorithm;
 		this.zeroKnowledgeProof = zeroKnowledgeProof;
+		this.primesMappingTableAlgorithms = primesMappingTableAlgorithms1;
 		this.verifyProcessPlaintextsAlgorithm = verifyProcessPlaintextsAlgorithm;
-		this.getEncodedVotingOptionsAlgorithm = getEncodedVotingOptionsAlgorithm;
 	}
 
 	/**
@@ -96,8 +89,8 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 		final String bb = context.getBallotBoxId();
 		final ElGamalMultiRecipientPublicKey EB_pk = context.getElectoralBoardPublicKey();
 		final PrimesMappingTable pTable = context.getPrimesMappingTable();
-		final int psi = getPsiAlgorithm.getPsi(pTable);
-		final int delta_hat = getDeltaHatAlgorithm.getDeltaHat(pTable);
+		final int psi = primesMappingTableAlgorithms.getPsi(pTable);
+		final int delta_hat = primesMappingTableAlgorithms.getDeltaHat(pTable);
 
 		// Input.
 		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_dec_4 = input.getPreviousPartiallyDecryptedVotes();
@@ -126,7 +119,7 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 		checkArgument((N_C_hat == N_C) || (N_C_hat == N_C + 2 && N_C < 2),
 				"The number of mixed votes must be equal to the number of processed votes, if the number of confirmed votes is 2 or greater. "
 						+ "Otherwise, there must be two more mixed votes than confirmed votes (for N_C = 0 or 1).");
-		final GroupVector<PrimeGqElement, GqGroup> p_tilde = getEncodedVotingOptionsAlgorithm.getEncodedVotingOptions(pTable, List.of());
+		final GroupVector<PrimeGqElement, GqGroup> p_tilde = primesMappingTableAlgorithms.getEncodedVotingOptions(pTable, List.of());
 		checkArgument(L_votes.stream().parallel().allMatch(p_tilde::containsAll),
 				"All selected voting options must be a subset of the total voting options.");
 		L_votes.forEach(p_i_hat -> checkArgument(p_i_hat.stream().parallel().distinct().count() == p_i_hat.size(),
@@ -152,7 +145,8 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 			LOGGER.info("The decryption proofs are valid. [ee: {}, bb: {}]", ee, bb);
 		}
 
-		final boolean processVerif = verifyProcessPlaintextsAlgorithm.verifyProcessPlaintexts(encryptionGroup, pTable,
+		final VerifyProcessPlaintextsContext verifyProcessPlaintextsContext = new VerifyProcessPlaintextsContext(encryptionGroup, ee, bb, pTable);
+		final boolean processVerif = verifyProcessPlaintextsAlgorithm.verifyProcessPlaintexts(verifyProcessPlaintextsContext,
 				new VerifyProcessPlaintextsInput.Builder()
 						.setPlaintextVotes(m)
 						.setSelectedEncodedVotingOptions(L_votes)
