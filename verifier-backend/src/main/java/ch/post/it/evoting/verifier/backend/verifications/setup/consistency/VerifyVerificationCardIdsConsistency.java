@@ -153,9 +153,9 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 					final String verificationCardSetId = verificationCardSetIdPath.getFileName().toString();
 					final int numberOfVotingCards = verificationCardSetContexts.stream()
 							.parallel()
-							.filter(vcs -> vcs.verificationCardSetId().equals(verificationCardSetId))
+							.filter(vcs -> vcs.getVerificationCardSetId().equals(verificationCardSetId))
 							.collect(MoreCollectors.onlyElement())
-							.numberOfVotingCards();
+							.getNumberOfVotingCards();
 
 					return new PayloadsVerificationCardIds(verificationDataIds, nodeIdsToCodeSharesIds, tallyDataIds, numberOfVotingCards);
 				})

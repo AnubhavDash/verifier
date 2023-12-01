@@ -1,0 +1,46 @@
+{
+	"electionEventId": "5F4EDD9DB85C3AEE8D9D23066D0FF67B",
+	"ballotId": "759CD926E492628EDCB222778FFEF01F",
+	"ballotBoxId": "953273AF331CE4CCA8981B632F09DE82",
+	"encryptionGroup": {
+		"p": "rnSjVsUQCZqi5wU7hgXvjCwUJ7SBKlx2FGb2/H572foRw1sffLdYhB1aS9pUDmlo5XgOAruXqnKublYuO7v33imQ75x4CH+9jDxtRtpsnv31t2FNxPVT0h5giq25tyy42N79bX1hsbwl/1FFczgBHQ6NQkYckljNnVaqGnJVnYavHdrGb4nVrg1bxOsP02IL1jqdyNPprrO2CkO8mmy1M9lXnGwDBYpBHL5sioHSi0qtudvoM3Me9W5YFdrFWKJ1f2kmSViguvv+2AEcQ2wXEcsRxPSmLKl5S/JrBcBW9uwC78HnnfTsMrwxNZlWqZ9dnGbmZ0LE6PTRS+JSIeYPtaWOcWG4DLpSMJpJLSZhvYPgsCuAHwfZ6KNeshrBbFKBJwU1CvuYgRbHgAAo2TtnmfwBASxtooay4vvkoJiNA66PP6EZoE3NHnlFFdybiy8GH39Pyi+ZUauXSWaZ4k6776TFpGNyGR/12wR9lVgHHzvKZsDVr5ASZ3Z7ZwZ4iWdn",
+		"q": "VzpRq2KIBM1Rc4KdwwL3xhYKE9pAlS47CjN7fj897P0I4a2PvlusQg6tJe0qBzS0crwHAV3L1TlXNysXHd377xTId848BD/exh42o202T37627Cm4nqp6Q8wRVbc25ZcbG9+tr6w2N4S/6iiuZwAjodGoSMOSSxmzqtVDTkqzsNXju1jN8Tq1wat4nWH6bEF6x1O5Gn011nbBSHeTTZameyrzjYBgsUgjl82RUDpRaVW3O30GbmPercsCu1irFE6v7STJKxQXX3/bACOIbYLiOWI4npTFlS8pfk1guAre3YBd+Dzzvp2GV4YmsyrVM+uzjNzM6FidHpopfEpEPMH2tLHOLDcBl0pGE0klpMw3sHwWBXAD4Ps9FGvWQ1gtilAk4KahX3MQItjwAAUbJ2zzP4AgJY20UNZcX3yUExGgddHn9CM0Cbmjzyiiu5NxZeDD7+n5RfMqNXLpLNM8Sdd99Ji0jG5DI/67YI+yqwDj53lM2Bq18gJM7s9s4M8RLOz",
+		"g": "Ag=="
+	},
+	"votes": [
+		[
+			29,
+			83,
+			109,
+			163,
+			617,
+			347,
+			421,
+			433,
+			577,
+			587,
+			223
+		]
+	],
+	"actualSelectedVotingOptions": [
+		[
+			"ch_test|3aa38c9e-6e93-3159-91e1-c3da90681572",
+			"ch_test|e9da718b-469e-35d4-8d7d-d6329621e755",
+			"ch_test|d0f886b7-03a8-3d8a-9e7d-4c9bfa02ddc6",
+			"ch_test|b4277282-00aa-3ccb-bdf2-4703ba2724e4",
+			"nrw_test|97e7687a-9ce7-4724-91bb-17396344b50c",
+			"nrw_test|f74aacda-e4f1-493e-95b8-0984f0f18d89|0",
+			"nrw_test|8ed07d87-b81d-4dc8-aaeb-0d5d29a1c2dd|0",
+			"nrw_test|8c12fee2-619f-47e1-82dd-cd4314c95807|0",
+			"nrw_test|25d225ee-2a75-49ac-b8f5-18a1be37f574|0",
+			"nrw_test|ff671047-7e0f-4198-974f-0041a55f1c70|0",
+			"0e08a1c6-62d3-3e54-8642-6792536ba039"
+		]
+	],
+	"decodedWriteInVotes": [
+		[]
+	],
+	"signature": {
+		"signatureContents": "su3s5+AmvJYgjZy9Qc9ShH5roDVkhoJ8oITbdYXrndKjnDMdGGpUW9/SquJHxrilqMFk3T1QXsjdV+twL+9TVUkk2AK+WP2vqgXBnzD2bWBXkH65gXS46gvyaTjWSp2A/MKQnMzQVU1/xTE/nO9iKYm17LGGEeUMjZ0B+zjlAAMDRAha3L+4SMVsejM345+yC5Uyql/gBIY2v+fA1lqETAzp/LgLyqqQJSXA/7Eu8YWBDBJtk9KmXGLO5Jq36Y7PaRD6XR6cA8CFA+4NQk83q3BT4hM4lMogwYysQ+aCCV1c088e4rw9I6LAUvnh2ZjY5hZChSAdeOCG+t/S23zAWkQKgx09LkFCcT75x3YvHGpomF1fxd2sMgoZwqMYqmWXu/1ITPpYaDa6mRAHyo7Y9RS8Cv5YeLLcrOzb+pE6tIB+SXASRtKGs/PWuQA6vxfLBjd0B7XWXQFC06ykDrkOLCEzFhvztXW1+0IUHW5aKA8ts6LrFVMG3/374wXMyHN1"
+	}
+}

@@ -91,7 +91,7 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 
 		final ConcurrentMap<String, Integer> numberOfVotingOptions = electionEventContext.verificationCardSetContexts().stream()
 				.parallel()
-				.collect(Collectors.toConcurrentMap(VerificationCardSetContext::verificationCardSetId, VerificationCardSetContext::getNumberOfVotingOptions));
+				.collect(Collectors.toConcurrentMap(VerificationCardSetContext::getVerificationCardSetId, VerificationCardSetContext::getNumberOfVotingOptions));
 
 		final boolean result = verificationCardSets.stream()
 				.parallel()

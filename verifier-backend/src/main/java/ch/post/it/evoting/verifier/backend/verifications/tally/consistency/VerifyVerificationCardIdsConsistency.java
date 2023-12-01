@@ -91,7 +91,7 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 				.getElectionEventContext()
 				.verificationCardSetContexts().stream()
 				.parallel()
-				.collect(Collectors.toConcurrentMap(VerificationCardSetContext::verificationCardSetId, VerificationCardSetContext::ballotBoxId));
+				.collect(Collectors.toConcurrentMap(VerificationCardSetContext::getVerificationCardSetId, VerificationCardSetContext::getBallotBoxId));
 
 		return controlComponentBallotBoxPayloads.stream()
 				.parallel()

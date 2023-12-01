@@ -212,8 +212,8 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 			final List<VerificationCardSetContext> verificationCardSetContexts = verificationCardSetIdAndBallotBoxId.stream()
 					.map(pair -> {
 						final VerificationCardSetContext mock = mock(VerificationCardSetContext.class);
-						when(mock.verificationCardSetId()).thenReturn(pair.getLeft());
-						when(mock.ballotBoxId()).thenReturn(pair.getRight());
+						when(mock.getVerificationCardSetId()).thenReturn(pair.getLeft());
+						when(mock.getBallotBoxId()).thenReturn(pair.getRight());
 						return mock;
 					})
 					.toList();

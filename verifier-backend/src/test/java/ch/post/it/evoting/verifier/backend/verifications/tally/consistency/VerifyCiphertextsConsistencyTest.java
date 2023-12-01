@@ -61,22 +61,22 @@ class VerifyCiphertextsConsistencyTest extends TallyVerificationTest {
 		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
 		final List<VerificationCardSetContext> vcsContexts = electionEventContext.verificationCardSetContexts();
 		final VerificationCardSetContext firstContext = vcsContexts.get(0);
-		final int size = firstContext.listOfWriteInOptions().size();
+		final int size = firstContext.getListOfWriteInOptions().size();
 		final GroupVector<PrimeGqElement, GqGroup> modifiedListOfWriteInOptions = PrimeGqElement.PrimeGqElementFactory.getSmallPrimeGroupMembers(
 				encryptionGroup, size + 1);
 		final VerificationCardSetContext modifiedFirstContext = new VerificationCardSetContext.Builder()
-				.setVerificationCardSetId(firstContext.verificationCardSetId())
-				.setVerificationCardSetAlias(firstContext.verificationCardSetAlias())
-				.setVerificationCardSetDescription(firstContext.verificationCardSetDescription())
-				.setBallotBoxId(firstContext.ballotBoxId())
-				.setBallotBoxStartTime(firstContext.ballotBoxStartTime())
-				.setBallotBoxFinishTime(firstContext.ballotBoxFinishTime())
-				.setTestBallotBox(firstContext.testBallotBox())
-				.setNumberOfVotingCards(firstContext.numberOfVotingCards())
-				.setGracePeriod(firstContext.gracePeriod())
-				.setPrimesMappingTable(firstContext.primesMappingTable())
-				.setCiSelections(firstContext.ciSelections())
-				.setListOfWriteInOptions(modifiedListOfWriteInOptions).build();
+				.setVerificationCardSetId(firstContext.getVerificationCardSetId())
+				.setVerificationCardSetAlias(firstContext.getVerificationCardSetAlias())
+				.setVerificationCardSetDescription(firstContext.getVerificationCardSetDescription())
+				.setBallotBoxId(firstContext.getBallotBoxId())
+				.setBallotBoxStartTime(firstContext.getBallotBoxStartTime())
+				.setBallotBoxFinishTime(firstContext.getBallotBoxFinishTime())
+				.setTestBallotBox(firstContext.isTestBallotBox())
+				.setNumberOfVotingCards(firstContext.getNumberOfVotingCards())
+				.setGracePeriod(firstContext.getGracePeriod())
+				.setPrimesMappingTable(firstContext.getPrimesMappingTable())
+				.setListOfWriteInOptions(modifiedListOfWriteInOptions)
+				.build();
 		final List<VerificationCardSetContext> modifiedVcsContexts = Streams.concat(Stream.of(modifiedFirstContext), vcsContexts.stream().skip(1))
 				.toList();
 		final ElectionEventContext modifiedElectionEventContext = spy(electionEventContext);

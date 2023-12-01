@@ -93,7 +93,7 @@ public class VerifyVotingOptions extends AbstractVerification {
 		final ElectionEventContext electionEventContext = extractionService.getElectionEventContext(inputDirectoryPath);
 
 		return electionEventContext.verificationCardSetContexts().stream()
-				.map(VerificationCardSetContext::primesMappingTable)
+				.map(VerificationCardSetContext::getPrimesMappingTable)
 				.map(PrimesMappingTable::getPTable)
 				.flatMap(Collection::stream)
 				.map(PrimesMappingTableEntry::encodedVotingOption)

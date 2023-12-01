@@ -108,8 +108,8 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 
 		return electionEventContext.verificationCardSetContexts().stream()
 				.map(verificationCardSetContext -> {
-					final String ballotBoxId = verificationCardSetContext.ballotBoxId();
-					final String verificationCardSetId = verificationCardSetContext.verificationCardSetId();
+					final String ballotBoxId = verificationCardSetContext.getBallotBoxId();
+					final String verificationCardSetId = verificationCardSetContext.getVerificationCardSetId();
 
 					final SetupComponentTallyDataPayload setupComponentTallyDataPayload = extractionService.getSetupComponentTallyDataPayload(
 							inputDirectoryPath, verificationCardSetId);

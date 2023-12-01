@@ -69,7 +69,7 @@ public class ExponentiationProofsVerificationExtractionService {
 		final List<String> verificationCardSetIds = electionEventContext
 				.verificationCardSetContexts()
 				.stream()
-				.map(VerificationCardSetContext::verificationCardSetId)
+				.map(VerificationCardSetContext::getVerificationCardSetId)
 				.toList();
 
 		validateUUID(electionEventId);
@@ -94,13 +94,13 @@ public class ExponentiationProofsVerificationExtractionService {
 		final ConcurrentMap<String, Integer> numberOfVoters = electionEventContext.verificationCardSetContexts()
 				.stream()
 				.parallel()
-				.collect(Collectors.toConcurrentMap(VerificationCardSetContext::verificationCardSetId,
-						VerificationCardSetContext::numberOfVotingCards));
+				.collect(Collectors.toConcurrentMap(VerificationCardSetContext::getVerificationCardSetId,
+						VerificationCardSetContext::getNumberOfVotingCards));
 
 		final ConcurrentMap<String, Integer> totalNumberOfVotingOptions = electionEventContext.verificationCardSetContexts().stream()
 				.parallel()
-				.collect(Collectors.toConcurrentMap(VerificationCardSetContext::verificationCardSetId,
-						vcContext -> vcContext.primesMappingTable().size()));
+				.collect(Collectors.toConcurrentMap(VerificationCardSetContext::getVerificationCardSetId,
+						vcContext -> vcContext.getPrimesMappingTable().size()));
 
 		checkArgument(electionEventContext.electionEventId().equals(electionEventId));
 		checkArgument(electionEventContext.verificationCardSetContexts().size() == input.getVerificationCardSetIds().size());

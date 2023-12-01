@@ -82,7 +82,7 @@ public class VerifyFileNameVerificationCardSetIdsConsistency extends AbstractVer
 				.getElectionEventContext();
 		final Set<String> payloadVerificationCardSetIds = electionEventContext.verificationCardSetContexts().stream()
 				.parallel()
-				.map(VerificationCardSetContext::verificationCardSetId)
+				.map(VerificationCardSetContext::getVerificationCardSetId)
 				.collect(Collectors.toUnmodifiableSet());
 
 		// Verifying set equality is sufficient since the payload ensures that there are no duplicate verification card set IDs.

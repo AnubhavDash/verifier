@@ -89,7 +89,7 @@ public class VerifyTallyControlComponentInput {
 		this.tallyControlComponentResults = checkNotNull(tallyControlComponentResults);
 		// The ElectionEventContext constructor ensures all ballot box ids are distinct.
 		this.ballotBoxIds = electionEventContextPayload.getElectionEventContext().verificationCardSetContexts().stream()
-				.map(VerificationCardSetContext::ballotBoxId)
+				.map(VerificationCardSetContext::getBallotBoxId)
 				.sorted(String::compareTo)
 				.toList();
 		this.tallyControlComponentDetailedResults = checkNotNull(tallyControlComponentDetailedResults);

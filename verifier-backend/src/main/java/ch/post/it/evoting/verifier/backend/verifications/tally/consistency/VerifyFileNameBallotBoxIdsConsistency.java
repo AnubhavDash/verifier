@@ -82,7 +82,7 @@ public class VerifyFileNameBallotBoxIdsConsistency extends AbstractVerification 
 				.getElectionEventContext();
 		final Set<String> payloadBallotBoxIds = electionEventContext.verificationCardSetContexts().stream()
 				.parallel()
-				.map(VerificationCardSetContext::ballotBoxId)
+				.map(VerificationCardSetContext::getBallotBoxId)
 				.collect(Collectors.toUnmodifiableSet());
 
 		// Verifying set equality is sufficient since the payload ensures that there are no duplicate ballot box IDs.

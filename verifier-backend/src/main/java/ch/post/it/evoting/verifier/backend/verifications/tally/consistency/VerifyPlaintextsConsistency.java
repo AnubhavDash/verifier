@@ -63,7 +63,7 @@ public class VerifyPlaintextsConsistency extends AbstractVerification {
 		final List<Plaintexts> plaintexts = verificationCardSetContexts.stream()
 				.parallel()
 				.map(vcsContext -> {
-					final String ballotBoxId = vcsContext.ballotBoxId();
+					final String ballotBoxId = vcsContext.getBallotBoxId();
 					final int numberWriteInsPlusOne = vcsContext.getNumberOfWriteIns() + 1;
 					final TallyComponentShufflePayload tallyComponentShufflePayload = extractionService.getTallyComponentShufflePayload(
 							inputDirectoryPath, ballotBoxId);

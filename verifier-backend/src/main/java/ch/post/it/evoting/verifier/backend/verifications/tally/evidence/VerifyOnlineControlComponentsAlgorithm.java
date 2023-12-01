@@ -168,7 +168,7 @@ public class VerifyOnlineControlComponentsAlgorithm {
 				allEqual(Stream.of(controlComponentBallotBoxPayloads.get(0).getEncryptionGroup(),
 								controlComponentShufflePayloads.get(0).getEncryptionGroup(),
 								setupComponentTallyDataPayload.getEncryptionGroup(),
-								electionEventContext.verificationCardSetContexts().get(0).primesMappingTable().getEncryptionGroup(),
+								electionEventContext.verificationCardSetContexts().get(0).getPrimesMappingTable().getEncryptionGroup(),
 								setupComponentPublicKeys.electionPublicKey().getGroup()),
 						Function.identity()),
 				"The control component ballot box and shuffle payloads, setup component tally data payload, election event context and setup component public keys must have the same group.");
@@ -184,11 +184,11 @@ public class VerifyOnlineControlComponentsAlgorithm {
 				"The control component ballot box and shuffle payloads must have the same ballot box id.");
 		final VerificationCardSetContext verificationCardSetContextForBallotBoxId = electionEventContext.verificationCardSetContexts().stream()
 				.parallel()
-				.filter(verificationCardSetContext -> verificationCardSetContext.ballotBoxId().equals(ballotBoxId))
+				.filter(verificationCardSetContext -> verificationCardSetContext.getBallotBoxId().equals(ballotBoxId))
 				.findFirst()
 				.orElseThrow(() -> new IllegalStateException(
 						"The ballot box id of the control component ballot box and shuffle payloads must be in the election event context."));
-		checkState(verificationCardSetContextForBallotBoxId.verificationCardSetId().equals(setupComponentTallyDataPayload.getVerificationCardSetId()),
+		checkState(verificationCardSetContextForBallotBoxId.getVerificationCardSetId().equals(setupComponentTallyDataPayload.getVerificationCardSetId()),
 				"The setup component tally data payload and verification card set context must have the same verification card set id.");
 	}
 

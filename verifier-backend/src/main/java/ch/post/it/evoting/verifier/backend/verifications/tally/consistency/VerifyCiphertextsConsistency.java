@@ -67,7 +67,7 @@ public class VerifyCiphertextsConsistency extends AbstractVerification {
 		final List<Ciphertexts> ciphertexts = verificationCardSetContexts.stream()
 				.parallel()
 				.map(vcsContext -> {
-					final String ballotBoxId = vcsContext.ballotBoxId();
+					final String ballotBoxId = vcsContext.getBallotBoxId();
 					final int numberWriteInsPlusOne = vcsContext.getNumberOfWriteIns() + 1;
 					final List<ControlComponentBallotBoxPayload> ballotBoxPayloads = extractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(
 							inputDirectoryPath, ballotBoxId).toList();

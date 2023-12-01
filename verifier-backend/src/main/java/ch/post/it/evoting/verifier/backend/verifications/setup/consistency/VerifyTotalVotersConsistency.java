@@ -74,7 +74,7 @@ public class VerifyTotalVotersConsistency extends AbstractVerification {
 		final int totalNumberOfVotingCards = verificationCardSetContexts.stream()
 				.parallel()
 				.mapToInt(verificationCardSetContext -> {
-					final int numberOfVotingCards = verificationCardSetContext.numberOfVotingCards();
+					final int numberOfVotingCards = verificationCardSetContext.getNumberOfVotingCards();
 
 					checkState(numberOfVotingCards >= 0);
 					return numberOfVotingCards;

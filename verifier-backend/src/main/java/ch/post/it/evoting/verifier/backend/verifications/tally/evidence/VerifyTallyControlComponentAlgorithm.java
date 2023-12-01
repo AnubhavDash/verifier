@@ -85,14 +85,14 @@ public class VerifyTallyControlComponentAlgorithm {
 					final String bb_i = bb_vector.get(i);
 
 					final VerificationCardSetContext verificationCardSetContext = electionEventContext.verificationCardSetContexts().stream()
-							.filter(vcsContext -> vcsContext.ballotBoxId().equals(bb_i))
+							.filter(vcsContext -> vcsContext.getBallotBoxId().equals(bb_i))
 							.collect(MoreCollectors.onlyElement());
 					final VerifyTallyControlComponentBallotBoxContext context_bb_i = new VerifyTallyControlComponentBallotBoxContext.Builder()
 							.setEncryptionGroup(encryptionGroup)
 							.setElectionEventId(ee)
 							.setBallotBoxId(bb_i)
 							.setElectoralBoardPublicKey(setupComponentPublicKeys.electoralBoardPublicKey())
-							.setPrimesMappingTable(verificationCardSetContext.primesMappingTable())
+							.setPrimesMappingTable(verificationCardSetContext.getPrimesMappingTable())
 							.build();
 
 					final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_dec_4 = lastOnlineControlComponentShuffles.get(i)

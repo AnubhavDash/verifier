@@ -84,7 +84,7 @@ public class VerifyOnlineControlComponents extends AbstractVerification {
 		final String electionEventId = electionEventContext.electionEventId();
 		final List<String> ballotBoxIds = electionEventContext.verificationCardSetContexts().stream()
 				.parallel()
-				.map(VerificationCardSetContext::ballotBoxId)
+				.map(VerificationCardSetContext::getBallotBoxId)
 				.toList();
 
 		final Map<String, List<ControlComponentBallotBoxPayload>> controlComponentBallotBoxesByBallotBoxId = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
@@ -100,9 +100,9 @@ public class VerifyOnlineControlComponents extends AbstractVerification {
 				.parallel()
 				.collect(Collectors.toMap(Function.identity(), bb -> {
 					final String verificationCardSetId = electionEventContext.verificationCardSetContexts().stream()
-							.filter(verificationCardSetContext -> verificationCardSetContext.ballotBoxId().equals(bb))
+							.filter(verificationCardSetContext -> verificationCardSetContext.getBallotBoxId().equals(bb))
 							.collect(MoreCollectors.onlyElement())
-							.verificationCardSetId();
+							.getVerificationCardSetId();
 
 					return electionDataExtractionService.getSetupComponentTallyDataPayload(
 							inputDirectoryPath, verificationCardSetId);

@@ -66,7 +66,7 @@ public class VerifyPrimesMappingTableConsistency extends AbstractVerification {
 		final ElectionEventContext electionEventContext = extractionService.getElectionEventContext(inputDirectoryPath);
 		final List<PrimesMappingTable> primesMappingTables = electionEventContext.verificationCardSetContexts().stream()
 				.parallel()
-				.map(VerificationCardSetContext::primesMappingTable)
+				.map(VerificationCardSetContext::getPrimesMappingTable)
 				.toList();
 		final Configuration configuration = extractionService.getCantonConfig(inputDirectoryPath);
 

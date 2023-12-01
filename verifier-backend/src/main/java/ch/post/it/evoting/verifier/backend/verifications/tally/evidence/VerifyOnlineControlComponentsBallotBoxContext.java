@@ -77,7 +77,7 @@ public class VerifyOnlineControlComponentsBallotBoxContext {
 		checkArgument(setupComponentPublicKeys.electionPublicKey().getGroup().equals(encryptionGroup));
 
 		final VerificationCardSetContext verificationCardSetContextForBallotBoxId = electionEventContext.verificationCardSetContexts().stream()
-				.filter(verificationCardSetContext -> verificationCardSetContext.ballotBoxId().equals(ballotBoxId))
+				.filter(verificationCardSetContext -> verificationCardSetContext.getBallotBoxId().equals(ballotBoxId))
 				.collect(MoreCollectors.onlyElement());
 
 		this.encryptionGroup = checkNotNull(encryptionGroup);
@@ -89,9 +89,9 @@ public class VerifyOnlineControlComponentsBallotBoxContext {
 				.collect(GroupVector.toGroupVector());
 		this.electoralBoardPublicKey = setupComponentPublicKeys.electoralBoardPublicKey();
 		this.choiceReturnCodesEncryptionPublicKey = setupComponentPublicKeys.choiceReturnCodesEncryptionPublicKey();
-		this.verificationCardSetId = verificationCardSetContextForBallotBoxId.verificationCardSetId();
-		this.numberOfEligibleVoters = verificationCardSetContextForBallotBoxId.numberOfVotingCards();
-		this.primesMappingTable = verificationCardSetContextForBallotBoxId.primesMappingTable();
+		this.verificationCardSetId = verificationCardSetContextForBallotBoxId.getVerificationCardSetId();
+		this.numberOfEligibleVoters = verificationCardSetContextForBallotBoxId.getNumberOfVotingCards();
+		this.primesMappingTable = verificationCardSetContextForBallotBoxId.getPrimesMappingTable();
 	}
 
 	public GqGroup getEncryptionGroup() {
