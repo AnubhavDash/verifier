@@ -70,7 +70,7 @@ public class VerifyVotingOptionsAlgorithm {
 				.parallel()
 				.allMatch(i -> encodedVotingOptions.get(i).getValue().compareTo(encodedVotingOptions.get(i + 1).getValue()) < 0);
 		checkArgument(isStrictlyAscending, "The encoded voting options must be in strict ascending order.");
-
+		checkArgument(!encodedVotingOptions.isEmpty(), "The number of encoded voting options must be strictly greater than 0.");
 		checkArgument(
 				encodedVotingOptions.get(0).getValue().compareTo(BigInteger.valueOf(3)) > 0,
 				"The encoded voting options must be strictly greater than 3.");

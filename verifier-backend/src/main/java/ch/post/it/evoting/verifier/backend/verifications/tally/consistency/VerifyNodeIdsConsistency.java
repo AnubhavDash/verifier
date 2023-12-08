@@ -69,11 +69,11 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 		final Map<String, List<ControlComponentBallotBoxPayload>> ballotBoxPayloads = extractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
 						inputDirectoryPath)
 				.parallel()
-				.collect(Collectors.groupingByConcurrent(ControlComponentBallotBoxPayload::getBallotBoxId));
+				.collect(Collectors.groupingByConcurrent(ControlComponentBallotBoxPayload::getBallotBoxId, Collectors.toUnmodifiableList()));
 		final Map<String, List<ControlComponentShufflePayload>> shufflePayloads = extractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
 						inputDirectoryPath)
 				.parallel()
-				.collect(Collectors.groupingByConcurrent(ControlComponentShufflePayload::getBallotBoxId));
+				.collect(Collectors.groupingByConcurrent(ControlComponentShufflePayload::getBallotBoxId, Collectors.toUnmodifiableList()));
 
 		if (isNodeIdConsistent(ballotBoxPayloads, shufflePayloads)) {
 			return VerificationResult.success(getVerificationDefinition());

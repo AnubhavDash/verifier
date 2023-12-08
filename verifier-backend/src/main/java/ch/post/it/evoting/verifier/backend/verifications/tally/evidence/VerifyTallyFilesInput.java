@@ -46,7 +46,8 @@ public class VerifyTallyFilesInput {
 	private VerifyTallyFilesInput(
 			final Configuration cantonConfig,
 			final Results tallyComponentDecrypt,
-			final Delivery tallyComponentEch0110, final ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222,
+			final Delivery tallyComponentEch0110,
+			final ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222,
 			final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads) {
 		this.cantonConfig = cantonConfig;
 		this.tallyComponentDecrypt = tallyComponentDecrypt;

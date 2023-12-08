@@ -68,8 +68,8 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 	 *     </ul>
 	 * </p>
 	 *
-	 * @param context the context containing the election event ID and the ballot box ID. Non-null.
-	 * @param input   the input containing the votes and the proofs to be verified. Non-null.
+	 * @param context the context as a {@link VerifyTallyControlComponentBallotBoxContext}. Non-null.
+	 * @param input   the input as a {@link VerifyTallyControlComponentBallotBoxInput}. Non-null.
 	 * @return {@code true} if all proofs verify, {@code false} otherwise
 	 * @throws NullPointerException if the context or the input is null.
 	 */
@@ -87,10 +87,10 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 		final GqGroup encryptionGroup = context.getEncryptionGroup();
 		final String ee = context.getElectionEventId();
 		final String bb = context.getBallotBoxId();
-		final ElGamalMultiRecipientPublicKey EB_pk = context.getElectoralBoardPublicKey();
 		final PrimesMappingTable pTable = context.getPrimesMappingTable();
 		final int psi = primesMappingTableAlgorithms.getPsi(pTable);
 		final int delta_hat = primesMappingTableAlgorithms.getDeltaHat(pTable);
+		final ElGamalMultiRecipientPublicKey EB_pk = context.getElectoralBoardPublicKey();
 
 		// Input.
 		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_dec_4 = input.getPreviousPartiallyDecryptedVotes();
@@ -105,7 +105,7 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 		// Cross-checks.
 		if (!L_votes.isEmpty()) {
 			checkArgument(L_votes.getElementSize() == psi,
-					"The size of the p_i_hat elements should be equal to the number of selectable encoded voting options.");
+					"The size of the p_i_hat elements and v_i_hat elements should be equal to the number of selectable encoded voting options.");
 			// It is ensured by the GroupVector class that all elements in L_votes have the same size.
 		}
 		checkArgument(c_dec_4.getElementSize() == delta_hat,
@@ -125,7 +125,7 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 		L_votes.forEach(p_i_hat -> checkArgument(p_i_hat.stream().parallel().distinct().count() == p_i_hat.size(),
 				"All selected encoded voting options in a vote must be distinct."));
 
-		// Algorithm.
+		// Operation.
 		final List<String> i_aux = List.of(ee, bb, "MixDecOffline");
 
 		final ElGamalMultiRecipientPublicKey EB_pk_cut = new ElGamalMultiRecipientPublicKey(

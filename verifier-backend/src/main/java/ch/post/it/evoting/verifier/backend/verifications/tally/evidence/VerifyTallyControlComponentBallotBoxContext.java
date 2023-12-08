@@ -19,10 +19,14 @@ import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.collect.MoreCollectors;
+
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
+import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
-import ch.post.it.evoting.evotinglibraries.domain.validations.FailedValidationException;
+import ch.post.it.evoting.evotinglibraries.domain.election.SetupComponentPublicKeys;
+import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 
 /**
  * Regroups the context values needed by the VerifyTallyControlComponentBallotBox algorithm.
@@ -31,8 +35,8 @@ import ch.post.it.evoting.evotinglibraries.domain.validations.FailedValidationEx
  *     <li>(p, q, g), the encryption group. Non-null.</li>
  *     <li>ee, the election event id. Non-null and a valid UUID.</li>
  *     <li>bb, the ballot box id. Non-null and a valid UUID.</li>
- *     <li>EB<sub>pk</sub>, the electoral board public key. Non-null.</li>
  *     <li>pTable, the primes mapping table. Non-null.</li>
+ *     <li>EB<sub>pk</sub>, the electoral board public key. Non-null.</li>
  * </ul>
  */
 public class VerifyTallyControlComponentBallotBoxContext {
@@ -40,16 +44,24 @@ public class VerifyTallyControlComponentBallotBoxContext {
 	private final GqGroup encryptionGroup;
 	private final String electionEventId;
 	private final String ballotBoxId;
-	private final ElGamalMultiRecipientPublicKey electoralBoardPublicKey;
 	private final PrimesMappingTable primesMappingTable;
+	private final ElGamalMultiRecipientPublicKey electoralBoardPublicKey;
 
-	private VerifyTallyControlComponentBallotBoxContext(final GqGroup encryptionGroup, final String electionEventId, final String ballotBoxId,
-			final ElGamalMultiRecipientPublicKey electoralBoardPublicKey, final PrimesMappingTable primesMappingTable) {
-		this.encryptionGroup = encryptionGroup;
-		this.electionEventId = electionEventId;
-		this.ballotBoxId = ballotBoxId;
-		this.electoralBoardPublicKey = electoralBoardPublicKey;
-		this.primesMappingTable = primesMappingTable;
+	private VerifyTallyControlComponentBallotBoxContext(final String electionEventId, final String ballotBoxId,
+			final ElectionEventContext electionEventContext, final SetupComponentPublicKeys setupComponentPublicKeys) {
+		checkNotNull(electionEventContext);
+		checkNotNull(setupComponentPublicKeys);
+
+		this.electionEventId = validateUUID(electionEventId);
+		this.ballotBoxId = validateUUID(ballotBoxId);
+		final VerificationCardSetContext verificationCardSetContext = electionEventContext.verificationCardSetContexts().stream()
+				.filter(vcsContext -> vcsContext.getBallotBoxId().equals(ballotBoxId))
+				.collect(MoreCollectors.onlyElement());
+		this.primesMappingTable = verificationCardSetContext.getPrimesMappingTable();
+		this.encryptionGroup = primesMappingTable.getEncryptionGroup();
+		this.electoralBoardPublicKey = setupComponentPublicKeys.electoralBoardPublicKey();
+
+		checkArgument(encryptionGroup.equals(electoralBoardPublicKey.getGroup()));
 	}
 
 	public GqGroup getEncryptionGroup() {
@@ -74,16 +86,10 @@ public class VerifyTallyControlComponentBallotBoxContext {
 
 	public static class Builder {
 
-		private GqGroup encryptionGroup;
 		private String electionEventId;
 		private String ballotBoxId;
-		private ElGamalMultiRecipientPublicKey electoralBoardPublicKey;
-		private PrimesMappingTable primesMappingTable;
-
-		public Builder setEncryptionGroup(final GqGroup encryptionGroup) {
-			this.encryptionGroup = encryptionGroup;
-			return this;
-		}
+		private ElectionEventContext electionEventContext;
+		private SetupComponentPublicKeys setupComponentPublicKeys;
 
 		public Builder setElectionEventId(final String electionEventId) {
 			this.electionEventId = electionEventId;
@@ -95,34 +101,18 @@ public class VerifyTallyControlComponentBallotBoxContext {
 			return this;
 		}
 
-		public Builder setElectoralBoardPublicKey(final ElGamalMultiRecipientPublicKey electoralBoardPublicKey) {
-			this.electoralBoardPublicKey = electoralBoardPublicKey;
+		public Builder setElectionEventContext(final ElectionEventContext electionEventContext) {
+			this.electionEventContext = electionEventContext;
 			return this;
 		}
 
-		public Builder setPrimesMappingTable(final PrimesMappingTable primesMappingTable) {
-			this.primesMappingTable = primesMappingTable;
+		public Builder setSetupComponentPublicKeys(final SetupComponentPublicKeys setupComponentPublicKeys) {
+			this.setupComponentPublicKeys = setupComponentPublicKeys;
 			return this;
 		}
 
-		/**
-		 * @throws NullPointerException      if any parameter is null.
-		 * @throws FailedValidationException if the election event id or ballot box id are not valid UUIDs.
-		 * @throws IllegalArgumentException  if the group of the electoral board public key or primes mapping table is not equal to the encryption
-		 *                                   group.
-		 */
 		public VerifyTallyControlComponentBallotBoxContext build() {
-			checkNotNull(encryptionGroup);
-			validateUUID(electionEventId);
-			validateUUID(ballotBoxId);
-			checkNotNull(electoralBoardPublicKey);
-			checkNotNull(primesMappingTable);
-
-			checkArgument(electoralBoardPublicKey.getGroup().equals(encryptionGroup));
-			checkArgument(primesMappingTable.getEncryptionGroup().equals(encryptionGroup));
-
-			return new VerifyTallyControlComponentBallotBoxContext(encryptionGroup, electionEventId, ballotBoxId, electoralBoardPublicKey,
-					primesMappingTable);
+			return new VerifyTallyControlComponentBallotBoxContext(electionEventId, ballotBoxId, electionEventContext, setupComponentPublicKeys);
 		}
 	}
 }

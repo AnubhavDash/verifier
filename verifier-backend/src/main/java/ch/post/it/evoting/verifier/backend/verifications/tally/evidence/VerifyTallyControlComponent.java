@@ -18,15 +18,14 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 import static ch.post.it.evoting.verifier.backend.tools.TranslationHelper.getFromResourceBundle;
 
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
 import ch.ech.xmlns.ech_0110._4.Delivery;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
-import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.SetupComponentPublicKeysPayload;
@@ -73,25 +72,26 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 	@SuppressWarnings("java:S117")
 	public VerificationResult verify(final Path inputDirectoryPath) {
 		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(inputDirectoryPath);
-		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
 		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = extractionService.getSetupComponentPublicKeysPayload(
 				inputDirectoryPath);
-		final List<ControlComponentShufflePayload> controlComponentShufflePayloads = extractionService
-				.getAllControlComponentShufflePayloadsOrderedByNodeId(inputDirectoryPath).toList();
-		final List<TallyComponentShufflePayload> tallyComponentShufflePayloads = extractionService
-				.getTallyComponentShufflePayloads(inputDirectoryPath).toList();
+		final VerifyTallyControlComponentContext context = new VerifyTallyControlComponentContext(electionEventContextPayload,
+				setupComponentPublicKeysPayload);
+
+		final Stream<ControlComponentShufflePayload> controlComponentShufflePayloads = extractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
+				inputDirectoryPath);
+		final Stream<TallyComponentShufflePayload> tallyComponentShufflePayloads = extractionService.getTallyComponentShufflePayloads(
+				inputDirectoryPath);
 		final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads = getAuthorizationNameToTallyComponentVotesPayloadMap(
-				inputDirectoryPath, electionEventContext);
-		final Configuration configuration = extractionService.getCantonConfig(inputDirectoryPath);
+				inputDirectoryPath, electionEventContextPayload);
+		final Configuration electionEventConfiguration = extractionService.getCantonConfig(inputDirectoryPath);
 		final Results tallyControlComponentDecryptions = extractionService.getTallyComponentDecrypt(inputDirectoryPath);
-		final ch.ech.xmlns.ech_0222._1.Delivery tallyControlComponentDetailedResults = extractionService.getTallyComponentEch0222(inputDirectoryPath);
 		final Delivery tallyControlComponentResults = extractionService.getTallyComponentEch0110(inputDirectoryPath);
-
+		final ch.ech.xmlns.ech_0222._1.Delivery tallyControlComponentDetailedResults = extractionService.getTallyComponentEch0222(inputDirectoryPath);
 		final VerifyTallyControlComponentInput input = new VerifyTallyControlComponentInput(controlComponentShufflePayloads,
-				tallyComponentShufflePayloads, tallyComponentVotesPayloads, electionEventContextPayload, setupComponentPublicKeysPayload,
-				configuration, tallyControlComponentDecryptions, tallyControlComponentDetailedResults, tallyControlComponentResults);
+				tallyComponentShufflePayloads, tallyComponentVotesPayloads, electionEventConfiguration,
+				tallyControlComponentDecryptions, tallyControlComponentResults, tallyControlComponentDetailedResults);
 
-		final boolean result = verifyTallyControlComponentAlgorithm.verifyTallyControlComponent(input);
+		final boolean result = verifyTallyControlComponentAlgorithm.verifyTallyControlComponent(context, input);
 		if (result) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
@@ -100,13 +100,17 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 		}
 	}
 
+	/**
+	 * Extract the {@link SetupComponentTallyDataPayload} and {@link TallyComponentVotesPayload} to create a mapping between the ballot box default
+	 * title and the {@link TallyComponentVotesPayload}.
+	 */
 	private Map<String, TallyComponentVotesPayload> getAuthorizationNameToTallyComponentVotesPayloadMap(final Path inputDirectoryPath,
-			final ElectionEventContext electionEventContext) {
+			final ElectionEventContextPayload electionEventContextPayload) {
 
 		record TallyComponentVotesTuple(String authorizationAlias, TallyComponentVotesPayload payload) {
 		}
 
-		return electionEventContext.verificationCardSetContexts().stream()
+		return electionEventContextPayload.getElectionEventContext().verificationCardSetContexts().stream()
 				.map(verificationCardSetContext -> {
 					final String ballotBoxId = verificationCardSetContext.getBallotBoxId();
 					final String verificationCardSetId = verificationCardSetContext.getVerificationCardSetId();

@@ -17,8 +17,6 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
@@ -88,8 +86,7 @@ class VerifyOnlineControlComponentsTest extends TallyVerificationTest {
 	@Test
 	@DisplayName("algorithm returning false is failed")
 	void algorithmReturningFalse() {
-		doReturn(false).when(verifyOnlineControlComponentsAlgorithm)
-				.verifyOnlineControlComponents(any(), anyList(), anyMap(), anyMap(), anyMap(), any(), any());
+		doReturn(false).when(verifyOnlineControlComponentsAlgorithm).verifyOnlineControlComponents(any(), any());
 
 		final VerificationResult result = verification.verify(datasetPath);
 
