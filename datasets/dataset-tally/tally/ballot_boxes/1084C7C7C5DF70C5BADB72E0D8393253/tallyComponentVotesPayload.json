@@ -1,0 +1,139 @@
+{
+	"electionEventId": "891305DC5D30C308C071105AEE58F25E",
+	"ballotId": "49CD517ECDB7083E317845A32CA5BA3A",
+	"ballotBoxId": "1084C7C7C5DF70C5BADB72E0D8393253",
+	"encryptionGroup": {
+		"p": "gEd6DTT+wYbJJAshYJyGVR9PMQl1ttiHTAVU1xJNl6EvHKZktg1Rj+Hca2n2PixPyjMSy1Jc5Cm7lXJYdKCB9DPuGhVzJb2Pus/DQFAVtEZ+HJ/HyZOBMOSU3K1DU5E3UmxWDqTfazqoKbL343hgDUM9VUZw6ypvkl15AMbUFHFsoETffwvj6KMOcxlX0Fsu6kmK4E7fBWwWB87uqJq8atd6VVoEcGloXLLwneIrda2+MqRHT35NoTnM0/YTXTfzUYrJMDgTSuvb8vrbFh3wy8tZbmL1wBh9dSm/UIzlYkd/EFAkIsyf0FpanB8ZxB8Z77nXOaakvKqx4S+WgSZC7cBQh8nXSdQXz3CyOtHX0LroReDk0iFM7rOipvIt4h0gs2F821P0TBT3WFDpV6pLJpQXdbagNicOL4w4929zFpycp0kKycxAKkFdD/rKGM/6x1wsQ7/OUPYMBgyJQjmESgyBmdc3oHtOv3wWUTUquCkrdncVfSMdQUdRGbuN7W8v",
+		"q": "QCO9Bpp/YMNkkgWQsE5DKo+nmIS622xDpgKqa4kmy9CXjlMyWwaox/DuNbT7HxYn5RmJZakuchTdyrksOlBA+hn3DQq5kt7H3WfhoCgK2iM/Dk/j5MnAmHJKblahqcibqTYrB1JvtZ1UFNl78bwwBqGeqqM4dZU3yS68gGNqCji2UCJvv4Xx9FGHOYyr6C2XdSTFcCdvgrYLA+d3VE1eNWu9Kq0CODS0Lll4TvEVutbfGVIjp78m0JzmafsJrpv5qMVkmBwJpXXt+X1tiw74ZeWstzF64Aw+upTfqEZysSO/iCgSEWZP6C0tTg+M4g+M99zrnNNSXlVY8JfLQJMhduAoQ+TrpOoL57hZHWjr6F10IvByaRCmd1nRU3kW8Q6QWbC+ban6Jgp7rCh0q9Ulk0oLuttQGxOHF8Yce7e5i05OU6SFZOYgFSCuh/1lDGf9Y64WId/nKHsGAwZEoRzCJQZAzOub0D2nX74LKJqVXBSVuzuKvpGOoKOojN3G9reX",
+		"g": "Ag=="
+	},
+	"votes": [
+		[
+			19,
+			59,
+			89,
+			109,
+			139,
+			179,
+			181,
+			191,
+			193,
+			227,
+			229,
+			13
+		],
+		[
+			19,
+			59,
+			79,
+			109,
+			157,
+			383,
+			401,
+			409,
+			419,
+			421,
+			431,
+			7
+		],
+		[
+			19,
+			67,
+			79,
+			127,
+			139,
+			179,
+			181,
+			191,
+			193,
+			227,
+			229,
+			17
+		],
+		[
+			19,
+			59,
+			79,
+			109,
+			149,
+			233,
+			269,
+			281,
+			317,
+			353,
+			359,
+			17
+		]
+	],
+	"actualSelectedVotingOptions": [
+		[
+			"ch_test|3aa38c9e-6e93-3159-91e1-c3da90681572",
+			"ch_test|d7a1b387-a90c-31ca-bfc2-ad038a1d9816",
+			"ch_test|562a2034-f9a8-3783-abf5-624ec5ac08be",
+			"ch_test|65113930-4472-3aac-9cfd-162f501c78f5",
+			"nrw_test|244ab111-a5d4-4090-bed3-79f850a27fa1",
+			"nrw_test|8cc68a36-df81-4381-aaff-83544ffe6e6c|0",
+			"nrw_test|d396ab8f-3c5f-4a88-81bc-494dba014287|0",
+			"nrw_test|d113bd2d-10aa-4519-89e9-ad7b49eafa76|0",
+			"nrw_test|1da9fbd3-07a5-4d9e-b3c1-2342a07684f2|0",
+			"nrw_test|f74aacda-e4f1-493e-95b8-0984f0f18d89|0",
+			"nrw_test|ed9f8446-fb14-4927-b5ec-b4db51cb77b1|0",
+			"1cde3adc-d3b8-3077-95b4-21ac2958a8fe"
+		],
+		[
+			"ch_test|3aa38c9e-6e93-3159-91e1-c3da90681572",
+			"ch_test|d7a1b387-a90c-31ca-bfc2-ad038a1d9816",
+			"ch_test|d0f886b7-03a8-3d8a-9e7d-4c9bfa02ddc6",
+			"ch_test|65113930-4472-3aac-9cfd-162f501c78f5",
+			"nrw_test|9ef97382-006e-4e3d-b079-1b7e53da339b",
+			"nrw_test|3a89019a-87ba-45b6-ac92-501ace75d05f|0",
+			"nrw_test|cdd0f070-a3a2-4a89-b525-fa19825d1305|0",
+			"nrw_test|1eb4e5e4-d2fc-4cdf-bbc4-2f84439b9870|0",
+			"nrw_test|9b175406-327d-42a2-9979-fcefb95e7620|0",
+			"nrw_test|04998ee9-33ce-4aae-beec-5fa4159e1ec0|0",
+			"nrw_test|25d225ee-2a75-49ac-b8f5-18a1be37f574|0",
+			"majorz_test|9bfe1f69-6d35-4966-b281-a5dc39655e3a|0"
+		],
+		[
+			"ch_test|3aa38c9e-6e93-3159-91e1-c3da90681572",
+			"ch_test|e9da718b-469e-35d4-8d7d-d6329621e755",
+			"ch_test|d0f886b7-03a8-3d8a-9e7d-4c9bfa02ddc6",
+			"ch_test|b4277282-00aa-3ccb-bdf2-4703ba2724e4",
+			"nrw_test|244ab111-a5d4-4090-bed3-79f850a27fa1",
+			"nrw_test|8cc68a36-df81-4381-aaff-83544ffe6e6c|0",
+			"nrw_test|d396ab8f-3c5f-4a88-81bc-494dba014287|0",
+			"nrw_test|d113bd2d-10aa-4519-89e9-ad7b49eafa76|0",
+			"nrw_test|1da9fbd3-07a5-4d9e-b3c1-2342a07684f2|0",
+			"nrw_test|f74aacda-e4f1-493e-95b8-0984f0f18d89|0",
+			"nrw_test|ed9f8446-fb14-4927-b5ec-b4db51cb77b1|0",
+			"majorz_test|f71ffce9-78c9-3621-895b-aebcc0849ad1"
+		],
+		[
+			"ch_test|3aa38c9e-6e93-3159-91e1-c3da90681572",
+			"ch_test|d7a1b387-a90c-31ca-bfc2-ad038a1d9816",
+			"ch_test|d0f886b7-03a8-3d8a-9e7d-4c9bfa02ddc6",
+			"ch_test|65113930-4472-3aac-9cfd-162f501c78f5",
+			"nrw_test|50504845-5222-4e70-8d34-f812fce04009",
+			"nrw_test|6eb5e01e-755a-4794-9781-b76a32e7175c|0",
+			"nrw_test|1d48f2f5-08a3-4d1f-be5e-80cfb6ed76e4|0",
+			"nrw_test|93d09b22-5b53-46cd-97c3-ae9cb122eab0|0",
+			"nrw_test|8ed07d87-b81d-4dc8-aaeb-0d5d29a1c2dd|0",
+			"nrw_test|8c12fee2-619f-47e1-82dd-cd4314c95807|0",
+			"nrw_test|f5074d62-71f3-4a0e-9fb5-82cb03d4751e|0",
+			"majorz_test|f71ffce9-78c9-3621-895b-aebcc0849ad1"
+		]
+	],
+	"decodedWriteInVotes": [
+		[],
+		[],
+		[
+			"Brad Pitt"
+		],
+		[
+			"Angelina Jolie"
+		]
+	],
+	"signature": {
+		"signatureContents": "SgLbbo67KykcAzL03oO1wh4ak7cX0eaP/wSeQwtgvgRsNSHkzTYkdVTcGigXk8QwWzekA7pzCjc4SHaQiywGqLNTuOAuwjV0s4U6zNhG4GbpU0yN1icJA1VXo+bebtTpwx/nTYgWAl/Zsf9UTAXGFVjSBl63qVtFtA60vKrmhHOTanaFstuAqkILwZz0mIRr8wnSC0FwKNuYlFSKQRsCAZzPo8ommtSTG3V9ezPDBPQ80YRMKB+rHjD6qwUvRn8haxv7YWOLHrP5oVZr3/uiazL7oJbPWO56Oe/gh6IqN3QMoU4ircetsS4J/YDwOMen/ODj85gOcM2eBvCqgRGwZz5+y0z3INn7l3Y4loItmvnsMu6nt9BzkKY85PZReVO0aWwWQv63xpfrblnJCupgQafog+Hq58kppWDn8yZB3RbgIFEnYxoMrHouQH2sAj9WmDJGNxjWb51CIeP9HMKn9nvKsyxPDxTG1STVSEpiI4vcsw8/wKZXE7lKDtulLQdq"
+	}
+}

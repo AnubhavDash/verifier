@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <configuration xmlns="http://www.evoting.ch/xmlns/config/5">
 	<header>
-		<fileDate>2023-09-13T13:05:34.074+02:00</fileDate>
+		<fileDate>2023-12-07T07:07:46.347+01:00</fileDate>
 		<voterTotal>43</voterTotal>
 	</header>
 	<contest>
 		<contestIdentification>Post_E2E_DEV</contestIdentification>
 		<contestDefaultLanguage>de</contestDefaultLanguage>
-		<contestDate>2022-11-25</contestDate>
+		<contestDate>2027-11-25</contestDate>
 		<contestDescription>
 			<contestDescriptionInfo>
 				<language>de</language>
@@ -26,8 +26,8 @@
 				<contestDescription>Urnengang Template (rm)</contestDescription>
 			</contestDescriptionInfo>
 		</contestDescription>
-		<evotingFromDate>2022-12-14T07:00:00+01:00</evotingFromDate>
-		<evotingToDate>2023-12-14T23:00:00+01:00</evotingToDate>
+		<evotingFromDate>2023-12-06T07:00:00+01:00</evotingFromDate>
+		<evotingToDate>2027-11-25T23:00:00+01:00</evotingToDate>
 		<adminBoard>
 			<adminBoardIdentification>Post_E2E_DEV</adminBoardIdentification>
 			<adminBoardName>Post_E2E_DEV</adminBoardName>
@@ -2562,8 +2562,8 @@
 			<authorizationName>CH_Testurne1</authorizationName>
 			<authorizationAlias>516e2551-ee42-3401-9988-7dfebd0ac0c0</authorizationAlias>
 			<authorizationTest>true</authorizationTest>
-			<authorizationFromDate>2022-12-14T07:00:00+01:00</authorizationFromDate>
-			<authorizationToDate>2023-12-14T23:00:00+01:00</authorizationToDate>
+			<authorizationFromDate>2023-12-06T07:00:00+01:00</authorizationFromDate>
+			<authorizationToDate>2027-11-25T23:00:00+01:00</authorizationToDate>
 			<authorizationGracePeriod>900</authorizationGracePeriod>
 			<authorizationObject>
 				<domainOfInfluence>
@@ -2582,8 +2582,8 @@
 			<authorizationName>CH_Testurne2</authorizationName>
 			<authorizationAlias>ec1ce02e-9b9b-3756-8d99-5bfd68678f6b</authorizationAlias>
 			<authorizationTest>true</authorizationTest>
-			<authorizationFromDate>2022-12-14T07:00:00+01:00</authorizationFromDate>
-			<authorizationToDate>2023-12-14T23:00:00+01:00</authorizationToDate>
+			<authorizationFromDate>2023-12-06T07:00:00+01:00</authorizationFromDate>
+			<authorizationToDate>2027-11-25T23:00:00+01:00</authorizationToDate>
 			<authorizationGracePeriod>900</authorizationGracePeriod>
 			<authorizationObject>
 				<domainOfInfluence>
@@ -2613,8 +2613,8 @@
 			<authorizationName>CH_Testurne3</authorizationName>
 			<authorizationAlias>7228df42-9812-3434-a123-7af149a88672</authorizationAlias>
 			<authorizationTest>true</authorizationTest>
-			<authorizationFromDate>2022-12-14T07:00:00+01:00</authorizationFromDate>
-			<authorizationToDate>2023-12-14T23:00:00+01:00</authorizationToDate>
+			<authorizationFromDate>2023-12-06T07:00:00+01:00</authorizationFromDate>
+			<authorizationToDate>2027-11-25T23:00:00+01:00</authorizationToDate>
 			<authorizationGracePeriod>900</authorizationGracePeriod>
 			<authorizationObject>
 				<domainOfInfluence>
@@ -2633,8 +2633,8 @@
 			<authorizationName>CH_Testurne4</authorizationName>
 			<authorizationAlias>88ac0932-b73a-3d2b-b04a-44a16176a5e9</authorizationAlias>
 			<authorizationTest>true</authorizationTest>
-			<authorizationFromDate>2022-12-14T07:00:00+01:00</authorizationFromDate>
-			<authorizationToDate>2023-12-14T23:00:00+01:00</authorizationToDate>
+			<authorizationFromDate>2023-12-06T07:00:00+01:00</authorizationFromDate>
+			<authorizationToDate>2027-11-25T23:00:00+01:00</authorizationToDate>
 			<authorizationGracePeriod>900</authorizationGracePeriod>
 			<authorizationObject>
 				<domainOfInfluence>
@@ -3168,6 +3168,6 @@
 		</voter>
 	</register>
 	<signature>
-		DYSJ9hpkOSuQYMlr00LcaU6XrWzArZruyNpZl3d8ltMcXzOe98KIAUbfq6/y1sXX7prVm3V/Ard2gFLMYDzNo5gCYGXxr6DAKnVhcDuECpeSTNJGiVg9ltFktxp75CUtR/kDSt4y6pfMu7/KMNQ255S5A/IdK5mbm1ZvM8ymd6k8P9vpsFYr3hI8DKv41quWjUlkiWy9XPL6BCWgrJEWjnQ3iFR5g4qjtYz2rRG+Jth5/3brP/fR2wiVCa6C8ZGY191Ow52/wpdI9igHrUtHV61LuBbDtW9/rZ3yvxqIubq+eis3/D97t69tgi+uaNfXqfU4eJWiSor3E3VRUL9GAEu+TDFyCwOc0/6EaVwrjDgfu+BFJdnhkg7jXJHOub/xfSoDFTLQDh85rcHwJ/Ol18E7Jwk1i/rrECAVd+BEkcFqUKrEVcqO+ZMUs9E0GLYqKFReTLvNevr+agOOCHnd6FNaoKb7JZTHrz+pieX7qRUrSNir0gP7DGsvAiLt96jL
+		GH4S/ecc0I8lK2C/iRPsBhQav/VW2Zp3AAhca5wnTAXCtplAvAjCTmZk59C9vhhbna5SXTuGMM/ru7J220NO5B6frste4wT7HWY4ercD/Cdz7rYDKGqzhb+azyR8OlbzRz0/lXrg8v9bRj0AV7HPCNOba2d3Rfjnqrzp7XmR+lStUeytAurKgP47XUYF3Q6p6ak38+0VtbCWFFUqCB1axAVU5NZHR0kwWIxsBEyNAVqSLWEXd7Gpdtfz2jKDxp0X9kMNsCq8GHhioNohQGteGYDkyUesKhlGg3GRjWAxX47swTt8H4F9xRM/PE19Dl2QdsNBB/dSX0S4o3gE/CuULUzm+0ksq5EQQtyyIuHbJLC7G7FDf7SmSSeXXn0gwVhq5wuoENhOVWS5MlfLZBzNH1NG9YDnNAc8sEJ5uKRM3NPKisYM5l8U9MNSimJRgXbtBrm7YCMI3MOZGyXuoRObDnCCUupjBQHdTShv9CKgw79v4xrk/+nc0LZXiMnQ4ZL5
 	</signature>
 </configuration>
