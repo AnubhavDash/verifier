@@ -29,7 +29,7 @@ import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
 import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTableEntry;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
-import ch.post.it.evoting.evotinglibraries.domain.mixnet.EncryptionParametersPayload;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -70,11 +70,11 @@ public class VerifyVotingOptions extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		// Get the encryption parameters.
-		final EncryptionParametersPayload encryptionParametersPayload = extractionService.getEncryptionParametersPayload(inputDirectoryPath);
+		// Get the election event context payload.
+		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(inputDirectoryPath);
 
 		// Get the primes from the file.
-		final GroupVector<PrimeGqElement, GqGroup> smallPrimeGroupMembers = encryptionParametersPayload.getSmallPrimes();
+		final GroupVector<PrimeGqElement, GqGroup> smallPrimeGroupMembers = electionEventContextPayload.getSmallPrimes();
 
 		final GroupVector<PrimeGqElement, GqGroup> encodedVotingOptions = extractEncodedVotingOptions(inputDirectoryPath);
 

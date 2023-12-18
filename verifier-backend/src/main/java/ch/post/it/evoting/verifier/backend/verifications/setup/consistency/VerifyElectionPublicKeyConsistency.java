@@ -68,8 +68,8 @@ public class VerifyElectionPublicKeyConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final int maxNumberOfWriteInFields = extractionService.getElectionEventContextPayload(inputDirectoryPath).getElectionEventContext()
-				.getMaxNumberOfWriteInFields();
+		final int maximumNumberOfWriteInsPlusOne = extractionService.getElectionEventContextPayload(inputDirectoryPath).getElectionEventContext()
+				.maximumNumberOfWriteInsPlusOne();
 		final SetupComponentPublicKeys setupComponentPublicKeys = extractionService.getSetupComponentPublicKeysPayload(inputDirectoryPath)
 				.getSetupComponentPublicKeys();
 
@@ -80,7 +80,7 @@ public class VerifyElectionPublicKeyConsistency extends AbstractVerification {
 								.map(ControlComponentPublicKeys::ccmjElectionPublicKey)
 								.map(ccmElectionPublicKey -> new ElGamalMultiRecipientPublicKey(
 										GroupVector.from(
-												ccmElectionPublicKey.getKeyElements().subList(0, maxNumberOfWriteInFields + 1)))))
+												ccmElectionPublicKey.getKeyElements().subList(0, maximumNumberOfWriteInsPlusOne)))))
 				.collect(GroupVector.toGroupVector());
 
 		final ElGamalMultiRecipientPublicKey combinedPublicKeys = elGamal.combinePublicKeys(publicKeys);

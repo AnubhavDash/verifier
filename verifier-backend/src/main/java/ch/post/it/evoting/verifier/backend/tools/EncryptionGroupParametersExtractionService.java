@@ -64,22 +64,6 @@ public class EncryptionGroupParametersExtractionService {
 	}
 
 	/**
-	 * Gets the encryption group parameters from the encryption parameters payload.
-	 *
-	 * @param inputDirectoryPath the dataset root directory.
-	 * @return the encryption group parameters of the encryption parameters payload.
-	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
-	 * @throws UncheckedIOException if the extraction fails.
-	 */
-	public EncryptionGroupParametersDataExtractor.DataExtraction getFromEncryptionParameters(final Path inputDirectoryPath) {
-		checkNotNull(inputDirectoryPath);
-
-		final PathNode encryptionParametersPayloadPath = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
-
-		return encryptionGroupParametersDataExtractor.load(encryptionParametersPayloadPath.getPath());
-	}
-
-	/**
 	 * Gets the encryption group parameters of all control component public key payloads.
 	 *
 	 * @param inputDirectoryPath the dataset root directory.
@@ -153,7 +137,8 @@ public class EncryptionGroupParametersExtractionService {
 
 		return pathNode.getRegexPaths().stream()
 				.parallel()
-				.map(ballotBoxPayloadPath -> pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_SHUFFLE, ballotBoxPayloadPath).getPath())
+				.map(ballotBoxPayloadPath -> pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_SHUFFLE, ballotBoxPayloadPath)
+						.getPath())
 				.map(encryptionGroupParametersDataExtractor::load);
 	}
 
@@ -171,7 +156,8 @@ public class EncryptionGroupParametersExtractionService {
 
 		return pathNode.getRegexPaths().stream()
 				.parallel()
-				.map(ballotBoxPayloadPath -> pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_VOTES, ballotBoxPayloadPath).getPath())
+				.map(ballotBoxPayloadPath -> pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_VOTES, ballotBoxPayloadPath)
+						.getPath())
 				.map(encryptionGroupParametersDataExtractor::load);
 
 	}
@@ -183,7 +169,8 @@ public class EncryptionGroupParametersExtractionService {
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the extraction fails.
 	 */
-	public Stream<EncryptionGroupParametersDataExtractor.DataExtraction> getFromSetupComponentVerificationDataPayloads(final Path inputDirectoryPath) {
+	public Stream<EncryptionGroupParametersDataExtractor.DataExtraction> getFromSetupComponentVerificationDataPayloads(
+			final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
 		final PathNode pathNode = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);

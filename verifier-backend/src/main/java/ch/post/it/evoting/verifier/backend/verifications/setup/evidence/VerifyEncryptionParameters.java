@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.math.GqElement;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
-import ch.post.it.evoting.evotinglibraries.domain.mixnet.EncryptionParametersPayload;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -69,14 +69,14 @@ public class VerifyEncryptionParameters extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 		// Deserialize file.
-		final EncryptionParametersPayload encryptionParametersPayload = extractionService.getEncryptionParametersPayload(inputDirectoryPath);
-		final GqGroup encryptionGroup = encryptionParametersPayload.getEncryptionGroup();
+		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(inputDirectoryPath);
+		final GqGroup encryptionGroup = electionEventContextPayload.getEncryptionGroup();
 
 		// Extract parameters.
 		final BigInteger p_hat = encryptionGroup.getP();
 		final BigInteger q_hat = encryptionGroup.getQ();
 		final GqElement g_hat = encryptionGroup.getGenerator();
-		final String seed = encryptionParametersPayload.getSeed();
+		final String seed = electionEventContextPayload.getSeed();
 
 		final VerificationResult verificationResult;
 		if (!verifyEncryptionParametersAlgorithm.verifyEncryptionParameters(p_hat, q_hat, g_hat, seed)) {

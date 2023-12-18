@@ -5,12 +5,11 @@ All verifications performed in the verifier are listed in the table below:
 | Phase | Category     | Id    | Name of the verification                          |
 |-------|--------------|-------|---------------------------------------------------|
 | Setup | Completeness | 01.01 | VerifySetupCompleteness                           |
-| Setup | Authenticity | 02.01 | VerifySignatureSetupComponentEncryptionParameters |
-| Setup | Authenticity | 02.02 | VerifySignatureCantonConfig                       |
-| Setup | Authenticity | 02.03 | VerifySignatureSetupComponentPublicKeys           |
-| Setup | Authenticity | 02.04 | VerifySignatureControlComponentPublicKeys         |
-| Setup | Authenticity | 02.05 | VerifySignatureSetupComponentTallyData            |
-| Setup | Authenticity | 02.06 | VerifySignatureElectionEventContext               |
+| Setup | Authenticity | 02.01 | VerifySignatureCantonConfig                       |
+| Setup | Authenticity | 02.02 | VerifySignatureSetupComponentPublicKeys           |
+| Setup | Authenticity | 02.03 | VerifySignatureControlComponentPublicKeys         |
+| Setup | Authenticity | 02.04 | VerifySignatureSetupComponentTallyData            |
+| Setup | Authenticity | 02.05 | VerifySignatureElectionEventContext               |
 | Setup | Consistency  | 03.01 | VerifyEncryptionGroupConsistency                  |
 | Setup | Consistency  | 03.02 | VerifySetupFileNamesConsistency                   |
 | Setup | Consistency  | 03.03 | VerifyCCrChoiceReturnCodesPublicKeyConsistency    |

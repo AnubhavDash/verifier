@@ -78,7 +78,6 @@ public class VerifyTallyCompleteness extends AbstractVerification {
 	private boolean verifySetupCompleteness(final Path inputDirectoryPath) {
 		try {
 			pathService.buildFromRootPath(StructureKey.SETUP_DIR, inputDirectoryPath);
-			pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
 			pathService.buildFromRootPath(StructureKey.CONFIGURATION_ANONYMIZED, inputDirectoryPath);
 			pathService.buildFromRootPath(StructureKey.ELECTION_EVENT_CONTEXT, inputDirectoryPath);
 			pathService.buildFromRootPath(StructureKey.SETUP_COMPONENT_PUBLIC_KEYS, inputDirectoryPath);

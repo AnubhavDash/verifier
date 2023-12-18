@@ -53,7 +53,7 @@ import com.google.common.collect.MoreCollectors;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.evotinglibraries.domain.encryption.StreamedEncryptionDecryptionService;
-import ch.post.it.evoting.evotinglibraries.domain.mixnet.EncryptionParametersPayload;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.evotinglibraries.domain.validations.PasswordValidation;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
@@ -208,8 +208,8 @@ public class VerifierProcessor {
 		final Configuration configuration = electionDataExtractionService.getCantonConfig(inputDirectory);
 
 		// Get election event seed.
-		final EncryptionParametersPayload encryptionParametersPayload = electionDataExtractionService.getEncryptionParametersPayload(inputDirectory);
-		final String electionEventSeed = encryptionParametersPayload.getSeed();
+		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(inputDirectory);
+		final String electionEventSeed = electionEventContextPayload.getSeed();
 
 		// Get the direct trust certificate fingerprints.
 		final Map<String, String> aliasesToFingerprints = datasetService.extractFingerprints();

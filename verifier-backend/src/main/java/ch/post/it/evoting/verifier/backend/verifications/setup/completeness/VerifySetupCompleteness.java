@@ -80,7 +80,6 @@ public class VerifySetupCompleteness extends AbstractVerification {
 	private boolean verifySetupCompleteness(final Path inputDirectoryPath) {
 		try {
 			pathService.buildFromRootPath(StructureKey.SETUP_DIR, inputDirectoryPath);
-			pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
 			pathService.buildFromRootPath(StructureKey.CONFIGURATION_ANONYMIZED, inputDirectoryPath);
 			pathService.buildFromRootPath(StructureKey.ELECTION_EVENT_CONTEXT, inputDirectoryPath);
 			pathService.buildFromRootPath(StructureKey.SETUP_COMPONENT_PUBLIC_KEYS, inputDirectoryPath);
@@ -89,9 +88,12 @@ public class VerifySetupCompleteness extends AbstractVerification {
 			pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SETS_DIR, inputDirectoryPath);
 			final List<Path> verificationCardSetIds = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath)
 					.getRegexPaths();
-			verificationCardSetIds.stream().parallel().forEach(vcs -> pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_CODE_SHARES, vcs));
-			verificationCardSetIds.stream().parallel().forEach(vcs -> pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_TALLY_DATA, vcs));
-			verificationCardSetIds.stream().parallel().forEach(vcs -> pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA, vcs));
+			verificationCardSetIds.stream().parallel()
+					.forEach(vcs -> pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_CODE_SHARES, vcs));
+			verificationCardSetIds.stream().parallel()
+					.forEach(vcs -> pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_TALLY_DATA, vcs));
+			verificationCardSetIds.stream().parallel()
+					.forEach(vcs -> pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA, vcs));
 			return true;
 		} catch (final UncheckedIOException | IllegalStateException e) {
 			LOGGER.error("Setup completeness failed.", e);

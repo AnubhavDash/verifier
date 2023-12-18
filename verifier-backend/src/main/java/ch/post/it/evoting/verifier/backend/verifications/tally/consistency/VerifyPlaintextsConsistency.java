@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.PrimesMappingTableAlgorithms;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -36,11 +37,14 @@ import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerification
 public class VerifyPlaintextsConsistency extends AbstractVerification {
 
 	private final ElectionDataExtractionService extractionService;
+	private final PrimesMappingTableAlgorithms primesMappingTableAlgorithms;
 
 	protected VerifyPlaintextsConsistency(final ResultPublisherService resultPublisherService,
-			final ElectionDataExtractionService extractionService) {
+			final ElectionDataExtractionService extractionService,
+			final PrimesMappingTableAlgorithms primesMappingTableAlgorithms) {
 		super(resultPublisherService);
 		this.extractionService = extractionService;
+		this.primesMappingTableAlgorithms = primesMappingTableAlgorithms;
 	}
 
 	@Override
@@ -64,7 +68,7 @@ public class VerifyPlaintextsConsistency extends AbstractVerification {
 				.parallel()
 				.map(vcsContext -> {
 					final String ballotBoxId = vcsContext.getBallotBoxId();
-					final int numberWriteInsPlusOne = vcsContext.getNumberOfWriteIns() + 1;
+					final int numberWriteInsPlusOne = primesMappingTableAlgorithms.getDeltaHat(vcsContext.getPrimesMappingTable());
 					final TallyComponentShufflePayload tallyComponentShufflePayload = extractionService.getTallyComponentShufflePayload(
 							inputDirectoryPath, ballotBoxId);
 					return new Plaintexts(tallyComponentShufflePayload, numberWriteInsPlusOne);

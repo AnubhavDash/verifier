@@ -148,7 +148,7 @@ public class DatasetService {
 		}
 
 		return Arrays.stream(Alias.values())
-				.filter(not(Alias.VOTING_SERVER::equals).and(not(Alias.PRINTING_COMPONENT::equals)))
+				.filter(not(Alias.VOTING_SERVER::equals).and(not(Alias.PRINTING_COMPONENT::equals)).and(not(Alias.VERIFIER::equals)))
 				.map(Alias::get)
 				.collect(Collectors.toMap(
 						Function.identity(),

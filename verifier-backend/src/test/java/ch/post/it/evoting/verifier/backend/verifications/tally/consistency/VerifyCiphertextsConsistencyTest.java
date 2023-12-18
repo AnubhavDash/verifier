@@ -16,34 +16,30 @@
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
-
-import java.util.List;
-import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.google.common.collect.Streams;
-
-import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
-import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
-import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
-import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
+import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.PrimesMappingTableAlgorithms;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
 
 class VerifyCiphertextsConsistencyTest extends TallyVerificationTest {
 
+	private static PrimesMappingTableAlgorithms primesMappingTableAlgorithms;
+
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyCiphertextsConsistency(resultPublisherServiceMock, electionDataExtractionService);
+		primesMappingTableAlgorithms = spy(new PrimesMappingTableAlgorithms());
+		verification = new VerifyCiphertextsConsistency(resultPublisherServiceMock, electionDataExtractionService, primesMappingTableAlgorithms);
 	}
 
 	@Test
@@ -57,37 +53,13 @@ class VerifyCiphertextsConsistencyTest extends TallyVerificationTest {
 	@Test
 	void testVerifyNokBallotBoxCiphertexts() {
 		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(datasetPath);
-		final GqGroup encryptionGroup = electionEventContextPayload.getEncryptionGroup();
 		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
-		final List<VerificationCardSetContext> vcsContexts = electionEventContext.verificationCardSetContexts();
-		final VerificationCardSetContext firstContext = vcsContexts.get(0);
-		final int size = firstContext.getListOfWriteInOptions().size();
-		final GroupVector<PrimeGqElement, GqGroup> modifiedListOfWriteInOptions = PrimeGqElement.PrimeGqElementFactory.getSmallPrimeGroupMembers(
-				encryptionGroup, size + 1);
-		final VerificationCardSetContext modifiedFirstContext = new VerificationCardSetContext.Builder()
-				.setVerificationCardSetId(firstContext.getVerificationCardSetId())
-				.setVerificationCardSetAlias(firstContext.getVerificationCardSetAlias())
-				.setVerificationCardSetDescription(firstContext.getVerificationCardSetDescription())
-				.setBallotBoxId(firstContext.getBallotBoxId())
-				.setBallotBoxStartTime(firstContext.getBallotBoxStartTime())
-				.setBallotBoxFinishTime(firstContext.getBallotBoxFinishTime())
-				.setTestBallotBox(firstContext.isTestBallotBox())
-				.setNumberOfVotingCards(firstContext.getNumberOfVotingCards())
-				.setGracePeriod(firstContext.getGracePeriod())
-				.setPrimesMappingTable(firstContext.getPrimesMappingTable())
-				.setListOfWriteInOptions(modifiedListOfWriteInOptions)
-				.build();
-		final List<VerificationCardSetContext> modifiedVcsContexts = Streams.concat(Stream.of(modifiedFirstContext), vcsContexts.stream().skip(1))
-				.toList();
-		final ElectionEventContext modifiedElectionEventContext = spy(electionEventContext);
-		doReturn(modifiedVcsContexts).when(modifiedElectionEventContext).verificationCardSetContexts();
-		final ElectionEventContextPayload modifiedElectionEventContextPayload = new ElectionEventContextPayload(
-				electionEventContextPayload.getEncryptionGroup(), modifiedElectionEventContext);
-		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-		doReturn(modifiedElectionEventContextPayload).when(extractionServiceMock).getElectionEventContextPayload(datasetPath);
+		final PrimesMappingTable primesMappingTable = electionEventContext.verificationCardSetContexts().get(0).getPrimesMappingTable();
+		final int numberOfWriteInsPlusOne = primesMappingTableAlgorithms.getDeltaHat(primesMappingTable);
+		doReturn(numberOfWriteInsPlusOne + 1).when(primesMappingTableAlgorithms).getDeltaHat(any());
 
 		final VerifyCiphertextsConsistency verificationWithMock = new VerifyCiphertextsConsistency(resultPublisherServiceMock,
-				extractionServiceMock);
+				electionDataExtractionService, primesMappingTableAlgorithms);
 		final VerificationResult verificationResult = verificationWithMock.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),

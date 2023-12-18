@@ -149,12 +149,12 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 				.setNumberOfVotingCards(verificationCardSetContext.getNumberOfVotingCards())
 				.setGracePeriod(verificationCardSetContext.getGracePeriod())
 				.setPrimesMappingTable(permutedPrimesMappingTable)
-				.setListOfWriteInOptions(verificationCardSetContext.getListOfWriteInOptions())
 				.build();
 	}
 
 	private List<VerificationCardSetContext> addNewActualVotingOption(final List<VerificationCardSetContext> verificationCardSetContexts) {
-		final PrimeGqElement encodedVotingOption = verificationCardSetContexts.get(0).getPrimesMappingTable().getPTable().get(0).encodedVotingOption();
+		final PrimeGqElement encodedVotingOption = verificationCardSetContexts.get(0).getPrimesMappingTable().getPTable().get(0)
+				.encodedVotingOption();
 		return verificationCardSetContexts.stream()
 				.map(verificationCardSetContext -> {
 					final PrimesMappingTable primesMappingTable = verificationCardSetContext.getPrimesMappingTable();
@@ -181,7 +181,6 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 								.setNumberOfVotingCards(verificationCardSetContext.getNumberOfVotingCards())
 								.setGracePeriod(verificationCardSetContext.getGracePeriod())
 								.setPrimesMappingTable(notInConfigPrimesMappingTable)
-								.setListOfWriteInOptions(verificationCardSetContext.getListOfWriteInOptions())
 								.build();
 					}
 					return verificationCardSetContext;

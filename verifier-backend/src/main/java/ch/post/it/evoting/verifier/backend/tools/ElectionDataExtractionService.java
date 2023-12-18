@@ -40,7 +40,6 @@ import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTa
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
-import ch.post.it.evoting.evotinglibraries.domain.mixnet.EncryptionParametersPayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.SetupComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.returncodes.ControlComponentCodeSharesPayload;
@@ -152,25 +151,6 @@ public class ElectionDataExtractionService {
 		final PathNode deliveryPathNode = pathService.buildFromRootPath(StructureKey.TALLY_COMPONENT_ECH0222, inputDirectoryPath);
 		return ech0222XmlFileRepository.read(deliveryPathNode.getPath(), XsdConstants.TALLY_COMPONENT_ECH_0222,
 				ch.ech.xmlns.ech_0222._1.Delivery.class);
-	}
-
-	/**
-	 * Gets the encryption parameters payload.
-	 *
-	 * @param inputDirectoryPath the root directory containing project files.
-	 * @return the encryption parameters payload found in the project files, at the expected location if it exists.
-	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
-	 * @throws UncheckedIOException if the file cannot be deserialized to an EncryptionParametersPayload.
-	 */
-	public EncryptionParametersPayload getEncryptionParametersPayload(final Path inputDirectoryPath) {
-		checkNotNull(inputDirectoryPath);
-
-		final PathNode encryptionParametersPathNode = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
-		try {
-			return objectMapper.readValue(encryptionParametersPathNode.getPath().toFile(), EncryptionParametersPayload.class);
-		} catch (final IOException e) {
-			throw new UncheckedIOException("Failed to deserialize encryption parameters.", e);
-		}
 	}
 
 	/**

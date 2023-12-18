@@ -26,6 +26,7 @@ import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetCo
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.PrimesMappingTableAlgorithms;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -40,11 +41,14 @@ import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerification
 public class VerifyCiphertextsConsistency extends AbstractVerification {
 
 	private final ElectionDataExtractionService extractionService;
+	private final PrimesMappingTableAlgorithms primesMappingTableAlgorithms;
 
 	public VerifyCiphertextsConsistency(final ResultPublisherService resultPublisherService,
-			final ElectionDataExtractionService extractionService) {
+			final ElectionDataExtractionService extractionService,
+			final PrimesMappingTableAlgorithms primesMappingTableAlgorithms) {
 		super(resultPublisherService);
 		this.extractionService = extractionService;
+		this.primesMappingTableAlgorithms = primesMappingTableAlgorithms;
 	}
 
 	@Override
@@ -68,7 +72,7 @@ public class VerifyCiphertextsConsistency extends AbstractVerification {
 				.parallel()
 				.map(vcsContext -> {
 					final String ballotBoxId = vcsContext.getBallotBoxId();
-					final int numberWriteInsPlusOne = vcsContext.getNumberOfWriteIns() + 1;
+					final int numberWriteInsPlusOne = primesMappingTableAlgorithms.getDeltaHat(vcsContext.getPrimesMappingTable());
 					final List<ControlComponentBallotBoxPayload> ballotBoxPayloads = extractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(
 							inputDirectoryPath, ballotBoxId).toList();
 					final List<ControlComponentShufflePayload> shufflePayloads = extractionService.getControlComponentShufflePayloadsOrderedByNodeId(

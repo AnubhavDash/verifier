@@ -67,15 +67,6 @@ class VerifyEncryptionGroupConsistencyTest extends SetupVerificationTest {
 	}
 
 	@Test
-	@DisplayName("EncryptionParameters having different encryption group parameters fails")
-	void invalidEncryptionParametersPayload() {
-		final EncryptionGroupParametersExtractionService groupParametersExtractorMock = spy(extractionService);
-		doReturn(differentEncryptionGroupParameters).when(groupParametersExtractorMock).getFromEncryptionParameters(datasetPath);
-
-		assertInvalidVerification(groupParametersExtractorMock);
-	}
-
-	@Test
 	@DisplayName("ControlComponentPublicKeys containing different encryption group parameters fails")
 	void invalidControlComponentPublicKeysPayload() {
 		final EncryptionGroupParametersExtractionService groupParametersExtractorMock = spy(extractionService);
