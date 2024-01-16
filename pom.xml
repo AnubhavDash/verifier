@@ -29,17 +29,17 @@
 	</modules>
 
 	<properties>
-		<maven-enforcer-plugin.requiredJavaVersion>[17.0.9]</maven-enforcer-plugin.requiredJavaVersion>
+		<maven-enforcer-plugin.requiredJavaVersion>[21.0.1]</maven-enforcer-plugin.requiredJavaVersion>
 		<maven-enforcer-plugin.requiredMavenVersion>[3.9.4]</maven-enforcer-plugin.requiredMavenVersion>
-		<maven.compiler.source>17</maven.compiler.source>
-		<maven.compiler.target>17</maven.compiler.target>
-		<maven.compiler.release>17</maven.compiler.release>
+		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
+		<maven.compiler.release>21</maven.compiler.release>
 		<project.build.outputTimestamp>2023-07-06T15:18:19+02:00</project.build.outputTimestamp>
 
 		<bouncycastle.version>1.77</bouncycastle.version>
 		<commons-codec.version>1.16.0</commons-codec.version>
-		<crypto-primitives-version>1.4.0.7</crypto-primitives-version>
-		<e-voting-libraries.version>1.4.0.47</e-voting-libraries.version>
+		<crypto-primitives-version>1.4.0.8</crypto-primitives-version>
+		<e-voting-libraries.version>1.4.0.50</e-voting-libraries.version>
 		<guava.version>33.0.0-jre</guava.version>
 		<jackson.version>2.16.1</jackson.version>
 		<jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
@@ -61,7 +61,8 @@
 		<reproducible-build-maven-plugin.version>0.15.2</reproducible-build-maven-plugin.version>
 		<rootProject>verifier</rootProject>
 		<slf4j.version>2.0.11</slf4j.version>
-		<spring-boot.version>3.1.7</spring-boot.version>
+		<spring-boot.version>3.2.0</spring-boot.version>
+		<system-stubs-jupiter.version>2.1.6</system-stubs-jupiter.version>
 		<versions-maven-plugin.version>2.16.2</versions-maven-plugin.version>
 		<zip4j.version>2.11.5</zip4j.version>
 		<apache.commons-lang3>3.14.0</apache.commons-lang3>
@@ -156,6 +157,7 @@
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-core</artifactId>
 				<version>${mockito.version}</version>
+				<scope>test</scope>
 			</dependency>
 
 			<!-- net.lingala.zip4j -->
@@ -257,6 +259,12 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
+			<dependency>
+				<groupId>uk.org.webcompere</groupId>
+				<artifactId>system-stubs-jupiter</artifactId>
+				<version>${system-stubs-jupiter.version}</version>
+				<scope>test</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -280,6 +288,14 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
 					<version>${maven-enforcer-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven-compiler-plugin.version}</version>
+					<configuration>
+						<parameters>true</parameters>
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -314,9 +330,7 @@
 					<artifactId>spring-boot-maven-plugin</artifactId>
 					<version>${spring-boot.version}</version>
 					<configuration>
-						<layers>
-							<enabled>false</enabled>
-						</layers>
+						<loaderImplementation>CLASSIC</loaderImplementation>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -411,11 +425,11 @@
 			<properties>
 
 				<!-- OpenJDK -->
-				<openjdk-jre.version>jdk-17.0.9+9-jre</openjdk-jre.version>
+				<openjdk-jre.version>jdk-21.0.1+12-jre</openjdk-jre.version>
 				<openjdk-jre.win64.url>
-					https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.9%2B9.1/OpenJDK17U-jre_x64_windows_hotspot_17.0.9_9.zip
+					https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.1%2B12/OpenJDK21U-jre_x64_windows_hotspot_21.0.1_12.zip
 				</openjdk-jre.win64.url>
-				<openjdk-jre.win64.sha256>6c491d6f8c28c6f451f08110a30348696a04b009f8c58592191046e0fab1477b</openjdk-jre.win64.sha256>
+				<openjdk-jre.win64.sha256>38bb68f9db9c85a63496570c53a1bcbac18c808677595d7e939d2f5b38e9a7aa</openjdk-jre.win64.sha256>
 
 			</properties>
 		</profile>

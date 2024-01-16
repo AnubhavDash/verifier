@@ -25,9 +25,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
+import ch.post.it.evoting.cryptoprimitives.hashing.Hash;
+import ch.post.it.evoting.cryptoprimitives.hashing.HashFactory;
+import ch.post.it.evoting.cryptoprimitives.math.Base64;
+import ch.post.it.evoting.cryptoprimitives.math.BaseEncodingFactory;
 import ch.post.it.evoting.cryptoprimitives.mixnet.MixnetFactory;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
@@ -41,13 +46,25 @@ import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
 
+import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
+import uk.org.webcompere.systemstubs.jupiter.SystemStub;
+import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
+
+@ExtendWith({ SystemStubsExtension.class })
 @DisplayName("VerifyOnlineControlComponentsEvidence with")
 class VerifyOnlineControlComponentsTest extends TallyVerificationTest {
 
 	private static VerifyOnlineControlComponentsAlgorithm verifyOnlineControlComponentsAlgorithm;
 
+	@SystemStub
+	private static EnvironmentVariables environmentVariables;
+
 	@BeforeAll
 	static void setUpAll() {
+		environmentVariables.set("SECURITY_LEVEL", "STANDARD");
+
+		final Hash hash = HashFactory.createHash();
+		final Base64 base64 = BaseEncodingFactory.createBase64();
 		final ElGamal elGamal = ElGamalFactory.createElGamal();
 		final ZeroKnowledgeProof zeroKnowledgeProof = ZeroKnowledgeProofFactory.createZeroKnowledgeProof();
 		final GetHashContextAlgorithm getHashContextAlgorithm = new GetHashContextAlgorithm();
@@ -57,7 +74,8 @@ class VerifyOnlineControlComponentsTest extends TallyVerificationTest {
 				zeroKnowledgeProof);
 		final VerifyVotingClientProofsAlgorithm verifyVotingClientProofsAlgorithm = new VerifyVotingClientProofsAlgorithm(zeroKnowledgeProof,
 				getHashContextAlgorithm, primesMappingTableAlgorithms);
-		final GetMixnetInitialCiphertextsAlgorithm getMixnetInitialCiphertextsAlgorithm = new GetMixnetInitialCiphertextsAlgorithm(elGamal);
+		final GetMixnetInitialCiphertextsAlgorithm getMixnetInitialCiphertextsAlgorithm = new GetMixnetInitialCiphertextsAlgorithm(hash, base64,
+				elGamal);
 
 		final VerifyOnlineControlComponentsBallotBoxAlgorithm verifyOnlineControlComponentsBallotBoxAlgorithm = new VerifyOnlineControlComponentsBallotBoxAlgorithm(
 				verifyMixDecOfflineAlgorithm, verifyVotingClientProofsAlgorithm, getMixnetInitialCiphertextsAlgorithm, primesMappingTableAlgorithms);

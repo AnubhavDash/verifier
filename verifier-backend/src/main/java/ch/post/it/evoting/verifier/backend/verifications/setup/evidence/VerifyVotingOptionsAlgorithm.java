@@ -23,9 +23,9 @@ import java.util.stream.IntStream;
 
 import org.springframework.stereotype.Service;
 
+import ch.post.it.evoting.cryptoprimitives.math.GqElement;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
-import ch.post.it.evoting.cryptoprimitives.math.MultiplicativeGroupElement;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
 import ch.post.it.evoting.evotinglibraries.domain.VotingOptionsConstants;
 
@@ -99,7 +99,7 @@ public class VerifyVotingOptionsAlgorithm {
 		final boolean verifB = p_vector.stream()
 				.skip(omega - phi)
 				.parallel()
-				.reduce(p_vector.getGroup().getIdentity(), MultiplicativeGroupElement::multiply, MultiplicativeGroupElement::multiply)
+				.reduce(p_vector.getGroup().getIdentity(), GqElement::multiply, GqElement::multiply)
 				.getValue()
 				.compareTo(p) < 0;
 

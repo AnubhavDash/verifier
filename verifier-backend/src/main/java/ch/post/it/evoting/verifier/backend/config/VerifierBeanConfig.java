@@ -38,6 +38,8 @@ import ch.post.it.evoting.cryptoprimitives.hashing.Argon2Factory;
 import ch.post.it.evoting.cryptoprimitives.hashing.Argon2Profile;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hash;
 import ch.post.it.evoting.cryptoprimitives.hashing.HashFactory;
+import ch.post.it.evoting.cryptoprimitives.math.Base64;
+import ch.post.it.evoting.cryptoprimitives.math.BaseEncodingFactory;
 import ch.post.it.evoting.cryptoprimitives.math.Random;
 import ch.post.it.evoting.cryptoprimitives.math.RandomFactory;
 import ch.post.it.evoting.cryptoprimitives.mixnet.Mixnet;
@@ -97,6 +99,11 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
+	public Base64 base64() {
+		return BaseEncodingFactory.createBase64();
+	}
+
+	@Bean
 	public ElGamal elGamal() {
 		return ElGamalFactory.createElGamal();
 	}
@@ -121,8 +128,8 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
-	public GetMixnetInitialCiphertextsAlgorithm getMixnetInitialCiphertextsAlgorithm(final ElGamal elGamal) {
-		return new GetMixnetInitialCiphertextsAlgorithm(elGamal);
+	public GetMixnetInitialCiphertextsAlgorithm getMixnetInitialCiphertextsAlgorithm(final Hash hash, final Base64 base64, final ElGamal elGamal) {
+		return new GetMixnetInitialCiphertextsAlgorithm(hash, base64, elGamal);
 	}
 
 	@Bean

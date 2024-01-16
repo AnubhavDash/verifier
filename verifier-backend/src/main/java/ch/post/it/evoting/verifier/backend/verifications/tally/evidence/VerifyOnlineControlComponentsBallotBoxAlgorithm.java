@@ -47,6 +47,7 @@ import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixonline.GetMixnetInitialCiphertextsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixonline.GetMixnetInitialCiphertextsContext;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixonline.GetMixnetInitialCiphertextsInput;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixonline.GetMixnetInitialCiphertextsOutput;
 
 /**
  * Implements the VerifyOnlineControlComponentsBallotBox algorithm.
@@ -177,8 +178,9 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 		final GetMixnetInitialCiphertextsContext getMixnetInitialCiphertextsContext = new GetMixnetInitialCiphertextsContext(encryptionGroup,
 				delta_hat);
 		final GetMixnetInitialCiphertextsInput getMixnetInitialCiphertextsInput = new GetMixnetInitialCiphertextsInput(vcMap_1, EL_pk);
-		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_init_1 = getMixnetInitialCiphertextsAlgorithm.getMixnetInitialCiphertexts(
+		final GetMixnetInitialCiphertextsOutput getMixnetInitialCiphertextsOutput = getMixnetInitialCiphertextsAlgorithm.getMixnetInitialCiphertexts(
 				getMixnetInitialCiphertextsContext, getMixnetInitialCiphertextsInput);
+		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_init_1 = getMixnetInitialCiphertextsOutput.mixnetInitialCiphertexts();
 
 		final VerifyMixDecInput Input_shuffleProofs = new VerifyMixDecInput(c_init_1, c_mix_j_pi_mix_j, c_dec_j_pi_dec_j, EL_pk, EL_pk_1_to_4, EB_pk);
 

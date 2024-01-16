@@ -23,6 +23,7 @@ import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
 import ch.post.it.evoting.cryptoprimitives.internal.hashing.HashService;
@@ -40,6 +41,11 @@ import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
 
+import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
+import uk.org.webcompere.systemstubs.jupiter.SystemStub;
+import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
+
+@ExtendWith({ SystemStubsExtension.class })
 class VerifyTallyControlComponentTest extends TallyVerificationTest {
 
 	private static final PrimesMappingTableAlgorithms PRIMES_MAPPING_TABLE_ALGORITHMS = new PrimesMappingTableAlgorithms();
@@ -59,8 +65,12 @@ class VerifyTallyControlComponentTest extends TallyVerificationTest {
 	private static final VerifyTallyFilesAlgorithm VERIFY_TALLY_FILES_ALGORITHM = new VerifyTallyFilesAlgorithm(HashService.getInstance(),
 			new XmlNormalizer());
 
+	@SystemStub
+	private static EnvironmentVariables environmentVariables;
+
 	@BeforeAll
 	static void setUpAll() {
+		environmentVariables.set("SECURITY_LEVEL", "STANDARD");
 		final VerifyTallyControlComponentAlgorithm verifyTallyControlComponentAlgorithm = new VerifyTallyControlComponentAlgorithm(
 				VERIFY_TALLY_CONTROL_COMPONENT_BALLOT_BOX_ALGORITHM, VERIFY_TALLY_FILES_ALGORITHM);
 

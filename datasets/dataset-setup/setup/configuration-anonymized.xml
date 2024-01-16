@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <configuration xmlns="http://www.evoting.ch/xmlns/config/5">
   <header>
-    <fileDate>2023-12-15T14:46:31.914+01:00</fileDate>
+    <fileDate>2023-12-18T17:28:20.911+01:00</fileDate>
     <voterTotal>43</voterTotal>
   </header>
   <contest>
@@ -3061,19 +3061,19 @@
           <displayCandidateLine1>
             <displayLineInfo>
               <language>de</language>
-              <displayLineText>1 Rot Doris Rote Partei</displayLineText>
+              <displayLineText>1 Rot Doris</displayLineText>
             </displayLineInfo>
             <displayLineInfo>
               <language>fr</language>
-              <displayLineText>1 Rot Doris Rote Partei</displayLineText>
+              <displayLineText>1 Rot Doris</displayLineText>
             </displayLineInfo>
             <displayLineInfo>
               <language>it</language>
-              <displayLineText>1 Rot Doris Rote Partei</displayLineText>
+              <displayLineText>1 Rot Doris</displayLineText>
             </displayLineInfo>
             <displayLineInfo>
               <language>rm</language>
-              <displayLineText>1 Rot Doris Rote Partei</displayLineText>
+              <displayLineText>1 Rot Doris</displayLineText>
             </displayLineInfo>
           </displayCandidateLine1>
           <displayCandidateLine2>
@@ -3094,6 +3094,24 @@
               <displayLineText>29.11.1961, Wil</displayLineText>
             </displayLineInfo>
           </displayCandidateLine2>
+          <displayCandidateLine4>
+            <displayLineInfo>
+              <language>de</language>
+              <displayLineText>Rote Partei</displayLineText>
+            </displayLineInfo>
+            <displayLineInfo>
+              <language>fr</language>
+              <displayLineText>Rote Partei</displayLineText>
+            </displayLineInfo>
+            <displayLineInfo>
+              <language>it</language>
+              <displayLineText>Rote Partei</displayLineText>
+            </displayLineInfo>
+            <displayLineInfo>
+              <language>rm</language>
+              <displayLineText>Rote Partei</displayLineText>
+            </displayLineInfo>
+          </displayCandidateLine4>
         </candidate>
         <candidate>
           <candidateIdentification>b5c605ec-9398-41d9-b934-006c548381c3</candidateIdentification>
@@ -3177,19 +3195,19 @@
           <displayCandidateLine1>
             <displayLineInfo>
               <language>de</language>
-              <displayLineText>2 Gelb Henry Gelbe Partei</displayLineText>
+              <displayLineText>2 Gelb Henry</displayLineText>
             </displayLineInfo>
             <displayLineInfo>
               <language>fr</language>
-              <displayLineText>2 Gelb Henry Gelbe Partei</displayLineText>
+              <displayLineText>2 Gelb Henry</displayLineText>
             </displayLineInfo>
             <displayLineInfo>
               <language>it</language>
-              <displayLineText>2 Gelb Henry Gelbe Partei</displayLineText>
+              <displayLineText>2 Gelb Henry</displayLineText>
             </displayLineInfo>
             <displayLineInfo>
               <language>rm</language>
-              <displayLineText>2 Gelb Henry Gelbe Partei</displayLineText>
+              <displayLineText>2 Gelb Henry</displayLineText>
             </displayLineInfo>
           </displayCandidateLine1>
           <displayCandidateLine2>
@@ -3210,6 +3228,24 @@
               <displayLineText>29.11.1954, Wil</displayLineText>
             </displayLineInfo>
           </displayCandidateLine2>
+          <displayCandidateLine4>
+            <displayLineInfo>
+              <language>de</language>
+              <displayLineText>Gelbe Partei</displayLineText>
+            </displayLineInfo>
+            <displayLineInfo>
+              <language>fr</language>
+              <displayLineText>Gelbe Partei</displayLineText>
+            </displayLineInfo>
+            <displayLineInfo>
+              <language>it</language>
+              <displayLineText>Gelbe Partei</displayLineText>
+            </displayLineInfo>
+            <displayLineInfo>
+              <language>rm</language>
+              <displayLineText>Gelbe Partei</displayLineText>
+            </displayLineInfo>
+          </displayCandidateLine4>
         </candidate>
         <list>
           <listIdentification>ca127938-5e2f-372f-8a4e-a0cb1da35b3b</listIdentification>
@@ -3341,18 +3377,22 @@
             <ballotQuestion>
               <ballotQuestionInfo>
                 <language>de</language>
+                <ballotQuestionTitle>Erster Vorschlag</ballotQuestionTitle>
                 <ballotQuestion>Wollen Sie den ersten Vorschlag annehmen?</ballotQuestion>
               </ballotQuestionInfo>
               <ballotQuestionInfo>
                 <language>fr</language>
+                <ballotQuestionTitle>Première Proposition</ballotQuestionTitle>
                 <ballotQuestion>Acceptez-vous la première proposition ?</ballotQuestion>
               </ballotQuestionInfo>
               <ballotQuestionInfo>
                 <language>it</language>
+                <ballotQuestionTitle>Prima Proposta</ballotQuestionTitle>
                 <ballotQuestion>accettate la prima proposta ?</ballotQuestion>
               </ballotQuestionInfo>
               <ballotQuestionInfo>
                 <language>rm</language>
+                <ballotQuestionTitle>Emprima Proposta</ballotQuestionTitle>
                 <ballotQuestion>acceptar l’emprima proposta ?</ballotQuestion>
               </ballotQuestionInfo>
             </ballotQuestion>
@@ -3456,18 +3496,22 @@
               <ballotQuestion>
                 <ballotQuestionInfo>
                   <language>de</language>
-                  <ballotQuestion>Wollen Sie den Vorschlag annehmen?</ballotQuestion>
+                  <ballotQuestionTitle>Zweiter Vorschlag</ballotQuestionTitle>
+                  <ballotQuestion>Wollen Sie den zweiten Vorschlag annehmen?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>fr</language>
+                  <ballotQuestionTitle>Deuxième Proposition</ballotQuestionTitle>
                   <ballotQuestion>Acceptez-vous la deuxième proposition ?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>it</language>
+                  <ballotQuestionTitle>Seconda Proposta</ballotQuestionTitle>
                   <ballotQuestion>Accettare la seconda proposta ?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>rm</language>
+                  <ballotQuestionTitle>Segunda Proposta</ballotQuestionTitle>
                   <ballotQuestion>Acceptar la segunda proposta ?</ballotQuestion>
                 </ballotQuestionInfo>
               </ballotQuestion>
@@ -3544,18 +3588,22 @@
               <ballotQuestion>
                 <ballotQuestionInfo>
                   <language>de</language>
+                  <ballotQuestionTitle>Gegenvorschlag</ballotQuestionTitle>
                   <ballotQuestion>Wollen Sie den Gegenvorschlag annehmen?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>fr</language>
+                  <ballotQuestionTitle>Contre Proposition</ballotQuestionTitle>
                   <ballotQuestion>Acceptez-vous la contre proposition ?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>it</language>
+                  <ballotQuestionTitle>Contra Proposta</ballotQuestionTitle>
                   <ballotQuestion>Accettare la contra proposta ?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>rm</language>
+                  <ballotQuestionTitle>Cuntra Proposta</ballotQuestionTitle>
                   <ballotQuestion>Acceptar la cuntra proposta ?</ballotQuestion>
                 </ballotQuestionInfo>
               </ballotQuestion>
@@ -3632,18 +3680,22 @@
               <ballotQuestion>
                 <ballotQuestionInfo>
                   <language>de</language>
+                  <ballotQuestionTitle>Bei Gleichstand</ballotQuestionTitle>
                   <ballotQuestion>Bei Gleichstand: Wollen Sie den Vorschlag oder den Gegenvorschlag annehmen?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>fr</language>
+                  <ballotQuestionTitle>En cas d'égalité</ballotQuestionTitle>
                   <ballotQuestion>En cas d'égalité : voulez-vous accepter la proposition ou la contre-proposition ?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>it</language>
+                  <ballotQuestionTitle>In caso di parità di voti</ballotQuestionTitle>
                   <ballotQuestion>In caso di parità di voti: volete accettare la proposta o la controproposta?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>rm</language>
+                  <ballotQuestionTitle>En connex cun l’egualitad</ballotQuestionTitle>
                   <ballotQuestion>En connex cun l’egualitad: vulais Vus acceptar la proposta u la cuntraproposta?</ballotQuestion>
                 </ballotQuestionInfo>
               </ballotQuestion>
@@ -4327,5 +4379,5 @@
       <voterType>SWISSABROAD</voterType>
     </voter>
   </register>
-  <signature>WGQjBFdfVyLt08didb7vIv1ftn2Z92+1PN+grt4JZaKwfMG0UbMYgUEmnyEU8bw5ppD/wtrmkwTPUUDzA5UBqonkfTzsiS5D3jIWTTUwpRi2h46dF1j8t4mHvqOpmsziCWhRq+VuQoYtrAhen9B8442dndkZ8gRRjz1Vh3BRXAFDSfi61AW+vr8Ud2Ko0Escc4tPV4eTaB0UmWWVPt+0RgR5hKFBkX7LxiHd0lEORPW/JYlzPDVB+YAuWGlSEoAc1IfHApbr0DfkSsy0vc6nJzFEe/T9J4x/byhVDVhAnsW5yKeXdOGCD7Kkh9F4h2fHmM9nEkAi9L+CRyGsxSuS8Yg3mpycQ5Y3Ab5t9jP8uhrhTbgsGCPi65L4ogG+9E2wlDoRxC+Y7a+1udcLuxPxLqUsYekZIbUcwih5kUe5frnb4looQxczhdnPlLWTPVBNsfPG+OWgWt9wiz/WHoc/qR4VkRUoyibZTwSHvuQQWyWwIjtErUTA/o7m/X1PeTRW</signature>
+  <signature>HTZNTeVxFy4OFH374P2sdnqZTBFG1mZFUrS77dOlQtKd8iKS5bTb3Cw3r6Jhc/uSunr+IdaeRAWX/xHTRq7YHkFKDK8OoUzcF23oI70REmNwsfNhF5g2J63UkYMes573AQuqw/nYhWTLhZBvhfmbkDfGf5WzNjF/8JDKqA5RHUQc4Q6RpHojz6/lzxx6mGVrSZ/5zeuJNfb/CQ3FZS7V7OCphE5HTROYpu/irElJOKRFEo3ikeZ9FkcvJ0YkNZIr3E42xlToLm6uwe/eTz6eheqcShNJX1tusuhNRRdnWzZhk5EQnxHTShNBlNJKonBEMaK6zzaCyFXWXntuRSrn/aOiC900Wf8eeOmIl7a2ivKOL7NalliZ0W+yWxmveIC6FPCuDgkOrGepUAjLpNbfpZ45JH9UDWiYGXrCaVlQmo/nJ3ddwyY8JiJASOcElZPfLOTZlCLq1JIxWCGbJVqE3CW1ZtiXYJDBTrxFwkyjiHkr24Kh5kiNzVMQPe10AZ/V</signature>
 </configuration>
