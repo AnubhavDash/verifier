@@ -75,7 +75,7 @@ public class VerifySchnorrProofs extends AbstractVerification {
 
 		final VerifyKeyGenerationSchnorrProofsContext context = new VerifyKeyGenerationSchnorrProofsContext(
 				electionEventContextPayload.getEncryptionGroup(), electionEventContext.electionEventId(),
-				electionEventContext.maximumNumberOfWriteInsPlusOne());
+				electionEventContext.maximumNumberOfSelections(), electionEventContext.maximumNumberOfWriteInsPlusOne());
 		final VerifyKeyGenerationSchnorrProofsInput input = new VerifyKeyGenerationSchnorrProofsInput(setupComponentPublicKeys);
 
 		final boolean result = verifyKeyGenerationSchnorrProofsAlgorithm.verifyKeyGenerationSchnorrProofs(context, input);
