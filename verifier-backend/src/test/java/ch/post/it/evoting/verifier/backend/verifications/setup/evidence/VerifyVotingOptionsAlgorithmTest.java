@@ -41,7 +41,7 @@ import ch.post.it.evoting.evotinglibraries.domain.VotingOptionsConstants;
 @DisplayName("VerifyVotingOptionsAlgorithm calling verifyVotingOptions with")
 class VerifyVotingOptionsAlgorithmTest {
 
-	private final int omega = VotingOptionsConstants.MAXIMUM_NUMBER_OF_VOTING_OPTIONS;
+	private final int n_sup = VotingOptionsConstants.MAXIMUM_SUPPORTED_NUMBER_OF_VOTING_OPTIONS;
 	private final VerifyVotingOptionsAlgorithm verifyVotingOptionsAlgorithm = new VerifyVotingOptionsAlgorithm();
 
 	private GroupVector<PrimeGqElement, GqGroup> primes;
@@ -115,20 +115,20 @@ class VerifyVotingOptionsAlgorithmTest {
 	}
 
 	@Test
-	@DisplayName("list of primes of different size than omega throws IllegalArgumentException")
-	void listOfPrimesSizeDifferentOmegaThrows() {
-		when(primes.size()).thenReturn(omega - 1);
+	@DisplayName("list of primes of different size than n_sup throws IllegalArgumentException")
+	void listOfPrimesSizeDifferentNSupThrows() {
+		when(primes.size()).thenReturn(n_sup - 1);
 
 		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
 				() -> verifyVotingOptionsAlgorithm.verifyVotingOptions(primes, encodedVotingOptions));
-		assertEquals(String.format("The list of small prime group members must be of size omega. [omega: %s, size: %s]", omega, omega - 1),
+		assertEquals(String.format("The list of small prime group members must be of size n_sup. [n_sup: %s, size: %s]", n_sup, n_sup - 1),
 				Throwables.getRootCause(exception).getMessage());
 
-		when(primes.size()).thenReturn(omega + 1);
+		when(primes.size()).thenReturn(n_sup + 1);
 
 		exception = assertThrows(IllegalArgumentException.class,
 				() -> verifyVotingOptionsAlgorithm.verifyVotingOptions(primes, encodedVotingOptions));
-		assertEquals(String.format("The list of small prime group members must be of size omega. [omega: %s, size: %s]", omega, omega + 1),
+		assertEquals(String.format("The list of small prime group members must be of size n_sup. [n_sup: %s, size: %s]", n_sup, n_sup + 1),
 				Throwables.getRootCause(exception).getMessage());
 	}
 
@@ -136,7 +136,7 @@ class VerifyVotingOptionsAlgorithmTest {
 	@DisplayName("encoded options of size zero throws IllegalArgumentException")
 	void encodedVotingOfOptionsSizeZeroThrows() {
 		when(encodedVotingOptions.size()).thenReturn(0);
-		when(primes.size()).thenReturn(omega);
+		when(primes.size()).thenReturn(n_sup);
 
 		final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
 				() -> verifyVotingOptionsAlgorithm.verifyVotingOptions(primes, encodedVotingOptions));
@@ -144,22 +144,22 @@ class VerifyVotingOptionsAlgorithmTest {
 	}
 
 	@Test
-	@DisplayName("encoded voting options of size greater omega throws IllegalArgumentException")
-	void encodedVotingOptionsOfSizeGreaterOmegaThrows() {
+	@DisplayName("encoded voting options of size greater n_sup throws IllegalArgumentException")
+	void encodedVotingOptionsOfSizeGreaterNSupThrows() {
 		final int originalSize = encodedVotingOptions.size();
-		when(encodedVotingOptions.size()).thenReturn(originalSize, omega + 1);
-		when(primes.size()).thenReturn(omega);
+		when(encodedVotingOptions.size()).thenReturn(originalSize, n_sup + 1);
+		when(primes.size()).thenReturn(n_sup);
 
 		final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
 				() -> verifyVotingOptionsAlgorithm.verifyVotingOptions(primes, encodedVotingOptions));
-		assertEquals("The number of encoded voting options must not be greater than the maximum number of voting options.",
+		assertEquals("The number of encoded voting options must not be greater than the maximum supported number of voting options.",
 				Throwables.getRootCause(exception).getMessage());
 	}
 
 	@Test
 	@DisplayName("valid input returns true")
 	void validInput() {
-		when(primes.size()).thenReturn(omega);
+		when(primes.size()).thenReturn(n_sup);
 
 		assertTrue(verifyVotingOptionsAlgorithm.verifyVotingOptions(primes, encodedVotingOptions));
 	}

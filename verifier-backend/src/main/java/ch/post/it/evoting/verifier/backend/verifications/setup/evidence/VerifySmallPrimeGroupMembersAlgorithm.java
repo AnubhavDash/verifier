@@ -34,32 +34,33 @@ public class VerifySmallPrimeGroupMembersAlgorithm {
 	/**
 	 * Verifies that the given prime numbers correspond to the small prime group members.
 	 *
-	 * @param smallPrimeGroupMembers <b>p</b>, a list of the &omega; smallest prime group members strictly greater than 3, in ascending order.
-	 * @return true if the given prime numbers are indeed the smallest &omega; prime group members, false otherwise
+	 * @param smallPrimeGroupMembers <b>p</b>, a list of the n<sub>sup</sub> smallest prime group members strictly greater than 3, in ascending
+	 *                               order.
+	 * @return true if the given prime numbers are indeed the smallest n<sub>sup</sub> prime group members, false otherwise
 	 */
 	@SuppressWarnings("java:S117")
 	public boolean verifySmallPrimeGroupMembers(final GroupVector<PrimeGqElement, GqGroup> smallPrimeGroupMembers) {
 		checkNotNull(smallPrimeGroupMembers);
 
-		final int omega = VotingOptionsConstants.MAXIMUM_NUMBER_OF_VOTING_OPTIONS;
+		final int n_sup = VotingOptionsConstants.MAXIMUM_SUPPORTED_NUMBER_OF_VOTING_OPTIONS;
 
 		final GqGroup group = smallPrimeGroupMembers.getGroup();
-		checkArgument(smallPrimeGroupMembers.size() == omega,
-				String.format("The list of small prime group members must contain omega elements. [omega: %d]", omega));
+		checkArgument(smallPrimeGroupMembers.size() == n_sup,
+				String.format("The list of small prime group members must contain n_sup elements. [n_sup: %d]", n_sup));
 		checkArgument(
 				smallPrimeGroupMembers.stream()
 						.parallel()
 						.map(PrimeGqElement::getValue)
 						.allMatch(primeValue -> BigInteger.valueOf(3).compareTo(primeValue) < 0),
 				"The small prime group members must be strictly greater than 3.");
-		checkArgument(IntStream.range(1, omega)
+		checkArgument(IntStream.range(1, n_sup)
 				.parallel()
 				.mapToObj(i -> smallPrimeGroupMembers.get(i - 1).getValue().compareTo(smallPrimeGroupMembers.get(i).getValue()) < 0)
 				.allMatch(Boolean::booleanValue), "The list of small prime group members must be sorted in ascending order");
 		final GroupVector<PrimeGqElement, GqGroup> p = smallPrimeGroupMembers;
 
 		// Operation
-		final GroupVector<PrimeGqElement, GqGroup> p_prime = PrimeGqElement.PrimeGqElementFactory.getSmallPrimeGroupMembers(group, omega);
+		final GroupVector<PrimeGqElement, GqGroup> p_prime = PrimeGqElement.PrimeGqElementFactory.getSmallPrimeGroupMembers(group, n_sup);
 		return p_prime.equals(p);
 	}
 }

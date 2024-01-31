@@ -38,20 +38,20 @@ public class VerifyVotingOptionsAlgorithm {
 	/**
 	 * Verifies the correctness of the voting options.
 	 * <p>
-	 * The voting options must correspond to the smallest prime group members and the product of the &phi; biggest voting options must be smaller than
+	 * The voting options must correspond to the smallest prime group members and the product of the &psi;<sub>sup</sub> biggest voting options must be smaller than
 	 * p.
 	 *
-	 * @param smallPrimeGroupMembers <b>p</b>, a list of the &omega; small prime group members strictly greater than 3.
+	 * @param smallPrimeGroupMembers <b>p</b>, a list of the n<sub>sup</sub> small prime group members strictly greater than 3.
 	 * @param encodedVotingOptions   <b>p</b>Tilde, a list of the voting options encoded as primes.
 	 * @return {@code true} if the verification is successful, {@code false} otherwise
 	 * @throws NullPointerException     if any input is null.
 	 * @throws IllegalArgumentException if
 	 *                                  <ul>
-	 *                                      <li>&omega; or &phi; are not strictly positive.</li>
+	 *                                      <li>n<sub>sup</sub> or &psi;<sub>sup</sub> are not strictly positive.</li>
 	 *                                      <li>The small primes and encoded voting options do not have the same group.</li>
-	 *                                      <li>There is not &omega; small primes.</li>
-	 *                                      <li>&omega; is strictly smaller than &phi;.</li>
-	 *                                      <li>There is not n encoded voting options with <code> 0 < n < &omega;</code>.</li>
+	 *                                      <li>There are not n<sub>sup</sub> small primes.</li>
+	 *                                      <li>n<sub>sup</sub> is strictly smaller than &psi;<sub>sup</sub>.</li>
+	 *                                      <li>There are not n encoded voting options with <code> 0 < n < n<sub>sup</sub></code>.</li>
 	 *                                  </ul>
 	 */
 	@SuppressWarnings("java:S117")
@@ -61,10 +61,10 @@ public class VerifyVotingOptionsAlgorithm {
 		checkNotNull(smallPrimeGroupMembers);
 		checkNotNull(encodedVotingOptions);
 
-		final long omega = VotingOptionsConstants.MAXIMUM_NUMBER_OF_VOTING_OPTIONS;
-		final long phi = VotingOptionsConstants.MAXIMUM_NUMBER_OF_SELECTABLE_VOTING_OPTIONS;
-		checkArgument(omega > 0, "omega must be strictly positive.");
-		checkArgument(phi > 0, "phi must be strictly positive.");
+		final long n_sup = VotingOptionsConstants.MAXIMUM_SUPPORTED_NUMBER_OF_VOTING_OPTIONS;
+		final long psi_sup = VotingOptionsConstants.MAXIMUM_SUPPORTED_NUMBER_OF_SELECTIONS;
+		checkArgument(n_sup > 0, "The maximum supported number of voting options must be strictly positive. [n_sup: %s]", n_sup);
+		checkArgument(psi_sup > 0, "The maximum supported number of selections must be strictly positive. [psi_sup]", psi_sup);
 
 		final boolean isStrictlyAscending = IntStream.range(0, encodedVotingOptions.size() - 1)
 				.parallel()
@@ -82,13 +82,13 @@ public class VerifyVotingOptionsAlgorithm {
 		final GroupVector<PrimeGqElement, GqGroup> p_tilde = encodedVotingOptions;
 		final int n_total = p_tilde.size();
 
-		checkArgument(p_vector.size() == omega, "The list of small prime group members must be of size omega. [omega: %s, size: %s]", omega,
+		checkArgument(p_vector.size() == n_sup, "The list of small prime group members must be of size n_sup. [n_sup: %s, size: %s]", n_sup,
 				p_vector.size());
 
 		// Require.
-		checkArgument(phi <= omega, "The supported number of selections must not be greater than the supported number of voting options.");
+		checkArgument(psi_sup <= n_sup, "The maximum supported number of selections must not be greater than the maximum supported number of voting options.");
 		checkArgument(0 < n_total, "The number of encoded voting options must be strictly greater than 0.");
-		checkArgument(n_total <= omega, "The number of encoded voting options must not be greater than the maximum number of voting options.");
+		checkArgument(n_total <= n_sup, "The number of encoded voting options must not be greater than the maximum supported number of voting options.");
 
 		// Operation.
 		final GroupVector<PrimeGqElement, GqGroup> p_prime = p_vector.subVector(0, n_total);
@@ -97,7 +97,7 @@ public class VerifyVotingOptionsAlgorithm {
 
 		final BigInteger p = p_vector.getGroup().getP();
 		final boolean verifB = p_vector.stream()
-				.skip(omega - phi)
+				.skip(n_sup - psi_sup)
 				.parallel()
 				.reduce(p_vector.getGroup().getIdentity(), GqElement::multiply, GqElement::multiply)
 				.getValue()

@@ -41,7 +41,7 @@ class VerifySmallPrimeGroupMembersAlgorithmTest {
 	void setup() {
 		final GqGroup gqGroup = new GqGroup(BigInteger.valueOf(181358268525299L), BigInteger.valueOf(90679134262649L), BigInteger.valueOf(3));
 
-		primes = PrimeGqElementFactory.getSmallPrimeGroupMembers(gqGroup, VotingOptionsConstants.MAXIMUM_NUMBER_OF_VOTING_OPTIONS + 1);
+		primes = PrimeGqElementFactory.getSmallPrimeGroupMembers(gqGroup, VotingOptionsConstants.MAXIMUM_SUPPORTED_NUMBER_OF_VOTING_OPTIONS + 1);
 	}
 
 	@Test
@@ -53,7 +53,8 @@ class VerifySmallPrimeGroupMembersAlgorithmTest {
 	@Test
 	@DisplayName("wrong primes fails")
 	void wrongPrimesFails() {
-		final GroupVector<PrimeGqElement, GqGroup> wrongPrimes = primes.subVector(1, VotingOptionsConstants.MAXIMUM_NUMBER_OF_VOTING_OPTIONS + 1);
+		final GroupVector<PrimeGqElement, GqGroup> wrongPrimes = primes.subVector(1,
+				VotingOptionsConstants.MAXIMUM_SUPPORTED_NUMBER_OF_VOTING_OPTIONS + 1);
 		assertFalse(verifySmallPrimeGroupMembersAlgorithm.verifySmallPrimeGroupMembers(wrongPrimes));
 	}
 
@@ -69,7 +70,7 @@ class VerifySmallPrimeGroupMembersAlgorithmTest {
 	@DisplayName("wrong order primes fails")
 	void wrongOrderPrimesFails() {
 		final GroupVector<PrimeGqElement, GqGroup> wrongOrderPrimes = primes.prepend(primes.get(0))
-				.subVector(0, VotingOptionsConstants.MAXIMUM_NUMBER_OF_VOTING_OPTIONS);
+				.subVector(0, VotingOptionsConstants.MAXIMUM_SUPPORTED_NUMBER_OF_VOTING_OPTIONS);
 		assertThrows(IllegalArgumentException.class, () -> verifySmallPrimeGroupMembersAlgorithm.verifySmallPrimeGroupMembers(wrongOrderPrimes));
 	}
 
@@ -77,7 +78,7 @@ class VerifySmallPrimeGroupMembersAlgorithmTest {
 	@DisplayName("valid input returns true")
 	void validInput() {
 		assertTrue(verifySmallPrimeGroupMembersAlgorithm.verifySmallPrimeGroupMembers(
-				primes.subVector(0, VotingOptionsConstants.MAXIMUM_NUMBER_OF_VOTING_OPTIONS)));
+				primes.subVector(0, VotingOptionsConstants.MAXIMUM_SUPPORTED_NUMBER_OF_VOTING_OPTIONS)));
 	}
 
 }
