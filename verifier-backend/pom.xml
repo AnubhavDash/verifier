@@ -6,13 +6,13 @@
 	<parent>
 		<artifactId>verifier</artifactId>
 		<groupId>ch.post.it.evoting.verifier</groupId>
-		<version>1.4.3.0</version>
+		<version>1.4.3.1</version>
 	</parent>
 
 	<artifactId>verifier-backend</artifactId>
 
 	<properties>
-		<jaxb-api.version>2.4.0-b180830.0359</jaxb-api.version>
+		<jaxb-api.version>2.3.1</jaxb-api.version>
 	</properties>
 
 	<dependencyManagement>
