@@ -89,7 +89,7 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 		final String bb = context.getBallotBoxId();
 		final PrimesMappingTable pTable = context.getPrimesMappingTable();
 		final int psi = primesMappingTableAlgorithms.getPsi(pTable);
-		final int delta_hat = primesMappingTableAlgorithms.getDeltaHat(pTable);
+		final int delta = primesMappingTableAlgorithms.getDelta(pTable);
 		final ElGamalMultiRecipientPublicKey EB_pk = context.getElectoralBoardPublicKey();
 
 		// Input.
@@ -108,9 +108,9 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 					"The size of the p_i_hat elements and v_i_hat elements should be equal to the number of selectable encoded voting options.");
 			// It is ensured by the GroupVector class that all elements in L_votes have the same size.
 		}
-		checkArgument(c_dec_4.getElementSize() == delta_hat,
-				"All shuffled, partially decrypted and decrypted votes must be of size delta_hat. [l: %s, delta_hat: %s]", c_dec_4.getElementSize(),
-				delta_hat);
+		checkArgument(c_dec_4.getElementSize() == delta,
+				"All shuffled, partially decrypted and decrypted votes must be of size delta. [l: %s, delta: %s]", c_dec_4.getElementSize(),
+				delta);
 
 		// Require.
 		final int N_C_hat = c_dec_4.size();
@@ -129,7 +129,7 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 		final List<String> i_aux = List.of(ee, bb, "MixDecOffline");
 
 		final ElGamalMultiRecipientPublicKey EB_pk_cut = new ElGamalMultiRecipientPublicKey(
-				GroupVector.from(EB_pk.getKeyElements().subList(0, delta_hat)));
+				GroupVector.from(EB_pk.getKeyElements().subList(0, delta)));
 
 		final VerificationResult shuffleVerif = mixnet.verifyShuffle(c_dec_4, c_mix_5, pi_mix_5, EB_pk_cut);
 		if (!shuffleVerif.isVerified()) {

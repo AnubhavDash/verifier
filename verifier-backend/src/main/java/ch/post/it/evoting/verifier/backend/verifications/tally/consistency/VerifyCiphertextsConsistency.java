@@ -72,7 +72,7 @@ public class VerifyCiphertextsConsistency extends AbstractVerification {
 				.parallel()
 				.map(vcsContext -> {
 					final String ballotBoxId = vcsContext.getBallotBoxId();
-					final int numberWriteInsPlusOne = primesMappingTableAlgorithms.getDeltaHat(vcsContext.getPrimesMappingTable());
+					final int numberWriteInsPlusOne = primesMappingTableAlgorithms.getDelta(vcsContext.getPrimesMappingTable());
 					final List<ControlComponentBallotBoxPayload> ballotBoxPayloads = extractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(
 							inputDirectoryPath, ballotBoxId).toList();
 					final List<ControlComponentShufflePayload> shufflePayloads = extractionService.getControlComponentShufflePayloadsOrderedByNodeId(

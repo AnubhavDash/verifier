@@ -55,8 +55,8 @@ class VerifyPlaintextsConsistencyTest extends TallyVerificationTest {
 		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(datasetPath);
 		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
 		final PrimesMappingTable primesMappingTable = electionEventContext.verificationCardSetContexts().get(0).getPrimesMappingTable();
-		final int numberOfWriteInsPlusOne = primesMappingTableAlgorithms.getDeltaHat(primesMappingTable);
-		doReturn(numberOfWriteInsPlusOne + 1).when(primesMappingTableAlgorithms).getDeltaHat(any());
+		final int numberOfWriteInsPlusOne = primesMappingTableAlgorithms.getDelta(primesMappingTable);
+		doReturn(numberOfWriteInsPlusOne + 1).when(primesMappingTableAlgorithms).getDelta(any());
 
 		final VerifyPlaintextsConsistency verificationWithMock = new VerifyPlaintextsConsistency(resultPublisherServiceMock,
 				electionDataExtractionService, primesMappingTableAlgorithms);

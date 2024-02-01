@@ -68,7 +68,7 @@ public class VerifyPlaintextsConsistency extends AbstractVerification {
 				.parallel()
 				.map(vcsContext -> {
 					final String ballotBoxId = vcsContext.getBallotBoxId();
-					final int numberWriteInsPlusOne = primesMappingTableAlgorithms.getDeltaHat(vcsContext.getPrimesMappingTable());
+					final int numberWriteInsPlusOne = primesMappingTableAlgorithms.getDelta(vcsContext.getPrimesMappingTable());
 					final TallyComponentShufflePayload tallyComponentShufflePayload = extractionService.getTallyComponentShufflePayload(
 							inputDirectoryPath, ballotBoxId);
 					return new Plaintexts(tallyComponentShufflePayload, numberWriteInsPlusOne);
