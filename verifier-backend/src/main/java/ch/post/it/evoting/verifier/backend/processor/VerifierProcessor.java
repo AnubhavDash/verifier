@@ -390,9 +390,10 @@ public class VerifierProcessor {
 				.filter(authorizationType -> testAuthorizations == authorizationType.isAuthorizationTest())
 				.map(AuthorizationType::getAuthorizationIdentification)
 				.map(authorizationIdentification -> tallyComponentDecrypt.getBallotsBox().stream().parallel()
-						.filter(bb -> bb.getBallotBoxIdentification().equals(authorizationIdentification))
+						.filter(ballotBox -> ballotBox.getBallotBoxIdentification().equals(authorizationIdentification))
 						.collect(MoreCollectors.onlyElement()))
-				.map(nonTestBallotBox -> nonTestBallotBox.getCountingCircle().stream().parallel()
+				.map(ballotBox -> ballotBox.getCountingCircle().stream()
+						.findFirst()
 						.map(countingCircle -> countingCircle.getDomainOfInfluence().stream()
 								.findFirst()
 								.map(domainOfInfluence -> {
@@ -402,17 +403,16 @@ public class VerifierProcessor {
 									final boolean hasElections = Objects.nonNull(electionGroups) && !electionGroups.isEmpty();
 
 									if (hasVotes) {
-										return votes.get(0).getBallot().size();
+										return votes.getFirst().getBallot().size();
 									} else {
 										if (hasElections) {
-											return electionGroups.get(0).getBallot().size();
+											return electionGroups.getFirst().getBallot().size();
 										} else {
 											return 0;
 										}
 									}
-								})
-								.orElse(0)
-						).reduce(0, Math::addExact)
+								}).orElse(0)
+						).orElse(0)
 				).reduce(0, Math::addExact);
 	}
 }
