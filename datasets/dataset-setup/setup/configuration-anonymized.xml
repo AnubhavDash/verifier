@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<configuration xmlns="http://www.evoting.ch/xmlns/config/5">
+<configuration xmlns="http://www.evoting.ch/xmlns/config/6">
   <header>
-    <fileDate>2023-12-18T17:28:20.911+01:00</fileDate>
+    <fileDate>2024-02-02T16:20:43.070+01:00</fileDate>
     <voterTotal>43</voterTotal>
   </header>
   <contest>
@@ -105,7 +105,7 @@
           <electionPosition>1</electionPosition>
           <numberOfMandates>6</numberOfMandates>
           <writeInsAllowed>false</writeInsAllowed>
-          <candidateAccumulation>1</candidateAccumulation>
+          <candidateAccumulation>2</candidateAccumulation>
           <minimalCandidateSelectionInList>1</minimalCandidateSelectionInList>
         </election>
         <candidate>
@@ -2667,6 +2667,54 @@
               </candidateTextInfo>
             </candidateTextOnPosition>
           </candidatePosition>
+          <candidatePosition>
+            <candidateListIdentification>45364b88-caa2-375d-9d28-90ece22d18a9</candidateListIdentification>
+            <positionOnList>3</positionOnList>
+            <candidateReferenceOnPosition>10.02</candidateReferenceOnPosition>
+            <candidateIdentification>ff671047-7e0f-4198-974f-0041a55f1c70</candidateIdentification>
+            <candidateTextOnPosition>
+              <candidateTextInfo>
+                <language>de</language>
+                <candidateText>01.01.1975, ?</candidateText>
+              </candidateTextInfo>
+              <candidateTextInfo>
+                <language>fr</language>
+                <candidateText>01.01.1975, ?</candidateText>
+              </candidateTextInfo>
+              <candidateTextInfo>
+                <language>it</language>
+                <candidateText>01.01.1975, ?</candidateText>
+              </candidateTextInfo>
+              <candidateTextInfo>
+                <language>rm</language>
+                <candidateText>01.01.1975, ?</candidateText>
+              </candidateTextInfo>
+            </candidateTextOnPosition>
+          </candidatePosition>
+          <candidatePosition>
+            <candidateListIdentification>8f1a8aa8-a7fb-349e-aadc-a326e95765b9</candidateListIdentification>
+            <positionOnList>4</positionOnList>
+            <candidateReferenceOnPosition>10.01</candidateReferenceOnPosition>
+            <candidateIdentification>e5b16bd6-815b-4e02-8e9e-04064a19b6d0</candidateIdentification>
+            <candidateTextOnPosition>
+              <candidateTextInfo>
+                <language>de</language>
+                <candidateText>01.01.1975, ?</candidateText>
+              </candidateTextInfo>
+              <candidateTextInfo>
+                <language>fr</language>
+                <candidateText>01.01.1975, ?</candidateText>
+              </candidateTextInfo>
+              <candidateTextInfo>
+                <language>it</language>
+                <candidateText>01.01.1975, ?</candidateText>
+              </candidateTextInfo>
+              <candidateTextInfo>
+                <language>rm</language>
+                <candidateText>01.01.1975, ?</candidateText>
+              </candidateTextInfo>
+            </candidateTextOnPosition>
+          </candidatePosition>
           <displayListLine1>
             <displayLineInfo>
               <language>de</language>
@@ -3061,19 +3109,19 @@
           <displayCandidateLine1>
             <displayLineInfo>
               <language>de</language>
-              <displayLineText>1 Rot Doris</displayLineText>
+              <displayLineText>1 Rot Doris Rote Partei</displayLineText>
             </displayLineInfo>
             <displayLineInfo>
               <language>fr</language>
-              <displayLineText>1 Rot Doris</displayLineText>
+              <displayLineText>1 Rot Doris Rote Partei</displayLineText>
             </displayLineInfo>
             <displayLineInfo>
               <language>it</language>
-              <displayLineText>1 Rot Doris</displayLineText>
+              <displayLineText>1 Rot Doris Rote Partei</displayLineText>
             </displayLineInfo>
             <displayLineInfo>
               <language>rm</language>
-              <displayLineText>1 Rot Doris</displayLineText>
+              <displayLineText>1 Rot Doris Rote Partei</displayLineText>
             </displayLineInfo>
           </displayCandidateLine1>
           <displayCandidateLine2>
@@ -3094,24 +3142,6 @@
               <displayLineText>29.11.1961, Wil</displayLineText>
             </displayLineInfo>
           </displayCandidateLine2>
-          <displayCandidateLine4>
-            <displayLineInfo>
-              <language>de</language>
-              <displayLineText>Rote Partei</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>fr</language>
-              <displayLineText>Rote Partei</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>it</language>
-              <displayLineText>Rote Partei</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>rm</language>
-              <displayLineText>Rote Partei</displayLineText>
-            </displayLineInfo>
-          </displayCandidateLine4>
         </candidate>
         <candidate>
           <candidateIdentification>b5c605ec-9398-41d9-b934-006c548381c3</candidateIdentification>
@@ -3195,19 +3225,19 @@
           <displayCandidateLine1>
             <displayLineInfo>
               <language>de</language>
-              <displayLineText>2 Gelb Henry</displayLineText>
+              <displayLineText>2 Gelb Henry Gelbe Partei</displayLineText>
             </displayLineInfo>
             <displayLineInfo>
               <language>fr</language>
-              <displayLineText>2 Gelb Henry</displayLineText>
+              <displayLineText>2 Gelb Henry Gelbe Partei</displayLineText>
             </displayLineInfo>
             <displayLineInfo>
               <language>it</language>
-              <displayLineText>2 Gelb Henry</displayLineText>
+              <displayLineText>2 Gelb Henry Gelbe Partei</displayLineText>
             </displayLineInfo>
             <displayLineInfo>
               <language>rm</language>
-              <displayLineText>2 Gelb Henry</displayLineText>
+              <displayLineText>2 Gelb Henry Gelbe Partei</displayLineText>
             </displayLineInfo>
           </displayCandidateLine1>
           <displayCandidateLine2>
@@ -3228,24 +3258,6 @@
               <displayLineText>29.11.1954, Wil</displayLineText>
             </displayLineInfo>
           </displayCandidateLine2>
-          <displayCandidateLine4>
-            <displayLineInfo>
-              <language>de</language>
-              <displayLineText>Gelbe Partei</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>fr</language>
-              <displayLineText>Gelbe Partei</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>it</language>
-              <displayLineText>Gelbe Partei</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>rm</language>
-              <displayLineText>Gelbe Partei</displayLineText>
-            </displayLineInfo>
-          </displayCandidateLine4>
         </candidate>
         <list>
           <listIdentification>ca127938-5e2f-372f-8a4e-a0cb1da35b3b</listIdentification>
@@ -3378,22 +3390,22 @@
               <ballotQuestionInfo>
                 <language>de</language>
                 <ballotQuestionTitle>Erster Vorschlag</ballotQuestionTitle>
-                <ballotQuestion>Wollen Sie den ersten Vorschlag annehmen?</ballotQuestion>
+                <ballotQuestion>Wollen Sie den ersten «**Vorschlag**» annehmen?</ballotQuestion>
               </ballotQuestionInfo>
               <ballotQuestionInfo>
                 <language>fr</language>
                 <ballotQuestionTitle>Première Proposition</ballotQuestionTitle>
-                <ballotQuestion>Acceptez-vous la première proposition ?</ballotQuestion>
+                <ballotQuestion>Acceptez-vous la première «**proposition**» ?</ballotQuestion>
               </ballotQuestionInfo>
               <ballotQuestionInfo>
                 <language>it</language>
                 <ballotQuestionTitle>Prima Proposta</ballotQuestionTitle>
-                <ballotQuestion>accettate la prima proposta ?</ballotQuestion>
+                <ballotQuestion>accettate la prima «**proposta**» ?</ballotQuestion>
               </ballotQuestionInfo>
               <ballotQuestionInfo>
                 <language>rm</language>
                 <ballotQuestionTitle>Emprima Proposta</ballotQuestionTitle>
-                <ballotQuestion>acceptar l’emprima proposta ?</ballotQuestion>
+                <ballotQuestion>acceptar l’emprima «**proposta**» ?</ballotQuestion>
               </ballotQuestionInfo>
             </ballotQuestion>
             <answer>
@@ -3589,22 +3601,22 @@
                 <ballotQuestionInfo>
                   <language>de</language>
                   <ballotQuestionTitle>Gegenvorschlag</ballotQuestionTitle>
-                  <ballotQuestion>Wollen Sie den Gegenvorschlag annehmen?</ballotQuestion>
+                  <ballotQuestion>Wollen Sie den **«Gegenvorschlag»** annehmen?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>fr</language>
                   <ballotQuestionTitle>Contre Proposition</ballotQuestionTitle>
-                  <ballotQuestion>Acceptez-vous la contre proposition ?</ballotQuestion>
+                  <ballotQuestion>Acceptez-vous la **«contre proposition»** ?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>it</language>
                   <ballotQuestionTitle>Contra Proposta</ballotQuestionTitle>
-                  <ballotQuestion>Accettare la contra proposta ?</ballotQuestion>
+                  <ballotQuestion>Accettare la **«contra proposta»** ?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>rm</language>
                   <ballotQuestionTitle>Cuntra Proposta</ballotQuestionTitle>
-                  <ballotQuestion>Acceptar la cuntra proposta ?</ballotQuestion>
+                  <ballotQuestion>Acceptar la **«cuntra proposta»** ?</ballotQuestion>
                 </ballotQuestionInfo>
               </ballotQuestion>
               <answer>
@@ -3681,22 +3693,22 @@
                 <ballotQuestionInfo>
                   <language>de</language>
                   <ballotQuestionTitle>Bei Gleichstand</ballotQuestionTitle>
-                  <ballotQuestion>Bei Gleichstand: Wollen Sie den Vorschlag oder den Gegenvorschlag annehmen?</ballotQuestion>
+                  <ballotQuestion>Bei *Gleichstand*: Wollen Sie den «**Vorschlag**» oder den **«Gegenvorschlag»** annehmen?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>fr</language>
                   <ballotQuestionTitle>En cas d'égalité</ballotQuestionTitle>
-                  <ballotQuestion>En cas d'égalité : voulez-vous accepter la proposition ou la contre-proposition ?</ballotQuestion>
+                  <ballotQuestion>En cas d'*égalité* : voulez-vous accepter «**la proposition**» ou la **«contre-proposition»** ?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>it</language>
                   <ballotQuestionTitle>In caso di parità di voti</ballotQuestionTitle>
-                  <ballotQuestion>In caso di parità di voti: volete accettare la proposta o la controproposta?</ballotQuestion>
+                  <ballotQuestion>In caso di *parità di voti*: volete accettare la «**proposta**» o la **«controproposta»**?</ballotQuestion>
                 </ballotQuestionInfo>
                 <ballotQuestionInfo>
                   <language>rm</language>
                   <ballotQuestionTitle>En connex cun l’egualitad</ballotQuestionTitle>
-                  <ballotQuestion>En connex cun l’egualitad: vulais Vus acceptar la proposta u la cuntraproposta?</ballotQuestion>
+                  <ballotQuestion>En connex cun l’*egualitad*: vulais Vus acceptar la «**proposta**» u la **«cuntraproposta»**?</ballotQuestion>
                 </ballotQuestionInfo>
               </ballotQuestion>
               <answer>
@@ -4379,5 +4391,5 @@
       <voterType>SWISSABROAD</voterType>
     </voter>
   </register>
-  <signature>HTZNTeVxFy4OFH374P2sdnqZTBFG1mZFUrS77dOlQtKd8iKS5bTb3Cw3r6Jhc/uSunr+IdaeRAWX/xHTRq7YHkFKDK8OoUzcF23oI70REmNwsfNhF5g2J63UkYMes573AQuqw/nYhWTLhZBvhfmbkDfGf5WzNjF/8JDKqA5RHUQc4Q6RpHojz6/lzxx6mGVrSZ/5zeuJNfb/CQ3FZS7V7OCphE5HTROYpu/irElJOKRFEo3ikeZ9FkcvJ0YkNZIr3E42xlToLm6uwe/eTz6eheqcShNJX1tusuhNRRdnWzZhk5EQnxHTShNBlNJKonBEMaK6zzaCyFXWXntuRSrn/aOiC900Wf8eeOmIl7a2ivKOL7NalliZ0W+yWxmveIC6FPCuDgkOrGepUAjLpNbfpZ45JH9UDWiYGXrCaVlQmo/nJ3ddwyY8JiJASOcElZPfLOTZlCLq1JIxWCGbJVqE3CW1ZtiXYJDBTrxFwkyjiHkr24Kh5kiNzVMQPe10AZ/V</signature>
+  <signature>uyCNC5CCTXaRh73R1rY1ZFAUvSckAVOSnsXCzfhvyvzIAsZWbdkZ3KSrvsBMYO8HdYNA1z/rxHPc0Q5D86Xh8CefrE5V74IbJO5HF4hfGCw+XdAwZMBDmtzhVkRyk5DP2XSX1I0Z7oN//LYVk6w9I8vi3wniVCRPmDYlFZHST2igc/gNYZ83Msy26CsgV/y6NNeTfr32e9WaDbfu9EpvqRkCqzF42hW4Xrruq48sv2MbW+SqvnbZlR3yCXgmnPWYBiwAwo5pRcGiIGZyPwK7VH0DkbVIxE+LP/MXhZsHO9Gw7KVxYmKRyr3DQmwIvw2/R0Rul7JSWyMn9PVNQ9/1ZsnTAucfR5ey571z0wpoj32rgpw6lXS3VImD4AVg4IrJqw4Cct1pMExh/kFL1PBPHw1OTHWipuzsMRYd9L3yKBscEOXNJNsGiYQShPzt2LkUzN8orewSIr5ARxy7+LO16uqtozYaBQJToCv1xdByptpR4ysOHU4Re8upxZc2IwDQ</signature>
 </configuration>
