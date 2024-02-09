@@ -227,7 +227,7 @@ public class VerifierProcessor {
 	}
 
 	private CompletableFuture<String> getDatasetHashCompletableFuture() {
-		return CompletableFuture.supplyAsync( () -> {
+		return CompletableFuture.supplyAsync(() -> {
 			try (final InputStream unpackedDatasetInputStream = dataset.newInputStream()) {
 				return DigestUtils.sha256Hex(unpackedDatasetInputStream).toUpperCase();
 			} catch (final IOException e) {
@@ -267,10 +267,11 @@ public class VerifierProcessor {
 		return configuration.getAuthorizations().getAuthorization().stream().parallel()
 				.filter(authorizationType -> testAuthorizations == authorizationType.isAuthorizationTest())
 				.map(AuthorizationType::getAuthorizationIdentification)
-				.map(nonTestAuthorizationIdentification -> tallyComponentDecrypt.getBallotsBox().stream().parallel()
-						.filter(bb -> bb.getBallotBoxIdentification().equals(nonTestAuthorizationIdentification))
+				.map(authorizationIdentification -> tallyComponentDecrypt.getBallotsBox().stream().parallel()
+						.filter(ballotBox -> ballotBox.getBallotBoxIdentification().equals(authorizationIdentification))
 						.collect(MoreCollectors.onlyElement()))
-				.map(nonTestBallotBox -> nonTestBallotBox.getCountingCircle().stream().parallel()
+				.map(ballotBox -> ballotBox.getCountingCircle().stream()
+						.findFirst()
 						.map(countingCircle -> countingCircle.getDomainOfInfluence().stream()
 								.findFirst()
 								.map(domainOfInfluence -> {
@@ -288,9 +289,8 @@ public class VerifierProcessor {
 											return 0;
 										}
 									}
-								})
-								.orElse(0)
-						).reduce(0, Math::addExact)
+								}).orElse(0)
+						).orElse(0)
 				).reduce(0, Math::addExact);
 	}
 }

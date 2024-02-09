@@ -1,5 +1,14 @@
 # Changelog
 
+## Release 1.4.4
+
+Release 1.4.4 is a minor maintenance patch containing the following changes:
+
+* Fixed the calculation of the number of confirmed votes in the PDF report for complex election events.
+* Regenerated the data set.
+* Updated dependencies and third-party libraries.
+* Made the file permission explicit to ensure the reproducible build.
+
 ## Release 1.4.3
 
 Release 1.4.3 is a minor maintenance patch containing the following changes:
