@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
-import ch.post.it.evoting.cryptoprimitives.internal.hashing.HashService;
+import ch.post.it.evoting.cryptoprimitives.hashing.HashFactory;
 import ch.post.it.evoting.cryptoprimitives.mixnet.MixnetFactory;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.FactorizeAlgorithm;
@@ -62,7 +62,7 @@ class VerifyTallyControlComponentTest extends TallyVerificationTest {
 	private static final VerifyTallyControlComponentBallotBoxAlgorithm VERIFY_TALLY_CONTROL_COMPONENT_BALLOT_BOX_ALGORITHM = new VerifyTallyControlComponentBallotBoxAlgorithm(
 			MixnetFactory.createMixnet(), ZeroKnowledgeProofFactory.createZeroKnowledgeProof(), PRIMES_MAPPING_TABLE_ALGORITHMS,
 			VERIFY_PROCESS_PLAINTEXTS_ALGORITHM);
-	private static final VerifyTallyFilesAlgorithm VERIFY_TALLY_FILES_ALGORITHM = new VerifyTallyFilesAlgorithm(HashService.getInstance(),
+	private static final VerifyTallyFilesAlgorithm VERIFY_TALLY_FILES_ALGORITHM = new VerifyTallyFilesAlgorithm(HashFactory.createHash(),
 			new XmlNormalizer());
 
 	@SystemStub
