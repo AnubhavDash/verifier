@@ -100,7 +100,7 @@ public class ExponentiationProofsVerificationExtractionService {
 		final ConcurrentMap<String, Integer> totalNumberOfVotingOptions = electionEventContext.verificationCardSetContexts().stream()
 				.parallel()
 				.collect(Collectors.toConcurrentMap(VerificationCardSetContext::getVerificationCardSetId,
-						vcContext -> vcContext.getPrimesMappingTable().size()));
+						vcContext -> vcContext.getPrimesMappingTable().getNumberOfVotingOptions()));
 
 		checkArgument(electionEventContext.electionEventId().equals(electionEventId));
 		checkArgument(electionEventContext.verificationCardSetContexts().size() == input.getVerificationCardSetIds().size());
