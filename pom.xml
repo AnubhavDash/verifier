@@ -37,7 +37,7 @@
 		<project.build.outputTimestamp>2023-07-06T15:18:19+02:00</project.build.outputTimestamp>
 
 		<bouncycastle.version>1.77</bouncycastle.version>
-		<commons-codec.version>1.16.0</commons-codec.version>
+		<commons-codec.version>1.16.1</commons-codec.version>
 		<crypto-primitives-version>1.4.0.9</crypto-primitives-version>
 		<e-voting-libraries.version>1.4.0.61</e-voting-libraries.version>
 		<guava.version>33.0.0-jre</guava.version>
@@ -45,23 +45,23 @@
 		<jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
 		<jakarta.xml.bind-api.version>4.0.0</jakarta.xml.bind-api.version>
 		<jsurfer-jackson.version>1.6.5</jsurfer-jackson.version>
-		<junit-jupiter.version>5.10.1</junit-jupiter.version>
+		<junit-jupiter.version>5.10.2</junit-jupiter.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
-		<maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-		<maven-dependency-check.version>9.0.8</maven-dependency-check.version>
+		<maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
+		<maven-dependency-check.version>9.0.9</maven-dependency-check.version>
 		<maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
 		<maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
 		<maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
 		<maven-release-plugin.version>3.0.1</maven-release-plugin.version>
 		<maven-source-plugin.version>3.3.0</maven-source-plugin.version>
 		<maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
-		<mockito.version>5.8.0</mockito.version>
+		<mockito.version>5.10.0</mockito.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<reproducible-build-maven-plugin.version>0.15.2</reproducible-build-maven-plugin.version>
 		<rootProject>verifier</rootProject>
-		<slf4j.version>2.0.11</slf4j.version>
-		<spring-boot.version>3.2.0</spring-boot.version>
+		<slf4j.version>2.0.12</slf4j.version>
+		<spring-boot.version>3.2.2</spring-boot.version>
 		<system-stubs-jupiter.version>2.1.6</system-stubs-jupiter.version>
 		<versions-maven-plugin.version>2.16.2</versions-maven-plugin.version>
 		<zip4j.version>2.11.5</zip4j.version>
