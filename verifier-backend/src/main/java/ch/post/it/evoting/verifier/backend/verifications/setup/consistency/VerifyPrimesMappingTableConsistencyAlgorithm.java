@@ -15,6 +15,8 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
+import static ch.post.it.evoting.evotinglibraries.domain.election.Ballot.CORRECTNESS_INFORMATION_CANDIDATE_PREFIX;
+import static ch.post.it.evoting.evotinglibraries.domain.election.Ballot.CORRECTNESS_INFORMATION_LIST_PREFIX;
 import static ch.post.it.evoting.evotinglibraries.domain.election.ElectionAttributesAliasConstants.ALIAS_JOIN_DELIMITER;
 import static ch.post.it.evoting.evotinglibraries.domain.election.SemanticInformationUtils.getAnswerInformation;
 import static ch.post.it.evoting.evotinglibraries.domain.election.SemanticInformationUtils.getBlankCandidatePositionInformation;
@@ -67,11 +69,12 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 	/**
 	 * Verifies that all PrimesMappingTables are consistent.
 	 * <ul>
-	 *     <li>A PrimesMappingTable must not contain duplicate encoded voting options. This is ensured by {@link PrimesMappingTable#from(List)}</li>
-	 *     <li>The same encoded voting option must have the same actual voting option in each table</li>
-	 *     <li>The same actual voting option must have the same semantic information in each table</li>
-	 *     <li>The actual voting options and semantic information in the pTable correspond to the configuration XML</li>
-	 *     <li>The number of tuples in the pTable correspond to the configuration XML taking into account possible accumulation of candidates.
+	 *     <li>A PrimesMappingTable must not contain duplicate encoded voting options. This is ensured by {@link PrimesMappingTable#from(List)}.</li>
+	 *     <li>The same encoded voting option must have the same actual voting option in each table.</li>
+	 *     <li>The same actual voting option must have the same semantic information in each table.</li>
+	 *     <li>The same actual voting option must have the same correctness information in each table.</li>
+	 *     <li>The actual voting options, semantic information and correctness information in the pTable correspond to the configuration XML.</li>
+	 *     <li>The number of tuples in the pTable correspond to the configuration XML taking into account possible accumulation of candidates.</li>
 	 * </ul>
 	 *
 	 * @param primesMappingTables the list of PrimesMappingTables, one per verification card set. Must be non-null and not empty.
@@ -91,7 +94,7 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 				.flatMap(GroupVector::stream)
 				.collect(Collectors.toSet());
 
-		// Create the actual voting option and semantic information mapping using the configuration XML.
+		// Create the actual voting option, semantic information and correctness information mapping using the configuration XML.
 		final Set<PartialPrimesMappingTableEntry> election = getElectionPartialPrimesMappingTableEntries(configuration);
 		final Set<PartialPrimesMappingTableEntry> vote = getVotePartialPrimesMappingTableEntries(configuration);
 		final Set<PartialPrimesMappingTableEntry> configurationPartialPrimesMappingTableEntries = Stream.of(election, vote)
@@ -112,8 +115,8 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 	}
 
 	/**
-	 * Verifies that the same encoded voting option has the same actual voting option and that the same actual voting option has the same semantic
-	 * information in all PrimesMappingTables.
+	 * Verifies that the same encoded voting option has the same actual voting option, that the same actual voting option has the same semantic
+	 * information and that the same actual voting option has the same correctness information in all PrimesMappingTables.
 	 *
 	 * @param configuration                                 ignored, needed for consistency in the signature of the verification methods.
 	 * @param configurationPartialPrimesMappingTableEntries ignored, needed for consistency in the signature of the verification methods.
@@ -129,13 +132,14 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 		final boolean correctMapping = primesMappingTableEntries.size() == encodedVotingOptions.size();
 		if (!correctMapping) {
 			LOGGER.error(
-					"The encoded voting options, actual voting options and semantic information mapping is not the same in all verification card sets.");
+					"The encoded voting options, actual voting options, semantic information and correctness information mapping is not the same in all verification card sets.");
 		}
 		return correctMapping;
 	}
 
 	/**
-	 * Verifies that the actual voting options and semantic information in the PrimesMappingTable correspond to the configuration XML.
+	 * Verifies that the actual voting options, semantic information and correctness information in the PrimesMappingTable correspond to the
+	 * configuration XML.
 	 *
 	 * @param configuration ignored, needed for consistency in the signature of the verification methods.
 	 */
@@ -144,12 +148,13 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 			final Configuration configuration, final Set<PartialPrimesMappingTableEntry> configurationPartialPrimesMappingTableEntries) {
 		final Set<PartialPrimesMappingTableEntry> partialPrimesMappingTableEntries = primesMappingTableEntries.stream()
 				.parallel()
-				.map(entry -> new PartialPrimesMappingTableEntry(entry.actualVotingOption(), entry.semanticInformation()))
+				.map(entry -> new PartialPrimesMappingTableEntry(entry.actualVotingOption(), entry.semanticInformation(),
+						entry.correctnessInformation()))
 				.collect(Collectors.toSet());
 
 		final boolean informationCorrespondsToConfiguration = partialPrimesMappingTableEntries.equals(configurationPartialPrimesMappingTableEntries);
 		if (!informationCorrespondsToConfiguration) {
-			LOGGER.error("The actual voting options and semantic information do not correspond to the configuration XML.");
+			LOGGER.error("The actual voting options, semantic information and correctness information do not correspond to the configuration XML.");
 		}
 		return informationCorrespondsToConfiguration;
 	}
@@ -197,23 +202,24 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 	private static Set<PartialPrimesMappingTableEntry> getEmptyListEntries(final ElectionInformationType electionInformationType,
 			final List<ListType> emptyLists) {
 		final ListType emptyList = emptyLists.stream().collect(MoreCollectors.onlyElement());
-		final ElectionType election = electionInformationType.getElection();
+		final String electionIdentification = electionInformationType.getElection().getElectionIdentification();
 		final Set<PartialPrimesMappingTableEntry> emptyListEntries = new HashSet<>();
 
 		// empty position
 		emptyList.getCandidatePosition()
 				.forEach(candidatePositionType -> {
-					final String emptyPositionActualVotingOption = String.join(ALIAS_JOIN_DELIMITER,
-							electionInformationType.getElection().getElectionIdentification(),
+					final String actualVotingOption = String.join(ALIAS_JOIN_DELIMITER, electionIdentification,
 							candidatePositionType.getCandidateListIdentification());
-					final String emptyPositionSemanticInformation = getBlankCandidatePositionInformation(candidatePositionType.getPositionOnList());
-					emptyListEntries.add(new PartialPrimesMappingTableEntry(emptyPositionActualVotingOption, emptyPositionSemanticInformation));
+					final String semanticInformation = getBlankCandidatePositionInformation(candidatePositionType.getPositionOnList());
+					final String correctnessInformation = String.join(ALIAS_JOIN_DELIMITER, CORRECTNESS_INFORMATION_CANDIDATE_PREFIX,
+							electionIdentification);
+					emptyListEntries.add(new PartialPrimesMappingTableEntry(actualVotingOption, semanticInformation, correctnessInformation));
 				});
 
 		// empty list - only added if an election includes at least one non-empty list (otherwise it would be a candidate-only election without the possibility of selecting lists)
 		final boolean electionWithLists = electionInformationType.getList().stream().parallel().anyMatch(not(ListType::isListEmpty));
 		if (electionWithLists) {
-			emptyListEntries.add(getListEntry(election.getElectionIdentification(), emptyList));
+			emptyListEntries.add(getListEntry(electionIdentification, emptyList));
 		}
 
 		return emptyListEntries;
@@ -230,7 +236,8 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 		final String actualVotingOption = String.join(ALIAS_JOIN_DELIMITER, electionIdentification, listType.getListIdentification());
 		final String semanticInformation = getListInformation(listType.isListEmpty(), listType.getListDescription().getListDescriptionInfo(),
 				ListDescriptionInfo::getListDescription);
-		return new PartialPrimesMappingTableEntry(actualVotingOption, semanticInformation);
+		final String correctnessInformation = String.join(ALIAS_JOIN_DELIMITER, CORRECTNESS_INFORMATION_LIST_PREFIX, electionIdentification);
+		return new PartialPrimesMappingTableEntry(actualVotingOption, semanticInformation, correctnessInformation);
 	}
 
 	private static Set<PartialPrimesMappingTableEntry> getCandidatesEntries(final ElectionInformationType electionInformationType) {
@@ -238,30 +245,36 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 			return Set.of();
 		}
 
+		final String electionIdentification = electionInformationType.getElection().getElectionIdentification();
 		return electionInformationType.getCandidate().stream()
 				.parallel()
 				.flatMap(candidateType ->
 						IntStream.range(0, electionInformationType.getElection().getCandidateAccumulation().intValue())
 								.mapToObj(String::valueOf)
-								.map(acc -> String.join(ALIAS_JOIN_DELIMITER, electionInformationType.getElection().getElectionIdentification(),
-										candidateType.getCandidateIdentification(), acc))
+								.map(acc -> String.join(ALIAS_JOIN_DELIMITER, electionIdentification, candidateType.getCandidateIdentification(),
+										acc))
 								.map(actualVotingOption -> {
 									final String semanticInformation = getCandidateInformation(candidateType.getFamilyName(),
 											candidateType.getFirstName(), candidateType.getCallName(), candidateType.getDateOfBirth().toXMLFormat());
-									return new PartialPrimesMappingTableEntry(actualVotingOption, semanticInformation);
+									final String correctnessInformation = String.join(ALIAS_JOIN_DELIMITER, CORRECTNESS_INFORMATION_CANDIDATE_PREFIX,
+											electionIdentification);
+									return new PartialPrimesMappingTableEntry(actualVotingOption, semanticInformation, correctnessInformation);
 								})
 				).collect(Collectors.toSet());
 	}
 
 	private static Set<PartialPrimesMappingTableEntry> getWriteInsEntries(final ElectionInformationType electionInformationType) {
+		final String electionIdentification = electionInformationType.getElection().getElectionIdentification();
+
 		// write-ins position - only added if write-ins are allowed for an election
 		return electionInformationType.getWriteInCandidate().stream()
 				.map(writeInCandidate -> {
-					final String writeInsPositionActualVotingOption = String.join(ALIAS_JOIN_DELIMITER,
-							electionInformationType.getElection().getElectionIdentification(),
+					final String actualVotingOption = String.join(ALIAS_JOIN_DELIMITER, electionIdentification,
 							writeInCandidate.getWriteInCandidateIdentification());
-					final String writeInsPositionSemanticInformation = getWriteInPositionInformation(writeInCandidate.getPosition());
-					return new PartialPrimesMappingTableEntry(writeInsPositionActualVotingOption, writeInsPositionSemanticInformation);
+					final String semanticInformation = getWriteInPositionInformation(writeInCandidate.getPosition());
+					final String correctnessInformation = String.join(ALIAS_JOIN_DELIMITER, CORRECTNESS_INFORMATION_CANDIDATE_PREFIX,
+							electionIdentification);
+					return new PartialPrimesMappingTableEntry(actualVotingOption, semanticInformation, correctnessInformation);
 				}).collect(Collectors.toSet());
 	}
 
@@ -269,21 +282,19 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 		return configuration.getContest().getVoteInformation().stream()
 				.parallel()
 				.map(VoteInformationType::getVote)
-				.map(voteInformationType -> {
-					return voteInformationType.getBallot().stream()
-							.parallel()
-							.map(ballotType -> {
-								final Set<PartialPrimesMappingTableEntry> standardBallotAnswers = getStandardBallotAnswersEntries(ballotType);
-								final Set<PartialPrimesMappingTableEntry> variantBallotStandardAnswers = getVariantBallotStandardAnswersEntries(
-										ballotType);
-								final Set<PartialPrimesMappingTableEntry> tieBreakAnswers = getTieBreakAnswersEntries(ballotType);
+				.map(voteInformationType -> voteInformationType.getBallot().stream()
+						.parallel()
+						.map(ballotType -> {
+							final Set<PartialPrimesMappingTableEntry> standardBallotAnswers = getStandardBallotAnswersEntries(ballotType);
+							final Set<PartialPrimesMappingTableEntry> variantBallotStandardAnswers = getVariantBallotStandardAnswersEntries(
+									ballotType);
+							final Set<PartialPrimesMappingTableEntry> tieBreakAnswers = getTieBreakAnswersEntries(ballotType);
 
-								return Stream.of(standardBallotAnswers, variantBallotStandardAnswers, tieBreakAnswers)
-										.flatMap(Set::stream)
-										.collect(Collectors.toSet());
-							}).flatMap(Set::stream)
-							.collect(Collectors.toSet());
-				})
+							return Stream.of(standardBallotAnswers, variantBallotStandardAnswers, tieBreakAnswers)
+									.flatMap(Set::stream)
+									.collect(Collectors.toSet());
+						}).flatMap(Set::stream)
+						.collect(Collectors.toSet()))
 				.flatMap(Set::stream)
 				.collect(Collectors.toSet());
 	}
@@ -321,7 +332,7 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 					final String semanticInformation = getAnswerInformation(standardAnswerType.isHiddenAnswer(),
 							ballotQuestionType.getBallotQuestionInfo(), BallotQuestionInfo::getBallotQuestion,
 							standardAnswerType.getAnswerInfo(), AnswerInformationType::getAnswer);
-					return new PartialPrimesMappingTableEntry(actualVotingOption, semanticInformation);
+					return new PartialPrimesMappingTableEntry(actualVotingOption, semanticInformation, questionIdentification);
 				});
 	}
 
@@ -336,16 +347,17 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 				.flatMap(tieBreakQuestionType -> tieBreakQuestionType.getAnswer().stream()
 						.parallel()
 						.map(tiebreakAnswerType -> {
-							final String actualVotingOption = String.join(ALIAS_JOIN_DELIMITER, tieBreakQuestionType.getQuestionIdentification(),
+							final String questionIdentification = tieBreakQuestionType.getQuestionIdentification();
+							final String actualVotingOption = String.join(ALIAS_JOIN_DELIMITER, questionIdentification,
 									tiebreakAnswerType.getAnswerIdentification());
 							final String semanticInformation = getAnswerInformation(tiebreakAnswerType.isHiddenAnswer(),
 									tieBreakQuestionType.getBallotQuestion().getBallotQuestionInfo(), BallotQuestionInfo::getBallotQuestion,
 									tiebreakAnswerType.getAnswerInfo(), AnswerInformationType::getAnswer);
-							return new PartialPrimesMappingTableEntry(actualVotingOption, semanticInformation);
+							return new PartialPrimesMappingTableEntry(actualVotingOption, semanticInformation, questionIdentification);
 						}))
 				.collect(Collectors.toSet());
 	}
 
-	private record PartialPrimesMappingTableEntry(String actualVotingOption, String semanticInformation) {
+	private record PartialPrimesMappingTableEntry(String actualVotingOption, String semanticInformation, String correctnessInformation) {
 	}
 }
