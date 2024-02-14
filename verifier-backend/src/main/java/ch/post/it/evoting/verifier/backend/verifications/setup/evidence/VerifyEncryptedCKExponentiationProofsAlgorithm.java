@@ -46,7 +46,7 @@ public class VerifyEncryptedCKExponentiationProofsAlgorithm {
 	 */
 	@SuppressWarnings("java:S117")
 	public boolean verifyEncryptedCKExponentiationProofs(final VerifyEncryptedExponentiationProofsInput input,
-			final List<ExponentiationProofsVerificationExtractionService.ContextAndInputForVerificationCardSetAndControlComponent> contextAndInputs) {
+			final List<ContextAndInputForVerificationCardSetAndControlComponent> contextAndInputs) {
 		checkNotNull(input);
 		checkNotNull(contextAndInputs);
 

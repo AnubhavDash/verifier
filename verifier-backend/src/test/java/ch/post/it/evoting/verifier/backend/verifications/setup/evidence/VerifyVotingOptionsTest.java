@@ -60,7 +60,7 @@ class VerifyVotingOptionsTest extends SetupVerificationTest {
 	@Test
 	@DisplayName("algorithm returning false is failed")
 	void algorithmReturningFalse() {
-		doReturn(false).when(verifyVotingOptionsAlgorithm).verifyVotingOptions(any(), any());
+		doReturn(false).when(verifyVotingOptionsAlgorithm).verifyVotingOptions(any(), any(), any());
 
 		final VerificationResult result = verification.verify(datasetPath);
 

@@ -94,7 +94,7 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 				"The context and input must have the same encryption group.");
 
 		// Context.
-		final GqGroup encryptionGroup = context.getEncryptionGroup();
+		final GqGroup p_q_g = context.getEncryptionGroup();
 		final String ee = context.getElectionEventId();
 		final String vcs = context.getVerificationCardSetId();
 		final String bb = context.getBallotBoxId();
@@ -127,11 +127,12 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 				"The element size of the shuffled and the partially decrypted votes must correspond to the number of allowed write ins + 1. [l: %s, delta: %s]",
 				c_mix_j_pi_mix_j.get(0).shuffledCiphertexts().getElementSize(), delta);
 		checkArgument(controlComponentsLists.isEmpty() || controlComponentsLists.get(0).encryptedPartialChoiceReturnCodes().size() == psi,
-				"The size of the encrypted, partial Choice Return Codes must be equal to the number of selectable voting options. [psi: %s]", psi);
+				"The size of the encrypted, partial Choice Return Codes must be equal to the number of selections. [psi: %s]", psi);
 
 		// Require.
-		checkArgument(N_C_hat >= 2, "There must be at least 2 shuffled votes.");
-		checkArgument(N_C >= 2 ? N_C_hat == N_C : N_C_hat == N_C + 2);
+		checkArgument(N_E >= N_C, "The the number of eligible voters must be greater or equal to the number of confirmed votes.");
+		checkArgument(N_C >= 2 ? N_C_hat == N_C : N_C_hat == N_C + 2, "The number of mixed votes must be equal to the number of processed votes, "
+				+ "if the number of confirmed votes is 2 or greater. Otherwise, there must be two more mixed votes than confirmed votes (for N_C = 0 or 1).");
 		final List<String> vc_1 = controlComponentsLists.stream().parallel()
 				.map(EncryptedVerifiableVote::contextIds)
 				.map(ContextIds::verificationCardId)
@@ -145,25 +146,22 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 					.boxed()
 					.collect(Collectors.toMap(vc_vector::get, K_vector::get));
 
-			final VerifyVotingClientProofsInput Input_vcProofs = new VerifyVotingClientProofsInput.Builder()
-					.setEncryptedVerifiableVotes(controlComponentsLists)
-					.setVerificationCardPublicKeys(KMap)
-					.setElectionPublicKey(EL_pk)
-					.setChoiceReturnCodesEncryptionPublicKey(pk_CCR)
-					.build();
-
-			final VerifyVotingClientProofsContext Context_vcProofs = new VerifyVotingClientProofsContext.Builder()
-					.setEncryptionGroup(encryptionGroup)
+			final VerifyVotingClientProofsContext verifyVotingClientProofsContext = new VerifyVotingClientProofsContext.Builder()
+					.setEncryptionGroup(p_q_g)
 					.setElectionEventId(ee)
 					.setVerificationCardSetId(vcs)
 					.setPrimesMappingTable(pTable)
+					.setNumberOfEligibleVoters(N_E)
+					.setElectionPublicKey(EL_pk)
+					.setChoiceReturnCodesEncryptionPublicKey(pk_CCR)
 					.build();
-			vcProofsVerif = verifyVotingClientProofsAlgorithm.verifyVotingClientProofs(Context_vcProofs, Input_vcProofs);
+			vcProofsVerif = verifyVotingClientProofsAlgorithm.verifyVotingClientProofs(verifyVotingClientProofsContext,
+					new VerifyVotingClientProofsInput(controlComponentsLists, KMap));
 
 			if (vcProofsVerif) {
-				LOGGER.info("The result of the verifyVotingClientProofs is successful. [ee: {}, bb: {}", ee, bb);
+				LOGGER.info("The result of the verifyVotingClientProofs is successful. [bb: {}", bb);
 			} else {
-				LOGGER.error("The result of the verifyVotingClientProofs is unsuccessful. [ee: {}, bb: {}", ee, bb);
+				LOGGER.error("The result of the verifyVotingClientProofs is unsuccessful. [bb: {}", bb);
 			}
 		} else {
 			vcProofsVerif = true;
@@ -175,17 +173,16 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 						EncryptedVerifiableVote::encryptedVote)
 				);
 
-		final GetMixnetInitialCiphertextsContext getMixnetInitialCiphertextsContext = new GetMixnetInitialCiphertextsContext(encryptionGroup,
-				delta);
-		final GetMixnetInitialCiphertextsInput getMixnetInitialCiphertextsInput = new GetMixnetInitialCiphertextsInput(vcMap_1, EL_pk);
+		final GetMixnetInitialCiphertextsContext getMixnetInitialCiphertextsContext = new GetMixnetInitialCiphertextsContext(p_q_g, N_E, delta,
+				EL_pk);
 		final GetMixnetInitialCiphertextsOutput getMixnetInitialCiphertextsOutput = getMixnetInitialCiphertextsAlgorithm.getMixnetInitialCiphertexts(
-				getMixnetInitialCiphertextsContext, getMixnetInitialCiphertextsInput);
+				getMixnetInitialCiphertextsContext, new GetMixnetInitialCiphertextsInput(vcMap_1));
 		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_init_1 = getMixnetInitialCiphertextsOutput.mixnetInitialCiphertexts();
 
-		final VerifyMixDecInput Input_shuffleProofs = new VerifyMixDecInput(c_init_1, c_mix_j_pi_mix_j, c_dec_j_pi_dec_j, EL_pk, EL_pk_1_to_4, EB_pk);
-
-		final VerifyMixDecOfflineContext Context_shuffleProofs = new VerifyMixDecOfflineContext(encryptionGroup, ee, bb, delta);
-		final boolean shuffleProofsVerif = verifyMixDecOfflineAlgorithm.verifyMixDecOffline(Context_shuffleProofs, Input_shuffleProofs);
+		final VerifyMixDecOfflineContext verifyMixDecOfflineContext = new VerifyMixDecOfflineContext(p_q_g, ee, bb, delta, EL_pk, EL_pk_1_to_4,
+				EB_pk);
+		final boolean shuffleProofsVerif = verifyMixDecOfflineAlgorithm.verifyMixDecOffline(verifyMixDecOfflineContext,
+				new VerifyMixDecInput(c_init_1, c_mix_j_pi_mix_j, c_dec_j_pi_dec_j));
 
 		if (shuffleProofsVerif) {
 			LOGGER.info("The result of the verifyMixDecOffline is successful. [ee: {}, bb: {}", ee, bb);

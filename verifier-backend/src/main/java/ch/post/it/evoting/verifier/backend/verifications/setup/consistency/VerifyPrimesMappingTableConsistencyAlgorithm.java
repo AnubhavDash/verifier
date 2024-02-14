@@ -39,6 +39,7 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.function.TriFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.MoreCollectors;
@@ -62,6 +63,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardBallo
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VariantBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 
+@Service
 public class VerifyPrimesMappingTableConsistencyAlgorithm {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(VerifyPrimesMappingTableConsistencyAlgorithm.class);

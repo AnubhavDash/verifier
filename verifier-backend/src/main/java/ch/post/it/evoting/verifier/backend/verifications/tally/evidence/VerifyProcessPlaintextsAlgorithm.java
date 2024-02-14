@@ -64,9 +64,7 @@ public final class VerifyProcessPlaintextsAlgorithm {
 		checkArgument(input.getPlaintextVotes().getGroup().equals(context.encryptionGroup()), "The context and input must have the same group.");
 
 		// Context.
-		final GqGroup encryptionGroup = context.encryptionGroup();
-		final String ee = context.electionEventId();
-		final String bb = context.ballotBoxId();
+		final GqGroup p_q_g = context.encryptionGroup();
 		final PrimesMappingTable pTable = context.primesMappingTable();
 
 		// Input.
@@ -82,7 +80,7 @@ public final class VerifyProcessPlaintextsAlgorithm {
 		checkArgument(N_C >= 2 ? N_C_hat == N_C : N_C_hat == N_C + 2);
 
 		// Operation.
-		final ProcessPlaintextsContext processPlaintextsContext = new ProcessPlaintextsContext(encryptionGroup, ee, bb, pTable);
+		final ProcessPlaintextsContext processPlaintextsContext = new ProcessPlaintextsContext(p_q_g, pTable);
 		final ProcessPlaintextsOutput L_votes_prime_L_decodedVotes_prime_L_writeIns_prime = processPlaintextsAlgorithm.processPlaintexts(
 				processPlaintextsContext, m);
 

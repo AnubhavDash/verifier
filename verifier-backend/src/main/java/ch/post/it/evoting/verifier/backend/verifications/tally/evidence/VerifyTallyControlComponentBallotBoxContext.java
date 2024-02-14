@@ -35,6 +35,7 @@ import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetCo
  *     <li>(p, q, g), the encryption group. Non-null.</li>
  *     <li>ee, the election event id. Non-null and a valid UUID.</li>
  *     <li>bb, the ballot box id. Non-null and a valid UUID.</li>
+ *     <li>N_E, the number of eligible voters. Strictly positive.</li>
  *     <li>pTable, the primes mapping table. Non-null.</li>
  *     <li>EB<sub>pk</sub>, the electoral board public key. Non-null.</li>
  * </ul>
@@ -44,6 +45,7 @@ public class VerifyTallyControlComponentBallotBoxContext {
 	private final GqGroup encryptionGroup;
 	private final String electionEventId;
 	private final String ballotBoxId;
+	private final int numberOfEligibleVoters;
 	private final PrimesMappingTable primesMappingTable;
 	private final ElGamalMultiRecipientPublicKey electoralBoardPublicKey;
 
@@ -57,6 +59,8 @@ public class VerifyTallyControlComponentBallotBoxContext {
 		final VerificationCardSetContext verificationCardSetContext = electionEventContext.verificationCardSetContexts().stream()
 				.filter(vcsContext -> vcsContext.getBallotBoxId().equals(ballotBoxId))
 				.collect(MoreCollectors.onlyElement());
+		// The constructor of VerificationCardSetContext ensures the number of voting cards is strictly positive.
+		this.numberOfEligibleVoters = verificationCardSetContext.getNumberOfVotingCards();
 		this.primesMappingTable = verificationCardSetContext.getPrimesMappingTable();
 		this.encryptionGroup = primesMappingTable.getEncryptionGroup();
 		this.electoralBoardPublicKey = setupComponentPublicKeys.electoralBoardPublicKey();
@@ -76,12 +80,16 @@ public class VerifyTallyControlComponentBallotBoxContext {
 		return ballotBoxId;
 	}
 
-	public ElGamalMultiRecipientPublicKey getElectoralBoardPublicKey() {
-		return electoralBoardPublicKey;
+	public int getNumberOfEligibleVoters() {
+		return numberOfEligibleVoters;
 	}
 
 	public PrimesMappingTable getPrimesMappingTable() {
 		return primesMappingTable;
+	}
+
+	public ElGamalMultiRecipientPublicKey getElectoralBoardPublicKey() {
+		return electoralBoardPublicKey;
 	}
 
 	public static class Builder {

@@ -46,7 +46,7 @@ public class VerifyEncryptedPCCExponentiationProofsAlgorithm {
 	 */
 	@SuppressWarnings("java:S117")
 	public boolean verifyEncryptedPCCExponentiationProofs(final VerifyEncryptedExponentiationProofsInput input,
-			final List<ExponentiationProofsVerificationExtractionService.ContextAndInputForVerificationCardSetAndControlComponent> contextAndInputs) {
+			final List<ContextAndInputForVerificationCardSetAndControlComponent> contextAndInputs) {
 		checkNotNull(input);
 		checkNotNull(contextAndInputs);
 

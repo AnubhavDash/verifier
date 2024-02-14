@@ -15,6 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 
+import static ch.post.it.evoting.evotinglibraries.domain.VotingOptionsConstants.MAXIMUM_SUPPORTED_NUMBER_OF_VOTING_OPTIONS;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -26,7 +27,6 @@ import org.springframework.stereotype.Service;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
-import ch.post.it.evoting.evotinglibraries.domain.VotingOptionsConstants;
 
 @Service
 public class VerifySmallPrimeGroupMembersAlgorithm {
@@ -34,33 +34,39 @@ public class VerifySmallPrimeGroupMembersAlgorithm {
 	/**
 	 * Verifies that the given prime numbers correspond to the small prime group members.
 	 *
+	 * @param encryptionGroup        (p, q, g), the encryption group.
 	 * @param smallPrimeGroupMembers <b>p</b>, a list of the n<sub>sup</sub> smallest prime group members strictly greater than 3, in ascending
 	 *                               order.
 	 * @return true if the given prime numbers are indeed the smallest n<sub>sup</sub> prime group members, false otherwise
 	 */
 	@SuppressWarnings("java:S117")
-	public boolean verifySmallPrimeGroupMembers(final GroupVector<PrimeGqElement, GqGroup> smallPrimeGroupMembers) {
+	boolean verifySmallPrimeGroupMembers(final GqGroup encryptionGroup, final GroupVector<PrimeGqElement, GqGroup> smallPrimeGroupMembers) {
+		checkNotNull(encryptionGroup);
 		checkNotNull(smallPrimeGroupMembers);
 
-		final int n_sup = VotingOptionsConstants.MAXIMUM_SUPPORTED_NUMBER_OF_VOTING_OPTIONS;
+		// Context.
+		final GqGroup p_q_g = encryptionGroup;
+		final int n_sup = MAXIMUM_SUPPORTED_NUMBER_OF_VOTING_OPTIONS;
 
-		final GqGroup group = smallPrimeGroupMembers.getGroup();
-		checkArgument(smallPrimeGroupMembers.size() == n_sup,
+		// Input.
+		final GroupVector<PrimeGqElement, GqGroup> p_vector = smallPrimeGroupMembers;
+
+		// Cross-checks.
+		checkArgument(p_vector.size() == n_sup,
 				String.format("The list of small prime group members must contain n_sup elements. [n_sup: %d]", n_sup));
-		checkArgument(
-				smallPrimeGroupMembers.stream()
+		checkArgument(p_vector.stream()
 						.parallel()
 						.map(PrimeGqElement::getValue)
 						.allMatch(primeValue -> BigInteger.valueOf(3).compareTo(primeValue) < 0),
 				"The small prime group members must be strictly greater than 3.");
 		checkArgument(IntStream.range(1, n_sup)
 				.parallel()
-				.mapToObj(i -> smallPrimeGroupMembers.get(i - 1).getValue().compareTo(smallPrimeGroupMembers.get(i).getValue()) < 0)
+				.mapToObj(i -> p_vector.get(i - 1).getValue().compareTo(p_vector.get(i).getValue()) < 0)
 				.allMatch(Boolean::booleanValue), "The list of small prime group members must be sorted in ascending order");
-		final GroupVector<PrimeGqElement, GqGroup> p = smallPrimeGroupMembers;
 
-		// Operation
-		final GroupVector<PrimeGqElement, GqGroup> p_prime = PrimeGqElement.PrimeGqElementFactory.getSmallPrimeGroupMembers(group, n_sup);
-		return p_prime.equals(p);
+		// Operation.
+		final GroupVector<PrimeGqElement, GqGroup> p_prime = PrimeGqElement.PrimeGqElementFactory.getSmallPrimeGroupMembers(p_q_g, n_sup);
+
+		return p_prime.equals(p_vector);
 	}
 }

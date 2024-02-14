@@ -15,6 +15,8 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 
+import static ch.post.it.evoting.evotinglibraries.domain.VotingOptionsConstants.MAXIMUM_SUPPORTED_NUMBER_OF_SELECTIONS;
+import static ch.post.it.evoting.evotinglibraries.domain.VotingOptionsConstants.MAXIMUM_SUPPORTED_NUMBER_OF_VOTING_OPTIONS;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -27,7 +29,6 @@ import ch.post.it.evoting.cryptoprimitives.math.GqElement;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
-import ch.post.it.evoting.evotinglibraries.domain.VotingOptionsConstants;
 
 /**
  * Implements the VerifyVotingOptions algorithm.
@@ -38,9 +39,10 @@ public class VerifyVotingOptionsAlgorithm {
 	/**
 	 * Verifies the correctness of the voting options.
 	 * <p>
-	 * The voting options must correspond to the smallest prime group members and the product of the &psi;<sub>sup</sub> biggest voting options must be smaller than
-	 * p.
+	 * The voting options must correspond to the smallest prime group members and the product of the &psi;<sub>sup</sub> biggest voting options must
+	 * be smaller than p.
 	 *
+	 * @param encryptionGroup        (p, q, g), the encryption group.
 	 * @param smallPrimeGroupMembers <b>p</b>, a list of the n<sub>sup</sub> small prime group members strictly greater than 3.
 	 * @param encodedVotingOptions   <b>p</b>Tilde, a list of the voting options encoded as primes.
 	 * @return {@code true} if the verification is successful, {@code false} otherwise
@@ -55,17 +57,11 @@ public class VerifyVotingOptionsAlgorithm {
 	 *                                  </ul>
 	 */
 	@SuppressWarnings("java:S117")
-	public boolean verifyVotingOptions(final GroupVector<PrimeGqElement, GqGroup> smallPrimeGroupMembers,
+	boolean verifyVotingOptions(final GqGroup encryptionGroup, final GroupVector<PrimeGqElement, GqGroup> smallPrimeGroupMembers,
 			final GroupVector<PrimeGqElement, GqGroup> encodedVotingOptions) {
-
+		checkNotNull(encryptionGroup);
 		checkNotNull(smallPrimeGroupMembers);
 		checkNotNull(encodedVotingOptions);
-
-		final long n_sup = VotingOptionsConstants.MAXIMUM_SUPPORTED_NUMBER_OF_VOTING_OPTIONS;
-		final long psi_sup = VotingOptionsConstants.MAXIMUM_SUPPORTED_NUMBER_OF_SELECTIONS;
-		checkArgument(n_sup > 0, "The maximum supported number of voting options must be strictly positive. [n_sup: %s]", n_sup);
-		checkArgument(psi_sup > 0, "The maximum supported number of selections must be strictly positive. [psi_sup]", psi_sup);
-
 		final boolean isStrictlyAscending = IntStream.range(0, encodedVotingOptions.size() - 1)
 				.parallel()
 				.allMatch(i -> encodedVotingOptions.get(i).getValue().compareTo(encodedVotingOptions.get(i + 1).getValue()) < 0);
@@ -75,31 +71,40 @@ public class VerifyVotingOptionsAlgorithm {
 				encodedVotingOptions.get(0).getValue().compareTo(BigInteger.valueOf(3)) > 0,
 				"The encoded voting options must be strictly greater than 3.");
 
-		checkArgument(smallPrimeGroupMembers.getGroup().equals(encodedVotingOptions.getGroup()),
-				"The small primes and encoded voting options must have the same group.");
+		// Context.
+		final GqGroup p_q_g = encryptionGroup;
+		final long n_sup = MAXIMUM_SUPPORTED_NUMBER_OF_VOTING_OPTIONS;
+		final long psi_sup = MAXIMUM_SUPPORTED_NUMBER_OF_SELECTIONS;
+		checkArgument(n_sup > 0, "The maximum supported number of voting options must be strictly positive. [n_sup: %s]", n_sup);
+		checkArgument(psi_sup > 0, "The maximum supported number of selections must be strictly positive. [psi_sup]", psi_sup);
 
 		final GroupVector<PrimeGqElement, GqGroup> p_vector = smallPrimeGroupMembers;
 		final GroupVector<PrimeGqElement, GqGroup> p_tilde = encodedVotingOptions;
 		final int n_total = p_tilde.size();
 
+		// Cross-checks.
+		checkArgument(smallPrimeGroupMembers.getGroup().equals(encodedVotingOptions.getGroup()),
+				"The small primes and encoded voting options must have the same group.");
 		checkArgument(p_vector.size() == n_sup, "The list of small prime group members must be of size n_sup. [n_sup: %s, size: %s]", n_sup,
 				p_vector.size());
 
 		// Require.
-		checkArgument(psi_sup <= n_sup, "The maximum supported number of selections must not be greater than the maximum supported number of voting options.");
+		checkArgument(psi_sup <= n_sup,
+				"The maximum supported number of selections must not be greater than the maximum supported number of voting options.");
 		checkArgument(0 < n_total, "The number of encoded voting options must be strictly greater than 0.");
-		checkArgument(n_total <= n_sup, "The number of encoded voting options must not be greater than the maximum supported number of voting options.");
+		checkArgument(n_total <= n_sup,
+				"The number of encoded voting options must not be greater than the maximum supported number of voting options.");
 
 		// Operation.
 		final GroupVector<PrimeGqElement, GqGroup> p_prime = p_vector.subVector(0, n_total);
 
 		final boolean verifA = p_prime.equals(p_tilde);
 
-		final BigInteger p = p_vector.getGroup().getP();
+		final BigInteger p = p_q_g.getP();
 		final boolean verifB = p_vector.stream()
 				.skip(n_sup - psi_sup)
 				.parallel()
-				.reduce(p_vector.getGroup().getIdentity(), GqElement::multiply, GqElement::multiply)
+				.reduce(p_q_g.getIdentity(), GqElement::multiply, GqElement::multiply)
 				.getValue()
 				.compareTo(p) < 0;
 

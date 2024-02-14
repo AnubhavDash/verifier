@@ -36,6 +36,7 @@ import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextD
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.evotinglibraries.domain.returncodes.ControlComponentCodeSharesPayload;
+import ch.post.it.evoting.evotinglibraries.domain.returncodes.SetupComponentVerificationData;
 import ch.post.it.evoting.evotinglibraries.domain.returncodes.SetupComponentVerificationDataPayload;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
 import ch.post.it.evoting.evotinglibraries.domain.signature.CryptoPrimitivesSignature;
@@ -89,9 +90,10 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 
 		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContext(inputDirectoryPath);
 
-		final ConcurrentMap<String, Integer> numberOfVotingOptions = electionEventContext.verificationCardSetContexts().stream()
+		final ConcurrentMap<String, Integer> numberOfVotingOptionsMap = electionEventContext.verificationCardSetContexts().stream()
 				.parallel()
-				.collect(Collectors.toConcurrentMap(VerificationCardSetContext::getVerificationCardSetId, VerificationCardSetContext::getNumberOfVotingOptions));
+				.collect(Collectors.toConcurrentMap(VerificationCardSetContext::getVerificationCardSetId,
+						VerificationCardSetContext::getNumberOfVotingOptions));
 
 		final boolean result = verificationCardSets.stream()
 				.parallel()
@@ -105,8 +107,12 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 								final List<ControlComponentCodeSharesPayload> controlComponentCodeShares = electionDataExtractionService.getControlComponentCodeSharesPayloadChunkOrderByNodeId(
 										path, chunk);
 
-								final int totalNumberOfVotingOptions = numberOfVotingOptions.get(
+								final int numberOfVotingOptions = numberOfVotingOptionsMap.get(
 										setupComponentVerificationData.getVerificationCardSetId());
+
+								final List<String> verificationCardIds = setupComponentVerificationData.getSetupComponentVerificationData().stream()
+										.map(SetupComponentVerificationData::verificationCardId)
+										.toList();
 
 								final BooleanSupplier s1 = () -> verifySignatureSetupComponentVerificationData(setupComponentVerificationData);
 
@@ -118,12 +124,14 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 								final BooleanSupplier v1 = verifyEncryptedPCCExponentiationProofs(
 										setupComponentVerificationData,
 										controlComponentCodeShares,
-										totalNumberOfVotingOptions);
+										verificationCardIds,
+										numberOfVotingOptions);
 
 								final BooleanSupplier v2 = verifyEncryptedCKExponentiationProofs(
 										setupComponentVerificationData,
 										controlComponentCodeShares,
-										totalNumberOfVotingOptions);
+										verificationCardIds,
+										numberOfVotingOptions);
 
 								return Stream.of(s1, s2, v1, v2);
 							})
@@ -145,58 +153,56 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 	}
 
 	private BooleanSupplier verifyEncryptedCKExponentiationProofs(final SetupComponentVerificationDataPayload setupComponentVerificationData,
-			final List<ControlComponentCodeSharesPayload> controlComponentCodeSharesPayloads, final int totalNumberOfVotingOptions) {
+			final List<ControlComponentCodeSharesPayload> controlComponentCodeSharesPayloads, final List<String> verificationCardIds,
+			final int numberOfVotingOptions) {
 
 		final VerifyEncryptedExponentiationProofsInput input = new VerifyEncryptedExponentiationProofsInput.Builder()
 				.setElectionEventId(setupComponentVerificationData.getElectionEventId())
 				.setVerificationCardSetIds(List.of(setupComponentVerificationData.getVerificationCardSetId()))
 				.build();
 
-		final List<ExponentiationProofsVerificationExtractionService.ContextAndInputForVerificationCardSetAndControlComponent> contextAndInputs = controlComponentCodeSharesPayloads.stream()
+		final List<ContextAndInputForVerificationCardSetAndControlComponent> contextAndInputs = controlComponentCodeSharesPayloads.stream()
 				.map(controlComponentCodeSharesPayload -> {
 
 					final VerifyEncryptedExponentiationProofsVerificationCardSetContext verificationCardSetContext = new VerifyEncryptedExponentiationProofsVerificationCardSetContext.Builder()
-							.setVerificationCardSetId(controlComponentCodeSharesPayload.getVerificationCardSetId())
+							.setEncryptionGroup(controlComponentCodeSharesPayload.getEncryptionGroup())
 							.setJ(controlComponentCodeSharesPayload.getNodeId())
 							.setElectionEventId(controlComponentCodeSharesPayload.getElectionEventId())
-							.setEncryptionGroup(controlComponentCodeSharesPayload.getEncryptionGroup())
-							.setNumberOfVoters(setupComponentVerificationData.getSetupComponentVerificationData().size())
-							.setNumberOfVotingOptions(totalNumberOfVotingOptions)
+							.setVerificationCardIds(verificationCardIds)
+							.setNumberOfVotingOptions(numberOfVotingOptions)
 							.build();
 
 					final VerifyEncryptedExponentiationProofsVerificationCardSetInput verificationCardSetInput = new VerifyEncryptedExponentiationProofsVerificationCardSetInput(
 							setupComponentVerificationData.getSetupComponentVerificationData(),
 							controlComponentCodeSharesPayload.getControlComponentCodeShares());
-					return new ExponentiationProofsVerificationExtractionService.ContextAndInputForVerificationCardSetAndControlComponent(
-							verificationCardSetContext, verificationCardSetInput);
+					return new ContextAndInputForVerificationCardSetAndControlComponent(verificationCardSetContext, verificationCardSetInput);
 				}).toList();
 		return () -> verifyEncryptedCKExponentiationProofsAlgorithm.verifyEncryptedCKExponentiationProofs(input, contextAndInputs);
 	}
 
 	private BooleanSupplier verifyEncryptedPCCExponentiationProofs(final SetupComponentVerificationDataPayload setupComponentVerificationData,
-			final List<ControlComponentCodeSharesPayload> controlComponentCodeSharesPayloads, final int totalNumberOfVotingOptions) {
+			final List<ControlComponentCodeSharesPayload> controlComponentCodeSharesPayloads, final List<String> verificationCardIds,
+			final int numberOfVotingOptions) {
 
 		final VerifyEncryptedExponentiationProofsInput input = new VerifyEncryptedExponentiationProofsInput.Builder()
 				.setElectionEventId(setupComponentVerificationData.getElectionEventId())
 				.setVerificationCardSetIds(List.of(setupComponentVerificationData.getVerificationCardSetId())).build();
 
-		final List<ExponentiationProofsVerificationExtractionService.ContextAndInputForVerificationCardSetAndControlComponent> contextAndInputs = controlComponentCodeSharesPayloads.stream()
+		final List<ContextAndInputForVerificationCardSetAndControlComponent> contextAndInputs = controlComponentCodeSharesPayloads.stream()
 				.map(controlComponentCodeSharesPayload -> {
 							final VerifyEncryptedExponentiationProofsVerificationCardSetContext verificationCardSetContext = new VerifyEncryptedExponentiationProofsVerificationCardSetContext.Builder()
-									.setVerificationCardSetId(controlComponentCodeSharesPayload.getVerificationCardSetId())
 									.setEncryptionGroup(controlComponentCodeSharesPayload.getEncryptionGroup())
-									.setElectionEventId(controlComponentCodeSharesPayload.getElectionEventId())
 									.setJ(controlComponentCodeSharesPayload.getNodeId())
-									.setNumberOfVoters(setupComponentVerificationData.getSetupComponentVerificationData().size())
-									.setNumberOfVotingOptions(totalNumberOfVotingOptions)
+									.setElectionEventId(controlComponentCodeSharesPayload.getElectionEventId())
+									.setVerificationCardIds(verificationCardIds)
+									.setNumberOfVotingOptions(numberOfVotingOptions)
 									.build();
 
 							final VerifyEncryptedExponentiationProofsVerificationCardSetInput verificationCardSetInput = new VerifyEncryptedExponentiationProofsVerificationCardSetInput(
 									setupComponentVerificationData.getSetupComponentVerificationData(),
 									controlComponentCodeSharesPayload.getControlComponentCodeShares());
 
-							return new ExponentiationProofsVerificationExtractionService.ContextAndInputForVerificationCardSetAndControlComponent(
-									verificationCardSetContext, verificationCardSetInput);
+							return new ContextAndInputForVerificationCardSetAndControlComponent(verificationCardSetContext, verificationCardSetInput);
 						}
 				).toList();
 

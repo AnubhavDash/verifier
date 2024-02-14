@@ -84,12 +84,13 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 				"The context and input should have the same encryption group.");
 
 		// Context.
-		final GqGroup encryptionGroup = context.getEncryptionGroup();
+		final GqGroup p_q_g = context.getEncryptionGroup();
 		final String ee = context.getElectionEventId();
 		final String bb = context.getBallotBoxId();
 		final PrimesMappingTable pTable = context.getPrimesMappingTable();
 		final int psi = primesMappingTableAlgorithms.getPsi(pTable);
 		final int delta = primesMappingTableAlgorithms.getDelta(pTable);
+		final int N_E = context.getNumberOfEligibleVoters();
 		final ElGamalMultiRecipientPublicKey EB_pk = context.getElectoralBoardPublicKey();
 
 		// Input.
@@ -105,7 +106,7 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 		// Cross-checks.
 		if (!L_votes.isEmpty()) {
 			checkArgument(L_votes.getElementSize() == psi,
-					"The size of the p_i_hat elements and v_i_hat elements should be equal to the number of selectable encoded voting options.");
+					"The size of the p_i_hat elements and v_i_hat elements should be equal to the number of selections.");
 			// It is ensured by the GroupVector class that all elements in L_votes have the same size.
 		}
 		checkArgument(c_dec_4.getElementSize() == delta,
@@ -115,8 +116,8 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 		// Require.
 		final int N_C_hat = c_dec_4.size();
 		final int N_C = L_votes.size();
-		checkArgument(N_C_hat >= 2, "The number of mixed votes must be greater than or equal to 2.");
-		checkArgument((N_C_hat == N_C) || (N_C_hat == N_C + 2 && N_C < 2),
+		checkArgument(N_E >= N_C, "The the number of eligible voters must be greater or equal to the number of confirmed votes.");
+		checkArgument((N_C_hat == N_C && N_C >= 2) || (N_C_hat == N_C + 2 && N_C < 2),
 				"The number of mixed votes must be equal to the number of processed votes, if the number of confirmed votes is 2 or greater. "
 						+ "Otherwise, there must be two more mixed votes than confirmed votes (for N_C = 0 or 1).");
 		final GroupVector<PrimeGqElement, GqGroup> p_tilde = primesMappingTableAlgorithms.getEncodedVotingOptions(pTable, List.of());
@@ -145,7 +146,7 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 			LOGGER.info("The decryption proofs are valid. [ee: {}, bb: {}]", ee, bb);
 		}
 
-		final VerifyProcessPlaintextsContext verifyProcessPlaintextsContext = new VerifyProcessPlaintextsContext(encryptionGroup, ee, bb, pTable);
+		final VerifyProcessPlaintextsContext verifyProcessPlaintextsContext = new VerifyProcessPlaintextsContext(p_q_g, pTable);
 		final boolean processVerif = verifyProcessPlaintextsAlgorithm.verifyProcessPlaintexts(verifyProcessPlaintextsContext,
 				new VerifyProcessPlaintextsInput.Builder()
 						.setPlaintextVotes(m)

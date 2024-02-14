@@ -64,11 +64,12 @@ public class VerifySmallPrimeGroupMembers extends AbstractVerification {
 	public VerificationResult verify(final Path inputDirectoryPath) {
 		// Get the election event context payload.
 		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(inputDirectoryPath);
+		final GqGroup encryptionGroup = electionEventContextPayload.getEncryptionGroup();
 
 		// Get the primes from the file.
 		final GroupVector<PrimeGqElement, GqGroup> smallPrimeGroupMembers = electionEventContextPayload.getSmallPrimes();
 
-		if (verifySmallPrimeGroupMembersAlgorithm.verifySmallPrimeGroupMembers(smallPrimeGroupMembers)) {
+		if (verifySmallPrimeGroupMembersAlgorithm.verifySmallPrimeGroupMembers(encryptionGroup, smallPrimeGroupMembers)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),

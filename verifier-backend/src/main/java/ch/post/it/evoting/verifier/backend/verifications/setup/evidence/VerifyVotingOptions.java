@@ -78,7 +78,8 @@ public class VerifyVotingOptions extends AbstractVerification {
 
 		final GroupVector<PrimeGqElement, GqGroup> encodedVotingOptions = extractEncodedVotingOptions(inputDirectoryPath);
 
-		if (verifyVotingOptionsAlgorithm.verifyVotingOptions(smallPrimeGroupMembers, encodedVotingOptions)) {
+		if (verifyVotingOptionsAlgorithm.verifyVotingOptions(electionEventContextPayload.getEncryptionGroup(), smallPrimeGroupMembers,
+				encodedVotingOptions)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),

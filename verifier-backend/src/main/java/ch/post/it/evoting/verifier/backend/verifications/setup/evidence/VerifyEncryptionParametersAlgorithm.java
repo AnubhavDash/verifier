@@ -34,7 +34,6 @@ import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
  * Implements the VerifyEncryptionParameters verification algorithm.
  */
 @Service
-@SuppressWarnings("java:S117")
 public class VerifyEncryptionParametersAlgorithm {
 
 	private final ElGamal elGamal;
@@ -50,18 +49,21 @@ public class VerifyEncryptionParametersAlgorithm {
 	 * @param q_hat q&#770;, the q to validate. Must be non-null and satisfy p&#770; = 2 * q&#770; + 1.
 	 * @param g_hat g&#770;, the g to validate. Must be non-null.
 	 * @param seed  the seed used to generate p&#770;, q&#770; and g&#770;.
-	 * @return {@code true} if the provided parameters match the re-computed ones, {@code false} otherwise.
+	 * @return true if the provided parameters match the re-computed ones, false otherwise.
 	 * @throws NullPointerException     if any parameter is null.
 	 * @throws IllegalArgumentException if p&#770; &#8800; 2 * q&#770; + 1.
 	 */
-	public boolean verifyEncryptionParameters(final BigInteger p_hat, final BigInteger q_hat, final GqElement g_hat, final String seed) {
+	@SuppressWarnings("java:S117")
+	boolean verifyEncryptionParameters(final BigInteger p_hat, final BigInteger q_hat, final GqElement g_hat, final String seed) {
+
+		// Context.
 		checkNotNull(p_hat);
 		checkNotNull(q_hat);
 		checkNotNull(g_hat);
 		validateSeed(seed);
 		checkArgument(p_hat.compareTo(q_hat.shiftLeft(1).add(BigInteger.ONE)) == 0, "p_hat must be equal to 2 * q_hat + 1.");
 
-		//Require
+		//Require.
 		checkState(SecurityLevelConfig.getSystemSecurityLevel() == SecurityLevelInternal.STANDARD,
 				"security level must be STANDARD (group modulus 3072 bits)");
 

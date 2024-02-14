@@ -84,7 +84,7 @@ public class VerifyTallyFilesInput {
 		private ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222;
 		private Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads;
 
-		public Builder cantonConfig(final Configuration cantonConfig) {
+		public Builder setCantonConfig(final Configuration cantonConfig) {
 			this.cantonConfig = cantonConfig;
 			return this;
 		}

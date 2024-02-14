@@ -15,7 +15,6 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
-import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.validateUUID;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -27,18 +26,14 @@ import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
  *
  * <ul>
  *     <li>(p, q, g), the encryption group. Not null.</li>
- *     <li>ee, the election event id. Not null and valid UUID.</li>
- *     <li>bb, a ballot box id. Not null and valid UUID.</li>
  *     <li>pTable, the primes mapping table. Not null.</li>
  * </ul>
  */
-public record VerifyProcessPlaintextsContext(GqGroup encryptionGroup, String electionEventId, String ballotBoxId,
+public record VerifyProcessPlaintextsContext(GqGroup encryptionGroup,
 											 PrimesMappingTable primesMappingTable) {
 
 	public VerifyProcessPlaintextsContext {
 		checkNotNull(encryptionGroup);
-		validateUUID(electionEventId);
-		validateUUID(ballotBoxId);
 		checkNotNull(primesMappingTable);
 
 		checkArgument(primesMappingTable.getEncryptionGroup().equals(encryptionGroup),

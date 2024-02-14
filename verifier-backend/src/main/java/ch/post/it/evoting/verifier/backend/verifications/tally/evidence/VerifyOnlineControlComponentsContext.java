@@ -31,7 +31,6 @@ import ch.post.it.evoting.evotinglibraries.domain.mixnet.SetupComponentPublicKey
  * Regroups the context values needed by the VerifyOnlineControlComponents algorithm.
  *
  * <ul>
- *     <li>ee, the election event id. Non-null and a valid UUID.</li>
  *     <li>vcs, the vector of verification card set id. Non-null and contains only valid UUIDs.</li>
  *     <li>bb, the vector of ballot box id. Non-null and contains only valid UUIDs.</li>
  *     <li>the Election Event Context. Non-null.</li>
@@ -40,7 +39,6 @@ import ch.post.it.evoting.evotinglibraries.domain.mixnet.SetupComponentPublicKey
  */
 public class VerifyOnlineControlComponentsContext {
 
-	private final String electionEventId;
 	private final List<String> verificationCardSetIds;
 	private final List<String> ballotBoxIds;
 	private final ElectionEventContext electionEventContext;
@@ -50,8 +48,7 @@ public class VerifyOnlineControlComponentsContext {
 			final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload) {
 		this.electionEventContext = checkNotNull(electionEventContextPayload).getElectionEventContext();
 		this.setupComponentPublicKeys = checkNotNull(setupComponentPublicKeysPayload).getSetupComponentPublicKeys();
-		// The ElectionEventContext constructor ensures that the electionEventID and the verification card set ids are valid UUIDs and unique.
-		this.electionEventId = electionEventContext.electionEventId();
+		// The ElectionEventContext constructor ensures that the verification card set ids are valid UUIDs and unique.
 		this.verificationCardSetIds = electionEventContext.verificationCardSetContexts().stream()
 				.map(VerificationCardSetContext::getVerificationCardSetId)
 				.toList();
@@ -63,10 +60,6 @@ public class VerifyOnlineControlComponentsContext {
 		// By definition verificationCardSetIds and ballotBoxIds have the same size.
 
 		checkArgument(electionEventContextPayload.getEncryptionGroup().equals(setupComponentPublicKeysPayload.getEncryptionGroup()));
-	}
-
-	public String getElectionEventId() {
-		return electionEventId;
 	}
 
 	public List<String> getVerificationCardSetIds() {

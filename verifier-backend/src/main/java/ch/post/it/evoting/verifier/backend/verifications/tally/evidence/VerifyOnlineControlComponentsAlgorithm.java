@@ -64,11 +64,11 @@ public class VerifyOnlineControlComponentsAlgorithm {
 		checkArgument(context.getEncryptionGroup().equals(input.getEncryptionGroup()), "The context and input must have the same encryption group.");
 
 		// Context.
-		final String ee = context.getElectionEventId();
 		final List<String> vcs = context.getVerificationCardSetIds();
 		final List<String> bb = context.getBallotBoxIds();
 		final ElectionEventContext electionEventContext = context.getElectionEventContext();
 		final SetupComponentPublicKeys setupComponentPublicKeys = context.getSetupComponentPublicKeys();
+		final String ee = electionEventContext.electionEventId();
 		final int N_bb = bb.size();
 
 		// Input.
@@ -81,7 +81,8 @@ public class VerifyOnlineControlComponentsAlgorithm {
 				"The Setup Component Tally Data must correspond to the correct verification card set id.");
 		checkArgument(firstControlComponentBallotBoxes.keySet().equals(new HashSet<>(bb)),
 				"The first control component ballot boxes and the control component shuffles must correspond to the correct ballot box ids.");
-		checkArgument(input.getElectionEventId().equals(ee), "The input must have the correct election event id.");
+		checkArgument(input.getElectionEventId().equals(ee),
+				"The input must have the correct election event id.");
 
 		// Operation.
 		return IntStream.range(0, N_bb)

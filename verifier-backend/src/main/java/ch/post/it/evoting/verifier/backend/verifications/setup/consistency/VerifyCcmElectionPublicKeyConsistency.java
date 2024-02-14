@@ -62,12 +62,14 @@ public class VerifyCcmElectionPublicKeyConsistency extends AbstractVerification 
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = extractionService.getSetupComponentPublicKeysPayload(inputDirectoryPath);
+		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = extractionService.getSetupComponentPublicKeysPayload(
+				inputDirectoryPath);
 		final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = extractionService.getControlComponentPublicKeysPayloads(
 				inputDirectoryPath);
 
 		final Map<Integer, ElGamalMultiRecipientPublicKey> electionEventContextPublicKeys = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
-				.combinedControlComponentPublicKeys().stream()
+				.combinedControlComponentPublicKeys()
+				.stream()
 				.collect(Collectors.toMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccmjElectionPublicKey));
 
 		final boolean sameCCMElectionPublicKeys = controlComponentPublicKeysPayloads.stream()

@@ -58,7 +58,7 @@ class VerifySmallPrimeGroupMembersTest extends SetupVerificationTest {
 
 	@Test
 	void executeTestNOK() {
-		doReturn(false).when(verifySmallPrimeGroupMembersAlgorithm).verifySmallPrimeGroupMembers(any());
+		doReturn(false).when(verifySmallPrimeGroupMembersAlgorithm).verifySmallPrimeGroupMembers(any(), any());
 
 		final VerificationResult result = verification.verify(datasetPath);
 

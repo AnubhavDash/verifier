@@ -38,7 +38,7 @@ import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetCo
  *     <li>ee, the election event id. Non-null and a valid UUID.</li>
  *     <li>vcs, the verification card set id. Non-null and a valid UUID.</li>
  *     <li>bb, the ballot box id. Non-null and a valid UUID.</li>
- *     <li>N_E, the number of eligible voters. Non-null.</li>
+ *     <li>N_E, the number of eligible voters. Strictly positive.</li>
  *     <li>pTable, the primes mapping table. Non-null.</li>
  *     <li>EL<sub>pk</sub>, the election public key. Non-null.</li>
  *     <li>(EL<sub>pk,1</sub>, EL<sub>pk,2</sub>, EL<sub>pk,3</sub>, EL<sub>pk,4</sub>), the CCM election public keys. Non-null.</li>
@@ -67,11 +67,12 @@ public class VerifyOnlineControlComponentsBallotBoxContext {
 		this.electionEventId = validateUUID(electionEventId);
 		this.verificationCardSetId = validateUUID(verificationCardSetId);
 		this.ballotBoxId = validateUUID(ballotBoxId);
-		final VerificationCardSetContext verificationCardSetContextForBallotBoxId = electionEventContext.verificationCardSetContexts().stream()
-				.filter(verificationCardSetContext -> verificationCardSetContext.getBallotBoxId().equals(ballotBoxId))
+		final VerificationCardSetContext verificationCardSetContext = electionEventContext.verificationCardSetContexts().stream()
+				.filter(vcsContext -> vcsContext.getBallotBoxId().equals(ballotBoxId))
 				.collect(MoreCollectors.onlyElement());
-		this.numberOfEligibleVoters = verificationCardSetContextForBallotBoxId.getNumberOfVotingCards();
-		this.primesMappingTable = verificationCardSetContextForBallotBoxId.getPrimesMappingTable();
+		// The constructor of VerificationCardSetContext ensures the number of voting cards is strictly positive.
+		this.numberOfEligibleVoters = verificationCardSetContext.getNumberOfVotingCards();
+		this.primesMappingTable = verificationCardSetContext.getPrimesMappingTable();
 		this.encryptionGroup = primesMappingTable.getEncryptionGroup();
 		this.electionPublicKey = setupComponentPublicKeys.electionPublicKey();
 		this.ccmElectionPublicKeys = setupComponentPublicKeys.combinedControlComponentPublicKeys().stream()
@@ -81,7 +82,7 @@ public class VerifyOnlineControlComponentsBallotBoxContext {
 		this.choiceReturnCodesEncryptionPublicKey = setupComponentPublicKeys.choiceReturnCodesEncryptionPublicKey();
 
 		checkArgument(electionEventId.equals(electionEventContext.electionEventId()));
-		checkArgument(verificationCardSetId.equals(verificationCardSetContextForBallotBoxId.getVerificationCardSetId()));
+		checkArgument(verificationCardSetId.equals(verificationCardSetContext.getVerificationCardSetId()));
 		checkArgument(this.encryptionGroup.equals(electionPublicKey.getGroup()));
 	}
 

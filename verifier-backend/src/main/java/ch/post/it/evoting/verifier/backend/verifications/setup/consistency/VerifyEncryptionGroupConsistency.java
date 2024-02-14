@@ -33,7 +33,7 @@ import ch.post.it.evoting.verifier.backend.tools.EncryptionGroupParametersExtrac
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 
-@Component("VerifySetupEncryptionGroupConsistency")
+@Component
 public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 
 	private final EncryptionGroupParametersExtractionService extractionService;
