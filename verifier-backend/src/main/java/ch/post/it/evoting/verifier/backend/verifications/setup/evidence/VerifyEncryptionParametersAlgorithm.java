@@ -52,6 +52,7 @@ public class VerifyEncryptionParametersAlgorithm {
 	 * @return true if the provided parameters match the re-computed ones, false otherwise.
 	 * @throws NullPointerException     if any parameter is null.
 	 * @throws IllegalArgumentException if p&#770; &#8800; 2 * q&#770; + 1.
+	 * @throws ch.post.it.evoting.evotinglibraries.domain.validations.FailedValidationException if the seed does not comply with the required pattern.
 	 */
 	@SuppressWarnings("java:S117")
 	boolean verifyEncryptionParameters(final BigInteger p_hat, final BigInteger q_hat, final GqElement g_hat, final String seed) {
@@ -68,10 +69,10 @@ public class VerifyEncryptionParametersAlgorithm {
 				"security level must be STANDARD (group modulus 3072 bits)");
 
 		// Operation.
-		final GqGroup gqGroup = elGamal.getEncryptionParameters(seed);
-		final BigInteger p = gqGroup.getP();
-		final BigInteger q = gqGroup.getQ();
-		final GqElement g = gqGroup.getGenerator();
+		final GqGroup p_q_g = elGamal.getEncryptionParameters(seed);
+		final BigInteger p = p_q_g.getP();
+		final BigInteger q = p_q_g.getQ();
+		final GqElement g = p_q_g.getGenerator();
 
 		return p.equals(p_hat) && q.equals(q_hat) && g.equals(g_hat);
 	}

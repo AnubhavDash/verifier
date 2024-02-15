@@ -54,15 +54,12 @@ public class VerifySmallPrimeGroupMembersAlgorithm {
 		// Cross-checks.
 		checkArgument(p_vector.size() == n_sup,
 				String.format("The list of small prime group members must contain n_sup elements. [n_sup: %d]", n_sup));
-		checkArgument(p_vector.stream()
-						.parallel()
-						.map(PrimeGqElement::getValue)
-						.allMatch(primeValue -> BigInteger.valueOf(3).compareTo(primeValue) < 0),
-				"The small prime group members must be strictly greater than 3.");
 		checkArgument(IntStream.range(1, n_sup)
 				.parallel()
 				.mapToObj(i -> p_vector.get(i - 1).getValue().compareTo(p_vector.get(i).getValue()) < 0)
 				.allMatch(Boolean::booleanValue), "The list of small prime group members must be sorted in ascending order");
+		checkArgument(p_vector.get(0).getValue().compareTo(BigInteger.valueOf(3)) > 0,
+				"The small prime group members must be strictly greater than 3.");
 
 		// Operation.
 		final GroupVector<PrimeGqElement, GqGroup> p_prime = PrimeGqElement.PrimeGqElementFactory.getSmallPrimeGroupMembers(p_q_g, n_sup);

@@ -44,16 +44,18 @@ public class VerifyVotingOptionsAlgorithm {
 	 *
 	 * @param encryptionGroup        (p, q, g), the encryption group.
 	 * @param smallPrimeGroupMembers <b>p</b>, a list of the n<sub>sup</sub> small prime group members strictly greater than 3.
-	 * @param encodedVotingOptions   <b>p</b>Tilde, a list of the voting options encoded as primes.
+	 * @param encodedVotingOptions   <b>p&#771;</b>, a list of the voting options encoded as primes.
 	 * @return {@code true} if the verification is successful, {@code false} otherwise
 	 * @throws NullPointerException     if any input is null.
 	 * @throws IllegalArgumentException if
 	 *                                  <ul>
+	 *                                      <li>The encoded voting options are not in strictly ascending order.</li>
+	 *                                      <li>At least one of the encoded voting options is smaller than or equal to 3.</li>
 	 *                                      <li>n<sub>sup</sub> or &psi;<sub>sup</sub> are not strictly positive.</li>
 	 *                                      <li>The small primes and encoded voting options do not have the same group.</li>
 	 *                                      <li>There are not n<sub>sup</sub> small primes.</li>
 	 *                                      <li>n<sub>sup</sub> is strictly smaller than &psi;<sub>sup</sub>.</li>
-	 *                                      <li>There are not n encoded voting options with <code> 0 < n < n<sub>sup</sub></code>.</li>
+	 *                                      <li>There are not n<sub>total</sub> encoded voting options with <code> 0 < n<sub>total</sub> < n<sub>sup</sub></code>.</li>
 	 *                                  </ul>
 	 */
 	@SuppressWarnings("java:S117")
@@ -78,6 +80,7 @@ public class VerifyVotingOptionsAlgorithm {
 		checkArgument(n_sup > 0, "The maximum supported number of voting options must be strictly positive. [n_sup: %s]", n_sup);
 		checkArgument(psi_sup > 0, "The maximum supported number of selections must be strictly positive. [psi_sup]", psi_sup);
 
+		// Input.
 		final GroupVector<PrimeGqElement, GqGroup> p_vector = smallPrimeGroupMembers;
 		final GroupVector<PrimeGqElement, GqGroup> p_tilde = encodedVotingOptions;
 		final int n_total = p_tilde.size();
