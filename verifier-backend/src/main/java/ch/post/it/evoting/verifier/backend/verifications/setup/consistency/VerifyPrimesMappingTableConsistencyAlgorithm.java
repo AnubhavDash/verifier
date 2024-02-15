@@ -23,6 +23,7 @@ import static ch.post.it.evoting.evotinglibraries.domain.election.SemanticInform
 import static ch.post.it.evoting.evotinglibraries.domain.election.SemanticInformationUtils.getCandidateInformation;
 import static ch.post.it.evoting.evotinglibraries.domain.election.SemanticInformationUtils.getListInformation;
 import static ch.post.it.evoting.evotinglibraries.domain.election.SemanticInformationUtils.getWriteInPositionInformation;
+import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.hasNoDuplicates;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.function.Predicate.not;
@@ -32,11 +33,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang3.function.TriFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -46,8 +47,10 @@ import com.google.common.collect.MoreCollectors;
 
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
+import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
 import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTableEntry;
+import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AnswerInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotQuestionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotQuestionType.BallotQuestionInfo;
@@ -69,25 +72,34 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 	private static final Logger LOGGER = LoggerFactory.getLogger(VerifyPrimesMappingTableConsistencyAlgorithm.class);
 
 	/**
-	 * Verifies that all PrimesMappingTables are consistent.
+	 * Verifies that all PrimesMappingTables of the given election event context are consistent.
 	 * <ul>
-	 *     <li>A PrimesMappingTable must not contain duplicate encoded voting options. This is ensured by {@link PrimesMappingTable#from(List)}.</li>
-	 *     <li>The same encoded voting option must have the same actual voting option in each table.</li>
+	 *     <li>A PrimesMappingTable must not contain duplicate encoded voting options.</li>
+	 *     <li>The same actual voting option must have the same encoded voting option in each table.</li>
 	 *     <li>The same actual voting option must have the same semantic information in each table.</li>
 	 *     <li>The same actual voting option must have the same correctness information in each table.</li>
 	 *     <li>The actual voting options, semantic information and correctness information in the pTable correspond to the configuration XML.</li>
 	 *     <li>The number of tuples in the pTable correspond to the configuration XML taking into account possible accumulation of candidates.</li>
 	 * </ul>
 	 *
-	 * @param primesMappingTables the list of PrimesMappingTables, one per verification card set. Must be non-null and not empty.
-	 * @param configuration       the configuration XML. Must be non-null.
-	 * @return {@code true} if the PrimesMappingTables are consistent, {@code false} otherwise}
+	 * @param electionEventContext the election event context, containing a list of PrimesMappingTables, one per verification card set. Must be non-null.
+	 * @param configuration        the configuration XML. Must be non-null.
+	 * @return {@code true} if the PrimesMappingTables are consistent, {@code false} otherwise
 	 */
-	public boolean verifyPrimesMappingTableConsistency(final List<PrimesMappingTable> primesMappingTables, final Configuration configuration) {
-		checkNotNull(primesMappingTables);
+	public boolean verifyPrimesMappingTableConsistency(final ElectionEventContext electionEventContext, final Configuration configuration) {
+		checkNotNull(electionEventContext);
+		checkNotNull(configuration);
+
+		final List<PrimesMappingTable> primesMappingTables = electionEventContext.verificationCardSetContexts().stream()
+				.map(VerificationCardSetContext::getPrimesMappingTable)
+				.toList();
 		checkArgument(!primesMappingTables.isEmpty());
 		primesMappingTables.stream().parallel().forEach(Preconditions::checkNotNull);
-		checkNotNull(configuration);
+
+		primesMappingTables.forEach(primesMappingTable -> checkArgument(hasNoDuplicates(primesMappingTable.getPTable().stream()
+						.map(PrimesMappingTableEntry::encodedVotingOption)
+						.collect(GroupVector.toGroupVector())),
+				"The primes mapping table entries contain duplicated encoded voting options."));
 
 		// Join the PrimesMappingTables of all verification card sets, deleting duplicates.
 		final Set<PrimesMappingTableEntry> primesMappingTableEntries = List.copyOf(primesMappingTables).stream()
@@ -103,7 +115,7 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 				.flatMap(Set::stream)
 				.collect(Collectors.toSet());
 
-		final List<TriFunction<Set<PrimesMappingTableEntry>, Configuration, Set<PartialPrimesMappingTableEntry>, Boolean>> consistencyVerifications = new ArrayList<>();
+		final List<BiFunction<Set<PrimesMappingTableEntry>, Set<PartialPrimesMappingTableEntry>, Boolean>> consistencyVerifications = new ArrayList<>();
 		consistencyVerifications.add(this::verifyCorrectMappingInAllVerificationCardSets);
 		consistencyVerifications.add(this::verifyInformationCorrespondsToConfiguration);
 		consistencyVerifications.add(this::verifyNumberOfTuplesCorrespondsToConfiguration);
@@ -111,23 +123,21 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 		return consistencyVerifications
 				.stream()
 				.parallel()
-				.map(f -> f.apply(primesMappingTableEntries, configuration, configurationPartialPrimesMappingTableEntries))
+				.map(f -> f.apply(primesMappingTableEntries, configurationPartialPrimesMappingTableEntries))
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 	}
 
 	/**
-	 * Verifies that the same encoded voting option has the same actual voting option, that the same actual voting option has the same semantic
+	 * Verifies that the same actual voting option has the same encoded voting option, that the same actual voting option has the same semantic
 	 * information and that the same actual voting option has the same correctness information in all PrimesMappingTables.
 	 *
-	 * @param configuration                                 ignored, needed for consistency in the signature of the verification methods.
 	 * @param configurationPartialPrimesMappingTableEntries ignored, needed for consistency in the signature of the verification methods.
 	 */
 	@SuppressWarnings("java:S1172")
 	private boolean verifyCorrectMappingInAllVerificationCardSets(final Set<PrimesMappingTableEntry> primesMappingTableEntries,
-			final Configuration configuration, final Set<PartialPrimesMappingTableEntry> configurationPartialPrimesMappingTableEntries) {
+			final Set<PartialPrimesMappingTableEntry> configurationPartialPrimesMappingTableEntries) {
 		final Set<PrimeGqElement> encodedVotingOptions = primesMappingTableEntries.stream()
-				.parallel()
 				.map(PrimesMappingTableEntry::encodedVotingOption)
 				.collect(Collectors.toSet());
 
@@ -143,11 +153,10 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 	 * Verifies that the actual voting options, semantic information and correctness information in the PrimesMappingTable correspond to the
 	 * configuration XML.
 	 *
-	 * @param configuration ignored, needed for consistency in the signature of the verification methods.
 	 */
 	@SuppressWarnings("java:S1172")
 	private boolean verifyInformationCorrespondsToConfiguration(final Set<PrimesMappingTableEntry> primesMappingTableEntries,
-			final Configuration configuration, final Set<PartialPrimesMappingTableEntry> configurationPartialPrimesMappingTableEntries) {
+			final Set<PartialPrimesMappingTableEntry> configurationPartialPrimesMappingTableEntries) {
 		final Set<PartialPrimesMappingTableEntry> partialPrimesMappingTableEntries = primesMappingTableEntries.stream()
 				.parallel()
 				.map(entry -> new PartialPrimesMappingTableEntry(entry.actualVotingOption(), entry.semanticInformation(),
@@ -165,7 +174,7 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 	 * Verifies that the number of tuples in the pTable corresponds to the configuration XML.
 	 */
 	private boolean verifyNumberOfTuplesCorrespondsToConfiguration(final Set<PrimesMappingTableEntry> primesMappingTableEntries,
-			final Configuration configuration, final Set<PartialPrimesMappingTableEntry> configurationPartialPrimesMappingTableEntries) {
+			final Set<PartialPrimesMappingTableEntry> configurationPartialPrimesMappingTableEntries) {
 		final int expectedPrimesMappingTableEntriesSize = configurationPartialPrimesMappingTableEntries.size();
 
 		final boolean numberOfTuplesCorrespondsToConfiguration = primesMappingTableEntries.size() == expectedPrimesMappingTableEntriesSize;
