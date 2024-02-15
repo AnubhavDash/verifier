@@ -35,25 +35,6 @@ We strive for excellent code quality to minimize the risk of bugs and vulnerabil
 | [SonarQube](https://www.sonarqube.org/) | Code quality and code security                                                                     |
 | [JFrog X-Ray](https://jfrog.com/xray/)  | Common vulnerabilities and exposures (CVE) analysis, Open-source software (OSS) license compliance | |
 
-### SonarQube Analysis
-
-We parametrize SonarQube with the built-in Sonar way quality profile. The SonarQube analysis of the verifier code reveals 0 bugs, 0 vulnerabilities, 0
-security hotspots, and 4 code smells.
-
-![SonarQube](SonarQube.jpg)
-
-The verifier contains 4 code smells in the code. [Code smells](https://docs.sonarqube.org/latest/user-guide/concepts/) are
-maintainability-related issues that might increase the likelihood of errors in future code changes but do not directly impact the code's security and
-robustness. An example would be a method that contains too many if/else statements, therefore has a high cognitive complexity, hence is difficult to
-maintain.
-
-### JFrog X-Ray Analysis
-
-The X-Ray analysis indicates that the published source code contains no directly dependent Java component with known vulnerabilities except
-for the vulnerability [CVE-2016-1000027](https://nvd.nist.gov/vuln/detail/CVE-2016-1000027) in the Spring framework.
-This particular vulnerability is [somewhat contested](https://github.com/spring-projects/spring-framework/issues/24434)
-and our internal analysis concluded that it cannot be exploited in the verifier of the Swiss Post Voting System.
-
 ## Changelog
 
 An overview of all major changes within the published releases is available [here](CHANGELOG.md).
@@ -73,6 +54,8 @@ The following table indicates the correspondence between the Verifier and E-voti
 | 1.4.1            | 1.3.1                                                                      |
 | 1.4.2            | 1.3.2                                                                      |
 | 1.4.3            | 1.3.3                                                                      |
+| 1.4.4            | 1.3.4                                                                      |
+| 1.5.0            | 1.4.0                                                                      |
 
 ## Build information
 
