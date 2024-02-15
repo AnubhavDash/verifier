@@ -51,7 +51,6 @@ public final class VerifyProcessPlaintextsAlgorithm {
 	 * @throws IllegalArgumentException if
 	 *                                  <ul>
 	 *                                      <li>the input group is not equal to the context group.</li>
-	 *                                      <li>the number of allowed write-ins + 1 is strictly greater than the number of elements in the decrypted votes.</li>
 	 *                                      <li>there are less than two plaintext votes.</li>
 	 *                                  </ul>
 	 */
