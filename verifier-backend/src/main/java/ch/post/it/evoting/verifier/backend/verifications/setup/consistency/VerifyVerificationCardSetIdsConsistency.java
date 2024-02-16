@@ -65,7 +65,7 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification309.description"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification310.description"));
 		definition.setId("03.10");
 		definition.setName("VerifyVerificationCardSetIdsConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
@@ -87,7 +87,7 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification309.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification310.nok.message"));
 		}
 	}
 

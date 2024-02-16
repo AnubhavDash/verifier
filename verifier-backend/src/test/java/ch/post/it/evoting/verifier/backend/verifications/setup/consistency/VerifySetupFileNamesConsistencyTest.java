@@ -67,7 +67,7 @@ class VerifySetupFileNamesConsistencyTest extends SetupVerificationTest {
 		final VerificationResult verificationResult = failingVerification.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification301.nok.message"));
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification302.nok.message"));
 		assertEquals(expectedResult, verificationResult);
 	}
 }

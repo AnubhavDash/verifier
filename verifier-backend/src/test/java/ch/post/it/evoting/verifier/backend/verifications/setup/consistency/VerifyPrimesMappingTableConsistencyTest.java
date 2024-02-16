@@ -88,7 +88,7 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 		final VerifyPrimesMappingTableConsistency verifyPrimesMappingTableConsistency = new VerifyPrimesMappingTableConsistency(extractionServiceMock,
 				consistencyAlgorithm, resultPublisherServiceMock);
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification307.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification308.nok.message"));
 		assertEquals(expectedResult, verifyPrimesMappingTableConsistency.verify(datasetPath));
 	}
 
@@ -107,7 +107,7 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 		final VerifyPrimesMappingTableConsistency verifyPrimesMappingTableConsistency = new VerifyPrimesMappingTableConsistency(extractionServiceMock,
 				consistencyAlgorithm, resultPublisherServiceMock);
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification307.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification308.nok.message"));
 		assertEquals(expectedResult, verifyPrimesMappingTableConsistency.verify(datasetPath));
 	}
 

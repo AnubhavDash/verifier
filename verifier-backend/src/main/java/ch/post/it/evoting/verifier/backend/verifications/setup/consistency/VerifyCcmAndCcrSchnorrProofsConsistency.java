@@ -57,7 +57,7 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification304.description"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification305.description"));
 		definition.setId("03.05");
 		definition.setName("VerifyCcmAndCcrSchnorrProofsConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
@@ -85,7 +85,7 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification304.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification305.nok.message"));
 		}
 	}
 

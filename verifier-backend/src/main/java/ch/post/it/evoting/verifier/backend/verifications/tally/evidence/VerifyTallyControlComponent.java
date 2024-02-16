@@ -61,7 +61,7 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 		final VerificationDefinition definition = new VerificationDefinition();
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.EVIDENCE);
-		definition.setDescription(getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification501.description"));
+		definition.setDescription(getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification1002.description"));
 		definition.setId("10.02");
 		definition.setName("VerifyTallyControlComponent");
 		definition.addVerifierEvent(TallyEvent.TYPE);
@@ -96,7 +96,7 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification501.nok.message"));
+					getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification1002.nok.message"));
 		}
 	}
 

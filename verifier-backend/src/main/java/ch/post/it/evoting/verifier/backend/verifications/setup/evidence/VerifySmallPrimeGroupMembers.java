@@ -53,7 +53,7 @@ public class VerifySmallPrimeGroupMembers extends AbstractVerification {
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
-				"setup.verification501.description"));
+				"setup.verification502.description"));
 		definition.setId("05.02");
 		definition.setName("VerifySmallPrimeGroupMembers");
 		definition.addVerifierEvent(SetupEvent.TYPE);
@@ -73,7 +73,7 @@ public class VerifySmallPrimeGroupMembers extends AbstractVerification {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification501.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification502.nok.message"));
 		}
 	}
 }

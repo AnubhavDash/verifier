@@ -97,7 +97,7 @@ class VerifyTallyControlComponentTest extends TallyVerificationTest {
 		final VerificationResult result = verificationWithMock.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),
-				getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification501.nok.message"));
+				getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification1002.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 
@@ -112,7 +112,7 @@ class VerifyTallyControlComponentTest extends TallyVerificationTest {
 		final VerificationResult result = verificationWithMock.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),
-				getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification501.nok.message"));
+				getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification1002.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 }

@@ -57,7 +57,7 @@ public class VerifySchnorrProofs extends AbstractVerification {
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
-				"setup.verification503.description"));
+				"setup.verification504.description"));
 		definition.setId("05.04");
 		definition.setName("VerifySchnorrProofs");
 		definition.addVerifierEvent(SetupEvent.TYPE);
@@ -84,7 +84,7 @@ public class VerifySchnorrProofs extends AbstractVerification {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification503.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification504.nok.message"));
 		}
 	}
 }

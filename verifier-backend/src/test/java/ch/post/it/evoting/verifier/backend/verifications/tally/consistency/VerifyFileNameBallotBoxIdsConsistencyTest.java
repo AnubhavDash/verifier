@@ -66,7 +66,7 @@ class VerifyFileNameBallotBoxIdsConsistencyTest extends TallyVerificationTest {
 		final VerificationResult result = verifyFileNameBallotBoxIdsConsistency.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification305.nok.message"));
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification806.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 

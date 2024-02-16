@@ -69,7 +69,7 @@ public class VerifySignatureTallyComponentEch0110 extends AbstractVerification {
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME,
 						"verification.direct.trust.authenticity.description", "TallyComponentEch0110"));
-		definition.setId("07.06");
+		definition.setId("07.07");
 		definition.setName("VerifySignatureTallyComponentEch0110");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;

@@ -37,11 +37,11 @@ import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 
 @Component
-public class VerifyCcrChoiceReturnCodesPublicKeyConsistency extends AbstractVerification {
+public class VerifyCCRChoiceReturnCodesPublicKeyConsistency extends AbstractVerification {
 
 	private final ElectionDataExtractionService extractionService;
 
-	protected VerifyCcrChoiceReturnCodesPublicKeyConsistency(final ElectionDataExtractionService extractionService,
+	protected VerifyCCRChoiceReturnCodesPublicKeyConsistency(final ElectionDataExtractionService extractionService,
 			final ResultPublisherService resultPublisherService) {
 		super(resultPublisherService);
 		this.extractionService = extractionService;
@@ -53,9 +53,9 @@ public class VerifyCcrChoiceReturnCodesPublicKeyConsistency extends AbstractVeri
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification302.description"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification303.description"));
 		definition.setId("03.03");
-		definition.setName("VerifyCCrChoiceReturnCodesPublicKeyConsistency");
+		definition.setName("VerifyCCRChoiceReturnCodesPublicKeyConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
 	}
@@ -83,7 +83,7 @@ public class VerifyCcrChoiceReturnCodesPublicKeyConsistency extends AbstractVeri
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification302.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification303.nok.message"));
 		}
 	}
 }

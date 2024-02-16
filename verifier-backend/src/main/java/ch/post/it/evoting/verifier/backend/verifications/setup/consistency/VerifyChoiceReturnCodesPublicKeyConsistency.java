@@ -56,7 +56,7 @@ public class VerifyChoiceReturnCodesPublicKeyConsistency extends AbstractVerific
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification305.description"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification306.description"));
 		definition.setId("03.06");
 		definition.setName("VerifyChoiceReturnCodesPublicKeyConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
@@ -80,7 +80,7 @@ public class VerifyChoiceReturnCodesPublicKeyConsistency extends AbstractVerific
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification305.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification306.nok.message"));
 		}
 	}
 }

@@ -74,7 +74,7 @@ class VerifyVerificationCardSetIdsConsistencyTest extends SetupVerificationTest 
 		final VerificationResult result = verifyVerificationCardSetIdsConsistency.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification309.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification310.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 }

@@ -57,7 +57,7 @@ public class VerifyTallyCompleteness extends AbstractVerification {
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.COMPLETENESS);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "verification100.description"));
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "verification101.description"));
 		definition.setId("06.01");
 		definition.setName("VerifyTallyCompleteness");
 		definition.addVerifierEvent(PreTallyEvent.TYPE);
@@ -71,7 +71,7 @@ public class VerifyTallyCompleteness extends AbstractVerification {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "verification100.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "verification101.nok.message"));
 		}
 	}
 

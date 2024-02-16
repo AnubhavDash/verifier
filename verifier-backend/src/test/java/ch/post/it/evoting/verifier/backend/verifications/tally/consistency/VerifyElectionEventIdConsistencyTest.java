@@ -68,7 +68,7 @@ class VerifyElectionEventIdConsistencyTest extends TallyVerificationTest {
 		final VerificationResult result = verifyElectionEventIdConsistency$.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification307.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification808.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 

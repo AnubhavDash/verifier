@@ -59,7 +59,7 @@ public class VerifyEncryptionParameters extends AbstractVerification {
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification500.description"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification501.description"));
 		definition.setId("05.01");
 		definition.setName("VerifyEncryptionParameters");
 		definition.addVerifierEvent(SetupEvent.TYPE);
@@ -81,7 +81,7 @@ public class VerifyEncryptionParameters extends AbstractVerification {
 		final VerificationResult verificationResult;
 		if (!verifyEncryptionParametersAlgorithm.verifyEncryptionParameters(p_hat, q_hat, g_hat, seed)) {
 			verificationResult = VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification500.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification501.nok.message"));
 		} else {
 			verificationResult = VerificationResult.success(getVerificationDefinition());
 			LOGGER.info("Successfully verified the encryption parameters p, q, g. [p: {}, q: {}, g: {}]", p_hat, q_hat, g_hat);

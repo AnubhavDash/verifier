@@ -120,7 +120,7 @@ class VerifyEncryptionGroupConsistencyTest extends SetupVerificationTest {
 		final VerificationResult verificationResult = invalidVerification.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(invalidVerification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification300.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification301.nok.message"));
 		assertEquals(expectedResult, verificationResult);
 	}
 }

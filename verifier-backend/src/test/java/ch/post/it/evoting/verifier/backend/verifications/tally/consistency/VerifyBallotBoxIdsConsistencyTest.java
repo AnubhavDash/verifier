@@ -65,7 +65,7 @@ class VerifyBallotBoxIdsConsistencyTest extends TallyVerificationTest {
 		final VerificationResult result = verifyVerificationCardSetIdsConsistency.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification304.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification805.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 }

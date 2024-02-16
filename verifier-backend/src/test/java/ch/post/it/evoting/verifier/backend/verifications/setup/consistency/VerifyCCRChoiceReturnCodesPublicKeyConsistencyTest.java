@@ -33,11 +33,11 @@ import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 
-class VerifyCcmElectionPublicKeyConsistencyTest extends SetupVerificationTest {
+class VerifyCCRChoiceReturnCodesPublicKeyConsistencyTest extends SetupVerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyCcmElectionPublicKeyConsistency(electionDataExtractionService, resultPublisherServiceMock);
+		verification = new VerifyCCRChoiceReturnCodesPublicKeyConsistency(electionDataExtractionService, resultPublisherServiceMock);
 	}
 
 	@Test
@@ -50,16 +50,17 @@ class VerifyCcmElectionPublicKeyConsistencyTest extends SetupVerificationTest {
 	}
 
 	@Test
-	@DisplayName("inconsistent EL_pk_j fails.")
-	void inconsistentCcmElectionPublicKeys() {
+	@DisplayName("inconsistent pk_CCR_j fails.")
+	void inconsistentCcrChoiceReturnCodesPublicKeys() {
 		final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = electionDataExtractionService.getControlComponentPublicKeysPayloads(
 				datasetPath);
 		final ControlComponentPublicKeysPayload controlComponentPublicKeysPayload3 = controlComponentPublicKeysPayloads.get(3);
 		final ControlComponentPublicKeys controlComponentPublicKeys = controlComponentPublicKeysPayload3.getControlComponentPublicKeys();
 
 		final ControlComponentPublicKeys modifiedControlComponentPublicKeys = spy(controlComponentPublicKeys);
-		doReturn(controlComponentPublicKeys.ccrjChoiceReturnCodesEncryptionPublicKey())
-				.when(modifiedControlComponentPublicKeys).ccmjElectionPublicKey();
+		doReturn(controlComponentPublicKeys.ccmjElectionPublicKey())
+				.when(modifiedControlComponentPublicKeys).ccrjChoiceReturnCodesEncryptionPublicKey();
+
 		final ControlComponentPublicKeysPayload modifiedControlComponentPublicKeysPayload3 = new ControlComponentPublicKeysPayload(
 				controlComponentPublicKeysPayload3.getEncryptionGroup(),
 				controlComponentPublicKeysPayload3.getElectionEventId(),
@@ -70,7 +71,7 @@ class VerifyCcmElectionPublicKeyConsistencyTest extends SetupVerificationTest {
 				controlComponentPublicKeysPayloads.get(2), modifiedControlComponentPublicKeysPayload3))
 				.when(extractionServiceMock).getControlComponentPublicKeysPayloads(datasetPath);
 
-		final VerifyCcmElectionPublicKeyConsistency verificationWithMock = new VerifyCcmElectionPublicKeyConsistency(
+		final VerifyCCRChoiceReturnCodesPublicKeyConsistency verificationWithMock = new VerifyCCRChoiceReturnCodesPublicKeyConsistency(
 				extractionServiceMock, resultPublisherServiceMock);
 
 		final VerificationResult result = verificationWithMock.verify(datasetPath);

@@ -67,7 +67,7 @@ class VerifySchnorrProofsTest extends SetupVerificationTest {
 		final VerificationResult result = verification.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification503.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification504.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 }

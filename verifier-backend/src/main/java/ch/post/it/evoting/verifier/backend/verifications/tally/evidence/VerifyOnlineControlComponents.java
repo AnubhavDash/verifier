@@ -56,7 +56,7 @@ public class VerifyOnlineControlComponents extends AbstractVerification {
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME,
-				"tally.verification500.description"));
+				"tally.verification1001.description"));
 		definition.setId("10.01");
 		definition.setName("VerifyOnlineControlComponents");
 		definition.addVerifierEvent(TallyEvent.TYPE);
@@ -86,7 +86,7 @@ public class VerifyOnlineControlComponents extends AbstractVerification {
 			verificationResult = VerificationResult.success(getVerificationDefinition());
 		} else {
 			verificationResult = VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification500.nok.message"));
+					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification1001.nok.message"));
 		}
 
 		return verificationResult;

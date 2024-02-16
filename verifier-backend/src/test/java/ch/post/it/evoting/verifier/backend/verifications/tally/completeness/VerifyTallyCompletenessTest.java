@@ -59,7 +59,7 @@ class VerifyTallyCompletenessTest extends TallyVerificationTest {
 		final VerifyTallyCompleteness verificationWithSpy = new VerifyTallyCompleteness(spyPathService, resultPublisherServiceMock);
 		final VerificationResult result = verificationWithSpy.verify(datasetPath);
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithSpy.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "verification100.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "verification101.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 
@@ -72,7 +72,7 @@ class VerifyTallyCompletenessTest extends TallyVerificationTest {
 		final VerifyTallyCompleteness verificationWithSpy = new VerifyTallyCompleteness(spyPathService, resultPublisherServiceMock);
 		final VerificationResult result = verificationWithSpy.verify(datasetPath);
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithSpy.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "verification100.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "verification101.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 }

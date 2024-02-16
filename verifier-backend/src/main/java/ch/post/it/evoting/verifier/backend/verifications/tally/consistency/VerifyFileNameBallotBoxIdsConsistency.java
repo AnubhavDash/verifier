@@ -61,7 +61,7 @@ public class VerifyFileNameBallotBoxIdsConsistency extends AbstractVerification 
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification305.description"));
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification806.description"));
 		definition.setId("08.06");
 		definition.setName("VerifyFileNameBallotBoxIdsConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
@@ -93,7 +93,7 @@ public class VerifyFileNameBallotBoxIdsConsistency extends AbstractVerification 
 			verificationResult = VerificationResult.success(getVerificationDefinition());
 		} else {
 			verificationResult = VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification305.nok.message"));
+					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification806.nok.message"));
 		}
 
 		return verificationResult;

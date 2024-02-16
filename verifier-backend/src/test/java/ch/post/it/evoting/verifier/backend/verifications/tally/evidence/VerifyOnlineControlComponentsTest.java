@@ -109,7 +109,7 @@ class VerifyOnlineControlComponentsTest extends TallyVerificationTest {
 		final VerificationResult result = verification.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification500.nok.message"));
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification1001.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 

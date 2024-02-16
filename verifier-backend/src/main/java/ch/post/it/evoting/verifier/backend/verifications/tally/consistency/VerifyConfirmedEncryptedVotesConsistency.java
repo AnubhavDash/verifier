@@ -52,7 +52,7 @@ public class VerifyConfirmedEncryptedVotesConsistency extends AbstractVerificati
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME,
-				"tally.verification300.description"));
+				"tally.verification801.description"));
 		definition.setId("08.01");
 		definition.setName("VerifyConfirmedEncryptedVotesConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
@@ -73,7 +73,7 @@ public class VerifyConfirmedEncryptedVotesConsistency extends AbstractVerificati
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification300.nok.message"));
+					getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification801.nok.message"));
 		}
 	}
 

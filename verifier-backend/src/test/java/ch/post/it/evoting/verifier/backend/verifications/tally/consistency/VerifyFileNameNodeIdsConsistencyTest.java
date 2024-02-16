@@ -64,7 +64,7 @@ class VerifyFileNameNodeIdsConsistencyTest extends TallyVerificationTest {
 		final VerificationResult verificationResult = failingVerification.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification309.nok.message"));
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification810.nok.message"));
 		assertEquals(expectedResult, verificationResult);
 	}
 
@@ -85,7 +85,7 @@ class VerifyFileNameNodeIdsConsistencyTest extends TallyVerificationTest {
 		final VerificationResult verificationResult = failingVerification.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification309.nok.message"));
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification810.nok.message"));
 		assertEquals(expectedResult, verificationResult);
 	}
 }

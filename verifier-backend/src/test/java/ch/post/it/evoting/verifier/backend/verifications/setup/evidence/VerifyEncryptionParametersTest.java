@@ -72,7 +72,7 @@ class VerifyEncryptionParametersTest extends SetupVerificationTest {
 		final VerificationResult result = verification.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification500.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification501.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 }

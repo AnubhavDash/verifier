@@ -61,7 +61,7 @@ public class VerifyVotingOptions extends AbstractVerification {
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
-				"setup.verification502.description"));
+				"setup.verification503.description"));
 		definition.setId("05.03");
 		definition.setName("VerifyVotingOptions");
 		definition.addVerifierEvent(SetupEvent.TYPE);
@@ -83,7 +83,7 @@ public class VerifyVotingOptions extends AbstractVerification {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification502.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification503.nok.message"));
 		}
 	}
 

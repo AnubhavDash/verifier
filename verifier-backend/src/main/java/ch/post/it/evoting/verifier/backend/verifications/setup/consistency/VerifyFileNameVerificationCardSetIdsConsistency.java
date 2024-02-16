@@ -61,7 +61,7 @@ public class VerifyFileNameVerificationCardSetIdsConsistency extends AbstractVer
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification310.description"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification311.description"));
 		definition.setId("03.11");
 		definition.setName("VerifyFileNameVerificationCardSetIdsConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
@@ -93,7 +93,7 @@ public class VerifyFileNameVerificationCardSetIdsConsistency extends AbstractVer
 			verificationResult = VerificationResult.success(getVerificationDefinition());
 		} else {
 			verificationResult = VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification310.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification311.nok.message"));
 		}
 
 		return verificationResult;

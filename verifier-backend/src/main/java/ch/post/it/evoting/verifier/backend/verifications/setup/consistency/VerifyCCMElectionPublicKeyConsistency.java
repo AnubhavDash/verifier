@@ -37,11 +37,11 @@ import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 
 @Component
-public class VerifyCcmElectionPublicKeyConsistency extends AbstractVerification {
+public class VerifyCCMElectionPublicKeyConsistency extends AbstractVerification {
 
 	private final ElectionDataExtractionService extractionService;
 
-	protected VerifyCcmElectionPublicKeyConsistency(final ElectionDataExtractionService extractionService,
+	protected VerifyCCMElectionPublicKeyConsistency(final ElectionDataExtractionService extractionService,
 			final ResultPublisherService resultPublisherService) {
 		super(resultPublisherService);
 		this.extractionService = extractionService;
@@ -53,9 +53,9 @@ public class VerifyCcmElectionPublicKeyConsistency extends AbstractVerification 
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification303.description"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification304.description"));
 		definition.setId("03.04");
-		definition.setName("VerifyCCmElectionPublicKeyConsistency");
+		definition.setName("VerifyCCMElectionPublicKeyConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
 	}
@@ -84,7 +84,7 @@ public class VerifyCcmElectionPublicKeyConsistency extends AbstractVerification 
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification303.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification304.nok.message"));
 		}
 	}
 }

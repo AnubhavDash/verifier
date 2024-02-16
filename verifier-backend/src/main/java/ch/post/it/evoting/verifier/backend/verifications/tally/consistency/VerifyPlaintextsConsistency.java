@@ -53,7 +53,7 @@ public class VerifyPlaintextsConsistency extends AbstractVerification {
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME,
-				"tally.verification302.description"));
+				"tally.verification803.description"));
 		definition.setId("08.03");
 		definition.setName("VerifyPlaintextsConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
@@ -78,7 +78,7 @@ public class VerifyPlaintextsConsistency extends AbstractVerification {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification302.nok.message"));
+					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification803.nok.message"));
 		}
 	}
 
