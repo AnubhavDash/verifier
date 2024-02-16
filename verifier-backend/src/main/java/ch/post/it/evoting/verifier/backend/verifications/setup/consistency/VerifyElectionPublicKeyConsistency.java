@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,12 +22,12 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Streams;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.ControlComponentPublicKeys;
-import ch.post.it.evoting.cryptoprimitives.domain.election.SetupComponentPublicKeys;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
+import ch.post.it.evoting.evotinglibraries.domain.election.ControlComponentPublicKeys;
+import ch.post.it.evoting.evotinglibraries.domain.election.SetupComponentPublicKeys;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -59,7 +59,7 @@ public class VerifyElectionPublicKeyConsistency extends AbstractVerification {
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification306.description"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification307.description"));
 		definition.setId("03.07");
 		definition.setName("VerifyElectionPublicKeyConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
@@ -68,8 +68,6 @@ public class VerifyElectionPublicKeyConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final int maxNumberOfWriteInFields = extractionService.getElectionEventContextPayload(inputDirectoryPath).getElectionEventContext()
-				.getMaxNumberOfWriteInFields();
 		final SetupComponentPublicKeys setupComponentPublicKeys = extractionService.getSetupComponentPublicKeysPayload(inputDirectoryPath)
 				.getSetupComponentPublicKeys();
 
@@ -77,10 +75,7 @@ public class VerifyElectionPublicKeyConsistency extends AbstractVerification {
 						Stream.of(setupComponentPublicKeys.electoralBoardPublicKey()),
 						setupComponentPublicKeys.combinedControlComponentPublicKeys()
 								.stream()
-								.map(ControlComponentPublicKeys::ccmjElectionPublicKey)
-								.map(ccmElectionPublicKey -> new ElGamalMultiRecipientPublicKey(
-										GroupVector.from(
-												ccmElectionPublicKey.getKeyElements().subList(0, maxNumberOfWriteInFields + 1)))))
+								.map(ControlComponentPublicKeys::ccmjElectionPublicKey))
 				.collect(GroupVector.toGroupVector());
 
 		final ElGamalMultiRecipientPublicKey combinedPublicKeys = elGamal.combinePublicKeys(publicKeys);
@@ -89,7 +84,7 @@ public class VerifyElectionPublicKeyConsistency extends AbstractVerification {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification306.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification307.nok.message"));
 		}
 	}
 }

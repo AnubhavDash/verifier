@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,45 +26,31 @@ import java.math.BigInteger;
 import java.util.Collections;
 import java.util.Comparator;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.google.common.base.Throwables;
 
-import ch.post.it.evoting.cryptoprimitives.domain.VotingOptionsConstants;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupElement;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
+import ch.post.it.evoting.evotinglibraries.domain.VotingOptionsConstants;
 
-import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
-import uk.org.webcompere.systemstubs.jupiter.SystemStub;
-import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
-
-@ExtendWith(SystemStubsExtension.class)
 @DisplayName("VerifyVotingOptionsAlgorithm calling verifyVotingOptions with")
 class VerifyVotingOptionsAlgorithmTest {
 
-	@SystemStub
-	private static EnvironmentVariables environmentVariables;
-
-	private final int omega = VotingOptionsConstants.MAXIMUM_NUMBER_OF_VOTING_OPTIONS;
+	private final int n_sup = VotingOptionsConstants.MAXIMUM_SUPPORTED_NUMBER_OF_VOTING_OPTIONS;
 	private final VerifyVotingOptionsAlgorithm verifyVotingOptionsAlgorithm = new VerifyVotingOptionsAlgorithm();
 
+	private GqGroup gqGroup;
 	private GroupVector<PrimeGqElement, GqGroup> primes;
 	private GroupVector<PrimeGqElement, GqGroup> encodedVotingOptions;
 
-	@BeforeAll
-	static void setupAll() {
-		environmentVariables.set("SECURITY_LEVEL", "TESTING_ONLY");
-	}
-
 	@BeforeEach
 	void setup() {
-		final GqGroup gqGroup = new GqGroup(BigInteger.valueOf(59), BigInteger.valueOf(29), BigInteger.valueOf(3));
+		gqGroup = new GqGroup(BigInteger.valueOf(59), BigInteger.valueOf(29), BigInteger.valueOf(3));
 
 		final GroupVector<PrimeGqElement, GqGroup> testPrimes = PrimeGqElementFactory.getSmallPrimeGroupMembers(gqGroup, 3);
 		primes = spy(testPrimes);
@@ -76,8 +62,9 @@ class VerifyVotingOptionsAlgorithmTest {
 	@Test
 	@DisplayName("any null argument throws NullPointerException")
 	void nullArgumentsThrows() {
-		assertThrows(NullPointerException.class, () -> verifyVotingOptionsAlgorithm.verifyVotingOptions(null, encodedVotingOptions));
-		assertThrows(NullPointerException.class, () -> verifyVotingOptionsAlgorithm.verifyVotingOptions(primes, null));
+		assertThrows(NullPointerException.class, () -> verifyVotingOptionsAlgorithm.verifyVotingOptions(null, primes, encodedVotingOptions));
+		assertThrows(NullPointerException.class, () -> verifyVotingOptionsAlgorithm.verifyVotingOptions(gqGroup, null, encodedVotingOptions));
+		assertThrows(NullPointerException.class, () -> verifyVotingOptionsAlgorithm.verifyVotingOptions(gqGroup, primes, null));
 	}
 
 	@Test
@@ -88,7 +75,7 @@ class VerifyVotingOptionsAlgorithmTest {
 				.collect(GroupVector.toGroupVector());
 
 		final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-				() -> verifyVotingOptionsAlgorithm.verifyVotingOptions(primes, reversedEncodedVotingOptions));
+				() -> verifyVotingOptionsAlgorithm.verifyVotingOptions(gqGroup, primes, reversedEncodedVotingOptions));
 		assertEquals("The encoded voting options must be in strict ascending order.", Throwables.getRootCause(exception).getMessage());
 	}
 
@@ -99,7 +86,7 @@ class VerifyVotingOptionsAlgorithmTest {
 				encodedVotingOptions.get(encodedVotingOptions.size() - 1));
 
 		final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-				() -> verifyVotingOptionsAlgorithm.verifyVotingOptions(primes, duplicateEncodedVotingOptions));
+				() -> verifyVotingOptionsAlgorithm.verifyVotingOptions(gqGroup, primes, duplicateEncodedVotingOptions));
 		assertEquals("The encoded voting options must be in strict ascending order.", Throwables.getRootCause(exception).getMessage());
 	}
 
@@ -114,7 +101,7 @@ class VerifyVotingOptionsAlgorithmTest {
 				PrimeGqElementFactory.fromValue(3, otherGqGroup));
 
 		final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-				() -> verifyVotingOptionsAlgorithm.verifyVotingOptions(otherSmallPrimeGroupMembers, otherEncodedVotingOptions));
+				() -> verifyVotingOptionsAlgorithm.verifyVotingOptions(gqGroup, otherSmallPrimeGroupMembers, otherEncodedVotingOptions));
 		assertEquals("The encoded voting options must be strictly greater than 3.", Throwables.getRootCause(exception).getMessage());
 	}
 
@@ -125,25 +112,25 @@ class VerifyVotingOptionsAlgorithmTest {
 		final GroupVector<PrimeGqElement, GqGroup> otherSmallPrimeGroupMembers = PrimeGqElementFactory.getSmallPrimeGroupMembers(otherGqGroup, 1);
 
 		final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-				() -> verifyVotingOptionsAlgorithm.verifyVotingOptions(otherSmallPrimeGroupMembers, encodedVotingOptions));
+				() -> verifyVotingOptionsAlgorithm.verifyVotingOptions(gqGroup, otherSmallPrimeGroupMembers, encodedVotingOptions));
 		assertEquals("The small primes and encoded voting options must have the same group.", Throwables.getRootCause(exception).getMessage());
 	}
 
 	@Test
-	@DisplayName("list of primes of different size than omega throws IllegalArgumentException")
-	void listOfPrimesSizeDifferentOmegaThrows() {
-		when(primes.size()).thenReturn(omega - 1);
+	@DisplayName("list of primes of different size than n_sup throws IllegalArgumentException")
+	void listOfPrimesSizeDifferentNSupThrows() {
+		when(primes.size()).thenReturn(n_sup - 1);
 
 		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-				() -> verifyVotingOptionsAlgorithm.verifyVotingOptions(primes, encodedVotingOptions));
-		assertEquals(String.format("The list of small prime group members must be of size omega. [omega: %s, size: %s]", omega, omega - 1),
+				() -> verifyVotingOptionsAlgorithm.verifyVotingOptions(gqGroup, primes, encodedVotingOptions));
+		assertEquals(String.format("The list of small prime group members must be of size n_sup. [n_sup: %s, size: %s]", n_sup, n_sup - 1),
 				Throwables.getRootCause(exception).getMessage());
 
-		when(primes.size()).thenReturn(omega + 1);
+		when(primes.size()).thenReturn(n_sup + 1);
 
 		exception = assertThrows(IllegalArgumentException.class,
-				() -> verifyVotingOptionsAlgorithm.verifyVotingOptions(primes, encodedVotingOptions));
-		assertEquals(String.format("The list of small prime group members must be of size omega. [omega: %s, size: %s]", omega, omega + 1),
+				() -> verifyVotingOptionsAlgorithm.verifyVotingOptions(gqGroup, primes, encodedVotingOptions));
+		assertEquals(String.format("The list of small prime group members must be of size n_sup. [n_sup: %s, size: %s]", n_sup, n_sup + 1),
 				Throwables.getRootCause(exception).getMessage());
 	}
 
@@ -151,32 +138,32 @@ class VerifyVotingOptionsAlgorithmTest {
 	@DisplayName("encoded options of size zero throws IllegalArgumentException")
 	void encodedVotingOfOptionsSizeZeroThrows() {
 		when(encodedVotingOptions.size()).thenReturn(0);
-		when(primes.size()).thenReturn(omega);
+		when(primes.size()).thenReturn(n_sup);
 
 		final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-				() -> verifyVotingOptionsAlgorithm.verifyVotingOptions(primes, encodedVotingOptions));
+				() -> verifyVotingOptionsAlgorithm.verifyVotingOptions(gqGroup, primes, encodedVotingOptions));
 		assertEquals("The number of encoded voting options must be strictly greater than 0.", Throwables.getRootCause(exception).getMessage());
 	}
 
 	@Test
-	@DisplayName("encoded voting options of size greater omega throws IllegalArgumentException")
-	void encodedVotingOptionsOfSizeGreaterOmegaThrows() {
+	@DisplayName("encoded voting options of size greater n_sup throws IllegalArgumentException")
+	void encodedVotingOptionsOfSizeGreaterNSupThrows() {
 		final int originalSize = encodedVotingOptions.size();
-		when(encodedVotingOptions.size()).thenReturn(originalSize, omega + 1);
-		when(primes.size()).thenReturn(omega);
+		when(encodedVotingOptions.size()).thenReturn(originalSize, n_sup + 1);
+		when(primes.size()).thenReturn(n_sup);
 
 		final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-				() -> verifyVotingOptionsAlgorithm.verifyVotingOptions(primes, encodedVotingOptions));
-		assertEquals("The number of encoded voting options must not be greater than the maximum number of voting options.",
+				() -> verifyVotingOptionsAlgorithm.verifyVotingOptions(gqGroup, primes, encodedVotingOptions));
+		assertEquals("The number of encoded voting options must not be greater than the maximum supported number of voting options.",
 				Throwables.getRootCause(exception).getMessage());
 	}
 
 	@Test
 	@DisplayName("valid input returns true")
 	void validInput() {
-		when(primes.size()).thenReturn(omega);
+		when(primes.size()).thenReturn(n_sup);
 
-		assertTrue(verifyVotingOptionsAlgorithm.verifyVotingOptions(primes, encodedVotingOptions));
+		assertTrue(verifyVotingOptionsAlgorithm.verifyVotingOptions(gqGroup, primes, encodedVotingOptions));
 	}
 
 }

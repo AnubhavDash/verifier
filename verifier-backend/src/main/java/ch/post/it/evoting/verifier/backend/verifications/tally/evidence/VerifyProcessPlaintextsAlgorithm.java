@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,120 +22,72 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
-import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientMessage;
-import ch.post.it.evoting.cryptoprimitives.math.GqElement;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.FactorizeAlgorithm;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetActualVotingOptionsAlgorithm;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetEncodedVotingOptionsAlgorithm;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.DecodeWriteInsAlgorithm;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.DecodeWriteInsAlgorithmInput;
+import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.ProcessPlaintextsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.ProcessPlaintextsContext;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.ProcessPlaintextsOutput;
 
 @Service
 public final class VerifyProcessPlaintextsAlgorithm {
 
-	private final ElGamal elGamal;
-	private final GetEncodedVotingOptionsAlgorithm getEncodedVotingOptionsAlgorithm;
-	private final GetActualVotingOptionsAlgorithm getActualVotingOptionsAlgorithm;
-	private final DecodeWriteInsAlgorithm decodeWriteInsAlgorithm;
-	private final FactorizeAlgorithm factorizeAlgorithm;
+	private final ProcessPlaintextsAlgorithm processPlaintextsAlgorithm;
 
 	public VerifyProcessPlaintextsAlgorithm(
-			final ElGamal elGamal,
-			final GetEncodedVotingOptionsAlgorithm getEncodedVotingOptionsAlgorithm,
-			final GetActualVotingOptionsAlgorithm getActualVotingOptionsAlgorithm,
-			final DecodeWriteInsAlgorithm decodeWriteInsAlgorithm,
-			final FactorizeAlgorithm factorizeAlgorithm) {
-		this.elGamal = elGamal;
-		this.getEncodedVotingOptionsAlgorithm = getEncodedVotingOptionsAlgorithm;
-		this.getActualVotingOptionsAlgorithm = getActualVotingOptionsAlgorithm;
-		this.decodeWriteInsAlgorithm = decodeWriteInsAlgorithm;
-		this.factorizeAlgorithm = factorizeAlgorithm;
+			final ProcessPlaintextsAlgorithm processPlaintextsAlgorithm) {
+		this.processPlaintextsAlgorithm = processPlaintextsAlgorithm;
 	}
 
 	/**
 	 * Verifies that all plaintext votes have been processed correctly.
 	 *
-	 * @param encryptionGroup the encryption group. Must be non-null.
-	 * @param input           the input as a {@link VerifyProcessPlaintextsInput}. Must be non-null.
+	 * @param context the context as a {@link VerifyProcessPlaintextsContext}. Must be non-null.
+	 * @param input   the input as a {@link VerifyProcessPlaintextsInput}. Must be non-null.
 	 * @return true if L_votes, L_decodedVotes and L_writeIns were generated correctly, false otherwise.
 	 * @throws NullPointerException     if any parameter is null.
 	 * @throws IllegalArgumentException if
 	 *                                  <ul>
 	 *                                      <li>the input group is not equal to the context group.</li>
-	 *                                      <li>the number of allowed write-ins + 1 is strictly greater than the number of elements in the decrypted votes.</li>
 	 *                                      <li>there are less than two plaintext votes.</li>
 	 *                                  </ul>
 	 */
 	@SuppressWarnings("java:S117")
-	public boolean verifyProcessPlaintexts(final GqGroup encryptionGroup, final VerifyProcessPlaintextsInput input) {
-		checkNotNull(encryptionGroup);
+	public boolean verifyProcessPlaintexts(final VerifyProcessPlaintextsContext context, final VerifyProcessPlaintextsInput input) {
+		checkNotNull(context);
 		checkNotNull(input);
-		checkArgument(input.getPlaintextVotes().getGroup().equals(encryptionGroup), "The context and input must have the same group.");
+
+		// Cross-group check.
+		checkArgument(input.getPlaintextVotes().getGroup().equals(context.encryptionGroup()), "The context and input must have the same group.");
+
+		// Context.
+		final GqGroup p_q_g = context.encryptionGroup();
+		final PrimesMappingTable pTable = context.primesMappingTable();
 
 		// Input.
-		final PrimesMappingTable pTable = input.getPrimesMappingTable();
 		final GroupVector<ElGamalMultiRecipientMessage, GqGroup> m = input.getPlaintextVotes();
-		final GroupVector<PrimeGqElement, GqGroup> p_w_tilde = input.getWriteInVotingOptions();
-		final int psi = input.getNumberOfSelectableVotingOptions();
-		final int delta_hat = input.getNumberOfAllowedWriteInsPlusOne();
 		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> L_votes = input.getSelectedEncodedVotingOptions();
 		final List<List<String>> L_decodedVotes = input.getSelectedDecodedVotingOptions();
 		final List<List<String>> L_writeIns = input.getSelectedDecodedWriteInVotes();
 
-		// Requires.
-		final int l = m.getElementSize();
-		checkArgument(delta_hat == l,
-				"The number of allowed write-ins + 1 must be equal to the number of elements in the decrypted votes. [delta_hat: %s, l: %s]",
-				delta_hat, l);
+		// Require.
 		final int N_C_hat = m.size();
 		checkArgument(N_C_hat >= 2, "There must be at least two plaintext votes.");
 		final int N_C = L_votes.size();
 		checkArgument(N_C >= 2 ? N_C_hat == N_C : N_C_hat == N_C + 2);
 
 		// Operation.
-		final ElGamalMultiRecipientMessage one_vector = elGamal.ones(encryptionGroup, delta_hat);
+		final ProcessPlaintextsContext processPlaintextsContext = new ProcessPlaintextsContext(p_q_g, pTable);
+		final ProcessPlaintextsOutput L_votes_prime_L_decodedVotes_prime_L_writeIns_prime = processPlaintextsAlgorithm.processPlaintexts(
+				processPlaintextsContext, m);
 
-		record FactorizedDecodedVotes(GroupVector<PrimeGqElement, GqGroup> factorized, List<String> decoded, List<String> decodedWriteInVotes) {
-		}
+		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> L_votes_prime = L_votes_prime_L_decodedVotes_prime_L_writeIns_prime.getSelectedEncodedVotingOptions();
+		final List<List<String>> L_decodedVotes_prime = L_votes_prime_L_decodedVotes_prime_L_writeIns_prime.getSelectedDecodedVotingOptions();
+		final List<List<String>> L_writeIns_prime = L_votes_prime_L_decodedVotes_prime_L_writeIns_prime.getSelectedDecodedWriteInVotes();
 
-		// Equivalent stream to the for-loop.
-		final List<FactorizedDecodedVotes> factorizedDecodedVotes = m.stream()
-				.filter(m_i -> !m_i.equals(one_vector))
-				.map(m_i -> {
-					final GqElement phi_i_0 = m_i.get(0);
-					final GroupVector<PrimeGqElement, GqGroup> p_k_hat_prime = factorizeAlgorithm.factorize(phi_i_0,
-							getEncodedVotingOptionsAlgorithm.getEncodedVotingOptions(pTable, List.of()), psi);
-
-					final List<String> v_k_hat_prime = getActualVotingOptionsAlgorithm.getActualVotingOptions(pTable, p_k_hat_prime);
-
-					final GroupVector<GqElement, GqGroup> w_k_prime = m_i.getElements().subVector(1, l);
-
-					final List<String> s_k_hat_prime = decodeWriteInsAlgorithm.decodeWriteIns(new DecodeWriteInsAlgorithmInput.Builder()
-							.setWriteInVotingOptions(p_w_tilde)
-							.setSelectedEncodedVotingOptions(p_k_hat_prime)
-							.setEncodedWriteIns(w_k_prime)
-							.build());
-
-					return new FactorizedDecodedVotes(p_k_hat_prime, v_k_hat_prime, s_k_hat_prime);
-				})
-				.toList();
-
-		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> p_hat_prime = factorizedDecodedVotes.stream()
-				.map(FactorizedDecodedVotes::factorized)
-				.collect(GroupVector.toGroupVector());
-		final List<List<String>> v_hat_prime = factorizedDecodedVotes.stream()
-				.map(FactorizedDecodedVotes::decoded)
-				.toList();
-		final List<List<String>> s_hat_prime = factorizedDecodedVotes.stream()
-				.map(FactorizedDecodedVotes::decodedWriteInVotes)
-				.toList();
-
-		return p_hat_prime.equals(L_votes) && v_hat_prime.equals(L_decodedVotes) && s_hat_prime.equals(L_writeIns);
+		return L_votes_prime.equals(L_votes) && L_decodedVotes_prime.equals(L_decodedVotes) && L_writeIns_prime.equals(L_writeIns);
 	}
 
 }

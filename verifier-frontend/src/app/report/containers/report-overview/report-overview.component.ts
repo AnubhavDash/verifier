@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,6 +22,8 @@ import {VerifierEvent} from '../../models/verifier-event.enum';
 import {Component, OnInit} from '@angular/core';
 import * as html2pdf from 'html2pdf.js';
 import packageJson from '../../../../../package.json';
+import {DatasetType} from '../../models/dataset-type.enum';
+import {VerifierMode} from '../../models/verifier-mode.enum';
 
 
 @Component({
@@ -37,7 +39,10 @@ export class ReportOverviewComponent implements OnInit {
   totalNumberOfTallyVerifications = 0;
   verificationStatusFilter = '';
   toggleMessage = true;
+  verifierMode = null;
   printMode = false;
+  displayDatasetInformation = true;
+  triggerModal = false;
   startDisabled = true;
   processStarted = false;
   eventStarted: string = null;
@@ -45,16 +50,19 @@ export class ReportOverviewComponent implements OnInit {
   startDate: string = null;
   endDate: string = null;
   isExportingToPDF = false;
+  contextDatasetLoading = false;
   datasetLoading = false;
+  contextDatasetLoadingError = false;
   datasetLoadingError = false;
+  contextFilename = '';
   filename = '';
+  contextHash = '';
   hash = '';
   electionEventId = '';
-  numberOfAuthorizedVoters = 0;
-  numberOfTestVoters = 0;
   fingerprints: Map<string, string> = new Map();
   appVersion = '';
   electionEventName = '';
+  electionEventSeed = '';
   electionEventDate: string;
   numberOfElections = 0;
   numberOfVotes = 0;
@@ -103,8 +111,6 @@ export class ReportOverviewComponent implements OnInit {
     control_component_4: 'Control Component 4'
   };
 
-  protected readonly VerifierEvent = VerifierEvent;
-
   private stompClient;
 
   constructor(private processorService: ProcessorService) {
@@ -145,13 +151,64 @@ export class ReportOverviewComponent implements OnInit {
       this.verifications = verifications;
 
       this.totalNumberOfSetupVerifications = Object.keys(verifications)
-          .filter(key => verifications[key].block === 'setup')
-          .length;
+        .filter(key => verifications[key].block === 'setup')
+        .length;
 
       this.totalNumberOfTallyVerifications = Object.keys(verifications)
-          .filter(key => verifications[key].block === 'tally')
-          .length;
+        .filter(key => verifications[key].block === 'tally')
+        .length;
     });
+  }
+
+  changeMode() {
+    this.triggerModal = false;
+    const newVerifierMode = this.isTallyMode() ? VerifierMode.SETUP : VerifierMode.TALLY;
+
+    this.resetProcess();
+    this.processorService.changeMode().subscribe((_value) => {
+      this.filename = '';
+      this.hash = '';
+      this.contextFilename = '';
+      this.contextHash = '';
+      this.startDisabled = true;
+      this.datasetLoadingError = false;
+      this.verifierMode = newVerifierMode;
+    });
+  }
+
+  changeModeToTally() {
+    this.changeModeTo(VerifierMode.TALLY);
+  }
+
+  changeModeToSetup() {
+    this.changeModeTo(VerifierMode.SETUP);
+  }
+
+  changeModeTo(verifierMode: VerifierMode) {
+    this.triggerModal = false;
+    if (verifierMode === this.verifierMode) {
+      return;
+    }
+
+    if (this.contextFilename || this.filename) {
+      this.triggerModal = true;
+      return;
+    }
+
+    this.startDisabled = true;
+    this.datasetLoadingError = false;
+    this.verifierMode = verifierMode;
+  }
+
+  startVerification(): void {
+    switch (this.verifierMode) {
+      case VerifierMode.SETUP:
+        return this.startProcess(VerifierEvent.PRE_SETUP);
+      case VerifierMode.TALLY:
+        return this.startProcess(VerifierEvent.PRE_TALLY);
+      default:
+        return;
+    }
   }
 
   startProcess(runOption: string): void {
@@ -171,7 +228,7 @@ export class ReportOverviewComponent implements OnInit {
   startSecondaryProcess(runOption: string): void {
     if (this.isProcessComplete() && this.statusCounterNOK() === 0 && this.statusCounterERROR() === 0) {
       this.processStarted = false;
-      this.startDisabled = false;
+      this.startDisabled = !this.verifierMode || !this.filename || this.filename === '';
       this.resetStatus();
       this.startProcess(runOption);
     }
@@ -207,7 +264,7 @@ export class ReportOverviewComponent implements OnInit {
       this.filterVerificationsAll();
       this.initTable();
       this.processStarted = false;
-      this.startDisabled = false;
+      this.startDisabled = !this.verifierMode || !this.filename || this.filename === '';
       this.eventStarted = null;
       this.startDate = null;
       this.endDate = null;
@@ -236,6 +293,26 @@ export class ReportOverviewComponent implements OnInit {
         }
       });
     });
+  }
+
+  getVerifierMode() {
+    return this.verifierMode.charAt(0) + this.verifierMode.slice(1).toLowerCase();
+  }
+
+  isSetupMode() {
+    return this.verifierMode === VerifierMode.SETUP;
+  }
+
+  isTallyMode() {
+    return this.verifierMode === VerifierMode.TALLY;
+  }
+
+  isSetupEvent() {
+    return (this.eventStarted === VerifierEvent.PRE_SETUP) || (this.eventStarted === VerifierEvent.SETUP);
+  }
+
+  isTallyEvent() {
+    return (this.eventStarted === VerifierEvent.PRE_TALLY) || (this.eventStarted === VerifierEvent.TALLY);
   }
 
   isRUNNING(status) {
@@ -340,58 +417,121 @@ export class ReportOverviewComponent implements OnInit {
     }).save();
   }
 
-  configurationUpload(event) {
+  // Upload dataset
+  configurationUpload(event, datasetType: string) {
     const file = event.target.files[0];
     if (file) {
-      this.datasetLoading = true;
-      this.filename = '';
-      this.hash = '';
-      this.electionEventId = '';
-      this.numberOfAuthorizedVoters = 0;
-      this.numberOfTestVoters = 0;
-      this.fingerprints = new Map();
-      this.electionEventName = '';
-      this.numberOfElections = 0;
-      this.numberOfVotes = 0;
-      this.numberOfNonTestBallotBoxes = 0;
-      this.numberOfTestBallotBoxes = 0;
-      this.totalNumberOfAuthorizedNonTestVoters = 0;
-      this.totalNumberOfTestVoters = 0;
       this.eventStarted = null;
       this.startDate = null;
       this.endDate = null;
 
-      this.processorService.uploadDataset(file).subscribe({
-        next: () => {
-          this.startDisabled = false;
-          this.processorService.getDatasetConfiguration().subscribe(configuration => {
-            this.datasetLoading = false;
-            this.datasetLoadingError = false;
-            this.filename = configuration.filename;
-            this.hash = configuration.hash;
-            this.electionEventId = configuration.electionEventId;
-            this.numberOfAuthorizedVoters = configuration.numberOfAuthorizedVoters;
-            this.numberOfTestVoters = configuration.numberOfTestVoters;
-            this.fingerprints = configuration.aliasesToFingerprints;
-            this.electionEventName = configuration.electionEventName;
-            this.electionEventDate = configuration.electionEventDate;
-            this.numberOfElections = configuration.numberOfElections;
-            this.numberOfVotes = configuration.numberOfVotes;
-            this.numberOfBallots = configuration.numberOfBallots;
-            this.numberOfNonTestBallotBoxes = configuration.numberOfNonTestBallotBoxes;
-            this.numberOfTestBallotBoxes = configuration.numberOfTestBallotBoxes;
-            this.totalNumberOfAuthorizedNonTestVoters = configuration.totalNumberOfAuthorizedNonTestVoters;
-            this.totalNumberOfTestVoters = configuration.totalNumberOfTestVoters;
-            this.numberOfConfirmedNonTestVotes = configuration.numberOfConfirmedNonTestVotes;
-            this.numberOfConfirmedTestVotes = configuration.numberOfConfirmedTestVotes;
-          });
-        },
-        error: () => {
-          this.datasetLoading = false;
-          this.datasetLoadingError = true;
-        }
-      });
+      if (datasetType === DatasetType.CONTEXT) {
+        return this.configurationUploadContext(file);
+      } else if (this.isSetupMode()) {
+        return this.configurationUploadSetup(file);
+      } else if (this.isTallyMode()) {
+        return this.configurationUploadTally(file);
+      }
     }
+  }
+
+  configurationUploadContext(file) {
+    this.startDisabled = true;
+    this.contextDatasetLoading = true;
+    this.contextFilename = '';
+    this.filename = '';
+    this.contextHash = '';
+    this.hash = '';
+    this.electionEventId = '';
+    this.fingerprints = new Map();
+    this.electionEventName = '';
+    this.electionEventSeed = '';
+    this.numberOfElections = 0;
+    this.numberOfVotes = 0;
+    this.numberOfNonTestBallotBoxes = 0;
+    this.numberOfTestBallotBoxes = 0;
+    this.triggerModal = false;
+
+    this.processorService.uploadDataset(file, DatasetType.CONTEXT).subscribe({
+      next: () => {
+        this.processorService.getDatasetConfiguration().subscribe(configuration => {
+          this.contextDatasetLoading = false;
+          this.contextDatasetLoadingError = false;
+          this.contextFilename = configuration.context.filename;
+          this.contextHash = configuration.context.hash;
+          this.electionEventId = configuration.context.electionEventId;
+          this.fingerprints = configuration.context.aliasesToFingerprints;
+          this.electionEventName = configuration.context.electionEventName;
+          this.electionEventSeed = configuration.context.electionEventSeed;
+          this.electionEventDate = configuration.context.electionEventDate;
+          this.numberOfElections = configuration.context.numberOfElections;
+          this.numberOfVotes = configuration.context.numberOfVotes;
+          this.numberOfBallots = configuration.context.numberOfBallots;
+          this.numberOfNonTestBallotBoxes = configuration.context.numberOfNonTestBallotBoxes;
+          this.numberOfTestBallotBoxes = configuration.context.numberOfTestBallotBoxes;
+          this.totalNumberOfAuthorizedNonTestVoters = configuration.context.totalNumberOfAuthorizedNonTestVoters;
+          this.totalNumberOfTestVoters = configuration.context.totalNumberOfTestVoters;
+        });
+      },
+      error: () => {
+        this.contextDatasetLoading = false;
+        this.contextDatasetLoadingError = true;
+      }
+    });
+  }
+
+  configurationUploadSetup(file) {
+    this.datasetLoading = true;
+    this.filename = '';
+    this.hash = '';
+
+    this.processorService.uploadDataset(file, DatasetType.SETUP).subscribe({
+      next: () => {
+        this.processorService.getDatasetConfiguration().subscribe(configuration => {
+          this.datasetLoading = false;
+          this.datasetLoadingError = false;
+          this.filename = configuration.setup.filename;
+          this.hash = configuration.setup.hash;
+          if (configuration.context) {
+            this.startDisabled = false;
+          }
+        });
+      },
+      error: () => {
+        this.datasetLoading = false;
+        this.datasetLoadingError = true;
+      }
+    });
+  }
+
+  configurationUploadTally(file) {
+    this.datasetLoading = true;
+    this.filename = '';
+    this.hash = '';
+
+    this.processorService.uploadDataset(file, DatasetType.TALLY).subscribe({
+      next: () => {
+        this.processorService.getDatasetConfiguration().subscribe(configuration => {
+          this.datasetLoading = false;
+          this.datasetLoadingError = false;
+          this.filename = configuration.tally.filename;
+          this.hash = configuration.tally.hash;
+          this.numberOfConfirmedNonTestVotes = configuration.tally.numberOfConfirmedNonTestVotes;
+          this.numberOfConfirmedTestVotes = configuration.tally.numberOfConfirmedTestVotes;
+          if (configuration.context) {
+            this.startDisabled = false;
+          }
+        });
+      },
+      error: () => {
+        this.datasetLoading = false;
+        this.datasetLoadingError = true;
+      }
+    });
+  }
+
+  isDatasetLoading() {
+    return this.contextDatasetLoading || this.datasetLoading;
   }
 
   // Status counter

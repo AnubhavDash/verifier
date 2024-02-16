@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,38 +21,34 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.List;
 import java.util.stream.Stream;
 
-import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeShare;
-import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationData;
-import ch.post.it.evoting.cryptoprimitives.domain.validations.Validations;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.ZqGroup;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ExponentiationProof;
+import ch.post.it.evoting.evotinglibraries.domain.returncodes.ControlComponentCodeShare;
+import ch.post.it.evoting.evotinglibraries.domain.returncodes.SetupComponentVerificationData;
 
 /**
  * Regroups the input values needed by the VerifyEncryptedPCCExponentiationProofsVerificationCardSet algorithm.
  * <ul>
- * <li>vc, the {@code GroupVector} of verification card IDs. Not null and valid UUIDs.</li>
- * <li>c<sub>pCC</sub>, the encrypted, hashed partial Choice Return Codes. Not null.</li>
- * <li>K<sub>j</sub>, the Voter Choice Return Code Generation public keys. Not null.</li>
- * <li>c<sub>expPCC,j</sub>, the exponentiated, encrypted, hashed partial Choice Return Codes. Not null.</li>
- * <li>pi<sub>expPCC,j</sub>, the proofs of correct exponentiation. Not null.</li>
+ *     <li>c<sub>pCC</sub>, the encrypted, hashed partial Choice Return Codes. Not null.</li>
+ *     <li>K<sub>j</sub>, the Voter Choice Return Code Generation public keys. Not null.</li>
+ *     <li>c<sub>expPCC,j</sub>, the exponentiated, encrypted, hashed partial Choice Return Codes. Not null.</li>
+ *     <li>&pi;<sub>expPCC,j</sub>, the proofs of correct exponentiation. Not null.</li>
  * </ul>
  * <p>
  * And by the VerifyEncryptedCKExponentiationProofsVerificationCardSet algorithm.
  * <ul>
- * <li>vc, the {@code GroupVector} of verification card IDs. Not null and valid UUIDs.</li>
- * <li>c<sub>ck</sub>, the encrypted, hashed Confirmation Key. Not null.</li>
- * <li>Kc<sub>j</sub>, the Voter Vote Cast Return Code Generation public keys. Not null.</li>
- * <li>c<sub>expCK,j</sub>, the exponentiated, encrypted, hashed Confirmation Key. Not null.</li>
- * <li>pi<sub>expCK,j</sub>, the proofs of correct exponentiation. Not null.</li>
+ *     <li>c<sub>ck</sub>, the encrypted, hashed Confirmation Key. Not null.</li>
+ *     <li>Kc<sub>j</sub>, the Voter Vote Cast Return Code Generation public keys. Not null.</li>
+ *     <li>c<sub>expCK,j</sub>, the exponentiated, encrypted, hashed Confirmation Key. Not null.</li>
+ *     <li>&pi;<sub>expCK,j</sub>, the proofs of correct exponentiation. Not null.</li>
  * </ul>
  */
 public class VerifyEncryptedExponentiationProofsVerificationCardSetInput {
 
-	private final List<String> verificationCardIds;
 	private final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> encryptedHashedPartialChoiceReturnCodes;
 	private final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> voterChoiceReturnCodeGenerationPublicKeys;
 	private final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> exponentiatedEncryptedHashedPartialChoiceReturnCodes;
@@ -67,10 +63,6 @@ public class VerifyEncryptedExponentiationProofsVerificationCardSetInput {
 		checkNotNull(setupComponentVerificationData);
 		checkNotNull(controlComponentCodeShares);
 
-		verificationCardIds = setupComponentVerificationData
-				.stream()
-				.map(SetupComponentVerificationData::verificationCardId)
-				.toList();
 		encryptedHashedPartialChoiceReturnCodes = setupComponentVerificationData
 				.stream()
 				.map(SetupComponentVerificationData::encryptedHashedSquaredPartialChoiceReturnCodes)
@@ -104,9 +96,6 @@ public class VerifyEncryptedExponentiationProofsVerificationCardSetInput {
 				.map(ControlComponentCodeShare::encryptedConfirmationKeyExponentiationProof)
 				.collect(GroupVector.toGroupVector());
 
-		checkNotNull(verificationCardIds);
-		verificationCardIds.forEach(Validations::validateUUID);
-
 		validateInput(encryptedHashedPartialChoiceReturnCodes, voterChoiceReturnCodeGenerationPublicKeys,
 				exponentiatedEncryptedHashedPartialChoiceReturnCodes, proofsOfCorrectPCCExponentiation);
 		validateInput(encryptedHashedConfirmationKey, voterVoteCastReturnCodeGenerationPublicKeys, exponentiatedEncryptedHashedConfirmationKey,
@@ -133,13 +122,9 @@ public class VerifyEncryptedExponentiationProofsVerificationCardSetInput {
 		checkArgument(proofsOfCorrectExponentiation.getGroup().hasSameOrderAs(encryptedHashedCiphertexts.getGroup()),
 				"The group of the proofs of correct exponentiation must have the same order as the input's encryption group.");
 
-		checkArgument(Stream.of(verificationCardIds.size(), encryptedHashedCiphertexts.size(), voterReturnCodeGenerationPublicKeys.size(),
+		checkArgument(Stream.of(encryptedHashedCiphertexts.size(), voterReturnCodeGenerationPublicKeys.size(),
 						exponentiatedEncryptedHashedCiphertexts.size(), proofsOfCorrectExponentiation.size()).distinct().count() == 1,
 				"All input elements must have the same size.");
-	}
-
-	public List<String> getVerificationCardIds() {
-		return verificationCardIds;
 	}
 
 	public GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> getEncryptedHashedPartialChoiceReturnCodes() {

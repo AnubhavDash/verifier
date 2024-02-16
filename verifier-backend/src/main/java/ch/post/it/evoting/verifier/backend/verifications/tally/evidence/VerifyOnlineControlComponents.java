@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,22 +16,14 @@
 package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
-import com.google.common.collect.MoreCollectors;
-
-import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
-import ch.post.it.evoting.cryptoprimitives.domain.election.SetupComponentPublicKeys;
-import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.SetupComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.SetupComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
@@ -64,7 +56,7 @@ public class VerifyOnlineControlComponents extends AbstractVerification {
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME,
-				"tally.verification500.description"));
+				"tally.verification1001.description"));
 		definition.setId("10.01");
 		definition.setName("VerifyOnlineControlComponents");
 		definition.addVerifierEvent(TallyEvent.TYPE);
@@ -75,60 +67,26 @@ public class VerifyOnlineControlComponents extends AbstractVerification {
 	public VerificationResult verify(final Path inputDirectoryPath) {
 		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(
 				inputDirectoryPath);
-		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
-
 		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = electionDataExtractionService.getSetupComponentPublicKeysPayload(
 				inputDirectoryPath);
-		final SetupComponentPublicKeys setupComponentPublicKeys = setupComponentPublicKeysPayload.getSetupComponentPublicKeys();
+		final VerifyOnlineControlComponentsContext context = new VerifyOnlineControlComponentsContext(electionEventContextPayload,
+				setupComponentPublicKeysPayload);
 
-		final String electionEventId = electionEventContext.electionEventId();
-		final List<String> ballotBoxIds = electionEventContext.verificationCardSetContexts().stream()
-				.parallel()
-				.map(VerificationCardSetContext::ballotBoxId)
-				.toList();
-
-		final Map<String, List<ControlComponentBallotBoxPayload>> controlComponentBallotBoxesByBallotBoxId = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
-						inputDirectoryPath)
-				.parallel()
-				.collect(Collectors.groupingByConcurrent(ControlComponentBallotBoxPayload::getBallotBoxId));
-		final Map<String, List<ControlComponentShufflePayload>> controlComponentShufflesByBallotBoxId = electionDataExtractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
-						inputDirectoryPath)
-				.parallel()
-				.collect(Collectors.groupingByConcurrent(ControlComponentShufflePayload::getBallotBoxId));
-
-		final Map<String, SetupComponentTallyDataPayload> setupComponentTallyDataByBallotBoxId = ballotBoxIds.stream()
-				.parallel()
-				.collect(Collectors.toMap(Function.identity(), bb -> {
-					final String verificationCardSetId = electionEventContext.verificationCardSetContexts().stream()
-							.filter(verificationCardSetContext -> verificationCardSetContext.ballotBoxId().equals(bb))
-							.collect(MoreCollectors.onlyElement())
-							.verificationCardSetId();
-
-					return electionDataExtractionService.getSetupComponentTallyDataPayload(
-							inputDirectoryPath, verificationCardSetId);
-				}));
-
-		final Map<String, Integer> numberOfSelectionsByBallotBoxId = ballotBoxIds.stream()
-				.parallel()
-				.collect(Collectors.toMap(Function.identity(), bb -> {
-					final String verificationCardSetId = electionEventContext.verificationCardSetContexts().stream()
-							.filter(verificationCardSetContext -> verificationCardSetContext.ballotBoxId().equals(bb))
-							.collect(MoreCollectors.onlyElement())
-							.verificationCardSetId();
-
-					return electionDataExtractionService.getCombinedCorrectnessInformation(
-							inputDirectoryPath, verificationCardSetId).getTotalNumberOfSelections();
-				}));
+		final Stream<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
+				inputDirectoryPath);
+		final Stream<ControlComponentShufflePayload> controlComponentShufflePayloads = electionDataExtractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
+				inputDirectoryPath);
+		final Stream<SetupComponentTallyDataPayload> setupComponentTallyDataPayloads = electionDataExtractionService.getSetupComponentTallyDataPayloads(
+				inputDirectoryPath);
+		final VerifyOnlineControlComponentsInput input = new VerifyOnlineControlComponentsInput(controlComponentBallotBoxPayloads,
+				controlComponentShufflePayloads, setupComponentTallyDataPayloads);
 
 		final VerificationResult verificationResult;
-		if (verifyOnlineControlComponentsAlgorithm.verifyOnlineControlComponents(electionEventId, ballotBoxIds, numberOfSelectionsByBallotBoxId,
-				controlComponentBallotBoxesByBallotBoxId, controlComponentShufflesByBallotBoxId, setupComponentTallyDataByBallotBoxId,
-				electionEventContext, setupComponentPublicKeys
-		)) {
+		if (verifyOnlineControlComponentsAlgorithm.verifyOnlineControlComponents(context, input)) {
 			verificationResult = VerificationResult.success(getVerificationDefinition());
 		} else {
 			verificationResult = VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification500.nok.message"));
+					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification1001.nok.message"));
 		}
 
 		return verificationResult;

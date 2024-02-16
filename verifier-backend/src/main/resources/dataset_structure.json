@@ -25,11 +25,6 @@
 				"name": "controlComponentPublicKeysPayload\\.([1-4])\\.json"
 			},
 			{
-				"key": "ENCRYPTION_PARAMETERS",
-				"type": "FILE",
-				"name": "encryptionParametersPayload\\.json"
-			},
-			{
 				"key": "VERIFICATION_CARD_SETS_DIR",
 				"type": "DIRECTORY",
 				"name": "verification_card_sets",

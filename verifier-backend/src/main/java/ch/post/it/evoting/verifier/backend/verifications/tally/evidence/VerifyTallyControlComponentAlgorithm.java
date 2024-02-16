@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,7 +18,6 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -26,20 +25,11 @@ import java.util.stream.IntStream;
 
 import org.springframework.stereotype.Service;
 
-import com.google.common.collect.MoreCollectors;
-
 import ch.ech.xmlns.ech_0110._4.Delivery;
-import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
-import ch.post.it.evoting.cryptoprimitives.domain.election.SetupComponentPublicKeys;
-import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.TallyComponentShufflePayload;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.VerifiablePlaintextDecryption;
-import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
-import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
-import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
-import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
-import ch.post.it.evoting.cryptoprimitives.mixnet.VerifiableShuffle;
+import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
+import ch.post.it.evoting.evotinglibraries.domain.election.SetupComponentPublicKeys;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
@@ -59,102 +49,69 @@ public class VerifyTallyControlComponentAlgorithm {
 	/**
 	 * Verifies the Tally control component’s operations.
 	 *
-	 * @param input                           the input for the VerifyTallyControlComponent algorithm. Not null.
-	 * @param numberOfSelectableVotingOptions the number of selectable voting options grouped by ballot box id.
-	 * @param writeInVotingOptions            the write-in voting options grouped by ballot box id.
+	 * @param input the input for the VerifyTallyControlComponent algorithm as a {@link VerifyTallyControlComponentInput}. Not null.
 	 * @return true if the operations are valid for all ballot boxes, false otherwise.
 	 */
 	@SuppressWarnings("java:S117")
-	public boolean verifyTallyControlComponent(final VerifyTallyControlComponentInput input,
-			final Map<String, Integer> numberOfSelectableVotingOptions, final Map<String, List<BigInteger>> writeInVotingOptions) {
+	public boolean verifyTallyControlComponent(final VerifyTallyControlComponentContext context, final VerifyTallyControlComponentInput input) {
+		checkNotNull(context);
 		checkNotNull(input);
-		checkNotNull(numberOfSelectableVotingOptions);
-		checkNotNull(writeInVotingOptions);
+
+		// Cross-group check.
+		checkArgument(context.getEncryptionGroup().equals(input.getEncryptionGroup()), "The context and input must have the same encryption group.");
+
+		// Context.
+		final String ee = context.getElectionEventId();
+		final List<String> bb = context.getBallotBoxIds();
+		final ElectionEventContext electionEventContext = context.getElectionEventContext();
+		final SetupComponentPublicKeys setupComponentPublicKeys = context.getSetupComponentPublicKeys();
+		final int N_bb = bb.size();
 
 		// Input.
-		final GqGroup encryptionGroup = input.getEncryptionGroup();
-		final String ee = input.getElectionEventId();
-		final List<String> bb = input.getBallotBoxIds();
-		final List<ControlComponentShufflePayload> lastOnlineControlComponentShuffles = input.getLastOnlineControlComponentShuffles();
-		final List<TallyComponentVotesPayload> tallyControlComponentVotes = input.getTallyControlComponentVotes();
-		final List<TallyComponentShufflePayload> tallyControlComponentShuffles = input.getTallyControlComponentShuffles();
-		final ElectionEventContext electionEventContext = input.getElectionEventContext();
-		final SetupComponentPublicKeys setupComponentPublicKeys = input.getSetupComponentPublicKeys();
-		final Configuration electionEventConfiguration = input.getElectionEventConfiguration();
-		final Results tallyControlComponentDecryptions = input.getTallyControlComponentDecryptions();
-		final Delivery tallyControlComponentResults = input.getTallyControlComponentResults();
-		final ch.ech.xmlns.ech_0222._1.Delivery tallyComponentEch0222 = input.getTallyComponentEch0222();
-		final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads = input.getTallyComponentVotesPayloads();
+		final Map<String, ControlComponentShufflePayload> lastOnlineControlComponentShuffles = input.getLastOnlineControlComponentShufflesPerBallotBoxId();
+		final Map<String, TallyComponentShufflePayload> tallyControlComponentShuffles = input.getTallyControlComponentShufflesPerBallotBoxId();
+		final Map<String, TallyComponentVotesPayload> tallyControlComponentVotes = input.getTallyControlComponentVotesPerBallotBoxId();
+		final Map<String, TallyComponentVotesPayload> L_decodedVotesbb = input.getTallyControlComponentVotesPerAuthorizationAlias();
+		final Configuration configurationXML = input.getElectionEventConfiguration();
+		final Results evotingDecryptXML = input.getTallyControlComponentDecryptions();
+		final Delivery eCH0110XML = input.getTallyControlComponentResults();
+		final ch.ech.xmlns.ech_0222._1.Delivery eCH0222XML = input.getTallyControlComponentDetailedResults();
 
 		// Cross-checks.
-		checkArgument(bb.size() == numberOfSelectableVotingOptions.keySet().size(),
-				"There must be a number of selectable voting options for each ballot box.");
-		checkArgument(new HashSet<>(bb).equals(numberOfSelectableVotingOptions.keySet()),
-				"The number of selectable voting options must be for the input's ballot boxes.");
+		checkArgument(lastOnlineControlComponentShuffles.keySet().equals(new HashSet<>(bb)),
+				"The last control component shuffles, the tally component shuffles and the tally component votes must correspond to the correct ballot box ids.");
+		checkArgument(input.getElectionEventId().equals(ee), "The input must have the correct election event id.");
 
 		// Operation.
-		final int N_bb = bb.size();
 		final boolean tallyVerif = IntStream.range(0, N_bb)
 				.parallel()
 				.mapToObj(i -> {
 					final String bb_i = bb.get(i);
 
-					final VerificationCardSetContext verificationCardSetContext = electionEventContext.verificationCardSetContexts().stream()
-							.filter(vcsContext -> vcsContext.ballotBoxId().equals(bb_i))
-							.collect(MoreCollectors.onlyElement());
-					final GroupVector<PrimeGqElement, GqGroup> writeInVotingOptions_bb_i = writeInVotingOptions.get(bb_i).stream()
-							.map(option -> PrimeGqElement.PrimeGqElementFactory.fromValue(option.intValue(), encryptionGroup))
-							.collect(GroupVector.toGroupVector());
-					final VerifyTallyControlComponentBallotBoxContext context_bb_i = new VerifyTallyControlComponentBallotBoxContext.Builder()
-							.setEncryptionGroup(encryptionGroup)
+					final VerifyTallyControlComponentBallotBoxInput Input_bb_i = new VerifyTallyControlComponentBallotBoxInput(
+							lastOnlineControlComponentShuffles.get(bb_i), tallyControlComponentShuffles.get(bb_i),
+							tallyControlComponentVotes.get(bb_i));
+
+					final VerifyTallyControlComponentBallotBoxContext Context_bb_i = new VerifyTallyControlComponentBallotBoxContext.Builder()
 							.setElectionEventId(ee)
 							.setBallotBoxId(bb_i)
-							.setElectoralBoardPublicKey(setupComponentPublicKeys.electoralBoardPublicKey())
-							.setPrimesMappingTable(verificationCardSetContext.primesMappingTable())
-							.setWriteInVotingOptions(writeInVotingOptions_bb_i)
-							.setNumberOfSelectableVotingOptions(numberOfSelectableVotingOptions.get(bb_i))
-							.setNumberOfAllowedWriteInsPlusOne(verificationCardSetContext.numberOfWriteInFields() + 1)
+							.setElectionEventContext(electionEventContext)
+							.setSetupComponentPublicKeys(setupComponentPublicKeys)
 							.build();
-
-					final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_dec_4 = lastOnlineControlComponentShuffles.get(i)
-							.getVerifiableDecryptions()
-							.getCiphertexts();
-
-					final TallyComponentShufflePayload tallyComponentShufflePayload = tallyControlComponentShuffles.get(i);
-					final VerifiableShuffle c_mix_5_pi_mix_5 = tallyComponentShufflePayload.getVerifiableShuffle();
-					final VerifiablePlaintextDecryption m_pi_dec_5 = tallyComponentShufflePayload.getVerifiablePlaintextDecryption();
-
-					final TallyComponentVotesPayload tallyControlComponentVote = tallyControlComponentVotes.get(i);
-					final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> L_votes = tallyControlComponentVote.getVotes().stream()
-							.map(list -> list.stream()
-									.map(p -> PrimeGqElement.PrimeGqElementFactory.fromValue(p.getValueAsInt(), encryptionGroup))
-									.collect(GroupVector.toGroupVector()))
-							.collect(GroupVector.toGroupVector());
-					final List<List<String>> L_decodedVotes = tallyControlComponentVote.getActualSelectedVotingOptions();
-					final List<List<String>> L_writeIns = tallyControlComponentVote.getDecodedWriteInVotes();
-
-					final VerifyTallyControlComponentBallotBoxInput input_bb_i = new VerifyTallyControlComponentBallotBoxInput.Builder()
-							.setSelectedEncodedVotingOptions(L_votes)
-							.setSelectedDecodedVotingOptions(L_decodedVotes)
-							.setSelectedDecodedWriteInVotes(L_writeIns)
-							.setPreviousPartiallyDecryptedVotes(c_dec_4)
-							.setVerifiableShuffle(c_mix_5_pi_mix_5)
-							.setVerifiablePlaintextDecryption(m_pi_dec_5)
-							.build();
-
-					return verifyTallyControlComponentBallotBoxAlgorithm.verifyTallyControlComponentBallotBox(context_bb_i, input_bb_i);
+					return verifyTallyControlComponentBallotBoxAlgorithm.verifyTallyControlComponentBallotBox(Context_bb_i, Input_bb_i);
 				})
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 
-		final VerifyTallyFilesInput verifyTallyFilesInput = new VerifyTallyFilesInput.Builder()
-				.cantonConfig(electionEventConfiguration)
-				.setTallyComponentDecrypt(tallyControlComponentDecryptions)
-				.setTallyComponentEch0110(tallyControlComponentResults)
-				.setTallyComponentEch0222(tallyComponentEch0222)
-				.setTallyComponentVotesPayloads(tallyComponentVotesPayloads)
+		final VerifyTallyFilesInput Input_tallyFiles = new VerifyTallyFilesInput.Builder()
+				.setCantonConfig(configurationXML)
+				.setTallyComponentDecrypt(evotingDecryptXML)
+				.setTallyComponentEch0110(eCH0110XML)
+				.setTallyComponentEch0222(eCH0222XML)
+				.setTallyComponentVotesPayloads(L_decodedVotesbb)
 				.build();
-		final boolean tallyFilesVerif = verifyTallyFilesAlgorithm.verifyTallyFiles(ee, verifyTallyFilesInput);
+
+		final boolean tallyFilesVerif = verifyTallyFilesAlgorithm.verifyTallyFiles(ee, Input_tallyFiles);
 
 		return tallyVerif && tallyFilesVerif;
 	}

@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,15 +21,15 @@ import java.util.Comparator;
 
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
-import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
-import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTableEntry;
-import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.EncryptionParametersPayload;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupElement;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
+import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
+import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
+import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTableEntry;
+import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -61,7 +61,7 @@ public class VerifyVotingOptions extends AbstractVerification {
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
-				"setup.verification502.description"));
+				"setup.verification503.description"));
 		definition.setId("05.03");
 		definition.setName("VerifyVotingOptions");
 		definition.addVerifierEvent(SetupEvent.TYPE);
@@ -70,19 +70,20 @@ public class VerifyVotingOptions extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		// Get the encryption parameters.
-		final EncryptionParametersPayload encryptionParametersPayload = extractionService.getEncryptionParametersPayload(inputDirectoryPath);
+		// Get the election event context payload.
+		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(inputDirectoryPath);
 
 		// Get the primes from the file.
-		final GroupVector<PrimeGqElement, GqGroup> smallPrimeGroupMembers = encryptionParametersPayload.getSmallPrimes();
+		final GroupVector<PrimeGqElement, GqGroup> smallPrimeGroupMembers = electionEventContextPayload.getSmallPrimes();
 
 		final GroupVector<PrimeGqElement, GqGroup> encodedVotingOptions = extractEncodedVotingOptions(inputDirectoryPath);
 
-		if (verifyVotingOptionsAlgorithm.verifyVotingOptions(smallPrimeGroupMembers, encodedVotingOptions)) {
+		if (verifyVotingOptionsAlgorithm.verifyVotingOptions(electionEventContextPayload.getEncryptionGroup(), smallPrimeGroupMembers,
+				encodedVotingOptions)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification502.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification503.nok.message"));
 		}
 	}
 
@@ -93,7 +94,7 @@ public class VerifyVotingOptions extends AbstractVerification {
 		final ElectionEventContext electionEventContext = extractionService.getElectionEventContext(inputDirectoryPath);
 
 		return electionEventContext.verificationCardSetContexts().stream()
-				.map(VerificationCardSetContext::primesMappingTable)
+				.map(VerificationCardSetContext::getPrimesMappingTable)
 				.map(PrimesMappingTable::getPTable)
 				.flatMap(Collection::stream)
 				.map(PrimesMappingTableEntry::encodedVotingOption)

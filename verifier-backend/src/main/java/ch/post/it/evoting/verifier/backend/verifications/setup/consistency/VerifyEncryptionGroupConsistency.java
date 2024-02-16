@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,7 +33,7 @@ import ch.post.it.evoting.verifier.backend.tools.EncryptionGroupParametersExtrac
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 
-@Component("VerifySetupEncryptionGroupConsistency")
+@Component
 public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 
 	private final EncryptionGroupParametersExtractionService extractionService;
@@ -50,7 +50,7 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification300.description"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification301.description"));
 		definition.setId("03.01");
 		definition.setName("VerifyEncryptionGroupConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
@@ -63,7 +63,6 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 				inputDirectoryPath);
 
 		final List<BiFunction<Path, EncryptionGroupParametersDataExtractor.DataExtraction, Boolean>> validations = new ArrayList<>();
-		validations.add(this::validateEncryptionParameters);
 		validations.add(this::validateControlComponentPublicKeys);
 		validations.add(this::validateSetupComponentVerificationDataPayloads);
 		validations.add(this::validateControlComponentCodeSharesPayload);
@@ -79,33 +78,33 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification300.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification301.nok.message"));
 		}
 	}
 
-	private boolean validateEncryptionParameters(final Path inputDirectoryPath, final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
-		return encryptionGroupParametersDataExtraction.equals(extractionService.getFromEncryptionParameters(inputDirectoryPath));
-	}
-
-	private boolean validateControlComponentPublicKeys(final Path inputDirectoryPath, final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
+	private boolean validateControlComponentPublicKeys(final Path inputDirectoryPath,
+			final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
 		return extractionService.getFromControlComponentPublicKeys(inputDirectoryPath)
 				.distinct()
 				.allMatch(encryptionGroupParametersDataExtraction::equals);
 	}
 
-	private boolean validateSetupComponentVerificationDataPayloads(final Path inputDirectoryPath, final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
+	private boolean validateSetupComponentVerificationDataPayloads(final Path inputDirectoryPath,
+			final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
 		return extractionService.getFromSetupComponentVerificationDataPayloads(inputDirectoryPath)
 				.distinct()
 				.allMatch(encryptionGroupParametersDataExtraction::equals);
 	}
 
-	private boolean validateControlComponentCodeSharesPayload(final Path inputDirectoryPath, final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
+	private boolean validateControlComponentCodeSharesPayload(final Path inputDirectoryPath,
+			final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
 		return extractionService.getFromControlComponentCodeShares(inputDirectoryPath)
 				.distinct()
 				.allMatch(encryptionGroupParametersDataExtraction::equals);
 	}
 
-	private boolean validateSetupComponentTallyDataPayloads(final Path inputDirectoryPath, final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
+	private boolean validateSetupComponentTallyDataPayloads(final Path inputDirectoryPath,
+			final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
 		return extractionService.getFromSetupComponentTallyDataPayloads(inputDirectoryPath)
 				.distinct()
 				.allMatch(encryptionGroupParametersDataExtraction::equals);

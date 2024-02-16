@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,12 +25,12 @@ class StructureChecker {
 		// private constructor, use static
 	}
 
-	static void process(JsonNode node) {
+	static void process(final JsonNode node) {
 		verifyNodeIntegrity(node);
 	}
 
-	private static void verifyNodeIntegrity(JsonNode currentNode) {
-		for (JsonNode node : currentNode) {
+	private static void verifyNodeIntegrity(final JsonNode currentNode) {
+		for (final JsonNode node : currentNode) {
 			// Check type presence.
 			final JsonNode type = node.path("type");
 			checkNodeMissing(type, "type", type.asText());
@@ -43,7 +43,7 @@ class StructureChecker {
 			final PathType pathType;
 			try {
 				pathType = PathType.valueOf(type.asText());
-			} catch (IllegalArgumentException e) {
+			} catch (final IllegalArgumentException e) {
 				throw new IllegalArgumentException(String.format("Type does not exist: %s", type.asText()));
 			}
 
@@ -61,12 +61,12 @@ class StructureChecker {
 		}
 	}
 
-	private static void checkFolderLoopIntegrity(JsonNode node) {
+	private static void checkFolderLoopIntegrity(final JsonNode node) {
 		final JsonNode content = node.path(CONTENT);
 		checkNodeMissing(content, CONTENT, node.path("type").asText());
 	}
 
-	private static void checkFolderIntegrity(JsonNode node) {
+	private static void checkFolderIntegrity(final JsonNode node) {
 		final JsonNode key = node.path("key");
 		final JsonNode name = node.path("name");
 		final JsonNode content = node.path(CONTENT);
@@ -78,7 +78,7 @@ class StructureChecker {
 
 	}
 
-	private static void checkFileNodeIntegrity(JsonNode node) {
+	private static void checkFileNodeIntegrity(final JsonNode node) {
 		final JsonNode key = node.path("key");
 		final JsonNode name = node.path("name");
 
@@ -87,7 +87,7 @@ class StructureChecker {
 		checkNodeMissing(name, "name", type);
 	}
 
-	private static void checkNodeMissing(JsonNode node, String field, String type) {
+	private static void checkNodeMissing(final JsonNode node, final String field, final String type) {
 		if (node.isMissingNode()) {
 			throw new IllegalArgumentException(String.format("Mandatory %s is missing in %s node.", field, type));
 		}

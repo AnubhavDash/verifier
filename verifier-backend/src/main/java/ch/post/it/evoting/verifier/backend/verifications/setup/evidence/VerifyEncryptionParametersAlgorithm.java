@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,6 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 
+import static ch.post.it.evoting.evotinglibraries.domain.validations.EncryptionParametersSeedValidation.validateSeed;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -33,7 +34,6 @@ import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
  * Implements the VerifyEncryptionParameters verification algorithm.
  */
 @Service
-@SuppressWarnings("java:S117")
 public class VerifyEncryptionParametersAlgorithm {
 
 	private final ElGamal elGamal;
@@ -49,25 +49,30 @@ public class VerifyEncryptionParametersAlgorithm {
 	 * @param q_hat q&#770;, the q to validate. Must be non-null and satisfy p&#770; = 2 * q&#770; + 1.
 	 * @param g_hat g&#770;, the g to validate. Must be non-null.
 	 * @param seed  the seed used to generate p&#770;, q&#770; and g&#770;.
-	 * @return {@code true} if the provided parameters match the re-computed ones, {@code false} otherwise.
+	 * @return true if the provided parameters match the re-computed ones, false otherwise.
 	 * @throws NullPointerException     if any parameter is null.
 	 * @throws IllegalArgumentException if p&#770; &#8800; 2 * q&#770; + 1.
+	 * @throws ch.post.it.evoting.evotinglibraries.domain.validations.FailedValidationException if the seed does not comply with the required pattern.
 	 */
-	public boolean verifyEncryptionParameters(final BigInteger p_hat, final BigInteger q_hat, final GqElement g_hat, final String seed) {
+	@SuppressWarnings("java:S117")
+	boolean verifyEncryptionParameters(final BigInteger p_hat, final BigInteger q_hat, final GqElement g_hat, final String seed) {
+
+		// Context.
 		checkNotNull(p_hat);
 		checkNotNull(q_hat);
 		checkNotNull(g_hat);
-		checkNotNull(seed);
+		validateSeed(seed);
 		checkArgument(p_hat.compareTo(q_hat.shiftLeft(1).add(BigInteger.ONE)) == 0, "p_hat must be equal to 2 * q_hat + 1.");
 
-		//Require
-		checkState(SecurityLevelConfig.getSystemSecurityLevel() == SecurityLevelInternal.EXTENDED, "security level must be EXTENDED (group modulus 3072 bits)");
+		//Require.
+		checkState(SecurityLevelConfig.getSystemSecurityLevel() == SecurityLevelInternal.STANDARD,
+				"security level must be STANDARD (group modulus 3072 bits)");
 
 		// Operation.
-		final GqGroup gqGroup = elGamal.getEncryptionParameters(seed);
-		final BigInteger p = gqGroup.getP();
-		final BigInteger q = gqGroup.getQ();
-		final GqElement g = gqGroup.getGenerator();
+		final GqGroup p_q_g = elGamal.getEncryptionParameters(seed);
+		final BigInteger p = p_q_g.getP();
+		final BigInteger q = p_q_g.getQ();
+		final GqElement g = p_q_g.getGenerator();
 
 		return p.equals(p_hat) && q.equals(q_hat) && g.equals(g_hat);
 	}

@@ -1,11 +1,11 @@
 /*
- * Copyright 2023 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 
-import static ch.post.it.evoting.cryptoprimitives.domain.ControlComponentConstants.NODE_IDS;
+import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -35,15 +35,15 @@ import java.util.Random;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeSharesPayload;
-import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationDataPayload;
-import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
-import ch.post.it.evoting.cryptoprimitives.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.hashing.HashableList;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
+import ch.post.it.evoting.evotinglibraries.domain.returncodes.ControlComponentCodeSharesPayload;
+import ch.post.it.evoting.evotinglibraries.domain.returncodes.SetupComponentVerificationDataPayload;
+import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
+import ch.post.it.evoting.evotinglibraries.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
@@ -120,12 +120,12 @@ class VerifySignatureVerificationDataAndCodeProofsTest extends SetupVerification
 				setupComponentVerificationData.getChunkId() + 1,
 				setupComponentVerificationData.getEncryptionGroup(),
 				setupComponentVerificationData.getSetupComponentVerificationData(),
-				setupComponentVerificationData.getCombinedCorrectnessInformation(),
 				setupComponentVerificationData.getSignature());
 
 		final boolean result = ((VerifySignatureVerificationDataAndCodeProofs) verification).verifySignatureSetupComponentVerificationData(another);
 		assertFalse(result);
 	}
+
 	@Test
 	void testSignatureControlComponentCodeSharesPayload() throws SignatureException {
 		final ControlComponentCodeSharesPayload controlComponentCodeShares = loadRandomControlComponentCodeShares();

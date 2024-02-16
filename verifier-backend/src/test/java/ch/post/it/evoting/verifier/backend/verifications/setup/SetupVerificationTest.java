@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.ech.xmlns.ech_0110._4.Delivery;
-import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
+import ch.post.it.evoting.evotinglibraries.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
@@ -74,7 +74,7 @@ public abstract class SetupVerificationTest {
 		pathService = new PathService();
 		resultPublisherServiceMock = mock(ResultPublisherService.class);
 		objectMapper = DomainObjectMapper.getNewInstance();
-		datasetPath = Paths.get("").toAbsolutePath().getParent().resolve("datasets").resolve("dataset1-setup");
+		datasetPath = Paths.get("").toAbsolutePath().getParent().resolve("datasets").resolve("dataset-setup");
 		signatureFactory = new TestDigitalSignaturesFactory();
 		ech0110XmlFileRepository = new XmlFileRepository<>();
 		ech0222XmlFileRepository = new XmlFileRepository<>();

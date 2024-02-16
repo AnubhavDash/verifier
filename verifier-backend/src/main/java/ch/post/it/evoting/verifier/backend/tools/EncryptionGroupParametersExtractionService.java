@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -61,22 +61,6 @@ public class EncryptionGroupParametersExtractionService {
 		final PathNode electionEventContextPayloadPath = pathService.buildFromRootPath(StructureKey.ELECTION_EVENT_CONTEXT, inputDirectoryPath);
 
 		return encryptionGroupParametersDataExtractor.load(electionEventContextPayloadPath.getPath());
-	}
-
-	/**
-	 * Gets the encryption group parameters from the encryption parameters payload.
-	 *
-	 * @param inputDirectoryPath the dataset root directory.
-	 * @return the encryption group parameters of the encryption parameters payload.
-	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
-	 * @throws UncheckedIOException if the extraction fails.
-	 */
-	public EncryptionGroupParametersDataExtractor.DataExtraction getFromEncryptionParameters(final Path inputDirectoryPath) {
-		checkNotNull(inputDirectoryPath);
-
-		final PathNode encryptionParametersPayloadPath = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
-
-		return encryptionGroupParametersDataExtractor.load(encryptionParametersPayloadPath.getPath());
 	}
 
 	/**
@@ -153,7 +137,8 @@ public class EncryptionGroupParametersExtractionService {
 
 		return pathNode.getRegexPaths().stream()
 				.parallel()
-				.map(ballotBoxPayloadPath -> pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_SHUFFLE, ballotBoxPayloadPath).getPath())
+				.map(ballotBoxPayloadPath -> pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_SHUFFLE, ballotBoxPayloadPath)
+						.getPath())
 				.map(encryptionGroupParametersDataExtractor::load);
 	}
 
@@ -171,7 +156,8 @@ public class EncryptionGroupParametersExtractionService {
 
 		return pathNode.getRegexPaths().stream()
 				.parallel()
-				.map(ballotBoxPayloadPath -> pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_VOTES, ballotBoxPayloadPath).getPath())
+				.map(ballotBoxPayloadPath -> pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_VOTES, ballotBoxPayloadPath)
+						.getPath())
 				.map(encryptionGroupParametersDataExtractor::load);
 
 	}
@@ -183,7 +169,8 @@ public class EncryptionGroupParametersExtractionService {
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the extraction fails.
 	 */
-	public Stream<EncryptionGroupParametersDataExtractor.DataExtraction> getFromSetupComponentVerificationDataPayloads(final Path inputDirectoryPath) {
+	public Stream<EncryptionGroupParametersDataExtractor.DataExtraction> getFromSetupComponentVerificationDataPayloads(
+			final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
 		final PathNode pathNode = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);

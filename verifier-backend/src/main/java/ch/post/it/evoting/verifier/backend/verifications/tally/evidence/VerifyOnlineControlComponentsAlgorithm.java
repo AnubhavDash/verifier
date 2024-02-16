@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,33 +15,27 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
-import static ch.post.it.evoting.cryptoprimitives.domain.ControlComponentConstants.NODE_IDS;
-import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.validateUUID;
-import static ch.post.it.evoting.cryptoprimitives.utils.Validations.allEqual;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
-import ch.post.it.evoting.cryptoprimitives.domain.election.SetupComponentPublicKeys;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
-import ch.post.it.evoting.cryptoprimitives.domain.validations.Validations;
-import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
-import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
-import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
+import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
+import ch.post.it.evoting.evotinglibraries.domain.election.SetupComponentPublicKeys;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
 
+/**
+ * Implements the VerifyOnlineControlComponents algorithm.
+ */
 @Service
 public class VerifyOnlineControlComponentsAlgorithm {
 
@@ -57,108 +51,66 @@ public class VerifyOnlineControlComponentsAlgorithm {
 	/**
 	 * Verifies the proofs of all OnlineControlComponents.
 	 *
-	 * @param electionEventId                   ee, the election event to be verified
-	 * @param ballotBoxIds                      bb, the ballot boxes to be verified
-	 * @param numberOfSelectableVotingOptions   ψ, the number of selectable voting options per ballot box
-	 * @param controlComponentBallotBoxPayloads the list of ControlComponentBallotBox payloads per ballot box
-	 * @param controlComponentShufflePayloads   the list of OnlineControlComponentShuffle payloads per ballot box
-	 * @param setupComponentTallyDataPayloads   the SetupComponentTallyData payload per ballot box
-	 * @param electionEventContext              the election event context containing the public keys
-	 * @return {@code true} if all proofs verify for all ballot boxes, {@code false} otherwise
+	 * @param context the context as a {@link VerifyOnlineControlComponentsContext}. Must be non-null.
+	 * @param input   the input as a {@link VerifyOnlineControlComponentsInput}. Must be non-null.
+	 * @return {@code true} if all proofs verify for all ballot boxes, {@code false} otherwise.
 	 */
 	@SuppressWarnings("java:S117")
-	public boolean verifyOnlineControlComponents(final String electionEventId, final List<String> ballotBoxIds,
-			final Map<String, Integer> numberOfSelectableVotingOptions,
-			final Map<String, List<ControlComponentBallotBoxPayload>> controlComponentBallotBoxPayloads,
-			final Map<String, List<ControlComponentShufflePayload>> controlComponentShufflePayloads,
-			final Map<String, SetupComponentTallyDataPayload> setupComponentTallyDataPayloads, final ElectionEventContext electionEventContext,
-			final SetupComponentPublicKeys setupComponentPublicKeys) {
-		validateUUID(electionEventId);
-		checkNotNull(ballotBoxIds);
-		checkArgument(!ballotBoxIds.isEmpty());
+	public boolean verifyOnlineControlComponents(final VerifyOnlineControlComponentsContext context, final VerifyOnlineControlComponentsInput input) {
+		checkNotNull(context);
+		checkNotNull(input);
 
-		final List<String> ballotBoxIdsCopy = List.copyOf(ballotBoxIds);
-		ballotBoxIdsCopy.stream().parallel().forEach(Validations::validateUUID);
+		// Cross-group check.
+		checkArgument(context.getEncryptionGroup().equals(input.getEncryptionGroup()), "The context and input must have the same encryption group.");
 
-		final String ee = electionEventId;
+		// Context.
+		final List<String> vcs = context.getVerificationCardSetIds();
+		final List<String> bb = context.getBallotBoxIds();
+		final ElectionEventContext electionEventContext = context.getElectionEventContext();
+		final SetupComponentPublicKeys setupComponentPublicKeys = context.getSetupComponentPublicKeys();
+		final String ee = electionEventContext.electionEventId();
+		final int N_bb = bb.size();
+
+		// Input.
+		final Map<String, ControlComponentBallotBoxPayload> firstControlComponentBallotBoxes = input.getFirstControlComponentBallotBoxesPerBallotBoxId();
+		final Map<String, List<ControlComponentShufflePayload>> onlineControlComponentShuffles = input.getControlComponentShufflesPerBallotBoxId();
+		final Map<String, SetupComponentTallyDataPayload> setupComponentTallyData = input.getSetupComponentTallyDataPerVerificationCardSetId();
+
+		// Cross-checks.
+		checkArgument(setupComponentTallyData.keySet().equals(new HashSet<>(vcs)),
+				"The Setup Component Tally Data must correspond to the correct verification card set id.");
+		checkArgument(firstControlComponentBallotBoxes.keySet().equals(new HashSet<>(bb)),
+				"The first control component ballot boxes and the control component shuffles must correspond to the correct ballot box ids.");
+		checkArgument(input.getElectionEventId().equals(ee),
+				"The input must have the correct election event id.");
 
 		// Operation.
-		return ballotBoxIdsCopy.stream()
+		return IntStream.range(0, N_bb)
 				.parallel()
-				.map(bb -> {
-					final SetupComponentTallyDataPayload tallyDataPayload = setupComponentTallyDataPayloads.get(bb);
-					final List<ControlComponentBallotBoxPayload> ballotBoxPayloads = controlComponentBallotBoxPayloads.get(bb);
-					final List<ControlComponentShufflePayload> shufflePayloads = controlComponentShufflePayloads.get(bb);
+				.mapToObj(i -> {
+					final String vcs_i = vcs.get(i);
+					final String bb_i = bb.get(i);
+					final VerifyOnlineControlComponentsBallotBoxInput Input_bb_i = new VerifyOnlineControlComponentsBallotBoxInput(
+							firstControlComponentBallotBoxes.get(bb_i), onlineControlComponentShuffles.get(bb_i), setupComponentTallyData.get(vcs_i));
 
-					verifyConsistency(ballotBoxPayloads, shufflePayloads);
-
-					final List<String> verificationCardIds = tallyDataPayload.getVerificationCardIds();
-					final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> verificationCardPublicKeys = tallyDataPayload.getVerificationCardPublicKeys();
-					final Map<String, ElGamalMultiRecipientPublicKey> KMap = IntStream.range(0, verificationCardIds.size())
-							.boxed()
-							.collect(Collectors.toMap(verificationCardIds::get, verificationCardPublicKeys::get));
-
-					final VerifyOnlineControlComponentsBallotBoxContext context = new VerifyOnlineControlComponentsBallotBoxContext(
-							verificationCardPublicKeys.getGroup(), ee, bb, numberOfSelectableVotingOptions.get(bb), electionEventContext,
-							setupComponentPublicKeys);
-
-					final ControlComponentBallotBoxPayload firstControlComponentBallotBoxPayload = ballotBoxPayloads.get(0);
-					final VerifyOnlineControlComponentBallotBoxInput input = new VerifyOnlineControlComponentBallotBoxInput(KMap,
-							firstControlComponentBallotBoxPayload, shufflePayloads);
-
-					final boolean bbOnlineCCVerif_i = verifyOnlineControlComponentsBallotBoxAlgorithm.verifyOnlineControlComponentsBallotBox(context,
-							input);
+					final VerifyOnlineControlComponentsBallotBoxContext Context_bb_i = new VerifyOnlineControlComponentsBallotBoxContext.Builder()
+							.setElectionEventId(ee)
+							.setVerificationCardSetId(vcs_i)
+							.setBallotBoxId(bb_i)
+							.setElectionEventContext(electionEventContext)
+							.setSetupComponentPublicKeys(setupComponentPublicKeys)
+							.build();
+					final boolean bbOnlineCCVerif_i = verifyOnlineControlComponentsBallotBoxAlgorithm.verifyOnlineControlComponentsBallotBox(
+							Context_bb_i, Input_bb_i);
 
 					if (!bbOnlineCCVerif_i) {
-						LOGGER.error("The online control component ballot box is invalid. [ballotBoxId: {}]", bb);
+						LOGGER.error("The online control component ballot box is invalid. [ballotBoxId: {}]", bb_i);
 					}
 
 					return bbOnlineCCVerif_i;
 				})
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
-	}
-
-	private void verifyConsistency(final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads,
-			final List<ControlComponentShufflePayload> controlComponentShufflePayloads) {
-
-		checkState(allEqual(controlComponentBallotBoxPayloads.stream(), ControlComponentBallotBoxPayload::getEncryptionGroup),
-				"All control component ballot box payloads must have the same group.");
-		checkState(allEqual(controlComponentBallotBoxPayloads.stream(), ControlComponentBallotBoxPayload::getElectionEventId),
-				"All control component ballot box payloads must have the same election event id.");
-		checkState(allEqual(controlComponentBallotBoxPayloads.stream(), ControlComponentBallotBoxPayload::getBallotBoxId),
-				"All control component ballot box payloads must have the same ballot box id.");
-		checkState(allEqual(controlComponentBallotBoxPayloads.stream(), ControlComponentBallotBoxPayload::getConfirmedEncryptedVotes),
-				"All control component ballot box payloads must have the same confirmed encrypted votes.");
-
-		final List<Integer> ballotBoxPayloadsNodeIds = controlComponentBallotBoxPayloads.stream()
-				.parallel()
-				.map(ControlComponentBallotBoxPayload::getNodeId)
-				.toList();
-		checkState(NODE_IDS.size() == ballotBoxPayloadsNodeIds.size() && NODE_IDS.equals(new HashSet<>(ballotBoxPayloadsNodeIds)),
-				"Wrong number of control component ballot box payloads.");
-
-		checkState(allEqual(controlComponentShufflePayloads.stream(), ControlComponentShufflePayload::getEncryptionGroup),
-				"All control component shuffle payloads must have the same group.");
-		checkState(allEqual(controlComponentShufflePayloads.stream(), ControlComponentShufflePayload::getElectionEventId),
-				"All control component shuffle payloads must have the same election event id.");
-		checkState(allEqual(controlComponentShufflePayloads.stream(), ControlComponentShufflePayload::getBallotBoxId),
-				"All control component shuffle payloads must have the same ballot box id.");
-
-		final List<Integer> shufflePayloadsNodeIds = controlComponentShufflePayloads.stream()
-				.parallel()
-				.map(ControlComponentShufflePayload::getNodeId)
-				.toList();
-		checkState(NODE_IDS.size() == shufflePayloadsNodeIds.size() && NODE_IDS.equals(new HashSet<>(shufflePayloadsNodeIds)),
-				"Wrong number of control component shuffle payloads.");
-
-		// Cross-checks.
-		checkState(controlComponentBallotBoxPayloads.get(0).getEncryptionGroup().equals(controlComponentShufflePayloads.get(0).getEncryptionGroup()),
-				"The control component ballot box and shuffle payloads must have the same group.");
-		checkState(controlComponentBallotBoxPayloads.get(0).getElectionEventId().equals(controlComponentShufflePayloads.get(0).getElectionEventId()),
-				"The control component ballot box and shuffle payloads must have the same election event id.");
-		checkState(controlComponentBallotBoxPayloads.get(0).getBallotBoxId().equals(controlComponentShufflePayloads.get(0).getBallotBoxId()),
-				"The control component ballot box and shuffle payloads must have the same ballot box id.");
 	}
 
 }

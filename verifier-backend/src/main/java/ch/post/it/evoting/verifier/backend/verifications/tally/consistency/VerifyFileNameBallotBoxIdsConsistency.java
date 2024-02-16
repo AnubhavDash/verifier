@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
-import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
+import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
+import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -61,7 +61,7 @@ public class VerifyFileNameBallotBoxIdsConsistency extends AbstractVerification 
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification305.description"));
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification806.description"));
 		definition.setId("08.06");
 		definition.setName("VerifyFileNameBallotBoxIdsConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
@@ -82,7 +82,7 @@ public class VerifyFileNameBallotBoxIdsConsistency extends AbstractVerification 
 				.getElectionEventContext();
 		final Set<String> payloadBallotBoxIds = electionEventContext.verificationCardSetContexts().stream()
 				.parallel()
-				.map(VerificationCardSetContext::ballotBoxId)
+				.map(VerificationCardSetContext::getBallotBoxId)
 				.collect(Collectors.toUnmodifiableSet());
 
 		// Verifying set equality is sufficient since the payload ensures that there are no duplicate ballot box IDs.
@@ -93,7 +93,7 @@ public class VerifyFileNameBallotBoxIdsConsistency extends AbstractVerification 
 			verificationResult = VerificationResult.success(getVerificationDefinition());
 		} else {
 			verificationResult = VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification305.nok.message"));
+					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification806.nok.message"));
 		}
 
 		return verificationResult;

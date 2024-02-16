@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
-import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.hasNoDuplicates;
+import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.hasNoDuplicates;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
@@ -34,9 +34,9 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.collect.MoreCollectors;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
-import ch.post.it.evoting.cryptoprimitives.domain.validations.Validations;
+import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
+import ch.post.it.evoting.evotinglibraries.domain.validations.Validations;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -73,7 +73,7 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification311.description"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification312.description"));
 		definition.setId("03.12");
 		definition.setName("VerifyVerificationCardIdsConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
@@ -92,7 +92,7 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification311.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification312.nok.message"));
 		}
 	}
 
@@ -153,9 +153,9 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 					final String verificationCardSetId = verificationCardSetIdPath.getFileName().toString();
 					final int numberOfVotingCards = verificationCardSetContexts.stream()
 							.parallel()
-							.filter(vcs -> vcs.verificationCardSetId().equals(verificationCardSetId))
+							.filter(vcs -> vcs.getVerificationCardSetId().equals(verificationCardSetId))
 							.collect(MoreCollectors.onlyElement())
-							.numberOfVotingCards();
+							.getNumberOfVotingCards();
 
 					return new PayloadsVerificationCardIds(verificationDataIds, nodeIdsToCodeSharesIds, tallyDataIds, numberOfVotingCards);
 				})

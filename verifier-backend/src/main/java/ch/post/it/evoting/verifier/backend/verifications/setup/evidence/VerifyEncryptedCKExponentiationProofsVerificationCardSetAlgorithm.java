@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -61,31 +61,31 @@ public class VerifyEncryptedCKExponentiationProofsVerificationCardSetAlgorithm {
 		checkNotNull(context);
 		checkNotNull(input);
 
+		// Cross-group check.
+		checkArgument(context.getEncryptionGroup().equals(input.getEncryptedHashedConfirmationKey().getGroup()),
+				"The context and input must have the same encryption group.");
+
 		// Context.
-		final GqGroup group = context.getEncryptionGroup();
+		final GqGroup p_q_g = context.getEncryptionGroup();
 		final int j = context.getJ();
 		final String ee = context.getElectionEventId();
-		final String vcs = context.getVerificationCardSetId();
-		final int N_E = context.getNumberOfVoters();
+		final List<String> vc = context.getVerificationCardIds();
+		final int N_E = vc.size();
 
 		// Input.
-		final List<String> vc = input.getVerificationCardIds();
 		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_ck = input.getEncryptedHashedConfirmationKey();
 		final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> Kc_j = input.getVoterVoteCastReturnCodeGenerationPublicKeys();
 		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_expCK_j = input.getExponentiatedEncryptedHashedConfirmationKey();
 		final GroupVector<ExponentiationProof, ZqGroup> pi_expCK_j = input.getProofsOfCorrectCKExponentiation();
 
-		// Cross-group check.
-		checkArgument(c_ck.getGroup().equals(group), "The context and input must have the same encryption group.");
-
 		// Cross-size validations.
-		checkArgument(vc.size() == N_E, "The size of each input must be equal to the number of voters.");
+		checkArgument(N_E == c_ck.size(), "The size of each input must be equal to the number of voters.");
 
 		// Operation.
 		final boolean verified = IntStream.range(0, N_E)
 				.parallel()
 				.mapToObj(id -> {
-					final GroupVector<GqElement, GqGroup> g = Stream.concat(Stream.of(group.getGenerator()), c_ck.get(id).stream())
+					final GroupVector<GqElement, GqGroup> g = Stream.concat(Stream.of(p_q_g.getGenerator()), c_ck.get(id).stream())
 							.collect(GroupVector.toGroupVector());
 
 					final GroupVector<GqElement, GqGroup> y = Stream.concat(Kc_j.get(id).getKeyElements().stream(), c_expCK_j.get(id).stream())
@@ -96,16 +96,16 @@ public class VerifyEncryptedCKExponentiationProofsVerificationCardSetAlgorithm {
 					final boolean exponentiationVerif_id = zeroKnowledgeProof.verifyExponentiation(g, y, pi_expCK_j.get(id), i_aux);
 
 					if (exponentiationVerif_id) {
-						LOGGER.debug("The encrypted CK exponentiation proof is valid. [ee: {}, vcs: {}, j: {}, vc_id: {}]", ee, vcs, j, vc.get(id));
+						LOGGER.debug("The encrypted CK exponentiation proof is valid. [ee: {}, j: {}, vc_id: {}]", ee, j, vc.get(id));
 					} else {
-						LOGGER.error("The encrypted CK exponentiation proof is invalid. [ee: {}, vcs: {}, j: {}, vc_id: {}]", ee, vcs, j, vc.get(id));
+						LOGGER.error("The encrypted CK exponentiation proof is invalid. [ee: {}, j: {}, vc_id: {}]", ee, j, vc.get(id));
 					}
 					return exponentiationVerif_id;
 				})
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 
-		LOGGER.debug("Successfully verified the CK exponentiation proofs of all verification cards in verification card set ID. [vcs: {}]", vcs);
+		LOGGER.debug("Successfully verified the CK exponentiation proofs of all verification cards in verification card set ID.");
 
 		return verified;
 	}

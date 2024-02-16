@@ -1,6 +1,6 @@
 {
   "name": "Verifier",
-  "version": "1.4.4-0",
+  "version": "1.5.0-0",
   "license": "MIT",
   "main": "main.js",
   "scripts": {
@@ -24,7 +24,7 @@
     "@stomp/stompjs": "6.1.2",
     "bootstrap": "4.6.2",
     "bootstrap-icons": "1.11.3",
-    "core-js": "3.35.1",
+    "core-js": "3.35.0",
     "html2pdf.js": "0.10.1",
     "minimal-request-promise": "1.5.0",
     "net": "1.0.2",
@@ -32,7 +32,7 @@
     "rxjs": "7.8.1",
     "sockjs-client": "1.6.1",
     "stompjs": "2.3.3",
-    "zone.js": "0.13.3"
+    "zone.js": "0.13.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "15.2.10",
@@ -43,7 +43,7 @@
     "@angular/language-service": "15.2.10",
     "@types/jasmine": "4.6.4",
     "@types/jasminewd2": "2.0.13",
-    "@types/node": "18.19.9",
+    "@types/node": "18.19.6",
     "@typescript-eslint/eslint-plugin": "5.62.0",
     "@typescript-eslint/parser": "5.62.0",
     "electron": "24.3.1",
@@ -58,7 +58,7 @@
   },
   "overrides": {
     "commander": "3.0.2",
-    "minimatch": "3.0.5"
+    "minimatch": "3.1.2"
   },
   "engines": {
     "node": ">=14",

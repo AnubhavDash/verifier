@@ -1,49 +1,174 @@
+<!--
+  ~ (c) Copyright 2024 Swiss Post Ltd.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
 <div class="container-fluid">
   <div class="row m-1">
     <div class="col-12 p-1 m-1 text-center">
       <h1 class="display-1">Swiss Post Verifier</h1>
     </div>
   </div>
-  <input #fileUpload (change)="configurationUpload($event)" accept=".zip" style="display: none" type="file">
+  <input #fileUploadContext (change)="configurationUpload($event, 'context')" accept=".zip" onclick="this.value=null" style="display: none"
+         type="file">
+  <input #fileUpload (change)="configurationUpload($event, 'setup/tally')" accept=".zip" onclick="this.value=null" style="display: none" type="file">
   <div class="row m-1 mb-3">
     <div class="col-12 p-0">
       <div class="h-100 p-3 bg-white rounded shadow">
-        <div class="input-group mb-2">
-          <div class="input-group-prepend">
-            <span class="input-group-text bg-outline-secondary">Dataset</span>
-          </div>
-          <button (click)="fileUpload.click()" class="form-control upload-button" [ngClass]="{'is-invalid' : datasetLoadingError}"
-                  [disabled]="datasetLoading || (processStarted && !isProcessComplete())">
-            <span *ngIf="!filename && !datasetLoading && !datasetLoadingError">Not uploaded yet. Click to upload one</span>
-            <span *ngIf="!filename && datasetLoading && !datasetLoadingError">
-              <div class="spinner-border spinner-border-sm text-primary" role="status">
-                <span class="sr-only">In progress...</span>
-              </div>
-              Uploading dataset...
-            </span>
-            <span *ngIf="!datasetLoading && datasetLoadingError">An error occurred while uploading the dataset. More details in the logs.</span>
-            <span *ngIf="!datasetLoading && !datasetLoadingError && hash"><i aria-hidden="true" class="bi-check-circle text-success"></i></span>
-            {{filename}} <span *ngIf="hash">({{hash}})</span>
-          </button>
-        </div>
         <div class="row">
-          <div class="col-6">
-            <button (click)="startProcess(verifierEvent.PRE_SETUP)" [disabled]="startDisabled || datasetLoading"
-                    class="btn btn-primary mr-1" type="button">
-              <i aria-hidden="true" class="bi-caret-right-fill"></i> Verify Setup
+          <div class="col-12">
+            <h2 class="display-2 mb-3">Verification datasets</h2>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-2">
+            <div aria-controls="modalCenter" class="btn-group btn-block">
+              <label [class.active]="isSetupMode()" class="btn btn-outline-dark">
+                <input (click)="changeModeToSetup()" [disabled]="(processStarted && !isProcessComplete()) || isDatasetLoading()" autocomplete="off"
+                       class="custom-control-input" data-target="#modalCenter" data-toggle="modal" id="setupMode" type="radio">Setup Mode
+              </label>
+              <label [class.active]="isTallyMode()" class="btn btn-outline-dark">
+                <input (click)="changeModeToTally()" [disabled]="(processStarted && !isProcessComplete()) || isDatasetLoading()" autocomplete="off"
+                       class="custom-control-input" data-target="#modalCenter" data-toggle="modal" id="tallyMode" type="radio">Tally Mode
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div *ngIf="verifierMode" class="col-2">
+            <button (click)="fileUploadContext.click()" [disabled]="isDatasetLoading() || (processStarted && !isProcessComplete())"
+                    class="btn btn-block upload-button btn-secondary text-center"><i aria-hidden="true" class="bi-upload"></i> Upload Context
+              Dataset
             </button>
-            <button (click)="startProcess(verifierEvent.PRE_TALLY)" [disabled]="startDisabled || datasetLoading" class="btn btn-primary mr-1"
-                    type="button">
-              <i aria-hidden="true" class="bi-caret-right-fill"></i> Verify Tally
+          </div>
+          <div class="col-8 mt-2">
+            <span *ngIf="verifierMode && !contextFilename && !isDatasetLoading() && !contextDatasetLoadingError">Not uploaded yet. Click to upload one</span>
+            <span *ngIf="!contextFilename && contextDatasetLoading">
+                  <div class="spinner-border spinner-border-sm text-primary" role="status">
+                    <span class="sr-only">In progress...</span>
+                  </div>
+                  Uploading dataset...
+              </span>
+            <span *ngIf="!contextDatasetLoading && contextDatasetLoadingError">
+              <i aria-hidden="true" class="bi-exclamation-circle text-danger"></i>
+               An error occurred while uploading the dataset. More details in the logs.
+            </span>
+            <span *ngIf="!contextDatasetLoading && !contextDatasetLoadingError && contextFilename">
+                <i aria-hidden="true" class="bi-check-circle text-success"></i>
+              </span> {{contextFilename}}
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div *ngIf="triggerModal" aria-hidden="true" aria-labelledby="modalCenterTitle" class="modal fade" id="modalCenter"
+               role="dialog" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalCenterTitle">Careful!</h5>
+                </div>
+                <div class="modal-body">
+                  Are you sure you want to change the mode? All information will be lost.
+                </div>
+                <div class="modal-footer">
+                  <button (click)="this.triggerModal=false" class="btn btn-secondary" data-dismiss="modal" type="button">Keep mode</button>
+                  <button (click)="changeMode()" class="btn btn-danger" data-dismiss="modal" type="button">Change mode</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="contextFilename && verifierMode" class="col-2">
+            <button (click)="fileUpload.click()" [disabled]="isDatasetLoading() || (processStarted && !isProcessComplete())"
+                    class="btn upload-button btn-block btn-secondary text-center"><i aria-hidden="true" class="bi-upload"></i>
+              Upload {{getVerifierMode()}}
+              Dataset
+            </button>
+          </div>
+          <div *ngIf="contextFilename && verifierMode" class="col-8 mt-2">
+            <span *ngIf="!filename && !isDatasetLoading() && !datasetLoadingError">Not uploaded yet. Click to upload one</span>
+            <span *ngIf="!filename && datasetLoading">
+                  <div class="spinner-border spinner-border-sm text-primary" role="status">
+                    <span class="sr-only">In progress...</span>
+                  </div>
+                  Uploading dataset...
+              </span>
+            <span *ngIf="!datasetLoading && datasetLoadingError">
+                <i aria-hidden="true" class="bi-exclamation-circle text-danger"></i>
+               An error occurred while uploading the dataset. More details in the logs.
+            </span>
+            <span *ngIf="!datasetLoading && !datasetLoadingError && filename">
+                <i aria-hidden="true" class="bi-check-circle text-success"></i>
+              </span> {{filename}}
+          </div>
+        </div>
+        <div *ngIf="contextFilename" class="row mt-4">
+          <div class="col-12 mb-2">
+            <div class="row">
+              <div class="col-12">
+                <div class="custom-control custom-switch float-left">
+                  <input [(ngModel)]="displayDatasetInformation" class="custom-control-input" id="toggleDatasetInformationSwitch" type="checkbox">
+                  <label class="custom-control-label" for="toggleDatasetInformationSwitch">Display Dataset Information</label>
+                </div>
+              </div>
+            </div>
+            <ng-container *ngIf="displayDatasetInformation">
+              <div class="row mt-3">
+                <div class="col-12 font-weight-bold">
+                  VERIFICATION INPUT
+                  <hr class="my-1">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  Verifier application version
+                </div>
+                <div class="col-8">Swiss Post Verifier {{appVersion}}</div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  Election event id
+                </div>
+                <div class="col-8">{{electionEventId}}</div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  Context data input hash (SHA-256)
+                </div>
+                <div class="col-8">{{contextHash}}</div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  {{getVerifierMode()}} data input hash (SHA-256)
+                </div>
+                <div *ngIf="hash" class="col-8">{{hash}}</div>
+                <div *ngIf="!hash" class="col-8">-</div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+        <div *ngIf="contextFilename && verifierMode" class="row mb-2 mt-2">
+          <div class="col-2 btn-group btn-block">
+            <button (click)="startVerification()" [disabled]="isDatasetLoading() || startDisabled"
+                    class="btn btn-primary" type="button">
+              <i aria-hidden="true" class="bi-caret-right-fill"></i> Verify
             </button>
             <button (click)="resetProcess()" [disabled]="!isProcessComplete()" class="btn btn-outline-primary" type="button">
               <i aria-hidden="true" class="bi-arrow-counterclockwise"></i> Reset
             </button>
           </div>
-          <div class="col-1 font-weight-bold mt-2 text-right">
+          <div class="col-7 font-weight-bold mt-2 text-right">
             Status
           </div>
-          <div class="col-4 mt-2">
+          <div class="col-3 mt-2">
             <div *ngIf="!processStarted">
               Verification not run
             </div>
@@ -58,8 +183,8 @@
             </div>
           </div>
         </div>
-        <hr>
-        <div class="row" *ngIf="processStarted">
+        <div *ngIf="processStarted" class="row">
+          <hr>
           <div class="col-12">
             <div class="float-left">
               <button (click)="filterVerificationsRUNNING()" [class.active]="verificationFilter.RUNNING.active"
@@ -90,7 +215,7 @@
     </div>
   </div>
 
-  <div class="row m-1" id="verification-report" *ngIf="processStarted">
+  <div *ngIf="processStarted" class="row m-1" id="verification-report">
     <div class="col-12 p-3 mb-3 bg-white rounded shadow">
       <div class="row">
         <div class="col-6">
@@ -124,15 +249,15 @@
           <div class="col-4">
             Execution start date / time
           </div>
-          <div class="col-8" *ngIf="startDate === null">-</div>
-          <div class="col-8" *ngIf="startDate !== null">{{startDate}}</div>
+          <div *ngIf="startDate === null" class="col-8">-</div>
+          <div *ngIf="startDate !== null" class="col-8">{{startDate}}</div>
         </div>
         <div class="row">
           <div class="col-4">
             Execution end date / time
           </div>
-          <div class="col-8" *ngIf="processStarted && isProcessComplete()">{{endDate}}</div>
-          <div class="col-8" *ngIf="!processStarted">-</div>
+          <div *ngIf="processStarted && isProcessComplete()" class="col-8">{{endDate}}</div>
+          <div *ngIf="!processStarted" class="col-8">-</div>
         </div>
         <div class="row">
           <div class="col-4">
@@ -142,17 +267,24 @@
         </div>
         <div class="row">
           <div class="col-4">
-            Verification data input hash (SHA-256)
+            Context data input hash (SHA-256)
           </div>
-          <div class="col-8">{{hash}}</div>
+          <div class="col-8">{{contextHash}}</div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            {{getVerifierMode()}} data input hash (SHA-256)
+          </div>
+          <div *ngIf="hash" class="col-8">{{hash}}</div>
+          <div *ngIf="!hash" class="col-8">-</div>
         </div>
         <div class="row">
           <div class="col-4">
             Executed Verification
           </div>
-          <div class="col-8" *ngIf="(eventStarted === VerifierEvent.PRE_SETUP) || (eventStarted === VerifierEvent.SETUP)">Verify Setup</div>
-		  <div class="col-8" *ngIf="(eventStarted === VerifierEvent.PRE_TALLY) || (eventStarted === VerifierEvent.TALLY)">Verify Tally</div>
-          <div class="col-8" *ngIf="eventStarted === null">-</div>
+          <div *ngIf="isSetupEvent()" class="col-8">Verify Setup</div>
+          <div *ngIf="isTallyEvent()" class="col-8">Verify Tally</div>
+          <div *ngIf="eventStarted === null" class="col-8">-</div>
         </div>
         <div class="row mt-3">
           <div class="col-12 font-weight-bold">
@@ -185,6 +317,12 @@
             Election Event Name
           </div>
           <div class="col-8">{{electionEventName}}</div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            Election Event Seed
+          </div>
+          <div class="col-8">{{electionEventSeed}}</div>
         </div>
         <div class="row">
           <div class="col-4">
@@ -238,15 +376,15 @@
           <div class="col-4">
             Number of confirmed (non-test) votes
           </div>
-          <div class="col-8" *ngIf="numberOfConfirmedNonTestVotes === null">-</div>
-          <div class="col-8" *ngIf="!(numberOfConfirmedNonTestVotes === null)">{{numberOfConfirmedNonTestVotes}}</div>
+          <div *ngIf="numberOfConfirmedNonTestVotes === null" class="col-8">-</div>
+          <div *ngIf="!(numberOfConfirmedNonTestVotes === null)" class="col-8">{{numberOfConfirmedNonTestVotes}}</div>
         </div>
         <div class="row">
           <div class="col-4">
             Number of confirmed test votes
           </div>
-          <div class="col-8" *ngIf="numberOfConfirmedTestVotes === null">-</div>
-          <div class="col-8" *ngIf="!(numberOfConfirmedTestVotes === null)">{{numberOfConfirmedTestVotes}}</div>
+          <div *ngIf="numberOfConfirmedTestVotes === null" class="col-8">-</div>
+          <div *ngIf="!(numberOfConfirmedTestVotes === null)" class="col-8">{{numberOfConfirmedTestVotes}}</div>
         </div>
         <div class="row mt-3">
           <div class="col-12 font-weight-bold">
@@ -258,9 +396,9 @@
           <div class="col-4">
             Total number of relevant verifications
           </div>
-          <div class="col-8" *ngIf="(eventStarted === VerifierEvent.PRE_SETUP) || (eventStarted === VerifierEvent.SETUP)">{{totalNumberOfSetupVerifications}}</div>
-          <div class="col-8" *ngIf="(eventStarted === VerifierEvent.PRE_TALLY) || (eventStarted === VerifierEvent.TALLY)">{{totalNumberOfTallyVerifications}}</div>
-          <div class="col-8" *ngIf="eventStarted === null">-</div>
+          <div *ngIf="isSetupEvent()" class="col-8">{{totalNumberOfSetupVerifications}}</div>
+          <div *ngIf="isTallyEvent()" class="col-8">{{totalNumberOfTallyVerifications}}</div>
+          <div *ngIf="eventStarted === null" class="col-8">-</div>
         </div>
         <div class="row">
           <div class="col-4">

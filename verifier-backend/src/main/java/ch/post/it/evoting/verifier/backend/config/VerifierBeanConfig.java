@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,25 +31,35 @@ import org.springframework.context.annotation.Primary;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.ech.xmlns.ech_0110._4.Delivery;
-import ch.post.it.evoting.cryptoprimitives.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
+import ch.post.it.evoting.cryptoprimitives.hashing.Argon2;
+import ch.post.it.evoting.cryptoprimitives.hashing.Argon2Factory;
+import ch.post.it.evoting.cryptoprimitives.hashing.Argon2Profile;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hash;
 import ch.post.it.evoting.cryptoprimitives.hashing.HashFactory;
+import ch.post.it.evoting.cryptoprimitives.math.Base64;
+import ch.post.it.evoting.cryptoprimitives.math.BaseEncodingFactory;
+import ch.post.it.evoting.cryptoprimitives.math.Random;
+import ch.post.it.evoting.cryptoprimitives.math.RandomFactory;
 import ch.post.it.evoting.cryptoprimitives.mixnet.Mixnet;
 import ch.post.it.evoting.cryptoprimitives.mixnet.MixnetFactory;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureFactory;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
+import ch.post.it.evoting.evotinglibraries.domain.encryption.StreamedEncryptionDecryptionService;
+import ch.post.it.evoting.evotinglibraries.domain.mapper.DomainObjectMapper;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.proofofcorrectkeygeneration.VerifyCCSchnorrProofsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.proofofcorrectkeygeneration.VerifyKeyGenerationSchnorrProofsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.FactorizeAlgorithm;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetActualVotingOptionsAlgorithm;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetEncodedVotingOptionsAlgorithm;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetSemanticInformationAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetHashContextAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.PrimesMappingTableAlgorithms;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.DecodeWriteInsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.IntegerToWriteInAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.IsWriteInOptionAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.QuadraticResidueToWriteInAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.ProcessPlaintextsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.VerifyMixDecOfflineAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.VerifyVotingClientProofsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixonline.GetMixnetInitialCiphertextsAlgorithm;
@@ -89,6 +99,11 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
+	public Base64 base64() {
+		return BaseEncodingFactory.createBase64();
+	}
+
+	@Bean
 	public ElGamal elGamal() {
 		return ElGamalFactory.createElGamal();
 	}
@@ -102,10 +117,9 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
-	public VerifyVotingClientProofsAlgorithm verifyVotingClientProofsAlgorithm(final ZeroKnowledgeProof zeroKnowledgeProof
-	) {
-		return new VerifyVotingClientProofsAlgorithm(zeroKnowledgeProof, getEncodedVotingOptionsAlgorithm(), getActualVotingOptionsAlgorithm(),
-				getSemanticInformationAlgorithm());
+	public VerifyVotingClientProofsAlgorithm verifyVotingClientProofsAlgorithm(final ZeroKnowledgeProof zeroKnowledgeProof,
+			final GetHashContextAlgorithm getHashContextAlgorithm, final PrimesMappingTableAlgorithms primesMappingTableAlgorithms) {
+		return new VerifyVotingClientProofsAlgorithm(zeroKnowledgeProof, getHashContextAlgorithm, primesMappingTableAlgorithms);
 	}
 
 	@Bean
@@ -114,23 +128,26 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
-	public GetMixnetInitialCiphertextsAlgorithm getMixnetInitialCiphertextsAlgorithm(final ElGamal elGamal) {
-		return new GetMixnetInitialCiphertextsAlgorithm(elGamal);
+	public GetMixnetInitialCiphertextsAlgorithm getMixnetInitialCiphertextsAlgorithm(final Hash hash, final Base64 base64, final ElGamal elGamal) {
+		return new GetMixnetInitialCiphertextsAlgorithm(hash, base64, elGamal);
 	}
 
 	@Bean
-	public GetEncodedVotingOptionsAlgorithm getEncodedVotingOptionsAlgorithm() {
-		return new GetEncodedVotingOptionsAlgorithm();
+	public ProcessPlaintextsAlgorithm processPlaintextsAlgorithm(final ElGamal elGamal,
+			final FactorizeAlgorithm factorizeAlgorithm,
+			final DecodeWriteInsAlgorithm decodeWriteInsAlgorithm,
+			final PrimesMappingTableAlgorithms primesMappingTableAlgorithms) {
+		return new ProcessPlaintextsAlgorithm(elGamal, factorizeAlgorithm, decodeWriteInsAlgorithm, primesMappingTableAlgorithms);
 	}
 
 	@Bean
-	public GetActualVotingOptionsAlgorithm getActualVotingOptionsAlgorithm() {
-		return new GetActualVotingOptionsAlgorithm();
+	public PrimesMappingTableAlgorithms primesMappingTableAlgorithms() {
+		return new PrimesMappingTableAlgorithms();
 	}
 
 	@Bean
-	public GetSemanticInformationAlgorithm getSemanticInformationAlgorithm() {
-		return new GetSemanticInformationAlgorithm();
+	public GetHashContextAlgorithm getHashContextAlgorithm() {
+		return new GetHashContextAlgorithm();
 	}
 
 	@Bean
@@ -157,6 +174,17 @@ public class VerifierBeanConfig {
 	@Bean
 	public FactorizeAlgorithm factorizeAlgorithm() {
 		return new FactorizeAlgorithm();
+	}
+
+	@Bean
+	public VerifyCCSchnorrProofsAlgorithm verifyCCSchnorrProofsAlgorithm(final ZeroKnowledgeProof zeroKnowledgeProof) {
+		return new VerifyCCSchnorrProofsAlgorithm(zeroKnowledgeProof);
+	}
+
+	@Bean
+	public VerifyKeyGenerationSchnorrProofsAlgorithm verifyKeyGenerationSchnorrProofsAlgorithm(
+			final VerifyCCSchnorrProofsAlgorithm verifyCCSchnorrProofsAlgorithm) {
+		return new VerifyKeyGenerationSchnorrProofsAlgorithm(verifyCCSchnorrProofsAlgorithm);
 	}
 
 	@Bean
@@ -198,5 +226,20 @@ public class VerifierBeanConfig {
 	@Bean
 	XmlNormalizer xmlNormalizer() {
 		return new XmlNormalizer();
+	}
+
+	@Bean
+	Argon2 argon2Standard() {
+		return Argon2Factory.createArgon2(Argon2Profile.STANDARD);
+	}
+
+	@Bean
+	public Random random() {
+		return RandomFactory.createRandom();
+	}
+
+	@Bean
+	StreamedEncryptionDecryptionService streamedEncryptionDecryptionService(final Random random, final Argon2 argon2) {
+		return new StreamedEncryptionDecryptionService(random, argon2);
 	}
 }

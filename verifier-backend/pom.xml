@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ (c) Copyright 2024 Swiss Post Ltd.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
 				 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -6,13 +21,13 @@
 	<parent>
 		<artifactId>verifier</artifactId>
 		<groupId>ch.post.it.evoting.verifier</groupId>
-		<version>1.4.4.0</version>
+		<version>1.5.0.0</version>
 	</parent>
 
 	<artifactId>verifier-backend</artifactId>
 
 	<properties>
-		<jaxb-api.version>2.3.1</jaxb-api.version>
+		<jaxb-api.version>2.4.0-b180830.0359</jaxb-api.version>
 	</properties>
 
 	<dependencyManagement>
@@ -38,10 +53,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -93,20 +104,16 @@
 			<artifactId>crypto-primitives</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>ch.post.it.evoting.cryptoprimitives.domain</groupId>
-			<artifactId>crypto-primitives-domain</artifactId>
+			<groupId>ch.post.it.evoting.evotinglibraries</groupId>
+			<artifactId>e-voting-libraries-domain</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>ch.post.it.evoting.evotinglibraries</groupId>
-			<artifactId>domain</artifactId>
+			<artifactId>e-voting-libraries-protocol-algorithms</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>ch.post.it.evoting.evotinglibraries</groupId>
-			<artifactId>protocol-algorithms</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>ch.post.it.evoting.evotinglibraries</groupId>
-			<artifactId>xml</artifactId>
+			<artifactId>e-voting-libraries-xml</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.mapstruct</groupId>
@@ -137,17 +144,10 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>uk.org.webcompere</groupId>
-			<artifactId>system-stubs-core</artifactId>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>uk.org.webcompere</groupId>
 			<artifactId>system-stubs-jupiter</artifactId>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

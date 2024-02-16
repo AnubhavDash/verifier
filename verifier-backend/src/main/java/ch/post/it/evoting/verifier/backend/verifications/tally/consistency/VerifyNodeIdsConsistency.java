@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
-import static ch.post.it.evoting.cryptoprimitives.domain.ControlComponentConstants.NODE_IDS;
+import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
@@ -56,7 +56,7 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification308.description"));
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification809.description"));
 		definition.setId("08.09");
 		definition.setName("VerifyNodeIdsConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
@@ -69,17 +69,17 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 		final Map<String, List<ControlComponentBallotBoxPayload>> ballotBoxPayloads = extractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
 						inputDirectoryPath)
 				.parallel()
-				.collect(Collectors.groupingByConcurrent(ControlComponentBallotBoxPayload::getBallotBoxId));
+				.collect(Collectors.groupingByConcurrent(ControlComponentBallotBoxPayload::getBallotBoxId, Collectors.toUnmodifiableList()));
 		final Map<String, List<ControlComponentShufflePayload>> shufflePayloads = extractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
 						inputDirectoryPath)
 				.parallel()
-				.collect(Collectors.groupingByConcurrent(ControlComponentShufflePayload::getBallotBoxId));
+				.collect(Collectors.groupingByConcurrent(ControlComponentShufflePayload::getBallotBoxId, Collectors.toUnmodifiableList()));
 
 		if (isNodeIdConsistent(ballotBoxPayloads, shufflePayloads)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification308.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification809.nok.message"));
 		}
 	}
 

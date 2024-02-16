@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,10 +34,10 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Answers;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.evotinglibraries.domain.common.EncryptedVerifiableVote;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
+import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
@@ -212,8 +212,8 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 			final List<VerificationCardSetContext> verificationCardSetContexts = verificationCardSetIdAndBallotBoxId.stream()
 					.map(pair -> {
 						final VerificationCardSetContext mock = mock(VerificationCardSetContext.class);
-						when(mock.verificationCardSetId()).thenReturn(pair.getLeft());
-						when(mock.ballotBoxId()).thenReturn(pair.getRight());
+						when(mock.getVerificationCardSetId()).thenReturn(pair.getLeft());
+						when(mock.getBallotBoxId()).thenReturn(pair.getRight());
 						return mock;
 					})
 					.toList();

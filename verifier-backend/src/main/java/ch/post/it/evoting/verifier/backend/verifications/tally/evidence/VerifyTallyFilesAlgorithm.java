@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
-import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.validateUUID;
+import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.validateUUID;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Arrays;
@@ -26,10 +26,10 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import org.springframework.stereotype.Service;
 
 import ch.ech.xmlns.ech_0110._4.Delivery;
-import ch.post.it.evoting.cryptoprimitives.domain.validations.FailedValidationException;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hash;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
+import ch.post.it.evoting.evotinglibraries.domain.validations.FailedValidationException;
 import ch.post.it.evoting.evotinglibraries.xml.XmlNormalizer;
 import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableEch0110Factory;
 import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableEch0222Factory;
@@ -54,7 +54,7 @@ public class VerifyTallyFilesAlgorithm {
 	/**
 	 * Verifies the correctness of the evoting-decrypt, eCH-0110 and eCH-0222 files.
 	 *
-	 * @param electionEventId the associated election event id.
+	 * @param electionEventId the associated election event id. Must be a valid UUID.
 	 * @param input           the {@link VerifyTallyFilesInput} containing the configuration, evoting-decrypt, eCH-0110 and eCH-0222 files.
 	 * @return {@code true} if the files are correct, {@code false} otherwise.
 	 * @throws NullPointerException      if any input parameter is null.
@@ -73,22 +73,23 @@ public class VerifyTallyFilesAlgorithm {
 		final Results evotingDecryptXML = input.getTallyComponentDecrypt();
 		final Delivery eCH0110XML = input.getTallyComponentEch0110();
 		final ch.ech.xmlns.ech_0222._1.Delivery eCH0222XML = input.getTallyComponentEch0222();
-		final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads = input.getTallyComponentVotesPayloads();
+		final Map<String, TallyComponentVotesPayload> L_decodedVotesbb = input.getTallyComponentVotesPayloads();
 
 		// Operation.
-		final Results evotingDecryptXML_prime = ResultDeliveryMapper.toResults(configurationXML, tallyComponentVotesPayloads);
+		final Results evotingDecryptXML_prime = ResultDeliveryMapper.toResults(configurationXML, L_decodedVotesbb);
+
 		final Delivery eCH0110XML_prime = DeliveryMapper.INSTANCE.map(ee, configurationXML, evotingDecryptXML,
 				configurationXML.getAuthorizations().getAuthorization());
 		final Delivery eCH0110XML_prime_normalized = xmlNormalizer.normalizeWriteInsEch0110(eCH0110XML_prime);
+
 		final ch.ech.xmlns.ech_0222._1.Delivery eCH0222XML_prime = RawDataDeliveryMapper.createECH0222(ee, configurationXML, evotingDecryptXML);
 		final ch.ech.xmlns.ech_0222._1.Delivery eCH0222XML_prime_normalized = xmlNormalizer.normalizeWriteInsEch0220(eCH0222XML_prime);
 
-		// Ignore timestamp fields (use original timestamps in re-generated files).
+		// Ignore timestamp fields in eCH0110 and eCH0222 (use original timestamps in re-generated files).
 		final XMLGregorianCalendar eCH0110OriginalMessageDate = eCH0110XML.getDeliveryHeader().getMessageDate();
 		eCH0110XML_prime_normalized.getDeliveryHeader().withMessageDate(eCH0110OriginalMessageDate);
 		final XMLGregorianCalendar eCH0110OriginalCreationDateTime = eCH0110XML.getResultDelivery().getReportingBody().getCreationDateTime();
 		eCH0110XML_prime_normalized.getResultDelivery().getReportingBody().withCreationDateTime(eCH0110OriginalCreationDateTime);
-
 		final XMLGregorianCalendar eCH0222OriginalMessageDate = eCH0222XML.getDeliveryHeader().getMessageDate();
 		eCH0222XML_prime_normalized.getDeliveryHeader().withMessageDate(eCH0222OriginalMessageDate);
 		final XMLGregorianCalendar eCH0222OriginalCreationDateTime = eCH0222XML.getRawDataDelivery().getReportingBody().getCreationDateTime();

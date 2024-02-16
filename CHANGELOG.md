@@ -1,9 +1,28 @@
 # Changelog
 
-## Release 1.4.4
+## Release 1.5.0
 
-Release 1.4.4 is a minor maintenance patch containing the following changes:
+Release 1.5.0 includes some feedback from the Federal Chancellery's mandated experts and other experts of the community.
+We want to thank the experts for their high-quality, constructive remarks:
 
+* Thomas Edmund Haines (Australian National University), Olivier Pereira (Université catholique Louvain), Vanessa Teague (Thinking Cybersecurity)
+* Aleksander Essex (Western University Canada)
+* Rolf Haenni, Reto Koenig, Philipp Locher, Eric Dubuis (Bern University of Applied Sciences)
+
+The following functionalities and improvements are included in release 1.5.0:
+
+* Aligned the distinction between context and input variables (feedback from Rolf Haenni, Reto Koenig, Philipp Locher, Eric Dubuis).
+* Improved alignment of the implementation to the verifier specification (feedback from Rolf Haenni, Reto Koenig, Philipp Locher, Eric Dubuis).
+* Aligned voting option variables to specification changes.
+* Aligned the key sizes to the specification changes.
+* Simplified the VerifyProcessPlaintexts algorithm according to the verifier specification.
+* Restrain the format of the encryption parameters' seed and display it in the verifier overview.
+* Centralized the Schnorr proof verification methods to e-voting-libraries.
+* Added truncation in the verifier's treatment of the write-in contents.
+* Updated the verification of the semantic information.
+* Aligned the verification of the primes mapping table consistency to the extended primes mapping table object.
+* Modified the input files of the verifier into context, setup and tally.
+* Symmetrically encrypt the input files to the verifier as a security best practice.
 * Fixed the calculation of the number of confirmed votes in the PDF report for complex election events.
 * Regenerated the data set.
 * Updated dependencies and third-party libraries.
@@ -23,12 +42,7 @@ Release 1.4.2 is a minor maintenance patch containing the following changes:
 
 ## Release 1.4.1
 
-Release 1.4.1 includes some feedback from the Federal Chancellery's mandated experts and other experts of the community.
-We want to thank the experts for their high-quality, constructive remarks:
-
-* Thomas Edmund Haines (Australian National University), Olivier Pereira (Université catholique Louvain), Vanessa Teague (Thinking Cybersecurity)
-* Aleksander Essex (Western University Canada)
-* Rolf Haenni, Reto Koenig, Philipp Locher, Eric Dubuis (Bern University of Applied Sciences)
+Release 1.4.1 includes some feedback from the Federal Chancellery's mandated experts (see above) and other experts of the community.
 
 The following functionalities and improvements are included in release 1.4.1:
 

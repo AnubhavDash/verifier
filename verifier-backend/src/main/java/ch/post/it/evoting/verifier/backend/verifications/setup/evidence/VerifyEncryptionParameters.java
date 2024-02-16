@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,9 +22,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.EncryptionParametersPayload;
 import ch.post.it.evoting.cryptoprimitives.math.GqElement;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -59,7 +59,7 @@ public class VerifyEncryptionParameters extends AbstractVerification {
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification500.description"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification501.description"));
 		definition.setId("05.01");
 		definition.setName("VerifyEncryptionParameters");
 		definition.addVerifierEvent(SetupEvent.TYPE);
@@ -69,19 +69,19 @@ public class VerifyEncryptionParameters extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 		// Deserialize file.
-		final EncryptionParametersPayload encryptionParametersPayload = extractionService.getEncryptionParametersPayload(inputDirectoryPath);
-		final GqGroup encryptionGroup = encryptionParametersPayload.getEncryptionGroup();
+		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(inputDirectoryPath);
+		final GqGroup encryptionGroup = electionEventContextPayload.getEncryptionGroup();
 
 		// Extract parameters.
 		final BigInteger p_hat = encryptionGroup.getP();
 		final BigInteger q_hat = encryptionGroup.getQ();
 		final GqElement g_hat = encryptionGroup.getGenerator();
-		final String seed = encryptionParametersPayload.getSeed();
+		final String seed = electionEventContextPayload.getSeed();
 
 		final VerificationResult verificationResult;
 		if (!verifyEncryptionParametersAlgorithm.verifyEncryptionParameters(p_hat, q_hat, g_hat, seed)) {
 			verificationResult = VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification500.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification501.nok.message"));
 		} else {
 			verificationResult = VerificationResult.success(getVerificationDefinition());
 			LOGGER.info("Successfully verified the encryption parameters p, q, g. [p: {}, q: {}, g: {}]", p_hat, q_hat, g_hat);

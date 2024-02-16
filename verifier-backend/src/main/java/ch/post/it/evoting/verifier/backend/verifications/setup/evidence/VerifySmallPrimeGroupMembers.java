@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,10 +19,10 @@ import java.nio.file.Path;
 
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.EncryptionParametersPayload;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -53,7 +53,7 @@ public class VerifySmallPrimeGroupMembers extends AbstractVerification {
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.EVIDENCE);
 		definition.setDescription(TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME,
-				"setup.verification501.description"));
+				"setup.verification502.description"));
 		definition.setId("05.02");
 		definition.setName("VerifySmallPrimeGroupMembers");
 		definition.addVerifierEvent(SetupEvent.TYPE);
@@ -62,17 +62,18 @@ public class VerifySmallPrimeGroupMembers extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		// Get the encryption parameters.
-		final EncryptionParametersPayload encryptionParametersPayload = extractionService.getEncryptionParametersPayload(inputDirectoryPath);
+		// Get the election event context payload.
+		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(inputDirectoryPath);
+		final GqGroup encryptionGroup = electionEventContextPayload.getEncryptionGroup();
 
 		// Get the primes from the file.
-		final GroupVector<PrimeGqElement, GqGroup> smallPrimeGroupMembers = encryptionParametersPayload.getSmallPrimes();
+		final GroupVector<PrimeGqElement, GqGroup> smallPrimeGroupMembers = electionEventContextPayload.getSmallPrimes();
 
-		if (verifySmallPrimeGroupMembersAlgorithm.verifySmallPrimeGroupMembers(smallPrimeGroupMembers)) {
+		if (verifySmallPrimeGroupMembersAlgorithm.verifySmallPrimeGroupMembers(encryptionGroup, smallPrimeGroupMembers)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification501.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification502.nok.message"));
 		}
 	}
 }

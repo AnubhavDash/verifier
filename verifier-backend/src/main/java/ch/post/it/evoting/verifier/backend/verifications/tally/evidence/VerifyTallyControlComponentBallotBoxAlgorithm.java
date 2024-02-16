@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,8 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTable;
-import ch.post.it.evoting.cryptoprimitives.domain.election.PrimesMappingTableEntry;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientMessage;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
@@ -37,6 +35,8 @@ import ch.post.it.evoting.cryptoprimitives.mixnet.ShuffleArgument;
 import ch.post.it.evoting.cryptoprimitives.utils.VerificationResult;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.VerifiableDecryptions;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
+import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.PrimesMappingTableAlgorithms;
 
 @Service
 public class VerifyTallyControlComponentBallotBoxAlgorithm {
@@ -45,14 +45,15 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 
 	private final Mixnet mixnet;
 	private final ZeroKnowledgeProof zeroKnowledgeProof;
+	private final PrimesMappingTableAlgorithms primesMappingTableAlgorithms;
 	private final VerifyProcessPlaintextsAlgorithm verifyProcessPlaintextsAlgorithm;
 
-	public VerifyTallyControlComponentBallotBoxAlgorithm(
-			final Mixnet mixnet,
-			final ZeroKnowledgeProof zeroKnowledgeProof,
+	public VerifyTallyControlComponentBallotBoxAlgorithm(final Mixnet mixnet, final ZeroKnowledgeProof zeroKnowledgeProof,
+			final PrimesMappingTableAlgorithms primesMappingTableAlgorithms1,
 			final VerifyProcessPlaintextsAlgorithm verifyProcessPlaintextsAlgorithm) {
 		this.mixnet = mixnet;
 		this.zeroKnowledgeProof = zeroKnowledgeProof;
+		this.primesMappingTableAlgorithms = primesMappingTableAlgorithms1;
 		this.verifyProcessPlaintextsAlgorithm = verifyProcessPlaintextsAlgorithm;
 	}
 
@@ -67,8 +68,8 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 	 *     </ul>
 	 * </p>
 	 *
-	 * @param context the context containing the election event ID and the ballot box ID. Non-null.
-	 * @param input   the input containing the votes and the proofs to be verified. Non-null.
+	 * @param context the context as a {@link VerifyTallyControlComponentBallotBoxContext}. Non-null.
+	 * @param input   the input as a {@link VerifyTallyControlComponentBallotBoxInput}. Non-null.
 	 * @return {@code true} if all proofs verify, {@code false} otherwise
 	 * @throws NullPointerException if the context or the input is null.
 	 */
@@ -78,15 +79,19 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 		checkNotNull(context);
 		checkNotNull(input);
 
+		// Cross-group check.
+		checkArgument(context.getEncryptionGroup().equals(input.getPreviousPartiallyDecryptedVotes().getGroup()),
+				"The context and input should have the same encryption group.");
+
 		// Context.
-		final GqGroup encryptionGroup = context.getEncryptionGroup();
+		final GqGroup p_q_g = context.getEncryptionGroup();
 		final String ee = context.getElectionEventId();
 		final String bb = context.getBallotBoxId();
-		final ElGamalMultiRecipientPublicKey EB_pk = context.getElectoralBoardPublicKey();
 		final PrimesMappingTable pTable = context.getPrimesMappingTable();
-		final GroupVector<PrimeGqElement, GqGroup> p_w_tilde = context.getWriteInVotingOptions();
-		final int psi = context.getNumberOfSelectableVotingOptions();
-		final int delta_hat = context.getNumberOfAllowedWriteInsPlusOne();
+		final int psi = primesMappingTableAlgorithms.getPsi(pTable);
+		final int delta = primesMappingTableAlgorithms.getDelta(pTable);
+		final int N_E = context.getNumberOfEligibleVoters();
+		final ElGamalMultiRecipientPublicKey EB_pk = context.getElectoralBoardPublicKey();
 
 		// Input.
 		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_dec_4 = input.getPreviousPartiallyDecryptedVotes();
@@ -99,35 +104,33 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 		final List<List<String>> L_writeIns = input.getSelectedDecodedWriteInVotes();
 
 		// Cross-checks.
-		checkArgument(encryptionGroup.equals(c_dec_4.getGroup()), "The context and input should have the same encryption group.");
 		if (!L_votes.isEmpty()) {
 			checkArgument(L_votes.getElementSize() == psi,
-					"The size of the p_i_hat elements should be equal to the number of selectable encoded voting options.");
+					"The size of the p_i_hat elements and v_i_hat elements should be equal to the number of selections.");
 			// It is ensured by the GroupVector class that all elements in L_votes have the same size.
 		}
+		checkArgument(c_dec_4.getElementSize() == delta,
+				"All shuffled, partially decrypted and decrypted votes must be of size delta. [l: %s, delta: %s]", c_dec_4.getElementSize(),
+				delta);
 
-		// Requires.
-		final int l = c_dec_4.getElementSize();
+		// Require.
 		final int N_C_hat = c_dec_4.size();
 		final int N_C = L_votes.size();
-		final GroupVector<PrimeGqElement, GqGroup> p_tilde = pTable.getPTable().stream().parallel()
-				.map(PrimesMappingTableEntry::encodedVotingOption)
-				.collect(GroupVector.toGroupVector());
-
-		checkArgument(l == delta_hat);
-		checkArgument(N_C_hat >= 2, "The number of mixed votes must be greater than or equal to 2.");
-		checkArgument((N_C_hat == N_C) || (N_C_hat == N_C + 2 && N_C < 2),
+		checkArgument(N_E >= N_C, "The the number of eligible voters must be greater or equal to the number of confirmed votes.");
+		checkArgument((N_C_hat == N_C && N_C >= 2) || (N_C_hat == N_C + 2 && N_C < 2),
 				"The number of mixed votes must be equal to the number of processed votes, if the number of confirmed votes is 2 or greater. "
 						+ "Otherwise, there must be two more mixed votes than confirmed votes (for N_C = 0 or 1).");
-		checkArgument(L_votes.stream().parallel().allMatch(p_tilde::containsAll), "All selected voting options must be a subset of the total voting options.");
+		final GroupVector<PrimeGqElement, GqGroup> p_tilde = primesMappingTableAlgorithms.getEncodedVotingOptions(pTable, List.of());
+		checkArgument(L_votes.stream().parallel().allMatch(p_tilde::containsAll),
+				"All selected voting options must be a subset of the total voting options.");
 		L_votes.forEach(p_i_hat -> checkArgument(p_i_hat.stream().parallel().distinct().count() == p_i_hat.size(),
 				"All selected encoded voting options in a vote must be distinct."));
 
-		// Algorithm.
+		// Operation.
 		final List<String> i_aux = List.of(ee, bb, "MixDecOffline");
 
 		final ElGamalMultiRecipientPublicKey EB_pk_cut = new ElGamalMultiRecipientPublicKey(
-				GroupVector.from(EB_pk.getKeyElements().subList(0, delta_hat)));
+				GroupVector.from(EB_pk.getKeyElements().subList(0, delta)));
 
 		final VerificationResult shuffleVerif = mixnet.verifyShuffle(c_dec_4, c_mix_5, pi_mix_5, EB_pk_cut);
 		if (!shuffleVerif.isVerified()) {
@@ -143,13 +146,10 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 			LOGGER.info("The decryption proofs are valid. [ee: {}, bb: {}]", ee, bb);
 		}
 
-		final boolean processVerif = verifyProcessPlaintextsAlgorithm.verifyProcessPlaintexts(encryptionGroup,
+		final VerifyProcessPlaintextsContext verifyProcessPlaintextsContext = new VerifyProcessPlaintextsContext(p_q_g, pTable);
+		final boolean processVerif = verifyProcessPlaintextsAlgorithm.verifyProcessPlaintexts(verifyProcessPlaintextsContext,
 				new VerifyProcessPlaintextsInput.Builder()
-						.setPrimesMappingTable(pTable)
 						.setPlaintextVotes(m)
-						.setWriteInVotingOptions(p_w_tilde)
-						.setNumberOfSelectableVotingOptions(psi)
-						.setNumberOfAllowedWriteInsPlusOne(delta_hat)
 						.setSelectedEncodedVotingOptions(L_votes)
 						.setSelectedDecodedVotingOptions(L_decodedVotes)
 						.setSelectedDecodedWriteInVotes(L_writeIns)

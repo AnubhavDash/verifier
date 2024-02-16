@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,8 +15,8 @@
  */
 package ch.post.it.evoting.verifier.backend.tools;
 
-import static ch.post.it.evoting.cryptoprimitives.domain.ControlComponentConstants.NODE_IDS;
-import static ch.post.it.evoting.cryptoprimitives.domain.validations.Validations.validateUUID;
+import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
+import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.validateUUID;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
@@ -35,20 +35,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.MoreCollectors;
 
 import ch.ech.xmlns.ech_0110._4.Delivery;
-import ch.post.it.evoting.cryptoprimitives.domain.election.CombinedCorrectnessInformation;
-import ch.post.it.evoting.cryptoprimitives.domain.election.ElectionEventContext;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ElectionEventContextPayload;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.EncryptionParametersPayload;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.SetupComponentPublicKeysPayload;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.TallyComponentShufflePayload;
-import ch.post.it.evoting.cryptoprimitives.domain.returncodes.ControlComponentCodeSharesPayload;
-import ch.post.it.evoting.cryptoprimitives.domain.returncodes.SetupComponentVerificationDataPayload;
-import ch.post.it.evoting.cryptoprimitives.domain.validations.FailedValidationException;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
+import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.SetupComponentPublicKeysPayload;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
+import ch.post.it.evoting.evotinglibraries.domain.returncodes.ControlComponentCodeSharesPayload;
+import ch.post.it.evoting.evotinglibraries.domain.returncodes.SetupComponentVerificationDataPayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
+import ch.post.it.evoting.evotinglibraries.domain.validations.FailedValidationException;
 import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
 import ch.post.it.evoting.evotinglibraries.xml.XsdConstants;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
@@ -128,14 +126,6 @@ public class ElectionDataExtractionService {
 	}
 
 	/**
-	 * @param inputDirectoryPath the root directory containing project files.
-	 * @return if the tally component decrypt exists return true, otherwise false.
-	 */
-	public boolean existsTallyComponentDecrypt(final Path inputDirectoryPath) {
-		return pathService.existsFromRootPath(StructureKey.TALLY_COMPONENT_DECRYPT, inputDirectoryPath);
-	}
-
-	/**
 	 * Gets the tally component eCH-0110.
 	 *
 	 * @param inputDirectoryPath the root directory containing project files.
@@ -161,25 +151,6 @@ public class ElectionDataExtractionService {
 		final PathNode deliveryPathNode = pathService.buildFromRootPath(StructureKey.TALLY_COMPONENT_ECH0222, inputDirectoryPath);
 		return ech0222XmlFileRepository.read(deliveryPathNode.getPath(), XsdConstants.TALLY_COMPONENT_ECH_0222,
 				ch.ech.xmlns.ech_0222._1.Delivery.class);
-	}
-
-	/**
-	 * Gets the encryption parameters payload.
-	 *
-	 * @param inputDirectoryPath the root directory containing project files.
-	 * @return the encryption parameters payload found in the project files, at the expected location if it exists.
-	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
-	 * @throws UncheckedIOException if the file cannot be deserialized to an EncryptionParametersPayload.
-	 */
-	public EncryptionParametersPayload getEncryptionParametersPayload(final Path inputDirectoryPath) {
-		checkNotNull(inputDirectoryPath);
-
-		final PathNode encryptionParametersPathNode = pathService.buildFromRootPath(StructureKey.ENCRYPTION_PARAMETERS, inputDirectoryPath);
-		try {
-			return objectMapper.readValue(encryptionParametersPathNode.getPath().toFile(), EncryptionParametersPayload.class);
-		} catch (final IOException e) {
-			throw new UncheckedIOException("Failed to deserialize encryption parameters.", e);
-		}
 	}
 
 	/**
@@ -469,36 +440,6 @@ public class ElectionDataExtractionService {
 	}
 
 	/**
-	 * Gets the combined correctness information for the given verification card set.
-	 *
-	 * @param inputDirectoryPath    the dataset root directory.
-	 * @param verificationCardSetId the verification card set id for which to get setup component tally data payload.
-	 * @return the combined correctness information.
-	 * @throws NullPointerException      if {@code inputDirectoryPath} is null.
-	 * @throws FailedValidationException if {@code verificationCardSetId} is invalid.
-	 * @throws UncheckedIOException      if the deserialization of the setup component verification data payload fails.
-	 */
-	public CombinedCorrectnessInformation getCombinedCorrectnessInformation(final Path inputDirectoryPath, final String verificationCardSetId) {
-		checkNotNull(inputDirectoryPath);
-		validateUUID(verificationCardSetId);
-
-		final PathNode verificationCardSet = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SETS_DIR, inputDirectoryPath);
-
-		final Path verificationCardSetIdPath = verificationCardSet.getPath().resolve(verificationCardSetId);
-		// All chunks contain the same combined correctness information.
-		final Path setupComponentVerificationDataPath = pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA,
-				verificationCardSetIdPath).getRegexPaths().get(0);
-
-		try {
-			return objectMapper.readValue(setupComponentVerificationDataPath.toFile(), SetupComponentVerificationDataPayload.class)
-					.getCombinedCorrectnessInformation();
-		} catch (final IOException e) {
-			throw new UncheckedIOException(
-					String.format("Failed to deserialize combined correctness information. [path: %s]", setupComponentVerificationDataPath), e);
-		}
-	}
-
-	/**
 	 * Gets all tally component shuffle payloads of the different ballot boxes as a {@link Stream}.
 	 *
 	 * @param inputDirectoryPath the dataset root directory.
@@ -673,27 +614,6 @@ public class ElectionDataExtractionService {
 				.map(Stream::toList)
 				.sorted(Comparator.comparingInt(controlComponentCodeSharesPayloads -> controlComponentCodeSharesPayloads.get(0).getChunkId()))
 				.toList();
-	}
-
-	/**
-	 * Gets all control component code shares payloads of the different verification card sets as a {@link Stream}.
-	 *
-	 * @param inputDirectoryPath the dataset root directory.
-	 * @return all control component code shares payloads.
-	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
-	 * @throws UncheckedIOException if the deserialization of the control component code shares payloads fails.
-	 */
-	public Stream<Stream<ControlComponentCodeSharesPayload>> getControlComponentCodeSharesPayloadsByChunkAndVcs(final Path inputDirectoryPath) {
-		checkNotNull(inputDirectoryPath);
-
-		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
-		return verificationCardSets.getRegexPaths().stream()
-				.parallel()
-				.flatMap(verificationCardSetIdPath -> pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_CODE_SHARES,
-								verificationCardSetIdPath).getRegexPaths()
-						.stream()
-						.parallel())
-				.map(this::getControlComponentCodeSharesOrderByNodeId);
 	}
 
 	public Stream<ControlComponentCodeSharesPayload> getControlComponentCodeSharesOrderByNodeId(final Path controlComponentCodeSharesPayloadsPath) {

@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,12 +20,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.cryptoprimitives.domain.election.VerificationCardSetContext;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.ControlComponentShufflePayload;
-import ch.post.it.evoting.cryptoprimitives.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
 import ch.post.it.evoting.evotinglibraries.domain.common.EncryptedVerifiableVote;
+import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.PrimesMappingTableAlgorithms;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -40,11 +41,14 @@ import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerification
 public class VerifyCiphertextsConsistency extends AbstractVerification {
 
 	private final ElectionDataExtractionService extractionService;
+	private final PrimesMappingTableAlgorithms primesMappingTableAlgorithms;
 
 	public VerifyCiphertextsConsistency(final ResultPublisherService resultPublisherService,
-			final ElectionDataExtractionService extractionService) {
+			final ElectionDataExtractionService extractionService,
+			final PrimesMappingTableAlgorithms primesMappingTableAlgorithms) {
 		super(resultPublisherService);
 		this.extractionService = extractionService;
+		this.primesMappingTableAlgorithms = primesMappingTableAlgorithms;
 	}
 
 	@Override
@@ -53,7 +57,7 @@ public class VerifyCiphertextsConsistency extends AbstractVerification {
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification301.description"));
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification802.description"));
 		definition.setId("08.02");
 		definition.setName("VerifyCiphertextsConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
@@ -67,8 +71,8 @@ public class VerifyCiphertextsConsistency extends AbstractVerification {
 		final List<Ciphertexts> ciphertexts = verificationCardSetContexts.stream()
 				.parallel()
 				.map(vcsContext -> {
-					final String ballotBoxId = vcsContext.ballotBoxId();
-					final int numberWriteInsPlusOne = vcsContext.numberOfWriteInFields() + 1;
+					final String ballotBoxId = vcsContext.getBallotBoxId();
+					final int numberWriteInsPlusOne = primesMappingTableAlgorithms.getDelta(vcsContext.getPrimesMappingTable());
 					final List<ControlComponentBallotBoxPayload> ballotBoxPayloads = extractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(
 							inputDirectoryPath, ballotBoxId).toList();
 					final List<ControlComponentShufflePayload> shufflePayloads = extractionService.getControlComponentShufflePayloadsOrderedByNodeId(
@@ -82,7 +86,7 @@ public class VerifyCiphertextsConsistency extends AbstractVerification {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification301.nok.message"));
+					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification802.nok.message"));
 		}
 	}
 

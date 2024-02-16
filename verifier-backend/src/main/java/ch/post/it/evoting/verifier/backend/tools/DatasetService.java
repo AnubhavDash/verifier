@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,18 +39,21 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import jakarta.xml.bind.DatatypeConverter;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
+import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
+import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 
-import jakarta.xml.bind.DatatypeConverter;
 import net.lingala.zip4j.io.inputstream.ZipInputStream;
 import net.lingala.zip4j.model.LocalFileHeader;
 
 @Service
 public class DatasetService {
 	private final DirectoryService directoryService;
+	private final PathService pathService;
 
 	@Value("${direct.trust.keystore.type}")
 	private String keyStoreType;
@@ -61,12 +64,13 @@ public class DatasetService {
 	@Value("${direct.trust.keystore.password.location}")
 	private String keyStorePasswordLocation;
 
-	public DatasetService(final DirectoryService directoryService) {
+	public DatasetService(final DirectoryService directoryService, final PathService pathService) {
 		this.directoryService = directoryService;
+		this.pathService = pathService;
 	}
 
 	public Dataset unpack(final Dataset dataset) throws IOException {
-		checkNotNull(dataset, "The dataset must be not null");
+		checkNotNull(dataset, "The dataset must be not null.");
 
 		if (dataset.isUnpacked()) {
 			return dataset;
@@ -80,6 +84,7 @@ public class DatasetService {
 				if (!entry.isDirectory()) {
 					hasEntry = true;
 
+					setActualDatasetType(dataset, entry.getFileName());
 					final Path fileLocation = dataset.getUnpackFolder().resolve(entry.getFileName());
 
 					if (!Files.exists(fileLocation.getParent())) {
@@ -96,16 +101,21 @@ public class DatasetService {
 				throw new InvalidParameterException("input is not a ZIP file or is empty.");
 			}
 		}
+
+		checkState(dataset.getActualType() != null, "input is not a %s dataset.", dataset.getExpectedType());
+
 		dataset.setUnpacked(true);
 
 		return dataset;
 	}
 
-	public void clean(final Dataset dataset) {
+	public void clean(final Dataset dataset, final boolean deleteDirectory) {
 		checkNotNull(dataset);
 
 		final Path unpackFolder = dataset.getUnpackFolder();
-		directoryService.deleteTemporaryDirectory(unpackFolder);
+		if (deleteDirectory) {
+			directoryService.deleteDirectory(unpackFolder);
+		}
 		dataset.removeUnpackFolder();
 	}
 
@@ -138,7 +148,7 @@ public class DatasetService {
 		}
 
 		return Arrays.stream(Alias.values())
-				.filter(not(Alias.VOTING_SERVER::equals))
+				.filter(not(Alias.VOTING_SERVER::equals).and(not(Alias.PRINTING_COMPONENT::equals)).and(not(Alias.VERIFIER::equals)))
 				.map(Alias::get)
 				.collect(Collectors.toMap(
 						Function.identity(),
@@ -172,4 +182,12 @@ public class DatasetService {
 						}));
 	}
 
+	private void setActualDatasetType(final Dataset dataset, final String fileName) {
+		if (dataset.getActualType() == null) {
+			Arrays.stream(DatasetType.values())
+					.filter(datasetType -> pathService.matchesStructureKey(datasetType.getStructureKey(), fileName))
+					.findAny()
+					.ifPresent(dataset::setActualType);
+		}
+	}
 }

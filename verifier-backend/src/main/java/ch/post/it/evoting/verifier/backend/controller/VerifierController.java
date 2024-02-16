@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 package ch.post.it.evoting.verifier.backend.controller;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -25,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,6 +38,7 @@ import ch.post.it.evoting.verifier.backend.dto.DatasetConfiguration;
 import ch.post.it.evoting.verifier.backend.dto.Verification;
 import ch.post.it.evoting.verifier.backend.processor.VerifierProcessor;
 import ch.post.it.evoting.verifier.backend.tools.DatasetExtractionException;
+import ch.post.it.evoting.verifier.backend.tools.DatasetType;
 
 @RestController
 @RequestMapping("/api/")
@@ -63,20 +67,28 @@ public class VerifierController {
 		this.processor.resetExecution();
 	}
 
+	@PostMapping("/changeMode")
+	public void changeMode() {
+		this.processor.cleanSetupTally();
+	}
+
 	@GetMapping(value = "/datasetConfiguration")
 	public DatasetConfiguration getDatasetConfiguration() {
 		return this.processor.getDatasetConfiguration();
 	}
 
-	@PostMapping("/dataset")
+	@PostMapping("/dataset/{datasetType}")
 	public ResponseEntity<String> uploadDataset(
+			@PathVariable
+			final DatasetType datasetType,
 			@RequestParam("file")
 			final MultipartFile file) throws IOException {
+		checkNotNull(datasetType);
 
 		try (final InputStream inputStream = new BufferedInputStream(file.getInputStream())) {
-			this.processor.setDataset(inputStream, file.getOriginalFilename());
+			this.processor.setDataset(inputStream, file.getOriginalFilename(), datasetType);
 		} catch (final DatasetExtractionException e) {
-			LOGGER.error("An error occurred while uploading the dataset.", e);
+			LOGGER.error("An error occurred while uploading the dataset. [datasetType: {}]", datasetType, e);
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 

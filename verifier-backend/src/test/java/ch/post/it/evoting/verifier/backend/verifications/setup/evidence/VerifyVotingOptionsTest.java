@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Post CH Ltd
+ * (c) Copyright 2024 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -60,12 +60,12 @@ class VerifyVotingOptionsTest extends SetupVerificationTest {
 	@Test
 	@DisplayName("algorithm returning false is failed")
 	void algorithmReturningFalse() {
-		doReturn(false).when(verifyVotingOptionsAlgorithm).verifyVotingOptions(any(), any());
+		doReturn(false).when(verifyVotingOptionsAlgorithm).verifyVotingOptions(any(), any(), any());
 
 		final VerificationResult result = verification.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification502.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification503.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 
