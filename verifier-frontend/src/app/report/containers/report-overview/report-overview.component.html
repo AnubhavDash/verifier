@@ -32,15 +32,13 @@
         </div>
         <div class="row mb-2">
           <div class="col-2">
-            <div aria-controls="modalCenter" class="btn-group btn-block">
-              <label [class.active]="isSetupMode()" class="btn btn-outline-dark">
-                <input (click)="changeModeToSetup()" [disabled]="(processStarted && !isProcessComplete()) || isDatasetLoading()" autocomplete="off"
-                       class="custom-control-input" data-target="#modalCenter" data-toggle="modal" id="setupMode" type="radio">Setup Mode
-              </label>
-              <label [class.active]="isTallyMode()" class="btn btn-outline-dark">
-                <input (click)="changeModeToTally()" [disabled]="(processStarted && !isProcessComplete()) || isDatasetLoading()" autocomplete="off"
-                       class="custom-control-input" data-target="#modalCenter" data-toggle="modal" id="tallyMode" type="radio">Tally Mode
-              </label>
+            <div class="btn-group  btn-block">
+              <input (click)="changeModeToSetup()" [disabled]="(processStarted && !isProcessComplete()) || isDatasetLoading()" autocomplete="off"
+                     class="custom-control-input visually-hidden" id="setupMode" type="radio">
+              <label [class.active]="isSetupMode()" class="btn btn-outline-dark" for="setupMode">Setup Mode</label>
+              <input (click)="changeModeToTally()" [disabled]="(processStarted && !isProcessComplete()) || isDatasetLoading()" autocomplete="off"
+                     class="custom-control-input visually-hidden" id="tallyMode" type="radio">
+              <label [class.active]="isTallyMode()" class="btn btn-outline-dark" for="tallyMode">Tally Mode</label>
             </div>
           </div>
         </div>
@@ -55,7 +53,7 @@
             <span *ngIf="verifierMode && !contextFilename && !isDatasetLoading() && !contextDatasetLoadingError">Not uploaded yet. Click to upload one</span>
             <span *ngIf="!contextFilename && contextDatasetLoading">
                   <div class="spinner-border spinner-border-sm text-primary" role="status">
-                    <span class="sr-only">In progress...</span>
+                    <span class="visually-hidden">In progress...</span>
                   </div>
                   Uploading dataset...
               </span>
@@ -69,8 +67,7 @@
           </div>
         </div>
         <div class="row mb-2">
-          <div *ngIf="triggerModal" aria-hidden="true" aria-labelledby="modalCenterTitle" class="modal fade" id="modalCenter"
-               role="dialog" tabindex="-1">
+          <div aria-hidden="true" aria-labelledby="modalCenterTitle" class="modal fade" id="modalCenter" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -80,8 +77,8 @@
                   Are you sure you want to change the mode? All information will be lost.
                 </div>
                 <div class="modal-footer">
-                  <button (click)="this.triggerModal=false" class="btn btn-secondary" data-dismiss="modal" type="button">Keep mode</button>
-                  <button (click)="changeMode()" class="btn btn-danger" data-dismiss="modal" type="button">Change mode</button>
+                  <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Keep mode</button>
+                  <button (click)="changeMode()" class="btn btn-danger" data-bs-dismiss="modal" type="button">Change mode</button>
                 </div>
               </div>
             </div>
@@ -97,7 +94,7 @@
             <span *ngIf="!filename && !isDatasetLoading() && !datasetLoadingError">Not uploaded yet. Click to upload one</span>
             <span *ngIf="!filename && datasetLoading">
                   <div class="spinner-border spinner-border-sm text-primary" role="status">
-                    <span class="sr-only">In progress...</span>
+                    <span class="visually-hidden">In progress...</span>
                   </div>
                   Uploading dataset...
               </span>
@@ -114,9 +111,9 @@
           <div class="col-12 mb-2">
             <div class="row">
               <div class="col-12">
-                <div class="custom-control custom-switch float-left">
-                  <input [(ngModel)]="displayDatasetInformation" class="custom-control-input" id="toggleDatasetInformationSwitch" type="checkbox">
-                  <label class="custom-control-label" for="toggleDatasetInformationSwitch">Display Dataset Information</label>
+                <div class="form-check form-switch float-left">
+                  <input [(ngModel)]="displayDatasetInformation" class="form-check-input" id="toggleDatasetInformationSwitch" role="switch" type="checkbox">
+                  <label class="form-check-label" for="toggleDatasetInformationSwitch">Display Dataset Information</label>
                 </div>
               </div>
             </div>
@@ -174,7 +171,7 @@
             </div>
             <div *ngIf="processStarted && !isProcessComplete()">
               <div class="spinner-border spinner-border-sm text-primary" role="status">
-                <span class="sr-only">In progress...</span>
+                <span class="visually-hidden">In progress...</span>
               </div>
               Verification in progress...
             </div>
@@ -183,26 +180,25 @@
             </div>
           </div>
         </div>
-        <div *ngIf="processStarted" class="row">
+        <div *ngIf="processStarted" class="row mt-3">
           <hr>
           <div class="col-12">
             <div class="float-left">
               <button (click)="filterVerificationsRUNNING()" [class.active]="verificationFilter.RUNNING.active"
-                      class="btn btn-outline-primary mr-1 mt-1"
-                      type="button">
-                Running <span class="badge badge-light">{{statusCounterRUNNING()}}</span>
+                      class="btn btn-outline-primary mr-1 mt-1" type="button">
+                Running <span class="badge text-bg-light">{{statusCounterRUNNING()}}</span>
               </button>
               <button (click)="filterVerificationsOK()" [class.active]="verificationFilter.OK.active" class="btn btn-outline-success mr-1 mt-1"
                       type="button">
-                Success <span class="badge badge-light">{{statusCounterOK()}}</span>
+                Success <span class="badge text-bg-light">{{statusCounterOK()}}</span>
               </button>
               <button (click)="filterVerificationsNOK()" [class.active]="verificationFilter.NOK.active" class="btn btn-outline-danger mr-1 mt-1"
                       type="button">
-                Failure <span class="badge badge-light">{{statusCounterNOK()}}</span>
+                Failure <span class="badge text-bg-light">{{statusCounterNOK()}}</span>
               </button>
               <button (click)="filterVerificationsERROR()" [class.active]="verificationFilter.ERROR.active" class="btn btn-outline-warning mr-1 mt-1"
                       type="button">
-                Error <span class="badge badge-light">{{statusCounterERROR()}}</span>
+                Error <span class="badge text-bg-light">{{statusCounterERROR()}}</span>
               </button>
             </div>
             <div class="form-check ml-4 mt-2 pt-1 float-left">
@@ -218,17 +214,17 @@
   <div *ngIf="processStarted" class="row m-1" id="verification-report">
     <div class="col-12 p-3 mb-3 bg-white rounded shadow">
       <div class="row">
-        <div class="col-6">
+        <div class="col-9">
           <h2 class="display-2 mb-3">Verification report</h2>
         </div>
-        <div class="col-6 text-right" data-html2canvas-ignore>
+        <div class="col-3" data-html2canvas-ignore>
           <button (click)="exportToPDF()" [disabled]="!printMode || isExportingToPDF" class="btn btn-primary ml-3">
             <span *ngIf="isExportingToPDF" aria-hidden="true" class="spinner-grow spinner-grow-sm" role="status"></span>
             <i *ngIf="!isExportingToPDF" aria-hidden="true" class="bi-printer"></i> Print to PDF
           </button>
-          <div class="custom-control custom-switch float-right ml-3 mt-2">
-            <input [(ngModel)]="printMode" class="custom-control-input" id="togglePrintModeSwitch" type="checkbox">
-            <label class="custom-control-label" for="togglePrintModeSwitch">Print mode</label>
+          <div class="form-check form-switch float-right ml-3 mt-2">
+            <input [(ngModel)]="printMode" class="form-check-input" id="togglePrintModeSwitch" role="switch" type="checkbox">
+            <label class="form-check-label" for="togglePrintModeSwitch">Print mode</label>
           </div>
         </div>
       </div>
@@ -451,19 +447,19 @@
                 <td>{{verification.value.description | localize}}</td>
                 <td class="text-center h3">
                   <div *ngIf="isRUNNING(verification.value.status)" class="text-primary" role="status">
-                    <i aria-hidden="true" class="bi-circle"></i> <span class="sr-only">{{verification.value.status}}</span>
+                    <i aria-hidden="true" class="bi-circle"></i> <span class="visually-hidden">{{verification.value.status}}</span>
                   </div>
                   <div *ngIf="isOK(verification.value.status)" class="text-success" role="status">
-                    <i aria-hidden="true" class="bi-check-circle"></i> <span class="sr-only">{{verification.value.status}}</span>
+                    <i aria-hidden="true" class="bi-check-circle"></i> <span class="visually-hidden">{{verification.value.status}}</span>
                   </div>
                   <div *ngIf="isNotOK(verification.value.status)" role="status" title="{{verification.value.message | localize}}">
-                    <i aria-hidden="true" class="bi-x-circle"></i> <span class="sr-only">{{verification.value.status}}</span>
+                    <i aria-hidden="true" class="bi-x-circle"></i> <span class="visually-hidden">{{verification.value.status}}</span>
                   </div>
                   <div *ngIf="isError(verification.value.status)" role="status" title="{{verification.value.message | localize}}">
-                    <i aria-hidden="true" class="bi-exclamation-circle"></i> <span class="sr-only">{{verification.value.status}}</span>
+                    <i aria-hidden="true" class="bi-exclamation-circle"></i> <span class="visually-hidden">{{verification.value.status}}</span>
                   </div>
                   <div *ngIf="isNA(verification.value.status)" role="status">
-                    <i aria-hidden="true" class="bi-dash-circle"></i> <span class="sr-only">{{verification.value.status}}</span>
+                    <i aria-hidden="true" class="bi-dash-circle"></i> <span class="visually-hidden">{{verification.value.status}}</span>
                   </div>
                 </td>
               </tr>
