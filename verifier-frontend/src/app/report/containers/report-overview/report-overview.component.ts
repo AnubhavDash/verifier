@@ -25,6 +25,8 @@ import packageJson from '../../../../../package.json';
 import {DatasetType} from '../../models/dataset-type.enum';
 import {VerifierMode} from '../../models/verifier-mode.enum';
 
+declare let $: any;
+
 
 @Component({
   templateUrl: 'report-overview.component.html',
@@ -42,7 +44,6 @@ export class ReportOverviewComponent implements OnInit {
   verifierMode = null;
   printMode = false;
   displayDatasetInformation = true;
-  triggerModal = false;
   startDisabled = true;
   processStarted = false;
   eventStarted: string = null;
@@ -161,7 +162,6 @@ export class ReportOverviewComponent implements OnInit {
   }
 
   changeMode() {
-    this.triggerModal = false;
     const newVerifierMode = this.isTallyMode() ? VerifierMode.SETUP : VerifierMode.TALLY;
 
     this.resetProcess();
@@ -185,13 +185,12 @@ export class ReportOverviewComponent implements OnInit {
   }
 
   changeModeTo(verifierMode: VerifierMode) {
-    this.triggerModal = false;
     if (verifierMode === this.verifierMode) {
       return;
     }
 
     if (this.contextFilename || this.filename) {
-      this.triggerModal = true;
+      $('#modalCenter').modal('show');
       return;
     }
 
@@ -450,7 +449,6 @@ export class ReportOverviewComponent implements OnInit {
     this.numberOfVotes = 0;
     this.numberOfNonTestBallotBoxes = 0;
     this.numberOfTestBallotBoxes = 0;
-    this.triggerModal = false;
 
     this.processorService.uploadDataset(file, DatasetType.CONTEXT).subscribe({
       next: () => {
