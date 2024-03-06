@@ -27,7 +27,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<download-maven-plugin.version>1.8.0</download-maven-plugin.version>
+		<download-maven-plugin.version>1.8.1</download-maven-plugin.version>
 	</properties>
 
 	<dependencies>

@@ -39,7 +39,7 @@
 		<bouncycastle.version>1.77</bouncycastle.version>
 		<commons-codec.version>1.16.1</commons-codec.version>
 		<crypto-primitives-version>1.4.1.0-b0</crypto-primitives-version>
-		<e-voting-libraries.version>1.4.1.0-b0</e-voting-libraries.version>
+		<e-voting-libraries.version>1.4.1.0-b1</e-voting-libraries.version>
 		<guava.version>33.0.0-jre</guava.version>
 		<jackson.version>2.16.1</jackson.version>
 		<jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
@@ -56,13 +56,13 @@
 		<maven-release-plugin.version>3.0.1</maven-release-plugin.version>
 		<maven-source-plugin.version>3.3.0</maven-source-plugin.version>
 		<maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
-		<mockito.version>5.10.0</mockito.version>
+		<mockito.version>5.11.0</mockito.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<reproducible-build-maven-plugin.version>0.15.2</reproducible-build-maven-plugin.version>
 		<rootProject>verifier</rootProject>
 		<slf4j.version>2.0.12</slf4j.version>
 		<sonar-maven-plugin.version>3.10.1.2184</sonar-maven-plugin.version>
-		<spring-boot.version>3.2.2</spring-boot.version>
+		<spring-boot.version>3.2.3</spring-boot.version>
 		<system-stubs-jupiter.version>2.1.6</system-stubs-jupiter.version>
 		<versions-maven-plugin.version>2.16.2</versions-maven-plugin.version>
 		<zip4j.version>2.11.5</zip4j.version>
