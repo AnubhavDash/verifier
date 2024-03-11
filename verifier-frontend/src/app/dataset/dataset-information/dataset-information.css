@@ -13,36 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-.border-left.border-10 {
-  border-width: 10px;
+.verifier-mode {
+  text-transform: lowercase;
+  display: inline-block;
 }
 
-.block-name {
+.verifier-mode:first-line {
   text-transform: capitalize;
-}
-
-
-.error-view-details {
-  display: none;
-}
-
-.error-hide-details {
-  display: inline;
-}
-
-.collapsed > .error-view-details {
-  display: inline;
-}
-
-.collapsed > .error-hide-details {
-  display: none;
-}
-
-.upload-button {
-  text-align: left;
-}
-
-.table thead th {
-  border-top: none;
 }

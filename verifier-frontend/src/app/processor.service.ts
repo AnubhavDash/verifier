@@ -16,9 +16,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {environment} from '../../../environments/environment';
-import {DatasetConfiguration} from '../models/DatasetConfiguration.interface';
-import {DatasetType} from '../models/dataset-type.enum';
+import {environment} from '../environments/environment';
+import {DatasetConfiguration} from './dataset/dataset-configuration/DatasetConfiguration.interface';
+import {DatasetType} from './dataset/dataset-upload/dataset-type.enum';
 
 @Injectable()
 export class ProcessorService {

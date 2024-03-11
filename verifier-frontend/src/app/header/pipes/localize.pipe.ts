@@ -13,23 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {NgModule} from '@angular/core';
-import {ProcessorService} from './processor.service';
-import {CommonModule} from '@angular/common';
-import {BrowserModule} from '@angular/platform-browser';
+import {Inject, LOCALE_ID, Pipe, PipeTransform} from '@angular/core';
 
-@NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    BrowserModule
-  ],
-  exports: [
-    CommonModule,
-    BrowserModule
-  ],
-  providers: [ProcessorService]
-})
-export class VerifierCommonModule {
+@Pipe({name: 'localize'})
+export class LocalizePipe implements PipeTransform {
 
+  constructor(@Inject(LOCALE_ID) private language: string) {
+  }
+
+  transform(value: object) {
+    return value?.[this.language] ?? '';
+  }
 }

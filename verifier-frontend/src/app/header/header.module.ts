@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {ReportOverviewComponent} from './containers/report-overview/report-overview.component';
-import {ProcessorService} from './services/processor.service';
+import {HeaderComponent} from './header.component';
+import {ProcessorService} from '../processor.service';
 import {VerifierCommonModule} from '../verifier-common-module';
 import {StatusFilterPipe} from './pipes/statusFilter.pipe';
 import {RouterModule, Routes} from '@angular/router';
@@ -22,12 +22,16 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import {LocalizePipe} from './pipes/localize.pipe';
+import {DatasetUploadComponent} from '../dataset/dataset-upload/dataset-upload.component';
+import {ReportDetailsComponent} from '../report/report-details/report-details.component';
+import {VerifierModeComponent} from '../verifier-mode/verifier-mode.component';
+import {DatasetInformationComponent} from '../dataset/dataset-information/dataset-information';
 
 const routes: Routes = [
   {
     path: 'report',
     children: [
-      {path: '', component: ReportOverviewComponent}
+      {path: '', component: HeaderComponent}
     ]
   }
 ];
@@ -36,7 +40,11 @@ const routes: Routes = [
   declarations: [
     StatusFilterPipe,
     LocalizePipe,
-    ReportOverviewComponent
+    HeaderComponent,
+    DatasetInformationComponent,
+    DatasetUploadComponent,
+    ReportDetailsComponent,
+    VerifierModeComponent
   ],
   imports: [
     BrowserModule,
@@ -48,5 +56,5 @@ const routes: Routes = [
   providers: [ProcessorService]
 })
 
-export class ReportModule {
+export class HeaderModule {
 }

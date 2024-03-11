@@ -18,7 +18,7 @@ import {NgModule} from '@angular/core';
 
 
 import {AppComponent} from './app.component';
-import {ReportModule} from './report/report.module';
+import {HeaderModule} from './header/header.module';
 import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from './home.component';
 import {HttpClientModule} from '@angular/common/http';
@@ -37,7 +37,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes),
     BrowserModule,
-    ReportModule,
+    HeaderModule,
     HttpClientModule,
     CommonModule,
     VerifierCommonModule,
