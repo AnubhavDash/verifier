@@ -13,67 +13,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {ProcessorService} from '../../services/processor.service';
+import {ProcessorService} from '../processor.service';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
-import {VerificationDefinition} from '../../models/VerificationDefinition.interface';
-import {environment} from '../../../../environments/environment';
-import {VerifierEvent} from '../../models/verifier-event.enum';
+import {VerificationDefinition} from './VerificationDefinition.interface';
+import {environment} from '../../environments/environment';
+import {VerifierEvent} from './verifier-event.enum';
 import {Component, OnInit} from '@angular/core';
 import * as html2pdf from 'html2pdf.js';
-import packageJson from '../../../../../package.json';
-import {DatasetType} from '../../models/dataset-type.enum';
-import {VerifierMode} from '../../models/verifier-mode.enum';
+import {VerifierMode} from '../verifier-mode/verifier-mode.enum';
+import {DatasetConfiguration} from '../dataset/dataset-configuration/DatasetConfiguration.interface';
+import {DatasetType} from '../dataset/dataset-upload/dataset-type.enum';
 
 declare let $: any;
 
 
 @Component({
-  templateUrl: 'report-overview.component.html',
-  styleUrls: ['report-overview.component.css'],
+  templateUrl: 'header.component.html',
+  styleUrls: ['header.component.css'],
   providers: []
 })
-export class ReportOverviewComponent implements OnInit {
+export class HeaderComponent implements OnInit {
 
-  verifications = {};
   verificationsSize = 0;
-  totalNumberOfSetupVerifications = 0;
-  totalNumberOfTallyVerifications = 0;
-  verificationStatusFilter = '';
-  toggleMessage = true;
-  verifierMode = null;
-  printMode = false;
   displayDatasetInformation = true;
   startDisabled = true;
   processStarted = false;
   eventStarted: string = null;
   verifierEvent = VerifierEvent;
+  isExportingToPDF = false;
+  configuration: DatasetConfiguration = new DatasetConfiguration();
+  contextFilename = '';
+  contextHash = '';
+  filename = '';
+  hash = '';
   startDate: string = null;
   endDate: string = null;
-  isExportingToPDF = false;
-  contextDatasetLoading = false;
-  datasetLoading = false;
-  contextDatasetLoadingError = false;
-  datasetLoadingError = false;
-  contextFilename = '';
-  filename = '';
-  contextHash = '';
-  hash = '';
-  electionEventId = '';
-  fingerprints: Map<string, string> = new Map();
-  appVersion = '';
-  electionEventName = '';
-  electionEventSeed = '';
-  electionEventDate: string;
-  numberOfElections = 0;
-  numberOfVotes = 0;
-  numberOfBallots = 0;
-  numberOfNonTestBallotBoxes = 0;
-  numberOfTestBallotBoxes = 0;
-  totalNumberOfAuthorizedNonTestVoters = 0;
-  totalNumberOfTestVoters = 0;
-  numberOfConfirmedNonTestVotes: number = null;
-  numberOfConfirmedTestVotes: number = null;
+  printMode = false;
+  toggleMessage = true;
+  totalNumberOfSetupVerifications = 0;
+  totalNumberOfTallyVerifications = 0;
+  uploadingDataset = false;
+  verifications = {};
+  verificationStatusFilter = '';
+  verifierMode = null;
 
   verificationFilter = {
     ALL: {
@@ -102,20 +85,9 @@ export class ReportOverviewComponent implements OnInit {
     }
   };
 
-  fingerprintsNames = {
-    canton: 'Canton',
-    sdm_config: 'Setup Component',
-    sdm_tally: 'Tally Control Component',
-    control_component_1: 'Control Component 1',
-    control_component_2: 'Control Component 2',
-    control_component_3: 'Control Component 3',
-    control_component_4: 'Control Component 4'
-  };
-
   private stompClient;
 
   constructor(private processorService: ProcessorService) {
-    this.appVersion = packageJson.version;
   }
 
   static convert(input: any): VerificationDefinition {
@@ -133,10 +105,6 @@ export class ReportOverviewComponent implements OnInit {
     return result;
   }
 
-  fingerPrintsNamesKeys() {
-    return Object.keys(this.fingerprintsNames);
-  };
-
   ngOnInit(): void {
     this.initTable();
     this.initializeWebSocketConnection();
@@ -147,7 +115,7 @@ export class ReportOverviewComponent implements OnInit {
       this.verificationsSize = results.length;
       const verifications = {};
       for (const verification of results) {
-        verifications[verification.id] = ReportOverviewComponent.convert(verification);
+        verifications[verification.id] = HeaderComponent.convert(verification);
       }
       this.verifications = verifications;
 
@@ -161,44 +129,30 @@ export class ReportOverviewComponent implements OnInit {
     });
   }
 
-  changeMode() {
-    const newVerifierMode = this.isTallyMode() ? VerifierMode.SETUP : VerifierMode.TALLY;
+  // Change verifier mode.
+  setNewVerifierMode(newVerifierMode: VerifierMode): void {
+    this.printMode = false;
+    this.contextFilename = undefined;
+    this.contextHash = undefined;
+    this.filename = undefined;
+    this.hash = undefined;
+    this.configuration = new DatasetConfiguration();
+    this.configuration.tally = null;
+    this.configuration.setup = null;
+    this.startDisabled = true;
+
+    if(!this.contextFilename) {
+      this.verifierMode = newVerifierMode;
+      return;
+    }
 
     this.resetProcess();
     this.processorService.changeMode().subscribe((_value) => {
-      this.filename = '';
-      this.hash = '';
-      this.contextFilename = '';
-      this.contextHash = '';
-      this.startDisabled = true;
-      this.datasetLoadingError = false;
       this.verifierMode = newVerifierMode;
     });
   }
 
-  changeModeToTally() {
-    this.changeModeTo(VerifierMode.TALLY);
-  }
-
-  changeModeToSetup() {
-    this.changeModeTo(VerifierMode.SETUP);
-  }
-
-  changeModeTo(verifierMode: VerifierMode) {
-    if (verifierMode === this.verifierMode) {
-      return;
-    }
-
-    if (this.contextFilename || this.filename) {
-      $('#modalCenter').modal('show');
-      return;
-    }
-
-    this.startDisabled = true;
-    this.datasetLoadingError = false;
-    this.verifierMode = verifierMode;
-  }
-
+  // Start verifications.
   startVerification(): void {
     switch (this.verifierMode) {
       case VerifierMode.SETUP:
@@ -267,6 +221,7 @@ export class ReportOverviewComponent implements OnInit {
       this.eventStarted = null;
       this.startDate = null;
       this.endDate = null;
+      this.printMode = false;
     });
   }
 
@@ -279,7 +234,7 @@ export class ReportOverviewComponent implements OnInit {
         if (message.body) {
           const verificationsCopy = (JSON.parse(JSON.stringify(that.verifications)));
           const result = JSON.parse(message.body);
-          verificationsCopy[result.id] = ReportOverviewComponent.convert(result);
+          verificationsCopy[result.id] = HeaderComponent.convert(result);
           that.verifications = verificationsCopy;
           that.activateResultVerificationFilters();
 
@@ -294,46 +249,7 @@ export class ReportOverviewComponent implements OnInit {
     });
   }
 
-  getVerifierMode() {
-    return this.verifierMode.charAt(0) + this.verifierMode.slice(1).toLowerCase();
-  }
-
-  isSetupMode() {
-    return this.verifierMode === VerifierMode.SETUP;
-  }
-
-  isTallyMode() {
-    return this.verifierMode === VerifierMode.TALLY;
-  }
-
-  isSetupEvent() {
-    return (this.eventStarted === VerifierEvent.PRE_SETUP) || (this.eventStarted === VerifierEvent.SETUP);
-  }
-
-  isTallyEvent() {
-    return (this.eventStarted === VerifierEvent.PRE_TALLY) || (this.eventStarted === VerifierEvent.TALLY);
-  }
-
-  isRUNNING(status) {
-    return status === 'RUNNING';
-  }
-
-  isOK(status) {
-    return status === 'OK';
-  }
-
-  isNotOK(status) {
-    return status === 'NOK';
-  }
-
-  isNA(status) {
-    return status === 'NA';
-  }
-
-  isError(status) {
-    return status === 'UNEXPECTED_ERROR';
-  }
-
+  // Filters.
   filterVerificationsAll() {
     this.verificationStatusFilter = this.verificationFilter['ALL'].value;
     const allFilters = Object.keys(this.verificationFilter);
@@ -362,6 +278,7 @@ export class ReportOverviewComponent implements OnInit {
     this.toggleVerificationFilter('NA');
   }
 
+  // Status counter.
   statusCounterAll() {
     return this.statusCounterOK() + this.statusCounterNOK() + this.statusCounterNA() + this.statusCounterERROR();
   }
@@ -386,7 +303,7 @@ export class ReportOverviewComponent implements OnInit {
     return this.statusCounter(this.verificationFilter.ERROR.value);
   }
 
-  // PDF Export
+  // PDF Export.
   exportToPDF() {
     this.isExportingToPDF = true;
     const pdfFileName = `verifier-report-${this.getCurrentDateFile()}`;
@@ -416,123 +333,84 @@ export class ReportOverviewComponent implements OnInit {
     }).save();
   }
 
-  // Upload dataset
-  configurationUpload(event, datasetType: string) {
-    const file = event.target.files[0];
-    if (file) {
-      this.eventStarted = null;
-      this.startDate = null;
-      this.endDate = null;
+  // General.
+  actionsDisabled(): boolean {
+    return this.uploadingDataset || (this.processStarted && !this.isProcessComplete());
+  }
 
-      if (datasetType === DatasetType.CONTEXT) {
-        return this.configurationUploadContext(file);
-      } else if (this.isSetupMode()) {
-        return this.configurationUploadSetup(file);
-      } else if (this.isTallyMode()) {
-        return this.configurationUploadTally(file);
-      }
+  // Upload dataset.
+  getDatasetTypeContext(): DatasetType {
+    return (this.verifierMode) ? DatasetType.CONTEXT : undefined;
+  }
+
+  getDatasetType(): DatasetType {
+    switch (this.verifierMode) {
+      case VerifierMode.SETUP: return DatasetType.SETUP;
+      case VerifierMode.TALLY: return DatasetType.TALLY;
+      default: return undefined;
     }
   }
 
-  configurationUploadContext(file) {
-    this.startDisabled = true;
-    this.contextDatasetLoading = true;
-    this.contextFilename = '';
-    this.filename = '';
-    this.contextHash = '';
-    this.hash = '';
-    this.electionEventId = '';
-    this.fingerprints = new Map();
-    this.electionEventName = '';
-    this.electionEventSeed = '';
-    this.numberOfElections = 0;
-    this.numberOfVotes = 0;
-    this.numberOfNonTestBallotBoxes = 0;
-    this.numberOfTestBallotBoxes = 0;
-
-    this.processorService.uploadDataset(file, DatasetType.CONTEXT).subscribe({
-      next: () => {
-        this.processorService.getDatasetConfiguration().subscribe(configuration => {
-          this.contextDatasetLoading = false;
-          this.contextDatasetLoadingError = false;
-          this.contextFilename = configuration.context.filename;
-          this.contextHash = configuration.context.hash;
-          this.electionEventId = configuration.context.electionEventId;
-          this.fingerprints = configuration.context.aliasesToFingerprints;
-          this.electionEventName = configuration.context.electionEventName;
-          this.electionEventSeed = configuration.context.electionEventSeed;
-          this.electionEventDate = configuration.context.electionEventDate;
-          this.numberOfElections = configuration.context.numberOfElections;
-          this.numberOfVotes = configuration.context.numberOfVotes;
-          this.numberOfBallots = configuration.context.numberOfBallots;
-          this.numberOfNonTestBallotBoxes = configuration.context.numberOfNonTestBallotBoxes;
-          this.numberOfTestBallotBoxes = configuration.context.numberOfTestBallotBoxes;
-          this.totalNumberOfAuthorizedNonTestVoters = configuration.context.totalNumberOfAuthorizedNonTestVoters;
-          this.totalNumberOfTestVoters = configuration.context.totalNumberOfTestVoters;
-        });
-      },
-      error: () => {
-        this.contextDatasetLoading = false;
-        this.contextDatasetLoadingError = true;
-      }
-    });
+  setDatasetConfigurationContext(configuration: DatasetConfiguration): void {
+    this.contextFilename = configuration.context.filename;
+    this.contextHash = configuration.context.hash;
+    this.configuration.context = configuration.context;
   }
 
-  configurationUploadSetup(file) {
-    this.datasetLoading = true;
-    this.filename = '';
-    this.hash = '';
-
-    this.processorService.uploadDataset(file, DatasetType.SETUP).subscribe({
-      next: () => {
-        this.processorService.getDatasetConfiguration().subscribe(configuration => {
-          this.datasetLoading = false;
-          this.datasetLoadingError = false;
-          this.filename = configuration.setup.filename;
-          this.hash = configuration.setup.hash;
-          if (configuration.context) {
-            this.startDisabled = false;
-          }
-        });
-      },
-      error: () => {
-        this.datasetLoading = false;
-        this.datasetLoadingError = true;
-      }
-    });
+  setDatasetConfiguration(configuration: DatasetConfiguration): void {
+    switch (this.verifierMode) {
+      case VerifierMode.SETUP: return this.setDatasetConfigurationSetup(configuration);
+      case VerifierMode.TALLY: return this.setDatasetConfigurationTally(configuration);
+    }
   }
 
-  configurationUploadTally(file) {
-    this.datasetLoading = true;
-    this.filename = '';
-    this.hash = '';
+  uploadingDatasetContextReset(event: boolean): void {
+    this.uploadingDataset = event;
 
-    this.processorService.uploadDataset(file, DatasetType.TALLY).subscribe({
-      next: () => {
-        this.processorService.getDatasetConfiguration().subscribe(configuration => {
-          this.datasetLoading = false;
-          this.datasetLoadingError = false;
-          this.filename = configuration.tally.filename;
-          this.hash = configuration.tally.hash;
-          this.numberOfConfirmedNonTestVotes = configuration.tally.numberOfConfirmedNonTestVotes;
-          this.numberOfConfirmedTestVotes = configuration.tally.numberOfConfirmedTestVotes;
-          if (configuration.context) {
-            this.startDisabled = false;
-          }
-        });
-      },
-      error: () => {
-        this.datasetLoading = false;
-        this.datasetLoadingError = true;
-      }
-    });
+    if(this.uploadingDataset) {
+      this.contextFilename = undefined;
+      this.contextHash = undefined;
+      this.configuration = new DatasetConfiguration();
+
+      this.uploadingDatasetReset(event);
+    }
   }
 
-  isDatasetLoading() {
-    return this.contextDatasetLoading || this.datasetLoading;
+  uploadingDatasetReset(event: boolean): void {
+    this.uploadingDataset = event;
+
+    if(this.uploadingDataset) {
+      this.filename = undefined;
+      this.hash = undefined;
+      this.configuration.tally = null;
+      this.configuration.setup = null;
+      this.startDisabled = true;
+      this.eventStarted = null;
+      this.startDate = null;
+      this.endDate = null;
+    }
   }
 
-  // Status counter
+  // Upload dataset.
+  private setDatasetConfigurationSetup(configuration: DatasetConfiguration): void {
+    this.filename = configuration.setup.filename;
+    this.hash = configuration.setup.hash;
+    this.configuration.setup = configuration.setup;
+    if (configuration.context) {
+      this.startDisabled = false;
+    }
+  }
+
+  private setDatasetConfigurationTally(configuration: DatasetConfiguration): void {
+    this.filename = configuration.tally.filename;
+    this.hash = configuration.tally.hash;
+    this.configuration.tally = configuration.tally;
+    if (configuration.context) {
+      this.startDisabled = false;
+    }
+  }
+
+  // Status counter.
   private statusCounter(statusValue: string) {
     const filtered = Object.keys(this.verifications)
       .filter(key => {
@@ -554,7 +432,7 @@ export class ReportOverviewComponent implements OnInit {
     Object.keys(this.verifications).forEach(key => this.verifications[key].status = null);
   }
 
-  // Filters
+  // Filters.
   private toggleVerificationFilter(key: string) {
     const filter = this.verificationFilter[key];
     if (filter.active) {
@@ -583,7 +461,7 @@ export class ReportOverviewComponent implements OnInit {
     }
   }
 
-  // Current Date
+  // Current Date.
   private getCurrentDateFile() {
     return this.formatDate(new Date(), true);
   }

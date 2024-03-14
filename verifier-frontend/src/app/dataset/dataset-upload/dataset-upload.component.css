@@ -13,15 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Inject, LOCALE_ID, Pipe, PipeTransform} from '@angular/core';
 
-@Pipe({name: 'localize'})
-export class LocalizePipe implements PipeTransform {
+.dataset-type {
+  text-transform: capitalize;
+}
 
-  constructor(@Inject(LOCALE_ID) private language: string) {
-  }
-
-  transform(value: object) {
-    return value && value[this.language] ? value[this.language] : '';
-  }
+.upload-button {
+  text-align: left;
 }

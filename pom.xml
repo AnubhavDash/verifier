@@ -19,7 +19,7 @@
 
 	<groupId>ch.post.it.evoting.verifier</groupId>
 	<artifactId>verifier</artifactId>
-	<version>1.5.1.0-b0</version>
+	<version>1.5.1.0-RC1</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -34,12 +34,12 @@
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
 		<maven.compiler.release>21</maven.compiler.release>
-		<project.build.outputTimestamp>2024-02-27T09:51:55+02:00</project.build.outputTimestamp>
+		<project.build.outputTimestamp>2024-03-14T17:14:43+02:00</project.build.outputTimestamp>
 
 		<bouncycastle.version>1.77</bouncycastle.version>
 		<commons-codec.version>1.16.1</commons-codec.version>
 		<crypto-primitives-version>1.4.1.0-b0</crypto-primitives-version>
-		<e-voting-libraries.version>1.4.1.0-b0</e-voting-libraries.version>
+		<e-voting-libraries.version>1.4.1.0-b3</e-voting-libraries.version>
 		<guava.version>33.0.0-jre</guava.version>
 		<jackson.version>2.16.1</jackson.version>
 		<jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
@@ -56,12 +56,13 @@
 		<maven-release-plugin.version>3.0.1</maven-release-plugin.version>
 		<maven-source-plugin.version>3.3.0</maven-source-plugin.version>
 		<maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
-		<mockito.version>5.10.0</mockito.version>
+		<mockito.version>5.11.0</mockito.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<reproducible-build-maven-plugin.version>0.15.2</reproducible-build-maven-plugin.version>
 		<rootProject>verifier</rootProject>
 		<slf4j.version>2.0.12</slf4j.version>
-		<spring-boot.version>3.2.2</spring-boot.version>
+		<sonar-maven-plugin.version>3.10.1.2184</sonar-maven-plugin.version>
+		<spring-boot.version>3.2.3</spring-boot.version>
 		<system-stubs-jupiter.version>2.1.6</system-stubs-jupiter.version>
 		<versions-maven-plugin.version>2.16.2</versions-maven-plugin.version>
 		<zip4j.version>2.11.5</zip4j.version>
@@ -69,11 +70,16 @@
 
 		<!-- sonar -->
 		<sonar.scm.disabled>true</sonar.scm.disabled>
-		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
-		<sonar.surefire.reportsPath>${project.basedir}/../target/surefire-reports</sonar.surefire.reportsPath>
 		<sonar.skipDesign>true</sonar.skipDesign>
-		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+		<sonar.junit.reportPaths>${project.basedir}/target/surefire-reports/,${project.basedir}/target/failsafe-reports/</sonar.junit.reportPaths>
+		<sonar.javascript.lcov.reportPaths>${project.basedir}/coverage/lcov.info</sonar.javascript.lcov.reportPaths>
+		<sonar.coverage.exclusions>**/test/**/*,**/tests/**/*</sonar.coverage.exclusions>
+		<sonar.java.source>${maven.compiler.release}</sonar.java.source>
+		<sonar.java.target>${maven.compiler.release}</sonar.java.target>
+		<sonar.issue.ignore.multicriteria>e1</sonar.issue.ignore.multicriteria>
+		<sonar.issue.ignore.multicriteria.e1.ruleKey>css:S4667</sonar.issue.ignore.multicriteria.e1.ruleKey>
+		<sonar.issue.ignore.multicriteria.e1.resourceKey>**/*.scss</sonar.issue.ignore.multicriteria.e1.resourceKey>
 	</properties>
 
 	<dependencyManagement>
@@ -342,6 +348,11 @@
 							</goals>
 						</execution>
 					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.sonarsource.scanner.maven</groupId>
+					<artifactId>sonar-maven-plugin</artifactId>
+					<version>${sonar-maven-plugin.version}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>

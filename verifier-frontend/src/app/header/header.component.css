@@ -13,23 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {NgModule} from '@angular/core';
-import {ProcessorService} from './processor.service';
-import {CommonModule} from '@angular/common';
-import {BrowserModule} from '@angular/platform-browser';
 
-@NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    BrowserModule
-  ],
-  exports: [
-    CommonModule,
-    BrowserModule
-  ],
-  providers: [ProcessorService]
-})
-export class VerifierCommonModule {
+.border-left.border-10 {
+  border-width: 10px;
+}
 
+
+.error-view-details {
+  display: none;
+}
+
+.error-hide-details {
+  display: inline;
+}
+
+.collapsed > .error-view-details {
+  display: inline;
+}
+
+.collapsed > .error-hide-details {
+  display: none;
+}
+
+.table thead th {
+  border-top: none;
 }
