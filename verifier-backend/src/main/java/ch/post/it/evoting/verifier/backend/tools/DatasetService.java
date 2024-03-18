@@ -178,7 +178,7 @@ public class DatasetService {
 							final byte[] digest = messageDigest.digest(encodedCertificate);
 							final String sha256Fingerprint = DatatypeConverter.printHexBinary(digest);
 
-							return String.join(":", sha256Fingerprint.split("(?<=\\G.{2})"));
+							return sha256Fingerprint.toLowerCase();
 						}));
 	}
 
