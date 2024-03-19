@@ -88,8 +88,6 @@ public class VerifierProcessor {
 	private static final String TALLY = TallyEvent.TYPE;
 	private static final String PRE_SETUP = PreSetupEvent.TYPE;
 	private static final String PRE_TALLY = PreTallyEvent.TYPE;
-	private static final String HASH_SPLIT_REGEX = "(?<=\\G.{2})";
-	private static final String HASH_DELIMITER = ":";
 	private final ApplicationContext applicationContext;
 	private final ApplicationEventPublisher applicationEventPublisher;
 	private final DatasetService datasetService;
@@ -248,7 +246,7 @@ public class VerifierProcessor {
 
 		this.datasetConfigurationContext = new DatasetConfigurationContext.Builder()
 				.setFilename(filename)
-				.setHash(String.join(HASH_DELIMITER, datasetHash.split(HASH_SPLIT_REGEX)))
+				.setHash(datasetHash.toLowerCase())
 				.setElectionEventId(electionEventId)
 				.setAliasesToFingerprints(aliasesToFingerprints)
 				.setElectionEventName(electionEventName)
@@ -279,7 +277,7 @@ public class VerifierProcessor {
 
 		final String datasetHash = datasetHashCompletableFuture.join();
 
-		this.datasetConfigurationSetup = new DatasetConfigurationSetup(filename, String.join(HASH_DELIMITER, datasetHash.split(HASH_SPLIT_REGEX)));
+		this.datasetConfigurationSetup = new DatasetConfigurationSetup(filename, datasetHash.toLowerCase());
 	}
 
 	private void setDatasetTally(final InputStream datasetInputStream, final String filename) {
@@ -303,7 +301,7 @@ public class VerifierProcessor {
 
 		final String datasetHash = datasetHashCompletableFuture.join();
 
-		this.datasetConfigurationTally = new DatasetConfigurationTally(filename, String.join(HASH_DELIMITER, datasetHash.split(HASH_SPLIT_REGEX)),
+		this.datasetConfigurationTally = new DatasetConfigurationTally(filename, datasetHash.toLowerCase(),
 				numberOfConfirmedNonTestVotes, numberOfConfirmedTestVotes);
 	}
 

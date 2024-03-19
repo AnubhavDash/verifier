@@ -19,7 +19,7 @@
 
 	<groupId>ch.post.it.evoting.verifier</groupId>
 	<artifactId>verifier</artifactId>
-	<version>1.5.1.0-RC1</version>
+	<version>1.5.1.0-RC2</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -29,17 +29,17 @@
 	</modules>
 
 	<properties>
-		<maven-enforcer-plugin.requiredJavaVersion>[21.0.1]</maven-enforcer-plugin.requiredJavaVersion>
-		<maven-enforcer-plugin.requiredMavenVersion>[3.9.4]</maven-enforcer-plugin.requiredMavenVersion>
+		<maven-enforcer-plugin.requiredJavaVersion>[21.0.2]</maven-enforcer-plugin.requiredJavaVersion>
+		<maven-enforcer-plugin.requiredMavenVersion>[3.9.6]</maven-enforcer-plugin.requiredMavenVersion>
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
 		<maven.compiler.release>21</maven.compiler.release>
-		<project.build.outputTimestamp>2024-03-14T17:14:43+02:00</project.build.outputTimestamp>
+		<project.build.outputTimestamp>2024-03-19T19:25:02+02:00</project.build.outputTimestamp>
 
 		<bouncycastle.version>1.77</bouncycastle.version>
 		<commons-codec.version>1.16.1</commons-codec.version>
-		<crypto-primitives-version>1.4.1.0-b0</crypto-primitives-version>
-		<e-voting-libraries.version>1.4.1.0-b3</e-voting-libraries.version>
+		<crypto-primitives-version>1.4.1.0-b1</crypto-primitives-version>
+		<e-voting-libraries.version>1.4.1.0-b5</e-voting-libraries.version>
 		<guava.version>33.0.0-jre</guava.version>
 		<jackson.version>2.16.1</jackson.version>
 		<jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
@@ -433,11 +433,11 @@
 			<properties>
 
 				<!-- OpenJDK -->
-				<openjdk-jre.version>jdk-21.0.1+12-jre</openjdk-jre.version>
+				<openjdk-jre.version>jdk-21.0.2+13-jre</openjdk-jre.version>
 				<openjdk-jre.win64.url>
-					https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.1%2B12/OpenJDK21U-jre_x64_windows_hotspot_21.0.1_12.zip
+					https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jre_x64_windows_hotspot_21.0.2_13.zip
 				</openjdk-jre.win64.url>
-				<openjdk-jre.win64.sha256>38bb68f9db9c85a63496570c53a1bcbac18c808677595d7e939d2f5b38e9a7aa</openjdk-jre.win64.sha256>
+				<openjdk-jre.win64.sha256>a29b88541bc11276de4c4cbdfac60e374ef8a34a415f61cb02a2b6a46f0e1064</openjdk-jre.win64.sha256>
 
 			</properties>
 		</profile>
