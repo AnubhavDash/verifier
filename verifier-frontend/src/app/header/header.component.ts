@@ -132,7 +132,6 @@ export class HeaderComponent implements OnInit {
   // Change verifier mode.
   setNewVerifierMode(newVerifierMode: VerifierMode): void {
     this.printMode = false;
-    this.contextFilename = undefined;
     this.contextHash = undefined;
     this.filename = undefined;
     this.hash = undefined;
@@ -146,6 +145,7 @@ export class HeaderComponent implements OnInit {
       return;
     }
 
+    this.contextFilename = undefined;
     this.resetProcess();
     this.processorService.changeMode().subscribe((_value) => {
       this.verifierMode = newVerifierMode;
