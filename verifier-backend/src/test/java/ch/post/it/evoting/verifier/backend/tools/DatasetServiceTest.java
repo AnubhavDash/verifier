@@ -49,7 +49,7 @@ import net.lingala.zip4j.model.enums.CompressionLevel;
 class DatasetServiceTest {
 
 	private static final String DATASET_CONTEXT_EXPECTED_FILE = "configuration-anonymized.xml";
-	private static final String DATASET_CONTEXT_EXPECTED_FOLDER = "setup";
+	private static final String DATASET_CONTEXT_EXPECTED_FOLDER = "context";
 	private static final String DATASET_SETUP_EXPECTED_FILE = "controlComponentCodeSharesPayload.0.json";
 	private static final String DATASET_SETUP_EXPECTED_FOLDER = Paths.get("setup", "verification_card_sets", "43B803449095FA47C0335A3B489FB61B")
 			.toString();
@@ -60,20 +60,17 @@ class DatasetServiceTest {
 
 	@TempDir
 	private static Path datasetTempDir;
+	@TempDir
+	private Path zipDirectory;
+	@TempDir
+	private Path folderToZip;
+	@TempDir
+	private Path unpackFolder;
 
 	@BeforeAll
 	static void setUpAll() {
 		datasetService = new DatasetService(new DirectoryService(datasetTempDir), new PathService());
 	}
-
-	@TempDir
-	private Path zipDirectory;
-
-	@TempDir
-	private Path folderToZip;
-
-	@TempDir
-	private Path unpackFolder;
 
 	@ParameterizedTest
 	@MethodSource()
@@ -150,7 +147,7 @@ class DatasetServiceTest {
 		final Dataset dataset = new Dataset(Files.newInputStream(zipDirectory.resolve(zipName)), unpackFolder, DatasetType.SETUP);
 
 		final IllegalStateException exception = assertThrows(IllegalStateException.class, () -> datasetService.unpack(dataset));
-		assertEquals("input is not a setup dataset.", Throwables.getRootCause(exception).getMessage());
+		assertEquals("The dataset does not have the expected type. [expectedType: setup]", Throwables.getRootCause(exception).getMessage());
 	}
 
 	private void createDatasetZip(final String zipName) throws IOException {

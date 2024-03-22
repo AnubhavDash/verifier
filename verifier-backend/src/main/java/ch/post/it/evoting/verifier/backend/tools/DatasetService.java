@@ -183,11 +183,16 @@ public class DatasetService {
 	}
 
 	private void setActualDatasetType(final Dataset dataset, final String fileName) {
-		if (dataset.getActualType() == null) {
-			Arrays.stream(DatasetType.values())
-					.filter(datasetType -> pathService.matchesStructureKey(datasetType.getStructureKey(), fileName))
-					.findAny()
-					.ifPresent(dataset::setActualType);
-		}
+		final DatasetType actualType = Arrays.stream(DatasetType.values())
+				.filter(datasetType -> datasetType.getStructureKeys().stream()
+						.anyMatch(structureKey -> pathService.matchesStructureKey(structureKey, fileName)))
+				.findAny()
+				.orElseThrow(() -> new IllegalStateException(
+						String.format("The dataset does not have the expected type. [expectedType: %s]", dataset.getExpectedType())));
+
+		checkState(dataset.getActualType() == null || dataset.getActualType() == actualType,
+				"The dataset does not have the expected type. [expectedType: %s]", dataset.getExpectedType());
+
+		dataset.setActualType(actualType);
 	}
 }

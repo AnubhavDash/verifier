@@ -37,8 +37,7 @@ import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 
 /**
- * This verification ensures that the ballot box IDs in the audit archive (data set) are consistent to the ballot boxes in the election event context
- * object.
+ * This verification ensures that the ballot box IDs in the dataset are consistent to the ballot boxes in the election event context object.
  */
 @Component
 public class VerifyFileNameBallotBoxIdsConsistency extends AbstractVerification {

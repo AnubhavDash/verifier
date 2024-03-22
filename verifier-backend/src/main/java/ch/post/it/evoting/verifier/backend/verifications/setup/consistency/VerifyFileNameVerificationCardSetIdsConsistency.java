@@ -31,27 +31,21 @@ import ch.post.it.evoting.verifier.backend.event.SetupEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
-import ch.post.it.evoting.verifier.backend.tools.path.PathService;
-import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 
 /**
- * This verification ensures that the verification card set IDs in the audit archive (data set) are consistent to the verification card sets in the
- * election event context object.
+ * This verification ensures that the verification card set ids in the dataset are consistent to the verification card sets in the election event
+ * context object.
  */
 @Component
 public class VerifyFileNameVerificationCardSetIdsConsistency extends AbstractVerification {
 
-	private final PathService pathService;
 	private final ElectionDataExtractionService electionDataExtractionService;
 
 	protected VerifyFileNameVerificationCardSetIdsConsistency(
-			final PathService pathService,
 			final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService electionDataExtractionService) {
 		super(resultPublisherService);
-		this.pathService = pathService;
 		this.electionDataExtractionService = electionDataExtractionService;
 	}
 
@@ -70,9 +64,14 @@ public class VerifyFileNameVerificationCardSetIdsConsistency extends AbstractVer
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
+		final Set<String> contextVerificationCardSetIds = electionDataExtractionService.getContextVerificationCardSetPaths(inputDirectoryPath)
+				.stream()
+				.parallel()
+				.map(Path::getFileName)
+				.map(Path::toString)
+				.collect(Collectors.toUnmodifiableSet());
 
-		final Set<String> verificationCardSetIds = verificationCardSets.getRegexPaths().stream()
+		final Set<String> setupVerificationCardSetIds = electionDataExtractionService.getSetupVerificationCardSetPaths(inputDirectoryPath).stream()
 				.parallel()
 				.map(Path::getFileName)
 				.map(Path::toString)
@@ -86,7 +85,8 @@ public class VerifyFileNameVerificationCardSetIdsConsistency extends AbstractVer
 				.collect(Collectors.toUnmodifiableSet());
 
 		// Verifying set equality is sufficient since the payload ensures that there are no duplicate verification card set IDs.
-		final boolean sameVerificationCardSetIds = verificationCardSetIds.equals(payloadVerificationCardSetIds);
+		final boolean sameVerificationCardSetIds = contextVerificationCardSetIds.equals(payloadVerificationCardSetIds) &&
+				setupVerificationCardSetIds.equals(payloadVerificationCardSetIds);
 
 		final VerificationResult verificationResult;
 		if (sameVerificationCardSetIds) {

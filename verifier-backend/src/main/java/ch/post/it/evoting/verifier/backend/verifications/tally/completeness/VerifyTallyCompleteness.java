@@ -34,6 +34,7 @@ import ch.post.it.evoting.verifier.backend.event.PreTallyEvent;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.backend.tools.VerifyContextCompletenessService;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -44,11 +45,14 @@ public class VerifyTallyCompleteness extends AbstractVerification {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(VerifyTallyCompleteness.class);
 	private final PathService pathService;
+	private final VerifyContextCompletenessService verifyContextCompletenessService;
 
 	protected VerifyTallyCompleteness(final PathService pathService,
-			final ResultPublisherService resultPublisherService) {
+			final ResultPublisherService resultPublisherService,
+			final VerifyContextCompletenessService verifyContextCompletenessService) {
 		super(resultPublisherService);
 		this.pathService = pathService;
+		this.verifyContextCompletenessService = verifyContextCompletenessService;
 	}
 
 	@Override
@@ -67,31 +71,11 @@ public class VerifyTallyCompleteness extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		if (verifySetupCompleteness(inputDirectoryPath) && verifyTallyCompleteness(inputDirectoryPath)) {
+		if (verifyContextCompletenessService.verifyContextCompleteness(inputDirectoryPath) && verifyTallyCompleteness(inputDirectoryPath)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
 					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "verification101.nok.message"));
-		}
-	}
-
-	private boolean verifySetupCompleteness(final Path inputDirectoryPath) {
-		try {
-			pathService.buildFromRootPath(StructureKey.SETUP_DIR, inputDirectoryPath);
-			pathService.buildFromRootPath(StructureKey.CONFIGURATION_ANONYMIZED, inputDirectoryPath);
-			pathService.buildFromRootPath(StructureKey.ELECTION_EVENT_CONTEXT, inputDirectoryPath);
-			pathService.buildFromRootPath(StructureKey.SETUP_COMPONENT_PUBLIC_KEYS, inputDirectoryPath);
-			checkState(pathService.buildFromRootPath(StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS, inputDirectoryPath).getRegexPaths().size()
-					== NODE_IDS.size());
-			pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SETS_DIR, inputDirectoryPath);
-			final List<Path> verificationCardSetIds = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath)
-					.getRegexPaths();
-			verificationCardSetIds.stream().parallel()
-					.forEach(vcs -> pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_TALLY_DATA, vcs));
-			return true;
-		} catch (final UncheckedIOException | IllegalStateException e) {
-			LOGGER.error("Setup completeness failed.", e);
-			return false;
 		}
 	}
 

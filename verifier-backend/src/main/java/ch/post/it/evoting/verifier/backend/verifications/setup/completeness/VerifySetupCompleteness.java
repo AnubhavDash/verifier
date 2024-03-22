@@ -15,9 +15,6 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.completeness;
 
-import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
-import static com.google.common.base.Preconditions.checkState;
-
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.List;
@@ -25,8 +22,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import com.google.common.annotations.VisibleForTesting;
 
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
@@ -36,6 +31,7 @@ import ch.post.it.evoting.verifier.backend.event.PreSetupEvent;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.backend.tools.VerifyContextCompletenessService;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -45,11 +41,14 @@ public class VerifySetupCompleteness extends AbstractVerification {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(VerifySetupCompleteness.class);
 	private final PathService pathService;
+	private final VerifyContextCompletenessService verifyContextCompletenessService;
 
 	protected VerifySetupCompleteness(final PathService pathService,
-			final ResultPublisherService resultPublisherService) {
+			final ResultPublisherService resultPublisherService,
+			final VerifyContextCompletenessService verifyContextCompletenessService) {
 		super(resultPublisherService);
 		this.pathService = pathService;
+		this.verifyContextCompletenessService = verifyContextCompletenessService;
 	}
 
 	@Override
@@ -68,7 +67,7 @@ public class VerifySetupCompleteness extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		if (verifySetupCompleteness(inputDirectoryPath)) {
+		if (verifyContextCompletenessService.verifyContextCompleteness(inputDirectoryPath) && verifySetupCompleteness(inputDirectoryPath)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
@@ -76,22 +75,15 @@ public class VerifySetupCompleteness extends AbstractVerification {
 		}
 	}
 
-	@VisibleForTesting
 	private boolean verifySetupCompleteness(final Path inputDirectoryPath) {
 		try {
 			pathService.buildFromRootPath(StructureKey.SETUP_DIR, inputDirectoryPath);
-			pathService.buildFromRootPath(StructureKey.CONFIGURATION_ANONYMIZED, inputDirectoryPath);
-			pathService.buildFromRootPath(StructureKey.ELECTION_EVENT_CONTEXT, inputDirectoryPath);
-			pathService.buildFromRootPath(StructureKey.SETUP_COMPONENT_PUBLIC_KEYS, inputDirectoryPath);
-			checkState(pathService.buildFromRootPath(StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS, inputDirectoryPath).getRegexPaths().size()
-					== NODE_IDS.size());
-			pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SETS_DIR, inputDirectoryPath);
-			final List<Path> verificationCardSetIds = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath)
+			pathService.buildFromRootPath(StructureKey.SETUP_VERIFICATION_CARD_SETS_DIR, inputDirectoryPath);
+			final List<Path> verificationCardSetIds = pathService.buildFromRootPath(StructureKey.SETUP_VERIFICATION_CARD_SET_ID_DIR,
+							inputDirectoryPath)
 					.getRegexPaths();
 			verificationCardSetIds.stream().parallel()
 					.forEach(vcs -> pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_CODE_SHARES, vcs));
-			verificationCardSetIds.stream().parallel()
-					.forEach(vcs -> pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_TALLY_DATA, vcs));
 			verificationCardSetIds.stream().parallel()
 					.forEach(vcs -> pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA, vcs));
 			return true;

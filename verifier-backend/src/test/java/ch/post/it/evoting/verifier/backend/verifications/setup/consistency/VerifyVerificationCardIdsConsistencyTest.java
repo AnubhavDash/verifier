@@ -80,7 +80,7 @@ class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 	@Test
 	@DisplayName("wrong order of verification card ids in chunk is failed")
 	void wrongOrderVerificationCardIdsInChunk() {
-		final List<Path> regexPaths = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, datasetPath).getRegexPaths();
+		final List<Path> regexPaths = electionDataExtractionService.getSetupVerificationCardSetPaths(datasetPath);
 		final int randomIndex = random.nextInt(0, regexPaths.size());
 		final Path verificationCardSet = regexPaths.get(randomIndex);
 
@@ -117,7 +117,7 @@ class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 	@Test
 	@DisplayName("wrong order of verification card ids between chunks is failed")
 	void wrongOrderVerificationCardIdsBetweenChunks() {
-		final List<Path> regexPaths = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, datasetPath).getRegexPaths();
+		final List<Path> regexPaths = electionDataExtractionService.getSetupVerificationCardSetPaths(datasetPath);
 		final int randomIndex = random.nextInt(0, regexPaths.size());
 		final Path verificationCardSet = regexPaths.get(randomIndex);
 		final List<SetupComponentVerificationDataPayloadDataExtractor.DataExtraction> swappedDataExtractions = new ArrayList<>(

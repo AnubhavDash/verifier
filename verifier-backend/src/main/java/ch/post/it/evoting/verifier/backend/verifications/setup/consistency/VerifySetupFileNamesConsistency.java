@@ -114,7 +114,7 @@ public class VerifySetupFileNamesConsistency extends AbstractVerification {
 	}
 
 	private boolean verifyControlComponentCodeSharesFileNameConsistency(final Path inputDirectoryPath) {
-		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
+		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.SETUP_VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
 
 		return verificationCardSets.getRegexPaths().stream()
 				.parallel()
@@ -140,7 +140,7 @@ public class VerifySetupFileNamesConsistency extends AbstractVerification {
 	}
 
 	private boolean verifySetupComponentVerificationDataFileNameConsistency(final Path inputDirectoryPath) {
-		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
+		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.SETUP_VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
 
 		return verificationCardSets.getRegexPaths().stream()
 				.parallel()

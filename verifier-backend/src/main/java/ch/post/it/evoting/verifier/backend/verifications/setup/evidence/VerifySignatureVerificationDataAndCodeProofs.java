@@ -86,7 +86,7 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final List<Path> verificationCardSets = electionDataExtractionService.getVerificationCardSetPaths(inputDirectoryPath);
+		final List<Path> verificationCardSets = electionDataExtractionService.getSetupVerificationCardSetPaths(inputDirectoryPath);
 
 		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContext(inputDirectoryPath);
 

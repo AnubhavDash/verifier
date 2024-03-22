@@ -36,9 +36,7 @@ import ch.post.it.evoting.verifier.backend.event.SetupEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
-import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 
 /**
@@ -93,10 +91,9 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 
 	private List<PayloadsVerificationCardSetIds> extractVerificationCardSetIds(final Path inputDirectoryPath) {
 
-		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
+		final List<Path> contextVerificationCardSetPaths = electionDataExtractionService.getContextVerificationCardSetPaths(inputDirectoryPath);
 
-		return verificationCardSets.getRegexPaths()
-				.stream()
+		return electionDataExtractionService.getSetupVerificationCardSetPaths(inputDirectoryPath).stream()
 				.parallel()
 				.map(verificationCardSetIdPath -> {
 
@@ -118,7 +115,10 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 
 					checkArgument(codeShareIds.size() == 1, "The control component code shares verification card set id size must be one.");
 
-					final Set<String> tallyIds = electionDataExtractionService.getSetupComponentTallyDataPayloadsDataExtractions(verificationCardSetIdPath)
+					final Set<String> tallyIds = contextVerificationCardSetPaths.stream()
+							.parallel()
+							.filter(vcsPath -> vcsPath.getFileName().toString().equals(vcsId))
+							.flatMap(electionDataExtractionService::getSetupComponentTallyDataPayloadsDataExtractions)
 							.map(SetupComponentTallyDataPayloadDataExtractor.DataExtraction::verificationCardSetId)
 							.collect(Collectors.toUnmodifiableSet());
 

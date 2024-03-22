@@ -38,7 +38,7 @@ import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 
 /**
- * This verification ensures that the election event IDs in the audit archive (data set) are consistent to the election event ID present in the file
+ * This verification ensures that the election event IDs in the dataset are consistent to the election event ID present in the file
  * electionEventContextPayload.json.
  */
 @Component("VerifySetupElectionEventIdConsistency")

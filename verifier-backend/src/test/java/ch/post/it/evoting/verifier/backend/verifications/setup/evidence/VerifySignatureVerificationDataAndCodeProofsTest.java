@@ -156,7 +156,7 @@ class VerifySignatureVerificationDataAndCodeProofsTest extends SetupVerification
 	}
 
 	private SetupComponentVerificationDataPayload loadRandomSetupComponentVerificationData() {
-		final List<Path> regexPaths = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, datasetPath).getRegexPaths();
+		final List<Path> regexPaths = electionDataExtractionService.getSetupVerificationCardSetPaths(datasetPath);
 		final int randomIndex = random.nextInt(0, regexPaths.size());
 		final Path verificationCardSet = regexPaths.get(randomIndex);
 
@@ -167,7 +167,7 @@ class VerifySignatureVerificationDataAndCodeProofsTest extends SetupVerification
 	}
 
 	private ControlComponentCodeSharesPayload loadRandomControlComponentCodeShares() {
-		final List<Path> regexPaths = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, datasetPath).getRegexPaths();
+		final List<Path> regexPaths = electionDataExtractionService.getSetupVerificationCardSetPaths(datasetPath);
 		final int randomIndex = random.nextInt(0, regexPaths.size());
 		final Path verificationCardSet = regexPaths.get(randomIndex);
 

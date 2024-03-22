@@ -16,7 +16,7 @@
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.nio.file.Path;
@@ -27,10 +27,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.verifier.backend.VerificationResult;
+import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
-import ch.post.it.evoting.verifier.backend.tools.path.PathService;
-import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 
@@ -39,7 +37,7 @@ class VerifyFileNameVerificationCardSetIdsConsistencyTest extends SetupVerificat
 
 	@BeforeAll
 	static void setUpAll() {
-		verification = new VerifyFileNameVerificationCardSetIdsConsistency(pathService, resultPublisherServiceMock, electionDataExtractionService);
+		verification = new VerifyFileNameVerificationCardSetIdsConsistency(resultPublisherServiceMock, electionDataExtractionService);
 	}
 
 	@Test
@@ -52,17 +50,31 @@ class VerifyFileNameVerificationCardSetIdsConsistencyTest extends SetupVerificat
 	}
 
 	@Test
-	@DisplayName("inconsistent verification card set ids is failed")
-	void inconsistentVerificationCardSetIds() {
-		final PathNode pathNodeMock = mock(PathNode.class);
-		when(pathNodeMock.getRegexPaths()).thenReturn(List.of(Path.of("11111111111111111111111111111111")));
-
-		final PathService pathServiceMock = mock(PathService.class);
-		when(pathServiceMock.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, datasetPath)).thenReturn(pathNodeMock);
+	@DisplayName("inconsistent verification card set ids in setup dataset fails")
+	void inconsistentVerificationCardSetIdsSetupDataset() {
+		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
+		when(electionDataExtractionServiceSpy.getSetupVerificationCardSetPaths(datasetPath)).thenReturn(
+				List.of(Path.of("11111111111111111111111111111111")));
 
 		final VerifyFileNameVerificationCardSetIdsConsistency verifyFileNameVerificationCardSetIdsConsistency = new VerifyFileNameVerificationCardSetIdsConsistency(
-				pathServiceMock,
-				resultPublisherServiceMock, electionDataExtractionService);
+				resultPublisherServiceMock, electionDataExtractionServiceSpy);
+
+		final VerificationResult result = verifyFileNameVerificationCardSetIdsConsistency.verify(datasetPath);
+
+		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification311.nok.message"));
+		assertEquals(expectedResult, result);
+	}
+
+	@Test
+	@DisplayName("inconsistent verification card set ids in context dataset fails")
+	void inconsistentVerificationCardSetIdsContextDataset() {
+		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
+		when(electionDataExtractionServiceSpy.getContextVerificationCardSetPaths(datasetPath)).thenReturn(
+				List.of(Path.of("11111111111111111111111111111111")));
+
+		final VerifyFileNameVerificationCardSetIdsConsistency verifyFileNameVerificationCardSetIdsConsistency = new VerifyFileNameVerificationCardSetIdsConsistency(
+				resultPublisherServiceMock, electionDataExtractionServiceSpy);
 
 		final VerificationResult result = verifyFileNameVerificationCardSetIdsConsistency.verify(datasetPath);
 
