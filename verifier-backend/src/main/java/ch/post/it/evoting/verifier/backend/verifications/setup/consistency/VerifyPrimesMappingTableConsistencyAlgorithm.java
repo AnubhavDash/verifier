@@ -82,7 +82,8 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 	 *     <li>The number of tuples in the pTable correspond to the configuration XML taking into account possible accumulation of candidates.</li>
 	 * </ul>
 	 *
-	 * @param electionEventContext the election event context, containing a list of PrimesMappingTables, one per verification card set. Must be non-null.
+	 * @param electionEventContext the election event context, containing a list of PrimesMappingTables, one per verification card set. Must be
+	 *                             non-null.
 	 * @param configuration        the configuration XML. Must be non-null.
 	 * @return {@code true} if the PrimesMappingTables are consistent, {@code false} otherwise
 	 */
@@ -141,7 +142,12 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 				.map(PrimesMappingTableEntry::encodedVotingOption)
 				.collect(Collectors.toSet());
 
-		final boolean correctMapping = primesMappingTableEntries.size() == encodedVotingOptions.size();
+		final Set<String> actualVotingOptions = primesMappingTableEntries.stream()
+				.map(PrimesMappingTableEntry::actualVotingOption)
+				.collect(Collectors.toSet());
+
+		final boolean correctMapping = primesMappingTableEntries.size() == encodedVotingOptions.size() &&
+				primesMappingTableEntries.size() == actualVotingOptions.size();
 		if (!correctMapping) {
 			LOGGER.error(
 					"The encoded voting options, actual voting options, semantic information and correctness information mapping is not the same in all verification card sets.");
@@ -152,9 +158,7 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 	/**
 	 * Verifies that the actual voting options, semantic information and correctness information in the PrimesMappingTable correspond to the
 	 * configuration XML.
-	 *
 	 */
-	@SuppressWarnings("java:S1172")
 	private boolean verifyInformationCorrespondsToConfiguration(final Set<PrimesMappingTableEntry> primesMappingTableEntries,
 			final Set<PartialPrimesMappingTableEntry> configurationPartialPrimesMappingTableEntries) {
 		final Set<PartialPrimesMappingTableEntry> partialPrimesMappingTableEntries = primesMappingTableEntries.stream()
