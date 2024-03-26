@@ -182,6 +182,21 @@ public class DatasetService {
 						}));
 	}
 
+	/**
+	 * This method is called for each file in the uploaded zip. It ensures the file is in the whitelist of the expected {@link DatasetType}, i.e. the
+	 * dataset type chosen to upload. The verifications
+	 * {@link ch.post.it.evoting.verifier.backend.verifications.setup.completeness.VerifySetupCompleteness} and
+	 * {@link ch.post.it.evoting.verifier.backend.verifications.tally.completeness.VerifyTallyCompleteness} ensure all the needed files are present in
+	 * the uploaded datasets.
+	 *
+	 * @param dataset  the dataset information as a {@link Dataset}.
+	 * @param fileName the file to verify.
+	 * @throws IllegalStateException if
+	 *                               <ul>
+	 *                                   <li>the file does not belong to any dataset type.</li>
+	 *                                   <li>the file belongs to a dataset type different from the expected one.</li>
+	 *                               </ul>
+	 */
 	private void setActualDatasetType(final Dataset dataset, final String fileName) {
 		final DatasetType actualType = Arrays.stream(DatasetType.values())
 				.filter(datasetType -> datasetType.getStructureKeys().stream()

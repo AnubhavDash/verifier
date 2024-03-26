@@ -51,10 +51,10 @@ class DatasetServiceTest {
 	private static final String DATASET_CONTEXT_EXPECTED_FILE = "configuration-anonymized.xml";
 	private static final String DATASET_CONTEXT_EXPECTED_FOLDER = "context";
 	private static final String DATASET_SETUP_EXPECTED_FILE = "controlComponentCodeSharesPayload.0.json";
-	private static final String DATASET_SETUP_EXPECTED_FOLDER = Paths.get("setup", "verification_card_sets", "43B803449095FA47C0335A3B489FB61B")
+	private static final String DATASET_SETUP_EXPECTED_FOLDER = Paths.get("setup", "verificationCardSets", "43B803449095FA47C0335A3B489FB61B")
 			.toString();
 	private static final String DATASET_TALLY_EXPECTED_FILE = "controlComponentBallotBoxPayload_1.json";
-	private static final String DATASET_TALLY_EXPECTED_FOLDER = Paths.get("tally", "ballot_boxes", "0E65660B5AF70D18DA2D47C3F4718102").toString();
+	private static final String DATASET_TALLY_EXPECTED_FOLDER = Paths.get("tally", "ballotBoxes", "0E65660B5AF70D18DA2D47C3F4718102").toString();
 
 	private static DatasetService datasetService;
 

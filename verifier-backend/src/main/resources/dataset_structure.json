@@ -27,7 +27,7 @@
 			{
 				"key": "CONTEXT_VERIFICATION_CARD_SETS_DIR",
 				"type": "DIRECTORY",
-				"name": "verification_card_sets",
+				"name": "verificationCardSets",
 				"content": [
 					{
 						"key": "CONTEXT_VERIFICATION_CARD_SET_ID_DIR",
@@ -53,7 +53,7 @@
 			{
 				"key": "SETUP_VERIFICATION_CARD_SETS_DIR",
 				"type": "DIRECTORY",
-				"name": "verification_card_sets",
+				"name": "verificationCardSets",
 				"content": [
 					{
 						"key": "SETUP_VERIFICATION_CARD_SET_ID_DIR",
@@ -99,7 +99,7 @@
 			{
 				"key": "BALLOT_BOXES_DIR",
 				"type": "DIRECTORY",
-				"name": "ballot_boxes",
+				"name": "ballotBoxes",
 				"content": [
 					{
 						"key": "BALLOT_BOX_ID_DIR",
