@@ -29,6 +29,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.backend.tools.VerifyContextCompletenessService;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -38,7 +39,8 @@ class VerifyTallyCompletenessTest extends TallyVerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyTallyCompleteness(pathService, resultPublisherServiceMock);
+		final VerifyContextCompletenessService verifyContextCompletenessService = new VerifyContextCompletenessService(pathService);
+		verification = new VerifyTallyCompleteness(pathService, resultPublisherServiceMock, verifyContextCompletenessService);
 	}
 
 	@Test
@@ -51,12 +53,14 @@ class VerifyTallyCompletenessTest extends TallyVerificationTest {
 	}
 
 	@Test
-	@DisplayName("invalid setup files fails")
-	void invalidSetupFiles() {
+	@DisplayName("invalid context files fails")
+	void invalidContextFiles() {
 		final PathService spyPathService = spy(pathService);
 		doThrow(UncheckedIOException.class).when(spyPathService).buildFromRootPath(eq(StructureKey.ELECTION_EVENT_CONTEXT), any());
 
-		final VerifyTallyCompleteness verificationWithSpy = new VerifyTallyCompleteness(spyPathService, resultPublisherServiceMock);
+		final VerifyContextCompletenessService verifyContextCompletenessServiceWithSpy = new VerifyContextCompletenessService(spyPathService);
+		final VerifyTallyCompleteness verificationWithSpy = new VerifyTallyCompleteness(spyPathService, resultPublisherServiceMock,
+				verifyContextCompletenessServiceWithSpy);
 		final VerificationResult result = verificationWithSpy.verify(datasetPath);
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithSpy.getVerificationDefinition(),
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "verification101.nok.message"));
@@ -69,7 +73,9 @@ class VerifyTallyCompletenessTest extends TallyVerificationTest {
 		final PathService spyPathService = spy(pathService);
 		doThrow(UncheckedIOException.class).when(spyPathService).buildFromDynamicAncestorPath(eq(StructureKey.TALLY_COMPONENT_VOTES), any());
 
-		final VerifyTallyCompleteness verificationWithSpy = new VerifyTallyCompleteness(spyPathService, resultPublisherServiceMock);
+		final VerifyContextCompletenessService verifyContextCompletenessServiceWithSpy = new VerifyContextCompletenessService(spyPathService);
+		final VerifyTallyCompleteness verificationWithSpy = new VerifyTallyCompleteness(spyPathService, resultPublisherServiceMock,
+				verifyContextCompletenessServiceWithSpy);
 		final VerificationResult result = verificationWithSpy.verify(datasetPath);
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithSpy.getVerificationDefinition(),
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "verification101.nok.message"));

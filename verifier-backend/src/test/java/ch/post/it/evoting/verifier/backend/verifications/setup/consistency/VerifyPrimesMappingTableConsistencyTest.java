@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,6 +40,7 @@ import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
 import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTableEntry;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
@@ -97,6 +99,27 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContext(datasetPath);
 		final List<VerificationCardSetContext> verificationCardSetContexts = electionEventContext.verificationCardSetContexts();
 		final List<VerificationCardSetContext> verificationCardSetContextsModified = addNewActualVotingOption(verificationCardSetContexts);
+
+		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
+		final ElectionEventContext electionEventContextMock = spy(electionEventContext);
+
+		doReturn(verificationCardSetContextsModified).when(electionEventContextMock).verificationCardSetContexts();
+		doReturn(electionEventContextMock).when(extractionServiceMock).getElectionEventContext(datasetPath);
+
+		final VerifyPrimesMappingTableConsistency verifyPrimesMappingTableConsistency = new VerifyPrimesMappingTableConsistency(extractionServiceMock,
+				consistencyAlgorithm, resultPublisherServiceMock);
+		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification308.nok.message"));
+		assertEquals(expectedResult, verifyPrimesMappingTableConsistency.verify(datasetPath));
+	}
+
+	@Test
+	void verifyNokActualVotingOptionMapsToTwoDifferentEncodedVotingOptions() {
+		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(datasetPath);
+		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
+		final List<VerificationCardSetContext> verificationCardSetContexts = electionEventContext.verificationCardSetContexts();
+		final List<VerificationCardSetContext> verificationCardSetContextsModified = mapToTwoDifferentEncodedVotingOptions(
+				electionEventContextPayload.getSmallPrimes(), verificationCardSetContexts);
 
 		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
 		final ElectionEventContext electionEventContextMock = spy(electionEventContext);
@@ -185,5 +208,43 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 					}
 					return verificationCardSetContext;
 				}).toList();
+	}
+
+	private List<VerificationCardSetContext> mapToTwoDifferentEncodedVotingOptions(final GroupVector<PrimeGqElement, GqGroup> smallPrimes,
+			final List<VerificationCardSetContext> verificationCardSetContexts) {
+		// Choose a new prime that's not in any pTable
+		final PrimeGqElement primeNotInPTables = smallPrimes.get(smallPrimes.size() - 1);
+
+		// Choose any pTable to modify
+		final int chosenVerificationCardSetContextIndex = 0;
+		final VerificationCardSetContext verificationCardSetContext = verificationCardSetContexts.get(chosenVerificationCardSetContextIndex);
+		final GroupVector<PrimesMappingTableEntry, GqGroup> pTable = verificationCardSetContext.getPrimesMappingTable().getPTable();
+
+		// Choose a voting option that does not represent a blank voting option
+		final int chosenPTableIndex = 2;
+		final PrimesMappingTableEntry pTableEntry = pTable.get(chosenPTableIndex);
+		final List<PrimesMappingTableEntry> pTableModified = IntStream.range(0, pTable.size())
+				.mapToObj(i -> (i == chosenPTableIndex)
+						? new PrimesMappingTableEntry(pTableEntry.actualVotingOption(), primeNotInPTables, pTableEntry.semanticInformation(),
+						pTableEntry.correctnessInformation())
+						: pTable.get(i)
+				).toList();
+
+		return IntStream.range(0, verificationCardSetContexts.size())
+				.mapToObj(i -> (i == chosenVerificationCardSetContextIndex)
+						? new VerificationCardSetContext.Builder()
+						.setVerificationCardSetId(verificationCardSetContext.getVerificationCardSetId())
+						.setVerificationCardSetAlias(verificationCardSetContext.getVerificationCardSetAlias())
+						.setVerificationCardSetDescription(verificationCardSetContext.getVerificationCardSetDescription())
+						.setBallotBoxId(verificationCardSetContext.getBallotBoxId())
+						.setBallotBoxStartTime(verificationCardSetContext.getBallotBoxStartTime())
+						.setBallotBoxFinishTime(verificationCardSetContext.getBallotBoxFinishTime())
+						.setTestBallotBox(verificationCardSetContext.isTestBallotBox())
+						.setNumberOfVotingCards(verificationCardSetContext.getNumberOfVotingCards())
+						.setGracePeriod(verificationCardSetContext.getGracePeriod())
+						.setPrimesMappingTable(PrimesMappingTable.from(pTableModified))
+						.build()
+						: verificationCardSetContexts.get(i))
+				.toList();
 	}
 }

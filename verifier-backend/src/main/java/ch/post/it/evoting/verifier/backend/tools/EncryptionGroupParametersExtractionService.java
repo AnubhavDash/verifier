@@ -173,7 +173,7 @@ public class EncryptionGroupParametersExtractionService {
 			final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
-		final PathNode pathNode = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
+		final PathNode pathNode = pathService.buildFromRootPath(StructureKey.SETUP_VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
 
 		return pathNode.getRegexPaths().stream()
 				.flatMap(ballotBoxIdPath -> pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA, ballotBoxIdPath)
@@ -194,7 +194,7 @@ public class EncryptionGroupParametersExtractionService {
 	public Stream<EncryptionGroupParametersDataExtractor.DataExtraction> getFromControlComponentCodeShares(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
-		final PathNode pathNode = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
+		final PathNode pathNode = pathService.buildFromRootPath(StructureKey.SETUP_VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
 
 		return pathNode.getRegexPaths().stream()
 				.flatMap(verificationCardSetIdPath -> pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_CODE_SHARES,
@@ -229,7 +229,7 @@ public class EncryptionGroupParametersExtractionService {
 	public Stream<EncryptionGroupParametersDataExtractor.DataExtraction> getFromSetupComponentTallyDataPayloads(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
-		final PathNode pathNode = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
+		final PathNode pathNode = pathService.buildFromRootPath(StructureKey.CONTEXT_VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
 
 		return pathNode.getRegexPaths().stream()
 				.parallel()

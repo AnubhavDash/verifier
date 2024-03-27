@@ -1,13 +1,28 @@
 # Changelog
 
-## Release 1.5.0
+## Release 1.5.1
 
-Release 1.5.0 includes some feedback from the Federal Chancellery's mandated experts and other experts of the community.
+Release 1.5.1 includes some feedback from the Federal Chancellery's mandated experts and other experts of the community.
 We want to thank the experts for their high-quality, constructive remarks:
 
 * Thomas Edmund Haines (Australian National University), Olivier Pereira (Université catholique Louvain), Vanessa Teague (Thinking Cybersecurity)
 * Aleksander Essex (Western University Canada)
 * Rolf Haenni, Reto Koenig, Philipp Locher, Eric Dubuis (Bern University of Applied Sciences)
+
+The following functionalities and improvements are included in release 1.5.1:
+
+* Separate the unzipped folders into context, setup, and tally and validate that the dataset only contains the expected files and folders (feedback from Vanessa Teague, Olivier Pereira, and Thomas Haines).
+* Improved the validations in VerifyPrimesMappingTableConsistency to prevent duplicate actual voting options (feedback from Vanessa Teague, Olivier Pereira, and Thomas Haines).
+* Indicated the encryption password of the example dataset in a readme (feedback from Vanessa Teague, Olivier Pereira, and Thomas Haines).
+* Display the certificate fingerprints in lower case and without colons for better usability.
+* Slightly reorganized the verifier front-end.
+* Fixed a bug with excessive parallelization for large datasets. 
+* Improved the consistency of the dataset file names.
+* Updated dependencies and third-party libraries.
+
+## Release 1.5.0
+
+Release 1.5.0 includes some feedback from the Federal Chancellery's mandated experts (see above) and other experts of the community.
 
 The following functionalities and improvements are included in release 1.5.0:
 

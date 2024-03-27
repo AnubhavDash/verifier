@@ -42,8 +42,8 @@ import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 
 /**
- * This verification ensures that the chunked files in the audit archive (data set) are consistent with the filename. It also checks the chunk ids are
- * monotonically increasing from 0 for each vcs.
+ * This verification ensures that the chunked files in the dataset are consistent with the filename. It also checks the chunk ids are monotonically
+ * increasing from 0 for each vcs.
  */
 @Component
 public class VerifyChunkConsistency extends AbstractVerification {
@@ -79,7 +79,7 @@ public class VerifyChunkConsistency extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
+		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.SETUP_VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
 
 		final List<Function<PathNode, Boolean>> validations = new ArrayList<>();
 		validations.add(this::validateControlComponentCodeSharesPayloads);

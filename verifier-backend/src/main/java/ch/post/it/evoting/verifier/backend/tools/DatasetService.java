@@ -182,12 +182,32 @@ public class DatasetService {
 						}));
 	}
 
+	/**
+	 * This method is called for each file in the uploaded zip. It ensures the file is in the whitelist of the expected {@link DatasetType}, i.e. the
+	 * dataset type chosen to upload. The verifications
+	 * {@link ch.post.it.evoting.verifier.backend.verifications.setup.completeness.VerifySetupCompleteness} and
+	 * {@link ch.post.it.evoting.verifier.backend.verifications.tally.completeness.VerifyTallyCompleteness} ensure all the needed files are present in
+	 * the uploaded datasets.
+	 *
+	 * @param dataset  the dataset information as a {@link Dataset}.
+	 * @param fileName the file to verify.
+	 * @throws IllegalStateException if
+	 *                               <ul>
+	 *                                   <li>the file does not belong to any dataset type.</li>
+	 *                                   <li>the file belongs to a dataset type different from the expected one.</li>
+	 *                               </ul>
+	 */
 	private void setActualDatasetType(final Dataset dataset, final String fileName) {
-		if (dataset.getActualType() == null) {
-			Arrays.stream(DatasetType.values())
-					.filter(datasetType -> pathService.matchesStructureKey(datasetType.getStructureKey(), fileName))
-					.findAny()
-					.ifPresent(dataset::setActualType);
-		}
+		final DatasetType actualType = Arrays.stream(DatasetType.values())
+				.filter(datasetType -> datasetType.getStructureKeys().stream()
+						.anyMatch(structureKey -> pathService.matchesStructureKey(structureKey, fileName)))
+				.findAny()
+				.orElseThrow(() -> new IllegalStateException(
+						String.format("The dataset does not have the expected type. [expectedType: %s]", dataset.getExpectedType())));
+
+		checkState(dataset.getActualType() == null || dataset.getActualType() == actualType,
+				"The dataset does not have the expected type. [expectedType: %s]", dataset.getExpectedType());
+
+		dataset.setActualType(actualType);
 	}
 }

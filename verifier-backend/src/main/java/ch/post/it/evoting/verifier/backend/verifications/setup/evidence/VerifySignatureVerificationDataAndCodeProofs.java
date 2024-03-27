@@ -86,7 +86,7 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final List<Path> verificationCardSets = electionDataExtractionService.getVerificationCardSetPaths(inputDirectoryPath);
+		final List<Path> verificationCardSets = electionDataExtractionService.getSetupVerificationCardSetPaths(inputDirectoryPath);
 
 		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContext(inputDirectoryPath);
 
@@ -96,7 +96,6 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 						VerificationCardSetContext::getNumberOfVotingOptions));
 
 		final boolean result = verificationCardSets.stream()
-				.parallel()
 				.map(path -> {
 					final int chunkCount = electionDataExtractionService.determineVerificationCardSetChunkCount(path);
 					return IntStream.range(0, chunkCount)
@@ -117,6 +116,7 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 								final BooleanSupplier s1 = () -> verifySignatureSetupComponentVerificationData(setupComponentVerificationData);
 
 								final BooleanSupplier s2 = () -> controlComponentCodeShares.stream()
+										.parallel()
 										.map(this::verifySignatureControlComponentCodeSharesPayload)
 										.reduce(Boolean::logicalAnd)
 										.orElse(false);
@@ -140,6 +140,7 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 							.reduce(Boolean::logicalAnd)
 							.orElse(false);
 				})
+				.parallel()
 				.reduce(Boolean::logicalAnd)
 				.orElse(false);
 

@@ -400,7 +400,7 @@ public class ElectionDataExtractionService {
 		checkNotNull(inputDirectoryPath);
 		validateUUID(verificationCardSetId);
 
-		final PathNode verificationCardSet = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SETS_DIR, inputDirectoryPath);
+		final PathNode verificationCardSet = pathService.buildFromRootPath(StructureKey.CONTEXT_VERIFICATION_CARD_SETS_DIR, inputDirectoryPath);
 
 		final Path verificationCardSetIdPath = verificationCardSet.getPath().resolve(verificationCardSetId);
 		final Path tallyDataPath = pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_TALLY_DATA, verificationCardSetIdPath)
@@ -424,7 +424,7 @@ public class ElectionDataExtractionService {
 	public Stream<SetupComponentTallyDataPayload> getSetupComponentTallyDataPayloads(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
-		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
+		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.CONTEXT_VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
 
 		return verificationCardSets.getRegexPaths().stream()
 				.parallel()
@@ -691,7 +691,7 @@ public class ElectionDataExtractionService {
 			final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
-		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
+		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.SETUP_VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
 
 		return verificationCardSets.getRegexPaths().stream()
 				.parallel()
@@ -729,7 +729,7 @@ public class ElectionDataExtractionService {
 			final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
-		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
+		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.SETUP_VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
 
 		return verificationCardSets.getRegexPaths().stream()
 				.parallel()
@@ -788,7 +788,7 @@ public class ElectionDataExtractionService {
 			final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
-		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
+		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.CONTEXT_VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
 
 		return verificationCardSets.getRegexPaths().stream()
 				.parallel()
@@ -815,13 +815,23 @@ public class ElectionDataExtractionService {
 	}
 
 	/**
-	 * Gets all the verification card set paths.
+	 * Gets all the verification card set paths from the context dataset.
 	 *
 	 * @param inputDirectoryPath the dataset root directory.
-	 * @return all verification card set paths.
+	 * @return all verification card set paths from the context.
 	 */
-	public List<Path> getVerificationCardSetPaths(final Path inputDirectoryPath) {
-		return pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath).getRegexPaths();
+	public List<Path> getContextVerificationCardSetPaths(final Path inputDirectoryPath) {
+		return pathService.buildFromRootPath(StructureKey.CONTEXT_VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath).getRegexPaths();
+	}
+
+	/**
+	 * Gets all the verification card set paths from the setup dataset.
+	 *
+	 * @param inputDirectoryPath the dataset root directory.
+	 * @return all verification card set paths from the setup.
+	 */
+	public List<Path> getSetupVerificationCardSetPaths(final Path inputDirectoryPath) {
+		return pathService.buildFromRootPath(StructureKey.SETUP_VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath).getRegexPaths();
 	}
 
 	/**

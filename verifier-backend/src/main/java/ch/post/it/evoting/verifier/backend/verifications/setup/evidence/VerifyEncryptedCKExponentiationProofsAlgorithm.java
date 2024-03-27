@@ -57,7 +57,6 @@ public class VerifyEncryptedCKExponentiationProofsAlgorithm {
 		// Operation.
 		final boolean vcsEncryptedCKVerif = contextAndInputs
 				.stream()
-				.parallel()
 				// Corresponds to the loop for j in [1, 4] and i in [0, N_bb)
 				.map(j_i -> verifyEncryptedCKExponentiationProofsVerificationCardSetAlgorithm
 						.verifyEncryptedCKExponentiationProofsVerificationCardSet(j_i.context(), j_i.input()))

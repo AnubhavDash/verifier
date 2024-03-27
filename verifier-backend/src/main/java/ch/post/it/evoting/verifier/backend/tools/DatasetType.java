@@ -15,20 +15,25 @@
  */
 package ch.post.it.evoting.verifier.backend.tools;
 
+import java.util.List;
+
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 
 public enum DatasetType {
-	CONTEXT(StructureKey.CONFIGURATION_ANONYMIZED),
-	SETUP(StructureKey.CONTROL_COMPONENT_CODE_SHARES),
-	TALLY(StructureKey.CONTROL_COMPONENT_BALLOT_BOX);
+	CONTEXT(List.of(StructureKey.CONFIGURATION_ANONYMIZED, StructureKey.ELECTION_EVENT_CONTEXT, StructureKey.SETUP_COMPONENT_PUBLIC_KEYS,
+			StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS, StructureKey.SETUP_COMPONENT_TALLY_DATA)),
+	SETUP(List.of(StructureKey.CONTROL_COMPONENT_CODE_SHARES, StructureKey.SETUP_COMPONENT_VERIFICATION_DATA)),
+	TALLY(List.of(StructureKey.TALLY_COMPONENT_DECRYPT, StructureKey.TALLY_COMPONENT_ECH0110, StructureKey.TALLY_COMPONENT_ECH0222,
+			StructureKey.CONTROL_COMPONENT_BALLOT_BOX, StructureKey.CONTROL_COMPONENT_SHUFFLE, StructureKey.TALLY_COMPONENT_SHUFFLE,
+			StructureKey.TALLY_COMPONENT_VOTES));
 
-	private final StructureKey structureKey;
+	private final List<StructureKey> structureKeys;
 
-	DatasetType(final StructureKey structureKey) {
-		this.structureKey = structureKey;
+	DatasetType(final List<StructureKey> structureKeys) {
+		this.structureKeys = structureKeys;
 	}
 
-	public StructureKey getStructureKey() {
-		return structureKey;
+	public List<StructureKey> getStructureKeys() {
+		return List.copyOf(structureKeys);
 	}
 }

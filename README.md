@@ -56,6 +56,7 @@ The following table indicates the correspondence between the Verifier and E-voti
 | 1.4.3            | 1.3.3                                                                      |
 | 1.4.4            | 1.3.4                                                                      |
 | 1.5.0            | 1.4.0                                                                      |
+| 1.5.1            | 1.4.1                                                                      |
 
 ## Build information
 

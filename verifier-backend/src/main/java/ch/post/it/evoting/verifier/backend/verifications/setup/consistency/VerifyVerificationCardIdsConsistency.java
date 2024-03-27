@@ -45,9 +45,7 @@ import ch.post.it.evoting.verifier.backend.event.SetupEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
-import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 
 @Component("VerifySetupVerificationCardIdsConsistency")
@@ -102,9 +100,9 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 		final List<VerificationCardSetContext> verificationCardSetContexts = electionEventContextPayload.getElectionEventContext()
 				.verificationCardSetContexts();
 
-		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
+		final List<Path> contextVerificationCardSetPaths = electionDataExtractionService.getContextVerificationCardSetPaths(inputDirectoryPath);
 
-		return verificationCardSets.getRegexPaths().stream()
+		return electionDataExtractionService.getSetupVerificationCardSetPaths(inputDirectoryPath).stream()
 				.parallel()
 				.map(verificationCardSetIdPath -> {
 
@@ -133,14 +131,22 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 								checkState(hasNoDuplicates(verificationCardIdsNode3));
 								checkState(hasNoDuplicates(verificationCardIdsNode4));
 
-								nodeIdsToCodeSharesIds.merge(1, verificationCardIdsNode1, (l1, l2) -> Stream.concat(l1.stream(), l2.stream()).toList());
-								nodeIdsToCodeSharesIds.merge(2, verificationCardIdsNode2, (l1, l2) -> Stream.concat(l1.stream(), l2.stream()).toList());
-								nodeIdsToCodeSharesIds.merge(3, verificationCardIdsNode3, (l1, l2) -> Stream.concat(l1.stream(), l2.stream()).toList());
-								nodeIdsToCodeSharesIds.merge(4, verificationCardIdsNode4, (l1, l2) -> Stream.concat(l1.stream(), l2.stream()).toList());
+								nodeIdsToCodeSharesIds.merge(1, verificationCardIdsNode1,
+										(l1, l2) -> Stream.concat(l1.stream(), l2.stream()).toList());
+								nodeIdsToCodeSharesIds.merge(2, verificationCardIdsNode2,
+										(l1, l2) -> Stream.concat(l1.stream(), l2.stream()).toList());
+								nodeIdsToCodeSharesIds.merge(3, verificationCardIdsNode3,
+										(l1, l2) -> Stream.concat(l1.stream(), l2.stream()).toList());
+								nodeIdsToCodeSharesIds.merge(4, verificationCardIdsNode4,
+										(l1, l2) -> Stream.concat(l1.stream(), l2.stream()).toList());
 							});
 
+					final String verificationCardSetId = verificationCardSetIdPath.getFileName().toString();
 
-					final List<String> tallyDataIds = electionDataExtractionService.getSetupComponentTallyDataPayloadsDataExtractions(verificationCardSetIdPath)
+					final List<String> tallyDataIds = contextVerificationCardSetPaths.stream()
+							.parallel()
+							.filter(vcsPath -> vcsPath.getFileName().toString().equals(verificationCardSetId))
+							.flatMap(electionDataExtractionService::getSetupComponentTallyDataPayloadsDataExtractions)
 							.map(dataExtraction -> {
 								final List<String> verificationCardIds = Arrays.asList(dataExtraction.verificationCardIds());
 
@@ -150,7 +156,6 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 							.flatMap(Collection::stream)
 							.toList();
 
-					final String verificationCardSetId = verificationCardSetIdPath.getFileName().toString();
 					final int numberOfVotingCards = verificationCardSetContexts.stream()
 							.parallel()
 							.filter(vcs -> vcs.getVerificationCardSetId().equals(verificationCardSetId))
