@@ -110,7 +110,7 @@ export class HeaderComponent implements OnInit {
     this.initializeWebSocketConnection();
   }
 
-  initTable() {
+  initTable(): void {
     this.processorService.getVerifications().subscribe(results => {
       this.verificationsSize = results.length;
       const verifications = {};
@@ -187,7 +187,7 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  updateStatus(runOptions: string) {
+  updateStatus(runOptions: string): void {
     Object.keys(this.verifications).forEach(key => {
       let notFound = true;
       this.verifications[key].events.forEach(event => {
@@ -202,7 +202,7 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  isProcessComplete() {
+  isProcessComplete(): boolean {
     const isProcessCompete = this.statusCounterAll() === this.verificationsSize;
 
     if (isProcessCompete && this.endDate === null) {
@@ -225,7 +225,7 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  initializeWebSocketConnection() {
+  initializeWebSocketConnection(): void {
     const ws = new SockJS(environment.appUrl + '/socket');
     this.stompClient = Stomp.over(ws);
     const that = this;
@@ -250,7 +250,7 @@ export class HeaderComponent implements OnInit {
   }
 
   // Filters.
-  filterVerificationsAll() {
+  filterVerificationsAll(): void {
     this.verificationStatusFilter = this.verificationFilter['ALL'].value;
     const allFilters = Object.keys(this.verificationFilter);
     allFilters.forEach((key) => {
@@ -258,55 +258,55 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  filterVerificationsRUNNING() {
+  filterVerificationsRUNNING(): void {
     this.toggleVerificationFilter('RUNNING');
   }
 
-  filterVerificationsOK() {
+  filterVerificationsOK(): void {
     this.toggleVerificationFilter('OK');
   }
 
-  filterVerificationsNOK() {
+  filterVerificationsNOK(): void {
     this.toggleVerificationFilter('NOK');
   }
 
-  filterVerificationsERROR() {
+  filterVerificationsERROR(): void {
     this.toggleVerificationFilter('ERROR');
   }
 
-  filterVerificationsNA() {
+  filterVerificationsNA(): void {
     this.toggleVerificationFilter('NA');
   }
 
   // Status counter.
-  statusCounterAll() {
+  statusCounterAll(): number {
     return this.statusCounterOK() + this.statusCounterNOK() + this.statusCounterNA() + this.statusCounterERROR();
   }
 
-  statusCounterRUNNING() {
+  statusCounterRUNNING(): number {
     return this.statusCounter(this.verificationFilter.RUNNING.value);
   }
 
-  statusCounterOK() {
+  statusCounterOK(): number {
     return this.statusCounter(this.verificationFilter.OK.value);
   }
 
-  statusCounterNOK() {
+  statusCounterNOK(): number {
     return this.statusCounter(this.verificationFilter.NOK.value);
   }
 
-  statusCounterNA() {
+  statusCounterNA(): number {
     return this.statusCounter(this.verificationFilter.NA.value);
   }
 
-  statusCounterERROR() {
+  statusCounterERROR(): number {
     return this.statusCounter(this.verificationFilter.ERROR.value);
   }
 
   // PDF Export.
-  exportToPDF() {
+  exportToPDF(): void {
     this.isExportingToPDF = true;
-    const pdfFileName = `verifier-report-${this.getCurrentDateFile()}`;
+    const pdfFileName = `verifier-report-${this.getPhase()}-${this.configuration?.context?.electionEventName}-${this.getCurrentDateFile()}`;
     const options = {
       margin: [5, 0],
       filename: `${pdfFileName}.pdf`,
@@ -331,6 +331,15 @@ export class HeaderComponent implements OnInit {
 
       component.isExportingToPDF = false;
     }).save();
+  }
+
+  getPhase(): string {
+    switch (this.verifierMode) {
+      case VerifierMode.SETUP:
+        return 'VerifySetupPhase';
+      case VerifierMode.TALLY:
+        return 'VerifyTally';
+    }
   }
 
   // General.
@@ -411,7 +420,7 @@ export class HeaderComponent implements OnInit {
   }
 
   // Status counter.
-  private statusCounter(statusValue: string) {
+  private statusCounter(statusValue: string): number {
     const filtered = Object.keys(this.verifications)
       .filter(key => {
         if (statusValue.indexOf('|') > -1) {
@@ -428,12 +437,12 @@ export class HeaderComponent implements OnInit {
     return Object.keys(filtered).length;
   }
 
-  private resetStatus() {
+  private resetStatus(): void {
     Object.keys(this.verifications).forEach(key => this.verifications[key].status = null);
   }
 
   // Filters.
-  private toggleVerificationFilter(key: string) {
+  private toggleVerificationFilter(key: string): void {
     const filter = this.verificationFilter[key];
     if (filter.active) {
       filter.active = false;
@@ -444,7 +453,7 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  private activateVerificationFilter(key: string) {
+  private activateVerificationFilter(key: string): void {
     const filter = this.verificationFilter[key];
     if (!filter.active) {
       this.verificationFilter['ALL'].active = false;
@@ -453,7 +462,7 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  private activateResultVerificationFilters() {
+  private activateResultVerificationFilters(): void {
     if (this.processStarted && this.isProcessComplete()) {
       this.activateVerificationFilter('OK');
       this.activateVerificationFilter('NOK');
@@ -462,15 +471,15 @@ export class HeaderComponent implements OnInit {
   }
 
   // Current Date.
-  private getCurrentDateFile() {
+  private getCurrentDateFile(): string {
     return this.formatDate(new Date(), true);
   }
 
-  private getCurrentDate() {
+  private getCurrentDate(): string {
     return this.formatDate(new Date(), false);
   }
 
-  private formatDate(dateToFormat, isFileFormat) {
+  private formatDate(dateToFormat, isFileFormat): string {
     const hours = String(dateToFormat.getHours()).padStart(2, '0');
     const minutes = String(dateToFormat.getMinutes()).padStart(2, '0');
     const date = String(dateToFormat.getDate()).padStart(2, '0');
@@ -478,7 +487,7 @@ export class HeaderComponent implements OnInit {
     const year = dateToFormat.getFullYear();
 
     if (isFileFormat) {
-      return `${year}${month}${date}-${hours}${minutes}`;
+      return `${year}${month}${date}_${hours}${minutes}`;
     } else {
       return `${date}.${month}.${year} ${hours}:${minutes}`;
     }

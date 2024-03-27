@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 export enum VerifierMode {
-  SETUP = 'SETUP',
-  TALLY = 'TALLY'
+  SETUP = 'Setup',
+  TALLY = 'Tally'
 }
