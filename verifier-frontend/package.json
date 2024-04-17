@@ -13,14 +13,14 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "17.2.4",
-    "@angular/common": "17.2.4",
-    "@angular/compiler": "17.2.4",
-    "@angular/core": "17.2.4",
-    "@angular/forms": "17.2.4",
-    "@angular/platform-browser": "17.2.4",
-    "@angular/platform-browser-dynamic": "17.2.4",
-    "@angular/router": "17.2.4",
+    "@angular/animations": "17.3.4",
+    "@angular/common": "17.3.4",
+    "@angular/compiler": "17.3.4",
+    "@angular/core": "17.3.4",
+    "@angular/forms": "17.3.4",
+    "@angular/platform-browser": "17.3.4",
+    "@angular/platform-browser-dynamic": "17.3.4",
+    "@angular/router": "17.3.4",
     "@stomp/stompjs": "7.0.0",
     "bootstrap": "5.3.3",
     "bootstrap-icons": "1.11.3",
@@ -36,12 +36,12 @@
     "zone.js": "0.14.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "17.2.3",
-    "@angular-eslint/builder": "17.2.1",
-    "@angular-eslint/eslint-plugin": "17.2.1",
-    "@angular/cli": "17.2.3",
-    "@angular/compiler-cli": "17.2.4",
-    "@angular/language-service": "17.2.4",
+    "@angular-devkit/build-angular": "17.3.4",
+    "@angular-eslint/builder": "17.3.0",
+    "@angular-eslint/eslint-plugin": "17.3.0",
+    "@angular/cli": "17.3.4",
+    "@angular/compiler-cli": "17.3.4",
+    "@angular/language-service": "17.3.4",
     "@types/jasmine": "5.1.4",
     "@types/jasminewd2": "2.0.13",
     "@types/node": "20.12.7",
@@ -56,10 +56,6 @@
     "shx": "0.3.4",
     "tslib": "2.6.2",
     "typescript": "5.3.3"
-  },
-  "overrides": {
-    "commander": "12.0.0",
-    "minimatch": "3.1.2"
   },
   "engines": {
     "node": ">=14",
