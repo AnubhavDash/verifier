@@ -1,13 +1,23 @@
 # Changelog
 
-## Release 1.5.1
+## Release 1.5.2
 
-Release 1.5.1 includes some feedback from the Federal Chancellery's mandated experts and other experts of the community.
+Release 1.5.2 includes some feedback from the Federal Chancellery's mandated experts and other experts of the community.
 We want to thank the experts for their high-quality, constructive remarks:
 
 * Thomas Edmund Haines (Australian National University), Olivier Pereira (Université catholique Louvain), Vanessa Teague (Thinking Cybersecurity)
 * Aleksander Essex (Western University Canada)
 * Rolf Haenni, Reto Koenig, Philipp Locher, Eric Dubuis (Bern University of Applied Sciences)
+
+The following functionalities and improvements are included in release 1.5.2:
+
+* Fixed an issue where reencrypted datasets were not accepted (feedback from Thomas Haines, Olivier Pereira, and Vanessa Teague).
+* Fixed an issue with the correct display of the datasets' hash value.
+* Updated dependencies and third-party libraries.
+
+## Release 1.5.1
+
+Release 1.5.1 includes some feedback from the Federal Chancellery's mandated experts (see above) and other experts of the community.
 
 The following functionalities and improvements are included in release 1.5.1:
 
