@@ -17,9 +17,7 @@ package ch.post.it.evoting.verifier.backend.controller;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -85,7 +83,7 @@ public class VerifierController {
 			@PathVariable
 			final DatasetType datasetType,
 			@RequestParam("file")
-			final MultipartFile file) throws IOException {
+			final MultipartFile file) {
 		checkNotNull(datasetType);
 
 		Path temporaryDataset = null;

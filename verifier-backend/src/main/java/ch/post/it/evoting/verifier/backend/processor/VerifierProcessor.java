@@ -250,7 +250,7 @@ public class VerifierProcessor {
 		try {
 			datasetHash = DigestUtils.sha256Hex(Files.newInputStream(filePath)).toLowerCase(Locale.ENGLISH);
 		} catch (final IOException e) {
-			throw new DatasetExtractionException("Could not digest given dataset.");
+			throw new DatasetExtractionException("Could not digest given context dataset.");
 		}
 
 		this.datasetConfigurationContext = new DatasetConfigurationContext.Builder()
@@ -286,14 +286,13 @@ public class VerifierProcessor {
 			throw new DatasetExtractionException("Could not download setup dataset.");
 		}
 
-		final CompletableFuture<String> datasetHashCompletableFuture = getDatasetHashCompletableFuture(setupDataset);
 		checkNotNull(unpackDataset(setupDataset));
 
 		final String datasetHash;
 		try {
 			datasetHash = DigestUtils.sha256Hex(Files.newInputStream(filePath)).toLowerCase(Locale.ENGLISH);
 		} catch (final IOException e) {
-			throw new DatasetExtractionException("Could not digest given dataset.");
+			throw new DatasetExtractionException("Could not digest given setup dataset.");
 		}
 
 		this.datasetConfigurationSetup = new DatasetConfigurationSetup(filename, datasetHash.toLowerCase(Locale.ENGLISH));
@@ -314,7 +313,6 @@ public class VerifierProcessor {
 			throw new DatasetExtractionException("Could not download tally dataset.");
 		}
 
-		final CompletableFuture<String> datasetHashCompletableFuture = getDatasetHashCompletableFuture(tallyDataset);
 		final Path inputDirectory = unpackDataset(tallyDataset);
 
 		final Results tallyComponentDecrypt = electionDataExtractionService.getTallyComponentDecrypt(inputDirectory);
@@ -327,7 +325,7 @@ public class VerifierProcessor {
 		try {
 			datasetHash = DigestUtils.sha256Hex(Files.newInputStream(filePath)).toLowerCase(Locale.ENGLISH);
 		} catch (final IOException e) {
-			throw new DatasetExtractionException("Could not digest given dataset.");
+			throw new DatasetExtractionException("Could not digest given tally dataset.");
 		}
 
 		this.datasetConfigurationTally = new DatasetConfigurationTally(filename, datasetHash.toLowerCase(Locale.ENGLISH),
@@ -342,16 +340,6 @@ public class VerifierProcessor {
 		LOGGER.info("Dataset successfully downloaded.");
 
 		return new Dataset(decryptedStream, directory, datasetType);
-	}
-
-	private CompletableFuture<String> getDatasetHashCompletableFuture(final Dataset dataset) {
-		return CompletableFuture.supplyAsync(() -> {
-			try (final InputStream unpackedDatasetInputStream = dataset.newInputStream()) {
-				return DigestUtils.sha256Hex(unpackedDatasetInputStream).toUpperCase();
-			} catch (final IOException e) {
-				throw new UncheckedIOException("Failed to digest given dataset.", e);
-			}
-		});
 	}
 
 	private Path unpackDataset(final Dataset dataset) {

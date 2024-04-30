@@ -38,7 +38,6 @@ import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentVerificationDataPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 
@@ -48,7 +47,7 @@ class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 
 	@BeforeAll
 	static void setUpAll() {
-		verification = new VerifyVerificationCardIdsConsistency(pathService, resultPublisherServiceMock, electionDataExtractionService);
+		verification = new VerifyVerificationCardIdsConsistency(resultPublisherServiceMock, electionDataExtractionService);
 	}
 
 	@Test
@@ -68,7 +67,7 @@ class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 				.getSetupComponentVerificationDataPayloadsDataExtractionsSortedByChunkId(any());
 
 		final VerifyVerificationCardIdsConsistency verifyVerificationCardIdsConsistency = new VerifyVerificationCardIdsConsistency(
-				pathService, resultPublisherServiceMock, electionDataExtractionServiceSpy);
+				resultPublisherServiceMock, electionDataExtractionServiceSpy);
 
 		final VerificationResult result = verifyVerificationCardIdsConsistency.verify(datasetPath);
 
@@ -104,8 +103,7 @@ class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
 		doReturn(swappedDataExtractions.stream()).when(electionDataExtractionServiceSpy)
 				.getSetupComponentVerificationDataPayloadsDataExtractionsSortedByChunkId(verificationCardSet);
-		final VerifyVerificationCardIdsConsistency verifyVerificationCardIdsConsistency = new VerifyVerificationCardIdsConsistency(
-				pathService, resultPublisherServiceMock, electionDataExtractionServiceSpy);
+		final VerifyVerificationCardIdsConsistency verifyVerificationCardIdsConsistency = new VerifyVerificationCardIdsConsistency(resultPublisherServiceMock, electionDataExtractionServiceSpy);
 
 		final VerificationResult result = verifyVerificationCardIdsConsistency.verify(datasetPath);
 
@@ -131,9 +129,8 @@ class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
 		doReturn(swappedDataExtractions.stream()).when(electionDataExtractionServiceSpy)
 				.getSetupComponentVerificationDataPayloadsDataExtractionsSortedByChunkId(verificationCardSet);
-		final VerifyVerificationCardIdsConsistency verifyVerificationCardIdsConsistency = new VerifyVerificationCardIdsConsistency(
-				pathService, resultPublisherServiceMock, electionDataExtractionServiceSpy);
 
+		final VerifyVerificationCardIdsConsistency verifyVerificationCardIdsConsistency = new VerifyVerificationCardIdsConsistency(resultPublisherServiceMock, electionDataExtractionServiceSpy);
 		final VerificationResult result = verifyVerificationCardIdsConsistency.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
