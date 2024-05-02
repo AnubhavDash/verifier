@@ -45,7 +45,6 @@ import ch.post.it.evoting.verifier.backend.event.SetupEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 
 @Component("VerifySetupVerificationCardIdsConsistency")
@@ -53,15 +52,12 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(VerifyVerificationCardIdsConsistency.class);
 
-	private final PathService pathService;
 	private final ElectionDataExtractionService electionDataExtractionService;
 
 	protected VerifyVerificationCardIdsConsistency(
-			final PathService pathService,
 			final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService electionDataExtractionService) {
 		super(resultPublisherService);
-		this.pathService = pathService;
 		this.electionDataExtractionService = electionDataExtractionService;
 	}
 

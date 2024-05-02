@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.math.BigInteger;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -32,7 +33,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import jakarta.annotation.PostConstruct;
@@ -152,23 +152,23 @@ public class VerifierProcessor {
 		return new DatasetConfiguration(datasetConfigurationContext, datasetConfigurationSetup, datasetConfigurationTally);
 	}
 
-	public void setDataset(final InputStream datasetInputStream, final String filename, final DatasetType datasetType)
+	public void setDataset(final String filename, final DatasetType datasetType, final Path filePath)
 			throws DatasetExtractionException {
-		checkNotNull(datasetInputStream);
 		checkNotNull(filename);
 		checkNotNull(datasetType);
+		checkNotNull(filePath);
 
 		switch (datasetType) {
-		case CONTEXT -> setDatasetContext(datasetInputStream, filename);
-		case SETUP -> setDatasetSetup(datasetInputStream, filename);
-		case TALLY -> setDatasetTally(datasetInputStream, filename);
+		case CONTEXT -> setDatasetContext(filename, filePath);
+		case SETUP -> setDatasetSetup(filename, filePath);
+		case TALLY -> setDatasetTally(filename, filePath);
 		default -> throw new IllegalArgumentException("The dataset type does not exist.");
 		}
 	}
 
-	private void setDatasetContext(final InputStream datasetInputStream, final String filename) throws DatasetExtractionException {
-		checkNotNull(datasetInputStream);
+	private void setDatasetContext(final String filename, final Path filePath) throws DatasetExtractionException {
 		checkNotNull(filename);
+		checkNotNull(filePath);
 
 		if (this.contextDataset != null) {
 			datasetService.clean(contextDataset, false);
@@ -187,9 +187,12 @@ public class VerifierProcessor {
 
 		LOGGER.debug("Secured directory successfully created for dataset. [directory: {}]", directory);
 
-		this.contextDataset = downloadDataset(datasetInputStream, directory, DatasetType.CONTEXT);
+	    try (final InputStream datasetInputStream = Files.newInputStream(filePath)) {
+			this.contextDataset = downloadDataset(datasetInputStream, directory, DatasetType.CONTEXT);
+		} catch (final IOException e) {
+			throw new DatasetExtractionException("Could not download context dataset.");
+		}
 
-		final CompletableFuture<String> datasetHashCompletableFuture = getDatasetHashCompletableFuture(contextDataset);
 		final Path inputDirectory = unpackDataset(contextDataset);
 
 		// Get election event id and number of voters from election event context.
@@ -242,11 +245,16 @@ public class VerifierProcessor {
 				.filter(AuthorizationType::isAuthorizationTest)
 				.count());
 
-		final String datasetHash = datasetHashCompletableFuture.join();
+		final String datasetHash;
+		try {
+			datasetHash = DigestUtils.sha256Hex(Files.newInputStream(filePath)).toLowerCase(Locale.ENGLISH);
+		} catch (final IOException e) {
+			throw new DatasetExtractionException("Could not digest given context dataset.");
+		}
 
 		this.datasetConfigurationContext = new DatasetConfigurationContext.Builder()
 				.setFilename(filename)
-				.setHash(datasetHash.toLowerCase())
+				.setHash(datasetHash.toLowerCase(Locale.ENGLISH))
 				.setElectionEventId(electionEventId)
 				.setAliasesToFingerprints(aliasesToFingerprints)
 				.setElectionEventName(electionEventName)
@@ -262,35 +270,48 @@ public class VerifierProcessor {
 				.build();
 	}
 
-	private void setDatasetSetup(final InputStream datasetInputStream, final String filename) {
-		checkNotNull(datasetInputStream);
+	private void setDatasetSetup(final String filename, final Path filePath) throws DatasetExtractionException {
 		checkNotNull(filename);
+		checkNotNull(filePath);
 		checkNotNull(datasetConfigurationContext, "A context dataset must be uploaded first.");
 
 		if (this.setupDataset != null) {
 			datasetService.clean(setupDataset, false);
 		}
-		this.setupDataset = downloadDataset(datasetInputStream, contextDataset.getUnpackFolder(), DatasetType.SETUP);
 
-		final CompletableFuture<String> datasetHashCompletableFuture = getDatasetHashCompletableFuture(setupDataset);
+		try (final InputStream datasetInputStream = Files.newInputStream(filePath)) {
+			this.setupDataset = downloadDataset(datasetInputStream, contextDataset.getUnpackFolder(), DatasetType.SETUP);
+		} catch (final IOException e) {
+			throw new DatasetExtractionException("Could not download setup dataset.");
+		}
+
 		checkNotNull(unpackDataset(setupDataset));
 
-		final String datasetHash = datasetHashCompletableFuture.join();
+		final String datasetHash;
+		try {
+			datasetHash = DigestUtils.sha256Hex(Files.newInputStream(filePath)).toLowerCase(Locale.ENGLISH);
+		} catch (final IOException e) {
+			throw new DatasetExtractionException("Could not digest given setup dataset.");
+		}
 
-		this.datasetConfigurationSetup = new DatasetConfigurationSetup(filename, datasetHash.toLowerCase());
+		this.datasetConfigurationSetup = new DatasetConfigurationSetup(filename, datasetHash.toLowerCase(Locale.ENGLISH));
 	}
 
-	private void setDatasetTally(final InputStream datasetInputStream, final String filename) {
-		checkNotNull(datasetInputStream);
+	private void setDatasetTally(final String filename, final Path filePath) throws DatasetExtractionException {
 		checkNotNull(filename);
+		checkNotNull(filePath);
 		checkNotNull(datasetConfigurationContext, "A context dataset must be uploaded first.");
 
-		if (this.tallyDataset != null) {
+		if (tallyDataset != null) {
 			datasetService.clean(tallyDataset, false);
 		}
-		this.tallyDataset = downloadDataset(datasetInputStream, contextDataset.getUnpackFolder(), DatasetType.TALLY);
 
-		final CompletableFuture<String> datasetHashCompletableFuture = getDatasetHashCompletableFuture(tallyDataset);
+		try (final InputStream datasetInputStream = Files.newInputStream(filePath)) {
+			tallyDataset = downloadDataset(datasetInputStream, contextDataset.getUnpackFolder(), DatasetType.TALLY);
+		} catch (final IOException e) {
+			throw new DatasetExtractionException("Could not download tally dataset.");
+		}
+
 		final Path inputDirectory = unpackDataset(tallyDataset);
 
 		final Results tallyComponentDecrypt = electionDataExtractionService.getTallyComponentDecrypt(inputDirectory);
@@ -299,9 +320,14 @@ public class VerifierProcessor {
 		final int numberOfConfirmedNonTestVotes = getNumberOfConfirmedVotes(configuration, tallyComponentDecrypt, false);
 		final int numberOfConfirmedTestVotes = getNumberOfConfirmedVotes(configuration, tallyComponentDecrypt, true);
 
-		final String datasetHash = datasetHashCompletableFuture.join();
+		final String datasetHash;
+		try {
+			datasetHash = DigestUtils.sha256Hex(Files.newInputStream(filePath)).toLowerCase(Locale.ENGLISH);
+		} catch (final IOException e) {
+			throw new DatasetExtractionException("Could not digest given tally dataset.");
+		}
 
-		this.datasetConfigurationTally = new DatasetConfigurationTally(filename, datasetHash.toLowerCase(),
+		this.datasetConfigurationTally = new DatasetConfigurationTally(filename, datasetHash.toLowerCase(Locale.ENGLISH),
 				numberOfConfirmedNonTestVotes, numberOfConfirmedTestVotes);
 	}
 
@@ -313,16 +339,6 @@ public class VerifierProcessor {
 		LOGGER.info("Dataset successfully downloaded.");
 
 		return new Dataset(decryptedStream, directory, datasetType);
-	}
-
-	private CompletableFuture<String> getDatasetHashCompletableFuture(final Dataset dataset) {
-		return CompletableFuture.supplyAsync(() -> {
-			try (final InputStream unpackedDatasetInputStream = dataset.newInputStream()) {
-				return DigestUtils.sha256Hex(unpackedDatasetInputStream).toUpperCase();
-			} catch (final IOException e) {
-				throw new UncheckedIOException("Failed to digest given dataset.", e);
-			}
-		});
 	}
 
 	private Path unpackDataset(final Dataset dataset) {

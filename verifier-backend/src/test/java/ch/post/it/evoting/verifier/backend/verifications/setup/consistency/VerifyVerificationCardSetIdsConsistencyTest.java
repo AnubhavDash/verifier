@@ -37,7 +37,7 @@ class VerifyVerificationCardSetIdsConsistencyTest extends SetupVerificationTest 
 
 	@BeforeAll
 	static void setUpAll() {
-		verification = new VerifyVerificationCardSetIdsConsistency(resultPublisherServiceMock, pathService, electionDataExtractionService);
+		verification = new VerifyVerificationCardSetIdsConsistency(resultPublisherServiceMock, electionDataExtractionService);
 	}
 
 	@Test
@@ -69,7 +69,7 @@ class VerifyVerificationCardSetIdsConsistencyTest extends SetupVerificationTest 
 				.getSetupComponentVerificationDataPayloadsDataExtractionsSortedByChunkId(any());
 
 		final VerifyVerificationCardSetIdsConsistency verifyVerificationCardSetIdsConsistency = new VerifyVerificationCardSetIdsConsistency(
-				resultPublisherServiceMock, pathService, electionDataExtractionServiceSpy);
+				resultPublisherServiceMock, electionDataExtractionServiceSpy);
 
 		final VerificationResult result = verifyVerificationCardSetIdsConsistency.verify(datasetPath);
 

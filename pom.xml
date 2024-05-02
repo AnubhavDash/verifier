@@ -19,7 +19,7 @@
 
 	<groupId>ch.post.it.evoting.verifier</groupId>
 	<artifactId>verifier</artifactId>
-	<version>1.5.1.0</version>
+	<version>1.5.2.0</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -34,39 +34,39 @@
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
 		<maven.compiler.release>21</maven.compiler.release>
-		<project.build.outputTimestamp>2024-03-27T17:12:48+02:00</project.build.outputTimestamp>
+		<project.build.outputTimestamp>2024-05-02T17:52:48+02:00</project.build.outputTimestamp>
 
-		<bouncycastle.version>1.77</bouncycastle.version>
+		<apache.commons-lang3>3.14.0</apache.commons-lang3>
+		<bouncycastle.version>1.78</bouncycastle.version>
 		<commons-codec.version>1.16.1</commons-codec.version>
-		<crypto-primitives-version>1.4.1.0</crypto-primitives-version>
-		<e-voting-libraries.version>1.4.1.0</e-voting-libraries.version>
-		<guava.version>33.0.0-jre</guava.version>
-		<jackson.version>2.16.1</jackson.version>
-		<jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
-		<jakarta.xml.bind-api.version>4.0.0</jakarta.xml.bind-api.version>
+		<crypto-primitives-version>1.4.2.0</crypto-primitives-version>
+		<e-voting-libraries.version>1.4.2.0</e-voting-libraries.version>
+		<guava.version>33.1.0-jre</guava.version>
+		<jackson.version>2.17.0</jackson.version>
+		<jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
+		<jakarta.xml.bind-api.version>4.0.2</jakarta.xml.bind-api.version>
 		<jsurfer-jackson.version>1.6.5</jsurfer-jackson.version>
 		<junit-jupiter.version>5.10.2</junit-jupiter.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
-		<maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
-		<maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
-		<maven-dependency-check.version>9.0.9</maven-dependency-check.version>
+		<maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
+		<maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+		<maven-dependency-check.version>9.1.0</maven-dependency-check.version>
 		<maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
 		<maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
 		<maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
 		<maven-release-plugin.version>3.0.1</maven-release-plugin.version>
-		<maven-source-plugin.version>3.3.0</maven-source-plugin.version>
+		<maven-source-plugin.version>3.3.1</maven-source-plugin.version>
 		<maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
 		<mockito.version>5.11.0</mockito.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<reproducible-build-maven-plugin.version>0.15.2</reproducible-build-maven-plugin.version>
 		<rootProject>verifier</rootProject>
 		<slf4j.version>2.0.12</slf4j.version>
-		<sonar-maven-plugin.version>3.10.1.2184</sonar-maven-plugin.version>
-		<spring-boot.version>3.2.3</spring-boot.version>
+		<sonar-maven-plugin.version>3.11.0.3922</sonar-maven-plugin.version>
+		<spring-boot.version>3.2.5</spring-boot.version>
 		<system-stubs-jupiter.version>2.1.6</system-stubs-jupiter.version>
 		<versions-maven-plugin.version>2.16.2</versions-maven-plugin.version>
 		<zip4j.version>2.11.5</zip4j.version>
-		<apache.commons-lang3>3.14.0</apache.commons-lang3>
 
 		<!-- sonar -->
 		<sonar.scm.disabled>true</sonar.scm.disabled>

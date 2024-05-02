@@ -181,7 +181,7 @@ public class PathService {
 		final String filePathRegex = String.join(fileSeparatorRegex, parentPathRegex, structureNode.qualifier());
 		final Pattern pattern = Pattern.compile(filePathRegex);
 
-		return pattern.matcher(fileName).matches();
+		return pattern.matcher(fileName.replace('/', File.separatorChar)).matches();
 	}
 
 	/**

@@ -21,7 +21,7 @@
 	<parent>
 		<artifactId>verifier</artifactId>
 		<groupId>ch.post.it.evoting.verifier</groupId>
-		<version>1.5.1.0</version>
+		<version>1.5.2.0</version>
 	</parent>
 
 	<artifactId>verifier-backend</artifactId>

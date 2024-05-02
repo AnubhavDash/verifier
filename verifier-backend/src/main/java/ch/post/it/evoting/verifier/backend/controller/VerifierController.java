@@ -17,9 +17,10 @@ package ch.post.it.evoting.verifier.backend.controller;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -82,14 +83,21 @@ public class VerifierController {
 			@PathVariable
 			final DatasetType datasetType,
 			@RequestParam("file")
-			final MultipartFile file) throws IOException {
+			final MultipartFile file) {
 		checkNotNull(datasetType);
 
-		try (final InputStream inputStream = new BufferedInputStream(file.getInputStream())) {
-			this.processor.setDataset(inputStream, file.getOriginalFilename(), datasetType);
+		Path temporaryDataset = null;
+
+		try {
+			temporaryDataset = createTemporaryDataset(file);
+			this.processor.setDataset(file.getOriginalFilename(), datasetType, temporaryDataset);
 		} catch (final DatasetExtractionException e) {
 			LOGGER.error("An error occurred while uploading the dataset. [datasetType: {}]", datasetType, e);
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} finally {
+			if (temporaryDataset != null) {
+				deleteTemporaryImport(temporaryDataset);
+			}
 		}
 
 		return new ResponseEntity<>(HttpStatus.OK);
@@ -112,4 +120,28 @@ public class VerifierController {
 		}
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
+
+	private Path createTemporaryDataset(final MultipartFile zip) {
+		Path importTempPath = null;
+		try {
+			importTempPath = Files.createTempFile(null, null);
+			zip.transferTo(importTempPath);
+		} catch (final IOException e) {
+			if (importTempPath != null) {
+				deleteTemporaryImport(importTempPath);
+			}
+			throw new UncheckedIOException("Failed to create temporary import file.", e);
+		}
+
+		return importTempPath;
+	}
+
+	private void deleteTemporaryImport(final Path importTempPath) {
+		try {
+			Files.deleteIfExists(importTempPath);
+		} catch (final IOException e) {
+			throw new UncheckedIOException("Failed to delete temporary dataset file.", e);
+		}
+	}
+
 }
