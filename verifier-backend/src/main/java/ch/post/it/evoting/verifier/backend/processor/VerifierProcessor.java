@@ -302,12 +302,12 @@ public class VerifierProcessor {
 		checkNotNull(filePath);
 		checkNotNull(datasetConfigurationContext, "A context dataset must be uploaded first.");
 
-		if (this.tallyDataset != null) {
+		if (tallyDataset != null) {
 			datasetService.clean(tallyDataset, false);
 		}
 
 		try (final InputStream datasetInputStream = Files.newInputStream(filePath)) {
-			this.setupDataset = downloadDataset(datasetInputStream, contextDataset.getUnpackFolder(), DatasetType.TALLY);
+			tallyDataset = downloadDataset(datasetInputStream, contextDataset.getUnpackFolder(), DatasetType.TALLY);
 		} catch (final IOException e) {
 			throw new DatasetExtractionException("Could not download tally dataset.");
 		}
