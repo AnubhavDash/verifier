@@ -1,6 +1,6 @@
 {
   "name": "Verifier",
-  "version": "1.5.2-0",
+  "version": "1.5.2-1",
   "license": "MIT",
   "main": "main.js",
   "scripts": {
@@ -60,5 +60,8 @@
   "engines": {
     "node": ">=14",
     "npm": ">=6"
+  },
+  "overrides": {
+    "websocket": "1.0.34"
   }
 }
