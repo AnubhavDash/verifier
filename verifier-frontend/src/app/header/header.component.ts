@@ -306,7 +306,8 @@ export class HeaderComponent implements OnInit {
   // PDF Export.
   exportToPDF(): void {
     this.isExportingToPDF = true;
-    const pdfFileName = `verifier-report-${this.getPhase()}-${this.configuration?.context?.electionEventName}-${this.getCurrentDateFile()}`;
+    // Verifier-report-{$Type}-{Seed}-{timestamp}.pdf ($Type is VerifyConfigPhase or VerifyTally
+    const pdfFileName = `Verifier-report-${this.getPhase()}-${this.configuration?.context?.electionEventSeed}-${this.getCurrentDateFile()}`;
     const options = {
       margin: [5, 0],
       filename: `${pdfFileName}.pdf`,
@@ -336,7 +337,7 @@ export class HeaderComponent implements OnInit {
   getPhase(): string {
     switch (this.verifierMode) {
       case VerifierMode.SETUP:
-        return 'VerifySetupPhase';
+        return 'VerifyConfigPhase';
       case VerifierMode.TALLY:
         return 'VerifyTally';
     }
