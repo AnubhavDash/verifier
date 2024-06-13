@@ -65,8 +65,8 @@ The following instructions provide step-by-step information to build the Verifie
 
 1. Ensure you have Maven and Node installed. We tested with following versions:
    * OpenJDK Runtime Environment Temurin-21.0.3+9 (build 21.0.3+9)
-    * Apache Maven 3.9.6
-    * Node: v18.19.0
+    * Apache Maven 3.9.7
+    * Node: v18.20.3
 
 2. Build using Maven
     * `mvn clean install`
