@@ -1,5 +1,15 @@
 # Changelog
 
+## Release 1.5.3
+
+Release 1.5.3 is a minor maintenance patch containing the following changes:
+
+* Integrated the GetHashElectionEventContext into the VerifySchnorrProofs algorithm (feedback from Vanessa Teague, Olivier Pereira, and Thomas Haines).
+* Fixed a bug where the verifier did not accept compliant passwords.
+* Aligned verifier report name to our naming convention.
+* Updated the data sets for compatibility with the e-voting release 1.4.3.
+* Updated dependencies and third-party libraries.
+
 ## Release 1.5.2
 
 Release 1.5.2 includes some feedback from the Federal Chancellery's mandated experts and other experts of the community.
