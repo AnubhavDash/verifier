@@ -67,8 +67,8 @@ class VerifyOnlineControlComponentsTest extends TallyVerificationTest {
 		final Base64 base64 = BaseEncodingFactory.createBase64();
 		final ElGamal elGamal = ElGamalFactory.createElGamal();
 		final ZeroKnowledgeProof zeroKnowledgeProof = ZeroKnowledgeProofFactory.createZeroKnowledgeProof();
-		final GetHashContextAlgorithm getHashContextAlgorithm = new GetHashContextAlgorithm();
 		final PrimesMappingTableAlgorithms primesMappingTableAlgorithms = new PrimesMappingTableAlgorithms();
+		final GetHashContextAlgorithm getHashContextAlgorithm = new GetHashContextAlgorithm(base64, hash, primesMappingTableAlgorithms);
 
 		final VerifyMixDecOfflineAlgorithm verifyMixDecOfflineAlgorithm = new VerifyMixDecOfflineAlgorithm(elGamal, MixnetFactory.createMixnet(),
 				zeroKnowledgeProof);

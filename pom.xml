@@ -19,7 +19,7 @@
 
 	<groupId>ch.post.it.evoting.verifier</groupId>
 	<artifactId>verifier</artifactId>
-	<version>1.5.2.1</version>
+	<version>1.5.3.0-b0</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -29,20 +29,20 @@
 	</modules>
 
 	<properties>
-		<maven-enforcer-plugin.requiredJavaVersion>[21.0.2]</maven-enforcer-plugin.requiredJavaVersion>
-		<maven-enforcer-plugin.requiredMavenVersion>[3.9.6]</maven-enforcer-plugin.requiredMavenVersion>
+		<maven-enforcer-plugin.requiredJavaVersion>[21.0.3]</maven-enforcer-plugin.requiredJavaVersion>
+		<maven-enforcer-plugin.requiredMavenVersion>[3.9.7]</maven-enforcer-plugin.requiredMavenVersion>
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
 		<maven.compiler.release>21</maven.compiler.release>
-		<project.build.outputTimestamp>2024-05-22T15:36:47+02:00</project.build.outputTimestamp>
+		<project.build.outputTimestamp>2024-06-17T13:25:41+02:00</project.build.outputTimestamp>
 
 		<apache.commons-lang3>3.14.0</apache.commons-lang3>
 		<bouncycastle.version>1.78</bouncycastle.version>
 		<commons-codec.version>1.16.1</commons-codec.version>
-		<crypto-primitives-version>1.4.2.0</crypto-primitives-version>
-		<e-voting-libraries.version>1.4.2.0</e-voting-libraries.version>
-		<guava.version>33.1.0-jre</guava.version>
-		<jackson.version>2.17.0</jackson.version>
+		<crypto-primitives-version>1.4.3.0-b3</crypto-primitives-version>
+		<e-voting-libraries.version>1.4.3.0-b6</e-voting-libraries.version>
+		<guava.version>33.2.1-jre</guava.version>
+		<jackson.version>2.17.1</jackson.version>
 		<jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
 		<jakarta.xml.bind-api.version>4.0.2</jakarta.xml.bind-api.version>
 		<jsurfer-jackson.version>1.6.5</jsurfer-jackson.version>
@@ -52,11 +52,11 @@
 		<maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
 		<maven-dependency-check.version>9.1.0</maven-dependency-check.version>
 		<maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
-		<maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
+		<maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
 		<maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
 		<maven-release-plugin.version>3.0.1</maven-release-plugin.version>
 		<maven-source-plugin.version>3.3.1</maven-source-plugin.version>
-		<maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
+		<maven-surefire-plugin.version>3.3.0</maven-surefire-plugin.version>
 		<mockito.version>5.11.0</mockito.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<reproducible-build-maven-plugin.version>0.15.2</reproducible-build-maven-plugin.version>
@@ -216,15 +216,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter</artifactId>
 				<version>${spring-boot.version}</version>
-				<exclusions>
-					<!-- spring-boot-starter 3.1.2 uses a vulnerable snakeyaml version 1.33,
-							 and we don't need this functionality, therefore we remove it manually.
-							 As soon spring-boot-starter is updated we should be able to remove this exclusion -->
-					<exclusion>
-						<groupId>org.yaml</groupId>
-						<artifactId>snakeyaml</artifactId>
-					</exclusion>
-				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
@@ -433,11 +424,11 @@
 			<properties>
 
 				<!-- OpenJDK -->
-				<openjdk-jre.version>jdk-21.0.2+13-jre</openjdk-jre.version>
+				<openjdk-jre.version>jdk-21.0.3+9-jre</openjdk-jre.version>
 				<openjdk-jre.win64.url>
-					https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jre_x64_windows_hotspot_21.0.2_13.zip
+					https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-jre_x64_windows_hotspot_21.0.3_9.zip
 				</openjdk-jre.win64.url>
-				<openjdk-jre.win64.sha256>a29b88541bc11276de4c4cbdfac60e374ef8a34a415f61cb02a2b6a46f0e1064</openjdk-jre.win64.sha256>
+				<openjdk-jre.win64.sha256>f79eaa741cb9ec4d20c7fd57a0fc52c715da183bc68eb19f4778b816b89ef003</openjdk-jre.win64.sha256>
 
 			</properties>
 		</profile>

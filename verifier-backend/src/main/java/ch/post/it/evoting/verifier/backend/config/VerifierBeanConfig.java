@@ -50,6 +50,7 @@ import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProo
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
 import ch.post.it.evoting.evotinglibraries.domain.encryption.StreamedEncryptionDecryptionService;
 import ch.post.it.evoting.evotinglibraries.domain.mapper.DomainObjectMapper;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.electioneventcontext.GetHashElectionEventContextAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.proofofcorrectkeygeneration.VerifyCCSchnorrProofsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.proofofcorrectkeygeneration.VerifyKeyGenerationSchnorrProofsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.FactorizeAlgorithm;
@@ -146,8 +147,14 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
-	public GetHashContextAlgorithm getHashContextAlgorithm() {
-		return new GetHashContextAlgorithm();
+	public GetHashContextAlgorithm getHashContextAlgorithm(final Base64 base64, final Hash hash,
+			final PrimesMappingTableAlgorithms primesMappingTableAlgorithms) {
+		return new GetHashContextAlgorithm(base64, hash, primesMappingTableAlgorithms);
+	}
+
+	@Bean
+	public GetHashElectionEventContextAlgorithm getHashElectionEventContextAlgorithm(final Base64 base64, final Hash hash) {
+		return new GetHashElectionEventContextAlgorithm(base64, hash);
 	}
 
 	@Bean
@@ -183,8 +190,9 @@ public class VerifierBeanConfig {
 
 	@Bean
 	public VerifyKeyGenerationSchnorrProofsAlgorithm verifyKeyGenerationSchnorrProofsAlgorithm(
-			final VerifyCCSchnorrProofsAlgorithm verifyCCSchnorrProofsAlgorithm) {
-		return new VerifyKeyGenerationSchnorrProofsAlgorithm(verifyCCSchnorrProofsAlgorithm);
+			final VerifyCCSchnorrProofsAlgorithm verifyCCSchnorrProofsAlgorithm,
+			final GetHashElectionEventContextAlgorithm getHashElectionEventContextAlgorithm) {
+		return new VerifyKeyGenerationSchnorrProofsAlgorithm(verifyCCSchnorrProofsAlgorithm, getHashElectionEventContextAlgorithm);
 	}
 
 	@Bean

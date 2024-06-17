@@ -25,8 +25,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.hashing.HashFactory;
+import ch.post.it.evoting.cryptoprimitives.math.BaseEncodingFactory;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.electioneventcontext.GetHashElectionEventContextAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.proofofcorrectkeygeneration.VerifyCCSchnorrProofsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.proofofcorrectkeygeneration.VerifyKeyGenerationSchnorrProofsAlgorithm;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
@@ -42,7 +45,10 @@ class VerifySchnorrProofsTest extends SetupVerificationTest {
 	static void setUpAll() {
 		final ZeroKnowledgeProof zeroKnowledgeProof = ZeroKnowledgeProofFactory.createZeroKnowledgeProof();
 		final VerifyCCSchnorrProofsAlgorithm verifyCCSchnorrProofsAlgorithm = new VerifyCCSchnorrProofsAlgorithm(zeroKnowledgeProof);
-		verifyKeyGenerationSchnorrProofsAlgorithm = spy(new VerifyKeyGenerationSchnorrProofsAlgorithm(verifyCCSchnorrProofsAlgorithm));
+		final GetHashElectionEventContextAlgorithm getHashElectionEventContextAlgorithm = new GetHashElectionEventContextAlgorithm(
+				BaseEncodingFactory.createBase64(), HashFactory.createHash());
+		verifyKeyGenerationSchnorrProofsAlgorithm = spy(
+				new VerifyKeyGenerationSchnorrProofsAlgorithm(verifyCCSchnorrProofsAlgorithm, getHashElectionEventContextAlgorithm));
 
 		verification = new VerifySchnorrProofs(resultPublisherServiceMock, electionDataExtractionService, verifyKeyGenerationSchnorrProofsAlgorithm);
 	}

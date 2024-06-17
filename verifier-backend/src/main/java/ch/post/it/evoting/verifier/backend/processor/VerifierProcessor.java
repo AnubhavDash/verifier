@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -117,8 +118,8 @@ public class VerifierProcessor {
 		this.electionDataExtractionService = electionDataExtractionService;
 		this.directoryService = directoryService;
 		this.streamedEncryptionDecryptionService = streamedEncryptionDecryptionService;
-		this.importDecryptionPassword = importDecryptionPassword;
-		PasswordValidation.validate(this.importDecryptionPassword, "import decryption");
+		this.importDecryptionPassword = PasswordValidation.validate(importDecryptionPassword, "import decryption", StandardCharsets.ISO_8859_1);
+
 	}
 
 	@PostConstruct

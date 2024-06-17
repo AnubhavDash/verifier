@@ -24,7 +24,6 @@ import ch.post.it.evoting.evotinglibraries.domain.election.SetupComponentPublicK
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.SetupComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.proofofcorrectkeygeneration.VerifyKeyGenerationSchnorrProofsAlgorithm;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.proofofcorrectkeygeneration.VerifyKeyGenerationSchnorrProofsContext;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.proofofcorrectkeygeneration.VerifyKeyGenerationSchnorrProofsInput;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
@@ -73,12 +72,9 @@ public class VerifySchnorrProofs extends AbstractVerification {
 				inputDirectoryPath);
 		final SetupComponentPublicKeys setupComponentPublicKeys = setupComponentPublicKeysPayload.getSetupComponentPublicKeys();
 
-		final VerifyKeyGenerationSchnorrProofsContext context = new VerifyKeyGenerationSchnorrProofsContext(
-				electionEventContextPayload.getEncryptionGroup(), electionEventContext.electionEventId(),
-				electionEventContext.maximumNumberOfSelections(), electionEventContext.maximumNumberOfWriteInsPlusOne());
 		final VerifyKeyGenerationSchnorrProofsInput input = new VerifyKeyGenerationSchnorrProofsInput(setupComponentPublicKeys);
 
-		final boolean result = verifyKeyGenerationSchnorrProofsAlgorithm.verifyKeyGenerationSchnorrProofs(context, input);
+		final boolean result = verifyKeyGenerationSchnorrProofsAlgorithm.verifyKeyGenerationSchnorrProofs(electionEventContext, input);
 
 		if (result) {
 			return VerificationResult.success(getVerificationDefinition());
