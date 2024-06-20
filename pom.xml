@@ -61,7 +61,7 @@
 		<reproducible-build-maven-plugin.version>0.15.2</reproducible-build-maven-plugin.version>
 		<rootProject>verifier</rootProject>
 		<slf4j.version>2.0.13</slf4j.version>
-		<sonar-maven-plugin.version>3.11.0.3922</sonar-maven-plugin.version>
+		<sonar-maven-plugin.version>4.0.0.4121</sonar-maven-plugin.version>
 		<spring-boot.version>3.2.6</spring-boot.version>
 		<system-stubs-jupiter.version>2.1.6</system-stubs-jupiter.version>
 		<versions-maven-plugin.version>2.16.2</versions-maven-plugin.version>
