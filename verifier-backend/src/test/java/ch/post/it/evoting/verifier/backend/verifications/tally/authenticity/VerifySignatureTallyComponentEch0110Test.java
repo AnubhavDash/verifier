@@ -36,10 +36,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.ech.xmlns.ech_0110._4.Delivery;
 import ch.ech.xmlns.ech_0155._4.ExtensionType;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
@@ -58,7 +58,7 @@ class VerifySignatureTallyComponentEch0110Test extends TallyVerificationTest {
 	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
 		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
 		verification = new VerifySignatureTallyComponentEch0110(resultPublisherServiceMock, electionDataExtractionService,
-				testSignatureVerification);
+				testSignatureVerification, objectMapper);
 	}
 
 	@Test
@@ -67,8 +67,8 @@ class VerifySignatureTallyComponentEch0110Test extends TallyVerificationTest {
 			final Path tempDirectory) throws SignatureException, JsonProcessingException {
 		Delivery delivery = electionDataExtractionService.getTallyComponentEch0110(datasetPath);
 
-		final byte[] signature = generateSignature(delivery);
-		final String signatureWithQuotes = new ObjectMapper().writeValueAsString(signature);
+		final ImmutableByteArray signature = generateSignature(delivery);
+		final String signatureWithQuotes = objectMapper.writeValueAsString(signature);
 		delivery.getResultDelivery().setExtension(new ExtensionType()
 				.withAny(List.of(new JAXBElement<>(new QName("signature"), String.class,
 						signatureWithQuotes.substring(1, signatureWithQuotes.length() - 1)))));
@@ -87,8 +87,8 @@ class VerifySignatureTallyComponentEch0110Test extends TallyVerificationTest {
 			final Path tempDirectory) throws SignatureException, JsonProcessingException {
 		Delivery delivery = electionDataExtractionService.getTallyComponentEch0110(datasetPath);
 
-		final byte[] signature = generateSignature(delivery);
-		final String signatureWithQuotes = new ObjectMapper().writeValueAsString(signature);
+		final ImmutableByteArray signature = generateSignature(delivery);
+		final String signatureWithQuotes = objectMapper.writeValueAsString(signature);
 		delivery.getResultDelivery().setExtension(new ExtensionType()
 				.withAny(List.of(new JAXBElement<>(new QName("signature"), String.class,
 						signatureWithQuotes.substring(1, signatureWithQuotes.length() - 1)))));
@@ -103,7 +103,7 @@ class VerifySignatureTallyComponentEch0110Test extends TallyVerificationTest {
 		assertFalse(((VerifySignatureTallyComponentEch0110) verification).verifySignature(delivery));
 	}
 
-	private byte[] generateSignature(final Delivery delivery) throws SignatureException {
+	private ImmutableByteArray generateSignature(final Delivery delivery) throws SignatureException {
 		final Hashable hash = HashableEch0110Factory.fromDelivery(delivery);
 		final Hashable additionalContextData = ChannelSecurityContextData.tallyComponentEch0110();
 

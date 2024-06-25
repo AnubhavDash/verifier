@@ -29,6 +29,7 @@ import java.security.cert.CertificateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureGeneration;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
@@ -54,10 +55,10 @@ class VerifySignatureControlComponentPublicKeysTest extends SetupVerificationTes
 	@Test
 	void testExpectedSignerSuccess() throws SignatureException {
 		final ControlComponentPublicKeysPayload controlComponentPublicKeysPayload = electionDataExtractionService.getControlComponentPublicKeysPayloads(
-				datasetPath).get(0);
+				datasetPath).getFirst();
 		final int nodeId = controlComponentPublicKeysPayload.getControlComponentPublicKeys().nodeId();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.getControlComponentByNodeId(nodeId));
-		final byte[] signature = testSignatureGeneration.genSignature(controlComponentPublicKeysPayload,
+		final ImmutableByteArray signature = testSignatureGeneration.genSignature(controlComponentPublicKeysPayload,
 				ChannelSecurityContextData.controlComponentPublicKeys(nodeId, controlComponentPublicKeysPayload.getElectionEventId()));
 		controlComponentPublicKeysPayload.setSignature(new CryptoPrimitivesSignature(signature));
 		assertTrue(((VerifySignatureControlComponentPublicKeys) verification).verifySignature(controlComponentPublicKeysPayload));
@@ -66,10 +67,10 @@ class VerifySignatureControlComponentPublicKeysTest extends SetupVerificationTes
 	@Test
 	void testUnexpectedSignerFails() throws SignatureException {
 		final ControlComponentPublicKeysPayload controlComponentPublicKeysPayload = electionDataExtractionService.getControlComponentPublicKeysPayloads(
-				datasetPath).get(0);
+				datasetPath).getFirst();
 		final int nodeId = controlComponentPublicKeysPayload.getControlComponentPublicKeys().nodeId();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_CONFIG);
-		final byte[] wrongSignature = testSignatureGeneration.genSignature(controlComponentPublicKeysPayload,
+		final ImmutableByteArray wrongSignature = testSignatureGeneration.genSignature(controlComponentPublicKeysPayload,
 				ChannelSecurityContextData.controlComponentPublicKeys(nodeId, controlComponentPublicKeysPayload.getElectionEventId()));
 		controlComponentPublicKeysPayload.setSignature(new CryptoPrimitivesSignature(wrongSignature));
 		assertFalse(((VerifySignatureControlComponentPublicKeys) verification).verifySignature(controlComponentPublicKeysPayload));

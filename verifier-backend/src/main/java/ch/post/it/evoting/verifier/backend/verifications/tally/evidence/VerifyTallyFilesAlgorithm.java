@@ -18,8 +18,8 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.validateUUID;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -103,9 +103,9 @@ public class VerifyTallyFilesAlgorithm {
 		final Hashable hashableECH0222XML = HashableEch0222Factory.fromDelivery(eCH0222XML);
 		final Hashable hashableECH0222XML_prime = HashableEch0222Factory.fromDelivery(eCH0222XML_prime_normalized);
 
-		return Arrays.equals(hash.recursiveHash(hashableEvotingDecryptXML), hash.recursiveHash(hashableEvotingDecryptXML_prime))
-				&& Arrays.equals(hash.recursiveHash(hashableECH0110XML), hash.recursiveHash(hashableECH0110XML_prime))
-				&& Arrays.equals(hash.recursiveHash(hashableECH0222XML), hash.recursiveHash(hashableECH0222XML_prime));
+		return Objects.equals(hash.recursiveHash(hashableEvotingDecryptXML), hash.recursiveHash(hashableEvotingDecryptXML_prime))
+				&& Objects.equals(hash.recursiveHash(hashableECH0110XML), hash.recursiveHash(hashableECH0110XML_prime))
+				&& Objects.equals(hash.recursiveHash(hashableECH0222XML), hash.recursiveHash(hashableECH0222XML_prime));
 	}
 
 }

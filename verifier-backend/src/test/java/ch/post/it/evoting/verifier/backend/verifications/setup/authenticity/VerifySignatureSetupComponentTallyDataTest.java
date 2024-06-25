@@ -29,6 +29,7 @@ import java.security.cert.CertificateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureGeneration;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
@@ -54,9 +55,9 @@ class VerifySignatureSetupComponentTallyDataTest extends SetupVerificationTest {
 	@Test
 	void testExpectedSignerSuccess() throws SignatureException {
 		final SetupComponentTallyDataPayload setupComponentTallyDataPayload = electionDataExtractionService.getSetupComponentTallyDataPayloads(
-				datasetPath).toList().get(0);
+				datasetPath).toList().getFirst();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_CONFIG);
-		final byte[] signature = testSignatureGeneration.genSignature(setupComponentTallyDataPayload,
+		final ImmutableByteArray signature = testSignatureGeneration.genSignature(setupComponentTallyDataPayload,
 				ChannelSecurityContextData.setupComponentTallyData(setupComponentTallyDataPayload.getElectionEventId(),
 						setupComponentTallyDataPayload.getVerificationCardSetId()));
 		setupComponentTallyDataPayload.setSignature(new CryptoPrimitivesSignature(signature));
@@ -66,9 +67,9 @@ class VerifySignatureSetupComponentTallyDataTest extends SetupVerificationTest {
 	@Test
 	void testUnexpectedSignerFails() throws SignatureException {
 		final SetupComponentTallyDataPayload setupComponentTallyDataPayload = electionDataExtractionService.getSetupComponentTallyDataPayloads(
-				datasetPath).toList().get(0);
+				datasetPath).toList().getFirst();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.CONTROL_COMPONENT_1);
-		final byte[] signature = testSignatureGeneration.genSignature(setupComponentTallyDataPayload,
+		final ImmutableByteArray signature = testSignatureGeneration.genSignature(setupComponentTallyDataPayload,
 				ChannelSecurityContextData.setupComponentTallyData(setupComponentTallyDataPayload.getElectionEventId(),
 						setupComponentTallyDataPayload.getVerificationCardSetId()));
 		setupComponentTallyDataPayload.setSignature(new CryptoPrimitivesSignature(signature));

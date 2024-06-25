@@ -29,6 +29,7 @@ import java.security.cert.CertificateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureGeneration;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
@@ -55,7 +56,7 @@ class VerifySignatureTallyComponentShuffleTest extends TallyVerificationTest {
 		final TallyComponentShufflePayload tallyComponentShufflePayload = electionDataExtractionService.getTallyComponentShufflePayloads(datasetPath)
 				.findFirst().orElseThrow();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_TALLY);
-		final byte[] signature = testSignatureGeneration.genSignature(tallyComponentShufflePayload,
+		final ImmutableByteArray signature = testSignatureGeneration.genSignature(tallyComponentShufflePayload,
 				ChannelSecurityContextData.tallyComponentShuffle(tallyComponentShufflePayload.getElectionEventId(),
 						tallyComponentShufflePayload.getBallotBoxId()));
 		tallyComponentShufflePayload.setSignature(new CryptoPrimitivesSignature(signature));
@@ -67,7 +68,7 @@ class VerifySignatureTallyComponentShuffleTest extends TallyVerificationTest {
 		final TallyComponentShufflePayload tallyComponentShufflePayload = electionDataExtractionService.getTallyComponentShufflePayloads(datasetPath)
 				.findFirst().orElseThrow();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_CONFIG);
-		final byte[] wrongSignature = testSignatureGeneration.genSignature(tallyComponentShufflePayload,
+		final ImmutableByteArray wrongSignature = testSignatureGeneration.genSignature(tallyComponentShufflePayload,
 				ChannelSecurityContextData.tallyComponentShuffle(tallyComponentShufflePayload.getElectionEventId(),
 						tallyComponentShufflePayload.getBallotBoxId()));
 		tallyComponentShufflePayload.setSignature(new CryptoPrimitivesSignature(wrongSignature));

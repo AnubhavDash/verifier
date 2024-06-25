@@ -51,6 +51,7 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.collect.MoreCollectors;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.evotinglibraries.domain.encryption.StreamedEncryptionDecryptionService;
@@ -84,7 +85,7 @@ import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 @Component
 public class VerifierProcessor {
 	private static final Logger LOGGER = LoggerFactory.getLogger(VerifierProcessor.class);
-	private static final byte[] ASSOCIATED_DATA = new byte[] {};
+	private static final ImmutableByteArray ASSOCIATED_DATA = ImmutableByteArray.EMPTY;
 	private static final String SETUP = SetupEvent.TYPE;
 	private static final String TALLY = TallyEvent.TYPE;
 	private static final String PRE_SETUP = PreSetupEvent.TYPE;
@@ -188,7 +189,7 @@ public class VerifierProcessor {
 
 		LOGGER.debug("Secured directory successfully created for dataset. [directory: {}]", directory);
 
-	    try (final InputStream datasetInputStream = Files.newInputStream(filePath)) {
+		try (final InputStream datasetInputStream = Files.newInputStream(filePath)) {
 			this.contextDataset = downloadDataset(datasetInputStream, directory, DatasetType.CONTEXT);
 		} catch (final IOException e) {
 			throw new DatasetExtractionException("Could not download context dataset.");

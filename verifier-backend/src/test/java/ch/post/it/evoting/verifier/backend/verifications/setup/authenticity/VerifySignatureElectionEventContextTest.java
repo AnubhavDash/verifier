@@ -30,6 +30,7 @@ import java.security.cert.CertificateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureGeneration;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
@@ -56,7 +57,7 @@ class VerifySignatureElectionEventContextTest extends SetupVerificationTest {
 	void testExpectedSignerSuccess() throws SignatureException {
 		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(datasetPath);
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_CONFIG);
-		final byte[] signature = testSignatureGeneration.genSignature(electionEventContextPayload,
+		final ImmutableByteArray signature = testSignatureGeneration.genSignature(electionEventContextPayload,
 				ChannelSecurityContextData.electionEventContext(electionEventContextPayload.getElectionEventContext().electionEventId()));
 		electionEventContextPayload.setSignature(new CryptoPrimitivesSignature(signature));
 		assertTrue(((VerifySignatureElectionEventContext) verification).verifySignature(electionEventContextPayload));
@@ -66,7 +67,7 @@ class VerifySignatureElectionEventContextTest extends SetupVerificationTest {
 	void testUnexpectedSignerFails() throws SignatureException {
 		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(datasetPath);
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.CONTROL_COMPONENT_1);
-		final byte[] wrongSignature = testSignatureGeneration.genSignature(electionEventContextPayload,
+		final ImmutableByteArray wrongSignature = testSignatureGeneration.genSignature(electionEventContextPayload,
 				ChannelSecurityContextData.electionEventContext(electionEventContextPayload.getElectionEventContext().electionEventId()));
 		electionEventContextPayload.setSignature(new CryptoPrimitivesSignature(wrongSignature));
 		assertFalse(((VerifySignatureElectionEventContext) verification).verifySignature(electionEventContextPayload));

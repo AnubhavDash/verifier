@@ -29,6 +29,7 @@ import java.security.cert.CertificateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureGeneration;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
@@ -55,7 +56,7 @@ class VerifySignatureTallyComponentVotesTest extends TallyVerificationTest {
 		final TallyComponentVotesPayload tallyComponentVotesPayload = electionDataExtractionService.getTallyComponentVotesPayloads(datasetPath)
 				.findFirst().orElseThrow();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_TALLY);
-		final byte[] signature = testSignatureGeneration.genSignature(tallyComponentVotesPayload,
+		final ImmutableByteArray signature = testSignatureGeneration.genSignature(tallyComponentVotesPayload,
 				ChannelSecurityContextData.tallyComponentVotes(tallyComponentVotesPayload.getElectionEventId(),
 						tallyComponentVotesPayload.getBallotBoxId()));
 		tallyComponentVotesPayload.setSignature(new CryptoPrimitivesSignature(signature));
@@ -67,7 +68,7 @@ class VerifySignatureTallyComponentVotesTest extends TallyVerificationTest {
 		final TallyComponentVotesPayload tallyComponentVotesPayload = electionDataExtractionService.getTallyComponentVotesPayloads(datasetPath)
 				.findFirst().orElseThrow();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_CONFIG);
-		final byte[] wrongSignature = testSignatureGeneration.genSignature(tallyComponentVotesPayload,
+		final ImmutableByteArray wrongSignature = testSignatureGeneration.genSignature(tallyComponentVotesPayload,
 				ChannelSecurityContextData.tallyComponentVotes(tallyComponentVotesPayload.getElectionEventId(),
 						tallyComponentVotesPayload.getBallotBoxId()));
 		tallyComponentVotesPayload.setSignature(new CryptoPrimitivesSignature(wrongSignature));

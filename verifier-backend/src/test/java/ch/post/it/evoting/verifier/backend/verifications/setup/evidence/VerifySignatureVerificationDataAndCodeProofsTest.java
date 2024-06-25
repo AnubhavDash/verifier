@@ -35,6 +35,7 @@ import java.util.Random;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.hashing.HashableList;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
@@ -46,7 +47,6 @@ import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
 import ch.post.it.evoting.evotinglibraries.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
-import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 
 class VerifySignatureVerificationDataAndCodeProofsTest extends SetupVerificationTest {
@@ -178,7 +178,7 @@ class VerifySignatureVerificationDataAndCodeProofsTest extends SetupVerification
 				verificationCardSet, randomChunkId).get(random.nextInt(0, NODE_IDS.size()));
 	}
 
-	private byte[] generateSignature(final ControlComponentCodeSharesPayload controlComponentCodeShares) throws SignatureException {
+	private ImmutableByteArray generateSignature(final ControlComponentCodeSharesPayload controlComponentCodeShares) throws SignatureException {
 		final Hashable hash = HashableList.from(controlComponentCodeShares.toHashableForm());
 		final Hashable additionalContextData = ChannelSecurityContextData.controlComponentCodeShares(
 				controlComponentCodeShares.getNodeId(),
@@ -189,7 +189,8 @@ class VerifySignatureVerificationDataAndCodeProofsTest extends SetupVerification
 				.genSignature(hash, additionalContextData);
 	}
 
-	private byte[] generateSignature(final SetupComponentVerificationDataPayload setupComponentVerificationData) throws SignatureException {
+	private ImmutableByteArray generateSignature(final SetupComponentVerificationDataPayload setupComponentVerificationData)
+			throws SignatureException {
 		final Hashable hash = HashableList.from(setupComponentVerificationData.toHashableForm());
 		final Hashable additionalContextData = ChannelSecurityContextData.setupComponentVerificationData(
 				setupComponentVerificationData.getElectionEventId(),

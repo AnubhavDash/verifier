@@ -28,6 +28,7 @@ import java.security.cert.CertificateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
@@ -48,7 +49,7 @@ class VerifySignatureTallyComponentDecryptTest extends TallyVerificationTest {
 	void testOK() throws SignatureException {
 		final Results results = electionDataExtractionService.getTallyComponentDecrypt(datasetPath);
 
-		results.setSignature(generateSignature(results));
+		results.setSignature(generateSignature(results).elements());
 
 		assertTrue(((VerifySignatureTallyComponentDecrypt) verification).verifySignature(results), "the signature is not valid");
 	}
@@ -57,13 +58,13 @@ class VerifySignatureTallyComponentDecryptTest extends TallyVerificationTest {
 	void testNOK() throws SignatureException {
 		final Results results = electionDataExtractionService.getTallyComponentDecrypt(datasetPath);
 
-		results.setSignature(generateSignature(results));
+		results.setSignature(generateSignature(results).elements());
 		results.setContestIdentification("new value");
 
 		assertFalse(((VerifySignatureTallyComponentDecrypt) verification).verifySignature(results), "the signature is valid but it should not");
 	}
 
-	private byte[] generateSignature(final Results results) throws SignatureException {
+	private ImmutableByteArray generateSignature(final Results results) throws SignatureException {
 		final Hashable hash = HashableResultsFactory.fromResults(results);
 		final Hashable additionalContextData = ChannelSecurityContextData.tallyComponentDecrypt();
 

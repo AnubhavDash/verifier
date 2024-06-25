@@ -28,6 +28,7 @@ import java.security.cert.CertificateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
@@ -49,7 +50,7 @@ class VerifySignatureCantonConfigTest extends SetupVerificationTest {
 	void testOK() throws SignatureException {
 		final Configuration configuration = electionDataExtractionService.getCantonConfig(datasetPath);
 
-		configuration.setSignature(generateSignature(configuration));
+		configuration.setSignature(generateSignature(configuration).elements());
 
 		assertTrue(((VerifySignatureCantonConfig) verification).verifySignature(configuration), "the signature is not valid");
 	}
@@ -58,13 +59,13 @@ class VerifySignatureCantonConfigTest extends SetupVerificationTest {
 	void testNOK() throws SignatureException {
 		final Configuration configuration = electionDataExtractionService.getCantonConfig(datasetPath);
 
-		configuration.setSignature(generateSignature(configuration));
+		configuration.setSignature(generateSignature(configuration).elements());
 		configuration.getContest().setContestIdentification("new value");
 
 		assertFalse(((VerifySignatureCantonConfig) verification).verifySignature(configuration), "the signature is valid but it should not");
 	}
 
-	private byte[] generateSignature(final Configuration configuration) throws SignatureException {
+	private ImmutableByteArray generateSignature(final Configuration configuration) throws SignatureException {
 		final Hashable hash = HashableCantonConfigFactory.fromConfiguration(configuration);
 		final Hashable additionalContextData = ChannelSecurityContextData.cantonConfig();
 

@@ -34,14 +34,14 @@ public class TranslationHelper {
 		//only static usage
 	}
 
-	public static Map<Language, String> getFromResourceBundle(String resourceBundleName, String key) {
-		Map<Language, String> result = new EnumMap<>(Language.class);
+	public static Map<Language, String> getFromResourceBundle(final String resourceBundleName, final String key) {
+		final Map<Language, String> result = new EnumMap<>(Language.class);
 		Arrays.stream(Language.values()).forEach(lang -> result.put(lang, getFromResourceBundle(resourceBundleName, key, lang.getLocale())));
 		return result;
 	}
 
-	public static Map<Language, String> getFromResourceBundle(String resourceBundleName, String key, String... args) {
-		Map<Language, String> result = new EnumMap<>(Language.class);
+	public static Map<Language, String> getFromResourceBundle(final String resourceBundleName, final String key, final String... args) {
+		final Map<Language, String> result = new EnumMap<>(Language.class);
 		Arrays.stream(Language.values())
 				.forEach(lang -> {
 					synchronized (formatter) {
@@ -52,15 +52,15 @@ public class TranslationHelper {
 		return result;
 	}
 
-	public static String getFromResourceBundle(String resourceBundleName, String key, Locale locale) {
+	public static String getFromResourceBundle(final String resourceBundleName, final String key, final Locale locale) {
 		return ResourceBundle.getBundle(resourceBundleName, locale).getString(key);
 	}
 
-	public static String getFromResourceBundle(String resourceBundleName, String key, Locale locale, String... args) {
+	public static String getFromResourceBundle(final String resourceBundleName, final String key, final Locale locale, final String... args) {
 		return MessageFormat.format(ResourceBundle.getBundle(resourceBundleName, locale).getString(key), (Object[]) args);
 	}
 
-	public static Map<Language, String> getSameMessageMultiLanguage(String message) {
+	public static Map<Language, String> getSameMessageMultiLanguage(final String message) {
 		return Arrays.stream(Language.values()).map(l -> new AbstractMap.SimpleEntry<>(l, message == null ? "" : message))
 				.collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 	}

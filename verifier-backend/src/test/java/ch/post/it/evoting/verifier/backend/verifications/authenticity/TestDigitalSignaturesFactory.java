@@ -43,7 +43,7 @@ public class TestDigitalSignaturesFactory {
 
 	public TestDigitalSignaturesFactory() {
 		keysAndCertMap = new HashMap<>();
-		for (Alias alias: Alias.values()) {
+		for (final Alias alias: Alias.values()) {
 			final KeysAndCert keysAndCert = generatePrivateKeyAndCertificate();
 			keysAndCertMap.put(alias, keysAndCert);
 		}
@@ -64,7 +64,7 @@ public class TestDigitalSignaturesFactory {
 			throws CertificateException, IOException, NoSuchAlgorithmException, KeyStoreException {
 		final KeyStore keyStore = KeyStore.getInstance("PKCS12");
 		keyStore.load(null, new char[]{});
-		for (Map.Entry<Alias, KeysAndCert> entry :keysAndCertMap.entrySet()) {
+		for (final Map.Entry<Alias, KeysAndCert> entry :keysAndCertMap.entrySet()) {
 			keyStore.setCertificateEntry(entry.getKey().get(), entry.getValue().certificate());
 		}
 		return SignatureFactory.getInstance().createSignatureVerification(keyStore);
@@ -75,7 +75,7 @@ public class TestDigitalSignaturesFactory {
 	 * @param alias with which to sign
 	 * @return a SignatureGeneration service that can sign.
 	 */
-	public SignatureGeneration getTestSignatureGeneration(Alias alias) {
+	public SignatureGeneration getTestSignatureGeneration(final Alias alias) {
 		return SignatureFactory.getInstance().createSignatureGeneration(keysAndCertMap.get(alias).privateKey(), keysAndCertMap.get(alias).certificate());
 	}
 

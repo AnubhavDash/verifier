@@ -29,6 +29,7 @@ import java.security.cert.CertificateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureGeneration;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
@@ -54,10 +55,10 @@ class VerifySignatureControlComponentBallotBoxTest extends TallyVerificationTest
 	@Test
 	void testExpectedSignerSuccess() throws SignatureException {
 		final ControlComponentBallotBoxPayload controlComponentBallotBoxPayload = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
-				datasetPath).toList().get(0);
+				datasetPath).toList().getFirst();
 		final int nodeId = controlComponentBallotBoxPayload.getNodeId();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.getControlComponentByNodeId(nodeId));
-		final byte[] signature = testSignatureGeneration.genSignature(controlComponentBallotBoxPayload,
+		final ImmutableByteArray signature = testSignatureGeneration.genSignature(controlComponentBallotBoxPayload,
 				ChannelSecurityContextData.controlComponentBallotBox(nodeId, controlComponentBallotBoxPayload.getElectionEventId(),
 						controlComponentBallotBoxPayload.getBallotBoxId()));
 		controlComponentBallotBoxPayload.setSignature(new CryptoPrimitivesSignature(signature));
@@ -67,10 +68,10 @@ class VerifySignatureControlComponentBallotBoxTest extends TallyVerificationTest
 	@Test
 	void testUnexpectedSignerFails() throws SignatureException {
 		final ControlComponentBallotBoxPayload controlComponentBallotBoxPayload = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
-				datasetPath).toList().get(0);
+				datasetPath).toList().getFirst();
 		final int nodeId = controlComponentBallotBoxPayload.getNodeId();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.VOTING_SERVER);
-		final byte[] wrongSignature = testSignatureGeneration.genSignature(controlComponentBallotBoxPayload,
+		final ImmutableByteArray wrongSignature = testSignatureGeneration.genSignature(controlComponentBallotBoxPayload,
 				ChannelSecurityContextData.controlComponentBallotBox(nodeId, controlComponentBallotBoxPayload.getElectionEventId(),
 						controlComponentBallotBoxPayload.getBallotBoxId()));
 		controlComponentBallotBoxPayload.setSignature(new CryptoPrimitivesSignature(wrongSignature));

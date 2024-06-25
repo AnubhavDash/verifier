@@ -34,7 +34,7 @@ public class VerificationDefinition {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(final String id) {
 		this.id = id;
 	}
 
@@ -42,7 +42,7 @@ public class VerificationDefinition {
 		return block;
 	}
 
-	public void setBlock(String block) {
+	public void setBlock(final String block) {
 		this.block = block;
 	}
 
@@ -50,7 +50,7 @@ public class VerificationDefinition {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -58,11 +58,11 @@ public class VerificationDefinition {
 		return category;
 	}
 
-	public void setCategory(Category category) {
+	public void setCategory(final Category category) {
 		this.category = category;
 	}
 
-	public void addVerifierEvent(String event) {
+	public void addVerifierEvent(final String event) {
 		this.verifierEvents.add(event);
 	}
 
@@ -74,7 +74,7 @@ public class VerificationDefinition {
 		return description;
 	}
 
-	public void setDescription(Map<Language, String> description) {
+	public void setDescription(final Map<Language, String> description) {
 		this.description = description;
 	}
 

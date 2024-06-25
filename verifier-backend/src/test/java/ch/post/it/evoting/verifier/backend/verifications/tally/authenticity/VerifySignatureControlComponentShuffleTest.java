@@ -29,6 +29,7 @@ import java.security.cert.CertificateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureGeneration;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
@@ -57,7 +58,7 @@ class VerifySignatureControlComponentShuffleTest extends TallyVerificationTest {
 				datasetPath).findFirst().orElseThrow();
 		final int nodeId = controlComponentShufflePayload.getNodeId();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.getControlComponentByNodeId(nodeId));
-		final byte[] signature = testSignatureGeneration.genSignature(controlComponentShufflePayload,
+		final ImmutableByteArray signature = testSignatureGeneration.genSignature(controlComponentShufflePayload,
 				ChannelSecurityContextData.controlComponentShuffle(nodeId, controlComponentShufflePayload.getElectionEventId(),
 						controlComponentShufflePayload.getBallotBoxId()));
 		controlComponentShufflePayload.setSignature(new CryptoPrimitivesSignature(signature));
@@ -70,7 +71,7 @@ class VerifySignatureControlComponentShuffleTest extends TallyVerificationTest {
 				datasetPath).findFirst().orElseThrow();
 		final int nodeId = controlComponentShufflePayload.getNodeId();
 		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_CONFIG);
-		final byte[] wrongSignature = testSignatureGeneration.genSignature(controlComponentShufflePayload,
+		final ImmutableByteArray wrongSignature = testSignatureGeneration.genSignature(controlComponentShufflePayload,
 				ChannelSecurityContextData.controlComponentShuffle(nodeId, controlComponentShufflePayload.getElectionEventId(),
 						controlComponentShufflePayload.getBallotBoxId()));
 		controlComponentShufflePayload.setSignature(new CryptoPrimitivesSignature(wrongSignature));
