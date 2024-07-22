@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.ech.xmlns.ech_0110._4.Delivery;
+import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
@@ -47,11 +48,12 @@ import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentVerifica
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
-import ch.post.it.evoting.verifier.backend.verifications.authenticity.TestDigitalSignaturesFactory;
+import ch.post.it.evoting.verifier.backend.verifications.authenticity.DatasetSignatureFactory;
 
 public abstract class SetupVerificationTest {
 
-	protected static TestDigitalSignaturesFactory signatureFactory;
+	protected static DatasetSignatureFactory datasetSignatureFactory;
+	protected static SignatureVerification datasetSignatureVerification;
 	protected static AbstractVerification verification;
 	protected static Path datasetPath;
 	protected static PathService pathService;
@@ -75,7 +77,8 @@ public abstract class SetupVerificationTest {
 		resultPublisherServiceMock = mock(ResultPublisherService.class);
 		objectMapper = DomainObjectMapper.getNewInstance();
 		datasetPath = Paths.get("").toAbsolutePath().getParent().resolve("datasets");
-		signatureFactory = new TestDigitalSignaturesFactory();
+		datasetSignatureFactory = new DatasetSignatureFactory();
+		datasetSignatureVerification = datasetSignatureFactory.getSignatureVerification();
 		ech0110XmlFileRepository = new XmlFileRepository<>();
 		ech0222XmlFileRepository = new XmlFileRepository<>();
 		configurationXmlFileRepository = new XmlFileRepository<>();

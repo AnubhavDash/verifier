@@ -19,19 +19,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.IOException;
 import java.nio.file.Path;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
-import java.security.cert.CertificateException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
-import ch.post.it.evoting.cryptoprimitives.signing.SignatureGeneration;
-import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
@@ -41,9 +34,8 @@ import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerification
 class VerifySignatureTallyComponentShuffleTest extends TallyVerificationTest {
 
 	@BeforeEach
-	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
-		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
-		verification = new VerifySignatureTallyComponentShuffle(resultPublisherServiceMock, electionDataExtractionService, testSignatureVerification);
+	void setUpAll() {
+		verification = new VerifySignatureTallyComponentShuffle(resultPublisherServiceMock, electionDataExtractionService, datasetSignatureVerification);
 	}
 
 	@Test
@@ -52,26 +44,26 @@ class VerifySignatureTallyComponentShuffleTest extends TallyVerificationTest {
 	}
 
 	@Test
-	void testExpectedSignerSuccess() throws SignatureException {
+	void testOK() {
 		final TallyComponentShufflePayload tallyComponentShufflePayload = electionDataExtractionService.getTallyComponentShufflePayloads(datasetPath)
-				.findFirst().orElseThrow();
-		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_TALLY);
-		final ImmutableByteArray signature = testSignatureGeneration.genSignature(tallyComponentShufflePayload,
-				ChannelSecurityContextData.tallyComponentShuffle(tallyComponentShufflePayload.getElectionEventId(),
-						tallyComponentShufflePayload.getBallotBoxId()));
-		tallyComponentShufflePayload.setSignature(new CryptoPrimitivesSignature(signature));
+				.findFirst()
+				.orElseThrow();
+
 		assertTrue(((VerifySignatureTallyComponentShuffle) verification).verifySignature(tallyComponentShufflePayload));
 	}
 
 	@Test
-	void testUnexpectedSignerFails() throws SignatureException {
+	void testNOK() throws SignatureException {
 		final TallyComponentShufflePayload tallyComponentShufflePayload = electionDataExtractionService.getTallyComponentShufflePayloads(datasetPath)
-				.findFirst().orElseThrow();
-		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_CONFIG);
-		final ImmutableByteArray wrongSignature = testSignatureGeneration.genSignature(tallyComponentShufflePayload,
+				.findFirst()
+				.orElseThrow();
+
+		final CryptoPrimitivesSignature dummySignature = datasetSignatureFactory.getDummySignature(tallyComponentShufflePayload,
 				ChannelSecurityContextData.tallyComponentShuffle(tallyComponentShufflePayload.getElectionEventId(),
-						tallyComponentShufflePayload.getBallotBoxId()));
-		tallyComponentShufflePayload.setSignature(new CryptoPrimitivesSignature(wrongSignature));
+						tallyComponentShufflePayload.getBallotBoxId()),
+				Alias.SDM_TALLY);
+		tallyComponentShufflePayload.setSignature(dummySignature);
+
 		assertFalse(((VerifySignatureTallyComponentShuffle) verification).verifySignature(tallyComponentShufflePayload));
 	}
 

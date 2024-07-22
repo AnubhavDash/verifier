@@ -19,19 +19,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.IOException;
 import java.nio.file.Path;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
-import java.security.cert.CertificateException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
-import ch.post.it.evoting.cryptoprimitives.signing.SignatureGeneration;
-import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
@@ -41,10 +34,9 @@ import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerification
 class VerifySignatureSetupComponentTallyDataTest extends SetupVerificationTest {
 
 	@BeforeEach
-	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
-		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
+	void setUpAll() {
 		verification = new VerifySignatureSetupComponentTallyData(resultPublisherServiceMock, electionDataExtractionService,
-				testSignatureVerification);
+				datasetSignatureVerification);
 	}
 
 	@Test
@@ -53,26 +45,28 @@ class VerifySignatureSetupComponentTallyDataTest extends SetupVerificationTest {
 	}
 
 	@Test
-	void testExpectedSignerSuccess() throws SignatureException {
+	void testOK() {
 		final SetupComponentTallyDataPayload setupComponentTallyDataPayload = electionDataExtractionService.getSetupComponentTallyDataPayloads(
-				datasetPath).toList().getFirst();
-		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_CONFIG);
-		final ImmutableByteArray signature = testSignatureGeneration.genSignature(setupComponentTallyDataPayload,
-				ChannelSecurityContextData.setupComponentTallyData(setupComponentTallyDataPayload.getElectionEventId(),
-						setupComponentTallyDataPayload.getVerificationCardSetId()));
-		setupComponentTallyDataPayload.setSignature(new CryptoPrimitivesSignature(signature));
+				datasetPath)
+				.toList()
+				.getFirst();
+
 		assertTrue(((VerifySignatureSetupComponentTallyData) verification).verifySignature(setupComponentTallyDataPayload));
 	}
 
 	@Test
-	void testUnexpectedSignerFails() throws SignatureException {
+	void testNOK() throws SignatureException {
 		final SetupComponentTallyDataPayload setupComponentTallyDataPayload = electionDataExtractionService.getSetupComponentTallyDataPayloads(
-				datasetPath).toList().getFirst();
-		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.CONTROL_COMPONENT_1);
-		final ImmutableByteArray signature = testSignatureGeneration.genSignature(setupComponentTallyDataPayload,
+				datasetPath)
+				.toList()
+				.getFirst();
+
+		final CryptoPrimitivesSignature dummySignature = datasetSignatureFactory.getDummySignature(setupComponentTallyDataPayload,
 				ChannelSecurityContextData.setupComponentTallyData(setupComponentTallyDataPayload.getElectionEventId(),
-						setupComponentTallyDataPayload.getVerificationCardSetId()));
-		setupComponentTallyDataPayload.setSignature(new CryptoPrimitivesSignature(signature));
+						setupComponentTallyDataPayload.getVerificationCardSetId()),
+				Alias.SDM_CONFIG);
+		setupComponentTallyDataPayload.setSignature(dummySignature);
+
 		assertFalse(((VerifySignatureSetupComponentTallyData) verification).verifySignature(setupComponentTallyDataPayload));
 	}
 }

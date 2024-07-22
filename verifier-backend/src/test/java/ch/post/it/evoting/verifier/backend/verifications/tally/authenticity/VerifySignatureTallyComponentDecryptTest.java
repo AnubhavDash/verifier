@@ -19,55 +19,32 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.authenticity;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.IOException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SignatureException;
-import java.security.cert.CertificateException;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
-import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
-import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
-import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
-import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
-import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableResultsFactory;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
 
 class VerifySignatureTallyComponentDecryptTest extends TallyVerificationTest {
 
 	@BeforeEach
-	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
-		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
-		verification = new VerifySignatureTallyComponentDecrypt(resultPublisherServiceMock, electionDataExtractionService, testSignatureVerification);
+	void setUpAll() {
+		verification = new VerifySignatureTallyComponentDecrypt(resultPublisherServiceMock, electionDataExtractionService, datasetSignatureVerification);
 	}
 
 	@Test
-	void testOK() throws SignatureException {
+	void testOK() {
 		final Results results = electionDataExtractionService.getTallyComponentDecrypt(datasetPath);
-
-		results.setSignature(generateSignature(results).elements());
 
 		assertTrue(((VerifySignatureTallyComponentDecrypt) verification).verifySignature(results), "the signature is not valid");
 	}
 
 	@Test
-	void testNOK() throws SignatureException {
+	void testNOK() {
 		final Results results = electionDataExtractionService.getTallyComponentDecrypt(datasetPath);
 
-		results.setSignature(generateSignature(results).elements());
 		results.setContestIdentification("new value");
 
 		assertFalse(((VerifySignatureTallyComponentDecrypt) verification).verifySignature(results), "the signature is valid but it should not");
-	}
-
-	private ImmutableByteArray generateSignature(final Results results) throws SignatureException {
-		final Hashable hash = HashableResultsFactory.fromResults(results);
-		final Hashable additionalContextData = ChannelSecurityContextData.tallyComponentDecrypt();
-
-		return signatureFactory.getTestSignatureGeneration(Alias.SDM_TALLY).genSignature(hash, additionalContextData);
 	}
 }
