@@ -49,8 +49,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
-import com.google.common.collect.MoreCollectors;
-
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
@@ -61,9 +59,6 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Authorization
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.ElectionGroupType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.VoteType;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.dto.DatasetConfiguration;
 import ch.post.it.evoting.verifier.backend.dto.DatasetConfigurationContext;
@@ -314,13 +309,10 @@ public class VerifierProcessor {
 			throw new DatasetExtractionException("Could not download tally dataset.");
 		}
 
-		final Path inputDirectory = unpackDataset(tallyDataset);
+		unpackDataset(tallyDataset);
 
-		final Results tallyComponentDecrypt = electionDataExtractionService.getTallyComponentDecrypt(inputDirectory);
-
-		final Configuration configuration = electionDataExtractionService.getCantonConfig(inputDirectory);
-		final int numberOfConfirmedNonTestVotes = getNumberOfConfirmedVotes(configuration, tallyComponentDecrypt, false);
-		final int numberOfConfirmedTestVotes = getNumberOfConfirmedVotes(configuration, tallyComponentDecrypt, true);
+		final int numberOfConfirmedNonTestVotes = 0;
+		final int numberOfConfirmedTestVotes = 0;
 
 		final String datasetHash;
 		try {
@@ -397,38 +389,5 @@ public class VerifierProcessor {
 	public void cleanSetupTally() {
 		this.setupDataset = null;
 		this.tallyDataset = null;
-	}
-
-	private static int getNumberOfConfirmedVotes(final Configuration configuration, final Results tallyComponentDecrypt,
-			final boolean testAuthorizations) {
-
-		return configuration.getAuthorizations().getAuthorization().stream().parallel()
-				.filter(authorizationType -> testAuthorizations == authorizationType.isAuthorizationTest())
-				.map(AuthorizationType::getAuthorizationIdentification)
-				.map(authorizationIdentification -> tallyComponentDecrypt.getBallotsBox().stream().parallel()
-						.filter(ballotBox -> ballotBox.getBallotBoxIdentification().equals(authorizationIdentification))
-						.collect(MoreCollectors.onlyElement()))
-				.map(ballotBox -> ballotBox.getCountingCircle().stream()
-						.findFirst()
-						.map(countingCircle -> countingCircle.getDomainOfInfluence().stream()
-								.findFirst()
-								.map(domainOfInfluence -> {
-									final List<VoteType> votes = domainOfInfluence.getVote();
-									final List<ElectionGroupType> electionGroups = domainOfInfluence.getElectionGroup();
-									final boolean hasVotes = Objects.nonNull(votes) && !votes.isEmpty();
-									final boolean hasElections = Objects.nonNull(electionGroups) && !electionGroups.isEmpty();
-
-									if (hasVotes) {
-										return votes.getFirst().getBallot().size();
-									} else {
-										if (hasElections) {
-											return electionGroups.getFirst().getBallot().size();
-										} else {
-											return 0;
-										}
-									}
-								}).orElse(0)
-						).orElse(0)
-				).reduce(0, Math::addExact);
 	}
 }

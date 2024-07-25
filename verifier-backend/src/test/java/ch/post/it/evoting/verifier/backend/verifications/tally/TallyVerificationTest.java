@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ch.ech.xmlns.ech_0110._4.Delivery;
+import ch.ech.xmlns.ech_0222._1.Delivery;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
@@ -59,10 +59,8 @@ public abstract class TallyVerificationTest {
 	protected static PathService pathService;
 	protected static AbstractVerification verification;
 	protected static ResultPublisherService resultPublisherServiceMock;
-	protected static XmlFileRepository<Delivery> ech0110XmlFileRepository;
-	protected static XmlFileRepository<ch.ech.xmlns.ech_0222._1.Delivery> ech0222XmlFileRepository;
+	protected static XmlFileRepository<Delivery> ech0222XmlFileRepository;
 	protected static XmlFileRepository<Configuration> configurationXmlFileRepository;
-	protected static XmlFileRepository<Results> resultsXmlFileRepository;
 	protected static ElectionDataExtractionService electionDataExtractionService;
 	protected static ElectionEventContextPayloadDataExtractor electionEventContextPayloadDataExtractor;
 	protected static SetupComponentVerificationDataPayloadDataExtractor setupComponentVerificationDataPayloadDataExtractor;
@@ -79,18 +77,16 @@ public abstract class TallyVerificationTest {
 		datasetPath = Paths.get("").toAbsolutePath().getParent().resolve("datasets");
 		datasetSignatureFactory = new DatasetSignatureFactory();
 		datasetSignatureVerification = datasetSignatureFactory.getSignatureVerification();
-		ech0110XmlFileRepository = new XmlFileRepository<>();
 		ech0222XmlFileRepository = new XmlFileRepository<>();
 		configurationXmlFileRepository = new XmlFileRepository<>();
-		resultsXmlFileRepository = new XmlFileRepository<>();
 		electionEventContextPayloadDataExtractor = new ElectionEventContextPayloadDataExtractor(JsonSurferJackson.INSTANCE);
 		setupComponentVerificationDataPayloadDataExtractor = new SetupComponentVerificationDataPayloadDataExtractor(JsonSurferJackson.INSTANCE);
 		setupComponentTallyDataPayloadDataExtractor = new SetupComponentTallyDataPayloadDataExtractor(JsonSurferJackson.INSTANCE);
 		controlComponentPublicKeysPayloadDataExtractor = new ControlComponentPublicKeysPayloadDataExtractor(JsonSurferJackson.INSTANCE);
 		controlComponentCodeSharesPayloadDataExtractor = new ControlComponentCodeSharesPayloadDataExtractor(JsonSurferJackson.INSTANCE);
 		encryptionGroupParametersDataExtractor = new EncryptionGroupParametersDataExtractor(JsonSurferJackson.INSTANCE);
-		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper, ech0110XmlFileRepository,
-				ech0222XmlFileRepository, configurationXmlFileRepository, resultsXmlFileRepository, electionEventContextPayloadDataExtractor,
+		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper,
+				ech0222XmlFileRepository, configurationXmlFileRepository, electionEventContextPayloadDataExtractor,
 				controlComponentCodeSharesPayloadDataExtractor, setupComponentVerificationDataPayloadDataExtractor,
 				controlComponentPublicKeysPayloadDataExtractor, setupComponentTallyDataPayloadDataExtractor);
 	}

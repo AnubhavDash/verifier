@@ -172,6 +172,7 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 				.setNumberOfVotingCards(verificationCardSetContext.getNumberOfVotingCards())
 				.setGracePeriod(verificationCardSetContext.getGracePeriod())
 				.setPrimesMappingTable(permutedPrimesMappingTable)
+				.setDomainsOfInfluence(verificationCardSetContext.getDomainsOfInfluence())
 				.build();
 	}
 
@@ -204,6 +205,7 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 								.setNumberOfVotingCards(verificationCardSetContext.getNumberOfVotingCards())
 								.setGracePeriod(verificationCardSetContext.getGracePeriod())
 								.setPrimesMappingTable(notInConfigPrimesMappingTable)
+								.setDomainsOfInfluence(verificationCardSetContext.getDomainsOfInfluence())
 								.build();
 					}
 					return verificationCardSetContext;
@@ -243,6 +245,7 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 						.setNumberOfVotingCards(verificationCardSetContext.getNumberOfVotingCards())
 						.setGracePeriod(verificationCardSetContext.getGracePeriod())
 						.setPrimesMappingTable(PrimesMappingTable.from(pTableModified))
+						.setDomainsOfInfluence(verificationCardSetContext.getDomainsOfInfluence())
 						.build()
 						: verificationCardSetContexts.get(i))
 				.toList();

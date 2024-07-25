@@ -57,10 +57,8 @@ class VerifySignatureVerificationDataAndCodeProofsTest extends SetupVerification
 	private final ElectionDataExtractionService electionDataExtractionService = new ElectionDataExtractionService(
 			pathService,
 			objectMapper,
-			ech0110XmlFileRepository,
 			ech0222XmlFileRepository,
 			configurationXmlFileRepository,
-			resultsXmlFileRepository,
 			electionEventContextPayloadDataExtractor,
 			controlComponentCodeSharesPayloadDataExtractor,
 			setupComponentVerificationDataPayloadDataExtractor,

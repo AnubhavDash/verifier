@@ -72,7 +72,7 @@ class VerifyFileNameNodeIdsConsistencyTest extends TallyVerificationTest {
 	void verifyNokShufflePayloadNodeId() throws IOException {
 		final ObjectMapper objectMapperMock = spy(objectMapper);
 		final ElectionDataExtractionService extractionService = new ElectionDataExtractionService(pathService, objectMapperMock,
-				ech0110XmlFileRepository, ech0222XmlFileRepository, configurationXmlFileRepository, resultsXmlFileRepository,
+				ech0222XmlFileRepository, configurationXmlFileRepository,
 				electionEventContextPayloadDataExtractor, controlComponentCodeSharesPayloadDataExtractor,
 				setupComponentVerificationDataPayloadDataExtractor, controlComponentPublicKeysPayloadDataExtractor,
 				setupComponentTallyDataPayloadDataExtractor);

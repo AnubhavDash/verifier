@@ -34,7 +34,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.MoreCollectors;
 
-import ch.ech.xmlns.ech_0110._4.Delivery;
+import ch.ech.xmlns.ech_0222._1.Delivery;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
@@ -50,7 +50,6 @@ import ch.post.it.evoting.evotinglibraries.domain.validations.FailedValidationEx
 import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
 import ch.post.it.evoting.evotinglibraries.xml.XsdConstants;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentCodeSharesPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentPublicKeysPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.dataextractors.ElectionEventContextPayloadDataExtractor;
@@ -66,10 +65,8 @@ public class ElectionDataExtractionService {
 	private final PathService pathService;
 	private final ObjectMapper objectMapper;
 	private final ElectionEventContextPayloadDataExtractor electionEventContextPayloadDataExtractor;
-	private final XmlFileRepository<Delivery> ech0110XmlFileRepository;
-	private final XmlFileRepository<ch.ech.xmlns.ech_0222._1.Delivery> ech0222XmlFileRepository;
+	private final XmlFileRepository<Delivery> ech0222XmlFileRepository;
 	private final XmlFileRepository<Configuration> configurationXmlFileRepository;
-	private final XmlFileRepository<Results> resultsXmlFileRepository;
 	private final ControlComponentCodeSharesPayloadDataExtractor controlComponentCodeSharesPayloadDataExtractor;
 	private final SetupComponentVerificationDataPayloadDataExtractor setupComponentVerificationDataPayloadDataExtractor;
 	private final ControlComponentPublicKeysPayloadDataExtractor controlComponentPublicKeysPayloadDataExtractor;
@@ -78,9 +75,8 @@ public class ElectionDataExtractionService {
 	public ElectionDataExtractionService(
 			final PathService pathService,
 			final ObjectMapper objectMapper,
-			final XmlFileRepository<Delivery> ech0110XmlFileRepository,
-			final XmlFileRepository<ch.ech.xmlns.ech_0222._1.Delivery> ech0222XmlFileRepository,
-			final XmlFileRepository<Configuration> configurationXmlFileRepository, final XmlFileRepository<Results> resultsXmlFileRepository,
+			final XmlFileRepository<Delivery> ech0222XmlFileRepository,
+			final XmlFileRepository<Configuration> configurationXmlFileRepository,
 			final ElectionEventContextPayloadDataExtractor electionEventContextPayloadDataExtractor,
 			final ControlComponentCodeSharesPayloadDataExtractor controlComponentCodeSharesPayloadDataExtractor,
 			final SetupComponentVerificationDataPayloadDataExtractor setupComponentVerificationDataPayloadDataExtractor,
@@ -89,10 +85,8 @@ public class ElectionDataExtractionService {
 		this.pathService = pathService;
 		this.objectMapper = objectMapper;
 		this.electionEventContextPayloadDataExtractor = electionEventContextPayloadDataExtractor;
-		this.ech0110XmlFileRepository = ech0110XmlFileRepository;
 		this.ech0222XmlFileRepository = ech0222XmlFileRepository;
 		this.configurationXmlFileRepository = configurationXmlFileRepository;
-		this.resultsXmlFileRepository = resultsXmlFileRepository;
 		this.controlComponentCodeSharesPayloadDataExtractor = controlComponentCodeSharesPayloadDataExtractor;
 		this.setupComponentVerificationDataPayloadDataExtractor = setupComponentVerificationDataPayloadDataExtractor;
 		this.controlComponentPublicKeysPayloadDataExtractor = controlComponentPublicKeysPayloadDataExtractor;
@@ -113,44 +107,17 @@ public class ElectionDataExtractionService {
 	}
 
 	/**
-	 * Gets the tally component decrypt.
-	 *
-	 * @param inputDirectoryPath the root directory containing project files.
-	 * @return the tally component decrypt as {@link Results} found in the project files, at the expected location if it exists.
-	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
-	 * @throws UncheckedIOException if the file cannot be deserialized to a Results.
-	 */
-	public Results getTallyComponentDecrypt(final Path inputDirectoryPath) {
-		final PathNode resultsPathNode = pathService.buildFromRootPath(StructureKey.TALLY_COMPONENT_DECRYPT, inputDirectoryPath);
-		return resultsXmlFileRepository.read(resultsPathNode.getPath(), XsdConstants.TALLY_COMPONENT_DECRYPT_XSD, Results.class);
-	}
-
-	/**
-	 * Gets the tally component eCH-0110.
-	 *
-	 * @param inputDirectoryPath the root directory containing project files.
-	 * @return the tally component eCH-0110 as {@link Delivery} found in the project files, at the expected location if it exists.
-	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
-	 * @throws UncheckedIOException if the file cannot be deserialized to a Delivery.
-	 */
-	public Delivery getTallyComponentEch0110(final Path inputDirectoryPath) {
-		final PathNode deliveryPathNode = pathService.buildFromRootPath(StructureKey.TALLY_COMPONENT_ECH0110, inputDirectoryPath);
-		return ech0110XmlFileRepository.read(deliveryPathNode.getPath(), XsdConstants.TALLY_COMPONENT_ECH_0110, Delivery.class);
-	}
-
-	/**
 	 * Gets the tally component eCH-0222.
 	 *
 	 * @param inputDirectoryPath the root directory containing project files.
-	 * @return the tally component eCH-0222 as {@link ch.ech.xmlns.ech_0222._1.Delivery} found in the project files, at the expected location if it
+	 * @return the tally component eCH-0222 as {@link Delivery} found in the project files, at the expected location if it
 	 * exists.
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the file cannot be deserialized to a Delivery.
 	 */
-	public ch.ech.xmlns.ech_0222._1.Delivery getTallyComponentEch0222(final Path inputDirectoryPath) {
+	public Delivery getTallyComponentEch0222(final Path inputDirectoryPath) {
 		final PathNode deliveryPathNode = pathService.buildFromRootPath(StructureKey.TALLY_COMPONENT_ECH0222, inputDirectoryPath);
-		return ech0222XmlFileRepository.read(deliveryPathNode.getPath(), XsdConstants.TALLY_COMPONENT_ECH_0222,
-				ch.ech.xmlns.ech_0222._1.Delivery.class);
+		return ech0222XmlFileRepository.read(deliveryPathNode.getPath(), XsdConstants.TALLY_COMPONENT_ECH_0222, Delivery.class);
 	}
 
 	/**

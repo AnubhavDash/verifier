@@ -26,12 +26,10 @@ import static ch.post.it.evoting.evotinglibraries.domain.election.SemanticInform
 import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.hasNoDuplicates;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static java.util.function.Predicate.not;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
@@ -43,7 +41,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.MoreCollectors;
 
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
@@ -59,6 +56,8 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EmptyListType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListDescriptionInformationType.ListDescriptionInfo;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardAnswerType;
@@ -198,11 +197,11 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 				.map(electionInformationType -> {
 					final ElectionType election = electionInformationType.getElection();
 					final String electionIdentification = election.getElectionIdentification();
-					final Map<Boolean, List<ListType>> isEmptyList = electionInformationType.getList().stream()
-							.collect(Collectors.partitioningBy(ListType::isListEmpty));
 
-					final Set<PartialPrimesMappingTableEntry> emptyList = getEmptyListEntries(electionInformationType, isEmptyList.get(true));
-					final Set<PartialPrimesMappingTableEntry> nonEmptyLists = getNonEmptyListsEntries(electionIdentification, isEmptyList.get(false));
+					final Set<PartialPrimesMappingTableEntry> emptyList = getEmptyListEntries(electionInformationType,
+							electionInformationType.getEmptyList());
+					final Set<PartialPrimesMappingTableEntry> nonEmptyLists = getNonEmptyListsEntries(electionIdentification,
+							electionInformationType.getList());
 					final Set<PartialPrimesMappingTableEntry> candidates = getCandidatesEntries(electionInformationType);
 					final Set<PartialPrimesMappingTableEntry> writeIns = getWriteInsEntries(electionInformationType);
 
@@ -215,26 +214,25 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 	}
 
 	private static Set<PartialPrimesMappingTableEntry> getEmptyListEntries(final ElectionInformationType electionInformationType,
-			final List<ListType> emptyLists) {
-		final ListType emptyList = emptyLists.stream().collect(MoreCollectors.onlyElement());
+			final EmptyListType emptyList) {
 		final String electionIdentification = electionInformationType.getElection().getElectionIdentification();
 		final Set<PartialPrimesMappingTableEntry> emptyListEntries = new HashSet<>();
 
 		// empty position
-		emptyList.getCandidatePosition()
-				.forEach(candidatePositionType -> {
+		emptyList.getEmptyPosition()
+				.forEach(emptyPosition -> {
 					final String actualVotingOption = String.join(ALIAS_JOIN_DELIMITER, electionIdentification,
-							candidatePositionType.getCandidateListIdentification());
-					final String semanticInformation = getBlankCandidatePositionInformation(candidatePositionType.getPositionOnList());
+							emptyPosition.getEmptyPositionIdentification());
+					final String semanticInformation = getBlankCandidatePositionInformation(emptyPosition.getPositionOnList());
 					final String correctnessInformation = String.join(ALIAS_JOIN_DELIMITER, CORRECTNESS_INFORMATION_CANDIDATE_PREFIX,
 							electionIdentification);
 					emptyListEntries.add(new PartialPrimesMappingTableEntry(actualVotingOption, semanticInformation, correctnessInformation));
 				});
 
 		// empty list - only added if an election includes at least one non-empty list (otherwise it would be a candidate-only election without the possibility of selecting lists)
-		final boolean electionWithLists = electionInformationType.getList().stream().parallel().anyMatch(not(ListType::isListEmpty));
+		final boolean electionWithLists = !electionInformationType.getList().isEmpty();
 		if (electionWithLists) {
-			emptyListEntries.add(getListEntry(electionIdentification, emptyList));
+			emptyListEntries.add(getListEntry(electionIdentification, emptyList.getListIdentification(), emptyList.getListDescription(), true));
 		}
 
 		return emptyListEntries;
@@ -243,13 +241,14 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 	private static Set<PartialPrimesMappingTableEntry> getNonEmptyListsEntries(final String electionIdentification, final List<ListType> nonEmpty) {
 		return nonEmpty.stream()
 				.parallel()
-				.map(listType -> getListEntry(electionIdentification, listType))
+				.map(listType -> getListEntry(electionIdentification, listType.getListIdentification(), listType.getListDescription(), false))
 				.collect(Collectors.toSet());
 	}
 
-	private static PartialPrimesMappingTableEntry getListEntry(final String electionIdentification, final ListType listType) {
-		final String actualVotingOption = String.join(ALIAS_JOIN_DELIMITER, electionIdentification, listType.getListIdentification());
-		final String semanticInformation = getListInformation(listType.isListEmpty(), listType.getListDescription().getListDescriptionInfo(),
+	private static PartialPrimesMappingTableEntry getListEntry(final String electionIdentification, final String listIdentification,
+			final ListDescriptionInformationType listDescriptionInformation, final boolean isEmptyList) {
+		final String actualVotingOption = String.join(ALIAS_JOIN_DELIMITER, electionIdentification, listIdentification);
+		final String semanticInformation = getListInformation(isEmptyList, listDescriptionInformation.getListDescriptionInfo(),
 				ListDescriptionInfo::getListDescription);
 		final String correctnessInformation = String.join(ALIAS_JOIN_DELIMITER, CORRECTNESS_INFORMATION_LIST_PREFIX, electionIdentification);
 		return new PartialPrimesMappingTableEntry(actualVotingOption, semanticInformation, correctnessInformation);
