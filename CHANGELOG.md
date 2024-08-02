@@ -1,5 +1,17 @@
 # Changelog
 
+## Release 1.5.3.2
+
+Release 1.5.3.2 incorporates the following change:
+
+* Update e-voting-libraries dependency to 1.4.3.2.
+
+## Release 1.5.3.1
+
+Release 1.5.3.1 incorporates the following change:
+
+* Update e-voting-libraries dependency to 1.4.3.1.
+
 ## Release 1.5.3
 
 Release 1.5.3 is a minor maintenance patch containing the following changes:
