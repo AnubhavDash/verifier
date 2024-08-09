@@ -15,6 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.authenticity;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -48,8 +49,8 @@ class VerifySignatureControlComponentBallotBoxTest extends TallyVerificationTest
 	void testOK() {
 		final ControlComponentBallotBoxPayload controlComponentBallotBoxPayload = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
 				datasetPath)
-				.toList()
-				.getFirst();
+				.collect(toImmutableList())
+				.get(0);
 
 		assertTrue(((VerifySignatureControlComponentBallotBox) verification).verifySignature(controlComponentBallotBoxPayload));
 	}
@@ -58,8 +59,8 @@ class VerifySignatureControlComponentBallotBoxTest extends TallyVerificationTest
 	void testNOK() throws SignatureException {
 		final ControlComponentBallotBoxPayload controlComponentBallotBoxPayload = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
 				datasetPath)
-				.toList()
-				.getFirst();
+				.collect(toImmutableList())
+				.get(0);
 
 		final int nodeId = controlComponentBallotBoxPayload.getNodeId();
 		final CryptoPrimitivesSignature dummySignature = datasetSignatureFactory.getDummySignature(controlComponentBallotBoxPayload,

@@ -18,9 +18,9 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.List;
 import java.util.stream.Stream;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
@@ -58,8 +58,9 @@ public class VerifyEncryptedExponentiationProofsVerificationCardSetInput {
 	private final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> exponentiatedEncryptedHashedConfirmationKey;
 	private final GroupVector<ExponentiationProof, ZqGroup> proofsOfCorrectCKExponentiation;
 
-	public VerifyEncryptedExponentiationProofsVerificationCardSetInput(final List<SetupComponentVerificationData> setupComponentVerificationData,
-			final List<ControlComponentCodeShare> controlComponentCodeShares) {
+	public VerifyEncryptedExponentiationProofsVerificationCardSetInput(
+			final ImmutableList<SetupComponentVerificationData> setupComponentVerificationData,
+			final ImmutableList<ControlComponentCodeShare> controlComponentCodeShares) {
 		checkNotNull(setupComponentVerificationData);
 		checkNotNull(controlComponentCodeShares);
 

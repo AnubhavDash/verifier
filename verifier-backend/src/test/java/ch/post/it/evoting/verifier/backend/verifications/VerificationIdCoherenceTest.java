@@ -15,9 +15,10 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
+
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -29,6 +30,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.dto.Verification;
@@ -80,13 +82,13 @@ class VerificationIdCoherenceTest {
 	@Test
 	void validateSortingIsCorrect() {
 		// given
-		final List<Double> idsAsDoubles = verifierProcessor.getVerifications().stream()
+		final ImmutableList<Double> idsAsDoubles = verifierProcessor.getVerifications().stream()
 				.map(Verification::getVerificationId)
 				.map(Double::valueOf)
-				.toList();
-		final List<Double> expected = idsAsDoubles.stream()
+				.collect(toImmutableList());
+		final ImmutableList<Double> expected = idsAsDoubles.stream()
 				.sorted()
-				.toList();
+				.collect(toImmutableList());
 
 		// when / then
 		Assertions.assertThat(idsAsDoubles).containsExactlyElementsOf(expected);

@@ -15,13 +15,14 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static ch.post.it.evoting.verifier.backend.tools.TranslationHelper.getFromResourceBundle;
 
 import java.nio.file.Path;
-import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
@@ -79,7 +80,7 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 		}
 	}
 
-	private List<TallyPayloadsSizes> extractTallyPayloadsSizes(final Path inputDirectoryPath) {
+	private ImmutableList<TallyPayloadsSizes> extractTallyPayloadsSizes(final Path inputDirectoryPath) {
 		final PathNode ballotBoxesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 
 		return ballotBoxesPathNode.getRegexPaths().stream()
@@ -93,28 +94,28 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 							electionDataExtractionService.getTallyComponentShufflePayload(ballotBoxPath);
 					final int tallyComponentShufflePayloadSize = tallyComponentShufflePayload.getVerifiableShuffle().shuffledCiphertexts().size();
 
-					final List<Integer> controlComponentBallotBoxPayloadsSizes = electionDataExtractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(
+					final ImmutableList<Integer> controlComponentBallotBoxPayloadsSizes = electionDataExtractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(
 									ballotBoxPath)
 							.parallel()
 							.map(controlComponentBallotBoxPayload -> controlComponentBallotBoxPayload.getConfirmedEncryptedVotes().size())
-							.toList();
+							.collect(toImmutableList());
 
-					final List<Integer> controlComponentShufflePayloadsSizes = electionDataExtractionService.getControlComponentShufflePayloadsOrderedByNodeId(
+					final ImmutableList<Integer> controlComponentShufflePayloadsSizes = electionDataExtractionService.getControlComponentShufflePayloadsOrderedByNodeId(
 									ballotBoxPath)
 							.parallel()
 							.map(controlComponentShufflePayload -> controlComponentShufflePayload.getVerifiableShuffle().shuffledCiphertexts().size())
-							.toList();
+							.collect(toImmutableList());
 
 					return new TallyPayloadsSizes(tallyComponentVotesPayloadSize, tallyComponentShufflePayloadSize,
 							controlComponentBallotBoxPayloadsSizes, controlComponentShufflePayloadsSizes);
-				}).toList();
+				}).collect(toImmutableList());
 	}
 
 	private boolean verifyConsistency(final TallyPayloadsSizes tallyPayloadsSizes) {
 		final int tallyComponentVotesPayloadSize = tallyPayloadsSizes.tallyComponentVotesPayloadSize();
 		final int tallyComponentShufflePayloadSize = tallyPayloadsSizes.tallyComponentShufflePayloadSize();
-		final List<Integer> controlComponentBallotBoxPayloadsSizes = tallyPayloadsSizes.controlComponentBallotBoxPayloadsSizes();
-		final List<Integer> controlComponentShufflePayloadsSizes = tallyPayloadsSizes.controlComponentShufflePayloadsSizes();
+		final ImmutableList<Integer> controlComponentBallotBoxPayloadsSizes = tallyPayloadsSizes.controlComponentBallotBoxPayloadsSizes();
+		final ImmutableList<Integer> controlComponentShufflePayloadsSizes = tallyPayloadsSizes.controlComponentShufflePayloadsSizes();
 		final int expectedSize = tallyComponentVotesPayloadSize;
 
 		final boolean isTallyComponentShufflePayloadConsistent =
@@ -138,8 +139,8 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 
 	private record TallyPayloadsSizes(int tallyComponentVotesPayloadSize,
 									  int tallyComponentShufflePayloadSize,
-									  List<Integer> controlComponentBallotBoxPayloadsSizes,
-									  List<Integer> controlComponentShufflePayloadsSizes) {
+									  ImmutableList<Integer> controlComponentBallotBoxPayloadsSizes,
+									  ImmutableList<Integer> controlComponentShufflePayloadsSizes) {
 	}
 
 }

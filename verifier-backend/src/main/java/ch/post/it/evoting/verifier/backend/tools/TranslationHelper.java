@@ -16,13 +16,11 @@
 package ch.post.it.evoting.verifier.backend.tools;
 
 import java.text.MessageFormat;
-import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 import ch.post.it.evoting.verifier.backend.Language;
 
@@ -60,8 +58,4 @@ public class TranslationHelper {
 		return MessageFormat.format(ResourceBundle.getBundle(resourceBundleName, locale).getString(key), (Object[]) args);
 	}
 
-	public static Map<Language, String> getSameMessageMultiLanguage(final String message) {
-		return Arrays.stream(Language.values()).map(l -> new AbstractMap.SimpleEntry<>(l, message == null ? "" : message))
-				.collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
-	}
 }

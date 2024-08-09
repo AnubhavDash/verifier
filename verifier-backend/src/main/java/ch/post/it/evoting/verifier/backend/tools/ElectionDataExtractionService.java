@@ -15,6 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.tools;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
 import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.validateUUID;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -25,7 +26,6 @@ import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -35,6 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.MoreCollectors;
 
 import ch.ech.xmlns.ech_0222._1.Delivery;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
@@ -260,7 +261,7 @@ public class ElectionDataExtractionService {
 	public Stream<ControlComponentBallotBoxPayload> getControlComponentBallotBoxPayloadsOrderedByNodeId(final Path ballotBoxDirectoryPath) {
 		checkNotNull(ballotBoxDirectoryPath);
 
-		final List<Path> ballotBoxPayloadPaths =
+		final ImmutableList<Path> ballotBoxPayloadPaths =
 				pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_BALLOT_BOX, ballotBoxDirectoryPath).getRegexPaths();
 
 		return ballotBoxPayloadPaths.stream()
@@ -303,8 +304,8 @@ public class ElectionDataExtractionService {
 														controlComponentShuffle), e);
 									}
 								}).sorted(Comparator.comparingInt(ControlComponentShufflePayload::getNodeId))
-								.toList())
-				.flatMap(List::stream);
+								.collect(toImmutableList()))
+				.flatMap(ImmutableList::stream);
 	}
 
 	/**
@@ -338,7 +339,8 @@ public class ElectionDataExtractionService {
 	public Stream<ControlComponentShufflePayload> getControlComponentShufflePayloadsOrderedByNodeId(final Path ballotBoxDirectoryPath) {
 		checkNotNull(ballotBoxDirectoryPath);
 
-		final List<Path> controlComponentShufflePayloadPaths = pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_SHUFFLE,
+		final ImmutableList<Path> controlComponentShufflePayloadPaths = pathService.buildFromDynamicAncestorPath(
+				StructureKey.CONTROL_COMPONENT_SHUFFLE,
 				ballotBoxDirectoryPath).getRegexPaths();
 
 		return controlComponentShufflePayloadPaths.stream()
@@ -530,80 +532,6 @@ public class ElectionDataExtractionService {
 	}
 
 	/**
-	 * Deserializes the setup component verification data payloads chunks, given a path for a verification card set ID ordered by chunk id as a
-	 * {@link Stream}.
-	 *
-	 * @param verificationCardSetIdPath the path for the verification card set ID.
-	 * @return List of {@code SetupComponentVerificationDataPayload} each corresponding to a chunk.
-	 * @throws NullPointerException if {@code verificationCardSetIdPath} is null.
-	 */
-	public Stream<SetupComponentVerificationDataPayload> deserializeSetupComponentVerificationDataPayloadOrderByChunkId(
-			final Path verificationCardSetIdPath) {
-		checkNotNull(verificationCardSetIdPath);
-
-		final PathNode nodePath = pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA, verificationCardSetIdPath);
-
-		return nodePath.getRegexPaths().stream()
-				.parallel()
-				.map(this::getSetupComponentVerificationDataPayload)
-				.sorted(Comparator.comparingInt(SetupComponentVerificationDataPayload::getChunkId));
-	}
-
-	public SetupComponentVerificationDataPayload getSetupComponentVerificationDataPayload(final Path setupComponentVerificationDataPayloadPath) {
-		checkNotNull(setupComponentVerificationDataPayloadPath);
-
-		try {
-			return objectMapper.readValue(setupComponentVerificationDataPayloadPath.toFile(), SetupComponentVerificationDataPayload.class);
-		} catch (final IOException e) {
-			throw new UncheckedIOException(
-					String.format("Failed to deserialize SetupComponentVerificationDataPayload payload. [filePath: %s]",
-							setupComponentVerificationDataPayloadPath), e);
-		}
-	}
-
-	/**
-	 * Deserializes and returns the control component code shares payloads for each chunk, given a path for a verification card set ID, ordered by
-	 * chunk id and node id.
-	 *
-	 * @param verificationCardSetIdPath the path for the verification card set ID.
-	 * @return List of {@code ReturnCodeGenerationResponsePayload} for each chunk.
-	 * @throws NullPointerException if {@code verificationCardSetIdPath} is null.
-	 */
-	public List<List<ControlComponentCodeSharesPayload>> deserializeControlComponentCodeSharesPayloadsOrderByChunkIdAndNodeId(
-			final Path verificationCardSetIdPath) {
-		checkNotNull(verificationCardSetIdPath);
-
-		final PathNode nodePath = pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_CODE_SHARES, verificationCardSetIdPath);
-		final List<Path> filePaths = nodePath.getRegexPaths();
-		return filePaths.stream()
-				.parallel()
-				.map(this::getControlComponentCodeSharesOrderByNodeId)
-				.map(Stream::toList)
-				.sorted(Comparator.comparingInt(controlComponentCodeSharesPayloads -> controlComponentCodeSharesPayloads.get(0).getChunkId()))
-				.toList();
-	}
-
-	public Stream<ControlComponentCodeSharesPayload> getControlComponentCodeSharesOrderByNodeId(final Path controlComponentCodeSharesPayloadsPath) {
-		checkNotNull(controlComponentCodeSharesPayloadsPath);
-
-		return getControlComponentCodeShares(controlComponentCodeSharesPayloadsPath)
-				.parallel()
-				.sorted(Comparator.comparingInt(ControlComponentCodeSharesPayload::getNodeId));
-	}
-
-	private Stream<ControlComponentCodeSharesPayload> getControlComponentCodeShares(final Path controlComponentCodeSharesPayloadsPath) {
-		checkNotNull(controlComponentCodeSharesPayloadsPath);
-
-		try {
-			return Arrays.stream(objectMapper.readValue(controlComponentCodeSharesPayloadsPath.toFile(), ControlComponentCodeSharesPayload[].class));
-		} catch (final IOException e) {
-			throw new UncheckedIOException(
-					String.format("Failed to deserialize ControlComponentCodeShares payloads. [filePath: %s]",
-							controlComponentCodeSharesPayloadsPath), e);
-		}
-	}
-
-	/**
 	 * Gets all the control components public keys payloads.
 	 *
 	 * @param inputDirectoryPath the dataset root directory.
@@ -611,7 +539,7 @@ public class ElectionDataExtractionService {
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the deserialization of the control components public keys payloads fails.
 	 */
-	public List<ControlComponentPublicKeysPayload> getControlComponentPublicKeysPayloads(final Path inputDirectoryPath) {
+	public ImmutableList<ControlComponentPublicKeysPayload> getControlComponentPublicKeysPayloads(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
 		final PathNode controlComponentPublicKeys = pathService.buildFromRootPath(StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS, inputDirectoryPath);
@@ -627,7 +555,7 @@ public class ElectionDataExtractionService {
 						throw new UncheckedIOException("Failed to deserialize control component public keys payload.", e);
 					}
 				})
-				.toList();
+				.collect(toImmutableList());
 	}
 
 	/**
@@ -787,7 +715,7 @@ public class ElectionDataExtractionService {
 	 * @param inputDirectoryPath the dataset root directory.
 	 * @return all verification card set paths from the context.
 	 */
-	public List<Path> getContextVerificationCardSetPaths(final Path inputDirectoryPath) {
+	public ImmutableList<Path> getContextVerificationCardSetPaths(final Path inputDirectoryPath) {
 		return pathService.buildFromRootPath(StructureKey.CONTEXT_VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath).getRegexPaths();
 	}
 
@@ -797,7 +725,7 @@ public class ElectionDataExtractionService {
 	 * @param inputDirectoryPath the dataset root directory.
 	 * @return all verification card set paths from the setup.
 	 */
-	public List<Path> getSetupVerificationCardSetPaths(final Path inputDirectoryPath) {
+	public ImmutableList<Path> getSetupVerificationCardSetPaths(final Path inputDirectoryPath) {
 		return pathService.buildFromRootPath(StructureKey.SETUP_VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath).getRegexPaths();
 	}
 
@@ -808,17 +736,17 @@ public class ElectionDataExtractionService {
 	 * @param chunkId                 the chunk id.
 	 * @return the list of control component code share chunk files ordered by node id.
 	 */
-	public List<ControlComponentCodeSharesPayload> getControlComponentCodeSharesPayloadChunkOrderByNodeId(final Path verificationCardSetPath,
+	public ImmutableList<ControlComponentCodeSharesPayload> getControlComponentCodeSharesPayloadChunkOrderByNodeId(final Path verificationCardSetPath,
 			final int chunkId) {
 		final Path file = pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_CODE_SHARES, verificationCardSetPath)
 				.getRegexPaths().stream()
 				.filter(filePath -> filePath.getFileName().toString().contains(String.format(".%s.", chunkId)))
 				.collect(MoreCollectors.onlyElement());
 		try {
-			final List<ControlComponentCodeSharesPayload> controlComponentCodeSharesPayloads = Arrays.stream(
+			final ImmutableList<ControlComponentCodeSharesPayload> controlComponentCodeSharesPayloads = Arrays.stream(
 							objectMapper.readValue(file.toFile(), ControlComponentCodeSharesPayload[].class))
 					.sorted(Comparator.comparing(ControlComponentCodeSharesPayload::getNodeId))
-					.toList();
+					.collect(toImmutableList());
 			controlComponentCodeSharesPayloads.forEach(
 					controlComponentCodeSharesPayload -> checkState(controlComponentCodeSharesPayload.getChunkId() == chunkId));
 			checkState(controlComponentCodeSharesPayloads.size() == NODE_IDS.size());
@@ -858,15 +786,17 @@ public class ElectionDataExtractionService {
 	 * @return the amount of chunks files related to the verification card set.
 	 */
 	public int determineVerificationCardSetChunkCount(final Path verificationCardSetPath) {
-		final List<Integer> values = pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA, verificationCardSetPath)
+		final ImmutableList<Integer> values = pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA,
+						verificationCardSetPath)
 				.getRegexPaths()
 				.stream()
+				.parallel()
 				.map(file -> {
 					final String filename = file.getFileName().toString();
 					return filename.substring(filename.indexOf('.') + 1, filename.lastIndexOf('.'));
 				})
 				.map(Integer::parseInt)
-				.toList();
+				.collect(toImmutableList());
 
 		final int maxValue = values.stream().max(Integer::compareTo).orElseThrow(() -> new IllegalStateException(
 				String.format("no chunk found for given verification card set. [verificationCardSetPath: %s]", verificationCardSetPath)));

@@ -16,7 +16,7 @@
 package ch.post.it.evoting.verifier.backend;
 
 import java.nio.file.Path;
-import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +53,7 @@ public abstract class AbstractVerification {
 	public void executeVerify(final VerifierEvent verifierEvent) {
 		// Retrieve events to which this verification is listening to.
 		final VerificationDefinition definition = getVerificationDefinition();
-		final List<String> listenedEvents = definition.getVerifierEvents().stream().toList();
+		final Set<String> listenedEvents = definition.getVerifierEvents();
 
 		// Execute verification only if received event is one listened to.
 		if (listenedEvents.contains(verifierEvent.getType())) {

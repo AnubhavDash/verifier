@@ -15,6 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static ch.post.it.evoting.evotinglibraries.domain.election.ActualVotingOptionUtils.getAnswerActualVotingOption;
 import static ch.post.it.evoting.evotinglibraries.domain.election.ActualVotingOptionUtils.getCandidateActualVotingOption;
 import static ch.post.it.evoting.evotinglibraries.domain.election.ActualVotingOptionUtils.getEmptyPositionActualVotingOption;
@@ -33,7 +34,6 @@ import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -46,8 +46,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Preconditions;
-
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
@@ -96,11 +95,10 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 		checkNotNull(electionEventContext);
 		checkNotNull(configuration);
 
-		final List<PrimesMappingTable> primesMappingTables = electionEventContext.verificationCardSetContexts().stream()
+		final ImmutableList<PrimesMappingTable> primesMappingTables = electionEventContext.verificationCardSetContexts().stream()
 				.map(VerificationCardSetContext::getPrimesMappingTable)
-				.toList();
+				.collect(toImmutableList());
 		checkArgument(!primesMappingTables.isEmpty());
-		primesMappingTables.stream().parallel().forEach(Preconditions::checkNotNull);
 
 		primesMappingTables.forEach(primesMappingTable -> checkArgument(hasNoDuplicates(primesMappingTable.getPTable().stream()
 						.map(PrimesMappingTableEntry::encodedVotingOption)
@@ -108,7 +106,7 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 				"The primes mapping table entries contain duplicated encoded voting options."));
 
 		// Join the PrimesMappingTables of all verification card sets, deleting duplicates.
-		final Set<PrimesMappingTableEntry> primesMappingTableEntries = List.copyOf(primesMappingTables).stream()
+		final Set<PrimesMappingTableEntry> primesMappingTableEntries = primesMappingTables.stream()
 				.parallel()
 				.map(PrimesMappingTable::getPTable)
 				.flatMap(GroupVector::stream)
@@ -121,10 +119,10 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 				.flatMap(Set::stream)
 				.collect(Collectors.toSet());
 
-		final List<BiFunction<Set<PrimesMappingTableEntry>, Set<PrimesMappingTableEntrySubset>, Boolean>> consistencyVerifications = new ArrayList<>();
-		consistencyVerifications.add(this::verifyCorrectMappingInAllVerificationCardSets);
-		consistencyVerifications.add(this::verifyInformationCorrespondsToConfiguration);
-		consistencyVerifications.add(this::verifyNumberOfTuplesCorrespondsToConfiguration);
+		final ImmutableList<BiFunction<Set<PrimesMappingTableEntry>, Set<PrimesMappingTableEntrySubset>, Boolean>> consistencyVerifications = ImmutableList.of(
+				this::verifyCorrectMappingInAllVerificationCardSets,
+				this::verifyInformationCorrespondsToConfiguration,
+				this::verifyNumberOfTuplesCorrespondsToConfiguration);
 
 		return consistencyVerifications
 				.stream()
@@ -253,7 +251,8 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 	private static PrimesMappingTableEntrySubset getListEntry(final String electionIdentification, final String listIdentification,
 			final ListDescriptionInformationType listDescriptionInformation, final boolean isEmptyList) {
 		final String actualVotingOption = getListActualVotingOption(electionIdentification, listIdentification);
-		final String semanticInformation = getListSemanticInformation(isEmptyList, listDescriptionInformation.getListDescriptionInfo(),
+		final String semanticInformation = getListSemanticInformation(isEmptyList,
+				ImmutableList.from(listDescriptionInformation.getListDescriptionInfo()),
 				ListDescriptionInfo::getListDescription);
 		final String correctnessInformation = getListCorrectnessInformation(electionIdentification);
 		return new PrimesMappingTableEntrySubset(actualVotingOption, semanticInformation, correctnessInformation);
@@ -346,8 +345,10 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 					final String actualVotingOption = getAnswerActualVotingOption(questionIdentification,
 							standardAnswerType.getAnswerIdentification());
 					final String semanticInformation = getAnswerSemanticInformation(standardAnswerType.isHiddenAnswer(),
-							ballotQuestionType.getBallotQuestionInfo(), BallotQuestionInfo::getBallotQuestion,
-							standardAnswerType.getAnswerInfo(), AnswerInformationType::getAnswer);
+							ImmutableList.from(ballotQuestionType.getBallotQuestionInfo()),
+							BallotQuestionInfo::getBallotQuestion,
+							ImmutableList.from(standardAnswerType.getAnswerInfo()),
+							AnswerInformationType::getAnswer);
 					return new PrimesMappingTableEntrySubset(actualVotingOption, semanticInformation, questionIdentification);
 				});
 	}
@@ -367,8 +368,10 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 							final String actualVotingOption = getAnswerActualVotingOption(questionIdentification,
 									tiebreakAnswerType.getAnswerIdentification());
 							final String semanticInformation = getAnswerSemanticInformation(tiebreakAnswerType.isHiddenAnswer(),
-									tieBreakQuestionType.getBallotQuestion().getBallotQuestionInfo(), BallotQuestionInfo::getBallotQuestion,
-									tiebreakAnswerType.getAnswerInfo(), AnswerInformationType::getAnswer);
+									ImmutableList.from(tieBreakQuestionType.getBallotQuestion().getBallotQuestionInfo()),
+									BallotQuestionInfo::getBallotQuestion,
+									ImmutableList.from(tiebreakAnswerType.getAnswerInfo()),
+									AnswerInformationType::getAnswer);
 							return new PrimesMappingTableEntrySubset(actualVotingOption, semanticInformation, questionIdentification);
 						}))
 				.collect(Collectors.toSet());

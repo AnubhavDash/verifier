@@ -20,12 +20,12 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
 import java.security.SignatureException;
-import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
@@ -75,7 +75,7 @@ public class VerifySignatureControlComponentPublicKeys extends AbstractVerificat
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = electionDataExtractionService.getControlComponentPublicKeysPayloads(
+		final ImmutableList<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = electionDataExtractionService.getControlComponentPublicKeysPayloads(
 				inputDirectoryPath);
 
 		checkState(NODE_IDS.size() == controlComponentPublicKeysPayloads.size(),

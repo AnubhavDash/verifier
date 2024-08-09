@@ -17,5 +17,5 @@ package ch.post.it.evoting.verifier.backend.tools.path;
 
 import java.nio.file.Path;
 
-record StructureNode(PathType type, Path parentPath, String qualifier, boolean dynamicAncestor) {
+public record StructureNode(PathType type, Path parentPath, String qualifier, boolean dynamicAncestor) {
 }

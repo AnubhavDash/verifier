@@ -15,14 +15,17 @@
  */
 package ch.post.it.evoting.verifier.backend.dataextractors;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
+
 import java.util.Collection;
-import java.util.List;
 
 import org.jsfr.json.JsonSurfer;
 import org.jsfr.json.ValueBox;
 import org.jsfr.json.compiler.JsonPathCompiler;
 import org.jsfr.json.path.JsonPath;
 import org.springframework.stereotype.Component;
+
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 
 @Component
 public class SetupComponentVerificationDataPayloadDataExtractor extends
@@ -45,7 +48,7 @@ public class SetupComponentVerificationDataPayloadDataExtractor extends
 						configuration.chunkIdValueBox().get(),
 						configuration.electionEventIdValueBox().get(),
 						configuration.verificationCardSetIdValueBox().get(),
-						configuration.verificationCardIdsValueBox().get()
+						configuration.verificationCardIdsValueBox().get().stream().collect(toImmutableList())
 				)
 		);
 	}
@@ -53,15 +56,8 @@ public class SetupComponentVerificationDataPayloadDataExtractor extends
 	public record DataExtraction(Integer chunkId,
 								 String electionEventId,
 								 String verificationCardSetId,
-								 Collection<String> verificationCardIds) {
+								 ImmutableList<String> verificationCardIds) {
 
-		public DataExtraction(final Integer chunkId, final String electionEventId, final String verificationCardSetId,
-				final Collection<String> verificationCardIds) {
-			this.chunkId = chunkId;
-			this.electionEventId = electionEventId;
-			this.verificationCardSetId = verificationCardSetId;
-			this.verificationCardIds = List.copyOf(verificationCardIds);
-		}
 	}
 
 	public record ValueBoxConfiguration(ValueBox<Integer> chunkIdValueBox,

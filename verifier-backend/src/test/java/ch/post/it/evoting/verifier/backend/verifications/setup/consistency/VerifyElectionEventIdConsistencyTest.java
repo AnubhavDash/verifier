@@ -19,13 +19,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentCodeSharesPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentPublicKeysPayloadDataExtractor;
@@ -63,7 +63,7 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 						datasetPath)
 				.map(dataExtraction -> new ControlComponentCodeSharesPayloadDataExtractor.DataExtraction(
 								dataExtraction.chunkIds(),
-								List.of("wrong election event ID"),
+						ImmutableList.of("wrong election event ID"),
 								dataExtraction.nodeIds(),
 								dataExtraction.verificationCardSetIds(),
 								dataExtraction.verificationCardIdsNode1(),

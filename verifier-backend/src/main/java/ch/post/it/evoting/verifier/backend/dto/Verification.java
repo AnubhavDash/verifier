@@ -15,10 +15,10 @@
  */
 package ch.post.it.evoting.verifier.backend.dto;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.Language;
 import ch.post.it.evoting.verifier.backend.Status;
@@ -34,7 +34,7 @@ public class Verification {
 	private Status status;
 	private Map<Language, String> message;
 	private Set<String> verifierEvents;
-	private List<String> errorStack;
+	private ImmutableList<String> errorStack;
 
 	public String getId() {
 		return id;
@@ -108,11 +108,11 @@ public class Verification {
 		this.verifierEvents = verifierEvents;
 	}
 
-	public List<String> getErrorStack() {
+	public ImmutableList<String> getErrorStack() {
 		return errorStack;
 	}
 
-	public void setErrorStack(final List<String> errorStack) {
+	public void setErrorStack(final ImmutableList<String> errorStack) {
 		this.errorStack = errorStack;
 	}
 }

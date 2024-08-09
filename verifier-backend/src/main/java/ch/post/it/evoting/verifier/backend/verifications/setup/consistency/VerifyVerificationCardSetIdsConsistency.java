@@ -15,16 +15,16 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import java.nio.file.Path;
-import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -85,9 +85,10 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 		}
 	}
 
-	private List<PayloadsVerificationCardSetIds> extractVerificationCardSetIds(final Path inputDirectoryPath) {
+	private ImmutableList<PayloadsVerificationCardSetIds> extractVerificationCardSetIds(final Path inputDirectoryPath) {
 
-		final List<Path> contextVerificationCardSetPaths = electionDataExtractionService.getContextVerificationCardSetPaths(inputDirectoryPath);
+		final ImmutableList<Path> contextVerificationCardSetPaths = electionDataExtractionService.getContextVerificationCardSetPaths(
+				inputDirectoryPath);
 
 		return electionDataExtractionService.getSetupVerificationCardSetPaths(inputDirectoryPath).stream()
 				.parallel()
@@ -106,7 +107,7 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 					final Set<String> codeShareIds = electionDataExtractionService.getControlComponentCodeSharesPayloadsDataExtractions(
 									verificationCardSetIdPath)
 							.map(ControlComponentCodeSharesPayloadDataExtractor.DataExtraction::verificationCardSetIds)
-							.flatMap(Collection::stream)
+							.flatMap(ImmutableList::stream)
 							.collect(Collectors.toUnmodifiableSet());
 
 					checkArgument(codeShareIds.size() == 1, "The control component code shares verification card set id size must be one.");
@@ -123,7 +124,7 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 					return new PayloadsVerificationCardSetIds(verificationCardSetId, verificationDataIds, codeShareIds, tallyIds);
 
 				})
-				.toList();
+				.collect(toImmutableList());
 	}
 
 	private record PayloadsVerificationCardSetIds(Set<String> verificationCardSetId, Set<String> verificationDataIds, Set<String> codeShareIds,

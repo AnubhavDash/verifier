@@ -15,6 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.processor;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
@@ -27,10 +28,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -50,6 +49,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.evotinglibraries.domain.encryption.StreamedEncryptionDecryptionService;
@@ -98,7 +98,7 @@ public class VerifierProcessor {
 	private DatasetConfigurationContext datasetConfigurationContext;
 	private DatasetConfigurationSetup datasetConfigurationSetup;
 	private DatasetConfigurationTally datasetConfigurationTally;
-	private List<Verification> verifications;
+	private ImmutableList<Verification> verifications;
 
 	public VerifierProcessor(final ApplicationContext applicationContext,
 			final ApplicationEventPublisher applicationEventPublisher,
@@ -126,19 +126,17 @@ public class VerifierProcessor {
 		verifications = verificationBeans.values().stream()
 				.map(AbstractVerification::getVerificationDefinition)
 				.map(VerificationMapper.INSTANCE::map)
-				.toList();
+				.sorted(Comparator.comparing(Verification::getBlock)
+						.thenComparing((o1, o2) -> {
+							final double id1 = Double.parseDouble(o1.getVerificationId());
+							final double id2 = Double.parseDouble(o2.getVerificationId());
+							return Double.compare(id1, id2);
+						}))
+				.collect(toImmutableList());
 	}
 
-	public List<Verification> getVerifications() {
-		final List<Verification> result = new ArrayList<>(verifications);
-		result.sort(Comparator.comparing(Verification::getBlock)
-				.thenComparing((o1, o2) -> {
-					final double id1 = Double.parseDouble(o1.getVerificationId());
-					final double id2 = Double.parseDouble(o2.getVerificationId());
-					return Double.compare(id1, id2);
-				}));
-
-		return result;
+	public ImmutableList<Verification> getVerifications() {
+		return verifications;
 	}
 
 	public void resetExecution() {

@@ -16,14 +16,13 @@
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.ZqGroup;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.SchnorrProof;
@@ -66,13 +65,14 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = extractionService.getSetupComponentPublicKeysPayload(inputDirectoryPath);
-		final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = extractionService.getControlComponentPublicKeysPayloads(
+		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = extractionService.getSetupComponentPublicKeysPayload(
+				inputDirectoryPath);
+		final ImmutableList<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = extractionService.getControlComponentPublicKeysPayloads(
 				inputDirectoryPath);
 
-		final List<BiFunction<SetupComponentPublicKeysPayload, List<ControlComponentPublicKeysPayload>, Boolean>> validations = new ArrayList<>();
-		validations.add(this::validateSameCcmjSchnorrProofs);
-		validations.add(this::validateSameCcrjSchnorrProofs);
+		final ImmutableList<BiFunction<SetupComponentPublicKeysPayload, ImmutableList<ControlComponentPublicKeysPayload>, Boolean>> validations = ImmutableList.of(
+				this::validateSameCcmjSchnorrProofs,
+				this::validateSameCcrjSchnorrProofs);
 
 		final boolean verified = validations
 				.stream()
@@ -90,7 +90,7 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 	}
 
 	private boolean validateSameCcrjSchnorrProofs(final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload,
-			final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads) {
+			final ImmutableList<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads) {
 		final Map<Integer, GroupVector<SchnorrProof, ZqGroup>> electionEventCcrjSchnorrProofs = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
 				.combinedControlComponentPublicKeys().stream()
 				.parallel()
@@ -106,7 +106,7 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 	}
 
 	private boolean validateSameCcmjSchnorrProofs(final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload,
-			final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads) {
+			final ImmutableList<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads) {
 		final Map<Integer, GroupVector<SchnorrProof, ZqGroup>> electionEventCcmjSchnorrProofs = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
 				.combinedControlComponentPublicKeys().stream()
 				.parallel()

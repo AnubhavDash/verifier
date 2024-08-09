@@ -16,13 +16,11 @@
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.function.BiFunction;
 
 import org.springframework.stereotype.Component;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -72,11 +70,11 @@ public class VerifyElectionEventIdConsistency extends AbstractVerification {
 		final String electionEventId = electionDataExtractionService.getElectionEventContextPayloadDataExtraction(inputDirectoryPath)
 				.electionEventId();
 
-		final List<BiFunction<Path, String, Boolean>> validations = new ArrayList<>();
-		validations.add(this::validateControlComponentCodeSharesPayload);
-		validations.add(this::validateSetupComponentVerificationDataPayload);
-		validations.add(this::validateSetupComponentTallyDataPayload);
-		validations.add(this::validateControlComponentPublicKeysPayload);
+		final ImmutableList<BiFunction<Path, String, Boolean>> validations = ImmutableList.of(
+				this::validateControlComponentCodeSharesPayload,
+				this::validateSetupComponentVerificationDataPayload,
+				this::validateSetupComponentTallyDataPayload,
+				this::validateControlComponentPublicKeysPayload);
 
 		final boolean sameElectionEventId = validations.stream()
 				.parallel()
@@ -95,7 +93,7 @@ public class VerifyElectionEventIdConsistency extends AbstractVerification {
 	private boolean validateControlComponentCodeSharesPayload(final Path inputDirectoryPath, final String electionEventId) {
 		return electionDataExtractionService.getAllControlComponentCodeSharesPayloadsDataExtractions(inputDirectoryPath)
 				.map(ControlComponentCodeSharesPayloadDataExtractor.DataExtraction::electionEventIds)
-				.flatMap(Collection::stream)
+				.flatMap(ImmutableList::stream)
 				.distinct()
 				.allMatch(electionEventId::equals);
 	}

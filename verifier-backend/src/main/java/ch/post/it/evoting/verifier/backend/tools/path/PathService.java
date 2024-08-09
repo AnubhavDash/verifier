@@ -15,6 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.tools.path;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -26,23 +27,20 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+
 @Service
 public class PathService {
-	private static final Logger LOGGER = LoggerFactory.getLogger(PathService.class);
-
 	private final Map<StructureKey, StructureNode> structureMap = new EnumMap<>(StructureKey.class);
 
 	public PathService() {
@@ -89,39 +87,6 @@ public class PathService {
 			throw new UncheckedIOException(
 					String.format("File or directory path could not be obtained for key %s and root path %s.", structureKey, rootPath), e);
 		}
-	}
-
-	/**
-	 * @param structureKey The file or directory to obtain.
-	 * @param rootPath     The root path where the dataset lies.
-	 * @return if the file or directory to obtain exists in the dataset return true, otherwise false.
-	 */
-	public boolean existsFromRootPath(final StructureKey structureKey, final Path rootPath) {
-		checkNotNull(structureKey);
-		checkNotNull(rootPath);
-
-		final StructureNode structureNode = getStructureNode(structureKey);
-
-		// Combine input path with file/directory parent path.
-		final Path combined = rootPath.resolve(structureNode.parentPath());
-
-		if (!Files.exists(combined)) {
-			LOGGER.debug("Parent node could not be found. [structureKey: {}, rootPath: {}]", structureKey, rootPath);
-			return false;
-		}
-
-		final List<Path> pathList;
-		try {
-			pathList = resolve(combined, structureNode);
-		} catch (final NoSuchFileException e) {
-			LOGGER.debug(String.format("File could not be found. [structureKey: %s, rootPath: %s]", structureKey, rootPath), e);
-			return false;
-		} catch (final IOException e) {
-			LOGGER.debug(String.format("An unexpected IOException occurred. [structureKey: %s, rootPath: %s]", structureKey, rootPath), e);
-			return false;
-		}
-
-		return !pathList.isEmpty();
 	}
 
 	/**
@@ -230,7 +195,7 @@ public class PathService {
 	 * @throws IOException         if an I/O error is thrown when accessing the starting file
 	 * @throws NoSuchFileException if no file or directory match the name or pattern
 	 */
-	private List<Path> resolve(final Path startingPath, final StructureNode structureNode) throws IOException {
+	private ImmutableList<Path> resolve(final Path startingPath, final StructureNode structureNode) throws IOException {
 		// Get the escaped (to work in regex) file system separator.
 		final String quotedSeparator = Pattern.quote(startingPath.getFileSystem().getSeparator());
 		// It is assumed that in dataset_structure file the file separators are /. Now we need to replace them with file system separators
@@ -239,7 +204,7 @@ public class PathService {
 		// Prepend with separator to ensure the path starts with it. Add a $ to be sure the path ends exactly with this regex.
 		final Pattern pattern = Pattern.compile(quotedSeparator + escapedSeparatorQualifier + "$");
 
-		final List<Path> filteredPaths;
+		final ImmutableList<Path> filteredPaths;
 		try (final Stream<Path> paths = Files.find(startingPath,
 				10, // Arbitrary depth value, should be enough.
 				(path, attributes) -> {
@@ -253,7 +218,7 @@ public class PathService {
 					// Remove starting path itself in case it matched by accident.
 					.filter(path -> !startingPath.equals(path))
 					.filter(path -> PathType.FILE.equals(structureNode.type()) ? Files.isRegularFile(path) : Files.isDirectory(path))
-					.toList();
+					.collect(toImmutableList());
 		}
 
 		if (filteredPaths.isEmpty()) {

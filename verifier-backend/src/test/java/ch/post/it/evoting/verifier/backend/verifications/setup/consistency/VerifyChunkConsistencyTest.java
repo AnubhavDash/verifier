@@ -20,13 +20,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 
@@ -53,14 +52,14 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 		// given
 		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, resultPublisherServiceMock,
 				controlComponentCodeSharesPayloadDataExtractor, setupComponentVerificationDataPayloadDataExtractor);
-		final List<List<Path>> payloadsPerCardSet = List.of(
-				List.of(
+		final ImmutableList<ImmutableList<Path>> payloadsPerCardSet = ImmutableList.of(
+				ImmutableList.of(
 						Path.of("/root/dir/controlComponentPublicKeysPayload.0.json"),
 						Path.of("/root/dir/controlComponentPublicKeysPayload.1.json"),
 						Path.of("/root/dir/controlComponentPublicKeysPayload.2.json"),
 						Path.of("/root/dir/controlComponentPublicKeysPayload.3.json")
 				),
-				List.of(
+				ImmutableList.of(
 						Path.of("/root/dir/controlComponentPublicKeysPayload.2.json"),
 						Path.of("/root/dir/controlComponentPublicKeysPayload.1.json"),
 						Path.of("/root/dir/controlComponentPublicKeysPayload.0.json")
@@ -80,8 +79,8 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 		// given
 		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, resultPublisherServiceMock,
 				controlComponentCodeSharesPayloadDataExtractor, setupComponentVerificationDataPayloadDataExtractor);
-		final List<List<Path>> payloadsPerCardSet = List.of(
-				List.of(
+		final ImmutableList<ImmutableList<Path>> payloadsPerCardSet = ImmutableList.of(
+				ImmutableList.of(
 						Path.of("/root/dir/controlComponentPublicKeysPayload.0.json"),
 						Path.of("/root/dir/controlComponentPublicKeysPayload.1.json"),
 						Path.of("/root/dir/controlComponentPublicKeysPayload.3.json")
@@ -101,8 +100,8 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 		// given
 		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, resultPublisherServiceMock,
 				controlComponentCodeSharesPayloadDataExtractor, setupComponentVerificationDataPayloadDataExtractor);
-		final List<List<Path>> payloadsPerCardSet = List.of(
-				List.of(
+		final ImmutableList<ImmutableList<Path>> payloadsPerCardSet = ImmutableList.of(
+				ImmutableList.of(
 						Path.of("/root/dir/controlComponentPublicKeysPayload.0.json"),
 						Path.of("/root/dir/controlComponentPublicKeysPayload.1.json"),
 						Path.of("/root/dir/controlComponentPublicKeysPayload.1.json"),
@@ -123,8 +122,8 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 		// given
 		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, resultPublisherServiceMock,
 				controlComponentCodeSharesPayloadDataExtractor, setupComponentVerificationDataPayloadDataExtractor);
-		final List<List<Path>> payloadsPerCardSet = List.of(
-				List.of(
+		final ImmutableList<ImmutableList<Path>> payloadsPerCardSet = ImmutableList.of(
+				ImmutableList.of(
 						Path.of("/root/dir/controlComponentPublicKeysPayload.1.json"),
 						Path.of("/root/dir/controlComponentPublicKeysPayload.2.json"),
 						Path.of("/root/dir/controlComponentPublicKeysPayload.3.json")
@@ -144,13 +143,13 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 		// given
 		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, resultPublisherServiceMock,
 				controlComponentCodeSharesPayloadDataExtractor, setupComponentVerificationDataPayloadDataExtractor);
-		final List<List<Path>> payloadsPerCardSet = List.of(
-				List.of(
+		final ImmutableList<ImmutableList<Path>> payloadsPerCardSet = ImmutableList.of(
+				ImmutableList.of(
 						Path.of("/root/dir/controlComponentPublicKeysPayload.0.json"),
 						Path.of("/root/dir/controlComponentPublicKeysPayload.1.json"),
 						Path.of("/root/dir/controlComponentPublicKeysPayload.2.json")
 				),
-				List.of(
+				ImmutableList.of(
 						Path.of("/root/dir/controlComponentPublicKeysPayload.2.json")
 				)
 		);
@@ -168,7 +167,7 @@ class VerifyChunkConsistencyTest extends SetupVerificationTest {
 		// given
 		final VerifyChunkConsistency verifyChunkConsistency = new VerifyChunkConsistency(pathService, resultPublisherServiceMock,
 				controlComponentCodeSharesPayloadDataExtractor, setupComponentVerificationDataPayloadDataExtractor);
-		final List<List<Path>> payloadsPerCardSet = Collections.emptyList();
+		final ImmutableList<ImmutableList<Path>> payloadsPerCardSet = ImmutableList.emptyList();
 
 		// when
 		final boolean result = verifyChunkConsistency.isSequenceMonotonic(payloadsPerCardSet);

@@ -15,17 +15,18 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
@@ -66,14 +67,14 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final Map<String, List<ControlComponentBallotBoxPayload>> ballotBoxPayloads = extractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
+		final Map<String, ImmutableList<ControlComponentBallotBoxPayload>> ballotBoxPayloads = extractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
 						inputDirectoryPath)
 				.parallel()
-				.collect(Collectors.groupingByConcurrent(ControlComponentBallotBoxPayload::getBallotBoxId, Collectors.toUnmodifiableList()));
-		final Map<String, List<ControlComponentShufflePayload>> shufflePayloads = extractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
+				.collect(Collectors.groupingByConcurrent(ControlComponentBallotBoxPayload::getBallotBoxId, toImmutableList()));
+		final Map<String, ImmutableList<ControlComponentShufflePayload>> shufflePayloads = extractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
 						inputDirectoryPath)
 				.parallel()
-				.collect(Collectors.groupingByConcurrent(ControlComponentShufflePayload::getBallotBoxId, Collectors.toUnmodifiableList()));
+				.collect(Collectors.groupingByConcurrent(ControlComponentShufflePayload::getBallotBoxId, toImmutableList()));
 
 		if (isNodeIdConsistent(ballotBoxPayloads, shufflePayloads)) {
 			return VerificationResult.success(getVerificationDefinition());
@@ -83,8 +84,8 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 		}
 	}
 
-	private boolean isNodeIdConsistent(final Map<String, List<ControlComponentBallotBoxPayload>> ballotBoxPayloads,
-			final Map<String, List<ControlComponentShufflePayload>> shufflePayloads) {
+	private boolean isNodeIdConsistent(final Map<String, ImmutableList<ControlComponentBallotBoxPayload>> ballotBoxPayloads,
+			final Map<String, ImmutableList<ControlComponentShufflePayload>> shufflePayloads) {
 		checkState(ballotBoxPayloads.keySet().equals(shufflePayloads.keySet()),
 				"The ballot box Ids of the ControlComponentPayloads and the shufflePayloads must be equal.");
 
@@ -93,22 +94,22 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 		return ballotBoxIds.stream()
 				.parallel()
 				.allMatch(bbId -> {
-							final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads = ballotBoxPayloads.get(bbId);
-							final List<Integer> ballotBoxPayloadsNodeIdList = controlComponentBallotBoxPayloads.stream()
+					final ImmutableList<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads = ballotBoxPayloads.get(bbId);
+					final ImmutableList<Integer> ballotBoxPayloadsNodeIdList = controlComponentBallotBoxPayloads.stream()
 									.parallel()
 									.map(ControlComponentBallotBoxPayload::getNodeId)
-									.toList();
-							final Set<Integer> ballotBoxPayloadsNodeIds = Set.copyOf(ballotBoxPayloadsNodeIdList);
+							.collect(toImmutableList());
+					final Set<Integer> ballotBoxPayloadsNodeIds = ballotBoxPayloadsNodeIdList.toSet();
 							final boolean bbPayloadNodeIdsConsistent =
 									ballotBoxPayloadsNodeIdList.size() == ballotBoxPayloadsNodeIds.size() && ballotBoxPayloadsNodeIds.containsAll(NODE_IDS)
 											&& NODE_IDS.containsAll(ballotBoxPayloadsNodeIds);
 
-							final List<ControlComponentShufflePayload> controlComponentShufflePayloads = shufflePayloads.get(bbId);
-							final List<Integer> shufflePaylodsNodeIdList = controlComponentShufflePayloads.stream()
+					final ImmutableList<ControlComponentShufflePayload> controlComponentShufflePayloads = shufflePayloads.get(bbId);
+					final ImmutableList<Integer> shufflePaylodsNodeIdList = controlComponentShufflePayloads.stream()
 									.parallel()
 									.map(ControlComponentShufflePayload::getNodeId)
-									.toList();
-							final Set<Integer> shufflePayloadsNodeIds = Set.copyOf(shufflePaylodsNodeIdList);
+							.collect(toImmutableList());
+					final Set<Integer> shufflePayloadsNodeIds = shufflePaylodsNodeIdList.toSet();
 							final boolean shufflePayloadsNodeIdsConsistent =
 									shufflePaylodsNodeIdList.size() == shufflePayloadsNodeIds.size() && shufflePayloadsNodeIds.containsAll(NODE_IDS)
 											&& NODE_IDS.containsAll(shufflePayloadsNodeIds);

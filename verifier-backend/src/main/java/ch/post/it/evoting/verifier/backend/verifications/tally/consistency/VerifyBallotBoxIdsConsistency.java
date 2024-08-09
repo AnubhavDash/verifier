@@ -15,13 +15,15 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
+
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
@@ -85,7 +87,7 @@ public class VerifyBallotBoxIdsConsistency extends AbstractVerification {
 		}
 	}
 
-	private List<PayloadsBallotBoxIds> extractBallotBoxIds(final Path inputDirectoryPath) {
+	private ImmutableList<PayloadsBallotBoxIds> extractBallotBoxIds(final Path inputDirectoryPath) {
 		final PathNode ballotBoxIds = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 		return ballotBoxIds.getRegexPaths().stream()
 				.parallel()
@@ -114,7 +116,7 @@ public class VerifyBallotBoxIdsConsistency extends AbstractVerification {
 					return new PayloadsBallotBoxIds(ballotBoxId, controlComponentBallotBoxIds, controlComponentShuffleIds,
 							tallyComponentShufflePayloadId, tallyComponentVotesPayloadId);
 				})
-				.toList();
+				.collect(toImmutableList());
 	}
 
 	private record PayloadsBallotBoxIds(Set<String> ballotBoxId, Set<String> ccBallotBoxIds, Set<String> ccShuffleIds, Set<String> tcShuffleId,

@@ -15,14 +15,17 @@
  */
 package ch.post.it.evoting.verifier.backend.dataextractors;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
+
 import java.util.Collection;
-import java.util.List;
 
 import org.jsfr.json.JsonSurfer;
 import org.jsfr.json.ValueBox;
 import org.jsfr.json.compiler.JsonPathCompiler;
 import org.jsfr.json.path.JsonPath;
 import org.springframework.stereotype.Component;
+
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 
 @Component
 public class ControlComponentCodeSharesPayloadDataExtractor extends
@@ -60,56 +63,33 @@ public class ControlComponentCodeSharesPayloadDataExtractor extends
 						collector.collectAll(G_JSON_PATH, String.class)
 				),
 				configuration -> new ControlComponentCodeSharesPayloadDataExtractor.DataExtraction(
-						configuration.chunkIdsValueBox().get(),
-						configuration.electionEventIdsValueBox().get(),
-						configuration.nodeIdsValueBox().get(),
-						configuration.verificationCardSetIdsValueBox().get(),
-						configuration.verificationCardIdsNode1ValueBox().get(),
-						configuration.verificationCardIdsNode2ValueBox().get(),
-						configuration.verificationCardIdsNode3ValueBox().get(),
-						configuration.verificationCardIdsNode4ValueBox().get(),
-						configuration.pValueVox().get(),
-						configuration.qValueVox().get(),
-						configuration.gValueVox().get()
+						configuration.chunkIdsValueBox().get().stream().collect(toImmutableList()),
+						configuration.electionEventIdsValueBox().get().stream().collect(toImmutableList()),
+						configuration.nodeIdsValueBox().get().stream().collect(toImmutableList()),
+						configuration.verificationCardSetIdsValueBox().get().stream().collect(toImmutableList()),
+						configuration.verificationCardIdsNode1ValueBox().get().stream().collect(toImmutableList()),
+						configuration.verificationCardIdsNode2ValueBox().get().stream().collect(toImmutableList()),
+						configuration.verificationCardIdsNode3ValueBox().get().stream().collect(toImmutableList()),
+						configuration.verificationCardIdsNode4ValueBox().get().stream().collect(toImmutableList()),
+						configuration.pValueVox().get().stream().collect(toImmutableList()),
+						configuration.qValueVox().get().stream().collect(toImmutableList()),
+						configuration.gValueVox().get().stream().collect(toImmutableList())
 				)
 		);
 	}
 
-	public record DataExtraction(Collection<Integer> chunkIds,
-								 Collection<String> electionEventIds,
-								 Collection<Integer> nodeIds,
-								 Collection<String> verificationCardSetIds,
-								 Collection<String> verificationCardIdsNode1,
-								 Collection<String> verificationCardIdsNode2,
-								 Collection<String> verificationCardIdsNode3,
-								 Collection<String> verificationCardIdsNode4,
-								 Collection<String> p,
-								 Collection<String> q,
-								 Collection<String> g) {
+	public record DataExtraction(ImmutableList<Integer> chunkIds,
+								 ImmutableList<String> electionEventIds,
+								 ImmutableList<Integer> nodeIds,
+								 ImmutableList<String> verificationCardSetIds,
+								 ImmutableList<String> verificationCardIdsNode1,
+								 ImmutableList<String> verificationCardIdsNode2,
+								 ImmutableList<String> verificationCardIdsNode3,
+								 ImmutableList<String> verificationCardIdsNode4,
+								 ImmutableList<String> p,
+								 ImmutableList<String> q,
+								 ImmutableList<String> g) {
 
-		public DataExtraction(final Collection<Integer> chunkIds,
-				final Collection<String> electionEventIds,
-				final Collection<Integer> nodeIds,
-				final Collection<String> verificationCardSetIds,
-				final Collection<String> verificationCardIdsNode1,
-				final Collection<String> verificationCardIdsNode2,
-				final Collection<String> verificationCardIdsNode3,
-				final Collection<String> verificationCardIdsNode4,
-				final Collection<String> p,
-				final Collection<String> q,
-				final Collection<String> g) {
-			this.chunkIds = List.copyOf(chunkIds);
-			this.electionEventIds = List.copyOf(electionEventIds);
-			this.nodeIds = List.copyOf(nodeIds);
-			this.verificationCardSetIds = List.copyOf(verificationCardSetIds);
-			this.verificationCardIdsNode1 = List.copyOf(verificationCardIdsNode1);
-			this.verificationCardIdsNode2 = List.copyOf(verificationCardIdsNode2);
-			this.verificationCardIdsNode3 = List.copyOf(verificationCardIdsNode3);
-			this.verificationCardIdsNode4 = List.copyOf(verificationCardIdsNode4);
-			this.p = List.copyOf(p);
-			this.q = List.copyOf(q);
-			this.g = List.copyOf(g);
-		}
 	}
 
 	public record ValueBoxConfiguration(ValueBox<Collection<Integer>> chunkIdsValueBox,

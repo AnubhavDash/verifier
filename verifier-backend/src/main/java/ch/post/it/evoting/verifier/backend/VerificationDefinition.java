@@ -91,7 +91,7 @@ public class VerificationDefinition {
 			return false;
 		}
 		final VerificationDefinition that = (VerificationDefinition) o;
-		return id == that.id && block.equals(that.block) && Objects.equals(name, that.name)
+		return id.equals(that.id) && block.equals(that.block) && Objects.equals(name, that.name)
 				&& category == that.category && Objects.equals(verifierEvents, that.verifierEvents) && Objects.equals(
 				description, that.description);
 	}

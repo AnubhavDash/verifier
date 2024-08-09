@@ -15,6 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.authenticity;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -48,8 +49,8 @@ class VerifySignatureSetupComponentTallyDataTest extends SetupVerificationTest {
 	void testOK() {
 		final SetupComponentTallyDataPayload setupComponentTallyDataPayload = electionDataExtractionService.getSetupComponentTallyDataPayloads(
 				datasetPath)
-				.toList()
-				.getFirst();
+				.collect(toImmutableList())
+				.get(0);
 
 		assertTrue(((VerifySignatureSetupComponentTallyData) verification).verifySignature(setupComponentTallyDataPayload));
 	}
@@ -58,8 +59,8 @@ class VerifySignatureSetupComponentTallyDataTest extends SetupVerificationTest {
 	void testNOK() throws SignatureException {
 		final SetupComponentTallyDataPayload setupComponentTallyDataPayload = electionDataExtractionService.getSetupComponentTallyDataPayloads(
 				datasetPath)
-				.toList()
-				.getFirst();
+				.collect(toImmutableList())
+				.get(0);
 
 		final CryptoPrimitivesSignature dummySignature = datasetSignatureFactory.getDummySignature(setupComponentTallyDataPayload,
 				ChannelSecurityContextData.setupComponentTallyData(setupComponentTallyDataPayload.getElectionEventId(),

@@ -16,12 +16,11 @@
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.BiFunction;
 
 import org.springframework.stereotype.Component;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -62,11 +61,12 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 		final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction = extractionService.getFromElectionEventContext(
 				inputDirectoryPath);
 
-		final List<BiFunction<Path, EncryptionGroupParametersDataExtractor.DataExtraction, Boolean>> validations = new ArrayList<>();
-		validations.add(this::validateControlComponentPublicKeys);
-		validations.add(this::validateSetupComponentVerificationDataPayloads);
-		validations.add(this::validateControlComponentCodeSharesPayload);
-		validations.add(this::validateSetupComponentTallyDataPayloads);
+		final ImmutableList<BiFunction<Path, EncryptionGroupParametersDataExtractor.DataExtraction, Boolean>> validations = ImmutableList.of(
+				this::validateControlComponentPublicKeys,
+				this::validateSetupComponentVerificationDataPayloads,
+				this::validateControlComponentCodeSharesPayload,
+				this::validateSetupComponentTallyDataPayloads);
+
 
 		final boolean sameGroupParameters = validations.stream()
 				.parallel()

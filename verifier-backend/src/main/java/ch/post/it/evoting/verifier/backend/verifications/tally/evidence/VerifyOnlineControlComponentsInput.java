@@ -15,18 +15,18 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static ch.post.it.evoting.cryptoprimitives.utils.Validations.allEqual;
 import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
@@ -46,7 +46,7 @@ import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBo
 public class VerifyOnlineControlComponentsInput {
 
 	private final Map<String, ControlComponentBallotBoxPayload> firstControlComponentBallotBoxesPerBallotBoxId;
-	private final Map<String, List<ControlComponentShufflePayload>> controlComponentShufflesPerBallotBoxId;
+	private final Map<String, ImmutableList<ControlComponentShufflePayload>> controlComponentShufflesPerBallotBoxId;
 	private final Map<String, SetupComponentTallyDataPayload> setupComponentTallyDataPerVerificationCardSetId;
 
 	public VerifyOnlineControlComponentsInput(final Stream<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads,
@@ -58,19 +58,19 @@ public class VerifyOnlineControlComponentsInput {
 				.collect(Collectors.toConcurrentMap(ControlComponentBallotBoxPayload::getBallotBoxId, Function.identity()));
 		this.controlComponentShufflesPerBallotBoxId = checkNotNull(controlComponentShufflePayloads)
 				.parallel()
-				.collect(Collectors.groupingByConcurrent(ControlComponentShufflePayload::getBallotBoxId, Collectors.toUnmodifiableList()));
+				.collect(Collectors.groupingByConcurrent(ControlComponentShufflePayload::getBallotBoxId, toImmutableList()));
 		this.setupComponentTallyDataPerVerificationCardSetId = checkNotNull(setupComponentTallyDataPayloads)
 				.parallel()
 				.collect(Collectors.toConcurrentMap(SetupComponentTallyDataPayload::getVerificationCardSetId, Function.identity()));
 
 		checkArgument(firstControlComponentBallotBoxesPerBallotBoxId.keySet().equals(controlComponentShufflesPerBallotBoxId.keySet()),
 				"The first control component ballot boxes and control component shuffles must correspond to the same ballot box ids.");
-		checkArgument(firstControlComponentBallotBoxesPerBallotBoxId.size() != 0,
+		checkArgument(!firstControlComponentBallotBoxesPerBallotBoxId.isEmpty(),
 				"There must be at least one control component ballot boxes and control component shuffles.");
 		checkArgument(allEqual(
 						Stream.of(
 										firstControlComponentBallotBoxesPerBallotBoxId.values().stream().map(ControlComponentBallotBoxPayload::getElectionEventId),
-										controlComponentShufflesPerBallotBoxId.values().stream().flatMap(Collection::stream)
+										controlComponentShufflesPerBallotBoxId.values().stream().flatMap(ImmutableList::stream)
 												.map(ControlComponentShufflePayload::getElectionEventId),
 										setupComponentTallyDataPerVerificationCardSetId.values().stream().map(SetupComponentTallyDataPayload::getElectionEventId))
 								.flatMap(Function.identity()),
@@ -82,7 +82,7 @@ public class VerifyOnlineControlComponentsInput {
 		return firstControlComponentBallotBoxesPerBallotBoxId;
 	}
 
-	public Map<String, List<ControlComponentShufflePayload>> getControlComponentShufflesPerBallotBoxId() {
+	public Map<String, ImmutableList<ControlComponentShufflePayload>> getControlComponentShufflesPerBallotBoxId() {
 		return controlComponentShufflesPerBallotBoxId;
 	}
 

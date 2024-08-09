@@ -15,6 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,6 +35,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentVerificationDataPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
@@ -79,25 +81,25 @@ class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 	@Test
 	@DisplayName("wrong order of verification card ids in chunk is failed")
 	void wrongOrderVerificationCardIdsInChunk() {
-		final List<Path> regexPaths = electionDataExtractionService.getSetupVerificationCardSetPaths(datasetPath);
+		final ImmutableList<Path> regexPaths = electionDataExtractionService.getSetupVerificationCardSetPaths(datasetPath);
 		final int randomIndex = random.nextInt(0, regexPaths.size());
 		final Path verificationCardSet = regexPaths.get(randomIndex);
 
 		final List<SetupComponentVerificationDataPayloadDataExtractor.DataExtraction> swappedDataExtractions = new ArrayList<>(
 				electionDataExtractionService.getSetupComponentVerificationDataPayloadsDataExtractionsSortedByChunkId(verificationCardSet)
 						.sorted(Comparator.comparingInt(SetupComponentVerificationDataPayloadDataExtractor.DataExtraction::chunkId))
-						.toList());
+						.collect(toImmutableList()).elements());
 		assumeTrue(swappedDataExtractions.size() > 1, "This test assumes at least two verification cards in the set.");
 
-		final SetupComponentVerificationDataPayloadDataExtractor.DataExtraction dataExtraction = swappedDataExtractions.get(0);
-		final List<String> swappedVerificationCardIds = new ArrayList<>(dataExtraction.verificationCardIds());
+		final SetupComponentVerificationDataPayloadDataExtractor.DataExtraction dataExtraction = swappedDataExtractions.getFirst();
+		final List<String> swappedVerificationCardIds = new ArrayList<>(dataExtraction.verificationCardIds().elements());
 		Collections.swap(swappedVerificationCardIds, 0, 1);
 
 		final SetupComponentVerificationDataPayloadDataExtractor.DataExtraction swappedDataExtraction = new SetupComponentVerificationDataPayloadDataExtractor.DataExtraction(
 				dataExtraction.chunkId(),
 				dataExtraction.electionEventId(),
 				dataExtraction.verificationCardSetId(),
-				swappedVerificationCardIds);
+				ImmutableList.from(swappedVerificationCardIds));
 		swappedDataExtractions.set(0, swappedDataExtraction);
 
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
@@ -115,13 +117,13 @@ class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 	@Test
 	@DisplayName("wrong order of verification card ids between chunks is failed")
 	void wrongOrderVerificationCardIdsBetweenChunks() {
-		final List<Path> regexPaths = electionDataExtractionService.getSetupVerificationCardSetPaths(datasetPath);
+		final ImmutableList<Path> regexPaths = electionDataExtractionService.getSetupVerificationCardSetPaths(datasetPath);
 		final int randomIndex = random.nextInt(0, regexPaths.size());
 		final Path verificationCardSet = regexPaths.get(randomIndex);
 		final List<SetupComponentVerificationDataPayloadDataExtractor.DataExtraction> swappedDataExtractions = new ArrayList<>(
 				electionDataExtractionService.getSetupComponentVerificationDataPayloadsDataExtractionsSortedByChunkId(verificationCardSet)
 						.sorted(Comparator.comparingInt(SetupComponentVerificationDataPayloadDataExtractor.DataExtraction::chunkId))
-						.toList());
+						.collect(toImmutableList()).elements());
 		assumeTrue(swappedDataExtractions.size() > 1, "This test assumes at least two verification cards in the set.");
 
 		Collections.swap(swappedDataExtractions, 0, 1);

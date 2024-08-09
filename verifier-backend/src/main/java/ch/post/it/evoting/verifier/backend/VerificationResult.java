@@ -15,13 +15,16 @@
  */
 package ch.post.it.evoting.verifier.backend;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
+
 import java.util.Arrays;
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
+
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 
 public class VerificationResult {
 
@@ -29,10 +32,10 @@ public class VerificationResult {
 	private final VerificationDefinition verificationDefinition;
 	private final Status status;
 	private final Map<Language, String> message;
-	private final List<String> errorStack;
+	private final ImmutableList<String> errorStack;
 
 	private VerificationResult(final VerificationDefinition verificationDefinition, final Status status, final Map<Language, String> message,
-			final List<String> errorStack) {
+			final ImmutableList<String> errorStack) {
 		this.verificationDefinition = verificationDefinition;
 		this.status = status;
 		this.message = message;
@@ -54,8 +57,10 @@ public class VerificationResult {
 				ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME, lang.getLocale()).getString("core.error.unexpected.message")));
 
 		final StackTraceElement[] stackTrace = exception.getStackTrace();
-		final List<String> errorStack = Stream.concat(Stream.of(exception.toString()),
-				Arrays.stream(stackTrace).map(StackTraceElement::toString)).toList();
+		final ImmutableList<String> errorStack = Stream.concat(
+						Stream.of(exception.toString()),
+						Arrays.stream(stackTrace).map(StackTraceElement::toString))
+				.collect(toImmutableList());
 		return new VerificationResult(verificationDefinition, Status.UNEXPECTED_ERROR, message, errorStack);
 	}
 
@@ -71,7 +76,7 @@ public class VerificationResult {
 		return message;
 	}
 
-	public List<String> getErrorStack() {
+	public ImmutableList<String> getErrorStack() {
 		return errorStack;
 	}
 

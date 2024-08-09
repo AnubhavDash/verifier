@@ -47,14 +47,15 @@ class VerifySignatureControlComponentPublicKeysTest extends SetupVerificationTes
 	@Test
 	void testOK() {
 		final ControlComponentPublicKeysPayload controlComponentPublicKeysPayload = electionDataExtractionService.getControlComponentPublicKeysPayloads(
-				datasetPath).getFirst();
+				datasetPath).get(0);
 
 		assertTrue(((VerifySignatureControlComponentPublicKeys) verification).verifySignature(controlComponentPublicKeysPayload));
 	}
 
 	@Test
 	void testNOK() throws SignatureException {
-		final ControlComponentPublicKeysPayload controlComponentPublicKeysPayload = electionDataExtractionService.getControlComponentPublicKeysPayloads(datasetPath).getFirst();
+		final ControlComponentPublicKeysPayload controlComponentPublicKeysPayload = electionDataExtractionService.getControlComponentPublicKeysPayloads(
+				datasetPath).get(0);
 
 		final int nodeId = controlComponentPublicKeysPayload.getControlComponentPublicKeys().nodeId();
 		final CryptoPrimitivesSignature dummySignature = datasetSignatureFactory.getDummySignature(controlComponentPublicKeysPayload,

@@ -17,12 +17,13 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 
 @Service
 public class VerifyEncryptedCKExponentiationProofsAlgorithm {
@@ -46,13 +47,13 @@ public class VerifyEncryptedCKExponentiationProofsAlgorithm {
 	 */
 	@SuppressWarnings("java:S117")
 	public boolean verifyEncryptedCKExponentiationProofs(final VerifyEncryptedExponentiationProofsInput input,
-			final List<ContextAndInputForVerificationCardSetAndControlComponent> contextAndInputs) {
+			final ImmutableList<ContextAndInputForVerificationCardSetAndControlComponent> contextAndInputs) {
 		checkNotNull(input);
 		checkNotNull(contextAndInputs);
 
 		// Input.
 		final String ee = input.getElectionEventId();
-		final List<String> vcs = input.getVerificationCardSetIds();
+		final ImmutableList<String> vcs = input.getVerificationCardSetIds();
 
 		// Operation.
 		final boolean vcsEncryptedCKVerif = contextAndInputs

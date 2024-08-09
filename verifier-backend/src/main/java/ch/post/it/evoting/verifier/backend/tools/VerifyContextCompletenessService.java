@@ -21,12 +21,12 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 
@@ -57,7 +57,7 @@ public class VerifyContextCompletenessService {
 			checkState(pathService.buildFromRootPath(StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS, inputDirectoryPath).getRegexPaths().size()
 					== NODE_IDS.size());
 			pathService.buildFromRootPath(StructureKey.CONTEXT_VERIFICATION_CARD_SETS_DIR, inputDirectoryPath);
-			final List<Path> verificationCardSetIds = pathService.buildFromRootPath(StructureKey.CONTEXT_VERIFICATION_CARD_SET_ID_DIR,
+			final ImmutableList<Path> verificationCardSetIds = pathService.buildFromRootPath(StructureKey.CONTEXT_VERIFICATION_CARD_SET_ID_DIR,
 							inputDirectoryPath)
 					.getRegexPaths();
 			verificationCardSetIds.stream().parallel()

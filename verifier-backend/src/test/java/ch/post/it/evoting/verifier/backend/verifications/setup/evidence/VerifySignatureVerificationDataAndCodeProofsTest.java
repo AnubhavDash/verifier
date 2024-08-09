@@ -25,12 +25,12 @@ import static org.mockito.Mockito.when;
 
 import java.nio.file.Path;
 import java.security.SignatureException;
-import java.util.List;
 import java.util.Random;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
@@ -138,7 +138,7 @@ class VerifySignatureVerificationDataAndCodeProofsTest extends SetupVerification
 	}
 
 	private SetupComponentVerificationDataPayload loadRandomSetupComponentVerificationData() {
-		final List<Path> regexPaths = electionDataExtractionService.getSetupVerificationCardSetPaths(datasetPath);
+		final ImmutableList<Path> regexPaths = electionDataExtractionService.getSetupVerificationCardSetPaths(datasetPath);
 		final int randomIndex = random.nextInt(0, regexPaths.size());
 		final Path verificationCardSet = regexPaths.get(randomIndex);
 
@@ -149,7 +149,7 @@ class VerifySignatureVerificationDataAndCodeProofsTest extends SetupVerification
 	}
 
 	private ControlComponentCodeSharesPayload loadRandomControlComponentCodeShares() {
-		final List<Path> regexPaths = electionDataExtractionService.getSetupVerificationCardSetPaths(datasetPath);
+		final ImmutableList<Path> regexPaths = electionDataExtractionService.getSetupVerificationCardSetPaths(datasetPath);
 		final int randomIndex = random.nextInt(0, regexPaths.size());
 		final Path verificationCardSet = regexPaths.get(randomIndex);
 
