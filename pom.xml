@@ -37,11 +37,11 @@
 		<project.build.outputTimestamp>2024-02-16T13:40:14+02:00</project.build.outputTimestamp>
 
 		<bouncycastle.version>1.78.1</bouncycastle.version>
-		<commons-codec.version>1.17.0</commons-codec.version>
+		<commons-codec.version>1.17.1</commons-codec.version>
 		<crypto-primitives-version>1.5.0.0-b12</crypto-primitives-version>
 		<e-voting-libraries.version>1.5.0.0-b28</e-voting-libraries.version>
 		<guava.version>33.2.1-jre</guava.version>
-		<jackson.version>2.17.1</jackson.version>
+		<jackson.version>2.17.2</jackson.version>
 		<jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
 		<jakarta.xml.bind-api.version>4.0.2</jakarta.xml.bind-api.version>
 		<jsurfer-jackson.version>1.6.5</jsurfer-jackson.version>
@@ -53,20 +53,20 @@
 		<maven-deploy-plugin.version>3.1.2</maven-deploy-plugin.version>
 		<maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
 		<maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
-		<maven-release-plugin.version>3.1.0</maven-release-plugin.version>
+		<maven-release-plugin.version>3.1.1</maven-release-plugin.version>
 		<maven-source-plugin.version>3.3.1</maven-source-plugin.version>
-		<maven-surefire-plugin.version>3.3.0</maven-surefire-plugin.version>
+		<maven-surefire-plugin.version>3.3.1</maven-surefire-plugin.version>
 		<mockito.version>5.12.0</mockito.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<reproducible-build-maven-plugin.version>0.15.2</reproducible-build-maven-plugin.version>
 		<rootProject>verifier</rootProject>
-		<slf4j.version>2.0.13</slf4j.version>
+		<slf4j.version>2.0.14</slf4j.version>
 		<sonar-maven-plugin.version>4.0.0.4121</sonar-maven-plugin.version>
-		<spring-boot.version>3.3.1</spring-boot.version>
+		<spring-boot.version>3.3.2</spring-boot.version>
 		<system-stubs-jupiter.version>2.1.6</system-stubs-jupiter.version>
-		<versions-maven-plugin.version>2.17.0</versions-maven-plugin.version>
+		<versions-maven-plugin.version>2.17.1</versions-maven-plugin.version>
 		<zip4j.version>2.11.5</zip4j.version>
-		<apache.commons-lang3>3.14.0</apache.commons-lang3>
+		<apache.commons-lang3>3.15.0</apache.commons-lang3>
 
 		<!-- sonar -->
 		<sonar.scm.disabled>true</sonar.scm.disabled>
