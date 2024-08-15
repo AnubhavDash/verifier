@@ -32,7 +32,7 @@ import ch.post.it.evoting.verifier.backend.tools.EncryptionGroupParametersExtrac
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 
-@Component("VerifyTallyEncryptionGroupConsistency")
+@Component("verifyTallyEncryptionGroupConsistency")
 public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 
 	private final EncryptionGroupParametersExtractionService extractionService;

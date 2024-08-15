@@ -13,20 +13,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-server.address=127.0.0.1
-server.port=8080
-direct.trust.keystore.location=
-direct.trust.keystore.password.location=
-direct.trust.keystore.type=PKCS12
-spring.servlet.multipart.max-file-size=-1
-spring.servlet.multipart.max-request-size=-1
-spring.main.banner-mode=LOG
+server:
+  address: 127.0.0.1
+  port: 8080
 
-# Logging
-spring.output.ansi.enabled=always
-logging.file.name=../logs/verifier-backend.log
-logging.logback.rollingpolicy.max-history=0
-logging.logback.rollingpolicy.file-name-pattern=${LOG_FILE}.%d{yyyy-MM-dd}.%i.log
+direct:
+  trust:
+    keystore:
+      location: # mandatory
+      password:
+        location: # mandatory
+      type: PKCS12
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+  main:
+    banner-mode: LOG
+  output:
+    ansi:
+      enabled: always
+
+logging:
+  file:
+    name: ../logs/verifier-backend.log
+  logback:
+    rollingpolicy:
+      max-history: 0
+      file-name-pattern: ${LOG_FILE}.%d{yyyy-MM-dd}.%i.log
 
 # Defines the password used for the decryption of the verifiable dataset. Default is empty. Must be set and respect the following:
 # - the size of the password is equal to or greater than 24.
@@ -35,8 +51,12 @@ logging.logback.rollingpolicy.file-name-pattern=${LOG_FILE}.%d{yyyy-MM-dd}.%i.lo
 # - the password contains at least one lower case letter.
 # - the password contains at least one special character.
 # - the password contains at least one digit.
-import.zip.decryption.password=
-# Location where to save the unzipped, unencrypted dataset. Default is the location of the "java.io.tmpdir" property. If set, must respect the following:
-# - use \\ as path delimiters (ex. C:\\temp).
-# - the directory must exist.
-#dataset.unzip.location=
+import:
+  zip:
+    decryption:
+      password: # mandatory
+
+# Location where to save the unzipped, unencrypted dataset. Default is the location of the "java.io.tmpdir" property. If set, the directory must exist.
+#dataset:
+#  unzip:
+#    location: # optional

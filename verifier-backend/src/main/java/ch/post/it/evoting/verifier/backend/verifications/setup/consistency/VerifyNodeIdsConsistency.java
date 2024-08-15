@@ -36,7 +36,7 @@ import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 
-@Component("VerifySetupNodeIdsConsistency")
+@Component("verifySetupNodeIdsConsistency")
 public class VerifyNodeIdsConsistency extends AbstractVerification {
 
 	private final ElectionDataExtractionService extractionService;

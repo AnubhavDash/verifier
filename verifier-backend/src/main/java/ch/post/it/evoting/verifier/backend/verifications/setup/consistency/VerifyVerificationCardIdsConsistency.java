@@ -46,7 +46,7 @@ import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 
-@Component("VerifySetupVerificationCardIdsConsistency")
+@Component("verifySetupVerificationCardIdsConsistency")
 public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(VerifyVerificationCardIdsConsistency.class);

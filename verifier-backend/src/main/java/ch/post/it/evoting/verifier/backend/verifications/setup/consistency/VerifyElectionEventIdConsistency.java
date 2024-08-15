@@ -39,7 +39,7 @@ import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerification
  * This verification ensures that the election event IDs in the dataset are consistent to the election event ID present in the file
  * electionEventContextPayload.json.
  */
-@Component("VerifySetupElectionEventIdConsistency")
+@Component("verifySetupElectionEventIdConsistency")
 public class VerifyElectionEventIdConsistency extends AbstractVerification {
 
 	private final ElectionDataExtractionService electionDataExtractionService;

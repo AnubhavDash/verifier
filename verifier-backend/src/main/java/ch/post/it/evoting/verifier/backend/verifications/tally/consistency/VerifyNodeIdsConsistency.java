@@ -40,7 +40,7 @@ import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 
-@Component("VerifyTallyNodeIdsConsistency")
+@Component("verifyTallyNodeIdsConsistency")
 public class VerifyNodeIdsConsistency extends AbstractVerification {
 
 	private final ElectionDataExtractionService extractionService;

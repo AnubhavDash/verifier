@@ -36,7 +36,7 @@ import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 
-@Component("VerifyTallyElectionEventIdConsistency")
+@Component("verifyTallyElectionEventIdConsistency")
 public class VerifyElectionEventIdConsistency extends AbstractVerification {
 
 	private final ElectionDataExtractionService electionDataExtractionService;

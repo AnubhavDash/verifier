@@ -216,15 +216,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter</artifactId>
 				<version>${spring-boot.version}</version>
-				<exclusions>
-					<!-- spring-boot-starter 3.1.2 uses a vulnerable snakeyaml version 1.33,
-							 and we don't need this functionality, therefore we remove it manually.
-							 As soon spring-boot-starter is updated we should be able to remove this exclusion -->
-					<exclusion>
-						<groupId>org.yaml</groupId>
-						<artifactId>snakeyaml</artifactId>
-					</exclusion>
-				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
