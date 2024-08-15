@@ -39,7 +39,7 @@
 		<bouncycastle.version>1.78.1</bouncycastle.version>
 		<commons-codec.version>1.17.1</commons-codec.version>
 		<crypto-primitives-version>1.5.0.0-b12</crypto-primitives-version>
-		<e-voting-libraries.version>1.5.0.0-b28</e-voting-libraries.version>
+		<e-voting-libraries.version>1.5.0.0-b29</e-voting-libraries.version>
 		<guava.version>33.2.1-jre</guava.version>
 		<jackson.version>2.17.2</jackson.version>
 		<jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>

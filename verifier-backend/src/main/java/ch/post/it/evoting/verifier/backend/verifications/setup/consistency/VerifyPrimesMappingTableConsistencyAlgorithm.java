@@ -271,8 +271,7 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 								.mapToObj(acc -> getCandidateActualVotingOption(electionIdentification, candidateType.getCandidateIdentification(),
 										acc))
 								.map(actualVotingOption -> {
-									final String semanticInformation = getCandidateSemanticInformation(candidateType.getFamilyName(),
-											candidateType.getFirstName(), candidateType.getCallName(), candidateType.getDateOfBirth().toXMLFormat());
+									final String semanticInformation = getCandidateSemanticInformation(candidateType.getFamilyName(), candidateType.getCallName(), candidateType.getDateOfBirth().toXMLFormat());
 									final String correctnessInformation = getCandidateCorrectnessInformation(electionIdentification);
 									return new PrimesMappingTableEntrySubset(actualVotingOption, semanticInformation, correctnessInformation);
 								})
