@@ -27,7 +27,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <exec-maven-plugin.version>3.4.0</exec-maven-plugin.version>
+    <exec-maven-plugin.version>3.4.1</exec-maven-plugin.version>
     <maven-clean-plugin.version>3.4.0</maven-clean-plugin.version>
     <sonar.sources>src</sonar.sources>
   </properties>
