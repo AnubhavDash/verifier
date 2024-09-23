@@ -31,7 +31,6 @@ import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShuffle
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 
 /**
  * Regroups the input values needed by the VerifyTallyControlComponent algorithm.
@@ -42,7 +41,6 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
  *     <li>(L<sub>votes</sub>, L<sub>decodedVotes</sub>, L<sub>writeIns</sub>), the Tally Control Component Votes for all bb<sub>i</sub>. Not null.</li>
  *     <li>L<sub>decodedVotesbb</sub>, the list of all selected decoded voting options for all bb<sub>i</sub>. Not null.</li>
  *     <li>Election Event Configuration, the configuration-anonymized as {@link Configuration}. Not null.</li>
- *     <li>Tally Control Component Decryptions, the evoting-decrypt as {@link Results}. Not null.</li>
  *     <li>Tally Control Component Detailed Results, the eCH-0222 as {@link Delivery}. Not null.</li>
  * </ul>
  */

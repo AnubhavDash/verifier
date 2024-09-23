@@ -33,9 +33,7 @@ import ch.post.it.evoting.evotinglibraries.domain.validations.FailedValidationEx
 import ch.post.it.evoting.evotinglibraries.xml.XmlNormalizer;
 import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableEch0222Factory;
 import ch.post.it.evoting.evotinglibraries.xml.mapper.RawDataDeliveryMapper;
-import ch.post.it.evoting.evotinglibraries.xml.mapper.ResultDeliveryMapper;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 
 @Service
 public class VerifyTallyFileAlgorithm {
@@ -71,8 +69,7 @@ public class VerifyTallyFileAlgorithm {
 		final Map<String, TallyComponentVotesPayload> L_decodedVotesbb = input.getTallyComponentVotesPayloads();
 
 		// Operation.
-		final Results evotingDecryptXML = ResultDeliveryMapper.toResults(configurationXML, L_decodedVotesbb);
-		final Delivery eCH0222XML_prime = RawDataDeliveryMapper.createECH0222(ee, configurationXML, evotingDecryptXML);
+		final Delivery eCH0222XML_prime = RawDataDeliveryMapper.createECH0222(ee, configurationXML, L_decodedVotesbb);
 		final Delivery eCH0222XML_prime_normalized = xmlNormalizer.normalizeWriteInsEch0222(eCH0222XML_prime);
 
 		// Ignore timestamp fields in eCH0110 and eCH0222 (use original timestamps in re-generated files).
