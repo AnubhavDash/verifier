@@ -29,8 +29,8 @@
 	</modules>
 
 	<properties>
-		<maven-enforcer-plugin.requiredJavaVersion>[21.0.3]</maven-enforcer-plugin.requiredJavaVersion>
-		<maven-enforcer-plugin.requiredMavenVersion>[3.9.7]</maven-enforcer-plugin.requiredMavenVersion>
+		<maven-enforcer-plugin.requiredJavaVersion>[21.0.4]</maven-enforcer-plugin.requiredJavaVersion>
+		<maven-enforcer-plugin.requiredMavenVersion>[3.9.9]</maven-enforcer-plugin.requiredMavenVersion>
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
 		<maven.compiler.release>21</maven.compiler.release>
@@ -424,11 +424,11 @@
 			<properties>
 
 				<!-- OpenJDK -->
-				<openjdk-jre.version>jdk-21.0.3+9-jre</openjdk-jre.version>
+				<openjdk-jre.version>jdk-21.0.4+7-jre</openjdk-jre.version>
 				<openjdk-jre.win64.url>
-					https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-jre_x64_windows_hotspot_21.0.3_9.zip
+					https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.4_7.zip
 				</openjdk-jre.win64.url>
-				<openjdk-jre.win64.sha256>f79eaa741cb9ec4d20c7fd57a0fc52c715da183bc68eb19f4778b816b89ef003</openjdk-jre.win64.sha256>
+				<openjdk-jre.win64.sha256>b58f6117d26a138da4cb962b974efc4be4b88b65093366146965d16ad3c45e75</openjdk-jre.win64.sha256>
 
 			</properties>
 		</profile>
