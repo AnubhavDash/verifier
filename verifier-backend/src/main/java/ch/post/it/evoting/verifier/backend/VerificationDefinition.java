@@ -16,9 +16,11 @@
 package ch.post.it.evoting.verifier.backend;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet;
 
 public class VerificationDefinition {
 
@@ -28,7 +30,7 @@ public class VerificationDefinition {
 	private String block;
 	private String name;
 	private Category category;
-	private Map<Language, String> description;
+	private ImmutableMap<Language, String> description;
 
 	public String getId() {
 		return id;
@@ -66,15 +68,15 @@ public class VerificationDefinition {
 		this.verifierEvents.add(event);
 	}
 
-	public Set<String> getVerifierEvents() {
-		return this.verifierEvents;
+	public ImmutableSet<String> getVerifierEvents() {
+		return ImmutableSet.from(this.verifierEvents);
 	}
 
-	public Map<Language, String> getDescription() {
+	public ImmutableMap<Language, String> getDescription() {
 		return description;
 	}
 
-	public void setDescription(final Map<Language, String> description) {
+	public void setDescription(final ImmutableMap<Language, String> description) {
 		this.description = description;
 	}
 

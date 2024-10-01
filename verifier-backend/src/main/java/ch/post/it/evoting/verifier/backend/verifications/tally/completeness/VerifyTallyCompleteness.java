@@ -15,7 +15,6 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.completeness;
 
-import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.io.UncheckedIOException;
@@ -26,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.evotinglibraries.domain.ControlComponentNode;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -87,10 +87,10 @@ public class VerifyTallyCompleteness extends AbstractVerification {
 					.getRegexPaths();
 			ballotBoxIds.forEach(bb -> checkState(
 					pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_BALLOT_BOX, bb).getRegexPaths().size()
-							== NODE_IDS.size()));
+							== ControlComponentNode.ids().size()));
 			ballotBoxIds.forEach(bb -> checkState(
 					pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_SHUFFLE, bb).getRegexPaths().size()
-							== NODE_IDS.size()));
+							== ControlComponentNode.ids().size()));
 			ballotBoxIds.forEach(bb -> pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_SHUFFLE, bb));
 			ballotBoxIds.forEach(bb -> pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_VOTES, bb));
 			return true;

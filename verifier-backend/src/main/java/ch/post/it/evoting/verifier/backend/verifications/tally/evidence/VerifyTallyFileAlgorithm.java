@@ -18,7 +18,6 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.validateUUID;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Map;
 import java.util.Objects;
 
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -26,6 +25,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import org.springframework.stereotype.Service;
 
 import ch.ech.xmlns.ech_0222._1.Delivery;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hash;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
@@ -66,7 +66,7 @@ public class VerifyTallyFileAlgorithm {
 		// Input.
 		final Configuration configurationXML = input.getCantonConfig();
 		final Delivery eCH0222XML = input.getTallyComponentEch0222();
-		final Map<String, TallyComponentVotesPayload> L_decodedVotesbb = input.getTallyComponentVotesPayloads();
+		final ImmutableMap<String, TallyComponentVotesPayload> L_decodedVotesbb = input.getTallyComponentVotesPayloads();
 
 		// Operation.
 		final Delivery eCH0222XML_prime = RawDataDeliveryMapper.createECH0222(ee, configurationXML, L_decodedVotesbb);

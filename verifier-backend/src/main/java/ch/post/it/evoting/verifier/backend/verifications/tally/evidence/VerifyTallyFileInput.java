@@ -17,9 +17,8 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Map;
-
 import ch.ech.xmlns.ech_0222._1.Delivery;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 
@@ -36,12 +35,12 @@ public class VerifyTallyFileInput {
 
 	private final Configuration cantonConfig;
 	private final Delivery tallyComponentEch0222;
-	private final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads;
+	private final ImmutableMap<String, TallyComponentVotesPayload> tallyComponentVotesPayloads;
 
 	private VerifyTallyFileInput(
 			final Configuration cantonConfig,
 			final Delivery tallyComponentEch0222,
-			final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads) {
+			final ImmutableMap<String, TallyComponentVotesPayload> tallyComponentVotesPayloads) {
 		this.cantonConfig = cantonConfig;
 		this.tallyComponentEch0222 = tallyComponentEch0222;
 		this.tallyComponentVotesPayloads = tallyComponentVotesPayloads;
@@ -55,7 +54,7 @@ public class VerifyTallyFileInput {
 		return tallyComponentEch0222;
 	}
 
-	public final Map<String, TallyComponentVotesPayload> getTallyComponentVotesPayloads() {
+	public final ImmutableMap<String, TallyComponentVotesPayload> getTallyComponentVotesPayloads() {
 		return tallyComponentVotesPayloads;
 	}
 
@@ -63,7 +62,7 @@ public class VerifyTallyFileInput {
 
 		private Configuration cantonConfig;
 		private Delivery tallyComponentEch0222;
-		private Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads;
+		private ImmutableMap<String, TallyComponentVotesPayload> tallyComponentVotesPayloads;
 
 		public Builder setCantonConfig(final Configuration cantonConfig) {
 			this.cantonConfig = cantonConfig;
@@ -75,8 +74,8 @@ public class VerifyTallyFileInput {
 			return this;
 		}
 
-		public Builder setTallyComponentVotesPayloads(final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads) {
-			this.tallyComponentVotesPayloads = Map.copyOf(tallyComponentVotesPayloads);
+		public Builder setTallyComponentVotesPayloads(final ImmutableMap<String, TallyComponentVotesPayload> tallyComponentVotesPayloads) {
+			this.tallyComponentVotesPayloads = tallyComponentVotesPayloads;
 			return this;
 		}
 

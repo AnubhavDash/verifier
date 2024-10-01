@@ -16,6 +16,7 @@
 
 package ch.post.it.evoting.verifier.backend.verifications.authenticity;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap.toImmutableMap;
 import static java.time.LocalDate.now;
 
 import java.io.IOException;
@@ -28,10 +29,10 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
 import java.security.cert.CertificateException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.AuthorityInformation;
 import ch.post.it.evoting.cryptoprimitives.signing.GenKeysAndCert;
@@ -48,15 +49,12 @@ import ch.post.it.evoting.evotinglibraries.domain.signature.CryptoPrimitivesSign
 public class DatasetSignatureFactory {
 
 	private final SignatureFactory signatureFactory;
-	private final Map<Alias, KeysAndCert> dummyKeysAndCertMap;
+	private final ImmutableMap<Alias, KeysAndCert> dummyKeysAndCertMap;
 
 	public DatasetSignatureFactory() {
 		signatureFactory = SignatureFactory.getInstance();
-		dummyKeysAndCertMap = new HashMap<>();
-		for (final Alias alias: Alias.values()) {
-			final KeysAndCert keysAndCert = generateDummyPrivateKeyAndCertificate();
-			dummyKeysAndCertMap.put(alias, keysAndCert);
-		}
+		dummyKeysAndCertMap = Arrays.stream(Alias.values())
+				.collect(toImmutableMap(alias -> alias, alias -> generateDummyPrivateKeyAndCertificate()));
 	}
 
 	/**

@@ -15,13 +15,14 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap.toImmutableMap;
+
 import java.nio.file.Path;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.domain.election.ControlComponentPublicKeys;
@@ -67,10 +68,10 @@ public class VerifyCCMElectionPublicKeyConsistency extends AbstractVerification 
 		final ImmutableList<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = extractionService.getControlComponentPublicKeysPayloads(
 				inputDirectoryPath);
 
-		final Map<Integer, ElGamalMultiRecipientPublicKey> electionEventContextPublicKeys = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
+		final ImmutableMap<Integer, ElGamalMultiRecipientPublicKey> electionEventContextPublicKeys = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
 				.combinedControlComponentPublicKeys()
 				.stream()
-				.collect(Collectors.toMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccmjElectionPublicKey));
+				.collect(toImmutableMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccmjElectionPublicKey));
 
 		final boolean sameCCMElectionPublicKeys = controlComponentPublicKeysPayloads.stream()
 				.parallel()

@@ -16,7 +16,6 @@
 package ch.post.it.evoting.verifier.backend;
 
 import java.nio.file.Path;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +24,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet;
 import ch.post.it.evoting.verifier.backend.event.VerifierEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 
@@ -53,7 +53,7 @@ public abstract class AbstractVerification {
 	public void executeVerify(final VerifierEvent verifierEvent) {
 		// Retrieve events to which this verification is listening to.
 		final VerificationDefinition definition = getVerificationDefinition();
-		final Set<String> listenedEvents = definition.getVerifierEvents();
+		final ImmutableSet<String> listenedEvents = definition.getVerifierEvents();
 
 		// Execute verification only if received event is one listened to.
 		if (listenedEvents.contains(verifierEvent.getType())) {

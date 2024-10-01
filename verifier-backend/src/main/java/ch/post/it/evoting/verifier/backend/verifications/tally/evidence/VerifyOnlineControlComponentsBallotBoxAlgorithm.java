@@ -16,12 +16,11 @@
 package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
 import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap.toImmutableMap;
 import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.hasNoDuplicates;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
@@ -29,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
@@ -143,9 +143,9 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 		// Operation.
 		final boolean vcProofsVerif;
 		if (N_C >= 1) {
-			final Map<String, ElGamalMultiRecipientPublicKey> KMap = IntStream.range(0, vc_vector.size())
+			final ImmutableMap<String, ElGamalMultiRecipientPublicKey> KMap = IntStream.range(0, vc_vector.size())
 					.boxed()
-					.collect(Collectors.toMap(vc_vector::get, K_vector::get));
+					.collect(toImmutableMap(vc_vector::get, K_vector::get));
 
 			final VerifyVotingClientProofsContext verifyVotingClientProofsContext = new VerifyVotingClientProofsContext.Builder()
 					.setEncryptionGroup(p_q_g)
@@ -168,8 +168,8 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 			vcProofsVerif = true;
 		}
 
-		final Map<String, ElGamalMultiRecipientCiphertext> vcMap_1 = controlComponentsLists.stream().parallel()
-				.collect(Collectors.toMap(
+		final ImmutableMap<String, ElGamalMultiRecipientCiphertext> vcMap_1 = controlComponentsLists.stream().parallel()
+				.collect(toImmutableMap(
 						encryptedVerifiableVote -> encryptedVerifiableVote.contextIds().verificationCardId(),
 						EncryptedVerifiableVote::encryptedVote)
 				);

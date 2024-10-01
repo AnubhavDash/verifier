@@ -21,7 +21,6 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
 import java.util.Comparator;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Stream;
@@ -33,6 +32,7 @@ import org.springframework.stereotype.Component;
 import com.google.common.collect.MoreCollectors;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.evotinglibraries.domain.validations.Validations;
@@ -162,7 +162,8 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 							.collect(MoreCollectors.onlyElement())
 							.getNumberOfVotingCards();
 
-					return new PayloadsVerificationCardIds(verificationDataIds, nodeIdsToCodeSharesIds, tallyDataIds, numberOfVotingCards);
+					return new PayloadsVerificationCardIds(verificationDataIds, ImmutableMap.from(nodeIdsToCodeSharesIds), tallyDataIds,
+							numberOfVotingCards);
 				})
 				.collect(toImmutableList());
 	}
@@ -181,7 +182,7 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 	 */
 	private boolean verifyConsistency(final PayloadsVerificationCardIds payloadsVerificationCardIds) {
 		final ImmutableList<String> verificationDataIds = payloadsVerificationCardIds.verificationDataIds;
-		final Map<Integer, ImmutableList<String>> nodeIdsToCodeSharesIds = payloadsVerificationCardIds.nodeIdsToVerificationCardIds;
+		final ImmutableMap<Integer, ImmutableList<String>> nodeIdsToCodeSharesIds = payloadsVerificationCardIds.nodeIdsToVerificationCardIds;
 		final ImmutableList<String> tallyDataIds = payloadsVerificationCardIds.tallyDataIds;
 		final int numberOfVotingCards = payloadsVerificationCardIds.numberOfVotingCards;
 
@@ -217,7 +218,7 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 	}
 
 	private record PayloadsVerificationCardIds(ImmutableList<String> verificationDataIds,
-											   Map<Integer, ImmutableList<String>> nodeIdsToVerificationCardIds,
+											   ImmutableMap<Integer, ImmutableList<String>> nodeIdsToVerificationCardIds,
 											   ImmutableList<String> tallyDataIds, int numberOfVotingCards) {
 	}
 

@@ -16,6 +16,7 @@
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
 import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet.toImmutableSet;
 import static ch.post.it.evoting.evotinglibraries.domain.election.ActualVotingOptionUtils.getAnswerActualVotingOption;
 import static ch.post.it.evoting.evotinglibraries.domain.election.ActualVotingOptionUtils.getCandidateActualVotingOption;
 import static ch.post.it.evoting.evotinglibraries.domain.election.ActualVotingOptionUtils.getEmptyPositionActualVotingOption;
@@ -38,7 +39,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -47,6 +47,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
@@ -106,20 +107,19 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 				"The primes mapping table entries contain duplicated encoded voting options."));
 
 		// Join the PrimesMappingTables of all verification card sets, deleting duplicates.
-		final Set<PrimesMappingTableEntry> primesMappingTableEntries = primesMappingTables.stream()
-				.parallel()
+		final ImmutableSet<PrimesMappingTableEntry> primesMappingTableEntries = primesMappingTables.stream()
 				.map(PrimesMappingTable::getPTable)
 				.flatMap(GroupVector::stream)
-				.collect(Collectors.toSet());
+				.collect(toImmutableSet());
 
 		// Create the actual voting option, semantic information and correctness information mapping using the configuration XML.
-		final Set<PrimesMappingTableEntrySubset> election = getElectionPartialPrimesMappingTableEntries(configuration);
-		final Set<PrimesMappingTableEntrySubset> vote = getVotePartialPrimesMappingTableEntries(configuration);
-		final Set<PrimesMappingTableEntrySubset> configurationPartialPrimesMappingTableEntries = Stream.of(election, vote)
-				.flatMap(Set::stream)
-				.collect(Collectors.toSet());
+		final ImmutableSet<PrimesMappingTableEntrySubset> election = getElectionPartialPrimesMappingTableEntries(configuration);
+		final ImmutableSet<PrimesMappingTableEntrySubset> vote = getVotePartialPrimesMappingTableEntries(configuration);
+		final ImmutableSet<PrimesMappingTableEntrySubset> configurationPartialPrimesMappingTableEntries = Stream.of(election, vote)
+				.flatMap(ImmutableSet::stream)
+				.collect(toImmutableSet());
 
-		final ImmutableList<BiFunction<Set<PrimesMappingTableEntry>, Set<PrimesMappingTableEntrySubset>, Boolean>> consistencyVerifications = ImmutableList.of(
+		final ImmutableList<BiFunction<ImmutableSet<PrimesMappingTableEntry>, ImmutableSet<PrimesMappingTableEntrySubset>, Boolean>> consistencyVerifications = ImmutableList.of(
 				this::verifyCorrectMappingInAllVerificationCardSets,
 				this::verifyInformationCorrespondsToConfiguration,
 				this::verifyNumberOfTuplesCorrespondsToConfiguration);
@@ -139,15 +139,15 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 	 * @param configurationPartialPrimesMappingTableEntries ignored, needed for consistency in the signature of the verification methods.
 	 */
 	@SuppressWarnings("java:S1172")
-	private boolean verifyCorrectMappingInAllVerificationCardSets(final Set<PrimesMappingTableEntry> primesMappingTableEntries,
-			final Set<PrimesMappingTableEntrySubset> configurationPartialPrimesMappingTableEntries) {
-		final Set<PrimeGqElement> encodedVotingOptions = primesMappingTableEntries.stream()
+	private boolean verifyCorrectMappingInAllVerificationCardSets(final ImmutableSet<PrimesMappingTableEntry> primesMappingTableEntries,
+			final ImmutableSet<PrimesMappingTableEntrySubset> configurationPartialPrimesMappingTableEntries) {
+		final ImmutableSet<PrimeGqElement> encodedVotingOptions = primesMappingTableEntries.stream()
 				.map(PrimesMappingTableEntry::encodedVotingOption)
-				.collect(Collectors.toSet());
+				.collect(toImmutableSet());
 
-		final Set<String> actualVotingOptions = primesMappingTableEntries.stream()
+		final ImmutableSet<String> actualVotingOptions = primesMappingTableEntries.stream()
 				.map(PrimesMappingTableEntry::actualVotingOption)
-				.collect(Collectors.toSet());
+				.collect(toImmutableSet());
 
 		final boolean correctMapping = primesMappingTableEntries.size() == encodedVotingOptions.size() &&
 				primesMappingTableEntries.size() == actualVotingOptions.size();
@@ -162,13 +162,13 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 	 * Verifies that the actual voting options, semantic information and correctness information in the PrimesMappingTable correspond to the
 	 * configuration XML.
 	 */
-	private boolean verifyInformationCorrespondsToConfiguration(final Set<PrimesMappingTableEntry> primesMappingTableEntries,
-			final Set<PrimesMappingTableEntrySubset> configurationPartialPrimesMappingTableEntries) {
-		final Set<PrimesMappingTableEntrySubset> partialPrimesMappingTableEntries = primesMappingTableEntries.stream()
+	private boolean verifyInformationCorrespondsToConfiguration(final ImmutableSet<PrimesMappingTableEntry> primesMappingTableEntries,
+			final ImmutableSet<PrimesMappingTableEntrySubset> configurationPartialPrimesMappingTableEntries) {
+		final ImmutableSet<PrimesMappingTableEntrySubset> partialPrimesMappingTableEntries = primesMappingTableEntries.stream()
 				.parallel()
 				.map(entry -> new PrimesMappingTableEntrySubset(entry.actualVotingOption(), entry.semanticInformation(),
 						entry.correctnessInformation()))
-				.collect(Collectors.toSet());
+				.collect(toImmutableSet());
 
 		final boolean informationCorrespondsToConfiguration = partialPrimesMappingTableEntries.equals(configurationPartialPrimesMappingTableEntries);
 		if (!informationCorrespondsToConfiguration) {
@@ -180,8 +180,8 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 	/**
 	 * Verifies that the number of tuples in the pTable corresponds to the configuration XML.
 	 */
-	private boolean verifyNumberOfTuplesCorrespondsToConfiguration(final Set<PrimesMappingTableEntry> primesMappingTableEntries,
-			final Set<PrimesMappingTableEntrySubset> configurationPartialPrimesMappingTableEntries) {
+	private boolean verifyNumberOfTuplesCorrespondsToConfiguration(final ImmutableSet<PrimesMappingTableEntry> primesMappingTableEntries,
+			final ImmutableSet<PrimesMappingTableEntrySubset> configurationPartialPrimesMappingTableEntries) {
 		final int expectedPrimesMappingTableEntriesSize = configurationPartialPrimesMappingTableEntries.size();
 
 		final boolean numberOfTuplesCorrespondsToConfiguration = primesMappingTableEntries.size() == expectedPrimesMappingTableEntriesSize;
@@ -193,7 +193,7 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 		return numberOfTuplesCorrespondsToConfiguration;
 	}
 
-	private Set<PrimesMappingTableEntrySubset> getElectionPartialPrimesMappingTableEntries(final Configuration configuration) {
+	private ImmutableSet<PrimesMappingTableEntrySubset> getElectionPartialPrimesMappingTableEntries(final Configuration configuration) {
 		return configuration.getContest().getElectionGroupBallot().stream()
 				.parallel()
 				.map(ElectionGroupBallotType::getElectionInformation)
@@ -202,22 +202,22 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 					final ElectionType election = electionInformationType.getElection();
 					final String electionIdentification = election.getElectionIdentification();
 
-					final Set<PrimesMappingTableEntrySubset> emptyList = getEmptyListEntries(electionInformationType,
+					final ImmutableSet<PrimesMappingTableEntrySubset> emptyList = getEmptyListEntries(electionInformationType,
 							electionInformationType.getEmptyList());
-					final Set<PrimesMappingTableEntrySubset> nonEmptyLists = getNonEmptyListsEntries(electionIdentification,
+					final ImmutableSet<PrimesMappingTableEntrySubset> nonEmptyLists = getNonEmptyListsEntries(electionIdentification,
 							electionInformationType.getList());
-					final Set<PrimesMappingTableEntrySubset> candidates = getCandidatesEntries(electionInformationType);
-					final Set<PrimesMappingTableEntrySubset> writeIns = getWriteInsEntries(electionInformationType);
+					final ImmutableSet<PrimesMappingTableEntrySubset> candidates = getCandidatesEntries(electionInformationType);
+					final ImmutableSet<PrimesMappingTableEntrySubset> writeIns = getWriteInsEntries(electionInformationType);
 
 					return Stream.of(emptyList, nonEmptyLists, candidates, writeIns)
-							.flatMap(Set::stream)
-							.collect(Collectors.toSet());
+							.flatMap(ImmutableSet::stream)
+							.collect(toImmutableSet());
 				})
-				.flatMap(Set::stream)
-				.collect(Collectors.toSet());
+				.flatMap(ImmutableSet::stream)
+				.collect(toImmutableSet());
 	}
 
-	private static Set<PrimesMappingTableEntrySubset> getEmptyListEntries(final ElectionInformationType electionInformationType,
+	private static ImmutableSet<PrimesMappingTableEntrySubset> getEmptyListEntries(final ElectionInformationType electionInformationType,
 			final EmptyListType emptyList) {
 		final String electionIdentification = electionInformationType.getElection().getElectionIdentification();
 		final Set<PrimesMappingTableEntrySubset> emptyListEntries = new HashSet<>();
@@ -238,14 +238,15 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 			emptyListEntries.add(getListEntry(electionIdentification, emptyList.getListIdentification(), emptyList.getListDescription(), true));
 		}
 
-		return emptyListEntries;
+		return ImmutableSet.from(emptyListEntries);
 	}
 
-	private static Set<PrimesMappingTableEntrySubset> getNonEmptyListsEntries(final String electionIdentification, final List<ListType> nonEmpty) {
+	private static ImmutableSet<PrimesMappingTableEntrySubset> getNonEmptyListsEntries(final String electionIdentification,
+			final List<ListType> nonEmpty) {
 		return nonEmpty.stream()
 				.parallel()
 				.map(listType -> getListEntry(electionIdentification, listType.getListIdentification(), listType.getListDescription(), false))
-				.collect(Collectors.toSet());
+				.collect(toImmutableSet());
 	}
 
 	private static PrimesMappingTableEntrySubset getListEntry(final String electionIdentification, final String listIdentification,
@@ -258,9 +259,9 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 		return new PrimesMappingTableEntrySubset(actualVotingOption, semanticInformation, correctnessInformation);
 	}
 
-	private static Set<PrimesMappingTableEntrySubset> getCandidatesEntries(final ElectionInformationType electionInformationType) {
+	private static ImmutableSet<PrimesMappingTableEntrySubset> getCandidatesEntries(final ElectionInformationType electionInformationType) {
 		if (electionInformationType.getCandidate() == null) {
-			return Set.of();
+			return ImmutableSet.emptySet();
 		}
 
 		final String electionIdentification = electionInformationType.getElection().getElectionIdentification();
@@ -275,10 +276,10 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 									final String correctnessInformation = getCandidateCorrectnessInformation(electionIdentification);
 									return new PrimesMappingTableEntrySubset(actualVotingOption, semanticInformation, correctnessInformation);
 								})
-				).collect(Collectors.toSet());
+				).collect(toImmutableSet());
 	}
 
-	private static Set<PrimesMappingTableEntrySubset> getWriteInsEntries(final ElectionInformationType electionInformationType) {
+	private static ImmutableSet<PrimesMappingTableEntrySubset> getWriteInsEntries(final ElectionInformationType electionInformationType) {
 		final String electionIdentification = electionInformationType.getElection().getElectionIdentification();
 
 		// write-ins position - only added if write-ins are allowed for an election
@@ -289,51 +290,51 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 					final String semanticInformation = getWriteInPositionSemanticInformation(writeInCandidate.getPosition());
 					final String correctnessInformation = getWriteInPositionCorrectnessInformation(electionIdentification);
 					return new PrimesMappingTableEntrySubset(actualVotingOption, semanticInformation, correctnessInformation);
-				}).collect(Collectors.toSet());
+				}).collect(toImmutableSet());
 	}
 
-	private Set<PrimesMappingTableEntrySubset> getVotePartialPrimesMappingTableEntries(final Configuration configuration) {
+	private ImmutableSet<PrimesMappingTableEntrySubset> getVotePartialPrimesMappingTableEntries(final Configuration configuration) {
 		return configuration.getContest().getVoteInformation().stream()
 				.parallel()
 				.map(VoteInformationType::getVote)
 				.map(voteInformationType -> voteInformationType.getBallot().stream()
 						.parallel()
 						.map(ballotType -> {
-							final Set<PrimesMappingTableEntrySubset> standardBallotAnswers = getStandardBallotAnswersEntries(ballotType);
-							final Set<PrimesMappingTableEntrySubset> variantBallotStandardAnswers = getVariantBallotStandardAnswersEntries(
+							final ImmutableSet<PrimesMappingTableEntrySubset> standardBallotAnswers = getStandardBallotAnswersEntries(ballotType);
+							final ImmutableSet<PrimesMappingTableEntrySubset> variantBallotStandardAnswers = getVariantBallotStandardAnswersEntries(
 									ballotType);
-							final Set<PrimesMappingTableEntrySubset> tieBreakAnswers = getTieBreakAnswersEntries(ballotType);
+							final ImmutableSet<PrimesMappingTableEntrySubset> tieBreakAnswers = getTieBreakAnswersEntries(ballotType);
 
 							return Stream.of(standardBallotAnswers, variantBallotStandardAnswers, tieBreakAnswers)
-									.flatMap(Set::stream)
-									.collect(Collectors.toSet());
-						}).flatMap(Set::stream)
-						.collect(Collectors.toSet()))
-				.flatMap(Set::stream)
-				.collect(Collectors.toSet());
+									.flatMap(ImmutableSet::stream)
+									.collect(toImmutableSet());
+						}).flatMap(ImmutableSet::stream)
+						.collect(toImmutableSet()))
+				.flatMap(ImmutableSet::stream)
+				.collect(toImmutableSet());
 	}
 
-	private static Set<PrimesMappingTableEntrySubset> getStandardBallotAnswersEntries(final BallotType ballotType) {
+	private static ImmutableSet<PrimesMappingTableEntrySubset> getStandardBallotAnswersEntries(final BallotType ballotType) {
 		final StandardBallotType standardBallot = ballotType.getStandardBallot();
 		if (standardBallot == null) {
-			return Set.of();
+			return ImmutableSet.emptySet();
 		}
 
 		return getStandardAnswersEntries(standardBallot.getQuestionIdentification(), standardBallot.getBallotQuestion(), standardBallot.getAnswer())
-				.collect(Collectors.toSet());
+				.collect(toImmutableSet());
 	}
 
-	private static Set<PrimesMappingTableEntrySubset> getVariantBallotStandardAnswersEntries(final BallotType ballotType) {
+	private static ImmutableSet<PrimesMappingTableEntrySubset> getVariantBallotStandardAnswersEntries(final BallotType ballotType) {
 		final VariantBallotType variantBallot = ballotType.getVariantBallot();
 		if (variantBallot == null) {
-			return Set.of();
+			return ImmutableSet.emptySet();
 		}
 
 		return variantBallot.getStandardQuestion().stream()
 				.parallel()
 				.flatMap(standardQuestionType -> getStandardAnswersEntries(standardQuestionType.getQuestionIdentification(),
 						standardQuestionType.getBallotQuestion(), standardQuestionType.getAnswer()))
-				.collect(Collectors.toSet());
+				.collect(toImmutableSet());
 	}
 
 	private static Stream<PrimesMappingTableEntrySubset> getStandardAnswersEntries(final String questionIdentification,
@@ -352,10 +353,10 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 				});
 	}
 
-	private static Set<PrimesMappingTableEntrySubset> getTieBreakAnswersEntries(final BallotType ballotType) {
+	private static ImmutableSet<PrimesMappingTableEntrySubset> getTieBreakAnswersEntries(final BallotType ballotType) {
 		final VariantBallotType variantBallot = ballotType.getVariantBallot();
 		if (variantBallot == null || variantBallot.getTieBreakQuestion() == null) {
-			return Set.of();
+			return ImmutableSet.emptySet();
 		}
 
 		return variantBallot.getTieBreakQuestion().stream()
@@ -373,7 +374,7 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 									AnswerInformationType::getAnswer);
 							return new PrimesMappingTableEntrySubset(actualVotingOption, semanticInformation, questionIdentification);
 						}))
-				.collect(Collectors.toSet());
+				.collect(toImmutableSet());
 	}
 
 	private record PrimesMappingTableEntrySubset(String actualVotingOption, String semanticInformation, String correctnessInformation) {

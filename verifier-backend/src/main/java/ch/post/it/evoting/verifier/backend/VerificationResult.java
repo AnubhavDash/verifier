@@ -16,25 +16,25 @@
 package ch.post.it.evoting.verifier.backend;
 
 import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap.toImmutableMap;
 
 import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 
 public class VerificationResult {
 
 	private static final String RESOURCE_BUNDLE_NAME = "resources";
 	private final VerificationDefinition verificationDefinition;
 	private final Status status;
-	private final Map<Language, String> message;
+	private final ImmutableMap<Language, String> message;
 	private final ImmutableList<String> errorStack;
 
-	private VerificationResult(final VerificationDefinition verificationDefinition, final Status status, final Map<Language, String> message,
+	private VerificationResult(final VerificationDefinition verificationDefinition, final Status status, final ImmutableMap<Language, String> message,
 			final ImmutableList<String> errorStack) {
 		this.verificationDefinition = verificationDefinition;
 		this.status = status;
@@ -46,15 +46,16 @@ public class VerificationResult {
 		return new VerificationResult(verificationDefinition, Status.OK, null, null);
 	}
 
-	public static VerificationResult failure(final VerificationDefinition verificationDefinition, final Map<Language, String> message) {
+	public static VerificationResult failure(final VerificationDefinition verificationDefinition, final ImmutableMap<Language, String> message) {
 
 		return new VerificationResult(verificationDefinition, Status.NOK, message, null);
 	}
 
 	public static VerificationResult error(final VerificationDefinition verificationDefinition, final Exception exception) {
-		final Map<Language, String> message = new EnumMap<>(Language.class);
-		Arrays.stream(Language.values()).forEach(lang -> message.put(lang,
-				ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME, lang.getLocale()).getString("core.error.unexpected.message")));
+		final ImmutableMap<Language, String> message = Arrays.stream(Language.values())
+				.collect(toImmutableMap(
+						lang -> lang,
+						lang -> ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME, lang.getLocale()).getString("core.error.unexpected.message")));
 
 		final StackTraceElement[] stackTrace = exception.getStackTrace();
 		final ImmutableList<String> errorStack = Stream.concat(
@@ -72,7 +73,7 @@ public class VerificationResult {
 		return status;
 	}
 
-	public Map<Language, String> getMessage() {
+	public ImmutableMap<Language, String> getMessage() {
 		return message;
 	}
 

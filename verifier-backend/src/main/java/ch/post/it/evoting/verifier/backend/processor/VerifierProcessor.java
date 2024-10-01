@@ -49,6 +49,7 @@ import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.evotinglibraries.domain.encryption.StreamedEncryptionDecryptionService;
@@ -208,7 +209,7 @@ public class VerifierProcessor {
 		final String electionEventSeed = electionEventContextPayload.getSeed();
 
 		// Get the direct trust certificate fingerprints.
-		final Map<String, String> aliasesToFingerprints = datasetService.extractFingerprints();
+		final ImmutableMap<String, String> aliasesToFingerprints = datasetService.extractFingerprints();
 
 		LOGGER.info("Dataset digest successfully computed.");
 

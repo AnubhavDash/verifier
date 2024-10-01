@@ -16,15 +16,15 @@
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
 import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet.toImmutableSet;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import java.nio.file.Path;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -95,29 +95,29 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 				.map(verificationCardSetIdPath -> {
 
 					final String vcsId = verificationCardSetIdPath.getFileName().toString();
-					final Set<String> verificationCardSetId = Set.of(vcsId);
+					final ImmutableSet<String> verificationCardSetId = ImmutableSet.of(vcsId);
 
-					final Set<String> verificationDataIds = electionDataExtractionService.getSetupComponentVerificationDataPayloadsDataExtractionsSortedByChunkId(
+					final ImmutableSet<String> verificationDataIds = electionDataExtractionService.getSetupComponentVerificationDataPayloadsDataExtractionsSortedByChunkId(
 									verificationCardSetIdPath)
 							.map(SetupComponentVerificationDataPayloadDataExtractor.DataExtraction::verificationCardSetId)
-							.collect(Collectors.toUnmodifiableSet());
+							.collect(toImmutableSet());
 
 					checkArgument(verificationDataIds.size() == 1, "The setup component verification card set id size must be one.");
 
-					final Set<String> codeShareIds = electionDataExtractionService.getControlComponentCodeSharesPayloadsDataExtractions(
+					final ImmutableSet<String> codeShareIds = electionDataExtractionService.getControlComponentCodeSharesPayloadsDataExtractions(
 									verificationCardSetIdPath)
 							.map(ControlComponentCodeSharesPayloadDataExtractor.DataExtraction::verificationCardSetIds)
 							.flatMap(ImmutableList::stream)
-							.collect(Collectors.toUnmodifiableSet());
+							.collect(toImmutableSet());
 
 					checkArgument(codeShareIds.size() == 1, "The control component code shares verification card set id size must be one.");
 
-					final Set<String> tallyIds = contextVerificationCardSetPaths.stream()
+					final ImmutableSet<String> tallyIds = contextVerificationCardSetPaths.stream()
 							.parallel()
 							.filter(vcsPath -> vcsPath.getFileName().toString().equals(vcsId))
 							.flatMap(electionDataExtractionService::getSetupComponentTallyDataPayloadsDataExtractions)
 							.map(SetupComponentTallyDataPayloadDataExtractor.DataExtraction::verificationCardSetId)
-							.collect(Collectors.toUnmodifiableSet());
+							.collect(toImmutableSet());
 
 					checkArgument(tallyIds.size() == 1, "The setup component tally verification card set id size must be one.");
 
@@ -127,8 +127,8 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 				.collect(toImmutableList());
 	}
 
-	private record PayloadsVerificationCardSetIds(Set<String> verificationCardSetId, Set<String> verificationDataIds, Set<String> codeShareIds,
-												  Set<String> tallyIds) {
+	private record PayloadsVerificationCardSetIds(ImmutableSet<String> verificationCardSetId, ImmutableSet<String> verificationDataIds,
+												  ImmutableSet<String> codeShareIds, ImmutableSet<String> tallyIds) {
 	}
 
 }

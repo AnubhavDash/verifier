@@ -160,7 +160,7 @@ public class VerifyChunkConsistency extends AbstractVerification {
 
 					if (!chunkIds.isEmpty()) {
 						return chunkIds.get(0) == 0 && chunkIds.get(chunkIds.size() - 1) == chunkIds.size() - 1 &&
-								chunkIds.toSet().size() == chunkIds.size();
+								chunkIds.toImmutableSet().size() == chunkIds.size();
 					}
 					return false;
 				});

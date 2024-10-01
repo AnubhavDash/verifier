@@ -16,7 +16,6 @@
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
 import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
-import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
 
 import java.nio.file.Path;
 import java.util.stream.Stream;
@@ -24,6 +23,7 @@ import java.util.stream.Stream;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.evotinglibraries.domain.ControlComponentNode;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -81,12 +81,13 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 	}
 
 	private boolean verifyNodeIdsConsistency(final ImmutableList<Integer> publicKeysNodeIds, final Stream<ImmutableList<Integer>> codeSharesNodeIds) {
-		final boolean verifPublicKeysNodeIdsComplete = publicKeysNodeIds.toSet().equals(NODE_IDS);
-		final boolean verifPublicKeyNodeIdsUnique = publicKeysNodeIds.size() == NODE_IDS.size();
+		final boolean verifPublicKeysNodeIdsComplete = publicKeysNodeIds.toImmutableSet().equals(ControlComponentNode.ids());
+		final boolean verifPublicKeyNodeIdsUnique = publicKeysNodeIds.size() == ControlComponentNode.ids().size();
 
 		final boolean verifCodeSharesNodeIds = codeSharesNodeIds
 				.parallel()
-				.allMatch(nodeIds -> NODE_IDS.equals(nodeIds.toSet()) && NODE_IDS.size() == nodeIds.size());
+				.allMatch(nodeIds -> ControlComponentNode.ids().equals(nodeIds.toImmutableSet())
+						&& ControlComponentNode.ids().size() == nodeIds.size());
 
 		return verifPublicKeysNodeIdsComplete && verifPublicKeyNodeIdsUnique && verifCodeSharesNodeIds;
 	}

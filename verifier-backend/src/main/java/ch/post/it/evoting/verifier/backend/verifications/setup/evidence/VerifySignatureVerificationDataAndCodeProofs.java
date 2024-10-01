@@ -20,9 +20,7 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
 import java.security.SignatureException;
-import java.util.concurrent.ConcurrentMap;
 import java.util.function.BooleanSupplier;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -31,6 +29,7 @@ import org.springframework.stereotype.Component;
 import com.google.common.annotations.VisibleForTesting;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
@@ -91,9 +90,9 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 
 		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContext(inputDirectoryPath);
 
-		final ConcurrentMap<String, Integer> numberOfVotingOptionsMap = electionEventContext.verificationCardSetContexts().stream()
-				.parallel()
-				.collect(Collectors.toConcurrentMap(VerificationCardSetContext::getVerificationCardSetId,
+		final ImmutableMap<String, Integer> numberOfVotingOptionsMap = electionEventContext.verificationCardSetContexts().stream()
+				.collect(ImmutableMap.toImmutableMap(
+						VerificationCardSetContext::getVerificationCardSetId,
 						VerificationCardSetContext::getNumberOfVotingOptions));
 
 		final boolean result = verificationCardSets.stream()

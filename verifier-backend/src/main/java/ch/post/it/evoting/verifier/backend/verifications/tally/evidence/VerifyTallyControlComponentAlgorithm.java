@@ -18,13 +18,13 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Map;
 import java.util.stream.IntStream;
 
 import org.springframework.stereotype.Service;
 
 import ch.ech.xmlns.ech_0222._1.Delivery;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.SetupComponentPublicKeys;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
@@ -66,15 +66,15 @@ public class VerifyTallyControlComponentAlgorithm {
 		final int N_bb = bb.size();
 
 		// Input.
-		final Map<String, ControlComponentShufflePayload> lastOnlineControlComponentShuffles = input.getLastOnlineControlComponentShufflesPerBallotBoxId();
-		final Map<String, TallyComponentShufflePayload> tallyControlComponentShuffles = input.getTallyControlComponentShufflesPerBallotBoxId();
-		final Map<String, TallyComponentVotesPayload> tallyControlComponentVotes = input.getTallyControlComponentVotesPerBallotBoxId();
-		final Map<String, TallyComponentVotesPayload> L_decodedVotesbb = input.getTallyControlComponentVotesPerAuthorizationAlias();
+		final ImmutableMap<String, ControlComponentShufflePayload> lastOnlineControlComponentShuffles = input.getLastOnlineControlComponentShufflesPerBallotBoxId();
+		final ImmutableMap<String, TallyComponentShufflePayload> tallyControlComponentShuffles = input.getTallyControlComponentShufflesPerBallotBoxId();
+		final ImmutableMap<String, TallyComponentVotesPayload> tallyControlComponentVotes = input.getTallyControlComponentVotesPerBallotBoxId();
+		final ImmutableMap<String, TallyComponentVotesPayload> L_decodedVotesbb = input.getTallyControlComponentVotesPerAuthorizationAlias();
 		final Configuration configurationXML = input.getElectionEventConfiguration();
 		final Delivery eCH0222XML = input.getTallyControlComponentDetailedResults();
 
 		// Cross-checks.
-		checkArgument(lastOnlineControlComponentShuffles.keySet().equals(bb.toSet()),
+		checkArgument(lastOnlineControlComponentShuffles.keySet().equals(bb.toImmutableSet()),
 				"The last control component shuffles, the tally component shuffles and the tally component votes must correspond to the correct ballot box ids.");
 		checkArgument(input.getElectionEventId().equals(ee), "The input must have the correct election event id.");
 

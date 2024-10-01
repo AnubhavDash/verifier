@@ -88,11 +88,11 @@ class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 		final List<SetupComponentVerificationDataPayloadDataExtractor.DataExtraction> swappedDataExtractions = new ArrayList<>(
 				electionDataExtractionService.getSetupComponentVerificationDataPayloadsDataExtractionsSortedByChunkId(verificationCardSet)
 						.sorted(Comparator.comparingInt(SetupComponentVerificationDataPayloadDataExtractor.DataExtraction::chunkId))
-						.collect(toImmutableList()).elements());
+						.collect(toImmutableList()).asList());
 		assumeTrue(swappedDataExtractions.size() > 1, "This test assumes at least two verification cards in the set.");
 
 		final SetupComponentVerificationDataPayloadDataExtractor.DataExtraction dataExtraction = swappedDataExtractions.getFirst();
-		final List<String> swappedVerificationCardIds = new ArrayList<>(dataExtraction.verificationCardIds().elements());
+		final List<String> swappedVerificationCardIds = new ArrayList<>(dataExtraction.verificationCardIds().asList());
 		Collections.swap(swappedVerificationCardIds, 0, 1);
 
 		final SetupComponentVerificationDataPayloadDataExtractor.DataExtraction swappedDataExtraction = new SetupComponentVerificationDataPayloadDataExtractor.DataExtraction(
@@ -123,7 +123,7 @@ class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 		final List<SetupComponentVerificationDataPayloadDataExtractor.DataExtraction> swappedDataExtractions = new ArrayList<>(
 				electionDataExtractionService.getSetupComponentVerificationDataPayloadsDataExtractionsSortedByChunkId(verificationCardSet)
 						.sorted(Comparator.comparingInt(SetupComponentVerificationDataPayloadDataExtractor.DataExtraction::chunkId))
-						.collect(toImmutableList()).elements());
+						.collect(toImmutableList()).asList());
 		assumeTrue(swappedDataExtractions.size() > 1, "This test assumes at least two verification cards in the set.");
 
 		Collections.swap(swappedDataExtractions, 0, 1);

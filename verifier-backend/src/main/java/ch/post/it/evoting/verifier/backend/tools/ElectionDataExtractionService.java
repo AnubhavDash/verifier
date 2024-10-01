@@ -16,7 +16,6 @@
 package ch.post.it.evoting.verifier.backend.tools;
 
 import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
-import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
 import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.validateUUID;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -36,6 +35,7 @@ import com.google.common.collect.MoreCollectors;
 
 import ch.ech.xmlns.ech_0222._1.Delivery;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.evotinglibraries.domain.ControlComponentNode;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
@@ -749,7 +749,7 @@ public class ElectionDataExtractionService {
 					.collect(toImmutableList());
 			controlComponentCodeSharesPayloads.forEach(
 					controlComponentCodeSharesPayload -> checkState(controlComponentCodeSharesPayload.getChunkId() == chunkId));
-			checkState(controlComponentCodeSharesPayloads.size() == NODE_IDS.size());
+			checkState(controlComponentCodeSharesPayloads.size() == ControlComponentNode.ids().size());
 			return controlComponentCodeSharesPayloads;
 		} catch (final IOException e) {
 			throw new UncheckedIOException(e);

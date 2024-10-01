@@ -15,10 +15,10 @@
  */
 package ch.post.it.evoting.verifier.backend.dto;
 
-import java.util.Map;
-import java.util.Set;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.Language;
 import ch.post.it.evoting.verifier.backend.Status;
@@ -30,10 +30,10 @@ public class Verification {
 	private String block;
 	private String name;
 	private Category category;
-	private Map<Language, String> description;
+	private ImmutableMap<Language, String> description;
 	private Status status;
-	private Map<Language, String> message;
-	private Set<String> verifierEvents;
+	private ImmutableMap<Language, String> message;
+	private ImmutableSet<String> verifierEvents;
 	private ImmutableList<String> errorStack;
 
 	public String getId() {
@@ -76,11 +76,11 @@ public class Verification {
 		this.category = category;
 	}
 
-	public Map<Language, String> getDescription() {
+	public ImmutableMap<Language, String> getDescription() {
 		return description;
 	}
 
-	public void setDescription(final Map<Language, String> description) {
+	public void setDescription(final ImmutableMap<Language, String> description) {
 		this.description = description;
 	}
 
@@ -92,19 +92,19 @@ public class Verification {
 		this.status = status;
 	}
 
-	public Map<Language, String> getMessage() {
+	public ImmutableMap<Language, String> getMessage() {
 		return message;
 	}
 
-	public void setMessage(final Map<Language, String> message) {
+	public void setMessage(final ImmutableMap<Language, String> message) {
 		this.message = message;
 	}
 
-	public Set<String> getVerifierEvents() {
+	public ImmutableSet<String> getVerifierEvents() {
 		return verifierEvents;
 	}
 
-	public void setVerifierEvents(final Set<String> verifierEvents) {
+	public void setVerifierEvents(final ImmutableSet<String> verifierEvents) {
 		this.verifierEvents = verifierEvents;
 	}
 
