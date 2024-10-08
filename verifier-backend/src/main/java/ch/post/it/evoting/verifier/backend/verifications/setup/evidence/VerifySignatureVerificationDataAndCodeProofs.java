@@ -15,14 +15,12 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
 import java.security.SignatureException;
-import java.util.List;
-import java.util.concurrent.ConcurrentMap;
 import java.util.function.BooleanSupplier;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -30,6 +28,8 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
@@ -86,13 +86,13 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final List<Path> verificationCardSets = electionDataExtractionService.getSetupVerificationCardSetPaths(inputDirectoryPath);
+		final ImmutableList<Path> verificationCardSets = electionDataExtractionService.getSetupVerificationCardSetPaths(inputDirectoryPath);
 
 		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContext(inputDirectoryPath);
 
-		final ConcurrentMap<String, Integer> numberOfVotingOptionsMap = electionEventContext.verificationCardSetContexts().stream()
-				.parallel()
-				.collect(Collectors.toConcurrentMap(VerificationCardSetContext::getVerificationCardSetId,
+		final ImmutableMap<String, Integer> numberOfVotingOptionsMap = electionEventContext.verificationCardSetContexts().stream()
+				.collect(ImmutableMap.toImmutableMap(
+						VerificationCardSetContext::getVerificationCardSetId,
 						VerificationCardSetContext::getNumberOfVotingOptions));
 
 		final boolean result = verificationCardSets.stream()
@@ -103,15 +103,16 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 							.flatMap(chunk -> {
 								final SetupComponentVerificationDataPayload setupComponentVerificationData = electionDataExtractionService.getSetupComponentVerificationDataPayloadChunk(
 										path, chunk);
-								final List<ControlComponentCodeSharesPayload> controlComponentCodeShares = electionDataExtractionService.getControlComponentCodeSharesPayloadChunkOrderByNodeId(
+								final ImmutableList<ControlComponentCodeSharesPayload> controlComponentCodeShares = electionDataExtractionService.getControlComponentCodeSharesPayloadChunkOrderByNodeId(
 										path, chunk);
 
 								final int numberOfVotingOptions = numberOfVotingOptionsMap.get(
 										setupComponentVerificationData.getVerificationCardSetId());
 
-								final List<String> verificationCardIds = setupComponentVerificationData.getSetupComponentVerificationData().stream()
+								final ImmutableList<String> verificationCardIds = setupComponentVerificationData.getSetupComponentVerificationData()
+										.stream()
 										.map(SetupComponentVerificationData::verificationCardId)
-										.toList();
+										.collect(toImmutableList());
 
 								final BooleanSupplier s1 = () -> verifySignatureSetupComponentVerificationData(setupComponentVerificationData);
 
@@ -154,15 +155,16 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 	}
 
 	private BooleanSupplier verifyEncryptedCKExponentiationProofs(final SetupComponentVerificationDataPayload setupComponentVerificationData,
-			final List<ControlComponentCodeSharesPayload> controlComponentCodeSharesPayloads, final List<String> verificationCardIds,
+			final ImmutableList<ControlComponentCodeSharesPayload> controlComponentCodeSharesPayloads,
+			final ImmutableList<String> verificationCardIds,
 			final int numberOfVotingOptions) {
 
 		final VerifyEncryptedExponentiationProofsInput input = new VerifyEncryptedExponentiationProofsInput.Builder()
 				.setElectionEventId(setupComponentVerificationData.getElectionEventId())
-				.setVerificationCardSetIds(List.of(setupComponentVerificationData.getVerificationCardSetId()))
+				.setVerificationCardSetIds(ImmutableList.of(setupComponentVerificationData.getVerificationCardSetId()))
 				.build();
 
-		final List<ContextAndInputForVerificationCardSetAndControlComponent> contextAndInputs = controlComponentCodeSharesPayloads.stream()
+		final ImmutableList<ContextAndInputForVerificationCardSetAndControlComponent> contextAndInputs = controlComponentCodeSharesPayloads.stream()
 				.map(controlComponentCodeSharesPayload -> {
 
 					final VerifyEncryptedExponentiationProofsVerificationCardSetContext verificationCardSetContext = new VerifyEncryptedExponentiationProofsVerificationCardSetContext.Builder()
@@ -177,19 +179,19 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 							setupComponentVerificationData.getSetupComponentVerificationData(),
 							controlComponentCodeSharesPayload.getControlComponentCodeShares());
 					return new ContextAndInputForVerificationCardSetAndControlComponent(verificationCardSetContext, verificationCardSetInput);
-				}).toList();
+				}).collect(toImmutableList());
 		return () -> verifyEncryptedCKExponentiationProofsAlgorithm.verifyEncryptedCKExponentiationProofs(input, contextAndInputs);
 	}
 
 	private BooleanSupplier verifyEncryptedPCCExponentiationProofs(final SetupComponentVerificationDataPayload setupComponentVerificationData,
-			final List<ControlComponentCodeSharesPayload> controlComponentCodeSharesPayloads, final List<String> verificationCardIds,
-			final int numberOfVotingOptions) {
+			final ImmutableList<ControlComponentCodeSharesPayload> controlComponentCodeSharesPayloads,
+			final ImmutableList<String> verificationCardIds, final int numberOfVotingOptions) {
 
 		final VerifyEncryptedExponentiationProofsInput input = new VerifyEncryptedExponentiationProofsInput.Builder()
 				.setElectionEventId(setupComponentVerificationData.getElectionEventId())
-				.setVerificationCardSetIds(List.of(setupComponentVerificationData.getVerificationCardSetId())).build();
+				.setVerificationCardSetIds(ImmutableList.of(setupComponentVerificationData.getVerificationCardSetId())).build();
 
-		final List<ContextAndInputForVerificationCardSetAndControlComponent> contextAndInputs = controlComponentCodeSharesPayloads.stream()
+		final ImmutableList<ContextAndInputForVerificationCardSetAndControlComponent> contextAndInputs = controlComponentCodeSharesPayloads.stream()
 				.map(controlComponentCodeSharesPayload -> {
 							final VerifyEncryptedExponentiationProofsVerificationCardSetContext verificationCardSetContext = new VerifyEncryptedExponentiationProofsVerificationCardSetContext.Builder()
 									.setEncryptionGroup(controlComponentCodeSharesPayload.getEncryptionGroup())
@@ -205,7 +207,7 @@ public class VerifySignatureVerificationDataAndCodeProofs extends AbstractVerifi
 
 							return new ContextAndInputForVerificationCardSetAndControlComponent(verificationCardSetContext, verificationCardSetInput);
 						}
-				).toList();
+				).collect(toImmutableList());
 
 		return () -> verifyEncryptedPCCExponentiationProofsAlgorithm.verifyEncryptedPCCExponentiationProofs(input, contextAndInputs);
 	}

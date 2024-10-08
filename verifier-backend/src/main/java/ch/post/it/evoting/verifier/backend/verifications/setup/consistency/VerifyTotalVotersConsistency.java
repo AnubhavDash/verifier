@@ -18,10 +18,10 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
-import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
@@ -68,7 +68,8 @@ public class VerifyTotalVotersConsistency extends AbstractVerification {
 				"The voter total in the header must be the same as the size of the voter list. [voterTotal: %s, voterCount: %s]", voterTotal,
 				voterCount);
 
-		final List<VerificationCardSetContext> verificationCardSetContexts = extractionService.getElectionEventContextPayload(inputDirectoryPath)
+		final ImmutableList<VerificationCardSetContext> verificationCardSetContexts = extractionService.getElectionEventContextPayload(
+						inputDirectoryPath)
 				.getElectionEventContext().verificationCardSetContexts();
 
 		final int totalNumberOfVotingCards = verificationCardSetContexts.stream()

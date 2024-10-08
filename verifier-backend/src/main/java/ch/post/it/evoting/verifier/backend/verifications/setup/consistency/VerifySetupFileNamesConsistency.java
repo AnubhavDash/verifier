@@ -16,12 +16,11 @@
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -75,10 +74,10 @@ public class VerifySetupFileNamesConsistency extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final List<Function<Path, Boolean>> validations = new ArrayList<>();
-		validations.add(this::verifyControlComponentPublicKeyFileNameConsistency);
-		validations.add(this::verifyControlComponentCodeSharesFileNameConsistency);
-		validations.add(this::verifySetupComponentVerificationDataFileNameConsistency);
+		final ImmutableList<Function<Path, Boolean>> validations = ImmutableList.of(
+				this::verifyControlComponentPublicKeyFileNameConsistency,
+				this::verifyControlComponentCodeSharesFileNameConsistency,
+				this::verifySetupComponentVerificationDataFileNameConsistency);
 
 		final boolean fileNamesConsistent = validations
 				.stream()

@@ -15,6 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -56,7 +57,7 @@ class VerifyFileNameNodeIdsConsistencyTest extends TallyVerificationTest {
 	void verifyNokBallotBoxPayloadNodeId() throws IOException {
 		final ObjectMapper objectMapperMock = spy(objectMapper);
 		final ControlComponentBallotBoxPayload firstBallotBoxPayload = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
-				datasetPath).toList().get(0);
+				datasetPath).collect(toImmutableList()).get(0);
 		doReturn(firstBallotBoxPayload).when(objectMapperMock).readValue(any(File.class), eq(ControlComponentBallotBoxPayload.class));
 
 		final VerifyFileNameNodeIdsConsistency failingVerification = new VerifyFileNameNodeIdsConsistency(resultPublisherServiceMock,
@@ -72,7 +73,7 @@ class VerifyFileNameNodeIdsConsistencyTest extends TallyVerificationTest {
 	void verifyNokShufflePayloadNodeId() throws IOException {
 		final ObjectMapper objectMapperMock = spy(objectMapper);
 		final ElectionDataExtractionService extractionService = new ElectionDataExtractionService(pathService, objectMapperMock,
-				ech0110XmlFileRepository, ech0222XmlFileRepository, configurationXmlFileRepository, resultsXmlFileRepository,
+				ech0222XmlFileRepository, configurationXmlFileRepository,
 				electionEventContextPayloadDataExtractor, controlComponentCodeSharesPayloadDataExtractor,
 				setupComponentVerificationDataPayloadDataExtractor, controlComponentPublicKeysPayloadDataExtractor,
 				setupComponentTallyDataPayloadDataExtractor);

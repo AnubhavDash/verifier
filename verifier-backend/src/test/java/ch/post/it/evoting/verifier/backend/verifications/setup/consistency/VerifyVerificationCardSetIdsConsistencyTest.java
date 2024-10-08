@@ -15,17 +15,17 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.spy;
 
-import java.util.List;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentVerificationDataPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
@@ -52,7 +52,7 @@ class VerifyVerificationCardSetIdsConsistencyTest extends SetupVerificationTest 
 	@Test
 	@DisplayName("inconsistent verification card set ids is failed")
 	void inconsistentVerificationCardIds() {
-		final List<SetupComponentVerificationDataPayloadDataExtractor.DataExtraction> dataExtractions = electionDataExtractionService.getAllSetupComponentVerificationDataPayloadsDataExtractions(
+		final ImmutableList<SetupComponentVerificationDataPayloadDataExtractor.DataExtraction> dataExtractions = electionDataExtractionService.getAllSetupComponentVerificationDataPayloadsDataExtractions(
 						datasetPath)
 				.map(dataExtraction -> new SetupComponentVerificationDataPayloadDataExtractor.DataExtraction(
 								dataExtraction.chunkId(),
@@ -61,7 +61,7 @@ class VerifyVerificationCardSetIdsConsistencyTest extends SetupVerificationTest 
 								dataExtraction.verificationCardIds()
 						)
 				)
-				.toList();
+				.collect(toImmutableList());
 
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
 

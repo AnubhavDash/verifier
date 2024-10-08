@@ -15,7 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.authenticity;
 
-import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.nio.file.Path;
 import java.security.SignatureException;
@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
@@ -89,9 +90,10 @@ public class VerifySignatureCantonConfig extends AbstractVerification {
 
 	@VisibleForTesting
 	boolean verifySignature(final Configuration configuration) {
-		final byte[] signature = configuration.getSignature();
+		checkNotNull(configuration);
 
-		checkState(signature != null, "The signature of the canton config file is null.");
+		final ImmutableByteArray signature = new ImmutableByteArray(
+				checkNotNull(configuration.getSignature(), "The signature of the canton config file is null."));
 
 		final Hashable hash = HashableCantonConfigFactory.fromConfiguration(configuration);
 		final Hashable additionalContextData = ChannelSecurityContextData.cantonConfig();

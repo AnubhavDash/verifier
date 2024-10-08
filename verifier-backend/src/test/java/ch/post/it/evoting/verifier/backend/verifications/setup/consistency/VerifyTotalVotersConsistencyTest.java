@@ -21,13 +21,12 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-import java.util.List;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.google.common.base.Throwables;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
@@ -77,7 +76,7 @@ class VerifyTotalVotersConsistencyTest extends SetupVerificationTest {
 		final ElectionEventContextPayload electionEventContextPayloadMock = spy(electionEventContextPayload);
 		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
 		final ElectionEventContext electionEventContextMock = spy(electionEventContext);
-		doReturn(List.of()).when(electionEventContextMock).verificationCardSetContexts();
+		doReturn(ImmutableList.emptyList()).when(electionEventContextMock).verificationCardSetContexts();
 		doReturn(electionEventContextMock).when(electionEventContextPayloadMock).getElectionEventContext();
 
 		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);

@@ -15,7 +15,6 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 
-import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -23,22 +22,17 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-import java.io.IOException;
 import java.nio.file.Path;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
-import java.security.cert.CertificateException;
-import java.util.List;
 import java.util.Random;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
-import ch.post.it.evoting.cryptoprimitives.hashing.HashableList;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
+import ch.post.it.evoting.evotinglibraries.domain.ControlComponentNode;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.evotinglibraries.domain.returncodes.ControlComponentCodeSharesPayload;
 import ch.post.it.evoting.evotinglibraries.domain.returncodes.SetupComponentVerificationDataPayload;
@@ -46,7 +40,6 @@ import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
 import ch.post.it.evoting.evotinglibraries.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
-import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 
 class VerifySignatureVerificationDataAndCodeProofsTest extends SetupVerificationTest {
@@ -64,10 +57,8 @@ class VerifySignatureVerificationDataAndCodeProofsTest extends SetupVerification
 	private final ElectionDataExtractionService electionDataExtractionService = new ElectionDataExtractionService(
 			pathService,
 			objectMapper,
-			ech0110XmlFileRepository,
 			ech0222XmlFileRepository,
 			configurationXmlFileRepository,
-			resultsXmlFileRepository,
 			electionEventContextPayloadDataExtractor,
 			controlComponentCodeSharesPayloadDataExtractor,
 			setupComponentVerificationDataPayloadDataExtractor,
@@ -75,10 +66,9 @@ class VerifySignatureVerificationDataAndCodeProofsTest extends SetupVerification
 			setupComponentTallyDataPayloadDataExtractor);
 
 	@BeforeEach
-	void setUpAll() throws CertificateException, IOException, NoSuchAlgorithmException, KeyStoreException {
+	void setUpAll() {
 		verification = new VerifySignatureVerificationDataAndCodeProofs(resultPublisherServiceMock, electionDataExtractionService,
-				signatureFactory.getTestSignatureVerification(),
-				verifyEncryptedPCCExponentiationProofsAlgorithm, verifyEncryptedCKExponentiationProofsAlgorithm);
+				datasetSignatureVerification, verifyEncryptedPCCExponentiationProofsAlgorithm, verifyEncryptedCKExponentiationProofsAlgorithm);
 	}
 
 	@Test
@@ -100,13 +90,11 @@ class VerifySignatureVerificationDataAndCodeProofsTest extends SetupVerification
 	}
 
 	@Test
-	void testSignatureSetupComponentVerificationData() throws SignatureException {
+	void testSignatureSetupComponentVerificationData() {
 		final SetupComponentVerificationDataPayload setupComponentVerificationData = loadRandomSetupComponentVerificationData();
-		setupComponentVerificationData.setSignature(new CryptoPrimitivesSignature(generateSignature(setupComponentVerificationData)));
 
-		final boolean result = ((VerifySignatureVerificationDataAndCodeProofs) verification).verifySignatureSetupComponentVerificationData(
-				setupComponentVerificationData);
-		assertTrue(result);
+		assertTrue(((VerifySignatureVerificationDataAndCodeProofs) verification).verifySignatureSetupComponentVerificationData(
+				setupComponentVerificationData));
 	}
 
 	@Test
@@ -127,36 +115,30 @@ class VerifySignatureVerificationDataAndCodeProofsTest extends SetupVerification
 	}
 
 	@Test
-	void testSignatureControlComponentCodeSharesPayload() throws SignatureException {
+	void testSignatureControlComponentCodeSharesPayload() {
 		final ControlComponentCodeSharesPayload controlComponentCodeShares = loadRandomControlComponentCodeShares();
 
-		controlComponentCodeShares.setSignature(new CryptoPrimitivesSignature(generateSignature(controlComponentCodeShares)));
-		final boolean result = ((VerifySignatureVerificationDataAndCodeProofs) verification).verifySignatureControlComponentCodeSharesPayload(
-				controlComponentCodeShares);
-		assertTrue(result);
+		assertTrue(((VerifySignatureVerificationDataAndCodeProofs) verification).verifySignatureControlComponentCodeSharesPayload(
+				controlComponentCodeShares));
 	}
 
 	@Test
 	void testSignatureControlComponentCodeSharesPayloadWithWrongSignature() throws SignatureException {
-		final ControlComponentCodeSharesPayload controlComponentCodeShares = loadRandomControlComponentCodeShares();
+		final ControlComponentCodeSharesPayload controlComponentCodeSharesPayload = loadRandomControlComponentCodeShares();
 
-		final ControlComponentCodeSharesPayload another = new ControlComponentCodeSharesPayload(
-				controlComponentCodeShares.getElectionEventId(),
-				controlComponentCodeShares.getVerificationCardSetId(),
-				controlComponentCodeShares.getChunkId() + 1,
-				controlComponentCodeShares.getEncryptionGroup(),
-				controlComponentCodeShares.getControlComponentCodeShares(),
-				controlComponentCodeShares.getNodeId(),
-				controlComponentCodeShares.getSignature());
+		final int nodeId = controlComponentCodeSharesPayload.getNodeId();
+		final CryptoPrimitivesSignature dummySignature = datasetSignatureFactory.getDummySignature(controlComponentCodeSharesPayload,
+				ChannelSecurityContextData.controlComponentCodeShares(nodeId, controlComponentCodeSharesPayload.getElectionEventId(),
+						controlComponentCodeSharesPayload.getVerificationCardSetId()),
+				Alias.getControlComponentByNodeId(nodeId));
+		controlComponentCodeSharesPayload.setSignature(dummySignature);
 
-		controlComponentCodeShares.setSignature(new CryptoPrimitivesSignature(generateSignature(controlComponentCodeShares)));
-		final boolean result = ((VerifySignatureVerificationDataAndCodeProofs) verification).verifySignatureControlComponentCodeSharesPayload(
-				another);
-		assertFalse(result);
+		assertFalse(((VerifySignatureVerificationDataAndCodeProofs) verification).verifySignatureControlComponentCodeSharesPayload(
+				controlComponentCodeSharesPayload));
 	}
 
 	private SetupComponentVerificationDataPayload loadRandomSetupComponentVerificationData() {
-		final List<Path> regexPaths = electionDataExtractionService.getSetupVerificationCardSetPaths(datasetPath);
+		final ImmutableList<Path> regexPaths = electionDataExtractionService.getSetupVerificationCardSetPaths(datasetPath);
 		final int randomIndex = random.nextInt(0, regexPaths.size());
 		final Path verificationCardSet = regexPaths.get(randomIndex);
 
@@ -167,7 +149,7 @@ class VerifySignatureVerificationDataAndCodeProofsTest extends SetupVerification
 	}
 
 	private ControlComponentCodeSharesPayload loadRandomControlComponentCodeShares() {
-		final List<Path> regexPaths = electionDataExtractionService.getSetupVerificationCardSetPaths(datasetPath);
+		final ImmutableList<Path> regexPaths = electionDataExtractionService.getSetupVerificationCardSetPaths(datasetPath);
 		final int randomIndex = random.nextInt(0, regexPaths.size());
 		final Path verificationCardSet = regexPaths.get(randomIndex);
 
@@ -175,27 +157,6 @@ class VerifySignatureVerificationDataAndCodeProofsTest extends SetupVerification
 
 		final int randomChunkId = random.nextInt(0, chunkCount);
 		return electionDataExtractionService.getControlComponentCodeSharesPayloadChunkOrderByNodeId(
-				verificationCardSet, randomChunkId).get(random.nextInt(0, NODE_IDS.size()));
+				verificationCardSet, randomChunkId).get(random.nextInt(0, ControlComponentNode.ids().size()));
 	}
-
-	private byte[] generateSignature(final ControlComponentCodeSharesPayload controlComponentCodeShares) throws SignatureException {
-		final Hashable hash = HashableList.from(controlComponentCodeShares.toHashableForm());
-		final Hashable additionalContextData = ChannelSecurityContextData.controlComponentCodeShares(
-				controlComponentCodeShares.getNodeId(),
-				controlComponentCodeShares.getElectionEventId(),
-				controlComponentCodeShares.getVerificationCardSetId());
-
-		return signatureFactory.getTestSignatureGeneration(Alias.getControlComponentByNodeId(controlComponentCodeShares.getNodeId()))
-				.genSignature(hash, additionalContextData);
-	}
-
-	private byte[] generateSignature(final SetupComponentVerificationDataPayload setupComponentVerificationData) throws SignatureException {
-		final Hashable hash = HashableList.from(setupComponentVerificationData.toHashableForm());
-		final Hashable additionalContextData = ChannelSecurityContextData.setupComponentVerificationData(
-				setupComponentVerificationData.getElectionEventId(),
-				setupComponentVerificationData.getVerificationCardSetId());
-
-		return signatureFactory.getTestSignatureGeneration(Alias.SDM_CONFIG).genSignature(hash, additionalContextData);
-	}
-
 }

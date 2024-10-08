@@ -15,19 +15,20 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap.toImmutableMap;
 import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.hasNoDuplicates;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
@@ -109,12 +110,12 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 
 		// Input.
 		// controlComponentsLists corresponds to (vc_1, E1_1, E1_tilde_1, E2_1, pi_Exp_1, pi_EqEnc_1)
-		final List<EncryptedVerifiableVote> controlComponentsLists = input.getControlComponentsLists();
+		final ImmutableList<EncryptedVerifiableVote> controlComponentsLists = input.getControlComponentsLists();
 		// c_mix_j_pi_mix_j contains both the preceding shuffled votes and shuffle proofs
-		final List<VerifiableShuffle> c_mix_j_pi_mix_j = input.getPrecedingShuffle();
+		final ImmutableList<VerifiableShuffle> c_mix_j_pi_mix_j = input.getPrecedingShuffle();
 		// c_mix_j_pi_mix_j contains both the preceding shuffled votes and shuffle proofs
-		final List<VerifiableDecryptions> c_dec_j_pi_dec_j = input.getPrecedingPartialDecryptions();
-		final List<String> vc_vector = input.getVerificationCardIds();
+		final ImmutableList<VerifiableDecryptions> c_dec_j_pi_dec_j = input.getPrecedingPartialDecryptions();
+		final ImmutableList<String> vc_vector = input.getVerificationCardIds();
 		final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> K_vector = input.getVerificationCardPublicKeys();
 		final int N_C = controlComponentsLists.size();
 		final int N_C_hat = c_mix_j_pi_mix_j.get(0).shuffledCiphertexts().size();
@@ -133,18 +134,18 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 		checkArgument(N_E >= N_C, "The the number of eligible voters must be greater or equal to the number of confirmed votes.");
 		checkArgument(N_C >= 2 ? N_C_hat == N_C : N_C_hat == N_C + 2, "The number of mixed votes must be equal to the number of processed votes, "
 				+ "if the number of confirmed votes is 2 or greater. Otherwise, there must be two more mixed votes than confirmed votes (for N_C = 0 or 1).");
-		final List<String> vc_1 = controlComponentsLists.stream().parallel()
+		final ImmutableList<String> vc_1 = controlComponentsLists.stream().parallel()
 				.map(EncryptedVerifiableVote::contextIds)
 				.map(ContextIds::verificationCardId)
-				.toList();
+				.collect(toImmutableList());
 		checkArgument(hasNoDuplicates(vc_1), "The verification card IDs must not contain duplicates.");
 
 		// Operation.
 		final boolean vcProofsVerif;
 		if (N_C >= 1) {
-			final Map<String, ElGamalMultiRecipientPublicKey> KMap = IntStream.range(0, vc_vector.size())
+			final ImmutableMap<String, ElGamalMultiRecipientPublicKey> KMap = IntStream.range(0, vc_vector.size())
 					.boxed()
-					.collect(Collectors.toMap(vc_vector::get, K_vector::get));
+					.collect(toImmutableMap(vc_vector::get, K_vector::get));
 
 			final VerifyVotingClientProofsContext verifyVotingClientProofsContext = new VerifyVotingClientProofsContext.Builder()
 					.setEncryptionGroup(p_q_g)
@@ -167,8 +168,8 @@ public class VerifyOnlineControlComponentsBallotBoxAlgorithm {
 			vcProofsVerif = true;
 		}
 
-		final Map<String, ElGamalMultiRecipientCiphertext> vcMap_1 = controlComponentsLists.stream().parallel()
-				.collect(Collectors.toMap(
+		final ImmutableMap<String, ElGamalMultiRecipientCiphertext> vcMap_1 = controlComponentsLists.stream().parallel()
+				.collect(toImmutableMap(
 						encryptedVerifiableVote -> encryptedVerifiableVote.contextIds().verificationCardId(),
 						EncryptedVerifiableVote::encryptedVote)
 				);

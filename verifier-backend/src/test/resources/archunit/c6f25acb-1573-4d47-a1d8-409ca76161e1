@@ -1,0 +1,2 @@
+Class <ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentPublicKeysPayloadDataExtractor> is annotated with @Service in (ControlComponentPublicKeysPayloadDataExtractor.java:0)
+Class <ch.post.it.evoting.verifier.backend.dataextractors.EncryptionGroupParametersDataExtractor> is annotated with @Service in (EncryptionGroupParametersDataExtractor.java:0)

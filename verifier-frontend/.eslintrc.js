@@ -25,7 +25,6 @@ module.exports = {
         "sourceType": "module"
     },
     "plugins": [
-        "eslint-plugin-import",
         "@angular-eslint/eslint-plugin",
         "@typescript-eslint"
     ],
@@ -62,19 +61,6 @@ module.exports = {
             }
         ],
         "@typescript-eslint/indent": "off",
-        "@typescript-eslint/member-delimiter-style": [
-            "error",
-            {
-                "multiline": {
-                    "delimiter": "semi",
-                    "requireLast": true
-                },
-                "singleline": {
-                    "delimiter": "semi",
-                    "requireLast": false
-                }
-            }
-        ],
         "@typescript-eslint/member-ordering": "error",
         "@typescript-eslint/naming-convention": "off",
         "@typescript-eslint/no-empty-function": "off",
@@ -95,15 +81,6 @@ module.exports = {
         ],
         "@typescript-eslint/no-unused-expressions": "error",
         "@typescript-eslint/prefer-function-type": "error",
-        "@typescript-eslint/quotes": [
-            "error",
-            "single"
-        ],
-        "@typescript-eslint/semi": [
-            "error",
-            "always"
-        ],
-        "@typescript-eslint/type-annotation-spacing": "error",
         "@typescript-eslint/unified-signatures": "error",
         "arrow-body-style": "error",
         "brace-style": [
@@ -121,7 +98,6 @@ module.exports = {
         "guard-for-in": "error",
         "id-denylist": "off",
         "id-match": "off",
-        "import/no-deprecated": "warn",
         "indent": "off",
         "max-len": [
             "error",

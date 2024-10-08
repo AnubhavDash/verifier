@@ -18,32 +18,30 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.IntStream;
 
 import org.springframework.stereotype.Service;
 
-import ch.ech.xmlns.ech_0110._4.Delivery;
+import ch.ech.xmlns.ech_0222._1.Delivery;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.SetupComponentPublicKeys;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 
 @Service
 public class VerifyTallyControlComponentAlgorithm {
 
 	private final VerifyTallyControlComponentBallotBoxAlgorithm verifyTallyControlComponentBallotBoxAlgorithm;
-	private final VerifyTallyFilesAlgorithm verifyTallyFilesAlgorithm;
+	private final VerifyTallyFileAlgorithm verifyTallyFileAlgorithm;
 
 	public VerifyTallyControlComponentAlgorithm(final VerifyTallyControlComponentBallotBoxAlgorithm verifyTallyControlComponentBallotBoxAlgorithm,
-			final VerifyTallyFilesAlgorithm verifyTallyFilesAlgorithm) {
+			final VerifyTallyFileAlgorithm verifyTallyFileAlgorithm) {
 		this.verifyTallyControlComponentBallotBoxAlgorithm = verifyTallyControlComponentBallotBoxAlgorithm;
-		this.verifyTallyFilesAlgorithm = verifyTallyFilesAlgorithm;
+		this.verifyTallyFileAlgorithm = verifyTallyFileAlgorithm;
 	}
 
 	/**
@@ -62,23 +60,21 @@ public class VerifyTallyControlComponentAlgorithm {
 
 		// Context.
 		final String ee = context.getElectionEventId();
-		final List<String> bb = context.getBallotBoxIds();
+		final ImmutableList<String> bb = context.getBallotBoxIds();
 		final ElectionEventContext electionEventContext = context.getElectionEventContext();
 		final SetupComponentPublicKeys setupComponentPublicKeys = context.getSetupComponentPublicKeys();
 		final int N_bb = bb.size();
 
 		// Input.
-		final Map<String, ControlComponentShufflePayload> lastOnlineControlComponentShuffles = input.getLastOnlineControlComponentShufflesPerBallotBoxId();
-		final Map<String, TallyComponentShufflePayload> tallyControlComponentShuffles = input.getTallyControlComponentShufflesPerBallotBoxId();
-		final Map<String, TallyComponentVotesPayload> tallyControlComponentVotes = input.getTallyControlComponentVotesPerBallotBoxId();
-		final Map<String, TallyComponentVotesPayload> L_decodedVotesbb = input.getTallyControlComponentVotesPerAuthorizationAlias();
+		final ImmutableMap<String, ControlComponentShufflePayload> lastOnlineControlComponentShuffles = input.getLastOnlineControlComponentShufflesPerBallotBoxId();
+		final ImmutableMap<String, TallyComponentShufflePayload> tallyControlComponentShuffles = input.getTallyControlComponentShufflesPerBallotBoxId();
+		final ImmutableMap<String, TallyComponentVotesPayload> tallyControlComponentVotes = input.getTallyControlComponentVotesPerBallotBoxId();
+		final ImmutableMap<String, TallyComponentVotesPayload> L_decodedVotesbb = input.getTallyControlComponentVotesPerAuthorizationAlias();
 		final Configuration configurationXML = input.getElectionEventConfiguration();
-		final Results evotingDecryptXML = input.getTallyControlComponentDecryptions();
-		final Delivery eCH0110XML = input.getTallyControlComponentResults();
-		final ch.ech.xmlns.ech_0222._1.Delivery eCH0222XML = input.getTallyControlComponentDetailedResults();
+		final Delivery eCH0222XML = input.getTallyControlComponentDetailedResults();
 
 		// Cross-checks.
-		checkArgument(lastOnlineControlComponentShuffles.keySet().equals(new HashSet<>(bb)),
+		checkArgument(lastOnlineControlComponentShuffles.keySet().equals(bb.toImmutableSet()),
 				"The last control component shuffles, the tally component shuffles and the tally component votes must correspond to the correct ballot box ids.");
 		checkArgument(input.getElectionEventId().equals(ee), "The input must have the correct election event id.");
 
@@ -103,16 +99,14 @@ public class VerifyTallyControlComponentAlgorithm {
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 
-		final VerifyTallyFilesInput Input_tallyFiles = new VerifyTallyFilesInput.Builder()
+		final VerifyTallyFileInput Input_tallyFile = new VerifyTallyFileInput.Builder()
 				.setCantonConfig(configurationXML)
-				.setTallyComponentDecrypt(evotingDecryptXML)
-				.setTallyComponentEch0110(eCH0110XML)
 				.setTallyComponentEch0222(eCH0222XML)
 				.setTallyComponentVotesPayloads(L_decodedVotesbb)
 				.build();
 
-		final boolean tallyFilesVerif = verifyTallyFilesAlgorithm.verifyTallyFiles(ee, Input_tallyFiles);
+		final boolean tallyFileVerif = verifyTallyFileAlgorithm.verifyTallyFile(ee, Input_tallyFile);
 
-		return tallyVerif && tallyFilesVerif;
+		return tallyVerif && tallyFileVerif;
 	}
 }

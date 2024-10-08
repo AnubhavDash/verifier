@@ -18,15 +18,14 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.SetupComponentPublicKeys;
@@ -64,22 +63,22 @@ public class VerifyOnlineControlComponentsAlgorithm {
 		checkArgument(context.getEncryptionGroup().equals(input.getEncryptionGroup()), "The context and input must have the same encryption group.");
 
 		// Context.
-		final List<String> vcs = context.getVerificationCardSetIds();
-		final List<String> bb = context.getBallotBoxIds();
+		final ImmutableList<String> vcs = context.getVerificationCardSetIds();
+		final ImmutableList<String> bb = context.getBallotBoxIds();
 		final ElectionEventContext electionEventContext = context.getElectionEventContext();
 		final SetupComponentPublicKeys setupComponentPublicKeys = context.getSetupComponentPublicKeys();
 		final String ee = electionEventContext.electionEventId();
 		final int N_bb = bb.size();
 
 		// Input.
-		final Map<String, ControlComponentBallotBoxPayload> firstControlComponentBallotBoxes = input.getFirstControlComponentBallotBoxesPerBallotBoxId();
-		final Map<String, List<ControlComponentShufflePayload>> onlineControlComponentShuffles = input.getControlComponentShufflesPerBallotBoxId();
-		final Map<String, SetupComponentTallyDataPayload> setupComponentTallyData = input.getSetupComponentTallyDataPerVerificationCardSetId();
+		final ImmutableMap<String, ControlComponentBallotBoxPayload> firstControlComponentBallotBoxes = input.getFirstControlComponentBallotBoxesPerBallotBoxId();
+		final ImmutableMap<String, ImmutableList<ControlComponentShufflePayload>> onlineControlComponentShuffles = input.getControlComponentShufflesPerBallotBoxId();
+		final ImmutableMap<String, SetupComponentTallyDataPayload> setupComponentTallyData = input.getSetupComponentTallyDataPerVerificationCardSetId();
 
 		// Cross-checks.
-		checkArgument(setupComponentTallyData.keySet().equals(new HashSet<>(vcs)),
+		checkArgument(setupComponentTallyData.keySet().equals(vcs.toImmutableSet()),
 				"The Setup Component Tally Data must correspond to the correct verification card set id.");
-		checkArgument(firstControlComponentBallotBoxes.keySet().equals(new HashSet<>(bb)),
+		checkArgument(firstControlComponentBallotBoxes.keySet().equals(bb.toImmutableSet()),
 				"The first control component ballot boxes and the control component shuffles must correspond to the correct ballot box ids.");
 		checkArgument(input.getElectionEventId().equals(ee),
 				"The input must have the correct election event id.");

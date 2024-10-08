@@ -15,17 +15,22 @@
  */
 package ch.post.it.evoting.verifier.backend.tools.path;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.nio.file.Path;
-import java.util.List;
+
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 
 public class PathNode {
 
-	private final List<Path> paths;
+	private final ImmutableList<Path> paths;
 	private final Path firstPath;
 
-	PathNode(final List<Path> path) {
-		this.paths = path;
-		this.firstPath = path.get(0);
+	PathNode(final ImmutableList<Path> paths) {
+		this.paths = checkNotNull(paths);
+		checkArgument(!paths.isEmpty(), "The list of paths cannot be empty.");
+		this.firstPath = paths.get(0);
 	}
 
 	/**
@@ -42,7 +47,7 @@ public class PathNode {
 	 *
 	 * @return The list of paths
 	 */
-	public List<Path> getRegexPaths() {
+	public ImmutableList<Path> getRegexPaths() {
 		return paths;
 	}
 
