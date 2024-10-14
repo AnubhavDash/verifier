@@ -1,5 +1,11 @@
 # Changelog
 
+## Release 1.5.4
+
+Release 1.5.4 incorporates the following change:
+
+* Updated dependencies and third-party libraries.
+
 ## Release 1.5.3.2
 
 Release 1.5.3.2 incorporates the following change:
