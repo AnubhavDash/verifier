@@ -15,16 +15,18 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
+import static com.google.common.collect.Sets.newHashSet;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -79,9 +81,9 @@ public class VerifyChunkConsistency extends AbstractVerification {
 
 		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.SETUP_VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
 
-		final ImmutableList<Function<PathNode, Boolean>> validations = ImmutableList.of(
-				this::validateControlComponentCodeSharesPayloads,
-				this::validateSetupComponentVerificationDataPayloads);
+		final List<Function<PathNode, Boolean>> validations = new ArrayList<>();
+		validations.add(this::validateControlComponentCodeSharesPayloads);
+		validations.add(this::validateSetupComponentVerificationDataPayloads);
 
 		final boolean isChunkIdsCoherent = validations.stream()
 				.parallel()
@@ -98,10 +100,10 @@ public class VerifyChunkConsistency extends AbstractVerification {
 	}
 
 	private boolean validateControlComponentCodeSharesPayloads(final PathNode verificationCardSets) {
-		final ImmutableList<ImmutableList<Path>> payloadsPerCardSet = verificationCardSets.getRegexPaths().stream()
+		final List<List<Path>> payloadsPerCardSet = verificationCardSets.getRegexPaths().stream()
 				.parallel()
 				.map(path -> pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_CODE_SHARES, path).getRegexPaths())
-				.collect(toImmutableList());
+				.toList();
 
 		// validate the monotony of sequence incrementation
 		final boolean isSequenceMonotonic = isSequenceMonotonic(payloadsPerCardSet);
@@ -109,7 +111,7 @@ public class VerifyChunkConsistency extends AbstractVerification {
 		// validate content of file match filename
 		final boolean doFileNameMatchContent = payloadsPerCardSet.stream()
 				.parallel()
-				.flatMap(ImmutableList::stream)
+				.flatMap(Collection::stream)
 				.allMatch(this::validateControlComponentCodeSharesPayloadContentMatchFileName);
 
 		return isSequenceMonotonic && doFileNameMatchContent;
@@ -123,17 +125,17 @@ public class VerifyChunkConsistency extends AbstractVerification {
 	}
 
 	private boolean validateSetupComponentVerificationDataPayloads(final PathNode verificationCardSets) {
-		final ImmutableList<ImmutableList<Path>> payloadsPerCardSet = verificationCardSets.getRegexPaths().stream()
+		final List<List<Path>> payloadsPerCardSet = verificationCardSets.getRegexPaths().stream()
 				.parallel()
 				.map(path -> pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA, path).getRegexPaths())
-				.collect(toImmutableList());
+				.toList();
 
 		// validate the monotony of sequence incrementation
 		final boolean isSequenceMonotonic = isSequenceMonotonic(payloadsPerCardSet);
 
 		// validate content of file match filename
 		final boolean doFileNameMatchContent = payloadsPerCardSet.stream()
-				.flatMap(ImmutableList::stream)
+				.flatMap(Collection::stream)
 				.parallel()
 				.allMatch(this::validateSetupComponentVerificationDataPayloadContentMatchFileName);
 
@@ -149,18 +151,18 @@ public class VerifyChunkConsistency extends AbstractVerification {
 	}
 
 	@VisibleForTesting
-	boolean isSequenceMonotonic(final ImmutableList<ImmutableList<Path>> payloadsPerCardSet) {
+	boolean isSequenceMonotonic(final List<List<Path>> payloadsPerCardSet) {
 		return payloadsPerCardSet.stream()
 				.parallel()
 				.allMatch(payloadPath -> {
-					final ImmutableList<Integer> chunkIds = payloadPath.stream()
+					final List<Integer> chunkIds = payloadPath.stream()
 							.map(path -> Integer.parseInt(path.getFileName().toString().split("\\.")[1]))
 							.sorted()
-							.collect(toImmutableList());
+							.toList();
 
 					if (!chunkIds.isEmpty()) {
 						return chunkIds.get(0) == 0 && chunkIds.get(chunkIds.size() - 1) == chunkIds.size() - 1 &&
-								chunkIds.toImmutableSet().size() == chunkIds.size();
+								newHashSet(chunkIds).size() == chunkIds.size();
 					}
 					return false;
 				});

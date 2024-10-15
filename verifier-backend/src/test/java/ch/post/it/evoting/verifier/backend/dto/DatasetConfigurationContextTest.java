@@ -18,13 +18,14 @@ package ch.post.it.evoting.verifier.backend.dto;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.Map;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.google.common.base.Throwables;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.cryptoprimitives.math.Base16Alphabet;
 import ch.post.it.evoting.cryptoprimitives.math.Random;
 import ch.post.it.evoting.cryptoprimitives.math.RandomFactory;
@@ -42,7 +43,7 @@ class DatasetConfigurationContextTest {
 		final String electionEventId = random.genRandomString(Constants.ID_LENGTH, Base16Alphabet.getInstance());
 		final String filename = String.format("dataset-context-%s.zip", electionEventId);
 		final String hash = "DC:D5:9D:15:4C:AB:F3:09:17:25:A1:55:F8:07:E6:DD:10:F5:F6:70:4D:28:5F:77:A9:79:BB:E1:0A:DD:D6:9C";
-		final ImmutableMap<String, String> aliasesToFingerprints = ImmutableMap.of(
+		final Map<String, String> aliasesToFingerprints = Map.of(
 				"Canton", "F0:C1:0E:F1:AD:67:95:7D:C1:80:4B:F8:81:51:12:70:F1:2A:98:9C:01:61:34:F3:3D:8A:C3:CF:C9:01:6B:0A",
 				"Setup Component", "28:8B:B6:3A:1E:17:05:0D:51:03:C8:47:F4:53:E5:04:6D:3F:CC:4E:09:BE:7D:12:B0:D9:26:6A:F5:59:DE:25",
 				"Tally Control Component", "E7:0E:D2:94:B5:72:5A:4E:31:6A:12:7C:A5:3E:00:64:54:6B:19:6E:BF:C0:23:B6:0D:8B:C3:31:AD:03:47:B0"
@@ -132,7 +133,7 @@ class DatasetConfigurationContextTest {
 	@Test
 	@DisplayName("empty aliases to fingerprints throws IllegalArgumentException")
 	void emptyAliasesToFingerprintsThrows() {
-		final ImmutableMap<String, String> emptyAliasesToFingerprints = ImmutableMap.emptyMap();
+		final Map<String, String> emptyAliasesToFingerprints = Map.of();
 		builder.setAliasesToFingerprints(emptyAliasesToFingerprints);
 
 		final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, builder::build);
@@ -204,7 +205,7 @@ class DatasetConfigurationContextTest {
 	@DisplayName("negative total number of authorized test voters throws IllegalArgumentException")
 	void negativeTotalNumberOfAuthorizedTestVotersThrows() {
 		builder.setTotalNumberOfTestVoters(-2);
-
+		
 		final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, builder::build);
 
 		assertEquals("The total number of test voters must be positive.", Throwables.getRootCause(exception).getMessage());

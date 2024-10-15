@@ -15,17 +15,22 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.authenticity;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
 import java.nio.file.Path;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
+import java.security.cert.CertificateException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.signing.SignatureGeneration;
+import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
 import ch.post.it.evoting.evotinglibraries.domain.signature.CryptoPrimitivesSignature;
@@ -35,9 +40,10 @@ import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerification
 class VerifySignatureControlComponentBallotBoxTest extends TallyVerificationTest {
 
 	@BeforeEach
-	void setUpAll() {
+	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
+		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
 		verification = new VerifySignatureControlComponentBallotBox(resultPublisherServiceMock, electionDataExtractionService,
-				datasetSignatureVerification);
+				testSignatureVerification);
 	}
 
 	@Test
@@ -46,29 +52,28 @@ class VerifySignatureControlComponentBallotBoxTest extends TallyVerificationTest
 	}
 
 	@Test
-	void testOK() {
+	void testExpectedSignerSuccess() throws SignatureException {
 		final ControlComponentBallotBoxPayload controlComponentBallotBoxPayload = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
-				datasetPath)
-				.collect(toImmutableList())
-				.get(0);
-
+				datasetPath).toList().get(0);
+		final int nodeId = controlComponentBallotBoxPayload.getNodeId();
+		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.getControlComponentByNodeId(nodeId));
+		final byte[] signature = testSignatureGeneration.genSignature(controlComponentBallotBoxPayload,
+				ChannelSecurityContextData.controlComponentBallotBox(nodeId, controlComponentBallotBoxPayload.getElectionEventId(),
+						controlComponentBallotBoxPayload.getBallotBoxId()));
+		controlComponentBallotBoxPayload.setSignature(new CryptoPrimitivesSignature(signature));
 		assertTrue(((VerifySignatureControlComponentBallotBox) verification).verifySignature(controlComponentBallotBoxPayload));
 	}
 
 	@Test
-	void testNOK() throws SignatureException {
+	void testUnexpectedSignerFails() throws SignatureException {
 		final ControlComponentBallotBoxPayload controlComponentBallotBoxPayload = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
-				datasetPath)
-				.collect(toImmutableList())
-				.get(0);
-
+				datasetPath).toList().get(0);
 		final int nodeId = controlComponentBallotBoxPayload.getNodeId();
-		final CryptoPrimitivesSignature dummySignature = datasetSignatureFactory.getDummySignature(controlComponentBallotBoxPayload,
+		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.VOTING_SERVER);
+		final byte[] wrongSignature = testSignatureGeneration.genSignature(controlComponentBallotBoxPayload,
 				ChannelSecurityContextData.controlComponentBallotBox(nodeId, controlComponentBallotBoxPayload.getElectionEventId(),
-						controlComponentBallotBoxPayload.getBallotBoxId()),
-				Alias.getControlComponentByNodeId(nodeId));
-		controlComponentBallotBoxPayload.setSignature(dummySignature);
-
+						controlComponentBallotBoxPayload.getBallotBoxId()));
+		controlComponentBallotBoxPayload.setSignature(new CryptoPrimitivesSignature(wrongSignature));
 		assertFalse(((VerifySignatureControlComponentBallotBox) verification).verifySignature(controlComponentBallotBoxPayload));
 	}
 }

@@ -19,12 +19,18 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
 import java.nio.file.Path;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
+import java.security.cert.CertificateException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.signing.SignatureGeneration;
+import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
 import ch.post.it.evoting.evotinglibraries.domain.signature.CryptoPrimitivesSignature;
@@ -34,8 +40,9 @@ import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerification
 class VerifySignatureTallyComponentVotesTest extends TallyVerificationTest {
 
 	@BeforeEach
-	void setUpAll() {
-		verification = new VerifySignatureTallyComponentVotes(resultPublisherServiceMock, electionDataExtractionService, datasetSignatureVerification);
+	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
+		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
+		verification = new VerifySignatureTallyComponentVotes(resultPublisherServiceMock, electionDataExtractionService, testSignatureVerification);
 	}
 
 	@Test
@@ -44,26 +51,26 @@ class VerifySignatureTallyComponentVotesTest extends TallyVerificationTest {
 	}
 
 	@Test
-	void testOK() {
+	void testExpectedSignerSuccess() throws SignatureException {
 		final TallyComponentVotesPayload tallyComponentVotesPayload = electionDataExtractionService.getTallyComponentVotesPayloads(datasetPath)
-				.findFirst()
-				.orElseThrow();
-
+				.findFirst().orElseThrow();
+		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_TALLY);
+		final byte[] signature = testSignatureGeneration.genSignature(tallyComponentVotesPayload,
+				ChannelSecurityContextData.tallyComponentVotes(tallyComponentVotesPayload.getElectionEventId(),
+						tallyComponentVotesPayload.getBallotBoxId()));
+		tallyComponentVotesPayload.setSignature(new CryptoPrimitivesSignature(signature));
 		assertTrue(((VerifySignatureTallyComponentVotes) verification).verifySignature(tallyComponentVotesPayload));
 	}
 
 	@Test
-	void testNOK() throws SignatureException {
+	void testUnexpectedSignerFails() throws SignatureException {
 		final TallyComponentVotesPayload tallyComponentVotesPayload = electionDataExtractionService.getTallyComponentVotesPayloads(datasetPath)
-				.findFirst()
-				.orElseThrow();
-
-		final CryptoPrimitivesSignature dummySignature = datasetSignatureFactory.getDummySignature(tallyComponentVotesPayload,
+				.findFirst().orElseThrow();
+		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_CONFIG);
+		final byte[] wrongSignature = testSignatureGeneration.genSignature(tallyComponentVotesPayload,
 				ChannelSecurityContextData.tallyComponentVotes(tallyComponentVotesPayload.getElectionEventId(),
-						tallyComponentVotesPayload.getBallotBoxId()),
-				Alias.SDM_TALLY);
-		tallyComponentVotesPayload.setSignature(dummySignature);
-
+						tallyComponentVotesPayload.getBallotBoxId()));
+		tallyComponentVotesPayload.setSignature(new CryptoPrimitivesSignature(wrongSignature));
 		assertFalse(((VerifySignatureTallyComponentVotes) verification).verifySignature(tallyComponentVotesPayload));
 	}
 }

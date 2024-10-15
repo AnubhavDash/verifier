@@ -20,12 +20,18 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
 import java.nio.file.Path;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
+import java.security.cert.CertificateException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.signing.SignatureGeneration;
+import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
@@ -35,9 +41,10 @@ import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerification
 class VerifySignatureElectionEventContextTest extends SetupVerificationTest {
 
 	@BeforeEach
-	void setUpAll() {
+	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
+		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
 		verification = new VerifySignatureElectionEventContext(resultPublisherServiceMock, electionDataExtractionService,
-				datasetSignatureVerification);
+				testSignatureVerification);
 	}
 
 	@Test
@@ -46,21 +53,24 @@ class VerifySignatureElectionEventContextTest extends SetupVerificationTest {
 	}
 
 	@Test
-	void testOK() {
+	void testExpectedSignerSuccess() throws SignatureException {
 		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(datasetPath);
-
+		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_CONFIG);
+		final byte[] signature = testSignatureGeneration.genSignature(electionEventContextPayload,
+				ChannelSecurityContextData.electionEventContext(electionEventContextPayload.getElectionEventContext().electionEventId()));
+		electionEventContextPayload.setSignature(new CryptoPrimitivesSignature(signature));
 		assertTrue(((VerifySignatureElectionEventContext) verification).verifySignature(electionEventContextPayload));
 	}
 
 	@Test
-	void testNOK() throws SignatureException {
+	void testUnexpectedSignerFails() throws SignatureException {
 		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(datasetPath);
-
-		final CryptoPrimitivesSignature dummySignature = datasetSignatureFactory.getDummySignature(electionEventContextPayload,
-				ChannelSecurityContextData.electionEventContext(electionEventContextPayload.getElectionEventContext().electionEventId()),
-				Alias.SDM_CONFIG);
-		electionEventContextPayload.setSignature(dummySignature);
-
+		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.CONTROL_COMPONENT_1);
+		final byte[] wrongSignature = testSignatureGeneration.genSignature(electionEventContextPayload,
+				ChannelSecurityContextData.electionEventContext(electionEventContextPayload.getElectionEventContext().electionEventId()));
+		electionEventContextPayload.setSignature(new CryptoPrimitivesSignature(wrongSignature));
 		assertFalse(((VerifySignatureElectionEventContext) verification).verifySignature(electionEventContextPayload));
+
 	}
+
 }

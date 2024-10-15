@@ -19,11 +19,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.domain.election.ControlComponentPublicKeys;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
@@ -51,7 +52,7 @@ class VerifyCCRChoiceReturnCodesPublicKeyConsistencyTest extends SetupVerificati
 	@Test
 	@DisplayName("inconsistent pk_CCR_j fails.")
 	void inconsistentCcrChoiceReturnCodesPublicKeys() {
-		final ImmutableList<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = electionDataExtractionService.getControlComponentPublicKeysPayloads(
+		final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = electionDataExtractionService.getControlComponentPublicKeysPayloads(
 				datasetPath);
 		final ControlComponentPublicKeysPayload controlComponentPublicKeysPayload3 = controlComponentPublicKeysPayloads.get(3);
 		final ControlComponentPublicKeys controlComponentPublicKeys = controlComponentPublicKeysPayload3.getControlComponentPublicKeys();
@@ -66,7 +67,7 @@ class VerifyCCRChoiceReturnCodesPublicKeyConsistencyTest extends SetupVerificati
 				modifiedControlComponentPublicKeys);
 
 		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-		doReturn(ImmutableList.of(controlComponentPublicKeysPayloads.get(0), controlComponentPublicKeysPayloads.get(1),
+		doReturn(List.of(controlComponentPublicKeysPayloads.get(0), controlComponentPublicKeysPayloads.get(1),
 				controlComponentPublicKeysPayloads.get(2), modifiedControlComponentPublicKeysPayload3))
 				.when(extractionServiceMock).getControlComponentPublicKeysPayloads(datasetPath);
 

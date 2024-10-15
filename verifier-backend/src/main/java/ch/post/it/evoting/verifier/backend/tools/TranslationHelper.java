@@ -15,14 +15,15 @@
  */
 package ch.post.it.evoting.verifier.backend.tools;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap.toImmutableMap;
-
 import java.text.MessageFormat;
+import java.util.AbstractMap;
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.verifier.backend.Language;
 
 public class TranslationHelper {
@@ -33,30 +34,34 @@ public class TranslationHelper {
 		//only static usage
 	}
 
-	public static ImmutableMap<Language, String> getFromResourceBundle(final String resourceBundleName, final String key) {
-		return Arrays.stream(Language.values())
-				.collect(toImmutableMap(lang -> lang, lang -> getFromResourceBundle(resourceBundleName, key, lang.getLocale())));
+	public static Map<Language, String> getFromResourceBundle(String resourceBundleName, String key) {
+		Map<Language, String> result = new EnumMap<>(Language.class);
+		Arrays.stream(Language.values()).forEach(lang -> result.put(lang, getFromResourceBundle(resourceBundleName, key, lang.getLocale())));
+		return result;
 	}
 
-	public static ImmutableMap<Language, String> getFromResourceBundle(final String resourceBundleName, final String key, final String... args) {
-		return Arrays.stream(Language.values())
-				.collect(toImmutableMap(
-						lang -> lang,
-						lang -> {
-							synchronized (formatter) {
-								formatter.applyPattern(getFromResourceBundle(resourceBundleName, key, lang.getLocale()));
-								return formatter.format(args);
-							}
-						}
-				));
+	public static Map<Language, String> getFromResourceBundle(String resourceBundleName, String key, String... args) {
+		Map<Language, String> result = new EnumMap<>(Language.class);
+		Arrays.stream(Language.values())
+				.forEach(lang -> {
+					synchronized (formatter) {
+						formatter.applyPattern(getFromResourceBundle(resourceBundleName, key, lang.getLocale()));
+						result.put(lang, formatter.format(args));
+					}
+				});
+		return result;
 	}
 
-	public static String getFromResourceBundle(final String resourceBundleName, final String key, final Locale locale) {
+	public static String getFromResourceBundle(String resourceBundleName, String key, Locale locale) {
 		return ResourceBundle.getBundle(resourceBundleName, locale).getString(key);
 	}
 
-	public static String getFromResourceBundle(final String resourceBundleName, final String key, final Locale locale, final String... args) {
+	public static String getFromResourceBundle(String resourceBundleName, String key, Locale locale, String... args) {
 		return MessageFormat.format(ResourceBundle.getBundle(resourceBundleName, locale).getString(key), (Object[]) args);
 	}
 
+	public static Map<Language, String> getSameMessageMultiLanguage(String message) {
+		return Arrays.stream(Language.values()).map(l -> new AbstractMap.SimpleEntry<>(l, message == null ? "" : message))
+				.collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+	}
 }

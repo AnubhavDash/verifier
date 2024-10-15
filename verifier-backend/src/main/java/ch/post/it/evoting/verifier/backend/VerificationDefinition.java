@@ -16,11 +16,9 @@
 package ch.post.it.evoting.verifier.backend;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet;
 
 public class VerificationDefinition {
 
@@ -30,13 +28,13 @@ public class VerificationDefinition {
 	private String block;
 	private String name;
 	private Category category;
-	private ImmutableMap<Language, String> description;
+	private Map<Language, String> description;
 
 	public String getId() {
 		return id;
 	}
 
-	public void setId(final String id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -44,7 +42,7 @@ public class VerificationDefinition {
 		return block;
 	}
 
-	public void setBlock(final String block) {
+	public void setBlock(String block) {
 		this.block = block;
 	}
 
@@ -52,7 +50,7 @@ public class VerificationDefinition {
 		return name;
 	}
 
-	public void setName(final String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -60,23 +58,23 @@ public class VerificationDefinition {
 		return category;
 	}
 
-	public void setCategory(final Category category) {
+	public void setCategory(Category category) {
 		this.category = category;
 	}
 
-	public void addVerifierEvent(final String event) {
+	public void addVerifierEvent(String event) {
 		this.verifierEvents.add(event);
 	}
 
-	public ImmutableSet<String> getVerifierEvents() {
-		return ImmutableSet.from(this.verifierEvents);
+	public Set<String> getVerifierEvents() {
+		return this.verifierEvents;
 	}
 
-	public ImmutableMap<Language, String> getDescription() {
+	public Map<Language, String> getDescription() {
 		return description;
 	}
 
-	public void setDescription(final ImmutableMap<Language, String> description) {
+	public void setDescription(Map<Language, String> description) {
 		this.description = description;
 	}
 
@@ -93,7 +91,7 @@ public class VerificationDefinition {
 			return false;
 		}
 		final VerificationDefinition that = (VerificationDefinition) o;
-		return id.equals(that.id) && block.equals(that.block) && Objects.equals(name, that.name)
+		return id == that.id && block.equals(that.block) && Objects.equals(name, that.name)
 				&& category == that.category && Objects.equals(verifierEvents, that.verifierEvents) && Objects.equals(
 				description, that.description);
 	}

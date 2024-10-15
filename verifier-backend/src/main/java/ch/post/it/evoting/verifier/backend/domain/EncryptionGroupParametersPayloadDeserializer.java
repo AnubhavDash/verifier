@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class EncryptionGroupParametersPayloadDeserializer extends JsonDeserializer<EncryptionGroupParametersPayload> {
 	@Override
-	public EncryptionGroupParametersPayload deserialize(final JsonParser parser, final DeserializationContext deserializationContext) throws IOException {
+	public EncryptionGroupParametersPayload deserialize(JsonParser parser, DeserializationContext deserializationContext) throws IOException {
 		final ObjectMapper mapper = new ObjectMapper();
 
 		final JsonNode node = mapper.readTree(parser);

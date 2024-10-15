@@ -20,11 +20,11 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientMessage;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
@@ -66,8 +66,8 @@ public class VerifyTallyControlComponentBallotBoxInput {
 	private final VerifiableShuffle tallyComponentsShuffle;
 	private final VerifiablePlaintextDecryption verifiablePlaintextDecryption;
 	private final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> selectedEncodedVotingOptions;
-	private final ImmutableList<ImmutableList<String>> selectedDecodedVotingOptions;
-	private final ImmutableList<ImmutableList<String>> selectedDecodedWriteInVotes;
+	private final List<List<String>> selectedDecodedVotingOptions;
+	private final List<List<String>> selectedDecodedWriteInVotes;
 
 	public VerifyTallyControlComponentBallotBoxInput(final ControlComponentShufflePayload lastControlComponentShufflePayload, final
 	TallyComponentShufflePayload tallyComponentShufflePayload, final TallyComponentVotesPayload tallyComponentVotesPaylaod) {
@@ -116,7 +116,7 @@ public class VerifyTallyControlComponentBallotBoxInput {
 		checkArgument(selectedDecodedWriteInVotes.size() == selectedEncodedVotingOptions.size(),
 				"There must be as many decoded write-in votes as encoded voting options.");
 
-		checkArgument(allEqual(selectedDecodedVotingOptions.stream(), ImmutableList::size),
+		checkArgument(allEqual(selectedDecodedVotingOptions.stream(), List::size),
 				"All selected decoded voting options must have the same size.");
 		checkArgument(selectedDecodedVotingOptions.isEmpty()
 						|| selectedEncodedVotingOptions.getElementSize() == selectedDecodedVotingOptions.get(0).size(),
@@ -162,11 +162,15 @@ public class VerifyTallyControlComponentBallotBoxInput {
 		return selectedEncodedVotingOptions;
 	}
 
-	public ImmutableList<ImmutableList<String>> getSelectedDecodedVotingOptions() {
-		return selectedDecodedVotingOptions;
+	public List<List<String>> getSelectedDecodedVotingOptions() {
+		return selectedDecodedVotingOptions.stream()
+				.map(List::copyOf)
+				.toList();
 	}
 
-	public ImmutableList<ImmutableList<String>> getSelectedDecodedWriteInVotes() {
-		return selectedDecodedWriteInVotes;
+	public List<List<String>> getSelectedDecodedWriteInVotes() {
+		return selectedDecodedWriteInVotes.stream()
+				.map(List::copyOf)
+				.toList();
 	}
 }

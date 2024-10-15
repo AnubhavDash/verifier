@@ -31,7 +31,6 @@ import com.google.common.collect.MoreCollectors;
 
 import ch.ech.xmlns.ech_0155._4.ExtensionType;
 import ch.ech.xmlns.ech_0222._1.Delivery;
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
@@ -52,17 +51,14 @@ public class VerifySignatureTallyComponentEch0222 extends AbstractVerification {
 
 	private final ElectionDataExtractionService electionDataExtractionService;
 	private final SignatureVerification signatureVerification;
-	private final ObjectMapper objectMapper;
 
 	protected VerifySignatureTallyComponentEch0222(
 			final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService electionDataExtractionService,
-			final SignatureVerification signatureVerification,
-			final ObjectMapper objectMapper) {
+			final SignatureVerification signatureVerification) {
 		super(resultPublisherService);
 		this.electionDataExtractionService = electionDataExtractionService;
 		this.signatureVerification = signatureVerification;
-		this.objectMapper = objectMapper;
 	}
 
 	@Override
@@ -112,9 +108,9 @@ public class VerifySignatureTallyComponentEch0222 extends AbstractVerification {
 		checkState(signatureContent != null, "The signature of the tally component eCH-0222 file is null.");
 		checkState(!signatureContent.isBlank(), "The signature of the tally component eCH-0222 file is blank.");
 
-		final ImmutableByteArray signature;
+		final byte[] signature;
 		try {
-			signature = objectMapper.readValue(String.format("\"%s\"", signatureContent), ImmutableByteArray.class);
+			signature = new ObjectMapper().readValue(String.format("\"%s\"", signatureContent), byte[].class);
 		} catch (final JsonProcessingException e) {
 			throw new UncheckedIOException("Could not deserialize signature.", e);
 		}

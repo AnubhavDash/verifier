@@ -15,14 +15,15 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 
+import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
 import static ch.post.it.evoting.evotinglibraries.domain.VotingOptionsConstants.MAXIMUM_SUPPORTED_NUMBER_OF_VOTING_OPTIONS;
 import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.validateUUID;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import java.util.List;
+
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
-import ch.post.it.evoting.evotinglibraries.domain.ControlComponentNode;
 import ch.post.it.evoting.evotinglibraries.domain.validations.Validations;
 
 /**
@@ -42,11 +43,11 @@ public class VerifyEncryptedExponentiationProofsVerificationCardSetContext {
 	private final GqGroup encryptionGroup;
 	private final int j;
 	private final String electionEventId;
-	private final ImmutableList<String> verificationCardIds;
+	private final List<String> verificationCardIds;
 	private final int numberOfVotingOptions;
 
 	private VerifyEncryptedExponentiationProofsVerificationCardSetContext(final GqGroup encryptionGroup, final int j, final String electionEventId,
-			final ImmutableList<String> verificationCardIds, final int numberOfVotingOptions) {
+			final List<String> verificationCardIds, final int numberOfVotingOptions) {
 		this.encryptionGroup = encryptionGroup;
 		this.j = j;
 		this.electionEventId = electionEventId;
@@ -66,8 +67,8 @@ public class VerifyEncryptedExponentiationProofsVerificationCardSetContext {
 		return electionEventId;
 	}
 
-	public ImmutableList<String> getVerificationCardIds() {
-		return verificationCardIds;
+	public List<String> getVerificationCardIds() {
+		return List.copyOf(verificationCardIds);
 	}
 
 	public int getNumberOfVotingOptions() {
@@ -82,7 +83,7 @@ public class VerifyEncryptedExponentiationProofsVerificationCardSetContext {
 		private GqGroup encryptionGroup;
 		private int j;
 		private String electionEventId;
-		private ImmutableList<String> verificationCardIds;
+		private List<String> verificationCardIds;
 		private int numberOfVotingOptions;
 
 		public Builder setEncryptionGroup(final GqGroup encryptionGroup) {
@@ -100,7 +101,7 @@ public class VerifyEncryptedExponentiationProofsVerificationCardSetContext {
 			return this;
 		}
 
-		public Builder setVerificationCardIds(final ImmutableList<String> verificationCardIds) {
+		public Builder setVerificationCardIds(final List<String> verificationCardIds) {
 			this.verificationCardIds = verificationCardIds;
 			return this;
 		}
@@ -115,7 +116,7 @@ public class VerifyEncryptedExponentiationProofsVerificationCardSetContext {
 			validateUUID(electionEventId);
 			checkNotNull(verificationCardIds).forEach(Validations::validateUUID);
 
-			checkArgument(ControlComponentNode.ids().contains(j), "The CCR's index must be in the range [1, 4]. [j: %s]", j);
+			checkArgument(NODE_IDS.contains(j), "The CCR's index must be in the range [1, 4]. [j: %s]", j);
 			checkArgument(numberOfVotingOptions > 0, "The number of voting options must be strictly positive. [n: %s]", numberOfVotingOptions);
 			checkArgument(numberOfVotingOptions <= MAXIMUM_SUPPORTED_NUMBER_OF_VOTING_OPTIONS,
 					"The number of voting options must be smaller or equal to the maximum supported number of voting options. [n: %s, n_sup: %s]",

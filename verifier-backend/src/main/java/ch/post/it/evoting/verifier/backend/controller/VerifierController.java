@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +35,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.verifier.backend.dto.DatasetConfiguration;
 import ch.post.it.evoting.verifier.backend.dto.Verification;
 import ch.post.it.evoting.verifier.backend.processor.VerifierProcessor;
@@ -60,22 +60,22 @@ public class VerifierController {
 
 	@PostMapping("/clean")
 	public void clean() {
-		processor.clean();
+		this.processor.clean();
 	}
 
 	@PostMapping("/reset")
 	public void reset() {
-		processor.resetExecution();
+		this.processor.resetExecution();
 	}
 
 	@PostMapping("/changeMode")
 	public void changeMode() {
-		processor.cleanSetupTally();
+		this.processor.cleanSetupTally();
 	}
 
 	@GetMapping(value = "/datasetConfiguration")
 	public DatasetConfiguration getDatasetConfiguration() {
-		return processor.getDatasetConfiguration();
+		return this.processor.getDatasetConfiguration();
 	}
 
 	@PostMapping("/dataset/{datasetType}")
@@ -90,7 +90,7 @@ public class VerifierController {
 
 		try {
 			temporaryDataset = createTemporaryDataset(file);
-			processor.setDataset(file.getOriginalFilename(), datasetType, temporaryDataset);
+			this.processor.setDataset(file.getOriginalFilename(), datasetType, temporaryDataset);
 		} catch (final DatasetExtractionException e) {
 			LOGGER.error("An error occurred while uploading the dataset. [datasetType: {}]", datasetType, e);
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -104,8 +104,8 @@ public class VerifierController {
 	}
 
 	@GetMapping("/verifications")
-	public ImmutableList<Verification> getTestStatus() {
-		return processor.getVerifications();
+	public List<Verification> getTestStatus() {
+		return this.processor.getVerifications();
 	}
 
 	@PostMapping("/verifications")
@@ -113,7 +113,7 @@ public class VerifierController {
 			@RequestParam()
 			final String runOptions) {
 		try {
-			processor.process(runOptions);
+			this.processor.process(runOptions);
 		} catch (final IllegalArgumentException e) {
 			LOGGER.error("Unable to process the verifications", e);
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

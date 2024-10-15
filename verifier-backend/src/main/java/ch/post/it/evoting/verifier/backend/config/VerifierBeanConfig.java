@@ -30,6 +30,7 @@ import org.springframework.context.annotation.Primary;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ch.ech.xmlns.ech_0110._4.Delivery;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
 import ch.post.it.evoting.cryptoprimitives.hashing.Argon2;
@@ -65,6 +66,7 @@ import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixonline.GetMixnetInitialCiphertextsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
 import ch.post.it.evoting.evotinglibraries.xml.XmlNormalizer;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.verifier.backend.tools.KeystoreRepository;
 import ch.post.it.evoting.verifier.backend.verifications.setup.consistency.VerifyPrimesMappingTableConsistencyAlgorithm;
 
@@ -215,7 +217,17 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
+	XmlFileRepository<Delivery> deliveryXmlFileRepository() {
+		return new XmlFileRepository<>();
+	}
+
+	@Bean
 	XmlFileRepository<ch.ech.xmlns.ech_0222._1.Delivery> ech0222DeliveryXmlFileRepository() {
+		return new XmlFileRepository<>();
+	}
+
+	@Bean
+	XmlFileRepository<Results> resultsXmlFileRepository() {
 		return new XmlFileRepository<>();
 	}
 

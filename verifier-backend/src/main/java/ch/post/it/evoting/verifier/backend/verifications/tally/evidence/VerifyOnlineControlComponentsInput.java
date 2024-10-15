@@ -15,20 +15,19 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap.toImmutableMap;
 import static ch.post.it.evoting.cryptoprimitives.utils.Validations.allEqual;
+import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
-import ch.post.it.evoting.evotinglibraries.domain.ControlComponentNode;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
@@ -46,32 +45,32 @@ import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBo
  */
 public class VerifyOnlineControlComponentsInput {
 
-	private final ImmutableMap<String, ControlComponentBallotBoxPayload> firstControlComponentBallotBoxesPerBallotBoxId;
-	private final ImmutableMap<String, ImmutableList<ControlComponentShufflePayload>> controlComponentShufflesPerBallotBoxId;
-	private final ImmutableMap<String, SetupComponentTallyDataPayload> setupComponentTallyDataPerVerificationCardSetId;
+	private final Map<String, ControlComponentBallotBoxPayload> firstControlComponentBallotBoxesPerBallotBoxId;
+	private final Map<String, List<ControlComponentShufflePayload>> controlComponentShufflesPerBallotBoxId;
+	private final Map<String, SetupComponentTallyDataPayload> setupComponentTallyDataPerVerificationCardSetId;
 
 	public VerifyOnlineControlComponentsInput(final Stream<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads,
 			final Stream<ControlComponentShufflePayload> controlComponentShufflePayloads,
 			final Stream<SetupComponentTallyDataPayload> setupComponentTallyDataPayloads) {
 		this.firstControlComponentBallotBoxesPerBallotBoxId = checkNotNull(controlComponentBallotBoxPayloads)
-				.filter(controlComponentBallotBoxPayload ->
-						controlComponentBallotBoxPayload.getNodeId() == ControlComponentNode.ids().stream().sorted().collect(toImmutableList())
-								.get(0))
-				.collect(toImmutableMap(ControlComponentBallotBoxPayload::getBallotBoxId, Function.identity()));
-		this.controlComponentShufflesPerBallotBoxId = ImmutableMap.from(checkNotNull(controlComponentShufflePayloads)
 				.parallel()
-				.collect(Collectors.groupingBy(ControlComponentShufflePayload::getBallotBoxId, toImmutableList())));
+				.filter(controlComponentBallotBoxPayload -> controlComponentBallotBoxPayload.getNodeId() == NODE_IDS.first())
+				.collect(Collectors.toConcurrentMap(ControlComponentBallotBoxPayload::getBallotBoxId, Function.identity()));
+		this.controlComponentShufflesPerBallotBoxId = checkNotNull(controlComponentShufflePayloads)
+				.parallel()
+				.collect(Collectors.groupingByConcurrent(ControlComponentShufflePayload::getBallotBoxId, Collectors.toUnmodifiableList()));
 		this.setupComponentTallyDataPerVerificationCardSetId = checkNotNull(setupComponentTallyDataPayloads)
-				.collect(toImmutableMap(SetupComponentTallyDataPayload::getVerificationCardSetId, Function.identity()));
+				.parallel()
+				.collect(Collectors.toConcurrentMap(SetupComponentTallyDataPayload::getVerificationCardSetId, Function.identity()));
 
 		checkArgument(firstControlComponentBallotBoxesPerBallotBoxId.keySet().equals(controlComponentShufflesPerBallotBoxId.keySet()),
 				"The first control component ballot boxes and control component shuffles must correspond to the same ballot box ids.");
-		checkArgument(!firstControlComponentBallotBoxesPerBallotBoxId.isEmpty(),
+		checkArgument(firstControlComponentBallotBoxesPerBallotBoxId.size() != 0,
 				"There must be at least one control component ballot boxes and control component shuffles.");
 		checkArgument(allEqual(
 						Stream.of(
 										firstControlComponentBallotBoxesPerBallotBoxId.values().stream().map(ControlComponentBallotBoxPayload::getElectionEventId),
-										controlComponentShufflesPerBallotBoxId.values().stream().flatMap(ImmutableList::stream)
+										controlComponentShufflesPerBallotBoxId.values().stream().flatMap(Collection::stream)
 												.map(ControlComponentShufflePayload::getElectionEventId),
 										setupComponentTallyDataPerVerificationCardSetId.values().stream().map(SetupComponentTallyDataPayload::getElectionEventId))
 								.flatMap(Function.identity()),
@@ -79,15 +78,15 @@ public class VerifyOnlineControlComponentsInput {
 				"The first control component ballot boxes, the control component shuffles and the setup component tally data must correspond to the same election event id.");
 	}
 
-	public ImmutableMap<String, ControlComponentBallotBoxPayload> getFirstControlComponentBallotBoxesPerBallotBoxId() {
+	public Map<String, ControlComponentBallotBoxPayload> getFirstControlComponentBallotBoxesPerBallotBoxId() {
 		return firstControlComponentBallotBoxesPerBallotBoxId;
 	}
 
-	public ImmutableMap<String, ImmutableList<ControlComponentShufflePayload>> getControlComponentShufflesPerBallotBoxId() {
+	public Map<String, List<ControlComponentShufflePayload>> getControlComponentShufflesPerBallotBoxId() {
 		return controlComponentShufflesPerBallotBoxId;
 	}
 
-	public ImmutableMap<String, SetupComponentTallyDataPayload> getSetupComponentTallyDataPerVerificationCardSetId() {
+	public Map<String, SetupComponentTallyDataPayload> getSetupComponentTallyDataPerVerificationCardSetId() {
 		return setupComponentTallyDataPerVerificationCardSetId;
 	}
 

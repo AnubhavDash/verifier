@@ -15,16 +15,16 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet.toImmutableSet;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import java.nio.file.Path;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -85,50 +85,49 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 		}
 	}
 
-	private ImmutableList<PayloadsVerificationCardSetIds> extractVerificationCardSetIds(final Path inputDirectoryPath) {
+	private List<PayloadsVerificationCardSetIds> extractVerificationCardSetIds(final Path inputDirectoryPath) {
 
-		final ImmutableList<Path> contextVerificationCardSetPaths = electionDataExtractionService.getContextVerificationCardSetPaths(
-				inputDirectoryPath);
+		final List<Path> contextVerificationCardSetPaths = electionDataExtractionService.getContextVerificationCardSetPaths(inputDirectoryPath);
 
 		return electionDataExtractionService.getSetupVerificationCardSetPaths(inputDirectoryPath).stream()
 				.parallel()
 				.map(verificationCardSetIdPath -> {
 
 					final String vcsId = verificationCardSetIdPath.getFileName().toString();
-					final ImmutableSet<String> verificationCardSetId = ImmutableSet.of(vcsId);
+					final Set<String> verificationCardSetId = Set.of(vcsId);
 
-					final ImmutableSet<String> verificationDataIds = electionDataExtractionService.getSetupComponentVerificationDataPayloadsDataExtractionsSortedByChunkId(
+					final Set<String> verificationDataIds = electionDataExtractionService.getSetupComponentVerificationDataPayloadsDataExtractionsSortedByChunkId(
 									verificationCardSetIdPath)
 							.map(SetupComponentVerificationDataPayloadDataExtractor.DataExtraction::verificationCardSetId)
-							.collect(toImmutableSet());
+							.collect(Collectors.toUnmodifiableSet());
 
 					checkArgument(verificationDataIds.size() == 1, "The setup component verification card set id size must be one.");
 
-					final ImmutableSet<String> codeShareIds = electionDataExtractionService.getControlComponentCodeSharesPayloadsDataExtractions(
+					final Set<String> codeShareIds = electionDataExtractionService.getControlComponentCodeSharesPayloadsDataExtractions(
 									verificationCardSetIdPath)
 							.map(ControlComponentCodeSharesPayloadDataExtractor.DataExtraction::verificationCardSetIds)
-							.flatMap(ImmutableList::stream)
-							.collect(toImmutableSet());
+							.flatMap(Collection::stream)
+							.collect(Collectors.toUnmodifiableSet());
 
 					checkArgument(codeShareIds.size() == 1, "The control component code shares verification card set id size must be one.");
 
-					final ImmutableSet<String> tallyIds = contextVerificationCardSetPaths.stream()
+					final Set<String> tallyIds = contextVerificationCardSetPaths.stream()
 							.parallel()
 							.filter(vcsPath -> vcsPath.getFileName().toString().equals(vcsId))
 							.flatMap(electionDataExtractionService::getSetupComponentTallyDataPayloadsDataExtractions)
 							.map(SetupComponentTallyDataPayloadDataExtractor.DataExtraction::verificationCardSetId)
-							.collect(toImmutableSet());
+							.collect(Collectors.toUnmodifiableSet());
 
 					checkArgument(tallyIds.size() == 1, "The setup component tally verification card set id size must be one.");
 
 					return new PayloadsVerificationCardSetIds(verificationCardSetId, verificationDataIds, codeShareIds, tallyIds);
 
 				})
-				.collect(toImmutableList());
+				.toList();
 	}
 
-	private record PayloadsVerificationCardSetIds(ImmutableSet<String> verificationCardSetId, ImmutableSet<String> verificationDataIds,
-												  ImmutableSet<String> codeShareIds, ImmutableSet<String> tallyIds) {
+	private record PayloadsVerificationCardSetIds(Set<String> verificationCardSetId, Set<String> verificationDataIds, Set<String> codeShareIds,
+												  Set<String> tallyIds) {
 	}
 
 }

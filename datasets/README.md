@@ -6,15 +6,15 @@ The Verifier has three different datasets: context, setup and tally.
 
 ### Context dataset
 
-The following table shows the contents of the context dataset and the schemas that describe their structures.
+The following table shows the contents of the context dataset.
 
-| Description                          | Path                                                                      | Schema                                                                   |
-|--------------------------------------|---------------------------------------------------------------------------|--------------------------------------------------------------------------|
-| Election Event Context               | `context/electionEventContextPayload.json`                                | e-voting-libraries-domain: ElectionEventContextPayload.schema.json       |
-| Election Event Configuration         | `context/configuration-anonymized.xml`                                    | e-voting-libraries-xml: evoting-config-7-0.xsd                           |
-| Online Control Component Public Keys | `context/controlComponentPublicKeysPayload.${j}.json`                     | e-voting-libraries-domain: ControlComponentPublicKeysPayload.schema.json |
-| Setup Component Public Keys          | `context/setupComponentPublicKeysPayload.json`                            | e-voting-libraries-domain: SetupComponentPublicKeysPayload.schema.json   |
-| Setup Component Tally Data           | `context/verificationCardSets/${vcs}/setupComponentTallyDataPayload.json` | e-voting-libraries-domain: SetupComponentTallyDataPayload.schema.json    |
+| Description                          | Path                                                                      |
+|--------------------------------------|---------------------------------------------------------------------------|
+| Election Event Context               | `context/electionEventContextPayload.json`                                |
+| Election Event Configuration         | `context/configuration-anonymized.xml`                                    |
+| Online Control Component Public Keys | `context/controlComponentPublicKeysPayload.${j}.json`                     |
+| Setup Component Public Keys          | `context/setupComponentPublicKeysPayload.json`                            |
+| Setup Component Tally Data           | `context/verificationCardSets/${vcs}/setupComponentTallyDataPayload.json` |
 
 The context dataset is used both in the Verify Setup phase and Verify Tally phase.
 
@@ -22,10 +22,10 @@ The context dataset is used both in the Verify Setup phase and Verify Tally phas
 
 The following table shows the contents of the setup dataset.
 
-| Description                       | Path                                                                                      | Schema                                                                       |
-|-----------------------------------|-------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|
-| Setup Component Verification Data | `setup/verificationCardSets/${vcs}/setupComponentVerificationDataPayload.${chunkId}.json` | e-voting-libraries-domain: SetupComponentVerificationDataPayload.schema.json |
-| Control Component Code Shares     | `setup/verificationCardSets/${vcs}/controlComponentCodeSharesPayload.${chunkId}.json`     | e-voting-libraries-domain: ControlComponentCodeSharesPayload.schema.json     |
+| Description                       | Path                                                                                      |
+|-----------------------------------|-------------------------------------------------------------------------------------------|
+| Setup Component Verification Data | `setup/verificationCardSets/${vcs}/setupComponentVerificationDataPayload.${chunkId}.json` |
+| Control Component Code Shares     | `setup/verificationCardSets/${vcs}/controlComponentCodeSharesPayload.${chunkId}.json`     |
 
 The setup dataset in only used in the Verify Setup phase.
 
@@ -33,13 +33,15 @@ The setup dataset in only used in the Verify Setup phase.
 
 The following table shows the contents of the tally dataset.
 
-| Description                              | Path                                                                 | Schema                                                                  |
-|------------------------------------------|----------------------------------------------------------------------|-------------------------------------------------------------------------|
-| Control Component Ballot Box             | `tally/ballotBoxes/${bb}/controlComponentBallotBoxPayload_${j}.json` | e-voting-libraries-domain: ControlComponentBallotBoxPayload.schema.json |
-| Online Control Component Shuffle         | `tally/ballotBoxes/${bb}/controlComponentShufflePayload_${j}.json`   | e-voting-libraries-domain: ControlComponentShufflePayload.schema.json   |
-| Tally Control Component Shuffle          | `tally/ballotBoxes/${bb}/tallyComponentShufflePayload.json`          | e-voting-libraries-domain: TallyComponentShufflePayload.schema.json     |
-| Tally Control Component Votes            | `tally/ballotBoxes/${bb}/tallyComponentVotesPayload.json`            | e-voting-libraries-domain: TallyComponentVotesPayload.schema.json       |
-| Tally Control Component Detailed Results | `tally/eCH-0222.xml`                                                 | e-voting-libraries-xml: eCH-0222-1-0.xsd                                |
+| Description                              | Path                                                                 |
+|------------------------------------------|----------------------------------------------------------------------|
+| Control Component Ballot Box             | `tally/ballotBoxes/${bb}/controlComponentBallotBoxPayload_${j}.json` |
+| Online Control Component Shuffle         | `tally/ballotBoxes/${bb}/controlComponentShufflePayload_${j}.json`   |
+| Tally Control Component Shuffle          | `tally/ballotBoxes/${bb}/tallyComponentShufflePayload.json`          |
+| Tally Control Component Votes            | `tally/ballotBoxes/${bb}/tallyComponentVotesPayload.json`            |
+| Tally Control Component Decryptions      | `tally/evoting-decrypt.xml`                                          |
+| Tally Control Component Detailed Results | `tally/eCH-0222.xml`                                                 |
+| Tally Control Component Results          | `tally/eCH-0110.xml`                                                 |
 
 The tally dataset in only used in the Verify Tally phase.
 

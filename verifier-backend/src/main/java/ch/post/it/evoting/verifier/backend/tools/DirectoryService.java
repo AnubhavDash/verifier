@@ -44,14 +44,13 @@ import java.nio.file.attribute.UserPrincipal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
-
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet;
 
 @Service
 public class DirectoryService {
@@ -123,7 +122,7 @@ public class DirectoryService {
 		final String ACL_FILE_ATTRIBUTE_VIEW = "acl";
 		final String POSIX_USER_ONLY_PERMISSION = "rwx------";
 
-		final ImmutableSet<String> supportedFileAttributeViews = ImmutableSet.from(path.getFileSystem().supportedFileAttributeViews());
+		final Set<String> supportedFileAttributeViews = path.getFileSystem().supportedFileAttributeViews();
 		if (supportedFileAttributeViews.contains(POSIX_FILE_ATTRIBUTE_VIEW)) {
 			LOGGER.debug("File system supports POSIX, setting permission");
 			Files.setPosixFilePermissions(path, PosixFilePermissions.fromString(POSIX_USER_ONLY_PERMISSION));

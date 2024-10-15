@@ -65,7 +65,7 @@
 			<filtered>true</filtered>
 			<includes>
 				<include>run-backend.bat</include>
-				<include>application.yaml</include>
+				<include>application.properties</include>
 			</includes>
 		</fileSet>
 		<fileSet>

@@ -18,15 +18,16 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.validateUUID;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import java.util.List;
+
 import ch.post.it.evoting.evotinglibraries.domain.validations.Validations;
 
 public class VerifyEncryptedExponentiationProofsInput {
 
 	private final String electionEventId;
-	private final ImmutableList<String> verificationCardSetIds;
+	private final List<String> verificationCardSetIds;
 
-	private VerifyEncryptedExponentiationProofsInput(final String electionEventId, final ImmutableList<String> verificationCardSetIds) {
+	private VerifyEncryptedExponentiationProofsInput(final String electionEventId, final List<String> verificationCardSetIds) {
 		this.electionEventId = electionEventId;
 		this.verificationCardSetIds = verificationCardSetIds;
 	}
@@ -35,20 +36,20 @@ public class VerifyEncryptedExponentiationProofsInput {
 		return electionEventId;
 	}
 
-	public ImmutableList<String> getVerificationCardSetIds() {
+	public List<String> getVerificationCardSetIds() {
 		return verificationCardSetIds;
 	}
 
 	public static class Builder {
 		private String electionEventId;
-		private ImmutableList<String> verificationCardSetIds;
+		private List<String> verificationCardSetIds;
 
 		public Builder setElectionEventId(final String electionEventId) {
 			this.electionEventId = electionEventId;
 			return this;
 		}
 
-		public Builder setVerificationCardSetIds(final ImmutableList<String> verificationCardSetIds) {
+		public Builder setVerificationCardSetIds(final List<String> verificationCardSetIds) {
 			this.verificationCardSetIds = verificationCardSetIds;
 			return this;
 		}
@@ -58,7 +59,7 @@ public class VerifyEncryptedExponentiationProofsInput {
 			checkNotNull(verificationCardSetIds);
 			verificationCardSetIds.forEach(Validations::validateUUID);
 
-			return new VerifyEncryptedExponentiationProofsInput(electionEventId, verificationCardSetIds);
+			return new VerifyEncryptedExponentiationProofsInput(electionEventId, List.copyOf(verificationCardSetIds));
 		}
 	}
 }

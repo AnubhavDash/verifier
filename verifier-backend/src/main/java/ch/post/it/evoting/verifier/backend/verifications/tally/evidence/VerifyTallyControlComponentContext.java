@@ -15,10 +15,10 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import java.util.List;
+
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
@@ -40,7 +40,7 @@ import ch.post.it.evoting.evotinglibraries.domain.mixnet.SetupComponentPublicKey
 public class VerifyTallyControlComponentContext {
 
 	private final String electionEventId;
-	private final ImmutableList<String> ballotBoxIds;
+	private final List<String> ballotBoxIds;
 	private final ElectionEventContext electionEventContext;
 	private final SetupComponentPublicKeys setupComponentPublicKeys;
 
@@ -52,7 +52,7 @@ public class VerifyTallyControlComponentContext {
 		// The ElectionEventContext constructor ensures the ballot box ids are valid UUIDs and unique.
 		this.ballotBoxIds = electionEventContext.verificationCardSetContexts().stream()
 				.map(VerificationCardSetContext::getBallotBoxId)
-				.collect(toImmutableList());
+				.toList();
 
 		// By definition ballotBoxIds have the same size.
 	}
@@ -61,7 +61,7 @@ public class VerifyTallyControlComponentContext {
 		return electionEventId;
 	}
 
-	public ImmutableList<String> getBallotBoxIds() {
+	public List<String> getBallotBoxIds() {
 		return ballotBoxIds;
 	}
 

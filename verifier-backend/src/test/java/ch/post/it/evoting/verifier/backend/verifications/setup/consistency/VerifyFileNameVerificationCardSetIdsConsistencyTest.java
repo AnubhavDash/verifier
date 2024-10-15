@@ -20,12 +20,12 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.nio.file.Path;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
@@ -54,7 +54,7 @@ class VerifyFileNameVerificationCardSetIdsConsistencyTest extends SetupVerificat
 	void inconsistentVerificationCardSetIdsSetupDataset() {
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
 		when(electionDataExtractionServiceSpy.getSetupVerificationCardSetPaths(datasetPath)).thenReturn(
-				ImmutableList.of(Path.of("11111111111111111111111111111111")));
+				List.of(Path.of("11111111111111111111111111111111")));
 
 		final VerifyFileNameVerificationCardSetIdsConsistency verifyFileNameVerificationCardSetIdsConsistency = new VerifyFileNameVerificationCardSetIdsConsistency(
 				resultPublisherServiceMock, electionDataExtractionServiceSpy);
@@ -71,7 +71,7 @@ class VerifyFileNameVerificationCardSetIdsConsistencyTest extends SetupVerificat
 	void inconsistentVerificationCardSetIdsContextDataset() {
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
 		when(electionDataExtractionServiceSpy.getContextVerificationCardSetPaths(datasetPath)).thenReturn(
-				ImmutableList.of(Path.of("11111111111111111111111111111111")));
+				List.of(Path.of("11111111111111111111111111111111")));
 
 		final VerifyFileNameVerificationCardSetIdsConsistency verifyFileNameVerificationCardSetIdsConsistency = new VerifyFileNameVerificationCardSetIdsConsistency(
 				resultPublisherServiceMock, electionDataExtractionServiceSpy);

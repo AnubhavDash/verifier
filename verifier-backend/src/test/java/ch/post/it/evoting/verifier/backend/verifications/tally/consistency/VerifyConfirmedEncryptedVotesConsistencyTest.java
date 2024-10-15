@@ -15,12 +15,12 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static ch.post.it.evoting.verifier.backend.tools.TranslationHelper.getFromResourceBundle;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.spy;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -28,7 +28,6 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Streams;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.evotinglibraries.domain.common.EncryptedVerifiableVote;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
@@ -58,16 +57,15 @@ class VerifyConfirmedEncryptedVotesConsistencyTest extends TallyVerificationTest
 		final ControlComponentBallotBoxPayload payloadWithVotes = controlComponentBallotBoxPayloads
 				.filter(payload -> payload.getConfirmedEncryptedVotes().size() > 1 && payload.getNodeId() == 1)
 				.findFirst().orElseThrow(() -> new IllegalStateException("Could not find a ballot box payload with enough votes"));
-		final ImmutableList<EncryptedVerifiableVote> confirmedEncryptedVotes = payloadWithVotes.getConfirmedEncryptedVotes();
-		final ImmutableList<EncryptedVerifiableVote> confirmedEncryptedVotesWithMissingVote = confirmedEncryptedVotes.stream().skip(1)
-				.collect(toImmutableList());
+		final List<EncryptedVerifiableVote> confirmedEncryptedVotes = payloadWithVotes.getConfirmedEncryptedVotes();
+		final List<EncryptedVerifiableVote> confirmedEncryptedVotesWithMissingVote = confirmedEncryptedVotes.stream().skip(1).toList();
 		final ControlComponentBallotBoxPayload newPayload = new ControlComponentBallotBoxPayload(
 				payloadWithVotes.getEncryptionGroup(), payloadWithVotes.getElectionEventId(), payloadWithVotes.getBallotBoxId(),
 				payloadWithVotes.getNodeId(),
 				confirmedEncryptedVotesWithMissingVote);
-		final ImmutableList<ControlComponentBallotBoxPayload> newControlComponentBallotBoxPayloads = Streams.concat(Stream.of(newPayload),
+		final List<ControlComponentBallotBoxPayload> newControlComponentBallotBoxPayloads = Streams.concat(Stream.of(newPayload),
 				electionDataExtractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(datasetPath, newPayload.getBallotBoxId())
-						.filter(payload -> payload.getNodeId() != 1)).collect(toImmutableList());
+						.filter(payload -> payload.getNodeId() != 1)).toList();
 
 		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
 		doAnswer(invocationOnMock -> newControlComponentBallotBoxPayloads.stream()).when(extractionServiceMock)

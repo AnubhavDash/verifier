@@ -15,7 +15,6 @@
  */
 package ch.post.it.evoting.verifier.backend.tools;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap.toImmutableMap;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static java.util.function.Predicate.not;
@@ -36,14 +35,15 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import jakarta.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 
@@ -124,7 +124,7 @@ public class DatasetService {
 	 *
 	 * @return a map with the alias names as keys and fingerprints as values.
 	 */
-	public ImmutableMap<String, String> extractFingerprints() {
+	public Map<String, String> extractFingerprints() {
 		final Path keyStorePasswordPath = Paths.get(keyStorePasswordLocation);
 		final char[] password;
 		try {
@@ -148,12 +148,9 @@ public class DatasetService {
 		}
 
 		return Arrays.stream(Alias.values())
-				.filter(not(Alias.VOTING_SERVER::equals)
-						.and(not(Alias.PRINTING_COMPONENT::equals))
-						.and(not(Alias.VERIFIER::equals))
-						.and(not(Alias.DISPUTE_RESOLVER::equals)))
+				.filter(not(Alias.VOTING_SERVER::equals).and(not(Alias.PRINTING_COMPONENT::equals)).and(not(Alias.VERIFIER::equals)))
 				.map(Alias::get)
-				.collect(toImmutableMap(
+				.collect(Collectors.toMap(
 						Function.identity(),
 						aliasName -> {
 							final Certificate certificate;

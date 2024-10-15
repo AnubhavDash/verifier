@@ -15,14 +15,13 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap.toImmutableMap;
-
 import java.nio.file.Path;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.domain.election.ControlComponentPublicKeys;
@@ -64,14 +63,13 @@ public class VerifyCCRChoiceReturnCodesPublicKeyConsistency extends AbstractVeri
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = extractionService.getSetupComponentPublicKeysPayload(inputDirectoryPath);
-		final ImmutableList<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = extractionService.getControlComponentPublicKeysPayloads(
+		final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = extractionService.getControlComponentPublicKeysPayloads(
 				inputDirectoryPath);
 
-		final ImmutableMap<Integer, ElGamalMultiRecipientPublicKey> electionEventContextPublicKeys = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
+		final Map<Integer, ElGamalMultiRecipientPublicKey> electionEventContextPublicKeys = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
 				.combinedControlComponentPublicKeys()
 				.stream()
-				.collect(toImmutableMap(ControlComponentPublicKeys::nodeId,
-						ControlComponentPublicKeys::ccrjChoiceReturnCodesEncryptionPublicKey));
+				.collect(Collectors.toMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccrjChoiceReturnCodesEncryptionPublicKey));
 
 		final boolean sameCCrChoiceReturnCodesPublicKeys = controlComponentPublicKeysPayloads.stream()
 				.parallel()

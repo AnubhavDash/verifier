@@ -82,6 +82,16 @@
 		"name": "tally",
 		"content": [
 			{
+				"key": "TALLY_COMPONENT_DECRYPT",
+				"type": "FILE",
+				"name": "evoting-decrypt_.+\\.xml"
+			},
+			{
+				"key": "TALLY_COMPONENT_ECH0110",
+				"type": "FILE",
+				"name": "eCH-0110_.+\\.xml"
+			},
+			{
 				"key": "TALLY_COMPONENT_ECH0222",
 				"type": "FILE",
 				"name": "eCH-0222_.+\\.xml"

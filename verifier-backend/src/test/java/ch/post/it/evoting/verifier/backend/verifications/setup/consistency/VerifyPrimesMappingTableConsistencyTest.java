@@ -15,7 +15,6 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.reset;
@@ -34,7 +33,6 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.MoreCollectors;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
@@ -77,11 +75,11 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 	@Test
 	void verifyNokExchangedActualVotingOptions() {
 		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContext(datasetPath);
-		final ImmutableList<VerificationCardSetContext> verificationCardSetContexts = electionEventContext.verificationCardSetContexts();
+		final List<VerificationCardSetContext> verificationCardSetContexts = electionEventContext.verificationCardSetContexts();
 		final VerificationCardSetContext verificationCardSetContextWithPermutation = permuteActualVotingOptions(verificationCardSetContexts.get(0));
-		final ImmutableList<VerificationCardSetContext> verificationCardSetContextsModified = ImmutableList.of(
-						verificationCardSetContextWithPermutation)
-				.append(verificationCardSetContexts.subList(1, verificationCardSetContexts.size()));
+		final ArrayList<VerificationCardSetContext> verificationCardSetContextsModified = new ArrayList<>(verificationCardSetContexts.size());
+		verificationCardSetContextsModified.add(verificationCardSetContextWithPermutation);
+		verificationCardSetContextsModified.addAll(verificationCardSetContexts.subList(1, verificationCardSetContexts.size()));
 
 		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
 		final ElectionEventContext electionEventContextMock = spy(electionEventContext);
@@ -99,8 +97,8 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 	@Test
 	void verifyNokActualVotingOptionNotInConfig() {
 		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContext(datasetPath);
-		final ImmutableList<VerificationCardSetContext> verificationCardSetContexts = electionEventContext.verificationCardSetContexts();
-		final ImmutableList<VerificationCardSetContext> verificationCardSetContextsModified = addNewActualVotingOption(verificationCardSetContexts);
+		final List<VerificationCardSetContext> verificationCardSetContexts = electionEventContext.verificationCardSetContexts();
+		final List<VerificationCardSetContext> verificationCardSetContextsModified = addNewActualVotingOption(verificationCardSetContexts);
 
 		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
 		final ElectionEventContext electionEventContextMock = spy(electionEventContext);
@@ -119,8 +117,8 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 	void verifyNokActualVotingOptionMapsToTwoDifferentEncodedVotingOptions() {
 		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(datasetPath);
 		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
-		final ImmutableList<VerificationCardSetContext> verificationCardSetContexts = electionEventContext.verificationCardSetContexts();
-		final ImmutableList<VerificationCardSetContext> verificationCardSetContextsModified = mapToTwoDifferentEncodedVotingOptions(
+		final List<VerificationCardSetContext> verificationCardSetContexts = electionEventContext.verificationCardSetContexts();
+		final List<VerificationCardSetContext> verificationCardSetContextsModified = mapToTwoDifferentEncodedVotingOptions(
 				electionEventContextPayload.getSmallPrimes(), verificationCardSetContexts);
 
 		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
@@ -139,7 +137,7 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 	private VerificationCardSetContext permuteActualVotingOptions(final VerificationCardSetContext verificationCardSetContext) {
 		final PrimesMappingTable primesMappingTable = verificationCardSetContext.getPrimesMappingTable();
 		final GroupVector<PrimesMappingTableEntry, GqGroup> pTable = primesMappingTable.getPTable();
-		final PrimesMappingTableEntry entry0 = pTable.getFirst();
+		final PrimesMappingTableEntry entry0 = pTable.get(0);
 		PrimesMappingTableEntry entry1;
 		int i = 0;
 		do {
@@ -152,7 +150,7 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 		final PrimesMappingTableEntry permutedEntry1 = new PrimesMappingTableEntry(entry1.actualVotingOption(),
 				entry0.encodedVotingOption(), entry1.semanticInformation(), entry1.correctnessInformation());
 
-		final List<PrimesMappingTableEntry> permutedPTableList = new ArrayList<>(pTable.size());
+		final ArrayList<PrimesMappingTableEntry> permutedPTableList = new ArrayList<>(pTable.size());
 		permutedPTableList.add(permutedEntry0);
 		for (int j = 1; j < pTable.size(); j++) {
 			if (j != i) {
@@ -161,7 +159,7 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 				permutedPTableList.add(permutedEntry1);
 			}
 		}
-		final PrimesMappingTable permutedPrimesMappingTable = PrimesMappingTable.from(ImmutableList.from(permutedPTableList));
+		final PrimesMappingTable permutedPrimesMappingTable = PrimesMappingTable.from(permutedPTableList);
 
 		return new VerificationCardSetContext.Builder()
 				.setVerificationCardSetId(verificationCardSetContext.getVerificationCardSetId())
@@ -174,27 +172,25 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 				.setNumberOfVotingCards(verificationCardSetContext.getNumberOfVotingCards())
 				.setGracePeriod(verificationCardSetContext.getGracePeriod())
 				.setPrimesMappingTable(permutedPrimesMappingTable)
-				.setDomainsOfInfluence(verificationCardSetContext.getDomainsOfInfluence())
 				.build();
 	}
 
-	private ImmutableList<VerificationCardSetContext> addNewActualVotingOption(
-			final ImmutableList<VerificationCardSetContext> verificationCardSetContexts) {
-		final PrimeGqElement encodedVotingOption = verificationCardSetContexts.get(0).getPrimesMappingTable().getPTable().getFirst()
+	private List<VerificationCardSetContext> addNewActualVotingOption(final List<VerificationCardSetContext> verificationCardSetContexts) {
+		final PrimeGqElement encodedVotingOption = verificationCardSetContexts.get(0).getPrimesMappingTable().getPTable().get(0)
 				.encodedVotingOption();
 		return verificationCardSetContexts.stream()
 				.map(verificationCardSetContext -> {
 					final PrimesMappingTable primesMappingTable = verificationCardSetContext.getPrimesMappingTable();
 					if (primesMappingTable.getPTable().stream().anyMatch(entry -> entry.encodedVotingOption().equals(encodedVotingOption))) {
-						final Map<Boolean, ImmutableList<PrimesMappingTableEntry>> toModify = primesMappingTable.getPTable().stream()
-								.collect(Collectors.partitioningBy(entry -> entry.encodedVotingOption().equals(encodedVotingOption),
-										toImmutableList()));
+						final Map<Boolean, List<PrimesMappingTableEntry>> toModify = primesMappingTable.getPTable().stream()
+								.collect(Collectors.partitioningBy(entry -> entry.encodedVotingOption().equals(encodedVotingOption)));
 						final PrimesMappingTableEntry pTable = toModify.get(true).stream().collect(MoreCollectors.onlyElement());
 						final PrimesMappingTableEntry newEntry = new PrimesMappingTableEntry("newActualVotingOption|NotInConfig",
 								pTable.encodedVotingOption(), pTable.semanticInformation(), pTable.correctnessInformation());
 
-						final ImmutableList<PrimesMappingTableEntry> pTableWithNewEntry = ImmutableList.of(newEntry)
-								.append(toModify.get(false));
+						final ArrayList<PrimesMappingTableEntry> pTableWithNewEntry = new ArrayList<>(pTable.size());
+						pTableWithNewEntry.add(newEntry);
+						pTableWithNewEntry.addAll(toModify.get(false));
 						final PrimesMappingTable notInConfigPrimesMappingTable = PrimesMappingTable.from(pTableWithNewEntry);
 
 						return new VerificationCardSetContext.Builder()
@@ -208,15 +204,14 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 								.setNumberOfVotingCards(verificationCardSetContext.getNumberOfVotingCards())
 								.setGracePeriod(verificationCardSetContext.getGracePeriod())
 								.setPrimesMappingTable(notInConfigPrimesMappingTable)
-								.setDomainsOfInfluence(verificationCardSetContext.getDomainsOfInfluence())
 								.build();
 					}
 					return verificationCardSetContext;
-				}).collect(toImmutableList());
+				}).toList();
 	}
 
-	private ImmutableList<VerificationCardSetContext> mapToTwoDifferentEncodedVotingOptions(final GroupVector<PrimeGqElement, GqGroup> smallPrimes,
-			final ImmutableList<VerificationCardSetContext> verificationCardSetContexts) {
+	private List<VerificationCardSetContext> mapToTwoDifferentEncodedVotingOptions(final GroupVector<PrimeGqElement, GqGroup> smallPrimes,
+			final List<VerificationCardSetContext> verificationCardSetContexts) {
 		// Choose a new prime that's not in any pTable
 		final PrimeGqElement primeNotInPTables = smallPrimes.get(smallPrimes.size() - 1);
 
@@ -228,12 +223,12 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 		// Choose a voting option that does not represent a blank voting option
 		final int chosenPTableIndex = 2;
 		final PrimesMappingTableEntry pTableEntry = pTable.get(chosenPTableIndex);
-		final ImmutableList<PrimesMappingTableEntry> pTableModified = IntStream.range(0, pTable.size())
+		final List<PrimesMappingTableEntry> pTableModified = IntStream.range(0, pTable.size())
 				.mapToObj(i -> (i == chosenPTableIndex)
 						? new PrimesMappingTableEntry(pTableEntry.actualVotingOption(), primeNotInPTables, pTableEntry.semanticInformation(),
 						pTableEntry.correctnessInformation())
 						: pTable.get(i)
-				).collect(toImmutableList());
+				).toList();
 
 		return IntStream.range(0, verificationCardSetContexts.size())
 				.mapToObj(i -> (i == chosenVerificationCardSetContextIndex)
@@ -248,9 +243,8 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 						.setNumberOfVotingCards(verificationCardSetContext.getNumberOfVotingCards())
 						.setGracePeriod(verificationCardSetContext.getGracePeriod())
 						.setPrimesMappingTable(PrimesMappingTable.from(pTableModified))
-						.setDomainsOfInfluence(verificationCardSetContext.getDomainsOfInfluence())
 						.build()
 						: verificationCardSetContexts.get(i))
-				.collect(toImmutableList());
+				.toList();
 	}
 }

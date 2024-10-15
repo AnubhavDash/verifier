@@ -31,9 +31,9 @@ public class KeystoreRepository {
 	private final String keystorePasswordLocation;
 	public KeystoreRepository(
 			@Value("${direct.trust.keystore.location}")
-			final String keystoreLocation,
+			String keystoreLocation,
 			@Value("${direct.trust.keystore.password.location}")
-			final String keystorePasswordLocation) {
+			String keystorePasswordLocation) {
 		this.keystoreLocation = keystoreLocation;
 		this.keystorePasswordLocation = keystorePasswordLocation;
 	}

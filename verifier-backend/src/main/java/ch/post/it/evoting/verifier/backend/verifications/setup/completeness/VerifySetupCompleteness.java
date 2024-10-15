@@ -17,12 +17,12 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.completeness;
 
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -79,7 +79,7 @@ public class VerifySetupCompleteness extends AbstractVerification {
 		try {
 			pathService.buildFromRootPath(StructureKey.SETUP_DIR, inputDirectoryPath);
 			pathService.buildFromRootPath(StructureKey.SETUP_VERIFICATION_CARD_SETS_DIR, inputDirectoryPath);
-			final ImmutableList<Path> verificationCardSetIds = pathService.buildFromRootPath(StructureKey.SETUP_VERIFICATION_CARD_SET_ID_DIR,
+			final List<Path> verificationCardSetIds = pathService.buildFromRootPath(StructureKey.SETUP_VERIFICATION_CARD_SET_ID_DIR,
 							inputDirectoryPath)
 					.getRegexPaths();
 			verificationCardSetIds.stream().parallel()

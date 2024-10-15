@@ -19,6 +19,7 @@ import static ch.post.it.evoting.cryptoprimitives.utils.Conversions.integerToStr
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -26,7 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqElement;
@@ -69,7 +69,7 @@ public class VerifyEncryptedPCCExponentiationProofsVerificationCardSetAlgorithm 
 		final GqGroup p_q_g = context.getEncryptionGroup();
 		final int j = context.getJ();
 		final String ee = context.getElectionEventId();
-		final ImmutableList<String> vc = context.getVerificationCardIds();
+		final List<String> vc = context.getVerificationCardIds();
 		final int n = context.getNumberOfVotingOptions();
 		final int N_E = vc.size();
 
@@ -95,7 +95,7 @@ public class VerifyEncryptedPCCExponentiationProofsVerificationCardSetAlgorithm 
 					final GroupVector<GqElement, GqGroup> y = Stream.concat(K_j.get(id).getKeyElements().stream(), c_expPCC_j.get(id).stream())
 							.collect(GroupVector.toGroupVector());
 
-					final ImmutableList<String> i_aux = ImmutableList.of(ee, vc.get(id), "GenEncLongCodeShares", integerToString(j));
+					final List<String> i_aux = List.of(ee, vc.get(id), "GenEncLongCodeShares", integerToString(j));
 
 					final boolean exponentiationVerif_id = zeroKnowledgeProof.verifyExponentiation(g, y, pi_expPCC_j.get(id), i_aux);
 
