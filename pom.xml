@@ -19,7 +19,7 @@
 
 	<groupId>ch.post.it.evoting.verifier</groupId>
 	<artifactId>verifier</artifactId>
-	<version>1.5.4.0-RC1</version>
+	<version>1.5.4.0-RC2</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -34,13 +34,13 @@
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
 		<maven.compiler.release>21</maven.compiler.release>
-		<project.build.outputTimestamp>2024-10-15T15:27:30+02:00</project.build.outputTimestamp>
+		<project.build.outputTimestamp>2024-10-16T00:20:46+02:00</project.build.outputTimestamp>
 
 		<apache.commons-lang3>3.17.0</apache.commons-lang3>
 		<bouncycastle.version>1.78.1</bouncycastle.version>
 		<commons-codec.version>1.17.1</commons-codec.version>
 		<crypto-primitives-version>1.4.4.0-RC1</crypto-primitives-version>
-		<e-voting-libraries.version>1.4.4.0-RC1</e-voting-libraries.version>
+		<e-voting-libraries.version>1.4.4.0-RC2</e-voting-libraries.version>
 		<guava.version>33.3.1-jre</guava.version>
 		<jackson.version>2.18.0</jackson.version>
 		<jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
