@@ -22,15 +22,18 @@ import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 
 public enum DatasetType {
 	CONTEXT(ImmutableList.of(
+			StructureKey.CONTEXT_MANIFEST,
 			StructureKey.CONFIGURATION_ANONYMIZED,
 			StructureKey.ELECTION_EVENT_CONTEXT,
 			StructureKey.SETUP_COMPONENT_PUBLIC_KEYS,
 			StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS,
 			StructureKey.SETUP_COMPONENT_TALLY_DATA)),
 	SETUP(ImmutableList.of(
+			StructureKey.SETUP_MANIFEST,
 			StructureKey.CONTROL_COMPONENT_CODE_SHARES,
 			StructureKey.SETUP_COMPONENT_VERIFICATION_DATA)),
 	TALLY(ImmutableList.of(
+			StructureKey.TALLY_MANIFEST,
 			StructureKey.TALLY_COMPONENT_ECH0222,
 			StructureKey.CONTROL_COMPONENT_BALLOT_BOX,
 			StructureKey.CONTROL_COMPONENT_SHUFFLE,

@@ -5,6 +5,11 @@
 		"name": "context",
 		"content": [
 			{
+				"key": "CONTEXT_MANIFEST",
+				"type": "FILE",
+				"name": "manifest\\.json"
+			},
+			{
 				"key": "CONFIGURATION_ANONYMIZED",
 				"type": "FILE",
 				"name": "configuration-anonymized\\.xml"
@@ -51,6 +56,11 @@
 		"name": "setup",
 		"content": [
 			{
+				"key": "SETUP_MANIFEST",
+				"type": "FILE",
+				"name": "manifest\\.json"
+			},
+			{
 				"key": "SETUP_VERIFICATION_CARD_SETS_DIR",
 				"type": "DIRECTORY",
 				"name": "verificationCardSets",
@@ -81,6 +91,11 @@
 		"type": "DIRECTORY",
 		"name": "tally",
 		"content": [
+			{
+				"key": "TALLY_MANIFEST",
+				"type": "FILE",
+				"name": "manifest\\.json"
+			},
 			{
 				"key": "TALLY_COMPONENT_ECH0222",
 				"type": "FILE",
