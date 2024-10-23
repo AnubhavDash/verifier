@@ -198,7 +198,7 @@ public class VerifierProcessor {
 		final Map<Boolean, Integer> testBallotBoxToTotalNumberOfVoters = electionEventContext.verificationCardSetContexts().stream()
 				.collect(Collectors.partitioningBy(
 						VerificationCardSetContext::isTestBallotBox,
-						Collectors.summingInt(VerificationCardSetContext::getNumberOfVotingCards)));
+						Collectors.summingInt(VerificationCardSetContext::getNumberOfEligibleVoters)));
 
 		// Get election event name, election event date, number of elections, number of votes, number of non-test ballot boxes, number of test
 		// ballot boxes, total number of authorized non-test voters and total number of test voters.

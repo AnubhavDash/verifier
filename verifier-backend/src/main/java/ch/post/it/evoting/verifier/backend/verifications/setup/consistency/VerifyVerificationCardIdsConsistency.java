@@ -156,14 +156,14 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 							.flatMap(ImmutableList::stream)
 							.collect(toImmutableList());
 
-					final int numberOfVotingCards = verificationCardSetContexts.stream()
+					final int numberOfEligibleVoters = verificationCardSetContexts.stream()
 							.parallel()
 							.filter(vcs -> vcs.getVerificationCardSetId().equals(verificationCardSetId))
 							.collect(MoreCollectors.onlyElement())
-							.getNumberOfVotingCards();
+							.getNumberOfEligibleVoters();
 
 					return new PayloadsVerificationCardIds(verificationDataIds, ImmutableMap.from(nodeIdsToCodeSharesIds), tallyDataIds,
-							numberOfVotingCards);
+							numberOfEligibleVoters);
 				})
 				.collect(toImmutableList());
 	}
@@ -177,14 +177,14 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 	 *     <li>the verification card ids of each payload have the same content and order.</li>
 	 *     <li>the verification card ids of the SetupComponentVerificationDataPayload's chunks have the same content and order than the
 	 *     verification card ids of the ControlComponentCodeSharesPayload's chunks.</li>
-	 *     <li>the number of verification card ids in each payload is equal to the {@code numberOfVotingCards}.</li>
+	 *     <li>the number of verification card ids in each payload is equal to the {@code numberOfEligibleVoters}.</li>
 	 * </ul>
 	 */
 	private boolean verifyConsistency(final PayloadsVerificationCardIds payloadsVerificationCardIds) {
 		final ImmutableList<String> verificationDataIds = payloadsVerificationCardIds.verificationDataIds;
 		final ImmutableMap<Integer, ImmutableList<String>> nodeIdsToCodeSharesIds = payloadsVerificationCardIds.nodeIdsToVerificationCardIds;
 		final ImmutableList<String> tallyDataIds = payloadsVerificationCardIds.tallyDataIds;
-		final int numberOfVotingCards = payloadsVerificationCardIds.numberOfVotingCards;
+		final int numberOfEligibleVoters = payloadsVerificationCardIds.numberOfEligibleVoters;
 
 		if (!hasNoDuplicates(verificationDataIds)) {
 			LOGGER.info("There are duplicated verification card ids among the SetupComponentVerificationDataPayload chunks.");
@@ -214,12 +214,13 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 
 		return tallyDataIds.equals(verificationDataIds)
 				&& tallyDataIds.equals(codeSharesVerificationIds)
-				&& tallyDataIds.size() == numberOfVotingCards;
+				&& tallyDataIds.size() == numberOfEligibleVoters;
 	}
 
 	private record PayloadsVerificationCardIds(ImmutableList<String> verificationDataIds,
 											   ImmutableMap<Integer, ImmutableList<String>> nodeIdsToVerificationCardIds,
-											   ImmutableList<String> tallyDataIds, int numberOfVotingCards) {
+											   ImmutableList<String> tallyDataIds,
+											   int numberOfEligibleVoters) {
 	}
 
 }

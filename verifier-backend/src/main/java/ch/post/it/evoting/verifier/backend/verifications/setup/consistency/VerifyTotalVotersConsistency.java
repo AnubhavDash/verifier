@@ -72,17 +72,17 @@ public class VerifyTotalVotersConsistency extends AbstractVerification {
 						inputDirectoryPath)
 				.getElectionEventContext().verificationCardSetContexts();
 
-		final int totalNumberOfVotingCards = verificationCardSetContexts.stream()
+		final int totalNumberOfEligibleVoters = verificationCardSetContexts.stream()
 				.parallel()
 				.mapToInt(verificationCardSetContext -> {
-					final int numberOfVotingCards = verificationCardSetContext.getNumberOfVotingCards();
+					final int numberOfEligibleVoters = verificationCardSetContext.getNumberOfEligibleVoters();
 
-					checkState(numberOfVotingCards >= 0);
-					return numberOfVotingCards;
+					checkState(numberOfEligibleVoters >= 0);
+					return numberOfEligibleVoters;
 				})
 				.reduce(0, Math::addExact);
 
-		if (voterCount == totalNumberOfVotingCards) {
+		if (voterCount == totalNumberOfEligibleVoters) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),

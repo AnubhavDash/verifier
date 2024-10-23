@@ -147,7 +147,7 @@ class DatasetServiceTest {
 		final Dataset dataset = new Dataset(Files.newInputStream(zipDirectory.resolve(zipName)), unpackFolder, DatasetType.SETUP);
 
 		final IllegalStateException exception = assertThrows(IllegalStateException.class, () -> datasetService.unpack(dataset));
-		assertEquals("The dataset does not have the expected type. [expectedType: setup]", Throwables.getRootCause(exception).getMessage());
+		assertEquals("The given zip does not correspond to a setup dataset.", Throwables.getRootCause(exception).getMessage());
 	}
 
 	private void createDatasetZip(final String zipName) throws IOException {

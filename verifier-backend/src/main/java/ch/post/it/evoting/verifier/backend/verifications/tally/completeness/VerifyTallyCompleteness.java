@@ -15,6 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.completeness;
 
+import static ch.post.it.evoting.verifier.backend.tools.DatasetType.TALLY;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.io.UncheckedIOException;
@@ -81,8 +82,7 @@ public class VerifyTallyCompleteness extends AbstractVerification {
 
 	private boolean verifyTallyCompleteness(final Path inputDirectoryPath) {
 		try {
-			pathService.buildFromRootPath(StructureKey.TALLY_COMPONENT_ECH0222, inputDirectoryPath);
-			pathService.buildFromRootPath(StructureKey.BALLOT_BOXES_DIR, inputDirectoryPath);
+			pathService.checkStructureKeysExistence(TALLY.getRootStructureKey(), inputDirectoryPath);
 			final ImmutableList<Path> ballotBoxIds = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath)
 					.getRegexPaths();
 			ballotBoxIds.forEach(bb -> checkState(
@@ -91,8 +91,6 @@ public class VerifyTallyCompleteness extends AbstractVerification {
 			ballotBoxIds.forEach(bb -> checkState(
 					pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_SHUFFLE, bb).getRegexPaths().size()
 							== ControlComponentNode.ids().size()));
-			ballotBoxIds.forEach(bb -> pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_SHUFFLE, bb));
-			ballotBoxIds.forEach(bb -> pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_VOTES, bb));
 			return true;
 		} catch (final UncheckedIOException | IllegalStateException e) {
 			LOGGER.error("Tally completeness failed.", e);

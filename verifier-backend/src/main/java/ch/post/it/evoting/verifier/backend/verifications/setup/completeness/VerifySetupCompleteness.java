@@ -15,6 +15,8 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.completeness;
 
+import static ch.post.it.evoting.verifier.backend.tools.DatasetType.SETUP;
+
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
 
@@ -22,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -33,7 +34,6 @@ import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.tools.VerifyContextCompletenessService;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
-import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 
 @Component
@@ -77,15 +77,7 @@ public class VerifySetupCompleteness extends AbstractVerification {
 
 	private boolean verifySetupCompleteness(final Path inputDirectoryPath) {
 		try {
-			pathService.buildFromRootPath(StructureKey.SETUP_DIR, inputDirectoryPath);
-			pathService.buildFromRootPath(StructureKey.SETUP_VERIFICATION_CARD_SETS_DIR, inputDirectoryPath);
-			final ImmutableList<Path> verificationCardSetIds = pathService.buildFromRootPath(StructureKey.SETUP_VERIFICATION_CARD_SET_ID_DIR,
-							inputDirectoryPath)
-					.getRegexPaths();
-			verificationCardSetIds.stream().parallel()
-					.forEach(vcs -> pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_CODE_SHARES, vcs));
-			verificationCardSetIds.stream().parallel()
-					.forEach(vcs -> pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA, vcs));
+			pathService.checkStructureKeysExistence(SETUP.getRootStructureKey(), inputDirectoryPath);
 			return true;
 		} catch (final UncheckedIOException | IllegalStateException e) {
 			LOGGER.error("Setup completeness failed.", e);

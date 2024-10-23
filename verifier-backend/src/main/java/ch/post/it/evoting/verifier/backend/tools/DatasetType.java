@@ -17,36 +17,26 @@ package ch.post.it.evoting.verifier.backend.tools;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import java.util.Locale;
+
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 
 public enum DatasetType {
-	CONTEXT(ImmutableList.of(
-			StructureKey.CONTEXT_MANIFEST,
-			StructureKey.CONFIGURATION_ANONYMIZED,
-			StructureKey.ELECTION_EVENT_CONTEXT,
-			StructureKey.SETUP_COMPONENT_PUBLIC_KEYS,
-			StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS,
-			StructureKey.SETUP_COMPONENT_TALLY_DATA)),
-	SETUP(ImmutableList.of(
-			StructureKey.SETUP_MANIFEST,
-			StructureKey.CONTROL_COMPONENT_CODE_SHARES,
-			StructureKey.SETUP_COMPONENT_VERIFICATION_DATA)),
-	TALLY(ImmutableList.of(
-			StructureKey.TALLY_MANIFEST,
-			StructureKey.TALLY_COMPONENT_ECH0222,
-			StructureKey.CONTROL_COMPONENT_BALLOT_BOX,
-			StructureKey.CONTROL_COMPONENT_SHUFFLE,
-			StructureKey.TALLY_COMPONENT_SHUFFLE,
-			StructureKey.TALLY_COMPONENT_VOTES));
+	CONTEXT(StructureKey.CONTEXT_DIR),
+	SETUP(StructureKey.SETUP_DIR),
+	TALLY(StructureKey.TALLY_DIR);
 
-	private final ImmutableList<StructureKey> structureKeys;
+	private final StructureKey rootStructureKey;
 
-	DatasetType(final ImmutableList<StructureKey> structureKeys) {
-		this.structureKeys = checkNotNull(structureKeys);
+	DatasetType(final StructureKey rootStructureKey) {
+		this.rootStructureKey = checkNotNull(rootStructureKey);
 	}
 
-	public ImmutableList<StructureKey> getStructureKeys() {
-		return structureKeys;
+	public StructureKey getRootStructureKey() {
+		return rootStructureKey;
+	}
+
+	public String getName() {
+		return name().toLowerCase(Locale.ENGLISH);
 	}
 }

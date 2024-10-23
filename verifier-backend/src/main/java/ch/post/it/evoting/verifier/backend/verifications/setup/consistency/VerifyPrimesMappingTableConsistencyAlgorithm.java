@@ -101,14 +101,14 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 				.collect(toImmutableList());
 		checkArgument(!primesMappingTables.isEmpty());
 
-		primesMappingTables.forEach(primesMappingTable -> checkArgument(hasNoDuplicates(primesMappingTable.getPTable().stream()
+		primesMappingTables.forEach(primesMappingTable -> checkArgument(hasNoDuplicates(primesMappingTable.pTable().stream()
 						.map(PrimesMappingTableEntry::encodedVotingOption)
 						.collect(GroupVector.toGroupVector())),
 				"The primes mapping table entries contain duplicated encoded voting options."));
 
 		// Join the PrimesMappingTables of all verification card sets, deleting duplicates.
 		final ImmutableSet<PrimesMappingTableEntry> primesMappingTableEntries = primesMappingTables.stream()
-				.map(PrimesMappingTable::getPTable)
+				.map(PrimesMappingTable::pTable)
 				.flatMap(GroupVector::stream)
 				.collect(toImmutableSet());
 

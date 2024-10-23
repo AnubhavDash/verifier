@@ -138,7 +138,7 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 
 	private VerificationCardSetContext permuteActualVotingOptions(final VerificationCardSetContext verificationCardSetContext) {
 		final PrimesMappingTable primesMappingTable = verificationCardSetContext.getPrimesMappingTable();
-		final GroupVector<PrimesMappingTableEntry, GqGroup> pTable = primesMappingTable.getPTable();
+		final GroupVector<PrimesMappingTableEntry, GqGroup> pTable = primesMappingTable.pTable();
 		final PrimesMappingTableEntry entry0 = pTable.getFirst();
 		PrimesMappingTableEntry entry1;
 		int i = 0;
@@ -171,7 +171,7 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 				.setBallotBoxStartTime(verificationCardSetContext.getBallotBoxStartTime())
 				.setBallotBoxFinishTime(verificationCardSetContext.getBallotBoxFinishTime())
 				.setTestBallotBox(verificationCardSetContext.isTestBallotBox())
-				.setNumberOfVotingCards(verificationCardSetContext.getNumberOfVotingCards())
+				.setNumberOfEligibleVoters(verificationCardSetContext.getNumberOfEligibleVoters())
 				.setGracePeriod(verificationCardSetContext.getGracePeriod())
 				.setPrimesMappingTable(permutedPrimesMappingTable)
 				.setDomainsOfInfluence(verificationCardSetContext.getDomainsOfInfluence())
@@ -180,13 +180,13 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 
 	private ImmutableList<VerificationCardSetContext> addNewActualVotingOption(
 			final ImmutableList<VerificationCardSetContext> verificationCardSetContexts) {
-		final PrimeGqElement encodedVotingOption = verificationCardSetContexts.get(0).getPrimesMappingTable().getPTable().getFirst()
+		final PrimeGqElement encodedVotingOption = verificationCardSetContexts.get(0).getPrimesMappingTable().pTable().getFirst()
 				.encodedVotingOption();
 		return verificationCardSetContexts.stream()
 				.map(verificationCardSetContext -> {
 					final PrimesMappingTable primesMappingTable = verificationCardSetContext.getPrimesMappingTable();
-					if (primesMappingTable.getPTable().stream().anyMatch(entry -> entry.encodedVotingOption().equals(encodedVotingOption))) {
-						final Map<Boolean, ImmutableList<PrimesMappingTableEntry>> toModify = primesMappingTable.getPTable().stream()
+					if (primesMappingTable.pTable().stream().anyMatch(entry -> entry.encodedVotingOption().equals(encodedVotingOption))) {
+						final Map<Boolean, ImmutableList<PrimesMappingTableEntry>> toModify = primesMappingTable.pTable().stream()
 								.collect(Collectors.partitioningBy(entry -> entry.encodedVotingOption().equals(encodedVotingOption),
 										toImmutableList()));
 						final PrimesMappingTableEntry pTable = toModify.get(true).stream().collect(MoreCollectors.onlyElement());
@@ -205,7 +205,7 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 								.setBallotBoxStartTime(verificationCardSetContext.getBallotBoxStartTime())
 								.setBallotBoxFinishTime(verificationCardSetContext.getBallotBoxFinishTime())
 								.setTestBallotBox(verificationCardSetContext.isTestBallotBox())
-								.setNumberOfVotingCards(verificationCardSetContext.getNumberOfVotingCards())
+								.setNumberOfEligibleVoters(verificationCardSetContext.getNumberOfEligibleVoters())
 								.setGracePeriod(verificationCardSetContext.getGracePeriod())
 								.setPrimesMappingTable(notInConfigPrimesMappingTable)
 								.setDomainsOfInfluence(verificationCardSetContext.getDomainsOfInfluence())
@@ -223,7 +223,7 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 		// Choose any pTable to modify
 		final int chosenVerificationCardSetContextIndex = 0;
 		final VerificationCardSetContext verificationCardSetContext = verificationCardSetContexts.get(chosenVerificationCardSetContextIndex);
-		final GroupVector<PrimesMappingTableEntry, GqGroup> pTable = verificationCardSetContext.getPrimesMappingTable().getPTable();
+		final GroupVector<PrimesMappingTableEntry, GqGroup> pTable = verificationCardSetContext.getPrimesMappingTable().pTable();
 
 		// Choose a voting option that does not represent a blank voting option
 		final int chosenPTableIndex = 2;
@@ -245,7 +245,7 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 						.setBallotBoxStartTime(verificationCardSetContext.getBallotBoxStartTime())
 						.setBallotBoxFinishTime(verificationCardSetContext.getBallotBoxFinishTime())
 						.setTestBallotBox(verificationCardSetContext.isTestBallotBox())
-						.setNumberOfVotingCards(verificationCardSetContext.getNumberOfVotingCards())
+						.setNumberOfEligibleVoters(verificationCardSetContext.getNumberOfEligibleVoters())
 						.setGracePeriod(verificationCardSetContext.getGracePeriod())
 						.setPrimesMappingTable(PrimesMappingTable.from(pTableModified))
 						.setDomainsOfInfluence(verificationCardSetContext.getDomainsOfInfluence())

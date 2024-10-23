@@ -84,7 +84,7 @@ public class DatasetService {
 				if (!entry.isDirectory()) {
 					hasEntry = true;
 
-					setActualDatasetType(dataset, entry.getFileName());
+					fileNameWhitelisting(dataset, entry.getFileName());
 					final Path fileLocation = dataset.getUnpackFolder().resolve(entry.getFileName());
 
 					if (!Files.exists(fileLocation.getParent())) {
@@ -101,8 +101,6 @@ public class DatasetService {
 				throw new InvalidParameterException("input is not a ZIP file or is empty.");
 			}
 		}
-
-		checkState(dataset.getActualType() != null, "input is not a %s dataset.", dataset.getExpectedType());
 
 		dataset.setUnpacked(true);
 
@@ -194,23 +192,14 @@ public class DatasetService {
 	 *
 	 * @param dataset  the dataset information as a {@link Dataset}.
 	 * @param fileName the file to verify.
-	 * @throws IllegalStateException if
-	 *                               <ul>
-	 *                                   <li>the file does not belong to any dataset type.</li>
-	 *                                   <li>the file belongs to a dataset type different from the expected one.</li>
-	 *                               </ul>
+	 * @throws IllegalStateException if the file does not belong to any dataset type or if the file belongs to a dataset type different from the
+	 *                               expected one.
 	 */
-	private void setActualDatasetType(final Dataset dataset, final String fileName) {
-		final DatasetType actualType = Arrays.stream(DatasetType.values())
-				.filter(datasetType -> datasetType.getStructureKeys().stream()
-						.anyMatch(structureKey -> pathService.matchesStructureKey(structureKey, fileName)))
-				.findAny()
-				.orElseThrow(() -> new IllegalStateException(
-						String.format("The dataset does not have the expected type. [expectedType: %s]", dataset.getExpectedType())));
+	private void fileNameWhitelisting(final Dataset dataset, final String fileName) {
+		final boolean fileInDatasetStructure = pathService.getDatasetFilesStructureKeys(dataset.getExpectedType().getRootStructureKey())
+				.stream()
+				.anyMatch(structureKey -> pathService.matchesStructureKey(structureKey, fileName));
 
-		checkState(dataset.getActualType() == null || dataset.getActualType() == actualType,
-				"The dataset does not have the expected type. [expectedType: %s]", dataset.getExpectedType());
-
-		dataset.setActualType(actualType);
+		checkState(fileInDatasetStructure, "The given zip does not correspond to a %s dataset.", dataset.getExpectedType().getName());
 	}
 }
