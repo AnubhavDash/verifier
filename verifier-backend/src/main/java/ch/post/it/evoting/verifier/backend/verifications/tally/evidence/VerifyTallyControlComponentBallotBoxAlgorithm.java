@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import ch.post.it.evoting.cryptoprimitives.collection.AuxiliaryInformation;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientMessage;
@@ -126,7 +127,7 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 				"All selected encoded voting options in a vote must be distinct."));
 
 		// Operation.
-		final ImmutableList<String> i_aux = ImmutableList.of(ee, bb, "MixDecOffline");
+		final AuxiliaryInformation i_aux = AuxiliaryInformation.of(ee, bb, "MixDecOffline");
 
 		final ElGamalMultiRecipientPublicKey EB_pk_cut = new ElGamalMultiRecipientPublicKey(
 				GroupVector.from(EB_pk.getKeyElements().subList(0, delta)));

@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import ch.post.it.evoting.cryptoprimitives.collection.AuxiliaryInformation;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
@@ -95,7 +96,7 @@ public class VerifyEncryptedPCCExponentiationProofsVerificationCardSetAlgorithm 
 					final GroupVector<GqElement, GqGroup> y = Stream.concat(K_j.get(id).getKeyElements().stream(), c_expPCC_j.get(id).stream())
 							.collect(GroupVector.toGroupVector());
 
-					final ImmutableList<String> i_aux = ImmutableList.of(ee, vc.get(id), "GenEncLongCodeShares", integerToString(j));
+					final AuxiliaryInformation i_aux = AuxiliaryInformation.of(ee, vc.get(id), "GenEncLongCodeShares", integerToString(j));
 
 					final boolean exponentiationVerif_id = zeroKnowledgeProof.verifyExponentiation(g, y, pi_expPCC_j.get(id), i_aux);
 
