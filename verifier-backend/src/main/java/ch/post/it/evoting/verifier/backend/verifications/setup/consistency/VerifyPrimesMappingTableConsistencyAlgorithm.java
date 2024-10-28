@@ -35,6 +35,7 @@ import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -253,7 +254,9 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 			final ListDescriptionInformationType listDescriptionInformation, final boolean isEmptyList) {
 		final String actualVotingOption = getListActualVotingOption(electionIdentification, listIdentification);
 		final String semanticInformation = getListSemanticInformation(isEmptyList,
-				ImmutableList.from(listDescriptionInformation.getListDescriptionInfo()),
+				listDescriptionInformation.getListDescriptionInfo().stream()
+						.sorted(Comparator.comparing(ListDescriptionInfo::getLanguage))
+						.collect(toImmutableList()),
 				ListDescriptionInfo::getListDescription);
 		final String correctnessInformation = getListCorrectnessInformation(electionIdentification);
 		return new PrimesMappingTableEntrySubset(actualVotingOption, semanticInformation, correctnessInformation);
@@ -345,7 +348,9 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 					final String actualVotingOption = getAnswerActualVotingOption(questionIdentification,
 							standardAnswerType.getAnswerIdentification());
 					final String semanticInformation = getAnswerSemanticInformation(standardAnswerType.isHiddenAnswer(),
-							ImmutableList.from(ballotQuestionType.getBallotQuestionInfo()),
+							ballotQuestionType.getBallotQuestionInfo().stream()
+									.sorted(Comparator.comparing(BallotQuestionInfo::getLanguage))
+									.collect(toImmutableList()),
 							BallotQuestionInfo::getBallotQuestion,
 							ImmutableList.from(standardAnswerType.getAnswerInfo()),
 							AnswerInformationType::getAnswer);
@@ -368,7 +373,9 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 							final String actualVotingOption = getAnswerActualVotingOption(questionIdentification,
 									tiebreakAnswerType.getAnswerIdentification());
 							final String semanticInformation = getAnswerSemanticInformation(tiebreakAnswerType.isHiddenAnswer(),
-									ImmutableList.from(tieBreakQuestionType.getBallotQuestion().getBallotQuestionInfo()),
+									tieBreakQuestionType.getBallotQuestion().getBallotQuestionInfo().stream()
+											.sorted(Comparator.comparing(BallotQuestionInfo::getLanguage))
+											.collect(toImmutableList()),
 									BallotQuestionInfo::getBallotQuestion,
 									ImmutableList.from(tiebreakAnswerType.getAnswerInfo()),
 									AnswerInformationType::getAnswer);
