@@ -104,7 +104,7 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 	private ImmutableMap<String, TallyComponentVotesPayload> getAuthorizationNameToTallyComponentVotesPayloadMap(final Path inputDirectoryPath,
 			final ElectionEventContextPayload electionEventContextPayload) {
 
-		record TallyComponentVotesTuple(String authorizationAlias, TallyComponentVotesPayload payload) {
+		record TallyComponentVotesTuple(String authorizationName, TallyComponentVotesPayload payload) {
 		}
 
 		return electionEventContextPayload.getElectionEventContext().verificationCardSetContexts().stream()
@@ -121,6 +121,6 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 
 					return new TallyComponentVotesTuple(ballotBoxDefaultTitle, tallyComponentVotesPayload);
 				})
-				.collect(toImmutableMap(TallyComponentVotesTuple::authorizationAlias, TallyComponentVotesTuple::payload));
+				.collect(toImmutableMap(TallyComponentVotesTuple::authorizationName, TallyComponentVotesTuple::payload));
 	}
 }

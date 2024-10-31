@@ -49,13 +49,13 @@ public class VerifyTallyControlComponentInput {
 	private final ImmutableMap<String, ControlComponentShufflePayload> lastOnlineControlComponentShufflesPerBallotBoxId;
 	private final ImmutableMap<String, TallyComponentShufflePayload> tallyControlComponentShufflesPerBallotBoxId;
 	private final ImmutableMap<String, TallyComponentVotesPayload> tallyControlComponentVotesPerBallotBoxId;
-	private final ImmutableMap<String, TallyComponentVotesPayload> tallyControlComponentVotesPerAuthorizationAlias;
+	private final ImmutableMap<String, TallyComponentVotesPayload> tallyControlComponentVotesPerAuthorizationName;
 	private final Configuration electionEventConfiguration;
 	private final Delivery tallyControlComponentDetailedResults;
 
 	public VerifyTallyControlComponentInput(final Stream<ControlComponentShufflePayload> controlComponentShufflePayloads,
 			final Stream<TallyComponentShufflePayload> tallyComponentShufflePayloads,
-			final ImmutableMap<String, TallyComponentVotesPayload> tallyControlComponentVotesPerAuthorizationAlias,
+			final ImmutableMap<String, TallyComponentVotesPayload> tallyControlComponentVotesPerAuthorizationName,
 			final Configuration electionEventConfiguration,
 			final Delivery tallyControlComponentDetailedResults) {
 		this.lastOnlineControlComponentShufflesPerBallotBoxId = checkNotNull(controlComponentShufflePayloads)
@@ -63,9 +63,9 @@ public class VerifyTallyControlComponentInput {
 				.collect(toImmutableMap(ControlComponentShufflePayload::getBallotBoxId, Function.identity()));
 		this.tallyControlComponentShufflesPerBallotBoxId = checkNotNull(tallyComponentShufflePayloads)
 				.collect(toImmutableMap(TallyComponentShufflePayload::getBallotBoxId, Function.identity()));
-		this.tallyControlComponentVotesPerBallotBoxId = checkNotNull(tallyControlComponentVotesPerAuthorizationAlias).values().stream()
+		this.tallyControlComponentVotesPerBallotBoxId = checkNotNull(tallyControlComponentVotesPerAuthorizationName).values().stream()
 				.collect(toImmutableMap(TallyComponentVotesPayload::getBallotBoxId, Function.identity()));
-		this.tallyControlComponentVotesPerAuthorizationAlias = checkNotNull(tallyControlComponentVotesPerAuthorizationAlias);
+		this.tallyControlComponentVotesPerAuthorizationName = checkNotNull(tallyControlComponentVotesPerAuthorizationName);
 		this.electionEventConfiguration = checkNotNull(electionEventConfiguration);
 		this.tallyControlComponentDetailedResults = checkNotNull(tallyControlComponentDetailedResults);
 
@@ -101,8 +101,8 @@ public class VerifyTallyControlComponentInput {
 		return tallyControlComponentVotesPerBallotBoxId;
 	}
 
-	public ImmutableMap<String, TallyComponentVotesPayload> getTallyControlComponentVotesPerAuthorizationAlias() {
-		return tallyControlComponentVotesPerAuthorizationAlias;
+	public ImmutableMap<String, TallyComponentVotesPayload> getTallyControlComponentVotesPerAuthorizationName() {
+		return tallyControlComponentVotesPerAuthorizationName;
 	}
 
 	public Configuration getElectionEventConfiguration() {

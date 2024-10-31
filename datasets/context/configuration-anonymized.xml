@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <configuration xmlns="http://www.evoting.ch/xmlns/config/7">
   <header>
-    <fileDate>2024-07-16T17:00:07.028+02:00</fileDate>
+    <fileDate>2024-10-24T10:29:30.982+02:00</fileDate>
     <voterTotal>43</voterTotal>
   </header>
   <contest>
@@ -3303,23 +3303,23 @@
           <returnCodeWriteInDescriptionInfo>
             <positionText>
               <language>de</language>
-              <positionTextShort>Return Code Write-In description</positionTextShort>
-              <positionTextLong>Return Code Write-In description</positionTextLong>
+              <positionTextShort>Nicht genannte Person</positionTextShort>
+              <positionTextLong>Nicht genannte Person</positionTextLong>
             </positionText>
             <positionText>
               <language>fr</language>
-              <positionTextShort>Return Code Write-In description</positionTextShort>
-              <positionTextLong>Return Code Write-In description</positionTextLong>
+              <positionTextShort>Vote manuscrit</positionTextShort>
+              <positionTextLong>Vote manuscrit</positionTextLong>
             </positionText>
             <positionText>
               <language>it</language>
-              <positionTextShort>Return Code Write-In description</positionTextShort>
-              <positionTextLong>Return Code Write-In description</positionTextLong>
+              <positionTextShort>Posizione write-in</positionTextShort>
+              <positionTextLong>Posizione write-in</positionTextLong>
             </positionText>
             <positionText>
               <language>rm</language>
-              <positionTextShort>Return Code Write-In description</positionTextShort>
-              <positionTextLong>Return Code Write-In description</positionTextLong>
+              <positionTextShort>Posiziun per agiuntar candidats</positionTextShort>
+              <positionTextLong>Posiziun per agiuntar candidats</positionTextLong>
             </positionText>
           </returnCodeWriteInDescriptionInfo>
         </writeInCandidate>
@@ -3775,7 +3775,6 @@
     <authorization>
       <authorizationIdentification>516e2551-ee42-3401-9988-7dfebd0ac0c0</authorizationIdentification>
       <authorizationName>CH_Testurne1</authorizationName>
-      <authorizationAlias>516e2551-ee42-3401-9988-7dfebd0ac0c0</authorizationAlias>
       <authorizationTest>true</authorizationTest>
       <authorizationFromDate>2023-12-06T07:00:00+01:00</authorizationFromDate>
       <authorizationToDate>2027-11-25T23:00:00+01:00</authorizationToDate>
@@ -3795,7 +3794,6 @@
     <authorization>
       <authorizationIdentification>ec1ce02e-9b9b-3756-8d99-5bfd68678f6b</authorizationIdentification>
       <authorizationName>CH_Testurne2</authorizationName>
-      <authorizationAlias>ec1ce02e-9b9b-3756-8d99-5bfd68678f6b</authorizationAlias>
       <authorizationTest>true</authorizationTest>
       <authorizationFromDate>2023-12-06T07:00:00+01:00</authorizationFromDate>
       <authorizationToDate>2027-11-25T23:00:00+01:00</authorizationToDate>
@@ -3826,7 +3824,6 @@
     <authorization>
       <authorizationIdentification>7228df42-9812-3434-a123-7af149a88672</authorizationIdentification>
       <authorizationName>CH_Testurne3</authorizationName>
-      <authorizationAlias>7228df42-9812-3434-a123-7af149a88672</authorizationAlias>
       <authorizationTest>true</authorizationTest>
       <authorizationFromDate>2023-12-06T07:00:00+01:00</authorizationFromDate>
       <authorizationToDate>2027-11-25T23:00:00+01:00</authorizationToDate>
@@ -3846,7 +3843,6 @@
     <authorization>
       <authorizationIdentification>88ac0932-b73a-3d2b-b04a-44a16176a5e9</authorizationIdentification>
       <authorizationName>CH_Testurne4</authorizationName>
-      <authorizationAlias>88ac0932-b73a-3d2b-b04a-44a16176a5e9</authorizationAlias>
       <authorizationTest>true</authorizationTest>
       <authorizationFromDate>2023-12-06T07:00:00+01:00</authorizationFromDate>
       <authorizationToDate>2027-11-25T23:00:00+01:00</authorizationToDate>
@@ -4382,5 +4378,5 @@
       <voterType>SWISSABROAD</voterType>
     </voter>
   </register>
-  <signature>Y/kKw29aVoMcYEi1U5uQ9Q1cWHLVZrhkf3hGPki8iYxtkz9I74nJxQcz1hgyU1Z5BtpYlOTCh2JcqZW6sOvW0gQ8qSeD1J138U4TOu62Q5kRv4mP6M8pbGvyrUwby8CItg2qkkcjJ+O4RF86KPk2I4R/O5vYvTjrBnjHsLg4zNawZ/knalGi5sBcATqilVq0B5ThUcv0fRnyW8fvDntR54x3k8YpkYEHXl4hj3ddlxA8L7odWqTTKOMi7pJ5eLtiRwnGKKBDpTZWz6tILGw1dGiTTFXYyp7q4wLUKYtnOBaRI8kluhVkK1QGVWdT4xxkigIjeHI4GV0r7Re4aZVaV73CctglvZM8bDPjIDXVly+fg59B2cAmiZFtvFdJGLr1yNWF3KhHmZsw0gR7y6ygPiS09I30slyJfeCNnc2vl3H8+NtngOKP2rA2osUClCl+YOj9PWNr4fLbjMPU5Do9Q3NdmBrICxjVDXn5hpYeGSHn24XAeMM1ZsfZRwGcamad</signature>
+  <signature>REDHW5ja1ME8ozwZNyggV4d25Fx2TWxS3PvDl+gh8V+grI1lkz5XMfh8yf7ZmH5BUVgB5ei9ogioZGnRC+TowCH/NZEu0hqjUGFa6TYyzdkaGpFw9ck5+DROKc2qkcBXzLtTLSjbh0ZbwsCDxEZe+YI0bWRjzhhzKJI20Kfo64kbvbsUGbkWFACJQi7ZMnODLSE26LLcK4go5U+YzSP5lv4wd8/WEbZ9C1545ouZEOGnMtVKxmLSQq0BTZJpys5ukGuQEouC6lXuMUtaBuFMwAsOVO531Q/BRpiC5DPQRc37iextYipbJGvY7Z6cOygfkbAcFjFrw5sKymK/ISgHyimNI36E6/l3PdzI9dsE0sHjneuxEzAV50uydDkRKVmpE/NUhPk15wk19xIAUHTlhb56gJ5HTV1rQUJS+lQfoA6T+GDd1MxtD+kEX0ldehbs8XfmSLj2geJFq9BLnODZPK3g4sepoQcM5xFk0d5ssLI01HTW4odxP9fwSXFLs++z</signature>
 </configuration>

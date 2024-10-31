@@ -69,7 +69,7 @@ public class VerifyTallyControlComponentAlgorithm {
 		final ImmutableMap<String, ControlComponentShufflePayload> lastOnlineControlComponentShuffles = input.getLastOnlineControlComponentShufflesPerBallotBoxId();
 		final ImmutableMap<String, TallyComponentShufflePayload> tallyControlComponentShuffles = input.getTallyControlComponentShufflesPerBallotBoxId();
 		final ImmutableMap<String, TallyComponentVotesPayload> tallyControlComponentVotes = input.getTallyControlComponentVotesPerBallotBoxId();
-		final ImmutableMap<String, TallyComponentVotesPayload> L_decodedVotesbb = input.getTallyControlComponentVotesPerAuthorizationAlias();
+		final ImmutableMap<String, TallyComponentVotesPayload> L_decodedVotesbb = input.getTallyControlComponentVotesPerAuthorizationName();
 		final Configuration configurationXML = input.getElectionEventConfiguration();
 		final Delivery eCH0222XML = input.getTallyControlComponentDetailedResults();
 
