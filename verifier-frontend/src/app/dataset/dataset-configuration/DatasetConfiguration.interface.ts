@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 import {DatasetConfigurationTally} from './DatasetConfigurationTally.interface';
-import {DatasetConfigurationSetup} from './DatasetConfigurationSetup.interface';
 import {DatasetConfigurationContext} from './DatasetConfigurationContext.interface';
 
 export class DatasetConfiguration {
   context: DatasetConfigurationContext;
-  setup: DatasetConfigurationSetup;
   tally: DatasetConfigurationTally;
 }

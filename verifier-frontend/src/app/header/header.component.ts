@@ -84,7 +84,8 @@ export class HeaderComponent implements OnInit {
       active: false
     }
   };
-
+  protected readonly DatasetType = DatasetType;
+  protected readonly VerifierMode = VerifierMode;
   private stompClient;
 
   constructor(private processorService: ProcessorService) {
@@ -137,10 +138,9 @@ export class HeaderComponent implements OnInit {
     this.hash = undefined;
     this.configuration = new DatasetConfiguration();
     this.configuration.tally = null;
-    this.configuration.setup = null;
     this.startDisabled = true;
 
-    if(!this.contextFilename) {
+    if (!this.contextFilename) {
       this.verifierMode = newVerifierMode;
       return;
     }
@@ -353,31 +353,29 @@ export class HeaderComponent implements OnInit {
     return (this.verifierMode) ? DatasetType.CONTEXT : undefined;
   }
 
-  getDatasetType(): DatasetType {
-    switch (this.verifierMode) {
-      case VerifierMode.SETUP: return DatasetType.SETUP;
-      case VerifierMode.TALLY: return DatasetType.TALLY;
-      default: return undefined;
-    }
-  }
-
   setDatasetConfigurationContext(configuration: DatasetConfiguration): void {
     this.contextFilename = configuration.context.filename;
     this.contextHash = configuration.context.hash;
     this.configuration.context = configuration.context;
+
+    if (this.verifierMode === VerifierMode.SETUP) {
+      this.startDisabled = false;
+    }
   }
 
-  setDatasetConfiguration(configuration: DatasetConfiguration): void {
-    switch (this.verifierMode) {
-      case VerifierMode.SETUP: return this.setDatasetConfigurationSetup(configuration);
-      case VerifierMode.TALLY: return this.setDatasetConfigurationTally(configuration);
+  setDatasetConfigurationTally(configuration: DatasetConfiguration): void {
+    this.filename = configuration.tally.filename;
+    this.hash = configuration.tally.hash;
+    this.configuration.tally = configuration.tally;
+    if (configuration.context) {
+      this.startDisabled = false;
     }
   }
 
   uploadingDatasetContextReset(event: boolean): void {
     this.uploadingDataset = event;
 
-    if(this.uploadingDataset) {
+    if (this.uploadingDataset) {
       this.contextFilename = undefined;
       this.contextHash = undefined;
       this.configuration = new DatasetConfiguration();
@@ -389,34 +387,14 @@ export class HeaderComponent implements OnInit {
   uploadingDatasetReset(event: boolean): void {
     this.uploadingDataset = event;
 
-    if(this.uploadingDataset) {
+    if (this.uploadingDataset) {
       this.filename = undefined;
       this.hash = undefined;
       this.configuration.tally = null;
-      this.configuration.setup = null;
       this.startDisabled = true;
       this.eventStarted = null;
       this.startDate = null;
       this.endDate = null;
-    }
-  }
-
-  // Upload dataset.
-  private setDatasetConfigurationSetup(configuration: DatasetConfiguration): void {
-    this.filename = configuration.setup.filename;
-    this.hash = configuration.setup.hash;
-    this.configuration.setup = configuration.setup;
-    if (configuration.context) {
-      this.startDisabled = false;
-    }
-  }
-
-  private setDatasetConfigurationTally(configuration: DatasetConfiguration): void {
-    this.filename = configuration.tally.filename;
-    this.hash = configuration.tally.hash;
-    this.configuration.tally = configuration.tally;
-    if (configuration.context) {
-      this.startDisabled = false;
     }
   }
 

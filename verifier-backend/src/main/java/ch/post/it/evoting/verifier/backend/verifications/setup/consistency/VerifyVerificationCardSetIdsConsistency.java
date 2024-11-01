@@ -29,9 +29,7 @@ import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentCodeSharesPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentTallyDataPayloadDataExtractor;
-import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentVerificationDataPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
@@ -71,9 +69,7 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 		final boolean sameVerificationCardSetIds = extractVerificationCardSetIds(inputDirectoryPath).stream()
 				.parallel()
 				.map(payloadsVerificationCardSetIds ->
-						payloadsVerificationCardSetIds.verificationCardSetId().equals(payloadsVerificationCardSetIds.verificationDataIds())
-								&& payloadsVerificationCardSetIds.verificationCardSetId().equals(payloadsVerificationCardSetIds.codeShareIds())
-								&& payloadsVerificationCardSetIds.verificationCardSetId().equals(payloadsVerificationCardSetIds.tallyIds()))
+						payloadsVerificationCardSetIds.verificationCardSetId().equals(payloadsVerificationCardSetIds.tallyIds()))
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 
@@ -87,48 +83,25 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 
 	private ImmutableList<PayloadsVerificationCardSetIds> extractVerificationCardSetIds(final Path inputDirectoryPath) {
 
-		final ImmutableList<Path> contextVerificationCardSetPaths = electionDataExtractionService.getContextVerificationCardSetPaths(
-				inputDirectoryPath);
-
-		return electionDataExtractionService.getSetupVerificationCardSetPaths(inputDirectoryPath).stream()
+		return electionDataExtractionService.getContextVerificationCardSetPaths(inputDirectoryPath).stream()
 				.parallel()
 				.map(verificationCardSetIdPath -> {
 
-					final String vcsId = verificationCardSetIdPath.getFileName().toString();
-					final ImmutableSet<String> verificationCardSetId = ImmutableSet.of(vcsId);
+					final ImmutableSet<String> verificationCardSetId = ImmutableSet.of(verificationCardSetIdPath.getFileName().toString());
 
-					final ImmutableSet<String> verificationDataIds = electionDataExtractionService.getSetupComponentVerificationDataPayloadsDataExtractionsSortedByChunkId(
-									verificationCardSetIdPath)
-							.map(SetupComponentVerificationDataPayloadDataExtractor.DataExtraction::verificationCardSetId)
-							.collect(toImmutableSet());
-
-					checkArgument(verificationDataIds.size() == 1, "The setup component verification card set id size must be one.");
-
-					final ImmutableSet<String> codeShareIds = electionDataExtractionService.getControlComponentCodeSharesPayloadsDataExtractions(
-									verificationCardSetIdPath)
-							.map(ControlComponentCodeSharesPayloadDataExtractor.DataExtraction::verificationCardSetIds)
-							.flatMap(ImmutableList::stream)
-							.collect(toImmutableSet());
-
-					checkArgument(codeShareIds.size() == 1, "The control component code shares verification card set id size must be one.");
-
-					final ImmutableSet<String> tallyIds = contextVerificationCardSetPaths.stream()
-							.parallel()
-							.filter(vcsPath -> vcsPath.getFileName().toString().equals(vcsId))
-							.flatMap(electionDataExtractionService::getSetupComponentTallyDataPayloadsDataExtractions)
+					final ImmutableSet<String> tallyIds = electionDataExtractionService.getSetupComponentTallyDataPayloadsDataExtractions(verificationCardSetIdPath)
 							.map(SetupComponentTallyDataPayloadDataExtractor.DataExtraction::verificationCardSetId)
 							.collect(toImmutableSet());
 
 					checkArgument(tallyIds.size() == 1, "The setup component tally verification card set id size must be one.");
 
-					return new PayloadsVerificationCardSetIds(verificationCardSetId, verificationDataIds, codeShareIds, tallyIds);
+					return new PayloadsVerificationCardSetIds(verificationCardSetId, tallyIds);
 
 				})
 				.collect(toImmutableList());
 	}
 
-	private record PayloadsVerificationCardSetIds(ImmutableSet<String> verificationCardSetId, ImmutableSet<String> verificationDataIds,
-												  ImmutableSet<String> codeShareIds, ImmutableSet<String> tallyIds) {
+	private record PayloadsVerificationCardSetIds(ImmutableSet<String> verificationCardSetId, ImmutableSet<String> tallyIds) {
 	}
 
 }

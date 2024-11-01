@@ -43,8 +43,7 @@ class VerifyEncryptionGroupConsistencyTest extends TallyVerificationTest {
 	@BeforeAll
 	static void setupAll() {
 		differentEncryptionGroupParameters = new EncryptionGroupParametersDataExtractor.DataExtraction("p", "q", "g");
-		extractionService = new EncryptionGroupParametersExtractionService(pathService, encryptionGroupParametersDataExtractor,
-				controlComponentCodeSharesPayloadDataExtractor);
+		extractionService = new EncryptionGroupParametersExtractionService(pathService, encryptionGroupParametersDataExtractor);
 		verification = new VerifyEncryptionGroupConsistency(resultPublisherServiceMock, extractionService);
 	}
 

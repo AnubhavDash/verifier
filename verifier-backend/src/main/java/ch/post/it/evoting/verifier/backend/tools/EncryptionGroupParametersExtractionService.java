@@ -16,17 +16,13 @@
 package ch.post.it.evoting.verifier.backend.tools;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
-import ch.post.it.evoting.cryptoprimitives.utils.Validations;
-import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentCodeSharesPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.dataextractors.EncryptionGroupParametersDataExtractor;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
@@ -37,14 +33,11 @@ public class EncryptionGroupParametersExtractionService {
 
 	private final PathService pathService;
 	private final EncryptionGroupParametersDataExtractor encryptionGroupParametersDataExtractor;
-	private final ControlComponentCodeSharesPayloadDataExtractor controlComponentCodeSharesPayloadDataExtractor;
 
 	public EncryptionGroupParametersExtractionService(final PathService pathService,
-			final EncryptionGroupParametersDataExtractor encryptionGroupParametersDataExtractor,
-			final ControlComponentCodeSharesPayloadDataExtractor controlComponentCodeSharesPayloadDataExtractor) {
+			final EncryptionGroupParametersDataExtractor encryptionGroupParametersDataExtractor) {
 		this.pathService = pathService;
 		this.encryptionGroupParametersDataExtractor = encryptionGroupParametersDataExtractor;
-		this.controlComponentCodeSharesPayloadDataExtractor = controlComponentCodeSharesPayloadDataExtractor;
 	}
 
 	/**
@@ -160,62 +153,6 @@ public class EncryptionGroupParametersExtractionService {
 						.getPath())
 				.map(encryptionGroupParametersDataExtractor::load);
 
-	}
-
-	/**
-	 * Gets the encryption group parameters of the SetupComponentVerificationDataPayloads.
-	 *
-	 * @param inputDirectoryPath the dataset root directory.
-	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
-	 * @throws UncheckedIOException if the extraction fails.
-	 */
-	public Stream<EncryptionGroupParametersDataExtractor.DataExtraction> getFromSetupComponentVerificationDataPayloads(
-			final Path inputDirectoryPath) {
-		checkNotNull(inputDirectoryPath);
-
-		final PathNode pathNode = pathService.buildFromRootPath(StructureKey.SETUP_VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
-
-		return pathNode.getRegexPaths().stream()
-				.flatMap(ballotBoxIdPath -> pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA, ballotBoxIdPath)
-						.getRegexPaths()
-						.stream())
-				.parallel()
-				.map(encryptionGroupParametersDataExtractor::load);
-	}
-
-	/**
-	 * Gets the encryption group parameters of the control component code shares payloads.
-	 *
-	 * @param inputDirectoryPath the dataset root directory.
-	 * @return a stream of the control component code shares payloads' encryption group parameters.
-	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
-	 * @throws UncheckedIOException if the extraction fails.
-	 */
-	public Stream<EncryptionGroupParametersDataExtractor.DataExtraction> getFromControlComponentCodeShares(final Path inputDirectoryPath) {
-		checkNotNull(inputDirectoryPath);
-
-		final PathNode pathNode = pathService.buildFromRootPath(StructureKey.SETUP_VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
-
-		return pathNode.getRegexPaths().stream()
-				.flatMap(verificationCardSetIdPath -> pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_CODE_SHARES,
-								verificationCardSetIdPath)
-						.getRegexPaths()
-						.stream())
-				.parallel()
-				.map(controlComponentCodeSharesPayloadDataExtractor::load)
-				.map(dataExtraction -> {
-
-					// Ensure all p, q, g are the same across a single payload file (ie for all nodes)
-					checkState(Validations.allEqual(dataExtraction.p().stream(), Function.identity()));
-					checkState(Validations.allEqual(dataExtraction.q().stream(), Function.identity()));
-					checkState(Validations.allEqual(dataExtraction.g().stream(), Function.identity()));
-
-					return new EncryptionGroupParametersDataExtractor.DataExtraction(
-							dataExtraction.p().iterator().next(),
-							dataExtraction.q().iterator().next(),
-							dataExtraction.g().iterator().next()
-					);
-				});
 	}
 
 	/**

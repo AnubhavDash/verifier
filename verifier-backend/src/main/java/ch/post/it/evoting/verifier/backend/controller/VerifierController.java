@@ -70,7 +70,7 @@ public class VerifierController {
 
 	@PostMapping("/changeMode")
 	public void changeMode() {
-		processor.cleanSetupTally();
+		processor.cleanContextTally();
 	}
 
 	@GetMapping(value = "/datasetConfiguration")

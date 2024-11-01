@@ -72,12 +72,6 @@ public class VerifyFileNameVerificationCardSetIdsConsistency extends AbstractVer
 				.map(Path::toString)
 				.collect(toImmutableSet());
 
-		final ImmutableSet<String> setupVerificationCardSetIds = electionDataExtractionService.getSetupVerificationCardSetPaths(inputDirectoryPath)
-				.stream()
-				.map(Path::getFileName)
-				.map(Path::toString)
-				.collect(toImmutableSet());
-
 		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContextPayload(inputDirectoryPath)
 				.getElectionEventContext();
 		final ImmutableSet<String> payloadVerificationCardSetIds = electionEventContext.verificationCardSetContexts().stream()
@@ -85,8 +79,7 @@ public class VerifyFileNameVerificationCardSetIdsConsistency extends AbstractVer
 				.collect(toImmutableSet());
 
 		// Verifying set equality is sufficient since the payload ensures that there are no duplicate verification card set IDs.
-		final boolean sameVerificationCardSetIds = contextVerificationCardSetIds.equals(payloadVerificationCardSetIds) &&
-				setupVerificationCardSetIds.equals(payloadVerificationCardSetIds);
+		final boolean sameVerificationCardSetIds = contextVerificationCardSetIds.equals(payloadVerificationCardSetIds);
 
 		final VerificationResult verificationResult;
 		if (sameVerificationCardSetIds) {

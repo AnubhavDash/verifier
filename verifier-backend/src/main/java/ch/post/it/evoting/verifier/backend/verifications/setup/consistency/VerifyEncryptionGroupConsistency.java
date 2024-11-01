@@ -63,8 +63,6 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 
 		final ImmutableList<BiFunction<Path, EncryptionGroupParametersDataExtractor.DataExtraction, Boolean>> validations = ImmutableList.of(
 				this::validateControlComponentPublicKeys,
-				this::validateSetupComponentVerificationDataPayloads,
-				this::validateControlComponentCodeSharesPayload,
 				this::validateSetupComponentTallyDataPayloads);
 
 
@@ -85,20 +83,6 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 	private boolean validateControlComponentPublicKeys(final Path inputDirectoryPath,
 			final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
 		return extractionService.getFromControlComponentPublicKeys(inputDirectoryPath)
-				.distinct()
-				.allMatch(encryptionGroupParametersDataExtraction::equals);
-	}
-
-	private boolean validateSetupComponentVerificationDataPayloads(final Path inputDirectoryPath,
-			final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
-		return extractionService.getFromSetupComponentVerificationDataPayloads(inputDirectoryPath)
-				.distinct()
-				.allMatch(encryptionGroupParametersDataExtraction::equals);
-	}
-
-	private boolean validateControlComponentCodeSharesPayload(final Path inputDirectoryPath,
-			final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
-		return extractionService.getFromControlComponentCodeShares(inputDirectoryPath)
 				.distinct()
 				.allMatch(encryptionGroupParametersDataExtraction::equals);
 	}

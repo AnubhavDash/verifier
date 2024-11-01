@@ -23,7 +23,6 @@ import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 
 public enum DatasetType {
 	CONTEXT(StructureKey.CONTEXT_DIR),
-	SETUP(StructureKey.SETUP_DIR),
 	TALLY(StructureKey.TALLY_DIR);
 
 	private final StructureKey rootStructureKey;

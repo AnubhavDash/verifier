@@ -98,8 +98,6 @@ export class DatasetUploadComponent implements OnChanges {
     switch (this.datasetType) {
       case DatasetType.CONTEXT:
         return datasetConfiguration.context.filename;
-      case DatasetType.SETUP:
-        return datasetConfiguration.setup.filename;
       case DatasetType.TALLY:
         return datasetConfiguration.tally.filename;
       default:

@@ -2,7 +2,7 @@
 
 ## Content
 
-The Verifier has three different datasets: context, setup and tally.
+The Verifier has two different datasets: context and tally.
 
 ### Context dataset
 
@@ -17,17 +17,6 @@ The following table shows the contents of the context dataset and the schemas th
 | Setup Component Tally Data           | `context/verificationCardSets/${vcs}/setupComponentTallyDataPayload.json` | e-voting-libraries-domain: SetupComponentTallyDataPayload.schema.json    |
 
 The context dataset is used both in the Verify Setup phase and Verify Tally phase.
-
-### Setup dataset
-
-The following table shows the contents of the setup dataset.
-
-| Description                       | Path                                                                                      | Schema                                                                       |
-|-----------------------------------|-------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|
-| Setup Component Verification Data | `setup/verificationCardSets/${vcs}/setupComponentVerificationDataPayload.${chunkId}.json` | e-voting-libraries-domain: SetupComponentVerificationDataPayload.schema.json |
-| Control Component Code Shares     | `setup/verificationCardSets/${vcs}/controlComponentCodeSharesPayload.${chunkId}.json`     | e-voting-libraries-domain: ControlComponentCodeSharesPayload.schema.json     |
-
-The setup dataset in only used in the Verify Setup phase.
 
 ### Tally dataset
 

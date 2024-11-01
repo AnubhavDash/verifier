@@ -15,9 +15,6 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.completeness;
 
-import static ch.post.it.evoting.verifier.backend.tools.DatasetType.SETUP;
-
-import java.io.UncheckedIOException;
 import java.nio.file.Path;
 
 import org.slf4j.Logger;
@@ -67,21 +64,11 @@ public class VerifySetupCompleteness extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		if (verifyContextCompletenessService.verifyContextCompleteness(inputDirectoryPath) && verifySetupCompleteness(inputDirectoryPath)) {
+		if (verifyContextCompletenessService.verifyContextCompleteness(inputDirectoryPath)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
 					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "verification101.nok.message"));
-		}
-	}
-
-	private boolean verifySetupCompleteness(final Path inputDirectoryPath) {
-		try {
-			pathService.checkStructureKeysExistence(SETUP.getRootStructureKey(), inputDirectoryPath);
-			return true;
-		} catch (final UncheckedIOException | IllegalStateException e) {
-			LOGGER.error("Setup completeness failed.", e);
-			return false;
 		}
 	}
 }

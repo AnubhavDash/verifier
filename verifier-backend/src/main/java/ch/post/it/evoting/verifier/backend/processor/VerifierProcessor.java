@@ -62,7 +62,6 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformati
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.dto.DatasetConfiguration;
 import ch.post.it.evoting.verifier.backend.dto.DatasetConfigurationContext;
-import ch.post.it.evoting.verifier.backend.dto.DatasetConfigurationSetup;
 import ch.post.it.evoting.verifier.backend.dto.DatasetConfigurationTally;
 import ch.post.it.evoting.verifier.backend.dto.Verification;
 import ch.post.it.evoting.verifier.backend.event.PreSetupEvent;
@@ -93,10 +92,8 @@ public class VerifierProcessor {
 	private final StreamedEncryptionDecryptionService streamedEncryptionDecryptionService;
 	private final char[] importDecryptionPassword;
 	private Dataset contextDataset;
-	private Dataset setupDataset;
 	private Dataset tallyDataset;
 	private DatasetConfigurationContext datasetConfigurationContext;
-	private DatasetConfigurationSetup datasetConfigurationSetup;
 	private DatasetConfigurationTally datasetConfigurationTally;
 	private ImmutableList<Verification> verifications;
 
@@ -145,7 +142,7 @@ public class VerifierProcessor {
 	}
 
 	public DatasetConfiguration getDatasetConfiguration() {
-		return new DatasetConfiguration(datasetConfigurationContext, datasetConfigurationSetup, datasetConfigurationTally);
+		return new DatasetConfiguration(datasetConfigurationContext, datasetConfigurationTally);
 	}
 
 	public void setDataset(final String filename, final DatasetType datasetType, final Path filePath)
@@ -156,7 +153,6 @@ public class VerifierProcessor {
 
 		switch (datasetType) {
 		case CONTEXT -> setDatasetContext(filename, filePath);
-		case SETUP -> setDatasetSetup(filename, filePath);
 		case TALLY -> setDatasetTally(filename, filePath);
 		default -> throw new IllegalArgumentException("The dataset type does not exist.");
 		}
@@ -169,9 +165,7 @@ public class VerifierProcessor {
 		if (this.contextDataset != null) {
 			datasetService.clean(contextDataset, false);
 		}
-		this.setupDataset = null;
 		this.tallyDataset = null;
-		this.datasetConfigurationSetup = null;
 		this.datasetConfigurationTally = null;
 
 		final Path directory;
@@ -266,33 +260,6 @@ public class VerifierProcessor {
 				.build();
 	}
 
-	private void setDatasetSetup(final String filename, final Path filePath) throws DatasetExtractionException {
-		checkNotNull(filename);
-		checkNotNull(filePath);
-		checkNotNull(datasetConfigurationContext, "A context dataset must be uploaded first.");
-
-		if (this.setupDataset != null) {
-			datasetService.clean(setupDataset, false);
-		}
-
-		try (final InputStream datasetInputStream = Files.newInputStream(filePath)) {
-			this.setupDataset = downloadDataset(datasetInputStream, contextDataset.getUnpackFolder(), DatasetType.SETUP);
-		} catch (final IOException e) {
-			throw new DatasetExtractionException("Could not download setup dataset.");
-		}
-
-		checkNotNull(unpackDataset(setupDataset));
-
-		final String datasetHash;
-		try {
-			datasetHash = DigestUtils.sha256Hex(Files.newInputStream(filePath)).toLowerCase(Locale.ENGLISH);
-		} catch (final IOException e) {
-			throw new DatasetExtractionException("Could not digest given setup dataset.");
-		}
-
-		this.datasetConfigurationSetup = new DatasetConfigurationSetup(filename, datasetHash.toLowerCase(Locale.ENGLISH));
-	}
-
 	private void setDatasetTally(final String filename, final Path filePath) throws DatasetExtractionException {
 		checkNotNull(filename);
 		checkNotNull(filePath);
@@ -349,13 +316,12 @@ public class VerifierProcessor {
 
 	public void process(final String runOption) {
 		checkNotNull(contextDataset, "A context dataset must be uploaded before running the process.");
-		checkState(Objects.nonNull(setupDataset) || Objects.nonNull(tallyDataset),
-				"Either a setup or tally dataset must be uploaded before running the process.");
 		checkState(contextDataset.isUnpacked(), "A context dataset must be unpacked before running the process.");
-		checkState((Objects.nonNull(setupDataset) && setupDataset.isUnpacked()) || (Objects.nonNull(tallyDataset) && tallyDataset.isUnpacked()),
-				"Either a setup or tally dataset must be unpacked before running the process.");
+		if (Objects.nonNull(tallyDataset)) {
+			checkState(tallyDataset.isUnpacked(), "Tally dataset must be unpacked before running the process.");
+		}
 
-		// the context, setup and tally dataset are unpacked in the same folder.
+		// the context and tally dataset are unpacked in the same folder.
 		final Path inputDirectory = contextDataset.getUnpackFolder();
 
 		LOGGER.debug("The input directory is {}", inputDirectory);
@@ -375,18 +341,14 @@ public class VerifierProcessor {
 			datasetService.clean(contextDataset, false);
 			this.contextDataset = null;
 		}
-		if (this.setupDataset != null) {
-			datasetService.clean(setupDataset, false);
-			this.setupDataset = null;
-		}
 		if (this.tallyDataset != null) {
 			datasetService.clean(tallyDataset, false);
 			this.tallyDataset = null;
 		}
 	}
 
-	public void cleanSetupTally() {
-		this.setupDataset = null;
+	public void cleanContextTally() {
+		this.contextDataset = null;
 		this.tallyDataset = null;
 	}
 }

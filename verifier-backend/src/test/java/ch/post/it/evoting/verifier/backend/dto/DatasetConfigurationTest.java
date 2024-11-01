@@ -31,7 +31,6 @@ import ch.post.it.evoting.evotinglibraries.domain.common.Constants;
 @DisplayName("DatasetConfiguration with")
 class DatasetConfigurationTest {
 
-	private DatasetConfigurationSetup setup;
 	private DatasetConfigurationContext context;
 	private DatasetConfigurationTally tally;
 
@@ -63,9 +62,6 @@ class DatasetConfigurationTest {
 				.setTotalNumberOfTestVoters(43)
 				.build();
 
-		final String setupFilename = String.format("dataset-setup-%s.zip", electionEventId);
-		setup = new DatasetConfigurationSetup(setupFilename, hash);
-
 		final String tallyFilename = String.format("dataset-tally-%s.zip", electionEventId);
 		final int numberOfConfirmedNonTestVotes = 0;
 		final int numberOfConfirmedTestVotes = 10;
@@ -75,15 +71,13 @@ class DatasetConfigurationTest {
 	@Test
 	@DisplayName("null context throws NullPointerException")
 	void nullContextThrows() {
-		assertThrows(NullPointerException.class, () -> new DatasetConfiguration(null, setup, tally));
+		assertThrows(NullPointerException.class, () -> new DatasetConfiguration(null, tally));
 	}
 
 	@Test
 	@DisplayName("valid parameters does not throw")
 	void validParametersDoesNotThrow() {
-		assertDoesNotThrow(() -> new DatasetConfiguration(context, null, null));
-		assertDoesNotThrow(() -> new DatasetConfiguration(context, setup, null));
-		assertDoesNotThrow(() -> new DatasetConfiguration(context, null, tally));
-		assertDoesNotThrow(() -> new DatasetConfiguration(context, setup, tally));
+		assertDoesNotThrow(() -> new DatasetConfiguration(context, tally));
+		assertDoesNotThrow(() -> new DatasetConfiguration(context, null));
 	}
 }
