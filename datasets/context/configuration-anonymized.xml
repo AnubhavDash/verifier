@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <configuration xmlns="http://www.evoting.ch/xmlns/config/7">
   <header>
-    <fileDate>2024-10-24T10:29:30.982+02:00</fileDate>
+    <fileDate>2024-11-04T11:48:32.318+01:00</fileDate>
     <voterTotal>43</voterTotal>
   </header>
   <contest>
@@ -4378,5 +4378,5 @@
       <voterType>SWISSABROAD</voterType>
     </voter>
   </register>
-  <signature>REDHW5ja1ME8ozwZNyggV4d25Fx2TWxS3PvDl+gh8V+grI1lkz5XMfh8yf7ZmH5BUVgB5ei9ogioZGnRC+TowCH/NZEu0hqjUGFa6TYyzdkaGpFw9ck5+DROKc2qkcBXzLtTLSjbh0ZbwsCDxEZe+YI0bWRjzhhzKJI20Kfo64kbvbsUGbkWFACJQi7ZMnODLSE26LLcK4go5U+YzSP5lv4wd8/WEbZ9C1545ouZEOGnMtVKxmLSQq0BTZJpys5ukGuQEouC6lXuMUtaBuFMwAsOVO531Q/BRpiC5DPQRc37iextYipbJGvY7Z6cOygfkbAcFjFrw5sKymK/ISgHyimNI36E6/l3PdzI9dsE0sHjneuxEzAV50uydDkRKVmpE/NUhPk15wk19xIAUHTlhb56gJ5HTV1rQUJS+lQfoA6T+GDd1MxtD+kEX0ldehbs8XfmSLj2geJFq9BLnODZPK3g4sepoQcM5xFk0d5ssLI01HTW4odxP9fwSXFLs++z</signature>
+  <signature>U/FJ6JYdhVgfxh2xopkevwPTzRfXceHcyP4lQoLNoi183kgU8O317slZz0soKxPG3dajf1ACdCbrK/DbCKI2W04cEuZB36rAOfdoJGIj2svGeWUbZcO/hGPuLMJNrJJ7F+EYf22cSx2uj8aVo/etuERQT/frP6LEFUHX8zzysY9v8WvJlBzl9ijl8b7ZpaqHLIPt97ACGKAh8yFQg5SHKtAk5Rzb9vmOJjguAo0d8r55L22jlsIpV6D+aTxkAROZL9WuQdzDCbjQYFPgx2pNYc/PH78NAJUGH0PAR5q027cExrNH6sK5hW+yhzKOG5hidN+MePtmoZwc9zTAaNcCSDyrmZeynqtb7jZIHoLTkSMqOXeWq3/7T6SUqc0BpdQgqzmMhzS+whcvkYICNKiZWxxHPhfdQ5/XMa2Aw2WwCguN7z/pcxpSu/QlU+XMvkiJ5IVOcwBX3ViYnpckAbp163bpgJ3OGe/MrisbxNF86miWdFuEq430JO4eKBpVZpRX</signature>
 </configuration>
