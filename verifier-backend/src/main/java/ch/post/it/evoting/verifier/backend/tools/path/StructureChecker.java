@@ -15,11 +15,14 @@
  */
 package ch.post.it.evoting.verifier.backend.tools.path;
 
+import static ch.post.it.evoting.verifier.backend.tools.path.StructureConstants.STRUCTURE_CONTENT;
+import static ch.post.it.evoting.verifier.backend.tools.path.StructureConstants.STRUCTURE_KEY;
+import static ch.post.it.evoting.verifier.backend.tools.path.StructureConstants.STRUCTURE_NAME;
+import static ch.post.it.evoting.verifier.backend.tools.path.StructureConstants.STRUCTURE_TYPE;
+
 import com.fasterxml.jackson.databind.JsonNode;
 
 class StructureChecker {
-
-	private static final String CONTENT = "content";
 
 	private StructureChecker() {
 		// private constructor, use static
@@ -32,12 +35,12 @@ class StructureChecker {
 	private static void verifyNodeIntegrity(final JsonNode currentNode) {
 		for (final JsonNode node : currentNode) {
 			// Check type presence.
-			final JsonNode type = node.path("type");
-			checkNodeMissing(type, "type", type.asText());
+			final JsonNode type = node.path(STRUCTURE_TYPE);
+			checkNodeMissing(type, STRUCTURE_TYPE, type.asText());
 
 			// Check key presence.
-			final JsonNode key = node.path("key");
-			checkNodeMissing(key, "key", key.asText());
+			final JsonNode key = node.path(STRUCTURE_KEY);
+			checkNodeMissing(key, STRUCTURE_KEY, key.asText());
 
 			// Check is the type is valid.
 			final PathType pathType;
@@ -51,40 +54,40 @@ class StructureChecker {
 			case FILE -> checkFileNodeIntegrity(node);
 			case DIRECTORY -> {
 				checkFolderIntegrity(node);
-				verifyNodeIntegrity(node.path(CONTENT));
+				verifyNodeIntegrity(node.path(STRUCTURE_CONTENT));
 			}
 			case DYNAMIC_DIRECTORY -> {
 				checkFolderLoopIntegrity(node);
-				verifyNodeIntegrity(node.path(CONTENT));
+				verifyNodeIntegrity(node.path(STRUCTURE_CONTENT));
 			}
 			}
 		}
 	}
 
 	private static void checkFolderLoopIntegrity(final JsonNode node) {
-		final JsonNode content = node.path(CONTENT);
-		checkNodeMissing(content, CONTENT, node.path("type").asText());
+		final JsonNode content = node.path(STRUCTURE_CONTENT);
+		checkNodeMissing(content, STRUCTURE_CONTENT, node.path(STRUCTURE_TYPE).asText());
 	}
 
 	private static void checkFolderIntegrity(final JsonNode node) {
-		final JsonNode key = node.path("key");
-		final JsonNode name = node.path("name");
-		final JsonNode content = node.path(CONTENT);
+		final JsonNode key = node.path(STRUCTURE_KEY);
+		final JsonNode name = node.path(STRUCTURE_NAME);
+		final JsonNode content = node.path(STRUCTURE_CONTENT);
 
-		final String type = node.path("type").asText();
-		checkNodeMissing(key, "key", type);
-		checkNodeMissing(name, "name", type);
-		checkNodeMissing(content, CONTENT, type);
+		final String type = node.path(STRUCTURE_TYPE).asText();
+		checkNodeMissing(key, STRUCTURE_KEY, type);
+		checkNodeMissing(name, STRUCTURE_NAME, type);
+		checkNodeMissing(content, STRUCTURE_CONTENT, type);
 
 	}
 
 	private static void checkFileNodeIntegrity(final JsonNode node) {
-		final JsonNode key = node.path("key");
-		final JsonNode name = node.path("name");
+		final JsonNode key = node.path(STRUCTURE_KEY);
+		final JsonNode name = node.path(STRUCTURE_NAME);
 
-		final String type = node.path("type").asText();
-		checkNodeMissing(key, "key", type);
-		checkNodeMissing(name, "name", type);
+		final String type = node.path(STRUCTURE_TYPE).asText();
+		checkNodeMissing(key, STRUCTURE_KEY, type);
+		checkNodeMissing(name, STRUCTURE_NAME, type);
 	}
 
 	private static void checkNodeMissing(final JsonNode node, final String field, final String type) {

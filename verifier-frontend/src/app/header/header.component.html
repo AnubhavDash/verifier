@@ -33,27 +33,30 @@
           [triggerModal]="contextFilename !== undefined && contextFilename !== ''"
           [verifierMode]="verifierMode"
         ></app-verifier-mode>
-        <app-upload
-          (datasetConfiguration)="setDatasetConfigurationContext($event)"
-          (uploadingDataset)="uploadingDatasetContextReset($event)"
-          *ngIf="verifierMode"
-          [datasetType]="getDatasetTypeContext()"
-          [uploadDisabled]="actionsDisabled()"
-          [verifierMode]="verifierMode"
-        ></app-upload>
-        <app-upload
-          (datasetConfiguration)="setDatasetConfiguration($event)"
-          (uploadingDataset)="uploadingDatasetReset($event)"
-          *ngIf="contextFilename && verifierMode"
-          [datasetType]="getDatasetType()"
-          [uploadDisabled]="actionsDisabled()"
-        ></app-upload>
+        @if (verifierMode) {
+          <app-upload
+            (datasetConfiguration)="setDatasetConfigurationContext($event)"
+            (uploadingDataset)="uploadingDatasetContextReset($event)"
+            [datasetType]="getDatasetTypeContext()"
+            [uploadDisabled]="actionsDisabled()"
+            [verifierMode]="verifierMode"
+          ></app-upload>
+        }
+        @if (contextFilename && verifierMode && verifierMode === VerifierMode.TALLY) {
+          <app-upload
+            (datasetConfiguration)="setDatasetConfigurationTally($event)"
+            (uploadingDataset)="uploadingDatasetReset($event)"
+            [datasetType]="DatasetType.TALLY"
+            [uploadDisabled]="actionsDisabled()"
+          ></app-upload>
+        }
         <div *ngIf="contextFilename" class="row mt-4">
           <div class="col-12 mb-2">
             <div class="row">
               <div class="col-12">
                 <div class="form-check form-switch float-left">
-                  <input [(ngModel)]="displayDatasetInformation" class="form-check-input" id="toggleDatasetInformationSwitch" role="switch" type="checkbox">
+                  <input [(ngModel)]="displayDatasetInformation" class="form-check-input" id="toggleDatasetInformationSwitch" role="switch"
+                         type="checkbox" aria-checked="true">
                   <label class="form-check-label" for="toggleDatasetInformationSwitch">Display Dataset Information</label>
                 </div>
               </div>
@@ -99,19 +102,19 @@
             <div class="float-left">
               <button (click)="filterVerificationsRUNNING()" [class.active]="verificationFilter.RUNNING.active"
                       class="btn btn-outline-primary mr-1 mt-1" type="button">
-                Running <span class="badge text-bg-light">{{statusCounterRUNNING()}}</span>
+                Running <span class="badge text-bg-light">{{ statusCounterRUNNING() }}</span>
               </button>
               <button (click)="filterVerificationsOK()" [class.active]="verificationFilter.OK.active" class="btn btn-outline-success mr-1 mt-1"
                       type="button">
-                Success <span class="badge text-bg-light">{{statusCounterOK()}}</span>
+                Success <span class="badge text-bg-light">{{ statusCounterOK() }}</span>
               </button>
               <button (click)="filterVerificationsNOK()" [class.active]="verificationFilter.NOK.active" class="btn btn-outline-danger mr-1 mt-1"
                       type="button">
-                Failure <span class="badge text-bg-light">{{statusCounterNOK()}}</span>
+                Failure <span class="badge text-bg-light">{{ statusCounterNOK() }}</span>
               </button>
               <button (click)="filterVerificationsERROR()" [class.active]="verificationFilter.ERROR.active" class="btn btn-outline-warning mr-1 mt-1"
                       type="button">
-                Error <span class="badge text-bg-light">{{statusCounterERROR()}}</span>
+                Error <span class="badge text-bg-light">{{ statusCounterERROR() }}</span>
               </button>
             </div>
             <div class="form-check ml-4 mt-2 pt-1 float-left">
@@ -136,7 +139,7 @@
             <i *ngIf="!isExportingToPDF" aria-hidden="true" class="bi-printer"></i> Print to PDF
           </button>
           <div class="form-check form-switch float-right ml-3 mt-2">
-            <input [(ngModel)]="printMode" class="form-check-input" id="togglePrintModeSwitch" role="switch" type="checkbox">
+            <input [(ngModel)]="printMode" class="form-check-input" id="togglePrintModeSwitch" role="switch" type="checkbox"  aria-checked="false">
             <label class="form-check-label" for="togglePrintModeSwitch">Print mode</label>
           </div>
         </div>

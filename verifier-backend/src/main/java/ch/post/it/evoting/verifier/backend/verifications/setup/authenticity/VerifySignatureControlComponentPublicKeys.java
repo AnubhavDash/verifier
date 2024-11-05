@@ -15,19 +15,19 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.authenticity;
 
-import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
 import java.security.SignatureException;
-import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
+import ch.post.it.evoting.evotinglibraries.domain.ControlComponentNode;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
@@ -75,14 +75,14 @@ public class VerifySignatureControlComponentPublicKeys extends AbstractVerificat
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = electionDataExtractionService.getControlComponentPublicKeysPayloads(
+		final ImmutableList<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = electionDataExtractionService.getControlComponentPublicKeysPayloads(
 				inputDirectoryPath);
 
-		checkState(NODE_IDS.size() == controlComponentPublicKeysPayloads.size(),
+		checkState(ControlComponentNode.ids().size() == controlComponentPublicKeysPayloads.size(),
 				"The number of control component public keys payload should correspond to the number of control components.");
 
 		controlComponentPublicKeysPayloads.stream().parallel()
-				.forEach(payload -> checkState(NODE_IDS.contains(payload.getControlComponentPublicKeys().nodeId()),
+				.forEach(payload -> checkState(ControlComponentNode.ids().contains(payload.getControlComponentPublicKeys().nodeId()),
 						"Invalid node id. [nodeId: %s]", payload.getControlComponentPublicKeys().nodeId()));
 
 		final boolean verified = controlComponentPublicKeysPayloads

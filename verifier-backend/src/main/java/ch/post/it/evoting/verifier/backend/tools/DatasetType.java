@@ -15,25 +15,27 @@
  */
 package ch.post.it.evoting.verifier.backend.tools;
 
-import java.util.List;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.util.Locale;
 
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 
 public enum DatasetType {
-	CONTEXT(List.of(StructureKey.CONFIGURATION_ANONYMIZED, StructureKey.ELECTION_EVENT_CONTEXT, StructureKey.SETUP_COMPONENT_PUBLIC_KEYS,
-			StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS, StructureKey.SETUP_COMPONENT_TALLY_DATA)),
-	SETUP(List.of(StructureKey.CONTROL_COMPONENT_CODE_SHARES, StructureKey.SETUP_COMPONENT_VERIFICATION_DATA)),
-	TALLY(List.of(StructureKey.TALLY_COMPONENT_DECRYPT, StructureKey.TALLY_COMPONENT_ECH0110, StructureKey.TALLY_COMPONENT_ECH0222,
-			StructureKey.CONTROL_COMPONENT_BALLOT_BOX, StructureKey.CONTROL_COMPONENT_SHUFFLE, StructureKey.TALLY_COMPONENT_SHUFFLE,
-			StructureKey.TALLY_COMPONENT_VOTES));
+	CONTEXT(StructureKey.CONTEXT_DIR),
+	TALLY(StructureKey.TALLY_DIR);
 
-	private final List<StructureKey> structureKeys;
+	private final StructureKey rootStructureKey;
 
-	DatasetType(final List<StructureKey> structureKeys) {
-		this.structureKeys = structureKeys;
+	DatasetType(final StructureKey rootStructureKey) {
+		this.rootStructureKey = checkNotNull(rootStructureKey);
 	}
 
-	public List<StructureKey> getStructureKeys() {
-		return List.copyOf(structureKeys);
+	public StructureKey getRootStructureKey() {
+		return rootStructureKey;
+	}
+
+	public String getName() {
+		return name().toLowerCase(Locale.ENGLISH);
 	}
 }

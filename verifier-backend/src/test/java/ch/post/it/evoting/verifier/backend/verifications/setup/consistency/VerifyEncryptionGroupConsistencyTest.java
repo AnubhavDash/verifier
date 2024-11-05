@@ -43,8 +43,7 @@ class VerifyEncryptionGroupConsistencyTest extends SetupVerificationTest {
 	@BeforeAll
 	static void setupAll() {
 		differentEncryptionGroupParameters = new EncryptionGroupParametersDataExtractor.DataExtraction("p", "q", "g");
-		extractionService = new EncryptionGroupParametersExtractionService(pathService, encryptionGroupParametersDataExtractor,
-				controlComponentCodeSharesPayloadDataExtractor);
+		extractionService = new EncryptionGroupParametersExtractionService(pathService, encryptionGroupParametersDataExtractor);
 		verification = new VerifyEncryptionGroupConsistency(resultPublisherServiceMock, extractionService);
 	}
 
@@ -74,30 +73,6 @@ class VerifyEncryptionGroupConsistencyTest extends SetupVerificationTest {
 				datasetPath);
 		doReturn(Streams.concat(Stream.of(differentEncryptionGroupParameters), controlComponentPublicKeysParameters)).when(
 				groupParametersExtractorMock).getFromControlComponentPublicKeys(datasetPath);
-
-		assertInvalidVerification(groupParametersExtractorMock);
-	}
-
-	@Test
-	@DisplayName("SetupComponentVerificationData containing different encryption group parameters fails")
-	void invalidSetupComponentVerificationDataPayload() {
-		final EncryptionGroupParametersExtractionService groupParametersExtractorMock = spy(extractionService);
-		final Stream<EncryptionGroupParametersDataExtractor.DataExtraction> controlComponentPublicKeysParameters = extractionService.getFromSetupComponentVerificationDataPayloads(
-				datasetPath);
-		doReturn(Streams.concat(Stream.of(differentEncryptionGroupParameters), controlComponentPublicKeysParameters)).when(
-				groupParametersExtractorMock).getFromSetupComponentVerificationDataPayloads(datasetPath);
-
-		assertInvalidVerification(groupParametersExtractorMock);
-	}
-
-	@Test
-	@DisplayName("NodeContributions containing different encryption group parameters fails")
-	void invalidNodeContributions() {
-		final EncryptionGroupParametersExtractionService groupParametersExtractorMock = spy(extractionService);
-		final Stream<EncryptionGroupParametersDataExtractor.DataExtraction> controlComponentPublicKeysParameters = extractionService.getFromControlComponentCodeShares(
-				datasetPath);
-		doReturn(Streams.concat(Stream.of(differentEncryptionGroupParameters), controlComponentPublicKeysParameters)).when(
-				groupParametersExtractorMock).getFromControlComponentCodeShares(datasetPath);
 
 		assertInvalidVerification(groupParametersExtractorMock);
 	}

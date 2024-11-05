@@ -16,9 +16,6 @@
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
@@ -26,9 +23,7 @@ import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentCodeSharesPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentPublicKeysPayloadDataExtractor;
-import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentVerificationDataPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
@@ -42,21 +37,15 @@ public class VerifySetupFileNamesConsistency extends AbstractVerification {
 
 	private final PathService pathService;
 
-	private final SetupComponentVerificationDataPayloadDataExtractor setupComponentVerificationDataPayloadDataExtractor;
 	private final ControlComponentPublicKeysPayloadDataExtractor controlComponentPublicKeysPayloadDataExtractor;
-	private final ControlComponentCodeSharesPayloadDataExtractor controlComponentCodeSharesPayloadDataExtractor;
 
 	protected VerifySetupFileNamesConsistency(
 			final ResultPublisherService resultPublisherService,
 			final PathService pathService,
-			final SetupComponentVerificationDataPayloadDataExtractor setupComponentVerificationDataPayloadDataExtractor,
-			final ControlComponentPublicKeysPayloadDataExtractor controlComponentPublicKeysPayloadDataExtractor,
-			final ControlComponentCodeSharesPayloadDataExtractor controlComponentCodeSharesPayloadDataExtractor) {
+			final ControlComponentPublicKeysPayloadDataExtractor controlComponentPublicKeysPayloadDataExtractor) {
 		super(resultPublisherService);
 		this.pathService = pathService;
-		this.setupComponentVerificationDataPayloadDataExtractor = setupComponentVerificationDataPayloadDataExtractor;
 		this.controlComponentPublicKeysPayloadDataExtractor = controlComponentPublicKeysPayloadDataExtractor;
-		this.controlComponentCodeSharesPayloadDataExtractor = controlComponentCodeSharesPayloadDataExtractor;
 	}
 
 	@Override
@@ -75,17 +64,7 @@ public class VerifySetupFileNamesConsistency extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final List<Function<Path, Boolean>> validations = new ArrayList<>();
-		validations.add(this::verifyControlComponentPublicKeyFileNameConsistency);
-		validations.add(this::verifyControlComponentCodeSharesFileNameConsistency);
-		validations.add(this::verifySetupComponentVerificationDataFileNameConsistency);
-
-		final boolean fileNamesConsistent = validations
-				.stream()
-				.parallel()
-				.map(f -> f.apply(inputDirectoryPath))
-				.reduce(Boolean::logicalAnd)
-				.orElse(Boolean.FALSE);
+		final boolean fileNamesConsistent = verifyControlComponentPublicKeyFileNameConsistency(inputDirectoryPath);
 
 		if (fileNamesConsistent) {
 			return VerificationResult.success(getVerificationDefinition());
@@ -112,58 +91,4 @@ public class VerifySetupFileNamesConsistency extends AbstractVerification {
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 	}
-
-	private boolean verifyControlComponentCodeSharesFileNameConsistency(final Path inputDirectoryPath) {
-		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.SETUP_VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
-
-		return verificationCardSets.getRegexPaths().stream()
-				.parallel()
-				.map(verificationCardSetPath -> {
-					final PathNode controlComponentCodeSharesNode = pathService.buildFromDynamicAncestorPath(
-							StructureKey.CONTROL_COMPONENT_CODE_SHARES, verificationCardSetPath);
-
-					return controlComponentCodeSharesNode.getRegexPaths().stream()
-							.parallel()
-							.map(path -> {
-								final String fileName = path.getFileName().toString();
-								final String chunkIdGroup = pathService.getRegexGroup(StructureKey.CONTROL_COMPONENT_CODE_SHARES, fileName, 1);
-								final int fileChunkId = Integer.parseInt(chunkIdGroup);
-
-								return controlComponentCodeSharesPayloadDataExtractor.load(path).chunkIds().stream()
-										.allMatch(payloadChunkId -> fileChunkId == payloadChunkId);
-							})
-							.reduce(Boolean::logicalAnd)
-							.orElse(Boolean.FALSE);
-				})
-				.reduce(Boolean::logicalAnd)
-				.orElse(Boolean.FALSE);
-	}
-
-	private boolean verifySetupComponentVerificationDataFileNameConsistency(final Path inputDirectoryPath) {
-		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.SETUP_VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
-
-		return verificationCardSets.getRegexPaths().stream()
-				.parallel()
-				.map(verificationCardSetPath -> {
-					final PathNode setupComponentVerificationDataNode = pathService.buildFromDynamicAncestorPath(
-							StructureKey.SETUP_COMPONENT_VERIFICATION_DATA, verificationCardSetPath);
-
-					return setupComponentVerificationDataNode.getRegexPaths().stream()
-							.parallel()
-							.map(path -> {
-								final String fileName = path.getFileName().toString();
-								final String chunkIdGroup = pathService.getRegexGroup(StructureKey.SETUP_COMPONENT_VERIFICATION_DATA, fileName, 1);
-								final int fileChunkId = Integer.parseInt(chunkIdGroup);
-
-								final Integer payloadChunkId = setupComponentVerificationDataPayloadDataExtractor.load(path).chunkId();
-
-								return fileChunkId == payloadChunkId;
-							})
-							.reduce(Boolean::logicalAnd)
-							.orElse(Boolean.FALSE);
-				})
-				.reduce(Boolean::logicalAnd)
-				.orElse(Boolean.FALSE);
-	}
-
 }

@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -27,10 +26,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentCodeSharesPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentPublicKeysPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentTallyDataPayloadDataExtractor;
-import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentVerificationDataPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -51,69 +48,6 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 
 		final VerificationResult expectedResult = VerificationResult.success(verification.getVerificationDefinition());
 		assertEquals(expectedResult, verificationResult);
-	}
-
-	@Test
-	@DisplayName("inconsistent control component code shares payloads failed")
-	void inconsistentControlComponentCodeSharesPayload() {
-
-		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
-
-		final Stream<ControlComponentCodeSharesPayloadDataExtractor.DataExtraction> dataExtractions = electionDataExtractionService.getAllControlComponentCodeSharesPayloadsDataExtractions(
-						datasetPath)
-				.map(dataExtraction -> new ControlComponentCodeSharesPayloadDataExtractor.DataExtraction(
-								dataExtraction.chunkIds(),
-								List.of("wrong election event ID"),
-								dataExtraction.nodeIds(),
-								dataExtraction.verificationCardSetIds(),
-								dataExtraction.verificationCardIdsNode1(),
-								dataExtraction.verificationCardIdsNode2(),
-								dataExtraction.verificationCardIdsNode3(),
-								dataExtraction.verificationCardIdsNode4(),
-								dataExtraction.p(),
-								dataExtraction.q(),
-								dataExtraction.g()
-						)
-				);
-
-		doReturn(dataExtractions).when(extractionServiceSpy).getAllControlComponentCodeSharesPayloadsDataExtractions(datasetPath);
-
-		final VerifyElectionEventIdConsistency verifyElectionEventIdConsistency = new VerifyElectionEventIdConsistency(
-				resultPublisherServiceMock, extractionServiceSpy);
-
-		final VerificationResult result = verifyElectionEventIdConsistency.verify(datasetPath);
-
-		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification309.nok.message"));
-		assertEquals(expectedResult, result);
-	}
-
-	@Test
-	@DisplayName("inconsistent setup component verification data payload failed")
-	void inconsistentSetupComponentVerificationDataPayload() {
-
-		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
-
-		final Stream<SetupComponentVerificationDataPayloadDataExtractor.DataExtraction> dataExtractions = electionDataExtractionService.getAllSetupComponentVerificationDataPayloadsDataExtractions(
-						datasetPath)
-				.map(dataExtraction -> new SetupComponentVerificationDataPayloadDataExtractor.DataExtraction(
-								dataExtraction.chunkId(),
-								"wrong election event ID",
-								dataExtraction.verificationCardSetId(),
-								dataExtraction.verificationCardIds()
-						)
-				);
-
-		doReturn(dataExtractions).when(extractionServiceSpy).getAllSetupComponentVerificationDataPayloadsDataExtractions(datasetPath);
-
-		final VerifyElectionEventIdConsistency verifyElectionEventIdConsistency = new VerifyElectionEventIdConsistency(
-				resultPublisherServiceMock, extractionServiceSpy);
-
-		final VerificationResult result = verifyElectionEventIdConsistency.verify(datasetPath);
-
-		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification309.nok.message"));
-		assertEquals(expectedResult, result);
 	}
 
 	@Test

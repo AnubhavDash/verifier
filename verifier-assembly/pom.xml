@@ -20,14 +20,14 @@
 	<parent>
 		<artifactId>verifier</artifactId>
 		<groupId>ch.post.it.evoting.verifier</groupId>
-		<version>1.5.4.3</version>
+		<version>1.6.0.0-RC2</version>
 	</parent>
 
 	<artifactId>verifier-assembly</artifactId>
 	<packaging>pom</packaging>
 
 	<properties>
-		<download-maven-plugin.version>1.8.1</download-maven-plugin.version>
+		<download-maven-plugin.version>1.10.0</download-maven-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -84,10 +84,6 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>ch.galinet</groupId>
-				<artifactId>reproducible-build-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>

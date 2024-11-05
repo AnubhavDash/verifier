@@ -16,12 +16,11 @@
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.BiFunction;
 
 import org.springframework.stereotype.Component;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -62,11 +61,10 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 		final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction = extractionService.getFromElectionEventContext(
 				inputDirectoryPath);
 
-		final List<BiFunction<Path, EncryptionGroupParametersDataExtractor.DataExtraction, Boolean>> validations = new ArrayList<>();
-		validations.add(this::validateControlComponentPublicKeys);
-		validations.add(this::validateSetupComponentVerificationDataPayloads);
-		validations.add(this::validateControlComponentCodeSharesPayload);
-		validations.add(this::validateSetupComponentTallyDataPayloads);
+		final ImmutableList<BiFunction<Path, EncryptionGroupParametersDataExtractor.DataExtraction, Boolean>> validations = ImmutableList.of(
+				this::validateControlComponentPublicKeys,
+				this::validateSetupComponentTallyDataPayloads);
+
 
 		final boolean sameGroupParameters = validations.stream()
 				.parallel()
@@ -85,20 +83,6 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 	private boolean validateControlComponentPublicKeys(final Path inputDirectoryPath,
 			final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
 		return extractionService.getFromControlComponentPublicKeys(inputDirectoryPath)
-				.distinct()
-				.allMatch(encryptionGroupParametersDataExtraction::equals);
-	}
-
-	private boolean validateSetupComponentVerificationDataPayloads(final Path inputDirectoryPath,
-			final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
-		return extractionService.getFromSetupComponentVerificationDataPayloads(inputDirectoryPath)
-				.distinct()
-				.allMatch(encryptionGroupParametersDataExtraction::equals);
-	}
-
-	private boolean validateControlComponentCodeSharesPayload(final Path inputDirectoryPath,
-			final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
-		return extractionService.getFromControlComponentCodeShares(inputDirectoryPath)
 				.distinct()
 				.allMatch(encryptionGroupParametersDataExtraction::equals);
 	}

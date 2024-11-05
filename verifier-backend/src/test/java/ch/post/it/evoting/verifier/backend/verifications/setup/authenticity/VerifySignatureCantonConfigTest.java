@@ -19,55 +19,32 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.authenticity;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.IOException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SignatureException;
-import java.security.cert.CertificateException;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
-import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
-import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
-import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
-import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableCantonConfigFactory;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 
 class VerifySignatureCantonConfigTest extends SetupVerificationTest {
 
 	@BeforeEach
-	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
-		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
-		verification = new VerifySignatureCantonConfig(resultPublisherServiceMock, electionDataExtractionService,
-				testSignatureVerification);
+	void setUpAll() {
+		verification = new VerifySignatureCantonConfig(resultPublisherServiceMock, electionDataExtractionService, datasetSignatureVerification);
 	}
 
 	@Test
-	void testOK() throws SignatureException {
+	void testOK() {
 		final Configuration configuration = electionDataExtractionService.getCantonConfig(datasetPath);
-
-		configuration.setSignature(generateSignature(configuration));
 
 		assertTrue(((VerifySignatureCantonConfig) verification).verifySignature(configuration), "the signature is not valid");
 	}
 
 	@Test
-	void testNOK() throws SignatureException {
+	void testNOK() {
 		final Configuration configuration = electionDataExtractionService.getCantonConfig(datasetPath);
 
-		configuration.setSignature(generateSignature(configuration));
 		configuration.getContest().setContestIdentification("new value");
 
 		assertFalse(((VerifySignatureCantonConfig) verification).verifySignature(configuration), "the signature is valid but it should not");
-	}
-
-	private byte[] generateSignature(final Configuration configuration) throws SignatureException {
-		final Hashable hash = HashableCantonConfigFactory.fromConfiguration(configuration);
-		final Hashable additionalContextData = ChannelSecurityContextData.cantonConfig();
-
-		return signatureFactory.getTestSignatureGeneration(Alias.CANTON).genSignature(hash, additionalContextData);
 	}
 }

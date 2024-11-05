@@ -34,9 +34,7 @@ class VerifySetupFileNamesConsistencyTest extends SetupVerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifySetupFileNamesConsistency(resultPublisherServiceMock, pathService,
-				setupComponentVerificationDataPayloadDataExtractor,
-				controlComponentPublicKeysPayloadDataExtractor, controlComponentCodeSharesPayloadDataExtractor);
+		verification = new VerifySetupFileNamesConsistency(resultPublisherServiceMock, pathService, controlComponentPublicKeysPayloadDataExtractor);
 	}
 
 	@Test
@@ -62,8 +60,7 @@ class VerifySetupFileNamesConsistencyTest extends SetupVerificationTest {
 				.thenReturn(new ControlComponentPublicKeysPayloadDataExtractor.DataExtraction(nodeId, electionEventId));
 
 		final VerifySetupFileNamesConsistency failingVerification = new VerifySetupFileNamesConsistency(resultPublisherServiceMock, pathService,
-				setupComponentVerificationDataPayloadDataExtractor, controlComponentPublicKeysPayloadDataExtractorMock,
-				controlComponentCodeSharesPayloadDataExtractor);
+				controlComponentPublicKeysPayloadDataExtractorMock);
 		final VerificationResult verificationResult = failingVerification.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),

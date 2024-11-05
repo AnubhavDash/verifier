@@ -15,21 +15,18 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
-import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 
 import java.nio.file.Path;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.evotinglibraries.domain.ControlComponentNode;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentCodeSharesPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentPublicKeysPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
@@ -37,7 +34,7 @@ import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 
-@Component("VerifySetupNodeIdsConsistency")
+@Component("verifySetupNodeIdsConsistency")
 public class VerifyNodeIdsConsistency extends AbstractVerification {
 
 	private final ElectionDataExtractionService extractionService;
@@ -63,31 +60,18 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		// Check controlComponentPublicKeysPayloads
-		final List<Integer> publicKeysNodeIds = extractionService.getControlComponentPublicKeysPayloadsDataExtractions(inputDirectoryPath)
+
+		final ImmutableList<Integer> publicKeysNodeIds = extractionService.getControlComponentPublicKeysPayloadsDataExtractions(inputDirectoryPath)
 				.map(ControlComponentPublicKeysPayloadDataExtractor.DataExtraction::nodeId)
-				.toList();
+				.collect(toImmutableList());
+		final boolean verifPublicKeysNodeIdsComplete = publicKeysNodeIds.toImmutableSet().equals(ControlComponentNode.ids());
+		final boolean verifPublicKeyNodeIdsUnique = publicKeysNodeIds.size() == ControlComponentNode.ids().size();
 
-		// Check controlComponentCodeSharesPayloads
-		final Stream<Collection<Integer>> codeSharesNodeIds = extractionService.getAllControlComponentCodeSharesPayloadsDataExtractions(inputDirectoryPath)
-				.map(ControlComponentCodeSharesPayloadDataExtractor.DataExtraction::nodeIds);
-
-		if (verifyNodeIdsConsistency(publicKeysNodeIds, codeSharesNodeIds)) {
+		if (verifPublicKeysNodeIdsComplete && verifPublicKeyNodeIdsUnique) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
 					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification314.nok.message"));
 		}
-	}
-
-	private boolean verifyNodeIdsConsistency(final List<Integer> publicKeysNodeIds, final Stream<Collection<Integer>> codeSharesNodeIds) {
-		final boolean verifPublicKeysNodeIdsComplete = Set.copyOf(publicKeysNodeIds).equals(NODE_IDS);
-		final boolean verifPublicKeyNodeIdsUnique = publicKeysNodeIds.size() == NODE_IDS.size();
-
-		final boolean verifCodeSharesNodeIds = codeSharesNodeIds
-				.parallel()
-				.allMatch(nodeIds -> NODE_IDS.equals(Set.copyOf(nodeIds)) && NODE_IDS.size() == nodeIds.size());
-
-		return verifPublicKeysNodeIdsComplete && verifPublicKeyNodeIdsUnique && verifCodeSharesNodeIds;
 	}
 }

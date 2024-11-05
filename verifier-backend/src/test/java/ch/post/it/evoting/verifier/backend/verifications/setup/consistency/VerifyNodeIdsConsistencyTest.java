@@ -15,11 +15,11 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -27,8 +27,8 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Streams;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentCodeSharesPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentPublicKeysPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
@@ -53,8 +53,8 @@ class VerifyNodeIdsConsistencyTest extends SetupVerificationTest {
 	@Test
 	void verifyNokControlComponentPublicKeysCompleteness() {
 		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-		final List<ControlComponentPublicKeysPayloadDataExtractor.DataExtraction> dataExtractions = electionDataExtractionService.getControlComponentPublicKeysPayloadsDataExtractions(
-				datasetPath).toList();
+		final ImmutableList<ControlComponentPublicKeysPayloadDataExtractor.DataExtraction> dataExtractions = electionDataExtractionService.getControlComponentPublicKeysPayloadsDataExtractions(
+				datasetPath).collect(toImmutableList());
 		doReturn(dataExtractions.subList(0, dataExtractions.size() - 1).stream()).when(extractionServiceMock)
 				.getControlComponentPublicKeysPayloadsDataExtractions(datasetPath);
 
@@ -69,43 +69,12 @@ class VerifyNodeIdsConsistencyTest extends SetupVerificationTest {
 	@Test
 	void verifyNokControlComponentPublicKeysUniqueness() {
 		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-		final List<ControlComponentPublicKeysPayloadDataExtractor.DataExtraction> dataExtractions = electionDataExtractionService.getControlComponentPublicKeysPayloadsDataExtractions(
-				datasetPath).toList();
+		final ImmutableList<ControlComponentPublicKeysPayloadDataExtractor.DataExtraction> dataExtractions = electionDataExtractionService.getControlComponentPublicKeysPayloadsDataExtractions(
+				datasetPath).collect(toImmutableList());
 		final Stream<ControlComponentPublicKeysPayloadDataExtractor.DataExtraction> publicKeysWithDuplicateNodeIds = Streams.concat(
 				dataExtractions.stream(),
 				Stream.of(dataExtractions.get(0)));
 		doReturn(publicKeysWithDuplicateNodeIds).when(extractionServiceMock).getControlComponentPublicKeysPayloadsDataExtractions(datasetPath);
-
-		final VerifyNodeIdsConsistency verificationWithMock = new VerifyNodeIdsConsistency(resultPublisherServiceMock, extractionServiceMock);
-		final VerificationResult verificationResult = verificationWithMock.verify(datasetPath);
-
-		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification314.nok.message"));
-		assertEquals(expectedResult, verificationResult);
-	}
-
-	@Test
-	void verifyNokCodeShares() {
-		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-
-		final Stream<ControlComponentCodeSharesPayloadDataExtractor.DataExtraction> dataExtractions = electionDataExtractionService.getAllControlComponentCodeSharesPayloadsDataExtractions(
-						datasetPath)
-				.map(dataExtraction -> new ControlComponentCodeSharesPayloadDataExtractor.DataExtraction(
-								dataExtraction.chunkIds(),
-								dataExtraction.electionEventIds(),
-								dataExtraction.nodeIds().stream().filter(nodeId -> nodeId != 1).toList(),
-								dataExtraction.verificationCardSetIds(),
-								dataExtraction.verificationCardIdsNode1(),
-								dataExtraction.verificationCardIdsNode2(),
-								dataExtraction.verificationCardIdsNode3(),
-								dataExtraction.verificationCardIdsNode4(),
-								dataExtraction.p(),
-								dataExtraction.q(),
-								dataExtraction.g()
-						)
-				);
-
-		doReturn(dataExtractions).when(extractionServiceMock).getAllControlComponentCodeSharesPayloadsDataExtractions(datasetPath);
 
 		final VerifyNodeIdsConsistency verificationWithMock = new VerifyNodeIdsConsistency(resultPublisherServiceMock, extractionServiceMock);
 		final VerificationResult verificationResult = verificationWithMock.verify(datasetPath);

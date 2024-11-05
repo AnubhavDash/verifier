@@ -15,18 +15,18 @@
  */
 package ch.post.it.evoting.verifier.backend.tools;
 
-import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
+import static ch.post.it.evoting.verifier.backend.tools.DatasetType.CONTEXT;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import ch.post.it.evoting.evotinglibraries.domain.ControlComponentNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 
@@ -50,18 +50,9 @@ public class VerifyContextCompletenessService {
 		checkNotNull(inputDirectoryPath);
 
 		try {
-			pathService.buildFromRootPath(StructureKey.CONTEXT_DIR, inputDirectoryPath);
-			pathService.buildFromRootPath(StructureKey.CONFIGURATION_ANONYMIZED, inputDirectoryPath);
-			pathService.buildFromRootPath(StructureKey.ELECTION_EVENT_CONTEXT, inputDirectoryPath);
-			pathService.buildFromRootPath(StructureKey.SETUP_COMPONENT_PUBLIC_KEYS, inputDirectoryPath);
+			pathService.checkStructureKeysExistence(CONTEXT.getRootStructureKey(), inputDirectoryPath);
 			checkState(pathService.buildFromRootPath(StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS, inputDirectoryPath).getRegexPaths().size()
-					== NODE_IDS.size());
-			pathService.buildFromRootPath(StructureKey.CONTEXT_VERIFICATION_CARD_SETS_DIR, inputDirectoryPath);
-			final List<Path> verificationCardSetIds = pathService.buildFromRootPath(StructureKey.CONTEXT_VERIFICATION_CARD_SET_ID_DIR,
-							inputDirectoryPath)
-					.getRegexPaths();
-			verificationCardSetIds.stream().parallel()
-					.forEach(vcs -> pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_TALLY_DATA, vcs));
+					== ControlComponentNode.ids().size());
 			return true;
 		} catch (final UncheckedIOException | IllegalStateException e) {
 			LOGGER.error("Context completeness failed.", e);

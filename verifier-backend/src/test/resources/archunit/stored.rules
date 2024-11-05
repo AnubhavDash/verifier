@@ -1,0 +1,3 @@
+#
+#Wed May 29 10:27:04 CEST 2024
+classes\ that\ have\ name\ not\ matching\ '.*(Service|Algorithm)'\ should\ not\ be\ annotated\ with\ @Service=c6f25acb-1573-4d47-a1d8-409ca76161e1

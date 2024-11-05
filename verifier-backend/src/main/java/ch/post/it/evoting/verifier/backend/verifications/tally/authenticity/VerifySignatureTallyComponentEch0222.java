@@ -31,6 +31,7 @@ import com.google.common.collect.MoreCollectors;
 
 import ch.ech.xmlns.ech_0155._4.ExtensionType;
 import ch.ech.xmlns.ech_0222._1.Delivery;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
@@ -51,14 +52,17 @@ public class VerifySignatureTallyComponentEch0222 extends AbstractVerification {
 
 	private final ElectionDataExtractionService electionDataExtractionService;
 	private final SignatureVerification signatureVerification;
+	private final ObjectMapper objectMapper;
 
 	protected VerifySignatureTallyComponentEch0222(
 			final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService electionDataExtractionService,
-			final SignatureVerification signatureVerification) {
+			final SignatureVerification signatureVerification,
+			final ObjectMapper objectMapper) {
 		super(resultPublisherService);
 		this.electionDataExtractionService = electionDataExtractionService;
 		this.signatureVerification = signatureVerification;
+		this.objectMapper = objectMapper;
 	}
 
 	@Override
@@ -69,7 +73,7 @@ public class VerifySignatureTallyComponentEch0222 extends AbstractVerification {
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME,
 						"verification.direct.trust.authenticity.description", "TallyComponentEch0222"));
-		definition.setId("07.06");
+		definition.setId("07.05");
 		definition.setName("VerifySignatureTallyComponentEch0222");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;
@@ -108,9 +112,9 @@ public class VerifySignatureTallyComponentEch0222 extends AbstractVerification {
 		checkState(signatureContent != null, "The signature of the tally component eCH-0222 file is null.");
 		checkState(!signatureContent.isBlank(), "The signature of the tally component eCH-0222 file is blank.");
 
-		final byte[] signature;
+		final ImmutableByteArray signature;
 		try {
-			signature = new ObjectMapper().readValue(String.format("\"%s\"", signatureContent), byte[].class);
+			signature = objectMapper.readValue(String.format("\"%s\"", signatureContent), ImmutableByteArray.class);
 		} catch (final JsonProcessingException e) {
 			throw new UncheckedIOException("Could not deserialize signature.", e);
 		}

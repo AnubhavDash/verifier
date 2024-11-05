@@ -19,12 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
-import java.util.List;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.domain.election.ControlComponentPublicKeys;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
@@ -52,7 +51,7 @@ class VerifyCCMElectionPublicKeyConsistencyTest extends SetupVerificationTest {
 	@Test
 	@DisplayName("inconsistent EL_pk_j fails.")
 	void inconsistentCcmElectionPublicKeys() {
-		final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = electionDataExtractionService.getControlComponentPublicKeysPayloads(
+		final ImmutableList<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = electionDataExtractionService.getControlComponentPublicKeysPayloads(
 				datasetPath);
 		final ControlComponentPublicKeysPayload controlComponentPublicKeysPayload3 = controlComponentPublicKeysPayloads.get(3);
 		final ControlComponentPublicKeys controlComponentPublicKeys = controlComponentPublicKeysPayload3.getControlComponentPublicKeys();
@@ -66,7 +65,7 @@ class VerifyCCMElectionPublicKeyConsistencyTest extends SetupVerificationTest {
 				modifiedControlComponentPublicKeys);
 
 		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-		doReturn(List.of(controlComponentPublicKeysPayloads.get(0), controlComponentPublicKeysPayloads.get(1),
+		doReturn(ImmutableList.of(controlComponentPublicKeysPayloads.get(0), controlComponentPublicKeysPayloads.get(1),
 				controlComponentPublicKeysPayloads.get(2), modifiedControlComponentPublicKeysPayload3))
 				.when(extractionServiceMock).getControlComponentPublicKeysPayloads(datasetPath);
 

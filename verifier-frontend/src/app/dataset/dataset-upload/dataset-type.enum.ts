@@ -15,6 +15,5 @@
  */
 export enum DatasetType {
   CONTEXT = 'context',
-  SETUP = 'setup',
   TALLY = 'tally'
 }

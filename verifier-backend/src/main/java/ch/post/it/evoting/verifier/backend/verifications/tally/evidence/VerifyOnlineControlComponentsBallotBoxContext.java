@@ -70,8 +70,8 @@ public class VerifyOnlineControlComponentsBallotBoxContext {
 		final VerificationCardSetContext verificationCardSetContext = electionEventContext.verificationCardSetContexts().stream()
 				.filter(vcsContext -> vcsContext.getBallotBoxId().equals(ballotBoxId))
 				.collect(MoreCollectors.onlyElement());
-		// The constructor of VerificationCardSetContext ensures the number of voting cards is strictly positive.
-		this.numberOfEligibleVoters = verificationCardSetContext.getNumberOfVotingCards();
+		// The constructor of VerificationCardSetContext ensures the number of eligible voters is strictly positive.
+		this.numberOfEligibleVoters = verificationCardSetContext.getNumberOfEligibleVoters();
 		this.primesMappingTable = verificationCardSetContext.getPrimesMappingTable();
 		this.encryptionGroup = primesMappingTable.getEncryptionGroup();
 		this.electionPublicKey = setupComponentPublicKeys.electionPublicKey();

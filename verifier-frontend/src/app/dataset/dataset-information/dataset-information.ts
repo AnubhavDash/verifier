@@ -46,6 +46,8 @@ export class DatasetInformationComponent {
     control_component_4: 'Control Component 4'
   };
 
+  protected readonly VerifierMode = VerifierMode;
+
   constructor() {
     this.appVersion = packageJson.version;
   }
@@ -58,11 +60,8 @@ export class DatasetInformationComponent {
     return this.endDate ?? '-';
   }
 
-  getHash(): string {
-    switch (this.verifierMode) {
-      case VerifierMode.SETUP: return this.configuration.setup?.hash ?? '-';
-      case VerifierMode.TALLY: return this.configuration.tally?.hash ?? '-';
-    }
+  getTallyHash(): string {
+    return this.configuration.tally?.hash ?? '-';
   }
 
   fingerPrintsNamesKeys(): {} {

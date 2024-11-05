@@ -66,19 +66,4 @@ class VerifySetupCompletenessTest extends SetupVerificationTest {
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "verification101.nok.message"));
 		assertEquals(expectedResult, result);
 	}
-
-	@Test
-	@DisplayName("invalid setup files fails")
-	void invalidSetupFiles() {
-		final PathService spyPathService = spy(pathService);
-		doThrow(UncheckedIOException.class).when(spyPathService).buildFromDynamicAncestorPath(eq(StructureKey.CONTROL_COMPONENT_CODE_SHARES), any());
-
-		final VerifyContextCompletenessService verifyContextCompletenessServiceWithSpy = new VerifyContextCompletenessService(spyPathService);
-		final VerifySetupCompleteness verificationWithSpy = new VerifySetupCompleteness(spyPathService, resultPublisherServiceMock,
-				verifyContextCompletenessServiceWithSpy);
-		final VerificationResult result = verificationWithSpy.verify(datasetPath);
-		final VerificationResult expectedResult = VerificationResult.failure(verificationWithSpy.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "verification101.nok.message"));
-		assertEquals(expectedResult, result);
-	}
 }

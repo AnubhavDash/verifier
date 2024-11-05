@@ -1,6 +1,6 @@
 {
   "name": "Verifier",
-  "version": "1.5.4-3",
+  "version": "1.6.0-0-RC2",
   "license": "MIT",
   "main": "main.js",
   "scripts": {
@@ -13,19 +13,19 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "17.3.12",
-    "@angular/common": "17.3.12",
-    "@angular/compiler": "17.3.12",
-    "@angular/core": "17.3.12",
-    "@angular/forms": "17.3.12",
-    "@angular/platform-browser": "17.3.12",
-    "@angular/platform-browser-dynamic": "17.3.12",
-    "@angular/router": "17.3.12",
+    "@angular/animations": "18.2.7",
+    "@angular/common": "18.2.7",
+    "@angular/compiler": "18.2.7",
+    "@angular/core": "18.2.7",
+    "@angular/forms": "18.2.7",
+    "@angular/platform-browser": "18.2.7",
+    "@angular/platform-browser-dynamic": "18.2.7",
+    "@angular/router": "18.2.7",
     "@stomp/stompjs": "7.0.0",
     "bootstrap": "5.3.3",
     "bootstrap-icons": "1.11.3",
-    "core-js": "3.36.1",
-    "html2pdf.js": "0.10.1",
+    "core-js": "3.38.1",
+    "html2pdf.js": "0.10.2",
     "jquery": "3.7.1",
     "minimal-request-promise": "1.5.0",
     "net": "1.0.2",
@@ -36,31 +36,30 @@
     "zone.js": "0.14.10"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "17.3.10",
+    "@angular-devkit/build-angular": "18.2.7",
     "@angular-eslint/builder": "18.3.1",
     "@angular-eslint/eslint-plugin": "18.3.1",
-    "@angular/cli": "17.3.10",
-    "@angular/compiler-cli": "17.3.12",
-    "@angular/language-service": "17.3.12",
+    "@angular/cli": "18.2.7",
+    "@angular/compiler-cli": "18.2.7",
+    "@angular/language-service": "18.2.7",
     "@types/jasmine": "5.1.4",
     "@types/jasminewd2": "2.0.13",
     "@types/node": "20.16.11",
-    "@typescript-eslint/eslint-plugin": "8.9.0",
-    "@typescript-eslint/parser": "8.9.0",
-    "electron": "28.2.10",
-    "electron-builder": "24.13.3",
+    "@typescript-eslint/eslint-plugin": "8.8.1",
+    "@typescript-eslint/parser": "8.8.1",
+    "electron": "32.1.2",
+    "electron-builder": "25.1.7",
     "electron-reload": "2.0.0-alpha.1",
     "eslint": "9.12.0",
     "run-script-os": "1.1.6",
     "shx": "0.3.4",
     "tslib": "2.7.0",
-    "typescript": "5.4.5"
+    "typescript": "5.5.4"
   },
   "engines": {
     "node": ">=14",
     "npm": ">=6"
   },
-  "//": "Websocket is overridden because its version is referenced as 'latest' that breaks the reproducibility",
   "overrides": {
     "websocket": "1.0.35"
   }
