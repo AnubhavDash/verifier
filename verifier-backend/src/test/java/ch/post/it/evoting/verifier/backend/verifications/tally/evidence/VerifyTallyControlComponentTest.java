@@ -62,7 +62,7 @@ class VerifyTallyControlComponentTest extends TallyVerificationTest {
 	private static final VerifyTallyControlComponentBallotBoxAlgorithm VERIFY_TALLY_CONTROL_COMPONENT_BALLOT_BOX_ALGORITHM = new VerifyTallyControlComponentBallotBoxAlgorithm(
 			MixnetFactory.createMixnet(), ZeroKnowledgeProofFactory.createZeroKnowledgeProof(), PRIMES_MAPPING_TABLE_ALGORITHMS,
 			VERIFY_PROCESS_PLAINTEXTS_ALGORITHM);
-	private static final VerifyTallyFileAlgorithm VERIFY_TALLY_FILES_ALGORITHM = new VerifyTallyFileAlgorithm(HashFactory.createHash(),
+	private static final VerifyECH0222Algorithm VERIFY_TALLY_FILES_ALGORITHM = new VerifyECH0222Algorithm(HashFactory.createHash(),
 			new XmlNormalizer());
 
 	@SystemStub
@@ -102,9 +102,9 @@ class VerifyTallyControlComponentTest extends TallyVerificationTest {
 	}
 
 	@Test
-	void verifyTallyFilesNok() {
-		final VerifyTallyFileAlgorithm algorithmMock = mock(VerifyTallyFileAlgorithm.class);
-		when(algorithmMock.verifyTallyFile(any(), any())).thenReturn(false);
+	void verifyECH0222Nok() {
+		final VerifyECH0222Algorithm algorithmMock = mock(VerifyECH0222Algorithm.class);
+		when(algorithmMock.verifyECH0222(any(), any())).thenReturn(false);
 		final VerifyTallyControlComponentAlgorithm verifyTallyControlComponentAlgorithm = new VerifyTallyControlComponentAlgorithm(
 				VERIFY_TALLY_CONTROL_COMPONENT_BALLOT_BOX_ALGORITHM, algorithmMock);
 		final VerifyTallyControlComponent verificationWithMock = new VerifyTallyControlComponent(electionDataExtractionService,

@@ -36,27 +36,27 @@ import ch.post.it.evoting.evotinglibraries.xml.mapper.RawDataDeliveryMapper;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 
 @Service
-public class VerifyTallyFileAlgorithm {
+public class VerifyECH0222Algorithm {
 
 	private final Hash hash;
 	private final XmlNormalizer xmlNormalizer;
 
-	public VerifyTallyFileAlgorithm(final Hash hash, final XmlNormalizer xmlNormalizer) {
+	public VerifyECH0222Algorithm(final Hash hash, final XmlNormalizer xmlNormalizer) {
 		this.hash = hash;
 		this.xmlNormalizer = xmlNormalizer;
 	}
 
 	/**
-	 * Verifies the correctness of the evoting-decrypt, eCH-0110 and eCH-0222 files.
+	 * Verifies the correctness of the eCH-0222 file.
 	 *
 	 * @param electionEventId the associated election event id. Must be a valid UUID.
-	 * @param input           the {@link VerifyTallyFileInput} containing the configuration, evoting-decrypt, eCH-0110 and eCH-0222 files.
+	 * @param input           the {@link VerifyECH0222Input} containing the configuration and eCH-0222 files.
 	 * @return {@code true} if the files are correct, {@code false} otherwise.
 	 * @throws NullPointerException      if any input parameter is null.
 	 * @throws FailedValidationException if {@code electionEventId} is invalid.
 	 */
 	@SuppressWarnings("java:S117")
-	public boolean verifyTallyFile(final String electionEventId, final VerifyTallyFileInput input) {
+	public boolean verifyECH0222(final String electionEventId, final VerifyECH0222Input input) {
 		checkNotNull(input);
 		validateUUID(electionEventId);
 
@@ -72,7 +72,7 @@ public class VerifyTallyFileAlgorithm {
 		final Delivery eCH0222XML_prime = RawDataDeliveryMapper.createECH0222(ee, configurationXML, L_decodedVotesbb);
 		final Delivery eCH0222XML_prime_normalized = xmlNormalizer.normalizeWriteInsEch0222(eCH0222XML_prime);
 
-		// Ignore timestamp fields in eCH0110 and eCH0222 (use original timestamps in re-generated files).
+		// Ignore timestamp fields in  eCH-0222 (use original timestamps in re-generated file).
 		final XMLGregorianCalendar eCH0222OriginalMessageDate = eCH0222XML.getDeliveryHeader().getMessageDate();
 		eCH0222XML_prime_normalized.getDeliveryHeader().withMessageDate(eCH0222OriginalMessageDate);
 		final XMLGregorianCalendar eCH0222OriginalCreationDateTime = eCH0222XML.getRawDataDelivery().getReportingBody().getCreationDateTime();

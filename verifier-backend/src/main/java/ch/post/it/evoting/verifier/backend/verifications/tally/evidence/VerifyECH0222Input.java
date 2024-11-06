@@ -23,7 +23,7 @@ import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPaylo
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 
 /**
- * Regroups the input values needed by the VerifyTallyFiles algorithm.
+ * Regroups the input values needed by the VerifyECH0222 algorithm.
  *
  * <ul>
  *     <li>Election Event Configuration, the configuration-anonymized as {@link Configuration}. Not null.</li>
@@ -31,13 +31,13 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration
  *     <li>L_decodedVotesbb, the list of all selected decoded voting options for each ballot box. Not null.</li>
  * </ul>
  */
-public class VerifyTallyFileInput {
+public class VerifyECH0222Input {
 
 	private final Configuration cantonConfig;
 	private final Delivery tallyComponentEch0222;
 	private final ImmutableMap<String, TallyComponentVotesPayload> tallyComponentVotesPayloads;
 
-	private VerifyTallyFileInput(
+	private VerifyECH0222Input(
 			final Configuration cantonConfig,
 			final Delivery tallyComponentEch0222,
 			final ImmutableMap<String, TallyComponentVotesPayload> tallyComponentVotesPayloads) {
@@ -79,12 +79,12 @@ public class VerifyTallyFileInput {
 			return this;
 		}
 
-		public VerifyTallyFileInput build() {
+		public VerifyECH0222Input build() {
 			checkNotNull(cantonConfig);
 			checkNotNull(tallyComponentEch0222);
 			checkNotNull(tallyComponentVotesPayloads);
 
-			return new VerifyTallyFileInput(cantonConfig, tallyComponentEch0222,
+			return new VerifyECH0222Input(cantonConfig, tallyComponentEch0222,
 					tallyComponentVotesPayloads);
 		}
 	}
