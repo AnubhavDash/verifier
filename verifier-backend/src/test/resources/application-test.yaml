@@ -16,9 +16,9 @@
 direct:
   trust:
     keystore:
-      location: ../datasets/direct-trust/local_direct_trust_keystore_verifier.p12
+      location: target/test-classes/datasets/direct-trust/local_direct_trust_keystore_verifier.p12
       password:
-        location: ../datasets/direct-trust/local_direct_trust_pw_verifier.txt
+        location: target/test-classes/datasets/direct-trust/local_direct_trust_pw_verifier.txt
 
 import:
   zip:
