@@ -17,13 +17,12 @@ const {app, BrowserWindow, Menu, dialog} = require('electron');
 const {createLogger, format, transports} = require('winston');
 const fs = require('fs');
 const path = require('path');
-const dateFormat = require('dateformat');
 const config = require('./config');
 const kill = require("tree-kill");
 
 // Logger config
 const logDir = 'logs';
-const suffix = dateFormat(new Date(), 'yyyy-mm-dd-HHMMss');
+const suffix = Date.now();
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir);
 }
