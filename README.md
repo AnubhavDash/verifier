@@ -121,13 +121,30 @@ The following table shows the contents of the tally dataset.
 
 The tally dataset in only used in the Verify Tally phase.
 
-## Import test password
+## Encryption
 
-The test datasets are encrypted and need a password to be decrypted. The password needed for decrypting the given datasets
-is `LongPassword_Encryption1`.
+The provided datasets are not encrypted. To be able to use them in the Verifier, they need to be encrypted.
 
-It can be set in the application.properties file as follows:
+The File Cryptor Tool provides such functionality to encrypt these datasets using a password. To know more about this tool, please refer to
+the [File Cryptor Tool README](https://gitlab.com/swisspost-evoting/e-voting/e-voting/-/blob/master/tools/file-cryptor/README.md).
+
+You can use any password to encrypt the datasets as long as it respects the `import.zip.decryption.password` policy defined in
+the [application.yml](verifier-backend/src/main/resources/application.yaml).
+
+For example, if you want to use the password `LongPassword_Encryption1` to encrypt the D2/context.zip, you need to add the following line to the
+`application.yaml` file:
 
 ```
 import.zip.decryption.password=LongPassword_Encryption1
+```
+
+And encrypt the datasets using the File Cryptor Tool with the password `LongPassword_Encryption1`:
+
+```bash
+java 
+-Dmode=ENCRYPT
+-Dpassword=LongPassword_Encryption1 
+-Dsource.file-path=<path-to-verifier>\\verifier-backend\\target\\test-classes\\datasets\\D2\\context.zip 
+-Dtarget.file-path=<path-to-verifier>\\verifier-backend\\target\\test-classes\\datasets\\D2\\encrypted-context.zip 
+-jar file-cryptor-<VERSION>-runnable.jar
 ```

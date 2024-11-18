@@ -251,6 +251,57 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>zip-D2-context</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/test/resources/datasets/assembly/D2/context.xml</descriptor>
+							</descriptors>
+							<finalName>context</finalName>
+							<appendAssemblyId>false</appendAssemblyId>
+							<outputDirectory>${project.build.testOutputDirectory}/datasets/D2</outputDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>zip-D3-context</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/test/resources/datasets/assembly/D3/context.xml</descriptor>
+							</descriptors>
+							<finalName>context</finalName>
+							<appendAssemblyId>false</appendAssemblyId>
+							<outputDirectory>${project.build.testOutputDirectory}/datasets/D3</outputDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>zip-D3-tally</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/test/resources/datasets/assembly/D3/tally.xml</descriptor>
+							</descriptors>
+							<finalName>tally</finalName>
+							<appendAssemblyId>false</appendAssemblyId>
+							<outputDirectory>${project.build.testOutputDirectory}/datasets/D3</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>ch.galinet</groupId>
 				<artifactId>reproducible-build-maven-plugin</artifactId>
 			</plugin>
