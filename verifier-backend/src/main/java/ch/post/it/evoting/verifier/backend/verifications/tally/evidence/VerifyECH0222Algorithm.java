@@ -73,10 +73,10 @@ public class VerifyECH0222Algorithm {
 		final Delivery eCH0222XML_prime_normalized = xmlNormalizer.normalizeWriteInsEch0222(eCH0222XML_prime);
 
 		// Ignore timestamp fields in  eCH-0222 (use original timestamps in re-generated file).
-		final XMLGregorianCalendar eCH0222OriginalMessageDate = eCH0222XML.getDeliveryHeader().getMessageDate();
-		eCH0222XML_prime_normalized.getDeliveryHeader().withMessageDate(eCH0222OriginalMessageDate);
-		final XMLGregorianCalendar eCH0222OriginalCreationDateTime = eCH0222XML.getRawDataDelivery().getReportingBody().getCreationDateTime();
-		eCH0222XML_prime_normalized.getRawDataDelivery().getReportingBody().withCreationDateTime(eCH0222OriginalCreationDateTime);
+		final XMLGregorianCalendar messageDate_prime = eCH0222XML.getDeliveryHeader().getMessageDate();
+		eCH0222XML_prime_normalized.getDeliveryHeader().withMessageDate(messageDate_prime);
+		final XMLGregorianCalendar creationDateTime_prime = eCH0222XML.getRawDataDelivery().getReportingBody().getCreationDateTime();
+		eCH0222XML_prime_normalized.getRawDataDelivery().getReportingBody().withCreationDateTime(creationDateTime_prime);
 
 		// Compare hash of fields.
 		final Hashable hashableECH0222XML = HashableEch0222Factory.fromDelivery(eCH0222XML);
