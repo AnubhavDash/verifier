@@ -21,9 +21,6 @@ import static java.time.LocalDate.now;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -65,9 +62,9 @@ public class DatasetSignatureFactory {
 	}
 
 	/**
-	 * @param hashable the payload to sign.
+	 * @param hashable              the payload to sign.
 	 * @param additionalContextData the additional context data.
-	 * @param alias the signing alias.
+	 * @param alias                 the signing alias.
 	 * @return a dummy signature.
 	 */
 	public CryptoPrimitivesSignature getDummySignature(final Hashable hashable, final Hashable additionalContextData, final Alias alias)
@@ -81,12 +78,16 @@ public class DatasetSignatureFactory {
 	 * @return the datasets' direct-trust keystore.
 	 */
 	private KeyStore getKeystore() {
-		final Path directTrustPath = Paths.get("").toAbsolutePath().getParent().resolve("datasets").resolve("direct-trust");
+		final String directTrustLocation = "datasets/direct-trust";
+		final String keystoreLocation = directTrustLocation + "/local_direct_trust_keystore_verifier.p12";
+		final String passwordLocation = directTrustLocation + "/local_direct_trust_pw_verifier.txt";
+		final ClassLoader classLoader = this.getClass().getClassLoader();
 
-		try(final InputStream keystoreLocation = Files.newInputStream(directTrustPath.resolve("local_direct_trust_keystore_verifier.p12"))) {
-			final char[] pwLocation = Files.readString(directTrustPath.resolve("local_direct_trust_pw_verifier.txt")).toCharArray();
+		try (final InputStream keystoreInputStream = classLoader.getResourceAsStream(keystoreLocation);
+			 final InputStream passwordInputStream = classLoader.getResourceAsStream(passwordLocation)) {
+			final char[] pwLocation =  new String(passwordInputStream.readAllBytes()).toCharArray();
 			final KeyStore keyStore = KeyStore.getInstance("PKCS12");
-			keyStore.load(keystoreLocation, pwLocation);
+			keyStore.load(keystoreInputStream, pwLocation);
 			return keyStore;
 		} catch (final IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException e) {
 			throw new RuntimeException("Error loading datasets direct-trust keystore", e);

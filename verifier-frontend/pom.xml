@@ -20,20 +20,36 @@
   <parent>
     <artifactId>verifier</artifactId>
     <groupId>ch.post.it.evoting.verifier</groupId>
-    <version>1.6.0.0-RC2</version>
+    <version>1.6.0.0-RC3</version>
   </parent>
 
   <artifactId>verifier-frontend</artifactId>
   <packaging>pom</packaging>
 
   <properties>
-    <exec-maven-plugin.version>3.4.1</exec-maven-plugin.version>
+    <exec-maven-plugin.version>3.5.0</exec-maven-plugin.version>
     <maven-clean-plugin.version>3.4.0</maven-clean-plugin.version>
+    <skipTests>false</skipTests>
     <sonar.sources>src</sonar.sources>
   </properties>
 
   <build>
     <plugins>
+      <plugin>
+        <!-- Skip JaCoCo -->
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>prepare-unit-test-agent</id>
+            <phase>none</phase>
+          </execution>
+          <execution>
+            <id>generate-unit-test-report</id>
+            <phase>none</phase>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-clean-plugin</artifactId>
@@ -41,18 +57,10 @@
         <configuration>
           <filesets>
             <fileset>
-              <directory>node_modules</directory>
-              <followSymlinks>false</followSymlinks>
-            </fileset>
-            <fileset>
               <directory>dist</directory>
             </fileset>
             <fileset>
               <directory>npm</directory>
-            </fileset>
-            <fileset>
-              <directory>app/node_modules</directory>
-              <followSymlinks>false</followSymlinks>
             </fileset>
           </filesets>
         </configuration>

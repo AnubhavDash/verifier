@@ -36,12 +36,12 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration
 public class VerifyTallyControlComponentAlgorithm {
 
 	private final VerifyTallyControlComponentBallotBoxAlgorithm verifyTallyControlComponentBallotBoxAlgorithm;
-	private final VerifyTallyFileAlgorithm verifyTallyFileAlgorithm;
+	private final VerifyECH0222Algorithm verifyECH0222Algorithm;
 
 	public VerifyTallyControlComponentAlgorithm(final VerifyTallyControlComponentBallotBoxAlgorithm verifyTallyControlComponentBallotBoxAlgorithm,
-			final VerifyTallyFileAlgorithm verifyTallyFileAlgorithm) {
+			final VerifyECH0222Algorithm verifyECH0222Algorithm) {
 		this.verifyTallyControlComponentBallotBoxAlgorithm = verifyTallyControlComponentBallotBoxAlgorithm;
-		this.verifyTallyFileAlgorithm = verifyTallyFileAlgorithm;
+		this.verifyECH0222Algorithm = verifyECH0222Algorithm;
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class VerifyTallyControlComponentAlgorithm {
 		final ImmutableMap<String, ControlComponentShufflePayload> lastOnlineControlComponentShuffles = input.getLastOnlineControlComponentShufflesPerBallotBoxId();
 		final ImmutableMap<String, TallyComponentShufflePayload> tallyControlComponentShuffles = input.getTallyControlComponentShufflesPerBallotBoxId();
 		final ImmutableMap<String, TallyComponentVotesPayload> tallyControlComponentVotes = input.getTallyControlComponentVotesPerBallotBoxId();
-		final ImmutableMap<String, TallyComponentVotesPayload> L_decodedVotesbb = input.getTallyControlComponentVotesPerAuthorizationName();
+		final ImmutableMap<String, TallyComponentVotesPayload> L_decodedVotesbb_L_decodedWriteInsbb = input.getTallyControlComponentVotesPerAuthorizationName();
 		final Configuration configurationXML = input.getElectionEventConfiguration();
 		final Delivery eCH0222XML = input.getTallyControlComponentDetailedResults();
 
@@ -99,14 +99,14 @@ public class VerifyTallyControlComponentAlgorithm {
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 
-		final VerifyTallyFileInput Input_tallyFile = new VerifyTallyFileInput.Builder()
+		final VerifyECH0222Input Input_eCH0222 = new VerifyECH0222Input.Builder()
 				.setCantonConfig(configurationXML)
 				.setTallyComponentEch0222(eCH0222XML)
-				.setTallyComponentVotesPayloads(L_decodedVotesbb)
+				.setTallyComponentVotesPayloads(L_decodedVotesbb_L_decodedWriteInsbb)
 				.build();
 
-		final boolean tallyFileVerif = verifyTallyFileAlgorithm.verifyTallyFile(ee, Input_tallyFile);
+		final boolean eCH0222Verif = verifyECH0222Algorithm.verifyECH0222(ee, Input_eCH0222);
 
-		return tallyVerif && tallyFileVerif;
+		return tallyVerif && eCH0222Verif;
 	}
 }

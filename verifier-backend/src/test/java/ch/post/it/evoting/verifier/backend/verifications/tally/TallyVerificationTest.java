@@ -21,8 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 
+import java.net.URISyntaxException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import org.jsfr.json.JsonSurferJackson;
 import org.junit.jupiter.api.BeforeAll;
@@ -64,12 +64,14 @@ public abstract class TallyVerificationTest {
 	protected static ControlComponentPublicKeysPayloadDataExtractor controlComponentPublicKeysPayloadDataExtractor;
 	protected static EncryptionGroupParametersDataExtractor encryptionGroupParametersDataExtractor;
 
+	private static final String datasetLocation = "datasets/D3";
+
 	@BeforeAll
-	static void baseSetUpAll() {
+	static void baseSetUpAll() throws URISyntaxException {
 		objectMapper = DomainObjectMapper.getNewInstance();
 		pathService = new PathService();
 		resultPublisherServiceMock = mock(ResultPublisherService.class);
-		datasetPath = Paths.get("").toAbsolutePath().getParent().resolve("datasets");
+		datasetPath = Path.of(TallyVerificationTest.class.getClassLoader().getResource(datasetLocation).toURI());
 		datasetSignatureFactory = new DatasetSignatureFactory();
 		datasetSignatureVerification = datasetSignatureFactory.getSignatureVerification();
 		ech0222XmlFileRepository = new XmlFileRepository<>();
