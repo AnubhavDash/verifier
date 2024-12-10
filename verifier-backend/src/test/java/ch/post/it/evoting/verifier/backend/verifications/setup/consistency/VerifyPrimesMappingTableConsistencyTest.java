@@ -83,13 +83,13 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 						verificationCardSetContextWithPermutation)
 				.append(verificationCardSetContexts.subList(1, verificationCardSetContexts.size()));
 
-		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-		final ElectionEventContext electionEventContextMock = spy(electionEventContext);
+		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
+		final ElectionEventContext electionEventContextSpy = spy(electionEventContext);
 
-		doReturn(verificationCardSetContextsModified).when(electionEventContextMock).verificationCardSetContexts();
-		doReturn(electionEventContextMock).when(extractionServiceMock).getElectionEventContext(datasetPath);
+		doReturn(verificationCardSetContextsModified).when(electionEventContextSpy).verificationCardSetContexts();
+		doReturn(electionEventContextSpy).when(extractionServiceSpy).getElectionEventContext(datasetPath);
 
-		final VerifyPrimesMappingTableConsistency verifyPrimesMappingTableConsistency = new VerifyPrimesMappingTableConsistency(extractionServiceMock,
+		final VerifyPrimesMappingTableConsistency verifyPrimesMappingTableConsistency = new VerifyPrimesMappingTableConsistency(extractionServiceSpy,
 				consistencyAlgorithm, resultPublisherServiceMock);
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification308.nok.message"));
@@ -102,13 +102,13 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 		final ImmutableList<VerificationCardSetContext> verificationCardSetContexts = electionEventContext.verificationCardSetContexts();
 		final ImmutableList<VerificationCardSetContext> verificationCardSetContextsModified = addNewActualVotingOption(verificationCardSetContexts);
 
-		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-		final ElectionEventContext electionEventContextMock = spy(electionEventContext);
+		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
+		final ElectionEventContext electionEventContextSpy = spy(electionEventContext);
 
-		doReturn(verificationCardSetContextsModified).when(electionEventContextMock).verificationCardSetContexts();
-		doReturn(electionEventContextMock).when(extractionServiceMock).getElectionEventContext(datasetPath);
+		doReturn(verificationCardSetContextsModified).when(electionEventContextSpy).verificationCardSetContexts();
+		doReturn(electionEventContextSpy).when(extractionServiceSpy).getElectionEventContext(datasetPath);
 
-		final VerifyPrimesMappingTableConsistency verifyPrimesMappingTableConsistency = new VerifyPrimesMappingTableConsistency(extractionServiceMock,
+		final VerifyPrimesMappingTableConsistency verifyPrimesMappingTableConsistency = new VerifyPrimesMappingTableConsistency(extractionServiceSpy,
 				consistencyAlgorithm, resultPublisherServiceMock);
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification308.nok.message"));
@@ -123,13 +123,13 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 		final ImmutableList<VerificationCardSetContext> verificationCardSetContextsModified = mapToTwoDifferentEncodedVotingOptions(
 				electionEventContextPayload.getSmallPrimes(), verificationCardSetContexts);
 
-		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-		final ElectionEventContext electionEventContextMock = spy(electionEventContext);
+		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
+		final ElectionEventContext electionEventContextSpy = spy(electionEventContext);
 
-		doReturn(verificationCardSetContextsModified).when(electionEventContextMock).verificationCardSetContexts();
-		doReturn(electionEventContextMock).when(extractionServiceMock).getElectionEventContext(datasetPath);
+		doReturn(verificationCardSetContextsModified).when(electionEventContextSpy).verificationCardSetContexts();
+		doReturn(electionEventContextSpy).when(extractionServiceSpy).getElectionEventContext(datasetPath);
 
-		final VerifyPrimesMappingTableConsistency verifyPrimesMappingTableConsistency = new VerifyPrimesMappingTableConsistency(extractionServiceMock,
+		final VerifyPrimesMappingTableConsistency verifyPrimesMappingTableConsistency = new VerifyPrimesMappingTableConsistency(extractionServiceSpy,
 				consistencyAlgorithm, resultPublisherServiceMock);
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
 				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification308.nok.message"));

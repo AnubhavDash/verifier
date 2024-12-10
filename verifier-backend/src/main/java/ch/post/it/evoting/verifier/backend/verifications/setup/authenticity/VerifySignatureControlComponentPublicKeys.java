@@ -15,6 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.authenticity;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
@@ -76,17 +77,12 @@ public class VerifySignatureControlComponentPublicKeys extends AbstractVerificat
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
 		final ImmutableList<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = electionDataExtractionService.getControlComponentPublicKeysPayloads(
-				inputDirectoryPath);
+				inputDirectoryPath).collect(toImmutableList());
 
 		checkState(ControlComponentNode.ids().size() == controlComponentPublicKeysPayloads.size(),
 				"The number of control component public keys payload should correspond to the number of control components.");
 
-		controlComponentPublicKeysPayloads.stream().parallel()
-				.forEach(payload -> checkState(ControlComponentNode.ids().contains(payload.getControlComponentPublicKeys().nodeId()),
-						"Invalid node id. [nodeId: %s]", payload.getControlComponentPublicKeys().nodeId()));
-
-		final boolean verified = controlComponentPublicKeysPayloads
-				.stream()
+		final boolean verified = controlComponentPublicKeysPayloads.stream()
 				.parallel()
 				.map(this::verifySignature)
 				.reduce(Boolean::logicalAnd)

@@ -44,7 +44,6 @@
 		<jackson.version>2.18.2</jackson.version>
 		<jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
 		<jakarta.xml.bind-api.version>4.0.2</jakarta.xml.bind-api.version>
-		<jsurfer-jackson.version>1.6.5</jsurfer-jackson.version>
 		<junit-jupiter.version>5.11.3</junit-jupiter.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
 		<maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
@@ -247,17 +246,6 @@
 				<version>${apache.commons-lang3}</version>
 			</dependency>
 
-			<dependency>
-				<groupId>com.github.jsurfer</groupId>
-				<artifactId>jsurfer-jackson</artifactId>
-				<version>${jsurfer-jackson.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>com.fasterxml.jackson.core</groupId>
-						<artifactId>jackson-databind</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
 			<dependency>
 				<groupId>uk.org.webcompere</groupId>
 				<artifactId>system-stubs-jupiter</artifactId>

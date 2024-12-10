@@ -23,11 +23,12 @@ import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.evotinglibraries.domain.ControlComponentNode;
+import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
+import ch.post.it.evoting.evotinglibraries.domain.election.ControlComponentPublicKeys;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentPublicKeysPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
@@ -61,8 +62,9 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final ImmutableList<Integer> publicKeysNodeIds = extractionService.getControlComponentPublicKeysPayloadsDataExtractions(inputDirectoryPath)
-				.map(ControlComponentPublicKeysPayloadDataExtractor.DataExtraction::nodeId)
+		final ImmutableList<Integer> publicKeysNodeIds = extractionService.getControlComponentPublicKeysPayloads(inputDirectoryPath)
+				.map(ControlComponentPublicKeysPayload::getControlComponentPublicKeys)
+				.map(ControlComponentPublicKeys::nodeId)
 				.collect(toImmutableList());
 		final boolean verifPublicKeysNodeIdsComplete = publicKeysNodeIds.toImmutableSet().equals(ControlComponentNode.ids());
 		final boolean verifPublicKeyNodeIdsUnique = publicKeysNodeIds.size() == ControlComponentNode.ids().size();

@@ -24,7 +24,6 @@ import static org.mockito.Mockito.reset;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 
-import org.jsfr.json.JsonSurferJackson;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,10 +37,6 @@ import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
-import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentPublicKeysPayloadDataExtractor;
-import ch.post.it.evoting.verifier.backend.dataextractors.ElectionEventContextPayloadDataExtractor;
-import ch.post.it.evoting.verifier.backend.dataextractors.EncryptionGroupParametersDataExtractor;
-import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentTallyDataPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
@@ -59,10 +54,6 @@ public abstract class SetupVerificationTest {
 	protected static XmlFileRepository<Delivery> ech0222XmlFileRepository;
 	protected static XmlFileRepository<Configuration> configurationXmlFileRepository;
 	protected static ElectionDataExtractionService electionDataExtractionService;
-	protected static ElectionEventContextPayloadDataExtractor electionEventContextPayloadDataExtractor;
-	protected static SetupComponentTallyDataPayloadDataExtractor setupComponentTallyDataPayloadDataExtractor;
-	protected static ControlComponentPublicKeysPayloadDataExtractor controlComponentPublicKeysPayloadDataExtractor;
-	protected static EncryptionGroupParametersDataExtractor encryptionGroupParametersDataExtractor;
 
 	private static final String datasetLocation = "datasets/D2";
 
@@ -76,13 +67,8 @@ public abstract class SetupVerificationTest {
 		datasetSignatureVerification = datasetSignatureFactory.getSignatureVerification();
 		ech0222XmlFileRepository = new XmlFileRepository<>();
 		configurationXmlFileRepository = new XmlFileRepository<>();
-		electionEventContextPayloadDataExtractor = new ElectionEventContextPayloadDataExtractor(JsonSurferJackson.INSTANCE);
-		setupComponentTallyDataPayloadDataExtractor = new SetupComponentTallyDataPayloadDataExtractor(JsonSurferJackson.INSTANCE);
-		controlComponentPublicKeysPayloadDataExtractor = new ControlComponentPublicKeysPayloadDataExtractor(JsonSurferJackson.INSTANCE);
-		encryptionGroupParametersDataExtractor = new EncryptionGroupParametersDataExtractor(JsonSurferJackson.INSTANCE);
 		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper,
-				ech0222XmlFileRepository, configurationXmlFileRepository, electionEventContextPayloadDataExtractor,
-				controlComponentPublicKeysPayloadDataExtractor, setupComponentTallyDataPayloadDataExtractor);
+				ech0222XmlFileRepository, configurationXmlFileRepository);
 	}
 
 	@BeforeEach

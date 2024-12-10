@@ -15,9 +15,12 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
+
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -52,7 +55,7 @@ class VerifyCCMElectionPublicKeyConsistencyTest extends SetupVerificationTest {
 	@DisplayName("inconsistent EL_pk_j fails.")
 	void inconsistentCcmElectionPublicKeys() {
 		final ImmutableList<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = electionDataExtractionService.getControlComponentPublicKeysPayloads(
-				datasetPath);
+				datasetPath).collect(toImmutableList());
 		final ControlComponentPublicKeysPayload controlComponentPublicKeysPayload3 = controlComponentPublicKeysPayloads.get(3);
 		final ControlComponentPublicKeys controlComponentPublicKeys = controlComponentPublicKeysPayload3.getControlComponentPublicKeys();
 
@@ -64,13 +67,13 @@ class VerifyCCMElectionPublicKeyConsistencyTest extends SetupVerificationTest {
 				controlComponentPublicKeysPayload3.getElectionEventId(),
 				modifiedControlComponentPublicKeys);
 
-		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-		doReturn(ImmutableList.of(controlComponentPublicKeysPayloads.get(0), controlComponentPublicKeysPayloads.get(1),
+		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
+		doReturn(Stream.of(controlComponentPublicKeysPayloads.get(0), controlComponentPublicKeysPayloads.get(1),
 				controlComponentPublicKeysPayloads.get(2), modifiedControlComponentPublicKeysPayload3))
-				.when(extractionServiceMock).getControlComponentPublicKeysPayloads(datasetPath);
+				.when(extractionServiceSpy).getControlComponentPublicKeysPayloads(datasetPath);
 
 		final VerifyCCMElectionPublicKeyConsistency verificationWithMock = new VerifyCCMElectionPublicKeyConsistency(
-				extractionServiceMock, resultPublisherServiceMock);
+				extractionServiceSpy, resultPublisherServiceMock);
 
 		final VerificationResult result = verificationWithMock.verify(datasetPath);
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),

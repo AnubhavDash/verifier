@@ -69,11 +69,11 @@ class VerifyConfirmedEncryptedVotesConsistencyTest extends TallyVerificationTest
 				electionDataExtractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(datasetPath, newPayload.getBallotBoxId())
 						.filter(payload -> payload.getNodeId() != 1)).collect(toImmutableList());
 
-		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-		doAnswer(invocationOnMock -> newControlComponentBallotBoxPayloads.stream()).when(extractionServiceMock)
+		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
+		doAnswer(invocationOnMock -> newControlComponentBallotBoxPayloads.stream()).when(extractionServiceSpy)
 				.getControlComponentBallotBoxPayloadsOrderedByNodeId(datasetPath, newPayload.getBallotBoxId());
 		final VerifyConfirmedEncryptedVotesConsistency verificationWithMock = new VerifyConfirmedEncryptedVotesConsistency(
-				resultPublisherServiceMock, extractionServiceMock);
+				resultPublisherServiceMock, extractionServiceSpy);
 
 		final VerificationResult verificationResult = verificationWithMock.verify(datasetPath);
 

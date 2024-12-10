@@ -15,6 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.authenticity;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -46,16 +47,16 @@ class VerifySignatureControlComponentPublicKeysTest extends SetupVerificationTes
 
 	@Test
 	void testOK() {
-		final ControlComponentPublicKeysPayload controlComponentPublicKeysPayload = electionDataExtractionService.getControlComponentPublicKeysPayloads(
-				datasetPath).get(0);
-
-		assertTrue(((VerifySignatureControlComponentPublicKeys) verification).verifySignature(controlComponentPublicKeysPayload));
+		electionDataExtractionService.getControlComponentPublicKeysPayloads(datasetPath)
+				.forEach(controlComponentPublicKeysPayload ->
+						assertTrue(((VerifySignatureControlComponentPublicKeys) verification).verifySignature(controlComponentPublicKeysPayload))
+				);
 	}
 
 	@Test
 	void testNOK() throws SignatureException {
 		final ControlComponentPublicKeysPayload controlComponentPublicKeysPayload = electionDataExtractionService.getControlComponentPublicKeysPayloads(
-				datasetPath).get(0);
+				datasetPath).collect(toImmutableList()).getFirst();
 
 		final int nodeId = controlComponentPublicKeysPayload.getControlComponentPublicKeys().nodeId();
 		final CryptoPrimitivesSignature dummySignature = datasetSignatureFactory.getDummySignature(controlComponentPublicKeysPayload,

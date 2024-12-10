@@ -40,7 +40,7 @@ class VerifySetupCompletenessTest extends SetupVerificationTest {
 	@BeforeAll
 	static void setupAll() {
 		final VerifyContextCompletenessService verifyContextCompletenessService = new VerifyContextCompletenessService(pathService);
-		verification = new VerifySetupCompleteness(pathService, resultPublisherServiceMock, verifyContextCompletenessService);
+		verification = new VerifySetupCompleteness(resultPublisherServiceMock, verifyContextCompletenessService);
 	}
 
 	@Test
@@ -59,7 +59,7 @@ class VerifySetupCompletenessTest extends SetupVerificationTest {
 		doThrow(UncheckedIOException.class).when(spyPathService).buildFromRootPath(eq(StructureKey.ELECTION_EVENT_CONTEXT), any());
 
 		final VerifyContextCompletenessService verifyContextCompletenessServiceWithSpy = new VerifyContextCompletenessService(spyPathService);
-		final VerifySetupCompleteness verificationWithSpy = new VerifySetupCompleteness(spyPathService, resultPublisherServiceMock,
+		final VerifySetupCompleteness verificationWithSpy = new VerifySetupCompleteness(resultPublisherServiceMock,
 				verifyContextCompletenessServiceWithSpy);
 		final VerificationResult result = verificationWithSpy.verify(datasetPath);
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithSpy.getVerificationDefinition(),

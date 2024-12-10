@@ -59,11 +59,11 @@ class VerifyTotalVotersConsistencyTest extends SetupVerificationTest {
 		final HeaderType headerType = new HeaderType();
 		headerType.setVoterTotal(39);
 		when(configurationMock.getHeader()).thenReturn(headerType);
-		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-		doReturn(configurationMock).when(extractionServiceMock).getCantonConfig(datasetPath);
+		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
+		doReturn(configurationMock).when(extractionServiceSpy).getCantonConfig(datasetPath);
 
 		final VerifyTotalVotersConsistency verificationBadVoterTotal = new VerifyTotalVotersConsistency(resultPublisherServiceMock,
-				extractionServiceMock);
+				extractionServiceSpy);
 
 		final IllegalStateException exception = assertThrows(IllegalStateException.class, () -> verificationBadVoterTotal.verify(datasetPath));
 		assertEquals("The voter total in the header must be the same as the size of the voter list. [voterTotal: 39, voterCount: 43]",
@@ -73,17 +73,16 @@ class VerifyTotalVotersConsistencyTest extends SetupVerificationTest {
 	@Test
 	void verifyNok() {
 		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(datasetPath);
-		final ElectionEventContextPayload electionEventContextPayloadMock = spy(electionEventContextPayload);
+		final ElectionEventContextPayload electionEventContextPayloadSpy = spy(electionEventContextPayload);
 		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
-		final ElectionEventContext electionEventContextMock = spy(electionEventContext);
-		doReturn(ImmutableList.emptyList()).when(electionEventContextMock).verificationCardSetContexts();
-		doReturn(electionEventContextMock).when(electionEventContextPayloadMock).getElectionEventContext();
+		final ElectionEventContext electionEventContextSpy = spy(electionEventContext);
+		doReturn(ImmutableList.emptyList()).when(electionEventContextSpy).verificationCardSetContexts();
+		doReturn(electionEventContextSpy).when(electionEventContextPayloadSpy).getElectionEventContext();
 
-		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-		doReturn(electionEventContextPayloadMock).when(extractionServiceMock).getElectionEventContextPayload(datasetPath);
+		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
+		doReturn(electionEventContextPayloadSpy).when(extractionServiceSpy).getElectionEventContextPayload(datasetPath);
 
-		final VerifyTotalVotersConsistency verificationNok = new VerifyTotalVotersConsistency(resultPublisherServiceMock,
-				extractionServiceMock);
+		final VerifyTotalVotersConsistency verificationNok = new VerifyTotalVotersConsistency(resultPublisherServiceMock, extractionServiceSpy);
 		final VerificationResult verificationResult = verificationNok.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verificationResult.getVerificationDefinition(),

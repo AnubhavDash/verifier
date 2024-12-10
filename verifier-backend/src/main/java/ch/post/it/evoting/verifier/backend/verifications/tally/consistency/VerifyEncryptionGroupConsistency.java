@@ -21,26 +21,31 @@ import java.util.function.BiFunction;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
+import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
+import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.dataextractors.EncryptionGroupParametersDataExtractor;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
-import ch.post.it.evoting.verifier.backend.tools.EncryptionGroupParametersExtractionService;
+import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 
 @Component("verifyTallyEncryptionGroupConsistency")
 public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 
-	private final EncryptionGroupParametersExtractionService extractionService;
+	private final ElectionDataExtractionService electionDataExtractionService;
 
-	public VerifyEncryptionGroupConsistency(final ResultPublisherService resultPublisherService,
-			final EncryptionGroupParametersExtractionService extractionService) {
+	public VerifyEncryptionGroupConsistency(
+			final ResultPublisherService resultPublisherService,
+			final ElectionDataExtractionService electionDataExtractionService) {
 		super(resultPublisherService);
-		this.extractionService = extractionService;
+		this.electionDataExtractionService = electionDataExtractionService;
 	}
 
 	@Override
@@ -58,10 +63,10 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction = extractionService.getFromElectionEventContext(
-				inputDirectoryPath);
+		final GqGroup electionEventContextPayloadEncryptionGroup = electionDataExtractionService.getElectionEventContextPayload(inputDirectoryPath)
+				.getEncryptionGroup();
 
-		final ImmutableList<BiFunction<Path, EncryptionGroupParametersDataExtractor.DataExtraction, Boolean>> validations = ImmutableList.of(
+		final ImmutableList<BiFunction<Path, GqGroup, Boolean>> validations = ImmutableList.of(
 				this::validateControlComponentBallotBoxPayloads,
 				this::validateControlComponentShufflePayloads,
 				this::validateTallyComponentShufflePayloads,
@@ -70,7 +75,7 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 
 		final boolean sameGroupParameters = validations.stream()
 				.parallel()
-				.map(f -> f.apply(inputDirectoryPath, encryptionGroupParametersDataExtraction))
+				.map(f -> f.apply(inputDirectoryPath, electionEventContextPayloadEncryptionGroup))
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 
@@ -83,30 +88,34 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 	}
 
 	private boolean validateControlComponentBallotBoxPayloads(final Path inputDirectoryPath,
-			final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
-		return extractionService.getFromControlComponentBallotBoxPayloads(inputDirectoryPath)
+			final GqGroup electionEventContextPayloadEncryptionGroup) {
+		return electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(inputDirectoryPath)
+				.map(ControlComponentBallotBoxPayload::getEncryptionGroup)
 				.distinct()
-				.allMatch(encryptionGroupParametersDataExtraction::equals);
+				.allMatch(electionEventContextPayloadEncryptionGroup::equals);
 	}
 
 	private boolean validateControlComponentShufflePayloads(final Path inputDirectoryPath,
-			final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
-		return extractionService.getFromControlComponentShufflePayloads(inputDirectoryPath)
+			final GqGroup electionEventContextPayloadEncryptionGroup) {
+		return electionDataExtractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(inputDirectoryPath)
+				.map(ControlComponentShufflePayload::getEncryptionGroup)
 				.distinct()
-				.allMatch(encryptionGroupParametersDataExtraction::equals);
+				.allMatch(electionEventContextPayloadEncryptionGroup::equals);
 	}
 
 	private boolean validateTallyComponentShufflePayloads(final Path inputDirectoryPath,
-			final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
-		return extractionService.getFromTallyComponentShufflePayloads(inputDirectoryPath)
+			final GqGroup electionEventContextPayloadEncryptionGroup) {
+		return electionDataExtractionService.getTallyComponentShufflePayloads(inputDirectoryPath)
+				.map(TallyComponentShufflePayload::getEncryptionGroup)
 				.distinct()
-				.allMatch(encryptionGroupParametersDataExtraction::equals);
+				.allMatch(electionEventContextPayloadEncryptionGroup::equals);
 	}
 
 	private boolean validateTallyComponentVotesPayloads(final Path inputDirectoryPath,
-			final EncryptionGroupParametersDataExtractor.DataExtraction encryptionGroupParametersDataExtraction) {
-		return extractionService.getFromTallyComponentVotesPayloads(inputDirectoryPath)
+			final GqGroup electionEventContextPayloadEncryptionGroup) {
+		return electionDataExtractionService.getTallyComponentVotesPayloads(inputDirectoryPath)
+				.map(TallyComponentVotesPayload::getEncryptionGroup)
 				.distinct()
-				.allMatch(encryptionGroupParametersDataExtraction::equals);
+				.allMatch(electionEventContextPayloadEncryptionGroup::equals);
 	}
 }

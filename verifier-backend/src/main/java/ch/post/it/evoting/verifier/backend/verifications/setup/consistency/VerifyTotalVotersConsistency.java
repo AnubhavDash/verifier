@@ -68,9 +68,8 @@ public class VerifyTotalVotersConsistency extends AbstractVerification {
 				"The voter total in the header must be the same as the size of the voter list. [voterTotal: %s, voterCount: %s]", voterTotal,
 				voterCount);
 
-		final ImmutableList<VerificationCardSetContext> verificationCardSetContexts = extractionService.getElectionEventContextPayload(
-						inputDirectoryPath)
-				.getElectionEventContext().verificationCardSetContexts();
+		final ImmutableList<VerificationCardSetContext> verificationCardSetContexts = extractionService.getElectionEventContext(inputDirectoryPath)
+				.verificationCardSetContexts();
 
 		final int totalNumberOfEligibleVoters = verificationCardSetContexts.stream()
 				.parallel()

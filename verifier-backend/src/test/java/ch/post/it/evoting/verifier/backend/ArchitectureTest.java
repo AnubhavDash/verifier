@@ -42,10 +42,10 @@ class ArchitectureTest {
 			.beAnnotatedWith(Service.class);
 
 	@ArchTest
-	static final ArchRule classesThatAreNotServicesAreWellAnnotated = FreezingArchRule.freeze(classes().that()
+	static final ArchRule classesThatAreNotServicesAreWellAnnotated = classes().that()
 			.haveNameNotMatching(".*(Service|Algorithm)")
 			.should()
-			.notBeAnnotatedWith(Service.class));
+			.notBeAnnotatedWith(Service.class);
 
 	@ArchTest
 	static final ArchRule noCyclesInBackend = slices()

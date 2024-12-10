@@ -64,9 +64,8 @@ public class VerifyPlaintextsConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final ImmutableList<VerificationCardSetContext> verificationCardSetContexts = extractionService.getElectionEventContextPayload(
-						inputDirectoryPath)
-				.getElectionEventContext().verificationCardSetContexts();
+		final ImmutableList<VerificationCardSetContext> verificationCardSetContexts = extractionService.getElectionEventContext(inputDirectoryPath)
+				.verificationCardSetContexts();
 		final ImmutableList<Plaintexts> plaintexts = verificationCardSetContexts.stream()
 				.parallel()
 				.map(vcsContext -> {

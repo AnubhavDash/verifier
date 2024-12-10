@@ -37,6 +37,7 @@ import org.mockito.Answers;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.evotinglibraries.domain.common.EncryptedVerifiableVote;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
+import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
@@ -64,7 +65,7 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 	@MethodSource("inconsistentRelationBetweenVerificationCardSetAndBallotBoxProvider")
 	@DisplayName("inconsistent relation between verification card set and ballot box failed when")
 	void inconsistentRelationBetweenVerificationCardSetAndBallotBox(final String testName,
-			final ElectionEventContextPayload electionEventContextPayloadMock,
+			final ElectionEventContext electionEventContextMock,
 			final ImmutableList<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloadsMock) {
 		// given
 		final VerifyVerificationCardIdsConsistency verifyElectionEventIdConsistency = new VerifyVerificationCardIdsConsistency(
@@ -72,7 +73,7 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 
 		// when
 		final boolean result = verifyElectionEventIdConsistency.verifyVerificationCardSetRelationToBallotBox(controlComponentBallotBoxPayloadsMock,
-				electionEventContextPayloadMock);
+				electionEventContextMock);
 
 		// then
 		assertFalse(result);
@@ -80,15 +81,16 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 
 	static Stream<Arguments> inconsistentRelationBetweenVerificationCardSetAndBallotBoxProvider() {
 
-		final ElectionEventContextPayload electionEventContextPayloadMock = new ElectionEventContextPayloadMockBuilder()
+		final ElectionEventContext electionEventContextMock = new ElectionEventContextPayloadMockBuilder()
 				.add("verificationCardSetId_1", "ballotBoxId_1")
 				.add("verificationCardSetId_2", "ballotBoxId_2")
 				.add("verificationCardSetId_3", "ballotBoxId_3")
-				.build();
+				.build()
+				.getElectionEventContext();
 
 		return Stream.of(
 				Arguments.of("verification card set ids is swapped between 2 ballot box.",
-						electionEventContextPayloadMock,
+						electionEventContextMock,
 						ImmutableList.of(
 								new ControlComponentBallotBoxPayloadMockBuilder("ballotBoxId_1")
 										.add("verificationCardSetId_1")
@@ -101,7 +103,7 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 										.build()
 						)),
 				Arguments.of("verification card set does not exist in election event context.",
-						electionEventContextPayloadMock,
+						electionEventContextMock,
 						ImmutableList.of(
 								new ControlComponentBallotBoxPayloadMockBuilder("ballotBoxId_1")
 										.add("verificationCardSetId_1")
@@ -114,7 +116,7 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 										.build()
 						)),
 				Arguments.of("ballot box which does not exist in election event context.",
-						electionEventContextPayloadMock,
+						electionEventContextMock,
 						ImmutableList.of(
 								new ControlComponentBallotBoxPayloadMockBuilder("ballotBoxId_1")
 										.add("verificationCardSetId_1")
