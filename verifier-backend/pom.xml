@@ -117,6 +117,12 @@
 			<artifactId>crypto-primitives</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>ch.post.it.evoting.cryptoprimitives</groupId>
+			<artifactId>crypto-primitives</artifactId>
+			<classifier>tests</classifier>
+			<type>test-jar</type>
+		</dependency>
+		<dependency>
 			<groupId>ch.post.it.evoting.evotinglibraries</groupId>
 			<artifactId>e-voting-libraries-domain</artifactId>
 		</dependency>
