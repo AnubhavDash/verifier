@@ -225,7 +225,7 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>prepare-datasets</id>
+						<id>prepare-datasets-and-json-testdata</id>
 						<phase>generate-test-resources</phase>
 						<goals>
 							<goal>run</goal>
@@ -248,6 +248,11 @@
 								</copy>
 								<copy todir="${project.build.testOutputDirectory}/datasets/D3/tally">
 									<fileset dir="${project.build.testOutputDirectory}/testdata/election-events/Post_E2E_DEV/D3/secure-data-manager-tally/tally"/>
+								</copy>
+
+								<!-- Protocol Algorithms -->
+								<copy todir="${project.build.testOutputDirectory}/protocol-algorithms/json">
+									<fileset dir="${project.build.testOutputDirectory}/testdata/protocol-algorithms/json/verifier-specification"/>
 								</copy>
 
 								<!-- Remove other files not needed -->

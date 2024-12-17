@@ -190,7 +190,7 @@ class VerifySignatureSetupComponentPublicKeysTest extends SetupVerificationTest 
 
 	static Stream<Arguments> jsonFileArgumentProvider() throws IOException {
 		final URL url = VerifySignatureSetupComponentPublicKeysTest.class.getResource(
-				"/verifySignatureSetupComponentPublicKeys/verify-signature-setup-component-public-keys.json");
+				"/protocol-algorithms/json/verifySignatureSetupComponentPublicKeys/verify-signature-setup-component-public-keys.json");
 		final ImmutableList<TestParameters> parametersList = ImmutableList.of(
 				DomainObjectMapper.getNewInstance().readValue(url, TestParameters[].class));
 

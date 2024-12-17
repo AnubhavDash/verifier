@@ -64,7 +64,7 @@
 		<sonar-maven-plugin.version>5.0.0.4389</sonar-maven-plugin.version>
 		<spring-boot.version>3.4.0</spring-boot.version>
 		<system-stubs-jupiter.version>2.1.7</system-stubs-jupiter.version>
-		<testdata.version>1.5.0.0-b7</testdata.version>
+		<testdata.version>1.5.0.0-b8</testdata.version>
 		<versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
 		<zip4j.version>2.11.5</zip4j.version>
 		<apache.commons-lang3>3.17.0</apache.commons-lang3>
