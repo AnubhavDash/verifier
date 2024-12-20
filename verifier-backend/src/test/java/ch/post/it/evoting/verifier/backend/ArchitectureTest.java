@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
-import com.tngtech.archunit.library.freeze.FreezingArchRule;
 
 @AnalyzeClasses(packages = "ch.post.it.evoting.verifier.backend")
 class ArchitectureTest {

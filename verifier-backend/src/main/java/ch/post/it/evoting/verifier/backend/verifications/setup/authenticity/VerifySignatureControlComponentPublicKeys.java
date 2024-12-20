@@ -110,6 +110,7 @@ public class VerifySignatureControlComponentPublicKeys extends AbstractVerificat
 		final Hashable additionalContextData = ChannelSecurityContextData.controlComponentPublicKeys(nodeId, electionEventId);
 
 		try {
+			// The ControlComponentPublicKeysPayload method toHashableForm recursively hashes the control component public keys payload as specified.
 			return signatureVerification.verifySignature(Alias.getControlComponentByNodeId(nodeId).toString(), controlComponentPublicKeysPayload,
 					additionalContextData, signature.signatureContents());
 		} catch (final SignatureException e) {
