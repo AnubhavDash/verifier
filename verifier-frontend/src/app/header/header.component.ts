@@ -31,7 +31,8 @@ declare let $: any;
 @Component({
   templateUrl: 'header.component.html',
   styleUrls: ['header.component.css'],
-  providers: []
+  providers: [],
+  standalone: false
 })
 export class HeaderComponent implements OnInit {
 

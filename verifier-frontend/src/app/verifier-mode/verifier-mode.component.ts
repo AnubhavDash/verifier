@@ -18,7 +18,8 @@ import {VerifierMode} from './verifier-mode.enum';
 
 @Component({
   templateUrl: 'verifier-mode.component.html',
-  selector: 'app-verifier-mode'
+  selector: 'app-verifier-mode',
+  standalone: false
 })
 export class VerifierModeComponent {
 

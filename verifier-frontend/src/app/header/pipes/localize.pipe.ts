@@ -15,7 +15,10 @@
  */
 import {Inject, LOCALE_ID, Pipe, PipeTransform} from '@angular/core';
 
-@Pipe({name: 'localize'})
+@Pipe({
+  name: 'localize',
+  standalone: false
+})
 export class LocalizePipe implements PipeTransform {
 
   constructor(@Inject(LOCALE_ID) private language: string) {

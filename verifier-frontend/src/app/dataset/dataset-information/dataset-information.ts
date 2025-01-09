@@ -20,7 +20,8 @@ import {VerifierMode} from '../../verifier-mode/verifier-mode.enum';
 
 @Component({
   templateUrl: 'dataset-information.html',
-  selector: 'app-dataset-information'
+  selector: 'app-dataset-information',
+  standalone: false
 })
 export class DatasetInformationComponent {
 
