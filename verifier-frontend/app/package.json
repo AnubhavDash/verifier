@@ -4,7 +4,7 @@
   "license": "MIT",
   "main": "main.js",
   "dependencies": {
-    "winston": "3.16.0",
+    "winston": "3.17.0",
     "minimal-request-promise": "1.5.0",
     "tree-kill": "1.2.2"
   }
