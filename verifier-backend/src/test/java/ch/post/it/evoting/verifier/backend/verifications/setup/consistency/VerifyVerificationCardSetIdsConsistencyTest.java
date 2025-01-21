@@ -74,11 +74,11 @@ class VerifyVerificationCardSetIdsConsistencyTest extends SetupVerificationTest 
 
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
 		doReturn(new SetupComponentTallyDataPayload(
+				setupComponentTallyDataPayload.getEncryptionGroup(),
 				setupComponentTallyDataPayload.getElectionEventId(),
 				otherVerificationCardSetId,
-				setupComponentTallyDataPayload.getBallotBoxDefaultTitle(),
-				setupComponentTallyDataPayload.getEncryptionGroup(),
 				setupComponentTallyDataPayload.getVerificationCardIds(),
+				setupComponentTallyDataPayload.getBallotBoxDefaultTitle(),
 				setupComponentTallyDataPayload.getVerificationCardPublicKeys(),
 				setupComponentTallyDataPayload.getSignature()))
 				.when(electionDataExtractionServiceSpy).getSetupComponentTallyDataPayload(datasetPath, verificationCardSetId);

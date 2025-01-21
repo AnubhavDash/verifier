@@ -63,11 +63,11 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 
 		final Stream<SetupComponentTallyDataPayload> stream = electionDataExtractionService.getSetupComponentTallyDataPayloads(datasetPath)
 				.map(setupComponentTallyDataPayload -> new SetupComponentTallyDataPayload(
+						setupComponentTallyDataPayload.getEncryptionGroup(),
 						inconsistentElectionEventId,
 						setupComponentTallyDataPayload.getVerificationCardSetId(),
-						setupComponentTallyDataPayload.getBallotBoxDefaultTitle(),
-						setupComponentTallyDataPayload.getEncryptionGroup(),
 						setupComponentTallyDataPayload.getVerificationCardIds(),
+						setupComponentTallyDataPayload.getBallotBoxDefaultTitle(),
 						setupComponentTallyDataPayload.getVerificationCardPublicKeys(),
 						setupComponentTallyDataPayload.getSignature())
 				);

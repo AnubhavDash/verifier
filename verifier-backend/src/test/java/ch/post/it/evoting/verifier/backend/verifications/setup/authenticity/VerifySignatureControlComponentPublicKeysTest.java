@@ -40,8 +40,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hash;
 import ch.post.it.evoting.cryptoprimitives.hashing.HashableBigInteger;
@@ -55,7 +53,6 @@ import ch.post.it.evoting.cryptoprimitives.test.tools.serialization.TestParamete
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.domain.election.ControlComponentPublicKeys;
-import ch.post.it.evoting.evotinglibraries.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
 import ch.post.it.evoting.evotinglibraries.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
@@ -114,7 +111,7 @@ class VerifySignatureControlComponentPublicKeysTest extends SetupVerificationTes
 	@DisplayName("implementation aligned to spec gives same result")
 	void getHashControlComponentPublicKeysAlignment() {
 		final ControlComponentPublicKeysPayload controlComponentPublicKeysPayload = electionDataExtractionService.getControlComponentPublicKeysPayloads(
-						datasetPath).collect(toImmutableList()).getLast();
+				datasetPath).collect(toImmutableList()).getLast();
 		final String expected = base64.base64Encode(hash.recursiveHash(controlComponentPublicKeysPayload));
 		assertEquals(expected, getHashControlComponentPublicKeysSpec(controlComponentPublicKeysPayload));
 	}
@@ -167,19 +164,17 @@ class VerifySignatureControlComponentPublicKeysTest extends SetupVerificationTes
 	static Stream<Arguments> jsonFileArgumentProvider() throws IOException {
 		final URL url = VerifySignatureControlComponentPublicKeysTest.class.getResource(
 				"/protocol-algorithms/json/verifySignatureControlComponentPublicKeys/verify-signature-control-component-public-keys.json");
-		final ImmutableList<TestParameters> parametersList = ImmutableList.of(
-				DomainObjectMapper.getNewInstance().readValue(url, TestParameters[].class));
+		final ImmutableList<TestParameters> parametersList = ImmutableList.of(objectMapper.readValue(url, TestParameters[].class));
 
 		return parametersList.stream().parallel().map(testParameters -> {
 			try (final MockedStatic<SecurityLevelConfig> mockedSecurityLevel = Mockito.mockStatic(SecurityLevelConfig.class)) {
 				mockedSecurityLevel.when(SecurityLevelConfig::getSystemSecurityLevel).thenReturn(testParameters.getSecurityLevel());
 
-				// Context.
-				final ObjectMapper mapper = DomainObjectMapper.getNewInstance();
+				// Input.
 				final JsonData input = testParameters.getInput();
-				final GqGroup encryptionGroup = getEncryptionGroup(mapper, input.getJsonData("encryptionGroup").jsonNode());
-				final String electionEventId = mapper.reader().readValue(input.getJsonData("electionEventId").jsonNode(), String.class);
-				final ControlComponentPublicKeys controlComponentPublicKeys = mapper.reader()
+				final GqGroup encryptionGroup = getEncryptionGroup(objectMapper, input.getJsonData("encryptionGroup").jsonNode());
+				final String electionEventId = objectMapper.reader().readValue(input.getJsonData("electionEventId").jsonNode(), String.class);
+				final ControlComponentPublicKeys controlComponentPublicKeys = objectMapper.reader()
 						.withAttribute("group", encryptionGroup)
 						.readValue(input.getJsonData("controlComponentPublicKeys").jsonNode(), ControlComponentPublicKeys.class);
 				final ControlComponentPublicKeysPayload controlComponentPublicKeysPayload = new ControlComponentPublicKeysPayload(encryptionGroup,
