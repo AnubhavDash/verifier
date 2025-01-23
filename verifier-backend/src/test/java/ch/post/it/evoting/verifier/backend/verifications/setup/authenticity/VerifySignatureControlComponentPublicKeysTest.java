@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.math.BigInteger;
 import java.net.URL;
 import java.nio.file.Path;
@@ -186,7 +187,7 @@ class VerifySignatureControlComponentPublicKeysTest extends SetupVerificationTes
 
 				return Arguments.of(controlComponentPublicKeysPayload, hash, testParameters.getDescription());
 			} catch (final IOException e) {
-				throw new RuntimeException(e);
+				throw new UncheckedIOException(e);
 			}
 		});
 	}
