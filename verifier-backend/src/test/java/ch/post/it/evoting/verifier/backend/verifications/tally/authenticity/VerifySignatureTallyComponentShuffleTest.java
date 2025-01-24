@@ -15,7 +15,6 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.authenticity;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static ch.post.it.evoting.cryptoprimitives.hashing.HashFactory.createHash;
 import static ch.post.it.evoting.cryptoprimitives.math.BaseEncodingFactory.createBase64;
 import static ch.post.it.evoting.evotinglibraries.domain.mapper.EncryptionGroupUtils.getEncryptionGroup;
@@ -114,12 +113,25 @@ class VerifySignatureTallyComponentShuffleTest extends TallyVerificationTest {
 	@DisplayName("implementation aligned to spec gives same result")
 	void getHashTallyComponentShuffleAlignment() {
 		final TallyComponentShufflePayload tallyComponentShufflePayload = electionDataExtractionService.getTallyComponentShufflePayloads(
-				datasetPath).collect(toImmutableList()).getLast();
+				datasetPath)
+				.findFirst()
+				.orElseThrow();
 		final String expected = base64.base64Encode(hash.recursiveHash(tallyComponentShufflePayload));
 		assertEquals(expected, getHashTallyComponentShuffleSpec(tallyComponentShufflePayload));
 	}
 
 	private String getHashTallyComponentShuffleSpec(final TallyComponentShufflePayload tallyComponentShufflePayload) {
+
+		final HashableList hShuffle = HashableList.of(
+				tallyComponentShufflePayload.getVerifiableShuffle().shuffledCiphertexts(),
+				tallyComponentShufflePayload.getVerifiableShuffle().shuffleArgument()
+		);
+
+		final HashableList hDecryption = HashableList.of(
+				tallyComponentShufflePayload.getVerifiablePlaintextDecryption().getDecryptedVotes(),
+				tallyComponentShufflePayload.getVerifiablePlaintextDecryption().getDecryptionProofs()
+		);
+
 		final GqGroup encryptionGroup = tallyComponentShufflePayload.getEncryptionGroup();
 		final HashableList p_q_g = HashableList.of(
 				HashableBigInteger.from(encryptionGroup.getP()),
@@ -130,17 +142,8 @@ class VerifySignatureTallyComponentShuffleTest extends TallyVerificationTest {
 
 		final HashableString bb = HashableString.from(tallyComponentShufflePayload.getBallotBoxId());
 
-		final HashableList hVerifiableShuffle = HashableList.of(
-				tallyComponentShufflePayload.getVerifiableShuffle().shuffledCiphertexts(),
-				tallyComponentShufflePayload.getVerifiableShuffle().shuffleArgument()
-		);
 
-		final HashableList hVerifiableDecryption = HashableList.of(
-				tallyComponentShufflePayload.getVerifiablePlaintextDecryption().getDecryptedVotes(),
-				tallyComponentShufflePayload.getVerifiablePlaintextDecryption().getDecryptionProofs()
-		);
-
-		final HashableList h = HashableList.of(p_q_g, ee, bb, hVerifiableShuffle, hVerifiableDecryption);
+		final HashableList h = HashableList.of(p_q_g, ee, bb, hShuffle, hDecryption);
 
 		return base64.base64Encode(hash.recursiveHash(h));
 	}
