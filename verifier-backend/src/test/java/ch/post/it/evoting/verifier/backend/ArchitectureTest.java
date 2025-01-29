@@ -7,6 +7,9 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +20,12 @@ import com.tngtech.archunit.lang.ArchRule;
 
 @AnalyzeClasses(packages = "ch.post.it.evoting.verifier.backend")
 class ArchitectureTest {
+
+	@ArchTest
+	static final ArchRule noClassesShouldCallLocalDateNow = noClasses().should().callMethod(LocalDate.class, "now");
+
+	@ArchTest
+	static final ArchRule noClassesShouldCallLocalDateTimeNow = noClasses().should().callMethod(LocalDateTime.class, "now");
 
 	@ArchTest
 	static final ArchRule controllersAreWellAnnotated = classes().that()

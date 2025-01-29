@@ -286,10 +286,10 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 		final String electionIdentification = electionInformationType.getElection().getElectionIdentification();
 
 		// write-ins position - only added if write-ins are allowed for an election
-		return electionInformationType.getWriteInCandidate().stream()
+		return electionInformationType.getWriteInPosition().stream()
 				.map(writeInCandidate -> {
 					final String actualVotingOption = getWriteInPositionActualVotingOption(electionIdentification,
-							writeInCandidate.getWriteInCandidateIdentification());
+							writeInCandidate.getWriteInPositionIdentification());
 					final String semanticInformation = getWriteInPositionSemanticInformation(writeInCandidate.getPosition());
 					final String correctnessInformation = getWriteInPositionCorrectnessInformation(electionIdentification);
 					return new PrimesMappingTableEntrySubset(actualVotingOption, semanticInformation, correctnessInformation);

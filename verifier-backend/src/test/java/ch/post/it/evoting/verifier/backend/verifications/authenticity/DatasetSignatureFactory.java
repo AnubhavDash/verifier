@@ -17,7 +17,6 @@
 package ch.post.it.evoting.verifier.backend.verifications.authenticity;
 
 import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap.toImmutableMap;
-import static java.time.LocalDate.now;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +25,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
 import java.security.cert.CertificateException;
+import java.time.LocalDate;
 import java.util.Arrays;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
@@ -37,6 +37,7 @@ import ch.post.it.evoting.cryptoprimitives.signing.KeysAndCert;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureFactory;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureGeneration;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
+import ch.post.it.evoting.evotinglibraries.domain.LocalDateUtils;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
 import ch.post.it.evoting.evotinglibraries.domain.signature.CryptoPrimitivesSignature;
 
@@ -116,6 +117,7 @@ public class DatasetSignatureFactory {
 						.setState("dummy-St")
 						.build()
 		);
-		return digitalSignatures.genKeysAndCert(now(), now().plusDays(1));
+		final LocalDate now = LocalDateUtils.now();
+		return digitalSignatures.genKeysAndCert(now, now.plusDays(1));
 	}
 }

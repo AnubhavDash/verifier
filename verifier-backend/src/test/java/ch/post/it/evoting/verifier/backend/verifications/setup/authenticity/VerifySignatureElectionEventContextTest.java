@@ -21,7 +21,6 @@ import static ch.post.it.evoting.cryptoprimitives.hashing.HashFactory.createHash
 import static ch.post.it.evoting.cryptoprimitives.hashing.HashableList.toHashableList;
 import static ch.post.it.evoting.cryptoprimitives.math.BaseEncodingFactory.createBase64;
 import static ch.post.it.evoting.cryptoprimitives.math.GroupVector.toGroupVector;
-import static ch.post.it.evoting.evotinglibraries.domain.common.Constants.ISO8601_LOCAL_DATETIME_WITHOUT_TIMEZONE_FORMAT;
 import static ch.post.it.evoting.evotinglibraries.domain.mapper.EncryptionGroupUtils.getEncryptionGroup;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -57,6 +56,7 @@ import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
 import ch.post.it.evoting.cryptoprimitives.test.tools.serialization.JsonData;
 import ch.post.it.evoting.cryptoprimitives.test.tools.serialization.TestParameters;
+import ch.post.it.evoting.evotinglibraries.domain.LocalDateTimeUtils;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
@@ -141,8 +141,8 @@ class VerifySignatureElectionEventContextTest extends SetupVerificationTest {
 							HashableString.from(v.getVerificationCardSetAlias()),
 							HashableString.from(v.getVerificationCardSetDescription()),
 							HashableString.from(v.getBallotBoxId()),
-							HashableString.from(v.getBallotBoxStartTime().format(ISO8601_LOCAL_DATETIME_WITHOUT_TIMEZONE_FORMAT)),
-							HashableString.from(v.getBallotBoxFinishTime().format(ISO8601_LOCAL_DATETIME_WITHOUT_TIMEZONE_FORMAT)),
+							HashableString.from(LocalDateTimeUtils.format(v.getBallotBoxStartTime())),
+							HashableString.from(LocalDateTimeUtils.format(v.getBallotBoxFinishTime())),
 							HashableString.from(String.valueOf(v.isTestBallotBox())),
 							HashableBigInteger.from(v.getNumberOfEligibleVoters()),
 							HashableBigInteger.from(v.getGracePeriod()),
@@ -162,8 +162,8 @@ class VerifySignatureElectionEventContextTest extends SetupVerificationTest {
 				HashableString.from(electionEventContext.electionEventAlias()),
 				HashableString.from(electionEventContext.electionEventDescription()),
 				HashableList.from(h_vcs),
-				HashableString.from(electionEventContext.startTime().format(ISO8601_LOCAL_DATETIME_WITHOUT_TIMEZONE_FORMAT)),
-				HashableString.from(electionEventContext.finishTime().format(ISO8601_LOCAL_DATETIME_WITHOUT_TIMEZONE_FORMAT)),
+				HashableString.from(LocalDateTimeUtils.format(electionEventContext.startTime())),
+				HashableString.from(LocalDateTimeUtils.format(electionEventContext.finishTime())),
 				HashableBigInteger.from(electionEventContext.maximumNumberOfVotingOptions()),
 				HashableBigInteger.from(electionEventContext.maximumNumberOfSelections()),
 				HashableBigInteger.from(electionEventContext.maximumNumberOfWriteInsPlusOne())

@@ -52,6 +52,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet;
+import ch.post.it.evoting.evotinglibraries.domain.LocalDateTimeUtils;
 
 @Service
 public class DirectoryService {
@@ -88,7 +89,7 @@ public class DirectoryService {
 	 * @throws IOException if an I/O error occurs during directory creation.
 	 */
 	public Path createSecuredDirectory() throws IOException {
-		final LocalDateTime now = LocalDateTime.now();
+		final LocalDateTime now = LocalDateTimeUtils.now();
 		final String timestamp = dateTimeFormatter.format(now);
 
 		final Path directory = Files.createDirectory(datasetUnzipLocation.resolve(Path.of(PREFIX + "-" + timestamp)));
