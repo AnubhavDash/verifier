@@ -55,6 +55,7 @@ import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
 import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTableEntry;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
+import ch.post.it.evoting.evotinglibraries.domain.electoralmodel.AnswerType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AnswerInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotQuestionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotQuestionType.BallotQuestionInfo;
@@ -347,12 +348,14 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 				.map(standardAnswerType -> {
 					final String actualVotingOption = getAnswerActualVotingOption(questionIdentification,
 							standardAnswerType.getAnswerIdentification());
-					final String semanticInformation = getAnswerSemanticInformation(standardAnswerType.isHiddenAnswer(),
+					final String semanticInformation = getAnswerSemanticInformation(AnswerType.EMPTY.name().equals(standardAnswerType.getStandardAnswerType()),
 							ballotQuestionType.getBallotQuestionInfo().stream()
 									.sorted(Comparator.comparing(BallotQuestionInfo::getLanguage))
 									.collect(toImmutableList()),
 							BallotQuestionInfo::getBallotQuestion,
-							ImmutableList.from(standardAnswerType.getAnswerInfo()),
+							ImmutableList.from(standardAnswerType.getAnswerInfo()).stream()
+									.sorted(Comparator.comparing(AnswerInformationType::getLanguage))
+									.collect(toImmutableList()),
 							AnswerInformationType::getAnswer);
 					return new PrimesMappingTableEntrySubset(actualVotingOption, semanticInformation, questionIdentification);
 				});
@@ -377,7 +380,9 @@ public class VerifyPrimesMappingTableConsistencyAlgorithm {
 											.sorted(Comparator.comparing(BallotQuestionInfo::getLanguage))
 											.collect(toImmutableList()),
 									BallotQuestionInfo::getBallotQuestion,
-									ImmutableList.from(tiebreakAnswerType.getAnswerInfo()),
+									ImmutableList.from(tiebreakAnswerType.getAnswerInfo()).stream()
+											.sorted(Comparator.comparing(AnswerInformationType::getLanguage))
+											.collect(toImmutableList()),
 									AnswerInformationType::getAnswer);
 							return new PrimesMappingTableEntrySubset(actualVotingOption, semanticInformation, questionIdentification);
 						}))
