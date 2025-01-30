@@ -21,12 +21,12 @@ import java.util.function.BiFunction;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
+import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentPublicKeysPayloadDataExtractor;
-import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentTallyDataPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
@@ -65,7 +65,7 @@ public class VerifyElectionEventIdConsistency extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final String electionEventId = electionDataExtractionService.getElectionEventContextPayloadDataExtraction(inputDirectoryPath)
+		final String electionEventId = electionDataExtractionService.getElectionEventContext(inputDirectoryPath)
 				.electionEventId();
 
 		final ImmutableList<BiFunction<Path, String, Boolean>> validations = ImmutableList.of(
@@ -87,15 +87,15 @@ public class VerifyElectionEventIdConsistency extends AbstractVerification {
 	}
 
 	private boolean validateSetupComponentTallyDataPayload(final Path inputDirectoryPath, final String electionEventId) {
-		return electionDataExtractionService.getAllSetupComponentTallyDataPayloadsDataExtractions(inputDirectoryPath)
-				.map(SetupComponentTallyDataPayloadDataExtractor.DataExtraction::electionEventId)
+		return electionDataExtractionService.getSetupComponentTallyDataPayloads(inputDirectoryPath)
+				.map(SetupComponentTallyDataPayload::getElectionEventId)
 				.distinct()
 				.allMatch(electionEventId::equals);
 	}
 
 	private boolean validateControlComponentPublicKeysPayload(final Path inputDirectoryPath, final String electionEventId) {
-		return electionDataExtractionService.getControlComponentPublicKeysPayloadsDataExtractions(inputDirectoryPath)
-				.map(ControlComponentPublicKeysPayloadDataExtractor.DataExtraction::electionEventId)
+		return electionDataExtractionService.getControlComponentPublicKeysPayloads(inputDirectoryPath)
+				.map(ControlComponentPublicKeysPayload::getElectionEventId)
 				.distinct()
 				.allMatch(electionEventId::equals);
 	}

@@ -45,9 +45,6 @@ import ch.post.it.evoting.evotinglibraries.domain.validations.FailedValidationEx
 import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
 import ch.post.it.evoting.evotinglibraries.xml.XsdConstants;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
-import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentPublicKeysPayloadDataExtractor;
-import ch.post.it.evoting.verifier.backend.dataextractors.ElectionEventContextPayloadDataExtractor;
-import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentTallyDataPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
@@ -57,27 +54,18 @@ public class ElectionDataExtractionService {
 
 	private final PathService pathService;
 	private final ObjectMapper objectMapper;
-	private final ElectionEventContextPayloadDataExtractor electionEventContextPayloadDataExtractor;
 	private final XmlFileRepository<Delivery> ech0222XmlFileRepository;
 	private final XmlFileRepository<Configuration> configurationXmlFileRepository;
-	private final ControlComponentPublicKeysPayloadDataExtractor controlComponentPublicKeysPayloadDataExtractor;
-	private final SetupComponentTallyDataPayloadDataExtractor setupComponentTallyDataPayloadDataExtractor;
 
 	public ElectionDataExtractionService(
 			final PathService pathService,
 			final ObjectMapper objectMapper,
 			final XmlFileRepository<Delivery> ech0222XmlFileRepository,
-			final XmlFileRepository<Configuration> configurationXmlFileRepository,
-			final ElectionEventContextPayloadDataExtractor electionEventContextPayloadDataExtractor,
-			final ControlComponentPublicKeysPayloadDataExtractor controlComponentPublicKeysPayloadDataExtractor,
-			final SetupComponentTallyDataPayloadDataExtractor setupComponentTallyDataPayloadDataExtractor) {
+			final XmlFileRepository<Configuration> configurationXmlFileRepository) {
 		this.pathService = pathService;
 		this.objectMapper = objectMapper;
-		this.electionEventContextPayloadDataExtractor = electionEventContextPayloadDataExtractor;
 		this.ech0222XmlFileRepository = ech0222XmlFileRepository;
 		this.configurationXmlFileRepository = configurationXmlFileRepository;
-		this.controlComponentPublicKeysPayloadDataExtractor = controlComponentPublicKeysPayloadDataExtractor;
-		this.setupComponentTallyDataPayloadDataExtractor = setupComponentTallyDataPayloadDataExtractor;
 	}
 
 	/**
@@ -97,8 +85,7 @@ public class ElectionDataExtractionService {
 	 * Gets the tally component eCH-0222.
 	 *
 	 * @param inputDirectoryPath the root directory containing project files.
-	 * @return the tally component eCH-0222 as {@link Delivery} found in the project files, at the expected location if it
-	 * exists.
+	 * @return the tally component eCH-0222 as {@link Delivery} found in the project files, at the expected location if it exists.
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the file cannot be deserialized to a Delivery.
 	 */
@@ -157,15 +144,7 @@ public class ElectionDataExtractionService {
 	public ElectionEventContext getElectionEventContext(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
-		final PathNode electionEventContextPayloadPath = pathService.buildFromRootPath(StructureKey.ELECTION_EVENT_CONTEXT, inputDirectoryPath);
-		try {
-			return objectMapper.readValue(electionEventContextPayloadPath.getPath().toFile(), ElectionEventContextPayload.class)
-					.getElectionEventContext();
-		} catch (final IOException e) {
-			throw new UncheckedIOException(
-					String.format("Failed to deserialize election event context. [path:%s ]", electionEventContextPayloadPath.getPath()), e);
-		}
-
+		return getElectionEventContextPayload(inputDirectoryPath).getElectionEventContext();
 	}
 
 	/**
@@ -525,96 +504,37 @@ public class ElectionDataExtractionService {
 	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
 	 * @throws UncheckedIOException if the deserialization of the control components public keys payloads fails.
 	 */
-	public ImmutableList<ControlComponentPublicKeysPayload> getControlComponentPublicKeysPayloads(final Path inputDirectoryPath) {
+	public Stream<ControlComponentPublicKeysPayload> getControlComponentPublicKeysPayloads(final Path inputDirectoryPath) {
 		checkNotNull(inputDirectoryPath);
 
 		final PathNode controlComponentPublicKeys = pathService.buildFromRootPath(StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS, inputDirectoryPath);
 
-		return controlComponentPublicKeys
-				.getRegexPaths()
-				.stream()
-				.parallel()
+		return controlComponentPublicKeys.getRegexPaths().stream()
 				.map(path -> {
 					try {
 						return objectMapper.readValue(path.toFile(), ControlComponentPublicKeysPayload.class);
 					} catch (final IOException e) {
 						throw new UncheckedIOException("Failed to deserialize control component public keys payload.", e);
 					}
-				})
-				.collect(toImmutableList());
+				});
 	}
 
 	/**
-	 * Gets the election event context payload data extraction.
+	 * Gets the control component public keys payload.
 	 *
-	 * @param inputDirectoryPath the root directory containing project files.
-	 * @return a data extraction of the election event context payload found in the project files, at the expected location if it exists.
-	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
-	 * @throws UncheckedIOException if the file cannot be read through.
+	 * @param controlComponentPublicKeysPayloadPath the path to the control component public keys payload.
+	 * @return the control component public keys payload.
+	 * @throws NullPointerException if {@code controlComponentPublicKeysPayloadPath} is null.
+	 * @throws UncheckedIOException if the deserialization of the control component public keys payload fails.
 	 */
-	public ElectionEventContextPayloadDataExtractor.DataExtraction getElectionEventContextPayloadDataExtraction(final Path inputDirectoryPath) {
-		checkNotNull(inputDirectoryPath);
+	public ControlComponentPublicKeysPayload getControlComponentPublicKeysPayload(final Path controlComponentPublicKeysPayloadPath) {
+		checkNotNull(controlComponentPublicKeysPayloadPath);
 
-		final PathNode electionEventContextPathNode = pathService.buildFromRootPath(StructureKey.ELECTION_EVENT_CONTEXT, inputDirectoryPath);
-
-		return electionEventContextPayloadDataExtractor.load(electionEventContextPathNode.getPath());
-	}
-
-	/**
-	 * Gets all the control components public keys payloads data extractions.
-	 *
-	 * @param inputDirectoryPath the dataset root directory.
-	 * @return all control components public keys payloads data extractions.
-	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
-	 * @throws UncheckedIOException if any file cannot be read through.
-	 */
-	public Stream<ControlComponentPublicKeysPayloadDataExtractor.DataExtraction> getControlComponentPublicKeysPayloadsDataExtractions(
-			final Path inputDirectoryPath) {
-		checkNotNull(inputDirectoryPath);
-
-		final PathNode controlComponentPublicKeys = pathService.buildFromRootPath(StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS, inputDirectoryPath);
-
-		return controlComponentPublicKeys.getRegexPaths().stream()
-				.parallel()
-				.map(controlComponentPublicKeysPayloadDataExtractor::load);
-	}
-
-	/**
-	 * Gets all setup component tally data payloads data extractions of the different verification card sets as a {@link Stream}.
-	 *
-	 * @param inputDirectoryPath the dataset root directory.
-	 * @return all setup component tally data payloads data extractions.
-	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
-	 * @throws UncheckedIOException if any file cannot be read through.
-	 */
-	public Stream<SetupComponentTallyDataPayloadDataExtractor.DataExtraction> getAllSetupComponentTallyDataPayloadsDataExtractions(
-			final Path inputDirectoryPath) {
-		checkNotNull(inputDirectoryPath);
-
-		final PathNode verificationCardSets = pathService.buildFromRootPath(StructureKey.CONTEXT_VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath);
-
-		return verificationCardSets.getRegexPaths().stream()
-				.parallel()
-				.flatMap(this::getSetupComponentTallyDataPayloadsDataExtractions);
-	}
-
-	/**
-	 * Gets the setup component tally data payloads data extractions, given a path for a verification card set ID as a {@link Stream}.
-	 *
-	 * @param verificationCardSetIdPath the path for the verification card set ID.
-	 * @return the setup component tally data payloads data extractions.
-	 * @throws NullPointerException if {@code verificationCardSetIdPath} is null.
-	 * @throws UncheckedIOException if any file cannot be read through.
-	 */
-	public Stream<SetupComponentTallyDataPayloadDataExtractor.DataExtraction> getSetupComponentTallyDataPayloadsDataExtractions(
-			final Path verificationCardSetIdPath) {
-		checkNotNull(verificationCardSetIdPath);
-
-		final PathNode nodePath = pathService.buildFromDynamicAncestorPath(StructureKey.SETUP_COMPONENT_TALLY_DATA, verificationCardSetIdPath);
-
-		return nodePath.getRegexPaths().stream()
-				.parallel()
-				.map(setupComponentTallyDataPayloadDataExtractor::load);
+		try {
+			return objectMapper.readValue(controlComponentPublicKeysPayloadPath.toFile(), ControlComponentPublicKeysPayload.class);
+		} catch (final IOException e) {
+			throw new UncheckedIOException("Failed to deserialize control component public keys payload.", e);
+		}
 	}
 
 	/**

@@ -15,36 +15,26 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Stream;
+import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentTallyDataPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 
 class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
-
-	private final Random random = new Random();
 
 	@BeforeAll
 	static void setUpAll() {
@@ -64,8 +54,10 @@ class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 	@DisplayName("inconsistent verification card ids is failed")
 	void inconsistentVerificationCardIds() {
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
-		doAnswer(invocationOnMock -> Stream.of()).when(electionDataExtractionServiceSpy)
-				.getSetupComponentTallyDataPayloadsDataExtractions(any());
+
+		final SetupComponentTallyDataPayload setupComponentTallyDataPayloadMock = mock(SetupComponentTallyDataPayload.class);
+		when(setupComponentTallyDataPayloadMock.getVerificationCardIds()).thenReturn(ImmutableList.emptyList());
+		doReturn(setupComponentTallyDataPayloadMock).when(electionDataExtractionServiceSpy).getSetupComponentTallyDataPayload(any(), any());
 
 		final VerifyVerificationCardIdsConsistency verifyVerificationCardIdsConsistency = new VerifyVerificationCardIdsConsistency(
 				resultPublisherServiceMock, electionDataExtractionServiceSpy);
@@ -77,43 +69,4 @@ class VerifyVerificationCardIdsConsistencyTest extends SetupVerificationTest {
 		assertEquals(expectedResult, result);
 	}
 
-	@Test
-	@DisplayName("wrong order of verification card ids is failed")
-	void wrongOrderVerificationCardIds() {
-		final ImmutableList<Path> regexPaths = electionDataExtractionService.getContextVerificationCardSetPaths(datasetPath);
-		final int randomIndex = random.nextInt(0, regexPaths.size());
-		final Path verificationCardSet = regexPaths.get(randomIndex);
-
-		final List<SetupComponentTallyDataPayloadDataExtractor.DataExtraction> swappedDataExtractions = new ArrayList<>(
-				electionDataExtractionService.getSetupComponentTallyDataPayloadsDataExtractions(verificationCardSet)
-						.sorted(Comparator.comparing(SetupComponentTallyDataPayloadDataExtractor.DataExtraction::verificationCardSetId))
-						.collect(toImmutableList())
-						.asList()
-		);
-		assumeTrue(swappedDataExtractions.size() > 1, "This test assumes at least two verification cards in the set.");
-
-		final SetupComponentTallyDataPayloadDataExtractor.DataExtraction dataExtraction = swappedDataExtractions.getFirst();
-		final String firstVerificationCardId = dataExtraction.verificationCardIds()[0];
-		dataExtraction.verificationCardIds()[0] = dataExtraction.verificationCardIds()[1];
-		dataExtraction.verificationCardIds()[1] = firstVerificationCardId;
-
-		final SetupComponentTallyDataPayloadDataExtractor.DataExtraction swappedDataExtraction = new SetupComponentTallyDataPayloadDataExtractor.DataExtraction(
-				dataExtraction.electionEventId(),
-				dataExtraction.verificationCardSetId(),
-				dataExtraction.verificationCardIds()
-		);
-		swappedDataExtractions.set(0, swappedDataExtraction);
-
-		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(swappedDataExtractions.stream()).when(electionDataExtractionServiceSpy)
-				.getSetupComponentTallyDataPayloadsDataExtractions(verificationCardSet);
-		final VerifyVerificationCardIdsConsistency verifyVerificationCardIdsConsistency = new VerifyVerificationCardIdsConsistency(
-				resultPublisherServiceMock, electionDataExtractionServiceSpy);
-
-		final VerificationResult result = verifyVerificationCardIdsConsistency.verify(datasetPath);
-
-		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification312.nok.message"));
-		assertEquals(expectedResult, result);
-	}
 }

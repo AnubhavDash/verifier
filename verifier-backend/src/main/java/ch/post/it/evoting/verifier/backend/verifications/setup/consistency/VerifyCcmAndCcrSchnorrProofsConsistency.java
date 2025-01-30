@@ -15,6 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap.toImmutableMap;
 
 import java.nio.file.Path;
@@ -69,7 +70,7 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = extractionService.getSetupComponentPublicKeysPayload(
 				inputDirectoryPath);
 		final ImmutableList<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = extractionService.getControlComponentPublicKeysPayloads(
-				inputDirectoryPath);
+				inputDirectoryPath).collect(toImmutableList());
 
 		final ImmutableList<BiFunction<SetupComponentPublicKeysPayload, ImmutableList<ControlComponentPublicKeysPayload>, Boolean>> validations = ImmutableList.of(
 				this::validateSameCcmjSchnorrProofs,

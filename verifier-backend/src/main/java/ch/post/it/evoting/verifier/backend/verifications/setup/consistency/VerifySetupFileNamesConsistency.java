@@ -23,9 +23,9 @@ import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentPublicKeysPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.event.SetupEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
+import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
@@ -36,16 +36,15 @@ import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerification
 public class VerifySetupFileNamesConsistency extends AbstractVerification {
 
 	private final PathService pathService;
-
-	private final ControlComponentPublicKeysPayloadDataExtractor controlComponentPublicKeysPayloadDataExtractor;
+	private final ElectionDataExtractionService electionDataExtractionService;
 
 	protected VerifySetupFileNamesConsistency(
 			final ResultPublisherService resultPublisherService,
 			final PathService pathService,
-			final ControlComponentPublicKeysPayloadDataExtractor controlComponentPublicKeysPayloadDataExtractor) {
+			final ElectionDataExtractionService electionDataExtractionService) {
 		super(resultPublisherService);
 		this.pathService = pathService;
-		this.controlComponentPublicKeysPayloadDataExtractor = controlComponentPublicKeysPayloadDataExtractor;
+		this.electionDataExtractionService = electionDataExtractionService;
 	}
 
 	@Override
@@ -84,7 +83,8 @@ public class VerifySetupFileNamesConsistency extends AbstractVerification {
 					final String nodeIdGroup = pathService.getRegexGroup(StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS, fileName, 1);
 					final int fileNodeId = Integer.parseInt(nodeIdGroup);
 
-					final int payloadNodeId = controlComponentPublicKeysPayloadDataExtractor.load(path).nodeId();
+					final int payloadNodeId = electionDataExtractionService.getControlComponentPublicKeysPayload(path).getControlComponentPublicKeys()
+							.nodeId();
 
 					return fileNodeId == payloadNodeId;
 				})

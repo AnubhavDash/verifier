@@ -22,7 +22,8 @@ import {VerifierMode} from '../../verifier-mode/verifier-mode.enum';
 @Component({
   templateUrl: 'dataset-upload.component.html',
   styleUrls: ['dataset-upload.component.css'],
-  selector: 'app-upload'
+  selector: 'app-upload',
+  standalone: false
 })
 export class DatasetUploadComponent implements OnChanges {
 

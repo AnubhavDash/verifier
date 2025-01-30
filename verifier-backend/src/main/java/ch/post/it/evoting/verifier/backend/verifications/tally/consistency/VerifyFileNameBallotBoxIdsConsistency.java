@@ -78,8 +78,7 @@ public class VerifyFileNameBallotBoxIdsConsistency extends AbstractVerification 
 				.map(Path::toString)
 				.collect(toImmutableSet());
 
-		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContextPayload(inputDirectoryPath)
-				.getElectionEventContext();
+		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContext(inputDirectoryPath);
 		final ImmutableSet<String> payloadBallotBoxIds = electionEventContext.verificationCardSetContexts().stream()
 				.map(VerificationCardSetContext::getBallotBoxId)
 				.collect(toImmutableSet());

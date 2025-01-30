@@ -88,7 +88,15 @@ The following instructions provide step-by-step information to build the Verifie
 
 5. Click on 'Verify Setup' to run the setup verifications, or click on 'Verify Tally' to run the tally verifications.
 
-# Verifier Test Datasets
+## Protocol Algorithms
+
+The implementation of some protocol algorithms is tested with JSON files.
+These files are available in the
+[`verifier-backend/target/test-classes/protocol-algorithms/json`](verifier-backend/target/test-classes/protocol-algorithms/json)
+directory once the project has been built.
+Ensure that the tests are executed only after an initial build.
+
+## Verifier Test Datasets
 
 The Verifier has two different datasets: context and tally. We provide some test datasets to test the verifier. The datasets are available in the
 [`verifier-backend/target/test-classes/datasets`](verifier-backend/target/test-classes/datasets) directory once the project has been built.
@@ -121,7 +129,7 @@ The following table shows the contents of the tally dataset.
 
 The tally dataset in only used in the Verify Tally phase.
 
-## Encryption
+### Encryption
 
 The provided datasets are not encrypted. To be able to use them in the Verifier, they need to be encrypted.
 

@@ -15,25 +15,32 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doAnswer;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
+
+import java.nio.file.Path;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.cryptoprimitives.math.Base16Alphabet;
+import ch.post.it.evoting.cryptoprimitives.math.Random;
+import ch.post.it.evoting.cryptoprimitives.math.RandomFactory;
+import ch.post.it.evoting.evotinglibraries.domain.common.Constants;
+import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentTallyDataPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 
 class VerifyVerificationCardSetIdsConsistencyTest extends SetupVerificationTest {
+
+	private final Random random = RandomFactory.createRandom();
 
 	@BeforeAll
 	static void setUpAll() {
@@ -52,20 +59,29 @@ class VerifyVerificationCardSetIdsConsistencyTest extends SetupVerificationTest 
 	@Test
 	@DisplayName("inconsistent verification card set ids is failed")
 	void inconsistentVerificationCardIds() {
-		final ImmutableList<SetupComponentTallyDataPayloadDataExtractor.DataExtraction> dataExtractions = electionDataExtractionService.getAllSetupComponentTallyDataPayloadsDataExtractions(
-						datasetPath)
-				.map(dataExtraction -> new SetupComponentTallyDataPayloadDataExtractor.DataExtraction(
-								dataExtraction.electionEventId(),
-								"wrong verification card set id",
-								dataExtraction.verificationCardIds()
-						)
-				)
-				.collect(toImmutableList());
+		final ImmutableList<Path> regexPaths = electionDataExtractionService.getContextVerificationCardSetPaths(datasetPath);
+
+		assumeTrue(!regexPaths.isEmpty(), "This test assumes at least one verification card set exists.");
+
+		final int randomIndex = random.genRandomInteger(regexPaths.size());
+		final Path verificationCardSetPath = regexPaths.get(randomIndex);
+		final String verificationCardSetId = verificationCardSetPath.getFileName().toString();
+
+		final SetupComponentTallyDataPayload setupComponentTallyDataPayload = electionDataExtractionService.getSetupComponentTallyDataPayload(
+				datasetPath, verificationCardSetId);
+
+		final String otherVerificationCardSetId = random.genRandomString(Constants.ID_LENGTH, Base16Alphabet.getInstance());
 
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
-
-		doAnswer(invocationOnMock -> dataExtractions.stream()).when(electionDataExtractionServiceSpy)
-				.getSetupComponentTallyDataPayloadsDataExtractions(any());
+		doReturn(new SetupComponentTallyDataPayload(
+				setupComponentTallyDataPayload.getEncryptionGroup(),
+				setupComponentTallyDataPayload.getElectionEventId(),
+				otherVerificationCardSetId,
+				setupComponentTallyDataPayload.getVerificationCardIds(),
+				setupComponentTallyDataPayload.getBallotBoxDefaultTitle(),
+				setupComponentTallyDataPayload.getVerificationCardPublicKeys(),
+				setupComponentTallyDataPayload.getSignature()))
+				.when(electionDataExtractionServiceSpy).getSetupComponentTallyDataPayload(datasetPath, verificationCardSetId);
 
 		final VerifyVerificationCardSetIdsConsistency verifyVerificationCardSetIdsConsistency = new VerifyVerificationCardSetIdsConsistency(
 				resultPublisherServiceMock, electionDataExtractionServiceSpy);

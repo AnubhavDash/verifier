@@ -18,7 +18,8 @@ import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-home-redirect',
-  template: ''
+  template: '',
+  standalone: false
 })
 export class HomeComponent implements OnInit {
   constructor(private router: Router) {

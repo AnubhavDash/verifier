@@ -98,6 +98,7 @@ public class VerifySignatureSetupComponentPublicKeys extends AbstractVerificatio
 		final Hashable additionalContextData = ChannelSecurityContextData.setupComponentPublicKeys(electionEventId);
 
 		try {
+			// The SetupComponentPublicKeysPayload method toHashableForm recursively hashes the setup component public keys payload as specified.
 			return signatureVerification.verifySignature(Alias.SDM_CONFIG.toString(), setupComponentPublicKeysPayload,
 					additionalContextData, signature.signatureContents());
 		} catch (final SignatureException e) {

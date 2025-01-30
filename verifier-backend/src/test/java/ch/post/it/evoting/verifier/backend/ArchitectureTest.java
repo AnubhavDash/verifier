@@ -7,6 +7,9 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,10 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
-import com.tngtech.archunit.library.freeze.FreezingArchRule;
 
 @AnalyzeClasses(packages = "ch.post.it.evoting.verifier.backend")
 class ArchitectureTest {
+
+	@ArchTest
+	static final ArchRule noClassesShouldCallLocalDateNow = noClasses().should().callMethod(LocalDate.class, "now");
+
+	@ArchTest
+	static final ArchRule noClassesShouldCallLocalDateTimeNow = noClasses().should().callMethod(LocalDateTime.class, "now");
 
 	@ArchTest
 	static final ArchRule controllersAreWellAnnotated = classes().that()
@@ -42,10 +50,10 @@ class ArchitectureTest {
 			.beAnnotatedWith(Service.class);
 
 	@ArchTest
-	static final ArchRule classesThatAreNotServicesAreWellAnnotated = FreezingArchRule.freeze(classes().that()
+	static final ArchRule classesThatAreNotServicesAreWellAnnotated = classes().that()
 			.haveNameNotMatching(".*(Service|Algorithm)")
 			.should()
-			.notBeAnnotatedWith(Service.class));
+			.notBeAnnotatedWith(Service.class);
 
 	@ArchTest
 	static final ArchRule noCyclesInBackend = slices()

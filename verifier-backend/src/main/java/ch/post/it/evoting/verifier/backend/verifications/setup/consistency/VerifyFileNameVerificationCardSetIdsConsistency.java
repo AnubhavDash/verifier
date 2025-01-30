@@ -72,8 +72,7 @@ public class VerifyFileNameVerificationCardSetIdsConsistency extends AbstractVer
 				.map(Path::toString)
 				.collect(toImmutableSet());
 
-		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContextPayload(inputDirectoryPath)
-				.getElectionEventContext();
+		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContext(inputDirectoryPath);
 		final ImmutableSet<String> payloadVerificationCardSetIds = electionEventContext.verificationCardSetContexts().stream()
 				.map(VerificationCardSetContext::getVerificationCardSetId)
 				.collect(toImmutableSet());

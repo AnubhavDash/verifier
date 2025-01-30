@@ -15,7 +15,10 @@
  */
 import {Pipe, PipeTransform} from '@angular/core';
 
-@Pipe({name: 'statusFilter'})
+@Pipe({
+  name: 'statusFilter',
+  standalone: false
+})
 export class StatusFilterPipe implements PipeTransform {
   /**
    * Transform

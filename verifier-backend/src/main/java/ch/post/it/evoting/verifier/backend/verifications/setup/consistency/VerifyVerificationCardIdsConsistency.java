@@ -16,21 +16,16 @@
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
 import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
-import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.hasNoDuplicates;
-import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
-import java.util.Arrays;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.MoreCollectors;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
-import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -43,8 +38,6 @@ import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerification
 
 @Component("verifySetupVerificationCardIdsConsistency")
 public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(VerifyVerificationCardIdsConsistency.class);
 
 	private final ElectionDataExtractionService electionDataExtractionService;
 
@@ -85,10 +78,8 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 	}
 
 	private ImmutableList<PayloadsVerificationCardIds> extractVerificationCardIds(final Path inputDirectoryPath) {
-		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(
-				inputDirectoryPath);
-		final ImmutableList<VerificationCardSetContext> verificationCardSetContexts = electionEventContextPayload.getElectionEventContext()
-				.verificationCardSetContexts();
+		final ImmutableList<VerificationCardSetContext> verificationCardSetContexts = electionDataExtractionService.getElectionEventContext(
+				inputDirectoryPath).verificationCardSetContexts();
 
 		return electionDataExtractionService.getContextVerificationCardSetPaths(inputDirectoryPath).stream()
 				.parallel()
@@ -96,17 +87,10 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 
 					final String verificationCardSetId = verificationCardSetIdPath.getFileName().toString();
 
-					final ImmutableList<String> tallyDataIds = electionDataExtractionService.getSetupComponentTallyDataPayloadsDataExtractions(
-									verificationCardSetIdPath)
-							.map(dataExtraction -> {
-								final ImmutableList<String> verificationCardIds = Arrays.stream(dataExtraction.verificationCardIds())
-										.collect(ImmutableList.toImmutableList());
+					final SetupComponentTallyDataPayload setupComponentTallyDataPayload = electionDataExtractionService.getSetupComponentTallyDataPayload(
+							inputDirectoryPath, verificationCardSetId);
 
-								checkState(hasNoDuplicates(verificationCardIds));
-								return verificationCardIds;
-							})
-							.flatMap(ImmutableList::stream)
-							.collect(toImmutableList());
+					final ImmutableList<String> verificationCardIds = setupComponentTallyDataPayload.getVerificationCardIds();
 
 					final int numberOfEligibleVoters = verificationCardSetContexts.stream()
 							.parallel()
@@ -114,7 +98,7 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 							.collect(MoreCollectors.onlyElement())
 							.getNumberOfEligibleVoters();
 
-					return new PayloadsVerificationCardIds(tallyDataIds, numberOfEligibleVoters);
+					return new PayloadsVerificationCardIds(verificationCardIds, numberOfEligibleVoters);
 				})
 				.collect(toImmutableList());
 	}
@@ -127,15 +111,14 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 	 * </ul>
 	 */
 	private boolean verifyConsistency(final PayloadsVerificationCardIds payloadsVerificationCardIds) {
-		final ImmutableList<String> tallyDataIds = payloadsVerificationCardIds.tallyDataIds;
-		final int numberOfEligibleVoters = payloadsVerificationCardIds.numberOfEligibleVoters;
+		final ImmutableList<String> verificationCardIds = payloadsVerificationCardIds.verificationCardIds();
+		final int numberOfEligibleVoters = payloadsVerificationCardIds.numberOfEligibleVoters();
 
 		// The SetupComponentTallyData payload ensures no verification card id are duplicates.
-
-		return tallyDataIds.size() == numberOfEligibleVoters;
+		return verificationCardIds.size() == numberOfEligibleVoters;
 	}
 
-	private record PayloadsVerificationCardIds(ImmutableList<String> tallyDataIds, int numberOfEligibleVoters) {
+	private record PayloadsVerificationCardIds(ImmutableList<String> verificationCardIds, int numberOfEligibleVoters) {
 	}
 
 }

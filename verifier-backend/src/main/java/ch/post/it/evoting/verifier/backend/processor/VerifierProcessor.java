@@ -52,9 +52,9 @@ import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
-import ch.post.it.evoting.evotinglibraries.domain.encryption.StreamedEncryptionDecryptionService;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.evotinglibraries.domain.validations.PasswordValidation;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.channelsecurity.StreamableSymmetricEncryptionDecryptionService;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
@@ -89,7 +89,7 @@ public class VerifierProcessor {
 	private final DatasetService datasetService;
 	private final ElectionDataExtractionService electionDataExtractionService;
 	private final DirectoryService directoryService;
-	private final StreamedEncryptionDecryptionService streamedEncryptionDecryptionService;
+	private final StreamableSymmetricEncryptionDecryptionService streamableSymmetricEncryptionDecryptionService;
 	private final char[] importDecryptionPassword;
 	private Dataset contextDataset;
 	private Dataset tallyDataset;
@@ -102,7 +102,7 @@ public class VerifierProcessor {
 			final DatasetService datasetService,
 			final ElectionDataExtractionService electionDataExtractionService,
 			final DirectoryService directoryService,
-			final StreamedEncryptionDecryptionService streamedEncryptionDecryptionService,
+			final StreamableSymmetricEncryptionDecryptionService streamableSymmetricEncryptionDecryptionService,
 			@Value("${import.zip.decryption.password}")
 			final char[] importDecryptionPassword) {
 		this.applicationContext = applicationContext;
@@ -110,7 +110,7 @@ public class VerifierProcessor {
 		this.datasetService = datasetService;
 		this.electionDataExtractionService = electionDataExtractionService;
 		this.directoryService = directoryService;
-		this.streamedEncryptionDecryptionService = streamedEncryptionDecryptionService;
+		this.streamableSymmetricEncryptionDecryptionService = streamableSymmetricEncryptionDecryptionService;
 		PasswordValidation.validate(importDecryptionPassword, "import decryption");
 		this.importDecryptionPassword = importDecryptionPassword;
 
@@ -293,7 +293,7 @@ public class VerifierProcessor {
 
 	private Dataset downloadDataset(final InputStream datasetInputStream, final Path directory, final DatasetType datasetType) {
 
-		final InputStream decryptedStream = streamedEncryptionDecryptionService.decrypt(datasetInputStream, importDecryptionPassword,
+		final InputStream decryptedStream = streamableSymmetricEncryptionDecryptionService.getStreamPlaintext(datasetInputStream, importDecryptionPassword,
 				ASSOCIATED_DATA);
 
 		LOGGER.info("Dataset successfully downloaded.");

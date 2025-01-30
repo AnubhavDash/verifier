@@ -15,7 +15,6 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
@@ -27,9 +26,8 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Streams;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentPublicKeysPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -52,13 +50,13 @@ class VerifyNodeIdsConsistencyTest extends SetupVerificationTest {
 
 	@Test
 	void verifyNokControlComponentPublicKeysCompleteness() {
-		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-		final ImmutableList<ControlComponentPublicKeysPayloadDataExtractor.DataExtraction> dataExtractions = electionDataExtractionService.getControlComponentPublicKeysPayloadsDataExtractions(
-				datasetPath).collect(toImmutableList());
-		doReturn(dataExtractions.subList(0, dataExtractions.size() - 1).stream()).when(extractionServiceMock)
-				.getControlComponentPublicKeysPayloadsDataExtractions(datasetPath);
+		final Stream<ControlComponentPublicKeysPayload> stream = electionDataExtractionService.getControlComponentPublicKeysPayloads(
+				datasetPath).skip(1);
 
-		final VerifyNodeIdsConsistency verificationWithMock = new VerifyNodeIdsConsistency(resultPublisherServiceMock, extractionServiceMock);
+		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
+		doReturn(stream).when(extractionServiceSpy).getControlComponentPublicKeysPayloads(datasetPath);
+
+		final VerifyNodeIdsConsistency verificationWithMock = new VerifyNodeIdsConsistency(resultPublisherServiceMock, extractionServiceSpy);
 		final VerificationResult verificationResult = verificationWithMock.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),
@@ -68,15 +66,15 @@ class VerifyNodeIdsConsistencyTest extends SetupVerificationTest {
 
 	@Test
 	void verifyNokControlComponentPublicKeysUniqueness() {
-		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-		final ImmutableList<ControlComponentPublicKeysPayloadDataExtractor.DataExtraction> dataExtractions = electionDataExtractionService.getControlComponentPublicKeysPayloadsDataExtractions(
-				datasetPath).collect(toImmutableList());
-		final Stream<ControlComponentPublicKeysPayloadDataExtractor.DataExtraction> publicKeysWithDuplicateNodeIds = Streams.concat(
-				dataExtractions.stream(),
-				Stream.of(dataExtractions.get(0)));
-		doReturn(publicKeysWithDuplicateNodeIds).when(extractionServiceMock).getControlComponentPublicKeysPayloadsDataExtractions(datasetPath);
+		final Stream<ControlComponentPublicKeysPayload> stream = electionDataExtractionService.getControlComponentPublicKeysPayloads(
+				datasetPath)
+				.limit(2)
+				.flatMap(payload -> Streams.concat(Stream.of(payload), Stream.of(payload)));
 
-		final VerifyNodeIdsConsistency verificationWithMock = new VerifyNodeIdsConsistency(resultPublisherServiceMock, extractionServiceMock);
+		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
+		doReturn(stream).when(extractionServiceSpy).getControlComponentPublicKeysPayloads(datasetPath);
+
+		final VerifyNodeIdsConsistency verificationWithMock = new VerifyNodeIdsConsistency(resultPublisherServiceMock, extractionServiceSpy);
 		final VerificationResult verificationResult = verificationWithMock.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),

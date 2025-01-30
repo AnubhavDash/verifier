@@ -30,8 +30,8 @@ import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
+import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
-import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
@@ -75,9 +75,9 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 
 		final Stream<SetupComponentTallyDataPayload> setupComponentTallyDataPayloads = extractionService.getSetupComponentTallyDataPayloads(
 				inputDirectoryPath);
-		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(inputDirectoryPath);
+		final ElectionEventContext electionEventContext = extractionService.getElectionEventContext(inputDirectoryPath);
 
-		if (verifyVerificationCardSetRelationToBallotBox(controlComponentBallotBoxPayloads, electionEventContextPayload) &&
+		if (verifyVerificationCardSetRelationToBallotBox(controlComponentBallotBoxPayloads, electionEventContext) &&
 				verifyVerificationCardIdsInExpectedSet(controlComponentBallotBoxPayloads, setupComponentTallyDataPayloads)) {
 
 			return VerificationResult.success(getVerificationDefinition());
@@ -89,10 +89,8 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 
 	@VisibleForTesting
 	boolean verifyVerificationCardSetRelationToBallotBox(final ImmutableList<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads,
-			final ElectionEventContextPayload electionEventContextPayload) {
-		final ImmutableMap<String, String> verificationCardSetIdToBallotBoxId = electionEventContextPayload
-				.getElectionEventContext()
-				.verificationCardSetContexts().stream()
+			final ElectionEventContext electionEventContext) {
+		final ImmutableMap<String, String> verificationCardSetIdToBallotBoxId = electionEventContext.verificationCardSetContexts().stream()
 				.collect(toImmutableMap(
 						VerificationCardSetContext::getVerificationCardSetId,
 						VerificationCardSetContext::getBallotBoxId));

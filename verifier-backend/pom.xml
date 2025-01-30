@@ -21,7 +21,7 @@
 	<parent>
 		<artifactId>verifier</artifactId>
 		<groupId>ch.post.it.evoting.verifier</groupId>
-		<version>1.6.0.0-RC3</version>
+		<version>1.6.0.0-RC5</version>
 	</parent>
 
 	<artifactId>verifier-backend</artifactId>
@@ -117,6 +117,12 @@
 			<artifactId>crypto-primitives</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>ch.post.it.evoting.cryptoprimitives</groupId>
+			<artifactId>crypto-primitives</artifactId>
+			<classifier>tests</classifier>
+			<type>test-jar</type>
+		</dependency>
+		<dependency>
 			<groupId>ch.post.it.evoting.evotinglibraries</groupId>
 			<artifactId>e-voting-libraries-domain</artifactId>
 		</dependency>
@@ -148,10 +154,6 @@
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.github.jsurfer</groupId>
-			<artifactId>jsurfer-jackson</artifactId>
 		</dependency>
 
 		<dependency>
@@ -223,7 +225,7 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>prepare-datasets</id>
+						<id>prepare-datasets-and-json-testdata</id>
 						<phase>generate-test-resources</phase>
 						<goals>
 							<goal>run</goal>
@@ -246,6 +248,11 @@
 								</copy>
 								<copy todir="${project.build.testOutputDirectory}/datasets/D3/tally">
 									<fileset dir="${project.build.testOutputDirectory}/testdata/election-events/Post_E2E_DEV/D3/secure-data-manager-tally/tally"/>
+								</copy>
+
+								<!-- Protocol Algorithms -->
+								<copy todir="${project.build.testOutputDirectory}/protocol-algorithms/json">
+									<fileset dir="${project.build.testOutputDirectory}/testdata/protocol-algorithms/json/verifier-specification"/>
 								</copy>
 
 								<!-- Remove other files not needed -->

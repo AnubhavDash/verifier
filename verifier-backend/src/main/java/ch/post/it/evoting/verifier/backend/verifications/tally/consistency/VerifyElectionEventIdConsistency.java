@@ -64,8 +64,7 @@ public class VerifyElectionEventIdConsistency extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final String electionEventId = electionDataExtractionService.getElectionEventContextPayload(inputDirectoryPath).getElectionEventContext()
-				.electionEventId();
+		final String electionEventId = electionDataExtractionService.getElectionEventContext(inputDirectoryPath).electionEventId();
 
 		final ImmutableList<BiFunction<Path, String, Boolean>> validations = ImmutableList.of(
 				this::areControlComponentBallotBoxPayloadsVerified,

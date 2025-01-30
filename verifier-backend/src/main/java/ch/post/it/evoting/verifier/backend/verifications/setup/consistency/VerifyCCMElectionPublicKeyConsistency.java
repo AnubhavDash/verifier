@@ -21,12 +21,10 @@ import java.nio.file.Path;
 
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.domain.election.ControlComponentPublicKeys;
-import ch.post.it.evoting.evotinglibraries.domain.mixnet.SetupComponentPublicKeysPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -63,17 +61,14 @@ public class VerifyCCMElectionPublicKeyConsistency extends AbstractVerification 
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = extractionService.getSetupComponentPublicKeysPayload(
-				inputDirectoryPath);
-		final ImmutableList<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = extractionService.getControlComponentPublicKeysPayloads(
-				inputDirectoryPath);
-
-		final ImmutableMap<Integer, ElGamalMultiRecipientPublicKey> electionEventContextPublicKeys = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
+		final ImmutableMap<Integer, ElGamalMultiRecipientPublicKey> electionEventContextPublicKeys = extractionService.getSetupComponentPublicKeysPayload(
+						inputDirectoryPath)
+				.getSetupComponentPublicKeys()
 				.combinedControlComponentPublicKeys()
 				.stream()
 				.collect(toImmutableMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccmjElectionPublicKey));
 
-		final boolean sameCCMElectionPublicKeys = controlComponentPublicKeysPayloads.stream()
+		final boolean sameCCMElectionPublicKeys = extractionService.getControlComponentPublicKeysPayloads(inputDirectoryPath)
 				.parallel()
 				.map(ControlComponentPublicKeysPayload::getControlComponentPublicKeys)
 				.map(controlComponentPublicKeys -> electionEventContextPublicKeys.get(controlComponentPublicKeys.nodeId())

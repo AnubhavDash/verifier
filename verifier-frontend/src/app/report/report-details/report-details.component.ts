@@ -18,7 +18,8 @@ import {Component, Input} from '@angular/core';
 @Component({
   templateUrl: 'report-details.component.html',
   styleUrls: ['report-details.component.css'],
-  selector: 'app-report-details'
+  selector: 'app-report-details',
+  standalone: false
 })
 export class ReportDetailsComponent {
 
