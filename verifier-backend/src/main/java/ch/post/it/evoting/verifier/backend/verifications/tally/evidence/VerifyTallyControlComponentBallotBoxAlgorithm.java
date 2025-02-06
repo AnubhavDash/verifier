@@ -18,6 +18,8 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.stream.IntStream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -30,9 +32,11 @@ import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKe
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
+import ch.post.it.evoting.cryptoprimitives.math.ZqGroup;
 import ch.post.it.evoting.cryptoprimitives.mixnet.Mixnet;
 import ch.post.it.evoting.cryptoprimitives.mixnet.ShuffleArgument;
 import ch.post.it.evoting.cryptoprimitives.utils.VerificationResult;
+import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.DecryptionProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.VerifiableDecryptions;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
 import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
@@ -98,7 +102,7 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> c_mix_5 = input.getShuffledVotes();
 		final ShuffleArgument pi_mix_5 = input.getShuffleProofs();
 		final GroupVector<ElGamalMultiRecipientMessage, GqGroup> m = input.getVerifiablePlaintextDecryption().getDecryptedVotes();
-		final VerifiableDecryptions pi_dec_5 = input.getVerifiableDecryptions();
+		final GroupVector<DecryptionProof, ZqGroup> pi_dec_5 = input.getVerifiablePlaintextDecryption().getDecryptionProofs();
 		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> L_votes = input.getSelectedEncodedVotingOptions();
 		final ImmutableList<ImmutableList<String>> L_decodedVotes = input.getSelectedDecodedVotingOptions();
 		final ImmutableList<ImmutableList<String>> L_writeIns = input.getSelectedDecodedWriteInVotes();
@@ -140,10 +144,13 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 			LOGGER.info("The shuffle proofs are valid. [ee: {}, bb: {}]", ee, bb);
 		}
 
-		final VerificationResult decryptVerif = zeroKnowledgeProof.verifyDecryptions(c_mix_5, EB_pk_cut, pi_dec_5, i_aux);
-		if (!decryptVerif.isVerified()) {
-			final String errorMessage = decryptVerif.getErrorMessages().get(0);
-			LOGGER.error("The decryption proofs are invalid. [ee: {}, bb: {}, errorMessage: {}]", ee, bb, errorMessage);
+		final boolean decryptVerif = IntStream.range(0, N_C_hat)
+				.mapToObj(i -> zeroKnowledgeProof.verifyDecryption(c_mix_5.get(i), EB_pk_cut, m.get(i), pi_dec_5.get(i), i_aux))
+				.reduce(Boolean::logicalAnd)
+				.orElse(false);
+
+		if (!decryptVerif) {
+			LOGGER.error("The decryption proofs are invalid. [ee: {}, bb: {}]", ee, bb);
 		} else {
 			LOGGER.info("The decryption proofs are valid. [ee: {}, bb: {}]", ee, bb);
 		}
@@ -162,6 +169,6 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 			LOGGER.info("The process plaintexts verification succeeded. [ee: {}, bb: {}]", ee, bb);
 		}
 
-		return shuffleVerif.isVerified() && decryptVerif.isVerified() && processVerif;
+		return shuffleVerif.isVerified() && decryptVerif && processVerif;
 	}
 }

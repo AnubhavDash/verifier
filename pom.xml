@@ -38,7 +38,7 @@
 
 		<bouncycastle.version>1.80</bouncycastle.version>
 		<commons-codec.version>1.18.0</commons-codec.version>
-		<crypto-primitives-version>1.5.0.0-b23</crypto-primitives-version>
+		<crypto-primitives-version>1.5.0.0-b24</crypto-primitives-version>
 		<e-voting-libraries.version>1.5.0.0-b83</e-voting-libraries.version>
 		<guava.version>33.4.0-jre</guava.version>
 		<jackson.version>2.18.2</jackson.version>
