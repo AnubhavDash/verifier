@@ -27,7 +27,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
 import ch.post.it.evoting.cryptoprimitives.hashing.HashFactory;
+import ch.post.it.evoting.cryptoprimitives.mixnet.Mixnet;
 import ch.post.it.evoting.cryptoprimitives.mixnet.MixnetFactory;
+import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.FactorizeAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.PrimesMappingTableAlgorithms;
@@ -87,9 +89,33 @@ class VerifyTallyControlComponentTest extends TallyVerificationTest {
 	}
 
 	@Test
-	void verifyTallyControlComponentBallotBoxNok() {
-		final VerifyTallyControlComponentBallotBoxAlgorithm algorithmMock = mock(VerifyTallyControlComponentBallotBoxAlgorithm.class);
-		when(algorithmMock.verifyTallyControlComponentBallotBox(any(), any())).thenReturn(false);
+	void verifyTallyControlComponentBallotBoxVerifyDecryptionNok() {
+		final Mixnet mixnet = MixnetFactory.createMixnet();
+		final ZeroKnowledgeProof zeroKnowledgeProofMock = mock(ZeroKnowledgeProof.class);
+		when(zeroKnowledgeProofMock.verifyDecryption(any(), any(), any(), any(), any())).thenReturn(false);
+		final PrimesMappingTableAlgorithms primesMappingTableAlgorithms = new PrimesMappingTableAlgorithms();
+		final VerifyProcessPlaintextsAlgorithm verifyProcessPlaintextsAlgorithmMock = mock(VerifyProcessPlaintextsAlgorithm.class);
+		when(verifyProcessPlaintextsAlgorithmMock.verifyProcessPlaintexts(any(), any())).thenReturn(true);
+		final VerifyTallyControlComponentBallotBoxAlgorithm algorithmMock = new VerifyTallyControlComponentBallotBoxAlgorithm(mixnet, zeroKnowledgeProofMock, primesMappingTableAlgorithms, verifyProcessPlaintextsAlgorithmMock);
+		final VerifyTallyControlComponentAlgorithm verifyTallyControlComponentAlgorithm = new VerifyTallyControlComponentAlgorithm(algorithmMock,
+				VERIFY_TALLY_FILES_ALGORITHM);
+		final VerifyTallyControlComponent verificationWithMock = new VerifyTallyControlComponent(electionDataExtractionService,
+				verifyTallyControlComponentAlgorithm, resultPublisherServiceMock);
+		final VerificationResult result = verificationWithMock.verify(datasetPath);
+
+		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),
+				getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification1002.nok.message"));
+		assertEquals(expectedResult, result);
+	}
+
+	@Test
+	void verifyTallyControlComponentBallotBoxVerifyProcessPlaintextsNok() {
+		final Mixnet mixnet = MixnetFactory.createMixnet();
+		final ZeroKnowledgeProof zeroKnowledgeProof = ZeroKnowledgeProofFactory.createZeroKnowledgeProof();
+		final PrimesMappingTableAlgorithms primesMappingTableAlgorithms = new PrimesMappingTableAlgorithms();
+		final VerifyProcessPlaintextsAlgorithm verifyProcessPlaintextsAlgorithmMock = mock(VerifyProcessPlaintextsAlgorithm.class);
+		when(verifyProcessPlaintextsAlgorithmMock.verifyProcessPlaintexts(any(), any())).thenReturn(false);
+		final VerifyTallyControlComponentBallotBoxAlgorithm algorithmMock = new VerifyTallyControlComponentBallotBoxAlgorithm(mixnet, zeroKnowledgeProof, primesMappingTableAlgorithms, verifyProcessPlaintextsAlgorithmMock);
 		final VerifyTallyControlComponentAlgorithm verifyTallyControlComponentAlgorithm = new VerifyTallyControlComponentAlgorithm(algorithmMock,
 				VERIFY_TALLY_FILES_ALGORITHM);
 		final VerifyTallyControlComponent verificationWithMock = new VerifyTallyControlComponent(electionDataExtractionService,

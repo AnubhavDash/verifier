@@ -105,7 +105,7 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 
 					final TallyComponentVotesPayload tallyComponentVotesPayload =
 							electionDataExtractionService.getTallyComponentVotesPayload(ballotBoxPath);
-					final int numberOfConfirmedVotesTallyComponentVotes = tallyComponentVotesPayload.getVotes().size();
+					final int numberOfConfirmedVotesTallyComponentVotes = tallyComponentVotesPayload.getDecryptedVotes().size();
 
 					return new TallyPayloadsSizes(numberOfConfirmedVotesControlComponentBallotBoxes, numberOfMixedVotesControlComponentShuffles,
 							numberOfMixedVotesTallyComponentShuffles, numberOfConfirmedVotesTallyComponentVotes

@@ -98,9 +98,9 @@ public class VerifyTallyControlComponentBallotBoxInput {
 		this.partiallyDecryptedVotes = lastControlComponentShufflePayload.getVerifiableDecryptions().getCiphertexts();
 		this.tallyComponentsShuffle = tallyComponentShufflePayload.getVerifiableShuffle();
 		this.verifiablePlaintextDecryption = tallyComponentShufflePayload.getVerifiablePlaintextDecryption();
-		this.selectedEncodedVotingOptions = tallyComponentVotesPaylaod.getVotes();
-		this.selectedDecodedVotingOptions = tallyComponentVotesPaylaod.getActualSelectedVotingOptions();
-		this.selectedDecodedWriteInVotes = tallyComponentVotesPaylaod.getDecodedWriteInVotes();
+		this.selectedEncodedVotingOptions = tallyComponentVotesPaylaod.getDecryptedVotes();
+		this.selectedDecodedVotingOptions = tallyComponentVotesPaylaod.getDecodedVotes();
+		this.selectedDecodedWriteInVotes = tallyComponentVotesPaylaod.getDecodedWriteIns();
 
 		// Cross-checks.
 		checkArgument(allEqual(Stream.of(partiallyDecryptedVotes, tallyComponentsShuffle.shuffledCiphertexts(),
