@@ -80,13 +80,14 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 				inputDirectoryPath);
 		final Stream<TallyComponentShufflePayload> tallyComponentShufflePayloads = extractionService.getTallyComponentShufflePayloads(
 				inputDirectoryPath);
-		final ImmutableMap<String, TallyComponentVotesPayload> tallyComponentVotesPayloads = getAuthorizationNameToTallyComponentVotesPayloadMap(
-				inputDirectoryPath, electionEventContextPayload);
 		final Configuration electionEventConfiguration = extractionService.getCantonConfig(inputDirectoryPath);
 		final Delivery tallyControlComponentDetailedResults = extractionService.getTallyComponentEch0222(inputDirectoryPath);
+		final ImmutableMap<String, TallyComponentVotesPayload> tallyControlComponentVotesPerAuthorizationName = getAuthorizationNameToTallyComponentVotesPayloadMap(
+				inputDirectoryPath, electionEventContextPayload);
 		final VerifyTallyControlComponentInput input = new VerifyTallyControlComponentInput(controlComponentShufflePayloads,
-				tallyComponentShufflePayloads, tallyComponentVotesPayloads, electionEventConfiguration,
-				tallyControlComponentDetailedResults);
+				tallyComponentShufflePayloads, electionEventConfiguration, tallyControlComponentDetailedResults,
+				tallyControlComponentVotesPerAuthorizationName
+		);
 
 		final boolean result = verifyTallyControlComponentAlgorithm.verifyTallyControlComponent(context, input);
 		if (result) {

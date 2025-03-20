@@ -69,14 +69,14 @@ public class VerifyTallyControlComponentAlgorithm {
 		final ImmutableMap<String, ControlComponentShufflePayload> lastOnlineControlComponentShuffles = input.getLastOnlineControlComponentShufflesPerBallotBoxId();
 		final ImmutableMap<String, TallyComponentShufflePayload> tallyControlComponentShuffles = input.getTallyControlComponentShufflesPerBallotBoxId();
 		final ImmutableMap<String, TallyComponentVotesPayload> tallyControlComponentVotes = input.getTallyControlComponentVotesPerBallotBoxId();
-		final ImmutableMap<String, TallyComponentVotesPayload> L_decodedVotesbb_L_decodedWriteInsbb = input.getTallyControlComponentVotesPerAuthorizationName();
 		final Configuration configurationXML = input.getElectionEventConfiguration();
 		final Delivery eCH0222XML = input.getTallyControlComponentDetailedResults();
+		final ImmutableMap<String, TallyComponentVotesPayload> Map_decodedVotes_Map_writeIns = input.getTallyControlComponentVotesPerAuthorizationName();
 
 		// Cross-checks.
+		checkArgument(ee.equals(input.getElectionEventId()), "The context and input must have the same election event id.");
 		checkArgument(lastOnlineControlComponentShuffles.keySet().equals(bb.toImmutableSet()),
 				"The last control component shuffles, the tally component shuffles and the tally component votes must correspond to the correct ballot box ids.");
-		checkArgument(input.getElectionEventId().equals(ee), "The input must have the correct election event id.");
 
 		// Operation.
 		final boolean tallyVerif = IntStream.range(0, N_bb)
@@ -102,7 +102,7 @@ public class VerifyTallyControlComponentAlgorithm {
 		final VerifyECH0222Input Input_eCH0222 = new VerifyECH0222Input.Builder()
 				.setCantonConfig(configurationXML)
 				.setTallyComponentEch0222(eCH0222XML)
-				.setTallyComponentVotesPayloads(L_decodedVotesbb_L_decodedWriteInsbb)
+				.setTallyControlComponentVotesPerAuthorizationName(Map_decodedVotes_Map_writeIns)
 				.build();
 
 		final boolean eCH0222Verif = verifyECH0222Algorithm.verifyECH0222(ee, Input_eCH0222);

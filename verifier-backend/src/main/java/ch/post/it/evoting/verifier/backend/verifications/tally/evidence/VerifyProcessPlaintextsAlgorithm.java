@@ -67,9 +67,9 @@ public final class VerifyProcessPlaintextsAlgorithm {
 
 		// Input.
 		final GroupVector<ElGamalMultiRecipientMessage, GqGroup> m = input.getPlaintextVotes();
-		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> L_votes = input.getSelectedEncodedVotingOptions();
-		final ImmutableList<ImmutableList<String>> L_decodedVotes = input.getSelectedDecodedVotingOptions();
-		final ImmutableList<ImmutableList<String>> L_writeIns = input.getSelectedDecodedWriteInVotes();
+		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> L_votes = input.getListOfDecryptedVotes();
+		final ImmutableList<ImmutableList<String>> L_decodedVotes = input.getListOfDecodedVotes();
+		final ImmutableList<ImmutableList<String>> L_writeIns = input.getListOfDecodedWriteIns();
 
 		// Require.
 		final int N_C_hat = m.size();

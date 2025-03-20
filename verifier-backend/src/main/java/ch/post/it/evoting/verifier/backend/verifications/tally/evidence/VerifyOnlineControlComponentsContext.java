@@ -62,6 +62,10 @@ public class VerifyOnlineControlComponentsContext {
 		checkArgument(electionEventContextPayload.getEncryptionGroup().equals(setupComponentPublicKeysPayload.getEncryptionGroup()));
 	}
 
+	public String getElectionEventId() {
+		return electionEventContext.electionEventId();
+	}
+
 	public ImmutableList<String> getVerificationCardSetIds() {
 		return verificationCardSetIds;
 	}
