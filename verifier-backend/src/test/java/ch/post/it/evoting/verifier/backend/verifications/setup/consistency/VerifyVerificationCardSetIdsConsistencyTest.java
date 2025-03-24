@@ -27,10 +27,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
-import ch.post.it.evoting.cryptoprimitives.math.Base16Alphabet;
 import ch.post.it.evoting.cryptoprimitives.math.Random;
 import ch.post.it.evoting.cryptoprimitives.math.RandomFactory;
-import ch.post.it.evoting.evotinglibraries.domain.common.Constants;
+import ch.post.it.evoting.evotinglibraries.domain.UUIDGenerator;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
@@ -39,8 +38,6 @@ import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerification
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 
 class VerifyVerificationCardSetIdsConsistencyTest extends SetupVerificationTest {
-
-	private final Random random = RandomFactory.createRandom();
 
 	@BeforeAll
 	static void setUpAll() {
@@ -63,6 +60,7 @@ class VerifyVerificationCardSetIdsConsistencyTest extends SetupVerificationTest 
 
 		assumeTrue(!regexPaths.isEmpty(), "This test assumes at least one verification card set exists.");
 
+		final Random random = RandomFactory.createRandom();
 		final int randomIndex = random.genRandomInteger(regexPaths.size());
 		final Path verificationCardSetPath = regexPaths.get(randomIndex);
 		final String verificationCardSetId = verificationCardSetPath.getFileName().toString();
@@ -70,7 +68,8 @@ class VerifyVerificationCardSetIdsConsistencyTest extends SetupVerificationTest 
 		final SetupComponentTallyDataPayload setupComponentTallyDataPayload = electionDataExtractionService.getSetupComponentTallyDataPayload(
 				datasetPath, verificationCardSetId);
 
-		final String otherVerificationCardSetId = random.genRandomString(Constants.ID_LENGTH, Base16Alphabet.getInstance());
+		final UUIDGenerator uuidGenerator = UUIDGenerator.getInstance();
+		final String otherVerificationCardSetId = uuidGenerator.generate();
 
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
 		doReturn(new SetupComponentTallyDataPayload(

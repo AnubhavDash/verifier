@@ -24,16 +24,13 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.base.Throwables;
 
-import ch.post.it.evoting.cryptoprimitives.math.Base16Alphabet;
-import ch.post.it.evoting.cryptoprimitives.math.Random;
-import ch.post.it.evoting.cryptoprimitives.math.RandomFactory;
-import ch.post.it.evoting.evotinglibraries.domain.common.Constants;
+import ch.post.it.evoting.evotinglibraries.domain.UUIDGenerator;
 
 @DisplayName("DatasetConfigurationTally with")
 class DatasetConfigurationTallyTest {
 
-	private final Random random = RandomFactory.createRandom();
-	private final String electionEventId = random.genRandomString(Constants.ID_LENGTH, Base16Alphabet.getInstance());
+	private final UUIDGenerator uuidGenerator = UUIDGenerator.getInstance();
+	private final String electionEventId = uuidGenerator.generate();
 	private final String filename = String.format("dataset-tally-%s.zip", electionEventId);
 	private final String hash = "DC:D5:9D:15:4C:AB:F3:09:17:25:A1:55:F8:07:E6:DD:10:F5:F6:70:4D:28:5F:77:A9:79:BB:E1:0A:DD:D6:9C";
 	private final int numberOfConfirmedNonTestVotes = 0;

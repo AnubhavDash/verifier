@@ -128,6 +128,12 @@
 		</dependency>
 		<dependency>
 			<groupId>ch.post.it.evoting.evotinglibraries</groupId>
+			<artifactId>e-voting-libraries-domain</artifactId>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.post.it.evoting.evotinglibraries</groupId>
 			<artifactId>e-voting-libraries-protocol-algorithms</artifactId>
 		</dependency>
 		<dependency>
