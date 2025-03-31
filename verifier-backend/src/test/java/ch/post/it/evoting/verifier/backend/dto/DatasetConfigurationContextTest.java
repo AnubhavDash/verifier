@@ -25,10 +25,7 @@ import org.junit.jupiter.api.Test;
 import com.google.common.base.Throwables;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
-import ch.post.it.evoting.cryptoprimitives.math.Base16Alphabet;
-import ch.post.it.evoting.cryptoprimitives.math.Random;
-import ch.post.it.evoting.cryptoprimitives.math.RandomFactory;
-import ch.post.it.evoting.evotinglibraries.domain.common.Constants;
+import ch.post.it.evoting.evotinglibraries.domain.UUIDGenerator;
 import ch.post.it.evoting.evotinglibraries.domain.validations.FailedValidationException;
 
 @DisplayName("DatasetConfigurationContext with")
@@ -38,8 +35,8 @@ class DatasetConfigurationContextTest {
 
 	@BeforeEach
 	void setUp() {
-		final Random random = RandomFactory.createRandom();
-		final String electionEventId = random.genRandomString(Constants.ID_LENGTH, Base16Alphabet.getInstance());
+		final UUIDGenerator uuidGenerator = UUIDGenerator.getInstance();
+		final String electionEventId = uuidGenerator.generate();
 		final String filename = String.format("dataset-context-%s.zip", electionEventId);
 		final String hash = "DC:D5:9D:15:4C:AB:F3:09:17:25:A1:55:F8:07:E6:DD:10:F5:F6:70:4D:28:5F:77:A9:79:BB:E1:0A:DD:D6:9C";
 		final ImmutableMap<String, String> aliasesToFingerprints = ImmutableMap.of(

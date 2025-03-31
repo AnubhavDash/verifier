@@ -134,20 +134,20 @@ class VerifySignatureTallyComponentVotesTest extends TallyVerificationTest {
 				HashableBigInteger.from(encryptionGroup.getQ()),
 				HashableBigInteger.from(encryptionGroup.getGenerator().getValue()));
 
-		final HashableList hVotes = tallyComponentVotesPayload.getVotes().stream()
+		final HashableList hVotes = tallyComponentVotesPayload.getDecryptedVotes().stream()
 				.map(votes -> votes.stream()
 						.map(PrimeGqElement::getValue)
 						.map(HashableBigInteger::from)
 						.collect(toHashableList()))
 				.collect(toHashableList());
 
-		final HashableList hDecodedVotes = tallyComponentVotesPayload.getActualSelectedVotingOptions().stream()
+		final HashableList hDecodedVotes = tallyComponentVotesPayload.getDecodedVotes().stream()
 				.map(decodedVotes -> decodedVotes.stream()
 						.map(HashableString::from)
 						.collect(toHashableList()))
 				.collect(toHashableList());
 
-		final HashableList hWriteIns = tallyComponentVotesPayload.getDecodedWriteInVotes().stream()
+		final HashableList hWriteIns = tallyComponentVotesPayload.getDecodedWriteIns().stream()
 				.map(writeIns -> writeIns.stream()
 						.map(HashableString::from)
 						.collect(toHashableList()))

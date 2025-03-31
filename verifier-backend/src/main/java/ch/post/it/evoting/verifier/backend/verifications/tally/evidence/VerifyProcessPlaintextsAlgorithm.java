@@ -67,9 +67,9 @@ public final class VerifyProcessPlaintextsAlgorithm {
 
 		// Input.
 		final GroupVector<ElGamalMultiRecipientMessage, GqGroup> m = input.getPlaintextVotes();
-		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> L_votes = input.getSelectedEncodedVotingOptions();
-		final ImmutableList<ImmutableList<String>> L_decodedVotes = input.getSelectedDecodedVotingOptions();
-		final ImmutableList<ImmutableList<String>> L_writeIns = input.getSelectedDecodedWriteInVotes();
+		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> L_votes = input.getListOfDecryptedVotes();
+		final ImmutableList<ImmutableList<String>> L_decodedVotes = input.getListOfDecodedVotes();
+		final ImmutableList<ImmutableList<String>> L_writeIns = input.getListOfDecodedWriteIns();
 
 		// Require.
 		final int N_C_hat = m.size();
@@ -82,9 +82,9 @@ public final class VerifyProcessPlaintextsAlgorithm {
 		final ProcessPlaintextsOutput L_votes_prime_L_decodedVotes_prime_L_writeIns_prime = processPlaintextsAlgorithm.processPlaintexts(
 				processPlaintextsContext, m);
 
-		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> L_votes_prime = L_votes_prime_L_decodedVotes_prime_L_writeIns_prime.getSelectedEncodedVotingOptions();
-		final ImmutableList<ImmutableList<String>> L_decodedVotes_prime = L_votes_prime_L_decodedVotes_prime_L_writeIns_prime.getSelectedDecodedVotingOptions();
-		final ImmutableList<ImmutableList<String>> L_writeIns_prime = L_votes_prime_L_decodedVotes_prime_L_writeIns_prime.getSelectedDecodedWriteInVotes();
+		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> L_votes_prime = L_votes_prime_L_decodedVotes_prime_L_writeIns_prime.getListOfDecryptedVotes();
+		final ImmutableList<ImmutableList<String>> L_decodedVotes_prime = L_votes_prime_L_decodedVotes_prime_L_writeIns_prime.getListOfDecodedVotes();
+		final ImmutableList<ImmutableList<String>> L_writeIns_prime = L_votes_prime_L_decodedVotes_prime_L_writeIns_prime.getListOfDecodedWriteIns();
 
 		return L_votes_prime.equals(L_votes) && L_decodedVotes_prime.equals(L_decodedVotes) && L_writeIns_prime.equals(L_writeIns);
 	}

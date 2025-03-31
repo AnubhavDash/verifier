@@ -35,7 +35,7 @@ import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetCo
  *     <li>(p, q, g), the encryption group. Non-null.</li>
  *     <li>ee, the election event id. Non-null and a valid UUID.</li>
  *     <li>bb, the ballot box id. Non-null and a valid UUID.</li>
- *     <li>N_E, the number of eligible voters. Strictly positive.</li>
+ *     <li>N<sub>E</sub>, the number of eligible voters. Strictly positive.</li>
  *     <li>pTable, the primes mapping table. Non-null.</li>
  *     <li>EB<sub>pk</sub>, the electoral board public key. Non-null.</li>
  * </ul>

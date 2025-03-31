@@ -49,16 +49,16 @@ public class VerifyECH0222Algorithm {
 	/**
 	 * Verifies the correctness of the eCH-0222 file.
 	 *
-	 * @param electionEventId the associated election event id. Must be a valid UUID.
-	 * @param input           the {@link VerifyECH0222Input} containing the configuration and eCH-0222 files.
-	 * @return {@code true} if the files are correct, {@code false} otherwise.
+	 * @param electionEventId the associated election event id. Must be non-null and a valid UUID.
+	 * @param input           the {@link VerifyECH0222Input} containing the configuration and eCH-0222 files and the decoded votes and write-ins.
+	 * @return {@code true} if the eCH-0222 is correct, {@code false} otherwise.
 	 * @throws NullPointerException      if any input parameter is null.
 	 * @throws FailedValidationException if {@code electionEventId} is invalid.
 	 */
 	@SuppressWarnings("java:S117")
 	public boolean verifyECH0222(final String electionEventId, final VerifyECH0222Input input) {
-		checkNotNull(input);
 		validateUUID(electionEventId);
+		checkNotNull(input);
 
 		// Context.
 		final String ee = electionEventId;
@@ -66,10 +66,10 @@ public class VerifyECH0222Algorithm {
 		// Input.
 		final Configuration configurationXML = input.getCantonConfig();
 		final Delivery eCH0222XML = input.getTallyComponentEch0222();
-		final ImmutableMap<String, TallyComponentVotesPayload> L_decodedVotesbb = input.getTallyComponentVotesPayloads();
+		final ImmutableMap<String, TallyComponentVotesPayload> Map_decodedVotes_Map_writeIns = input.getTallyControlComponentVotesPerAuthorizationName();
 
 		// Operation.
-		final Delivery eCH0222XML_prime = RawDataDeliveryMapper.createECH0222(ee, configurationXML, L_decodedVotesbb);
+		final Delivery eCH0222XML_prime = RawDataDeliveryMapper.createECH0222(ee, configurationXML, Map_decodedVotes_Map_writeIns);
 		final Delivery eCH0222XML_prime_normalized = xmlNormalizer.normalizeWriteInsEch0222(eCH0222XML_prime);
 
 		// Ignore timestamp fields in  eCH-0222 (use original timestamps in re-generated file).

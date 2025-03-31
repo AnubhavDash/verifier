@@ -1,6 +1,6 @@
 {
   "name": "Verifier",
-  "version": "1.6.0-0-RC5",
+  "version": "1.6.0-0-RC7",
   "license": "MIT",
   "main": "main.js",
   "scripts": {

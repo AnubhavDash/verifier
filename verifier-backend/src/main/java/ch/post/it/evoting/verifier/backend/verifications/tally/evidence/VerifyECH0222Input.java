@@ -28,7 +28,8 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration
  * <ul>
  *     <li>Election Event Configuration, the configuration-anonymized as {@link Configuration}. Not null.</li>
  *     <li>Tally Control Component Detailed Results, the eCH-0222 as {@link Delivery}. Not null.</li>
- *     <li>L_decodedVotesbb, the list of all selected decoded voting options for each ballot box. Not null.</li>
+ *     <li>Map<sub>decodedVotes</sub>, the key-value map of L<sub>decodedVotes</sub> per authorization name. Not null.</li>
+ *     <li>Map<sub>writeIns</sub>, the key-value map of L<sub>writeIns</sub> per authorization name. Not null.</li>
  * </ul>
  */
 public class VerifyECH0222Input {
@@ -54,7 +55,7 @@ public class VerifyECH0222Input {
 		return tallyComponentEch0222;
 	}
 
-	public final ImmutableMap<String, TallyComponentVotesPayload> getTallyComponentVotesPayloads() {
+	public final ImmutableMap<String, TallyComponentVotesPayload> getTallyControlComponentVotesPerAuthorizationName() {
 		return tallyComponentVotesPayloads;
 	}
 
@@ -74,7 +75,7 @@ public class VerifyECH0222Input {
 			return this;
 		}
 
-		public Builder setTallyComponentVotesPayloads(final ImmutableMap<String, TallyComponentVotesPayload> tallyComponentVotesPayloads) {
+		public Builder setTallyControlComponentVotesPerAuthorizationName(final ImmutableMap<String, TallyComponentVotesPayload> tallyComponentVotesPayloads) {
 			this.tallyComponentVotesPayloads = tallyComponentVotesPayloads;
 			return this;
 		}

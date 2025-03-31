@@ -63,11 +63,11 @@ public class VerifyOnlineControlComponentsAlgorithm {
 		checkArgument(context.getEncryptionGroup().equals(input.getEncryptionGroup()), "The context and input must have the same encryption group.");
 
 		// Context.
+		final String ee = context.getElectionEventId();
 		final ImmutableList<String> vcs = context.getVerificationCardSetIds();
 		final ImmutableList<String> bb = context.getBallotBoxIds();
 		final ElectionEventContext electionEventContext = context.getElectionEventContext();
 		final SetupComponentPublicKeys setupComponentPublicKeys = context.getSetupComponentPublicKeys();
-		final String ee = electionEventContext.electionEventId();
 		final int N_bb = bb.size();
 
 		// Input.
@@ -76,12 +76,11 @@ public class VerifyOnlineControlComponentsAlgorithm {
 		final ImmutableMap<String, SetupComponentTallyDataPayload> setupComponentTallyData = input.getSetupComponentTallyDataPerVerificationCardSetId();
 
 		// Cross-checks.
+		checkArgument(ee.equals(input.getElectionEventId()), "The context and input must have the same election event id.");
 		checkArgument(setupComponentTallyData.keySet().equals(vcs.toImmutableSet()),
 				"The Setup Component Tally Data must correspond to the correct verification card set id.");
 		checkArgument(firstControlComponentBallotBoxes.keySet().equals(bb.toImmutableSet()),
 				"The first control component ballot boxes and the control component shuffles must correspond to the correct ballot box ids.");
-		checkArgument(input.getElectionEventId().equals(ee),
-				"The input must have the correct election event id.");
 
 		// Operation.
 		return IntStream.range(0, N_bb)
@@ -93,7 +92,6 @@ public class VerifyOnlineControlComponentsAlgorithm {
 							firstControlComponentBallotBoxes.get(bb_i), onlineControlComponentShuffles.get(bb_i), setupComponentTallyData.get(vcs_i));
 
 					final VerifyOnlineControlComponentsBallotBoxContext Context_bb_i = new VerifyOnlineControlComponentsBallotBoxContext.Builder()
-							.setElectionEventId(ee)
 							.setVerificationCardSetId(vcs_i)
 							.setBallotBoxId(bb_i)
 							.setElectionEventContext(electionEventContext)
