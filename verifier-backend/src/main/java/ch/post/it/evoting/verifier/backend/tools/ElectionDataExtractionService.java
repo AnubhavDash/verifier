@@ -69,6 +69,18 @@ public class ElectionDataExtractionService {
 	}
 
 	/**
+	 * Gets the canton config path.
+	 *
+	 * @param inputDirectoryPath the root directory containing project files.
+	 * @return the canton config path.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 */
+	public Path getCantonConfigPath(final Path inputDirectoryPath) {
+		final PathNode configurationPathNode = pathService.buildFromRootPath(StructureKey.CONFIGURATION_ANONYMIZED, inputDirectoryPath);
+		return configurationPathNode.getPath();
+	}
+
+	/**
 	 * Gets the canton config.
 	 *
 	 * @param inputDirectoryPath the root directory containing project files.

@@ -33,6 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ch.ech.xmlns.ech_0222._1.Delivery;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.mapper.DomainObjectMapper;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.channelsecurity.XMLSignatureService;
 import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
@@ -51,6 +52,7 @@ public abstract class SetupVerificationTest {
 	protected static PathService pathService;
 	protected static ResultPublisherService resultPublisherServiceMock;
 	protected static ObjectMapper objectMapper;
+	protected static XMLSignatureService xmlSignatureService;
 	protected static XmlFileRepository<Delivery> ech0222XmlFileRepository;
 	protected static XmlFileRepository<Configuration> configurationXmlFileRepository;
 	protected static ElectionDataExtractionService electionDataExtractionService;
@@ -66,6 +68,7 @@ public abstract class SetupVerificationTest {
 		datasetSignatureFactory = new DatasetSignatureFactory();
 		datasetSignatureVerification = datasetSignatureFactory.getSignatureVerification();
 		ech0222XmlFileRepository = new XmlFileRepository<>();
+		xmlSignatureService = new XMLSignatureService();
 		configurationXmlFileRepository = new XmlFileRepository<>();
 		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper,
 				ech0222XmlFileRepository, configurationXmlFileRepository);

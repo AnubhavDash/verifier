@@ -17,20 +17,24 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.authenticity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.PublicKey;
 import java.security.SignatureException;
 
 import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
-import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
-import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
-import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
-import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableCantonConfigFactory;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.channelsecurity.XMLSignatureService;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -45,16 +49,18 @@ import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerification
 public class VerifySignatureCantonConfig extends AbstractVerification {
 
 	private final ElectionDataExtractionService electionDataExtractionService;
-
-	private final SignatureVerification signatureVerification;
+	private final XMLSignatureService xmlSignatureService;
+	private final KeyStore keyStore;
 
 	protected VerifySignatureCantonConfig(
 			final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService electionDataExtractionService,
-			final SignatureVerification signatureVerification) {
+			final XMLSignatureService xmlSignatureService,
+			final KeyStore keyStore) {
 		super(resultPublisherService);
 		this.electionDataExtractionService = electionDataExtractionService;
-		this.signatureVerification = signatureVerification;
+		this.xmlSignatureService = xmlSignatureService;
+		this.keyStore = keyStore;
 	}
 
 	@Override
@@ -73,10 +79,13 @@ public class VerifySignatureCantonConfig extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-
-		final Configuration configuration = electionDataExtractionService.getCantonConfig(inputDirectoryPath);
-
-		final boolean verified = verifySignature(configuration);
+		final Path cantonConfigPath = electionDataExtractionService.getCantonConfigPath(inputDirectoryPath);
+		final boolean verified;
+		try (final InputStream configurationIn = Files.newInputStream(cantonConfigPath)) {
+			verified = verifySignature(configurationIn);
+		} catch (final IOException e) {
+			throw new UncheckedIOException("Could not read configuration-anonymized file", e);
+		}
 
 		if (verified) {
 			return VerificationResult.success(getVerificationDefinition());
@@ -89,20 +98,16 @@ public class VerifySignatureCantonConfig extends AbstractVerification {
 	}
 
 	@VisibleForTesting
-	boolean verifySignature(final Configuration configuration) {
+	boolean verifySignature(final InputStream configuration) {
 		checkNotNull(configuration);
 
-		final ImmutableByteArray signature = new ImmutableByteArray(
-				checkNotNull(configuration.getSignature(), "The signature of the canton config file is null."));
-
-		final Hashable hash = HashableCantonConfigFactory.fromConfiguration(configuration);
-		final Hashable additionalContextData = ChannelSecurityContextData.cantonConfig();
-
+		final PublicKey signatureVerificationKey;
 		try {
-			return signatureVerification.verifySignature(Alias.CANTON.toString(), hash, additionalContextData, signature);
-		} catch (final SignatureException e) {
-			throw new IllegalStateException("Could not verify the signature of the canton config file.");
+			signatureVerificationKey = keyStore.getCertificate(Alias.CANTON.get()).getPublicKey();
+		} catch (final KeyStoreException e) {
+			throw new IllegalStateException("Unable to open keystore", e);
 		}
+		return xmlSignatureService.verifyXMLSignature(configuration, signatureVerificationKey);
 	}
 }
 

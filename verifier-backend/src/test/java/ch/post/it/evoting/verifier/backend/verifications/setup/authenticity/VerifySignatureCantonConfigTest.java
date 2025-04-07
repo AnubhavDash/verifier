@@ -18,33 +18,72 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.authenticity;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.channelsecurity.XMLSignatureService;
+import ch.post.it.evoting.verifier.backend.verifications.authenticity.DatasetSignatureFactory;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 
 class VerifySignatureCantonConfigTest extends SetupVerificationTest {
 
+	private KeyStore keyStoreMock;
+	private XMLSignatureService xmlSignatureServiceMock;
+
 	@BeforeEach
 	void setUpAll() {
-		verification = new VerifySignatureCantonConfig(resultPublisherServiceMock, electionDataExtractionService, datasetSignatureVerification);
+		keyStoreMock = spy(new DatasetSignatureFactory().getKeystore());
+		xmlSignatureServiceMock = spy(xmlSignatureService);
+		verification = new VerifySignatureCantonConfig(resultPublisherServiceMock, electionDataExtractionService, xmlSignatureServiceMock, keyStoreMock);
 	}
 
 	@Test
-	void testOK() {
-		final Configuration configuration = electionDataExtractionService.getCantonConfig(datasetPath);
+	void testOK() throws IOException {
+		final Path configurationPath = electionDataExtractionService.getCantonConfigPath(datasetPath);
 
-		assertTrue(((VerifySignatureCantonConfig) verification).verifySignature(configuration), "the signature is not valid");
+		try (final InputStream configurationIn = Files.newInputStream(configurationPath)) {
+			assertTrue(((VerifySignatureCantonConfig) verification).verifySignature(configurationIn), "the signature is not valid");
+		}
 	}
 
 	@Test
-	void testNOK() {
-		final Configuration configuration = electionDataExtractionService.getCantonConfig(datasetPath);
+	void testNOK() throws IOException {
+		final Path configurationPath = electionDataExtractionService.getCantonConfigPath(datasetPath);
+		doReturn(false).when(xmlSignatureServiceMock).verifyXMLSignature(any(), any());
 
-		configuration.getContest().setContestIdentification("new value");
+		try (final InputStream configurationIn = Files.newInputStream(configurationPath)) {
+			assertFalse(((VerifySignatureCantonConfig) verification).verifySignature(configurationIn), "the signature is not valid");
+		}
+	}
 
-		assertFalse(((VerifySignatureCantonConfig) verification).verifySignature(configuration), "the signature is valid but it should not");
+	@Test
+	void testVerificationKeyNOK() throws IOException, KeyStoreException, NoSuchAlgorithmException {
+		final Path configurationPath = electionDataExtractionService.getCantonConfigPath(datasetPath);
+		final Certificate certificateMock = mock(Certificate.class);
+		final KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+		keyPairGenerator.initialize(3072);
+		final KeyPair keyPair = keyPairGenerator.generateKeyPair();
+		doReturn(keyPair.getPublic()).when(certificateMock).getPublicKey();
+		doReturn(certificateMock).when(keyStoreMock).getCertificate(any());
+
+		try (final InputStream configurationIn = Files.newInputStream(configurationPath)) {
+			assertFalse(((VerifySignatureCantonConfig) verification).verifySignature(configurationIn), "the signature is not valid");
+		}
 	}
 }
