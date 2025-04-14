@@ -17,34 +17,64 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.authenticity;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ch.ech.xmlns.ech_0222._1.Delivery;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.channelsecurity.XMLSignatureService;
+import ch.post.it.evoting.verifier.backend.verifications.authenticity.DatasetSignatureFactory;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
 
 class VerifySignatureTallyComponentEch0222Test extends TallyVerificationTest {
 
+	private KeyStore keyStoreMock;
+	private XMLSignatureService xmlSignatureServiceMock;
+
 	@BeforeEach
 	void setUpAll() {
-		verification = new VerifySignatureTallyComponentEch0222(resultPublisherServiceMock, electionDataExtractionService,
-				datasetSignatureVerification, objectMapper);
+		keyStoreMock = spy(new DatasetSignatureFactory().getKeystore());
+		xmlSignatureServiceMock = spy(new XMLSignatureService());
+		verification = new VerifySignatureTallyComponentEch0222(resultPublisherServiceMock, electionDataExtractionService, xmlSignatureServiceMock, keyStoreMock);
 	}
 
 	@Test
-	void testOK() {
-		final Delivery delivery = electionDataExtractionService.getTallyComponentEch0222(datasetPath);
+	void testOK() throws IOException {
+		final Path deliveryPath = electionDataExtractionService.getTallyComponentEch0222Path(datasetPath);
 
-		assertTrue(((VerifySignatureTallyComponentEch0222) verification).verifySignature(delivery));
+		assertTrue(((VerifySignatureTallyComponentEch0222) verification).verifySignature(deliveryPath), "the signature is not valid");
 	}
 
 	@Test
-	void testNOK() {
-		final Delivery delivery = electionDataExtractionService.getTallyComponentEch0222(datasetPath);
+	void testNOK() throws IOException {
+		final Path deliveryPath = electionDataExtractionService.getTallyComponentEch0222Path(datasetPath);
+		doReturn(false).when(xmlSignatureServiceMock).verifyXMLSignature(any(), any());
 
-		delivery.getDeliveryHeader().setSenderId("");
+		assertFalse(((VerifySignatureTallyComponentEch0222) verification).verifySignature(deliveryPath), "the signature is not valid");
+	}
 
-		assertFalse(((VerifySignatureTallyComponentEch0222) verification).verifySignature(delivery));
+	@Test
+	void testVerificationKeyNOK() throws IOException, KeyStoreException, NoSuchAlgorithmException {
+		final Path deliveryPath = electionDataExtractionService.getTallyComponentEch0222Path(datasetPath);
+		final Certificate certificateMock = mock(Certificate.class);
+		final KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+		keyPairGenerator.initialize(3072);
+		final KeyPair keyPair = keyPairGenerator.generateKeyPair();
+		doReturn(keyPair.getPublic()).when(certificateMock).getPublicKey();
+		doReturn(certificateMock).when(keyStoreMock).getCertificate(any());
+
+		assertFalse(((VerifySignatureTallyComponentEch0222) verification).verifySignature(deliveryPath), "the signature is not valid");
 	}
 }

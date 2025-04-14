@@ -80,12 +80,7 @@ public class VerifySignatureCantonConfig extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 		final Path cantonConfigPath = electionDataExtractionService.getCantonConfigPath(inputDirectoryPath);
-		final boolean verified;
-		try (final InputStream configurationIn = Files.newInputStream(cantonConfigPath)) {
-			verified = verifySignature(configurationIn);
-		} catch (final IOException e) {
-			throw new UncheckedIOException("Could not read configuration-anonymized file", e);
-		}
+		final boolean verified = verifySignature(cantonConfigPath);
 
 		if (verified) {
 			return VerificationResult.success(getVerificationDefinition());
@@ -98,16 +93,18 @@ public class VerifySignatureCantonConfig extends AbstractVerification {
 	}
 
 	@VisibleForTesting
-	boolean verifySignature(final InputStream configuration) {
-		checkNotNull(configuration);
+	boolean verifySignature(final Path configurationPath) {
+		checkNotNull(configurationPath);
 
 		final PublicKey signatureVerificationKey;
-		try {
+		try (final InputStream configurationIn = Files.newInputStream(configurationPath)) {
 			signatureVerificationKey = keyStore.getCertificate(Alias.CANTON.get()).getPublicKey();
+			return xmlSignatureService.verifyXMLSignature(configurationIn, signatureVerificationKey);
 		} catch (final KeyStoreException e) {
 			throw new IllegalStateException("Unable to open keystore", e);
+		} catch (final IOException e) {
+			throw new UncheckedIOException("Could not read configuration-anonymized file", e);
 		}
-		return xmlSignatureService.verifyXMLSignature(configuration, signatureVerificationKey);
 	}
 }
 

@@ -24,8 +24,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -54,22 +52,18 @@ class VerifySignatureCantonConfigTest extends SetupVerificationTest {
 	}
 
 	@Test
-	void testOK() throws IOException {
+	void testOK() {
 		final Path configurationPath = electionDataExtractionService.getCantonConfigPath(datasetPath);
 
-		try (final InputStream configurationIn = Files.newInputStream(configurationPath)) {
-			assertTrue(((VerifySignatureCantonConfig) verification).verifySignature(configurationIn), "the signature is not valid");
-		}
+		assertTrue(((VerifySignatureCantonConfig) verification).verifySignature(configurationPath), "the signature is not valid");
 	}
 
 	@Test
-	void testNOK() throws IOException {
+	void testNOK() {
 		final Path configurationPath = electionDataExtractionService.getCantonConfigPath(datasetPath);
 		doReturn(false).when(xmlSignatureServiceMock).verifyXMLSignature(any(), any());
 
-		try (final InputStream configurationIn = Files.newInputStream(configurationPath)) {
-			assertFalse(((VerifySignatureCantonConfig) verification).verifySignature(configurationIn), "the signature is not valid");
-		}
+		assertFalse(((VerifySignatureCantonConfig) verification).verifySignature(configurationPath), "the signature is not valid");
 	}
 
 	@Test
@@ -82,8 +76,6 @@ class VerifySignatureCantonConfigTest extends SetupVerificationTest {
 		doReturn(keyPair.getPublic()).when(certificateMock).getPublicKey();
 		doReturn(certificateMock).when(keyStoreMock).getCertificate(any());
 
-		try (final InputStream configurationIn = Files.newInputStream(configurationPath)) {
-			assertFalse(((VerifySignatureCantonConfig) verification).verifySignature(configurationIn), "the signature is not valid");
-		}
+		assertFalse(((VerifySignatureCantonConfig) verification).verifySignature(configurationPath), "the signature is not valid");
 	}
 }

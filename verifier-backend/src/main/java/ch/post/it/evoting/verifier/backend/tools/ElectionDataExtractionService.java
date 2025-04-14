@@ -94,6 +94,18 @@ public class ElectionDataExtractionService {
 	}
 
 	/**
+	 * Gets the tally component eCH-0222 path.
+	 *
+	 * @param inputDirectoryPath the root directory containing project files.
+	 * @return the tally component eCH-0222 path.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 */
+	public Path getTallyComponentEch0222Path(final Path inputDirectoryPath) {
+		final PathNode configurationPathNode = pathService.buildFromRootPath(StructureKey.TALLY_COMPONENT_ECH0222, inputDirectoryPath);
+		return configurationPathNode.getPath();
+	}
+
+	/**
 	 * Gets the tally component eCH-0222.
 	 *
 	 * @param inputDirectoryPath the root directory containing project files.
