@@ -33,6 +33,15 @@
     <sonar.sources>src</sonar.sources>
   </properties>
 
+  <dependencies>
+    <dependency>
+      <groupId>ch.post.it.evoting.evotinglibraries</groupId>
+      <artifactId>e-voting-libraries-ui</artifactId>
+      <version>${e-voting-libraries.version}</version>
+      <type>zip</type>
+    </dependency>
+  </dependencies>
+
   <build>
     <plugins>
       <plugin>
@@ -50,7 +59,9 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
+        <!-- Cleaning directories -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-clean-plugin</artifactId>
         <version>${maven-clean-plugin.version}</version>
@@ -62,10 +73,37 @@
             <fileset>
               <directory>npm</directory>
             </fileset>
+            <fileset>
+              <directory>vendor</directory>
+            </fileset>
           </filesets>
         </configuration>
       </plugin>
+
       <plugin>
+        <!-- Unzip shared resources -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack-e-voting-libraries-ui-kit</id>
+            <goals>
+              <goal>unpack-dependencies</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <outputDirectory>${project.basedir}/vendor/e-voting-libraries-ui-kit</outputDirectory>
+              <includeGroupIds>ch.post.it.evoting.evotinglibraries</includeGroupIds>
+              <includeArtifactIds>e-voting-libraries-ui</includeArtifactIds>
+              <excludeTransitive>true</excludeTransitive>
+              <excludeTypes>pom</excludeTypes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <!-- Run npm commands -->
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>${exec-maven-plugin.version}</version>
@@ -75,12 +113,13 @@
             <goals>
               <goal>exec</goal>
             </goals>
-            <phase>initialize</phase>
+            <phase>generate-resources</phase>
             <configuration>
               <executable>npm</executable>
               <arguments>
                 <argument>--no-color</argument>
                 <argument>ci</argument>
+                <argument>--fund=false</argument>
               </arguments>
             </configuration>
           </execution>

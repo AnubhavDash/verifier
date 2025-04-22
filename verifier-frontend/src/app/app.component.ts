@@ -13,13 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
+import {TranslateService} from "@ngx-translate/core";
+import packageInfo from "../../package.json";
+
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: [],
-    standalone: false
+  selector: 'ver-root',
+  templateUrl: './app.component.html',
+  styleUrls: [],
+  standalone: false
 })
 export class AppComponent {
+  packageDescription: string = packageInfo.description;
+  packageVersion: string = packageInfo.version;
+  availableLanguages: string [];
+
+  readonly translate: TranslateService = inject(TranslateService);
+
+  constructor() {
+    this.translate.addLangs(['en', 'de', 'fr']);
+    this.translate.setDefaultLang('en');
+    this.translate.use('en');
+    this.availableLanguages = this.translate.getLangs();
+  }
+
+  setLanguage(lang: string) {
+    this.translate.use(lang);
+  }
 }

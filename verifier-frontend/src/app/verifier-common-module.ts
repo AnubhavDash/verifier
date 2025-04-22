@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import {NgModule} from '@angular/core';
-import {ProcessorService} from './processor.service';
+import {VerifyService} from './verify/verify.service';
 import {CommonModule} from '@angular/common';
 import {BrowserModule} from '@angular/platform-browser';
 
@@ -28,7 +28,7 @@ import {BrowserModule} from '@angular/platform-browser';
     CommonModule,
     BrowserModule
   ],
-  providers: [ProcessorService]
+  providers: [VerifyService]
 })
 export class VerifierCommonModule {
 

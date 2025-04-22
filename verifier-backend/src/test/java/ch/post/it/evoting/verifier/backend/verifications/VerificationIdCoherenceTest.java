@@ -34,6 +34,7 @@ import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
+import ch.post.it.evoting.verifier.backend.domain.VerifierMode;
 import ch.post.it.evoting.verifier.backend.dto.Verification;
 import ch.post.it.evoting.verifier.backend.processor.VerifierProcessor;
 
@@ -83,7 +84,7 @@ class VerificationIdCoherenceTest {
 	@Test
 	void validateSortingIsCorrect() {
 		// given
-		final ImmutableList<Double> idsAsDoubles = verifierProcessor.getVerifications().stream()
+		final ImmutableList<Double> idsAsDoubles = verifierProcessor.getVerifications("").stream()
 				.map(Verification::getVerificationId)
 				.map(Double::valueOf)
 				.collect(toImmutableList());

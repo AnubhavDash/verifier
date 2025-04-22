@@ -60,6 +60,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
+import ch.post.it.evoting.verifier.backend.domain.VerifierMode;
 import ch.post.it.evoting.verifier.backend.dto.DatasetConfiguration;
 import ch.post.it.evoting.verifier.backend.dto.DatasetConfigurationContext;
 import ch.post.it.evoting.verifier.backend.dto.DatasetConfigurationTally;
@@ -133,8 +134,10 @@ public class VerifierProcessor {
 				.collect(toImmutableList());
 	}
 
-	public ImmutableList<Verification> getVerifications() {
-		return verifications;
+	public ImmutableList<Verification> getVerifications(final String mode) {
+		return verifications.stream()
+				.filter(v -> v.getBlock().equals(mode))
+				.collect(toImmutableList());
 	}
 
 	public void resetExecution() {
@@ -336,7 +339,7 @@ public class VerifierProcessor {
 	}
 
 	@PreDestroy
-	public void clean() {
+	public void cleanDatasets() {
 		if (this.contextDataset != null) {
 			datasetService.clean(contextDataset, false);
 			this.contextDataset = null;
@@ -347,7 +350,7 @@ public class VerifierProcessor {
 		}
 	}
 
-	public void cleanContextTally() {
+	public void shallowCleanDatasets() {
 		this.contextDataset = null;
 		this.tallyDataset = null;
 	}
