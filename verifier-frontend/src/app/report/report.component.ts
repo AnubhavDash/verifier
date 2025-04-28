@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 import {VerificationDefinition} from '../shared/types/verification-definition';
-import {Component, inject, OnInit} from '@angular/core';
-import * as html2pdf from 'html2pdf.js';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {DatasetConfiguration} from '../shared/types/dataset-configuration';
 import {VerifierMode} from '../shared/types/verifier-mode.enum';
 import {ProcessTime} from "../shared/types/process-time";
 import {VerificationStatus} from "../shared/types/verification-status";
-import {formatDate} from "@angular/common";
-import {TranslateService} from "@ngx-translate/core";
+import {ExportToPdfService} from "../shared/services/export-to-pdf.service";
+import {Router} from "@angular/router";
+import {SessionStorageService} from "../shared/services/session-storage.service";
 
 @Component({
   templateUrl: 'report.component.html',
@@ -34,54 +34,49 @@ export class ReportComponent implements OnInit {
   verificationsSize = 0;
   verifierMode: VerifierMode;
   processTime: ProcessTime;
+  isReportGenerating = signal(false);
+  isReportGenerated= signal(false);
 
-  private readonly translate: TranslateService = inject(TranslateService);
+  private readonly exportToPdfService: ExportToPdfService = inject(ExportToPdfService);
+  private readonly router: Router = inject(Router);
+  private readonly sessionStorageService = inject(SessionStorageService);
 
   ngOnInit(): void {
-    this.verifierMode =  JSON.parse(sessionStorage.getItem("verifierMode"));
-    this.configuration = JSON.parse(sessionStorage.getItem("configuration"));
-    this.verifications = JSON.parse(sessionStorage.getItem("verifications"));
+    this.verifierMode =  this.sessionStorageService.getVerifierMode();
+    this.configuration = this.sessionStorageService.getConfiguration();
+    this.verifications = this.sessionStorageService.getVerifications();
     this.verificationsSize = Object.keys(this.verifications).length;
-    this.processTime = JSON.parse(sessionStorage.getItem("processTime"));
+    this.processTime = this.sessionStorageService.getProcessTime();
+    this.isReportGenerated.set(this.sessionStorageService.getVerificationReportGenerated());
+  }
+
+  next() {
+    this.router.navigate(['/export-result']);
   }
 
   // PDF Export.
   exportToPDF(): void {
-    const pdfFileName = this.getFilename();
-    html2pdf()
-        .from(document.getElementById('verification-report'))
-        .set({
-          margin: [10, 5],
-          image: {type: 'jpeg', quality: 0.98},
-          html2canvas: {scale: 4},
-          pagebreak: {
-            before: ['.html2pdf-break-page'],
-            mode: ['avoid-all', 'css', 'legacy']
-          },
-          jsPDF: {unit: 'mm', format: 'a4', orientation: 'landscape'}
-        })
-        .toPdf()
-        .get('pdf')
-        .then(function (pdf) {
-          const total = pdf.internal.getNumberOfPages();
+    this.isReportGenerating.set(true);
+    this.isReportGenerated.set(false);
+    // PDF Prefix: Verifier-report-{$Type}-{Seed} ($Type is VerifyConfigPhase or VerifyTally)
+    const type = this.verifierMode === VerifierMode.SETUP ? 'VerifyConfigPhase' : 'VerifyTally';
+    const pdfFilenamePrefix = `Verifier-report-${type}-${this.configuration.context.electionEventSeed}`;
 
-          for (let i = 1; i <= total; i++) {
-            pdf.setPage(i);
-            pdf.setFontSize(10);
-            pdf.setTextColor(90);
-            pdf.text(`${pdfFileName}`, 5, pdf.internal.pageSize.getHeight() - 5);
-            pdf.text(`${i}/${total}`, pdf.internal.pageSize.getWidth() - 10, pdf.internal.pageSize.getHeight() - 5);
-          }
-
-        })
-        .save(pdfFileName);
+    this.exportToPdfService.export(
+      document.getElementById('verification-report'),
+      pdfFilenamePrefix,
+      () => this.completeReportGeneration()
+    );
   }
 
-  getFilename(): string {
-    const phase = this.verifierMode === VerifierMode.SETUP ? 'VerifyConfigPhase' : 'VerifyTally';
-    const formattedDate = formatDate(new Date(), 'YYYYMMdd_HHmm', 'en');
-    // Verifier-report-{$Type}-{Seed}-{timestamp}.pdf ($Type is VerifyConfigPhase or VerifyTally)
-    return `Verifier-report-${phase}-${this.configuration.context.electionEventSeed}-${formattedDate}`;
+  isShownNextButton(): boolean {
+    return this.verifierMode === VerifierMode.TALLY;
+  }
+
+  completeReportGeneration(){
+    this.isReportGenerating.set(false);
+    this.isReportGenerated.set(true);
+    this.sessionStorageService.setVerificationReportGenerated(this.isReportGenerated());
   }
 
   statusCounterOK(): number {

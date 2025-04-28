@@ -19,6 +19,7 @@ import {DatasetConfiguration} from '../shared/types/dataset-configuration';
 import {DatasetType} from '../shared/types/dataset-type';
 import {Router} from "@angular/router";
 import {DatasetService} from "./dataset.service";
+import {SessionStorageService} from "../shared/services/session-storage.service";
 
 @Component({
   templateUrl: 'dataset.component.html',
@@ -29,16 +30,16 @@ export class DatasetComponent implements OnInit {
 
   configuration: DatasetConfiguration;
   verifierMode: VerifierMode;
-  uploadingDataset: boolean = false;
+  loadingDataset: boolean = false;
 
   protected readonly DatasetType = DatasetType;
   private readonly datasetService: DatasetService = inject(DatasetService);
   private readonly router: Router = inject(Router);
+  private readonly sessionStorageService = inject(SessionStorageService);
 
   ngOnInit(): void {
-    this.verifierMode = JSON.parse(sessionStorage.getItem("verifierMode"));
-    const configuration = JSON.parse(sessionStorage.getItem("configuration"))
-    this.configuration = configuration ? configuration : new DatasetConfiguration();
+    this.verifierMode = this.sessionStorageService.getVerifierMode();
+    this.configuration = this.sessionStorageService.getConfiguration() || new DatasetConfiguration();
   }
 
   // Change verifier mode.
@@ -47,20 +48,24 @@ export class DatasetComponent implements OnInit {
       return;
     }
 
-    sessionStorage.removeItem("verifierMode");
-    sessionStorage.removeItem("configuration");
+    this.sessionStorageService.setVerifierMode(verifierMode);
+    this.sessionStorageService.clearConfiguration();
+    this.sessionStorageService.clearVerifications();
+    this.sessionStorageService.clearProcessTime();
+    this.sessionStorageService.clearVerificationReportGenerated();
+    this.sessionStorageService.clearElectionResultReportGenerated();
 
-    this.datasetService.shallowCleanDatasets().subscribe((_value) => {
+    this.datasetService.cleanDatasets().subscribe((_value) => {
       this.verifierMode = verifierMode;
       this.configuration = new DatasetConfiguration();
     });
   }
 
-  get isShownUploadContext(): boolean {
+  get isShownLoadContext(): boolean {
     return this.verifierMode !== null;
   }
 
-  get isShownUploadTally(): boolean {
+  get isShownLoadTally(): boolean {
     return this.configuration.context && this.configuration.context.filename && this.verifierMode && this.verifierMode === VerifierMode.TALLY;
   }
 
@@ -80,45 +85,40 @@ export class DatasetComponent implements OnInit {
   }
 
   next(){
-    const sessionVerifierMode = JSON.parse(sessionStorage.getItem("verifierMode"));
-    if (sessionVerifierMode !== this.verifierMode) {
-      sessionStorage.removeItem('verifications');
-      sessionStorage.removeItem('processTime');
-    }
-    sessionStorage.setItem("verifierMode", JSON.stringify(this.verifierMode));
-    sessionStorage.setItem("configuration", JSON.stringify(this.configuration));
     this.router.navigate(['/verify']);
   }
 
-  // General.
   actionsDisabled(): boolean {
-    return this.uploadingDataset;
+    return this.loadingDataset;
   }
 
-  // Upload dataset.
   getDatasetTypeContext(): DatasetType {
     return (this.verifierMode) ? DatasetType.CONTEXT : undefined;
   }
 
   setDatasetConfigurationContext(configuration: DatasetConfiguration): void {
     this.configuration.context = configuration.context;
+    if (this.verifierMode === VerifierMode.SETUP) {
+      this.sessionStorageService.setConfiguration(this.configuration);
+    }
   }
 
   setDatasetConfigurationTally(configuration: DatasetConfiguration): void {
     this.configuration.tally = configuration.tally;
+    this.sessionStorageService.setConfiguration(this.configuration);
   }
 
-  uploadingDatasetContextReset(uploadingState: boolean): void {
-    this.uploadingDataset = uploadingState;
+  datasetContextReset(loadingState: boolean): void {
+    this.loadingDataset = loadingState;
 
-    if (uploadingState) {
+    if (loadingState) {
       this.configuration = new DatasetConfiguration();
     }
   }
 
-  uploadingDatasetTallyReset(uploadingState: boolean): void {
-    this.uploadingDataset = uploadingState;
-    if (uploadingState) {
+  datasetTallyReset(loadingState: boolean): void {
+    this.loadingDataset = loadingState;
+    if (loadingState) {
       this.configuration.tally = null;
     }
   }

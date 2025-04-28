@@ -38,8 +38,8 @@
 
 		<bouncycastle.version>1.80</bouncycastle.version>
 		<commons-codec.version>1.18.0</commons-codec.version>
-		<crypto-primitives-version>1.5.0.0-b28</crypto-primitives-version>
-		<e-voting-libraries.version>1.5.0.0-b107</e-voting-libraries.version>
+		<crypto-primitives-version>1.5.0.0-b29</crypto-primitives-version>
+		<e-voting-libraries.version>1.5.0.0-b113</e-voting-libraries.version>
 		<guava.version>33.4.7-jre</guava.version>
 		<jackson.version>2.18.3</jackson.version>
 		<jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
@@ -64,7 +64,7 @@
 		<sonar-maven-plugin.version>5.1.0.4751</sonar-maven-plugin.version>
 		<spring-boot.version>3.4.4</spring-boot.version>
 		<system-stubs-jupiter.version>2.1.8</system-stubs-jupiter.version>
-		<testdata.version>1.5.0.0-b29</testdata.version>
+		<testdata.version>1.5.0.0-b30</testdata.version>
 		<versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
 		<zip4j.version>2.11.5</zip4j.version>
 		<apache.commons-lang3>3.17.0</apache.commons-lang3>

@@ -13,23 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {DatasetComponent} from './dataset.component';
+import {ResultComponent} from './result.component';
 import {VerifierCommonModule} from '../verifier-common-module';
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
-import {DatasetLoadComponent} from './components/dataset-load/dataset-load.component';
-import {VerifierModeComponent} from './components/verifier-mode/verifier-mode.component';
-import {DatasetInformationComponent} from '../shared/components/dataset-information/dataset-information.component';
 import {PageTitleComponent} from "../shared/components/page-title/page-title.component";
 import {TranslatePipe} from "@ngx-translate/core";
-import {DatasetService} from "./dataset.service";
+import {DatasetInformationComponent} from "../shared/components/dataset-information/dataset-information.component";
+import {VerificationDetailsComponent} from "../shared/components/verification-details/verification-details.component";
+import {DatasetInformationItemComponent} from "../shared/components/dataset-information-item/dataset-information-item.component";
+import {ResultService} from "./result.service";
+import {ResultsComponent} from "e-voting-libraries-ui-kit";
 
 @NgModule({
   declarations: [
-    DatasetComponent,
-    DatasetLoadComponent,
-    VerifierModeComponent
+    ResultComponent
   ],
   imports: [
     BrowserModule,
@@ -37,10 +36,14 @@ import {DatasetService} from "./dataset.service";
     VerifierCommonModule,
     PageTitleComponent,
     TranslatePipe,
-    DatasetInformationComponent
+    DatasetInformationComponent,
+    VerificationDetailsComponent,
+    DatasetInformationItemComponent,
+    ResultsComponent
   ],
-  providers: [DatasetService]
+  exports: [],
+  providers: [ResultService]
 })
 
-export class DatasetModule {
+export class ResultModule {
 }

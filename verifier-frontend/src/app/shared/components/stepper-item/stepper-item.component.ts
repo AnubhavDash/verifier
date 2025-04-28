@@ -13,18 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {inject, Injectable} from "@angular/core";
-import {CanActivate} from "@angular/router";
-import {SessionStorageService} from "../shared/services/session-storage.service";
+import {Component, Input} from '@angular/core';
+import {RouterLink, RouterLinkActive} from "@angular/router";
+import {NgClass} from "@angular/common";
 
-@Injectable({
-  providedIn: 'root'
+@Component({
+  templateUrl: 'stepper-item.component.html',
+  selector: 'ver-stepper-item',
+  imports: [
+    RouterLinkActive,
+    NgClass,
+    RouterLink
+  ],
+  standalone: true
 })
-export class ReportGuard implements CanActivate {
-  private readonly sessionStorageService = inject(SessionStorageService);
-
-  canActivate(): boolean {
-    return this.sessionStorageService.getVerifications() !== null
-      &&  this.sessionStorageService.getConfiguration() !== null;
-  }
+export class StepperItemComponent {
+  @Input({required: true}) link: string;
+  @Input({required: true}) linkText: string;
+  @Input({required: true}) isComplete: boolean;
 }

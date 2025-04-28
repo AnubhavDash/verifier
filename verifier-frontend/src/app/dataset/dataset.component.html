@@ -18,24 +18,23 @@
   [instructions]="'dataset.instructions' | translate"
   [title]="'dataset.title' | translate"
 >
-  @if (isEnabledNextButton) {
-    <div class="alert alert-success page-actions">
-      <i aria-hidden="true" class="bi bi-upload"></i>
+  @if (loadingDataset) {
+    <div class="alert alert-primary page-actions">
+      <div class="spinner">
+        <span aria-hidden="true" class="spinner-border"></span>
+        <span class="visually-hidden">{{ 'common.loading' | translate }}</span>
+      </div>
       <p>
-        {{ 'dataset.instructions' | translate }}
+        {{ 'dataset.loading' | translate }}
       </p>
-      <button (click)="next()" class="btn btn-primary" type="button">
-        <i aria-hidden="true" class="bi bi-arrow-right-circle"></i>
-        {{ 'common.next' | translate }}
-      </button>
     </div>
   } @else {
-    <div class="alert alert-info page-actions">
-      <i aria-hidden="true" class="bi bi-upload"></i>
+    <div [ngClass]="{'alert-success': isEnabledNextButton, 'alert-info': !isEnabledNextButton}" class="alert page-actions">
+      <i [ngClass]="{'bi-check-circle': isEnabledNextButton, 'bi-upload': !isEnabledNextButton }" aria-hidden="true" class="bi"></i>
       <p>
-        {{ 'dataset.instructions' | translate }}
+        {{ (isEnabledNextButton ? 'dataset.action.complete' : 'dataset.instructions' ) | translate }}
       </p>
-      <button [disabled]="true" class="btn btn-primary" type="button">
+      <button [disabled]="!isEnabledNextButton" (click)="next()" class="btn btn-primary" type="button">
         <i aria-hidden="true" class="bi bi-arrow-right-circle"></i>
         {{ 'common.next' | translate }}
       </button>
@@ -43,9 +42,9 @@
   }
 </ver-page-title>
 
-<div class="card">
+<div class="card mb-3">
   <div class="card-header">
-    {{ 'dataset.datasetUpload.title' | translate }}
+    {{ 'dataset.datasetLoad.title' | translate }}
   </div>
   <div class="card-body">
     <ver-verifier-mode
@@ -54,22 +53,22 @@
       [verifierMode]="verifierMode"
     ></ver-verifier-mode>
 
-    @if (isShownUploadContext) {
+    @if (isShownLoadContext) {
       <hr>
-      <ver-dataset-upload
+      <ver-dataset-load
         (datasetConfiguration)="setDatasetConfigurationContext($event)"
-        (uploadingDataset)="uploadingDatasetContextReset($event)"
+        (loadingDataset)="datasetContextReset($event)"
         [datasetType]="getDatasetTypeContext()"
-        [uploadDisabled]="actionsDisabled()"
+        [loadDisabled]="actionsDisabled()"
         [verifierMode]="verifierMode"
         [configuration]="configuration"/>
     }
-    @if (isShownUploadTally) {
-      <ver-dataset-upload
+    @if (isShownLoadTally) {
+      <ver-dataset-load
         (datasetConfiguration)="setDatasetConfigurationTally($event)"
-        (uploadingDataset)="uploadingDatasetTallyReset($event)"
+        (loadingDataset)="datasetTallyReset($event)"
         [datasetType]="DatasetType.TALLY"
-        [uploadDisabled]="actionsDisabled()"
+        [loadDisabled]="actionsDisabled()"
         [configuration]="configuration"/>
     }
   </div>

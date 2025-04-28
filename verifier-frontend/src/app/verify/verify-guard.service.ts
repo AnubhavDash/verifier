@@ -15,15 +15,17 @@
  */
 import {inject, Injectable} from "@angular/core";
 import {CanActivate, Router} from "@angular/router";
+import {SessionStorageService} from "../shared/services/session-storage.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class VerifyGuard implements CanActivate {
   private readonly router: Router = inject(Router);
+  private readonly sessionStorageService = inject(SessionStorageService);
 
   canActivate(): boolean {
-    if (sessionStorage.getItem("verifierMode") && sessionStorage.getItem("configuration")) {
+    if (this.sessionStorageService.getVerifierMode() && this.sessionStorageService.getConfiguration()) {
       return true;
     } else {
       this.router.navigate(['/dataset']);

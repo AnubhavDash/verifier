@@ -4,13 +4,18 @@
     "next": "Next"
   },
   "step": {
-    "dataset": "Upload Dataset",
+    "dataset": "Load Dataset",
     "verify": "Verify",
-    "report": "Report"
+    "report": "Export Verification Report",
+    "result": "Export Election Result"
   },
   "dataset": {
-    "instructions": "Please select a mode and upload the requested dataset(s).",
-    "title": "Dataset upload",
+    "instructions": "Please select a mode and load the requested dataset(s).",
+    "title": "Dataset(s) load",
+    "loading": "Loading...",
+    "action": {
+      "complete": "Dataset(s) loaded."
+    },
     "verifierMode": {
       "setup": "Setup Mode",
       "tally": "Tally Mode",
@@ -21,12 +26,12 @@
         "buttonChange": "Change mode"
       }
     },
-    "datasetUpload": {
-      "title" : "Dataset upload",
-      "uploadButton": "Upload {{datasetType}} dataset",
-      "notUploadedYet": "Not uploaded yet. Click to upload one",
-      "uploading": "Uploading dataset...",
-      "error": "An error occurred while uploading the dataset. More details in the logs."
+    "datasetLoad": {
+      "title": "Dataset load",
+      "loadButton": "Load {{datasetType}} dataset",
+      "notLoadedYet": "Not loaded yet. Click to load one",
+      "loading": "Loading dataset...",
+      "error": "An error occurred while loading the dataset. More details in the logs."
     }
   },
   "datasetInformation": {
@@ -39,6 +44,7 @@
       "electionEventId": "Election event id",
       "contextInputHash": "Context data input hash (SHA-256)",
       "tallyInputHash": "Tally data input hash (SHA-256)",
+      "eCH022Hash": "eCH-0222 xml hash (SHA-256)",
       "executedVerification": "Executed Verification"
     },
     "certificateAuthenticity": {
@@ -66,9 +72,7 @@
       "numberOfNonTestBallotBoxes": "Number of (non-test) ballot boxes",
       "numberOfTestBallotBoxes": "Number of test ballot boxes",
       "totalNumberOfAuthorizedNonTestVoters": "Total number of authorized (non-test) voters",
-      "totalNumberOfTestVoters": "Total number of test voters",
-      "numberOfNonTestConfirmedVotes": "Number of confirmed (non-test) votes",
-      "numberOfTestConfirmedVotes": "Number of confirmed test votes"
+      "totalNumberOfTestVoters": "Total number of test voters"
     },
     "verificationOverview": {
       "title": "Verification Overview",
@@ -78,7 +82,7 @@
       "numberOfErrorVerifications": "Number of error verifications"
     }
   },
-  "verify" : {
+  "verify": {
     "instructions": "Please run the verification.",
     "title": "Verification",
     "action": {
@@ -91,17 +95,19 @@
     "verificationHasErrors": "Some verifications have errors."
   },
   "report": {
-      "instructions": "Please export the report.",
-      "title": "Report",
-      "action": {
-        "export": "Export"
-      },
-	  "verificationConfirmation": {
-        "title": "Verification Confirmation",
-        "signersConfirmation": "The signers hereby confirm that they verified the correctness of the above information.",
-        "name": "Name",
-        "signature": "Signature"
-	  }
+    "instructions": "Please export the verification report.",
+    "title": "Report",
+    "action": {
+      "export": "Export",
+      "exportGenerating": "Export generating...",
+      "exportCompleted": "Export done."
+    },
+    "verificationConfirmation": {
+      "title": "Verification Confirmation",
+      "signersConfirmation": "The signers hereby confirm that they verified the correctness of the above information.",
+      "name": "Name",
+      "signature": "Signature"
+    }
   },
   "verificationDetails": {
     "header": {
@@ -113,5 +119,14 @@
     },
     "showError": "Show details",
     "hideError": "Hide details"
+  },
+  "result": {
+    "instructions": "Please export the election result.",
+    "title": "Election Result",
+    "action": {
+      "export": "Export",
+      "exportGenerating": "Export generating...",
+      "exportCompleted": "Export done."
+    }
   }
 }

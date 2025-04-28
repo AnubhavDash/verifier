@@ -25,6 +25,7 @@ import {VerifierMode} from '../shared/types/verifier-mode.enum';
 import {Router} from "@angular/router";
 import {VerificationStatus} from "../shared/types/verification-status";
 import {ProcessTime} from "../shared/types/process-time";
+import {SessionStorageService} from "../shared/services/session-storage.service";
 
 @Component({
   templateUrl: 'verify.component.html',
@@ -43,30 +44,30 @@ export class VerifyComponent implements OnInit {
   verificationsSize = 0;
 
   private readonly router: Router = inject(Router);
-  private readonly processorService: VerifyService = inject(VerifyService);
+  private readonly verifyService: VerifyService = inject(VerifyService);
+  private readonly sessionStorageService = inject(SessionStorageService);
 
   ngOnInit(): void {
-    this.verifierMode = JSON.parse(sessionStorage.getItem("verifierMode"));
-    const configuration = JSON.parse(sessionStorage.getItem("configuration"));
-    this.configuration = configuration ? configuration : new DatasetConfiguration();
-    this.verifications = JSON.parse(sessionStorage.getItem('verifications'));
+    this.verifierMode = this.sessionStorageService.getVerifierMode();
+    this.configuration = this.sessionStorageService.getConfiguration() || new DatasetConfiguration();
+    this.verifications = this.sessionStorageService.getVerifications();
     if (!this.verifications) {
       this.initVerifications();
     } else {
       this.processStarted = true;
       this.verificationsSize = Object.keys(this.verifications).length;
     }
-    const processTime = JSON.parse(sessionStorage.getItem("processTime"))
+    const processTime = this.sessionStorageService.getProcessTime();
     this.processTime = processTime ? processTime : new ProcessTime();
     this.initializeWebSocketConnection();
   }
 
   next() {
-    this.router.navigate(['/report']);
+    this.router.navigate(['/export-report']);
   }
 
   initVerifications(): void {
-    this.processorService.getVerifications(this.verifierMode).subscribe(results => {
+    this.verifyService.getVerifications(this.verifierMode).subscribe(results => {
       this.verifications = {};
       this.verificationsSize = results.length;
       for (const verification of results) {
@@ -130,7 +131,7 @@ export class VerifyComponent implements OnInit {
       this.processTime.start = new Date();
     }
 
-    this.processorService.processVerifications(runOption).subscribe(() => {
+    this.verifyService.processVerifications(runOption).subscribe(() => {
       this.updateStatus(runOption);
     });
   }
@@ -161,20 +162,23 @@ export class VerifyComponent implements OnInit {
         this.processTime.end = new Date();
       }
       clearInterval(this.runtimeRefresh);
-      sessionStorage.setItem('verifications', JSON.stringify(this.verifications));
-      sessionStorage.setItem('processTime', JSON.stringify(this.processTime));
+      this.sessionStorageService.setVerifications(this.verifications);
+      this.sessionStorageService.setProcessTime(this.processTime);
     }
 
     return isProcessComplete;
   }
 
   resetProcess(): void {
-    this.processorService.resetVerifications().subscribe((_value) => {
+    this.verifyService.resetVerifications().subscribe((_value) => {
       this.initVerifications();
       this.processStarted = false;
       this.startedEvent = null;
       this.processTime = new ProcessTime();
-      sessionStorage.removeItem('verifications');
+      this.sessionStorageService.clearVerifications();
+      this.sessionStorageService.clearProcessTime();
+      this.sessionStorageService.clearVerificationReportGenerated();
+      this.sessionStorageService.clearElectionResultReportGenerated();
     });
   }
 
@@ -205,6 +209,8 @@ export class VerifyComponent implements OnInit {
 
   private resetStatus(): void {
     Object.keys(this.verifications).forEach(key => this.verifications[key].status = VerificationStatus.IDLE);
+    this.sessionStorageService.clearVerifications();
+    this.sessionStorageService.clearProcessTime();
   }
 
   private getRunTime(): number {

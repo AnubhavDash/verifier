@@ -13,11 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import {inject, Injectable} from "@angular/core";
+import {CanActivate} from "@angular/router";
+import {SessionStorageService} from "../shared/services/session-storage.service";
 
-.dataset-type {
-  text-transform: capitalize;
-}
+@Injectable({
+  providedIn: 'root'
+})
+export class ResultGuard implements CanActivate {
+  private readonly sessionStorageService = inject(SessionStorageService);
 
-.upload-button {
-  text-align: left;
+  canActivate(): boolean {
+    return this.sessionStorageService.getVerifications() !== null
+      &&  this.sessionStorageService.getConfiguration() !== null
+      && this.sessionStorageService.getVerificationReportGenerated();
+  }
 }

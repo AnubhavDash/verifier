@@ -20,22 +20,21 @@ import {VerifierMode} from "../../../shared/types/verifier-mode.enum";
 import {DatasetService} from "../../dataset.service";
 
 @Component({
-  templateUrl: 'dataset-upload.component.html',
-  styleUrls: ['dataset-upload.component.css'],
-  selector: 'ver-dataset-upload',
+  templateUrl: 'dataset-load.component.html',
+  selector: 'ver-dataset-load',
   standalone: false
 })
-export class DatasetUploadComponent implements OnChanges, OnInit {
+export class DatasetLoadComponent implements OnChanges, OnInit {
 
   @Input() datasetType: DatasetType | undefined;
-  @Input() uploadDisabled: boolean;
+  @Input() loadDisabled: boolean;
   @Input() verifierMode: VerifierMode;
   @Input() configuration: DatasetConfiguration;
   @Output() datasetConfiguration: EventEmitter<DatasetConfiguration> = new EventEmitter<DatasetConfiguration>();
-  @Output() uploadingDataset: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() loadingDataset: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  uploading = false;
-  uploadError = false;
+  loading = false;
+  loadError = false;
   filename = undefined;
   private readonly datasetService: DatasetService = inject(DatasetService);
 
@@ -51,53 +50,53 @@ export class DatasetUploadComponent implements OnChanges, OnInit {
     }
   }
 
-  upload(event) {
+  load(event) {
     const file = event.target.files[0];
     if (file) {
-      this.uploading = true;
+      this.loading = true;
       this.filename = undefined;
 
-      this.uploadingDataset.emit(this.uploading);
+      this.loadingDataset.emit(this.loading);
 
-      this.datasetService.uploadDataset(file, this.datasetType).subscribe({
+      this.datasetService.loadDataset(file, this.datasetType).subscribe({
         next: () => {
           this.datasetService.getDatasetConfiguration().subscribe(configuration => {
-            this.uploading = false;
-            this.uploadError = false;
+            this.loading = false;
+            this.loadError = false;
             this.filename = this.getDatasetFilename(configuration);
 
             this.datasetConfiguration.emit(configuration);
-            this.uploadingDataset.emit(this.uploading);
+            this.loadingDataset.emit(this.loading);
           });
         },
         error: () => {
-          this.uploading = false;
-          this.uploadError = true;
+          this.loading = false;
+          this.loadError = true;
 
-          this.uploadingDataset.emit(this.uploading);
+          this.loadingDataset.emit(this.loading);
         }
       });
     }
   }
 
-  isUploadDisabled(): boolean {
-    return this.uploading || this.uploadDisabled;
+  isLoadDisabled(): boolean {
+    return this.loading || this.loadDisabled;
   }
 
-  isNotUploaded(): boolean {
-    return (!this.datasetType || !this.filename) && !this.uploading && !this.uploadError;
+  isNotLoaded(): boolean {
+    return (!this.datasetType || !this.filename) && !this.loading && !this.loadError;
   }
 
-  isUploading(): boolean {
-    return this.uploading;
+  isLoading(): boolean {
+    return this.loading;
   }
 
   errorOccurred(): boolean {
-    return !this.uploading && this.uploadError;
+    return !this.loading && this.loadError;
   }
 
-  isUploaded(): boolean {
-    return this.filename && !this.uploading && !this.uploadError;
+  isLoaded(): boolean {
+    return this.filename && !this.loading && !this.loadError;
   }
 
   private getDatasetFilename(datasetConfiguration: DatasetConfiguration): string {

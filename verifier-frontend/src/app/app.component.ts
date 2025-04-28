@@ -13,9 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
 import packageInfo from "../../package.json";
+import {SessionStorageService} from "./shared/services/session-storage.service";
+import {combineLatest} from "rxjs";
+import {VerifierMode} from "./shared/types/verifier-mode.enum";
 
 
 @Component({
@@ -24,12 +27,18 @@ import packageInfo from "../../package.json";
   styleUrls: [],
   standalone: false
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   packageDescription: string = packageInfo.description;
   packageVersion: string = packageInfo.version;
   availableLanguages: string [];
+  isDatasetLoaded: boolean = false;
+  isVerificationComplete: boolean = false;
+  isVerificationReportGenerated: boolean = false;
+  isElectionResultReportGenerated: boolean = false;
+  verifierMode: VerifierMode;
 
   readonly translate: TranslateService = inject(TranslateService);
+  private readonly sessionStorageService = inject(SessionStorageService);
 
   constructor() {
     this.translate.addLangs(['en', 'de', 'fr']);
@@ -41,4 +50,24 @@ export class AppComponent {
   setLanguage(lang: string) {
     this.translate.use(lang);
   }
+
+  ngOnInit(): void {
+    combineLatest([
+      this.sessionStorageService.datasetLoaded$,
+      this.sessionStorageService.verificationCompleted$,
+      this.sessionStorageService.verificationReportGenerated$,
+      this.sessionStorageService.electionResultReportGenerated$
+    ]).subscribe(([datasetLoadedStatus, verificationCompletedStatus, verificationReportGeneratedStatus, electionResultReportGeneratedStatus]) => {
+      this.isDatasetLoaded = datasetLoadedStatus;
+      this.verifierMode = this.sessionStorageService.getVerifierMode();
+      this.isVerificationComplete = verificationCompletedStatus;
+      this.isVerificationReportGenerated = verificationReportGeneratedStatus;
+      this.isElectionResultReportGenerated = electionResultReportGeneratedStatus;
+    });
+  }
+
+  isTallyMode() {
+    return this.verifierMode === VerifierMode.TALLY;
+  }
+
 }

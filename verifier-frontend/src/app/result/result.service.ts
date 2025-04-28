@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {inject, Injectable} from "@angular/core";
-import {CanActivate} from "@angular/router";
-import {SessionStorageService} from "../shared/services/session-storage.service";
+import {inject, Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {environment} from '../../environments/environment';
+import {BallotBoxResults} from "e-voting-libraries-ui-kit";
 
-@Injectable({
-  providedIn: 'root'
-})
-export class ReportGuard implements CanActivate {
-  private readonly sessionStorageService = inject(SessionStorageService);
+@Injectable()
+export class ResultService {
 
-  canActivate(): boolean {
-    return this.sessionStorageService.getVerifications() !== null
-      &&  this.sessionStorageService.getConfiguration() !== null;
+  private readonly RESULT_API = `${environment.appUrl}/api/electioneventresult`;
+  private readonly http: HttpClient = inject(HttpClient);
+
+  getElectionEventResult(): Observable<BallotBoxResults[]> {
+    return this.http.get<BallotBoxResults[]>(`${this.RESULT_API}`);
   }
 }

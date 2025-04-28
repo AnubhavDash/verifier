@@ -22,7 +22,6 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -51,14 +50,14 @@ class VerifySignatureTallyComponentEch0222Test extends TallyVerificationTest {
 	}
 
 	@Test
-	void testOK() throws IOException {
+	void testOK() {
 		final Path deliveryPath = electionDataExtractionService.getTallyComponentEch0222Path(datasetPath);
 
 		assertTrue(((VerifySignatureTallyComponentEch0222) verification).verifySignature(deliveryPath), "the signature is not valid");
 	}
 
 	@Test
-	void testNOK() throws IOException {
+	void testNOK() {
 		final Path deliveryPath = electionDataExtractionService.getTallyComponentEch0222Path(datasetPath);
 		doReturn(false).when(xmlSignatureServiceMock).verifyXMLSignature(any(), any());
 
@@ -66,7 +65,7 @@ class VerifySignatureTallyComponentEch0222Test extends TallyVerificationTest {
 	}
 
 	@Test
-	void testVerificationKeyNOK() throws IOException, KeyStoreException, NoSuchAlgorithmException {
+	void testVerificationKeyNOK() throws KeyStoreException, NoSuchAlgorithmException {
 		final Path deliveryPath = electionDataExtractionService.getTallyComponentEch0222Path(datasetPath);
 		final Certificate certificateMock = mock(Certificate.class);
 		final KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");

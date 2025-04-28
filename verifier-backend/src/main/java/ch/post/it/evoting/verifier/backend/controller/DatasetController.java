@@ -57,7 +57,7 @@ public class DatasetController {
 	}
 
 	@PostMapping("clean")
-	public void shallowCleanDatasets() {
+	public void cleanDatasets() {
 		processor.cleanDatasets();
 	}
 

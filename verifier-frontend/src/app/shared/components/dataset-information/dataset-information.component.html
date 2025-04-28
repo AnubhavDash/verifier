@@ -34,6 +34,8 @@
       @if (isTally()) {
         <ver-dataset-information-item [info]="'datasetInformation.verificationInput.tallyInputHash' | translate"
                                       [value]="getTallyHash()"/>
+        <ver-dataset-information-item [info]="'datasetInformation.verificationInput.eCH022Hash' | translate"
+                                      [value]="getECH0222Hash()"/>
       }
       @if (isReportMode()) {
         <ver-dataset-information-item [info]="'datasetInformation.verificationInput.executedVerification' | translate"
@@ -82,10 +84,6 @@
                                       [value]="configuration.context.totalNumberOfAuthorizedNonTestVoters"/>
         <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.totalNumberOfTestVoters' | translate"
                                       [value]="configuration.context.totalNumberOfTestVoters"/>
-        <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.numberOfNonTestConfirmedVotes' | translate"
-                                      [value]="getNumberOfConfirmedNonTestVotes()"/>
-        <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.numberOfTestConfirmedVotes' | translate"
-                                      [value]="getNumberOfConfirmedTestVotes()"/>
       </div>
     </div>
 

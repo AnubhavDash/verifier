@@ -30,11 +30,11 @@ export class DatasetService {
     return this.http.get<DatasetConfiguration>(this.DATASET_API);
   }
 
-  shallowCleanDatasets(): Observable<Object> {
+  cleanDatasets(): Observable<Object> {
     return this.http.post(`${this.DATASET_API}/clean`, null);
   }
 
-  uploadDataset(file: File, datasetType: DatasetType): Observable<Object> {
+  loadDataset(file: File, datasetType: DatasetType): Observable<Object> {
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post(`${this.DATASET_API}/${datasetType}`, formData);

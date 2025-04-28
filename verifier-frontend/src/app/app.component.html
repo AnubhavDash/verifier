@@ -19,9 +19,7 @@
   <nav class="navbar navbar-expand border-bottom" data-bs-theme="light" [style.background-color]="'#ff8b00'">
     <div class="container-fluid">
       <span class="navbar-brand fw-light text-uppercase">Verifier</span>
-
       <ul class="navbar-nav ms-auto gap-3">
-
         <li class="nav-item" display="dynamic" ngbDropdown>
           <a aria-haspopup="true" class="nav-link" data-test="currentLanguage" ngbDropdownToggle tabindex="0">
             <span aria-hidden="true">{{ translate.currentLang | uppercase }}</span>
@@ -29,7 +27,7 @@
           </a>
           <div [attr.aria-label]="'header.languageSelector.menu' | translate" class="dropdown-menu language-selector" ngbDropdownMenu role="menu">
             @for (lang of availableLanguages; track $index) {
-              @if (lang !== translate.currentLang){
+              @if (lang !== translate.currentLang) {
                 <a
                   (click)="$event.preventDefault(); setLanguage(lang)"
                   class="text-center"
@@ -57,43 +55,16 @@
     <aside class="flex-shrink-0 min-vw-15 py-3 bg-light">
       <ol class="nav flex-column gap-1">
         <li class="nav-item">
-          <a
-            [routerLink]="'dataset'"
-            class="nav-link link-primary d-flex align-items-center text-muted"
-            data-test="step">
-            <span
-              routerLinkActive #rlaDataset="routerLinkActive"
-              [ngClass]="{'bi-circle-fill': rlaDataset.isActive, 'bi-circle': !rlaDataset.isActive}"
-              aria-hidden="true"
-              class="bi me-2 text-primary"></span>
-            <span data-test="label" class="flex-grow-1 flex-shrink-0">{{ 'step.dataset' | translate }}</span>
-          </a>
+          <ver-stepper-item [link]="'load-dataset'" [linkText]="'step.dataset' | translate" [isComplete]="isDatasetLoaded"/>
         </li>
         <li class="nav-item">
-          <a
-            [routerLink]="'verify'"
-            class="nav-link link-primary d-flex align-items-center text-muted"
-            data-test="step">
-            <span
-              routerLinkActive #rlaVerify="routerLinkActive"
-              [ngClass]="{'bi-circle-fill': rlaVerify.isActive, 'bi-circle': !rlaVerify.isActive}"
-              aria-hidden="true"
-              class="bi me-2 text-primary"></span>
-            <span data-test="label" class="flex-grow-1 flex-shrink-0">{{ 'step.verify' | translate }}</span>
-          </a>
+          <ver-stepper-item [link]="'verify'" [linkText]="'step.verify' | translate" [isComplete]="isVerificationComplete"/>
         </li>
         <li class="nav-item">
-          <a
-            [routerLink]="'report'"
-            class="nav-link link-primary d-flex align-items-center text-muted"
-            data-test="step">
-            <span
-              routerLinkActive #rlaReport="routerLinkActive"
-              [ngClass]="{'bi-circle-fill': rlaReport.isActive, 'bi-circle': !rlaReport.isActive}"
-              aria-hidden="true"
-              class="bi me-2 text-primary"></span>
-            <span data-test="label" class="flex-grow-1 flex-shrink-0">{{ 'step.report' | translate }}</span>
-          </a>
+          <ver-stepper-item [link]="'export-report'" [linkText]="'step.report' | translate" [isComplete]="isVerificationReportGenerated"/>
+        </li>
+        <li class="nav-item" [hidden]="!isTallyMode()">
+          <ver-stepper-item [link]="'export-result'" [linkText]="'step.result' | translate" [isComplete]="isElectionResultReportGenerated"/>
         </li>
       </ol>
     </aside>

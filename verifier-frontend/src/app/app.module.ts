@@ -32,37 +32,44 @@ import {ReportModule} from "./report/report.module";
 import {NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
 import {VerifyGuard} from "./verify/verify-guard.service";
 import {ReportGuard} from "./report/report-guard.service";
+import {ResultComponent} from "./result/result.component";
+import {ResultGuard} from "./result/result-guard.service";
+import {ResultModule} from "./result/result.module";
+import {StepperItemComponent} from "./shared/components/stepper-item/stepper-item.component";
 
 const routes: Routes = [
-  {path: 'dataset', component: DatasetComponent},
+  {path: 'load-dataset', component: DatasetComponent},
   {path: 'verify', component: VerifyComponent, canActivate: [VerifyGuard]},
-  {path: 'report', component: ReportComponent, canActivate: [ReportGuard]},
-  {path: '**', redirectTo: 'dataset'},
+  {path: 'export-report', component: ReportComponent, canActivate: [ReportGuard]},
+  {path: 'export-result', component: ResultComponent, canActivate: [ResultGuard]},
+  {path: '**', redirectTo: 'load-dataset'},
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
   ],
-  imports: [
-    RouterModule.forRoot(routes),
-    BrowserModule,
-    DatasetModule,
-    VerifyModule,
-    ReportModule,
-    NgbDropdownModule,
-    HttpClientModule,
-    CommonModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    }),
-    VerifierCommonModule,
-    InternalHeaderComponent,
-  ],
+	imports: [
+		RouterModule.forRoot(routes),
+		BrowserModule,
+		DatasetModule,
+		VerifyModule,
+		ReportModule,
+		ResultModule,
+		NgbDropdownModule,
+		HttpClientModule,
+		CommonModule,
+		TranslateModule.forRoot({
+			loader: {
+				provide: TranslateLoader,
+				useFactory: HttpLoaderFactory,
+				deps: [HttpClient]
+			}
+		}),
+		VerifierCommonModule,
+		InternalHeaderComponent,
+		StepperItemComponent,
+	],
   providers: [provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent]
 })

@@ -4,13 +4,18 @@
     "next": "FR:Next"
   },
   "step": {
-    "dataset": "FR:Upload Dataset",
-    "verify": "FR:Verify",
-    "report": "FR:Report"
+    "dataset": "Charger le jeu de données",
+    "verify": "Vérifier",
+    "report": "Exporter le rapport de vérification",
+    "result": "Exporter le résultat du scrutin"
   },
   "dataset": {
-    "instructions": "FR:Please select a mode and upload the requested dataset(s).",
-    "title": "FR:Dataset upload",
+    "instructions": "FR:Please select a mode and load the requested dataset(s).",
+    "title": "FR:Dataset(s) load",
+    "loading": "FR:Loading...",
+    "action": {
+      "complete": "FR:Dataset(s) loaded."
+    },
     "verifierMode": {
       "setup": "FR:Setup Mode",
       "tally": "FR:Tally Mode",
@@ -21,12 +26,12 @@
         "buttonChange": "FR:Change mode"
       }
     },
-    "datasetUpload": {
-      "title" : "FR:Dataset upload",
-      "uploadButton": "FR:Upload {{datasetType}} dataset",
-      "notUploadedYet": "FR:Not uploaded yet. Click to upload one",
-      "uploading": "FR:Uploading dataset...",
-      "error": "FR:An error occurred while uploading the dataset. More details in the logs."
+    "datasetLoad": {
+      "title" : "FR:Dataset load",
+      "loadButton": "FR:Load {{datasetType}} dataset",
+      "notLoadedYet": "FR:Not loaded yet. Click to load one",
+      "loading": "FR:Loading dataset...",
+      "error": "FR:An error occurred while loading the dataset. More details in the logs."
     }
   },
   "datasetInformation": {
@@ -39,6 +44,7 @@
       "electionEventId": "FR:Election event id",
       "contextInputHash": "FR:Context data input hash (SHA-256)",
       "tallyInputHash": "FR:Tally data input hash (SHA-256)",
+      "eCH022Hash": "FR:eCH-0222 xml hash (SHA-256)",
       "executedVerification": "FR:Executed Verification"
     },
     "certificateAuthenticity": {
@@ -66,9 +72,7 @@
       "numberOfNonTestBallotBoxes": "FR:Number of (non-test) ballot boxes",
       "numberOfTestBallotBoxes": "FR:Number of test ballot boxes",
       "totalNumberOfAuthorizedNonTestVoters": "FR:Total number of authorized (non-test) voters",
-      "totalNumberOfTestVoters": "FR:Total number of test voters",
-      "numberOfNonTestConfirmedVotes": "FR:Number of confirmed (non-test) votes",
-      "numberOfTestConfirmedVotes": "FR:Number of confirmed test votes"
+      "totalNumberOfTestVoters": "FR:Total number of test voters"
     },
     "verificationOverview": {
       "title": "FR:Verification Overview",
@@ -91,10 +95,12 @@
     "verificationHasErrors": "FR:Some verifications have errors."
   },
   "report": {
-    "instructions": "FR:Please export the report.",
+    "instructions": "FR:Please export the verification report.",
     "title": "FR:Report",
     "action": {
-      "export": "FR:Export"
+      "export": "FR:Export",
+      "exportGenerating": "FR:Export generating...",
+      "exportCompleted": "FR:Export done."
     },
     "verificationConfirmation": {
       "title": "FR:Verification Confirmation",
@@ -113,5 +119,14 @@
     },
     "showError": "FR:Show details",
     "hideError": "FR:Hide details"
+  },
+  "result": {
+    "instructions": "FR:Please export the election result.",
+    "title": "FR:Election Result",
+    "action": {
+      "export": "FR:Export",
+      "exportGenerating": "FR:Export generating...",
+      "exportCompleted": "FR:Export done."
+    }
   }
 }

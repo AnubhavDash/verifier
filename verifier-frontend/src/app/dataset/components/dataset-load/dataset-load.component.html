@@ -13,31 +13,31 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<input #uploadDataset (change)="upload($event)" accept=".zip" onclick="this.value=null" style="display: none" type="file">
+<input #loadDataset (change)="load($event)" accept=".zip" onclick="this.value=null" style="display: none" type="file">
 <div class="row mb-2">
   <div class="d-grid col-4">
-    <button (click)="uploadDataset.click()"
-            [disabled]="isUploadDisabled()"
-            [ngClass]="{'btn-primary': isNotUploaded(), 'btn-outline-primary': !isNotUploaded()}"
-            class="btn btn-block upload-button text-center dataset-type">
-      <i aria-hidden="true" class="bi-upload"></i> {{ 'dataset.datasetUpload.uploadButton' | translate: {datasetType} }}
+    <button (click)="loadDataset.click()"
+            [disabled]="isLoadDisabled()"
+            [ngClass]="{'btn-primary': isNotLoaded(), 'btn-outline-primary': !isNotLoaded()}"
+            class="btn btn-block text-center dataset-type">
+      <i aria-hidden="true" class="bi-upload"></i> {{ 'dataset.datasetLoad.loadButton' | translate: {datasetType} }}
     </button>
   </div>
   <div class="col-8 mt-2">
-    @if (isNotUploaded()) {
-      {{ 'dataset.datasetUpload.notUploadedYet' | translate }}
+    @if (isNotLoaded()) {
+      {{ 'dataset.datasetLoad.notLoadedYet' | translate }}
     }
-    @if (isUploading()) {
+    @if (isLoading()) {
       <div class="spinner-border spinner-border-sm text-primary">
         <span class="visually-hidden">In progress...</span>
       </div>
-      {{ 'dataset.datasetUpload.uploading' | translate }}
+      {{ 'dataset.datasetLoad.loading' | translate }}
     }
     @if (errorOccurred()) {
       <i aria-hidden="true" class="bi-exclamation-circle text-danger"></i>
-      {{ 'dataset.datasetUpload.error' | translate }}
+      {{ 'dataset.datasetLoad.error' | translate }}
     }
-    @if (isUploaded()) {
+    @if (isLoaded()) {
       <i aria-hidden="true" class="bi-check-circle text-success"></i> {{filename}}
     }
   </div>

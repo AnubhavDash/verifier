@@ -17,16 +17,47 @@
 <ver-page-title
 		[instructions]="'report.instructions' | translate"
 		[title]="'report.title' | translate">
-	<div class="alert alert-info page-actions">
-		<i aria-hidden="true" class="bi bi-arrow-right-circle"></i>
-		<p>
-			{{ 'report.instructions' | translate }}
-		</p>
-		<button (click)="exportToPDF()" class="btn btn-primary" type="button">
-			<i aria-hidden="true" class="bi bi-arrow-right-circle"></i>
-			{{ 'report.action.export' | translate }}
-		</button>
-	</div>
+  @if (isReportGenerating()) {
+    <div class="alert alert-primary page-actions">
+      <div class="spinner">
+        <span aria-hidden="true" class="spinner-border"></span>
+        <span class="visually-hidden">{{ 'common.loading' | translate }}</span>
+      </div>
+      <p>
+        {{ 'report.action.exportGenerating' | translate }}
+      </p>
+    </div>
+  }
+  @if (!isReportGenerating() && !isReportGenerated()) {
+    <div class="alert alert-info page-actions">
+      <i aria-hidden="true" class="bi bi-arrow-right-circle"></i>
+      <p>
+        {{ 'report.instructions' | translate }}
+      </p>
+      <button (click)="exportToPDF()" class="btn btn-primary" type="button">
+        <i aria-hidden="true" class="bi bi-arrow-right-circle"></i>
+        {{ 'report.action.export' | translate }}
+      </button>
+    </div>
+  }
+  @if (!isReportGenerating() && isReportGenerated()) {
+    <div class="alert alert-success page-actions">
+      <i aria-hidden="true" class="bi bi-arrow-right-circle"></i>
+      <p>
+        {{ 'report.action.exportCompleted' | translate }}
+      </p>
+      <button (click)="exportToPDF()" class="btn btn-link" type="button">
+        <i aria-hidden="true" class="bi-arrow-counterclockwise"></i>
+        {{ 'report.action.export' | translate }}
+      </button>
+      @if (isShownNextButton()){
+        <button (click)="next()" class="btn btn-primary" type="button">
+          <i aria-hidden="true" class="bi bi-arrow-right-circle"></i>
+          {{ 'common.next' | translate }}
+        </button>
+      }
+    </div>
+  }
 </ver-page-title>
 
 <div id="verification-report">

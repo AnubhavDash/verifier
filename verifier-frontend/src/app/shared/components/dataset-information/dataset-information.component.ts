@@ -60,16 +60,8 @@ export class DatasetInformationComponent {
     return this.configuration.tally?.hash ?? '-';
   }
 
-  getNumberOfConfirmedNonTestVotes(): string {
-    return this.verifierMode === VerifierMode.TALLY && this.configuration.tally
-      ? this.configuration.tally.numberOfConfirmedNonTestVotes.toString()
-      : '-';
-  }
-
-  getNumberOfConfirmedTestVotes(): string {
-    return this.verifierMode === VerifierMode.TALLY && this.configuration.tally
-      ? this.configuration.tally.numberOfConfirmedTestVotes.toString()
-      : '-';
+  getECH0222Hash(): string {
+    return this.configuration.tally?.eCH0222Hash ?? '-';
   }
 
   getTotalNumberOfVerifications(): number {

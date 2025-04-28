@@ -17,8 +17,6 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.authenticity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -27,7 +25,6 @@ import java.nio.file.Path;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.PublicKey;
-import java.security.SignatureException;
 
 import org.springframework.stereotype.Component;
 

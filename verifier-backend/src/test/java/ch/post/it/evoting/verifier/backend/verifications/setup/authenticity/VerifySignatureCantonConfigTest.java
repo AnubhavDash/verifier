@@ -23,7 +23,6 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -67,7 +66,7 @@ class VerifySignatureCantonConfigTest extends SetupVerificationTest {
 	}
 
 	@Test
-	void testVerificationKeyNOK() throws IOException, KeyStoreException, NoSuchAlgorithmException {
+	void testVerificationKeyNOK() throws KeyStoreException, NoSuchAlgorithmException {
 		final Path configurationPath = electionDataExtractionService.getCantonConfigPath(datasetPath);
 		final Certificate certificateMock = mock(Certificate.class);
 		final KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
