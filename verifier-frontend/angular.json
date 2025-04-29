@@ -23,10 +23,9 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
-              "src/styles.css"
+              "src/app/shared/styles/index.scss"
             ],
             "scripts": [
-              "node_modules/jquery/dist/jquery.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js"
             ],
             "vendorChunk": true,
@@ -64,18 +63,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "verifier-frontend:build"
+            "buildTarget": "verifier-frontend:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "verifier-frontend:build:production"
+              "buildTarget": "verifier-frontend:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "verifier-frontend:build"
+            "buildTarget": "verifier-frontend:build"
           }
         },
         "lint": {
@@ -95,11 +94,11 @@
   },
   "schematics": {
     "@schematics/angular:component": {
-      "prefix": "app",
+      "prefix": "ver",
       "style": "css"
     },
     "@schematics/angular:directive": {
-      "prefix": "app"
+      "prefix": "ver"
     }
   },
   "cli": {

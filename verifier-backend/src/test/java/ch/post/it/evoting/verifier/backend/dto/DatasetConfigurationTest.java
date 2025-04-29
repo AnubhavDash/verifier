@@ -37,6 +37,7 @@ class DatasetConfigurationTest {
 		final String electionEventId = uuidGenerator.generate();
 		final String contextFilename = String.format("dataset-context-%s.zip", electionEventId);
 		final String hash = "DC:D5:9D:15:4C:AB:F3:09:17:25:A1:55:F8:07:E6:DD:10:F5:F6:70:4D:28:5F:77:A9:79:BB:E1:0A:DD:D6:9C";
+		final String eCH0222Hash = "DC:D5:9D:15:4C:AB:F3:09:17:25:A1:55:F8:07:E6:DD:10:F5:F6:70:4D:28:5F:77:A9:79:BB:E1:0A:DD:D6:9C";
 		final ImmutableMap<String, String> aliasesToFingerprints = ImmutableMap.of(
 				"Canton", "F0:C1:0E:F1:AD:67:95:7D:C1:80:4B:F8:81:51:12:70:F1:2A:98:9C:01:61:34:F3:3D:8A:C3:CF:C9:01:6B:0A",
 				"Setup Component", "28:8B:B6:3A:1E:17:05:0D:51:03:C8:47:F4:53:E5:04:6D:3F:CC:4E:09:BE:7D:12:B0:D9:26:6A:F5:59:DE:25",
@@ -60,9 +61,7 @@ class DatasetConfigurationTest {
 				.build();
 
 		final String tallyFilename = String.format("dataset-tally-%s.zip", electionEventId);
-		final int numberOfConfirmedNonTestVotes = 0;
-		final int numberOfConfirmedTestVotes = 10;
-		tally = new DatasetConfigurationTally(tallyFilename, hash, numberOfConfirmedNonTestVotes, numberOfConfirmedTestVotes);
+		tally = new DatasetConfigurationTally(tallyFilename, hash, eCH0222Hash);
 	}
 
 	@Test

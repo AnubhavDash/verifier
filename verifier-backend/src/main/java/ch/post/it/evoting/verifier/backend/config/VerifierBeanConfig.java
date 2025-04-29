@@ -47,6 +47,7 @@ import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProo
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
 import ch.post.it.evoting.evotinglibraries.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.channelsecurity.StreamableSymmetricEncryptionDecryptionService;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.channelsecurity.XMLSignatureService;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.electioneventcontext.GetHashElectionEventContextAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.proofofcorrectkeygeneration.VerifyCCSchnorrProofsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.proofofcorrectkeygeneration.VerifyKeyGenerationSchnorrProofsAlgorithm;
@@ -200,6 +201,11 @@ public class VerifierBeanConfig {
 	SignatureVerification keystoreService(final KeyStore keyStore) {
 		return SignatureFactory.getInstance()
 				.createSignatureVerification(keyStore);
+	}
+
+	@Bean
+	XMLSignatureService xmlSignatureService() {
+		return new XMLSignatureService();
 	}
 
 	@Bean

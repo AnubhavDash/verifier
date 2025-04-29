@@ -69,6 +69,18 @@ public class ElectionDataExtractionService {
 	}
 
 	/**
+	 * Gets the canton config path.
+	 *
+	 * @param inputDirectoryPath the root directory containing project files.
+	 * @return the canton config path.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 */
+	public Path getCantonConfigPath(final Path inputDirectoryPath) {
+		final PathNode configurationPathNode = pathService.buildFromRootPath(StructureKey.CONFIGURATION_ANONYMIZED, inputDirectoryPath);
+		return configurationPathNode.getPath();
+	}
+
+	/**
 	 * Gets the canton config.
 	 *
 	 * @param inputDirectoryPath the root directory containing project files.
@@ -79,6 +91,18 @@ public class ElectionDataExtractionService {
 	public Configuration getCantonConfig(final Path inputDirectoryPath) {
 		final PathNode configurationPathNode = pathService.buildFromRootPath(StructureKey.CONFIGURATION_ANONYMIZED, inputDirectoryPath);
 		return configurationXmlFileRepository.read(configurationPathNode.getPath(), XsdConstants.CANTON_CONFIG_XSD, Configuration.class);
+	}
+
+	/**
+	 * Gets the tally component eCH-0222 path.
+	 *
+	 * @param inputDirectoryPath the root directory containing project files.
+	 * @return the tally component eCH-0222 path.
+	 * @throws NullPointerException if {@code inputDirectoryPath} is null.
+	 */
+	public Path getTallyComponentEch0222Path(final Path inputDirectoryPath) {
+		final PathNode configurationPathNode = pathService.buildFromRootPath(StructureKey.TALLY_COMPONENT_ECH0222, inputDirectoryPath);
+		return configurationPathNode.getPath();
 	}
 
 	/**

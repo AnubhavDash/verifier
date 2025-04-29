@@ -78,7 +78,7 @@ public class DatasetSignatureFactory {
 	/**
 	 * @return the datasets' direct-trust keystore.
 	 */
-	private KeyStore getKeystore() {
+	public KeyStore getKeystore() {
 		final String directTrustLocation = "datasets/direct-trust";
 		final String keystoreLocation = directTrustLocation + "/local_direct_trust_keystore_verifier.p12";
 		final String passwordLocation = directTrustLocation + "/local_direct_trust_pw_verifier.txt";

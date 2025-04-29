@@ -13,4 +13,68 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<router-outlet></router-outlet>
+
+<div class="vh-100 d-flex flex-column overflow-hidden">
+
+  <nav class="navbar navbar-expand border-bottom" data-bs-theme="light" [style.background-color]="'#ff8b00'">
+    <div class="container-fluid">
+      <span class="navbar-brand fw-light text-uppercase">Verifier</span>
+      <ul class="navbar-nav ms-auto gap-3">
+        <li class="nav-item" display="dynamic" ngbDropdown>
+          <a aria-haspopup="true" class="nav-link" data-test="currentLanguage" ngbDropdownToggle tabindex="0">
+            <span aria-hidden="true">{{ translate.currentLang | uppercase }}</span>
+            <span class="visually-hidden">{{ 'header.languageSelector.button' | translate }}</span>
+          </a>
+          <div [attr.aria-label]="'header.languageSelector.menu' | translate" class="dropdown-menu language-selector" ngbDropdownMenu role="menu">
+            @for (lang of availableLanguages; track $index) {
+              @if (lang !== translate.currentLang) {
+                <a
+                  (click)="$event.preventDefault(); setLanguage(lang)"
+                  class="text-center"
+                  data-test="language"
+                  href="#"
+                  ngbDropdownItem
+                  role="menuitem"
+                >
+                  <span aria-hidden="true">{{ lang | uppercase }}</span>
+                </a>
+              }
+            }
+          </div>
+        </li>
+      </ul>
+      <span class="navbar-text text-end ms-3" style="font-size: 0.7em">
+			<span>{{ packageDescription }}</span>
+			<br/>
+			<span>v{{ packageVersion }}</span>
+    	</span>
+    </div>
+  </nav>
+
+  <div class="flex-fill overflow-hidden d-flex">
+    <aside class="flex-shrink-0 min-vw-15 py-3 bg-light">
+      <ol class="nav flex-column gap-1">
+        <li class="nav-item">
+          <ver-stepper-item [link]="'load-dataset'" [linkText]="'step.dataset' | translate" [isComplete]="isDatasetLoaded"/>
+        </li>
+        <li class="nav-item">
+          <ver-stepper-item [link]="'verify'" [linkText]="'step.verify' | translate" [isComplete]="isVerificationComplete"/>
+        </li>
+        <li class="nav-item">
+          <ver-stepper-item [link]="'export-report'" [linkText]="'step.report' | translate" [isComplete]="isVerificationReportGenerated"/>
+        </li>
+        <li class="nav-item" [hidden]="!isTallyMode()">
+          <ver-stepper-item [link]="'export-result'" [linkText]="'step.result' | translate" [isComplete]="isElectionResultReportGenerated"/>
+        </li>
+      </ol>
+    </aside>
+    <main class="flex-fill overflow-x-hidden overflow-y-auto">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xxl-10 pb-5">
+          <router-outlet id="main-router-outlet"></router-outlet>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+

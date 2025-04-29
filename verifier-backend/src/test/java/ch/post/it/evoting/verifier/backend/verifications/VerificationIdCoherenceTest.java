@@ -83,7 +83,7 @@ class VerificationIdCoherenceTest {
 	@Test
 	void validateSortingIsCorrect() {
 		// given
-		final ImmutableList<Double> idsAsDoubles = verifierProcessor.getVerifications().stream()
+		final ImmutableList<Double> idsAsDoubles = verifierProcessor.getVerifications("").stream()
 				.map(Verification::getVerificationId)
 				.map(Double::valueOf)
 				.collect(toImmutableList());

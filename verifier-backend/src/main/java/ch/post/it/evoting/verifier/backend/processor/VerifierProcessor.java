@@ -53,6 +53,9 @@ import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
+import ch.post.it.evoting.evotinglibraries.domain.tally.BallotBoxResult;
+import ch.post.it.evoting.evotinglibraries.domain.tally.ElectionEventResultUtils;
+import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.evoting.evotinglibraries.domain.validations.PasswordValidation;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.channelsecurity.StreamableSymmetricEncryptionDecryptionService;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
@@ -133,8 +136,10 @@ public class VerifierProcessor {
 				.collect(toImmutableList());
 	}
 
-	public ImmutableList<Verification> getVerifications() {
-		return verifications;
+	public ImmutableList<Verification> getVerifications(final String mode) {
+		return verifications.stream()
+				.filter(v -> v.getBlock().equals(mode))
+				.collect(toImmutableList());
 	}
 
 	public void resetExecution() {
@@ -277,9 +282,6 @@ public class VerifierProcessor {
 
 		unpackDataset(tallyDataset);
 
-		final int numberOfConfirmedNonTestVotes = 0;
-		final int numberOfConfirmedTestVotes = 0;
-
 		final String datasetHash;
 		try {
 			datasetHash = DigestUtils.sha256Hex(Files.newInputStream(filePath)).toLowerCase(Locale.ENGLISH);
@@ -287,8 +289,16 @@ public class VerifierProcessor {
 			throw new DatasetExtractionException("Could not digest given tally dataset.");
 		}
 
-		this.datasetConfigurationTally = new DatasetConfigurationTally(filename, datasetHash.toLowerCase(Locale.ENGLISH),
-				numberOfConfirmedNonTestVotes, numberOfConfirmedTestVotes);
+		final Path tallyComponentEch0222Path = electionDataExtractionService.getTallyComponentEch0222Path(tallyDataset.getUnpackFolder());
+		final String eCH222Hash;
+		try {
+			eCH222Hash = DigestUtils.sha256Hex(Files.newInputStream(tallyComponentEch0222Path)).toLowerCase(Locale.ENGLISH);
+		} catch (final IOException e) {
+			throw new DatasetExtractionException("Could not digest given eCH222 file.");
+		}
+
+
+		this.datasetConfigurationTally = new DatasetConfigurationTally(filename, datasetHash.toLowerCase(Locale.ENGLISH), eCH222Hash);
 	}
 
 	private Dataset downloadDataset(final InputStream datasetInputStream, final Path directory, final DatasetType datasetType) {
@@ -336,7 +346,7 @@ public class VerifierProcessor {
 	}
 
 	@PreDestroy
-	public void clean() {
+	public void cleanDatasets() {
 		if (this.contextDataset != null) {
 			datasetService.clean(contextDataset, false);
 			this.contextDataset = null;
@@ -347,8 +357,15 @@ public class VerifierProcessor {
 		}
 	}
 
-	public void cleanContextTally() {
-		this.contextDataset = null;
-		this.tallyDataset = null;
+	public ImmutableList<BallotBoxResult> getElectionEventResult(){
+		final Path inputDirectory = contextDataset.getUnpackFolder();
+		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(inputDirectory);
+		return electionEventContextPayload.getElectionEventContext().verificationCardSetContexts().stream()
+				.map(verificationCardSetContext -> {
+					final String ballotBoxId = verificationCardSetContext.getBallotBoxId();
+					final TallyComponentVotesPayload tallyComponentVotesPayload = electionDataExtractionService.getTallyComponentVotesPayload(inputDirectory, ballotBoxId);
+					return ElectionEventResultUtils.getBallotBoxResult(electionEventContextPayload,
+							tallyComponentVotesPayload);
+				}).collect(toImmutableList());
 	}
 }

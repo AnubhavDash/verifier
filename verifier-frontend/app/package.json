@@ -1,6 +1,6 @@
 {
   "name": "Verifier",
-  "version": "1.6.0-0-RC7",
+  "version": "1.6.0-0-RC8",
   "license": "MIT",
   "main": "main.js",
   "dependencies": {
