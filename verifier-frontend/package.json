@@ -65,6 +65,5 @@
   },
   "overrides": {
     "websocket": "1.0.35"
-  },
-  "builders": "builders.json"
+  }
 }
