@@ -3,7 +3,7 @@
 ---
 
 Verifier
-Copyright 2024 Post CH Ltd.
+Copyright 2025 Post CH Ltd.
 
 The verifier implements the verification algorithms of the Swiss Post Voting System developed at Post CH Ltd.
 
