@@ -31,9 +31,9 @@ import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.evoting.evotinglibraries.domain.validations.FailedValidationException;
 import ch.post.it.evoting.evotinglibraries.xml.XmlNormalizer;
-import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableEch0222Factory;
 import ch.post.it.evoting.evotinglibraries.xml.mapper.RawDataDeliveryMapper;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
+import ch.post.it.evoting.verifier.backend.verifications.tally.evidence.hashable.HashableEch0222Factory;
 
 @Service
 public class VerifyECH0222Algorithm {
