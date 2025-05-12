@@ -65,7 +65,8 @@ export class ReportComponent implements OnInit {
     this.exportToPdfService.export(
       document.getElementById('verification-report'),
       pdfFilenamePrefix,
-      () => this.completeReportGeneration()
+      () => this.completeReportGeneration(),
+      true
     );
   }
 
