@@ -5,11 +5,6 @@
 		"name": "context",
 		"content": [
 			{
-				"key": "CONTEXT_MANIFEST",
-				"type": "FILE",
-				"name": "manifest\\.json"
-			},
-			{
 				"key": "CONFIGURATION_ANONYMIZED",
 				"type": "FILE",
 				"name": "configuration-anonymized\\.xml"
@@ -51,14 +46,50 @@
 		]
 	},
 	{
+		"key": "SETUP_DIR",
+		"type": "DIRECTORY",
+		"name": "setup",
+		"content": [
+			{
+				"key": "SETUP_VERIFICATION_CARD_SETS_DIR",
+				"type": "DIRECTORY",
+				"name": "verificationCardSets",
+				"content": [
+					{
+						"key": "SETUP_VERIFICATION_CARD_SET_ID_DIR",
+						"type": "DYNAMIC_DIRECTORY",
+						"name": "[0-9a-zA-Z]{32}",
+						"content": [
+							{
+								"key": "CONTROL_COMPONENT_CODE_SHARES",
+								"type": "FILE",
+								"name": "controlComponentCodeSharesPayload\\.([0-9]+)\\.json"
+							},
+							{
+								"key": "SETUP_COMPONENT_VERIFICATION_DATA",
+								"type": "FILE",
+								"name": "setupComponentVerificationDataPayload\\.([0-9]+)\\.json"
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	{
 		"key": "TALLY_DIR",
 		"type": "DIRECTORY",
 		"name": "tally",
 		"content": [
 			{
-				"key": "TALLY_MANIFEST",
+				"key": "TALLY_COMPONENT_DECRYPT",
 				"type": "FILE",
-				"name": "manifest\\.json"
+				"name": "evoting-decrypt_.+\\.xml"
+			},
+			{
+				"key": "TALLY_COMPONENT_ECH0110",
+				"type": "FILE",
+				"name": "eCH-0110_.+\\.xml"
 			},
 			{
 				"key": "TALLY_COMPONENT_ECH0222",

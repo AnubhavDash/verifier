@@ -17,23 +17,19 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
-import java.math.BigInteger;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
-import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
-import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
-import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
+import com.google.common.collect.Streams;
+
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
+import ch.post.it.evoting.verifier.backend.dataextractors.EncryptionGroupParametersDataExtractor;
+import ch.post.it.evoting.verifier.backend.tools.EncryptionGroupParametersExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
@@ -41,11 +37,15 @@ import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerification
 @DisplayName("VerifySetupEncryptionGroupConsistency with")
 class VerifyEncryptionGroupConsistencyTest extends SetupVerificationTest {
 
-	private static final GqGroup otherGqGroup = new GqGroup(BigInteger.valueOf(23), BigInteger.valueOf(11), BigInteger.valueOf(3));
+	private static EncryptionGroupParametersDataExtractor.DataExtraction differentEncryptionGroupParameters;
+	private static EncryptionGroupParametersExtractionService extractionService;
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyEncryptionGroupConsistency(resultPublisherServiceMock, electionDataExtractionService);
+		differentEncryptionGroupParameters = new EncryptionGroupParametersDataExtractor.DataExtraction("p", "q", "g");
+		extractionService = new EncryptionGroupParametersExtractionService(pathService, encryptionGroupParametersDataExtractor,
+				controlComponentCodeSharesPayloadDataExtractor);
+		verification = new VerifyEncryptionGroupConsistency(resultPublisherServiceMock, extractionService);
 	}
 
 	@Test
@@ -60,53 +60,63 @@ class VerifyEncryptionGroupConsistencyTest extends SetupVerificationTest {
 	@Test
 	@DisplayName("ElectionEventContext having different encryption group parameters fails")
 	void invalidElectionEventContextPayload() {
-		final ElectionEventContextPayload mock = mock(ElectionEventContextPayload.class);
-		when(mock.getEncryptionGroup()).thenReturn(otherGqGroup);
+		final EncryptionGroupParametersExtractionService groupParametersExtractorMock = spy(extractionService);
+		doReturn(differentEncryptionGroupParameters).when(groupParametersExtractorMock).getFromElectionEventContext(datasetPath);
 
-		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(mock).when(electionDataExtractionServiceSpy).getElectionEventContextPayload(datasetPath);
-
-		assertInvalidVerification(electionDataExtractionServiceSpy);
+		assertInvalidVerification(groupParametersExtractorMock);
 	}
 
 	@Test
 	@DisplayName("ControlComponentPublicKeys containing different encryption group parameters fails")
 	void invalidControlComponentPublicKeysPayload() {
-		final ControlComponentPublicKeysPayload mock = mock(ControlComponentPublicKeysPayload.class);
-		when(mock.getEncryptionGroup()).thenReturn(otherGqGroup);
+		final EncryptionGroupParametersExtractionService groupParametersExtractorMock = spy(extractionService);
+		final Stream<EncryptionGroupParametersDataExtractor.DataExtraction> controlComponentPublicKeysParameters = extractionService.getFromControlComponentPublicKeys(
+				datasetPath);
+		doReturn(Streams.concat(Stream.of(differentEncryptionGroupParameters), controlComponentPublicKeysParameters)).when(
+				groupParametersExtractorMock).getFromControlComponentPublicKeys(datasetPath);
 
-		final Stream<ControlComponentPublicKeysPayload> stream = Stream.concat(
-				Stream.of(mock),
-				electionDataExtractionService.getControlComponentPublicKeysPayloads(datasetPath)
-		);
+		assertInvalidVerification(groupParametersExtractorMock);
+	}
 
-		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(stream).when(electionDataExtractionServiceSpy).getControlComponentPublicKeysPayloads(datasetPath);
+	@Test
+	@DisplayName("SetupComponentVerificationData containing different encryption group parameters fails")
+	void invalidSetupComponentVerificationDataPayload() {
+		final EncryptionGroupParametersExtractionService groupParametersExtractorMock = spy(extractionService);
+		final Stream<EncryptionGroupParametersDataExtractor.DataExtraction> controlComponentPublicKeysParameters = extractionService.getFromSetupComponentVerificationDataPayloads(
+				datasetPath);
+		doReturn(Streams.concat(Stream.of(differentEncryptionGroupParameters), controlComponentPublicKeysParameters)).when(
+				groupParametersExtractorMock).getFromSetupComponentVerificationDataPayloads(datasetPath);
 
-		assertInvalidVerification(electionDataExtractionServiceSpy);
+		assertInvalidVerification(groupParametersExtractorMock);
+	}
+
+	@Test
+	@DisplayName("NodeContributions containing different encryption group parameters fails")
+	void invalidNodeContributions() {
+		final EncryptionGroupParametersExtractionService groupParametersExtractorMock = spy(extractionService);
+		final Stream<EncryptionGroupParametersDataExtractor.DataExtraction> controlComponentPublicKeysParameters = extractionService.getFromControlComponentCodeShares(
+				datasetPath);
+		doReturn(Streams.concat(Stream.of(differentEncryptionGroupParameters), controlComponentPublicKeysParameters)).when(
+				groupParametersExtractorMock).getFromControlComponentCodeShares(datasetPath);
+
+		assertInvalidVerification(groupParametersExtractorMock);
 	}
 
 	@Test
 	@DisplayName("SetupComponentTallyData containing different encryption group parameters fails")
 	void invalidSetupComponentTallyDataPayload() {
-		final SetupComponentTallyDataPayload mock = mock(SetupComponentTallyDataPayload.class);
-		when(mock.getEncryptionGroup()).thenReturn(otherGqGroup);
+		final EncryptionGroupParametersExtractionService groupParametersExtractorMock = spy(extractionService);
+		final Stream<EncryptionGroupParametersDataExtractor.DataExtraction> controlComponentPublicKeysParameters = extractionService.getFromSetupComponentTallyDataPayloads(
+				datasetPath);
+		doReturn(Streams.concat(Stream.of(differentEncryptionGroupParameters), controlComponentPublicKeysParameters)).when(
+				groupParametersExtractorMock).getFromSetupComponentTallyDataPayloads(datasetPath);
 
-
-		final Stream<SetupComponentTallyDataPayload> stream = Stream.concat(
-				Stream.of(mock),
-				electionDataExtractionService.getSetupComponentTallyDataPayloads(datasetPath)
-		);
-
-		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(stream).when(electionDataExtractionServiceSpy).getSetupComponentTallyDataPayloads(datasetPath);
-
-		assertInvalidVerification(electionDataExtractionServiceSpy);
+		assertInvalidVerification(groupParametersExtractorMock);
 	}
 
-	private void assertInvalidVerification(final ElectionDataExtractionService electionDataExtractionServiceSpy) {
+	private void assertInvalidVerification(final EncryptionGroupParametersExtractionService groupParametersExtractorMock) {
 		final VerifyEncryptionGroupConsistency invalidVerification = new VerifyEncryptionGroupConsistency(resultPublisherServiceMock,
-				electionDataExtractionServiceSpy);
+				groupParametersExtractorMock);
 		final VerificationResult verificationResult = invalidVerification.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(invalidVerification.getVerificationDefinition(),

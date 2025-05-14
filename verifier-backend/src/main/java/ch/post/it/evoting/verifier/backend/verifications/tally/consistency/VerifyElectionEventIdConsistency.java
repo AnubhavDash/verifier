@@ -16,11 +16,12 @@
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiFunction;
 
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
@@ -36,7 +37,7 @@ import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 
-@Component("verifyTallyElectionEventIdConsistency")
+@Component("VerifyTallyElectionEventIdConsistency")
 public class VerifyElectionEventIdConsistency extends AbstractVerification {
 
 	private final ElectionDataExtractionService electionDataExtractionService;
@@ -64,13 +65,14 @@ public class VerifyElectionEventIdConsistency extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final String electionEventId = electionDataExtractionService.getElectionEventContext(inputDirectoryPath).electionEventId();
+		final String electionEventId = electionDataExtractionService.getElectionEventContextPayload(inputDirectoryPath).getElectionEventContext()
+				.electionEventId();
 
-		final ImmutableList<BiFunction<Path, String, Boolean>> validations = ImmutableList.of(
-				this::areControlComponentBallotBoxPayloadsVerified,
-				this::areControlComponentShufflePayloadsVerified,
-				this::areTallyComponentShufflePayloadsVerified,
-				this::areTallyComponentVotesPayloadsVerified);
+		final List<BiFunction<Path, String, Boolean>> validations = new ArrayList<>();
+		validations.add(this::areControlComponentBallotBoxPayloadsVerified);
+		validations.add(this::areControlComponentShufflePayloadsVerified);
+		validations.add(this::areTallyComponentShufflePayloadsVerified);
+		validations.add(this::areTallyComponentVotesPayloadsVerified);
 
 		final boolean verified = validations
 				.stream()

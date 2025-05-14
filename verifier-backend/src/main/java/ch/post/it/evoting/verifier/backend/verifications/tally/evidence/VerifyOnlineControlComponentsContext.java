@@ -15,11 +15,11 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import java.util.List;
+
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.SetupComponentPublicKeys;
@@ -39,8 +39,8 @@ import ch.post.it.evoting.evotinglibraries.domain.mixnet.SetupComponentPublicKey
  */
 public class VerifyOnlineControlComponentsContext {
 
-	private final ImmutableList<String> verificationCardSetIds;
-	private final ImmutableList<String> ballotBoxIds;
+	private final List<String> verificationCardSetIds;
+	private final List<String> ballotBoxIds;
 	private final ElectionEventContext electionEventContext;
 	private final SetupComponentPublicKeys setupComponentPublicKeys;
 
@@ -51,26 +51,22 @@ public class VerifyOnlineControlComponentsContext {
 		// The ElectionEventContext constructor ensures that the verification card set ids are valid UUIDs and unique.
 		this.verificationCardSetIds = electionEventContext.verificationCardSetContexts().stream()
 				.map(VerificationCardSetContext::getVerificationCardSetId)
-				.collect(toImmutableList());
+				.toList();
 		// The ElectionEventContext constructor ensures the ballot box ids are valid UUIDs and unique.
 		this.ballotBoxIds = electionEventContext.verificationCardSetContexts().stream()
 				.map(VerificationCardSetContext::getBallotBoxId)
-				.collect(toImmutableList());
+				.toList();
 
 		// By definition verificationCardSetIds and ballotBoxIds have the same size.
 
 		checkArgument(electionEventContextPayload.getEncryptionGroup().equals(setupComponentPublicKeysPayload.getEncryptionGroup()));
 	}
 
-	public String getElectionEventId() {
-		return electionEventContext.electionEventId();
-	}
-
-	public ImmutableList<String> getVerificationCardSetIds() {
+	public List<String> getVerificationCardSetIds() {
 		return verificationCardSetIds;
 	}
 
-	public ImmutableList<String> getBallotBoxIds() {
+	public List<String> getBallotBoxIds() {
 		return ballotBoxIds;
 	}
 

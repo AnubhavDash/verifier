@@ -64,11 +64,11 @@ class VerifyChoiceReturnCodesPublicKeyConsistencyTest extends SetupVerificationT
 				setupComponentPublicKeysPayload.getEncryptionGroup(), setupComponentPublicKeysPayload.getElectionEventId(),
 				modifiedSetupComponentPublicKeys);
 
-		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(modifiedSetupComponentPublicKeysPayload).when(extractionServiceSpy).getSetupComponentPublicKeysPayload(datasetPath);
+		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
+		doReturn(modifiedSetupComponentPublicKeysPayload).when(extractionServiceMock).getSetupComponentPublicKeysPayload(datasetPath);
 
 		final VerifyChoiceReturnCodesPublicKeyConsistency verificationWithMock = new VerifyChoiceReturnCodesPublicKeyConsistency(EL_GAMAL,
-				extractionServiceSpy, resultPublisherServiceMock);
+				extractionServiceMock, resultPublisherServiceMock);
 
 		final VerificationResult result = verificationWithMock.verify(datasetPath);
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),

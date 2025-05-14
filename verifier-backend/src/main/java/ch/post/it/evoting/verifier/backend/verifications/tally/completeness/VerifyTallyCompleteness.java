@@ -15,18 +15,17 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.completeness;
 
-import static ch.post.it.evoting.verifier.backend.tools.DatasetType.TALLY;
+import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
-import ch.post.it.evoting.evotinglibraries.domain.ControlComponentNode;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -82,15 +81,19 @@ public class VerifyTallyCompleteness extends AbstractVerification {
 
 	private boolean verifyTallyCompleteness(final Path inputDirectoryPath) {
 		try {
-			pathService.checkStructureKeysExistence(TALLY.getRootStructureKey(), inputDirectoryPath);
-			final ImmutableList<Path> ballotBoxIds = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath)
-					.getRegexPaths();
+			pathService.buildFromRootPath(StructureKey.TALLY_COMPONENT_DECRYPT, inputDirectoryPath);
+			pathService.buildFromRootPath(StructureKey.TALLY_COMPONENT_ECH0110, inputDirectoryPath);
+			pathService.buildFromRootPath(StructureKey.TALLY_COMPONENT_ECH0222, inputDirectoryPath);
+			pathService.buildFromRootPath(StructureKey.BALLOT_BOXES_DIR, inputDirectoryPath);
+			final List<Path> ballotBoxIds = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath).getRegexPaths();
 			ballotBoxIds.forEach(bb -> checkState(
 					pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_BALLOT_BOX, bb).getRegexPaths().size()
-							== ControlComponentNode.ids().size()));
+							== NODE_IDS.size()));
 			ballotBoxIds.forEach(bb -> checkState(
 					pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_SHUFFLE, bb).getRegexPaths().size()
-							== ControlComponentNode.ids().size()));
+							== NODE_IDS.size()));
+			ballotBoxIds.forEach(bb -> pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_SHUFFLE, bb));
+			ballotBoxIds.forEach(bb -> pathService.buildFromDynamicAncestorPath(StructureKey.TALLY_COMPONENT_VOTES, bb));
 			return true;
 		} catch (final UncheckedIOException | IllegalStateException e) {
 			LOGGER.error("Tally completeness failed.", e);

@@ -20,12 +20,12 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.nio.file.Path;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
@@ -50,11 +50,28 @@ class VerifyFileNameVerificationCardSetIdsConsistencyTest extends SetupVerificat
 	}
 
 	@Test
+	@DisplayName("inconsistent verification card set ids in setup dataset fails")
+	void inconsistentVerificationCardSetIdsSetupDataset() {
+		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
+		when(electionDataExtractionServiceSpy.getSetupVerificationCardSetPaths(datasetPath)).thenReturn(
+				List.of(Path.of("11111111111111111111111111111111")));
+
+		final VerifyFileNameVerificationCardSetIdsConsistency verifyFileNameVerificationCardSetIdsConsistency = new VerifyFileNameVerificationCardSetIdsConsistency(
+				resultPublisherServiceMock, electionDataExtractionServiceSpy);
+
+		final VerificationResult result = verifyFileNameVerificationCardSetIdsConsistency.verify(datasetPath);
+
+		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification311.nok.message"));
+		assertEquals(expectedResult, result);
+	}
+
+	@Test
 	@DisplayName("inconsistent verification card set ids in context dataset fails")
 	void inconsistentVerificationCardSetIdsContextDataset() {
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
 		when(electionDataExtractionServiceSpy.getContextVerificationCardSetPaths(datasetPath)).thenReturn(
-				ImmutableList.of(Path.of("11111111111111111111111111111111")));
+				List.of(Path.of("11111111111111111111111111111111")));
 
 		final VerifyFileNameVerificationCardSetIdsConsistency verifyFileNameVerificationCardSetIdsConsistency = new VerifyFileNameVerificationCardSetIdsConsistency(
 				resultPublisherServiceMock, electionDataExtractionServiceSpy);

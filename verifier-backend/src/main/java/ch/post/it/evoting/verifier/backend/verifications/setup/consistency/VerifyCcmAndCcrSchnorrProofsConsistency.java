@@ -15,16 +15,15 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap.toImmutableMap;
-
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.ZqGroup;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.SchnorrProof;
@@ -67,14 +66,13 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = extractionService.getSetupComponentPublicKeysPayload(
+		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = extractionService.getSetupComponentPublicKeysPayload(inputDirectoryPath);
+		final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = extractionService.getControlComponentPublicKeysPayloads(
 				inputDirectoryPath);
-		final ImmutableList<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = extractionService.getControlComponentPublicKeysPayloads(
-				inputDirectoryPath).collect(toImmutableList());
 
-		final ImmutableList<BiFunction<SetupComponentPublicKeysPayload, ImmutableList<ControlComponentPublicKeysPayload>, Boolean>> validations = ImmutableList.of(
-				this::validateSameCcmjSchnorrProofs,
-				this::validateSameCcrjSchnorrProofs);
+		final List<BiFunction<SetupComponentPublicKeysPayload, List<ControlComponentPublicKeysPayload>, Boolean>> validations = new ArrayList<>();
+		validations.add(this::validateSameCcmjSchnorrProofs);
+		validations.add(this::validateSameCcrjSchnorrProofs);
 
 		final boolean verified = validations
 				.stream()
@@ -92,10 +90,11 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 	}
 
 	private boolean validateSameCcrjSchnorrProofs(final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload,
-			final ImmutableList<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads) {
-		final ImmutableMap<Integer, GroupVector<SchnorrProof, ZqGroup>> electionEventCcrjSchnorrProofs = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
+			final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads) {
+		final Map<Integer, GroupVector<SchnorrProof, ZqGroup>> electionEventCcrjSchnorrProofs = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
 				.combinedControlComponentPublicKeys().stream()
-				.collect(toImmutableMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccrjSchnorrProofs));
+				.parallel()
+				.collect(Collectors.toConcurrentMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccrjSchnorrProofs));
 
 		return controlComponentPublicKeysPayloads.stream()
 				.parallel()
@@ -107,10 +106,11 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 	}
 
 	private boolean validateSameCcmjSchnorrProofs(final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload,
-			final ImmutableList<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads) {
-		final ImmutableMap<Integer, GroupVector<SchnorrProof, ZqGroup>> electionEventCcmjSchnorrProofs = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
+			final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads) {
+		final Map<Integer, GroupVector<SchnorrProof, ZqGroup>> electionEventCcmjSchnorrProofs = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
 				.combinedControlComponentPublicKeys().stream()
-				.collect(toImmutableMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccmjSchnorrProofs));
+				.parallel()
+				.collect(Collectors.toConcurrentMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccmjSchnorrProofs));
 
 		return controlComponentPublicKeysPayloads.stream()
 				.parallel()

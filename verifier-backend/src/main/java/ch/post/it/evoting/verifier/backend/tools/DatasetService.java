@@ -15,7 +15,6 @@
  */
 package ch.post.it.evoting.verifier.backend.tools;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap.toImmutableMap;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static java.util.function.Predicate.not;
@@ -36,14 +35,15 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import jakarta.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 
@@ -84,7 +84,7 @@ public class DatasetService {
 				if (!entry.isDirectory()) {
 					hasEntry = true;
 
-					fileNameWhitelisting(dataset, entry.getFileName());
+					setActualDatasetType(dataset, entry.getFileName());
 					final Path fileLocation = dataset.getUnpackFolder().resolve(entry.getFileName());
 
 					if (!Files.exists(fileLocation.getParent())) {
@@ -101,6 +101,8 @@ public class DatasetService {
 				throw new InvalidParameterException("input is not a ZIP file or is empty.");
 			}
 		}
+
+		checkState(dataset.getActualType() != null, "input is not a %s dataset.", dataset.getExpectedType());
 
 		dataset.setUnpacked(true);
 
@@ -122,7 +124,7 @@ public class DatasetService {
 	 *
 	 * @return a map with the alias names as keys and fingerprints as values.
 	 */
-	public ImmutableMap<String, String> extractFingerprints() {
+	public Map<String, String> extractFingerprints() {
 		final Path keyStorePasswordPath = Paths.get(keyStorePasswordLocation);
 		final char[] password;
 		try {
@@ -146,12 +148,9 @@ public class DatasetService {
 		}
 
 		return Arrays.stream(Alias.values())
-				.filter(not(Alias.VOTING_SERVER::equals)
-						.and(not(Alias.PRINTING_COMPONENT::equals))
-						.and(not(Alias.VERIFIER::equals))
-						.and(not(Alias.DISPUTE_RESOLVER::equals)))
+				.filter(not(Alias.VOTING_SERVER::equals).and(not(Alias.PRINTING_COMPONENT::equals)).and(not(Alias.VERIFIER::equals)))
 				.map(Alias::get)
-				.collect(toImmutableMap(
+				.collect(Collectors.toMap(
 						Function.identity(),
 						aliasName -> {
 							final Certificate certificate;
@@ -192,14 +191,23 @@ public class DatasetService {
 	 *
 	 * @param dataset  the dataset information as a {@link Dataset}.
 	 * @param fileName the file to verify.
-	 * @throws IllegalStateException if the file does not belong to any dataset type or if the file belongs to a dataset type different from the
-	 *                               expected one.
+	 * @throws IllegalStateException if
+	 *                               <ul>
+	 *                                   <li>the file does not belong to any dataset type.</li>
+	 *                                   <li>the file belongs to a dataset type different from the expected one.</li>
+	 *                               </ul>
 	 */
-	private void fileNameWhitelisting(final Dataset dataset, final String fileName) {
-		final boolean fileInDatasetStructure = pathService.getDatasetFilesStructureKeys(dataset.getExpectedType().getRootStructureKey())
-				.stream()
-				.anyMatch(structureKey -> pathService.matchesStructureKey(structureKey, fileName));
+	private void setActualDatasetType(final Dataset dataset, final String fileName) {
+		final DatasetType actualType = Arrays.stream(DatasetType.values())
+				.filter(datasetType -> datasetType.getStructureKeys().stream()
+						.anyMatch(structureKey -> pathService.matchesStructureKey(structureKey, fileName)))
+				.findAny()
+				.orElseThrow(() -> new IllegalStateException(
+						String.format("The dataset does not have the expected type. [expectedType: %s]", dataset.getExpectedType())));
 
-		checkState(fileInDatasetStructure, "The given zip does not correspond to a %s dataset.", dataset.getExpectedType().getName());
+		checkState(dataset.getActualType() == null || dataset.getActualType() == actualType,
+				"The dataset does not have the expected type. [expectedType: %s]", dataset.getExpectedType());
+
+		dataset.setActualType(actualType);
 	}
 }

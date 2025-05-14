@@ -21,16 +21,13 @@
 	<parent>
 		<artifactId>verifier</artifactId>
 		<groupId>ch.post.it.evoting.verifier</groupId>
-		<version>1.6.0.0-RC8</version>
+		<version>1.5.5.0-b0</version>
 	</parent>
 
 	<artifactId>verifier-backend</artifactId>
 
 	<properties>
-		<archunit.version>1.4.0</archunit.version>
 		<jaxb-api.version>2.4.0-b180830.0359</jaxb-api.version>
-		<!-- These two files are temporarily excluded from the Sonar analysis as there is a bug in Sonar preventing a successful run. -->
-		<sonar.test.exclusions>**/VerifySignatureControlComponentShuffleTest.java,**/VerifySignatureTallyComponentShuffleTest.java</sonar.test.exclusions>
 	</properties>
 
 	<dependencyManagement>
@@ -39,13 +36,6 @@
 				<groupId>javax.xml.bind</groupId>
 				<artifactId>jaxb-api</artifactId>
 				<version>${jaxb-api.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.tngtech.archunit</groupId>
-				<artifactId>archunit-junit5</artifactId>
-				<version>${archunit.version}</version>
-				<scope>test</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -110,29 +100,12 @@
 			<artifactId>junit-jupiter</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.tngtech.archunit</groupId>
-			<artifactId>archunit-junit5</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>ch.post.it.evoting.cryptoprimitives</groupId>
 			<artifactId>crypto-primitives</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>ch.post.it.evoting.cryptoprimitives</groupId>
-			<artifactId>crypto-primitives</artifactId>
-			<classifier>tests</classifier>
-			<type>test-jar</type>
-		</dependency>
-		<dependency>
 			<groupId>ch.post.it.evoting.evotinglibraries</groupId>
 			<artifactId>e-voting-libraries-domain</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>ch.post.it.evoting.evotinglibraries</groupId>
-			<artifactId>e-voting-libraries-domain</artifactId>
-			<type>test-jar</type>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>ch.post.it.evoting.evotinglibraries</groupId>
@@ -163,6 +136,10 @@
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.github.jsurfer</groupId>
+			<artifactId>jsurfer-jackson</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.mockito</groupId>
@@ -182,13 +159,6 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<argLine>@{argLine} -javaagent:${net.bytebuddy:byte-buddy-agent:jar}</argLine>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
@@ -203,126 +173,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>unpack-testdata</id>
-						<phase>generate-test-resources</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>ch.post.it.evoting</groupId>
-									<artifactId>testdata</artifactId>
-									<version>${testdata.version}</version>
-									<classifier>resources</classifier>
-									<type>zip</type>
-									<outputDirectory>${project.build.testOutputDirectory}</outputDirectory>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>prepare-datasets-and-json-testdata</id>
-						<phase>generate-test-resources</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<target>
-								<!-- Direct Trust -->
-								<copy todir="${project.build.testOutputDirectory}/datasets/direct-trust">
-									<fileset dir="${project.build.testOutputDirectory}/testdata/direct-trust/verifier"/>
-								</copy>
 
-								<!-- Setup Dataset -->
-								<copy todir="${project.build.testOutputDirectory}/datasets/D2/context">
-									<fileset dir="${project.build.testOutputDirectory}/testdata/election-events/Post_E2E_DEV/D2/secure-data-manager-setup/context"/>
-								</copy>
-
-								<!-- Tally Dataset -->
-								<copy todir="${project.build.testOutputDirectory}/datasets/D3/context">
-									<fileset dir="${project.build.testOutputDirectory}/testdata/election-events/Post_E2E_DEV/D2/secure-data-manager-setup/context"/>
-								</copy>
-								<copy todir="${project.build.testOutputDirectory}/datasets/D3/tally">
-									<fileset dir="${project.build.testOutputDirectory}/testdata/election-events/Post_E2E_DEV/D3/secure-data-manager-tally/tally"/>
-								</copy>
-
-								<!-- Protocol Algorithms -->
-								<copy todir="${project.build.testOutputDirectory}/protocol-algorithms/json">
-									<fileset dir="${project.build.testOutputDirectory}/testdata/protocol-algorithms/json/verifier-specification"/>
-								</copy>
-
-								<!-- Remove other files not needed -->
-								<delete includeEmptyDirs="true">
-									<fileset dir="${project.build.testOutputDirectory}/testdata"/>
-								</delete>
-							</target>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>zip-D2-context</id>
-						<phase>generate-test-resources</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-						<configuration>
-							<descriptors>
-								<descriptor>src/test/resources/datasets/assembly/D2/context.xml</descriptor>
-							</descriptors>
-							<finalName>context</finalName>
-							<appendAssemblyId>false</appendAssemblyId>
-							<outputDirectory>${project.build.testOutputDirectory}/datasets/D2</outputDirectory>
-						</configuration>
-					</execution>
-					<execution>
-						<id>zip-D3-context</id>
-						<phase>generate-test-resources</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-						<configuration>
-							<descriptors>
-								<descriptor>src/test/resources/datasets/assembly/D3/context.xml</descriptor>
-							</descriptors>
-							<finalName>context</finalName>
-							<appendAssemblyId>false</appendAssemblyId>
-							<outputDirectory>${project.build.testOutputDirectory}/datasets/D3</outputDirectory>
-						</configuration>
-					</execution>
-					<execution>
-						<id>zip-D3-tally</id>
-						<phase>generate-test-resources</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-						<configuration>
-							<descriptors>
-								<descriptor>src/test/resources/datasets/assembly/D3/tally.xml</descriptor>
-							</descriptors>
-							<finalName>tally</finalName>
-							<appendAssemblyId>false</appendAssemblyId>
-							<outputDirectory>${project.build.testOutputDirectory}/datasets/D3</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 			<plugin>
 				<groupId>ch.galinet</groupId>
 				<artifactId>reproducible-build-maven-plugin</artifactId>

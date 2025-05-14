@@ -15,49 +15,22 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.authenticity;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
-import static ch.post.it.evoting.cryptoprimitives.hashing.HashFactory.createHash;
-import static ch.post.it.evoting.cryptoprimitives.hashing.HashableList.toHashableList;
-import static ch.post.it.evoting.cryptoprimitives.math.BaseEncodingFactory.createBase64;
-import static ch.post.it.evoting.cryptoprimitives.math.GroupVector.toGroupVector;
-import static ch.post.it.evoting.evotinglibraries.domain.mapper.EncryptionGroupUtils.getEncryptionGroup;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.net.URL;
 import java.nio.file.Path;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
-import java.util.Arrays;
-import java.util.stream.Stream;
+import java.security.cert.CertificateException;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
-import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
-import ch.post.it.evoting.cryptoprimitives.hashing.Hash;
-import ch.post.it.evoting.cryptoprimitives.hashing.HashableBigInteger;
-import ch.post.it.evoting.cryptoprimitives.hashing.HashableList;
-import ch.post.it.evoting.cryptoprimitives.hashing.HashableString;
-import ch.post.it.evoting.cryptoprimitives.internal.securitylevel.SecurityLevelConfig;
-import ch.post.it.evoting.cryptoprimitives.math.Base64;
-import ch.post.it.evoting.cryptoprimitives.math.GqElement;
-import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
-import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
-import ch.post.it.evoting.cryptoprimitives.test.tools.serialization.JsonData;
-import ch.post.it.evoting.cryptoprimitives.test.tools.serialization.TestParameters;
+import ch.post.it.evoting.cryptoprimitives.signing.SignatureGeneration;
+import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
@@ -66,16 +39,11 @@ import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerification
 
 class VerifySignatureSetupComponentTallyDataTest extends SetupVerificationTest {
 
-	private Hash hash;
-	private Base64 base64;
-
 	@BeforeEach
-	void setUpAll() {
+	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
+		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
 		verification = new VerifySignatureSetupComponentTallyData(resultPublisherServiceMock, electionDataExtractionService,
-				datasetSignatureVerification);
-
-		hash = createHash();
-		base64 = createBase64();
+				testSignatureVerification);
 	}
 
 	@Test
@@ -84,117 +52,26 @@ class VerifySignatureSetupComponentTallyDataTest extends SetupVerificationTest {
 	}
 
 	@Test
-	void testOK() {
+	void testExpectedSignerSuccess() throws SignatureException {
 		final SetupComponentTallyDataPayload setupComponentTallyDataPayload = electionDataExtractionService.getSetupComponentTallyDataPayloads(
-						datasetPath)
-				.collect(toImmutableList())
-				.get(0);
-
+				datasetPath).toList().get(0);
+		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.SDM_CONFIG);
+		final byte[] signature = testSignatureGeneration.genSignature(setupComponentTallyDataPayload,
+				ChannelSecurityContextData.setupComponentTallyData(setupComponentTallyDataPayload.getElectionEventId(),
+						setupComponentTallyDataPayload.getVerificationCardSetId()));
+		setupComponentTallyDataPayload.setSignature(new CryptoPrimitivesSignature(signature));
 		assertTrue(((VerifySignatureSetupComponentTallyData) verification).verifySignature(setupComponentTallyDataPayload));
 	}
 
 	@Test
-	void testNOK() throws SignatureException {
+	void testUnexpectedSignerFails() throws SignatureException {
 		final SetupComponentTallyDataPayload setupComponentTallyDataPayload = electionDataExtractionService.getSetupComponentTallyDataPayloads(
-						datasetPath)
-				.collect(toImmutableList())
-				.get(0);
-
-		final CryptoPrimitivesSignature dummySignature = datasetSignatureFactory.getDummySignature(setupComponentTallyDataPayload,
+				datasetPath).toList().get(0);
+		final SignatureGeneration testSignatureGeneration = signatureFactory.getTestSignatureGeneration(Alias.CONTROL_COMPONENT_1);
+		final byte[] signature = testSignatureGeneration.genSignature(setupComponentTallyDataPayload,
 				ChannelSecurityContextData.setupComponentTallyData(setupComponentTallyDataPayload.getElectionEventId(),
-						setupComponentTallyDataPayload.getVerificationCardSetId()),
-				Alias.SDM_CONFIG);
-		setupComponentTallyDataPayload.setSignature(dummySignature);
-
+						setupComponentTallyDataPayload.getVerificationCardSetId()));
+		setupComponentTallyDataPayload.setSignature(new CryptoPrimitivesSignature(signature));
 		assertFalse(((VerifySignatureSetupComponentTallyData) verification).verifySignature(setupComponentTallyDataPayload));
-	}
-
-	@ParameterizedTest
-	@MethodSource("jsonFileArgumentProvider")
-	@DisplayName("specific values returns expected output")
-	void getHashSetupComponentTallyDataWithSpecificValues(final SetupComponentTallyDataPayload setupComponentTallyDataPayload,
-			final String hash, final String description) {
-		assertEquals(hash, getHashSetupComponentTallyDataSpec(setupComponentTallyDataPayload),
-				String.format("assertion failed for: %s", description));
-	}
-
-	@Test
-	@DisplayName("implementation aligned to spec gives same result")
-	void getHashSetupComponentTallyDataAlignment() {
-		final SetupComponentTallyDataPayload setupComponentTallyDataPayload = electionDataExtractionService.getSetupComponentTallyDataPayloads(
-						datasetPath)
-				.findFirst()
-				.orElseThrow();
-		final String expected = base64.base64Encode(hash.recursiveHash(setupComponentTallyDataPayload));
-		assertEquals(expected, getHashSetupComponentTallyDataSpec(setupComponentTallyDataPayload));
-	}
-
-	private String getHashSetupComponentTallyDataSpec(final SetupComponentTallyDataPayload setupComponentTallyDataPayload) {
-		final GqGroup encryptionGroup = setupComponentTallyDataPayload.getEncryptionGroup();
-		final HashableList p_q_g = HashableList.of(
-				HashableBigInteger.from(encryptionGroup.getP()),
-				HashableBigInteger.from(encryptionGroup.getQ()),
-				HashableBigInteger.from(encryptionGroup.getGenerator().getValue()));
-
-		final HashableString ee = HashableString.from(setupComponentTallyDataPayload.getElectionEventId());
-
-		final HashableString vcs = HashableString.from(setupComponentTallyDataPayload.getVerificationCardSetId());
-
-		final HashableList vc = setupComponentTallyDataPayload.getVerificationCardIds().stream()
-				.map(HashableString::from)
-				.collect(toHashableList());
-
-		final HashableString ballotBoxDefaultTitle = HashableString.from(setupComponentTallyDataPayload.getBallotBoxDefaultTitle());
-
-		final HashableList K = setupComponentTallyDataPayload.getVerificationCardPublicKeys().stream()
-				.map(votes -> votes.stream()
-						.map(GqElement::getValue)
-						.map(HashableBigInteger::from)
-						.collect(toHashableList()))
-				.collect(toHashableList());
-
-		final HashableList h = HashableList.of(p_q_g, ee, vcs, vc, ballotBoxDefaultTitle, K);
-
-		return base64.base64Encode(hash.recursiveHash(h));
-	}
-
-	static Stream<Arguments> jsonFileArgumentProvider() throws IOException {
-		final URL url = VerifySignatureSetupComponentTallyDataTest.class.getResource(
-				"/protocol-algorithms/json/verifySignatureSetupComponentTallyData/verify-signature-setup-component-tally-data.json");
-		final ImmutableList<TestParameters> parametersList = ImmutableList.of(objectMapper.readValue(url, TestParameters[].class));
-
-		return parametersList.stream().parallel().map(testParameters -> {
-			try (final MockedStatic<SecurityLevelConfig> mockedSecurityLevel = Mockito.mockStatic(SecurityLevelConfig.class)) {
-				mockedSecurityLevel.when(SecurityLevelConfig::getSystemSecurityLevel).thenReturn(testParameters.getSecurityLevel());
-
-				// Input.
-				final JsonData input = testParameters.getInput();
-				final GqGroup encryptionGroup = getEncryptionGroup(objectMapper, input.getJsonData("encryptionGroup").jsonNode());
-				final String electionEventId = objectMapper.reader().readValue(input.getJsonData("electionEventId").jsonNode(), String.class);
-				final String verificationCardSetId = objectMapper.reader()
-						.readValue(input.getJsonData("verificationCardSetId").jsonNode(), String.class);
-				final ImmutableList<String> verificationCardIds = ImmutableList.from(objectMapper.reader()
-						.readValue(input.getJsonData("verificationCardIds").jsonNode().traverse(), new TypeReference<>() {
-						}));
-				final String ballotBoxDefaultTitle = objectMapper.reader()
-						.readValue(input.getJsonData("ballotBoxDefaultTitle").jsonNode(), String.class);
-				final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> verificationCardPublicKeys = Arrays.stream(objectMapper.reader()
-								.withAttribute("group", encryptionGroup)
-								.readValue(input.getJsonData("verificationCardPublicKeys").jsonNode(), GqElement[][].class))
-						.map(GroupVector::of)
-						.map(ElGamalMultiRecipientPublicKey::new)
-						.collect(toGroupVector());
-				final SetupComponentTallyDataPayload electionEventContextPayload = new SetupComponentTallyDataPayload(encryptionGroup,
-						electionEventId, verificationCardSetId, verificationCardIds, ballotBoxDefaultTitle, verificationCardPublicKeys);
-
-				// Output.
-				final JsonData output = testParameters.getOutput();
-				final String hash = output.get("d", String.class);
-
-				return Arguments.of(electionEventContextPayload, hash, testParameters.getDescription());
-			} catch (final IOException e) {
-				throw new UncheckedIOException(e);
-			}
-		});
 	}
 }

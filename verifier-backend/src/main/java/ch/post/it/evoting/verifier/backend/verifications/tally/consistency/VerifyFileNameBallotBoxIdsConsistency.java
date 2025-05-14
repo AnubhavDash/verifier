@@ -15,13 +15,11 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
-import static com.google.common.collect.ImmutableSet.toImmutableSet;
-
 import java.nio.file.Path;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
-
-import com.google.common.collect.ImmutableSet;
 
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
@@ -73,15 +71,18 @@ public class VerifyFileNameBallotBoxIdsConsistency extends AbstractVerification 
 	public VerificationResult verify(final Path inputDirectoryPath) {
 		final PathNode ballotBoxes = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 
-		final ImmutableSet<String> ballotBoxIds = ballotBoxes.getRegexPaths().stream()
+		final Set<String> ballotBoxIds = ballotBoxes.getRegexPaths().stream()
+				.parallel()
 				.map(Path::getFileName)
 				.map(Path::toString)
-				.collect(toImmutableSet());
+				.collect(Collectors.toUnmodifiableSet());
 
-		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContext(inputDirectoryPath);
-		final ImmutableSet<String> payloadBallotBoxIds = electionEventContext.verificationCardSetContexts().stream()
+		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContextPayload(inputDirectoryPath)
+				.getElectionEventContext();
+		final Set<String> payloadBallotBoxIds = electionEventContext.verificationCardSetContexts().stream()
+				.parallel()
 				.map(VerificationCardSetContext::getBallotBoxId)
-				.collect(toImmutableSet());
+				.collect(Collectors.toUnmodifiableSet());
 
 		// Verifying set equality is sufficient since the payload ensures that there are no duplicate ballot box IDs.
 		final boolean sameBallotBoxIds = ballotBoxIds.equals(payloadBallotBoxIds);

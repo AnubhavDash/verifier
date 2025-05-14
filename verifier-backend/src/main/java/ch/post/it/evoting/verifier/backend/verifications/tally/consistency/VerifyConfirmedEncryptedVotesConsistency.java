@@ -62,7 +62,8 @@ public class VerifyConfirmedEncryptedVotesConsistency extends AbstractVerificati
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final Stream<Stream<ControlComponentBallotBoxPayload>> ballotBoxPayloads = extractionService.getElectionEventContext(inputDirectoryPath)
+		final Stream<Stream<ControlComponentBallotBoxPayload>> ballotBoxPayloads = extractionService.getElectionEventContextPayload(inputDirectoryPath)
+				.getElectionEventContext()
 				.verificationCardSetContexts().stream()
 				.parallel()
 				.map(VerificationCardSetContext::getBallotBoxId)

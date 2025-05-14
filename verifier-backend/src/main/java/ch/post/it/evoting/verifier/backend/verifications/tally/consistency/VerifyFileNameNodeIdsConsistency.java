@@ -18,13 +18,14 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
@@ -68,10 +69,9 @@ public class VerifyFileNameNodeIdsConsistency extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final ImmutableList<Function<Path, Boolean>> validations = ImmutableList.of(
-				this::verifyControlComponentBallotBoxFileNamesConsistency,
-				this::verifyControlComponentShuffleFileNamesConsistency
-		);
+		final List<Function<Path, Boolean>> validations = new ArrayList<>();
+		validations.add(this::verifyControlComponentBallotBoxFileNamesConsistency);
+		validations.add(this::verifyControlComponentShuffleFileNamesConsistency);
 
 		final boolean fileNamesConsistent = validations
 				.stream()

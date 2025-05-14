@@ -20,12 +20,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.nio.file.Path;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
@@ -55,7 +55,7 @@ class VerifyFileNameBallotBoxIdsConsistencyTest extends TallyVerificationTest {
 	@DisplayName("inconsistent ballot box ids is failed")
 	void inconsistentVerificationCardSetIds() {
 		final PathNode pathNodeMock = mock(PathNode.class);
-		when(pathNodeMock.getRegexPaths()).thenReturn(ImmutableList.of(Path.of("11111111111111111111111111111111")));
+		when(pathNodeMock.getRegexPaths()).thenReturn(List.of(Path.of("11111111111111111111111111111111")));
 
 		final PathService pathServiceMock = mock(PathService.class);
 		when(pathServiceMock.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, datasetPath)).thenReturn(pathNodeMock);

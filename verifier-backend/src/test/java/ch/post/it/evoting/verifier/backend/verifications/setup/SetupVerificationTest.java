@@ -21,57 +21,75 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 
-import java.net.URISyntaxException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
+import org.jsfr.json.JsonSurferJackson;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ch.ech.xmlns.ech_0222._1.Delivery;
-import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
+import ch.ech.xmlns.ech_0110._4.Delivery;
 import ch.post.it.evoting.evotinglibraries.domain.mapper.DomainObjectMapper;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.channelsecurity.XMLSignatureService;
 import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
+import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentCodeSharesPayloadDataExtractor;
+import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentPublicKeysPayloadDataExtractor;
+import ch.post.it.evoting.verifier.backend.dataextractors.ElectionEventContextPayloadDataExtractor;
+import ch.post.it.evoting.verifier.backend.dataextractors.EncryptionGroupParametersDataExtractor;
+import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentTallyDataPayloadDataExtractor;
+import ch.post.it.evoting.verifier.backend.dataextractors.SetupComponentVerificationDataPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
-import ch.post.it.evoting.verifier.backend.verifications.authenticity.DatasetSignatureFactory;
+import ch.post.it.evoting.verifier.backend.verifications.authenticity.TestDigitalSignaturesFactory;
 
 public abstract class SetupVerificationTest {
 
-	protected static DatasetSignatureFactory datasetSignatureFactory;
-	protected static SignatureVerification datasetSignatureVerification;
+	protected static TestDigitalSignaturesFactory signatureFactory;
 	protected static AbstractVerification verification;
 	protected static Path datasetPath;
 	protected static PathService pathService;
 	protected static ResultPublisherService resultPublisherServiceMock;
 	protected static ObjectMapper objectMapper;
-	protected static XMLSignatureService xmlSignatureService;
-	protected static XmlFileRepository<Delivery> ech0222XmlFileRepository;
+	protected static XmlFileRepository<Delivery> ech0110XmlFileRepository;
+	protected static XmlFileRepository<ch.ech.xmlns.ech_0222._1.Delivery> ech0222XmlFileRepository;
 	protected static XmlFileRepository<Configuration> configurationXmlFileRepository;
+	protected static XmlFileRepository<Results> resultsXmlFileRepository;
 	protected static ElectionDataExtractionService electionDataExtractionService;
-
-	private static final String datasetLocation = "datasets/D2";
+	protected static ElectionEventContextPayloadDataExtractor electionEventContextPayloadDataExtractor;
+	protected static SetupComponentVerificationDataPayloadDataExtractor setupComponentVerificationDataPayloadDataExtractor;
+	protected static SetupComponentTallyDataPayloadDataExtractor setupComponentTallyDataPayloadDataExtractor;
+	protected static ControlComponentPublicKeysPayloadDataExtractor controlComponentPublicKeysPayloadDataExtractor;
+	protected static ControlComponentCodeSharesPayloadDataExtractor controlComponentCodeSharesPayloadDataExtractor;
+	protected static EncryptionGroupParametersDataExtractor encryptionGroupParametersDataExtractor;
 
 	@BeforeAll
-	static void baseSetUpAll() throws URISyntaxException {
+	static void baseSetUpAll() {
 		pathService = new PathService();
 		resultPublisherServiceMock = mock(ResultPublisherService.class);
 		objectMapper = DomainObjectMapper.getNewInstance();
-		datasetPath = Path.of(SetupVerificationTest.class.getClassLoader().getResource(datasetLocation).toURI());
-		datasetSignatureFactory = new DatasetSignatureFactory();
-		datasetSignatureVerification = datasetSignatureFactory.getSignatureVerification();
+		datasetPath = Paths.get("").toAbsolutePath().getParent().resolve("datasets");
+		signatureFactory = new TestDigitalSignaturesFactory();
+		ech0110XmlFileRepository = new XmlFileRepository<>();
 		ech0222XmlFileRepository = new XmlFileRepository<>();
-		xmlSignatureService = new XMLSignatureService();
 		configurationXmlFileRepository = new XmlFileRepository<>();
-		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper,
-				ech0222XmlFileRepository, configurationXmlFileRepository);
+		electionEventContextPayloadDataExtractor = new ElectionEventContextPayloadDataExtractor(JsonSurferJackson.INSTANCE);
+		setupComponentVerificationDataPayloadDataExtractor = new SetupComponentVerificationDataPayloadDataExtractor(JsonSurferJackson.INSTANCE);
+		setupComponentTallyDataPayloadDataExtractor = new SetupComponentTallyDataPayloadDataExtractor(JsonSurferJackson.INSTANCE);
+		controlComponentPublicKeysPayloadDataExtractor = new ControlComponentPublicKeysPayloadDataExtractor(JsonSurferJackson.INSTANCE);
+		controlComponentCodeSharesPayloadDataExtractor = new ControlComponentCodeSharesPayloadDataExtractor(JsonSurferJackson.INSTANCE);
+		encryptionGroupParametersDataExtractor = new EncryptionGroupParametersDataExtractor(JsonSurferJackson.INSTANCE);
+		electionDataExtractionService = new ElectionDataExtractionService(pathService, objectMapper, ech0110XmlFileRepository,
+				ech0222XmlFileRepository, configurationXmlFileRepository, resultsXmlFileRepository, electionEventContextPayloadDataExtractor,
+				controlComponentCodeSharesPayloadDataExtractor, setupComponentVerificationDataPayloadDataExtractor,
+				controlComponentPublicKeysPayloadDataExtractor, setupComponentTallyDataPayloadDataExtractor);
+		resultsXmlFileRepository = new XmlFileRepository<>();
 	}
 
 	@BeforeEach

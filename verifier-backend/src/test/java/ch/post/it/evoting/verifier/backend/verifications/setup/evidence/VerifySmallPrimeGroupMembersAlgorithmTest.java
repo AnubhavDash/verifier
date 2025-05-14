@@ -63,7 +63,7 @@ class VerifySmallPrimeGroupMembersAlgorithmTest {
 	@Test
 	@DisplayName("too many primes fails")
 	void tooManyPrimesFails() {
-		final GroupVector<PrimeGqElement, GqGroup> tooManyPrimes = primes.append(primes.getFirst());
+		final GroupVector<PrimeGqElement, GqGroup> tooManyPrimes = primes.append(primes.get(0));
 		assertThrows(IllegalArgumentException.class,
 				() -> verifySmallPrimeGroupMembersAlgorithm.verifySmallPrimeGroupMembers(gqGroup, tooManyPrimes));
 	}
@@ -71,7 +71,7 @@ class VerifySmallPrimeGroupMembersAlgorithmTest {
 	@Test
 	@DisplayName("wrong order primes fails")
 	void wrongOrderPrimesFails() {
-		final GroupVector<PrimeGqElement, GqGroup> wrongOrderPrimes = primes.prepend(primes.getFirst())
+		final GroupVector<PrimeGqElement, GqGroup> wrongOrderPrimes = primes.prepend(primes.get(0))
 				.subVector(0, VotingOptionsConstants.MAXIMUM_SUPPORTED_NUMBER_OF_VOTING_OPTIONS);
 		assertThrows(IllegalArgumentException.class,
 				() -> verifySmallPrimeGroupMembersAlgorithm.verifySmallPrimeGroupMembers(gqGroup, wrongOrderPrimes));

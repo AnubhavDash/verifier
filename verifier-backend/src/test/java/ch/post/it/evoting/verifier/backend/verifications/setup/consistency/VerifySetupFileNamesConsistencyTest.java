@@ -16,32 +16,27 @@
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.spy;
-
-import java.nio.file.Path;
-import java.util.Random;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
+import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentPublicKeysPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 
 class VerifySetupFileNamesConsistencyTest extends SetupVerificationTest {
 
-	private final Random random = new Random();
-
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifySetupFileNamesConsistency(resultPublisherServiceMock, pathService, electionDataExtractionService);
+		verification = new VerifySetupFileNamesConsistency(resultPublisherServiceMock, pathService,
+				setupComponentVerificationDataPayloadDataExtractor,
+				controlComponentPublicKeysPayloadDataExtractor, controlComponentCodeSharesPayloadDataExtractor);
 	}
 
 	@Test
@@ -54,26 +49,21 @@ class VerifySetupFileNamesConsistencyTest extends SetupVerificationTest {
 
 	@Test
 	void verifyNok() {
-		final ImmutableList<Path> regexPaths = pathService.buildFromRootPath(StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS, datasetPath).getRegexPaths();
-		final int regexPathsSize = regexPaths.size();
+		final ControlComponentPublicKeysPayloadDataExtractor controlComponentPublicKeysPayloadDataExtractorMock = mock(
+				ControlComponentPublicKeysPayloadDataExtractor.class);
 
-		assumeTrue(regexPathsSize > 1, "This test assumes at least two control component public keys payloads.");
+		final ControlComponentPublicKeysPayload firstPublicKeysPayload =
+				electionDataExtractionService.getControlComponentPublicKeysPayloads(datasetPath).get(0);
 
-		final int firstRandomIndex = random.nextInt(0, regexPathsSize);
-		int secondRandomIndex = firstRandomIndex;
-		while (secondRandomIndex == firstRandomIndex) {
-			secondRandomIndex = random.nextInt(0, regexPathsSize);
-		}
+		final String electionEventId = firstPublicKeysPayload.getElectionEventId();
+		final int nodeId = firstPublicKeysPayload.getControlComponentPublicKeys().nodeId();
 
-		final ControlComponentPublicKeysPayload controlComponentPublicKeysPayload = electionDataExtractionService.getControlComponentPublicKeysPayload(
-				regexPaths.get(firstRandomIndex));
-
-		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(controlComponentPublicKeysPayload).when(extractionServiceSpy)
-				.getControlComponentPublicKeysPayload(regexPaths.get(secondRandomIndex));
+		when(controlComponentPublicKeysPayloadDataExtractorMock.load(any()))
+				.thenReturn(new ControlComponentPublicKeysPayloadDataExtractor.DataExtraction(nodeId, electionEventId));
 
 		final VerifySetupFileNamesConsistency failingVerification = new VerifySetupFileNamesConsistency(resultPublisherServiceMock, pathService,
-				extractionServiceSpy);
+				setupComponentVerificationDataPayloadDataExtractor, controlComponentPublicKeysPayloadDataExtractorMock,
+				controlComponentCodeSharesPayloadDataExtractor);
 		final VerificationResult verificationResult = failingVerification.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),

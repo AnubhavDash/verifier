@@ -69,10 +69,10 @@ class VerifyElectionPublicKeyConsistencyTest extends SetupVerificationTest {
 		final SetupComponentPublicKeysPayload modifiedSetupComponentPublicKeysPayload = new SetupComponentPublicKeysPayload(
 				setupComponentPublicKeysPayload.getEncryptionGroup(), setupComponentPublicKeysPayload.getElectionEventId(), modifiedSetupComponentPublicKeys);
 
-		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
-		doReturn(modifiedSetupComponentPublicKeysPayload).when(extractionServiceSpy).getSetupComponentPublicKeysPayload(datasetPath);
+		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
+		doReturn(modifiedSetupComponentPublicKeysPayload).when(extractionServiceMock).getSetupComponentPublicKeysPayload(datasetPath);
 
-		final VerifyElectionPublicKeyConsistency verificationWithMock = new VerifyElectionPublicKeyConsistency(EL_GAMAL, extractionServiceSpy,
+		final VerifyElectionPublicKeyConsistency verificationWithMock = new VerifyElectionPublicKeyConsistency(EL_GAMAL, extractionServiceMock,
 				resultPublisherServiceMock);
 
 		final VerificationResult result = verificationWithMock.verify(datasetPath);

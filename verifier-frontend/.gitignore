@@ -11,7 +11,6 @@
 /app/node_modules
 /npm/cache/
 /app/node_modules
-/vendor
 
 # IDEs and editors
 /.idea
@@ -31,6 +30,7 @@
 
 # misc
 /.angular/cache
+/.nx
 /.sass-cache
 /connect.lock
 /coverage
@@ -49,5 +49,3 @@ testem.log
 Thumbs.db
 
 *.iml
-
-.nx

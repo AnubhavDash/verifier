@@ -15,14 +15,13 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static ch.post.it.evoting.verifier.backend.tools.TranslationHelper.getFromResourceBundle;
 
 import java.nio.file.Path;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
@@ -80,71 +79,67 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 		}
 	}
 
-	private ImmutableList<TallyPayloadsSizes> extractTallyPayloadsSizes(final Path inputDirectoryPath) {
+	private List<TallyPayloadsSizes> extractTallyPayloadsSizes(final Path inputDirectoryPath) {
 		final PathNode ballotBoxesPathNode = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 
 		return ballotBoxesPathNode.getRegexPaths().stream()
 				.parallel()
 				.map(ballotBoxPath -> {
-					final ImmutableList<Integer> numberOfConfirmedVotesControlComponentBallotBoxes = electionDataExtractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(
-									ballotBoxPath)
-							.parallel()
-							.map(controlComponentBallotBoxPayload -> controlComponentBallotBoxPayload.getConfirmedEncryptedVotes().size())
-							.collect(toImmutableList());
-
-					final ImmutableList<Integer> numberOfMixedVotesControlComponentShuffles = electionDataExtractionService.getControlComponentShufflePayloadsOrderedByNodeId(
-									ballotBoxPath)
-							.parallel()
-							.map(controlComponentShufflePayload -> controlComponentShufflePayload.getVerifiableShuffle().shuffledCiphertexts().size())
-							.collect(toImmutableList());
+					final TallyComponentVotesPayload tallyComponentVotesPayload =
+							electionDataExtractionService.getTallyComponentVotesPayload(ballotBoxPath);
+					final int tallyComponentVotesPayloadSize = tallyComponentVotesPayload.getVotes().size();
 
 					final TallyComponentShufflePayload tallyComponentShufflePayload =
 							electionDataExtractionService.getTallyComponentShufflePayload(ballotBoxPath);
-					final int numberOfMixedVotesTallyComponentShuffles = tallyComponentShufflePayload.getVerifiableShuffle().shuffledCiphertexts()
-							.size();
+					final int tallyComponentShufflePayloadSize = tallyComponentShufflePayload.getVerifiableShuffle().shuffledCiphertexts().size();
 
-					final TallyComponentVotesPayload tallyComponentVotesPayload =
-							electionDataExtractionService.getTallyComponentVotesPayload(ballotBoxPath);
-					final int numberOfConfirmedVotesTallyComponentVotes = tallyComponentVotesPayload.getDecryptedVotes().size();
+					final List<Integer> controlComponentBallotBoxPayloadsSizes = electionDataExtractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(
+									ballotBoxPath)
+							.parallel()
+							.map(controlComponentBallotBoxPayload -> controlComponentBallotBoxPayload.getConfirmedEncryptedVotes().size())
+							.toList();
 
-					return new TallyPayloadsSizes(numberOfConfirmedVotesControlComponentBallotBoxes, numberOfMixedVotesControlComponentShuffles,
-							numberOfMixedVotesTallyComponentShuffles, numberOfConfirmedVotesTallyComponentVotes
-					);
-				}).collect(toImmutableList());
+					final List<Integer> controlComponentShufflePayloadsSizes = electionDataExtractionService.getControlComponentShufflePayloadsOrderedByNodeId(
+									ballotBoxPath)
+							.parallel()
+							.map(controlComponentShufflePayload -> controlComponentShufflePayload.getVerifiableShuffle().shuffledCiphertexts().size())
+							.toList();
+
+					return new TallyPayloadsSizes(tallyComponentVotesPayloadSize, tallyComponentShufflePayloadSize,
+							controlComponentBallotBoxPayloadsSizes, controlComponentShufflePayloadsSizes);
+				}).toList();
 	}
 
-	@SuppressWarnings("java:S117")
 	private boolean verifyConsistency(final TallyPayloadsSizes tallyPayloadsSizes) {
-		final int N_C_TallyControlComponentVotes = tallyPayloadsSizes.numberOfConfirmedVotesTallyComponentVotes();
-		final ImmutableList<Integer> numberOfConfirmedVotesControlComponentBallotBoxes = tallyPayloadsSizes.numberOfConfirmedVotesControlComponentBallotBoxes();
-		final boolean identicalNumberOfConfirmedVotes = numberOfConfirmedVotesControlComponentBallotBoxes.stream()
+		final int tallyComponentVotesPayloadSize = tallyPayloadsSizes.tallyComponentVotesPayloadSize();
+		final int tallyComponentShufflePayloadSize = tallyPayloadsSizes.tallyComponentShufflePayloadSize();
+		final List<Integer> controlComponentBallotBoxPayloadsSizes = tallyPayloadsSizes.controlComponentBallotBoxPayloadsSizes();
+		final List<Integer> controlComponentShufflePayloadsSizes = tallyPayloadsSizes.controlComponentShufflePayloadsSizes();
+		final int expectedSize = tallyComponentVotesPayloadSize;
+
+		final boolean isTallyComponentShufflePayloadConsistent =
+				// TallyComponentShufflePayload contains 2 dummy votes for the case there is less than 2 actual votes.
+				(expectedSize < 2) ? tallyComponentShufflePayloadSize == expectedSize + 2 : tallyComponentShufflePayloadSize == expectedSize;
+
+		final boolean areControlComponentBallotBoxPayloadsConsistent = controlComponentBallotBoxPayloadsSizes.stream()
 				.parallel()
-				.allMatch(N_C_ControlComponentBallotBox -> N_C_ControlComponentBallotBox == N_C_TallyControlComponentVotes);
+				.allMatch(controlComponentBallotBoxPayloadsSize -> controlComponentBallotBoxPayloadsSize == expectedSize);
 
-		final int N_C_hat_TallyControlComponentShuffle = tallyPayloadsSizes.numberOfMixedVotesTallyComponentShuffles();
-		final ImmutableList<Integer> numberOfMixedVotesControlComponentShuffles = tallyPayloadsSizes.numberOfMixedVotesControlComponentShuffles();
-		final boolean identicalNumberOfMixedVotes = numberOfMixedVotesControlComponentShuffles.stream()
+		final boolean areControlComponentShufflePayloadsConsistent = controlComponentShufflePayloadsSizes.stream()
 				.parallel()
-				.allMatch(N_C_hat_OnlineControlComponentShuffle -> N_C_hat_OnlineControlComponentShuffle == N_C_hat_TallyControlComponentShuffle);
+				// controlComponentShufflePayload contains 2 dummy votes for the case there is less than 2 actual votes.
+				.allMatch(controlComponentShufflePayloadsSize -> (expectedSize < 2) ?
+						controlComponentShufflePayloadsSize == expectedSize + 2 : controlComponentShufflePayloadsSize == expectedSize);
 
-		final int N_C = N_C_TallyControlComponentVotes;
-		final int N_C_hat = N_C_hat_TallyControlComponentShuffle;
-		final boolean correctCorrespondanceConfirmedVotesAndMixedVotes =
-				// If there are less than 2 confirmed votes, TallyComponentShufflePayload and ControlComponentShufflePayload contain 2 dummy votes.
-				(N_C < 2) ?
-						N_C_hat == N_C + 2 :
-						N_C_hat == N_C;
-
-		return identicalNumberOfConfirmedVotes
-				&& identicalNumberOfMixedVotes
-				&& correctCorrespondanceConfirmedVotesAndMixedVotes;
+		return isTallyComponentShufflePayloadConsistent
+				&& areControlComponentBallotBoxPayloadsConsistent
+				&& areControlComponentShufflePayloadsConsistent;
 	}
 
-	private record TallyPayloadsSizes(ImmutableList<Integer> numberOfConfirmedVotesControlComponentBallotBoxes,
-									  ImmutableList<Integer> numberOfMixedVotesControlComponentShuffles,
-									  int numberOfMixedVotesTallyComponentShuffles,
-									  int numberOfConfirmedVotesTallyComponentVotes
-	) {
+	private record TallyPayloadsSizes(int tallyComponentVotesPayloadSize,
+									  int tallyComponentShufflePayloadSize,
+									  List<Integer> controlComponentBallotBoxPayloadsSizes,
+									  List<Integer> controlComponentShufflePayloadsSizes) {
 	}
 
 }

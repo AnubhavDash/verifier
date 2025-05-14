@@ -19,7 +19,10 @@ import static ch.post.it.evoting.cryptoprimitives.utils.Validations.allEqual;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import java.util.List;
+
+import com.google.common.base.Preconditions;
+
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientMessage;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
@@ -30,50 +33,53 @@ import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
  *
  * <ul>
  *     <li>m, the list of plaintext votes. Non-null.</li>
- *     <li>L<sub>votes</sub>, the list of decrypted votes. Non-null.</li>
- *     <li>L<sub>decodedVotes</sub>, the list of decoded votes. Non-null.</li>
- *     <li>L<sub>writeIns</sub>, the list of decoded write-ins. Non-null.</li>
+ *     <li>L<sub>votes</sub>, the list of all selected encoded voting options. Non-null.</li>
+ *     <li>L<sub>decodedVotes</sub>, the list of all selected decoded voting options. Non-null.</li>
+ *     <li>L<sub>writeIns</sub>, the list of all selected decoded write-in votes. Non-null.</li>
  * </ul>
  */
 public class VerifyProcessPlaintextsInput {
 
 	private final GroupVector<ElGamalMultiRecipientMessage, GqGroup> plaintextVotes;
-	private final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> listOfDecryptedVotes;
-	private final ImmutableList<ImmutableList<String>> listOfDecodedVotes;
-	private final ImmutableList<ImmutableList<String>> listOfDecodedWriteIns;
+	private final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> selectedEncodedVotingOptions;
+	private final List<List<String>> selectedDecodedVotingOptions;
+	private final List<List<String>> selectedDecodedWriteInVotes;
 
 	private VerifyProcessPlaintextsInput(final GroupVector<ElGamalMultiRecipientMessage, GqGroup> plaintextVotes,
-			final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> listOfDecryptedVotes,
-			final ImmutableList<ImmutableList<String>> listOfDecodedVotes,
-			final ImmutableList<ImmutableList<String>> listOfDecodedWriteIns) {
+			final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> selectedEncodedVotingOptions,
+			final List<List<String>> selectedDecodedVotingOptions, final List<List<String>> selectedDecodedWriteInVotes) {
 		this.plaintextVotes = plaintextVotes;
-		this.listOfDecryptedVotes = listOfDecryptedVotes;
-		this.listOfDecodedVotes = listOfDecodedVotes;
-		this.listOfDecodedWriteIns = listOfDecodedWriteIns;
+		this.selectedEncodedVotingOptions = selectedEncodedVotingOptions;
+		this.selectedDecodedVotingOptions = selectedDecodedVotingOptions;
+		this.selectedDecodedWriteInVotes = selectedDecodedWriteInVotes;
 	}
 
 	public GroupVector<ElGamalMultiRecipientMessage, GqGroup> getPlaintextVotes() {
 		return plaintextVotes;
 	}
 
-	public GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> getListOfDecryptedVotes() {
-		return listOfDecryptedVotes;
+	public GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> getSelectedEncodedVotingOptions() {
+		return selectedEncodedVotingOptions;
 	}
 
-	public ImmutableList<ImmutableList<String>> getListOfDecodedVotes() {
-		return listOfDecodedVotes;
+	public List<List<String>> getSelectedDecodedVotingOptions() {
+		return selectedDecodedVotingOptions.stream()
+				.map(List::copyOf)
+				.toList();
 	}
 
-	public ImmutableList<ImmutableList<String>> getListOfDecodedWriteIns() {
-		return listOfDecodedWriteIns;
+	public List<List<String>> getSelectedDecodedWriteInVotes() {
+		return selectedDecodedWriteInVotes.stream()
+				.map(List::copyOf)
+				.toList();
 	}
 
 	public static class Builder {
 
 		private GroupVector<ElGamalMultiRecipientMessage, GqGroup> plaintextVotes;
-		private GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> listOfDecryptedVotes;
-		private ImmutableList<ImmutableList<String>> listOfDecodedVotes;
-		private ImmutableList<ImmutableList<String>> listOfDecodedWriteIns;
+		private GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> selectedEncodedVotingOptions;
+		private List<List<String>> selectedDecodedVotingOptions;
+		private List<List<String>> selectedDecodedWriteInVotes;
 
 		public Builder setPlaintextVotes(
 				final GroupVector<ElGamalMultiRecipientMessage, GqGroup> plaintextVotes) {
@@ -81,19 +87,30 @@ public class VerifyProcessPlaintextsInput {
 			return this;
 		}
 
-		public Builder setListOfDecryptedVotes(
-				final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> listOfDecryptedVotes) {
-			this.listOfDecryptedVotes = listOfDecryptedVotes;
+		public Builder setSelectedEncodedVotingOptions(
+				final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> selectedEncodedVotingOptions) {
+			this.selectedEncodedVotingOptions = selectedEncodedVotingOptions;
 			return this;
 		}
 
-		public Builder setListOfDecodedVotes(final ImmutableList<ImmutableList<String>> listOfDecodedVotes) {
-			this.listOfDecodedVotes = checkNotNull(listOfDecodedVotes);
+		public Builder setSelectedDecodedVotingOptions(final List<List<String>> selectedDecodedVotingOptions) {
+			final List<List<String>> selectedDecodedVotingOptionsCopy = List.copyOf(checkNotNull(selectedDecodedVotingOptions));
+			selectedDecodedVotingOptionsCopy.stream().parallel().forEach(Preconditions::checkNotNull);
+			selectedDecodedVotingOptionsCopy.stream().parallel().forEach(options -> options.forEach(Preconditions::checkNotNull));
+			this.selectedDecodedVotingOptions = selectedDecodedVotingOptionsCopy.stream()
+					.parallel()
+					.map(List::copyOf)
+					.toList();
 			return this;
 		}
 
-		public Builder setListOfDecodedWriteIns(final ImmutableList<ImmutableList<String>> listOfDecodedWriteIns) {
-			this.listOfDecodedWriteIns = checkNotNull(listOfDecodedWriteIns);
+		public Builder setSelectedDecodedWriteInVotes(final List<List<String>> selectedDecodedWriteInVotes) {
+			final List<List<String>> selectedDecodedWriteInVotesCopy = List.copyOf(checkNotNull(selectedDecodedWriteInVotes));
+			selectedDecodedWriteInVotesCopy.forEach(Preconditions::checkNotNull);
+			selectedDecodedWriteInVotesCopy.forEach(options -> options.forEach(Preconditions::checkNotNull));
+			this.selectedDecodedWriteInVotes = selectedDecodedWriteInVotesCopy.stream()
+					.map(List::copyOf)
+					.toList();
 			return this;
 		}
 
@@ -101,31 +118,32 @@ public class VerifyProcessPlaintextsInput {
 		 * @throws NullPointerException     if any parameter is null.
 		 * @throws IllegalArgumentException if
 		 *                                  <ul>
-		 *                                      <li>the plaintext votes and the decrypted votes do not have the same group.</li>
-		 *                                      <li>there is a different number of decrypted votes and decoded votes.</li>
-		 *                                      <li>there is a different number of write-ins and decrypted votes.</li>
+		 *                                      <li>the plaintext votes and the selected encoded voting options do not have the same group.</li>
+		 *                                      <li>there is a different number of selected encoded and decoded voting options.</li>
+		 *                                      <li>there is a different number of selected write-in votes and selected encoded voting options.</li>
 		 *                                  </ul>
 		 */
 		public VerifyProcessPlaintextsInput build() {
 			checkNotNull(plaintextVotes);
-			checkNotNull(listOfDecryptedVotes);
+			checkNotNull(selectedEncodedVotingOptions);
 
 			// Cross-group checks.
-			checkArgument(listOfDecryptedVotes.isEmpty() || listOfDecryptedVotes.getGroup().equals(plaintextVotes.getGroup()),
-					"The decrypted votes and plaintexts votes must have the same group.");
+			checkArgument(selectedEncodedVotingOptions.isEmpty() || selectedEncodedVotingOptions.getGroup().equals(plaintextVotes.getGroup()),
+					"The selected encoded voting options and plaintexts votes must have the same group.");
 
 			// Cross-size checks.
-			checkArgument(listOfDecryptedVotes.size() == listOfDecodedVotes.size(),
-					"There must be as many decrypted votes as decoded votes.");
-			checkArgument(listOfDecodedWriteIns.size() == listOfDecryptedVotes.size(),
-					"There must be as many write-ins as decrypted votes.");
-			checkArgument(allEqual(listOfDecodedVotes.stream(), ImmutableList::size),
-					"All decoded votes must have the same size.");
-			checkArgument(listOfDecryptedVotes.isEmpty()
-							|| listOfDecryptedVotes.getElementSize() == listOfDecodedVotes.get(0).size(),
-					"All decrypted votes and decoded votes must have the same size.");
+			checkArgument(selectedEncodedVotingOptions.size() == selectedDecodedVotingOptions.size(),
+					"There must be as many encoded as decoded voting options.");
+			checkArgument(selectedDecodedWriteInVotes.size() == selectedEncodedVotingOptions.size(),
+					"There must be as many decoded write-in votes as encoded voting options.");
+			checkArgument(allEqual(selectedDecodedVotingOptions.stream(), List::size),
+					"All selected decoded voting options must have the same size.");
+			checkArgument(selectedEncodedVotingOptions.isEmpty()
+							|| selectedEncodedVotingOptions.getElementSize() == selectedDecodedVotingOptions.get(0).size(),
+					"All selected encoded and decoded voting options must have the same size.");
 
-			return new VerifyProcessPlaintextsInput(plaintextVotes, listOfDecryptedVotes, listOfDecodedVotes, listOfDecodedWriteIns);
+			return new VerifyProcessPlaintextsInput(plaintextVotes, selectedEncodedVotingOptions, selectedDecodedVotingOptions,
+					selectedDecodedWriteInVotes);
 		}
 	}
 }

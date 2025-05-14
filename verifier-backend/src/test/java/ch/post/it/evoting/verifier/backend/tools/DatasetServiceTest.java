@@ -25,7 +25,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -51,6 +50,9 @@ class DatasetServiceTest {
 
 	private static final String DATASET_CONTEXT_EXPECTED_FILE = "configuration-anonymized.xml";
 	private static final String DATASET_CONTEXT_EXPECTED_FOLDER = "context";
+	private static final String DATASET_SETUP_EXPECTED_FILE = "controlComponentCodeSharesPayload.0.json";
+	private static final String DATASET_SETUP_EXPECTED_FOLDER = Paths.get("setup", "verificationCardSets", "43B803449095FA47C0335A3B489FB61B")
+			.toString();
 	private static final String DATASET_TALLY_EXPECTED_FILE = "controlComponentBallotBoxPayload_1.json";
 	private static final String DATASET_TALLY_EXPECTED_FOLDER = Paths.get("tally", "ballotBoxes", "0E65660B5AF70D18DA2D47C3F4718102").toString();
 
@@ -95,6 +97,7 @@ class DatasetServiceTest {
 	static Stream<Arguments> testUnpackDataset() {
 		return Stream.of(
 				Arguments.of(DatasetType.CONTEXT, DATASET_CONTEXT_EXPECTED_FOLDER, DATASET_CONTEXT_EXPECTED_FILE),
+				Arguments.of(DatasetType.SETUP, DATASET_SETUP_EXPECTED_FOLDER, DATASET_SETUP_EXPECTED_FILE),
 				Arguments.of(DatasetType.TALLY, DATASET_TALLY_EXPECTED_FOLDER, DATASET_TALLY_EXPECTED_FILE)
 		);
 	}
@@ -122,8 +125,12 @@ class DatasetServiceTest {
 
 	static Stream<Arguments> testUnpackWrongDatasetType() {
 		return Stream.of(
+				Arguments.of(DatasetType.SETUP, DATASET_CONTEXT_EXPECTED_FOLDER, DATASET_CONTEXT_EXPECTED_FILE),
 				Arguments.of(DatasetType.TALLY, DATASET_CONTEXT_EXPECTED_FOLDER, DATASET_CONTEXT_EXPECTED_FILE),
-				Arguments.of(DatasetType.CONTEXT, DATASET_TALLY_EXPECTED_FOLDER, DATASET_TALLY_EXPECTED_FILE)
+				Arguments.of(DatasetType.CONTEXT, DATASET_SETUP_EXPECTED_FOLDER, DATASET_SETUP_EXPECTED_FILE),
+				Arguments.of(DatasetType.TALLY, DATASET_SETUP_EXPECTED_FOLDER, DATASET_SETUP_EXPECTED_FILE),
+				Arguments.of(DatasetType.CONTEXT, DATASET_TALLY_EXPECTED_FOLDER, DATASET_TALLY_EXPECTED_FILE),
+				Arguments.of(DatasetType.SETUP, DATASET_TALLY_EXPECTED_FOLDER, DATASET_TALLY_EXPECTED_FILE)
 		);
 	}
 
@@ -137,10 +144,10 @@ class DatasetServiceTest {
 
 		createDatasetZip(zipName);
 
-		final Dataset dataset = new Dataset(Files.newInputStream(zipDirectory.resolve(zipName)), unpackFolder, DatasetType.TALLY);
+		final Dataset dataset = new Dataset(Files.newInputStream(zipDirectory.resolve(zipName)), unpackFolder, DatasetType.SETUP);
 
 		final IllegalStateException exception = assertThrows(IllegalStateException.class, () -> datasetService.unpack(dataset));
-		assertEquals("The given zip does not correspond to a tally dataset.", Throwables.getRootCause(exception).getMessage());
+		assertEquals("The dataset does not have the expected type. [expectedType: setup]", Throwables.getRootCause(exception).getMessage());
 	}
 
 	private void createDatasetZip(final String zipName) throws IOException {
@@ -161,7 +168,7 @@ class DatasetServiceTest {
 						inputStream.transferTo(zipOutputStream);
 						zipOutputStream.closeEntry();
 					} catch (final IOException e) {
-						throw new UncheckedIOException(e);
+						throw new RuntimeException(e);
 					}
 				}
 			});

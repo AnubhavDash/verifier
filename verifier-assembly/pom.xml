@@ -20,7 +20,7 @@
 	<parent>
 		<artifactId>verifier</artifactId>
 		<groupId>ch.post.it.evoting.verifier</groupId>
-		<version>1.6.0.0-RC8</version>
+		<version>1.5.5.0-b0</version>
 	</parent>
 
 	<artifactId>verifier-assembly</artifactId>
@@ -84,6 +84,10 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>ch.galinet</groupId>
+				<artifactId>reproducible-build-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>

@@ -1,0 +1,43 @@
+<!--
+  ~ (c) Copyright 2024 Swiss Post Ltd.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<div class="row mb-2">
+  <div class="col-12">
+    <div class="btn-group btn-block">
+      <input (click)="changeModeToSetup()" [disabled]="changeModeDisabled" autocomplete="off" class="custom-control-input visually-hidden"
+             data-bs-target="#changeModeModal" data-bs-toggle="modal" id="setupMode" type="radio">
+      <label [class.active]="isSetupMode()" class="btn btn-outline-dark" for="setupMode">Setup Mode</label>
+      <input (click)="changeModeToTally()" [disabled]="changeModeDisabled" autocomplete="off" class="custom-control-input visually-hidden"
+             data-bs-target="#changeModeModal" data-bs-toggle="modal" id="tallyMode" type="radio">
+      <label [class.active]="isTallyMode()" class="btn btn-outline-dark" for="tallyMode">Tally Mode</label>
+    </div>
+  </div>
+</div>
+<div *ngIf="triggerModal" aria-hidden="true" aria-labelledby="changeModeModalTitle" class="modal fade" id="changeModeModal" role="dialog" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="changeModeModalTitle">Careful!</h5>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to change the mode? All information will be lost.
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Keep mode</button>
+        <button (click)="changeMode()" class="btn btn-danger" data-bs-dismiss="modal" type="button">Change mode</button>
+      </div>
+    </div>
+  </div>
+</div>

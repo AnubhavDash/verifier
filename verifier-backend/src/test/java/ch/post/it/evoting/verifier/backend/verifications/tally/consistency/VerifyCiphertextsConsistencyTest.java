@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.PrimesMappingTableAlgorithms;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
@@ -51,7 +52,8 @@ class VerifyCiphertextsConsistencyTest extends TallyVerificationTest {
 
 	@Test
 	void testVerifyNokBallotBoxCiphertexts() {
-		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContext(datasetPath);
+		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(datasetPath);
+		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
 		final PrimesMappingTable primesMappingTable = electionEventContext.verificationCardSetContexts().get(0).getPrimesMappingTable();
 		final int numberOfWriteInsPlusOne = primesMappingTableAlgorithms.getDelta(primesMappingTable);
 		doReturn(numberOfWriteInsPlusOne + 1).when(primesMappingTableAlgorithms).getDelta(any());

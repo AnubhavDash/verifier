@@ -15,16 +15,19 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static ch.post.it.evoting.cryptoprimitives.utils.Validations.allEqual;
+import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import com.google.common.base.Preconditions;
+
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
@@ -32,7 +35,6 @@ import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.mixnet.VerifiableShuffle;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.PlaintextEqualityProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.VerifiableDecryptions;
-import ch.post.it.evoting.evotinglibraries.domain.ControlComponentNode;
 import ch.post.it.evoting.evotinglibraries.domain.common.EncryptedVerifiableVote;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
@@ -67,45 +69,47 @@ import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBo
  */
 public class VerifyOnlineControlComponentsBallotBoxInput {
 
-	private final ImmutableList<EncryptedVerifiableVote> controlComponentsLists;
-	private final ImmutableList<VerifiableShuffle> precedingShuffle;
-	private final ImmutableList<VerifiableDecryptions> precedingPartialDecryptions;
-	private final ImmutableList<String> verificationCardIds;
+	private final List<EncryptedVerifiableVote> controlComponentsLists;
+	private final List<VerifiableShuffle> precedingShuffle;
+	private final List<VerifiableDecryptions> precedingPartialDecryptions;
+	private final List<String> verificationCardIds;
 	private final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> verificationCardPublicKeys;
 
 	public VerifyOnlineControlComponentsBallotBoxInput(final ControlComponentBallotBoxPayload firstControlComponentBallotBox,
-			final ImmutableList<ControlComponentShufflePayload> controlComponentShuffles,
+			final List<ControlComponentShufflePayload> controlComponentShuffles,
 			final SetupComponentTallyDataPayload setupComponentTallyDataPayload) {
 		checkNotNull(setupComponentTallyDataPayload);
 		verifyConsistency(checkNotNull(firstControlComponentBallotBox));
-		checkNotNull(controlComponentShuffles);
-		checkArgument(controlComponentShuffles.size() == ControlComponentNode.ids().size());
-		verifyConsistency(controlComponentShuffles);
+		final List<ControlComponentShufflePayload> controlComponentShufflesCopy = checkNotNull(controlComponentShuffles).stream()
+				.map(Preconditions::checkNotNull)
+				.toList();
+		checkArgument(controlComponentShufflesCopy.size() == NODE_IDS.size());
+		verifyConsistency(controlComponentShufflesCopy);
 
 		// id consistency checks.
 		checkState(
 				allEqual(Stream.of(firstControlComponentBallotBox.getEncryptionGroup(),
-								controlComponentShuffles.get(0).getEncryptionGroup(),
+								controlComponentShufflesCopy.get(0).getEncryptionGroup(),
 								setupComponentTallyDataPayload.getEncryptionGroup()),
 						Function.identity()),
 				"The first control component ballot box payload, the control component shuffle payloads and the setup component tally data payload must have the same group.");
 		checkState(
 				allEqual(Stream.of(firstControlComponentBallotBox.getElectionEventId(),
-								controlComponentShuffles.get(0).getElectionEventId(),
+								controlComponentShufflesCopy.get(0).getElectionEventId(),
 								setupComponentTallyDataPayload.getElectionEventId()),
 						Function.identity()),
 				"The first control component ballot box payload, the control component shuffle payloads and the setup component tally data payload must have the same election event id.");
 		final String ballotBoxId = firstControlComponentBallotBox.getBallotBoxId();
-		checkState(ballotBoxId.equals(controlComponentShuffles.get(0).getBallotBoxId()),
+		checkState(ballotBoxId.equals(controlComponentShufflesCopy.get(0).getBallotBoxId()),
 				"The The first control component ballot box payload and the control component shuffle payloads must have the same ballot box id.");
 
 		this.controlComponentsLists = firstControlComponentBallotBox.getConfirmedEncryptedVotes();
-		this.precedingShuffle = controlComponentShuffles.stream().parallel()
+		this.precedingShuffle = controlComponentShufflesCopy.stream().parallel()
 				.map(ControlComponentShufflePayload::getVerifiableShuffle)
-				.collect(toImmutableList());
-		this.precedingPartialDecryptions = controlComponentShuffles.stream().parallel()
+				.toList();
+		this.precedingPartialDecryptions = controlComponentShufflesCopy.stream().parallel()
 				.map(ControlComponentShufflePayload::getVerifiableDecryptions)
-				.collect(toImmutableList());
+				.toList();
 		this.verificationCardIds = setupComponentTallyDataPayload.getVerificationCardIds();
 		this.verificationCardPublicKeys = setupComponentTallyDataPayload.getVerificationCardPublicKeys();
 
@@ -118,19 +122,19 @@ public class VerifyOnlineControlComponentsBallotBoxInput {
 				setupComponentTallyDataPayload.getVerificationCardPublicKeys().size(), controlComponentsLists.size());
 	}
 
-	public ImmutableList<EncryptedVerifiableVote> getControlComponentsLists() {
+	public List<EncryptedVerifiableVote> getControlComponentsLists() {
 		return controlComponentsLists;
 	}
 
-	public ImmutableList<VerifiableShuffle> getPrecedingShuffle() {
+	public List<VerifiableShuffle> getPrecedingShuffle() {
 		return precedingShuffle;
 	}
 
-	public ImmutableList<VerifiableDecryptions> getPrecedingPartialDecryptions() {
+	public List<VerifiableDecryptions> getPrecedingPartialDecryptions() {
 		return precedingPartialDecryptions;
 	}
 
-	public ImmutableList<String> getVerificationCardIds() {
+	public List<String> getVerificationCardIds() {
 		return verificationCardIds;
 	}
 
@@ -144,7 +148,7 @@ public class VerifyOnlineControlComponentsBallotBoxInput {
 
 	private void verifyConsistency(final ControlComponentBallotBoxPayload firstControlComponentBallotBox) {
 		checkArgument(firstControlComponentBallotBox.getNodeId() == 1, "Wrong control component ballot box payload.");
-		final ImmutableList<EncryptedVerifiableVote> encryptedVerifiableVotes = firstControlComponentBallotBox.getConfirmedEncryptedVotes();
+		final List<EncryptedVerifiableVote> encryptedVerifiableVotes = firstControlComponentBallotBox.getConfirmedEncryptedVotes();
 		checkArgument(
 				allEqual(encryptedVerifiableVotes.stream().map(EncryptedVerifiableVote::encryptedVote), ElGamalMultiRecipientCiphertext::size),
 				"All encrypted, confirmed votes must have the same size.");
@@ -167,31 +171,29 @@ public class VerifyOnlineControlComponentsBallotBoxInput {
 				"All plaintext equality proofs must the same size and it must be equal to 2.");
 	}
 
-	private void verifyConsistency(final ImmutableList<ControlComponentShufflePayload> controlComponentShuffles) {
+	private void verifyConsistency(final List<ControlComponentShufflePayload> controlComponentShuffles) {
 		checkState(allEqual(controlComponentShuffles.stream(), ControlComponentShufflePayload::getEncryptionGroup),
 				"All control component shuffle payloads must have the same group.");
 		checkState(allEqual(controlComponentShuffles.stream(), ControlComponentShufflePayload::getElectionEventId),
 				"All control component shuffle payloads must have the same election event id.");
 		checkState(allEqual(controlComponentShuffles.stream(), ControlComponentShufflePayload::getBallotBoxId),
 				"All control component shuffle payloads must have the same ballot box id.");
-		checkState(ControlComponentNode.ids().size() == controlComponentShuffles.size(), "Wrong number of control component shuffle payloads.");
-		final ImmutableList<Integer> shufflePayloadsNodeIds = controlComponentShuffles.stream()
+		checkState(NODE_IDS.size() == controlComponentShuffles.size(), "Wrong number of control component shuffle payloads.");
+		final List<Integer> shufflePayloadsNodeIds = controlComponentShuffles.stream()
 				.map(ControlComponentShufflePayload::getNodeId)
-				.collect(toImmutableList());
-		checkState(ControlComponentNode.ids().equals(shufflePayloadsNodeIds.toImmutableSet()),
-				"The control component shuffle payloads contain invalid node ids.");
-		final ImmutableList<VerifiableShuffle> verifiableShuffles = controlComponentShuffles.stream()
+				.toList();
+		checkState(NODE_IDS.equals(new HashSet<>(shufflePayloadsNodeIds)), "The control component shuffle payloads contain invalid node ids.");
+		final List<VerifiableShuffle> verifiableShuffles = controlComponentShuffles.stream()
 				.map(ControlComponentShufflePayload::getVerifiableShuffle)
-				.collect(toImmutableList());
-		final ImmutableList<VerifiableDecryptions> verifiableDecryptions = controlComponentShuffles.stream()
+				.toList();
+		final List<VerifiableDecryptions> verifiableDecryptions = controlComponentShuffles.stream()
 				.map(ControlComponentShufflePayload::getVerifiableDecryptions)
-				.collect(toImmutableList());
-		checkArgument(verifiableShuffles.size() == ControlComponentNode.ids().size(),
-				"There must be as many shuffle proofs as there are nodes. [nodeIdsSize: %s]",
-				ControlComponentNode.ids().size());
-		checkArgument(verifiableDecryptions.size() == ControlComponentNode.ids().size(),
+				.toList();
+		checkArgument(verifiableShuffles.size() == NODE_IDS.size(), "There must be as many shuffle proofs as there are nodes. [nodeIdsSize: %s]",
+				NODE_IDS.size());
+		checkArgument(verifiableDecryptions.size() == NODE_IDS.size(),
 				"There must be as many decryption proofs as there are nodes. [nodeIdsSize: %s]",
-				ControlComponentNode.ids().size());
+				NODE_IDS.size());
 		checkArgument(
 				allEqual(Stream.concat(verifiableShuffles.stream().map(VerifiableShuffle::shuffledCiphertexts),
 								verifiableDecryptions.stream().map(VerifiableDecryptions::getCiphertexts)),

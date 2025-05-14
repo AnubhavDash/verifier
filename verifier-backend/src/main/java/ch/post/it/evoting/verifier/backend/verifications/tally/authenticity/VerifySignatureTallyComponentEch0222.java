@@ -15,23 +15,27 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.authenticity;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.PublicKey;
+import java.security.SignatureException;
 
 import org.springframework.stereotype.Component;
+import org.w3c.dom.Element;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.MoreCollectors;
 
+import ch.ech.xmlns.ech_0155._4.ExtensionType;
+import ch.ech.xmlns.ech_0222._1.Delivery;
+import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
+import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
+import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.channelsecurity.XMLSignatureService;
+import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableEch0222Factory;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -46,18 +50,15 @@ import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerification
 public class VerifySignatureTallyComponentEch0222 extends AbstractVerification {
 
 	private final ElectionDataExtractionService electionDataExtractionService;
-	private final XMLSignatureService xmlSignatureService;
-	private final KeyStore keyStore;
+	private final SignatureVerification signatureVerification;
 
 	protected VerifySignatureTallyComponentEch0222(
 			final ResultPublisherService resultPublisherService,
 			final ElectionDataExtractionService electionDataExtractionService,
-			final XMLSignatureService xmlSignatureService,
-			final KeyStore keyStore) {
+			final SignatureVerification signatureVerification) {
 		super(resultPublisherService);
 		this.electionDataExtractionService = electionDataExtractionService;
-		this.xmlSignatureService = xmlSignatureService;
-		this.keyStore = keyStore;
+		this.signatureVerification = signatureVerification;
 	}
 
 	@Override
@@ -68,7 +69,7 @@ public class VerifySignatureTallyComponentEch0222 extends AbstractVerification {
 		definition.setDescription(
 				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME,
 						"verification.direct.trust.authenticity.description", "TallyComponentEch0222"));
-		definition.setId("07.05");
+		definition.setId("07.06");
 		definition.setName("VerifySignatureTallyComponentEch0222");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;
@@ -77,9 +78,9 @@ public class VerifySignatureTallyComponentEch0222 extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final Path deliveryPath = electionDataExtractionService.getTallyComponentEch0222Path(inputDirectoryPath);
+		final Delivery delivery = electionDataExtractionService.getTallyComponentEch0222(inputDirectoryPath);
 
-		final boolean verified = verifySignature(deliveryPath);
+		final boolean verified = verifySignature(delivery);
 
 		if (verified) {
 			return VerificationResult.success(getVerificationDefinition());
@@ -91,17 +92,36 @@ public class VerifySignatureTallyComponentEch0222 extends AbstractVerification {
 	}
 
 	@VisibleForTesting
-	boolean verifySignature(final Path deliveryPath) {
-		checkNotNull(deliveryPath);
+	boolean verifySignature(final Delivery delivery) {
 
-		final PublicKey signatureVerificationKey;
-		try (final InputStream deliveryIn = Files.newInputStream(deliveryPath)) {
-			signatureVerificationKey = keyStore.getCertificate(Alias.SDM_TALLY.get()).getPublicKey();
-			return xmlSignatureService.verifyXMLSignature(deliveryIn, signatureVerificationKey);
-		} catch (final KeyStoreException e) {
-			throw new IllegalStateException("Unable to open keystore", e);
-		} catch (final IOException e) {
-			throw new UncheckedIOException("Could not read the eCH-0222 file", e);
+		final ExtensionType extension = delivery.getRawDataDelivery().getExtension();
+
+		checkState(extension != null, "The tally component eCH-0222 file does not contain the expected extension.");
+
+		final Element signatureElement = extension.getAny().stream()
+				.map(Element.class::cast)
+				.filter(element -> element.getTagName().equals("signature"))
+				.collect(MoreCollectors.onlyElement());
+
+		final String signatureContent = signatureElement.getTextContent();
+
+		checkState(signatureContent != null, "The signature of the tally component eCH-0222 file is null.");
+		checkState(!signatureContent.isBlank(), "The signature of the tally component eCH-0222 file is blank.");
+
+		final byte[] signature;
+		try {
+			signature = new ObjectMapper().readValue(String.format("\"%s\"", signatureContent), byte[].class);
+		} catch (final JsonProcessingException e) {
+			throw new UncheckedIOException("Could not deserialize signature.", e);
+		}
+
+		final Hashable hash = HashableEch0222Factory.fromDelivery(delivery);
+		final Hashable additionalContextData = ChannelSecurityContextData.tallyComponentEch0222();
+
+		try {
+			return signatureVerification.verifySignature(Alias.SDM_TALLY.toString(), hash, additionalContextData, signature);
+		} catch (final SignatureException e) {
+			throw new IllegalStateException("Could not verify the signature of the tally component eCH-0222 file.");
 		}
 	}
 }

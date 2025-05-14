@@ -15,13 +15,11 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
-
 import java.nio.file.Path;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.PrimesMappingTableAlgorithms;
@@ -64,9 +62,9 @@ public class VerifyPlaintextsConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final ImmutableList<VerificationCardSetContext> verificationCardSetContexts = extractionService.getElectionEventContext(inputDirectoryPath)
-				.verificationCardSetContexts();
-		final ImmutableList<Plaintexts> plaintexts = verificationCardSetContexts.stream()
+		final List<VerificationCardSetContext> verificationCardSetContexts = extractionService.getElectionEventContextPayload(inputDirectoryPath)
+				.getElectionEventContext().verificationCardSetContexts();
+		final List<Plaintexts> plaintexts = verificationCardSetContexts.stream()
 				.parallel()
 				.map(vcsContext -> {
 					final String ballotBoxId = vcsContext.getBallotBoxId();
@@ -75,7 +73,7 @@ public class VerifyPlaintextsConsistency extends AbstractVerification {
 							inputDirectoryPath, ballotBoxId);
 					return new Plaintexts(tallyComponentShufflePayload, numberWriteInsPlusOne);
 				})
-				.collect(toImmutableList());
+				.toList();
 		if (plaintextsConsistent(plaintexts)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
@@ -84,7 +82,7 @@ public class VerifyPlaintextsConsistency extends AbstractVerification {
 		}
 	}
 
-	private boolean plaintextsConsistent(final ImmutableList<Plaintexts> plaintexts) {
+	private boolean plaintextsConsistent(final List<Plaintexts> plaintexts) {
 		return plaintexts.stream()
 				.parallel()
 				.map(information -> information.tallyComponentShufflePayload.getVerifiablePlaintextDecryption()

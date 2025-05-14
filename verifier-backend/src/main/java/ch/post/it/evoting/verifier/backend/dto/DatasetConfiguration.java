@@ -17,7 +17,7 @@ package ch.post.it.evoting.verifier.backend.dto;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public record DatasetConfiguration(DatasetConfigurationContext context, DatasetConfigurationTally tally) {
+public record DatasetConfiguration(DatasetConfigurationContext context, DatasetConfigurationSetup setup, DatasetConfigurationTally tally) {
 
 	public DatasetConfiguration {
 		checkNotNull(context);

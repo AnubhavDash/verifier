@@ -95,7 +95,7 @@ public class VerifyVotingOptions extends AbstractVerification {
 
 		return electionEventContext.verificationCardSetContexts().stream()
 				.map(VerificationCardSetContext::getPrimesMappingTable)
-				.map(PrimesMappingTable::pTable)
+				.map(PrimesMappingTable::getPTable)
 				.flatMap(Collection::stream)
 				.map(PrimesMappingTableEntry::encodedVotingOption)
 				.distinct()

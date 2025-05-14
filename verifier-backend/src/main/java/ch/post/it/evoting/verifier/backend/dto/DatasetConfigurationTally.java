@@ -15,13 +15,15 @@
  */
 package ch.post.it.evoting.verifier.backend.dto;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public record DatasetConfigurationTally(String filename, String hash, String eCH0222Hash) {
+public record DatasetConfigurationTally(String filename, String hash, int numberOfConfirmedNonTestVotes, int numberOfConfirmedTestVotes) {
 
 	public DatasetConfigurationTally {
 		checkNotNull(filename);
 		checkNotNull(hash);
-		checkNotNull(eCH0222Hash);
+		checkArgument(numberOfConfirmedNonTestVotes >= 0, "The number of confirmed non test votes must be positive.");
+		checkArgument(numberOfConfirmedTestVotes >= 0, "The number of confirmed non test votes must be positive.");
 	}
 }

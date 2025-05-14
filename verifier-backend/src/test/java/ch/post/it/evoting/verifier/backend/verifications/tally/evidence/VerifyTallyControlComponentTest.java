@@ -27,9 +27,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
 import ch.post.it.evoting.cryptoprimitives.hashing.HashFactory;
-import ch.post.it.evoting.cryptoprimitives.mixnet.Mixnet;
 import ch.post.it.evoting.cryptoprimitives.mixnet.MixnetFactory;
-import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.FactorizeAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.PrimesMappingTableAlgorithms;
@@ -64,7 +62,7 @@ class VerifyTallyControlComponentTest extends TallyVerificationTest {
 	private static final VerifyTallyControlComponentBallotBoxAlgorithm VERIFY_TALLY_CONTROL_COMPONENT_BALLOT_BOX_ALGORITHM = new VerifyTallyControlComponentBallotBoxAlgorithm(
 			MixnetFactory.createMixnet(), ZeroKnowledgeProofFactory.createZeroKnowledgeProof(), PRIMES_MAPPING_TABLE_ALGORITHMS,
 			VERIFY_PROCESS_PLAINTEXTS_ALGORITHM);
-	private static final VerifyECH0222Algorithm VERIFY_TALLY_FILES_ALGORITHM = new VerifyECH0222Algorithm(HashFactory.createHash(),
+	private static final VerifyTallyFilesAlgorithm VERIFY_TALLY_FILES_ALGORITHM = new VerifyTallyFilesAlgorithm(HashFactory.createHash(),
 			new XmlNormalizer());
 
 	@SystemStub
@@ -89,14 +87,9 @@ class VerifyTallyControlComponentTest extends TallyVerificationTest {
 	}
 
 	@Test
-	void verifyTallyControlComponentBallotBoxVerifyDecryptionNok() {
-		final Mixnet mixnet = MixnetFactory.createMixnet();
-		final ZeroKnowledgeProof zeroKnowledgeProofMock = mock(ZeroKnowledgeProof.class);
-		when(zeroKnowledgeProofMock.verifyDecryption(any(), any(), any(), any(), any())).thenReturn(false);
-		final PrimesMappingTableAlgorithms primesMappingTableAlgorithms = new PrimesMappingTableAlgorithms();
-		final VerifyProcessPlaintextsAlgorithm verifyProcessPlaintextsAlgorithmMock = mock(VerifyProcessPlaintextsAlgorithm.class);
-		when(verifyProcessPlaintextsAlgorithmMock.verifyProcessPlaintexts(any(), any())).thenReturn(true);
-		final VerifyTallyControlComponentBallotBoxAlgorithm algorithmMock = new VerifyTallyControlComponentBallotBoxAlgorithm(mixnet, zeroKnowledgeProofMock, primesMappingTableAlgorithms, verifyProcessPlaintextsAlgorithmMock);
+	void verifyTallyControlComponentBallotBoxNok() {
+		final VerifyTallyControlComponentBallotBoxAlgorithm algorithmMock = mock(VerifyTallyControlComponentBallotBoxAlgorithm.class);
+		when(algorithmMock.verifyTallyControlComponentBallotBox(any(), any())).thenReturn(false);
 		final VerifyTallyControlComponentAlgorithm verifyTallyControlComponentAlgorithm = new VerifyTallyControlComponentAlgorithm(algorithmMock,
 				VERIFY_TALLY_FILES_ALGORITHM);
 		final VerifyTallyControlComponent verificationWithMock = new VerifyTallyControlComponent(electionDataExtractionService,
@@ -109,28 +102,9 @@ class VerifyTallyControlComponentTest extends TallyVerificationTest {
 	}
 
 	@Test
-	void verifyTallyControlComponentBallotBoxVerifyProcessPlaintextsNok() {
-		final Mixnet mixnet = MixnetFactory.createMixnet();
-		final ZeroKnowledgeProof zeroKnowledgeProof = ZeroKnowledgeProofFactory.createZeroKnowledgeProof();
-		final PrimesMappingTableAlgorithms primesMappingTableAlgorithms = new PrimesMappingTableAlgorithms();
-		final VerifyProcessPlaintextsAlgorithm verifyProcessPlaintextsAlgorithmMock = mock(VerifyProcessPlaintextsAlgorithm.class);
-		when(verifyProcessPlaintextsAlgorithmMock.verifyProcessPlaintexts(any(), any())).thenReturn(false);
-		final VerifyTallyControlComponentBallotBoxAlgorithm algorithmMock = new VerifyTallyControlComponentBallotBoxAlgorithm(mixnet, zeroKnowledgeProof, primesMappingTableAlgorithms, verifyProcessPlaintextsAlgorithmMock);
-		final VerifyTallyControlComponentAlgorithm verifyTallyControlComponentAlgorithm = new VerifyTallyControlComponentAlgorithm(algorithmMock,
-				VERIFY_TALLY_FILES_ALGORITHM);
-		final VerifyTallyControlComponent verificationWithMock = new VerifyTallyControlComponent(electionDataExtractionService,
-				verifyTallyControlComponentAlgorithm, resultPublisherServiceMock);
-		final VerificationResult result = verificationWithMock.verify(datasetPath);
-
-		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),
-				getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification1002.nok.message"));
-		assertEquals(expectedResult, result);
-	}
-
-	@Test
-	void verifyECH0222Nok() {
-		final VerifyECH0222Algorithm algorithmMock = mock(VerifyECH0222Algorithm.class);
-		when(algorithmMock.verifyECH0222(any(), any())).thenReturn(false);
+	void verifyTallyFilesNok() {
+		final VerifyTallyFilesAlgorithm algorithmMock = mock(VerifyTallyFilesAlgorithm.class);
+		when(algorithmMock.verifyTallyFiles(any(), any())).thenReturn(false);
 		final VerifyTallyControlComponentAlgorithm verifyTallyControlComponentAlgorithm = new VerifyTallyControlComponentAlgorithm(
 				VERIFY_TALLY_CONTROL_COMPONENT_BALLOT_BOX_ALGORITHM, algorithmMock);
 		final VerifyTallyControlComponent verificationWithMock = new VerifyTallyControlComponent(electionDataExtractionService,

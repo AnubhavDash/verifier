@@ -28,7 +28,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
 import ch.post.it.evoting.cryptoprimitives.internal.securitylevel.SecurityLevelConfig;
@@ -53,11 +52,11 @@ class VerifyEncryptionParametersAlgorithmTest {
 
 	@BeforeEach
 	void setup() {
-		final ImmutableByteArray bytesP = base64.base64Decode(
+		final byte[] bytesP = base64.base64Decode(
 				"rnSjVsUQCZqi5wU7hgXvjCwUJ7SBKlx2FGb2/H572foRw1sffLdYhB1aS9pUDmlo5XgOAruXqnKublYuO7v33imQ75x4CH+9jDxtRtpsnv31t2FNxPVT0h5giq25tyy42N79bX1hsbwl/1FFczgBHQ6NQkYckljNnVaqGnJVnYavHdrGb4nVrg1bxOsP02IL1jqdyNPprrO2CkO8mmy1M9lXnGwDBYpBHL5sioHSi0qtudvoM3Me9W5YFdrFWKJ1f2kmSViguvv+2AEcQ2wXEcsRxPSmLKl5S/JrBcBW9uwC78HnnfTsMrwxNZlWqZ9dnGbmZ0LE6PTRS+JSIeYPtaWOcWG4DLpSMJpJLSZhvYPgsCuAHwfZ6KNeshrBbFKBJwU1CvuYgRbHgAAo2TtnmfwBASxtooay4vvkoJiNA66PP6EZoE3NHnlFFdybiy8GH39Pyi+ZUauXSWaZ4k6776TFpGNyGR/12wR9lVgHHzvKZsDVr5ASZ3Z7ZwZ4iWdn");
 		p = byteArrayToInteger(bytesP);
 
-		final ImmutableByteArray bytesQ = base64.base64Decode(
+		final byte[] bytesQ = base64.base64Decode(
 				"VzpRq2KIBM1Rc4KdwwL3xhYKE9pAlS47CjN7fj897P0I4a2PvlusQg6tJe0qBzS0crwHAV3L1TlXNysXHd377xTId848BD/exh42o202T37627Cm4nqp6Q8wRVbc25ZcbG9+tr6w2N4S/6iiuZwAjodGoSMOSSxmzqtVDTkqzsNXju1jN8Tq1wat4nWH6bEF6x1O5Gn011nbBSHeTTZameyrzjYBgsUgjl82RUDpRaVW3O30GbmPercsCu1irFE6v7STJKxQXX3/bACOIbYLiOWI4npTFlS8pfk1guAre3YBd+Dzzvp2GV4YmsyrVM+uzjNzM6FidHpopfEpEPMH2tLHOLDcBl0pGE0klpMw3sHwWBXAD4Ps9FGvWQ1gtilAk4KahX3MQItjwAAUbJ2zzP4AgJY20UNZcX3yUExGgddHn9CM0Cbmjzyiiu5NxZeDD7+n5RfMqNXLpLNM8Sdd99Ji0jG5DI/67YI+yqwDj53lM2Bq18gJM7s9s4M8RLOz");
 		q = byteArrayToInteger(bytesQ);
 

@@ -17,63 +17,95 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.authenticity;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 
+import java.io.IOException;
 import java.nio.file.Path;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.Certificate;
+import java.security.SignatureException;
+import java.security.cert.CertificateException;
+import java.util.List;
+
+import jakarta.xml.bind.JAXBElement;
+
+import javax.xml.namespace.QName;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.channelsecurity.XMLSignatureService;
-import ch.post.it.evoting.verifier.backend.verifications.authenticity.DatasetSignatureFactory;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import ch.ech.xmlns.ech_0155._4.ExtensionType;
+import ch.ech.xmlns.ech_0222._1.Delivery;
+import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
+import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
+import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
+import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
+import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
+import ch.post.it.evoting.evotinglibraries.xml.XsdConstants;
+import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableEch0222Factory;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
 
 class VerifySignatureTallyComponentEch0222Test extends TallyVerificationTest {
 
-	private KeyStore keyStoreMock;
-	private XMLSignatureService xmlSignatureServiceMock;
+	private final XmlFileRepository<Delivery> xmlFileRepository = new XmlFileRepository<>();
+	private final String schemaResourceName = XsdConstants.TALLY_COMPONENT_ECH_0222;
 
 	@BeforeEach
-	void setUpAll() {
-		keyStoreMock = spy(new DatasetSignatureFactory().getKeystore());
-		xmlSignatureServiceMock = spy(new XMLSignatureService());
-		verification = new VerifySignatureTallyComponentEch0222(resultPublisherServiceMock, electionDataExtractionService, xmlSignatureServiceMock, keyStoreMock);
+	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
+		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
+		verification = new VerifySignatureTallyComponentEch0222(resultPublisherServiceMock, electionDataExtractionService,
+				testSignatureVerification);
 	}
 
 	@Test
-	void testOK() {
-		final Path deliveryPath = electionDataExtractionService.getTallyComponentEch0222Path(datasetPath);
+	void testOK(
+			@TempDir
+			final Path tempDirectory) throws SignatureException, JsonProcessingException {
+		Delivery delivery = electionDataExtractionService.getTallyComponentEch0222(datasetPath);
 
-		assertTrue(((VerifySignatureTallyComponentEch0222) verification).verifySignature(deliveryPath), "the signature is not valid");
+		final byte[] signature = generateSignature(delivery);
+		final String signatureWithQuotes = new ObjectMapper().writeValueAsString(signature);
+		delivery.getRawDataDelivery().setExtension(new ExtensionType()
+				.withAny(List.of(new JAXBElement<>(new QName("signature"), String.class,
+						signatureWithQuotes.substring(1, signatureWithQuotes.length() - 1)))));
+
+		final Path eCH0222 = tempDirectory.resolve("eCH-0222.xml");
+
+		xmlFileRepository.write(delivery, schemaResourceName, eCH0222);
+		delivery = xmlFileRepository.read(eCH0222, schemaResourceName, Delivery.class);
+
+		assertTrue(((VerifySignatureTallyComponentEch0222) verification).verifySignature(delivery));
 	}
 
 	@Test
-	void testNOK() {
-		final Path deliveryPath = electionDataExtractionService.getTallyComponentEch0222Path(datasetPath);
-		doReturn(false).when(xmlSignatureServiceMock).verifyXMLSignature(any(), any());
+	void testNOK(
+			@TempDir
+			final Path tempDirectory) throws SignatureException, JsonProcessingException {
+		Delivery delivery = electionDataExtractionService.getTallyComponentEch0222(datasetPath);
 
-		assertFalse(((VerifySignatureTallyComponentEch0222) verification).verifySignature(deliveryPath), "the signature is not valid");
+		final byte[] signature = generateSignature(delivery);
+		final String signatureWithQuotes = new ObjectMapper().writeValueAsString(signature);
+		delivery.getRawDataDelivery().setExtension(new ExtensionType()
+				.withAny(List.of(new JAXBElement<>(new QName("signature"), String.class,
+						signatureWithQuotes.substring(1, signatureWithQuotes.length() - 1)))));
+
+		delivery.getDeliveryHeader().setSenderId("");
+
+		final Path eCH0222 = tempDirectory.resolve("eCH-0222.xml");
+
+		xmlFileRepository.write(delivery, schemaResourceName, eCH0222);
+		delivery = xmlFileRepository.read(eCH0222, schemaResourceName, Delivery.class);
+
+		assertFalse(((VerifySignatureTallyComponentEch0222) verification).verifySignature(delivery));
 	}
 
-	@Test
-	void testVerificationKeyNOK() throws KeyStoreException, NoSuchAlgorithmException {
-		final Path deliveryPath = electionDataExtractionService.getTallyComponentEch0222Path(datasetPath);
-		final Certificate certificateMock = mock(Certificate.class);
-		final KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-		keyPairGenerator.initialize(3072);
-		final KeyPair keyPair = keyPairGenerator.generateKeyPair();
-		doReturn(keyPair.getPublic()).when(certificateMock).getPublicKey();
-		doReturn(certificateMock).when(keyStoreMock).getCertificate(any());
+	private byte[] generateSignature(final Delivery delivery) throws SignatureException {
+		final Hashable hash = HashableEch0222Factory.fromDelivery(delivery);
+		final Hashable additionalContextData = ChannelSecurityContextData.tallyComponentEch0222();
 
-		assertFalse(((VerifySignatureTallyComponentEch0222) verification).verifySignature(deliveryPath), "the signature is not valid");
+		return signatureFactory.getTestSignatureGeneration(Alias.SDM_TALLY).genSignature(hash, additionalContextData);
 	}
 }

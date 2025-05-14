@@ -15,23 +15,20 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap.toImmutableMap;
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet.toImmutableSet;
-
 import java.nio.file.Path;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
 
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
-import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
+import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
@@ -44,7 +41,7 @@ import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 
-@Component("verifyTallyVerificationCardIdsConsistency")
+@Component("VerifyTallyVerificationCardIdsConsistency")
 public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 
 	private final ElectionDataExtractionService extractionService;
@@ -70,14 +67,14 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final ImmutableList<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads = extractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
-				inputDirectoryPath).collect(toImmutableList());
+		final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads = extractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
+				inputDirectoryPath).toList();
 
 		final Stream<SetupComponentTallyDataPayload> setupComponentTallyDataPayloads = extractionService.getSetupComponentTallyDataPayloads(
 				inputDirectoryPath);
-		final ElectionEventContext electionEventContext = extractionService.getElectionEventContext(inputDirectoryPath);
+		final ElectionEventContextPayload electionEventContextPayload = extractionService.getElectionEventContextPayload(inputDirectoryPath);
 
-		if (verifyVerificationCardSetRelationToBallotBox(controlComponentBallotBoxPayloads, electionEventContext) &&
+		if (verifyVerificationCardSetRelationToBallotBox(controlComponentBallotBoxPayloads, electionEventContextPayload) &&
 				verifyVerificationCardIdsInExpectedSet(controlComponentBallotBoxPayloads, setupComponentTallyDataPayloads)) {
 
 			return VerificationResult.success(getVerificationDefinition());
@@ -88,12 +85,14 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 	}
 
 	@VisibleForTesting
-	boolean verifyVerificationCardSetRelationToBallotBox(final ImmutableList<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads,
-			final ElectionEventContext electionEventContext) {
-		final ImmutableMap<String, String> verificationCardSetIdToBallotBoxId = electionEventContext.verificationCardSetContexts().stream()
-				.collect(toImmutableMap(
-						VerificationCardSetContext::getVerificationCardSetId,
-						VerificationCardSetContext::getBallotBoxId));
+	boolean verifyVerificationCardSetRelationToBallotBox(final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads,
+			final ElectionEventContextPayload electionEventContextPayload) {
+		final Map<String, String> verificationCardSetIdToBallotBoxId = electionEventContextPayload
+				.getElectionEventContext()
+				.verificationCardSetContexts().stream()
+				.parallel()
+				.collect(
+						Collectors.toConcurrentMap(VerificationCardSetContext::getVerificationCardSetId, VerificationCardSetContext::getBallotBoxId));
 
 		return controlComponentBallotBoxPayloads.stream()
 				.parallel()
@@ -104,19 +103,18 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 	}
 
 	@VisibleForTesting
-	boolean verifyVerificationCardIdsInExpectedSet(final ImmutableList<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloadsByBallotBox,
+	boolean verifyVerificationCardIdsInExpectedSet(final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloadsByBallotBox,
 			final Stream<SetupComponentTallyDataPayload> setupComponentTallyDataPayloads) {
-		final ImmutableMap<String, ImmutableSet<String>> verificationCardSetIdToVerificationCardIds = setupComponentTallyDataPayloads
-				.collect(toImmutableMap(
-						SetupComponentTallyDataPayload::getVerificationCardSetId,
-						setupComponentTallyDataPayload -> setupComponentTallyDataPayload.getVerificationCardIds().stream()
-								.collect(toImmutableSet())));
+		final Map<String, Set<String>> verificationCardSetIdToVerificationCardIds = setupComponentTallyDataPayloads
+				.parallel()
+				.collect(Collectors.toConcurrentMap(SetupComponentTallyDataPayload::getVerificationCardSetId,
+						setupComponentTallyDataPayload -> Set.copyOf(setupComponentTallyDataPayload.getVerificationCardIds())));
 
 		return controlComponentBallotBoxPayloadsByBallotBox.stream()
 				.parallel()
 				.flatMap(payload -> payload.getConfirmedEncryptedVotes().stream())
 				.allMatch(encryptedVerifiableVote -> {
-					final ImmutableSet<String> expectedVerificationCardIds = verificationCardSetIdToVerificationCardIds.get(
+					final Set<String> expectedVerificationCardIds = verificationCardSetIdToVerificationCardIds.get(
 							encryptedVerifiableVote.contextIds().verificationCardSetId());
 					return expectedVerificationCardIds.contains(encryptedVerifiableVote.contextIds().verificationCardId());
 				});
