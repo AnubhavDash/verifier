@@ -31,6 +31,9 @@
     <maven-clean-plugin.version>3.4.1</maven-clean-plugin.version>
     <skipTests>false</skipTests>
     <sonar.sources>src</sonar.sources>
+    <sonar.tests>src</sonar.tests>
+    <sonar.exclusions>**/*.spec.ts</sonar.exclusions>
+    <sonar.test.inclusions>**/*.spec.ts</sonar.test.inclusions>
   </properties>
 
   <dependencies>
