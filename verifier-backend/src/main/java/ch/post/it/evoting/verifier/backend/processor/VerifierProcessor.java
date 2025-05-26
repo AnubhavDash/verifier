@@ -57,7 +57,7 @@ import ch.post.it.evoting.evotinglibraries.domain.tally.BallotBoxResult;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ElectionEventResultUtils;
 import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.evoting.evotinglibraries.domain.validations.PasswordValidation;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.channelsecurity.StreamableSymmetricEncryptionDecryptionService;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.channelsecurity.StreamableSymmetricEncryptionDecryptionService;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
@@ -297,13 +297,13 @@ public class VerifierProcessor {
 			throw new DatasetExtractionException("Could not digest given eCH222 file.");
 		}
 
-
 		this.datasetConfigurationTally = new DatasetConfigurationTally(filename, datasetHash.toLowerCase(Locale.ENGLISH), eCH222Hash);
 	}
 
 	private Dataset downloadDataset(final InputStream datasetInputStream, final Path directory, final DatasetType datasetType) {
 
-		final InputStream decryptedStream = streamableSymmetricEncryptionDecryptionService.getStreamPlaintext(datasetInputStream, importDecryptionPassword,
+		final InputStream decryptedStream = streamableSymmetricEncryptionDecryptionService.getStreamPlaintext(datasetInputStream,
+				importDecryptionPassword,
 				ASSOCIATED_DATA);
 
 		LOGGER.info("Dataset successfully downloaded.");
@@ -357,13 +357,14 @@ public class VerifierProcessor {
 		}
 	}
 
-	public ImmutableList<BallotBoxResult> getElectionEventResult(){
+	public ImmutableList<BallotBoxResult> getElectionEventResult() {
 		final Path inputDirectory = contextDataset.getUnpackFolder();
 		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(inputDirectory);
 		return electionEventContextPayload.getElectionEventContext().verificationCardSetContexts().stream()
 				.map(verificationCardSetContext -> {
 					final String ballotBoxId = verificationCardSetContext.getBallotBoxId();
-					final TallyComponentVotesPayload tallyComponentVotesPayload = electionDataExtractionService.getTallyComponentVotesPayload(inputDirectory, ballotBoxId);
+					final TallyComponentVotesPayload tallyComponentVotesPayload = electionDataExtractionService.getTallyComponentVotesPayload(
+							inputDirectory, ballotBoxId);
 					return ElectionEventResultUtils.getBallotBoxResult(electionEventContextPayload,
 							tallyComponentVotesPayload);
 				}).collect(toImmutableList());

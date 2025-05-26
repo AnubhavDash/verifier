@@ -33,7 +33,7 @@ import java.security.cert.Certificate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.channelsecurity.XMLSignatureService;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.channelsecurity.XMLSignatureService;
 import ch.post.it.evoting.verifier.backend.verifications.authenticity.DatasetSignatureFactory;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
 
@@ -46,7 +46,8 @@ class VerifySignatureTallyComponentEch0222Test extends TallyVerificationTest {
 	void setUpAll() {
 		keyStoreMock = spy(new DatasetSignatureFactory().getKeystore());
 		xmlSignatureServiceMock = spy(new XMLSignatureService());
-		verification = new VerifySignatureTallyComponentEch0222(resultPublisherServiceMock, electionDataExtractionService, xmlSignatureServiceMock, keyStoreMock);
+		verification = new VerifySignatureTallyComponentEch0222(resultPublisherServiceMock, electionDataExtractionService, xmlSignatureServiceMock,
+				keyStoreMock);
 	}
 
 	@Test

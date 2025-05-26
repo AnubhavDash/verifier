@@ -34,7 +34,7 @@ import java.security.cert.Certificate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.channelsecurity.XMLSignatureService;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.channelsecurity.XMLSignatureService;
 import ch.post.it.evoting.verifier.backend.verifications.authenticity.DatasetSignatureFactory;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 
@@ -47,7 +47,8 @@ class VerifySignatureCantonConfigTest extends SetupVerificationTest {
 	void setUpAll() {
 		keyStoreMock = spy(new DatasetSignatureFactory().getKeystore());
 		xmlSignatureServiceMock = spy(xmlSignatureService);
-		verification = new VerifySignatureCantonConfig(resultPublisherServiceMock, electionDataExtractionService, xmlSignatureServiceMock, keyStoreMock);
+		verification = new VerifySignatureCantonConfig(resultPublisherServiceMock, electionDataExtractionService, xmlSignatureServiceMock,
+				keyStoreMock);
 	}
 
 	@Test

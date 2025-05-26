@@ -39,7 +39,7 @@ import ch.post.it.evoting.cryptoprimitives.utils.VerificationResult;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.DecryptionProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
 import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.PrimesMappingTableAlgorithms;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.electoralmodel.PrimesMappingTableAlgorithms;
 
 @Service
 public class VerifyTallyControlComponentBallotBoxAlgorithm {
@@ -52,11 +52,11 @@ public class VerifyTallyControlComponentBallotBoxAlgorithm {
 	private final VerifyProcessPlaintextsAlgorithm verifyProcessPlaintextsAlgorithm;
 
 	public VerifyTallyControlComponentBallotBoxAlgorithm(final Mixnet mixnet, final ZeroKnowledgeProof zeroKnowledgeProof,
-			final PrimesMappingTableAlgorithms primesMappingTableAlgorithms1,
+			final PrimesMappingTableAlgorithms primesMappingTableAlgorithms,
 			final VerifyProcessPlaintextsAlgorithm verifyProcessPlaintextsAlgorithm) {
 		this.mixnet = mixnet;
 		this.zeroKnowledgeProof = zeroKnowledgeProof;
-		this.primesMappingTableAlgorithms = primesMappingTableAlgorithms1;
+		this.primesMappingTableAlgorithms = primesMappingTableAlgorithms;
 		this.verifyProcessPlaintextsAlgorithm = verifyProcessPlaintextsAlgorithm;
 	}
 

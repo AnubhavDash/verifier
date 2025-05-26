@@ -33,7 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ch.ech.xmlns.ech_0222._1.Delivery;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.mapper.DomainObjectMapper;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.channelsecurity.XMLSignatureService;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.channelsecurity.XMLSignatureService;
 import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
@@ -44,6 +44,8 @@ import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.verifications.authenticity.DatasetSignatureFactory;
 
 public abstract class SetupVerificationTest {
+
+	private static final String DATASET_LOCATION = "datasets/D2";
 
 	protected static DatasetSignatureFactory datasetSignatureFactory;
 	protected static SignatureVerification datasetSignatureVerification;
@@ -57,14 +59,12 @@ public abstract class SetupVerificationTest {
 	protected static XmlFileRepository<Configuration> configurationXmlFileRepository;
 	protected static ElectionDataExtractionService electionDataExtractionService;
 
-	private static final String datasetLocation = "datasets/D2";
-
 	@BeforeAll
 	static void baseSetUpAll() throws URISyntaxException {
 		pathService = new PathService();
 		resultPublisherServiceMock = mock(ResultPublisherService.class);
 		objectMapper = DomainObjectMapper.getNewInstance();
-		datasetPath = Path.of(SetupVerificationTest.class.getClassLoader().getResource(datasetLocation).toURI());
+		datasetPath = Path.of(SetupVerificationTest.class.getClassLoader().getResource(DATASET_LOCATION).toURI());
 		datasetSignatureFactory = new DatasetSignatureFactory();
 		datasetSignatureVerification = datasetSignatureFactory.getSignatureVerification();
 		ech0222XmlFileRepository = new XmlFileRepository<>();

@@ -44,6 +44,8 @@ import ch.post.it.evoting.verifier.backend.verifications.authenticity.DatasetSig
 
 public abstract class TallyVerificationTest {
 
+	private static final String DATASET_LOCATION = "datasets/D3";
+
 	protected static DatasetSignatureFactory datasetSignatureFactory;
 	protected static SignatureVerification datasetSignatureVerification;
 	protected static Path datasetPath;
@@ -55,14 +57,12 @@ public abstract class TallyVerificationTest {
 	protected static XmlFileRepository<Configuration> configurationXmlFileRepository;
 	protected static ElectionDataExtractionService electionDataExtractionService;
 
-	private static final String datasetLocation = "datasets/D3";
-
 	@BeforeAll
 	static void baseSetUpAll() throws URISyntaxException {
 		objectMapper = DomainObjectMapper.getNewInstance();
 		pathService = new PathService();
 		resultPublisherServiceMock = mock(ResultPublisherService.class);
-		datasetPath = Path.of(TallyVerificationTest.class.getClassLoader().getResource(datasetLocation).toURI());
+		datasetPath = Path.of(TallyVerificationTest.class.getClassLoader().getResource(DATASET_LOCATION).toURI());
 		datasetSignatureFactory = new DatasetSignatureFactory();
 		datasetSignatureVerification = datasetSignatureFactory.getSignatureVerification();
 		ech0222XmlFileRepository = new XmlFileRepository<>();
