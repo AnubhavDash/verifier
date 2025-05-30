@@ -17,7 +17,7 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import ch.ech.xmlns.ech_0222._1.Delivery;
+import ch.ech.xmlns.ech_0222._3.Delivery;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;

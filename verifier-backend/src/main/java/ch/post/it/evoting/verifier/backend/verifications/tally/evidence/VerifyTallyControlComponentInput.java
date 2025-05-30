@@ -23,7 +23,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import ch.ech.xmlns.ech_0222._1.Delivery;
+import ch.ech.xmlns.ech_0222._3.Delivery;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.evotinglibraries.domain.ControlComponentNode;

@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
-import ch.ech.xmlns.ech_0222._1.Delivery;
+import ch.ech.xmlns.ech_0222._3.Delivery;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;

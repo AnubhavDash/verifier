@@ -20,12 +20,12 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.math.BigInteger;
 
-import ch.ech.xmlns.ech_0222._1.Delivery;
-import ch.ech.xmlns.ech_0222._1.ElectionRawDataType;
-import ch.ech.xmlns.ech_0222._1.EventRawDataDelivery;
-import ch.ech.xmlns.ech_0222._1.RawDataType;
-import ch.ech.xmlns.ech_0222._1.ReportingBodyType;
-import ch.ech.xmlns.ech_0222._1.VoteRawDataType;
+import ch.ech.xmlns.ech_0222._3.Delivery;
+import ch.ech.xmlns.ech_0222._3.ElectionRawDataType;
+import ch.ech.xmlns.ech_0222._3.EventRawDataDelivery;
+import ch.ech.xmlns.ech_0222._3.RawDataType;
+import ch.ech.xmlns.ech_0222._3.ReportingBodyType;
+import ch.ech.xmlns.ech_0222._3.VoteRawDataType;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.hashing.HashableBigInteger;
 import ch.post.it.evoting.cryptoprimitives.hashing.HashableList;
@@ -94,7 +94,7 @@ public interface HashableEch0222Factory {
 
 	private static Hashable fromVoteBallotRawData(final VoteRawDataType.BallotRawData ballotRawData) {
 		return HashableList.of(
-				HashableString.from(ballotRawData.getBallotIdentification()),
+				HashableString.from(ballotRawData.getElectronicBallotIdentification()),
 				fromBallotCasted(ballotRawData.getBallotCasted())
 		);
 	}
@@ -146,31 +146,23 @@ public interface HashableEch0222Factory {
 	private static Hashable fromElectionRawData(final ElectionRawDataType electionRawDataType) {
 		return HashableList.of(
 				HashableString.from(electionRawDataType.getElectionIdentification()),
-				electionRawDataType.getBallotRawData().stream()
-						.map(HashableEch0222Factory::fromElectionBallotRawData)
-						.collect(toHashableList())
-		);
-	}
-
-	private static Hashable fromElectionBallotRawData(final ElectionRawDataType.BallotRawData ballotRawData) {
-		return HashableList.of(
-				HashableUtils.fromNullable(ballotRawData.getListRawData(),
+				HashableUtils.fromNullable(electionRawDataType.getListRawData(),
 						"listRawData",
 						HashableEch0222Factory::fromListRawData),
-				ballotRawData.getBallotPosition().stream()
+				electionRawDataType.getBallotPosition().stream()
 						.map(HashableEch0222Factory::fromBallotPosition)
 						.collect(toHashableList()),
-				HashableUtils.fromNullable(ballotRawData.isIsUnchangedBallot(),
+				HashableUtils.fromNullable(electionRawDataType.isIsUnchangedBallot(),
 						"isUnchangedBallot",
 						HashableEch0222Factory::fromIsUnchangedBallot)
 		);
 	}
 
-	private static Hashable fromListRawData(final ElectionRawDataType.BallotRawData.ListRawData listRawData) {
+	private static Hashable fromListRawData(final ElectionRawDataType.ListRawData listRawData) {
 		return HashableString.from(listRawData.getListIdentification());
 	}
 
-	private static Hashable fromBallotPosition(final ElectionRawDataType.BallotRawData.BallotPosition ballotPosition) {
+	private static Hashable fromBallotPosition(final ElectionRawDataType.BallotPosition ballotPosition) {
 		final boolean hasCandidate = ballotPosition.getCandidate() != null;
 		final boolean isEmpty = ballotPosition.isIsEmpty() != null;
 
@@ -181,7 +173,7 @@ public interface HashableEch0222Factory {
 				HashableString.from(Boolean.toString(ballotPosition.isIsEmpty()));
 	}
 
-	private static Hashable fromCandidate(final ElectionRawDataType.BallotRawData.BallotPosition.Candidate candidate) {
+	private static Hashable fromCandidate(final ElectionRawDataType.BallotPosition.Candidate candidate) {
 		final boolean hasCandidateInformation = candidate.getCandidateIdentification() != null && candidate.getCandidateReferenceOnPosition() != null;
 		final boolean isWriteIn = candidate.getWriteIn() != null;
 

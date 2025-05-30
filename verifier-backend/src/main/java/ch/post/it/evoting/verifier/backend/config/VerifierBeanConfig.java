@@ -214,7 +214,7 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
-	XmlFileRepository<ch.ech.xmlns.ech_0222._1.Delivery> ech0222DeliveryXmlFileRepository() {
+	XmlFileRepository<ch.ech.xmlns.ech_0222._3.Delivery> ech0222DeliveryXmlFileRepository() {
 		return new XmlFileRepository<>();
 	}
 

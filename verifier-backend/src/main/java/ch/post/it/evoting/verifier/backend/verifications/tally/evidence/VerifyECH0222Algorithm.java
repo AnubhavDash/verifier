@@ -23,8 +23,8 @@ import java.util.Objects;
 import org.springframework.stereotype.Service;
 
 import ch.ech.xmlns.ech_0058._5.HeaderType;
-import ch.ech.xmlns.ech_0222._1.Delivery;
-import ch.ech.xmlns.ech_0222._1.ReportingBodyType;
+import ch.ech.xmlns.ech_0222._3.Delivery;
+import ch.ech.xmlns.ech_0222._3.ReportingBodyType;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hash;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;

@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ch.ech.xmlns.ech_0222._1.Delivery;
+import ch.ech.xmlns.ech_0222._3.Delivery;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.mapper.DomainObjectMapper;
 import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
