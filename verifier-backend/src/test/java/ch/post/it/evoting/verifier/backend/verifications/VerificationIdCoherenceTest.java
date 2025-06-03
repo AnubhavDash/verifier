@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,23 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet.toImmutableSet;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.dto.Verification;
@@ -50,14 +53,14 @@ class VerificationIdCoherenceTest {
 		final Collection<AbstractVerification> verificationBeans = applicationContext.getBeansOfType(AbstractVerification.class).values();
 
 		// when
-		final Set<String> invalidIds = verificationBeans.stream()
+		final ImmutableSet<String> invalidIds = verificationBeans.stream()
 				.map(AbstractVerification::getVerificationDefinition)
 				.map(VerificationDefinition::getId)
 				.filter(id -> !idPattern.matcher(id).matches())
-				.collect(Collectors.toSet());
+				.collect(toImmutableSet());
 
 		// then
-		Assertions.assertThat(invalidIds).isEmpty();
+		assertThat(invalidIds).isEmpty();
 	}
 
 	@Test
@@ -67,28 +70,28 @@ class VerificationIdCoherenceTest {
 		final Collection<AbstractVerification> verificationBeans = applicationContext.getBeansOfType(AbstractVerification.class).values();
 
 		// when
-		final Set<String> duplicates = verificationBeans.stream()
+		final ImmutableSet<String> duplicates = verificationBeans.stream()
 				.map(AbstractVerification::getVerificationDefinition)
 				.map(VerificationDefinition::getId)
 				.filter(id -> !state.add(id))
-				.collect(Collectors.toSet());
+				.collect(toImmutableSet());
 
 		// then
-		Assertions.assertThat(duplicates).isEmpty();
+		assertThat(duplicates).isEmpty();
 	}
 
 	@Test
 	void validateSortingIsCorrect() {
 		// given
-		final List<Double> idsAsDoubles = verifierProcessor.getVerifications().stream()
+		final ImmutableList<Double> idsAsDoubles = verifierProcessor.getVerifications("").stream()
 				.map(Verification::getVerificationId)
 				.map(Double::valueOf)
-				.toList();
-		final List<Double> expected = idsAsDoubles.stream()
+				.collect(toImmutableList());
+		final ImmutableList<Double> expected = idsAsDoubles.stream()
 				.sorted()
-				.toList();
+				.collect(toImmutableList());
 
 		// when / then
-		Assertions.assertThat(idsAsDoubles).containsExactlyElementsOf(expected);
+		assertThat(idsAsDoubles).containsExactlyElementsOf(expected);
 	}
 }

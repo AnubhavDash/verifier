@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,15 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet.toImmutableSet;
+
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
@@ -85,39 +87,38 @@ public class VerifyBallotBoxIdsConsistency extends AbstractVerification {
 		}
 	}
 
-	private List<PayloadsBallotBoxIds> extractBallotBoxIds(final Path inputDirectoryPath) {
+	private ImmutableList<PayloadsBallotBoxIds> extractBallotBoxIds(final Path inputDirectoryPath) {
 		final PathNode ballotBoxIds = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 		return ballotBoxIds.getRegexPaths().stream()
 				.parallel()
 				.map(ballotBoxIdPath -> {
 					final String bb = ballotBoxIdPath.getFileName().toString();
-					final Set<String> ballotBoxId = Set.of(bb);
+					final ImmutableSet<String> ballotBoxId = ImmutableSet.of(bb);
 
-					final Set<String> controlComponentBallotBoxIds = extractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(
+					final ImmutableSet<String> controlComponentBallotBoxIds = extractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(
 									inputDirectoryPath, bb)
 							.map(ControlComponentBallotBoxPayload::getBallotBoxId)
-							.collect(Collectors.toSet());
+							.collect(toImmutableSet());
 
-					final Set<String> controlComponentShuffleIds = extractionService.getControlComponentShufflePayloadsOrderedByNodeId(
+					final ImmutableSet<String> controlComponentShuffleIds = extractionService.getControlComponentShufflePayloadsOrderedByNodeId(
 									inputDirectoryPath, bb)
-							.parallel()
 							.map(ControlComponentShufflePayload::getBallotBoxId)
-							.collect(Collectors.toSet());
+							.collect(toImmutableSet());
 
 					final TallyComponentShufflePayload tallyComponentShufflePayload = extractionService.getTallyComponentShufflePayload(
 							inputDirectoryPath, bb);
-					final Set<String> tallyComponentShufflePayloadId = Set.of(tallyComponentShufflePayload.getBallotBoxId());
+					final ImmutableSet<String> tallyComponentShufflePayloadId = ImmutableSet.of(tallyComponentShufflePayload.getBallotBoxId());
 
 					final TallyComponentVotesPayload tallyComponentVotesPayload = extractionService.getTallyComponentVotesPayload(ballotBoxIdPath);
-					final Set<String> tallyComponentVotesPayloadId = Set.of(tallyComponentVotesPayload.getBallotBoxId());
+					final ImmutableSet<String> tallyComponentVotesPayloadId = ImmutableSet.of(tallyComponentVotesPayload.getBallotBoxId());
 
 					return new PayloadsBallotBoxIds(ballotBoxId, controlComponentBallotBoxIds, controlComponentShuffleIds,
 							tallyComponentShufflePayloadId, tallyComponentVotesPayloadId);
 				})
-				.toList();
+				.collect(toImmutableList());
 	}
 
-	private record PayloadsBallotBoxIds(Set<String> ballotBoxId, Set<String> ccBallotBoxIds, Set<String> ccShuffleIds, Set<String> tcShuffleId,
-										Set<String> tcVotesId) {
+	private record PayloadsBallotBoxIds(ImmutableSet<String> ballotBoxId, ImmutableSet<String> ccBallotBoxIds, ImmutableSet<String> ccShuffleIds,
+										ImmutableSet<String> tcShuffleId, ImmutableSet<String> tcVotesId) {
 	}
 }

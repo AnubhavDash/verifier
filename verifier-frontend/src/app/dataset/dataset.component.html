@@ -1,0 +1,82 @@
+<!--
+  ~ (c) Copyright 2025 Swiss Post Ltd.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<ver-page-title
+  [instructions]="'dataset.instructions' | translate"
+  [title]="'dataset.title' | translate"
+>
+  @if (loadingDataset) {
+    <div class="alert alert-primary page-actions">
+      <div class="spinner">
+        <span aria-hidden="true" class="spinner-border"></span>
+        <span class="visually-hidden">{{ 'common.loading' | translate }}</span>
+      </div>
+      <p>
+        {{ 'dataset.loading' | translate }}
+      </p>
+    </div>
+  } @else {
+    <div [ngClass]="{'alert-success': isEnabledNextButton, 'alert-info': !isEnabledNextButton}" class="alert page-actions">
+      <i [ngClass]="{'bi-check-circle': isEnabledNextButton, 'bi-upload': !isEnabledNextButton }" aria-hidden="true" class="bi"></i>
+      <p>
+        {{ (isEnabledNextButton ? 'dataset.action.complete' : 'dataset.instructions' ) | translate }}
+      </p>
+      <button [disabled]="!isEnabledNextButton" (click)="next()" class="btn btn-primary" type="button">
+        <i aria-hidden="true" class="bi bi-arrow-right-circle"></i>
+        {{ 'common.next' | translate }}
+      </button>
+    </div>
+  }
+</ver-page-title>
+
+<div class="card mb-3">
+  <div class="card-header">
+    {{ 'dataset.datasetLoad.title' | translate }}
+  </div>
+  <div class="card-body">
+    <ver-verifier-mode
+      (newVerifierMode)="setVerifierMode($event)"
+      [changeModeDisabled]="actionsDisabled()"
+      [verifierMode]="verifierMode"
+    ></ver-verifier-mode>
+
+    @if (isShownLoadContext) {
+      <hr>
+      <ver-dataset-load
+        (datasetConfiguration)="setDatasetConfigurationContext($event)"
+        (loadingDataset)="datasetContextReset($event)"
+        [datasetType]="getDatasetTypeContext()"
+        [loadDisabled]="actionsDisabled()"
+        [verifierMode]="verifierMode"
+        [configuration]="configuration"/>
+    }
+    @if (isShownLoadTally) {
+      <ver-dataset-load
+        (datasetConfiguration)="setDatasetConfigurationTally($event)"
+        (loadingDataset)="datasetTallyReset($event)"
+        [datasetType]="DatasetType.TALLY"
+        [loadDisabled]="actionsDisabled()"
+        [configuration]="configuration"/>
+    }
+  </div>
+</div>
+
+@if (isShownDatasetInformation) {
+  <ver-dataset-information
+    [configuration]="configuration"
+    [displayDatasetInformation]="true"
+    [verifierMode]="verifierMode"/>
+}

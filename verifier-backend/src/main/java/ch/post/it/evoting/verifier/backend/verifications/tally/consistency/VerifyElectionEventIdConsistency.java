@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,11 @@
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.BiFunction;
 
 import org.springframework.stereotype.Component;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
@@ -37,7 +36,7 @@ import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 
-@Component("VerifyTallyElectionEventIdConsistency")
+@Component("verifyTallyElectionEventIdConsistency")
 public class VerifyElectionEventIdConsistency extends AbstractVerification {
 
 	private final ElectionDataExtractionService electionDataExtractionService;
@@ -65,14 +64,13 @@ public class VerifyElectionEventIdConsistency extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final String electionEventId = electionDataExtractionService.getElectionEventContextPayload(inputDirectoryPath).getElectionEventContext()
-				.electionEventId();
+		final String electionEventId = electionDataExtractionService.getElectionEventContext(inputDirectoryPath).electionEventId();
 
-		final List<BiFunction<Path, String, Boolean>> validations = new ArrayList<>();
-		validations.add(this::areControlComponentBallotBoxPayloadsVerified);
-		validations.add(this::areControlComponentShufflePayloadsVerified);
-		validations.add(this::areTallyComponentShufflePayloadsVerified);
-		validations.add(this::areTallyComponentVotesPayloadsVerified);
+		final ImmutableList<BiFunction<Path, String, Boolean>> validations = ImmutableList.of(
+				this::areControlComponentBallotBoxPayloadsVerified,
+				this::areControlComponentShufflePayloadsVerified,
+				this::areTallyComponentShufflePayloadsVerified,
+				this::areTallyComponentVotesPayloadsVerified);
 
 		final boolean verified = validations
 				.stream()

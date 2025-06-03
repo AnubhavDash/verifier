@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ (c) Copyright 2024 Swiss Post Ltd.
+  ~ (c) Copyright 2025 Swiss Post Ltd.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 	<parent>
 		<artifactId>verifier</artifactId>
 		<groupId>ch.post.it.evoting.verifier</groupId>
-		<version>1.5.5.1</version>
+		<version>1.6.0.0-RC9</version>
 	</parent>
 
 	<artifactId>verifier-assembly</artifactId>
@@ -84,10 +84,6 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>ch.galinet</groupId>
-				<artifactId>reproducible-build-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>

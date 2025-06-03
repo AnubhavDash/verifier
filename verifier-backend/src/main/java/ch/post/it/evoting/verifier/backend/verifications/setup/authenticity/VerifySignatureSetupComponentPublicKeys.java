@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,6 +98,7 @@ public class VerifySignatureSetupComponentPublicKeys extends AbstractVerificatio
 		final Hashable additionalContextData = ChannelSecurityContextData.setupComponentPublicKeys(electionEventId);
 
 		try {
+			// The SetupComponentPublicKeysPayload method toHashableForm recursively hashes the setup component public keys payload as specified.
 			return signatureVerification.verifySignature(Alias.SDM_CONFIG.toString(), setupComponentPublicKeysPayload,
 					additionalContextData, signature.signatureContents());
 		} catch (final SignatureException e) {

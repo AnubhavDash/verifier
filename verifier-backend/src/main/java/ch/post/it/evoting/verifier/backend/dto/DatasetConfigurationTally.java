@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,13 @@
  */
 package ch.post.it.evoting.verifier.backend.dto;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public record DatasetConfigurationTally(String filename, String hash, int numberOfConfirmedNonTestVotes, int numberOfConfirmedTestVotes) {
+public record DatasetConfigurationTally(String filename, String hash, String eCH0222Hash) {
 
 	public DatasetConfigurationTally {
 		checkNotNull(filename);
 		checkNotNull(hash);
-		checkArgument(numberOfConfirmedNonTestVotes >= 0, "The number of confirmed non test votes must be positive.");
-		checkArgument(numberOfConfirmedTestVotes >= 0, "The number of confirmed non test votes must be positive.");
+		checkNotNull(eCH0222Hash);
 	}
 }

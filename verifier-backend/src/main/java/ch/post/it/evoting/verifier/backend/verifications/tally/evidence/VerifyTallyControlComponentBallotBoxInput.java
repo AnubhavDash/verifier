@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,21 +20,16 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
-import java.util.List;
 import java.util.function.Function;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientCiphertext;
-import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientMessage;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
-import ch.post.it.evoting.cryptoprimitives.math.ZqGroup;
 import ch.post.it.evoting.cryptoprimitives.mixnet.ShuffleArgument;
 import ch.post.it.evoting.cryptoprimitives.mixnet.VerifiableShuffle;
-import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.DecryptionProof;
-import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.VerifiableDecryptions;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.VerifiablePlaintextDecryption;
@@ -55,9 +50,9 @@ import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPaylo
  *         <li>m, the decrypted votes. Non-null.</li>
  *         <li>pi<sub>dec,5</sub>, the decryption proofs. Non-null.</li>
  *     </ul>
- *     <li>L<sub>votes</sub>, the list of all selected encoded voting options. Non-null.</li>
- *     <li>L<sub>decodedVotes</sub>, the list of all selected decoded voting options. Non-null.</li>
- *     <li>L<sub>writeIns</sub>, the list of all selected decoded write-in votes. Non-null.</li>
+ *     <li>L<sub>votes</sub>, the list of decrypted votes. Non-null.</li>
+ *     <li>L<sub>decodedVotes</sub>, the list of decoded votes. Non-null.</li>
+ *     <li>L<sub>writeIns</sub>, the list of decoded write-ins. Non-null.</li>
  * </ul>
  */
 public class VerifyTallyControlComponentBallotBoxInput {
@@ -65,9 +60,9 @@ public class VerifyTallyControlComponentBallotBoxInput {
 	private final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> partiallyDecryptedVotes;
 	private final VerifiableShuffle tallyComponentsShuffle;
 	private final VerifiablePlaintextDecryption verifiablePlaintextDecryption;
-	private final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> selectedEncodedVotingOptions;
-	private final List<List<String>> selectedDecodedVotingOptions;
-	private final List<List<String>> selectedDecodedWriteInVotes;
+	private final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> decryptedVotes;
+	private final ImmutableList<ImmutableList<String>> decodedVotes;
+	private final ImmutableList<ImmutableList<String>> decodedWriteIns;
 
 	public VerifyTallyControlComponentBallotBoxInput(final ControlComponentShufflePayload lastControlComponentShufflePayload, final
 	TallyComponentShufflePayload tallyComponentShufflePayload, final TallyComponentVotesPayload tallyComponentVotesPaylaod) {
@@ -98,29 +93,28 @@ public class VerifyTallyControlComponentBallotBoxInput {
 		this.partiallyDecryptedVotes = lastControlComponentShufflePayload.getVerifiableDecryptions().getCiphertexts();
 		this.tallyComponentsShuffle = tallyComponentShufflePayload.getVerifiableShuffle();
 		this.verifiablePlaintextDecryption = tallyComponentShufflePayload.getVerifiablePlaintextDecryption();
-		this.selectedEncodedVotingOptions = tallyComponentVotesPaylaod.getVotes();
-		this.selectedDecodedVotingOptions = tallyComponentVotesPaylaod.getActualSelectedVotingOptions();
-		this.selectedDecodedWriteInVotes = tallyComponentVotesPaylaod.getDecodedWriteInVotes();
+		this.decryptedVotes = tallyComponentVotesPaylaod.getDecryptedVotes();
+		this.decodedVotes = tallyComponentVotesPaylaod.getDecodedVotes();
+		this.decodedWriteIns = tallyComponentVotesPaylaod.getDecodedWriteIns();
 
 		// Cross-checks.
 		checkArgument(allEqual(Stream.of(partiallyDecryptedVotes, tallyComponentsShuffle.shuffledCiphertexts(),
 						verifiablePlaintextDecryption.getDecryptedVotes()), GroupVector::getGroup),
 				"All input must have the same group.");
-		if (!selectedEncodedVotingOptions.isEmpty()) {
-			checkArgument(verifiablePlaintextDecryption.getGroup().equals(selectedEncodedVotingOptions.getGroup()),
-					"The selected encoded voting options and verifiable plaintext decryption must have the same group.");
+		if (!decryptedVotes.isEmpty()) {
+			checkArgument(verifiablePlaintextDecryption.getGroup().equals(decryptedVotes.getGroup()),
+					"The decrypted votes and verifiable plaintext decryption must have the same group.");
 		}
 
-		checkArgument(selectedEncodedVotingOptions.size() == selectedDecodedVotingOptions.size(),
-				"There must be as many encoded as decoded voting options.");
-		checkArgument(selectedDecodedWriteInVotes.size() == selectedEncodedVotingOptions.size(),
-				"There must be as many decoded write-in votes as encoded voting options.");
+		checkArgument(decryptedVotes.size() == decodedVotes.size(),
+				"There must be as many decrypted votes as decoded votes.");
+		checkArgument(decodedWriteIns.size() == decryptedVotes.size(),
+				"There must be as many decoded write-in votes as decrypted votes.");
 
-		checkArgument(allEqual(selectedDecodedVotingOptions.stream(), List::size),
-				"All selected decoded voting options must have the same size.");
-		checkArgument(selectedDecodedVotingOptions.isEmpty()
-						|| selectedEncodedVotingOptions.getElementSize() == selectedDecodedVotingOptions.get(0).size(),
-				"All selected encoded and decoded voting options must have the same size.");
+		checkArgument(allEqual(decodedVotes.stream(), ImmutableList::size),
+				"All decoded votes must have the same size.");
+		checkArgument(decodedVotes.isEmpty() || decryptedVotes.getElementSize() == decodedVotes.get(0).size(),
+				"All decrypted votes and decoded votes must have the same size.");
 
 		checkArgument(allEqual(Stream.of(partiallyDecryptedVotes, tallyComponentsShuffle.shuffledCiphertexts(),
 						verifiablePlaintextDecryption.getDecryptedVotes()),
@@ -147,30 +141,15 @@ public class VerifyTallyControlComponentBallotBoxInput {
 		return verifiablePlaintextDecryption;
 	}
 
-	public VerifiableDecryptions getVerifiableDecryptions() {
-		final GroupVector<ElGamalMultiRecipientMessage, GqGroup> decryptedVotes = verifiablePlaintextDecryption.getDecryptedVotes();
-		final GroupVector<ElGamalMultiRecipientCiphertext, GqGroup> ciphertexts = IntStream.range(0, decryptedVotes.size())
-				.mapToObj(i -> ElGamalMultiRecipientCiphertext.create(tallyComponentsShuffle.shuffledCiphertexts().get(i).getGamma(),
-						decryptedVotes.get(i).getElements()))
-				.collect(GroupVector.toGroupVector());
-		final GroupVector<DecryptionProof, ZqGroup> decryptionProofs = verifiablePlaintextDecryption.getDecryptionProofs();
-
-		return new VerifiableDecryptions(ciphertexts, decryptionProofs);
+	public GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> getDecryptedVotes() {
+		return decryptedVotes;
 	}
 
-	public GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> getSelectedEncodedVotingOptions() {
-		return selectedEncodedVotingOptions;
+	public ImmutableList<ImmutableList<String>> getDecodedVotes() {
+		return decodedVotes;
 	}
 
-	public List<List<String>> getSelectedDecodedVotingOptions() {
-		return selectedDecodedVotingOptions.stream()
-				.map(List::copyOf)
-				.toList();
-	}
-
-	public List<List<String>> getSelectedDecodedWriteInVotes() {
-		return selectedDecodedWriteInVotes.stream()
-				.map(List::copyOf)
-				.toList();
+	public ImmutableList<ImmutableList<String>> getDecodedWriteIns() {
+		return decodedWriteIns;
 	}
 }

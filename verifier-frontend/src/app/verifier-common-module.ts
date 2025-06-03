@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import {NgModule} from '@angular/core';
-import {ProcessorService} from './processor.service';
+import {VerifyService} from './verify/verify.service';
 import {CommonModule} from '@angular/common';
 import {BrowserModule} from '@angular/platform-browser';
 
@@ -28,7 +28,7 @@ import {BrowserModule} from '@angular/platform-browser';
     CommonModule,
     BrowserModule
   ],
-  providers: [ProcessorService]
+  providers: [VerifyService]
 })
 export class VerifierCommonModule {
 

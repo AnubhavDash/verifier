@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package ch.post.it.evoting.verifier.backend.tools.path;
 public enum StructureKey {
 
 	CONTEXT_DIR,
+	CONTEXT_MANIFEST,
 	CONFIGURATION_ANONYMIZED,
 	ELECTION_EVENT_CONTEXT,
 	SETUP_COMPONENT_PUBLIC_KEYS,
@@ -26,15 +27,8 @@ public enum StructureKey {
 	CONTEXT_VERIFICATION_CARD_SET_ID_DIR,
 	SETUP_COMPONENT_TALLY_DATA,
 
-	SETUP_DIR,
-	SETUP_VERIFICATION_CARD_SETS_DIR,
-	SETUP_VERIFICATION_CARD_SET_ID_DIR,
-	SETUP_COMPONENT_VERIFICATION_DATA,
-	CONTROL_COMPONENT_CODE_SHARES,
-
 	TALLY_DIR,
-	TALLY_COMPONENT_DECRYPT,
-	TALLY_COMPONENT_ECH0110,
+	TALLY_MANIFEST,
 	TALLY_COMPONENT_ECH0222,
 	BALLOT_BOXES_DIR,
 	BALLOT_BOX_ID_DIR,

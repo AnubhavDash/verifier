@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -56,7 +57,7 @@ class VerifyFileNameNodeIdsConsistencyTest extends TallyVerificationTest {
 	void verifyNokBallotBoxPayloadNodeId() throws IOException {
 		final ObjectMapper objectMapperMock = spy(objectMapper);
 		final ControlComponentBallotBoxPayload firstBallotBoxPayload = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
-				datasetPath).toList().get(0);
+				datasetPath).collect(toImmutableList()).get(0);
 		doReturn(firstBallotBoxPayload).when(objectMapperMock).readValue(any(File.class), eq(ControlComponentBallotBoxPayload.class));
 
 		final VerifyFileNameNodeIdsConsistency failingVerification = new VerifyFileNameNodeIdsConsistency(resultPublisherServiceMock,
@@ -72,10 +73,7 @@ class VerifyFileNameNodeIdsConsistencyTest extends TallyVerificationTest {
 	void verifyNokShufflePayloadNodeId() throws IOException {
 		final ObjectMapper objectMapperMock = spy(objectMapper);
 		final ElectionDataExtractionService extractionService = new ElectionDataExtractionService(pathService, objectMapperMock,
-				ech0110XmlFileRepository, ech0222XmlFileRepository, configurationXmlFileRepository, resultsXmlFileRepository,
-				electionEventContextPayloadDataExtractor, controlComponentCodeSharesPayloadDataExtractor,
-				setupComponentVerificationDataPayloadDataExtractor, controlComponentPublicKeysPayloadDataExtractor,
-				setupComponentTallyDataPayloadDataExtractor);
+				ech0222XmlFileRepository, configurationXmlFileRepository);
 		final ControlComponentShufflePayload firstShufflePayload = extractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
 				datasetPath).findFirst().orElseThrow();
 		doReturn(firstShufflePayload).when(objectMapperMock).readValue(any(File.class), eq(ControlComponentShufflePayload.class));

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,16 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap.toImmutableMap;
 import static ch.post.it.evoting.verifier.backend.tools.TranslationHelper.getFromResourceBundle;
 
 import java.nio.file.Path;
-import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
-import ch.ech.xmlns.ech_0110._4.Delivery;
+import ch.ech.xmlns.ech_0222._3.Delivery;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
@@ -32,7 +32,6 @@ import ch.post.it.evoting.evotinglibraries.domain.mixnet.SetupComponentPublicKey
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -81,15 +80,14 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 				inputDirectoryPath);
 		final Stream<TallyComponentShufflePayload> tallyComponentShufflePayloads = extractionService.getTallyComponentShufflePayloads(
 				inputDirectoryPath);
-		final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloads = getAuthorizationNameToTallyComponentVotesPayloadMap(
-				inputDirectoryPath, electionEventContextPayload);
 		final Configuration electionEventConfiguration = extractionService.getCantonConfig(inputDirectoryPath);
-		final Results tallyControlComponentDecryptions = extractionService.getTallyComponentDecrypt(inputDirectoryPath);
-		final Delivery tallyControlComponentResults = extractionService.getTallyComponentEch0110(inputDirectoryPath);
-		final ch.ech.xmlns.ech_0222._1.Delivery tallyControlComponentDetailedResults = extractionService.getTallyComponentEch0222(inputDirectoryPath);
+		final Delivery tallyControlComponentDetailedResults = extractionService.getTallyComponentEch0222(inputDirectoryPath);
+		final ImmutableMap<String, TallyComponentVotesPayload> tallyControlComponentVotesPerAuthorizationName = getAuthorizationNameToTallyComponentVotesPayloadMap(
+				inputDirectoryPath, electionEventContextPayload);
 		final VerifyTallyControlComponentInput input = new VerifyTallyControlComponentInput(controlComponentShufflePayloads,
-				tallyComponentShufflePayloads, tallyComponentVotesPayloads, electionEventConfiguration,
-				tallyControlComponentDecryptions, tallyControlComponentResults, tallyControlComponentDetailedResults);
+				tallyComponentShufflePayloads, electionEventConfiguration, tallyControlComponentDetailedResults,
+				tallyControlComponentVotesPerAuthorizationName
+		);
 
 		final boolean result = verifyTallyControlComponentAlgorithm.verifyTallyControlComponent(context, input);
 		if (result) {
@@ -104,10 +102,10 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 	 * Extract the {@link SetupComponentTallyDataPayload} and {@link TallyComponentVotesPayload} to create a mapping between the ballot box default
 	 * title and the {@link TallyComponentVotesPayload}.
 	 */
-	private Map<String, TallyComponentVotesPayload> getAuthorizationNameToTallyComponentVotesPayloadMap(final Path inputDirectoryPath,
+	private ImmutableMap<String, TallyComponentVotesPayload> getAuthorizationNameToTallyComponentVotesPayloadMap(final Path inputDirectoryPath,
 			final ElectionEventContextPayload electionEventContextPayload) {
 
-		record TallyComponentVotesTuple(String authorizationAlias, TallyComponentVotesPayload payload) {
+		record TallyComponentVotesTuple(String authorizationName, TallyComponentVotesPayload payload) {
 		}
 
 		return electionEventContextPayload.getElectionEventContext().verificationCardSetContexts().stream()
@@ -124,6 +122,6 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 
 					return new TallyComponentVotesTuple(ballotBoxDefaultTitle, tallyComponentVotesPayload);
 				})
-				.collect(Collectors.toMap(TallyComponentVotesTuple::authorizationAlias, TallyComponentVotesTuple::payload));
+				.collect(toImmutableMap(TallyComponentVotesTuple::authorizationName, TallyComponentVotesTuple::payload));
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -27,9 +26,8 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Streams;
 
+import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
-import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentCodeSharesPayloadDataExtractor;
-import ch.post.it.evoting.verifier.backend.dataextractors.ControlComponentPublicKeysPayloadDataExtractor;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -52,13 +50,13 @@ class VerifyNodeIdsConsistencyTest extends SetupVerificationTest {
 
 	@Test
 	void verifyNokControlComponentPublicKeysCompleteness() {
-		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-		final List<ControlComponentPublicKeysPayloadDataExtractor.DataExtraction> dataExtractions = electionDataExtractionService.getControlComponentPublicKeysPayloadsDataExtractions(
-				datasetPath).toList();
-		doReturn(dataExtractions.subList(0, dataExtractions.size() - 1).stream()).when(extractionServiceMock)
-				.getControlComponentPublicKeysPayloadsDataExtractions(datasetPath);
+		final Stream<ControlComponentPublicKeysPayload> stream = electionDataExtractionService.getControlComponentPublicKeysPayloads(
+				datasetPath).skip(1);
 
-		final VerifyNodeIdsConsistency verificationWithMock = new VerifyNodeIdsConsistency(resultPublisherServiceMock, extractionServiceMock);
+		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
+		doReturn(stream).when(extractionServiceSpy).getControlComponentPublicKeysPayloads(datasetPath);
+
+		final VerifyNodeIdsConsistency verificationWithMock = new VerifyNodeIdsConsistency(resultPublisherServiceMock, extractionServiceSpy);
 		final VerificationResult verificationResult = verificationWithMock.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),
@@ -68,46 +66,15 @@ class VerifyNodeIdsConsistencyTest extends SetupVerificationTest {
 
 	@Test
 	void verifyNokControlComponentPublicKeysUniqueness() {
-		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-		final List<ControlComponentPublicKeysPayloadDataExtractor.DataExtraction> dataExtractions = electionDataExtractionService.getControlComponentPublicKeysPayloadsDataExtractions(
-				datasetPath).toList();
-		final Stream<ControlComponentPublicKeysPayloadDataExtractor.DataExtraction> publicKeysWithDuplicateNodeIds = Streams.concat(
-				dataExtractions.stream(),
-				Stream.of(dataExtractions.get(0)));
-		doReturn(publicKeysWithDuplicateNodeIds).when(extractionServiceMock).getControlComponentPublicKeysPayloadsDataExtractions(datasetPath);
+		final Stream<ControlComponentPublicKeysPayload> stream = electionDataExtractionService.getControlComponentPublicKeysPayloads(
+				datasetPath)
+				.limit(2)
+				.flatMap(payload -> Streams.concat(Stream.of(payload), Stream.of(payload)));
 
-		final VerifyNodeIdsConsistency verificationWithMock = new VerifyNodeIdsConsistency(resultPublisherServiceMock, extractionServiceMock);
-		final VerificationResult verificationResult = verificationWithMock.verify(datasetPath);
+		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
+		doReturn(stream).when(extractionServiceSpy).getControlComponentPublicKeysPayloads(datasetPath);
 
-		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification314.nok.message"));
-		assertEquals(expectedResult, verificationResult);
-	}
-
-	@Test
-	void verifyNokCodeShares() {
-		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-
-		final Stream<ControlComponentCodeSharesPayloadDataExtractor.DataExtraction> dataExtractions = electionDataExtractionService.getAllControlComponentCodeSharesPayloadsDataExtractions(
-						datasetPath)
-				.map(dataExtraction -> new ControlComponentCodeSharesPayloadDataExtractor.DataExtraction(
-								dataExtraction.chunkIds(),
-								dataExtraction.electionEventIds(),
-								dataExtraction.nodeIds().stream().filter(nodeId -> nodeId != 1).toList(),
-								dataExtraction.verificationCardSetIds(),
-								dataExtraction.verificationCardIdsNode1(),
-								dataExtraction.verificationCardIdsNode2(),
-								dataExtraction.verificationCardIdsNode3(),
-								dataExtraction.verificationCardIdsNode4(),
-								dataExtraction.p(),
-								dataExtraction.q(),
-								dataExtraction.g()
-						)
-				);
-
-		doReturn(dataExtractions).when(extractionServiceMock).getAllControlComponentCodeSharesPayloadsDataExtractions(datasetPath);
-
-		final VerifyNodeIdsConsistency verificationWithMock = new VerifyNodeIdsConsistency(resultPublisherServiceMock, extractionServiceMock);
+		final VerifyNodeIdsConsistency verificationWithMock = new VerifyNodeIdsConsistency(resultPublisherServiceMock, extractionServiceSpy);
 		final VerificationResult verificationResult = verificationWithMock.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,16 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
+
 import java.nio.file.Path;
-import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.PrimesMappingTableAlgorithms;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.electoralmodel.PrimesMappingTableAlgorithms;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -62,9 +64,9 @@ public class VerifyPlaintextsConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final List<VerificationCardSetContext> verificationCardSetContexts = extractionService.getElectionEventContextPayload(inputDirectoryPath)
-				.getElectionEventContext().verificationCardSetContexts();
-		final List<Plaintexts> plaintexts = verificationCardSetContexts.stream()
+		final ImmutableList<VerificationCardSetContext> verificationCardSetContexts = extractionService.getElectionEventContext(inputDirectoryPath)
+				.verificationCardSetContexts();
+		final ImmutableList<Plaintexts> plaintexts = verificationCardSetContexts.stream()
 				.parallel()
 				.map(vcsContext -> {
 					final String ballotBoxId = vcsContext.getBallotBoxId();
@@ -73,7 +75,7 @@ public class VerifyPlaintextsConsistency extends AbstractVerification {
 							inputDirectoryPath, ballotBoxId);
 					return new Plaintexts(tallyComponentShufflePayload, numberWriteInsPlusOne);
 				})
-				.toList();
+				.collect(toImmutableList());
 		if (plaintextsConsistent(plaintexts)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
@@ -82,7 +84,7 @@ public class VerifyPlaintextsConsistency extends AbstractVerification {
 		}
 	}
 
-	private boolean plaintextsConsistent(final List<Plaintexts> plaintexts) {
+	private boolean plaintextsConsistent(final ImmutableList<Plaintexts> plaintexts) {
 		return plaintexts.stream()
 				.parallel()
 				.map(information -> information.tallyComponentShufflePayload.getVerifiablePlaintextDecryption()

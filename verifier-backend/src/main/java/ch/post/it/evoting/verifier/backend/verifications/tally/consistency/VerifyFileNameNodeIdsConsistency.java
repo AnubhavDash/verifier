@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,13 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
@@ -69,9 +68,10 @@ public class VerifyFileNameNodeIdsConsistency extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final List<Function<Path, Boolean>> validations = new ArrayList<>();
-		validations.add(this::verifyControlComponentBallotBoxFileNamesConsistency);
-		validations.add(this::verifyControlComponentShuffleFileNamesConsistency);
+		final ImmutableList<Function<Path, Boolean>> validations = ImmutableList.of(
+				this::verifyControlComponentBallotBoxFileNamesConsistency,
+				this::verifyControlComponentShuffleFileNamesConsistency
+		);
 
 		final boolean fileNamesConsistent = validations
 				.stream()

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,13 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
+import static com.google.common.collect.ImmutableSet.toImmutableSet;
+
 import java.nio.file.Path;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
+
+import com.google.common.collect.ImmutableSet;
 
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
@@ -71,18 +73,15 @@ public class VerifyFileNameBallotBoxIdsConsistency extends AbstractVerification 
 	public VerificationResult verify(final Path inputDirectoryPath) {
 		final PathNode ballotBoxes = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 
-		final Set<String> ballotBoxIds = ballotBoxes.getRegexPaths().stream()
-				.parallel()
+		final ImmutableSet<String> ballotBoxIds = ballotBoxes.getRegexPaths().stream()
 				.map(Path::getFileName)
 				.map(Path::toString)
-				.collect(Collectors.toUnmodifiableSet());
+				.collect(toImmutableSet());
 
-		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContextPayload(inputDirectoryPath)
-				.getElectionEventContext();
-		final Set<String> payloadBallotBoxIds = electionEventContext.verificationCardSetContexts().stream()
-				.parallel()
+		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContext(inputDirectoryPath);
+		final ImmutableSet<String> payloadBallotBoxIds = electionEventContext.verificationCardSetContexts().stream()
 				.map(VerificationCardSetContext::getBallotBoxId)
-				.collect(Collectors.toUnmodifiableSet());
+				.collect(toImmutableSet());
 
 		// Verifying set equality is sufficient since the payload ensures that there are no duplicate ballot box IDs.
 		final boolean sameBallotBoxIds = ballotBoxIds.equals(payloadBallotBoxIds);

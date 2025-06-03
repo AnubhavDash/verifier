@@ -1,0 +1,82 @@
+<!--
+  ~ (c) Copyright 2025 Swiss Post Ltd.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<table aria-label="Verification definitions list" class="table mt-3 mb-0" role="table">
+  <thead>
+  <tr>
+    <th class="text-center" scope="col"></th>
+    <th class="text-center" scope="col">{{ 'verificationDetails.header.phase' | translate }}</th>
+    <th class="text-center" scope="col">{{ 'verificationDetails.header.id' | translate }}</th>
+    <th scope="col">{{ 'verificationDetails.header.name' | translate }}</th>
+    <th scope="col">{{ 'verificationDetails.header.category' | translate }}</th>
+    <th scope="col">{{ 'verificationDetails.header.description' | translate }}</th>
+  </tr>
+  </thead>
+  <tbody>
+    @for (verification of verifications | keyvalue; track $index; let last = $last) {
+      <tr [ngClass]="{'table-warning': isNotOK(verification.value.status), 'table-danger': isError(verification.value.status)}">
+        <td class="text-center fs-5">
+          @if (isDefault(verification.value.status)) {
+            <i aria-hidden="true" class="text-primary bi bi-arrow-right-circle"></i>
+          }
+          @if (isRunning(verification.value.status)) {
+            <div class="spinner">
+              <span aria-hidden="true" class="spinner-border spinner-border-sm"></span>
+            </div>
+          }
+          @if (isOK(verification.value.status)) {
+            <i aria-hidden="true" class="text-success bi bi-check-circle"></i>
+          }
+          @if (isNotOK(verification.value.status)) {
+            <i aria-hidden="true" class="text-warning bi bi-x-circle"></i>
+          }
+          @if (isError(verification.value.status)) {
+            <i aria-hidden="true" class="text-danger bi bi-exclamation-circle"></i>
+          }
+        </td>
+        <td class="text-center block-name">{{verification.value.block}}</td>
+        <td class="text-center">{{verification.value.verificationId}}</td>
+        <td>{{verification.value.name}}</td>
+        <td>{{verification.value.category}}</td>
+        <td>{{verification.value.description | localize}}</td>
+      </tr>
+      @if (isNotOK(verification.value.status) || isError(verification.value.status)) {
+        <tr [ngClass]="{'table-warning': isNotOK(verification.value.status), 'table-danger': isError(verification.value.status)}">
+			<td></td>
+			<td colspan="5">
+            {{verification.value.message | localize}}
+            @if (verification.value.errorStack !== null && !isReportDisplay) {
+              <a (click)="$event.preventDefault(); toggleCollapse($index)" aria-controls="collapseExample" aria-expanded="false"
+                 class="text-decoration-none" data-html2canvas-ignore data-toggle="collapse"
+                 href="#">
+				  [{{ (collapsedStates[$index] ? 'verificationDetails.hideError' : 'verificationDetails.showError') | translate }}]
+              </a>
+            }
+				<div [ngbCollapse]="!collapsedStates[$index]" class="collapse text-monospace text-break"
+                   id="{{'collapseExample' + verification.value.id}}">
+                <hr>
+                {{verification.value.errorStack[0]}}
+                <ul style="list-style-type:none;">
+                  @for (stack of verification.value.errorStack | slice:1; track $index) {
+                    <li>{{stack}}</li>
+                  }
+                </ul>
+              </div>
+          </td>
+        </tr>
+      }
+    }
+  </tbody>
+</table>

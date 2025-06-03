@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,20 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.authenticity;
 
-import static ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants.NODE_IDS;
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
 import java.security.SignatureException;
-import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
+import ch.post.it.evoting.evotinglibraries.domain.ControlComponentNode;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
@@ -75,18 +76,13 @@ public class VerifySignatureControlComponentPublicKeys extends AbstractVerificat
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = electionDataExtractionService.getControlComponentPublicKeysPayloads(
-				inputDirectoryPath);
+		final ImmutableList<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = electionDataExtractionService.getControlComponentPublicKeysPayloads(
+				inputDirectoryPath).collect(toImmutableList());
 
-		checkState(NODE_IDS.size() == controlComponentPublicKeysPayloads.size(),
+		checkState(ControlComponentNode.ids().size() == controlComponentPublicKeysPayloads.size(),
 				"The number of control component public keys payload should correspond to the number of control components.");
 
-		controlComponentPublicKeysPayloads.stream().parallel()
-				.forEach(payload -> checkState(NODE_IDS.contains(payload.getControlComponentPublicKeys().nodeId()),
-						"Invalid node id. [nodeId: %s]", payload.getControlComponentPublicKeys().nodeId()));
-
-		final boolean verified = controlComponentPublicKeysPayloads
-				.stream()
+		final boolean verified = controlComponentPublicKeysPayloads.stream()
 				.parallel()
 				.map(this::verifySignature)
 				.reduce(Boolean::logicalAnd)
@@ -114,6 +110,7 @@ public class VerifySignatureControlComponentPublicKeys extends AbstractVerificat
 		final Hashable additionalContextData = ChannelSecurityContextData.controlComponentPublicKeys(nodeId, electionEventId);
 
 		try {
+			// The ControlComponentPublicKeysPayload method toHashableForm recursively hashes the control component public keys payload as specified.
 			return signatureVerification.verifySignature(Alias.getControlComponentByNodeId(nodeId).toString(), controlComponentPublicKeysPayload,
 					additionalContextData, signature.signatureContents());
 		} catch (final SignatureException e) {

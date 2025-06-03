@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,14 +19,14 @@ import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Map;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 
 public class DatasetConfigurationContext {
 
 	private final String filename;
 	private final String hash;
 	private final String electionEventId;
-	private final Map<String, String> aliasesToFingerprints;
+	private final ImmutableMap<String, String> aliasesToFingerprints;
 	private final String electionEventName;
 	private final String electionEventSeed;
 	private final String electionEventDate;
@@ -39,7 +39,7 @@ public class DatasetConfigurationContext {
 	private final int totalNumberOfTestVoters;
 
 	private DatasetConfigurationContext(final String filename, final String hash, final String electionEventId,
-			final Map<String, String> aliasesToFingerprints, final String electionEventName, final String electionEventSeed,
+			final ImmutableMap<String, String> aliasesToFingerprints, final String electionEventName, final String electionEventSeed,
 			final String electionEventDate, final int numberOfElections, final int numberOfVotes, final int numberOfBallots,
 			final int numberOfNonTestBallotBoxes, final int numberOfTestBallotBoxes, final int totalNumberOfAuthorizedNonTestVoters,
 			final int totalNumberOfTestVoters) {
@@ -80,7 +80,7 @@ public class DatasetConfigurationContext {
 		return electionEventId;
 	}
 
-	public Map<String, String> getAliasesToFingerprints() {
+	public ImmutableMap<String, String> getAliasesToFingerprints() {
 		return aliasesToFingerprints;
 	}
 
@@ -128,7 +128,7 @@ public class DatasetConfigurationContext {
 		private String filename;
 		private String hash;
 		private String electionEventId;
-		private Map<String, String> aliasesToFingerprints;
+		private ImmutableMap<String, String> aliasesToFingerprints;
 		private String electionEventName;
 		private String electionEventSeed;
 		private String electionEventDate;
@@ -155,7 +155,7 @@ public class DatasetConfigurationContext {
 			return this;
 		}
 
-		public Builder setAliasesToFingerprints(final Map<String, String> aliasesToFingerprints) {
+		public Builder setAliasesToFingerprints(final ImmutableMap<String, String> aliasesToFingerprints) {
 			this.aliasesToFingerprints = aliasesToFingerprints;
 			return this;
 		}

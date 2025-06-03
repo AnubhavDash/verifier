@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ (c) Copyright 2024 Swiss Post Ltd.
+  ~ (c) Copyright 2025 Swiss Post Ltd.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 	<groupId>ch.post.it.evoting.verifier</groupId>
 	<artifactId>verifier</artifactId>
-	<version>1.5.5.1</version>
+	<version>1.6.0.0-RC9</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -34,23 +34,22 @@
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
 		<maven.compiler.release>21</maven.compiler.release>
-		<project.build.outputTimestamp>2025-05-27T15:21:09+02:00</project.build.outputTimestamp>
+		<project.build.outputTimestamp>2025-06-03T17:15:06+02:00</project.build.outputTimestamp>
 
-		<apache.commons-lang3>3.17.0</apache.commons-lang3>
 		<bouncycastle.version>1.80</bouncycastle.version>
 		<commons-codec.version>1.18.0</commons-codec.version>
-		<crypto-primitives-version>1.4.5.1</crypto-primitives-version>
-		<e-voting-libraries.version>1.4.5.1</e-voting-libraries.version>
-		<guava.version>33.4.8-jre</guava.version>
-		<jackson.version>2.19.0</jackson.version>
+		<crypto-primitives-version>1.5.0.0-b30</crypto-primitives-version>
+		<e-voting-libraries.version>1.5.0.0-b121</e-voting-libraries.version>
+		<guava.version>33.4.7-jre</guava.version>
+		<jackson.version>2.18.3</jackson.version>
 		<jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
 		<jakarta.xml.bind-api.version>4.0.2</jakarta.xml.bind-api.version>
-		<jsurfer-jackson.version>1.6.5</jsurfer-jackson.version>
-		<junit-jupiter.version>5.12.2</junit-jupiter.version>
+		<junit-jupiter.version>5.12.1</junit-jupiter.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
 		<maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
 		<maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
-		<maven-dependency-check.version>12.1.0</maven-dependency-check.version>
+		<maven-dependency-check.version>12.1.1</maven-dependency-check.version>
+		<maven-dependency-plugin.version>3.8.1</maven-dependency-plugin.version>
 		<maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
 		<maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
 		<maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
@@ -62,24 +61,24 @@
 		<reproducible-build-maven-plugin.version>0.17.0</reproducible-build-maven-plugin.version>
 		<rootProject>verifier</rootProject>
 		<slf4j.version>2.0.17</slf4j.version>
-		<sonar-maven-plugin.version>3.11.0.3922</sonar-maven-plugin.version>
-		<spring-boot.version>3.4.5</spring-boot.version>
+		<sonar-maven-plugin.version>5.1.0.4751</sonar-maven-plugin.version>
+		<spring-boot.version>3.4.4</spring-boot.version>
 		<system-stubs-jupiter.version>2.1.8</system-stubs-jupiter.version>
+		<testdata.version>1.5.0.0-b32</testdata.version>
 		<versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
 		<zip4j.version>2.11.5</zip4j.version>
+		<apache.commons-lang3>3.17.0</apache.commons-lang3>
 
 		<!-- sonar -->
 		<sonar.scm.disabled>true</sonar.scm.disabled>
 		<sonar.skipDesign>true</sonar.skipDesign>
+		<sonar.scanner.skipJreProvisioning>true</sonar.scanner.skipJreProvisioning>
+		<sonar.scanner.skipNodeProvisioning>true</sonar.scanner.skipNodeProvisioning>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		<sonar.junit.reportPaths>${project.basedir}/target/surefire-reports/,${project.basedir}/target/failsafe-reports/</sonar.junit.reportPaths>
 		<sonar.javascript.lcov.reportPaths>${project.basedir}/coverage/lcov.info</sonar.javascript.lcov.reportPaths>
-		<sonar.coverage.exclusions>**/test/**/*,**/tests/**/*</sonar.coverage.exclusions>
 		<sonar.java.source>${maven.compiler.release}</sonar.java.source>
 		<sonar.java.target>${maven.compiler.release}</sonar.java.target>
-		<sonar.issue.ignore.multicriteria>e1</sonar.issue.ignore.multicriteria>
-		<sonar.issue.ignore.multicriteria.e1.ruleKey>css:S4667</sonar.issue.ignore.multicriteria.e1.ruleKey>
-		<sonar.issue.ignore.multicriteria.e1.resourceKey>**/*.scss</sonar.issue.ignore.multicriteria.e1.resourceKey>
 	</properties>
 
 	<dependencyManagement>
@@ -139,6 +138,13 @@
 				<groupId>ch.post.it.evoting.evotinglibraries</groupId>
 				<artifactId>e-voting-libraries-domain</artifactId>
 				<version>${e-voting-libraries.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.post.it.evoting.evotinglibraries</groupId>
+				<artifactId>e-voting-libraries-domain</artifactId>
+				<version>${e-voting-libraries.version}</version>
+				<type>test-jar</type>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>ch.post.it.evoting.evotinglibraries</groupId>
@@ -246,17 +252,6 @@
 			</dependency>
 
 			<dependency>
-				<groupId>com.github.jsurfer</groupId>
-				<artifactId>jsurfer-jackson</artifactId>
-				<version>${jsurfer-jackson.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>com.fasterxml.jackson.core</groupId>
-						<artifactId>jackson-databind</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
 				<groupId>uk.org.webcompere</groupId>
 				<artifactId>system-stubs-jupiter</artifactId>
 				<version>${system-stubs-jupiter.version}</version>
@@ -293,6 +288,11 @@
 					<configuration>
 						<parameters>true</parameters>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>${maven-dependency-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -348,6 +348,18 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<!-- Generate properties pointing to artifacts. Used for Mockito in javaagent for example. -->
+					<execution>
+						<goals>
+							<goal>properties</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -409,10 +421,6 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>versions-maven-plugin</artifactId>
 				<version>${versions-maven-plugin.version}</version>
-				<configuration>
-					<allowMajorUpdates>false</allowMajorUpdates>
-					<ignoredVersions>.*beta.*,.*alpha.*,.*-b.*,.*.*-M.*,.*SNAPSHOT.*,.*-VE.*,.*-RC.*</ignoredVersions>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

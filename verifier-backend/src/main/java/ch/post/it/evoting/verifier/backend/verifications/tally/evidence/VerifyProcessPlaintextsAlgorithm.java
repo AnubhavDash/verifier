@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,9 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientMessage;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
@@ -68,9 +67,9 @@ public final class VerifyProcessPlaintextsAlgorithm {
 
 		// Input.
 		final GroupVector<ElGamalMultiRecipientMessage, GqGroup> m = input.getPlaintextVotes();
-		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> L_votes = input.getSelectedEncodedVotingOptions();
-		final List<List<String>> L_decodedVotes = input.getSelectedDecodedVotingOptions();
-		final List<List<String>> L_writeIns = input.getSelectedDecodedWriteInVotes();
+		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> L_votes = input.getListOfDecryptedVotes();
+		final ImmutableList<ImmutableList<String>> L_decodedVotes = input.getListOfDecodedVotes();
+		final ImmutableList<ImmutableList<String>> L_writeIns = input.getListOfDecodedWriteIns();
 
 		// Require.
 		final int N_C_hat = m.size();
@@ -83,9 +82,9 @@ public final class VerifyProcessPlaintextsAlgorithm {
 		final ProcessPlaintextsOutput L_votes_prime_L_decodedVotes_prime_L_writeIns_prime = processPlaintextsAlgorithm.processPlaintexts(
 				processPlaintextsContext, m);
 
-		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> L_votes_prime = L_votes_prime_L_decodedVotes_prime_L_writeIns_prime.getSelectedEncodedVotingOptions();
-		final List<List<String>> L_decodedVotes_prime = L_votes_prime_L_decodedVotes_prime_L_writeIns_prime.getSelectedDecodedVotingOptions();
-		final List<List<String>> L_writeIns_prime = L_votes_prime_L_decodedVotes_prime_L_writeIns_prime.getSelectedDecodedWriteInVotes();
+		final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> L_votes_prime = L_votes_prime_L_decodedVotes_prime_L_writeIns_prime.getListOfDecryptedVotes();
+		final ImmutableList<ImmutableList<String>> L_decodedVotes_prime = L_votes_prime_L_decodedVotes_prime_L_writeIns_prime.getListOfDecodedVotes();
+		final ImmutableList<ImmutableList<String>> L_writeIns_prime = L_votes_prime_L_decodedVotes_prime_L_writeIns_prime.getListOfDecodedWriteIns();
 
 		return L_votes_prime.equals(L_votes) && L_decodedVotes_prime.equals(L_decodedVotes) && L_writeIns_prime.equals(L_writeIns);
 	}

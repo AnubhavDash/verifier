@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,13 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -34,8 +34,10 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Answers;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.evotinglibraries.domain.common.EncryptedVerifiableVote;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
+import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
@@ -63,15 +65,15 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 	@MethodSource("inconsistentRelationBetweenVerificationCardSetAndBallotBoxProvider")
 	@DisplayName("inconsistent relation between verification card set and ballot box failed when")
 	void inconsistentRelationBetweenVerificationCardSetAndBallotBox(final String testName,
-			final ElectionEventContextPayload electionEventContextPayloadMock,
-			final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloadsMock) {
+			final ElectionEventContext electionEventContextMock,
+			final ImmutableList<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloadsMock) {
 		// given
 		final VerifyVerificationCardIdsConsistency verifyElectionEventIdConsistency = new VerifyVerificationCardIdsConsistency(
 				resultPublisherServiceMock, electionDataExtractionService);
 
 		// when
 		final boolean result = verifyElectionEventIdConsistency.verifyVerificationCardSetRelationToBallotBox(controlComponentBallotBoxPayloadsMock,
-				electionEventContextPayloadMock);
+				electionEventContextMock);
 
 		// then
 		assertFalse(result);
@@ -79,16 +81,17 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 
 	static Stream<Arguments> inconsistentRelationBetweenVerificationCardSetAndBallotBoxProvider() {
 
-		final ElectionEventContextPayload electionEventContextPayloadMock = new ElectionEventContextPayloadMockBuilder()
+		final ElectionEventContext electionEventContextMock = new ElectionEventContextPayloadMockBuilder()
 				.add("verificationCardSetId_1", "ballotBoxId_1")
 				.add("verificationCardSetId_2", "ballotBoxId_2")
 				.add("verificationCardSetId_3", "ballotBoxId_3")
-				.build();
+				.build()
+				.getElectionEventContext();
 
 		return Stream.of(
 				Arguments.of("verification card set ids is swapped between 2 ballot box.",
-						electionEventContextPayloadMock,
-						List.of(
+						electionEventContextMock,
+						ImmutableList.of(
 								new ControlComponentBallotBoxPayloadMockBuilder("ballotBoxId_1")
 										.add("verificationCardSetId_1")
 										.build(),
@@ -100,8 +103,8 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 										.build()
 						)),
 				Arguments.of("verification card set does not exist in election event context.",
-						electionEventContextPayloadMock,
-						List.of(
+						electionEventContextMock,
+						ImmutableList.of(
 								new ControlComponentBallotBoxPayloadMockBuilder("ballotBoxId_1")
 										.add("verificationCardSetId_1")
 										.build(),
@@ -113,8 +116,8 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 										.build()
 						)),
 				Arguments.of("ballot box which does not exist in election event context.",
-						electionEventContextPayloadMock,
-						List.of(
+						electionEventContextMock,
+						ImmutableList.of(
 								new ControlComponentBallotBoxPayloadMockBuilder("ballotBoxId_1")
 										.add("verificationCardSetId_1")
 										.build(),
@@ -134,7 +137,7 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 	@MethodSource("inconsistentVerificationCardIdsInExpectedSetProvider")
 	@DisplayName("inconsistent verification card ids in expected set failed")
 	void inconsistentVerificationCardIdsInExpectedSet(final String testName,
-			final List<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloadsMock,
+			final ImmutableList<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloadsMock,
 			final Stream<SetupComponentTallyDataPayload> setupComponentTallyDataPayloads) {
 		// given
 
@@ -151,7 +154,7 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 	static Stream<Arguments> inconsistentVerificationCardIdsInExpectedSetProvider() {
 		return Stream.of(
 				Arguments.of("missing verification card ID in the related set.",
-						List.of(new ControlComponentBallotBoxPayloadMockBuilder("ballotBoxId_1")
+						ImmutableList.of(new ControlComponentBallotBoxPayloadMockBuilder("ballotBoxId_1")
 								.add("verificationCardSetId_1", "verificationCardId_1")
 								.add("verificationCardSetId_1", "verificationCardId_2")
 								.add("verificationCardSetId_2", "verificationCardId_3")
@@ -175,7 +178,7 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 										.build()
 						),
 						Arguments.of("unexpected verification card set",
-								List.of(new ControlComponentBallotBoxPayloadMockBuilder("ballotBoxId_1")
+								ImmutableList.of(new ControlComponentBallotBoxPayloadMockBuilder("ballotBoxId_1")
 										.add("verificationCardSetId_1", "verificationCardId_1")
 										.add("verificationCardSetId_1", "verificationCardId_2")
 										.add("verificationCardSetId_2", "verificationCardId_3")
@@ -209,14 +212,14 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 		}
 
 		public ElectionEventContextPayload build() {
-			final List<VerificationCardSetContext> verificationCardSetContexts = verificationCardSetIdAndBallotBoxId.stream()
+			final ImmutableList<VerificationCardSetContext> verificationCardSetContexts = verificationCardSetIdAndBallotBoxId.stream()
 					.map(pair -> {
 						final VerificationCardSetContext mock = mock(VerificationCardSetContext.class);
 						when(mock.getVerificationCardSetId()).thenReturn(pair.getLeft());
 						when(mock.getBallotBoxId()).thenReturn(pair.getRight());
 						return mock;
 					})
-					.toList();
+					.collect(toImmutableList());
 
 			final ElectionEventContextPayload electionEventContextPayloadMock = mock(ElectionEventContextPayload.class, Answers.RETURNS_DEEP_STUBS);
 			when(electionEventContextPayloadMock.getElectionEventContext().verificationCardSetContexts()).thenReturn(verificationCardSetContexts);
@@ -243,14 +246,14 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 		}
 
 		public ControlComponentBallotBoxPayload build() {
-			final List<EncryptedVerifiableVote> encryptedVerifiableVotes = verificationCardSetIdsAndVerificationCardIds.stream()
+			final ImmutableList<EncryptedVerifiableVote> encryptedVerifiableVotes = verificationCardSetIdsAndVerificationCardIds.stream()
 					.map(pair -> {
 						final EncryptedVerifiableVote mock = mock(EncryptedVerifiableVote.class, Answers.RETURNS_DEEP_STUBS);
 						when(mock.contextIds().verificationCardSetId()).thenReturn(pair.getLeft());
 						when(mock.contextIds().verificationCardId()).thenReturn(pair.getRight());
 						return mock;
 					})
-					.toList();
+					.collect(toImmutableList());
 			final ControlComponentBallotBoxPayload controlComponentBallotBoxPayload = mock(ControlComponentBallotBoxPayload.class);
 			when(controlComponentBallotBoxPayload.getBallotBoxId()).thenReturn(ballotBoxId);
 			when(controlComponentBallotBoxPayload.getConfirmedEncryptedVotes()).thenReturn(encryptedVerifiableVotes);
@@ -274,7 +277,7 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 
 		public SetupComponentTallyDataPayload build() {
 			final SetupComponentTallyDataPayload mock = mock(SetupComponentTallyDataPayload.class, Answers.RETURNS_DEEP_STUBS);
-			when(mock.getVerificationCardIds()).thenReturn(verificationCardIds.stream().toList());
+			when(mock.getVerificationCardIds()).thenReturn(verificationCardIds.stream().collect(toImmutableList()));
 			when(mock.getVerificationCardSetId()).thenReturn(verificationCardSetId);
 			return mock;
 		}

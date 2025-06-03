@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package ch.post.it.evoting.verifier.backend.controller;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -37,20 +36,9 @@ class VerifierControllerTest {
 	}
 
 	@Test
-	void ping_returnsTrue() {
-		assertTrue(controller.ping());
-	}
-
-	@Test
-	void tests_get_callsGetTestStatus() {
-		controller.getTestStatus();
-		verify(processorMock, atLeast(1)).getVerifications();
-	}
-
-	@Test
-	void configurationInputDirectory_callsGetConfiguration() {
-		controller.getDatasetConfiguration();
-		verify(processorMock).getDatasetConfiguration();
+	void getVerificationList() {
+		controller.getVerificationList("setup");
+		verify(processorMock, atLeast(1)).getVerifications("setup");
 	}
 
 }

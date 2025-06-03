@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,56 +18,64 @@ package ch.post.it.evoting.verifier.backend.verifications.setup.authenticity;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 
-import java.io.IOException;
+import java.nio.file.Path;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.SignatureException;
-import java.security.cert.CertificateException;
+import java.security.cert.Certificate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
-import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
-import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
-import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
-import ch.post.it.evoting.evotinglibraries.xml.hashable.HashableCantonConfigFactory;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.channelsecurity.XMLSignatureService;
+import ch.post.it.evoting.verifier.backend.verifications.authenticity.DatasetSignatureFactory;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 
 class VerifySignatureCantonConfigTest extends SetupVerificationTest {
 
+	private KeyStore keyStoreMock;
+	private XMLSignatureService xmlSignatureServiceMock;
+
 	@BeforeEach
-	void setUpAll() throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
-		final SignatureVerification testSignatureVerification = signatureFactory.getTestSignatureVerification();
-		verification = new VerifySignatureCantonConfig(resultPublisherServiceMock, electionDataExtractionService,
-				testSignatureVerification);
+	void setUpAll() {
+		keyStoreMock = spy(new DatasetSignatureFactory().getKeystore());
+		xmlSignatureServiceMock = spy(xmlSignatureService);
+		verification = new VerifySignatureCantonConfig(resultPublisherServiceMock, electionDataExtractionService, xmlSignatureServiceMock,
+				keyStoreMock);
 	}
 
 	@Test
-	void testOK() throws SignatureException {
-		final Configuration configuration = electionDataExtractionService.getCantonConfig(datasetPath);
+	void testOK() {
+		final Path configurationPath = electionDataExtractionService.getCantonConfigPath(datasetPath);
 
-		configuration.setSignature(generateSignature(configuration));
-
-		assertTrue(((VerifySignatureCantonConfig) verification).verifySignature(configuration), "the signature is not valid");
+		assertTrue(((VerifySignatureCantonConfig) verification).verifySignature(configurationPath), "the signature is not valid");
 	}
 
 	@Test
-	void testNOK() throws SignatureException {
-		final Configuration configuration = electionDataExtractionService.getCantonConfig(datasetPath);
+	void testNOK() {
+		final Path configurationPath = electionDataExtractionService.getCantonConfigPath(datasetPath);
+		doReturn(false).when(xmlSignatureServiceMock).verifyXMLSignature(any(), any());
 
-		configuration.setSignature(generateSignature(configuration));
-		configuration.getContest().setContestIdentification("new value");
-
-		assertFalse(((VerifySignatureCantonConfig) verification).verifySignature(configuration), "the signature is valid but it should not");
+		assertFalse(((VerifySignatureCantonConfig) verification).verifySignature(configurationPath), "the signature is not valid");
 	}
 
-	private byte[] generateSignature(final Configuration configuration) throws SignatureException {
-		final Hashable hash = HashableCantonConfigFactory.fromConfiguration(configuration);
-		final Hashable additionalContextData = ChannelSecurityContextData.cantonConfig();
+	@Test
+	void testVerificationKeyNOK() throws KeyStoreException, NoSuchAlgorithmException {
+		final Path configurationPath = electionDataExtractionService.getCantonConfigPath(datasetPath);
+		final Certificate certificateMock = mock(Certificate.class);
+		final KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+		keyPairGenerator.initialize(3072);
+		final KeyPair keyPair = keyPairGenerator.generateKeyPair();
+		doReturn(keyPair.getPublic()).when(certificateMock).getPublicKey();
+		doReturn(certificateMock).when(keyStoreMock).getCertificate(any());
 
-		return signatureFactory.getTestSignatureGeneration(Alias.CANTON).genSignature(hash, additionalContextData);
+		assertFalse(((VerifySignatureCantonConfig) verification).verifySignature(configurationPath), "the signature is not valid");
 	}
 }

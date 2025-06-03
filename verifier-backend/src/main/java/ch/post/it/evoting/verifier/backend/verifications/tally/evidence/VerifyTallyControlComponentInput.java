@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,23 +15,22 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap.toImmutableMap;
 import static ch.post.it.evoting.cryptoprimitives.utils.Validations.allEqual;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import ch.ech.xmlns.ech_0110._4.Delivery;
+import ch.ech.xmlns.ech_0222._3.Delivery;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
-import ch.post.it.evoting.evotinglibraries.domain.ControlComponentConstants;
+import ch.post.it.evoting.evotinglibraries.domain.ControlComponentNode;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 
 /**
  * Regroups the input values needed by the VerifyTallyControlComponent algorithm.
@@ -40,44 +39,33 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
  *     <li>(c<sub>mix,4</sub>, pi<sub>mix,4</sub>, c<sub>dec,4</sub>, pi<sub>dec,4</sub>), the Last Online Control Component Shuffles for all bb<sub>i</sub>. Not null.</li>
  *     <li>(c<sub>mix,5</sub>, pi<sub>mix,5</sub>, m, pi<sub>dec,5</sub>), the Tally Control Component Shuffles for all bb<sub>i</sub>. Not null.</li>
  *     <li>(L<sub>votes</sub>, L<sub>decodedVotes</sub>, L<sub>writeIns</sub>), the Tally Control Component Votes for all bb<sub>i</sub>. Not null.</li>
- *     <li>L<sub>decodedVotesbb</sub>, the list of all selected decoded voting options for all bb<sub>i</sub>. Not null.</li>
  *     <li>Election Event Configuration, the configuration-anonymized as {@link Configuration}. Not null.</li>
- *     <li>Tally Control Component Decryptions, the evoting-decrypt as {@link Results}. Not null.</li>
- *     <li>Tally Control Component Results, the eCH-0110 as {@link Delivery}. Not null.</li>
- *     <li>Tally Control Component Detailed Results, the eCH-0222 as {@link ch.ech.xmlns.ech_0222._1.Delivery}. Not null.</li>
+ *     <li>Tally Control Component Detailed Results, the eCH-0222 as {@link Delivery}. Not null.</li>
+ *     <li>Map<sub>writeIns</sub>, the key-value map of L<sub>writeIns</sub> per authorization name. Not null.</li>
  * </ul>
  */
 public class VerifyTallyControlComponentInput {
 
-	private final Map<String, ControlComponentShufflePayload> lastOnlineControlComponentShufflesPerBallotBoxId;
-	private final Map<String, TallyComponentShufflePayload> tallyControlComponentShufflesPerBallotBoxId;
-	private final Map<String, TallyComponentVotesPayload> tallyControlComponentVotesPerBallotBoxId;
-	private final Map<String, TallyComponentVotesPayload> tallyControlComponentVotesPerAuthorizationAlias;
+	private final ImmutableMap<String, ControlComponentShufflePayload> lastOnlineControlComponentShufflesPerBallotBoxId;
+	private final ImmutableMap<String, TallyComponentShufflePayload> tallyControlComponentShufflesPerBallotBoxId;
+	private final ImmutableMap<String, TallyComponentVotesPayload> tallyControlComponentVotesPerBallotBoxId;
 	private final Configuration electionEventConfiguration;
-	private final Results tallyControlComponentDecryptions;
-	private final Delivery tallyControlComponentResults;
-	private final ch.ech.xmlns.ech_0222._1.Delivery tallyControlComponentDetailedResults;
+	private final Delivery tallyControlComponentDetailedResults;
+	private final ImmutableMap<String, TallyComponentVotesPayload> tallyControlComponentVotesPerAuthorizationName;
 
 	public VerifyTallyControlComponentInput(final Stream<ControlComponentShufflePayload> controlComponentShufflePayloads,
 			final Stream<TallyComponentShufflePayload> tallyComponentShufflePayloads,
-			final Map<String, TallyComponentVotesPayload> tallyControlComponentVotesPerAuthorizationAlias,
-			final Configuration electionEventConfiguration,
-			final Results tallyControlComponentDecryptions,
-			final Delivery tallyControlComponentResults,
-			final ch.ech.xmlns.ech_0222._1.Delivery tallyControlComponentDetailedResults) {
+			final Configuration electionEventConfiguration, final Delivery tallyControlComponentDetailedResults,
+			final ImmutableMap<String, TallyComponentVotesPayload> tallyControlComponentVotesPerAuthorizationName) {
 		this.lastOnlineControlComponentShufflesPerBallotBoxId = checkNotNull(controlComponentShufflePayloads)
-				.filter(controlComponentShufflePayload -> controlComponentShufflePayload.getNodeId() == ControlComponentConstants.NODE_IDS.last())
-				.collect(Collectors.toConcurrentMap(ControlComponentShufflePayload::getBallotBoxId, Function.identity()));
+				.filter(controlComponentShufflePayload -> controlComponentShufflePayload.getNodeId() == ControlComponentNode.last().id())
+				.collect(toImmutableMap(ControlComponentShufflePayload::getBallotBoxId, Function.identity()));
 		this.tallyControlComponentShufflesPerBallotBoxId = checkNotNull(tallyComponentShufflePayloads)
-				.collect(Collectors.toConcurrentMap(TallyComponentShufflePayload::getBallotBoxId, Function.identity()));
-		final Map<String, TallyComponentVotesPayload> tallyComponentVotesPayloadsCopy = Map.copyOf(
-				checkNotNull(tallyControlComponentVotesPerAuthorizationAlias));
-		this.tallyControlComponentVotesPerBallotBoxId = tallyComponentVotesPayloadsCopy.values().stream()
-				.collect(Collectors.toConcurrentMap(TallyComponentVotesPayload::getBallotBoxId, Function.identity()));
-		this.tallyControlComponentVotesPerAuthorizationAlias = tallyComponentVotesPayloadsCopy;
+				.collect(toImmutableMap(TallyComponentShufflePayload::getBallotBoxId, Function.identity()));
+		this.tallyControlComponentVotesPerBallotBoxId = checkNotNull(tallyControlComponentVotesPerAuthorizationName).values().stream()
+				.collect(toImmutableMap(TallyComponentVotesPayload::getBallotBoxId, Function.identity()));
+		this.tallyControlComponentVotesPerAuthorizationName = checkNotNull(tallyControlComponentVotesPerAuthorizationName);
 		this.electionEventConfiguration = checkNotNull(electionEventConfiguration);
-		this.tallyControlComponentDecryptions = checkNotNull(tallyControlComponentDecryptions);
-		this.tallyControlComponentResults = checkNotNull(tallyControlComponentResults);
 		this.tallyControlComponentDetailedResults = checkNotNull(tallyControlComponentDetailedResults);
 
 		checkArgument(allEqual(Stream.of(
@@ -86,7 +74,7 @@ public class VerifyTallyControlComponentInput {
 								tallyControlComponentVotesPerBallotBoxId.keySet()),
 						Function.identity()),
 				"The last control component shuffles, the tally component shuffles and the tally component votes must correspond to the same ballot box ids.");
-		checkArgument(lastOnlineControlComponentShufflesPerBallotBoxId.size() != 0,
+		checkArgument(!lastOnlineControlComponentShufflesPerBallotBoxId.isEmpty(),
 				"There must be at least one control component shuffle payload, tally component shuffle payload and tally component votes payload.");
 		checkArgument(allEqual(
 						Stream.of(
@@ -100,36 +88,28 @@ public class VerifyTallyControlComponentInput {
 
 	}
 
-	public Map<String, ControlComponentShufflePayload> getLastOnlineControlComponentShufflesPerBallotBoxId() {
+	public ImmutableMap<String, ControlComponentShufflePayload> getLastOnlineControlComponentShufflesPerBallotBoxId() {
 		return lastOnlineControlComponentShufflesPerBallotBoxId;
 	}
 
-	public Map<String, TallyComponentShufflePayload> getTallyControlComponentShufflesPerBallotBoxId() {
+	public ImmutableMap<String, TallyComponentShufflePayload> getTallyControlComponentShufflesPerBallotBoxId() {
 		return tallyControlComponentShufflesPerBallotBoxId;
 	}
 
-	public Map<String, TallyComponentVotesPayload> getTallyControlComponentVotesPerBallotBoxId() {
+	public ImmutableMap<String, TallyComponentVotesPayload> getTallyControlComponentVotesPerBallotBoxId() {
 		return tallyControlComponentVotesPerBallotBoxId;
-	}
-
-	public Map<String, TallyComponentVotesPayload> getTallyControlComponentVotesPerAuthorizationAlias() {
-		return tallyControlComponentVotesPerAuthorizationAlias;
 	}
 
 	public Configuration getElectionEventConfiguration() {
 		return electionEventConfiguration;
 	}
 
-	public Results getTallyControlComponentDecryptions() {
-		return tallyControlComponentDecryptions;
-	}
-
-	public Delivery getTallyControlComponentResults() {
-		return tallyControlComponentResults;
-	}
-
-	public ch.ech.xmlns.ech_0222._1.Delivery getTallyControlComponentDetailedResults() {
+	public Delivery getTallyControlComponentDetailedResults() {
 		return tallyControlComponentDetailedResults;
+	}
+
+	public ImmutableMap<String, TallyComponentVotesPayload> getTallyControlComponentVotesPerAuthorizationName() {
+		return tallyControlComponentVotesPerAuthorizationName;
 	}
 
 	public GqGroup getEncryptionGroup() {

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetCo
  *     <li>(p, q, g), the encryption group. Non-null.</li>
  *     <li>ee, the election event id. Non-null and a valid UUID.</li>
  *     <li>bb, the ballot box id. Non-null and a valid UUID.</li>
- *     <li>N_E, the number of eligible voters. Strictly positive.</li>
+ *     <li>N<sub>E</sub>, the number of eligible voters. Strictly positive.</li>
  *     <li>pTable, the primes mapping table. Non-null.</li>
  *     <li>EB<sub>pk</sub>, the electoral board public key. Non-null.</li>
  * </ul>
@@ -59,8 +59,8 @@ public class VerifyTallyControlComponentBallotBoxContext {
 		final VerificationCardSetContext verificationCardSetContext = electionEventContext.verificationCardSetContexts().stream()
 				.filter(vcsContext -> vcsContext.getBallotBoxId().equals(ballotBoxId))
 				.collect(MoreCollectors.onlyElement());
-		// The constructor of VerificationCardSetContext ensures the number of voting cards is strictly positive.
-		this.numberOfEligibleVoters = verificationCardSetContext.getNumberOfVotingCards();
+		// The constructor of VerificationCardSetContext ensures the number of eligible voters is strictly positive.
+		this.numberOfEligibleVoters = verificationCardSetContext.getNumberOfEligibleVoters();
 		this.primesMappingTable = verificationCardSetContext.getPrimesMappingTable();
 		this.encryptionGroup = primesMappingTable.getEncryptionGroup();
 		this.electoralBoardPublicKey = setupComponentPublicKeys.electoralBoardPublicKey();

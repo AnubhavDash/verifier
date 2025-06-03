@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,13 +22,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-import java.util.Collections;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
@@ -56,7 +56,7 @@ class VerifyNumberConfirmedEncryptedVotesConsistencyTest extends TallyVerificati
 	@DisplayName("inconsistent number of confirmed encrypted votes failed")
 	void inconsistentNumberConfirmedEncryptedVotes() {
 		final ControlComponentBallotBoxPayload controlComponentBallotBoxPayload = mock(ControlComponentBallotBoxPayload.class);
-		when(controlComponentBallotBoxPayload.getConfirmedEncryptedVotes()).thenReturn(Collections.emptyList());
+		when(controlComponentBallotBoxPayload.getConfirmedEncryptedVotes()).thenReturn(ImmutableList.emptyList());
 
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
 		doAnswer(invocationOnMock -> Stream.of(controlComponentBallotBoxPayload)).when(electionDataExtractionServiceSpy)

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,8 +62,7 @@ public class VerifyConfirmedEncryptedVotesConsistency extends AbstractVerificati
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final Stream<Stream<ControlComponentBallotBoxPayload>> ballotBoxPayloads = extractionService.getElectionEventContextPayload(inputDirectoryPath)
-				.getElectionEventContext()
+		final Stream<Stream<ControlComponentBallotBoxPayload>> ballotBoxPayloads = extractionService.getElectionEventContext(inputDirectoryPath)
 				.verificationCardSetContexts().stream()
 				.parallel()
 				.map(VerificationCardSetContext::getBallotBoxId)

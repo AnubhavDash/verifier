@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,14 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap.toImmutableMap;
+
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.domain.election.ControlComponentPublicKeys;
@@ -62,16 +63,18 @@ public class VerifyCCRChoiceReturnCodesPublicKeyConsistency extends AbstractVeri
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = extractionService.getSetupComponentPublicKeysPayload(inputDirectoryPath);
-		final List<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = extractionService.getControlComponentPublicKeysPayloads(
+		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = extractionService.getSetupComponentPublicKeysPayload(
+				inputDirectoryPath);
+		final Stream<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = extractionService.getControlComponentPublicKeysPayloads(
 				inputDirectoryPath);
 
-		final Map<Integer, ElGamalMultiRecipientPublicKey> electionEventContextPublicKeys = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
+		final ImmutableMap<Integer, ElGamalMultiRecipientPublicKey> electionEventContextPublicKeys = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
 				.combinedControlComponentPublicKeys()
 				.stream()
-				.collect(Collectors.toMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccrjChoiceReturnCodesEncryptionPublicKey));
+				.collect(toImmutableMap(ControlComponentPublicKeys::nodeId,
+						ControlComponentPublicKeys::ccrjChoiceReturnCodesEncryptionPublicKey));
 
-		final boolean sameCCrChoiceReturnCodesPublicKeys = controlComponentPublicKeysPayloads.stream()
+		final boolean sameCCrChoiceReturnCodesPublicKeys = controlComponentPublicKeysPayloads
 				.parallel()
 				.map(ControlComponentPublicKeysPayload::getControlComponentPublicKeys)
 				.map(controlComponentPublicKeys -> electionEventContextPublicKeys.get(controlComponentPublicKeys.nodeId())

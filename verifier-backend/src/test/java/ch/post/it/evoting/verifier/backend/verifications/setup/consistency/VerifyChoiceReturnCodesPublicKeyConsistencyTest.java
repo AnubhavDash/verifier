@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,11 +64,11 @@ class VerifyChoiceReturnCodesPublicKeyConsistencyTest extends SetupVerificationT
 				setupComponentPublicKeysPayload.getEncryptionGroup(), setupComponentPublicKeysPayload.getElectionEventId(),
 				modifiedSetupComponentPublicKeys);
 
-		final ElectionDataExtractionService extractionServiceMock = spy(electionDataExtractionService);
-		doReturn(modifiedSetupComponentPublicKeysPayload).when(extractionServiceMock).getSetupComponentPublicKeysPayload(datasetPath);
+		final ElectionDataExtractionService extractionServiceSpy = spy(electionDataExtractionService);
+		doReturn(modifiedSetupComponentPublicKeysPayload).when(extractionServiceSpy).getSetupComponentPublicKeysPayload(datasetPath);
 
 		final VerifyChoiceReturnCodesPublicKeyConsistency verificationWithMock = new VerifyChoiceReturnCodesPublicKeyConsistency(EL_GAMAL,
-				extractionServiceMock, resultPublisherServiceMock);
+				extractionServiceSpy, resultPublisherServiceMock);
 
 		final VerificationResult result = verificationWithMock.verify(datasetPath);
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),

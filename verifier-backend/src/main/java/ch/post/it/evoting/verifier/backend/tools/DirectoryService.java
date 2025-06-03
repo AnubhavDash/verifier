@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,13 +44,15 @@ import java.nio.file.attribute.UserPrincipal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
+
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet;
+import ch.post.it.evoting.evotinglibraries.domain.LocalDateTimeUtils;
 
 @Service
 public class DirectoryService {
@@ -87,7 +89,7 @@ public class DirectoryService {
 	 * @throws IOException if an I/O error occurs during directory creation.
 	 */
 	public Path createSecuredDirectory() throws IOException {
-		final LocalDateTime now = LocalDateTime.now();
+		final LocalDateTime now = LocalDateTimeUtils.now();
 		final String timestamp = dateTimeFormatter.format(now);
 
 		final Path directory = Files.createDirectory(datasetUnzipLocation.resolve(Path.of(PREFIX + "-" + timestamp)));
@@ -122,7 +124,7 @@ public class DirectoryService {
 		final String ACL_FILE_ATTRIBUTE_VIEW = "acl";
 		final String POSIX_USER_ONLY_PERMISSION = "rwx------";
 
-		final Set<String> supportedFileAttributeViews = path.getFileSystem().supportedFileAttributeViews();
+		final ImmutableSet<String> supportedFileAttributeViews = ImmutableSet.from(path.getFileSystem().supportedFileAttributeViews());
 		if (supportedFileAttributeViews.contains(POSIX_FILE_ATTRIBUTE_VIEW)) {
 			LOGGER.debug("File system supports POSIX, setting permission");
 			Files.setPosixFilePermissions(path, PosixFilePermissions.fromString(POSIX_USER_ONLY_PERMISSION));

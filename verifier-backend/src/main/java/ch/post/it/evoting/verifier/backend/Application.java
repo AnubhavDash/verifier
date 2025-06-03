@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,40 @@
  */
 package ch.post.it.evoting.verifier.backend;
 
+import static ch.post.it.evoting.evotinglibraries.domain.JarHashLogger.getFingerprintLogMessage;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.security.NoSuchAlgorithmException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
+import org.springframework.boot.system.ApplicationHome;
+import org.springframework.cache.annotation.EnableCaching;
 
+@EnableCaching
 @SpringBootApplication(exclude = { UserDetailsServiceAutoConfiguration.class })
 public class Application {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
+
+
 	public static void main(final String[] args) {
 		SpringApplication.run(Application.class, args);
+		logJarHash();
+	}
+
+	private static void logJarHash() {
+		final Path jarPath = new ApplicationHome(Application.class).getSource().toPath();
+
+		try {
+			final String fingerprintLogMessage = getFingerprintLogMessage(jarPath);
+			LOGGER.info(fingerprintLogMessage);
+		} catch (final IOException | NoSuchAlgorithmException e) {
+			LOGGER.error("Failed to compute JAR Fingerprint.", e);
+		}
 	}
 }

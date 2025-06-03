@@ -1,0 +1,92 @@
+<!--
+  ~ (c) Copyright 2025 Swiss Post Ltd.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<ver-page-title
+  [instructions]="'verify.instructions' | translate"
+  [title]="'verify.title' | translate">
+  @if (processStarted && !isProcessComplete()) {
+    <div class="alert alert-primary page-actions">
+      <div class="spinner">
+        <span aria-hidden="true" class="spinner-border"></span>
+        <span class="visually-hidden">{{ 'common.loading' | translate }}</span>
+      </div>
+      <p>
+        {{ 'verify.verificationRunning' | translate }} ({{statusCounterRUNNING() }}/{{ verificationsSize}})
+      </p>
+    </div>
+  }
+  @if (isProcessComplete()) {
+    <div [ngClass]="{'alert-success': !hasFailed() && !hasError(), 'alert-warning': hasFailed(), 'alert-danger': hasError()}"
+		 class="alert page-actions">
+      <i aria-hidden="true"
+		 [ngClass]="{'bi-check-circle': !hasFailed() && !hasError(), 'bi-x-circle': hasFailed(), 'bi-exclamation-circle': hasError()}"
+		 class="bi"></i>
+      <p>
+        {{ 'verify.verificationCompleted' | translate }}
+		  @if (hasError()){
+			  {{ 'verify.verificationHasErrors' | translate }}
+		  }
+		  @if (hasFailed()){
+			  {{ 'verify.verificationHasFailed' | translate }}
+		  }
+      </p>
+      <button (click)="resetProcess()" [disabled]="!isProcessComplete()" class="btn btn-link" type="button">
+        <i aria-hidden="true" class="bi-arrow-counterclockwise"></i>
+        {{ 'verify.action.reset' | translate }}
+      </button>
+      <button (click)="next()" class="btn btn-primary" type="button">
+        <i aria-hidden="true" class="bi bi-arrow-right-circle"></i>
+        {{ 'common.next' | translate }}
+      </button>
+    </div>
+  }
+  @if (!processStarted && !isProcessComplete()) {
+    <div class="alert alert-info page-actions">
+      <i aria-hidden="true" class="bi bi-arrow-right-circle"></i>
+      <p>
+        {{ 'verify.instructions' | translate }}
+      </p>
+      <button (click)="startVerification()" class="btn btn-primary" type="button">
+        <i aria-hidden="true" class="bi bi-arrow-right-circle"></i>
+        {{ 'verify.action.verify' | translate }}
+      </button>
+    </div>
+  }
+
+  @if (processStarted) {
+    <div class="alert alert-light mt-2">
+      <div class="row">
+        <div class="col-3 d-flex align-items-center gap-2 text-nowrap">
+          <i aria-hidden="true" class="bi bi-stopwatch fs-5"></i>
+          {{ processTime.runtime | date:"H'h' mm'm' ss's'" }}
+        </div>
+        <div class="col-9">
+          @if (processTime.start) {
+            <span>{{ processTime.start | date:'dd.MM.YYYY HH:mm:ss' }}</span>
+          }
+          @if (processTime.end) {
+            <span> - {{ processTime.end | date:'dd.MM.YYYY HH:mm:ss' }}</span>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</ver-page-title>
+
+<ver-verification-details
+  [isReportDisplay]="false"
+  [verifications]="verifications"
+></ver-verification-details>

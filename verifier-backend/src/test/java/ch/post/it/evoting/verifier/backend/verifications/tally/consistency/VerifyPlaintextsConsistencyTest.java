@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.PrimesMappingTable;
-import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.PrimesMappingTableAlgorithms;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.electoralmodel.PrimesMappingTableAlgorithms;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
@@ -52,8 +51,7 @@ class VerifyPlaintextsConsistencyTest extends TallyVerificationTest {
 
 	@Test
 	void verifyNok() {
-		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(datasetPath);
-		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();
+		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContext(datasetPath);
 		final PrimesMappingTable primesMappingTable = electionEventContext.verificationCardSetContexts().get(0).getPrimesMappingTable();
 		final int numberOfWriteInsPlusOne = primesMappingTableAlgorithms.getDelta(primesMappingTable);
 		doReturn(numberOfWriteInsPlusOne + 1).when(primesMappingTableAlgorithms).getDelta(any());

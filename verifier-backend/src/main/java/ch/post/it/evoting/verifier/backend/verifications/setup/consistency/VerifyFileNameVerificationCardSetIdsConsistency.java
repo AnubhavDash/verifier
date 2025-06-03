@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,13 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet.toImmutableSet;
+
 import java.nio.file.Path;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
@@ -64,29 +65,20 @@ public class VerifyFileNameVerificationCardSetIdsConsistency extends AbstractVer
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final Set<String> contextVerificationCardSetIds = electionDataExtractionService.getContextVerificationCardSetPaths(inputDirectoryPath)
+		final ImmutableSet<String> contextVerificationCardSetIds = electionDataExtractionService.getContextVerificationCardSetPaths(
+						inputDirectoryPath)
 				.stream()
-				.parallel()
 				.map(Path::getFileName)
 				.map(Path::toString)
-				.collect(Collectors.toUnmodifiableSet());
+				.collect(toImmutableSet());
 
-		final Set<String> setupVerificationCardSetIds = electionDataExtractionService.getSetupVerificationCardSetPaths(inputDirectoryPath).stream()
-				.parallel()
-				.map(Path::getFileName)
-				.map(Path::toString)
-				.collect(Collectors.toUnmodifiableSet());
-
-		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContextPayload(inputDirectoryPath)
-				.getElectionEventContext();
-		final Set<String> payloadVerificationCardSetIds = electionEventContext.verificationCardSetContexts().stream()
-				.parallel()
+		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContext(inputDirectoryPath);
+		final ImmutableSet<String> payloadVerificationCardSetIds = electionEventContext.verificationCardSetContexts().stream()
 				.map(VerificationCardSetContext::getVerificationCardSetId)
-				.collect(Collectors.toUnmodifiableSet());
+				.collect(toImmutableSet());
 
 		// Verifying set equality is sufficient since the payload ensures that there are no duplicate verification card set IDs.
-		final boolean sameVerificationCardSetIds = contextVerificationCardSetIds.equals(payloadVerificationCardSetIds) &&
-				setupVerificationCardSetIds.equals(payloadVerificationCardSetIds);
+		final boolean sameVerificationCardSetIds = contextVerificationCardSetIds.equals(payloadVerificationCardSetIds);
 
 		final VerificationResult verificationResult;
 		if (sameVerificationCardSetIds) {

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,9 +31,9 @@ public class KeystoreRepository {
 	private final String keystorePasswordLocation;
 	public KeystoreRepository(
 			@Value("${direct.trust.keystore.location}")
-			String keystoreLocation,
+			final String keystoreLocation,
 			@Value("${direct.trust.keystore.password.location}")
-			String keystorePasswordLocation) {
+			final String keystorePasswordLocation) {
 		this.keystoreLocation = keystoreLocation;
 		this.keystorePasswordLocation = keystorePasswordLocation;
 	}

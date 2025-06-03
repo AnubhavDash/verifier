@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,5 +17,5 @@ package ch.post.it.evoting.verifier.backend.tools.path;
 
 import java.nio.file.Path;
 
-record StructureNode(PathType type, Path parentPath, String qualifier, boolean dynamicAncestor) {
+public record StructureNode(PathType type, Path parentPath, String qualifier, boolean dynamicAncestor) {
 }

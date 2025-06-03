@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,21 +59,22 @@ public class VerifyOnlineControlComponentsBallotBoxContext {
 	private final ElGamalMultiRecipientPublicKey electoralBoardPublicKey;
 	private final ElGamalMultiRecipientPublicKey choiceReturnCodesEncryptionPublicKey;
 
-	private VerifyOnlineControlComponentsBallotBoxContext(final String electionEventId, final String verificationCardSetId, final String ballotBoxId,
+	private VerifyOnlineControlComponentsBallotBoxContext(final String verificationCardSetId, final String ballotBoxId,
 			final ElectionEventContext electionEventContext, final SetupComponentPublicKeys setupComponentPublicKeys) {
 		checkNotNull(electionEventContext);
 		checkNotNull(setupComponentPublicKeys);
 
-		this.electionEventId = validateUUID(electionEventId);
+		this.electionEventId = electionEventContext.electionEventId();
 		this.verificationCardSetId = validateUUID(verificationCardSetId);
 		this.ballotBoxId = validateUUID(ballotBoxId);
 		final VerificationCardSetContext verificationCardSetContext = electionEventContext.verificationCardSetContexts().stream()
 				.filter(vcsContext -> vcsContext.getBallotBoxId().equals(ballotBoxId))
 				.collect(MoreCollectors.onlyElement());
-		// The constructor of VerificationCardSetContext ensures the number of voting cards is strictly positive.
-		this.numberOfEligibleVoters = verificationCardSetContext.getNumberOfVotingCards();
+		// The constructor of VerificationCardSetContext ensures the number of eligible voters is strictly positive.
+		this.numberOfEligibleVoters = verificationCardSetContext.getNumberOfEligibleVoters();
 		this.primesMappingTable = verificationCardSetContext.getPrimesMappingTable();
 		this.encryptionGroup = primesMappingTable.getEncryptionGroup();
+		// The constructor of SetupComponentPublicKeys ensures all keys have the same encryption group.
 		this.electionPublicKey = setupComponentPublicKeys.electionPublicKey();
 		this.ccmElectionPublicKeys = setupComponentPublicKeys.combinedControlComponentPublicKeys().stream()
 				.map(ControlComponentPublicKeys::ccmjElectionPublicKey)
@@ -81,7 +82,6 @@ public class VerifyOnlineControlComponentsBallotBoxContext {
 		this.electoralBoardPublicKey = setupComponentPublicKeys.electoralBoardPublicKey();
 		this.choiceReturnCodesEncryptionPublicKey = setupComponentPublicKeys.choiceReturnCodesEncryptionPublicKey();
 
-		checkArgument(electionEventId.equals(electionEventContext.electionEventId()));
 		checkArgument(verificationCardSetId.equals(verificationCardSetContext.getVerificationCardSetId()));
 		checkArgument(this.encryptionGroup.equals(electionPublicKey.getGroup()));
 	}
@@ -128,16 +128,10 @@ public class VerifyOnlineControlComponentsBallotBoxContext {
 
 	public static class Builder {
 
-		private String electionEventId;
 		private String ballotBoxId;
 		private String verificationCardSetId;
 		private ElectionEventContext electionEventContext;
 		private SetupComponentPublicKeys setupComponentPublicKeys;
-
-		public Builder setElectionEventId(final String electionEventId) {
-			this.electionEventId = electionEventId;
-			return this;
-		}
 
 		public Builder setBallotBoxId(final String ballotBoxId) {
 			this.ballotBoxId = ballotBoxId;
@@ -160,7 +154,7 @@ public class VerifyOnlineControlComponentsBallotBoxContext {
 		}
 
 		public VerifyOnlineControlComponentsBallotBoxContext build() {
-			return new VerifyOnlineControlComponentsBallotBoxContext(electionEventId, verificationCardSetId, ballotBoxId, electionEventContext,
+			return new VerifyOnlineControlComponentsBallotBoxContext(verificationCardSetId, ballotBoxId, electionEventContext,
 					setupComponentPublicKeys);
 		}
 	}

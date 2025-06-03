@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class EncryptionGroupParametersPayloadDeserializer extends JsonDeserializer<EncryptionGroupParametersPayload> {
 	@Override
-	public EncryptionGroupParametersPayload deserialize(JsonParser parser, DeserializationContext deserializationContext) throws IOException {
+	public EncryptionGroupParametersPayload deserialize(final JsonParser parser, final DeserializationContext deserializationContext) throws IOException {
 		final ObjectMapper mapper = new ObjectMapper();
 
 		final JsonNode node = mapper.readTree(parser);

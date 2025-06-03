@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,7 +63,7 @@ class VerifySmallPrimeGroupMembersAlgorithmTest {
 	@Test
 	@DisplayName("too many primes fails")
 	void tooManyPrimesFails() {
-		final GroupVector<PrimeGqElement, GqGroup> tooManyPrimes = primes.append(primes.get(0));
+		final GroupVector<PrimeGqElement, GqGroup> tooManyPrimes = primes.append(primes.getFirst());
 		assertThrows(IllegalArgumentException.class,
 				() -> verifySmallPrimeGroupMembersAlgorithm.verifySmallPrimeGroupMembers(gqGroup, tooManyPrimes));
 	}
@@ -71,7 +71,7 @@ class VerifySmallPrimeGroupMembersAlgorithmTest {
 	@Test
 	@DisplayName("wrong order primes fails")
 	void wrongOrderPrimesFails() {
-		final GroupVector<PrimeGqElement, GqGroup> wrongOrderPrimes = primes.prepend(primes.get(0))
+		final GroupVector<PrimeGqElement, GqGroup> wrongOrderPrimes = primes.prepend(primes.getFirst())
 				.subVector(0, VotingOptionsConstants.MAXIMUM_SUPPORTED_NUMBER_OF_VOTING_OPTIONS);
 		assertThrows(IllegalArgumentException.class,
 				() -> verifySmallPrimeGroupMembersAlgorithm.verifySmallPrimeGroupMembers(gqGroup, wrongOrderPrimes));

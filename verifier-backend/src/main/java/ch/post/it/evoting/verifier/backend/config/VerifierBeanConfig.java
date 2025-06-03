@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,6 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
-import org.jsfr.json.JsonSurfer;
-import org.jsfr.json.JsonSurferJackson;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +28,6 @@ import org.springframework.context.annotation.Primary;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ch.ech.xmlns.ech_0110._4.Delivery;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
 import ch.post.it.evoting.cryptoprimitives.hashing.Argon2;
@@ -48,14 +45,15 @@ import ch.post.it.evoting.cryptoprimitives.signing.SignatureFactory;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
-import ch.post.it.evoting.evotinglibraries.domain.encryption.StreamedEncryptionDecryptionService;
 import ch.post.it.evoting.evotinglibraries.domain.mapper.DomainObjectMapper;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.electioneventcontext.GetHashElectionEventContextAlgorithm;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.proofofcorrectkeygeneration.VerifyCCSchnorrProofsAlgorithm;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.proofofcorrectkeygeneration.VerifyKeyGenerationSchnorrProofsAlgorithm;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.FactorizeAlgorithm;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.GetHashContextAlgorithm;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.votingoptions.PrimesMappingTableAlgorithms;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.channelsecurity.StreamableSymmetricEncryptionDecryptionService;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.channelsecurity.XMLSignatureService;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.agreementalgorithms.GetHashContextAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.agreementalgorithms.GetHashElectionEventContextAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.agreementalgorithms.proofofcorrectkeygeneration.VerifyCCSchnorrProofsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.agreementalgorithms.proofofcorrectkeygeneration.VerifyKeyGenerationSchnorrProofsAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.electoralmodel.FactorizeAlgorithm;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.electoralmodel.PrimesMappingTableAlgorithms;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.DecodeWriteInsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.IntegerToWriteInAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.IsWriteInOptionAlgorithm;
@@ -66,7 +64,6 @@ import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixonline.GetMixnetInitialCiphertextsAlgorithm;
 import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
 import ch.post.it.evoting.evotinglibraries.xml.XmlNormalizer;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingdecrypt.Results;
 import ch.post.it.evoting.verifier.backend.tools.KeystoreRepository;
 import ch.post.it.evoting.verifier.backend.verifications.setup.consistency.VerifyPrimesMappingTableConsistencyAlgorithm;
 
@@ -87,11 +84,6 @@ public class VerifierBeanConfig {
 	@Primary
 	public ObjectMapper objectMapper() {
 		return DomainObjectMapper.getNewInstance();
-	}
-
-	@Bean
-	public JsonSurfer jsonSurfer() {
-		return JsonSurferJackson.INSTANCE;
 	}
 
 	@Bean
@@ -212,22 +204,17 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
+	XMLSignatureService xmlSignatureService() {
+		return new XMLSignatureService();
+	}
+
+	@Bean
 	XmlFileRepository<ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration> configurationXmlFileRepository() {
 		return new XmlFileRepository<>();
 	}
 
 	@Bean
-	XmlFileRepository<Delivery> deliveryXmlFileRepository() {
-		return new XmlFileRepository<>();
-	}
-
-	@Bean
-	XmlFileRepository<ch.ech.xmlns.ech_0222._1.Delivery> ech0222DeliveryXmlFileRepository() {
-		return new XmlFileRepository<>();
-	}
-
-	@Bean
-	XmlFileRepository<Results> resultsXmlFileRepository() {
+	XmlFileRepository<ch.ech.xmlns.ech_0222._3.Delivery> ech0222DeliveryXmlFileRepository() {
 		return new XmlFileRepository<>();
 	}
 
@@ -247,7 +234,7 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
-	StreamedEncryptionDecryptionService streamedEncryptionDecryptionService(final Random random, final Argon2 argon2) {
-		return new StreamedEncryptionDecryptionService(random, argon2);
+	StreamableSymmetricEncryptionDecryptionService streamedEncryptionDecryptionService(final Random random, final Argon2 argon2) {
+		return new StreamableSymmetricEncryptionDecryptionService(random, argon2);
 	}
 }
