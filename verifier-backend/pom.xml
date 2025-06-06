@@ -27,7 +27,7 @@
 	<artifactId>verifier-backend</artifactId>
 
 	<properties>
-		<archunit.version>1.4.0</archunit.version>
+		<archunit.version>1.4.1</archunit.version>
 		<jaxb-api.version>2.4.0-b180830.0359</jaxb-api.version>
 		<!-- These two files are temporarily excluded from the Sonar analysis as there is a bug in Sonar preventing a successful run. -->
 		<sonar.test.exclusions>**/VerifySignatureControlComponentShuffleTest.java,**/VerifySignatureTallyComponentShuffleTest.java</sonar.test.exclusions>
