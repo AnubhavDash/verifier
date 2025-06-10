@@ -102,7 +102,7 @@ public class DirectoryService {
 	}
 
 	/**
-	 * Recursively delete the given directory
+	 * Recursively delete the given directory.
 	 *
 	 * @param directoryToDelete the directory to delete
 	 * @throws NullPointerException     if the path is null
@@ -110,12 +110,30 @@ public class DirectoryService {
 	 */
 	public void deleteDirectory(final Path directoryToDelete) {
 		checkNotNull(directoryToDelete);
-		checkArgument(Files.isDirectory(directoryToDelete), "Given path must be a directory");
+		checkArgument(Files.isDirectory(directoryToDelete), "Given path must be a directory.");
 		try {
 			FileSystemUtils.deleteRecursively(directoryToDelete);
 			LOGGER.debug("Directory successfully deleted.");
 		} catch (final IOException e) {
-			LOGGER.warn("Unable to delete the existing directory");
+			LOGGER.warn("Unable to delete the existing directory.");
+		}
+	}
+
+	/**
+	 * Delete the given file.
+	 *
+	 * @param fileToDelete the file to delete
+	 * @throws NullPointerException     if the path is null
+	 * @throws IllegalArgumentException if the path is not a file
+	 */
+	public void deleteFile(final Path fileToDelete) {
+		checkNotNull(fileToDelete);
+		checkArgument(Files.isRegularFile(fileToDelete), "Given path must be a file.");
+		try {
+			Files.deleteIfExists(fileToDelete);
+			LOGGER.debug("File successfully deleted.");
+		} catch (final IOException e) {
+			LOGGER.warn("Unable to delete the existing file.");
 		}
 	}
 

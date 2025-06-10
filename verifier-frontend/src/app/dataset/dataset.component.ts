@@ -118,7 +118,13 @@ export class DatasetComponent implements OnInit {
 
   datasetTallyReset(loadingState: boolean): void {
     this.loadingDataset = loadingState;
-    if (loadingState) {
+
+    if (loadingState && this.configuration.tally !== null) {
+      this.sessionStorageService.clearVerifications();
+      this.sessionStorageService.clearProcessTime();
+      this.sessionStorageService.clearVerificationReportGenerated();
+      this.sessionStorageService.clearElectionResultReportGenerated();
+
       this.configuration.tally = null;
     }
   }

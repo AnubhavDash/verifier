@@ -112,7 +112,8 @@ public class DatasetService {
 
 		final Path unpackFolder = dataset.getUnpackFolder();
 		if (deleteDirectory) {
-			directoryService.deleteDirectory(unpackFolder);
+			directoryService.deleteDirectory(unpackFolder.resolve(dataset.getExpectedType().getName()));
+			directoryService.deleteFile(unpackFolder.resolve(dataset.getDatasetPath()));
 		}
 		dataset.removeUnpackFolder();
 	}
