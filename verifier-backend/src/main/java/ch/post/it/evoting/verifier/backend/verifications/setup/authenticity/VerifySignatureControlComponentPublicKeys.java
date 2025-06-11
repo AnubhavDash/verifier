@@ -16,6 +16,7 @@
 package ch.post.it.evoting.verifier.backend.verifications.setup.authenticity;
 
 import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
@@ -25,14 +26,13 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
-import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.ControlComponentNode;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
-import ch.post.it.evoting.evotinglibraries.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -99,24 +99,26 @@ public class VerifySignatureControlComponentPublicKeys extends AbstractVerificat
 	}
 
 	@VisibleForTesting
-	boolean verifySignature(final ControlComponentPublicKeysPayload controlComponentPublicKeysPayload) {
-		final int nodeId = controlComponentPublicKeysPayload.getControlComponentPublicKeys().nodeId();
-		final String electionEventId = controlComponentPublicKeysPayload.getElectionEventId();
-		final CryptoPrimitivesSignature signature = controlComponentPublicKeysPayload.getSignature();
+	boolean verifySignature(final ControlComponentPublicKeysPayload input) {
+		// Input.
+		final ControlComponentPublicKeysPayload message = checkNotNull(input);
+		final int j = message.getControlComponentPublicKeys().nodeId();
+		final String ee = message.getElectionEventId();
+		final ImmutableByteArray s = checkNotNull(input.getSignature()).signatureContents();
 
-		checkState(signature != null,
-				"The signature of the control component public keys payload is null. [nodeId: %s, electionEventId: %s]", nodeId, electionEventId);
-
-		final Hashable additionalContextData = ChannelSecurityContextData.controlComponentPublicKeys(nodeId, electionEventId);
-
+		// Operation.
 		try {
-			// The ControlComponentPublicKeysPayload method toHashableForm recursively hashes the control component public keys payload as specified.
-			return signatureVerification.verifySignature(Alias.getControlComponentByNodeId(nodeId).toString(), controlComponentPublicKeysPayload,
-					additionalContextData, signature.signatureContents());
+			return signatureVerification.verifySignature(
+					Alias.getControlComponentByNodeId(j).toString(),
+					// The ControlComponentPublicKeysPayload method toHashableForm recursively hashes payload as specified.
+					message,
+					ChannelSecurityContextData.controlComponentPublicKeys(j, ee),
+					s
+			);
 		} catch (final SignatureException e) {
 			throw new IllegalStateException(
 					String.format("Could not verify the signature of the control component public keys payload. [nodeId: %s, electionEventId: %s]",
-							nodeId, electionEventId));
+							j, ee));
 		}
 	}
 }

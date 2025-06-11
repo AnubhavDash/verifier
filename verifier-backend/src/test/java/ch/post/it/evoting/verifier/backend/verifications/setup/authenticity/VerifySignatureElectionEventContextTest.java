@@ -88,7 +88,7 @@ class VerifySignatureElectionEventContextTest extends SetupVerificationTest {
 	void testOK() {
 		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(datasetPath);
 
-		assertTrue(((VerifySignatureElectionEventContext) verification).verifySignature(electionEventContextPayload));
+		assertTrue(((VerifySignatureElectionEventContext) verification).verifySignatureElectionEventContext(electionEventContextPayload));
 	}
 
 	@Test
@@ -100,7 +100,7 @@ class VerifySignatureElectionEventContextTest extends SetupVerificationTest {
 				Alias.SDM_CONFIG);
 		electionEventContextPayload.setSignature(dummySignature);
 
-		assertFalse(((VerifySignatureElectionEventContext) verification).verifySignature(electionEventContextPayload));
+		assertFalse(((VerifySignatureElectionEventContext) verification).verifySignatureElectionEventContext(electionEventContextPayload));
 	}
 
 	@ParameterizedTest

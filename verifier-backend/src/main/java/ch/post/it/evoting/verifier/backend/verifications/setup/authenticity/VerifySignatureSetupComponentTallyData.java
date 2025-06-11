@@ -15,7 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.authenticity;
 
-import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.nio.file.Path;
 import java.security.SignatureException;
@@ -24,12 +24,11 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
 
-import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
-import ch.post.it.evoting.evotinglibraries.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -90,25 +89,27 @@ public class VerifySignatureSetupComponentTallyData extends AbstractVerification
 	}
 
 	@VisibleForTesting
-	boolean verifySignature(final SetupComponentTallyDataPayload setupComponentTallyDataPayload) {
-		final String electionEventId = setupComponentTallyDataPayload.getElectionEventId();
-		final String verificationCardSetId = setupComponentTallyDataPayload.getVerificationCardSetId();
-		final CryptoPrimitivesSignature signature = setupComponentTallyDataPayload.getSignature();
+	boolean verifySignature(final SetupComponentTallyDataPayload input) {
+		// Input.
+		final SetupComponentTallyDataPayload message = checkNotNull(input);
+		final String vcs = message.getVerificationCardSetId();
+		final String ee = message.getElectionEventId();
+		final ImmutableByteArray s = checkNotNull(input.getSignature()).signatureContents();
 
-		checkState(signature != null,
-				"The signature of the setup component tally data payload is null. [electionEventId: %s, verificationCardSetId: %s]", electionEventId,
-				verificationCardSetId);
-
-		final Hashable additionalContextData = ChannelSecurityContextData.setupComponentTallyData(electionEventId, verificationCardSetId);
-
+		// Operation.
 		try {
-			return signatureVerification.verifySignature(Alias.SDM_CONFIG.toString(), setupComponentTallyDataPayload, additionalContextData,
-					signature.signatureContents());
+			return signatureVerification.verifySignature(
+					Alias.SDM_CONFIG.toString(),
+					// The SetupComponentTallyDataPayload method toHashableForm recursively hashes payload as specified.
+					message,
+					ChannelSecurityContextData.setupComponentTallyData(ee, vcs),
+					s
+			);
 		} catch (final SignatureException e) {
 			throw new IllegalStateException(
 					String.format(
 							"Could not verify the signature of the setup component tally data payload. [electionEventId: %s, verificationCardSetId: %s]",
-							electionEventId, verificationCardSetId));
+							ee, vcs));
 		}
 	}
 }

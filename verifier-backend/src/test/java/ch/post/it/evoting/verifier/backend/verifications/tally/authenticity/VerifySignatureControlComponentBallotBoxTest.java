@@ -86,7 +86,7 @@ class VerifySignatureControlComponentBallotBoxTest extends TallyVerificationTest
 				.collect(toImmutableList())
 				.get(0);
 
-		assertTrue(((VerifySignatureControlComponentBallotBox) verification).verifySignature(controlComponentBallotBoxPayload));
+		assertTrue(((VerifySignatureControlComponentBallotBox) verification).verifySignatureControlComponentBallotBox(controlComponentBallotBoxPayload));
 	}
 
 	@Test
@@ -103,7 +103,7 @@ class VerifySignatureControlComponentBallotBoxTest extends TallyVerificationTest
 				Alias.getControlComponentByNodeId(nodeId));
 		controlComponentBallotBoxPayload.setSignature(dummySignature);
 
-		assertFalse(((VerifySignatureControlComponentBallotBox) verification).verifySignature(controlComponentBallotBoxPayload));
+		assertFalse(((VerifySignatureControlComponentBallotBox) verification).verifySignatureControlComponentBallotBox(controlComponentBallotBoxPayload));
 	}
 
 	@ParameterizedTest

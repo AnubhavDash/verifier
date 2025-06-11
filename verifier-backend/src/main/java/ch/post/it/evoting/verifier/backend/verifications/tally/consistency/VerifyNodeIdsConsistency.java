@@ -91,21 +91,21 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 
 		return ballotBoxPayloads.keySet().stream().parallel()
 				.allMatch(bbId -> {
-					final ImmutableList<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads = ballotBoxPayloads.get(bbId);
-					final ImmutableList<Integer> ballotBoxPayloadsNodeIdList = controlComponentBallotBoxPayloads.stream()
+							final ImmutableList<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads = ballotBoxPayloads.get(bbId);
+							final ImmutableList<Integer> ballotBoxPayloadsNodeIdList = controlComponentBallotBoxPayloads.stream()
 									.map(ControlComponentBallotBoxPayload::getNodeId)
-							.collect(toImmutableList());
-					final ImmutableSet<Integer> ballotBoxPayloadsNodeIds = ballotBoxPayloadsNodeIdList.toImmutableSet();
+									.collect(toImmutableList());
+							final ImmutableSet<Integer> ballotBoxPayloadsNodeIds = ballotBoxPayloadsNodeIdList.toImmutableSet();
 							final boolean bbPayloadNodeIdsConsistent =
 									ballotBoxPayloadsNodeIdList.size() == ballotBoxPayloadsNodeIds.size() && ballotBoxPayloadsNodeIds.containsAll(
 											ControlComponentNode.ids())
 											&& ControlComponentNode.ids().containsAll(ballotBoxPayloadsNodeIds);
 
-					final ImmutableList<ControlComponentShufflePayload> controlComponentShufflePayloads = shufflePayloads.get(bbId);
-					final ImmutableList<Integer> shufflePaylodsNodeIdList = controlComponentShufflePayloads.stream()
+							final ImmutableList<ControlComponentShufflePayload> controlComponentShufflePayloads = shufflePayloads.get(bbId);
+							final ImmutableList<Integer> shufflePaylodsNodeIdList = controlComponentShufflePayloads.stream()
 									.map(ControlComponentShufflePayload::getNodeId)
-							.collect(toImmutableList());
-					final ImmutableSet<Integer> shufflePayloadsNodeIds = shufflePaylodsNodeIdList.toImmutableSet();
+									.collect(toImmutableList());
+							final ImmutableSet<Integer> shufflePayloadsNodeIds = shufflePaylodsNodeIdList.toImmutableSet();
 							final boolean shufflePayloadsNodeIdsConsistent =
 									shufflePaylodsNodeIdList.size() == shufflePayloadsNodeIds.size() && shufflePayloadsNodeIds.containsAll(
 											ControlComponentNode.ids())

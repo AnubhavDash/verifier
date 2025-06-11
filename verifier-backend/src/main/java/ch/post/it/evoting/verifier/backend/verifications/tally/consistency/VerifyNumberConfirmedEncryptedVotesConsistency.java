@@ -17,6 +17,8 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
 import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static ch.post.it.evoting.verifier.backend.tools.TranslationHelper.getFromResourceBundle;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.nio.file.Path;
 
@@ -68,7 +70,7 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 	public VerificationResult verify(final Path inputDirectoryPath) {
 		final boolean isNumberConfirmedEncryptedVotesConsistent = extractTallyPayloadsSizes(inputDirectoryPath).stream()
 				.parallel()
-				.map(this::verifyConsistency)
+				.map(this::verifyNumberConfirmedEncryptedVotesConsistency)
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 
@@ -114,7 +116,9 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 	}
 
 	@SuppressWarnings("java:S117")
-	private boolean verifyConsistency(final TallyPayloadsSizes tallyPayloadsSizes) {
+	private boolean verifyNumberConfirmedEncryptedVotesConsistency(final TallyPayloadsSizes tallyPayloadsSizes) {
+
+		// Operation.
 		final int N_C_TallyControlComponentVotes = tallyPayloadsSizes.numberOfConfirmedVotesTallyComponentVotes();
 		final ImmutableList<Integer> numberOfConfirmedVotesControlComponentBallotBoxes = tallyPayloadsSizes.numberOfConfirmedVotesControlComponentBallotBoxes();
 		final boolean identicalNumberOfConfirmedVotes = numberOfConfirmedVotesControlComponentBallotBoxes.stream()
@@ -145,6 +149,12 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 									  int numberOfMixedVotesTallyComponentShuffles,
 									  int numberOfConfirmedVotesTallyComponentVotes
 	) {
+		private TallyPayloadsSizes {
+			checkNotNull(numberOfConfirmedVotesControlComponentBallotBoxes);
+			checkNotNull(numberOfMixedVotesControlComponentShuffles);
+			checkArgument(numberOfMixedVotesTallyComponentShuffles >= 0);
+			checkArgument(numberOfConfirmedVotesTallyComponentVotes >= 0);
+		}
 	}
 
 }

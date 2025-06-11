@@ -24,7 +24,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
-import java.security.PublicKey;
 
 import org.springframework.stereotype.Component;
 
@@ -79,7 +78,7 @@ public class VerifySignatureTallyComponentEch0222 extends AbstractVerification {
 
 		final Path deliveryPath = electionDataExtractionService.getTallyComponentEch0222Path(inputDirectoryPath);
 
-		final boolean verified = verifySignature(deliveryPath);
+		final boolean verified = verifySignatureTallyComponentEch0222(deliveryPath);
 
 		if (verified) {
 			return VerificationResult.success(getVerificationDefinition());
@@ -91,13 +90,13 @@ public class VerifySignatureTallyComponentEch0222 extends AbstractVerification {
 	}
 
 	@VisibleForTesting
-	boolean verifySignature(final Path deliveryPath) {
-		checkNotNull(deliveryPath);
+	boolean verifySignatureTallyComponentEch0222(final Path deliveryPath) {
 
-		final PublicKey signatureVerificationKey;
-		try (final InputStream deliveryIn = Files.newInputStream(deliveryPath)) {
-			signatureVerificationKey = keyStore.getCertificate(Alias.SDM_TALLY.get()).getPublicKey();
-			return xmlSignatureService.verifyXMLSignature(deliveryIn, signatureVerificationKey);
+		// Operation.
+		try (final InputStream deliveryIn = Files.newInputStream(checkNotNull(deliveryPath))) {
+
+			return xmlSignatureService.verifyXMLSignature(deliveryIn, keyStore.getCertificate(Alias.SDM_TALLY.get()).getPublicKey());
+
 		} catch (final KeyStoreException e) {
 			throw new IllegalStateException("Unable to open keystore", e);
 		} catch (final IOException e) {

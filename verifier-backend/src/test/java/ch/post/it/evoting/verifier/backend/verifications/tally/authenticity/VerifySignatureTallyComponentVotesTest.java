@@ -87,7 +87,7 @@ class VerifySignatureTallyComponentVotesTest extends TallyVerificationTest {
 				.findFirst()
 				.orElseThrow();
 
-		assertTrue(((VerifySignatureTallyComponentVotes) verification).verifySignature(tallyComponentVotesPayload));
+		assertTrue(((VerifySignatureTallyComponentVotes) verification).verifySignatureTallyComponentVotes(tallyComponentVotesPayload));
 	}
 
 	@Test
@@ -102,7 +102,7 @@ class VerifySignatureTallyComponentVotesTest extends TallyVerificationTest {
 				Alias.SDM_TALLY);
 		tallyComponentVotesPayload.setSignature(dummySignature);
 
-		assertFalse(((VerifySignatureTallyComponentVotes) verification).verifySignature(tallyComponentVotesPayload));
+		assertFalse(((VerifySignatureTallyComponentVotes) verification).verifySignatureTallyComponentVotes(tallyComponentVotesPayload));
 	}
 
 	@ParameterizedTest

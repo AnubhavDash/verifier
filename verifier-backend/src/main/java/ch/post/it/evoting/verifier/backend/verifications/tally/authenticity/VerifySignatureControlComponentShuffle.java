@@ -15,7 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.authenticity;
 
-import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.nio.file.Path;
 import java.security.SignatureException;
@@ -25,12 +25,11 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
 
-import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
-import ch.post.it.evoting.evotinglibraries.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -80,7 +79,7 @@ public class VerifySignatureControlComponentShuffle extends AbstractVerification
 
 		final boolean verified = controlComponentShufflePayloads
 				.parallel()
-				.map(this::verifySignature)
+				.map(this::verifySignatureControlComponentShuffle)
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 
@@ -95,25 +94,28 @@ public class VerifySignatureControlComponentShuffle extends AbstractVerification
 	}
 
 	@VisibleForTesting
-	boolean verifySignature(final ControlComponentShufflePayload controlComponentShufflePayload) {
-		final int nodeId = controlComponentShufflePayload.getNodeId();
-		final String electionEventId = controlComponentShufflePayload.getElectionEventId();
-		final String ballotBoxId = controlComponentShufflePayload.getBallotBoxId();
-		final CryptoPrimitivesSignature signature = controlComponentShufflePayload.getSignature();
+	boolean verifySignatureControlComponentShuffle(final ControlComponentShufflePayload input) {
 
-		checkState(signature != null,
-				"The signature of the control component shuffle payload is null. [nodeID: %s, electionEventId: %s, ballotBoxId: %s]",
-				nodeId, electionEventId, ballotBoxId);
+		// Input.
+		final ControlComponentShufflePayload message = checkNotNull(input);
+		final int j = message.getNodeId();
+		final String ee = input.getElectionEventId();
+		final String bb = input.getBallotBoxId();
+		final ImmutableByteArray s = checkNotNull(input.getSignature()).signatureContents();
 
-		final Hashable additionalContextData = ChannelSecurityContextData.controlComponentShuffle(nodeId, electionEventId, ballotBoxId);
-
+		// Operation.
 		try {
-			return signatureVerification.verifySignature(Alias.getControlComponentByNodeId(nodeId).toString(), controlComponentShufflePayload,
-					additionalContextData, signature.signatureContents());
+			return signatureVerification.verifySignature(
+					Alias.getControlComponentByNodeId(j).toString(),
+					// The ControlComponentShufflePayload method toHashableForm recursively hashes payload as specified.
+					message,
+					ChannelSecurityContextData.controlComponentShuffle(j, ee, bb),
+					s);
+
 		} catch (final SignatureException e) {
 			throw new IllegalStateException(String.format(
 					"Could not verify the signature of the control component shuffle payload. [nodeId: %s, electionEventId: %s, ballotBoxId: %s]",
-					nodeId, electionEventId, ballotBoxId));
+					j, ee, bb));
 		}
 	}
 }
