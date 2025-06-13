@@ -49,19 +49,14 @@ public class VerifyECH0222Algorithm {
 	/**
 	 * Verifies the correctness of the eCH-0222 file.
 	 *
-	 * @param electionEventId the associated election event id. Must be non-null and a valid UUID.
 	 * @param input           the {@link VerifyECH0222Input} containing the configuration and eCH-0222 files and the decoded votes and write-ins.
 	 * @return {@code true} if the eCH-0222 is correct, {@code false} otherwise.
 	 * @throws NullPointerException      if any input parameter is null.
 	 * @throws FailedValidationException if {@code electionEventId} is invalid.
 	 */
 	@SuppressWarnings("java:S117")
-	public boolean verifyECH0222(final String electionEventId, final VerifyECH0222Input input) {
-		validateUUID(electionEventId);
+	public boolean verifyECH0222(final VerifyECH0222Input input) {
 		checkNotNull(input);
-
-		// Context.
-		final String ee = electionEventId;
 
 		// Input.
 		final Configuration configurationXML = input.getCantonConfig();
@@ -69,7 +64,7 @@ public class VerifyECH0222Algorithm {
 		final ImmutableMap<String, TallyComponentVotesPayload> Map_decodedVotes_Map_writeIns = input.getTallyControlComponentVotesPerAuthorizationName();
 
 		// Operation.
-		final Delivery eCH0222XML_prime = RawDataDeliveryMapper.createECH0222(ee, configurationXML, Map_decodedVotes_Map_writeIns);
+		final Delivery eCH0222XML_prime = RawDataDeliveryMapper.createECH0222(configurationXML, Map_decodedVotes_Map_writeIns);
 		final Delivery eCH0222XML_prime_normalized = xmlNormalizer.normalizeWriteInsEch0222(eCH0222XML_prime);
 
 		// Ignore metadata in eCH-0222 (use original metadata in re-generated file).

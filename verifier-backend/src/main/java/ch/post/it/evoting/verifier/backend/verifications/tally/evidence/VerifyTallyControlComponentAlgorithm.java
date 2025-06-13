@@ -105,7 +105,7 @@ public class VerifyTallyControlComponentAlgorithm {
 				.setTallyControlComponentVotesPerAuthorizationName(Map_decodedVotes_Map_writeIns)
 				.build();
 
-		final boolean eCH0222Verif = verifyECH0222Algorithm.verifyECH0222(ee, Input_eCH0222);
+		final boolean eCH0222Verif = verifyECH0222Algorithm.verifyECH0222(Input_eCH0222);
 
 		return tallyVerif && eCH0222Verif;
 	}
