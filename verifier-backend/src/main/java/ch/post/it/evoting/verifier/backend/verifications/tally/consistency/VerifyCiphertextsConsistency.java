@@ -59,8 +59,8 @@ public class VerifyCiphertextsConsistency extends AbstractVerification {
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification802.description"));
-		definition.setId("08.02");
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification809.description"));
+		definition.setId("08.09");
 		definition.setName("VerifyCiphertextsConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;
@@ -68,58 +68,76 @@ public class VerifyCiphertextsConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
+
+		if (verifyCiphertextsConsistency(inputDirectoryPath)) {
+			return VerificationResult.success(getVerificationDefinition());
+		} else {
+			return VerificationResult.failure(getVerificationDefinition(),
+					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification809.nok.message"));
+		}
+	}
+
+	private boolean verifyCiphertextsConsistency(final Path inputDirectoryPath) {
+
+		// Input.
 		final ImmutableList<VerificationCardSetContext> verificationCardSetContexts = extractionService.getElectionEventContext(inputDirectoryPath)
 				.verificationCardSetContexts();
 		final ImmutableList<Ciphertexts> ciphertexts = verificationCardSetContexts.stream()
 				.parallel()
-				.map(vcsContext -> {
-					final String ballotBoxId = vcsContext.getBallotBoxId();
-					final int numberWriteInsPlusOne = primesMappingTableAlgorithms.getDelta(vcsContext.getPrimesMappingTable());
+				.map(verificationCardSetContext -> {
+					final String ballotBoxId = verificationCardSetContext.getBallotBoxId();
+
+					final int numberWriteInsPlusOne = primesMappingTableAlgorithms.getDelta(verificationCardSetContext.getPrimesMappingTable());
+
 					final ImmutableList<ControlComponentBallotBoxPayload> ballotBoxPayloads = extractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(
-							inputDirectoryPath, ballotBoxId).collect(toImmutableList());
+									inputDirectoryPath, ballotBoxId)
+							.collect(toImmutableList());
+
 					final ImmutableList<ControlComponentShufflePayload> shufflePayloads = extractionService.getControlComponentShufflePayloadsOrderedByNodeId(
-							inputDirectoryPath, ballotBoxId).collect(toImmutableList());
+									inputDirectoryPath, ballotBoxId)
+							.collect(toImmutableList());
+
 					final TallyComponentShufflePayload tallyComponentShufflePayload = extractionService.getTallyComponentShufflePayload(
 							inputDirectoryPath, ballotBoxId);
+
 					return new Ciphertexts(ballotBoxPayloads, shufflePayloads, tallyComponentShufflePayload, numberWriteInsPlusOne);
 				})
 				.collect(toImmutableList());
-		if (ciphertextsConsistent(ciphertexts)) {
-			return VerificationResult.success(getVerificationDefinition());
-		} else {
-			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification802.nok.message"));
-		}
-	}
 
-	private boolean ciphertextsConsistent(final ImmutableList<Ciphertexts> ciphertexts) {
+		// Operation.
 		return ciphertexts.stream()
 				.parallel()
 				.map(information -> {
-					final int numberWriteInsPlusOne = information.numberWriteInsPlusOne;
-					final boolean ballotBoxPayloadsCiphertextsConsistent = information.ballotBoxPayloads.stream()
+					final int numberOfAllowedWriteInsPlusOne = information.numberOfAllowedWriteInsPlusOne;
+
+					final boolean isControlComponentBallotBoxCiphertextsConsistent = information.controlComponentBallotBox.stream()
 							.parallel()
 							.flatMap(payload -> payload.getConfirmedEncryptedVotes().stream())
 							.map(EncryptedVerifiableVote::encryptedVote)
 							.map(ElGamalMultiRecipientCiphertext::size)
-							.filter(ciphertextSize -> ciphertextSize != numberWriteInsPlusOne)
+							.filter(ciphertextSize -> ciphertextSize != numberOfAllowedWriteInsPlusOne)
 							.collect(toImmutableList()).isEmpty();
-					final boolean shufflePayloadsCiphertextsConsistent = information.shufflePayloads.stream()
+
+					final boolean isOnlineControlComponentShuffleCiphertextsConsistent = information.onlineControlComponentShuffle.stream()
 							.parallel()
 							.flatMap(payload -> payload.getVerifiableDecryptions().getCiphertexts().stream())
 							.map(ElGamalMultiRecipientCiphertext::size)
-							.filter(ciphertextSize -> ciphertextSize != numberWriteInsPlusOne)
+							.filter(ciphertextSize -> ciphertextSize != numberOfAllowedWriteInsPlusOne)
 							.collect(toImmutableList()).isEmpty();
-					final boolean tallyShufflePayloadCiphertextsConsistent = information.tallyComponentShufflePayload.getVerifiableShuffle()
-							.shuffledCiphertexts().getElementSize() == numberWriteInsPlusOne;
-					return ballotBoxPayloadsCiphertextsConsistent && shufflePayloadsCiphertextsConsistent && tallyShufflePayloadCiphertextsConsistent;
+
+					final boolean isTallyControlShuffleCiphertextsConsistent = information.tallyControlComponentShuffle.getVerifiableShuffle()
+							.shuffledCiphertexts().getElementSize() == numberOfAllowedWriteInsPlusOne;
+
+					return isControlComponentBallotBoxCiphertextsConsistent &&
+							isOnlineControlComponentShuffleCiphertextsConsistent &&
+							isTallyControlShuffleCiphertextsConsistent;
 				})
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 	}
 
-	private record Ciphertexts(ImmutableList<ControlComponentBallotBoxPayload> ballotBoxPayloads,
-							   ImmutableList<ControlComponentShufflePayload> shufflePayloads,
-							   TallyComponentShufflePayload tallyComponentShufflePayload, int numberWriteInsPlusOne) {
+	private record Ciphertexts(ImmutableList<ControlComponentBallotBoxPayload> controlComponentBallotBox,
+							   ImmutableList<ControlComponentShufflePayload> onlineControlComponentShuffle,
+							   TallyComponentShufflePayload tallyControlComponentShuffle, int numberOfAllowedWriteInsPlusOne) {
 	}
 }

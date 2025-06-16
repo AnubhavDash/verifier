@@ -20,6 +20,7 @@ import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap.toImmu
 
 import java.nio.file.Path;
 import java.util.function.BiFunction;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
@@ -42,11 +43,11 @@ import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 
 @Component
-public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerification {
+public class VerifyCCMAndCCRSchnorrProofsConsistency extends AbstractVerification {
 
 	private final ElectionDataExtractionService extractionService;
 
-	protected VerifyCcmAndCcrSchnorrProofsConsistency(final ElectionDataExtractionService extractionService,
+	protected VerifyCCMAndCCRSchnorrProofsConsistency(final ElectionDataExtractionService extractionService,
 			final ResultPublisherService resultPublisherService) {
 		super(resultPublisherService);
 		this.extractionService = extractionService;
@@ -58,8 +59,8 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification305.description"));
-		definition.setId("03.05");
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification310.description"));
+		definition.setId("03.10");
 		definition.setName("VerifyCcmAndCcrSchnorrProofsConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
@@ -67,46 +68,36 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = extractionService.getSetupComponentPublicKeysPayload(
-				inputDirectoryPath);
-		final ImmutableList<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = extractionService.getControlComponentPublicKeysPayloads(
-				inputDirectoryPath).collect(toImmutableList());
 
-		final ImmutableList<BiFunction<SetupComponentPublicKeysPayload, ImmutableList<ControlComponentPublicKeysPayload>, Boolean>> validations = ImmutableList.of(
-				this::validateSameCcmjSchnorrProofs,
-				this::validateSameCcrjSchnorrProofs);
-
-		final boolean verified = validations
-				.stream()
-				.parallel()
-				.map(f -> f.apply(setupComponentPublicKeysPayload, controlComponentPublicKeysPayloads))
-				.reduce(Boolean::logicalAnd)
-				.orElse(Boolean.FALSE);
-
-		if (verified) {
+		if (verifyCCMAndCCRSchnorrProofsConsistency(inputDirectoryPath)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification305.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification310.nok.message"));
 		}
 	}
 
-	private boolean validateSameCcrjSchnorrProofs(final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload,
-			final ImmutableList<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads) {
-		final ImmutableMap<Integer, GroupVector<SchnorrProof, ZqGroup>> electionEventCcrjSchnorrProofs = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
-				.combinedControlComponentPublicKeys().stream()
-				.collect(toImmutableMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccrjSchnorrProofs));
+	private boolean verifyCCMAndCCRSchnorrProofsConsistency(final Path inputDirectoryPath) {
 
-		return controlComponentPublicKeysPayloads.stream()
+		// Input.
+		final ImmutableList<ControlComponentPublicKeysPayload> onlineControlComponentPublicKeys = extractionService.getControlComponentPublicKeysPayloads(
+				inputDirectoryPath).collect(toImmutableList());
+		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = extractionService.getSetupComponentPublicKeysPayload(
+				inputDirectoryPath);
+
+		// Operation.
+		final Stream<BiFunction<SetupComponentPublicKeysPayload, ImmutableList<ControlComponentPublicKeysPayload>, Boolean>> validations = Stream.of(
+				this::validateCCMSchnorrProofsConsistency,
+				this::validateCCRSchnorrProofsConsistency);
+
+		return validations
 				.parallel()
-				.map(ControlComponentPublicKeysPayload::getControlComponentPublicKeys)
-				.map(controlComponentPublicKeys -> electionEventCcrjSchnorrProofs.get(controlComponentPublicKeys.nodeId())
-						.equals(controlComponentPublicKeys.ccrjSchnorrProofs()))
+				.map(f -> f.apply(setupComponentPublicKeysPayload, onlineControlComponentPublicKeys))
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 	}
 
-	private boolean validateSameCcmjSchnorrProofs(final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload,
+	private boolean validateCCMSchnorrProofsConsistency(final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload,
 			final ImmutableList<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads) {
 		final ImmutableMap<Integer, GroupVector<SchnorrProof, ZqGroup>> electionEventCcmjSchnorrProofs = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
 				.combinedControlComponentPublicKeys().stream()
@@ -117,6 +108,21 @@ public class VerifyCcmAndCcrSchnorrProofsConsistency extends AbstractVerificatio
 				.map(ControlComponentPublicKeysPayload::getControlComponentPublicKeys)
 				.map(controlComponentPublicKeys -> electionEventCcmjSchnorrProofs.get(controlComponentPublicKeys.nodeId())
 						.equals(controlComponentPublicKeys.ccmjSchnorrProofs()))
+				.reduce(Boolean::logicalAnd)
+				.orElse(Boolean.FALSE);
+	}
+
+	private boolean validateCCRSchnorrProofsConsistency(final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload,
+			final ImmutableList<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads) {
+		final ImmutableMap<Integer, GroupVector<SchnorrProof, ZqGroup>> electionEventCcrjSchnorrProofs = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
+				.combinedControlComponentPublicKeys().stream()
+				.collect(toImmutableMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccrjSchnorrProofs));
+
+		return controlComponentPublicKeysPayloads.stream()
+				.parallel()
+				.map(ControlComponentPublicKeysPayload::getControlComponentPublicKeys)
+				.map(controlComponentPublicKeys -> electionEventCcrjSchnorrProofs.get(controlComponentPublicKeys.nodeId())
+						.equals(controlComponentPublicKeys.ccrjSchnorrProofs()))
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 	}

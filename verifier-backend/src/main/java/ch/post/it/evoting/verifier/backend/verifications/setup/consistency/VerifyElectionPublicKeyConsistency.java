@@ -20,12 +20,10 @@ import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
-import com.google.common.collect.Streams;
-
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
-import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
+import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.domain.election.ControlComponentPublicKeys;
 import ch.post.it.evoting.evotinglibraries.domain.election.SetupComponentPublicKeys;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
@@ -59,8 +57,8 @@ public class VerifyElectionPublicKeyConsistency extends AbstractVerification {
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification307.description"));
-		definition.setId("03.07");
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification312.description"));
+		definition.setId("03.12");
 		definition.setName("VerifyElectionPublicKeyConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
@@ -68,23 +66,33 @@ public class VerifyElectionPublicKeyConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final SetupComponentPublicKeys setupComponentPublicKeys = extractionService.getSetupComponentPublicKeysPayload(inputDirectoryPath)
-				.getSetupComponentPublicKeys();
 
-		final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> publicKeys = Streams.concat(
-						Stream.of(setupComponentPublicKeys.electoralBoardPublicKey()),
-						setupComponentPublicKeys.combinedControlComponentPublicKeys()
-								.stream()
-								.map(ControlComponentPublicKeys::ccmjElectionPublicKey))
-				.collect(GroupVector.toGroupVector());
-
-		final ElGamalMultiRecipientPublicKey combinedPublicKeys = elGamal.combinePublicKeys(publicKeys);
-
-		if (setupComponentPublicKeys.electionPublicKey().equals(combinedPublicKeys)) {
+		if (verifyElectionPublicKeyConsistency(inputDirectoryPath)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification307.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification312.nok.message"));
 		}
+	}
+
+	@SuppressWarnings("java:S117")
+	private boolean verifyElectionPublicKeyConsistency(final Path inputDirectoryPath) {
+
+		// Input.
+		final Stream<ElGamalMultiRecipientPublicKey> EL_pk_j = extractionService.getControlComponentPublicKeysPayloads(inputDirectoryPath)
+				.parallel()
+				.map(ControlComponentPublicKeysPayload::getControlComponentPublicKeys)
+				.map(ControlComponentPublicKeys::ccmjElectionPublicKey);
+		final SetupComponentPublicKeys setupComponentPublicKeys = extractionService.getSetupComponentPublicKeysPayload(inputDirectoryPath)
+				.getSetupComponentPublicKeys();
+		final ElGamalMultiRecipientPublicKey EL_pk = setupComponentPublicKeys.electionPublicKey();
+		final ElGamalMultiRecipientPublicKey EB_pk = setupComponentPublicKeys.electoralBoardPublicKey();
+
+		// Operation.
+		final ElGamalMultiRecipientPublicKey combined_EB_pk_EL_pk_j = elGamal.combinePublicKeys(Stream.concat(Stream.of(EB_pk), EL_pk_j)
+				.collect(GroupVector.toGroupVector())
+		);
+
+		return EL_pk.equals(combined_EB_pk_EL_pk_j);
 	}
 }

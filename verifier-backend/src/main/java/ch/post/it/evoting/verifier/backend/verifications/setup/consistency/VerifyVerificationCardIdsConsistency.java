@@ -15,8 +15,6 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
-
 import java.nio.file.Path;
 
 import org.springframework.stereotype.Component;
@@ -24,7 +22,6 @@ import org.springframework.stereotype.Component;
 import com.google.common.collect.MoreCollectors;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
-import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
@@ -54,8 +51,8 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification312.description"));
-		definition.setId("03.12");
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification307.description"));
+		definition.setId("03.07");
 		definition.setName("VerifyVerificationCardIdsConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
@@ -63,62 +60,41 @@ public class VerifyVerificationCardIdsConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final boolean verificationCardIdsConsistent = extractVerificationCardIds(inputDirectoryPath).stream()
-				.parallel()
-				.map(this::verifyConsistency)
-				.reduce(Boolean::logicalAnd)
-				.orElse(Boolean.FALSE);
 
-		if (verificationCardIdsConsistent) {
+		if (verifyVerificationCardIdsConsistency(inputDirectoryPath)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification312.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification307.nok.message"));
 		}
 	}
 
-	private ImmutableList<PayloadsVerificationCardIds> extractVerificationCardIds(final Path inputDirectoryPath) {
+	private boolean verifyVerificationCardIdsConsistency(final Path inputDirectoryPath) {
+		// Input.
 		final ImmutableList<VerificationCardSetContext> verificationCardSetContexts = electionDataExtractionService.getElectionEventContext(
 				inputDirectoryPath).verificationCardSetContexts();
+		final ImmutableList<Path> verificationCardSetIdPaths = electionDataExtractionService.getContextVerificationCardSetIdPaths(inputDirectoryPath);
 
-		return electionDataExtractionService.getContextVerificationCardSetPaths(inputDirectoryPath).stream()
+		// Operation.
+		return verificationCardSetIdPaths.stream()
 				.parallel()
 				.map(verificationCardSetIdPath -> {
-
 					final String verificationCardSetId = verificationCardSetIdPath.getFileName().toString();
 
-					final SetupComponentTallyDataPayload setupComponentTallyDataPayload = electionDataExtractionService.getSetupComponentTallyDataPayload(
-							inputDirectoryPath, verificationCardSetId);
-
-					final ImmutableList<String> verificationCardIds = setupComponentTallyDataPayload.getVerificationCardIds();
+					final ImmutableList<String> setupComponentTallyDataVerificationCardIds = electionDataExtractionService.getSetupComponentTallyDataPayload(
+							inputDirectoryPath, verificationCardSetId).getVerificationCardIds();
 
 					final int numberOfEligibleVoters = verificationCardSetContexts.stream()
 							.parallel()
-							.filter(vcs -> vcs.getVerificationCardSetId().equals(verificationCardSetId))
+							.filter(verificationCardSetContext -> verificationCardSetContext.getVerificationCardSetId().equals(verificationCardSetId))
 							.collect(MoreCollectors.onlyElement())
 							.getNumberOfEligibleVoters();
 
-					return new PayloadsVerificationCardIds(verificationCardIds, numberOfEligibleVoters);
+					// The SetupComponentTallyData payload ensures no verification card id are duplicates.
+					return setupComponentTallyDataVerificationCardIds.size() == numberOfEligibleVoters;
 				})
-				.collect(toImmutableList());
-	}
-
-	/**
-	 * Verifies:
-	 * <ul>
-	 *     <li>the verification card ids in the setup component tally data payload do not have duplicates.</li>
-	 *     <li>the number of verification card ids in the setup component tally data payload is equal to the {@code numberOfEligibleVoters}.</li>
-	 * </ul>
-	 */
-	private boolean verifyConsistency(final PayloadsVerificationCardIds payloadsVerificationCardIds) {
-		final ImmutableList<String> verificationCardIds = payloadsVerificationCardIds.verificationCardIds();
-		final int numberOfEligibleVoters = payloadsVerificationCardIds.numberOfEligibleVoters();
-
-		// The SetupComponentTallyData payload ensures no verification card id are duplicates.
-		return verificationCardIds.size() == numberOfEligibleVoters;
-	}
-
-	private record PayloadsVerificationCardIds(ImmutableList<String> verificationCardIds, int numberOfEligibleVoters) {
+				.reduce(Boolean::logicalAnd)
+				.orElse(Boolean.FALSE);
 	}
 
 }

@@ -78,7 +78,7 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 		final VerificationResult result = verifyElectionEventIdConsistency.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification309.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification304.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 
@@ -105,7 +105,7 @@ class VerifyElectionEventIdConsistencyTest extends SetupVerificationTest {
 		final VerificationResult result = verifyElectionEventIdConsistency.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification309.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification304.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 }

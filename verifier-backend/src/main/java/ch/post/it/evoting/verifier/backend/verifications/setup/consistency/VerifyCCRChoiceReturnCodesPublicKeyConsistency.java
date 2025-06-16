@@ -54,8 +54,8 @@ public class VerifyCCRChoiceReturnCodesPublicKeyConsistency extends AbstractVeri
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification303.description"));
-		definition.setId("03.03");
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification308.description"));
+		definition.setId("03.08");
 		definition.setName("VerifyCCRChoiceReturnCodesPublicKeyConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
@@ -63,31 +63,37 @@ public class VerifyCCRChoiceReturnCodesPublicKeyConsistency extends AbstractVeri
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
+
+		if (verifyCCRChoiceReturnCodesPublicKeyConsistency(inputDirectoryPath)) {
+			return VerificationResult.success(getVerificationDefinition());
+		} else {
+			return VerificationResult.failure(getVerificationDefinition(),
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification308.nok.message"));
+		}
+	}
+
+	private boolean verifyCCRChoiceReturnCodesPublicKeyConsistency(final Path inputDirectoryPath) {
+
+		// Input.
 		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = extractionService.getSetupComponentPublicKeysPayload(
 				inputDirectoryPath);
-		final Stream<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = extractionService.getControlComponentPublicKeysPayloads(
-				inputDirectoryPath);
-
-		final ImmutableMap<Integer, ElGamalMultiRecipientPublicKey> electionEventContextPublicKeys = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
+		final ImmutableMap<Integer, ElGamalMultiRecipientPublicKey> setupComponentPublicKeysCCRMap = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
 				.combinedControlComponentPublicKeys()
 				.stream()
 				.collect(toImmutableMap(ControlComponentPublicKeys::nodeId,
 						ControlComponentPublicKeys::ccrjChoiceReturnCodesEncryptionPublicKey));
+		final Stream<ControlComponentPublicKeysPayload> controlComponentPublicKeysPayloads = extractionService.getControlComponentPublicKeysPayloads(
+				inputDirectoryPath);
 
-		final boolean sameCCrChoiceReturnCodesPublicKeys = controlComponentPublicKeysPayloads
+
+		// Operation.
+		return controlComponentPublicKeysPayloads
 				.parallel()
 				.map(ControlComponentPublicKeysPayload::getControlComponentPublicKeys)
-				.map(controlComponentPublicKeys -> electionEventContextPublicKeys.get(controlComponentPublicKeys.nodeId())
+				.map(controlComponentPublicKeys -> setupComponentPublicKeysCCRMap.get(controlComponentPublicKeys.nodeId())
 						.equals(controlComponentPublicKeys.ccrjChoiceReturnCodesEncryptionPublicKey()))
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
-
-		if (sameCCrChoiceReturnCodesPublicKeys) {
-			return VerificationResult.success(getVerificationDefinition());
-		} else {
-			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification303.nok.message"));
-		}
 	}
 }
 

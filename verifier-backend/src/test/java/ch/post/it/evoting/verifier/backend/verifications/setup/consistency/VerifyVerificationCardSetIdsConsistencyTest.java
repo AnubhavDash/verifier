@@ -56,7 +56,7 @@ class VerifyVerificationCardSetIdsConsistencyTest extends SetupVerificationTest 
 	@Test
 	@DisplayName("inconsistent verification card set ids is failed")
 	void inconsistentVerificationCardIds() {
-		final ImmutableList<Path> regexPaths = electionDataExtractionService.getContextVerificationCardSetPaths(datasetPath);
+		final ImmutableList<Path> regexPaths = electionDataExtractionService.getContextVerificationCardSetIdPaths(datasetPath);
 
 		assumeTrue(!regexPaths.isEmpty(), "This test assumes at least one verification card set exists.");
 
@@ -88,7 +88,7 @@ class VerifyVerificationCardSetIdsConsistencyTest extends SetupVerificationTest 
 		final VerificationResult result = verifyVerificationCardSetIdsConsistency.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification310.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification305.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 }

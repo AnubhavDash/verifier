@@ -52,8 +52,8 @@ public class VerifyConfirmedEncryptedVotesConsistency extends AbstractVerificati
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME,
-				"tally.verification801.description"));
-		definition.setId("08.01");
+				"tally.verification808.description"));
+		definition.setId("08.08");
 		definition.setName("VerifyConfirmedEncryptedVotesConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;
@@ -62,24 +62,27 @@ public class VerifyConfirmedEncryptedVotesConsistency extends AbstractVerificati
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final Stream<Stream<ControlComponentBallotBoxPayload>> ballotBoxPayloads = extractionService.getElectionEventContext(inputDirectoryPath)
+		if (verifyConfirmedEncryptedVotesConsistency(inputDirectoryPath)) {
+			return VerificationResult.success(getVerificationDefinition());
+		} else {
+			return VerificationResult.failure(getVerificationDefinition(),
+					getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification808.nok.message"));
+		}
+	}
+
+	private boolean verifyConfirmedEncryptedVotesConsistency(final Path inputDirectoryPath) {
+
+		// Input.
+		final Stream<Stream<ControlComponentBallotBoxPayload>> controlComponentBallotBoxes = extractionService.getElectionEventContext(inputDirectoryPath)
 				.verificationCardSetContexts().stream()
 				.parallel()
 				.map(VerificationCardSetContext::getBallotBoxId)
 				.map(ballotBoxId -> extractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(inputDirectoryPath, ballotBoxId));
 
-		if (confirmedVotesConsistent(ballotBoxPayloads)) {
-			return VerificationResult.success(getVerificationDefinition());
-		} else {
-			return VerificationResult.failure(getVerificationDefinition(),
-					getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification801.nok.message"));
-		}
-	}
-
-	private boolean confirmedVotesConsistent(final Stream<Stream<ControlComponentBallotBoxPayload>> ballotBoxPayloadSupplier) {
-		return ballotBoxPayloadSupplier
+		// Operation.
+		return controlComponentBallotBoxes
 				.parallel()
-				.map(ballotBoxPayloads -> Validations.allEqual(ballotBoxPayloads, ControlComponentBallotBoxPayload::getConfirmedEncryptedVotes))
+				.map(controlComponentBallotBox -> Validations.allEqual(controlComponentBallotBox, ControlComponentBallotBoxPayload::getConfirmedEncryptedVotes))
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 	}

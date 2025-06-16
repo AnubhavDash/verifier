@@ -35,13 +35,13 @@ import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 
-class VerifySetupFileNamesConsistencyTest extends SetupVerificationTest {
+class VerifyFileNameNodeIdsConsistencyTest extends SetupVerificationTest {
 
 	private final Random random = new Random();
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifySetupFileNamesConsistency(resultPublisherServiceMock, pathService, electionDataExtractionService);
+		verification = new VerifyFileNameNodeIdsConsistency(resultPublisherServiceMock, pathService, electionDataExtractionService);
 	}
 
 	@Test
@@ -72,12 +72,12 @@ class VerifySetupFileNamesConsistencyTest extends SetupVerificationTest {
 		doReturn(controlComponentPublicKeysPayload).when(extractionServiceSpy)
 				.getControlComponentPublicKeysPayload(regexPaths.get(secondRandomIndex));
 
-		final VerifySetupFileNamesConsistency failingVerification = new VerifySetupFileNamesConsistency(resultPublisherServiceMock, pathService,
+		final VerifyFileNameNodeIdsConsistency failingVerification = new VerifyFileNameNodeIdsConsistency(resultPublisherServiceMock, pathService,
 				extractionServiceSpy);
 		final VerificationResult verificationResult = failingVerification.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification302.nok.message"));
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification303.nok.message"));
 		assertEquals(expectedResult, verificationResult);
 	}
 }

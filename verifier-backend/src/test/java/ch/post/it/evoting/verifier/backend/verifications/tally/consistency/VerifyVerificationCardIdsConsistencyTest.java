@@ -17,35 +17,35 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
 import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Answers;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.evotinglibraries.domain.UUIDGenerator;
+import ch.post.it.evoting.evotinglibraries.domain.common.ContextIds;
 import ch.post.it.evoting.evotinglibraries.domain.common.EncryptedVerifiableVote;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
-import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
-import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
-import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
+import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
+import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
+import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
 
 @DisplayName("VerifyVerificationCardIdsConsistencyTest with")
 class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
+
+	private static final UUIDGenerator uuidGenerator = UUIDGenerator.getInstance();
 
 	@BeforeAll
 	static void setupAll() {
@@ -63,223 +63,123 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 
 	@ParameterizedTest(name = "{0}")
 	@MethodSource("inconsistentRelationBetweenVerificationCardSetAndBallotBoxProvider")
-	@DisplayName("inconsistent relation between verification card set and ballot box failed when")
+	@DisplayName("inconsistent relation between verification card set and ballot box is failed when")
 	void inconsistentRelationBetweenVerificationCardSetAndBallotBox(final String testName,
-			final ElectionEventContext electionEventContextMock,
-			final ImmutableList<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloadsMock) {
-		// given
-		final VerifyVerificationCardIdsConsistency verifyElectionEventIdConsistency = new VerifyVerificationCardIdsConsistency(
-				resultPublisherServiceMock, electionDataExtractionService);
+			final ImmutableList<ControlComponentBallotBoxPayload> inconsistentControlComponentBallotBoxPayloads) {
 
-		// when
-		final boolean result = verifyElectionEventIdConsistency.verifyVerificationCardSetRelationToBallotBox(controlComponentBallotBoxPayloadsMock,
-				electionEventContextMock);
+		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
+		doReturn(inconsistentControlComponentBallotBoxPayloads.stream()).when(electionDataExtractionServiceSpy)
+				.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(any());
 
-		// then
-		assertFalse(result);
-	}
+		final VerifyVerificationCardIdsConsistency verifyVerificationCardIdsConsistency = new VerifyVerificationCardIdsConsistency(
+				resultPublisherServiceMock, electionDataExtractionServiceSpy);
 
-	static Stream<Arguments> inconsistentRelationBetweenVerificationCardSetAndBallotBoxProvider() {
+		final VerificationResult result = verifyVerificationCardIdsConsistency.verify(datasetPath);
 
-		final ElectionEventContext electionEventContextMock = new ElectionEventContextPayloadMockBuilder()
-				.add("verificationCardSetId_1", "ballotBoxId_1")
-				.add("verificationCardSetId_2", "ballotBoxId_2")
-				.add("verificationCardSetId_3", "ballotBoxId_3")
-				.build()
-				.getElectionEventContext();
-
-		return Stream.of(
-				Arguments.of("verification card set ids is swapped between 2 ballot box.",
-						electionEventContextMock,
-						ImmutableList.of(
-								new ControlComponentBallotBoxPayloadMockBuilder("ballotBoxId_1")
-										.add("verificationCardSetId_1")
-										.build(),
-								new ControlComponentBallotBoxPayloadMockBuilder("ballotBoxId_2")
-										.add("verificationCardSetId_3")
-										.build(),
-								new ControlComponentBallotBoxPayloadMockBuilder("ballotBoxId_3")
-										.add("verificationCardSetId_2")
-										.build()
-						)),
-				Arguments.of("verification card set does not exist in election event context.",
-						electionEventContextMock,
-						ImmutableList.of(
-								new ControlComponentBallotBoxPayloadMockBuilder("ballotBoxId_1")
-										.add("verificationCardSetId_1")
-										.build(),
-								new ControlComponentBallotBoxPayloadMockBuilder("ballotBoxId_2")
-										.add("verificationCardSetId_2")
-										.build(),
-								new ControlComponentBallotBoxPayloadMockBuilder("ballotBoxId_3")
-										.add("verificationCardSetId_4")
-										.build()
-						)),
-				Arguments.of("ballot box which does not exist in election event context.",
-						electionEventContextMock,
-						ImmutableList.of(
-								new ControlComponentBallotBoxPayloadMockBuilder("ballotBoxId_1")
-										.add("verificationCardSetId_1")
-										.build(),
-								new ControlComponentBallotBoxPayloadMockBuilder("ballotBoxId_2")
-										.add("verificationCardSetId_2")
-										.build(),
-								new ControlComponentBallotBoxPayloadMockBuilder("ballotBoxId_3")
-										.add("verificationCardSetId_3")
-										.build(),
-								new ControlComponentBallotBoxPayloadMockBuilder("ballotBoxId_4")
-										.add("verificationCardSetId_3")
-										.build()
-						)));
+		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification807.nok.message"));
+		assertEquals(expectedResult, result);
 	}
 
 	@ParameterizedTest(name = "{0}")
 	@MethodSource("inconsistentVerificationCardIdsInExpectedSetProvider")
 	@DisplayName("inconsistent verification card ids in expected set failed")
 	void inconsistentVerificationCardIdsInExpectedSet(final String testName,
-			final ImmutableList<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloadsMock,
-			final Stream<SetupComponentTallyDataPayload> setupComponentTallyDataPayloads) {
-		// given
+			final ImmutableList<SetupComponentTallyDataPayload> setupComponentTallyDataPayloads) {
 
-		// when
-		final VerifyVerificationCardIdsConsistency verifyElectionEventIdConsistency = new VerifyVerificationCardIdsConsistency(
-				resultPublisherServiceMock, electionDataExtractionService);
-		final boolean result = verifyElectionEventIdConsistency.verifyVerificationCardIdsInExpectedSet(controlComponentBallotBoxPayloadsMock,
-				setupComponentTallyDataPayloads);
+		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
+		doReturn(setupComponentTallyDataPayloads.stream()).when(electionDataExtractionServiceSpy).getSetupComponentTallyDataPayloads(any());
 
-		// then
-		assertFalse(result);
+		final VerifyVerificationCardIdsConsistency verifyVerificationCardIdsConsistency = new VerifyVerificationCardIdsConsistency(
+				resultPublisherServiceMock, electionDataExtractionServiceSpy);
+
+		final VerificationResult result = verifyVerificationCardIdsConsistency.verify(datasetPath);
+
+		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification807.nok.message"));
+		assertEquals(expectedResult, result);
 	}
 
-	static Stream<Arguments> inconsistentVerificationCardIdsInExpectedSetProvider() {
+	private static Stream<Arguments> inconsistentRelationBetweenVerificationCardSetAndBallotBoxProvider() {
+
+		final ImmutableList<ControlComponentBallotBoxPayload> controlComponentBallotBoxPayloads = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
+						datasetPath)
+				.collect(toImmutableList());
+
+		return Stream.of(
+				Arguments.of("verification card set ids is swapped between 2 ballot box.",
+						ImmutableList.of(
+								new ControlComponentBallotBoxPayload(controlComponentBallotBoxPayloads.getFirst().getEncryptionGroup(),
+										controlComponentBallotBoxPayloads.getFirst().getElectionEventId(),
+										controlComponentBallotBoxPayloads.getFirst().getBallotBoxId(),
+										controlComponentBallotBoxPayloads.getFirst().getNodeId(),
+										controlComponentBallotBoxPayloads.get(1).getConfirmedEncryptedVotes()),
+								new ControlComponentBallotBoxPayload(controlComponentBallotBoxPayloads.get(1).getEncryptionGroup(),
+										controlComponentBallotBoxPayloads.get(1).getElectionEventId(),
+										controlComponentBallotBoxPayloads.get(1).getBallotBoxId(),
+										controlComponentBallotBoxPayloads.get(1).getNodeId(),
+										controlComponentBallotBoxPayloads.getFirst().getConfirmedEncryptedVotes()))),
+				Arguments.of("verification card set does not exist in election event context.",
+						controlComponentBallotBoxPayloads.stream()
+								.map(controlComponentBallotBoxPayload -> {
+									final String verificationCardSetId = uuidGenerator.generate();
+									return new ControlComponentBallotBoxPayload(controlComponentBallotBoxPayload.getEncryptionGroup(),
+											controlComponentBallotBoxPayload.getElectionEventId(),
+											controlComponentBallotBoxPayload.getBallotBoxId(),
+											controlComponentBallotBoxPayload.getNodeId(),
+											controlComponentBallotBoxPayload.getConfirmedEncryptedVotes().stream()
+													.map(encryptedVerifiableVote -> new EncryptedVerifiableVote(
+															new ContextIds(
+																	encryptedVerifiableVote.contextIds().electionEventId(),
+																	verificationCardSetId,
+																	encryptedVerifiableVote.contextIds().verificationCardId()),
+															encryptedVerifiableVote.encryptedVote(),
+															encryptedVerifiableVote.exponentiatedEncryptedVote(),
+															encryptedVerifiableVote.encryptedPartialChoiceReturnCodes(),
+															encryptedVerifiableVote.exponentiationProof(),
+															encryptedVerifiableVote.plaintextEqualityProof()
+													)).collect(toImmutableList()));
+								}).collect(toImmutableList())),
+				Arguments.of("ballot box which does not exist in election event context.",
+						controlComponentBallotBoxPayloads.stream()
+								.map(controlComponentBallotBoxPayload ->
+										new ControlComponentBallotBoxPayload(controlComponentBallotBoxPayload.getEncryptionGroup(),
+												controlComponentBallotBoxPayload.getElectionEventId(),
+												uuidGenerator.generate(),
+												controlComponentBallotBoxPayload.getNodeId(),
+												controlComponentBallotBoxPayload.getConfirmedEncryptedVotes()))
+								.collect(toImmutableList()))
+		);
+	}
+
+	private static Stream<Arguments> inconsistentVerificationCardIdsInExpectedSetProvider() {
+
+		final ImmutableList<SetupComponentTallyDataPayload> setupComponentTallyDataPayloads = electionDataExtractionService.getSetupComponentTallyDataPayloads(
+						datasetPath)
+				.collect(toImmutableList());
+
 		return Stream.of(
 				Arguments.of("missing verification card ID in the related set.",
-						ImmutableList.of(new ControlComponentBallotBoxPayloadMockBuilder("ballotBoxId_1")
-								.add("verificationCardSetId_1", "verificationCardId_1")
-								.add("verificationCardSetId_1", "verificationCardId_2")
-								.add("verificationCardSetId_2", "verificationCardId_3")
-								.add("verificationCardSetId_2", "verificationCardId_4")
-								.add("verificationCardSetId_2", "verificationCardId_5")
-								.add("verificationCardSetId_3", "verificationCardId_6")
-								.add("verificationCardSetId_3", "verificationCardId_7")
-								.build()
-						), Stream.of(
-								new SetupComponentTallyDataPayloadsMockBuilder("verificationCardSetId_1")
-										.add("verificationCardId_1")
-										.add("verificationCardId_2")
-										.build(),
-								new SetupComponentTallyDataPayloadsMockBuilder("verificationCardSetId_2")
-										.add("verificationCardId_3")
-										.add("verificationCardId_4")
-										.add("verificationCardId_5")
-										.build(),
-								new SetupComponentTallyDataPayloadsMockBuilder("verificationCardSetId_3")
-										.add("verificationCardId_6")
-										.build()
-						),
-						Arguments.of("unexpected verification card set",
-								ImmutableList.of(new ControlComponentBallotBoxPayloadMockBuilder("ballotBoxId_1")
-										.add("verificationCardSetId_1", "verificationCardId_1")
-										.add("verificationCardSetId_1", "verificationCardId_2")
-										.add("verificationCardSetId_2", "verificationCardId_3")
-										.add("verificationCardSetId_2", "verificationCardId_4")
-										.add("verificationCardSetId_2", "verificationCardId_5")
-										.add("verificationCardSetId_3", "verificationCardId_6")
-										.build()
-								), Stream.of(
-										new SetupComponentTallyDataPayloadsMockBuilder("verificationCardSetId_1")
-												.add("verificationCardId_1")
-												.add("verificationCardId_2")
-												.build(),
-										new SetupComponentTallyDataPayloadsMockBuilder("verificationCardSetId_2")
-												.add("verificationCardId_3")
-												.add("verificationCardId_4")
-												.build(),
-										new SetupComponentTallyDataPayloadsMockBuilder("verificationCardSetId_3")
-												.add("verificationCardId_5")
-												.add("verificationCardId_6")
-												.build()
-								))));
-	}
-
-	private static class ElectionEventContextPayloadMockBuilder {
-
-		private final Set<Pair<String, String>> verificationCardSetIdAndBallotBoxId = new HashSet<>();
-
-		public ElectionEventContextPayloadMockBuilder add(final String verificationCardSetId, final String ballotBoxId) {
-			verificationCardSetIdAndBallotBoxId.add(Pair.of(verificationCardSetId, ballotBoxId));
-			return this;
-		}
-
-		public ElectionEventContextPayload build() {
-			final ImmutableList<VerificationCardSetContext> verificationCardSetContexts = verificationCardSetIdAndBallotBoxId.stream()
-					.map(pair -> {
-						final VerificationCardSetContext mock = mock(VerificationCardSetContext.class);
-						when(mock.getVerificationCardSetId()).thenReturn(pair.getLeft());
-						when(mock.getBallotBoxId()).thenReturn(pair.getRight());
-						return mock;
-					})
-					.collect(toImmutableList());
-
-			final ElectionEventContextPayload electionEventContextPayloadMock = mock(ElectionEventContextPayload.class, Answers.RETURNS_DEEP_STUBS);
-			when(electionEventContextPayloadMock.getElectionEventContext().verificationCardSetContexts()).thenReturn(verificationCardSetContexts);
-			return electionEventContextPayloadMock;
-		}
-	}
-
-	private static class ControlComponentBallotBoxPayloadMockBuilder {
-
-		private final String ballotBoxId;
-		private final Set<Pair<String, String>> verificationCardSetIdsAndVerificationCardIds = new HashSet<>();
-
-		private ControlComponentBallotBoxPayloadMockBuilder(final String ballotBoxId) {
-			this.ballotBoxId = ballotBoxId;
-		}
-
-		public ControlComponentBallotBoxPayloadMockBuilder add(final String verificationCardSetId) {
-			return add(verificationCardSetId, "");
-		}
-
-		public ControlComponentBallotBoxPayloadMockBuilder add(final String verificationCardSetId, final String verificationCardId) {
-			verificationCardSetIdsAndVerificationCardIds.add(Pair.of(verificationCardSetId, verificationCardId));
-			return this;
-		}
-
-		public ControlComponentBallotBoxPayload build() {
-			final ImmutableList<EncryptedVerifiableVote> encryptedVerifiableVotes = verificationCardSetIdsAndVerificationCardIds.stream()
-					.map(pair -> {
-						final EncryptedVerifiableVote mock = mock(EncryptedVerifiableVote.class, Answers.RETURNS_DEEP_STUBS);
-						when(mock.contextIds().verificationCardSetId()).thenReturn(pair.getLeft());
-						when(mock.contextIds().verificationCardId()).thenReturn(pair.getRight());
-						return mock;
-					})
-					.collect(toImmutableList());
-			final ControlComponentBallotBoxPayload controlComponentBallotBoxPayload = mock(ControlComponentBallotBoxPayload.class);
-			when(controlComponentBallotBoxPayload.getBallotBoxId()).thenReturn(ballotBoxId);
-			when(controlComponentBallotBoxPayload.getConfirmedEncryptedVotes()).thenReturn(encryptedVerifiableVotes);
-			return controlComponentBallotBoxPayload;
-		}
-	}
-
-	private static class SetupComponentTallyDataPayloadsMockBuilder {
-
-		private final String verificationCardSetId;
-		private final Set<String> verificationCardIds = new HashSet<>();
-
-		public SetupComponentTallyDataPayloadsMockBuilder(final String verificationCardSetId) {
-			this.verificationCardSetId = verificationCardSetId;
-		}
-
-		public SetupComponentTallyDataPayloadsMockBuilder add(final String verificationCardId) {
-			verificationCardIds.add(verificationCardId);
-			return this;
-		}
-
-		public SetupComponentTallyDataPayload build() {
-			final SetupComponentTallyDataPayload mock = mock(SetupComponentTallyDataPayload.class, Answers.RETURNS_DEEP_STUBS);
-			when(mock.getVerificationCardIds()).thenReturn(verificationCardIds.stream().collect(toImmutableList()));
-			when(mock.getVerificationCardSetId()).thenReturn(verificationCardSetId);
-			return mock;
-		}
+						ImmutableList.of(
+								new SetupComponentTallyDataPayload(
+										setupComponentTallyDataPayloads.getFirst().getEncryptionGroup(),
+										setupComponentTallyDataPayloads.getFirst().getElectionEventId(),
+										setupComponentTallyDataPayloads.getFirst().getVerificationCardSetId(),
+										setupComponentTallyDataPayloads.getFirst().getVerificationCardIds().subList(0, 1),
+										setupComponentTallyDataPayloads.getFirst().getBallotBoxDefaultTitle(),
+										setupComponentTallyDataPayloads.getFirst().getVerificationCardPublicKeys().subVector(0, 1)
+								)
+						)),
+				Arguments.of("unexpected verification card set",
+						ImmutableList.of(
+								new SetupComponentTallyDataPayload(
+										setupComponentTallyDataPayloads.getFirst().getEncryptionGroup(),
+										setupComponentTallyDataPayloads.getFirst().getElectionEventId(),
+										uuidGenerator.generate(),
+										setupComponentTallyDataPayloads.getFirst().getVerificationCardIds(),
+										setupComponentTallyDataPayloads.getFirst().getBallotBoxDefaultTitle(),
+										setupComponentTallyDataPayloads.getFirst().getVerificationCardPublicKeys()
+								)
+						)));
 	}
 }

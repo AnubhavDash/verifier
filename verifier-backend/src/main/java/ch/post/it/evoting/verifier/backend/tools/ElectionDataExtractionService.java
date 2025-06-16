@@ -207,15 +207,7 @@ public class ElectionDataExtractionService {
 				.map(controlComponentBallotBoxes ->
 						controlComponentBallotBoxes.getRegexPaths().stream()
 								.parallel()
-								.map(controlComponentBallotBox -> {
-									try {
-										return objectMapper.readValue(controlComponentBallotBox.toFile(), ControlComponentBallotBoxPayload.class);
-									} catch (final IOException e) {
-										throw new UncheckedIOException(
-												String.format("Failed to deserialize control component ballot box payload. [path: %s]",
-														controlComponentBallotBox), e);
-									}
-								})
+								.map(this::getControlComponentBallotBoxPayload)
 								.sorted(Comparator.comparingInt(ControlComponentBallotBoxPayload::getNodeId)));
 	}
 
@@ -255,15 +247,28 @@ public class ElectionDataExtractionService {
 
 		return ballotBoxPayloadPaths.stream()
 				.parallel()
-				.map(path -> {
-					try {
-						return objectMapper.readValue(path.toFile(), ControlComponentBallotBoxPayload.class);
-					} catch (final IOException e) {
-						throw new UncheckedIOException(String.format("Failed to deserialize control component ballot box payload. [path: %s]", path),
-								e);
-					}
-				})
+				.map(this::getControlComponentBallotBoxPayload)
 				.sorted(Comparator.comparingInt(ControlComponentBallotBoxPayload::getNodeId));
+	}
+
+	/**
+	 * Gets the control component ballot box payload.
+	 *
+	 * @param controlComponentBallotBoxPayloadPath the path to the control component ballot box payload.
+	 * @return the control component ballot box payload.
+	 * @throws NullPointerException if {@code controlComponentBallotBoxPayloadPath} is null.
+	 * @throws UncheckedIOException if the deserialization of the control component ballot box payload fails.
+	 */
+	public ControlComponentBallotBoxPayload getControlComponentBallotBoxPayload(final Path controlComponentBallotBoxPayloadPath) {
+		checkNotNull(controlComponentBallotBoxPayloadPath);
+
+		try {
+			return objectMapper.readValue(controlComponentBallotBoxPayloadPath.toFile(), ControlComponentBallotBoxPayload.class);
+		} catch (final IOException e) {
+			throw new UncheckedIOException(
+					String.format("Failed to deserialize control component ballot box payload. [path: %s]", controlComponentBallotBoxPayloadPath),
+					e);
+		}
 	}
 
 	/**
@@ -284,15 +289,8 @@ public class ElectionDataExtractionService {
 				.map(ballotBox -> pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_SHUFFLE, ballotBox))
 				.map(controlComponentShuffles ->
 						controlComponentShuffles.getRegexPaths().stream()
-								.map(controlComponentShuffle -> {
-									try {
-										return objectMapper.readValue(controlComponentShuffle.toFile(), ControlComponentShufflePayload.class);
-									} catch (final IOException e) {
-										throw new UncheckedIOException(
-												String.format("Failed to deserialize control component shuffle payload. [path: %s]",
-														controlComponentShuffle), e);
-									}
-								}).sorted(Comparator.comparingInt(ControlComponentShufflePayload::getNodeId))
+								.map(this::getControlComponentShufflePayload)
+								.sorted(Comparator.comparingInt(ControlComponentShufflePayload::getNodeId))
 								.collect(toImmutableList()))
 				.flatMap(ImmutableList::stream);
 	}
@@ -334,14 +332,27 @@ public class ElectionDataExtractionService {
 
 		return controlComponentShufflePayloadPaths.stream()
 				.parallel()
-				.map(path -> {
-					try {
-						return objectMapper.readValue(path.toFile(), ControlComponentShufflePayload.class);
-					} catch (final IOException e) {
-						throw new UncheckedIOException(String.format("Failed to deserialize control component shuffle payload. [path: %s]", path), e);
-					}
-				})
+				.map(this::getControlComponentShufflePayload)
 				.sorted(Comparator.comparingInt(ControlComponentShufflePayload::getNodeId));
+	}
+
+	/**
+	 * Gets the control component shuffle payload.
+	 *
+	 * @param controlComponentShufflePayloadPath the path to the control component shuffle payload.
+	 * @return the control component shuffle payload.
+	 * @throws NullPointerException if {@code controlComponentShufflePayloadPath} is null.
+	 * @throws UncheckedIOException if the deserialization of the control component shuffle payload fails.
+	 */
+	public ControlComponentShufflePayload getControlComponentShufflePayload(final Path controlComponentShufflePayloadPath) {
+		checkNotNull(controlComponentShufflePayloadPath);
+
+		try {
+			return objectMapper.readValue(controlComponentShufflePayloadPath.toFile(), ControlComponentShufflePayload.class);
+		} catch (final IOException e) {
+			throw new UncheckedIOException(
+					String.format("Failed to deserialize control component shuffle payload. [path: %s]", controlComponentShufflePayloadPath), e);
+		}
 	}
 
 	/**
@@ -534,13 +545,7 @@ public class ElectionDataExtractionService {
 		final PathNode controlComponentPublicKeys = pathService.buildFromRootPath(StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS, inputDirectoryPath);
 
 		return controlComponentPublicKeys.getRegexPaths().stream()
-				.map(path -> {
-					try {
-						return objectMapper.readValue(path.toFile(), ControlComponentPublicKeysPayload.class);
-					} catch (final IOException e) {
-						throw new UncheckedIOException("Failed to deserialize control component public keys payload.", e);
-					}
-				});
+				.map(this::getControlComponentPublicKeysPayload);
 	}
 
 	/**
@@ -562,12 +567,12 @@ public class ElectionDataExtractionService {
 	}
 
 	/**
-	 * Gets all the verification card set paths from the context dataset.
+	 * Gets all the verification card set id paths from the context dataset.
 	 *
 	 * @param inputDirectoryPath the dataset root directory.
-	 * @return all verification card set paths from the context.
+	 * @return all verification card set id paths from the context.
 	 */
-	public ImmutableList<Path> getContextVerificationCardSetPaths(final Path inputDirectoryPath) {
+	public ImmutableList<Path> getContextVerificationCardSetIdPaths(final Path inputDirectoryPath) {
 		return pathService.buildFromRootPath(StructureKey.CONTEXT_VERIFICATION_CARD_SET_ID_DIR, inputDirectoryPath).getRegexPaths();
 	}
 }

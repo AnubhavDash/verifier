@@ -32,13 +32,13 @@ import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
 
-@Component
-public class VerifySetupFileNamesConsistency extends AbstractVerification {
+@Component("verifySetupFileNameNodeIdsConsistency")
+public class VerifyFileNameNodeIdsConsistency extends AbstractVerification {
 
 	private final PathService pathService;
 	private final ElectionDataExtractionService electionDataExtractionService;
 
-	protected VerifySetupFileNamesConsistency(
+	protected VerifyFileNameNodeIdsConsistency(
 			final ResultPublisherService resultPublisherService,
 			final PathService pathService,
 			final ElectionDataExtractionService electionDataExtractionService) {
@@ -53,9 +53,9 @@ public class VerifySetupFileNamesConsistency extends AbstractVerification {
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification302.description"));
-		definition.setId("03.02");
-		definition.setName("VerifySetupFileNamesConsistency");
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification303.description"));
+		definition.setId("03.03");
+		definition.setName("VerifyFileNameNodeIdsConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
 	}
@@ -63,20 +63,20 @@ public class VerifySetupFileNamesConsistency extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final boolean fileNamesConsistent = verifyControlComponentPublicKeyFileNameConsistency(inputDirectoryPath);
-
-		if (fileNamesConsistent) {
+		if (verifyFileNameNodeIdsConsistency(inputDirectoryPath)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification302.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification303.nok.message"));
 		}
 	}
 
-	private boolean verifyControlComponentPublicKeyFileNameConsistency(final Path inputDirectoryPath) {
-		final PathNode controlComponentPublicKeyNodes = pathService.buildFromRootPath(StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS, inputDirectoryPath);
+	private boolean verifyFileNameNodeIdsConsistency(final Path inputDirectoryPath) {
+		// Input.
+		final PathNode onlineControlComponentPublicKeys = pathService.buildFromRootPath(StructureKey.CONTROL_COMPONENT_PUBLIC_KEYS, inputDirectoryPath);
 
-		return controlComponentPublicKeyNodes.getRegexPaths().stream()
+		// Operation.
+		return onlineControlComponentPublicKeys.getRegexPaths().stream()
 				.parallel()
 				.map(path -> {
 					final String fileName = path.getFileName().toString();

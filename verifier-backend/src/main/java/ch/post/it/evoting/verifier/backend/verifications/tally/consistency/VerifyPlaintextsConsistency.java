@@ -55,8 +55,8 @@ public class VerifyPlaintextsConsistency extends AbstractVerification {
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME,
-				"tally.verification803.description"));
-		definition.setId("08.03");
+				"tally.verification810.description"));
+		definition.setId("08.10");
 		definition.setName("VerifyPlaintextsConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;
@@ -64,27 +64,35 @@ public class VerifyPlaintextsConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
+
+		if (verifyPlaintextsConsistency(inputDirectoryPath)) {
+			return VerificationResult.success(getVerificationDefinition());
+		} else {
+			return VerificationResult.failure(getVerificationDefinition(),
+					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification810.nok.message"));
+		}
+	}
+
+	private boolean verifyPlaintextsConsistency(final Path inputDirectoryPath) {
+
+		// Input.
 		final ImmutableList<VerificationCardSetContext> verificationCardSetContexts = extractionService.getElectionEventContext(inputDirectoryPath)
 				.verificationCardSetContexts();
 		final ImmutableList<Plaintexts> plaintexts = verificationCardSetContexts.stream()
 				.parallel()
 				.map(vcsContext -> {
 					final String ballotBoxId = vcsContext.getBallotBoxId();
-					final int numberWriteInsPlusOne = primesMappingTableAlgorithms.getDelta(vcsContext.getPrimesMappingTable());
+
+					final int numberOfAllowedWriteInsPlusOne = primesMappingTableAlgorithms.getDelta(vcsContext.getPrimesMappingTable());
+
 					final TallyComponentShufflePayload tallyComponentShufflePayload = extractionService.getTallyComponentShufflePayload(
 							inputDirectoryPath, ballotBoxId);
-					return new Plaintexts(tallyComponentShufflePayload, numberWriteInsPlusOne);
+
+					return new Plaintexts(tallyComponentShufflePayload, numberOfAllowedWriteInsPlusOne);
 				})
 				.collect(toImmutableList());
-		if (plaintextsConsistent(plaintexts)) {
-			return VerificationResult.success(getVerificationDefinition());
-		} else {
-			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification803.nok.message"));
-		}
-	}
 
-	private boolean plaintextsConsistent(final ImmutableList<Plaintexts> plaintexts) {
+		// Operation.
 		return plaintexts.stream()
 				.parallel()
 				.map(information -> information.tallyComponentShufflePayload.getVerifiablePlaintextDecryption()

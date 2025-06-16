@@ -15,8 +15,6 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
-
 import java.nio.file.Path;
 
 import org.springframework.stereotype.Component;
@@ -53,8 +51,8 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification310.description"));
-		definition.setId("03.10");
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification305.description"));
+		definition.setId("03.05");
 		definition.setName("VerifyVerificationCardSetIdsConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
@@ -62,41 +60,32 @@ public class VerifyVerificationCardSetIdsConsistency extends AbstractVerificatio
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final boolean sameVerificationCardSetIds = extractVerificationCardSetIds(inputDirectoryPath).stream()
-				.parallel()
-				.map(payloadsVerificationCardSetIds ->
-						payloadsVerificationCardSetIds.verificationCardSetId()
-								.equals(payloadsVerificationCardSetIds.setupComponentTallyDataPayloadVerificationCardSetId()))
-				.reduce(Boolean::logicalAnd)
-				.orElse(Boolean.FALSE);
 
-		if (sameVerificationCardSetIds) {
+		if (verifyVerificationCardSetIdsConsistency(inputDirectoryPath)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification310.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification305.nok.message"));
 		}
 	}
 
-	private ImmutableList<PayloadsVerificationCardSetIds> extractVerificationCardSetIds(final Path inputDirectoryPath) {
+	private boolean verifyVerificationCardSetIdsConsistency(final Path inputDirectoryPath) {
+		// Input.
+		final ImmutableList<Path> verificationCardSetIdPaths = electionDataExtractionService.getContextVerificationCardSetIdPaths(inputDirectoryPath);
 
-		return electionDataExtractionService.getContextVerificationCardSetPaths(inputDirectoryPath).stream()
+		// Operation.
+		return verificationCardSetIdPaths.stream()
 				.parallel()
 				.map(verificationCardSetIdPath -> {
-
 					final String verificationCardSetId = verificationCardSetIdPath.getFileName().toString();
 
-					final String setupComponentTallyDataPayloadVerificationCardSetId = electionDataExtractionService.getSetupComponentTallyDataPayload(
+					final String setupComponentTallyDataVerificationCardSetId = electionDataExtractionService.getSetupComponentTallyDataPayload(
 							inputDirectoryPath, verificationCardSetId).getVerificationCardSetId();
 
-					return new PayloadsVerificationCardSetIds(verificationCardSetId, setupComponentTallyDataPayloadVerificationCardSetId);
-
+					return verificationCardSetId.equals(setupComponentTallyDataVerificationCardSetId);
 				})
-				.collect(toImmutableList());
+				.reduce(Boolean::logicalAnd)
+				.orElse(Boolean.FALSE);
 	}
-
-	private record PayloadsVerificationCardSetIds(String verificationCardSetId, String setupComponentTallyDataPayloadVerificationCardSetId) {
-	}
-
 }
 

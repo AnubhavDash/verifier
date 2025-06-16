@@ -23,8 +23,8 @@ import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalMultiRecipientPublicKey;
 import ch.post.it.evoting.cryptoprimitives.math.GqGroup;
 import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
+import ch.post.it.evoting.evotinglibraries.domain.configuration.ControlComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.domain.election.ControlComponentPublicKeys;
-import ch.post.it.evoting.evotinglibraries.domain.election.SetupComponentPublicKeys;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -56,8 +56,8 @@ public class VerifyChoiceReturnCodesPublicKeyConsistency extends AbstractVerific
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification306.description"));
-		definition.setId("03.06");
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification311.description"));
+		definition.setId("03.11");
 		definition.setName("VerifyChoiceReturnCodesPublicKeyConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
@@ -65,23 +65,32 @@ public class VerifyChoiceReturnCodesPublicKeyConsistency extends AbstractVerific
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final SetupComponentPublicKeys setupComponentPublicKeys = extractionService.getSetupComponentPublicKeysPayload(inputDirectoryPath)
-				.getSetupComponentPublicKeys();
 
-		final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> choiceReturnCodesPublicKeys = setupComponentPublicKeys.combinedControlComponentPublicKeys()
-				.stream()
-				.parallel()
-				.map(ControlComponentPublicKeys::ccrjChoiceReturnCodesEncryptionPublicKey)
-				.collect(GroupVector.toGroupVector());
-
-		final ElGamalMultiRecipientPublicKey combinedChoiceReturnCodesPublicKeys = elGamal.combinePublicKeys(choiceReturnCodesPublicKeys);
-
-		if (setupComponentPublicKeys.choiceReturnCodesEncryptionPublicKey().equals(combinedChoiceReturnCodesPublicKeys)) {
+		if (verifyChoiceReturnCodesPublicKeyConsistency(inputDirectoryPath)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification306.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification311.nok.message"));
 		}
+	}
+
+	@SuppressWarnings("java:S117")
+	private boolean verifyChoiceReturnCodesPublicKeyConsistency(final Path inputDirectoryPath) {
+
+		// Input.
+		final GroupVector<ElGamalMultiRecipientPublicKey, GqGroup> pk_CCR_j = extractionService.getControlComponentPublicKeysPayloads(inputDirectoryPath)
+				.parallel()
+				.map(ControlComponentPublicKeysPayload::getControlComponentPublicKeys)
+				.map(ControlComponentPublicKeys::ccrjChoiceReturnCodesEncryptionPublicKey)
+				.collect(GroupVector.toGroupVector());
+		final ElGamalMultiRecipientPublicKey pk_CCR = extractionService.getSetupComponentPublicKeysPayload(inputDirectoryPath)
+				.getSetupComponentPublicKeys()
+				.choiceReturnCodesEncryptionPublicKey();
+
+		// Operation.
+		final ElGamalMultiRecipientPublicKey combined_pk_CCR = elGamal.combinePublicKeys(pk_CCR_j);
+
+		return pk_CCR.equals(combined_pk_CCR);
 	}
 }
 

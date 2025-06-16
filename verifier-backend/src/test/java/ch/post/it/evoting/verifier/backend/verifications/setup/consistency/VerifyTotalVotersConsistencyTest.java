@@ -86,7 +86,7 @@ class VerifyTotalVotersConsistencyTest extends SetupVerificationTest {
 		final VerificationResult verificationResult = verificationNok.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verificationResult.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification313.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification314.nok.message"));
 
 		assertEquals(expectedResult, verificationResult);
 	}

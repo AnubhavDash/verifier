@@ -16,6 +16,7 @@
 package ch.post.it.evoting.verifier.backend.verifications.tally.evidence;
 
 import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap.toImmutableMap;
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet.toImmutableSet;
 import static ch.post.it.evoting.cryptoprimitives.utils.Validations.allEqual;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -41,6 +42,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration
  *     <li>(L<sub>votes</sub>, L<sub>decodedVotes</sub>, L<sub>writeIns</sub>), the Tally Control Component Votes for all bb<sub>i</sub>. Not null.</li>
  *     <li>Election Event Configuration, the configuration-anonymized as {@link Configuration}. Not null.</li>
  *     <li>Tally Control Component Detailed Results, the eCH-0222 as {@link Delivery}. Not null.</li>
+ *     <li>Map<sub>decodedVotes</sub>, the key-value map of L<sub>decodedVotes</sub> per authorization name. Not null.</li>
  *     <li>Map<sub>writeIns</sub>, the key-value map of L<sub>writeIns</sub> per authorization name. Not null.</li>
  * </ul>
  */
@@ -71,7 +73,10 @@ public class VerifyTallyControlComponentInput {
 		checkArgument(allEqual(Stream.of(
 								lastOnlineControlComponentShufflesPerBallotBoxId.keySet(),
 								tallyControlComponentShufflesPerBallotBoxId.keySet(),
-								tallyControlComponentVotesPerBallotBoxId.keySet()),
+								tallyControlComponentVotesPerBallotBoxId.keySet(),
+								tallyControlComponentVotesPerAuthorizationName.values().stream()
+										.map(TallyComponentVotesPayload::getBallotBoxId)
+										.collect(toImmutableSet())),
 						Function.identity()),
 				"The last control component shuffles, the tally component shuffles and the tally component votes must correspond to the same ballot box ids.");
 		checkArgument(!lastOnlineControlComponentShufflesPerBallotBoxId.isEmpty(),
@@ -80,9 +85,9 @@ public class VerifyTallyControlComponentInput {
 						Stream.of(
 										lastOnlineControlComponentShufflesPerBallotBoxId.values().stream().map(ControlComponentShufflePayload::getElectionEventId),
 										tallyControlComponentShufflesPerBallotBoxId.values().stream().map(TallyComponentShufflePayload::getElectionEventId),
-										tallyControlComponentVotesPerBallotBoxId.values().stream().map(TallyComponentVotesPayload::getElectionEventId))
-								.flatMap(Function.identity())
-						,
+										tallyControlComponentVotesPerBallotBoxId.values().stream().map(TallyComponentVotesPayload::getElectionEventId),
+										tallyControlComponentVotesPerAuthorizationName.values().stream().map(TallyComponentVotesPayload::getElectionEventId))
+								.flatMap(Function.identity()),
 						Function.identity()),
 				"The last control component shuffles, tally component shuffles and tally component votes must correspond to the same election event id.");
 

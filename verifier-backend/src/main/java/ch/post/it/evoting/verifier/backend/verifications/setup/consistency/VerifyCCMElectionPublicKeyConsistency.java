@@ -52,8 +52,8 @@ public class VerifyCCMElectionPublicKeyConsistency extends AbstractVerification 
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification304.description"));
-		definition.setId("03.04");
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification309.description"));
+		definition.setId("03.09");
 		definition.setName("VerifyCCMElectionPublicKeyConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
@@ -61,26 +61,32 @@ public class VerifyCCMElectionPublicKeyConsistency extends AbstractVerification 
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final ImmutableMap<Integer, ElGamalMultiRecipientPublicKey> electionEventContextPublicKeys = extractionService.getSetupComponentPublicKeysPayload(
+
+		if (verifyCCMElectionPublicKeyConsistency(inputDirectoryPath)) {
+			return VerificationResult.success(getVerificationDefinition());
+		} else {
+			return VerificationResult.failure(getVerificationDefinition(),
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification309.nok.message"));
+		}
+	}
+
+	private boolean verifyCCMElectionPublicKeyConsistency(final Path inputDirectoryPath) {
+
+		// Input.
+		final ImmutableMap<Integer, ElGamalMultiRecipientPublicKey> setupComponentCCMElectionPublicKeys = extractionService.getSetupComponentPublicKeysPayload(
 						inputDirectoryPath)
 				.getSetupComponentPublicKeys()
 				.combinedControlComponentPublicKeys()
 				.stream()
 				.collect(toImmutableMap(ControlComponentPublicKeys::nodeId, ControlComponentPublicKeys::ccmjElectionPublicKey));
 
-		final boolean sameCCMElectionPublicKeys = extractionService.getControlComponentPublicKeysPayloads(inputDirectoryPath)
+		// Operation.
+		return extractionService.getControlComponentPublicKeysPayloads(inputDirectoryPath)
 				.parallel()
 				.map(ControlComponentPublicKeysPayload::getControlComponentPublicKeys)
-				.map(controlComponentPublicKeys -> electionEventContextPublicKeys.get(controlComponentPublicKeys.nodeId())
+				.map(controlComponentPublicKeys -> setupComponentCCMElectionPublicKeys.get(controlComponentPublicKeys.nodeId())
 						.equals(controlComponentPublicKeys.ccmjElectionPublicKey()))
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
-
-		if (sameCCMElectionPublicKeys) {
-			return VerificationResult.success(getVerificationDefinition());
-		} else {
-			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification304.nok.message"));
-		}
 	}
 }

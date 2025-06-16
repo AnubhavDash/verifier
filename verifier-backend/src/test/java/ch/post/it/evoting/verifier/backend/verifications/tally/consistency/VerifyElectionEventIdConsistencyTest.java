@@ -62,13 +62,13 @@ class VerifyElectionEventIdConsistencyTest extends TallyVerificationTest {
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
 		doReturn(electionEventContextPayloadMock).when(electionDataExtractionServiceSpy).getElectionEventContextPayload(any());
 
-		final VerifyElectionEventIdConsistency verifyElectionEventIdConsistency$ =
+		final VerifyElectionEventIdConsistency verifyElectionEventIdConsistency =
 				new VerifyElectionEventIdConsistency(resultPublisherServiceMock, electionDataExtractionServiceSpy);
 
-		final VerificationResult result = verifyElectionEventIdConsistency$.verify(datasetPath);
+		final VerificationResult result = verifyElectionEventIdConsistency.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification808.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification804.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 

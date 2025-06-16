@@ -15,41 +15,36 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Path;
-import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
-import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
-import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.event.TallyEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
+import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
 import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 
-@Component
+@Component("verifyTallyFileNameNodeIdsConsistency")
 public class VerifyFileNameNodeIdsConsistency extends AbstractVerification {
 
 	private final PathService pathService;
-	private final ObjectMapper objectMapper;
+	private final ElectionDataExtractionService electionDataExtractionService;
 
-	protected VerifyFileNameNodeIdsConsistency(final ResultPublisherService resultPublisherService, final PathService pathService,
-			final ObjectMapper objectMapper) {
+	protected VerifyFileNameNodeIdsConsistency(
+			final ResultPublisherService resultPublisherService,
+			final PathService pathService,
+			final ElectionDataExtractionService electionDataExtractionService) {
 		super(resultPublisherService);
 		this.pathService = pathService;
-		this.objectMapper = objectMapper;
+		this.electionDataExtractionService = electionDataExtractionService;
 	}
 
 	@Override
@@ -58,8 +53,8 @@ public class VerifyFileNameNodeIdsConsistency extends AbstractVerification {
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification810.description"));
-		definition.setId("08.10");
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification803.description"));
+		definition.setId("08.03");
 		definition.setName("VerifyFileNameNodeIdsConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;
@@ -68,89 +63,59 @@ public class VerifyFileNameNodeIdsConsistency extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final ImmutableList<Function<Path, Boolean>> validations = ImmutableList.of(
-				this::verifyControlComponentBallotBoxFileNamesConsistency,
-				this::verifyControlComponentShuffleFileNamesConsistency
-		);
-
-		final boolean fileNamesConsistent = validations
-				.stream()
-				.parallel()
-				.map(f -> f.apply(inputDirectoryPath))
-				.reduce(Boolean::logicalAnd)
-				.orElse(Boolean.FALSE);
-
-		if (fileNamesConsistent) {
+		if (verifyFileNameNodeIdsConsistency(inputDirectoryPath)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification810.nok.message"));
+					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification803.nok.message"));
 		}
 	}
 
-	private boolean verifyControlComponentBallotBoxFileNamesConsistency(final Path inputDirectoryPath) {
+	private boolean verifyFileNameNodeIdsConsistency(final Path inputDirectoryPath) {
+		// Input.
 		final PathNode ballotBoxes = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 
+		// Operation.
 		return ballotBoxes.getRegexPaths().stream()
 				.parallel()
-				.map(ballotBoxPath -> {
-					final PathNode controlComponentBallotBoxNode = pathService.buildFromDynamicAncestorPath(
-							StructureKey.CONTROL_COMPONENT_BALLOT_BOX, ballotBoxPath);
+				.map(ballotBoxPath -> validateControlComponentBallotBox(ballotBoxPath) && validateControlComponentShuffle(ballotBoxPath))
+				.reduce(Boolean::logicalAnd)
+				.orElse(Boolean.FALSE);
+	}
 
-					return controlComponentBallotBoxNode.getRegexPaths().stream()
-							.parallel()
-							.map(path -> {
-								final String fileName = path.getFileName().toString();
-								final String nodeIdGroup = pathService.getRegexGroup(StructureKey.CONTROL_COMPONENT_BALLOT_BOX, fileName, 1);
-								final int fileNodeId = Integer.parseInt(nodeIdGroup);
+	private boolean validateControlComponentBallotBox(final Path ballotBoxPath) {
+		final PathNode controlComponentBallotBox = pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_BALLOT_BOX,
+				ballotBoxPath);
 
-								final ControlComponentBallotBoxPayload controlComponentBallotBoxPayload;
-								try {
-									controlComponentBallotBoxPayload = objectMapper.readValue(path.toFile(), ControlComponentBallotBoxPayload.class);
-								} catch (final IOException e) {
-									final String errorMessage = String.format("Could not deserialize payload from file. [file name: %s]", fileName);
-									throw new UncheckedIOException(errorMessage, e);
-								}
-								final int payloadNodeId = controlComponentBallotBoxPayload.getNodeId();
+		return controlComponentBallotBox.getRegexPaths().stream()
+				.parallel()
+				.map(path -> {
+					final String fileName = path.getFileName().toString();
+					final String nodeIdGroup = pathService.getRegexGroup(StructureKey.CONTROL_COMPONENT_BALLOT_BOX, fileName, 1);
+					final int fileNodeId = Integer.parseInt(nodeIdGroup);
 
-								return fileNodeId == payloadNodeId;
-							})
-							.reduce(Boolean::logicalAnd)
-							.orElse(Boolean.FALSE);
+					final int payloadNodeId = electionDataExtractionService.getControlComponentBallotBoxPayload(path).getNodeId();
+
+					return fileNodeId == payloadNodeId;
 				})
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 	}
 
-	private boolean verifyControlComponentShuffleFileNamesConsistency(final Path inputDirectoryPath) {
-		final PathNode ballotBoxes = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
+	private boolean validateControlComponentShuffle(final Path ballotBoxPath) {
+		final PathNode onlineControlComponentShuffle = pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_SHUFFLE,
+				ballotBoxPath);
 
-		return ballotBoxes.getRegexPaths().stream()
+		return onlineControlComponentShuffle.getRegexPaths().stream()
 				.parallel()
-				.map(ballotBoxPath -> {
-					final PathNode controlComponentShuffleNode = pathService.buildFromDynamicAncestorPath(StructureKey.CONTROL_COMPONENT_SHUFFLE,
-							ballotBoxPath);
+				.map(path -> {
+					final String fileName = path.getFileName().toString();
+					final String nodeIdGroup = pathService.getRegexGroup(StructureKey.CONTROL_COMPONENT_SHUFFLE, fileName, 1);
+					final int fileNodeId = Integer.parseInt(nodeIdGroup);
 
-					return controlComponentShuffleNode.getRegexPaths().stream()
-							.parallel()
-							.map(path -> {
-								final String fileName = path.getFileName().toString();
-								final String nodeIdGroup = pathService.getRegexGroup(StructureKey.CONTROL_COMPONENT_SHUFFLE, fileName, 1);
-								final int fileNodeId = Integer.parseInt(nodeIdGroup);
+					final int payloadNodeId = electionDataExtractionService.getControlComponentShufflePayload(path).getNodeId();
 
-								final ControlComponentShufflePayload controlComponentShufflePayload;
-								try {
-									controlComponentShufflePayload = objectMapper.readValue(path.toFile(), ControlComponentShufflePayload.class);
-								} catch (final IOException e) {
-									final String errorMessage = String.format("Could not deserialize payload from file. [file name: %s]", fileName);
-									throw new UncheckedIOException(errorMessage, e);
-								}
-								final int payloadNodeId = controlComponentShufflePayload.getNodeId();
-
-								return fileNodeId == payloadNodeId;
-							})
-							.reduce(Boolean::logicalAnd)
-							.orElse(Boolean.FALSE);
+					return fileNodeId == payloadNodeId;
 				})
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
