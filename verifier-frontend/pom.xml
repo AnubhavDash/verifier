@@ -20,15 +20,15 @@
   <parent>
     <artifactId>verifier</artifactId>
     <groupId>ch.post.it.evoting.verifier</groupId>
-    <version>1.6.0.0-RC9</version>
+    <version>1.6.0.0-RC10</version>
   </parent>
 
   <artifactId>verifier-frontend</artifactId>
   <packaging>pom</packaging>
 
   <properties>
-    <exec-maven-plugin.version>3.5.0</exec-maven-plugin.version>
-    <maven-clean-plugin.version>3.4.1</maven-clean-plugin.version>
+    <exec-maven-plugin.version>3.5.1</exec-maven-plugin.version>
+    <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
     <skipTests>false</skipTests>
     <sonar.sources>src</sonar.sources>
     <sonar.tests>src</sonar.tests>

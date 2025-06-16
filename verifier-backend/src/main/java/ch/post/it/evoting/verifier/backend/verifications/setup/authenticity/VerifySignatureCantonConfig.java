@@ -24,7 +24,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
-import java.security.PublicKey;
 
 import org.springframework.stereotype.Component;
 
@@ -77,7 +76,7 @@ public class VerifySignatureCantonConfig extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 		final Path cantonConfigPath = electionDataExtractionService.getCantonConfigPath(inputDirectoryPath);
-		final boolean verified = verifySignature(cantonConfigPath);
+		final boolean verified = verifySignatureCantonConfig(cantonConfigPath);
 
 		if (verified) {
 			return VerificationResult.success(getVerificationDefinition());
@@ -90,13 +89,13 @@ public class VerifySignatureCantonConfig extends AbstractVerification {
 	}
 
 	@VisibleForTesting
-	boolean verifySignature(final Path configurationPath) {
-		checkNotNull(configurationPath);
+	boolean verifySignatureCantonConfig(final Path signedConfigurationXml) {
 
-		final PublicKey signatureVerificationKey;
-		try (final InputStream configurationIn = Files.newInputStream(configurationPath)) {
-			signatureVerificationKey = keyStore.getCertificate(Alias.CANTON.get()).getPublicKey();
-			return xmlSignatureService.verifyXMLSignature(configurationIn, signatureVerificationKey);
+		// Operation.
+		try (final InputStream signedConfigurationXmlStream = Files.newInputStream(checkNotNull(signedConfigurationXml))) {
+
+			return xmlSignatureService.verifyXMLSignature(signedConfigurationXmlStream, keyStore.getCertificate(Alias.CANTON.get()).getPublicKey());
+
 		} catch (final KeyStoreException e) {
 			throw new IllegalStateException("Unable to open keystore", e);
 		} catch (final IOException e) {

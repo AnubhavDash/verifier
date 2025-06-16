@@ -78,7 +78,7 @@ class VerifyConfirmedEncryptedVotesConsistencyTest extends TallyVerificationTest
 		final VerificationResult verificationResult = verificationWithMock.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(), getFromResourceBundle(
-				TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification801.nok.message"));
+				TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification808.nok.message"));
 		assertEquals(expectedResult, verificationResult);
 	}
 }

@@ -15,6 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.consistency;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
@@ -22,6 +23,7 @@ import java.nio.file.Path;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
@@ -51,8 +53,8 @@ public class VerifyTotalVotersConsistency extends AbstractVerification {
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification313.description"));
-		definition.setId("03.13");
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification314.description"));
+		definition.setId("03.14");
 		definition.setName("VerifyTotalVotersConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
@@ -60,16 +62,30 @@ public class VerifyTotalVotersConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final Configuration configuration = extractionService.getCantonConfig(inputDirectoryPath);
+		final Configuration electionEventConfiguration = extractionService.getCantonConfig(inputDirectoryPath);
+		final ElectionEventContext electionEventContext = extractionService.getElectionEventContext(inputDirectoryPath);
 
-		final int voterTotal = configuration.getHeader().getVoterTotal();
-		final int voterCount = configuration.getRegister().getVoter().size();
+		final boolean result = verifyTotalVotersConsistency(electionEventConfiguration, electionEventContext);
+
+		if (result) {
+			return VerificationResult.success(getVerificationDefinition());
+		} else {
+			return VerificationResult.failure(getVerificationDefinition(),
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification314.nok.message"));
+		}
+	}
+
+	private boolean verifyTotalVotersConsistency(final Configuration electionEventConfiguration, final ElectionEventContext electionEventContext) {
+
+		// Operation.
+		final int voterTotal = checkNotNull(electionEventConfiguration).getHeader().getVoterTotal();
+		final int voterCount = checkNotNull(electionEventConfiguration).getRegister().getVoter().size();
+
 		checkState(voterTotal == voterCount,
 				"The voter total in the header must be the same as the size of the voter list. [voterTotal: %s, voterCount: %s]", voterTotal,
 				voterCount);
 
-		final ImmutableList<VerificationCardSetContext> verificationCardSetContexts = extractionService.getElectionEventContext(inputDirectoryPath)
-				.verificationCardSetContexts();
+		final ImmutableList<VerificationCardSetContext> verificationCardSetContexts = electionEventContext.verificationCardSetContexts();
 
 		final int totalNumberOfEligibleVoters = verificationCardSetContexts.stream()
 				.parallel()
@@ -81,11 +97,6 @@ public class VerifyTotalVotersConsistency extends AbstractVerification {
 				})
 				.reduce(0, Math::addExact);
 
-		if (voterCount == totalNumberOfEligibleVoters) {
-			return VerificationResult.success(getVerificationDefinition());
-		} else {
-			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification313.nok.message"));
-		}
+		return voterCount == totalNumberOfEligibleVoters;
 	}
 }

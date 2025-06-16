@@ -21,6 +21,7 @@ import java.nio.file.Path;
 
 import org.springframework.stereotype.Component;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
@@ -56,8 +57,8 @@ public class VerifyFileNameVerificationCardSetIdsConsistency extends AbstractVer
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification311.description"));
-		definition.setId("03.11");
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification306.description"));
+		definition.setId("03.06");
 		definition.setName("VerifyFileNameVerificationCardSetIdsConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
@@ -65,30 +66,31 @@ public class VerifyFileNameVerificationCardSetIdsConsistency extends AbstractVer
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final ImmutableSet<String> contextVerificationCardSetIds = electionDataExtractionService.getContextVerificationCardSetPaths(
-						inputDirectoryPath)
-				.stream()
+
+		if (verifyFileNameVerificationCardSetIdsConsistency(inputDirectoryPath)) {
+			return VerificationResult.success(getVerificationDefinition());
+		} else {
+			return VerificationResult.failure(getVerificationDefinition(),
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification306.nok.message"));
+		}
+	}
+
+	private boolean verifyFileNameVerificationCardSetIdsConsistency(final Path inputDirectoryPath) {
+		// Input.
+		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContext(inputDirectoryPath);
+		final ImmutableList<Path> verificationCardSetIdPaths = electionDataExtractionService.getContextVerificationCardSetIdPaths(inputDirectoryPath);
+
+		// Operation.
+		final ImmutableSet<String> contextVerificationCardSetIds = verificationCardSetIdPaths.stream()
 				.map(Path::getFileName)
 				.map(Path::toString)
 				.collect(toImmutableSet());
-
-		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContext(inputDirectoryPath);
-		final ImmutableSet<String> payloadVerificationCardSetIds = electionEventContext.verificationCardSetContexts().stream()
+		final ImmutableSet<String> electionEventContextVerificationCardSetIds = electionEventContext.verificationCardSetContexts().stream()
 				.map(VerificationCardSetContext::getVerificationCardSetId)
 				.collect(toImmutableSet());
 
-		// Verifying set equality is sufficient since the payload ensures that there are no duplicate verification card set IDs.
-		final boolean sameVerificationCardSetIds = contextVerificationCardSetIds.equals(payloadVerificationCardSetIds);
-
-		final VerificationResult verificationResult;
-		if (sameVerificationCardSetIds) {
-			verificationResult = VerificationResult.success(getVerificationDefinition());
-		} else {
-			verificationResult = VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification311.nok.message"));
-		}
-
-		return verificationResult;
+		// Verifying set equality is sufficient since the ElectionEventContext constructor ensures that there are no duplicate verification card set IDs.
+		return contextVerificationCardSetIds.equals(electionEventContextVerificationCardSetIds);
 	}
 
 }

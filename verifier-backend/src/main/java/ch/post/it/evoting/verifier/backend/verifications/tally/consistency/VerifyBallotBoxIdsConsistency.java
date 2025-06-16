@@ -15,7 +15,6 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
-import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet.toImmutableSet;
 
 import java.nio.file.Path;
@@ -25,9 +24,7 @@ import org.springframework.stereotype.Component;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
-import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
-import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -36,7 +33,6 @@ import ch.post.it.evoting.verifier.backend.event.TallyEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationSuite;
@@ -70,16 +66,8 @@ public class VerifyBallotBoxIdsConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final boolean sameBallotBoxIds = extractBallotBoxIds(inputDirectoryPath).stream()
-				.parallel()
-				.map(payloadsBallotBoxIds -> payloadsBallotBoxIds.ballotBoxId().equals(payloadsBallotBoxIds.ccBallotBoxIds())
-						&& payloadsBallotBoxIds.ballotBoxId().equals(payloadsBallotBoxIds.ccShuffleIds())
-						&& payloadsBallotBoxIds.ballotBoxId().equals(payloadsBallotBoxIds.tcShuffleId())
-						&& payloadsBallotBoxIds.ballotBoxId().equals(payloadsBallotBoxIds.tcVotesId()))
-				.reduce(Boolean::logicalAnd)
-				.orElse(Boolean.FALSE);
 
-		if (sameBallotBoxIds) {
+		if (verifyBallotBoxIdsConsistency(inputDirectoryPath)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
@@ -87,38 +75,42 @@ public class VerifyBallotBoxIdsConsistency extends AbstractVerification {
 		}
 	}
 
-	private ImmutableList<PayloadsBallotBoxIds> extractBallotBoxIds(final Path inputDirectoryPath) {
-		final PathNode ballotBoxIds = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
-		return ballotBoxIds.getRegexPaths().stream()
+	private boolean verifyBallotBoxIdsConsistency(final Path inputDirectoryPath) {
+		// Input.
+		final ImmutableList<Path> ballotBoxIdPaths = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath)
+				.getRegexPaths();
+
+		// Operation.
+		return ballotBoxIdPaths.stream()
 				.parallel()
 				.map(ballotBoxIdPath -> {
-					final String bb = ballotBoxIdPath.getFileName().toString();
-					final ImmutableSet<String> ballotBoxId = ImmutableSet.of(bb);
+					final String ballotBoxId = ballotBoxIdPath.getFileName().toString();
 
 					final ImmutableSet<String> controlComponentBallotBoxIds = extractionService.getControlComponentBallotBoxPayloadsOrderedByNodeId(
-									inputDirectoryPath, bb)
+									inputDirectoryPath, ballotBoxId)
 							.map(ControlComponentBallotBoxPayload::getBallotBoxId)
 							.collect(toImmutableSet());
 
-					final ImmutableSet<String> controlComponentShuffleIds = extractionService.getControlComponentShufflePayloadsOrderedByNodeId(
-									inputDirectoryPath, bb)
+					final ImmutableSet<String> onlineControlComponentShuffleIds = extractionService.getControlComponentShufflePayloadsOrderedByNodeId(
+									inputDirectoryPath, ballotBoxId)
 							.map(ControlComponentShufflePayload::getBallotBoxId)
 							.collect(toImmutableSet());
 
-					final TallyComponentShufflePayload tallyComponentShufflePayload = extractionService.getTallyComponentShufflePayload(
-							inputDirectoryPath, bb);
-					final ImmutableSet<String> tallyComponentShufflePayloadId = ImmutableSet.of(tallyComponentShufflePayload.getBallotBoxId());
+					final ImmutableSet<String> tallyControlComponentShuffleBallotBoxIds = ImmutableSet.of(
+							extractionService.getTallyComponentShufflePayload(inputDirectoryPath, ballotBoxId).getBallotBoxId());
 
-					final TallyComponentVotesPayload tallyComponentVotesPayload = extractionService.getTallyComponentVotesPayload(ballotBoxIdPath);
-					final ImmutableSet<String> tallyComponentVotesPayloadId = ImmutableSet.of(tallyComponentVotesPayload.getBallotBoxId());
+					final ImmutableSet<String> tallyControlComponentVotesBallotBoxIds = ImmutableSet.of(
+							extractionService.getTallyComponentVotesPayload(ballotBoxIdPath).getBallotBoxId());
 
-					return new PayloadsBallotBoxIds(ballotBoxId, controlComponentBallotBoxIds, controlComponentShuffleIds,
-							tallyComponentShufflePayloadId, tallyComponentVotesPayloadId);
+					final boolean isConsistentAcrossFiles = controlComponentBallotBoxIds.equals(onlineControlComponentShuffleIds) &&
+							controlComponentBallotBoxIds.equals(tallyControlComponentShuffleBallotBoxIds) &&
+							controlComponentBallotBoxIds.equals(tallyControlComponentVotesBallotBoxIds);
+
+					final boolean matchesPathName = ImmutableSet.of(ballotBoxId).equals(controlComponentBallotBoxIds);
+
+					return isConsistentAcrossFiles && matchesPathName;
 				})
-				.collect(toImmutableList());
-	}
-
-	private record PayloadsBallotBoxIds(ImmutableSet<String> ballotBoxId, ImmutableSet<String> ccBallotBoxIds, ImmutableSet<String> ccShuffleIds,
-										ImmutableSet<String> tcShuffleId, ImmutableSet<String> tcVotesId) {
+				.reduce(Boolean::logicalAnd)
+				.orElse(Boolean.FALSE);
 	}
 }

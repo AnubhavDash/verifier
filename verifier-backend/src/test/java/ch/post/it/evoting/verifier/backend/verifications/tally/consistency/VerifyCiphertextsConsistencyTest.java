@@ -61,7 +61,7 @@ class VerifyCiphertextsConsistencyTest extends TallyVerificationTest {
 		final VerificationResult verificationResult = verificationWithMock.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification802.nok.message"));
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification809.nok.message"));
 		assertEquals(expectedResult, verificationResult);
 	}
 }

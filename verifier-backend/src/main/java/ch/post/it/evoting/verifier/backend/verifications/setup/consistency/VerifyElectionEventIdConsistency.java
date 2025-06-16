@@ -55,8 +55,8 @@ public class VerifyElectionEventIdConsistency extends AbstractVerification {
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification309.description"));
-		definition.setId("03.09");
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification304.description"));
+		definition.setId("03.04");
 		definition.setName("VerifyElectionEventIdConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
@@ -65,39 +65,43 @@ public class VerifyElectionEventIdConsistency extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final String electionEventId = electionDataExtractionService.getElectionEventContext(inputDirectoryPath)
-				.electionEventId();
-
-		final ImmutableList<BiFunction<Path, String, Boolean>> validations = ImmutableList.of(
-				this::validateSetupComponentTallyDataPayload,
-				this::validateControlComponentPublicKeysPayload);
-
-		final boolean sameElectionEventId = validations.stream()
-				.parallel()
-				.map(f -> f.apply(inputDirectoryPath, electionEventId))
-				.reduce(Boolean::logicalAnd)
-				.orElse(Boolean.FALSE);
-
-		if (sameElectionEventId) {
+		if (verifyElectionEventIdConsistency(inputDirectoryPath)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification309.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification304.nok.message"));
 		}
 	}
 
-	private boolean validateSetupComponentTallyDataPayload(final Path inputDirectoryPath, final String electionEventId) {
-		return electionDataExtractionService.getSetupComponentTallyDataPayloads(inputDirectoryPath)
-				.map(SetupComponentTallyDataPayload::getElectionEventId)
-				.distinct()
-				.allMatch(electionEventId::equals);
+	private boolean verifyElectionEventIdConsistency(final Path inputDirectoryPath) {
+		// Input.
+		final String electionEventContextElectionEventId = electionDataExtractionService.getElectionEventContext(inputDirectoryPath)
+				.electionEventId();
+
+		// Operation.
+		final ImmutableList<BiFunction<Path, String, Boolean>> validations = ImmutableList.of(
+				this::validateControlComponentPublicKeys,
+				this::validateSetupComponentTallyData);
+
+		return validations.stream()
+				.parallel()
+				.map(f -> f.apply(inputDirectoryPath, electionEventContextElectionEventId))
+				.reduce(Boolean::logicalAnd)
+				.orElse(Boolean.FALSE);
 	}
 
-	private boolean validateControlComponentPublicKeysPayload(final Path inputDirectoryPath, final String electionEventId) {
+	private boolean validateControlComponentPublicKeys(final Path inputDirectoryPath, final String electionEventContextElectionEventId) {
 		return electionDataExtractionService.getControlComponentPublicKeysPayloads(inputDirectoryPath)
 				.map(ControlComponentPublicKeysPayload::getElectionEventId)
 				.distinct()
-				.allMatch(electionEventId::equals);
+				.allMatch(electionEventContextElectionEventId::equals);
+	}
+
+	private boolean validateSetupComponentTallyData(final Path inputDirectoryPath, final String electionEventContextElectionEventId) {
+		return electionDataExtractionService.getSetupComponentTallyDataPayloads(inputDirectoryPath)
+				.map(SetupComponentTallyDataPayload::getElectionEventId)
+				.distinct()
+				.allMatch(electionEventContextElectionEventId::equals);
 	}
 }
 

@@ -130,7 +130,7 @@ class VerifyTallyControlComponentTest extends TallyVerificationTest {
 	@Test
 	void verifyECH0222Nok() {
 		final VerifyECH0222Algorithm algorithmMock = mock(VerifyECH0222Algorithm.class);
-		when(algorithmMock.verifyECH0222(any(), any())).thenReturn(false);
+		when(algorithmMock.verifyECH0222(any())).thenReturn(false);
 		final VerifyTallyControlComponentAlgorithm verifyTallyControlComponentAlgorithm = new VerifyTallyControlComponentAlgorithm(
 				VERIFY_TALLY_CONTROL_COMPONENT_BALLOT_BOX_ALGORITHM, algorithmMock);
 		final VerifyTallyControlComponent verificationWithMock = new VerifyTallyControlComponent(electionDataExtractionService,

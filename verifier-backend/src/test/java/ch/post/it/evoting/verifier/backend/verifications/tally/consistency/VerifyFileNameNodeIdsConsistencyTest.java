@@ -18,17 +18,11 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
@@ -42,7 +36,7 @@ class VerifyFileNameNodeIdsConsistencyTest extends TallyVerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyFileNameNodeIdsConsistency(resultPublisherServiceMock, pathService, objectMapper);
+		verification = new VerifyFileNameNodeIdsConsistency(resultPublisherServiceMock, pathService, electionDataExtractionService);
 	}
 
 	@Test
@@ -54,36 +48,34 @@ class VerifyFileNameNodeIdsConsistencyTest extends TallyVerificationTest {
 	}
 
 	@Test
-	void verifyNokBallotBoxPayloadNodeId() throws IOException {
-		final ObjectMapper objectMapperMock = spy(objectMapper);
+	void verifyNokBallotBoxPayloadNodeId() {
+		final ElectionDataExtractionService electionDataExtractionServiceMock = spy(electionDataExtractionService);
 		final ControlComponentBallotBoxPayload firstBallotBoxPayload = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
 				datasetPath).collect(toImmutableList()).get(0);
-		doReturn(firstBallotBoxPayload).when(objectMapperMock).readValue(any(File.class), eq(ControlComponentBallotBoxPayload.class));
+		doReturn(firstBallotBoxPayload).when(electionDataExtractionServiceMock).getControlComponentBallotBoxPayload(any());
 
 		final VerifyFileNameNodeIdsConsistency failingVerification = new VerifyFileNameNodeIdsConsistency(resultPublisherServiceMock,
-				pathService, objectMapperMock);
+				pathService, electionDataExtractionServiceMock);
 		final VerificationResult verificationResult = failingVerification.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification810.nok.message"));
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification803.nok.message"));
 		assertEquals(expectedResult, verificationResult);
 	}
 
 	@Test
-	void verifyNokShufflePayloadNodeId() throws IOException {
-		final ObjectMapper objectMapperMock = spy(objectMapper);
-		final ElectionDataExtractionService extractionService = new ElectionDataExtractionService(pathService, objectMapperMock,
-				ech0222XmlFileRepository, configurationXmlFileRepository);
-		final ControlComponentShufflePayload firstShufflePayload = extractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
+	void verifyNokShufflePayloadNodeId() {
+		final ElectionDataExtractionService electionDataExtractionServiceMock = spy(electionDataExtractionService);
+		final ControlComponentShufflePayload firstShufflePayload = electionDataExtractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
 				datasetPath).findFirst().orElseThrow();
-		doReturn(firstShufflePayload).when(objectMapperMock).readValue(any(File.class), eq(ControlComponentShufflePayload.class));
+		doReturn(firstShufflePayload).when(electionDataExtractionServiceMock).getControlComponentShufflePayload(any());
 
 		final VerifyFileNameNodeIdsConsistency failingVerification = new VerifyFileNameNodeIdsConsistency(resultPublisherServiceMock,
-				pathService, objectMapperMock);
+				pathService, electionDataExtractionServiceMock);
 		final VerificationResult verificationResult = failingVerification.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification810.nok.message"));
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification803.nok.message"));
 		assertEquals(expectedResult, verificationResult);
 	}
 }

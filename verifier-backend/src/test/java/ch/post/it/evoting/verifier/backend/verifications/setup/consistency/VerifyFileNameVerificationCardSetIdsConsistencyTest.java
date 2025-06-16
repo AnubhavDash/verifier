@@ -53,7 +53,7 @@ class VerifyFileNameVerificationCardSetIdsConsistencyTest extends SetupVerificat
 	@DisplayName("inconsistent verification card set ids in context dataset fails")
 	void inconsistentVerificationCardSetIdsContextDataset() {
 		final ElectionDataExtractionService electionDataExtractionServiceSpy = spy(electionDataExtractionService);
-		when(electionDataExtractionServiceSpy.getContextVerificationCardSetPaths(datasetPath)).thenReturn(
+		when(electionDataExtractionServiceSpy.getContextVerificationCardSetIdPaths(datasetPath)).thenReturn(
 				ImmutableList.of(Path.of("11111111111111111111111111111111")));
 
 		final VerifyFileNameVerificationCardSetIdsConsistency verifyFileNameVerificationCardSetIdsConsistency = new VerifyFileNameVerificationCardSetIdsConsistency(
@@ -62,7 +62,7 @@ class VerifyFileNameVerificationCardSetIdsConsistencyTest extends SetupVerificat
 		final VerificationResult result = verifyFileNameVerificationCardSetIdsConsistency.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification311.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification306.nok.message"));
 		assertEquals(expectedResult, result);
 	}
 

@@ -15,7 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.authenticity;
 
-import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.nio.file.Path;
 import java.security.SignatureException;
@@ -24,11 +24,10 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
 
-import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
-import ch.post.it.evoting.evotinglibraries.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.evotinglibraries.domain.tally.ControlComponentBallotBoxPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
@@ -76,7 +75,7 @@ public class VerifySignatureControlComponentBallotBox extends AbstractVerificati
 
 		final boolean verified = electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(inputDirectoryPath)
 				.parallel()
-				.map(this::verifySignature)
+				.map(this::verifySignatureControlComponentBallotBox)
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 
@@ -91,25 +90,28 @@ public class VerifySignatureControlComponentBallotBox extends AbstractVerificati
 	}
 
 	@VisibleForTesting
-	boolean verifySignature(final ControlComponentBallotBoxPayload controlComponentBallotBoxPayload) {
-		final int nodeId = controlComponentBallotBoxPayload.getNodeId();
-		final String electionEventId = controlComponentBallotBoxPayload.getElectionEventId();
-		final String ballotBoxId = controlComponentBallotBoxPayload.getBallotBoxId();
-		final CryptoPrimitivesSignature signature = controlComponentBallotBoxPayload.getSignature();
+	boolean verifySignatureControlComponentBallotBox(final ControlComponentBallotBoxPayload input) {
 
-		checkState(signature != null,
-				"The signature of the control component ballot box payload is null. [nodeID: %s, electionEventId: %s, ballotBoxId: %s]",
-				nodeId, electionEventId, ballotBoxId);
+		// Input.
+		final ControlComponentBallotBoxPayload message = checkNotNull(input);
+		final int j = message.getNodeId();
+		final String ee = message.getElectionEventId();
+		final String bb = message.getBallotBoxId();
+		final ImmutableByteArray s = checkNotNull(input.getSignature()).signatureContents();
 
-		final Hashable additionalContextData = ChannelSecurityContextData.controlComponentBallotBox(nodeId, electionEventId, ballotBoxId);
-
+		// Operation.
 		try {
-			return signatureVerification.verifySignature(Alias.getControlComponentByNodeId(nodeId).toString(), controlComponentBallotBoxPayload,
-					additionalContextData, signature.signatureContents());
+			return signatureVerification.verifySignature(
+					Alias.getControlComponentByNodeId(j).toString(),
+					// The ControlComponentBallotBoxPayload method toHashableForm recursively hashes payload as specified.
+					message,
+					ChannelSecurityContextData.controlComponentBallotBox(j, ee, bb),
+					s);
+
 		} catch (final SignatureException e) {
 			throw new IllegalStateException(String.format(
 					"Could not verify the signature of the control component ballot box payload. [nodeId: %s, electionEventId: %s, ballotBoxId: %s]",
-					nodeId, electionEventId, ballotBoxId));
+					j, ee, bb));
 		}
 	}
 }

@@ -52,8 +52,8 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 		definition.setBlock(SetupVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification314.description"));
-		definition.setId("03.14");
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification302.description"));
+		definition.setId("03.02");
 		definition.setName("VerifyNodeIdsConsistency");
 		definition.addVerifierEvent(SetupEvent.TYPE);
 		return definition;
@@ -61,19 +61,25 @@ public class VerifyNodeIdsConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-
-		final ImmutableList<Integer> publicKeysNodeIds = extractionService.getControlComponentPublicKeysPayloads(inputDirectoryPath)
-				.map(ControlComponentPublicKeysPayload::getControlComponentPublicKeys)
-				.map(ControlComponentPublicKeys::nodeId)
-				.collect(toImmutableList());
-		final boolean verifPublicKeysNodeIdsComplete = publicKeysNodeIds.toImmutableSet().equals(ControlComponentNode.ids());
-		final boolean verifPublicKeyNodeIdsUnique = publicKeysNodeIds.size() == ControlComponentNode.ids().size();
-
-		if (verifPublicKeysNodeIdsComplete && verifPublicKeyNodeIdsUnique) {
+		if (verifyNodeIdsConsistency(inputDirectoryPath)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification314.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification302.nok.message"));
 		}
+	}
+
+	private boolean verifyNodeIdsConsistency(final Path inputDirectoryPath) {
+		// Input.
+		final ImmutableList<Integer> onlineControlComponentPublicKeysNodeIds = extractionService.getControlComponentPublicKeysPayloads(inputDirectoryPath)
+				.map(ControlComponentPublicKeysPayload::getControlComponentPublicKeys)
+				.map(ControlComponentPublicKeys::nodeId)
+				.collect(toImmutableList());
+
+		// Operation.
+		final boolean isCompleteNodeIds = onlineControlComponentPublicKeysNodeIds.toImmutableSet().equals(ControlComponentNode.ids());
+		final boolean isUniqueNodeIds = onlineControlComponentPublicKeysNodeIds.size() == ControlComponentNode.ids().size();
+
+		return isCompleteNodeIds && isUniqueNodeIds;
 	}
 }

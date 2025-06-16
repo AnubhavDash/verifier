@@ -54,8 +54,8 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification811.description"));
-		definition.setId("08.11");
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification801.description"));
+		definition.setId("08.01");
 		definition.setName("VerifyEncryptionGroupConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;
@@ -63,31 +63,36 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final GqGroup electionEventContextPayloadEncryptionGroup = electionDataExtractionService.getElectionEventContextPayload(inputDirectoryPath)
-				.getEncryptionGroup();
 
-		final ImmutableList<BiFunction<Path, GqGroup, Boolean>> validations = ImmutableList.of(
-				this::validateControlComponentBallotBoxPayloads,
-				this::validateControlComponentShufflePayloads,
-				this::validateTallyComponentShufflePayloads,
-				this::validateTallyComponentVotesPayloads
-		);
-
-		final boolean sameGroupParameters = validations.stream()
-				.parallel()
-				.map(f -> f.apply(inputDirectoryPath, electionEventContextPayloadEncryptionGroup))
-				.reduce(Boolean::logicalAnd)
-				.orElse(Boolean.FALSE);
-
-		if (sameGroupParameters) {
+		if (verifyEncryptionGroupConsistency(inputDirectoryPath)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification811.nok.message"));
+					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification801.nok.message"));
 		}
 	}
 
-	private boolean validateControlComponentBallotBoxPayloads(final Path inputDirectoryPath,
+	private boolean verifyEncryptionGroupConsistency(final Path inputDirectoryPath) {
+		// Input.
+		final GqGroup electionEventContextEncryptionGroup = electionDataExtractionService.getElectionEventContextPayload(inputDirectoryPath)
+				.getEncryptionGroup();
+
+		// Operation.
+		final ImmutableList<BiFunction<Path, GqGroup, Boolean>> validations = ImmutableList.of(
+				this::validateControlComponentBallotBox,
+				this::validateOnlineControlComponentShuffle,
+				this::validateTallyControlComponentShuffle,
+				this::validateTallyControlComponentVotes
+		);
+
+		return validations.stream()
+				.parallel()
+				.map(f -> f.apply(inputDirectoryPath, electionEventContextEncryptionGroup))
+				.reduce(Boolean::logicalAnd)
+				.orElse(Boolean.FALSE);
+	}
+
+	private boolean validateControlComponentBallotBox(final Path inputDirectoryPath,
 			final GqGroup electionEventContextPayloadEncryptionGroup) {
 		return electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(inputDirectoryPath)
 				.map(ControlComponentBallotBoxPayload::getEncryptionGroup)
@@ -95,7 +100,7 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 				.allMatch(electionEventContextPayloadEncryptionGroup::equals);
 	}
 
-	private boolean validateControlComponentShufflePayloads(final Path inputDirectoryPath,
+	private boolean validateOnlineControlComponentShuffle(final Path inputDirectoryPath,
 			final GqGroup electionEventContextPayloadEncryptionGroup) {
 		return electionDataExtractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(inputDirectoryPath)
 				.map(ControlComponentShufflePayload::getEncryptionGroup)
@@ -103,7 +108,7 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 				.allMatch(electionEventContextPayloadEncryptionGroup::equals);
 	}
 
-	private boolean validateTallyComponentShufflePayloads(final Path inputDirectoryPath,
+	private boolean validateTallyControlComponentShuffle(final Path inputDirectoryPath,
 			final GqGroup electionEventContextPayloadEncryptionGroup) {
 		return electionDataExtractionService.getTallyComponentShufflePayloads(inputDirectoryPath)
 				.map(TallyComponentShufflePayload::getEncryptionGroup)
@@ -111,7 +116,7 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 				.allMatch(electionEventContextPayloadEncryptionGroup::equals);
 	}
 
-	private boolean validateTallyComponentVotesPayloads(final Path inputDirectoryPath,
+	private boolean validateTallyControlComponentVotes(final Path inputDirectoryPath,
 			final GqGroup electionEventContextPayloadEncryptionGroup) {
 		return electionDataExtractionService.getTallyComponentVotesPayloads(inputDirectoryPath)
 				.map(TallyComponentVotesPayload::getEncryptionGroup)

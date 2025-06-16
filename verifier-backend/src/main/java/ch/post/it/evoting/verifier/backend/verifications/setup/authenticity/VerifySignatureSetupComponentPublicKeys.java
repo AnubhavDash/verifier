@@ -15,7 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.authenticity;
 
-import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.nio.file.Path;
 import java.security.SignatureException;
@@ -24,12 +24,11 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
 
-import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.SetupComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
-import ch.post.it.evoting.evotinglibraries.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -89,22 +88,26 @@ public class VerifySignatureSetupComponentPublicKeys extends AbstractVerificatio
 	}
 
 	@VisibleForTesting
-	boolean verifySignature(final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload) {
-		final String electionEventId = setupComponentPublicKeysPayload.getElectionEventId();
-		final CryptoPrimitivesSignature signature = setupComponentPublicKeysPayload.getSignature();
+	boolean verifySignature(final SetupComponentPublicKeysPayload input) {
 
-		checkState(signature != null, "The signature of the setup component public keys payload is null. [electionEventId: %s]", electionEventId);
+		// Input.
+		final SetupComponentPublicKeysPayload message = checkNotNull(input);
+		final String ee = message.getElectionEventId();
+		final ImmutableByteArray s = checkNotNull(input.getSignature()).signatureContents();
 
-		final Hashable additionalContextData = ChannelSecurityContextData.setupComponentPublicKeys(electionEventId);
-
+		// Operation.
 		try {
-			// The SetupComponentPublicKeysPayload method toHashableForm recursively hashes the setup component public keys payload as specified.
-			return signatureVerification.verifySignature(Alias.SDM_CONFIG.toString(), setupComponentPublicKeysPayload,
-					additionalContextData, signature.signatureContents());
+			return signatureVerification.verifySignature(
+					Alias.SDM_CONFIG.toString(),
+					// The SetupComponentPublicKeysPayload method toHashableForm recursively hashes payload as specified.
+					message,
+					ChannelSecurityContextData.setupComponentPublicKeys(ee),
+					s);
+
 		} catch (final SignatureException e) {
 			throw new IllegalStateException(
 					String.format("Could not verify the signature of the setup component public keys payload. [electionEventId: %s]",
-							electionEventId));
+							ee));
 		}
 	}
 }

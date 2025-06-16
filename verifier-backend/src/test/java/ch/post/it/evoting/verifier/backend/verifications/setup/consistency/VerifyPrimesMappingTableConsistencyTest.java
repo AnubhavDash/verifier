@@ -92,7 +92,7 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 		final VerifyPrimesMappingTableConsistency verifyPrimesMappingTableConsistency = new VerifyPrimesMappingTableConsistency(extractionServiceSpy,
 				consistencyAlgorithm, resultPublisherServiceMock);
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification308.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification313.nok.message"));
 		assertEquals(expectedResult, verifyPrimesMappingTableConsistency.verify(datasetPath));
 	}
 
@@ -111,7 +111,7 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 		final VerifyPrimesMappingTableConsistency verifyPrimesMappingTableConsistency = new VerifyPrimesMappingTableConsistency(extractionServiceSpy,
 				consistencyAlgorithm, resultPublisherServiceMock);
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification308.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification313.nok.message"));
 		assertEquals(expectedResult, verifyPrimesMappingTableConsistency.verify(datasetPath));
 	}
 
@@ -132,7 +132,7 @@ class VerifyPrimesMappingTableConsistencyTest extends SetupVerificationTest {
 		final VerifyPrimesMappingTableConsistency verifyPrimesMappingTableConsistency = new VerifyPrimesMappingTableConsistency(extractionServiceSpy,
 				consistencyAlgorithm, resultPublisherServiceMock);
 		final VerificationResult expectedResult = VerificationResult.failure(verification.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification308.nok.message"));
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification313.nok.message"));
 		assertEquals(expectedResult, verifyPrimesMappingTableConsistency.verify(datasetPath));
 	}
 

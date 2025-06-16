@@ -24,11 +24,11 @@ import org.junit.jupiter.api.Test;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerificationTest;
 
-class VerifyCcmAndCcrSchnorrProofsConsistencyTest extends SetupVerificationTest {
+class VerifyCCMAndCCRSchnorrProofsConsistencyTest extends SetupVerificationTest {
 
 	@BeforeAll
 	static void setupAll() {
-		verification = new VerifyCcmAndCcrSchnorrProofsConsistency(electionDataExtractionService, resultPublisherServiceMock);
+		verification = new VerifyCCMAndCCRSchnorrProofsConsistency(electionDataExtractionService, resultPublisherServiceMock);
 	}
 
 	@Test

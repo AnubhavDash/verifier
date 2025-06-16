@@ -15,7 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.authenticity;
 
-import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.nio.file.Path;
 import java.security.SignatureException;
@@ -24,12 +24,11 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
 
-import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPayload;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
-import ch.post.it.evoting.evotinglibraries.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
 import ch.post.it.evoting.verifier.backend.VerificationDefinition;
@@ -76,7 +75,7 @@ public class VerifySignatureElectionEventContext extends AbstractVerification {
 		final ElectionEventContextPayload electionEventContextPayload = electionDataExtractionService.getElectionEventContextPayload(
 				inputDirectoryPath);
 
-		final boolean verified = verifySignature(electionEventContextPayload);
+		final boolean verified = verifySignatureElectionEventContext(electionEventContextPayload);
 
 		if (verified) {
 			return VerificationResult.success(getVerificationDefinition());
@@ -89,20 +88,24 @@ public class VerifySignatureElectionEventContext extends AbstractVerification {
 	}
 
 	@VisibleForTesting
-	boolean verifySignature(final ElectionEventContextPayload electionEventContextPayload) {
-		final String electionEventId = electionEventContextPayload.getElectionEventContext().electionEventId();
-		final CryptoPrimitivesSignature signature = electionEventContextPayload.getSignature();
+	boolean verifySignatureElectionEventContext(final ElectionEventContextPayload input) {
+		// Input.
+		final ElectionEventContextPayload message = checkNotNull(input);
+		final String ee = message.getElectionEventContext().electionEventId();
+		final ImmutableByteArray s = checkNotNull(input.getSignature()).signatureContents();
 
-		checkState(signature != null, "The signature of the election event context payload is null. [electionEventId: %s]", electionEventId);
-
-		final Hashable additionalContextData = ChannelSecurityContextData.electionEventContext(electionEventId);
-
+		// Operation.
 		try {
-			return signatureVerification.verifySignature(Alias.SDM_CONFIG.toString(), electionEventContextPayload,
-					additionalContextData, signature.signatureContents());
+			return signatureVerification.verifySignature(
+					Alias.SDM_CONFIG.toString(),
+					// The ElectionEventContextPayload method toHashableForm recursively hashes payload as specified.
+					message,
+					ChannelSecurityContextData.electionEventContext(ee),
+					s
+			);
 		} catch (final SignatureException e) {
 			throw new IllegalStateException(
-					String.format("Could not verify the signature of the election event context payload. [electionEventId: %s]", electionEventId));
+					String.format("Could not verify the signature of the election event context payload. [electionEventId: %s]", ee));
 		}
 	}
 }

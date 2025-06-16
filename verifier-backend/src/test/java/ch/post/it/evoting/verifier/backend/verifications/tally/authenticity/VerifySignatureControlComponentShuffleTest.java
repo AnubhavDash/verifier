@@ -84,7 +84,7 @@ class VerifySignatureControlComponentShuffleTest extends TallyVerificationTest {
 				.findFirst()
 				.orElseThrow();
 
-		assertTrue(((VerifySignatureControlComponentShuffle) verification).verifySignature(controlComponentShufflePayload));
+		assertTrue(((VerifySignatureControlComponentShuffle) verification).verifySignatureControlComponentShuffle(controlComponentShufflePayload));
 	}
 
 	@Test
@@ -101,7 +101,7 @@ class VerifySignatureControlComponentShuffleTest extends TallyVerificationTest {
 				Alias.getControlComponentByNodeId(nodeId));
 		controlComponentShufflePayload.setSignature(dummySignature);
 
-		assertFalse(((VerifySignatureControlComponentShuffle) verification).verifySignature(controlComponentShufflePayload));
+		assertFalse(((VerifySignatureControlComponentShuffle) verification).verifySignatureControlComponentShuffle(controlComponentShufflePayload));
 	}
 
 	@ParameterizedTest

@@ -61,20 +61,7 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final GqGroup electionEventContextEncryptionGroup = electionDataExtractionService.getElectionEventContextPayload(inputDirectoryPath)
-				.getEncryptionGroup();
-
-		final ImmutableList<BiFunction<Path, GqGroup, Boolean>> validations = ImmutableList.of(
-				this::validateControlComponentPublicKeys,
-				this::validateSetupComponentTallyDataPayloads);
-
-		final boolean sameGroupParameters = validations.stream()
-				.parallel()
-				.map(f -> f.apply(inputDirectoryPath, electionEventContextEncryptionGroup))
-				.reduce(Boolean::logicalAnd)
-				.orElse(Boolean.FALSE);
-
-		if (sameGroupParameters) {
+		if (verifyEncryptionGroupConsistency(inputDirectoryPath)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
@@ -82,14 +69,31 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 		}
 	}
 
-	private boolean validateControlComponentPublicKeys(final Path inputDirectoryPath, final GqGroup electionEventContextEncryptionGroup) {
+	private boolean verifyEncryptionGroupConsistency(final Path inputDirectoryPath) {
+		// Input.
+		final GqGroup electionEventContextEncryptionGroup = electionDataExtractionService.getElectionEventContextPayload(inputDirectoryPath)
+				.getEncryptionGroup();
+
+		// Operation.
+		final ImmutableList<BiFunction<Path, GqGroup, Boolean>> validations = ImmutableList.of(
+				this::validateOnlineControlComponentPublicKeys,
+				this::validateSetupComponentTallyData);
+
+		return validations.stream()
+				.parallel()
+				.map(f -> f.apply(inputDirectoryPath, electionEventContextEncryptionGroup))
+				.reduce(Boolean::logicalAnd)
+				.orElse(Boolean.FALSE);
+	}
+
+	private boolean validateOnlineControlComponentPublicKeys(final Path inputDirectoryPath, final GqGroup electionEventContextEncryptionGroup) {
 		return electionDataExtractionService.getControlComponentPublicKeysPayloads(inputDirectoryPath)
 				.map(ControlComponentPublicKeysPayload::getEncryptionGroup)
 				.distinct()
 				.allMatch(electionEventContextEncryptionGroup::equals);
 	}
 
-	private boolean validateSetupComponentTallyDataPayloads(final Path inputDirectoryPath, final GqGroup electionEventContextEncryptionGroup) {
+	private boolean validateSetupComponentTallyData(final Path inputDirectoryPath, final GqGroup electionEventContextEncryptionGroup) {
 		return electionDataExtractionService.getSetupComponentTallyDataPayloads(inputDirectoryPath)
 				.map(SetupComponentTallyDataPayload::getEncryptionGroup)
 				.distinct()

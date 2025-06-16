@@ -17,6 +17,8 @@ package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
 import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static ch.post.it.evoting.verifier.backend.tools.TranslationHelper.getFromResourceBundle;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.nio.file.Path;
 
@@ -57,8 +59,8 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification807.description"));
-		definition.setId("08.07");
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification811.description"));
+		definition.setId("08.11");
 		definition.setName("VerifyNumberConfirmedEncryptedVotesConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;
@@ -68,7 +70,7 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 	public VerificationResult verify(final Path inputDirectoryPath) {
 		final boolean isNumberConfirmedEncryptedVotesConsistent = extractTallyPayloadsSizes(inputDirectoryPath).stream()
 				.parallel()
-				.map(this::verifyConsistency)
+				.map(this::verifyNumberConfirmedEncryptedVotesConsistency)
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 
@@ -76,8 +78,37 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification807.nok.message"));
+					getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification811.nok.message"));
 		}
+	}
+
+	@SuppressWarnings("java:S117")
+	private boolean verifyNumberConfirmedEncryptedVotesConsistency(final TallyPayloadsSizes tallyPayloadsSizes) {
+
+		// Operation.
+		final int N_C_TallyControlComponentVotes = tallyPayloadsSizes.numberOfConfirmedVotesTallyComponentVotes();
+		final ImmutableList<Integer> numberOfConfirmedVotesControlComponentBallotBoxes = tallyPayloadsSizes.numberOfConfirmedVotesControlComponentBallotBoxes();
+		final boolean identicalNumberOfConfirmedVotes = numberOfConfirmedVotesControlComponentBallotBoxes.stream()
+				.parallel()
+				.allMatch(N_C_ControlComponentBallotBox -> N_C_ControlComponentBallotBox == N_C_TallyControlComponentVotes);
+
+		final int N_C_hat_TallyControlComponentShuffle = tallyPayloadsSizes.numberOfMixedVotesTallyComponentShuffles();
+		final ImmutableList<Integer> numberOfMixedVotesControlComponentShuffles = tallyPayloadsSizes.numberOfMixedVotesControlComponentShuffles();
+		final boolean identicalNumberOfMixedVotes = numberOfMixedVotesControlComponentShuffles.stream()
+				.parallel()
+				.allMatch(N_C_hat_OnlineControlComponentShuffle -> N_C_hat_OnlineControlComponentShuffle == N_C_hat_TallyControlComponentShuffle);
+
+		final int N_C = N_C_TallyControlComponentVotes;
+		final int N_C_hat = N_C_hat_TallyControlComponentShuffle;
+		final boolean correctCorrespondanceConfirmedVotesAndMixedVotes =
+				// If there are less than 2 confirmed votes, TallyComponentShufflePayload and ControlComponentShufflePayload contain 2 dummy votes.
+				(N_C < 2) ?
+						N_C_hat == N_C + 2 :
+						N_C_hat == N_C;
+
+		return identicalNumberOfConfirmedVotes
+				&& identicalNumberOfMixedVotes
+				&& correctCorrespondanceConfirmedVotesAndMixedVotes;
 	}
 
 	private ImmutableList<TallyPayloadsSizes> extractTallyPayloadsSizes(final Path inputDirectoryPath) {
@@ -113,38 +144,17 @@ public class VerifyNumberConfirmedEncryptedVotesConsistency extends AbstractVeri
 				}).collect(toImmutableList());
 	}
 
-	@SuppressWarnings("java:S117")
-	private boolean verifyConsistency(final TallyPayloadsSizes tallyPayloadsSizes) {
-		final int N_C_TallyControlComponentVotes = tallyPayloadsSizes.numberOfConfirmedVotesTallyComponentVotes();
-		final ImmutableList<Integer> numberOfConfirmedVotesControlComponentBallotBoxes = tallyPayloadsSizes.numberOfConfirmedVotesControlComponentBallotBoxes();
-		final boolean identicalNumberOfConfirmedVotes = numberOfConfirmedVotesControlComponentBallotBoxes.stream()
-				.parallel()
-				.allMatch(N_C_ControlComponentBallotBox -> N_C_ControlComponentBallotBox == N_C_TallyControlComponentVotes);
-
-		final int N_C_hat_TallyControlComponentShuffle = tallyPayloadsSizes.numberOfMixedVotesTallyComponentShuffles();
-		final ImmutableList<Integer> numberOfMixedVotesControlComponentShuffles = tallyPayloadsSizes.numberOfMixedVotesControlComponentShuffles();
-		final boolean identicalNumberOfMixedVotes = numberOfMixedVotesControlComponentShuffles.stream()
-				.parallel()
-				.allMatch(N_C_hat_OnlineControlComponentShuffle -> N_C_hat_OnlineControlComponentShuffle == N_C_hat_TallyControlComponentShuffle);
-
-		final int N_C = N_C_TallyControlComponentVotes;
-		final int N_C_hat = N_C_hat_TallyControlComponentShuffle;
-		final boolean correctCorrespondanceConfirmedVotesAndMixedVotes =
-				// If there are less than 2 confirmed votes, TallyComponentShufflePayload and ControlComponentShufflePayload contain 2 dummy votes.
-				(N_C < 2) ?
-						N_C_hat == N_C + 2 :
-						N_C_hat == N_C;
-
-		return identicalNumberOfConfirmedVotes
-				&& identicalNumberOfMixedVotes
-				&& correctCorrespondanceConfirmedVotesAndMixedVotes;
-	}
-
 	private record TallyPayloadsSizes(ImmutableList<Integer> numberOfConfirmedVotesControlComponentBallotBoxes,
 									  ImmutableList<Integer> numberOfMixedVotesControlComponentShuffles,
 									  int numberOfMixedVotesTallyComponentShuffles,
 									  int numberOfConfirmedVotesTallyComponentVotes
 	) {
+		private TallyPayloadsSizes {
+			checkNotNull(numberOfConfirmedVotesControlComponentBallotBoxes);
+			checkNotNull(numberOfMixedVotesControlComponentShuffles);
+			checkArgument(numberOfMixedVotesTallyComponentShuffles >= 0);
+			checkArgument(numberOfConfirmedVotesTallyComponentVotes >= 0);
+		}
 	}
 
 }

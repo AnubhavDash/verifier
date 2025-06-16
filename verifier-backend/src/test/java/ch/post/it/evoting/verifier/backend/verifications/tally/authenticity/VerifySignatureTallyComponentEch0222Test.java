@@ -54,7 +54,7 @@ class VerifySignatureTallyComponentEch0222Test extends TallyVerificationTest {
 	void testOK() {
 		final Path deliveryPath = electionDataExtractionService.getTallyComponentEch0222Path(datasetPath);
 
-		assertTrue(((VerifySignatureTallyComponentEch0222) verification).verifySignature(deliveryPath), "the signature is not valid");
+		assertTrue(((VerifySignatureTallyComponentEch0222) verification).verifySignatureTallyComponentEch0222(deliveryPath), "the signature is not valid");
 	}
 
 	@Test
@@ -62,7 +62,7 @@ class VerifySignatureTallyComponentEch0222Test extends TallyVerificationTest {
 		final Path deliveryPath = electionDataExtractionService.getTallyComponentEch0222Path(datasetPath);
 		doReturn(false).when(xmlSignatureServiceMock).verifyXMLSignature(any(), any());
 
-		assertFalse(((VerifySignatureTallyComponentEch0222) verification).verifySignature(deliveryPath), "the signature is not valid");
+		assertFalse(((VerifySignatureTallyComponentEch0222) verification).verifySignatureTallyComponentEch0222(deliveryPath), "the signature is not valid");
 	}
 
 	@Test
@@ -75,6 +75,6 @@ class VerifySignatureTallyComponentEch0222Test extends TallyVerificationTest {
 		doReturn(keyPair.getPublic()).when(certificateMock).getPublicKey();
 		doReturn(certificateMock).when(keyStoreMock).getCertificate(any());
 
-		assertFalse(((VerifySignatureTallyComponentEch0222) verification).verifySignature(deliveryPath), "the signature is not valid");
+		assertFalse(((VerifySignatureTallyComponentEch0222) verification).verifySignatureTallyComponentEch0222(deliveryPath), "the signature is not valid");
 	}
 }

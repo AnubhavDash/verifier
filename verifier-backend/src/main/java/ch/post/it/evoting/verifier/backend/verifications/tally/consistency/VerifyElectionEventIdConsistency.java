@@ -54,8 +54,8 @@ public class VerifyElectionEventIdConsistency extends AbstractVerification {
 		definition.setBlock(TallyVerificationSuite.BLOCK_NAME);
 		definition.setCategory(Category.CONSISTENCY);
 		definition.setDescription(
-				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification808.description"));
-		definition.setId("08.08");
+				TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification804.description"));
+		definition.setId("08.04");
 		definition.setName("VerifyElectionEventIdConsistency");
 		definition.addVerifierEvent(TallyEvent.TYPE);
 		return definition;
@@ -64,57 +64,59 @@ public class VerifyElectionEventIdConsistency extends AbstractVerification {
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
 
-		final String electionEventId = electionDataExtractionService.getElectionEventContext(inputDirectoryPath).electionEventId();
-
-		final ImmutableList<BiFunction<Path, String, Boolean>> validations = ImmutableList.of(
-				this::areControlComponentBallotBoxPayloadsVerified,
-				this::areControlComponentShufflePayloadsVerified,
-				this::areTallyComponentShufflePayloadsVerified,
-				this::areTallyComponentVotesPayloadsVerified);
-
-		final boolean verified = validations
-				.stream()
-				.parallel()
-				.map(f -> f.apply(inputDirectoryPath, electionEventId))
-				.reduce(Boolean::logicalAnd)
-				.orElse(Boolean.FALSE);
-
-		if (verified) {
+		if (verifyElectionEventIdConsistency(inputDirectoryPath)) {
 			return VerificationResult.success(getVerificationDefinition());
 		} else {
 			return VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification808.nok.message"));
+					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification804.nok.message"));
 		}
 	}
 
-	private boolean areTallyComponentVotesPayloadsVerified(final Path inputDirectoryPath, final String electionEventId) {
-		return electionDataExtractionService.getTallyComponentVotesPayloads(inputDirectoryPath)
+	private boolean verifyElectionEventIdConsistency(final Path inputDirectoryPath) {
+		// Input.
+		final String electionEventContextElectionEventId = electionDataExtractionService.getElectionEventContext(inputDirectoryPath)
+				.electionEventId();
+
+		// Operation.
+		final ImmutableList<BiFunction<Path, String, Boolean>> validations = ImmutableList.of(
+				this::validateControlComponentBallotBox,
+				this::validateOnlineControlComponentShuffle,
+				this::validateTallyControlComponentShuffle,
+				this::validateTallyControlComponentVotes);
+
+		return validations.stream()
 				.parallel()
-				.map(TallyComponentVotesPayload::getElectionEventId)
-				.allMatch(id -> id.equals(electionEventId));
+				.map(f -> f.apply(inputDirectoryPath, electionEventContextElectionEventId))
+				.reduce(Boolean::logicalAnd)
+				.orElse(Boolean.FALSE);
 	}
 
-	private boolean areTallyComponentShufflePayloadsVerified(final Path inputDirectoryPath, final String electionEventId) {
+	private boolean validateControlComponentBallotBox(final Path inputDirectoryPath, final String electionEventContextElectionEventId) {
+		return electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(inputDirectoryPath)
+				.parallel()
+				.map(ControlComponentBallotBoxPayload::getElectionEventId)
+				.allMatch(electionEventContextElectionEventId::equals);
+	}
+
+	private boolean validateOnlineControlComponentShuffle(final Path inputDirectoryPath, final String electionEventContextElectionEventId) {
+		return electionDataExtractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(inputDirectoryPath)
+				.parallel()
+				.map(ControlComponentShufflePayload::getElectionEventId)
+				.allMatch(electionEventContextElectionEventId::equals);
+	}
+
+	private boolean validateTallyControlComponentShuffle(final Path inputDirectoryPath, final String electionEventContextElectionEventId) {
 		return electionDataExtractionService.getTallyComponentShufflePayloads(inputDirectoryPath)
 				.parallel()
 				.map(TallyComponentShufflePayload::getElectionEventId)
-				.allMatch(id -> id.equals(electionEventId));
+				.allMatch(electionEventContextElectionEventId::equals);
 	}
 
-	private boolean areControlComponentShufflePayloadsVerified(final Path inputDirectoryPath, final String electionEventId) {
-		return electionDataExtractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(
-						inputDirectoryPath)
+	private boolean validateTallyControlComponentVotes(final Path inputDirectoryPath, final String electionEventContextElectionEventId) {
+		return electionDataExtractionService.getTallyComponentVotesPayloads(inputDirectoryPath)
 				.parallel()
-				.map(ControlComponentShufflePayload::getElectionEventId)
-				.allMatch(id -> id.equals(electionEventId));
-	}
-
-	private boolean areControlComponentBallotBoxPayloadsVerified(final Path inputDirectoryPath, final String electionEventId) {
-		return electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(
-						inputDirectoryPath)
-				.parallel()
-				.map(ControlComponentBallotBoxPayload::getElectionEventId)
-				.allMatch(id -> id.equals(electionEventId));
+				.map(TallyComponentVotesPayload::getElectionEventId)
+				.allMatch(electionEventContextElectionEventId::equals);
 	}
 
 }

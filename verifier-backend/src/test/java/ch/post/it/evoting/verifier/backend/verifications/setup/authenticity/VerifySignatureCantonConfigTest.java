@@ -55,7 +55,7 @@ class VerifySignatureCantonConfigTest extends SetupVerificationTest {
 	void testOK() {
 		final Path configurationPath = electionDataExtractionService.getCantonConfigPath(datasetPath);
 
-		assertTrue(((VerifySignatureCantonConfig) verification).verifySignature(configurationPath), "the signature is not valid");
+		assertTrue(((VerifySignatureCantonConfig) verification).verifySignatureCantonConfig(configurationPath), "the signature is not valid");
 	}
 
 	@Test
@@ -63,7 +63,7 @@ class VerifySignatureCantonConfigTest extends SetupVerificationTest {
 		final Path configurationPath = electionDataExtractionService.getCantonConfigPath(datasetPath);
 		doReturn(false).when(xmlSignatureServiceMock).verifyXMLSignature(any(), any());
 
-		assertFalse(((VerifySignatureCantonConfig) verification).verifySignature(configurationPath), "the signature is not valid");
+		assertFalse(((VerifySignatureCantonConfig) verification).verifySignatureCantonConfig(configurationPath), "the signature is not valid");
 	}
 
 	@Test
@@ -76,6 +76,6 @@ class VerifySignatureCantonConfigTest extends SetupVerificationTest {
 		doReturn(keyPair.getPublic()).when(certificateMock).getPublicKey();
 		doReturn(certificateMock).when(keyStoreMock).getCertificate(any());
 
-		assertFalse(((VerifySignatureCantonConfig) verification).verifySignature(configurationPath), "the signature is not valid");
+		assertFalse(((VerifySignatureCantonConfig) verification).verifySignatureCantonConfig(configurationPath), "the signature is not valid");
 	}
 }

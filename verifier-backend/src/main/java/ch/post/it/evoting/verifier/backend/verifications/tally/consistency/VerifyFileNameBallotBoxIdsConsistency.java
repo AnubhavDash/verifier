@@ -15,14 +15,14 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.consistency;
 
-import static com.google.common.collect.ImmutableSet.toImmutableSet;
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet.toImmutableSet;
 
 import java.nio.file.Path;
 
 import org.springframework.stereotype.Component;
 
-import com.google.common.collect.ImmutableSet;
-
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet;
 import ch.post.it.evoting.evotinglibraries.domain.election.ElectionEventContext;
 import ch.post.it.evoting.evotinglibraries.domain.election.VerificationCardSetContext;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
@@ -33,7 +33,6 @@ import ch.post.it.evoting.verifier.backend.event.TallyEvent;
 import ch.post.it.evoting.verifier.backend.processor.ResultPublisherService;
 import ch.post.it.evoting.verifier.backend.tools.ElectionDataExtractionService;
 import ch.post.it.evoting.verifier.backend.tools.TranslationHelper;
-import ch.post.it.evoting.verifier.backend.tools.path.PathNode;
 import ch.post.it.evoting.verifier.backend.tools.path.PathService;
 import ch.post.it.evoting.verifier.backend.tools.path.StructureKey;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
@@ -71,29 +70,31 @@ public class VerifyFileNameBallotBoxIdsConsistency extends AbstractVerification 
 
 	@Override
 	public VerificationResult verify(final Path inputDirectoryPath) {
-		final PathNode ballotBoxes = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath);
 
-		final ImmutableSet<String> ballotBoxIds = ballotBoxes.getRegexPaths().stream()
+		if (verifyFileNameBallotBoxIdsConsistency(inputDirectoryPath)) {
+			return VerificationResult.success(getVerificationDefinition());
+		} else {
+			return VerificationResult.failure(getVerificationDefinition(),
+					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification806.nok.message"));
+		}
+	}
+
+	private boolean verifyFileNameBallotBoxIdsConsistency(final Path inputDirectoryPath) {
+		// Input.
+		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContext(inputDirectoryPath);
+		final ImmutableList<Path> ballotBoxIdPaths = pathService.buildFromRootPath(StructureKey.BALLOT_BOX_ID_DIR, inputDirectoryPath)
+				.getRegexPaths();
+
+		// Operation.
+		final ImmutableSet<String> tallyBallotBoxIds = ballotBoxIdPaths.stream()
 				.map(Path::getFileName)
 				.map(Path::toString)
 				.collect(toImmutableSet());
-
-		final ElectionEventContext electionEventContext = electionDataExtractionService.getElectionEventContext(inputDirectoryPath);
-		final ImmutableSet<String> payloadBallotBoxIds = electionEventContext.verificationCardSetContexts().stream()
+		final ImmutableSet<String> electionEventContextBallotBoxIds = electionEventContext.verificationCardSetContexts().stream()
 				.map(VerificationCardSetContext::getBallotBoxId)
 				.collect(toImmutableSet());
 
 		// Verifying set equality is sufficient since the payload ensures that there are no duplicate ballot box IDs.
-		final boolean sameBallotBoxIds = ballotBoxIds.equals(payloadBallotBoxIds);
-
-		final VerificationResult verificationResult;
-		if (sameBallotBoxIds) {
-			verificationResult = VerificationResult.success(getVerificationDefinition());
-		} else {
-			verificationResult = VerificationResult.failure(getVerificationDefinition(),
-					TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification806.nok.message"));
-		}
-
-		return verificationResult;
+		return tallyBallotBoxIds.equals(electionEventContextBallotBoxIds);
 	}
 }

@@ -61,7 +61,7 @@ class VerifyPlaintextsConsistencyTest extends TallyVerificationTest {
 		final VerificationResult verificationResult = verificationWithMock.verify(datasetPath);
 
 		final VerificationResult expectedResult = VerificationResult.failure(verificationWithMock.getVerificationDefinition(),
-				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification803.nok.message"));
+				TranslationHelper.getFromResourceBundle(TallyVerificationSuite.RESOURCE_BUNDLE_NAME, "tally.verification810.nok.message"));
 		assertEquals(expectedResult, verificationResult);
 	}
 }

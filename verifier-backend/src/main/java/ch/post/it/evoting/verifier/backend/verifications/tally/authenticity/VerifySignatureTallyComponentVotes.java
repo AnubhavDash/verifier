@@ -15,7 +15,7 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.tally.authenticity;
 
-import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.nio.file.Path;
 import java.security.SignatureException;
@@ -25,11 +25,10 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
 
-import ch.post.it.evoting.cryptoprimitives.hashing.Hashable;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureVerification;
 import ch.post.it.evoting.evotinglibraries.domain.common.ChannelSecurityContextData;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
-import ch.post.it.evoting.evotinglibraries.domain.signature.CryptoPrimitivesSignature;
 import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
@@ -80,7 +79,7 @@ public class VerifySignatureTallyComponentVotes extends AbstractVerification {
 
 		final boolean verified = tallyComponentVotesPayloads
 				.parallel()
-				.map(this::verifySignature)
+				.map(this::verifySignatureTallyComponentVotes)
 				.reduce(Boolean::logicalAnd)
 				.orElse(Boolean.FALSE);
 
@@ -95,23 +94,27 @@ public class VerifySignatureTallyComponentVotes extends AbstractVerification {
 	}
 
 	@VisibleForTesting
-	boolean verifySignature(final TallyComponentVotesPayload tallyComponentVotesPayload) {
-		final String electionEventId = tallyComponentVotesPayload.getElectionEventId();
-		final String ballotBoxId = tallyComponentVotesPayload.getBallotBoxId();
-		final CryptoPrimitivesSignature signature = tallyComponentVotesPayload.getSignature();
+	boolean verifySignatureTallyComponentVotes(final TallyComponentVotesPayload input) {
 
-		checkState(signature != null, "The signature of the tally component votes payload is null. [electionEventId: %s, ballotBoxId: %s]",
-				electionEventId, ballotBoxId);
+		// Input.
+		final TallyComponentVotesPayload message = checkNotNull(input);
+		final String ee = message.getElectionEventId();
+		final String bb = message.getBallotBoxId();
+		final ImmutableByteArray s = checkNotNull(input.getSignature()).signatureContents();
 
-		final Hashable additionalContextData = ChannelSecurityContextData.tallyComponentVotes(electionEventId, ballotBoxId);
-
+		// Operation.
 		try {
-			return signatureVerification.verifySignature(Alias.SDM_TALLY.toString(), tallyComponentVotesPayload,
-					additionalContextData, signature.signatureContents());
+			return signatureVerification.verifySignature(
+					Alias.SDM_TALLY.toString(),
+					// The TallyComponentVotesPayload method toHashableForm recursively hashes payload as specified.
+					message,
+					ChannelSecurityContextData.tallyComponentVotes(ee, bb),
+					s);
+
 		} catch (final SignatureException e) {
 			throw new IllegalStateException(
 					String.format("Could not verify the signature of the  tally component votes payload. [electionEventId: %s, ballotBoxId: %s]",
-							electionEventId, ballotBoxId));
+							ee, bb));
 		}
 	}
 }

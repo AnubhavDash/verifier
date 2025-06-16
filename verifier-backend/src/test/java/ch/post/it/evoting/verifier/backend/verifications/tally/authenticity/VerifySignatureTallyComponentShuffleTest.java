@@ -82,7 +82,7 @@ class VerifySignatureTallyComponentShuffleTest extends TallyVerificationTest {
 				.findFirst()
 				.orElseThrow();
 
-		assertTrue(((VerifySignatureTallyComponentShuffle) verification).verifySignature(tallyComponentShufflePayload));
+		assertTrue(((VerifySignatureTallyComponentShuffle) verification).verifySignatureTallyComponentShuffle(tallyComponentShufflePayload));
 	}
 
 	@Test
@@ -97,7 +97,7 @@ class VerifySignatureTallyComponentShuffleTest extends TallyVerificationTest {
 				Alias.SDM_TALLY);
 		tallyComponentShufflePayload.setSignature(dummySignature);
 
-		assertFalse(((VerifySignatureTallyComponentShuffle) verification).verifySignature(tallyComponentShufflePayload));
+		assertFalse(((VerifySignatureTallyComponentShuffle) verification).verifySignatureTallyComponentShuffle(tallyComponentShufflePayload));
 	}
 
 	@ParameterizedTest

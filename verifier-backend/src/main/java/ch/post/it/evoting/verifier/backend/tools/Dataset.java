@@ -75,6 +75,10 @@ public class Dataset {
 		return expectedType;
 	}
 
+	public Path getDatasetPath() {
+		return datasetPath;
+	}
+
 	public void removeUnpackFolder() {
 		this.unpackFolder = null;
 		this.isUnpacked = false;

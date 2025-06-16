@@ -271,7 +271,7 @@ public class VerifierProcessor {
 		checkNotNull(datasetConfigurationContext, "A context dataset must be uploaded first.");
 
 		if (tallyDataset != null) {
-			datasetService.clean(tallyDataset, false);
+			datasetService.clean(tallyDataset, true);
 		}
 
 		try (final InputStream datasetInputStream = Files.newInputStream(filePath)) {
