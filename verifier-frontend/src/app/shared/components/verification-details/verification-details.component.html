@@ -26,54 +26,54 @@
   </thead>
   <tbody>
     @for (verification of verifications | keyvalue; track $index; let last = $last) {
-      <tr [ngClass]="{'table-warning': isNotOK(verification.value.status), 'table-danger': isError(verification.value.status)}">
+      <tr [ngClass]="{'table-warning': isNotOK(verification.key), 'table-danger': isError(verification.key)}">
         <td class="text-center fs-5">
-          @if (isDefault(verification.value.status)) {
+          @if (isDefault(verification.key)) {
             <i aria-hidden="true" class="text-primary bi bi-arrow-right-circle"></i>
           }
-          @if (isRunning(verification.value.status)) {
+          @if (isRunning(verification.key)) {
             <div class="spinner">
               <span aria-hidden="true" class="spinner-border spinner-border-sm"></span>
             </div>
           }
-          @if (isOK(verification.value.status)) {
+          @if (isOK(verification.key)) {
             <i aria-hidden="true" class="text-success bi bi-check-circle"></i>
           }
-          @if (isNotOK(verification.value.status)) {
+          @if (isNotOK(verification.key)) {
             <i aria-hidden="true" class="text-warning bi bi-x-circle"></i>
           }
-          @if (isError(verification.value.status)) {
+          @if (isError(verification.key)) {
             <i aria-hidden="true" class="text-danger bi bi-exclamation-circle"></i>
           }
         </td>
-        <td class="text-center block-name">{{verification.value.block}}</td>
-        <td class="text-center">{{verification.value.verificationId}}</td>
-        <td>{{verification.value.name}}</td>
-        <td>{{verification.value.category}}</td>
-        <td>{{verification.value.description | localize}}</td>
+        <td class="text-center block-name">{{ verification.value.block }}</td>
+        <td class="text-center">{{ verification.value.verificationId }}</td>
+        <td>{{ verification.value.name }}</td>
+        <td>{{ verification.value.category }}</td>
+        <td>{{ verification.value.description | localize }}</td>
       </tr>
-      @if (isNotOK(verification.value.status) || isError(verification.value.status)) {
-        <tr [ngClass]="{'table-warning': isNotOK(verification.value.status), 'table-danger': isError(verification.value.status)}">
-			<td></td>
-			<td colspan="5">
-            {{verification.value.message | localize}}
-            @if (verification.value.errorStack !== null && !isReportDisplay) {
+      @if (isNotOK(verification.key) || isError(verification.key)) {
+        <tr [ngClass]="{'table-warning': isNotOK(verification.key), 'table-danger': isError(verification.key)}">
+          <td></td>
+          <td colspan="5">
+            {{ verification.value.message | localize }}
+            @if (showErrorStack(verification.key)) {
               <a (click)="$event.preventDefault(); toggleCollapse($index)" aria-controls="collapseExample" aria-expanded="false"
                  class="text-decoration-none" data-html2canvas-ignore data-toggle="collapse"
                  href="#">
-				  [{{ (collapsedStates[$index] ? 'verificationDetails.hideError' : 'verificationDetails.showError') | translate }}]
+                [{{ (collapsedStates[$index] ? 'verificationDetails.hideError' : 'verificationDetails.showError') | translate }}]
               </a>
             }
-				<div [ngbCollapse]="!collapsedStates[$index]" class="collapse text-monospace text-break"
-                   id="{{'collapseExample' + verification.value.id}}">
-                <hr>
-                {{verification.value.errorStack[0]}}
-                <ul style="list-style-type:none;">
-                  @for (stack of verification.value.errorStack | slice:1; track $index) {
-                    <li>{{stack}}</li>
-                  }
-                </ul>
-              </div>
+            <div [ngbCollapse]="!collapsedStates[$index]" class="collapse text-monospace text-break"
+                 id="{{'collapseExample' + verification.value.id}}">
+              <hr>
+              {{ errorStack(verification.key)[0] }}
+              <ul style="list-style-type:none;">
+                @for (stack of errorStack(verification.key) | slice:1; track $index) {
+                  <li>{{ stack }}</li>
+                }
+              </ul>
+            </div>
           </td>
         </tr>
       }

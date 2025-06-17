@@ -24,24 +24,24 @@
         <span class="visually-hidden">{{ 'common.loading' | translate }}</span>
       </div>
       <p>
-        {{ 'verify.verificationRunning' | translate }} ({{statusCounterRUNNING() }}/{{ verificationsSize}})
+        {{ 'verify.verificationRunning' | translate }} ({{ statusCounterRUNNING() }}/{{ verificationsSize }})
       </p>
     </div>
   }
   @if (isProcessComplete()) {
     <div [ngClass]="{'alert-success': !hasFailed() && !hasError(), 'alert-warning': hasFailed(), 'alert-danger': hasError()}"
-		 class="alert page-actions">
+         class="alert page-actions">
       <i aria-hidden="true"
-		 [ngClass]="{'bi-check-circle': !hasFailed() && !hasError(), 'bi-x-circle': hasFailed(), 'bi-exclamation-circle': hasError()}"
-		 class="bi"></i>
+         [ngClass]="{'bi-check-circle': !hasFailed() && !hasError(), 'bi-x-circle': hasFailed(), 'bi-exclamation-circle': hasError()}"
+         class="bi"></i>
       <p>
         {{ 'verify.verificationCompleted' | translate }}
-		  @if (hasError()){
-			  {{ 'verify.verificationHasErrors' | translate }}
-		  }
-		  @if (hasFailed()){
-			  {{ 'verify.verificationHasFailed' | translate }}
-		  }
+        @if (hasError()) {
+          {{ 'verify.verificationHasErrors' | translate }}
+        }
+        @if (hasFailed()) {
+          {{ 'verify.verificationHasFailed' | translate }}
+        }
       </p>
       <button (click)="resetProcess()" [disabled]="!isProcessComplete()" class="btn btn-link" type="button">
         <i aria-hidden="true" class="bi-arrow-counterclockwise"></i>

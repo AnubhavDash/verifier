@@ -41,28 +41,36 @@ export class VerificationDetailsComponent {
 
   collapsedStates: boolean[] = [];
 
-  toggleCollapse(index: number){
+  toggleCollapse(index: number) {
     this.collapsedStates[index] = !this.collapsedStates[index];
   }
 
-  isDefault(status: string): boolean {
-    return status === VerificationStatus.IDLE;
+  isDefault(key: unknown): boolean {
+    return this.verifications[<string> key].status === VerificationStatus.IDLE;
   }
 
-  isRunning(status: string): boolean {
-    return status === VerificationStatus.RUNNING;
+  isRunning(key: unknown): boolean {
+    return this.verifications[<string> key].status === VerificationStatus.RUNNING;
   }
 
-  isOK(status: string): boolean {
-    return status === VerificationStatus.OK;
+  isOK(key: unknown): boolean {
+    return this.verifications[<string> key].status === VerificationStatus.OK;
   }
 
-  isNotOK(status: string): boolean {
-    return status === VerificationStatus.NOK;
+  isNotOK(key: unknown): boolean {
+    return this.verifications[<string> key].status === VerificationStatus.NOK;
   }
 
-  isError(status: string): boolean {
-    return status === VerificationStatus.ERROR;
+  isError(key: unknown): boolean {
+    return this.verifications[<string> key].status === VerificationStatus.ERROR;
+  }
+
+  showErrorStack(key: unknown): boolean {
+    return this.verifications[<string> key].errorStack !== null && !this.isReportDisplay;
+  }
+
+  errorStack(key: unknown): string[] {
+    return this.verifications[<string> key].errorStack || [];
   }
 
 }
