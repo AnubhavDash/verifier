@@ -26,11 +26,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
-import ch.post.it.evoting.cryptoprimitives.hashing.HashFactory;
 import ch.post.it.evoting.cryptoprimitives.mixnet.Mixnet;
 import ch.post.it.evoting.cryptoprimitives.mixnet.MixnetFactory;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProof;
 import ch.post.it.evoting.cryptoprimitives.zeroknowledgeproofs.ZeroKnowledgeProofFactory;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.channelsecurity.XMLSignatureService;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.electoralmodel.FactorizeAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.electoralmodel.PrimesMappingTableAlgorithms;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.DecodeWriteInsAlgorithm;
@@ -38,7 +38,7 @@ import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.wri
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.IsWriteInOptionAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.writeins.QuadraticResidueToWriteInAlgorithm;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.tally.mixoffline.ProcessPlaintextsAlgorithm;
-import ch.post.it.evoting.evotinglibraries.xml.XmlNormalizer;
+import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
 import ch.post.it.evoting.verifier.backend.VerificationResult;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationSuite;
 import ch.post.it.evoting.verifier.backend.verifications.tally.TallyVerificationTest;
@@ -64,8 +64,7 @@ class VerifyTallyControlComponentTest extends TallyVerificationTest {
 	private static final VerifyTallyControlComponentBallotBoxAlgorithm VERIFY_TALLY_CONTROL_COMPONENT_BALLOT_BOX_ALGORITHM = new VerifyTallyControlComponentBallotBoxAlgorithm(
 			MixnetFactory.createMixnet(), ZeroKnowledgeProofFactory.createZeroKnowledgeProof(), PRIMES_MAPPING_TABLE_ALGORITHMS,
 			VERIFY_PROCESS_PLAINTEXTS_ALGORITHM);
-	private static final VerifyECH0222Algorithm VERIFY_TALLY_FILES_ALGORITHM = new VerifyECH0222Algorithm(HashFactory.createHash(),
-			new XmlNormalizer());
+	private static final VerifyECH0222Algorithm VERIFY_TALLY_FILES_ALGORITHM = new VerifyECH0222Algorithm(new XMLSignatureService(), new XmlFileRepository<>());
 
 	@SystemStub
 	private static EnvironmentVariables environmentVariables;

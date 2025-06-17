@@ -28,6 +28,7 @@ import org.springframework.context.annotation.Primary;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ch.ech.xmlns.ech_0222._3.Delivery;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamal;
 import ch.post.it.evoting.cryptoprimitives.elgamal.ElGamalFactory;
 import ch.post.it.evoting.cryptoprimitives.hashing.Argon2;
@@ -214,7 +215,7 @@ public class VerifierBeanConfig {
 	}
 
 	@Bean
-	XmlFileRepository<ch.ech.xmlns.ech_0222._3.Delivery> ech0222DeliveryXmlFileRepository() {
+	XmlFileRepository<Delivery> ech0222DeliveryXmlFileRepository() {
 		return new XmlFileRepository<>();
 	}
 
