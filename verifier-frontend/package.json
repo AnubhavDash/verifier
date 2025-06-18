@@ -10,7 +10,8 @@
     "lint": "ng lint",
     "postbuild": "cd app/ && npm ci && cd .. && run-script-os",
     "postbuild:darwin:linux": "USE_HARD_LINKS=false BUILD_NUMBER=0 electron-builder build -w --publish=never",
-    "postbuild:win32": "electron-builder build -w --publish=never"
+    "postbuild:win32": "electron-builder build -w --publish=never",
+    "install:vendor": "npm install e-voting-libraries-ui-kit"
   },
   "private": true,
   "dependencies": {
