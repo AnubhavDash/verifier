@@ -15,6 +15,9 @@
  */
 package ch.post.it.evoting.verifier.backend.verifications.setup.evidence;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.nio.file.Path;
 
 import org.springframework.stereotype.Component;
@@ -68,11 +71,8 @@ public class VerifySchnorrProofs extends AbstractVerification {
 
 		final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload = extractionService.getSetupComponentPublicKeysPayload(
 				inputDirectoryPath);
-		final SetupComponentPublicKeys setupComponentPublicKeys = setupComponentPublicKeysPayload.getSetupComponentPublicKeys();
 
-		final VerifyKeyGenerationSchnorrProofsInput input = new VerifyKeyGenerationSchnorrProofsInput(setupComponentPublicKeys);
-
-		final boolean result = verifyKeyGenerationSchnorrProofsAlgorithm.verifyKeyGenerationSchnorrProofs(electionEventContext, input);
+		final boolean result = verifySchnorrProofs(electionEventContext, setupComponentPublicKeysPayload.getSetupComponentPublicKeys());
 
 		if (result) {
 			return VerificationResult.success(getVerificationDefinition());
@@ -80,5 +80,25 @@ public class VerifySchnorrProofs extends AbstractVerification {
 			return VerificationResult.failure(getVerificationDefinition(),
 					TranslationHelper.getFromResourceBundle(SetupVerificationSuite.RESOURCE_BUNDLE_NAME, "setup.verification504.nok.message"));
 		}
+	}
+
+	boolean verifySchnorrProofs(final ElectionEventContext electionEventContext, final SetupComponentPublicKeys setupComponentPublicKeys) {
+
+		checkNotNull(setupComponentPublicKeys);
+
+		// Context.
+		final ElectionEventContext context = checkNotNull(electionEventContext);
+
+		// Input.
+		// setupComponentPublicKeys contains all the inputs defined in the specification
+
+		// Require.
+		final int delta_max = context.maximumNumberOfWriteInsPlusOne();
+		final int phi_max = context.maximumNumberOfSelections();
+		checkArgument(delta_max - 1 <= phi_max);
+
+		// Operation.
+		final VerifyKeyGenerationSchnorrProofsInput input = new VerifyKeyGenerationSchnorrProofsInput(setupComponentPublicKeys);
+		return verifyKeyGenerationSchnorrProofsAlgorithm.verifyKeyGenerationSchnorrProofs(context, input);
 	}
 }
