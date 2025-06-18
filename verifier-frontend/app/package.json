@@ -2,7 +2,7 @@
   "name": "Verifier",
   "version": "1.6.0-0-SNAPSHOT",
   "license": "MIT",
-  "main": "main.js",
+  "main": "electron-main.js",
   "dependencies": {
     "winston": "3.17.0",
     "minimal-request-promise": "1.5.0",
