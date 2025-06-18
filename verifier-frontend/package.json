@@ -1,6 +1,6 @@
 {
   "name": "Verifier",
-  "version": "1.6.0-0-RC10",
+  "version": "1.6.0-0-RC11",
   "description": "Swiss Post Verifier",
   "license": "MIT",
   "main": "main.js",
@@ -10,7 +10,8 @@
     "lint": "ng lint",
     "postbuild": "cd app/ && npm ci && cd .. && run-script-os",
     "postbuild:darwin:linux": "USE_HARD_LINKS=false BUILD_NUMBER=0 electron-builder build -w --publish=never",
-    "postbuild:win32": "electron-builder build -w --publish=never"
+    "postbuild:win32": "electron-builder build -w --publish=never",
+    "install:vendor": "npm install e-voting-libraries-ui-kit"
   },
   "private": true,
   "dependencies": {
@@ -65,5 +66,6 @@
   },
   "overrides": {
     "websocket": "1.0.35"
-  }
+  },
+  "builders": "builders.json"
 }

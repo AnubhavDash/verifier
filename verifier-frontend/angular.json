@@ -9,7 +9,7 @@
       "projectType": "application",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "./:browser",
           "options": {
             "outputPath": "dist",
             "index": "src/index.html",
@@ -44,7 +44,8 @@
                 }
               ],
               "optimization": true,
-              "outputHashing": "all",
+              "subresourceIntegrity": true,
+              "outputHashing": "none",
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,

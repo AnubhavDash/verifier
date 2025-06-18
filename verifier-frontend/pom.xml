@@ -20,7 +20,7 @@
   <parent>
     <artifactId>verifier</artifactId>
     <groupId>ch.post.it.evoting.verifier</groupId>
-    <version>1.6.0.0-RC10</version>
+    <version>1.6.0.0-RC11</version>
   </parent>
 
   <artifactId>verifier-frontend</artifactId>
@@ -163,4 +163,62 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>update-npm-vendors</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>${exec-maven-plugin.version}</version>
+            <executions>
+              <execution>
+                <id>npm ci</id>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <phase>generate-sources</phase>
+                <configuration>
+                  <executable>npm</executable>
+                  <arguments>
+                    <argument>ci</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>Npm run install vendor</id>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <phase>generate-sources</phase>
+                <configuration>
+                  <executable>npm</executable>
+                  <arguments>
+                    <argument>run</argument>
+                    <argument>install:vendor</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>Clean path</id>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>sed</executable>
+                  <arguments>
+                    <argument>-i</argument>
+                    <argument>/\"resolved\": \"http.*/d</argument>
+                    <argument>package-lock.json</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
