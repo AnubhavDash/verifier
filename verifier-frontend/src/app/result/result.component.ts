@@ -38,9 +38,13 @@ export class ResultComponent implements OnInit {
   ngOnInit(): void {
     this.configuration = this.sessionStorageService.getConfiguration();
     this.resultService.getElectionEventResult().subscribe(result => {
-      this.result = result;
+      this.result = this.sortBallotBoxes(result);
     });
     this.isReportGenerated.set(this.sessionStorageService.getElectionResultReportGenerated());
+  }
+
+  sortBallotBoxes(ballotBoxResults: BallotBoxResults[]): BallotBoxResults[] {
+    return [...ballotBoxResults].sort((a, b) => a.description.localeCompare(b.description));
   }
 
   // PDF Export.
