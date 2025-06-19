@@ -1,0 +1,132 @@
+{
+  "common": {
+    "loading": "Caricamento...",
+    "next": "Avanti"
+  },
+  "step": {
+    "dataset": "Carica set di dati",
+    "verify": "Verifica",
+    "report": "Esporta rapporto di verifica",
+    "result": "Esporta risultato elezioni"
+  },
+  "dataset": {
+    "instructions": "Seleziona una modalità e carica il/i set di dati richiesto/i.",
+    "title": "Caricamento set di dati",
+    "loading": "Caricamento...",
+    "action": {
+      "complete": "Set di dati caricato/i."
+    },
+    "verifierMode": {
+      "setup": "Setup Mode",
+      "tally": "Tally Mode",
+      "modal": {
+        "title": "Attenzione!",
+        "message": "Sei sicuro di voler cambiare modalità? Tutte le informazioni andranno perse.",
+        "buttonKeep": "Mantieni modalità",
+        "buttonChange": "Cambia modalità"
+      }
+    },
+    "datasetLoad": {
+      "title": "Caricamento set di dati",
+      "loadButton": "Carica set di dati {{datasetType}}",
+      "notLoadedYet": "Non ancora caricato. Clicca per caricarne uno",
+      "loading": "Caricamento set di dati...",
+      "error": "Si è verificato un errore durante il caricamento del set di dati. Maggiori dettagli nei log."
+    }
+  },
+  "datasetInformation": {
+    "verificationInput": {
+      "title": "Input di verifica",
+      "applicationVersion": "Versione dell’applicazione di verifica",
+      "applicationVersionValue": "Swiss Post Verifier {{appVersion}}",
+      "executionStart": "Data/ora di inizio esecuzione",
+      "executionEnd": "Data/ora di fine esecuzione",
+      "electionEventId": "ID evento elettorale",
+      "contextInputHash": "Hash dei dati contestuali in input (SHA-256)",
+      "tallyInputHash": "Hash dei dati di conteggio in input (SHA-256)",
+      "eCH022Hash": "Hash xml eCH‑0222 (SHA-256)",
+      "executedVerification": "Verifica eseguita"
+    },
+    "certificateAuthenticity": {
+      "title": "Controllo autenticità dei certificati",
+      "protocolParticipant": "Partecipante al protocollo",
+      "certificateFingerprint": "Fingerprint del certificato (SHA-256)",
+      "participantsKey": {
+        "canton": "Cantone",
+        "sdm_config": "Setup Component",
+        "sdm_tally": "Tally Control Component",
+        "control_component_1": "Control Component 1",
+        "control_component_2": "Control Component 2",
+        "control_component_3": "Control Component 3",
+        "control_component_4": "Control Component 4"
+      }
+    },
+    "configurationCorrectness": {
+      "title": "Controlli di correttezza della configurazione",
+      "electionEventName": "Nome dell’evento elettorale",
+      "electionEventSeed": "Seed dell’evento elettorale",
+      "electionEventDate": "Data dell’evento elettorale",
+      "numberOfElections": "Numero di elezioni",
+      "numberOfVotes": "Numero di voti (Abstimmungen / votations)",
+      "numberOfBallots": "Numero di schede (Vorlagen / objets)",
+      "numberOfNonTestBallotBoxes": "Numero di urne (non di test)",
+      "numberOfTestBallotBoxes": "Numero di urne di test",
+      "totalNumberOfAuthorizedNonTestVoters": "Numero totale di elettori autorizzati (non di test)",
+      "totalNumberOfTestVoters": "Numero totale di elettori di test"
+    },
+    "verificationOverview": {
+      "title": "Panoramica verifica",
+      "totalNumberOfRelevantVerifications": "Numero totale di verifiche rilevanti",
+      "numberOfSuccessfulVerifications": "Numero di verifiche riuscite",
+      "numberOfFailedVerifications": "Numero di verifiche fallite",
+      "numberOfErrorVerifications": "Numero di verifiche con errori"
+    }
+  },
+  "verify": {
+    "instructions": "Avvia la verifica.",
+    "title": "Verifica",
+    "action": {
+      "verify": "Verifica",
+      "reset": "Resetta"
+    },
+    "verificationRunning": "Verifica in corso...",
+    "verificationCompleted": "Verifica completata.",
+    "verificationHasFailed": "Alcune verifiche non sono riuscite.",
+    "verificationHasErrors": "Alcune verifiche contengono errori."
+  },
+  "report": {
+    "instructions": "Esporta il rapporto di verifica.",
+    "title": "Rapporto",
+    "action": {
+      "export": "Esporta",
+      "exportGenerating": "Generazione esportazione...",
+      "exportCompleted": "Esportazione completata."
+    },
+    "verificationConfirmation": {
+      "title": "Conferma della verifica",
+      "signersConfirmation": "I firmatari confermano di aver verificato la correttezza delle informazioni di cui sopra.",
+      "name": "Nome",
+      "signature": "Firma"
+    }
+  },
+  "verificationDetails": {
+    "header": {
+      "phase": "Fase",
+      "id": "ID",
+      "name": "Nome",
+      "category": "Categoria",
+      "description": "Descrizione"
+    },
+    "showError": "Mostra dettagli",
+    "hideError": "Nascondi dettagli"
+  },
+  "result": {
+    "instructions": "Esporta il risultato dell’elezione.",
+    "title": "Risultato elezione",
+    "action": {
+      "export": "Esporta",
+      "exportGenerating": "Generazione esportazione...",
+      "exportCompleted": "Esportazione completata."
+    }
+  }
+}
