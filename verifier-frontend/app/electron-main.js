@@ -13,80 +13,69 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const {app, BrowserWindow, Menu, dialog} = require('electron');
+const {app, screen, BrowserWindow, Menu, dialog} = require('electron');
 const {createLogger, format, transports} = require('winston');
 const fs = require('fs');
-const path = require('path');
+const {dirname, join} = require('path');
 const config = require('./config');
-const kill = require("tree-kill");
+const {spawn} = require("child_process");
+const requestPromise = require("minimal-request-promise");
 
-// Logger config
-const logDir = 'logs';
-const suffix = Date.now();
-if (!fs.existsSync(logDir)) {
-  fs.mkdirSync(logDir);
-}
-const filename = path.join(logDir, `verifier-frontend-app_${suffix}.log`);
-const logger = createLogger({
-  format: format.combine(
-    format.timestamp({
-      format: 'YYYY-MM-DD HH:mm:ss'
-    }),
-    format.json()
-  ),
-  transports: [new transports.File({filename})]
-});
+// Logger
+const logger = createFrontendLogger();
+// Electron processes
+let frontendWindow = null;
+let serverProcess = null;
 
-
-// Backend server process
-let serverProcess;
-const platform = process.platform;
-
-if (platform === 'win32') {
-  console.log(app.getAppPath());
-  logger.log('info', app.getAppPath());
-
-  serverProcess = require('child_process')
-    .spawn('cmd.exe', ['/c', 'run-backend.bat startup'],
-      {
-        cwd: app.getAppPath() + '/../'
-      });
-} else {
-  console.error('Non windows OS is currently not implemented');
-  logger.log('error', 'Non windows OS is currently not implemented');
-}
-
-if (!serverProcess) {
-  console.error('Unable to start server from ' + app.getAppPath());
-  logger.log('error', 'Unable to start server from ' + app.getAppPath());
+/**
+ * Bootstraps the application.
+ */
+const gotTheLock = app.requestSingleInstanceLock();
+if (!gotTheLock) {
   app.quit();
-  return;
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (frontendWindow) {
+      if (frontendWindow.isMinimized()) {
+        frontendWindow.restore();
+      }
+      frontendWindow.focus();
+    }
+  });
+  app.on('ready', function () {
+    configureFrontendWindow();
+  });
+
+  startUpServerProcess();
 }
 
-console.log('Server PID: ' + serverProcess.pid);
-logger.log('info', 'Server PID: ' + serverProcess.pid);
-
-
-let win;
-const prepareWindow = function () {
-
-  // Create the browser window.
-  win = new BrowserWindow({
+/**
+ * Frontend window configuration.
+ */
+function configureFrontendWindow() {
+  // Window size & configuration
+  const workAreaSize = screen.getPrimaryDisplay().workAreaSize;
+  const width = Math.min(1280, workAreaSize.width || 1280);
+  const height = Math.min(900, workAreaSize.height || 900);
+  frontendWindow = new BrowserWindow({
     show: false,
-    width: 1200,
-    height: 800,
+    width: width,
+    height: height,
     webPreferences: {
       plugins: true
     }
   });
-  win.webContents.on('did-finish-load', () => win.setTitle(`Swiss Post Verifier (${app.getVersion()})`));
+  frontendWindow.webContents.on('did-finish-load', () => frontendWindow.setTitle(`Swiss Post Verifier (${app.getVersion()})`));
+
+  // Menu configuration
   const menu = Menu.buildFromTemplate([
     {
       label: 'File',
       submenu: [
         {
           label: 'Toggle developer tools', click() {
-            win.webContents.toggleDevTools();
+            frontendWindow.webContents.toggleDevTools();
           },
           accelerator: 'F12'
         },
@@ -98,53 +87,63 @@ const prepareWindow = function () {
       ]
     }
   ]);
-  Menu.setApplicationMenu(menu);
+  frontendWindow.setMenu(menu);
+  frontendWindow.setIcon(`${__dirname}/favicon.ico`);
 
-  win.on('close', function (e) {
-    if (serverProcess) {
-      e.preventDefault();
-
-      logger.log('info', 'Killing backend server PID: ' + serverProcess.pid);
-      const shutdown = require('child_process').spawn('cmd.exe', ['/c', 'run-backend.bat shutdown'], {cwd: app.getAppPath() + '/../'});
-      shutdown.on('exit', function () {
-        logger.log('info', "Backend server process is killed.");
-        serverProcess = null;
-        win.close(); // recall window close method.
-      })
-    }
+  frontendWindow.on('close', function (e) {
+    shutdownServerProcess(e);
   });
 
   // Event when the window is closed.
-  win.on('closed', function () {
-    win = null;
+  frontendWindow.on('closed', function () {
+    frontendWindow = null;
     app.quit();
   });
-};
+}
 
-const startUp = function (counter) {
-  const requestPromise = require('minimal-request-promise');
+/**
+ * Handles the server process startup.
+ */
+function startUpServerProcess() {
+  serverProcess = spawn(
+    'cmd.exe',
+    ['/c', 'run-backend.bat startup'],
+    {cwd: app.getAppPath() + '/../'}
+  );
 
+  if (!serverProcess) {
+    console.error('Unable to start server from ' + app.getAppPath());
+    logger.log('error', 'Unable to start server from ' + app.getAppPath());
+    app.quit();
+    return;
+  }
+  console.log('Server PID: ' + serverProcess.pid);
+  logger.log('info', 'Server PID: ' + serverProcess.pid);
+
+  checkBackendStartUp(1);
+}
+
+/**
+ * Handles the server process readiness.
+ */
+function checkBackendStartUp(counter) {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-  app.on('ready', function () {
-    prepareWindow();
-  });
 
   requestPromise.get(config.serverConnectionCheckUrl()).then(
     function () {
       console.log('Server started!');
       logger.log('info', 'Server started!');
-      win.loadURL(`file://${__dirname}/index.html`);
-      win.maximize();
-      win.show();
+      frontendWindow.loadURL(`file://${__dirname}/index.html`);
+      frontendWindow.show();
     }, function () {
       console.log(`Waiting for the server start... (${counter}/20)`);
       logger.log('info', 'Waiting for the server start...');
       if (counter < 20) {
         setTimeout(function () {
-          startUp(counter + 1);
+          checkBackendStartUp(counter + 1);
         }, 800);
       } else {
-        dialog.showMessageBox(win, {
+        dialog.showMessageBox(frontendWindow, {
           type: 'error',
           message: 'Unable to connect to server. Application will stop'
         }).then(() => {
@@ -154,6 +153,46 @@ const startUp = function (counter) {
         });
       }
     });
-};
+}
 
-startUp(1);
+/**
+ * Handles the server process shutdown.
+ */
+function shutdownServerProcess(e) {
+  if (serverProcess) {
+    e.preventDefault();
+
+    logger.log('info', 'Killing backend server PID: ' + serverProcess.pid);
+    const shutdown = spawn(
+      'cmd.exe',
+      ['/c', 'run-backend.bat shutdown'],
+      {cwd: app.getAppPath() + '/../'}
+    );
+    shutdown.on('exit', function () {
+      logger.log('info', "Backend server process is killed.");
+      serverProcess = null;
+      frontendWindow.close(); // recall window close method.
+    })
+  }
+}
+
+/**
+ * Creates a frontend logger.
+ */
+function createFrontendLogger() {
+  const logDir = dirname(process.execPath) + '/logs';
+  const suffix = Date.now();
+  if (!fs.existsSync(logDir)) {
+    fs.mkdirSync(logDir);
+  }
+  const filename = join(logDir, `verifier-frontend-app_${suffix}.log`);
+  return createLogger({
+    format: format.combine(
+      format.timestamp({
+        format: 'YYYY-MM-DD HH:mm:ss'
+      }),
+      format.json()
+    ),
+    transports: [new transports.File({filename})]
+  });
+}
