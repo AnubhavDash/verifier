@@ -1,132 +1,132 @@
 {
   "common": {
-    "loading": "DE:Loading...",
-    "next": "DE:Next"
+    "loading": "Wird geladen...",
+    "next": "Weiter"
   },
   "step": {
-    "dataset": "Dataset laden",
-    "verify": "Dataset laden",
-    "report": "Verifizierungsbericht exportieren",
-    "result": "Wahl- und Abstimmungsergebnis exportieren"
+    "dataset": "Datensatz laden",
+    "verify": "Verifizieren",
+    "report": "Verifikationsbericht exportieren",
+    "result": "Wahlergebnis exportieren"
   },
   "dataset": {
-    "instructions": "DE:Please select a mode and load the requested dataset(s).",
-    "title": "DE:Dataset(s) load",
-    "loading": "DE:Loading...",
+    "instructions": "Bitte wählen Sie einen Modus und laden Sie die erforderlichen Datensätze.",
+    "title": "Datensatz/Datensätze laden",
+    "loading": "Wird geladen...",
     "action": {
-      "complete": "DE:Dataset(s) loaded."
+      "complete": "Datensatz/Datensätze geladen."
     },
     "verifierMode": {
-      "setup": "DE:Setup Mode",
-      "tally": "DE:Tally Mode",
+      "setup": "Setup Mode",
+      "tally": "Tally Mode",
       "modal": {
-        "title": "DE:Careful!",
-        "message": "DE:Are you sure you want to change the mode? All information will be lost.",
-        "buttonKeep": "DE:Keep mode",
-        "buttonChange": "DE:Change mode"
+        "title": "Achtung!",
+        "message": "Möchten Sie den Modus wirklich ändern? Alle Informationen gehen verloren.",
+        "buttonKeep": "Modus behalten",
+        "buttonChange": "Modus ändern"
       }
     },
     "datasetLoad": {
-      "title" : "DE:Dataset load",
-      "loadButton": "DE:Load {{datasetType}} dataset",
-      "notLoadedYet": "DE:Not loaded yet. Click to load one",
-      "loading": "DE:Loading dataset...",
-      "error": "DE:An error occurred while loading the dataset. More details in the logs."
+      "title": "Datensatz laden",
+      "loadButton": "{{datasetType}}-Datensatz laden",
+      "notLoadedYet": "Noch nicht geladen. Klicken, um einen zu laden",
+      "loading": "Datensatz wird geladen...",
+      "error": "Beim Laden des Datensatzes ist ein Fehler aufgetreten. Weitere Details im Log."
     }
   },
   "datasetInformation": {
     "verificationInput": {
-      "title": "DE:Verification Input",
-      "applicationVersion": "DE:Verifier application version",
-      "applicationVersionValue": "DE:Swiss Post Verifier {{appVersion}}",
-      "executionStart": "DE:Execution start date / time",
-      "executionEnd": "DE:Execution end date / time",
-      "electionEventId": "DE:Election event id",
-      "contextInputHash": "DE:Context data input hash (SHA-256)",
-      "tallyInputHash": "DE:Tally data input hash (SHA-256)",
-      "eCH022Hash": "DE:eCH-0222 xml hash (SHA-256)",
-      "executedVerification": "DE:Executed Verification"
+      "title": "Verifikations-Eingabe",
+      "applicationVersion": "Version der Verifikator-App",
+      "applicationVersionValue": "Swiss Post Verifier {{appVersion}}",
+      "executionStart": "Startdatum/-uhrzeit der Ausführung",
+      "executionEnd": "Enddatum/-uhrzeit der Ausführung",
+      "electionEventId": "Wahlereignis-ID",
+      "contextInputHash": "Kontextdaten-Eingabe-Hash (SHA-256)",
+      "tallyInputHash": "Auswertungsdaten-Eingabe-Hash (SHA-256)",
+      "eCH022Hash": "eCH‑0222‑XML-Hash (SHA-256)",
+      "executedVerification": "Durchgeführte Verifikation"
     },
     "certificateAuthenticity": {
-      "title": "DE:Certificate Authenticity checks",
-      "protocolParticipant": "DE:Protocol participant",
-      "certificateFingerprint": "DE:Certificate fingerprint (SHA-256)",
+      "title": "Zertifikats‑Authentizitätsprüfungen",
+      "protocolParticipant": "Protokollteilnehmer",
+      "certificateFingerprint": "Zertifikat-Fingerabdruck (SHA-256)",
       "participantsKey": {
-        "canton": "DE:Canton",
-        "sdm_config": "DE:Setup Component",
-        "sdm_tally": "DE:Tally Control Component",
-        "control_component_1": "DE:Control Component 1",
-        "control_component_2": "DE:Control Component 2",
-        "control_component_3": "DE:Control Component 3",
-        "control_component_4": "DE:Control Component 4"
+        "canton": "Kanton",
+        "sdm_config": "Setup Component",
+        "sdm_tally": "Tally Control Component",
+        "control_component_1": "Control Component 1",
+        "control_component_2": "Control Component 2",
+        "control_component_3": "Control Component 3",
+        "control_component_4": "Control Component 4"
       }
     },
     "configurationCorrectness": {
-      "title": "DE:Configuration Correctness checks",
-      "electionEventName": "DE:Election Event Name",
-      "electionEventSeed": "DE:Election Event Seed",
-      "electionEventDate": "DE:Election Event Date",
-      "numberOfElections": "DE:Number of elections",
-      "numberOfVotes": "DE:Number of votes (Abstimmungen / votations)",
-      "numberOfBallots": "DE:Number of ballots (Vorlagen / objets)",
-      "numberOfNonTestBallotBoxes": "DE:Number of (non-test) ballot boxes",
-      "numberOfTestBallotBoxes": "DE:Number of test ballot boxes",
-      "totalNumberOfAuthorizedNonTestVoters": "DE:Total number of authorized (non-test) voters",
-      "totalNumberOfTestVoters": "DE:Total number of test voters"
+      "title": "Konfigurationsprüfungen",
+      "electionEventName": "Name des Wahlereignisses",
+      "electionEventSeed": "Seed des Wahlereignisses",
+      "electionEventDate": "Datum des Wahlereignisses",
+      "numberOfElections": "Anzahl der Wahlen",
+      "numberOfVotes": "Anzahl Stimmen (Abstimmungen / votations)",
+      "numberOfBallots": "Anzahl Wahlzettel (Vorlagen / objets)",
+      "numberOfNonTestBallotBoxes": "Anzahl (nicht‑Test‑)Urnen",
+      "numberOfTestBallotBoxes": "Anzahl Test‑Urnen",
+      "totalNumberOfAuthorizedNonTestVoters": "Gesamtzahl berechtigter (nicht‑Test‑)Wähler",
+      "totalNumberOfTestVoters": "Gesamtzahl Testwähler"
     },
     "verificationOverview": {
-      "title": "DE:Verification Overview",
-      "totalNumberOfRelevantVerifications": "DE:Total number of relevant verifications",
-      "numberOfSuccessfulVerifications": "DE:Number of successful verifications",
-      "numberOfFailedVerifications": "DE:Number of failed verifications",
-      "numberOfErrorVerifications": "DE:Number of error verifications"
+      "title": "Verifikationsübersicht",
+      "totalNumberOfRelevantVerifications": "Gesamtzahl relevanter Verifikationen",
+      "numberOfSuccessfulVerifications": "Anzahl erfolgreicher Verifikationen",
+      "numberOfFailedVerifications": "Anzahl fehlgeschlagener Verifikationen",
+      "numberOfErrorVerifications": "Anzahl Verifikationen mit Fehlern"
     }
   },
-  "verify" : {
-    "instructions": "DE:Please run the verification.",
-    "title": "DE:Verification",
+  "verify": {
+    "instructions": "Bitte führen Sie die Verifikation durch.",
+    "title": "Verifikation",
     "action": {
-      "verify": "DE:Verify",
-      "reset": "DE:Reset"
+      "verify": "Verifizieren",
+      "reset": "Zurücksetzen"
     },
-    "verificationRunning": "DE:Verification running...",
-    "verificationCompleted": "DE:Verification completed.",
-    "verificationHasFailed": "DE:Some verifications failed.",
-    "verificationHasErrors": "DE:Some verifications have errors."
+    "verificationRunning": "Verifikation läuft...",
+    "verificationCompleted": "Verifikation abgeschlossen.",
+    "verificationHasFailed": "Einige Verifikationen sind fehlgeschlagen.",
+    "verificationHasErrors": "Einige Verifikationen enthalten Fehler."
   },
   "report": {
-    "instructions": "DE:Please export the verification report.",
-    "title": "DE:Report",
+    "instructions": "Bitte exportieren Sie den Verifikationsbericht.",
+    "title": "Bericht",
     "action": {
-      "export": "DE:Export",
-      "exportGenerating": "DE:Export generating...",
-      "exportCompleted": "DE:Export done."
+      "export": "Exportieren",
+      "exportGenerating": "Export wird erstellt...",
+      "exportCompleted": "Export abgeschlossen."
     },
     "verificationConfirmation": {
-      "title": "DE:Verification Confirmation",
-      "signersConfirmation": "DE:The signers hereby confirm that they verified the correctness of the above information.",
-      "name": "DE:Name",
-      "signature": "DE:Signature"
+      "title": "Verifikationsbestätigung",
+      "signersConfirmation": "Die Unterzeichner bestätigen hiermit, dass sie die Richtigkeit der obigen Informationen überprüft haben.",
+      "name": "Name",
+      "signature": "Unterschrift"
     }
   },
   "verificationDetails": {
     "header": {
-      "phase": "DE:Phase",
-      "id": "DE:Id",
-      "name": "DE:Name",
-      "category": "DE:Category",
-      "description": "DE:Description"
+      "phase": "Phase",
+      "id": "ID",
+      "name": "Name",
+      "category": "Kategorie",
+      "description": "Beschreibung"
     },
-    "showError": "DE:Show details",
-    "hideError": "DE:Hide details"
+    "showError": "Details anzeigen",
+    "hideError": "Details verbergen"
   },
   "result": {
-    "instructions": "DE:Please export the election result.",
-    "title": "DE:Election Result",
+    "instructions": "Bitte exportieren Sie das Wahlergebnis.",
+    "title": "Wahlergebnis",
     "action": {
-      "export": "DE:Export",
-      "exportGenerating": "DE:Export generating...",
-      "exportCompleted": "DE:Export done."
+      "export": "Exportieren",
+      "exportGenerating": "Export wird erstellt...",
+      "exportCompleted": "Export abgeschlossen."
     }
   }
 }

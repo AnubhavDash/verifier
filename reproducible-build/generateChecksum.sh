@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+# (c) Copyright 2025 Swiss Post Ltd.
+#
 
 hash_filename="checksum.md"
 hash_path="target"

@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
   private readonly sessionStorageService = inject(SessionStorageService);
 
   constructor() {
-    this.translate.addLangs(['en', 'de', 'fr']);
+    this.translate.addLangs(['en', 'de', 'fr', 'it']);
     this.translate.setDefaultLang('en');
     this.translate.use('en');
     this.availableLanguages = this.translate.getLangs();

@@ -1,6 +1,6 @@
 {
   "name": "Verifier",
-  "version": "1.6.0-0-RC11",
+  "version": "1.6.0-0-b0",
   "license": "MIT",
   "main": "electron-main.js",
   "dependencies": {
