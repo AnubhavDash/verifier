@@ -45,22 +45,13 @@ The following table indicates the correspondence between the Verifier and E-voti
 
 | Verifier version | [E-voting](https://gitlab.com/swisspost-evoting/e-voting/e-voting) version |
 |------------------|----------------------------------------------------------------------------|
-| 1.2.0            | 1.1.0                                                                      |
-| 1.3.0            | 1.2.0                                                                      |
-| 1.3.1            | 1.2.1                                                                      |
-| 1.3.2            | 1.2.2                                                                      |
-| 1.3.3            | 1.2.3                                                                      |
-| 1.4.0            | 1.3.0                                                                      |
-| 1.4.1            | 1.3.1                                                                      |
-| 1.4.2            | 1.3.2                                                                      |
-| 1.4.3            | 1.3.3                                                                      |
-| 1.4.4            | 1.3.4                                                                      |
 | 1.5.0            | 1.4.0                                                                      |
 | 1.5.1            | 1.4.1                                                                      |
 | 1.5.2            | 1.4.2                                                                      |
 | 1.5.3            | 1.4.3                                                                      |
 | 1.5.4            | 1.4.4                                                                      |
 | 1.5.5            | 1.4.5                                                                      |
+| 1.6.0            | 1.5.0                                                                      |
 
 ## Build information
 
@@ -81,11 +72,11 @@ The following instructions provide step-by-step information to build the Verifie
 1. Unzip the generated artifact.
 
 2. Ensure that the verifier's keystore and the keystore's password file are located at the place indicated in the
-   file [application.properties](./verifier-assembly/src/main/resources/application.properties).
+   file [application.yaml](./verifier-assembly/src/main/resources/application.yaml).
 
 3. Launch the Verifier.exe.
 
-4. Click on the dataset upload section and select a dataset. You can find a test dataset in the [./datasets](./datasets) subfolder.
+4. Click on the dataset upload section and select a dataset. See below on how to obtain an encrypted dataset.
 
 5. Click on 'Verify Setup' to run the setup verifications, or click on 'Verify Tally' to run the tally verifications.
 
@@ -126,9 +117,9 @@ The following table shows the contents of the tally dataset.
 | Online Control Component Shuffle         | `tally/ballotBoxes/${bb}/controlComponentShufflePayload_${j}.json`   | e-voting-libraries-domain: ControlComponentShufflePayload.schema.json   |
 | Tally Control Component Shuffle          | `tally/ballotBoxes/${bb}/tallyComponentShufflePayload.json`          | e-voting-libraries-domain: TallyComponentShufflePayload.schema.json     |
 | Tally Control Component Votes            | `tally/ballotBoxes/${bb}/tallyComponentVotesPayload.json`            | e-voting-libraries-domain: TallyComponentVotesPayload.schema.json       |
-| Tally Control Component Detailed Results | `tally/eCH-0222.xml`                                                 | e-voting-libraries-xml: eCH-0222-1-0.xsd                                |
+| Tally Control Component Detailed Results | `tally/eCH-0222.xml`                                                 | e-voting-libraries-xml: eCH-0222-3-0.xsd                                |
 
-The tally dataset in only used in the Verify Tally phase.
+The tally dataset is only used in the Verify Tally phase.
 
 ### Encryption
 
