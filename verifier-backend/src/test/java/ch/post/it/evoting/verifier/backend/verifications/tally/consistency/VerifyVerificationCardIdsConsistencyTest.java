@@ -113,7 +113,7 @@ class VerifyVerificationCardIdsConsistencyTest extends TallyVerificationTest {
 										controlComponentBallotBoxPayloads.getFirst().getElectionEventId(),
 										controlComponentBallotBoxPayloads.getFirst().getBallotBoxId(),
 										controlComponentBallotBoxPayloads.getFirst().getNodeId(),
-										controlComponentBallotBoxPayloads.get(1).getConfirmedEncryptedVotes()),
+										controlComponentBallotBoxPayloads.get(2).getConfirmedEncryptedVotes()),
 								new ControlComponentBallotBoxPayload(controlComponentBallotBoxPayloads.get(1).getEncryptionGroup(),
 										controlComponentBallotBoxPayloads.get(1).getElectionEventId(),
 										controlComponentBallotBoxPayloads.get(1).getBallotBoxId(),
