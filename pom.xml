@@ -19,7 +19,7 @@
 
 	<groupId>ch.post.it.evoting.verifier</groupId>
 	<artifactId>verifier</artifactId>
-	<version>1.6.0.0-SNAPSHOT</version>
+	<version>1.6.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -34,12 +34,12 @@
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
 		<maven.compiler.release>21</maven.compiler.release>
-		<project.build.outputTimestamp>2024-02-16T13:40:14+02:00</project.build.outputTimestamp>
+		<project.build.outputTimestamp>2025-06-20T17:23:01+02:00</project.build.outputTimestamp>
 
 		<bouncycastle.version>1.81</bouncycastle.version>
 		<commons-codec.version>1.18.0</commons-codec.version>
-		<crypto-primitives-version>1.5.0.0-b32</crypto-primitives-version>
-		<e-voting-libraries.version>1.5.0.0-b129</e-voting-libraries.version>
+		<crypto-primitives-version>1.5.0.0</crypto-primitives-version>
+		<e-voting-libraries.version>1.5.0.0</e-voting-libraries.version>
 		<guava.version>33.4.8-jre</guava.version>
 		<jackson.version>2.19.0</jackson.version>
 		<jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
@@ -64,7 +64,7 @@
 		<sonar-maven-plugin.version>5.1.0.4751</sonar-maven-plugin.version>
 		<spring-boot.version>3.5.0</spring-boot.version>
 		<system-stubs-jupiter.version>2.1.8</system-stubs-jupiter.version>
-		<testdata.version>1.5.0.0-b36</testdata.version>
+		<testdata.version>1.5.0.0</testdata.version>
 		<versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
 		<zip4j.version>2.11.5</zip4j.version>
 		<apache.commons-lang3>3.17.0</apache.commons-lang3>
