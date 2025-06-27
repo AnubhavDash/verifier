@@ -129,6 +129,7 @@ class VerifySignatureSetupComponentTallyDataTest extends SetupVerificationTest {
 		assertEquals(expected, getHashSetupComponentTallyDataSpec(setupComponentTallyDataPayload));
 	}
 
+	@SuppressWarnings("java:S117")
 	private String getHashSetupComponentTallyDataSpec(final SetupComponentTallyDataPayload setupComponentTallyDataPayload) {
 		final GqGroup encryptionGroup = setupComponentTallyDataPayload.getEncryptionGroup();
 		final HashableList p_q_g = HashableList.of(

@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 import {Component, Input} from '@angular/core';
-import packageJson from '../../../../../package.json';
-import {DatasetConfiguration} from '../../types/dataset-configuration';
-import {VerifierMode} from '../../types/verifier-mode.enum';
 
 @Component({
   templateUrl: 'dataset-information-item.component.html',

@@ -38,6 +38,7 @@ import ch.post.it.evoting.cryptoprimitives.math.GroupVector;
 import ch.post.it.evoting.cryptoprimitives.math.PrimeGqElement;
 import ch.post.it.evoting.evotinglibraries.domain.VotingOptionsConstants;
 
+@SuppressWarnings("java:S116")
 @DisplayName("VerifyVotingOptionsAlgorithm calling verifyVotingOptions with")
 class VerifyVotingOptionsAlgorithmTest {
 

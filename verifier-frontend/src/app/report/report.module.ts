@@ -23,24 +23,22 @@ import {PageTitleComponent} from "../shared/components/page-title/page-title.com
 import {TranslatePipe} from "@ngx-translate/core";
 import {DatasetInformationComponent} from "../shared/components/dataset-information/dataset-information.component";
 import {VerificationDetailsComponent} from "../shared/components/verification-details/verification-details.component";
-import {StatusFilterPipe} from "../shared/pipes/statusFilter.pipe";
-import {LocalizePipe} from "../shared/pipes/localize.pipe";
 import {DatasetInformationItemComponent} from "../shared/components/dataset-information-item/dataset-information-item.component";
 
 @NgModule({
   declarations: [
     ReportComponent
   ],
-	imports: [
-		BrowserModule,
-		FormsModule,
-		VerifierCommonModule,
-		PageTitleComponent,
-		TranslatePipe,
-		DatasetInformationComponent,
-		VerificationDetailsComponent,
-		DatasetInformationItemComponent
-	],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    VerifierCommonModule,
+    PageTitleComponent,
+    TranslatePipe,
+    DatasetInformationComponent,
+    VerificationDetailsComponent,
+    DatasetInformationItemComponent
+  ],
   exports: [],
   providers: [VerifyService]
 })
