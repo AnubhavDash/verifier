@@ -42,6 +42,7 @@ import ch.post.it.evoting.evotinglibraries.domain.VotingOptionsConstants;
 @DisplayName("VerifyVotingOptionsAlgorithm calling verifyVotingOptions with")
 class VerifyVotingOptionsAlgorithmTest {
 
+	@SuppressWarnings("java:S116") // Aligns with our coding conventions for algorithms.
 	private final int n_sup = VotingOptionsConstants.MAXIMUM_SUPPORTED_NUMBER_OF_VOTING_OPTIONS;
 	private final VerifyVotingOptionsAlgorithm verifyVotingOptionsAlgorithm = new VerifyVotingOptionsAlgorithm();
 

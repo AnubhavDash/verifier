@@ -40,7 +40,7 @@ function getUsersLocale(): string {
   }
   const wn = window.navigator as any;
   let lang = wn.languages ? wn.languages[0] : supportedLanguages[0];
-  lang = lang || wn.language || wn.browserLanguage || wn.userLanguage;
+  lang = (lang ?? (wn.language) ?? wn.browserLanguage) ?? wn.userLanguage;
 
   // Filter on supported languages
   lang = supportedLanguages.filter(function (value) {

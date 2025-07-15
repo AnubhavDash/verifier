@@ -58,7 +58,7 @@ export class VerifyComponent implements OnInit {
       this.verificationsSize = Object.keys(this.verifications).length;
     }
     const processTime = this.sessionStorageService.getProcessTime();
-    this.processTime = processTime ? processTime : new ProcessTime();
+    this.processTime = processTime || new ProcessTime();
     this.initializeWebSocketConnection();
   }
 
@@ -158,9 +158,7 @@ export class VerifyComponent implements OnInit {
     const isProcessComplete = this.statusCounterAll() === this.verificationsSize;
 
     if (isProcessComplete) {
-      if (this.processTime.end == null) {
-        this.processTime.end = new Date();
-      }
+      this.processTime.end ??= new Date();
       clearInterval(this.runtimeRefresh);
       this.sessionStorageService.setVerifications(this.verifications);
       this.sessionStorageService.setProcessTime(this.processTime);

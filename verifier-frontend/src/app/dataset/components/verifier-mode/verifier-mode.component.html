@@ -14,15 +14,27 @@
   ~ limitations under the License.
   -->
 <div class="form-check">
-  <input (click)="$event.preventDefault(); changeModeToSetup(changeModeModal)" name="radioMode" value="{{VerifierMode.SETUP}}" class="form-check-input" type="radio"
-         id="setupModeRadio" [checked]="isSetupMode()">
+  <input (click)="$event.preventDefault(); changeModeToSetup(changeModeModal)"
+         (keydown)="null"
+         name="radioMode"
+         value="{{VerifierMode.SETUP}}"
+         class="form-check-input"
+         type="radio"
+         id="setupModeRadio"
+         [checked]="isSetupMode()">
   <label class="form-check-label" for="setupModeRadio">
     {{ 'dataset.verifierMode.setup' | translate }}
   </label>
 </div>
 <div class="form-check">
-  <input (click)="$event.preventDefault(); changeModeToTally(changeModeModal)" name="radioMode" value="{{VerifierMode.TALLY}}" class="form-check-input" type="radio"
-         id="tallyModeRadio" [checked]="isTallyMode()">
+  <input (click)="$event.preventDefault(); changeModeToTally(changeModeModal)"
+         (keydown)="null"
+         name="radioMode"
+         value="{{VerifierMode.TALLY}}"
+         class="form-check-input"
+         type="radio"
+         id="tallyModeRadio"
+         [checked]="isTallyMode()">
   <label class="form-check-label" for="tallyModeRadio">
     {{ 'dataset.verifierMode.tally' | translate }}
   </label>

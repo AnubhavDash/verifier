@@ -53,11 +53,6 @@ export class SessionStorageService {
     return JSON.parse(sessionStorage.getItem(VERIFIER_MODE_KEY));
   }
 
-  clearVerifierMode(): void {
-    sessionStorage.removeItem(VERIFIER_MODE_KEY);
-    this.datasetLoadedSubject.next(false);
-  }
-
   setConfiguration(value: DatasetConfiguration): void {
     sessionStorage.setItem(CONFIGURATION_KEY, JSON.stringify(value));
     this.datasetLoadedSubject.next(true);
@@ -108,7 +103,7 @@ export class SessionStorageService {
   }
 
   getVerificationReportGenerated(): boolean {
-    return JSON.parse(sessionStorage.getItem(VERIFICATION_REPORT_GENERATED_KEY)) || false;
+    return JSON.parse(sessionStorage.getItem(VERIFICATION_REPORT_GENERATED_KEY)) ?? false;
   }
 
   clearVerificationReportGenerated(): void {
@@ -122,7 +117,7 @@ export class SessionStorageService {
   }
 
   getElectionResultReportGenerated(): boolean {
-    return JSON.parse(sessionStorage.getItem(ELECTION_RESULT_REPORT_GENERATED_KEY)) || false;
+    return JSON.parse(sessionStorage.getItem(ELECTION_RESULT_REPORT_GENERATED_KEY)) ?? false;
   }
 
   clearElectionResultReportGenerated(): void {

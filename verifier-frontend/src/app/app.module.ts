@@ -18,7 +18,7 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {DatasetModule} from './dataset/dataset.module';
 import {RouterModule, Routes} from '@angular/router';
-import {HttpClient, HttpClientModule, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {HttpClient, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {CommonModule} from '@angular/common';
 import {VerifierCommonModule} from './verifier-common-module';
 import {DatasetComponent} from "./dataset/dataset.component";
@@ -49,27 +49,26 @@ const routes: Routes = [
   declarations: [
     AppComponent,
   ],
-	imports: [
-		RouterModule.forRoot(routes),
-		BrowserModule,
-		DatasetModule,
-		VerifyModule,
-		ReportModule,
-		ResultModule,
-		NgbDropdownModule,
-		HttpClientModule,
-		CommonModule,
-		TranslateModule.forRoot({
-			loader: {
-				provide: TranslateLoader,
-				useFactory: HttpLoaderFactory,
-				deps: [HttpClient]
-			}
-		}),
-		VerifierCommonModule,
-		InternalHeaderComponent,
-		StepperItemComponent,
-	],
+  imports: [
+    RouterModule.forRoot(routes),
+    BrowserModule,
+    DatasetModule,
+    VerifyModule,
+    ReportModule,
+    ResultModule,
+    NgbDropdownModule,
+    CommonModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
+    VerifierCommonModule,
+    InternalHeaderComponent,
+    StepperItemComponent,
+  ],
   providers: [provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent]
 })
