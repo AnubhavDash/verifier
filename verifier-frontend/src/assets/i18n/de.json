@@ -63,16 +63,16 @@
     },
     "configurationCorrectness": {
       "title": "Konfigurationsprüfungen",
-      "electionEventName": "Name des Wahlereignisses",
-      "electionEventSeed": "Seed des Wahlereignisses",
-      "electionEventDate": "Datum des Wahlereignisses",
+      "electionEventName": "Name des Urnengangs",
+      "electionEventSeed": "Seed-Wert des Urnengangs",
+      "electionEventDate": "Datum des Urnengangs",
       "numberOfElections": "Anzahl der Wahlen",
-      "numberOfVotes": "Anzahl Stimmen (Abstimmungen / votations)",
-      "numberOfBallots": "Anzahl Wahlzettel (Vorlagen / objets)",
+      "numberOfVotes": "Anzahl Abstimmungen",
+      "numberOfBallots": "Anzahl Abstimmungsvorlagen",
       "numberOfNonTestBallotBoxes": "Anzahl (nicht‑Test‑)Urnen",
       "numberOfTestBallotBoxes": "Anzahl Test‑Urnen",
-      "totalNumberOfAuthorizedNonTestVoters": "Gesamtzahl berechtigter (nicht‑Test‑)Wähler",
-      "totalNumberOfTestVoters": "Gesamtzahl Testwähler"
+      "totalNumberOfAuthorizedNonTestVoters": "Gesamtzahl (nicht‑Test‑)Stimmberechtigte",
+      "totalNumberOfTestVoters": "Gesamtzahl Test-Stimmberechtigte"
     },
     "verificationOverview": {
       "title": "Verifikationsübersicht",
