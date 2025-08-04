@@ -33,6 +33,7 @@
     "e-voting-libraries-ui-kit": "file:vendor/e-voting-libraries-ui-kit",
     "html2pdf.js": "0.10.3",
     "jspdf": "3.0.1",
+    "jspdf-autotable": "5.0.2",
     "minimal-request-promise": "1.5.0",
     "net": "1.0.2",
     "rxjs": "7.8.2",

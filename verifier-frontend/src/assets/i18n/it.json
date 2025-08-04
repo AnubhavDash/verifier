@@ -44,7 +44,7 @@
       "electionEventId": "ID evento elettorale",
       "contextInputHash": "Hash dei dati contestuali in input (SHA-256)",
       "tallyInputHash": "Hash dei dati di conteggio in input (SHA-256)",
-      "eCH022Hash": "Hash xml eCH‑0222 (SHA-256)",
+      "eCH022Hash": "Hash xml eCH-0222 (SHA-256)",
       "executedVerification": "Verifica eseguita"
     },
     "certificateAuthenticity": {
@@ -102,15 +102,23 @@
       "exportGenerating": "Generazione esportazione...",
       "exportCompleted": "Esportazione completata."
     },
-    "verificationConfirmation": {
-      "title": "Conferma della verifica",
-      "signersConfirmation": "I firmatari confermano di aver verificato la correttezza delle informazioni di cui sopra.",
-      "name": "Nome",
-      "signature": "Firma"
+    "document": {
+      "title": "Rapporto di verifica",
+      "sections": {
+        "overallInformation": "Informazioni generali",
+        "verificationResults": "Risultati della verifica",
+        "verificationConfirmation": {
+          "title": "Conferma della verifica",
+          "signersConfirmation": "I firmatari confermano di aver verificato la correttezza delle informazioni di cui sopra.",
+          "name": "Nome",
+          "signature": "Firma"
+        }
+      }
     }
   },
   "verificationDetails": {
     "header": {
+      "status": "Stato",
       "phase": "Fase",
       "id": "ID",
       "name": "Nome",
@@ -127,6 +135,24 @@
       "export": "Esporta",
       "exportGenerating": "Generazione esportazione...",
       "exportCompleted": "Esportazione completata."
+    },
+    "resultConfirmation": {
+      "title": "Conferma del risultato",
+      "signersConfirmation": "I firmatari confermano di aver verificato la correttezza delle informazioni di cui sopra.",
+      "name": "Nome",
+      "signature": "Firma"
+    },
+    "document": {
+      "title": "Risultato elezione",
+      "label": {
+        "candidateName": "Nome",
+        "candidateVotes": "Suffragi personali",
+        "partyVotes": "Suffragi di partito",
+        "additionalVotes": "Suffragi di complemento",
+        "confirmedVotes": "Voti confermati",
+        "eligibleVoters": "Elettori aventi diritto",
+        "writeInPositions": "Candidati write-in"
+      }
     }
   }
 }

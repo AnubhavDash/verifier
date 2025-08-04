@@ -44,7 +44,7 @@
       "electionEventId": "ID de l’événement électoral",
       "contextInputHash": "Hash de l’entrée des données contextuelles (SHA-256)",
       "tallyInputHash": "Hash de l’entrée des données de comptage (SHA-256)",
-      "eCH022Hash": "Hash du xml eCH‑0222 (SHA-256)",
+      "eCH022Hash": "Hash du xml eCH-0222 (SHA-256)",
       "executedVerification": "Vérification exécutée"
     },
     "certificateAuthenticity": {
@@ -102,15 +102,23 @@
       "exportGenerating": "Génération de l’export...",
       "exportCompleted": "Export terminé."
     },
-    "verificationConfirmation": {
-      "title": "Confirmation de la vérification",
-      "signersConfirmation": "Les signataires confirment par la présente qu’ils ont vérifié l’exactitude des informations ci‑dessous.",
-      "name": "Nom",
-      "signature": "Signature"
+    "document": {
+      "title": "Rapport de vérification",
+      "sections": {
+        "overallInformation": "Informations générales",
+        "verificationResults": "Résultats de la vérification",
+        "verificationConfirmation": {
+          "title": "Confirmation de la vérification",
+          "signersConfirmation": "Les signataires confirment par la présente qu’ils ont vérifié l’exactitude des informations ci-dessous.",
+          "name": "Nom",
+          "signature": "Signature"
+        }
+      }
     }
   },
   "verificationDetails": {
     "header": {
+      "status": "Status",
       "phase": "Phase",
       "id": "Id",
       "name": "Nom",
@@ -127,6 +135,24 @@
       "export": "Exporter",
       "exportGenerating": "Génération de l’export...",
       "exportCompleted": "Export terminé."
+    },
+    "resultConfirmation": {
+      "title": "Confirmation du résultat",
+      "signersConfirmation": "Les signataires confirment par la présente qu’ils ont vérifié l’exactitude des informations ci-dessous.",
+      "name": "Nom",
+      "signature": "Signature"
+    },
+    "document": {
+      "title": "Résultat de l’élection",
+      "label": {
+        "candidateName": "Nom",
+        "candidateVotes": "Suffrages nominatifs",
+        "partyVotes": "Suffrages de parti",
+        "additionalVotes": "Suffrages complémentaires",
+        "confirmedVotes": "Votes confirmés",
+        "eligibleVoters": "Électeurs éligibles",
+        "writeInPositions": "Votes manuscrits"
+      }
     }
   }
 }

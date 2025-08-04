@@ -53,9 +53,9 @@ export class ResultComponent implements OnInit {
     this.isReportGenerated.set(false);
     // PDF Prefix: Election-result-{Seed}
     const pdfFilenamePrefix = `Election-result-${this.configuration.context.electionEventSeed}`;
-    this.exportToPdfService.export(
-      document.getElementById('election-event-result'),
+    this.exportToPdfService.exportElectionResult(
       pdfFilenamePrefix,
+      this.result,
       () => this.completeReportGeneration());
   }
 

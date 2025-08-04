@@ -102,15 +102,23 @@
       "exportGenerating": "Export generating...",
       "exportCompleted": "Export done."
     },
-    "verificationConfirmation": {
-      "title": "Verification Confirmation",
-      "signersConfirmation": "The signers hereby confirm that they verified the correctness of the above information.",
-      "name": "Name",
-      "signature": "Signature"
+    "document": {
+      "title": "Verification Report",
+      "sections": {
+        "overallInformation": "Overall information",
+        "verificationResults": "Verification results",
+        "verificationConfirmation": {
+          "title": "Verification confirmation",
+          "signersConfirmation": "The signers hereby confirm that they verified the correctness of the above information.",
+          "name": "Name",
+          "signature": "Signature"
+        }
+      }
     }
   },
   "verificationDetails": {
     "header": {
+      "status": "Status",
       "phase": "Phase",
       "id": "Id",
       "name": "Name",
@@ -127,6 +135,24 @@
       "export": "Export",
       "exportGenerating": "Export generating...",
       "exportCompleted": "Export done."
+    },
+    "resultConfirmation": {
+      "title": "Result confirmation",
+      "signersConfirmation": "The signers hereby confirm that they verified the correctness of the above information.",
+      "name": "Name",
+      "signature": "Signature"
+    },
+    "document": {
+      "title": "Election Result",
+      "label": {
+        "candidateName": "Name",
+        "candidateVotes": "Candidate votes",
+        "partyVotes": "Party Votes",
+        "additionalVotes": "Additional Votes",
+        "confirmedVotes": "Confirmed Votes",
+        "eligibleVoters": "Eligible Voters",
+        "writeInPositions": "Write-in candidates"
+      }
     }
   }
 }

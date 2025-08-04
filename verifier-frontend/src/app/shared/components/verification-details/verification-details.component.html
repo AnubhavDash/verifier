@@ -26,23 +26,23 @@
   </thead>
   <tbody>
     @for (verification of verifications | keyvalue; track $index; let last = $last) {
-      <tr [ngClass]="{'table-warning': isNotOK(verification.key), 'table-danger': isError(verification.key)}">
+      <tr [ngClass]="{'table-warning': isNotOK(verification.key, verifications), 'table-danger': isError(verification.key, verifications)}">
         <td class="text-center fs-5">
-          @if (isDefault(verification.key)) {
+          @if (isDefault(verification.key, verifications)) {
             <i aria-hidden="true" class="text-primary bi bi-arrow-right-circle"></i>
           }
-          @if (isRunning(verification.key)) {
+          @if (isRunning(verification.key, verifications)) {
             <div class="spinner">
               <span aria-hidden="true" class="spinner-border spinner-border-sm"></span>
             </div>
           }
-          @if (isOK(verification.key)) {
+          @if (isOK(verification.key, verifications)) {
             <i aria-hidden="true" class="text-success bi bi-check-circle"></i>
           }
-          @if (isNotOK(verification.key)) {
+          @if (isNotOK(verification.key, verifications)) {
             <i aria-hidden="true" class="text-warning bi bi-x-circle"></i>
           }
-          @if (isError(verification.key)) {
+          @if (isError(verification.key, verifications)) {
             <i aria-hidden="true" class="text-danger bi bi-exclamation-circle"></i>
           }
         </td>
@@ -52,12 +52,12 @@
         <td>{{ verification.value.category }}</td>
         <td>{{ verification.value.description | localize }}</td>
       </tr>
-      @if (isNotOK(verification.key) || isError(verification.key)) {
-        <tr [ngClass]="{'table-warning': isNotOK(verification.key), 'table-danger': isError(verification.key)}">
+      @if (isNotOK(verification.key, verifications) || isError(verification.key, verifications)) {
+        <tr [ngClass]="{'table-warning': isNotOK(verification.key, verifications), 'table-danger': isError(verification.key, verifications)}">
           <td></td>
           <td colspan="5">
             {{ verification.value.message | localize }}
-            @if (showErrorStack(verification.key)) {
+            @if (showErrorStack(verification.key, verifications)) {
               <a (click)="$event.preventDefault(); toggleCollapse($index)" aria-controls="collapseExample" aria-expanded="false"
                  class="text-decoration-none" data-html2canvas-ignore data-toggle="collapse"
                  href="#">
@@ -67,9 +67,9 @@
             <div [ngbCollapse]="!collapsedStates[$index]" class="collapse text-monospace text-break"
                  id="{{'collapseExample' + verification.value.id}}">
               <hr>
-              {{ errorStack(verification.key)[0] }}
+              {{ errorStack(verification.key, verifications)[0] }}
               <ul style="list-style-type:none;">
-                @for (stack of errorStack(verification.key) | slice:1; track $index) {
+                @for (stack of errorStack(verification.key, verifications) | slice:1; track $index) {
                   <li>{{ stack }}</li>
                 }
               </ul>

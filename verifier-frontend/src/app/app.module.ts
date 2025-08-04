@@ -22,7 +22,7 @@ import {HttpClient, provideHttpClient, withInterceptorsFromDi} from '@angular/co
 import {CommonModule} from '@angular/common';
 import {VerifierCommonModule} from './verifier-common-module';
 import {DatasetComponent} from "./dataset/dataset.component";
-import {InternalHeaderComponent} from "e-voting-libraries-ui-kit";
+import {InternalHeaderComponent, TranslateTextPipe} from "e-voting-libraries-ui-kit";
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {VerifyComponent} from "./verify/verify.component";
@@ -69,7 +69,7 @@ const routes: Routes = [
     InternalHeaderComponent,
     StepperItemComponent,
   ],
-  providers: [provideHttpClient(withInterceptorsFromDi())],
+  providers: [provideHttpClient(withInterceptorsFromDi()), TranslateTextPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {
