@@ -42,8 +42,8 @@ export class AppComponent implements OnInit {
 
   constructor() {
     this.translate.addLangs(['en', 'de', 'fr', 'it']);
-    this.translate.setDefaultLang('en');
-    this.translate.use('en');
+    this.translate.setDefaultLang('de');
+    this.translate.use('de');
     this.availableLanguages = this.translate.getLangs();
   }
 
