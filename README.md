@@ -58,8 +58,8 @@ The following table indicates the correspondence between the Verifier and E-voti
 The following instructions provide step-by-step information to build the Verifier of the Swiss Post Voting System on a Windows machine.
 
 1. Ensure you have Maven and Node installed. We tested with following versions:
-   * OpenJDK Runtime Environment Temurin-21.0.7+6 (build 21.0.7+6)
-    * Apache Maven 3.9.9
+   * OpenJDK Runtime Environment Temurin-21.0.8+9 (build 21.0.8+9)
+    * Apache Maven 3.9.11
     * Node: v20.19.1
 
 2. Build using Maven
