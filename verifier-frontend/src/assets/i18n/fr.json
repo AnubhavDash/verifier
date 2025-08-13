@@ -37,7 +37,7 @@
   "datasetInformation": {
     "verificationInput": {
       "title": "Entrée de vérification",
-      "applicationVersion": "Version de l’application de vérification",
+      "applicationVersion": "Version du verifier",
       "applicationVersionValue": "Swiss Post Verifier {{appVersion}}",
       "executionStart": "Date/heure de début d’exécution",
       "executionEnd": "Date/heure de fin d’exécution",
@@ -80,6 +80,16 @@
       "numberOfSuccessfulVerifications": "Nombre de vérifications réussies",
       "numberOfFailedVerifications": "Nombre de vérifications échouées",
       "numberOfErrorVerifications": "Nombre de vérifications avec erreurs"
+    },
+    "electionEventInfo": {
+      "title": "Information du scrutin",
+      "applicationVersion": "Version du verifier",
+      "applicationVersionValue": "Swiss Post Verifier {{appVersion}}",
+      "electionEventId": "ID de l’événement électoral",
+      "eCH022Hash": "Hash du xml eCH-0222 (SHA-256)",
+      "electionEventName": "Nom du scrutin",
+      "electionEventSeed": "Valeur de graine du scrutin",
+      "electionEventDate": "Date du scrutin"
     }
   },
   "verify": {
@@ -144,6 +154,7 @@
     },
     "document": {
       "title": "Résultat de l’élection",
+      "overallInformation": "Informations générales",
       "label": {
         "candidateName": "Nom",
         "candidateVotes": "Suffrages nominatifs",
