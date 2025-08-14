@@ -13,14 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, Input} from '@angular/core';
+import {VerificationDefinition} from "./verification-definition";
+import {DatasetConfiguration} from "./dataset-configuration";
+import {VerifierMode} from "./verifier-mode.enum";
 
-@Component({
-  templateUrl: 'dataset-information-item.component.html',
-  selector: 'ver-dataset-information-item',
-  standalone: true
-})
-export class DatasetInformationItemComponent {
-  @Input() info: string;
-  @Input() value: string | number;
+export class VerificationReport {
+  configuration: DatasetConfiguration;
+  startDate: string;
+  endDate: string;
+  verifierMode: VerifierMode;
+  statusCounterOK: number;
+  statusCounterNOK: number;
+  statusCounterERROR: number;
+  verifications: Record<string, VerificationDefinition>
 }

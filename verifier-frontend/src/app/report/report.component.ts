@@ -22,6 +22,7 @@ import {VerificationStatus} from "../shared/types/verification-status";
 import {ExportToPdfService} from "../shared/services/export-to-pdf.service";
 import {Router} from "@angular/router";
 import {SessionStorageService} from "../shared/services/session-storage.service";
+import {formatDate} from "@angular/common";
 
 @Component({
   templateUrl: 'report.component.html',
@@ -62,11 +63,19 @@ export class ReportComponent implements OnInit {
     const type = this.verifierMode === VerifierMode.SETUP ? 'VerifyConfigPhase' : 'VerifyTally';
     const pdfFilenamePrefix = `Verifier-report-${type}-${this.configuration.context.electionEventSeed}`;
 
-    this.exportToPdfService.export(
-      document.getElementById('verification-report'),
+    this.exportToPdfService.exportVerificationReport(
       pdfFilenamePrefix,
-      () => this.completeReportGeneration(),
-      true
+      {
+        configuration: this.configuration,
+        startDate: formatDate(this.processTime.start, 'dd.MM.yyyy HH:mm:ss', 'en'),
+        endDate: formatDate(this.processTime.end, 'dd.MM.yyyy HH:mm:ss', 'en'),
+        verifierMode: this.verifierMode,
+        statusCounterOK: this.statusCounterOK(),
+        statusCounterNOK: this.statusCounterNOK(),
+        statusCounterERROR: this.statusCounterERROR(),
+        verifications: this.verifications
+      },
+      () => this.completeReportGeneration()
     );
   }
 

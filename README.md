@@ -39,6 +39,10 @@ We strive for excellent code quality to minimize the risk of bugs and vulnerabil
 
 An overview of all major changes within the published releases is available [here](CHANGELOG.md).
 
+## Security Considerations
+
+The verifier operates within the cantonal infrastructure under [strict operational and procedural security](https://gitlab.com/swisspost-evoting/e-voting/e-voting-documentation/-/blob/master/Operations/Recommendation_Safety_Measures_Cantonal_Infrastructure.md?ref_type=heads). For example, it runs on a hardened, offline machine under a strict four-eyes principle.
+
 ## E-voting Compatibility
 
 The following table indicates the correspondence between the Verifier and E-voting system version.
@@ -52,14 +56,15 @@ The following table indicates the correspondence between the Verifier and E-voti
 | 1.5.4            | 1.4.4                                                                      |
 | 1.5.5            | 1.4.5                                                                      |
 | 1.6.0            | 1.5.0                                                                      |
+| 1.6.1            | 1.5.1                                                                      |
 
 ## Build information
 
 The following instructions provide step-by-step information to build the Verifier of the Swiss Post Voting System on a Windows machine.
 
 1. Ensure you have Maven and Node installed. We tested with following versions:
-   * OpenJDK Runtime Environment Temurin-21.0.7+6 (build 21.0.7+6)
-    * Apache Maven 3.9.9
+   * OpenJDK Runtime Environment Temurin-21.0.8+9 (build 21.0.8+9)
+    * Apache Maven 3.9.11
     * Node: v20.19.1
 
 2. Build using Maven

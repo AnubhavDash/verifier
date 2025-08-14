@@ -126,6 +126,7 @@ class VerifySignatureControlComponentBallotBoxTest extends TallyVerificationTest
 		assertEquals(expected, getHashControlComponentBallotBoxSpec(controlComponentBallotBoxPayload));
 	}
 
+	@SuppressWarnings("java:S117")
 	private String getHashControlComponentBallotBoxSpec(final ControlComponentBallotBoxPayload controlComponentBallotBoxPayload) {
 
 		final HashableList hVotes = controlComponentBallotBoxPayload.getConfirmedEncryptedVotes().stream()

@@ -39,7 +39,7 @@ import ch.post.it.evoting.verifier.backend.verifications.setup.SetupVerification
 
 class VerifyElectionPublicKeyConsistencyTest extends SetupVerificationTest {
 
-	private final static ElGamal EL_GAMAL = ElGamalFactory.createElGamal();
+	private static final ElGamal EL_GAMAL = ElGamalFactory.createElGamal();
 
 	@BeforeAll
 	static void setupAll() {

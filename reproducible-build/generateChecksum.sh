@@ -3,16 +3,16 @@
 # (c) Copyright 2025 Swiss Post Ltd.
 #
 
-hash_filename="checksum.md"
-hash_path="target"
+hash_filename="${project.artifactId}_${project.version}_checksum.md"
+hash_path="target/reproducible-build"
+
 echo '| Artefact | Version | Checksum |' > "$hash_path/$hash_filename"
 echo '|----------|---------|----------|' >> "$hash_path/$hash_filename"
 
-for file in target/verifier-assembly-*.zip; do
+for file in ./verifier-assembly/target/verifier-assembly-*.zip; do
   if [[ -f "$file" ]]; then
     filename=$(basename "$file")
-    version=$1
     checksum=$(sha256sum "$file" | awk '{print $1}')
-    echo "| **$filename** | $version | $checksum |" >> "$hash_path/$hash_filename"
+    echo "| **$filename** | ${project.version} | $checksum |" >> "$hash_path/$hash_filename"
   fi
 done

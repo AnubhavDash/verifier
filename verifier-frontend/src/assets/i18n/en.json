@@ -67,8 +67,8 @@
       "electionEventSeed": "Election Event Seed",
       "electionEventDate": "Election Event Date",
       "numberOfElections": "Number of elections",
-      "numberOfVotes": "Number of votes (Abstimmungen / votations)",
-      "numberOfBallots": "Number of ballots (Vorlagen / objets)",
+      "numberOfVotes": "Number of popular votes",
+      "numberOfBallots": "Number of vote proposals",
       "numberOfNonTestBallotBoxes": "Number of (non-test) ballot boxes",
       "numberOfTestBallotBoxes": "Number of test ballot boxes",
       "totalNumberOfAuthorizedNonTestVoters": "Total number of authorized (non-test) voters",
@@ -80,6 +80,16 @@
       "numberOfSuccessfulVerifications": "Number of successful verifications",
       "numberOfFailedVerifications": "Number of failed verifications",
       "numberOfErrorVerifications": "Number of error verifications"
+    },
+    "electionEventInfo": {
+      "title": "Election Event information",
+      "applicationVersion": "Verifier application version",
+      "applicationVersionValue": "Swiss Post Verifier {{appVersion}}",
+      "electionEventId": "Election event id",
+      "eCH022Hash": "eCH-0222 xml hash (SHA-256)",
+      "electionEventName": "Election Event Name",
+      "electionEventSeed": "Election Event Seed",
+      "electionEventDate": "Election Event Date"
     }
   },
   "verify": {
@@ -102,15 +112,23 @@
       "exportGenerating": "Export generating...",
       "exportCompleted": "Export done."
     },
-    "verificationConfirmation": {
-      "title": "Verification Confirmation",
-      "signersConfirmation": "The signers hereby confirm that they verified the correctness of the above information.",
-      "name": "Name",
-      "signature": "Signature"
+    "document": {
+      "title": "Verification Report",
+      "sections": {
+        "overallInformation": "Overall information",
+        "verificationResults": "Verification results",
+        "verificationConfirmation": {
+          "title": "Verification confirmation",
+          "signersConfirmation": "The signers hereby confirm that they verified the correctness of the above information.",
+          "name": "Name",
+          "signature": "Signature"
+        }
+      }
     }
   },
   "verificationDetails": {
     "header": {
+      "status": "Status",
       "phase": "Phase",
       "id": "Id",
       "name": "Name",
@@ -127,6 +145,25 @@
       "export": "Export",
       "exportGenerating": "Export generating...",
       "exportCompleted": "Export done."
+    },
+    "resultConfirmation": {
+      "title": "Result confirmation",
+      "signersConfirmation": "The signers hereby confirm that they verified the correctness of the above information.",
+      "name": "Name",
+      "signature": "Signature"
+    },
+    "document": {
+      "title": "Election Result",
+      "overallInformation": "Overall information",
+      "label": {
+        "candidateName": "Name",
+        "candidateVotes": "Candidate votes",
+        "partyVotes": "Party Votes",
+        "additionalVotes": "Additional Votes",
+        "confirmedVotes": "Confirmed Votes",
+        "eligibleVoters": "Eligible Voters",
+        "writeInPositions": "Write-in candidates"
+      }
     }
   }
 }

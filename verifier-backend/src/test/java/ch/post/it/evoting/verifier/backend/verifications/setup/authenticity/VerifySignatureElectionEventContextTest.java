@@ -120,6 +120,7 @@ class VerifySignatureElectionEventContextTest extends SetupVerificationTest {
 		assertEquals(expected, getHashElectionEventContextPayloadSpec(electionEventContextPayload));
 	}
 
+	@SuppressWarnings("java:S117")
 	private String getHashElectionEventContextPayloadSpec(final ElectionEventContextPayload electionEventContextPayload) {
 
 		final ElectionEventContext electionEventContext = electionEventContextPayload.getElectionEventContext();

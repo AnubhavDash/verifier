@@ -13,14 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, Input} from '@angular/core';
+import {jsPDF} from "jspdf";
 
-@Component({
-  templateUrl: 'dataset-information-item.component.html',
-  selector: 'ver-dataset-information-item',
-  standalone: true
-})
-export class DatasetInformationItemComponent {
-  @Input() info: string;
-  @Input() value: string | number;
+export interface PDFConfig {
+  doc: jsPDF;
+  pageWidth: number;
+  x: number;
+  y: number;
 }

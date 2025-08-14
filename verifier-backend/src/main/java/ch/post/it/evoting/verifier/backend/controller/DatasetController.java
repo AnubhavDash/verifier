@@ -86,6 +86,9 @@ public class DatasetController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	// The Verifier runs on a trusted bare metal machine with no network or internet connection.
+	// Temporary file is created, used immediately, and deleted after processing.
+	@SuppressWarnings("java:S5443")
 	private Path createTemporaryDataset(final MultipartFile zip) {
 		Path importTempPath = null;
 		try {

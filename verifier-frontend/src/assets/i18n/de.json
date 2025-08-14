@@ -37,18 +37,18 @@
   "datasetInformation": {
     "verificationInput": {
       "title": "Verifikations-Eingabe",
-      "applicationVersion": "Version der Verifikator-App",
+      "applicationVersion": "Version des Verifiers",
       "applicationVersionValue": "Swiss Post Verifier {{appVersion}}",
       "executionStart": "Startdatum/-uhrzeit der Ausführung",
       "executionEnd": "Enddatum/-uhrzeit der Ausführung",
-      "electionEventId": "Wahlereignis-ID",
+      "electionEventId": "Urnengangs-ID",
       "contextInputHash": "Kontextdaten-Eingabe-Hash (SHA-256)",
       "tallyInputHash": "Auswertungsdaten-Eingabe-Hash (SHA-256)",
-      "eCH022Hash": "eCH‑0222‑XML-Hash (SHA-256)",
+      "eCH022Hash": "eCH-0222-XML-Hash (SHA-256)",
       "executedVerification": "Durchgeführte Verifikation"
     },
     "certificateAuthenticity": {
-      "title": "Zertifikats‑Authentizitätsprüfungen",
+      "title": "Zertifikats-Authentizitätsprüfungen",
       "protocolParticipant": "Protokollteilnehmer",
       "certificateFingerprint": "Zertifikat-Fingerabdruck (SHA-256)",
       "participantsKey": {
@@ -63,16 +63,16 @@
     },
     "configurationCorrectness": {
       "title": "Konfigurationsprüfungen",
-      "electionEventName": "Name des Wahlereignisses",
-      "electionEventSeed": "Seed des Wahlereignisses",
-      "electionEventDate": "Datum des Wahlereignisses",
+      "electionEventName": "Name des Urnengangs",
+      "electionEventSeed": "Seed-Wert des Urnengangs",
+      "electionEventDate": "Datum des Urnengangs",
       "numberOfElections": "Anzahl der Wahlen",
-      "numberOfVotes": "Anzahl Stimmen (Abstimmungen / votations)",
-      "numberOfBallots": "Anzahl Wahlzettel (Vorlagen / objets)",
-      "numberOfNonTestBallotBoxes": "Anzahl (nicht‑Test‑)Urnen",
-      "numberOfTestBallotBoxes": "Anzahl Test‑Urnen",
-      "totalNumberOfAuthorizedNonTestVoters": "Gesamtzahl berechtigter (nicht‑Test‑)Wähler",
-      "totalNumberOfTestVoters": "Gesamtzahl Testwähler"
+      "numberOfVotes": "Anzahl Abstimmungen",
+      "numberOfBallots": "Anzahl Abstimmungsvorlagen",
+      "numberOfNonTestBallotBoxes": "Anzahl (nicht-Test-)Urnen",
+      "numberOfTestBallotBoxes": "Anzahl Test-Urnen",
+      "totalNumberOfAuthorizedNonTestVoters": "Gesamtzahl (nicht-Test-)Stimmberechtigte",
+      "totalNumberOfTestVoters": "Gesamtzahl Test-Stimmberechtigte"
     },
     "verificationOverview": {
       "title": "Verifikationsübersicht",
@@ -80,6 +80,16 @@
       "numberOfSuccessfulVerifications": "Anzahl erfolgreicher Verifikationen",
       "numberOfFailedVerifications": "Anzahl fehlgeschlagener Verifikationen",
       "numberOfErrorVerifications": "Anzahl Verifikationen mit Fehlern"
+    },
+    "electionEventInfo": {
+      "title": "Urnengangs-Informationen",
+      "applicationVersion": "Version des Verifiers",
+      "applicationVersionValue": "Swiss Post Verifier {{appVersion}}",
+      "electionEventId": "Urnengangs-ID",
+      "eCH022Hash": "eCH-0222-XML-Hash (SHA-256)",
+      "electionEventName": "Name des Urnengangs",
+      "electionEventSeed": "Seed-Wert des Urnengangs",
+      "electionEventDate": "Datum des Urnengangs"
     }
   },
   "verify": {
@@ -102,15 +112,23 @@
       "exportGenerating": "Export wird erstellt...",
       "exportCompleted": "Export abgeschlossen."
     },
-    "verificationConfirmation": {
-      "title": "Verifikationsbestätigung",
-      "signersConfirmation": "Die Unterzeichner bestätigen hiermit, dass sie die Richtigkeit der obigen Informationen überprüft haben.",
-      "name": "Name",
-      "signature": "Unterschrift"
+    "document": {
+      "title": "Verifikationsbericht",
+      "sections": {
+        "overallInformation": "Allgemeine Informationen",
+        "verificationResults": "Verifikationsresultate",
+        "verificationConfirmation": {
+          "title": "Verifikationsbestätigung",
+          "signersConfirmation": "Die Unterzeichner bestätigen hiermit, dass sie die Richtigkeit der obigen Informationen überprüft haben.",
+          "name": "Name",
+          "signature": "Unterschrift"
+        }
+      }
     }
   },
   "verificationDetails": {
     "header": {
+      "status": "Status",
       "phase": "Phase",
       "id": "ID",
       "name": "Name",
@@ -127,6 +145,25 @@
       "export": "Exportieren",
       "exportGenerating": "Export wird erstellt...",
       "exportCompleted": "Export abgeschlossen."
+    },
+    "resultConfirmation": {
+      "title": "Ergebnisbestätigung",
+      "signersConfirmation": "Die Unterzeichner bestätigen hiermit, dass sie die Richtigkeit der obigen Informationen überprüft haben.",
+      "name": "Name",
+      "signature": "Unterschrift"
+    },
+    "document": {
+      "title": "Wahlergebnis",
+      "overallInformation": "Allgemeine Informationen",
+      "label": {
+        "candidateName": "Gesamtname",
+        "candidateVotes": "Kandidatenstimmen",
+        "partyVotes": "Parteistimmen",
+        "additionalVotes": "Zusatzstimmen",
+        "confirmedVotes": "Bestätigte Stimmen",
+        "eligibleVoters": "Stimmberechtigte",
+        "writeInPositions": "Nicht genannte Personen"
+      }
     }
   }
 }

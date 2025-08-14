@@ -117,6 +117,7 @@ class VerifySignatureControlComponentPublicKeysTest extends SetupVerificationTes
 		assertEquals(expected, getHashControlComponentPublicKeysSpec(controlComponentPublicKeysPayload));
 	}
 
+	@SuppressWarnings("java:S117")
 	private String getHashControlComponentPublicKeysSpec(final ControlComponentPublicKeysPayload controlComponentPublicKeysPayload) {
 
 		final ControlComponentPublicKeys controlComponentPublicKeys = controlComponentPublicKeysPayload.getControlComponentPublicKeys();

@@ -1,5 +1,14 @@
 # Changelog
 
+## Release 1.6.1
+
+Release 1.6.1 is a minor maintenance patch containing the following changes:
+
+* Improved the generation and layout of the election result report.
+* Improved translation of the verification report.
+* Minor code improvements.
+* Updated dependencies and third-party libraries.
+
 ## Release 1.6.0
 
 Release 1.6.0 includes some feedback from the Federal Chancellery's mandated experts and other experts of the community.

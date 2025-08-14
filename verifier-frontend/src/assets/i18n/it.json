@@ -41,10 +41,10 @@
       "applicationVersionValue": "Swiss Post Verifier {{appVersion}}",
       "executionStart": "Data/ora di inizio esecuzione",
       "executionEnd": "Data/ora di fine esecuzione",
-      "electionEventId": "ID evento elettorale",
+      "electionEventId": "ID dello scrutinio",
       "contextInputHash": "Hash dei dati contestuali in input (SHA-256)",
       "tallyInputHash": "Hash dei dati di conteggio in input (SHA-256)",
-      "eCH022Hash": "Hash xml eCH‑0222 (SHA-256)",
+      "eCH022Hash": "Hash xml eCH-0222 (SHA-256)",
       "executedVerification": "Verifica eseguita"
     },
     "certificateAuthenticity": {
@@ -63,12 +63,12 @@
     },
     "configurationCorrectness": {
       "title": "Controlli di correttezza della configurazione",
-      "electionEventName": "Nome dell’evento elettorale",
-      "electionEventSeed": "Seed dell’evento elettorale",
-      "electionEventDate": "Data dell’evento elettorale",
+      "electionEventName": "Nome dello scrutinio",
+      "electionEventSeed": "Valore seme dello scrutinio",
+      "electionEventDate": "Data dello scrutinio",
       "numberOfElections": "Numero di elezioni",
-      "numberOfVotes": "Numero di voti (Abstimmungen / votations)",
-      "numberOfBallots": "Numero di schede (Vorlagen / objets)",
+      "numberOfVotes": "Numero di votazioni",
+      "numberOfBallots": "Numero di oggetti in votazione",
       "numberOfNonTestBallotBoxes": "Numero di urne (non di test)",
       "numberOfTestBallotBoxes": "Numero di urne di test",
       "totalNumberOfAuthorizedNonTestVoters": "Numero totale di elettori autorizzati (non di test)",
@@ -80,6 +80,16 @@
       "numberOfSuccessfulVerifications": "Numero di verifiche riuscite",
       "numberOfFailedVerifications": "Numero di verifiche fallite",
       "numberOfErrorVerifications": "Numero di verifiche con errori"
+    },
+    "electionEventInfo": {
+      "title": "Informazioni sullo scrutinio",
+      "applicationVersion": "Versione dell’applicazione di verifica",
+      "applicationVersionValue": "Swiss Post Verifier {{appVersion}}",
+      "electionEventId": "ID dello scrutinio",
+      "eCH022Hash": "Hash xml eCH-0222 (SHA-256)",
+      "electionEventName": "Nome dello scrutinio",
+      "electionEventSeed": "Valore seme dello scrutinio",
+      "electionEventDate": "Data dello scrutinio"
     }
   },
   "verify": {
@@ -102,15 +112,23 @@
       "exportGenerating": "Generazione esportazione...",
       "exportCompleted": "Esportazione completata."
     },
-    "verificationConfirmation": {
-      "title": "Conferma della verifica",
-      "signersConfirmation": "I firmatari confermano di aver verificato la correttezza delle informazioni di cui sopra.",
-      "name": "Nome",
-      "signature": "Firma"
+    "document": {
+      "title": "Rapporto di verifica",
+      "sections": {
+        "overallInformation": "Informazioni generali",
+        "verificationResults": "Risultati della verifica",
+        "verificationConfirmation": {
+          "title": "Conferma della verifica",
+          "signersConfirmation": "I firmatari confermano di aver verificato la correttezza delle informazioni di cui sopra.",
+          "name": "Nome",
+          "signature": "Firma"
+        }
+      }
     }
   },
   "verificationDetails": {
     "header": {
+      "status": "Stato",
       "phase": "Fase",
       "id": "ID",
       "name": "Nome",
@@ -127,6 +145,25 @@
       "export": "Esporta",
       "exportGenerating": "Generazione esportazione...",
       "exportCompleted": "Esportazione completata."
+    },
+    "resultConfirmation": {
+      "title": "Conferma del risultato",
+      "signersConfirmation": "I firmatari confermano di aver verificato la correttezza delle informazioni di cui sopra.",
+      "name": "Nome",
+      "signature": "Firma"
+    },
+    "document": {
+      "title": "Risultato elezione",
+      "overallInformation": "Informazioni generali",
+      "label": {
+        "candidateName": "Nome",
+        "candidateVotes": "Suffragi personali",
+        "partyVotes": "Suffragi di partito",
+        "additionalVotes": "Suffragi di complemento",
+        "confirmedVotes": "Voti confermati",
+        "eligibleVoters": "Elettori aventi diritto",
+        "writeInPositions": "Candidati write-in"
+      }
     }
   }
 }

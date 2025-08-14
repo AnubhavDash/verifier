@@ -18,11 +18,11 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {DatasetModule} from './dataset/dataset.module';
 import {RouterModule, Routes} from '@angular/router';
-import {HttpClient, HttpClientModule, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {HttpClient, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {CommonModule} from '@angular/common';
 import {VerifierCommonModule} from './verifier-common-module';
 import {DatasetComponent} from "./dataset/dataset.component";
-import {InternalHeaderComponent} from "e-voting-libraries-ui-kit";
+import {InternalHeaderComponent, TranslateTextPipe} from "e-voting-libraries-ui-kit";
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {VerifyComponent} from "./verify/verify.component";
@@ -49,28 +49,27 @@ const routes: Routes = [
   declarations: [
     AppComponent,
   ],
-	imports: [
-		RouterModule.forRoot(routes),
-		BrowserModule,
-		DatasetModule,
-		VerifyModule,
-		ReportModule,
-		ResultModule,
-		NgbDropdownModule,
-		HttpClientModule,
-		CommonModule,
-		TranslateModule.forRoot({
-			loader: {
-				provide: TranslateLoader,
-				useFactory: HttpLoaderFactory,
-				deps: [HttpClient]
-			}
-		}),
-		VerifierCommonModule,
-		InternalHeaderComponent,
-		StepperItemComponent,
-	],
-  providers: [provideHttpClient(withInterceptorsFromDi())],
+  imports: [
+    RouterModule.forRoot(routes),
+    BrowserModule,
+    DatasetModule,
+    VerifyModule,
+    ReportModule,
+    ResultModule,
+    NgbDropdownModule,
+    CommonModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
+    VerifierCommonModule,
+    InternalHeaderComponent,
+    StepperItemComponent,
+  ],
+  providers: [provideHttpClient(withInterceptorsFromDi()), TranslateTextPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {

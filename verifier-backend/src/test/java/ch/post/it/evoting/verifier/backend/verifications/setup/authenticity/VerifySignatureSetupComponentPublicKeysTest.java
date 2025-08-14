@@ -117,6 +117,7 @@ class VerifySignatureSetupComponentPublicKeysTest extends SetupVerificationTest 
 		assertEquals(expected, getHashSetupComponentPublicKeysSpec(setupComponentPublicKeysPayload));
 	}
 
+	@SuppressWarnings("java:S117")
 	private String getHashSetupComponentPublicKeysSpec(final SetupComponentPublicKeysPayload setupComponentPublicKeysPayload) {
 		final ImmutableList<HashableList> h_pk = setupComponentPublicKeysPayload.getSetupComponentPublicKeys()
 				.combinedControlComponentPublicKeys().stream()

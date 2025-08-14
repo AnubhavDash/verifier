@@ -123,6 +123,7 @@ class VerifySignatureTallyComponentVotesTest extends TallyVerificationTest {
 		assertEquals(expected, getHashTallyComponentVotesSpec(tallyComponentVotesPayload));
 	}
 
+	@SuppressWarnings("java:S117")
 	private String getHashTallyComponentVotesSpec(final TallyComponentVotesPayload tallyComponentVotesPayload) {
 		final HashableString ee = HashableString.from(tallyComponentVotesPayload.getElectionEventId());
 
