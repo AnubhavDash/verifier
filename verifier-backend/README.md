@@ -33,7 +33,7 @@ All verifications performed in the verifier are listed in the table below:
 | Tally | Authenticity | 07.02 | VerifySignatureControlComponentShuffle          |
 | Tally | Authenticity | 07.03 | VerifySignatureTallyComponentShuffle            |
 | Tally | Authenticity | 07.04 | VerifySignatureTallyComponentVotes              |
-| Tally | Authenticity | 07.05 | VerifySignatureTallyComponentEch0222            |
+| Tally | Authenticity | 07.05 | VerifySignatureTallyComponentECH0222            |
 | Tally | Consistency  | 08.01 | VerifyEncryptionGroupConsistency                |
 | Tally | Consistency  | 08.02 | VerifyNodeIdsConsistency                        |
 | Tally | Consistency  | 08.03 | VerifyFileNameNodeIdsConsistency                |
