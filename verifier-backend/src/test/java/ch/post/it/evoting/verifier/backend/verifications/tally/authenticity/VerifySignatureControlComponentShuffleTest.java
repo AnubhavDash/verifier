@@ -124,6 +124,7 @@ class VerifySignatureControlComponentShuffleTest extends TallyVerificationTest {
 		assertEquals(expected, getHashControlComponentShuffleSpec(controlComponentShufflePayload));
 	}
 
+	@SuppressWarnings("java:S117")
 	private String getHashControlComponentShuffleSpec(final ControlComponentShufflePayload controlComponentShufflePayload) {
 
 		final HashableList hShuffle = HashableList.of(
