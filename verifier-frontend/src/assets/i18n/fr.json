@@ -4,17 +4,17 @@
     "next": "Suivant"
   },
   "step": {
-    "dataset": "Charger le jeu de données",
+    "dataset": "Charger les jeux de données",
     "verify": "Vérifier",
     "report": "Exporter le rapport de vérification",
     "result": "Exporter le résultat du scrutin"
   },
   "dataset": {
-    "instructions": "Veuillez sélectionner un mode puis charger le(s) jeu(x) de données demandé(s).",
-    "title": "Chargement du(des) jeu(x) de données",
+    "instructions": "Veuillez sélectionner un mode puis charger les jeux de données demandés.",
+    "title": "Chargement des jeux de données",
     "loading": "Chargement...",
     "action": {
-      "complete": "Jeu(x) de données chargé(s)."
+      "complete": "Jeux de données chargés."
     },
     "verifierMode": {
       "setup": "Setup Mode",
@@ -31,7 +31,7 @@
       "loadButton": "Charger le jeu de données {{datasetType}}",
       "notLoadedYet": "Pas encore chargé. Cliquez pour en charger un",
       "loading": "Chargement du jeu de données...",
-      "error": "Une erreur est survenue lors du chargement du jeu de données. Plus de détails dans les logs."
+      "error": "Une erreur est survenue lors du chargement du jeu de données. Vous trouverez plus de détails dans le fichier du log."
     }
   },
   "datasetInformation": {
@@ -42,8 +42,8 @@
       "executionStart": "Date/heure de début d’exécution",
       "executionEnd": "Date/heure de fin d’exécution",
       "electionEventId": "ID de l’événement électoral",
-      "contextInputHash": "Hash de l’entrée des données contextuelles (SHA-256)",
-      "tallyInputHash": "Hash de l’entrée des données de comptage (SHA-256)",
+      "contextInputHash": "Hash du jeu de données de contexte (SHA-256)",
+      "tallyInputHash": "Hash du jeu de données de dépouillement (SHA-256)",
       "eCH022Hash": "Hash du xml eCH-0222 (SHA-256)",
       "executedVerification": "Vérification exécutée"
     },
@@ -139,8 +139,8 @@
     "hideError": "Masquer les détails"
   },
   "result": {
-    "instructions": "Veuillez exporter le résultat de l’élection.",
-    "title": "Résultat de l’élection",
+    "instructions": "Veuillez exporter le résultat du scrutin.",
+    "title": "Résultat du scrutin",
     "action": {
       "export": "Exporter",
       "exportGenerating": "Génération de l’export...",
@@ -153,7 +153,7 @@
       "signature": "Signature"
     },
     "document": {
-      "title": "Résultat de l’élection",
+      "title": "Résultat du scrutin",
       "overallInformation": "Informations générales",
       "label": {
         "candidateName": "Nom",

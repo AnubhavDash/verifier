@@ -7,14 +7,14 @@
     "dataset": "Carica set di dati",
     "verify": "Verifica",
     "report": "Esporta rapporto di verifica",
-    "result": "Esporta risultato elezioni"
+    "result": "Esporta risultato dello scrutinio"
   },
   "dataset": {
-    "instructions": "Seleziona una modalità e carica il/i set di dati richiesto/i.",
+    "instructions": "Seleziona una modalità e carica i set di dati richiesti.",
     "title": "Caricamento set di dati",
     "loading": "Caricamento...",
     "action": {
-      "complete": "Set di dati caricato/i."
+      "complete": "Set di dati caricati."
     },
     "verifierMode": {
       "setup": "Setup Mode",
@@ -31,7 +31,7 @@
       "loadButton": "Carica set di dati {{datasetType}}",
       "notLoadedYet": "Non ancora caricato. Clicca per caricarne uno",
       "loading": "Caricamento set di dati...",
-      "error": "Si è verificato un errore durante il caricamento del set di dati. Maggiori dettagli nei log."
+      "error": "Durante il caricamento del dataset si è verificato un errore. Ulteriori dettagli sono disponibili nel file di log."
     }
   },
   "datasetInformation": {
@@ -42,8 +42,8 @@
       "executionStart": "Data/ora di inizio esecuzione",
       "executionEnd": "Data/ora di fine esecuzione",
       "electionEventId": "ID dello scrutinio",
-      "contextInputHash": "Hash dei dati contestuali in input (SHA-256)",
-      "tallyInputHash": "Hash dei dati di conteggio in input (SHA-256)",
+      "contextInputHash": "Hash dell’insieme di dati di contesto (SHA-256)",
+      "tallyInputHash": "Hash dell’insieme di dati di scrutinio (SHA-256)",
       "eCH022Hash": "Hash xml eCH-0222 (SHA-256)",
       "executedVerification": "Verifica eseguita"
     },
@@ -139,8 +139,8 @@
     "hideError": "Nascondi dettagli"
   },
   "result": {
-    "instructions": "Esporta il risultato dell’elezione.",
-    "title": "Risultato elezione",
+    "instructions": "Esporta il risultato dello scrutinio.",
+    "title": "Risultato dello scrutinio",
     "action": {
       "export": "Esporta",
       "exportGenerating": "Generazione esportazione...",
@@ -153,7 +153,7 @@
       "signature": "Firma"
     },
     "document": {
-      "title": "Risultato elezione",
+      "title": "Risultato dello scrutinio",
       "overallInformation": "Informazioni generali",
       "label": {
         "candidateName": "Nome",

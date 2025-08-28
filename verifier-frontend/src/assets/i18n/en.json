@@ -42,8 +42,8 @@
       "executionStart": "Execution start date / time",
       "executionEnd": "Execution end date / time",
       "electionEventId": "Election event id",
-      "contextInputHash": "Context data input hash (SHA-256)",
-      "tallyInputHash": "Tally data input hash (SHA-256)",
+      "contextInputHash": "Context dataset hash (SHA-256)",
+      "tallyInputHash": "Tally dataset hash (SHA-256)",
       "eCH022Hash": "eCH-0222 xml hash (SHA-256)",
       "executedVerification": "Executed Verification"
     },
