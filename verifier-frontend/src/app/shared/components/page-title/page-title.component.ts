@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import {AfterViewInit, Component, DestroyRef, HostBinding, inject, Input} from '@angular/core';
-import {CommonModule} from '@angular/common';
+
 import {TranslateModule} from '@ngx-translate/core';
 import {distinctUntilChanged, fromEvent, map} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
@@ -22,7 +22,7 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 @Component({
 	selector: 'ver-page-title',
 	standalone: true,
-	imports: [CommonModule, TranslateModule],
+	imports: [TranslateModule],
 	templateUrl: './page-title.component.html',
 })
 export class PageTitleComponent implements AfterViewInit {
