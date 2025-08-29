@@ -20,8 +20,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.io.UncheckedIOException;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -41,6 +39,7 @@ import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
 import ch.post.it.evoting.evotinglibraries.domain.validations.FailedValidationException;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.channelsecurity.XMLSignatureService;
+import ch.post.it.evoting.evotinglibraries.toolbox.OutputToInputStreamConverter;
 import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
 import ch.post.it.evoting.evotinglibraries.xml.mapper.RawDataDeliveryMapper;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
@@ -64,7 +63,7 @@ public class VerifyECH0222Algorithm {
 	 * @throws NullPointerException      if any input parameter is null.
 	 * @throws FailedValidationException if {@code electionEventId} is invalid.
 	 */
-	@SuppressWarnings({"java:S117", "java:S4087"})
+	@SuppressWarnings({ "java:S117", "java:S4087" })
 	public boolean verifyECH0222(final VerifyECH0222Input input) {
 		checkNotNull(input);
 
@@ -94,43 +93,22 @@ public class VerifyECH0222Algorithm {
 	 * Generates the eCH-0222 XML signature.
 	 * <p>
 	 * This method is wrapping the original genXMLSignature to hide the complexity of the stream generation.
+	 *
 	 * @param delivery   the delivery containing the eCH-0222 data to be signed.
 	 * @param signingKey the private key used for signing the eCH-0222 data.
 	 * @return the signed eCH-0222 XML document.
 	 */
 	private Document genXMLSignature(final Delivery delivery, final PrivateKey signingKey) {
-		try (final PipedOutputStream eCH0222OutputStream = new PipedOutputStream();
-				final PipedInputStream eCH0222InputStream = new PipedInputStream(eCH0222OutputStream)) {
-			final Thread t = new Thread(() -> {
-				ech0222XmlFileRepository.write(eCH0222OutputStream, delivery, TALLY_COMPONENT_ECH_0222);
-				try {
-					// close stream to make content available to connected PipedInputStream 'eCH0222InputStream'
-					eCH0222OutputStream.close();
-				} catch (final IOException e) {
-					throw new UncheckedIOException("Unable to finish writing to eCH-0222", e);
-				}
-			});
-			t.start();
-
-			try (final PipedOutputStream signedEch0222Output = new PipedOutputStream();
-					final PipedInputStream signedEch0222Input = new PipedInputStream(signedEch0222Output)) {
-				final Thread t2 = new Thread(() -> {
-					xmlSignatureService.genXMLSignature(eCH0222InputStream, signedEch0222Output, signingKey, "eCH-0222:rawDataDelivery",
-							"eCH-0222:extension");
-					try {
-						// close stream to make content available to connected PipedInputStream 'signedEch0222Input'
-						signedEch0222Output.close();
-					} catch (final IOException e) {
-						throw new UncheckedIOException("Unable to finish writing to eCH-0222", e);
-					}
-				});
-				t2.start();
-
-				return getSignedDocument(signedEch0222Input);
-			}
+		try (final OutputToInputStreamConverter converter = new OutputToInputStreamConverter();
+				final InputStream eCH0222InputStream = converter.convert(
+						os -> ech0222XmlFileRepository.write(os, delivery, TALLY_COMPONENT_ECH_0222));
+				final OutputToInputStreamConverter converterSignature = new OutputToInputStreamConverter();
+				final InputStream signedEch0222Input = converterSignature.convert(
+						os -> xmlSignatureService.genXMLSignature(eCH0222InputStream, os, signingKey, "eCH-0222:rawDataDelivery",
+								"eCH-0222:extension"))) {
+			return getSignedDocument(signedEch0222Input);
 		} catch (final IOException e) {
 			throw new UncheckedIOException("Could not save tally component eCH-0222 file.", e);
-
 		}
 	}
 

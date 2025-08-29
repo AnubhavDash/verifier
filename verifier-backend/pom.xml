@@ -141,6 +141,10 @@
 			<artifactId>e-voting-libraries-xml</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>ch.post.it.evoting.evotinglibraries</groupId>
+			<artifactId>e-voting-libraries-toolbox</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
 		</dependency>
