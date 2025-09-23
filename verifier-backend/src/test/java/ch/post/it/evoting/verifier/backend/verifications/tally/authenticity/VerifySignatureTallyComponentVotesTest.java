@@ -173,16 +173,16 @@ class VerifySignatureTallyComponentVotesTest extends TallyVerificationTest {
 				final GqGroup encryptionGroup = getEncryptionGroup(objectMapper, input.getJsonData("encryptionGroup").jsonNode());
 				final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> votes = Arrays.stream(objectMapper.reader()
 								.withAttribute("group", encryptionGroup)
-								.readValue(input.getJsonData("votes").jsonNode(), PrimeGqElement[][].class))
+								.readValue(input.getJsonData("decryptedVotes").jsonNode(), PrimeGqElement[][].class))
 						.map(GroupVector::of)
 						.collect(toGroupVector());
 				final String electionEventId = input.get("electionEventId", String.class);
 				final String ballotBoxId = input.get("ballotBoxId", String.class);
 				final ImmutableList<ImmutableList<String>> actualSelectedVotingOptions = ImmutableList.from(objectMapper.reader()
-						.readValue(input.getJsonData("actualSelectedVotingOptions").jsonNode().traverse(), new TypeReference<>() {
+						.readValue(input.getJsonData("decodedVotes").jsonNode().traverse(), new TypeReference<>() {
 						}));
 				final ImmutableList<ImmutableList<String>> decodedWriteInVotes = ImmutableList.from(objectMapper.reader()
-						.readValue(input.getJsonData("decodedWriteInVotes").jsonNode().traverse(), new TypeReference<>() {
+						.readValue(input.getJsonData("decodedWriteIns").jsonNode().traverse(), new TypeReference<>() {
 						}));
 				final TallyComponentVotesPayload tallyComponentVotesPayload = new TallyComponentVotesPayload(encryptionGroup, electionEventId,
 						ballotBoxId, votes, actualSelectedVotingOptions, decodedWriteInVotes);
