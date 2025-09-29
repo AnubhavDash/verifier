@@ -32,6 +32,10 @@
       "notLoadedYet": "Not loaded yet. Click to load one",
       "loading": "Loading dataset...",
       "error": "An error occurred while loading the dataset. More details in the logs."
+    },
+    "datasetType": {
+      "context": "context",
+      "tally": "tally"
     }
   },
   "datasetInformation": {
@@ -44,7 +48,7 @@
       "electionEventId": "Election event id",
       "contextInputHash": "Context dataset hash (SHA-256)",
       "tallyInputHash": "Tally dataset hash (SHA-256)",
-      "eCH022Hash": "eCH-0222 xml hash (SHA-256)",
+      "eCH0222Hash": "eCH-0222 xml hash (SHA-256)",
       "executedVerification": "Executed Verification"
     },
     "certificateAuthenticity": {
@@ -86,7 +90,7 @@
       "applicationVersion": "Verifier application version",
       "applicationVersionValue": "Swiss Post Verifier {{appVersion}}",
       "electionEventId": "Election event id",
-      "eCH022Hash": "eCH-0222 xml hash (SHA-256)",
+      "eCH0222Hash": "eCH-0222 xml hash (SHA-256)",
       "electionEventName": "Election Event Name",
       "electionEventSeed": "Election Event Seed",
       "electionEventDate": "Election Event Date"

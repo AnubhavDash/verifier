@@ -28,10 +28,14 @@
     },
     "datasetLoad": {
       "title": "Datensatz laden",
-      "loadButton": "{{datasetType}}-Datensatz laden",
+      "loadButton": "{{datasetType}}datensatz laden",
       "notLoadedYet": "Noch nicht geladen. Klicken, um einen zu laden",
       "loading": "Datensatz wird geladen...",
       "error": "Beim Laden des Datensatzes ist ein Fehler aufgetreten. Weitere Details finden Sie in der Log-Datei."
+    },
+    "datasetType": {
+      "context": "Kontext",
+      "tally": "Auszählung"
     }
   },
   "datasetInformation": {
@@ -44,7 +48,7 @@
       "electionEventId": "Urnengangs-ID",
       "contextInputHash": "Hash des Kontextdatensatzes (SHA-256)",
       "tallyInputHash": "Hash des Auszählungsdatensatzes (SHA-256)",
-      "eCH022Hash": "eCH-0222-XML-Hash (SHA-256)",
+      "eCH0222Hash": "eCH-0222-XML-Hash (SHA-256)",
       "executedVerification": "Durchgeführte Verifikation"
     },
     "certificateAuthenticity": {
@@ -86,7 +90,7 @@
       "applicationVersion": "Version des Verifiers",
       "applicationVersionValue": "Swiss Post Verifier {{appVersion}}",
       "electionEventId": "Urnengangs-ID",
-      "eCH022Hash": "eCH-0222-XML-Hash (SHA-256)",
+      "eCH0222Hash": "eCH-0222-XML-Hash (SHA-256)",
       "electionEventName": "Name des Urnengangs",
       "electionEventSeed": "Seed-Wert des Urnengangs",
       "electionEventDate": "Datum des Urnengangs"

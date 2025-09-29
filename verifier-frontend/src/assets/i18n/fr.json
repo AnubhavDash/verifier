@@ -28,10 +28,14 @@
     },
     "datasetLoad": {
       "title": "Chargement du jeu de données",
-      "loadButton": "Charger le jeu de données {{datasetType}}",
+      "loadButton": "Charger le jeu de données de {{datasetType}}",
       "notLoadedYet": "Pas encore chargé. Cliquez pour en charger un",
       "loading": "Chargement du jeu de données...",
       "error": "Une erreur est survenue lors du chargement du jeu de données. Vous trouverez plus de détails dans le fichier du log."
+    },
+    "datasetType": {
+      "context": "contexte",
+      "tally": "dépouillement"
     }
   },
   "datasetInformation": {
@@ -44,7 +48,7 @@
       "electionEventId": "ID de l’événement électoral",
       "contextInputHash": "Hash du jeu de données de contexte (SHA-256)",
       "tallyInputHash": "Hash du jeu de données de dépouillement (SHA-256)",
-      "eCH022Hash": "Hash du xml eCH-0222 (SHA-256)",
+      "eCH0222Hash": "Hash du xml eCH-0222 (SHA-256)",
       "executedVerification": "Vérification exécutée"
     },
     "certificateAuthenticity": {
@@ -86,7 +90,7 @@
       "applicationVersion": "Version du verifier",
       "applicationVersionValue": "Swiss Post Verifier {{appVersion}}",
       "electionEventId": "ID de l’événement électoral",
-      "eCH022Hash": "Hash du xml eCH-0222 (SHA-256)",
+      "eCH0222Hash": "Hash du xml eCH-0222 (SHA-256)",
       "electionEventName": "Nom du scrutin",
       "electionEventSeed": "Valeur de graine du scrutin",
       "electionEventDate": "Date du scrutin"

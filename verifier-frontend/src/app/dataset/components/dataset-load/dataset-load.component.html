@@ -20,8 +20,7 @@
             [disabled]="isLoadDisabled()"
             [ngClass]="{'btn-primary': isNotLoaded(), 'btn-outline-primary': !isNotLoaded()}"
             class="btn btn-block text-center dataset-type">
-      <i aria-hidden="true" class="bi-upload"></i> {{ 'dataset.datasetLoad.loadButton' | translate: {datasetType} }}
-    </button>
+      <i aria-hidden="true" class="bi-upload"></i> {{ 'dataset.datasetLoad.loadButton' | translate: { datasetType: translatedDatasetType } }}</button>
   </div>
   <div class="col-8 mt-2">
     @if (isNotLoaded()) {

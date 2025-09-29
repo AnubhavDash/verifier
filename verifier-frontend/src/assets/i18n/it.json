@@ -28,10 +28,14 @@
     },
     "datasetLoad": {
       "title": "Caricamento set di dati",
-      "loadButton": "Carica set di dati {{datasetType}}",
+      "loadButton": "Carica set di dati di {{datasetType}}",
       "notLoadedYet": "Non ancora caricato. Clicca per caricarne uno",
       "loading": "Caricamento set di dati...",
       "error": "Durante il caricamento del dataset si è verificato un errore. Ulteriori dettagli sono disponibili nel file di log."
+    },
+    "datasetType": {
+      "context": "contesto",
+      "tally": "scrutinio"
     }
   },
   "datasetInformation": {
@@ -44,7 +48,7 @@
       "electionEventId": "ID dello scrutinio",
       "contextInputHash": "Hash dell’insieme di dati di contesto (SHA-256)",
       "tallyInputHash": "Hash dell’insieme di dati di scrutinio (SHA-256)",
-      "eCH022Hash": "Hash xml eCH-0222 (SHA-256)",
+      "eCH0222Hash": "Hash xml eCH-0222 (SHA-256)",
       "executedVerification": "Verifica eseguita"
     },
     "certificateAuthenticity": {
@@ -86,7 +90,7 @@
       "applicationVersion": "Versione dell’applicazione di verifica",
       "applicationVersionValue": "Swiss Post Verifier {{appVersion}}",
       "electionEventId": "ID dello scrutinio",
-      "eCH022Hash": "Hash xml eCH-0222 (SHA-256)",
+      "eCH0222Hash": "Hash xml eCH-0222 (SHA-256)",
       "electionEventName": "Nome dello scrutinio",
       "electionEventSeed": "Valore seme dello scrutinio",
       "electionEventDate": "Data dello scrutinio"

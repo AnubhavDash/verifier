@@ -86,7 +86,9 @@
   }
 </ver-page-title>
 
-<ver-verification-details
-  [isReportDisplay]="false"
-  [verifications]="verifications"
-></ver-verification-details>
+<div class="table-responsive" style="box-sizing: border-box; max-height: calc(92vh - 370px); overflow-y: auto;">
+  <ver-verification-details style="box-sizing: border-box;"
+    [isReportDisplay]="false"
+    [verifications]="verifications"
+  ></ver-verification-details>
+</div>
