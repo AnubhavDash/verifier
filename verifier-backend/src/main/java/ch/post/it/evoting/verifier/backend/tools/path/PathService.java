@@ -54,7 +54,7 @@ public class PathService {
 	public PathService() {
 		try {
 			final ObjectMapper mapper = new ObjectMapper();
-			rootNode = mapper.readTree(getClass().getResource("/dataset_structure.json"));
+			rootNode = mapper.readTree(getClass().getResourceAsStream("/dataset_structure.json"));
 
 			StructureChecker.process(rootNode);
 

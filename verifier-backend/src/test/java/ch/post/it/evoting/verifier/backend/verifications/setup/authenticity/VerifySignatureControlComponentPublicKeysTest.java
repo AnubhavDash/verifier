@@ -25,9 +25,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.math.BigInteger;
-import java.net.URL;
 import java.nio.file.Path;
 import java.security.SignatureException;
 import java.util.stream.Stream;
@@ -164,9 +164,9 @@ class VerifySignatureControlComponentPublicKeysTest extends SetupVerificationTes
 	}
 
 	static Stream<Arguments> jsonFileArgumentProvider() throws IOException {
-		final URL url = VerifySignatureControlComponentPublicKeysTest.class.getResource(
+		final InputStream inputStream = VerifySignatureControlComponentPublicKeysTest.class.getResourceAsStream(
 				"/protocol-algorithms/json/verifySignatureControlComponentPublicKeys/verify-signature-control-component-public-keys.json");
-		final ImmutableList<TestParameters> parametersList = ImmutableList.of(objectMapper.readValue(url, TestParameters[].class));
+		final ImmutableList<TestParameters> parametersList = ImmutableList.of(objectMapper.readValue(inputStream, TestParameters[].class));
 
 		return parametersList.stream().parallel().map(testParameters -> {
 			try (final MockedStatic<SecurityLevelConfig> mockedSecurityLevel = Mockito.mockStatic(SecurityLevelConfig.class)) {

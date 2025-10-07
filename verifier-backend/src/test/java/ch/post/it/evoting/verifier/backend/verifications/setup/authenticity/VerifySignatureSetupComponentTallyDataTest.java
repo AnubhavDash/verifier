@@ -27,8 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.net.URL;
 import java.nio.file.Path;
 import java.security.SignatureException;
 import java.util.Arrays;
@@ -160,9 +160,9 @@ class VerifySignatureSetupComponentTallyDataTest extends SetupVerificationTest {
 	}
 
 	static Stream<Arguments> jsonFileArgumentProvider() throws IOException {
-		final URL url = VerifySignatureSetupComponentTallyDataTest.class.getResource(
+		final InputStream inputStream = VerifySignatureSetupComponentTallyDataTest.class.getResourceAsStream(
 				"/protocol-algorithms/json/verifySignatureSetupComponentTallyData/verify-signature-setup-component-tally-data.json");
-		final ImmutableList<TestParameters> parametersList = ImmutableList.of(objectMapper.readValue(url, TestParameters[].class));
+		final ImmutableList<TestParameters> parametersList = ImmutableList.of(objectMapper.readValue(inputStream, TestParameters[].class));
 
 		return parametersList.stream().parallel().map(testParameters -> {
 			try (final MockedStatic<SecurityLevelConfig> mockedSecurityLevel = Mockito.mockStatic(SecurityLevelConfig.class)) {
