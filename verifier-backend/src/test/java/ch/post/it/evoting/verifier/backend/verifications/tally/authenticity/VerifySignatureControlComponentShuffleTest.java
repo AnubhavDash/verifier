@@ -24,9 +24,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.math.BigInteger;
-import java.net.URL;
 import java.nio.file.Path;
 import java.security.SignatureException;
 import java.util.stream.Stream;
@@ -124,6 +124,7 @@ class VerifySignatureControlComponentShuffleTest extends TallyVerificationTest {
 		assertEquals(expected, getHashControlComponentShuffleSpec(controlComponentShufflePayload));
 	}
 
+	@SuppressWarnings("java:S117")
 	private String getHashControlComponentShuffleSpec(final ControlComponentShufflePayload controlComponentShufflePayload) {
 
 		final HashableList hShuffle = HashableList.of(
@@ -154,9 +155,9 @@ class VerifySignatureControlComponentShuffleTest extends TallyVerificationTest {
 	}
 
 	static Stream<Arguments> jsonFileArgumentProvider() throws IOException {
-		final URL url = VerifySignatureControlComponentShuffleTest.class.getResource(
+		final InputStream inputStream = VerifySignatureControlComponentShuffleTest.class.getResourceAsStream(
 				"/protocol-algorithms/json/verifySignatureControlComponentShuffle/verify-signature-control-component-shuffle.json");
-		final ImmutableList<TestParameters> parametersList = ImmutableList.of(objectMapper.readValue(url, TestParameters[].class));
+		final ImmutableList<TestParameters> parametersList = ImmutableList.of(objectMapper.readValue(inputStream, TestParameters[].class));
 
 		return parametersList.stream().parallel().map(testParameters -> {
 			try (final MockedStatic<SecurityLevelConfig> mockedSecurityLevel = Mockito.mockStatic(SecurityLevelConfig.class)) {

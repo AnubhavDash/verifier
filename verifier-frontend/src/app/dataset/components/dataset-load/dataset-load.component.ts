@@ -18,6 +18,7 @@ import {DatasetType} from '../../../shared/types/dataset-type';
 import {DatasetConfiguration} from '../../../shared/types/dataset-configuration';
 import {VerifierMode} from "../../../shared/types/verifier-mode.enum";
 import {DatasetService} from "../../dataset.service";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 
 @Component({
   templateUrl: 'dataset-load.component.html',
@@ -36,7 +37,10 @@ export class DatasetLoadComponent implements OnChanges, OnInit {
   loading = false;
   loadError = false;
   filename = undefined;
+  translatedDatasetType: string;
   private readonly datasetService: DatasetService = inject(DatasetService);
+  private readonly translate: TranslateService = inject(TranslateService);
+
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.verifierMode && changes.verifierMode.previousValue !== changes.verifierMode.currentValue) {
@@ -47,6 +51,14 @@ export class DatasetLoadComponent implements OnChanges, OnInit {
   ngOnInit(): void {
     if (this.configuration) {
       this.filename = this.getDatasetFilename(this.configuration);
+    }
+
+    this.updateTranslatedDatasetType();
+
+    if (this.datasetType) {
+      this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+        this.updateTranslatedDatasetType();
+      });
     }
   }
 
@@ -108,6 +120,12 @@ export class DatasetLoadComponent implements OnChanges, OnInit {
       default:
         return '';
     }
+  }
+
+  private updateTranslatedDatasetType(): void {
+    this.translate.get(`dataset.datasetType.${this.datasetType}`).subscribe((translation: string) => {
+      this.translatedDatasetType = translation;
+    });
   }
 
 }

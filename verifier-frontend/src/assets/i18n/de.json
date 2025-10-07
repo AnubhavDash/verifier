@@ -7,14 +7,14 @@
     "dataset": "Datensatz laden",
     "verify": "Verifizieren",
     "report": "Verifikationsbericht exportieren",
-    "result": "Wahlergebnis exportieren"
+    "result": "Wahl- und Abstimmungsergebnis exportieren"
   },
   "dataset": {
     "instructions": "Bitte wählen Sie einen Modus und laden Sie die erforderlichen Datensätze.",
-    "title": "Datensatz/Datensätze laden",
+    "title": "Datensätze laden",
     "loading": "Wird geladen...",
     "action": {
-      "complete": "Datensatz/Datensätze geladen."
+      "complete": "Datensätze geladen."
     },
     "verifierMode": {
       "setup": "Setup Mode",
@@ -28,10 +28,14 @@
     },
     "datasetLoad": {
       "title": "Datensatz laden",
-      "loadButton": "{{datasetType}}-Datensatz laden",
+      "loadButton": "{{datasetType}}datensatz laden",
       "notLoadedYet": "Noch nicht geladen. Klicken, um einen zu laden",
       "loading": "Datensatz wird geladen...",
-      "error": "Beim Laden des Datensatzes ist ein Fehler aufgetreten. Weitere Details im Log."
+      "error": "Beim Laden des Datensatzes ist ein Fehler aufgetreten. Weitere Details finden Sie in der Log-Datei."
+    },
+    "datasetType": {
+      "context": "Kontext",
+      "tally": "Auszählung"
     }
   },
   "datasetInformation": {
@@ -42,9 +46,9 @@
       "executionStart": "Startdatum/-uhrzeit der Ausführung",
       "executionEnd": "Enddatum/-uhrzeit der Ausführung",
       "electionEventId": "Urnengangs-ID",
-      "contextInputHash": "Kontextdaten-Eingabe-Hash (SHA-256)",
-      "tallyInputHash": "Auswertungsdaten-Eingabe-Hash (SHA-256)",
-      "eCH022Hash": "eCH-0222-XML-Hash (SHA-256)",
+      "contextInputHash": "Hash des Kontextdatensatzes (SHA-256)",
+      "tallyInputHash": "Hash des Auszählungsdatensatzes (SHA-256)",
+      "eCH0222Hash": "eCH-0222-XML-Hash (SHA-256)",
       "executedVerification": "Durchgeführte Verifikation"
     },
     "certificateAuthenticity": {
@@ -86,7 +90,7 @@
       "applicationVersion": "Version des Verifiers",
       "applicationVersionValue": "Swiss Post Verifier {{appVersion}}",
       "electionEventId": "Urnengangs-ID",
-      "eCH022Hash": "eCH-0222-XML-Hash (SHA-256)",
+      "eCH0222Hash": "eCH-0222-XML-Hash (SHA-256)",
       "electionEventName": "Name des Urnengangs",
       "electionEventSeed": "Seed-Wert des Urnengangs",
       "electionEventDate": "Datum des Urnengangs"
@@ -139,8 +143,8 @@
     "hideError": "Details verbergen"
   },
   "result": {
-    "instructions": "Bitte exportieren Sie das Wahlergebnis.",
-    "title": "Wahlergebnis",
+    "instructions": "Bitte exportieren Sie das Wahl- und Abstimmungsergebnis.",
+    "title": "Wahl- und Abstimmungsergebnis",
     "action": {
       "export": "Exportieren",
       "exportGenerating": "Export wird erstellt...",
@@ -153,10 +157,10 @@
       "signature": "Unterschrift"
     },
     "document": {
-      "title": "Wahlergebnis",
+      "title": "Wahl- und Abstimmungsergebnis",
       "overallInformation": "Allgemeine Informationen",
       "label": {
-        "candidateName": "Gesamtname",
+        "candidateName": "Name",
         "candidateVotes": "Kandidatenstimmen",
         "partyVotes": "Parteistimmen",
         "additionalVotes": "Zusatzstimmen",

@@ -28,8 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.net.URL;
 import java.nio.file.Path;
 import java.security.SignatureException;
 import java.util.Arrays;
@@ -188,9 +188,9 @@ class VerifySignatureElectionEventContextTest extends SetupVerificationTest {
 	}
 
 	static Stream<Arguments> jsonFileArgumentProvider() throws IOException {
-		final URL url = VerifySignatureElectionEventContextTest.class.getResource(
+		final InputStream inputStream = VerifySignatureElectionEventContextTest.class.getResourceAsStream(
 				"/protocol-algorithms/json/verifySignatureElectionEventContext/verify-signature-election-event-context.json");
-		final ImmutableList<TestParameters> parametersList = ImmutableList.of(objectMapper.readValue(url, TestParameters[].class));
+		final ImmutableList<TestParameters> parametersList = ImmutableList.of(objectMapper.readValue(inputStream, TestParameters[].class));
 
 		return parametersList.stream().parallel().map(testParameters -> {
 			try (final MockedStatic<SecurityLevelConfig> mockedSecurityLevel = Mockito.mockStatic(SecurityLevelConfig.class)) {
@@ -208,7 +208,8 @@ class VerifySignatureElectionEventContextTest extends SetupVerificationTest {
 						.withAttribute("group", encryptionGroup)
 						.readValue(input.getJsonData("electionEventContext").jsonNode(), ElectionEventContext.class);
 				final String tenantId = objectMapper.reader().readValue(input.getJsonData("tenantId").jsonNode(), String.class);
-				final ElectionEventContextPayload electionEventContextPayload = new ElectionEventContextPayload(encryptionGroup, seed, smallPrimes, electionEventContext, tenantId);
+				final ElectionEventContextPayload electionEventContextPayload = new ElectionEventContextPayload(encryptionGroup, seed, smallPrimes,
+						electionEventContext, tenantId);
 
 				// Output.
 				final JsonData output = testParameters.getOutput();

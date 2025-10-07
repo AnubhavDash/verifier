@@ -75,10 +75,10 @@
         </div>
         <div class="col-9">
           @if (processTime.start) {
-            <span>{{ processTime.start | date:'dd.MM.YYYY HH:mm:ss' }}</span>
+            <span>{{ processTime.start | date:'dd.MM.yyyy HH:mm:ss' }}</span>
           }
           @if (processTime.end) {
-            <span> - {{ processTime.end | date:'dd.MM.YYYY HH:mm:ss' }}</span>
+            <span> - {{ processTime.end | date:'dd.MM.yyyy HH:mm:ss' }}</span>
           }
         </div>
       </div>
@@ -86,7 +86,9 @@
   }
 </ver-page-title>
 
-<ver-verification-details
-  [isReportDisplay]="false"
-  [verifications]="verifications"
-></ver-verification-details>
+<div class="table-responsive" style="box-sizing: border-box; max-height: calc(92vh - 370px); overflow-y: auto;">
+  <ver-verification-details style="box-sizing: border-box;"
+    [isReportDisplay]="false"
+    [verifications]="verifications"
+  ></ver-verification-details>
+</div>

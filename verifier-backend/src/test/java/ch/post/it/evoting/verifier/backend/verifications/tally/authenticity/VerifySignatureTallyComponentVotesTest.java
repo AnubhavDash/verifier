@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.security.SignatureException;
 import java.util.Arrays;
@@ -160,9 +160,9 @@ class VerifySignatureTallyComponentVotesTest extends TallyVerificationTest {
 	}
 
 	static Stream<Arguments> jsonFileArgumentProvider() throws IOException {
-		final URL url = VerifySignatureTallyComponentVotesTest.class.getResource(
+		final InputStream inputStream = VerifySignatureTallyComponentVotesTest.class.getResourceAsStream(
 				"/protocol-algorithms/json/verifySignatureTallyComponentVotes/verify-signature-tally-component-votes.json");
-		final ImmutableList<TestParameters> parametersList = ImmutableList.of(objectMapper.readValue(url, TestParameters[].class));
+		final ImmutableList<TestParameters> parametersList = ImmutableList.of(objectMapper.readValue(inputStream, TestParameters[].class));
 
 		return parametersList.stream().parallel().map(testParameters -> {
 			try (final MockedStatic<SecurityLevelConfig> mockedSecurityLevel = Mockito.mockStatic(SecurityLevelConfig.class)) {
@@ -173,16 +173,16 @@ class VerifySignatureTallyComponentVotesTest extends TallyVerificationTest {
 				final GqGroup encryptionGroup = getEncryptionGroup(objectMapper, input.getJsonData("encryptionGroup").jsonNode());
 				final GroupVector<GroupVector<PrimeGqElement, GqGroup>, GqGroup> votes = Arrays.stream(objectMapper.reader()
 								.withAttribute("group", encryptionGroup)
-								.readValue(input.getJsonData("votes").jsonNode(), PrimeGqElement[][].class))
+								.readValue(input.getJsonData("decryptedVotes").jsonNode(), PrimeGqElement[][].class))
 						.map(GroupVector::of)
 						.collect(toGroupVector());
 				final String electionEventId = input.get("electionEventId", String.class);
 				final String ballotBoxId = input.get("ballotBoxId", String.class);
 				final ImmutableList<ImmutableList<String>> actualSelectedVotingOptions = ImmutableList.from(objectMapper.reader()
-						.readValue(input.getJsonData("actualSelectedVotingOptions").jsonNode().traverse(), new TypeReference<>() {
+						.readValue(input.getJsonData("decodedVotes").jsonNode().traverse(), new TypeReference<>() {
 						}));
 				final ImmutableList<ImmutableList<String>> decodedWriteInVotes = ImmutableList.from(objectMapper.reader()
-						.readValue(input.getJsonData("decodedWriteInVotes").jsonNode().traverse(), new TypeReference<>() {
+						.readValue(input.getJsonData("decodedWriteIns").jsonNode().traverse(), new TypeReference<>() {
 						}));
 				final TallyComponentVotesPayload tallyComponentVotesPayload = new TallyComponentVotesPayload(encryptionGroup, electionEventId,
 						ballotBoxId, votes, actualSelectedVotingOptions, decodedWriteInVotes);

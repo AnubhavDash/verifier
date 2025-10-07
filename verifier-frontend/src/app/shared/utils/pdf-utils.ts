@@ -236,7 +236,7 @@ export class PDFUtils {
   }
 
   static generateFilename(prefix: string): string {
-    const formattedDate = formatDate(new Date(), 'YYYYMMdd_HHmm', 'en');
+    const formattedDate = formatDate(new Date(), 'yyyyMMdd_HHmm', 'en');
     return `${prefix}-${formattedDate}`;
   }
 
