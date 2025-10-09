@@ -46,9 +46,9 @@
       "executionStart": "Startdatum/-uhrzeit der Ausführung",
       "executionEnd": "Enddatum/-uhrzeit der Ausführung",
       "electionEventId": "Urnengangs-ID",
-      "contextInputHash": "Hash des Kontextdatensatzes (SHA-256)",
-      "tallyInputHash": "Hash des Auszählungsdatensatzes (SHA-256)",
-      "eCH0222Hash": "eCH-0222-XML-Hash (SHA-256)",
+      "contextInputHash": "Hash des Kontextdatensatzes (Dataset-context*.zip)",
+      "tallyInputHash": "Hash des Auszählungsdatensatzes (Dataset-tally*.zip)",
+      "eCH0222Hash": "Hash der Auszählungsdatei (eCH-0222*.xml)",
       "executedVerification": "Durchgeführte Verifikation"
     },
     "certificateAuthenticity": {
@@ -104,6 +104,7 @@
       "reset": "Zurücksetzen"
     },
     "verificationRunning": "Verifikation läuft...",
+    "verificationProgress": "{{completed}}/{{total}} abgeschlossen",
     "verificationCompleted": "Verifikation abgeschlossen.",
     "verificationHasFailed": "Einige Verifikationen sind fehlgeschlagen.",
     "verificationHasErrors": "Einige Verifikationen enthalten Fehler."

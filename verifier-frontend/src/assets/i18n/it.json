@@ -46,9 +46,9 @@
       "executionStart": "Data/ora di inizio esecuzione",
       "executionEnd": "Data/ora di fine esecuzione",
       "electionEventId": "ID dello scrutinio",
-      "contextInputHash": "Hash dell’insieme di dati di contesto (SHA-256)",
-      "tallyInputHash": "Hash dell’insieme di dati di scrutinio (SHA-256)",
-      "eCH0222Hash": "Hash xml eCH-0222 (SHA-256)",
+      "contextInputHash": "Hash dell’insieme di dati di contesto (Dataset-context*.zip)",
+      "tallyInputHash": "Hash dell’insieme di dati di scrutinio (Dataset-tally*.zip)",
+      "eCH0222Hash": "Hash del file di conteggio (eCH-0222*.xml)",
       "executedVerification": "Verifica eseguita"
     },
     "certificateAuthenticity": {
@@ -104,6 +104,7 @@
       "reset": "Resetta"
     },
     "verificationRunning": "Verifica in corso...",
+    "verificationProgress": "{{completed}}/{{total}} completate",
     "verificationCompleted": "Verifica completata.",
     "verificationHasFailed": "Alcune verifiche non sono riuscite.",
     "verificationHasErrors": "Alcune verifiche contengono errori."

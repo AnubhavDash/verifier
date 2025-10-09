@@ -46,9 +46,9 @@
       "executionStart": "Execution start date / time",
       "executionEnd": "Execution end date / time",
       "electionEventId": "Election event id",
-      "contextInputHash": "Context dataset hash (SHA-256)",
-      "tallyInputHash": "Tally dataset hash (SHA-256)",
-      "eCH0222Hash": "eCH-0222 xml hash (SHA-256)",
+      "contextInputHash": "Context dataset hash (Dataset-context*.zip)",
+      "tallyInputHash": "Tally dataset hash (Dataset-tally*.zip)",
+      "eCH0222Hash": "Tally file hash (eCH-0222*.xml)",
       "executedVerification": "Executed Verification"
     },
     "certificateAuthenticity": {
@@ -104,6 +104,7 @@
       "reset": "Reset"
     },
     "verificationRunning": "Verification running...",
+    "verificationProgress": "{{completed}}/{{total}} completed",
     "verificationCompleted": "Verification completed.",
     "verificationHasFailed": "Some verifications failed.",
     "verificationHasErrors": "Some verifications have errors."

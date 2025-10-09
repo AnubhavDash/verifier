@@ -57,6 +57,7 @@ The following table indicates the correspondence between the Verifier and E-voti
 | 1.5.5            | 1.4.5                                                                      |
 | 1.6.0            | 1.5.0                                                                      |
 | 1.6.1            | 1.5.1                                                                      |
+| 1.6.2            | 1.5.2                                                                      |
 
 ## Build information
 
@@ -65,7 +66,7 @@ The following instructions provide step-by-step information to build the Verifie
 1. Ensure you have Maven and Node installed. We tested with following versions:
    * OpenJDK Runtime Environment Temurin-21.0.8+9 (build 21.0.8+9)
     * Apache Maven 3.9.11
-    * Node: v20.19.1
+    * Node: v22.15.0
 
 2. Build using Maven
     * `mvn clean install`

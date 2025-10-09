@@ -46,9 +46,9 @@
       "executionStart": "Date/heure de début d’exécution",
       "executionEnd": "Date/heure de fin d’exécution",
       "electionEventId": "ID de l’événement électoral",
-      "contextInputHash": "Hash du jeu de données de contexte (SHA-256)",
-      "tallyInputHash": "Hash du jeu de données de dépouillement (SHA-256)",
-      "eCH0222Hash": "Hash du xml eCH-0222 (SHA-256)",
+      "contextInputHash": "Hash du jeu de données de contexte (Dataset-context*.zip)",
+      "tallyInputHash": "Hash du jeu de données de dépouillement (Dataset-tally*.zip)",
+      "eCH0222Hash": "Hash du fichier de dépouillement (eCH-0222*.xml)",
       "executedVerification": "Vérification exécutée"
     },
     "certificateAuthenticity": {
@@ -104,6 +104,7 @@
       "reset": "Réinitialiser"
     },
     "verificationRunning": "Vérification en cours...",
+    "verificationProgress": "{{completed}}/{{total}} complétées",
     "verificationCompleted": "Vérification terminée.",
     "verificationHasFailed": "Certaines vérifications ont échoué.",
     "verificationHasErrors": "Certaines vérifications contiennent des erreurs."

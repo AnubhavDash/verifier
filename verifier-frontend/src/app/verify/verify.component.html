@@ -24,7 +24,10 @@
         <span class="visually-hidden">{{ 'common.loading' | translate }}</span>
       </div>
       <p>
-        {{ 'verify.verificationRunning' | translate }} ({{ statusCounterRUNNING() }}/{{ verificationsSize }})
+        {{ 'verify.verificationRunning' | translate }}
+        <span [hidden]="statusCounterCompleted() === verificationsSize && this.statusCounterRunning() == 0">
+          ({{ 'verify.verificationProgress' | translate:{completed: statusCounterCompleted(), total: verificationsSize} }})
+        </span>
       </p>
     </div>
   }
