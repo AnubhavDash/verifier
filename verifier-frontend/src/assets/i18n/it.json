@@ -104,6 +104,7 @@
       "reset": "Resetta"
     },
     "verificationRunning": "Verifica in corso...",
+    "verificationProgress": "{{completed}}/{{total}} completate",
     "verificationCompleted": "Verifica completata.",
     "verificationHasFailed": "Alcune verifiche non sono riuscite.",
     "verificationHasErrors": "Alcune verifiche contengono errori."

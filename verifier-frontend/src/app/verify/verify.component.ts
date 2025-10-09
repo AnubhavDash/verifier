@@ -187,10 +187,6 @@ export class VerifyComponent implements OnInit {
       + this.statusCounter(VerificationStatus.ERROR);
   }
 
-  statusCounterRUNNING(): number {
-    return this.statusCounter(VerificationStatus.RUNNING);
-  }
-
   hasFailed() {
     return this.statusCounter(VerificationStatus.NOK) > 0;
   }
@@ -218,5 +214,14 @@ export class VerifyComponent implements OnInit {
 
     return runTimeBase + (endDate.getTime() - startDate.getTime());
   }
+
+  statusCounterRunning(): number {
+    return this.statusCounter(VerificationStatus.RUNNING);
+  }
+
+  statusCounterCompleted(): number {
+    return this.verificationsSize - this.statusCounterRunning();
+  }
+
 }
 
