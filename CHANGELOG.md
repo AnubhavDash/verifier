@@ -1,5 +1,15 @@
 # Changelog
 
+## Release 1.6.2
+
+Release 1.6.2 is a minor maintenance patch containing the following changes:
+
+* Improved logging of signature verification by using the OutputToInputStream converter.
+* Increased number of signatures in the PDF report.
+* Improved various translations.
+* Minor code improvements.
+* Updated dependencies and third-party libraries.
+
 ## Release 1.6.1
 
 Release 1.6.1 is a minor maintenance patch containing the following changes:
