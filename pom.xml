@@ -19,7 +19,7 @@
 
 	<groupId>ch.post.it.evoting.verifier</groupId>
 	<artifactId>verifier</artifactId>
-	<version>1.6.2.0</version>
+	<version>1.7.0.0-b0</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -34,7 +34,7 @@
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
 		<maven.compiler.release>21</maven.compiler.release>
-		<project.build.outputTimestamp>2025-10-09T15:42:03+02:00</project.build.outputTimestamp>
+		<project.build.outputTimestamp>2025-10-16T15:09:33+02:00</project.build.outputTimestamp>
 
 		<bouncycastle.version>1.82</bouncycastle.version>
 		<commons-codec.version>1.19.0</commons-codec.version>
