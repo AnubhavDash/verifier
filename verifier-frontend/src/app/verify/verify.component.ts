@@ -26,6 +26,7 @@ import {Router} from "@angular/router";
 import {VerificationStatus} from "../shared/types/verification-status";
 import {ProcessTime} from "../shared/types/process-time";
 import {SessionStorageService} from "../shared/services/session-storage.service";
+import {DatasetDisplayMode} from "../shared/types/dataset-display-mode.enum";
 
 @Component({
   templateUrl: 'verify.component.html',
@@ -43,6 +44,7 @@ export class VerifyComponent implements OnInit {
   verifications: Record<string, VerificationDefinition>;
   verificationsSize = 0;
 
+  protected readonly DatasetDisplayMode = DatasetDisplayMode;
   private readonly router: Router = inject(Router);
   private readonly verifyService: VerifyService = inject(VerifyService);
   private readonly sessionStorageService = inject(SessionStorageService);
@@ -187,6 +189,14 @@ export class VerifyComponent implements OnInit {
       + this.statusCounter(VerificationStatus.ERROR);
   }
 
+  statusCounterRunning(): number {
+    return this.statusCounter(VerificationStatus.RUNNING);
+  }
+
+  statusCounterCompleted(): number {
+    return this.verificationsSize - this.statusCounterRunning();
+  }
+
   hasFailed() {
     return this.statusCounter(VerificationStatus.NOK) > 0;
   }
@@ -214,14 +224,5 @@ export class VerifyComponent implements OnInit {
 
     return runTimeBase + (endDate.getTime() - startDate.getTime());
   }
-
-  statusCounterRunning(): number {
-    return this.statusCounter(VerificationStatus.RUNNING);
-  }
-
-  statusCounterCompleted(): number {
-    return this.verificationsSize - this.statusCounterRunning();
-  }
-
 }
 

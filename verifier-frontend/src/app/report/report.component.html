@@ -15,8 +15,8 @@
   -->
 
 <ver-page-title
-		[instructions]="'report.instructions' | translate"
-		[title]="'report.title' | translate">
+  [instructions]="'report.instructions' | translate"
+  [title]="'report.title' | translate">
   @if (isReportGenerating()) {
     <div class="alert alert-primary page-actions">
       <div class="spinner">
@@ -50,7 +50,7 @@
         <i aria-hidden="true" class="bi-arrow-counterclockwise"></i>
         {{ 'report.action.export' | translate }}
       </button>
-      @if (isShownNextButton()){
+      @if (isShownNextButton()) {
         <button (click)="next()" class="btn btn-primary" type="button">
           <i aria-hidden="true" class="bi bi-arrow-right-circle"></i>
           {{ 'common.next' | translate }}
@@ -61,20 +61,20 @@
 </ver-page-title>
 
 <div class="table-responsive" style="box-sizing: border-box; max-height: calc(100vh - 400px); overflow-y: auto;">
-<div id="verification-report">
-	<ver-dataset-information
-			[configuration]="configuration"
-			[displayDatasetInformation]="true"
-			[startDate]="processTime.start | date:'dd.MM.yyyy HH:mm:ss'"
-			[endDate]="processTime.end | date:'dd.MM.yyyy HH:mm:ss'"
-			[statusCounterERROR]="statusCounterERROR()"
-			[statusCounterNOK]="statusCounterNOK()"
-			[statusCounterOK]="statusCounterOK()"
-			[totalNumberOfVerifications]="verificationsSize"
-			[verifierMode]="verifierMode"
-	/>
-	<ver-verification-details
-			[isReportDisplay]="true"
-			[verifications]="verifications"></ver-verification-details>
+  <div id="verification-report">
+    <ver-dataset-information
+      [displayMode]="DatasetDisplayMode.REPORT"
+      [configuration]="configuration"
+      [startDate]="processTime.start | date:'dd.MM.yyyy HH:mm:ss'"
+      [endDate]="processTime.end | date:'dd.MM.yyyy HH:mm:ss'"
+      [statusCounterERROR]="statusCounterERROR()"
+      [statusCounterNOK]="statusCounterNOK()"
+      [statusCounterOK]="statusCounterOK()"
+      [totalNumberOfVerifications]="verificationsSize"
+      [verifierMode]="verifierMode"
+    />
+    <ver-verification-details
+      [isReportDisplay]="true"
+      [verifications]="verifications"></ver-verification-details>
   </div>
 </div>

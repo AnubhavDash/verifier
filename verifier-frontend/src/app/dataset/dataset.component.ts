@@ -20,6 +20,7 @@ import {DatasetType} from '../shared/types/dataset-type';
 import {Router} from "@angular/router";
 import {DatasetService} from "./dataset.service";
 import {SessionStorageService} from "../shared/services/session-storage.service";
+import {DatasetDisplayMode} from "../shared/types/dataset-display-mode.enum";
 
 @Component({
   templateUrl: 'dataset.component.html',
@@ -30,8 +31,9 @@ export class DatasetComponent implements OnInit {
 
   configuration: DatasetConfiguration;
   verifierMode: VerifierMode;
-  loadingDataset: boolean = false;
+  loadingDataset = false;
 
+  protected readonly DatasetDisplayMode = DatasetDisplayMode;
   protected readonly DatasetType = DatasetType;
   private readonly datasetService: DatasetService = inject(DatasetService);
   private readonly router: Router = inject(Router);

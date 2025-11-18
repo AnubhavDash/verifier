@@ -23,6 +23,7 @@ import {ExportToPdfService} from "../shared/services/export-to-pdf.service";
 import {Router} from "@angular/router";
 import {SessionStorageService} from "../shared/services/session-storage.service";
 import {formatDate} from "@angular/common";
+import {DatasetDisplayMode} from "../shared/types/dataset-display-mode.enum";
 
 @Component({
   templateUrl: 'report.component.html',
@@ -38,6 +39,7 @@ export class ReportComponent implements OnInit {
   isReportGenerating = signal(false);
   isReportGenerated= signal(false);
 
+  protected readonly DatasetDisplayMode = DatasetDisplayMode;
   private readonly exportToPdfService: ExportToPdfService = inject(ExportToPdfService);
   private readonly router: Router = inject(Router);
   private readonly sessionStorageService = inject(SessionStorageService);

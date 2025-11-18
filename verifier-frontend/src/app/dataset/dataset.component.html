@@ -78,8 +78,8 @@
 
 @if (isShownDatasetInformation) {
   <ver-dataset-information
+    [displayMode]="DatasetDisplayMode.PREVIEW"
     [configuration]="configuration"
-    [displayDatasetInformation]="true"
-    [verifierMode]="verifierMode"/>
+    [verifierMode]="verifierMode" />
 }
 </div>

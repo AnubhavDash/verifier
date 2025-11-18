@@ -13,80 +13,81 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-@if (displayDatasetInformation){
-  <div class="card">
+
+<div class="card">
+  <div class="card-header">
+    {{ 'datasetInformation.verificationInput.title' | translate }}
+  </div>
+  <div class="card-body">
+    <ver-dataset-information-item [info]="'datasetInformation.verificationInput.applicationVersion' | translate"
+                                  [value]="'datasetInformation.verificationInput.applicationVersionValue' | translate: {appVersion} "/>
+    @if (displayMode === DatasetDisplayMode.REPORT) {
+      <ver-dataset-information-item [info]="'datasetInformation.verificationInput.executionStart' | translate"
+                                    [value]="this.startDate"/>
+      <ver-dataset-information-item [info]="'datasetInformation.verificationInput.executionEnd' | translate"
+                                    [value]="getEndDate()"/>
+    }
+    <ver-dataset-information-item [info]="'datasetInformation.verificationInput.electionEventId' | translate"
+                                  [value]="configuration.context.electionEventId"/>
+    <ver-dataset-information-item [info]="'datasetInformation.verificationInput.contextInputHash' | translate"
+                                  [value]="configuration.context.hash"/>
+    @if (isTally()) {
+      <ver-dataset-information-item [info]="'datasetInformation.verificationInput.tallyInputHash' | translate"
+                                    [value]="getTallyHash()"/>
+      <ver-dataset-information-item [info]="'datasetInformation.verificationInput.eCH0222Hash' | translate"
+                                    [value]="getECH0222Hash()"/>
+    }
+    @if (isReportMode()) {
+      <ver-dataset-information-item [info]="'datasetInformation.verificationInput.executedVerification' | translate"
+                                    [value]="'Verify ' + verifierMode"/>
+    }
+  </div>
+</div>
+
+@if (isVerificationMode() || isReportMode()) {
+  <div class="card mt-3">
     <div class="card-header">
-      {{ 'datasetInformation.verificationInput.title' | translate }}
+      {{ 'datasetInformation.certificateAuthenticity.title' | translate }}
     </div>
     <div class="card-body">
-      <ver-dataset-information-item [info]="'datasetInformation.verificationInput.applicationVersion' | translate"
-                                    [value]="'datasetInformation.verificationInput.applicationVersionValue' | translate: {appVersion} "/>
-      @if (isReportMode()) {
-        <ver-dataset-information-item [info]="'datasetInformation.verificationInput.executionStart' | translate"
-                                      [value]="this.startDate"/>
-        <ver-dataset-information-item [info]="'datasetInformation.verificationInput.executionEnd' | translate"
-                                      [value]="getEndDate()"/>
-      }
-      <ver-dataset-information-item [info]="'datasetInformation.verificationInput.electionEventId' | translate"
-                                    [value]="configuration.context.electionEventId"/>
-      <ver-dataset-information-item [info]="'datasetInformation.verificationInput.contextInputHash' | translate"
-                                    [value]="configuration.context.hash"/>
-      @if (isTally()) {
-        <ver-dataset-information-item [info]="'datasetInformation.verificationInput.tallyInputHash' | translate"
-                                      [value]="getTallyHash()"/>
-        <ver-dataset-information-item [info]="'datasetInformation.verificationInput.eCH0222Hash' | translate"
-                                      [value]="getECH0222Hash()"/>
-      }
-      @if (isReportMode()) {
-        <ver-dataset-information-item [info]="'datasetInformation.verificationInput.executedVerification' | translate"
-                                      [value]="'Verify ' + verifierMode"/>
+      <ver-dataset-information-item [info]="'datasetInformation.certificateAuthenticity.protocolParticipant' | translate"
+                                    [value]="'datasetInformation.certificateAuthenticity.certificateFingerprint' | translate"/>
+      @for (key of fingerprintsKeys; track $index) {
+        <ver-dataset-information-item [info]="'datasetInformation.certificateAuthenticity.participantsKey.' + key | translate"
+                                      [value]="configuration.context.aliasesToFingerprints[key]"/>
       }
     </div>
   </div>
 
-  @if (isReportMode()){
-    <div class="card mt-3">
-      <div class="card-header">
-        {{ 'datasetInformation.certificateAuthenticity.title' | translate }}
-      </div>
-      <div class="card-body">
-        <ver-dataset-information-item [info]="'datasetInformation.certificateAuthenticity.protocolParticipant' | translate"
-                                      [value]="'datasetInformation.certificateAuthenticity.certificateFingerprint' | translate"/>
-        @for (key of fingerprintsKeys; track $index) {
-          <ver-dataset-information-item [info]="'datasetInformation.certificateAuthenticity.participantsKey.' + key | translate"
-                                        [value]="configuration.context.aliasesToFingerprints[key]"/>
-        }
-      </div>
+  <div class="card mt-3">
+    <div class="card-header">
+      {{ 'datasetInformation.configurationCorrectness.title' | translate }}
     </div>
-
-    <div class="card mt-3">
-      <div class="card-header">
-        {{ 'datasetInformation.configurationCorrectness.title' | translate }}
-      </div>
-      <div class="card-body">
-        <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.electionEventName' | translate"
-                                      [value]="configuration.context.electionEventName"/>
-        <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.electionEventSeed' | translate"
-                                      [value]="configuration.context.electionEventSeed"/>
-        <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.electionEventDate' | translate"
-                                      [value]="configuration.context.electionEventDate"/>
-        <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.numberOfElections' | translate"
-                                      [value]="configuration.context.numberOfElections"/>
-        <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.numberOfVotes' | translate"
-                                      [value]="configuration.context.numberOfVotes"/>
-        <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.numberOfBallots' | translate"
-                                      [value]="configuration.context.numberOfBallots"/>
-        <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.numberOfNonTestBallotBoxes' | translate"
-                                      [value]="configuration.context.numberOfNonTestBallotBoxes"/>
-        <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.numberOfTestBallotBoxes' | translate"
-                                      [value]="configuration.context.numberOfTestBallotBoxes"/>
-        <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.totalNumberOfAuthorizedNonTestVoters' | translate"
-                                      [value]="configuration.context.totalNumberOfAuthorizedNonTestVoters"/>
-        <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.totalNumberOfTestVoters' | translate"
-                                      [value]="configuration.context.totalNumberOfTestVoters"/>
-      </div>
+    <div class="card-body">
+      <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.electionEventName' | translate"
+                                    [value]="configuration.context.electionEventName"/>
+      <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.electionEventSeed' | translate"
+                                    [value]="configuration.context.electionEventSeed"/>
+      <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.electionEventDate' | translate"
+                                    [value]="configuration.context.electionEventDate"/>
+      <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.numberOfElections' | translate"
+                                    [value]="configuration.context.numberOfElections"/>
+      <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.numberOfVotes' | translate"
+                                    [value]="configuration.context.numberOfVotes"/>
+      <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.numberOfBallots' | translate"
+                                    [value]="configuration.context.numberOfBallots"/>
+      <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.numberOfNonTestBallotBoxes' | translate"
+                                    [value]="configuration.context.numberOfNonTestBallotBoxes"/>
+      <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.numberOfTestBallotBoxes' | translate"
+                                    [value]="configuration.context.numberOfTestBallotBoxes"/>
+      <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.totalNumberOfAuthorizedNonTestVoters' | translate"
+                                    [value]="configuration.context.totalNumberOfAuthorizedNonTestVoters"/>
+      <ver-dataset-information-item [info]="'datasetInformation.configurationCorrectness.totalNumberOfTestVoters' | translate"
+                                    [value]="configuration.context.totalNumberOfTestVoters"/>
     </div>
+  </div>
 
+  @if (isReportMode()) {
     <div class="card mt-3">
       <div class="card-header">
         {{ 'datasetInformation.verificationOverview.title' | translate }}

@@ -19,6 +19,7 @@ import {DatasetConfiguration} from '../../types/dataset-configuration';
 import {VerifierMode} from '../../types/verifier-mode.enum';
 import {DatasetInformationItemComponent} from "../dataset-information-item/dataset-information-item.component";
 import {TranslatePipe} from "@ngx-translate/core";
+import {DatasetDisplayMode} from "../../types/dataset-display-mode.enum";
 
 @Component({
   templateUrl: 'dataset-information.component.html',
@@ -30,9 +31,9 @@ import {TranslatePipe} from "@ngx-translate/core";
   standalone: true
 })
 export class DatasetInformationComponent {
+  @Input({required: true}) displayMode: DatasetDisplayMode;
+  @Input({required: true}) configuration: DatasetConfiguration | undefined;
 
-  @Input() configuration: DatasetConfiguration | undefined;
-  @Input() displayDatasetInformation: boolean;
   @Input() startDate: string | undefined;
   @Input() endDate: string | undefined;
   @Input() statusCounterERROR: number | undefined;
@@ -42,10 +43,24 @@ export class DatasetInformationComponent {
   @Input() verifierMode: VerifierMode | undefined;
 
   appVersion = packageJson.version;
-  fingerprintsKeys: string[] = ['canton', 'sdm_config', 'sdm_tally', 'control_component_1', 'control_component_2', 'control_component_3', 'control_component_4'];
+  fingerprintsKeys: string[] = [
+    'canton',
+    'sdm_config',
+    'sdm_tally',
+    'control_component_1',
+    'control_component_2',
+    'control_component_3',
+    'control_component_4'
+  ];
+
+  protected readonly DatasetDisplayMode = DatasetDisplayMode;
 
   isReportMode(): boolean {
-    return this.startDate !== undefined;
+    return this.displayMode === DatasetDisplayMode.REPORT;
+  }
+
+  isVerificationMode(): boolean {
+    return this.displayMode === DatasetDisplayMode.VERIFICATION;
   }
 
   isTally(): boolean {
