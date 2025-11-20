@@ -1,6 +1,6 @@
 {
   "name": "verifier",
-  "version": "1.6.2-1-RC1",
+  "version": "1.6.2-1",
   "description": "Swiss Post Verifier",
   "license": "MIT",
   "main": "main.js",

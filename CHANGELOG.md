@@ -1,5 +1,12 @@
 # Changelog
 
+## Release 1.6.2.1
+
+Release 1.6.2.1 is a minor maintenance patch containing the following changes:
+
+* Minor UX improvement to display the dataset information in the verification step.
+* Updated dependencies and third-party libraries.
+
 ## Release 1.6.2
 
 Release 1.6.2 is a minor maintenance patch containing the following changes:
