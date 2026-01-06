@@ -20,7 +20,7 @@
 	<parent>
 		<artifactId>verifier</artifactId>
 		<groupId>ch.post.it.evoting.verifier</groupId>
-		<version>1.6.2.1</version>
+		<version>1.7.0.0-b1</version>
 	</parent>
 
 	<artifactId>verifier-assembly</artifactId>
@@ -81,30 +81,6 @@
 								<descriptor>src/main/assembly/assembly.xml</descriptor>
 							</descriptors>
 							<appendAssemblyId>false</appendAssemblyId>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<inherited>false</inherited>
-				<executions>
-					<execution>
-						<id>run-custom-script</id>
-						<phase>install</phase>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<configuration>
-							<executable>bash</executable>
-							<arguments>
-								<argument>../reproducible-build/generateChecksum.sh</argument>
-								<argument>${parent.artifactId}</argument>
-								<argument>${parent.version}</argument>
-								<argument>../target</argument>
-								<argument>./target</argument>
-							</arguments>
 						</configuration>
 					</execution>
 				</executions>

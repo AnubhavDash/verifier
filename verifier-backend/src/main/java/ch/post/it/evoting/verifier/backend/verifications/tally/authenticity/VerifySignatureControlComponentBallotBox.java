@@ -108,7 +108,7 @@ public class VerifySignatureControlComponentBallotBox extends AbstractVerificati
 					ChannelSecurityContextData.controlComponentBallotBox(j, ee, bb),
 					s);
 
-		} catch (final SignatureException e) {
+		} catch (final SignatureException _) {
 			throw new IllegalStateException(String.format(
 					"Could not verify the signature of the control component ballot box payload. [nodeId: %s, electionEventId: %s, ballotBoxId: %s]",
 					j, ee, bb));

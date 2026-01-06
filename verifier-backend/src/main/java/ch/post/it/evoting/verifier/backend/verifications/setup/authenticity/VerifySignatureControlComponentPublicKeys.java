@@ -115,7 +115,7 @@ public class VerifySignatureControlComponentPublicKeys extends AbstractVerificat
 					ChannelSecurityContextData.controlComponentPublicKeys(j, ee),
 					s
 			);
-		} catch (final SignatureException e) {
+		} catch (final SignatureException _) {
 			throw new IllegalStateException(
 					String.format("Could not verify the signature of the control component public keys payload. [nodeId: %s, electionEventId: %s]",
 							j, ee));

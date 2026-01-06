@@ -111,7 +111,7 @@ public class VerifySignatureTallyComponentShuffle extends AbstractVerification {
 					ChannelSecurityContextData.tallyComponentShuffle(ee, bb),
 					s);
 
-		} catch (final SignatureException e) {
+		} catch (final SignatureException _) {
 			throw new IllegalStateException(
 					String.format("Could not verify the signature of the tally component shuffle payload. [electionEventId: %s, ballotBoxId: %s]",
 							ee, bb));

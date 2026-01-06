@@ -21,7 +21,7 @@
 	<parent>
 		<artifactId>verifier</artifactId>
 		<groupId>ch.post.it.evoting.verifier</groupId>
-		<version>1.6.2.1</version>
+		<version>1.7.0.0-b1</version>
 	</parent>
 
 	<artifactId>verifier-backend</artifactId>
@@ -29,6 +29,7 @@
 	<properties>
 		<archunit.version>1.4.1</archunit.version>
 		<jaxb-api.version>2.4.0-b180830.0359</jaxb-api.version>
+		<hash-generator.skip>true</hash-generator.skip>
 	</properties>
 
 	<dependencyManagement>
@@ -149,11 +150,6 @@
 			<artifactId>mapstruct</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.mapstruct</groupId>
-			<artifactId>mapstruct-processor</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
 			<groupId>net.lingala.zip4j</groupId>
 			<artifactId>zip4j</artifactId>
 		</dependency>
@@ -173,6 +169,10 @@
 		<dependency>
 			<groupId>uk.org.webcompere</groupId>
 			<artifactId>system-stubs-jupiter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

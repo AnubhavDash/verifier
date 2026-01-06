@@ -18,13 +18,13 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {DatasetModule} from './dataset/dataset.module';
 import {RouterModule, Routes} from '@angular/router';
-import {HttpClient, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {CommonModule} from '@angular/common';
 import {VerifierCommonModule} from './verifier-common-module';
 import {DatasetComponent} from "./dataset/dataset.component";
 import {InternalHeaderComponent, TranslateTextPipe} from "e-voting-libraries-ui-kit";
-import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {TranslateHttpLoader} from "@ngx-translate/http-loader";
+import {TranslateModule} from '@ngx-translate/core';
+import {provideTranslateHttpLoader} from "@ngx-translate/http-loader";
 import {VerifyComponent} from "./verify/verify.component";
 import {VerifyModule} from "./verify/verify.module";
 import {ReportComponent} from "./report/report.component";
@@ -58,23 +58,20 @@ const routes: Routes = [
     ResultModule,
     NgbDropdownModule,
     CommonModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    }),
+    TranslateModule.forRoot(),
     VerifierCommonModule,
     InternalHeaderComponent,
     StepperItemComponent,
   ],
-  providers: [provideHttpClient(withInterceptorsFromDi()), TranslateTextPipe],
+  providers: [
+    provideHttpClient(withInterceptorsFromDi()),
+    provideTranslateHttpLoader({
+      prefix: './assets/i18n/',
+      suffix: '.json'
+    }),
+    TranslateTextPipe
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
-}
-
-export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }

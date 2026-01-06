@@ -89,14 +89,12 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 	private boolean validateOnlineControlComponentPublicKeys(final Path inputDirectoryPath, final GqGroup electionEventContextEncryptionGroup) {
 		return electionDataExtractionService.getControlComponentPublicKeysPayloads(inputDirectoryPath)
 				.map(ControlComponentPublicKeysPayload::getEncryptionGroup)
-				.distinct()
 				.allMatch(electionEventContextEncryptionGroup::equals);
 	}
 
 	private boolean validateSetupComponentTallyData(final Path inputDirectoryPath, final GqGroup electionEventContextEncryptionGroup) {
 		return electionDataExtractionService.getSetupComponentTallyDataPayloads(inputDirectoryPath)
 				.map(SetupComponentTallyDataPayload::getEncryptionGroup)
-				.distinct()
 				.allMatch(electionEventContextEncryptionGroup::equals);
 	}
 }

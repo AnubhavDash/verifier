@@ -46,7 +46,7 @@ class StructureChecker {
 			final PathType pathType;
 			try {
 				pathType = PathType.valueOf(type.asText());
-			} catch (final IllegalArgumentException e) {
+			} catch (final IllegalArgumentException _) {
 				throw new IllegalArgumentException(String.format("Type does not exist: %s", type.asText()));
 			}
 

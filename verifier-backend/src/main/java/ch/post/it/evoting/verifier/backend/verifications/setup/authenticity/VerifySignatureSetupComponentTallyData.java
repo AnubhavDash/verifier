@@ -105,7 +105,7 @@ public class VerifySignatureSetupComponentTallyData extends AbstractVerification
 					ChannelSecurityContextData.setupComponentTallyData(ee, vcs),
 					s
 			);
-		} catch (final SignatureException e) {
+		} catch (final SignatureException _) {
 			throw new IllegalStateException(
 					String.format(
 							"Could not verify the signature of the setup component tally data payload. [electionEventId: %s, verificationCardSetId: %s]",

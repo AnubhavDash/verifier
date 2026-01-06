@@ -176,7 +176,7 @@ public class VerifierProcessor {
 		final Path directory;
 		try {
 			directory = directoryService.createSecuredDirectory();
-		} catch (final IOException e) {
+		} catch (final IOException _) {
 			throw new DatasetExtractionException("Could not create secured directory for dataset extraction.");
 		}
 
@@ -184,7 +184,7 @@ public class VerifierProcessor {
 
 		try (final InputStream datasetInputStream = Files.newInputStream(filePath)) {
 			this.contextDataset = downloadDataset(datasetInputStream, directory, DatasetType.CONTEXT);
-		} catch (final IOException e) {
+		} catch (final IOException _) {
 			throw new DatasetExtractionException("Could not download context dataset.");
 		}
 
@@ -243,7 +243,7 @@ public class VerifierProcessor {
 		final String datasetHash;
 		try {
 			datasetHash = DigestUtils.sha256Hex(Files.newInputStream(filePath)).toLowerCase(Locale.ENGLISH);
-		} catch (final IOException e) {
+		} catch (final IOException _) {
 			throw new DatasetExtractionException("Could not digest given context dataset.");
 		}
 
@@ -276,7 +276,7 @@ public class VerifierProcessor {
 
 		try (final InputStream datasetInputStream = Files.newInputStream(filePath)) {
 			tallyDataset = downloadDataset(datasetInputStream, contextDataset.getUnpackFolder(), DatasetType.TALLY);
-		} catch (final IOException e) {
+		} catch (final IOException _) {
 			throw new DatasetExtractionException("Could not download tally dataset.");
 		}
 
@@ -285,7 +285,7 @@ public class VerifierProcessor {
 		final String datasetHash;
 		try {
 			datasetHash = DigestUtils.sha256Hex(Files.newInputStream(filePath)).toLowerCase(Locale.ENGLISH);
-		} catch (final IOException e) {
+		} catch (final IOException _) {
 			throw new DatasetExtractionException("Could not digest given tally dataset.");
 		}
 
@@ -293,7 +293,7 @@ public class VerifierProcessor {
 		final String eCH222Hash;
 		try {
 			eCH222Hash = DigestUtils.sha256Hex(Files.newInputStream(tallyComponentEch0222Path)).toLowerCase(Locale.ENGLISH);
-		} catch (final IOException e) {
+		} catch (final IOException _) {
 			throw new DatasetExtractionException("Could not digest given eCH222 file.");
 		}
 

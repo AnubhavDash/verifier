@@ -20,7 +20,7 @@
   <parent>
     <artifactId>verifier</artifactId>
     <groupId>ch.post.it.evoting.verifier</groupId>
-    <version>1.6.2.1</version>
+    <version>1.7.0.0-b1</version>
   </parent>
 
   <artifactId>verifier-frontend</artifactId>
@@ -33,6 +33,7 @@
     <sonar.tests>src</sonar.tests>
     <sonar.exclusions>**/*.spec.ts</sonar.exclusions>
     <sonar.test.inclusions>**/*.spec.ts</sonar.test.inclusions>
+    <hash-generator.skip>true</hash-generator.skip>
   </properties>
 
   <dependencies>
