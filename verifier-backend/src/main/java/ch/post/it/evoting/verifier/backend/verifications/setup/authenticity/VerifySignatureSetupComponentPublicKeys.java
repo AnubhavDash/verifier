@@ -104,7 +104,7 @@ public class VerifySignatureSetupComponentPublicKeys extends AbstractVerificatio
 					ChannelSecurityContextData.setupComponentPublicKeys(ee),
 					s);
 
-		} catch (final SignatureException _) {
+		} catch (final SignatureException e) {
 			throw new IllegalStateException(
 					String.format("Could not verify the signature of the setup component public keys payload. [electionEventId: %s]",
 							ee));

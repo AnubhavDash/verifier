@@ -30,7 +30,7 @@ import {VerifierMode} from "./shared/types/verifier-mode.enum";
 export class AppComponent implements OnInit {
   packageDescription: string = packageInfo.description;
   packageVersion: string = packageInfo.version;
-  availableLanguages: readonly string[];
+  availableLanguages: string [];
   isDatasetLoaded: boolean = false;
   isVerificationComplete: boolean = false;
   isVerificationReportGenerated: boolean = false;
@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
 
   constructor() {
     this.translate.addLangs(['en', 'de', 'fr', 'it']);
-    this.translate.setFallbackLang('de');
+    this.translate.setDefaultLang('de');
     this.translate.use('de');
     this.availableLanguages = this.translate.getLangs();
   }

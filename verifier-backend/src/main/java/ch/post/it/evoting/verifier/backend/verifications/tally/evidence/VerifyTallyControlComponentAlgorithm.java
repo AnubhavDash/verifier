@@ -30,6 +30,7 @@ import ch.post.it.evoting.evotinglibraries.domain.election.SetupComponentPublicK
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 
 @Service
@@ -71,7 +72,7 @@ public class VerifyTallyControlComponentAlgorithm {
 		final ImmutableMap<String, TallyComponentVotesPayload> tallyControlComponentVotes = input.getTallyControlComponentVotesPerBallotBoxId();
 		final Configuration configurationXML = input.getElectionEventConfiguration();
 		final Delivery eCH0222XML = input.getTallyControlComponentDetailedResults();
-		final ImmutableMap<String, TallyComponentVotesPayload> Map_decodedVotes_Map_writeIns = input.getTallyControlComponentVotesPerAuthorizationName();
+		final ImmutableMap<AuthorizationType, TallyComponentVotesPayload> Map_decodedVotes_Map_writeIns = input.getTallyControlComponentVotesPerAuthorizationName();
 
 		// Cross-checks.
 		checkArgument(ee.equals(input.getElectionEventId()), "The context and input must have the same election event id.");

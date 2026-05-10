@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import ch.ech.xmlns.ech_0222._3.Delivery;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 
 /**
@@ -36,12 +37,12 @@ public class VerifyECH0222Input {
 
 	private final Configuration cantonConfig;
 	private final Delivery tallyComponentEch0222;
-	private final ImmutableMap<String, TallyComponentVotesPayload> tallyComponentVotesPayloads;
+	private final ImmutableMap<AuthorizationType, TallyComponentVotesPayload> tallyComponentVotesPayloads;
 
 	private VerifyECH0222Input(
 			final Configuration cantonConfig,
 			final Delivery tallyComponentEch0222,
-			final ImmutableMap<String, TallyComponentVotesPayload> tallyComponentVotesPayloads) {
+			final ImmutableMap<AuthorizationType, TallyComponentVotesPayload> tallyComponentVotesPayloads) {
 		this.cantonConfig = cantonConfig;
 		this.tallyComponentEch0222 = tallyComponentEch0222;
 		this.tallyComponentVotesPayloads = tallyComponentVotesPayloads;
@@ -55,7 +56,7 @@ public class VerifyECH0222Input {
 		return tallyComponentEch0222;
 	}
 
-	public final ImmutableMap<String, TallyComponentVotesPayload> getTallyControlComponentVotesPerAuthorizationName() {
+	public final ImmutableMap<AuthorizationType, TallyComponentVotesPayload> getTallyControlComponentVotesPerAuthorizationName() {
 		return tallyComponentVotesPayloads;
 	}
 
@@ -63,7 +64,7 @@ public class VerifyECH0222Input {
 
 		private Configuration cantonConfig;
 		private Delivery tallyComponentEch0222;
-		private ImmutableMap<String, TallyComponentVotesPayload> tallyComponentVotesPayloads;
+		private ImmutableMap<AuthorizationType, TallyComponentVotesPayload> tallyComponentVotesPayloads;
 
 		public Builder setCantonConfig(final Configuration cantonConfig) {
 			this.cantonConfig = cantonConfig;
@@ -75,7 +76,7 @@ public class VerifyECH0222Input {
 			return this;
 		}
 
-		public Builder setTallyControlComponentVotesPerAuthorizationName(final ImmutableMap<String, TallyComponentVotesPayload> tallyComponentVotesPayloads) {
+		public Builder setTallyControlComponentVotesPerAuthorizationName(final ImmutableMap<AuthorizationType, TallyComponentVotesPayload> tallyComponentVotesPayloads) {
 			this.tallyComponentVotesPayloads = tallyComponentVotesPayloads;
 			return this;
 		}

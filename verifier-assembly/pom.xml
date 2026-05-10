@@ -20,7 +20,7 @@
 	<parent>
 		<artifactId>verifier</artifactId>
 		<groupId>ch.post.it.evoting.verifier</groupId>
-		<version>1.7.0.0-b1</version>
+		<version>1.6.3.0-RC1</version>
 	</parent>
 
 	<artifactId>verifier-assembly</artifactId>
@@ -59,7 +59,7 @@
 						<configuration>
 							<followRedirects>true</followRedirects>
 							<url>${openjdk-jre.win64.url}</url>
-							<outputDirectory>${project.build.directory}/jre</outputDirectory>
+							<outputDirectory>${project.build.directory}/install/OpenJDK-win64</outputDirectory>
 							<unpack>true</unpack>
 							<sha256>${openjdk-jre.win64.sha256}</sha256>
 						</configuration>

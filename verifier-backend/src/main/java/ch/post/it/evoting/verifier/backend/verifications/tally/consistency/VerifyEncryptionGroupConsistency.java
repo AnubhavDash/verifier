@@ -96,6 +96,7 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 			final GqGroup electionEventContextPayloadEncryptionGroup) {
 		return electionDataExtractionService.getAllControlComponentBallotBoxPayloadsOrderedByNodeId(inputDirectoryPath)
 				.map(ControlComponentBallotBoxPayload::getEncryptionGroup)
+				.distinct()
 				.allMatch(electionEventContextPayloadEncryptionGroup::equals);
 	}
 
@@ -103,6 +104,7 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 			final GqGroup electionEventContextPayloadEncryptionGroup) {
 		return electionDataExtractionService.getAllControlComponentShufflePayloadsOrderedByNodeId(inputDirectoryPath)
 				.map(ControlComponentShufflePayload::getEncryptionGroup)
+				.distinct()
 				.allMatch(electionEventContextPayloadEncryptionGroup::equals);
 	}
 
@@ -110,6 +112,7 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 			final GqGroup electionEventContextPayloadEncryptionGroup) {
 		return electionDataExtractionService.getTallyComponentShufflePayloads(inputDirectoryPath)
 				.map(TallyComponentShufflePayload::getEncryptionGroup)
+				.distinct()
 				.allMatch(electionEventContextPayloadEncryptionGroup::equals);
 	}
 
@@ -117,6 +120,7 @@ public class VerifyEncryptionGroupConsistency extends AbstractVerification {
 			final GqGroup electionEventContextPayloadEncryptionGroup) {
 		return electionDataExtractionService.getTallyComponentVotesPayloads(inputDirectoryPath)
 				.map(TallyComponentVotesPayload::getEncryptionGroup)
+				.distinct()
 				.allMatch(electionEventContextPayloadEncryptionGroup::equals);
 	}
 }

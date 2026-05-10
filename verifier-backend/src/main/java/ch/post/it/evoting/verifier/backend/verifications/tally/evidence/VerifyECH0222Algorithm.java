@@ -42,6 +42,7 @@ import ch.post.it.evoting.evotinglibraries.protocol.algorithms.channelsecurity.X
 import ch.post.it.evoting.evotinglibraries.toolbox.OutputToInputStreamConverter;
 import ch.post.it.evoting.evotinglibraries.xml.XmlFileRepository;
 import ch.post.it.evoting.evotinglibraries.xml.mapper.RawDataDeliveryMapper;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 
 @Service
@@ -70,7 +71,7 @@ public class VerifyECH0222Algorithm {
 		// Input.
 		final Configuration configurationXML = input.getCantonConfig();
 		final Delivery eCH0222XML = input.getTallyComponentEch0222();
-		final ImmutableMap<String, TallyComponentVotesPayload> Map_decodedVotes_Map_writeIns = input.getTallyControlComponentVotesPerAuthorizationName();
+		final ImmutableMap<AuthorizationType, TallyComponentVotesPayload> Map_decodedVotes_Map_writeIns = input.getTallyControlComponentVotesPerAuthorizationName();
 
 		// Operation.
 		final Delivery eCH0222XML_prime = RawDataDeliveryMapper.createECH0222(configurationXML, Map_decodedVotes_Map_writeIns);

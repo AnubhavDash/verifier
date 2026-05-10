@@ -112,7 +112,7 @@ public class VerifySignatureControlComponentShuffle extends AbstractVerification
 					ChannelSecurityContextData.controlComponentShuffle(j, ee, bb),
 					s);
 
-		} catch (final SignatureException _) {
+		} catch (final SignatureException e) {
 			throw new IllegalStateException(String.format(
 					"Could not verify the signature of the control component shuffle payload. [nodeId: %s, electionEventId: %s, ballotBoxId: %s]",
 					j, ee, bb));

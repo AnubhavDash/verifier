@@ -4,8 +4,8 @@ setlocal
 
 rem Set local environment variables
 set "VERIFIER_HOME=%cd%"
-set "JAVA_HOME=%VERIFIER_HOME%\${openjdk-jre.version}"
-set "JRE_HOME=%VERIFIER_HOME%\${openjdk-jre.version}"
+set "JAVA_HOME=%VERIFIER_HOME%\embedded-jre"
+set "JRE_HOME=%VERIFIER_HOME%\embedded-jre"
 
 rem Create Verifier service
 set "VERIFIER_SERVICE=verifier-backend"

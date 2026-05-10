@@ -1,5 +1,14 @@
 # Changelog
 
+## Release 1.6.3
+
+Release 1.6.3 is a minor maintenance patch containing the following changes:
+
+* Display the Verification Input, Certificate Authenticity Checks, and Configuration Correctness Checks during the execution of the verifications.
+* Merged duplicate counting circles into a single counting circle for the tally file.
+* Minor UI improvements.
+* Updated dependencies and third-party libraries.
+
 ## Release 1.6.2.1
 
 Release 1.6.2.1 is a minor maintenance patch containing the following changes:

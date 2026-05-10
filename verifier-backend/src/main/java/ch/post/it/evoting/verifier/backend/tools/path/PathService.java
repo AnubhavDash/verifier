@@ -60,7 +60,7 @@ public class PathService {
 
 			addMapEntry(rootNode, Paths.get(""));
 
-		} catch (final IOException _) {
+		} catch (final IOException e) {
 			throw new IllegalArgumentException("Impossible to find/read structure file.");
 		}
 	}

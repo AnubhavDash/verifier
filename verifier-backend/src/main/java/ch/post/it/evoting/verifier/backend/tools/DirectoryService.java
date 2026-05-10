@@ -73,7 +73,7 @@ public class DirectoryService {
 		} else {
 			try {
 				this.datasetUnzipLocation = datasetUnzipLocation.toRealPath(LinkOption.NOFOLLOW_LINKS);
-			} catch (final IOException _) {
+			} catch (final IOException e) {
 				throw new IllegalStateException(String.format("The provided directory path does not exist. [path: %s]", datasetUnzipLocation));
 			}
 		}
@@ -114,7 +114,7 @@ public class DirectoryService {
 		try {
 			FileSystemUtils.deleteRecursively(directoryToDelete);
 			LOGGER.debug("Directory successfully deleted.");
-		} catch (final IOException _) {
+		} catch (final IOException e) {
 			LOGGER.warn("Unable to delete the existing directory.");
 		}
 	}
@@ -132,7 +132,7 @@ public class DirectoryService {
 		try {
 			Files.deleteIfExists(fileToDelete);
 			LOGGER.debug("File successfully deleted.");
-		} catch (final IOException _) {
+		} catch (final IOException e) {
 			LOGGER.warn("Unable to delete the existing file.");
 		}
 	}

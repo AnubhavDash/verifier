@@ -93,12 +93,14 @@ public class VerifyElectionEventIdConsistency extends AbstractVerification {
 	private boolean validateControlComponentPublicKeys(final Path inputDirectoryPath, final String electionEventContextElectionEventId) {
 		return electionDataExtractionService.getControlComponentPublicKeysPayloads(inputDirectoryPath)
 				.map(ControlComponentPublicKeysPayload::getElectionEventId)
+				.distinct()
 				.allMatch(electionEventContextElectionEventId::equals);
 	}
 
 	private boolean validateSetupComponentTallyData(final Path inputDirectoryPath, final String electionEventContextElectionEventId) {
 		return electionDataExtractionService.getSetupComponentTallyDataPayloads(inputDirectoryPath)
 				.map(SetupComponentTallyDataPayload::getElectionEventId)
+				.distinct()
 				.allMatch(electionEventContextElectionEventId::equals);
 	}
 }

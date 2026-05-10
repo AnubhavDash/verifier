@@ -31,6 +31,7 @@ import ch.post.it.evoting.evotinglibraries.domain.ControlComponentNode;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.ControlComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 
 /**
@@ -53,12 +54,12 @@ public class VerifyTallyControlComponentInput {
 	private final ImmutableMap<String, TallyComponentVotesPayload> tallyControlComponentVotesPerBallotBoxId;
 	private final Configuration electionEventConfiguration;
 	private final Delivery tallyControlComponentDetailedResults;
-	private final ImmutableMap<String, TallyComponentVotesPayload> tallyControlComponentVotesPerAuthorizationName;
+	private final ImmutableMap<AuthorizationType, TallyComponentVotesPayload> tallyControlComponentVotesPerAuthorizationName;
 
 	public VerifyTallyControlComponentInput(final Stream<ControlComponentShufflePayload> controlComponentShufflePayloads,
 			final Stream<TallyComponentShufflePayload> tallyComponentShufflePayloads,
 			final Configuration electionEventConfiguration, final Delivery tallyControlComponentDetailedResults,
-			final ImmutableMap<String, TallyComponentVotesPayload> tallyControlComponentVotesPerAuthorizationName) {
+			final ImmutableMap<AuthorizationType, TallyComponentVotesPayload> tallyControlComponentVotesPerAuthorizationName) {
 		this.lastOnlineControlComponentShufflesPerBallotBoxId = checkNotNull(controlComponentShufflePayloads)
 				.filter(controlComponentShufflePayload -> controlComponentShufflePayload.getNodeId() == ControlComponentNode.last().id())
 				.collect(toImmutableMap(ControlComponentShufflePayload::getBallotBoxId, Function.identity()));
@@ -113,7 +114,7 @@ public class VerifyTallyControlComponentInput {
 		return tallyControlComponentDetailedResults;
 	}
 
-	public ImmutableMap<String, TallyComponentVotesPayload> getTallyControlComponentVotesPerAuthorizationName() {
+	public ImmutableMap<AuthorizationType, TallyComponentVotesPayload> getTallyControlComponentVotesPerAuthorizationName() {
 		return tallyControlComponentVotesPerAuthorizationName;
 	}
 

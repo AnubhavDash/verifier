@@ -103,7 +103,7 @@ public class VerifySignatureElectionEventContext extends AbstractVerification {
 					ChannelSecurityContextData.electionEventContext(ee),
 					s
 			);
-		} catch (final SignatureException _) {
+		} catch (final SignatureException e) {
 			throw new IllegalStateException(
 					String.format("Could not verify the signature of the election event context payload. [electionEventId: %s]", ee));
 		}

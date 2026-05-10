@@ -23,6 +23,8 @@ import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
+import com.google.common.collect.MoreCollectors;
+
 import ch.ech.xmlns.ech_0222._3.Delivery;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableMap;
 import ch.post.it.evoting.evotinglibraries.domain.configuration.SetupComponentTallyDataPayload;
@@ -31,6 +33,7 @@ import ch.post.it.evoting.evotinglibraries.domain.mixnet.ElectionEventContextPay
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.SetupComponentPublicKeysPayload;
 import ch.post.it.evoting.evotinglibraries.domain.mixnet.TallyComponentShufflePayload;
 import ch.post.it.evoting.evotinglibraries.domain.tally.TallyComponentVotesPayload;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.verifier.backend.AbstractVerification;
 import ch.post.it.evoting.verifier.backend.Category;
@@ -82,11 +85,11 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 				inputDirectoryPath);
 		final Configuration electionEventConfiguration = extractionService.getCantonConfig(inputDirectoryPath);
 		final Delivery tallyControlComponentDetailedResults = extractionService.getTallyComponentEch0222(inputDirectoryPath);
-		final ImmutableMap<String, TallyComponentVotesPayload> tallyControlComponentVotesPerAuthorizationName = getAuthorizationNameToTallyComponentVotesPayloadMap(
+		final ImmutableMap<AuthorizationType, TallyComponentVotesPayload> tallyControlComponentVotesPerAuthorization = getAuthorizationNameToTallyComponentVotesPayloadMap(
 				inputDirectoryPath, electionEventContextPayload);
 		final VerifyTallyControlComponentInput input = new VerifyTallyControlComponentInput(controlComponentShufflePayloads,
 				tallyComponentShufflePayloads, electionEventConfiguration, tallyControlComponentDetailedResults,
-				tallyControlComponentVotesPerAuthorizationName
+				tallyControlComponentVotesPerAuthorization
 		);
 
 		final boolean result = verifyTallyControlComponentAlgorithm.verifyTallyControlComponent(context, input);
@@ -102,10 +105,10 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 	 * Extract the {@link SetupComponentTallyDataPayload} and {@link TallyComponentVotesPayload} to create a mapping between the ballot box default
 	 * title and the {@link TallyComponentVotesPayload}.
 	 */
-	private ImmutableMap<String, TallyComponentVotesPayload> getAuthorizationNameToTallyComponentVotesPayloadMap(final Path inputDirectoryPath,
+	private ImmutableMap<AuthorizationType, TallyComponentVotesPayload> getAuthorizationNameToTallyComponentVotesPayloadMap(final Path inputDirectoryPath,
 			final ElectionEventContextPayload electionEventContextPayload) {
 
-		record TallyComponentVotesTuple(String authorizationName, TallyComponentVotesPayload payload) {
+		record TallyComponentVotesTuple(AuthorizationType authorization, TallyComponentVotesPayload payload) {
 		}
 
 		return electionEventContextPayload.getElectionEventContext().verificationCardSetContexts().stream()
@@ -117,11 +120,16 @@ public class VerifyTallyControlComponent extends AbstractVerification {
 							inputDirectoryPath, verificationCardSetId);
 					final String ballotBoxDefaultTitle = setupComponentTallyDataPayload.getBallotBoxDefaultTitle();
 
+					final AuthorizationType authorization = extractionService.getCantonConfig(inputDirectoryPath).getAuthorizations()
+							.getAuthorization().stream()
+							.filter(authorizationType -> authorizationType.getAuthorizationName().equals(ballotBoxDefaultTitle))
+							.collect(MoreCollectors.onlyElement());
+
 					final TallyComponentVotesPayload tallyComponentVotesPayload = extractionService.getTallyComponentVotesPayload(
 							inputDirectoryPath, ballotBoxId);
 
-					return new TallyComponentVotesTuple(ballotBoxDefaultTitle, tallyComponentVotesPayload);
+					return new TallyComponentVotesTuple(authorization, tallyComponentVotesPayload);
 				})
-				.collect(toImmutableMap(TallyComponentVotesTuple::authorizationName, TallyComponentVotesTuple::payload));
+				.collect(toImmutableMap(TallyComponentVotesTuple::authorization, TallyComponentVotesTuple::payload));
 	}
 }

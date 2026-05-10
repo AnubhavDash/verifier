@@ -111,7 +111,7 @@ public class VerifySignatureTallyComponentVotes extends AbstractVerification {
 					ChannelSecurityContextData.tallyComponentVotes(ee, bb),
 					s);
 
-		} catch (final SignatureException _) {
+		} catch (final SignatureException e) {
 			throw new IllegalStateException(
 					String.format("Could not verify the signature of the  tally component votes payload. [electionEventId: %s, ballotBoxId: %s]",
 							ee, bb));

@@ -62,7 +62,6 @@
 			<directoryMode>0755</directoryMode>
 			<directory>${project.basedir}/src/main/resources</directory>
 			<outputDirectory>./resources</outputDirectory>
-			<filtered>true</filtered>
 			<includes>
 				<include>run-backend.bat</include>
 				<include>application.yaml</include>
@@ -77,6 +76,23 @@
 				<include>README.md</include>
 			</includes>
 		</fileSet>
+		<fileSet>
+			<fileMode>0644</fileMode>
+			<directoryMode>0755</directoryMode>
+			<directory>${project.build.directory}/install/OpenJDK-win64/${openjdk-jre.version}</directory>
+			<excludes>
+				<exclude>resources/${openjdk-jre.version}/conf/security/java.security</exclude>
+			</excludes>
+			<outputDirectory>resources/embedded-jre</outputDirectory>
+		</fileSet>
 	</fileSets>
 
+	<files>
+		<!-- Java security -->
+		<file>
+			<source>${project.basedir}/../security/windows/java.security</source>
+			<outputDirectory>resources/embedded-jre/conf/security</outputDirectory>
+			<fileMode>0644</fileMode>
+		</file>
+	</files>
 </assembly>
